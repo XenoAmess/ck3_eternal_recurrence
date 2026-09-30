@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import gzip
+import locale
 import math
 import os
 import re
@@ -112,6 +113,15 @@ class SessionHandle:
     watchdog_creation_date: str
     job_handle: object | None
     pre_resume_inventory: dict[str, object] | None = None
+    injector_attestation: dict[str, object] | None = None
+
+
+class NativeInjectorError(AgentError):
+    """Injector failure carrying the exact attempted process identity."""
+
+    def __init__(self, message: str, attestation: dict[str, object]) -> None:
+        super().__init__(message)
+        self.attestation = dict(attestation)
 
 
 class _SuspendedWindowsProcess:
@@ -2300,36 +2310,141 @@ def _ck3_launch_command(
     return command
 
 
+def _pinned_injector_creation_utc(child: subprocess.Popen[bytes]) -> str:
+    """Freeze creation time from CPython's pinned Windows Popen process handle.
+
+    A later PID lookup can refer to a different process after a short-lived
+    injector exits. This Windows-only private-handle dependency fails closed
+    if the current Python/runtime no longer exposes it.
+    """
+    if os.name != "nt" or type(child.pid) is not int or child.pid <= 0:
+        raise AgentError("injector pinned Windows process identity is unavailable")
+    handle = getattr(child, "_handle", None)
+    if handle is None or int(handle) <= 0:
+        raise AgentError("injector pinned Windows process handle is unavailable")
+    import win32process
+
+    created = win32process.GetProcessTimes(int(handle)).get("CreationTime")
+    if (not isinstance(created, datetime) or created.tzinfo is None
+            or created.year < 2000):
+        raise AgentError("injector pinned Windows creation time is unavailable")
+    return created.astimezone(timezone.utc).isoformat(timespec="microseconds")
+
+
+def _injector_text(raw: bytes) -> str:
+    """Keep subprocess.run(text=True, errors='replace') diagnostic semantics."""
+    encoding = "utf-8" if sys.flags.utf8_mode else locale.getencoding()
+    return raw.decode(encoding, errors="replace").replace("\r\n", "\n").replace("\r", "\n")
+
+
+def _injector_outputs(
+    attestation: dict[str, object], stdout: bytes | None,
+    stderr: bytes | None, returncode: int | None, *, root_reaped: bool,
+) -> tuple[str, str]:
+    attestation.update({
+        "returncode": returncode,
+        "stdout_sha256": (hashlib.sha256(stdout).hexdigest().upper()
+                          if stdout is not None else None),
+        "stderr_sha256": (hashlib.sha256(stderr).hexdigest().upper()
+                          if stderr is not None else None),
+        "stdout_bytes": len(stdout) if stdout is not None else None,
+        "stderr_bytes": len(stderr) if stderr is not None else None,
+        "injector_root_reaped": root_reaped,
+    })
+    return (_injector_text(stdout) if stdout is not None else "",
+            _injector_text(stderr) if stderr is not None else "")
+
+
+def _terminate_injector(
+    child: subprocess.Popen[bytes],
+) -> tuple[bytes | None, bytes | None, bool]:
+    """Bounded kill/reap of the exact root; descendants remain unproven."""
+    try:
+        if child.poll() is None:
+            child.kill()
+        stdout, stderr = child.communicate(timeout=5)
+        return stdout, stderr, type(child.returncode) is int
+    except Exception:
+        return None, None, False
+
+
 def _inject_native_bridge(
     process: _SuspendedWindowsProcess,
     config: NativeBridgeLaunchConfig,
-) -> None:
-    """Run the existing injector CLI while CK3's primary thread is suspended."""
-    command = [
-        str(config.injector_path),
-        str(process.pid),
-        str(config.dll_path),
-    ]
+) -> dict[str, object]:
+    """Run the existing CLI before CK3 resume and freeze its pinned identity."""
+    command = [str(config.injector_path), str(process.pid), str(config.dll_path)]
+    attestation: dict[str, object] = {
+        "schema": "xar.ck3.native-injector-attempt.v1",
+        "status": "STARTING", "argv": command,
+        "parent_pid": os.getpid(), "target_ck3_pid": process.pid,
+        "pid": None, "creation_utc": None,
+        "creation_source": "Popen._handle/GetProcessTimes",
+        "returncode": None, "stdout_sha256": None, "stderr_sha256": None,
+        "stdout_bytes": None, "stderr_bytes": None,
+        "injector_root_reaped": False,
+        "complete_process_tree_proven": False,
+        "role_query_authorized": False,
+    }
+    process.injector_attestation = attestation
     try:
-        result = subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            errors="replace",
-            timeout=NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS,
-            check=False,
-        )
-    except (OSError, subprocess.TimeoutExpired) as error:
-        raise AgentError(
-            f"native bridge injector could not complete: {error}"
+        child = subprocess.Popen(command, stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE)
+    except OSError as error:
+        # Constructor failure does not provide a pinned child handle. Do not
+        # infer that no process was briefly created inside Popen.
+        attestation["status"] = "RED_SPAWN_UNPROVEN"
+        raise NativeInjectorError(
+            f"native bridge injector could not complete: {error}", attestation
         ) from error
-    if result.returncode != 0:
-        stdout = result.stdout.strip()
-        stderr = result.stderr.strip()
-        raise AgentError(
-            "native bridge injector failed before CK3 resume: "
-            f"rc={result.returncode}, stdout={stdout!r}, stderr={stderr!r}"
-        )
+    attestation["pid"] = child.pid
+    try:
+        try:
+            attestation["creation_utc"] = _pinned_injector_creation_utc(child)
+        except Exception as error:
+            stdout, stderr, cleared = _terminate_injector(child)
+            _injector_outputs(attestation, stdout, stderr, child.returncode,
+                              root_reaped=cleared)
+            attestation["status"] = "RED_IDENTITY"
+            raise NativeInjectorError(
+                f"native bridge injector could not complete: {error}", attestation
+            ) from error
+        try:
+            stdout, stderr = child.communicate(
+                timeout=NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS)
+        except (OSError, subprocess.TimeoutExpired) as error:
+            stdout, stderr, cleared = _terminate_injector(child)
+            _injector_outputs(attestation, stdout, stderr, child.returncode,
+                              root_reaped=cleared)
+            attestation["status"] = "RED_TIMEOUT_OR_IO"
+            raise NativeInjectorError(
+                f"native bridge injector could not complete: {error}", attestation
+            ) from error
+        stdout_text, stderr_text = _injector_outputs(
+            attestation, stdout, stderr, child.returncode,
+            root_reaped=type(child.returncode) is int)
+        if not attestation["injector_root_reaped"]:
+            attestation["status"] = "RED_EXIT_UNPROVEN"
+            raise NativeInjectorError(
+                "native bridge injector could not complete: exit is unproven",
+                attestation,
+            )
+        if child.returncode != 0:
+            attestation["status"] = "RED_RETURN_CODE"
+            raise NativeInjectorError(
+                "native bridge injector failed before CK3 resume: "
+                f"rc={child.returncode}, stdout={stdout_text.strip()!r}, "
+                f"stderr={stderr_text.strip()!r}", attestation,
+            )
+        attestation["status"] = "INJECTOR_EXIT_ZERO_TREE_UNPROVEN"
+        return dict(attestation)
+    finally:
+        # CPython closes the pinned process handle when this Popen is released.
+        # Never wait without a bound if a failed kill/reap left it running.
+        if child.poll() is not None:
+            for stream in (child.stdout, child.stderr):
+                if stream is not None and not stream.closed:
+                    stream.close()
 
 
 def _resume_with_native_bridge(
@@ -2337,8 +2452,21 @@ def _resume_with_native_bridge(
     config: NativeBridgeLaunchConfig | None,
 ) -> None:
     if config is not None:
-        _inject_native_bridge(process, config)
+        process.injector_attestation = _inject_native_bridge(process, config)
     process.resume()
+
+
+def _require_injector_cleanup_before_marker_clear(
+    process: _SuspendedWindowsProcess | None,
+) -> None:
+    attempt = getattr(process, "injector_attestation", None)
+    if (attempt is not None
+            and (not isinstance(attempt, Mapping)
+                 or attempt.get("injector_root_reaped") is not True
+                 or attempt.get("complete_process_tree_proven") is not True)):
+        raise UnsafeCleanupError(
+            "injector process tree cleanup is unproven; unsafe marker retained"
+        )
 
 
 def _assign_process_to_job(
@@ -2642,6 +2770,7 @@ def launch(
             raise UnsafeCleanupError(
                 f"CK3 launch contract failed and its job is not empty: {error}"
             ) from error
+        _require_injector_cleanup_before_marker_clear(process)
         _close_job(job_handle)
         if process is not None:
             process.close()
@@ -2667,6 +2796,7 @@ def launch(
         watchdog_creation_date,
         job_handle,
         pre_resume_inventory,
+        getattr(process, "injector_attestation", None),
     )
 
 
@@ -2841,6 +2971,7 @@ def stop_tracked(
         errors.append(f"process watchdog reported failure: {detail}")
         watchdog_error.unlink(missing_ok=True)
     try:
+        _require_injector_cleanup_before_marker_clear(handle.process)
         handle.pid_file.unlink(missing_ok=True)
         handle.ready_file.unlink(missing_ok=True)
         watchdog_error.unlink(missing_ok=True)
