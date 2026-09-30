@@ -7,18 +7,9 @@ from PIL import Image, ImageDraw
 from xar_promo.process import CommandSpec, run_command
 
 from .common import font, lines
-
-BG = "#211813"
-PANEL = "#35291F"
-INK = "#F0E5CF"
-MUTED = "#BBA98D"
-GOLD = "#CBA56A"
-RED = "#CA7962"
-BLUE = "#9AAEAB"  # Muted opposing-faction accent, not a blue dashboard field.
-GREEN = "#ABB582"
-PAPER = "#D9C39B"
-PAPER_INK = "#3E2C20"
-FAINT_RULE = "#61503C"
+from .series_palette import (
+    BG, PANEL, INK, MUTED, GOLD, RED, BLUE, GREEN, PAPER, PAPER_INK, FAINT_RULE,
+)
 
 # Older teaching/help layouts share these drawing helpers. Translate their
 # panel fills at the visual boundary without editing frozen mechanism copy.

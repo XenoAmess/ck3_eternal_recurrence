@@ -10,6 +10,9 @@ from pathlib import Path
 from xar_promo.tts import EdgeTtsProvider, TtsRequest
 from xar_promo.render import ass_burn_in_filter
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'integration' / 'src'))
+from war_ai_promo.series_palette import BG, PANEL, INK, MUTED, GOLD, ass_color
+
 FFBIN = Path('C:/Users/1/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0.1-full_build/bin')
 FFMPEG, FFPROBE = FFBIN/'ffmpeg.exe', FFBIN/'ffprobe.exe'
 
@@ -187,6 +190,9 @@ Style: Source,Microsoft YaHei,27,&H00E4DACA,&H00FFFFFF,&H80101010,&H80101010,0,0
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
 '''
+    # Episodes 0/1 retain white Chinese and grey English subtitle glyphs.
+    # Only the source-label packaging adopts the shared brown-and-gold colors.
+    header=header.replace('&H00E4DACA',ass_color(INK)).replace('&H80101010',ass_color(PANEL))
     rows=[]
     for u in chapter['utterances']:
         begin=at(u['local_start']);end=at(u['local_start']+u['duration'])
@@ -213,7 +219,7 @@ def render_chunk(run,chapter,edit,items,index):
         shot=edit['utterances'][u['key']];visual=Path(shot['image'])
         if shot.get('kind')=='raw-excerpt':
             argv+=['-threads','1','-ss',str(shot['start']),'-t',str(min(u['duration'],shot['source_duration'])),'-i',str(visual)]
-            filters.append(f'[{i}:v]setpts=PTS-STARTPTS,scale=1920:900:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:0:color=0x0D141C,setsar=1,fps=30,tpad=stop_mode=clone:stop_duration={u["duration"]},trim=duration={u["duration"]},format=yuv420p[v{i}]')
+            filters.append(f'[{i}:v]setpts=PTS-STARTPTS,scale=1920:900:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:0:color=0x{BG[1:]},drawbox=x=0:y=900:w=iw:h=2:color=0x{GOLD[1:]}:t=fill,setsar=1,fps=30,tpad=stop_mode=clone:stop_duration={u["duration"]},trim=duration={u["duration"]},format=yuv420p[v{i}]')
         else:
             argv+=['-threads','1','-loop','1','-framerate','30','-t',str(u['duration']),'-i',str(visual)]
             filters.append(f'[{i}:v]trim=duration={u["duration"]},setpts=PTS-STARTPTS,setsar=1,format=yuv420p[v{i}]')
@@ -236,7 +242,7 @@ def render_chapter(run,chapter,edit):
     command(run,cid+'-chapter-join',[str(FFMPEG),'-hide_banner','-nostdin','-n','-f','concat','-safe','0','-i',str(concat),'-c','copy','-movflags','+faststart',str(out)])
     return {**ref(out),'duration_expected':chapter['duration']}
 
-def render(run,edit_path):
+def render(run,edit_path,output_name='CK3-War-AI-Episode02-Review-20260930-a04.mp4'):
     timeline=read(run/'timeline.json');edit=read(edit_path)
     if [c['id'] for c in timeline['chapters']] != ['opening','pursuit','knights','reinforcement','terminal','closing']:raise ValueError('full a04 requires original six chapters')
     if not 1620 <= timeline['total_duration'] <= 1920:raise ValueError(f"actual narration {timeline['total_duration']:.3f}s outside authorized 27-32min content range")
@@ -255,16 +261,17 @@ def render(run,edit_path):
     concat=run/'concat.txt';text_once(concat,''.join(f"file '{r['path'].replace(chr(92),'/')}'\n"+f"duration {r['duration_expected']:.9f}\n" for r in results))
     meta=run/'chapters.ffmetadata';lines=[';FFMETADATA1']
     for c in timeline['chapters']:lines.extend(['[CHAPTER]','TIMEBASE=1/1000',f'START={round(c["global_start"]*1000)}',f'END={round((c["global_start"]+c["duration"])*1000)}',f'title={c["title"]}'])
-    text_once(meta,'\n'.join(lines)+'\n');out=run/'CK3-War-AI-Episode02-Review-20260930-a04.mp4'
+    if Path(output_name).name!=output_name or not output_name.endswith('.mp4'):raise ValueError('output name must be one MP4 filename')
+    text_once(meta,'\n'.join(lines)+'\n');out=run/output_name
     command(run,'final-join',[str(FFMPEG),'-hide_banner','-nostdin','-n','-f','concat','-safe','0','-i',str(concat),'-f','ffmetadata','-i',str(meta),'-map','0','-map_metadata','1','-map_chapters','1','-c','copy','-movflags','+faststart',str(out)])
     report={**ref(out),'duration_expected':timeline['total_duration'],'human_signoff':'not-provided','status':'pending-independent-machine-check-and-frame-review'};write(run/'final-artifact.json',report);print(json.dumps(report))
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('phase',choices=['prepare','narrate','narrate-raw','reuse-narration','reuse-processed-narration','finish-narration','render']);p.add_argument('--run',required=True,type=Path);p.add_argument('--story',type=Path);p.add_argument('--environment',type=Path);p.add_argument('--edit',type=Path);p.add_argument('--previous',type=Path);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('phase',choices=['prepare','narrate','narrate-raw','reuse-narration','reuse-processed-narration','finish-narration','render']);p.add_argument('--run',required=True,type=Path);p.add_argument('--story',type=Path);p.add_argument('--environment',type=Path);p.add_argument('--edit',type=Path);p.add_argument('--previous',type=Path);p.add_argument('--output-name',default='CK3-War-AI-Episode02-Review-20260930-a04.mp4');a=p.parse_args()
     if a.phase=='prepare':prepare(a.run,a.story,a.environment)
     elif a.phase in ['narrate','narrate-raw']:narrate(a.run,a.phase=='narrate-raw')
     elif a.phase=='reuse-narration':reuse_narration(a.run,a.previous)
     elif a.phase=='reuse-processed-narration':reuse_processed_narration(a.run,a.previous)
     elif a.phase=='finish-narration':finish_narration(a.run)
-    else:render(a.run,a.edit)
+    else:render(a.run,a.edit,a.output_name)
 if __name__=='__main__':main()
