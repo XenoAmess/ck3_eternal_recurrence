@@ -117,9 +117,11 @@ def assess_feast_start_private_v1(
 def _material_post(pending: Mapping[str, object], post: Mapping[str, object]) -> bool:
     if (post.get("schema") != POST_SCHEMA
             or post.get("actor_character_id") != pending.get("actor_character_id")
-            or post.get("date_raw") != pending.get("date_raw")
-            or post.get("snapshot_revision", 0) < pending.get("native_revision", 0)):
+            or post.get("date_raw") != pending.get("date_raw")):
         return False
+    # The private query validates the current connection's paused frame. Native
+    # revisions restart in a new PID; the recorded old revision is provenance,
+    # while actor/date, exact hosted identity and debit prove the saved action.
     pre_ids = pending["pre_hosted_activities"]
     post_ids = post["hosted_activities"]
     if (not isinstance(pre_ids, list) or not isinstance(post_ids, list)

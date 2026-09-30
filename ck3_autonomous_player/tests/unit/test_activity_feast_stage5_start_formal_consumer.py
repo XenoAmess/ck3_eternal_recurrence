@@ -72,6 +72,8 @@ class Driver:
         self.state = self
         self.sent: list[dict[str, object]] = []
         self.fail_submit = False
+        self.fail_post = False
+        self.native_revision = 3
         self.post = {
             "schema": POST_SCHEMA, "snapshot_revision": 4,
             "date_raw": 53219928, "actor_character_id": 29829,
@@ -88,7 +90,7 @@ class Driver:
         self.after_submit = False
 
     def take_snapshot(self) -> dict[str, object]:
-        revision = 4 if self.after_submit else 3
+        revision = self.native_revision + 1 if self.after_submit else self.native_revision
         return {"snapshot_id": f"native:{revision}",
                 "revision": 6 if self.after_submit else 5,
                 "native_revision": revision, "date_raw": 53219928,
@@ -114,6 +116,8 @@ class Driver:
                                    "schema": "activity-feast-stage5-start-private-action-v1",
                                    "submitted": True, "native_status": "submitted_pending",
                                    "precondition": inputs()}}}
+        if self.fail_post:
+            raise BridgeUnavailableError("post unavailable")
         return {"type": "command_result", "protocol_version": 1,
                 "request_id": request_id, "ok": True,
                 "result": {"step": step, "accepted": True,
@@ -183,6 +187,28 @@ class FeastStartConsumerTest(unittest.TestCase):
             self.assertEqual(missing["status"], "resolved_activity_unobserved")
             self.assertFalse(missing["postcondition_verified"])
             self.assertEqual(sum(row["step"] == START_STEP for row in driver.sent), 1)
+
+    def test_new_pid_lower_revision_resolves_material_pending_without_submit(self) -> None:
+        with TemporaryDirectory() as temp:
+            old_driver = Driver(Path(temp))
+            old_driver.native_revision = 9
+            old_driver.fail_post = True
+            qualified = inputs()
+            qualified.update({"native_guest_route_qualified": True,
+                              "snapshot_revision": 9, "queried_snapshot_id": "native:9"})
+            old_guest = {**guest(), "snapshot_revision": 9}
+            first = consume_feast_start_private_v1(
+                old_driver, inputs=qualified, guest=old_guest, budget=budget())
+            self.assertEqual(first["status"], "pending_post_read_red")
+            self.assertEqual(read_feast_start_ledger(Path(temp))["pending"]["native_revision"], 9)
+            fresh_driver = Driver(Path(temp))
+            fresh_driver.post["snapshot_revision"] = 3
+            recovered = consume_feast_start_private_v1(fresh_driver, inputs={})
+            self.assertEqual(recovered["status"], "applied")
+            self.assertTrue(recovered["postcondition_verified"])
+            self.assertEqual(recovered["activity_id"], 77)
+            self.assertEqual(sum(row["step"] == START_STEP for row in old_driver.sent), 1)
+            self.assertEqual(sum(row["step"] == START_STEP for row in fresh_driver.sent), 0)
 
     def test_timeout_or_ambiguous_post_never_retries_start(self) -> None:
         with TemporaryDirectory() as temp:

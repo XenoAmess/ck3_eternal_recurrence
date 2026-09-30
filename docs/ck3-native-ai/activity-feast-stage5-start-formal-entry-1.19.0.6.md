@@ -75,12 +75,20 @@ resolved ledger is saved with the game's checkpoint on the same paused actor
 and date. A recovered ledger is consumed before opening another planner. A
 resolved recovery reads the recorded activity's current full ID, host and type;
 it does not infer that today's balance should equal the original debit balance.
+Native revisions restart in a new PID. Pending recovery validates the fresh
+query's frame and preserves the old revision as provenance; it compares the
+persisted actor/date, activity identity and resource debit without treating
+revisions from separate PIDs as one increasing sequence. Independent review
+reproduced the previous old-revision-9/new-revision-3 failure through the actual
+consumer and transport; the matching material result now resolves with zero
+additional Start submissions.
 Recovery queries add no new Start/gameplay turn. The existing following-turn
 consumer requires a later actual game date and keeps its separate evidence.
 
 ## Verification and remaining evidence
 
-Focused normal/optimized checks passed **45/45 in each mode**. Fixture coverage exercises default OFF, unqualified
+Focused normal/optimized checks passed **46/46 in each mode** after the pending
+revision fix. Fixture coverage exercises default OFF, unqualified
 selected guests, native `CanStart=false`, positive typed submission with
 independent fee/activity poststate and checkpoint, ACK without an effect,
 pending recovery without resubmission, and resolved identity recovery. Fixtures
