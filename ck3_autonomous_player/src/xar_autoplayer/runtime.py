@@ -2431,6 +2431,9 @@ def _inject_native_bridge(
     if (result.error is not None or attestation.get("status") != "EXIT"
             or attestation.get("complete_process_tree_proven") is not True):
         reason = result.error or "injector process tree is unproven"
+        if attestation.get("status") == "EXIT":
+            attestation["status"] = "RED_JOB_REPORT_MISMATCH"
+        attestation["complete_process_tree_proven"] = False
         raise NativeInjectorError(
             f"native bridge injector could not complete: {reason}", attestation
         )

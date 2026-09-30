@@ -264,6 +264,24 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             _resume_with_native_bridge(process, self.config)
         process.resume.assert_not_called()
 
+    def test_contradictory_helper_error_or_status_cannot_clear_marker(self) -> None:
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        for status, error in (("EXIT", "dummy helper error"),
+                              ("RED_INTERNAL", None)):
+            with self.subTest(status=status):
+                process = SimpleNamespace(pid=4123, resume=mock.Mock())
+                result = self.outcome(command, status=status, tree=True,
+                                      error=error)
+                with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                                return_value=result), self.assertRaises(NativeInjectorError):
+                    _resume_with_native_bridge(process, self.config)
+                self.assertFalse(process.injector_attestation[
+                    "complete_process_tree_proven"])
+                self.assertNotEqual(process.injector_attestation["status"], "EXIT")
+                with self.assertRaises(UnsafeCleanupError):
+                    _require_injector_cleanup_before_marker_clear(process)
+                process.resume.assert_not_called()
+
     def test_malformed_job_report_keeps_marker_and_never_resumes(self) -> None:
         command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
         invalid_fields = {
