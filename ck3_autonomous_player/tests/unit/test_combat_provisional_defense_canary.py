@@ -445,6 +445,67 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             blocked = self._plan(frame, rows)
         self.assertIsNone(blocked["selected_step"])
 
+    def test_same_frame_multiple_defenders_reach_model_without_dropping_participants(self):
+        # R0402's exact adapter inputs; this checks dispatch, while the full
+        # native payload replay independently exercises the existing model.
+        frame = {
+            "diagnostics": {"hello": {
+                "ck3_build_match": True,
+                "expected_ck3_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+            }},
+            "succession_lifecycle": {
+                "lifecycle": "ordinary_campaign_succession", "xar_enabled": "xar_off",
+            },
+            "combat_simulation_inputs_v3": {
+                "completeness": {"input_observation_ready": True,
+                                 "monte_carlo_ready": False,
+                                 "planner_usable": False},
+                "base_inputs": {
+                    "target_province_id": 2629,
+                    "scenario": {
+                        "attacker_entry_province_id": 2630,
+                        "attacker_army_ids": [83886367],
+                        "defender_army_ids": [50331920, 83886484],
+                        "attacker_side": "player_or_allied",
+                        "defender_side": "enemy",
+                        "actual_route_dependency": False,
+                    },
+                },
+            },
+            "snapshot_id": "native:4", "revision": 5,
+            "native_revision": 4, "date_raw": 53219928,
+        }
+        inputs = {
+            "target_province_id": 2629, "entry_province_id": 2630,
+            "attacker_army_id": 83886367,
+            "defender_army_ids": (50331920, 83886484),
+            "friendly_current_soldiers": 2333,
+        }
+        with mock.patch("xar_autoplayer.strategy.forecast_fixed_contact",
+                        return_value={"status": "model_unavailable"}) as model:
+            result = _provisional_defense_research_assessment(frame, **inputs)
+        model.assert_called_once()
+        self.assertEqual(model.call_args.kwargs["defender_army_ids"],
+                         (50331920, 83886484))
+        self.assertEqual(model.call_args.kwargs["attacker_army_ids"], (83886367,))
+        self.assertEqual(model.call_args.kwargs["capture"], {
+            "snapshot_id": "native:4", "revision": 5,
+            "native_revision": 4, "date_raw": 53219928,
+        })
+        self.assertEqual(model.call_args.kwargs["sample_count"], 512)
+        self.assertEqual(model.call_args.kwargs["horizon_days"], 120)
+        self.assertEqual(result, {"status": "research_trial_unavailable",
+                                  "model_status": "model_unavailable"})
+        # Keep the exact observed order and empty-roster rejection. A failed
+        # model is never rewritten into an admissible contact.
+        for defenders in ((83886484, 50331920), ()):
+            with self.subTest(defenders=defenders), mock.patch(
+                    "xar_autoplayer.strategy.forecast_fixed_contact") as model:
+                result = _provisional_defense_research_assessment(
+                    frame, **{**inputs, "defender_army_ids": defenders})
+                model.assert_not_called()
+                self.assertEqual(result["status"], "same_frame_encounter_scope_mismatch")
+
     def test_existing_frozen_live_input_runs_provisional_model_without_native_planner_gate(self):
         fixture = json.loads(
             (FIXTURES / "live_rev4_player_attacks_357.json").read_text(encoding="utf-8")
