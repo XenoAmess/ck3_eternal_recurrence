@@ -34,3 +34,21 @@
 [a06 成片与实测回执](../series-color-a06-20261001.md)：棕金包装与前两期一致；媒体检查通过，单视频客户端 InSync。完整真人 1× 观看、听审及 signoff 仍待完成。
 
 独立分支 `codex/war-series-brown-gold-20261001`，工作树 `C:/w/e2gold1001`，固定底座 `d81b91be1ae6bf818f38c3c5af0d595dd4ea4752`。没有拉取、合入或接收新的 master 内容，所有旧过程资产保留。
+
+## 2026-10-01 实采追加
+
+以上未运行记录保留当时状态；当前以本节及新增回执为准。新 R0127 已完成骑士保存态补证：33437 从 ALIVE/regiment65 变为 DEAD，后档明确 `death_date=1066.12.30`、`death_battle`、killer34120。独立复核通过，直接新增旁证对应 k023–k025；phase trace 仍 failed/1040，没有人物卡、名单画面或 clean span。旧 a02 的 UNKNOWN 不改写。
+
+原图与 melted meta_date 实际是 1066.12.29→12.30；旧计划将 raw53146848/53146872 标为12/30→12/31，晚了一天。案例编号 d26→d27 保持，旧计划与逐句表冻结原样；日期勘误及每句补证范围见下表。
+
+| 新结果 | 精确证据 |
+| --- | --- |
+| R0127 保存态及全过程 | [nextday-live-R0127.json](knights/nextday-live-R0127.json) |
+| 独立核验 | [nextday-live-R0127-verification.json](knights/nextday-live-R0127-verification.json) |
+| 38句补证映射和日期勘误 | [nextday-supplement.md](knights/nextday-supplement.md) |
+| 增援 R0128 零推进失败 | [paused-join-R0128-failed.json](reinforcement/paused-join-R0128-failed.json) |
+| 增援 R0129 刷新后仍失败 | [paused-join-R0129-failed.json](reinforcement/paused-join-R0129-failed.json) |
+
+R0128 已真实加载 J-d11 暂停场景并绑定 snapshot/control；原生地图定位返回 `state_changed`，没有请求日期推进或取得采样对。失败已保全，受管清理通过。增援 UI 缺口继续推进，失败记录不能当作补证完成。
+
+R0129 在聚焦后重新读取 snapshot/control 并重选战场，typed 定位仍返回 `state_changed`，同样零日期推进、零采样对。原有 public/native revision 转换经实际输入离线重放确认正确；具体原生拒绝条件未在回件暴露。两次旧失败都保留，接续施工限于此实际定位入口。
