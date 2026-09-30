@@ -28,6 +28,10 @@ class _InjectorDeadlineExpired(RuntimeError):
     """The combined create, assign, run, and proof budget was exhausted."""
 
 
+class _InjectorCleanupUnproven(RuntimeError):
+    """An inherited handle could not be closed before injector resume."""
+
+
 @dataclass
 class ContainedInjectorResult:
     report: dict[str, object]
@@ -260,9 +264,18 @@ def run_contained_injector_command(
             out_write = _inheritable_copy(raw_out_write)
             err_write = _inheritable_copy(raw_err_write)
         finally:
-            _close_handle(raw_out_write)
-            _close_handle(raw_err_write)
-            raw_out_write = raw_err_write = None
+            failed_raw: list[str] = []
+            if _close_handle(raw_out_write):
+                raw_out_write = None
+            else:
+                failed_raw.append("stdout raw write handle")
+            if _close_handle(raw_err_write):
+                raw_err_write = None
+            else:
+                failed_raw.append("stderr raw write handle")
+            if failed_raw:
+                raise _InjectorCleanupUnproven(
+                    "pre-CreateProcess close unproven: " + ", ".join(failed_raw))
         with open(os.devnull, "rb") as null:
             stdin_copy = _inheritable_copy(msvcrt.get_osfhandle(null.fileno()))
             startup = subprocess.STARTUPINFO(
@@ -279,10 +292,22 @@ def run_contained_injector_command(
                 None, str(executable.parent), startup)
         report["pid"] = pid
         require_budget("suspended CreateProcess")
-        _close_handle(out_write)
-        _close_handle(err_write)
-        _close_handle(stdin_copy)
-        out_write = err_write = stdin_copy = None
+        failed_inherited: list[str] = []
+        if _close_handle(out_write):
+            out_write = None
+        else:
+            failed_inherited.append("stdout inherited write handle")
+        if _close_handle(err_write):
+            err_write = None
+        else:
+            failed_inherited.append("stderr inherited write handle")
+        if _close_handle(stdin_copy):
+            stdin_copy = None
+        else:
+            failed_inherited.append("stdin inherited handle")
+        if failed_inherited:
+            raise _InjectorCleanupUnproven(
+                "pre-resume close unproven: " + ", ".join(failed_inherited))
 
         if type(pid) is not int or pid <= 0:
             raise RuntimeError("injector pinned PID is invalid")
@@ -387,6 +412,11 @@ def run_contained_injector_command(
         return result
     except _InjectorDeadlineExpired as error:
         report["status"] = "RED_TIMEOUT"
+        error_text = str(error)
+        result = ContainedInjectorResult(report, None, None, error_text)
+        return result
+    except _InjectorCleanupUnproven as error:
+        report["status"] = "RED_CLEANUP"
         error_text = str(error)
         result = ContainedInjectorResult(report, None, None, error_text)
         return result
