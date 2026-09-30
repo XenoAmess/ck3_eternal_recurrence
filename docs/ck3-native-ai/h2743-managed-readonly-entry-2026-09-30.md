@@ -38,7 +38,7 @@ and argv are preserved at
 `7BC8E89173503B07115BAD147F8B372AA6815DCAFC3A61900871B48D0495B72A`.
 These tests use synthetic sessions and do not constitute live evidence.
 
-### 2026-09-30 15:10 lifecycle correction
+### 2026-09-30 lifecycle correction
 
 Independent review reproduced the native driver's default rogue/xar_on binding
 rejecting the prepared ordinary/xar_off state. The entry now verifies the frozen
