@@ -5,6 +5,8 @@ The default and --check-static modes do not create an attempt or start CK3.
 ck3-screen lease. It is not a prepared state. --prepare-live-profile requires
 a separately acquired screen lease to consume that seal. --run requires the
 prepared state, human-reviewed fresh Steam offline evidence, and the lease.
+The current-HEAD v5 live modes are hard-stopped until the shared task bus uses
+pinned source/installed hashes and expected-sequence lease operations.
 """
 
 from __future__ import annotations
@@ -529,9 +531,18 @@ def verify_static_seal(attempt: Path) -> None:
         raise RuntimeError("sealed attempt already contains preparation or unexpected files")
 
 
+def require_live_bus_migration() -> None:
+    """This v5 HEAD pair cannot use the legacy list/heartbeat screen lease."""
+    if CANDIDATE == HEAD_STORAGE_CANDIDATE:
+        raise RuntimeError("LIVE_STOP_CAS_MIGRATION_PENDING: H2743 v5 current-HEAD "
+                           "requires pinned task-bus source/installed SHA and "
+                           "expected-sequence lease operations before live preparation or run")
+
+
 def prepare_no_launch(attempt_name: str, task_id: str | None,
                       *, sealed_attempt: bool = False) -> None:
     """Screen-owned live profile preparation; legacy CLI remains available."""
+    require_live_bus_migration()
     if not valid_attempt_name(attempt_name):
         raise RuntimeError("use a fresh literal attempt-N-dejure-baseline-no-launch name")
     attempt = ROOT / attempt_name
@@ -1073,6 +1084,7 @@ def require_clean_session_exit(receipt: dict[str, object], *, require_read_audit
 
 
 def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
+    require_live_bus_migration()
     check_static()
     state, ready = prepared_state(attempt)
     gate = live_gate(task_id, steam_gate)
@@ -1224,7 +1236,7 @@ def main() -> None:
     mode.add_argument("--seal-no-launch", action="store_true",
                       help="new v5 static seal; no screen lease or child process")
     mode.add_argument("--prepare-live-profile", action="store_true",
-                      help="screen-owned profile/preflight from an exact static seal")
+                      help="screen-owned profile/preflight from a static seal; current-HEAD v5 live STOP")
     mode.add_argument("--prepare-no-launch", action="store_true",
                       help="legacy screen-owned profile/preflight in a fresh attempt")
     parser.add_argument("--attempt-name", help="fresh attempt-N-dejure-baseline-no-launch")

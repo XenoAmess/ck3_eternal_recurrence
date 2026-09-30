@@ -123,19 +123,33 @@ class HeadStoragePairTest(unittest.TestCase):
                 runner.verify_static_seal(attempt)
             checked.assert_called_with(static_only=True)
 
-    def test_sealed_live_prepare_requires_a_screen_before_child_probes(self) -> None:
+    def test_current_head_live_prepare_and_run_hard_stop_before_any_child(self) -> None:
         runner = self.runner
         runner.select_candidate(runner.HEAD_STORAGE_CANDIDATE)
         with tempfile.TemporaryDirectory(prefix="h2743-v5-static-seal-") as folder, \
                 patch.object(runner, "ROOT", Path(folder)), \
-                patch.object(runner, "check_static", return_value={"status": "test-static"}), \
-                patch.object(runner, "screen_lease", side_effect=RuntimeError("no screen lease")), \
+                patch.object(runner, "check_static", return_value={"status": "test-static"}) as checked, \
+                patch.object(runner, "screen_lease", side_effect=AssertionError("bus checked")) as lease, \
                 patch.object(runner.subprocess, "run", side_effect=AssertionError("child spawned")), \
                 patch.object(runner.subprocess, "Popen", side_effect=AssertionError("child spawned")):
             runner.static_seal("attempt-900002-dejure-baseline-no-launch")
-            with self.assertRaisesRegex(RuntimeError, "no screen lease"):
+            checked.reset_mock()
+            with self.assertRaisesRegex(RuntimeError, "LIVE_STOP_CAS_MIGRATION_PENDING"):
                 runner.prepare_no_launch("attempt-900002-dejure-baseline-no-launch",
                                          "h2743-test-task", sealed_attempt=True)
+            with self.assertRaisesRegex(RuntimeError, "LIVE_STOP_CAS_MIGRATION_PENDING"):
+                runner.prepare_no_launch("attempt-900003-dejure-baseline-no-launch",
+                                         "h2743-test-task")
+            with self.assertRaisesRegex(RuntimeError, "LIVE_STOP_CAS_MIGRATION_PENDING"):
+                runner.run(Path(folder) / "attempt-900002-dejure-baseline-no-launch",
+                           Path(folder) / "absent-steam-gate.json", "h2743-test-task")
+            checked.assert_not_called()
+            lease.assert_not_called()
+
+    def test_old_candidate_live_guard_remains_compatible(self) -> None:
+        runner = self.runner
+        runner.select_candidate(runner.STORAGE_CANDIDATE)
+        runner.require_live_bus_migration()
 
 
 if __name__ == "__main__":
