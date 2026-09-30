@@ -9,12 +9,40 @@ import tempfile
 import time
 import unittest
 from unittest import mock
+from contextlib import contextmanager
 
 import recorder_job
 
 
 @unittest.skipUnless(sys.platform == "win32", "Windows Job API required")
 class RecorderJobTests(unittest.TestCase):
+    def wait_active(self, job: recorder_job.RecorderJob, expected: int,
+                    timeout: float = 5) -> None:
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            active = recorder_job._active(job.job)
+            if active == expected:
+                return
+            time.sleep(0.02)
+        self.assertEqual(recorder_job._active(job.job), expected)
+
+    @contextmanager
+    def contained(self, job: recorder_job.RecorderJob, root: Path):
+        try:
+            yield job
+        finally:
+            if job.job is not None:
+                try:
+                    job.abort(receipt=root / "fixture-finally-abort.json",
+                              unsafe_marker=root / "unsafe.json")
+                finally:
+                    if job.job is not None:
+                        # Last-resort test cleanup; the test still fails if
+                        # the Job abort itself could not prove an empty tree.
+                        recorder_job._close(job.job)
+                        job.job = None
+                        job.process.wait(timeout=10)
+
     def test_normal_pipe_exit_proves_empty_tree(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -24,14 +52,20 @@ class RecorderJobTests(unittest.TestCase):
                     stderr=err, unsafe_marker=root / "unsafe.json",
                     start_receipt=root / "spawn.json",
                     failure_receipt=root / "spawn-red.json")
-                row = job.finish(receipt=root / "finish.json",
-                                 unsafe_marker=root / "unsafe.json", timeout=5)
+                with self.contained(job, root):
+                    row = job.finish(receipt=root / "finish.json",
+                                     unsafe_marker=root / "unsafe.json", timeout=5)
             self.assertEqual(row["state"], "NORMAL_TREE_EMPTY")
             self.assertEqual(row["job_active_processes"], 0)
             self.assertEqual(row["returncode"], 0)
             self.assertFalse((root / "unsafe.json").exists())
             self.assertEqual(json.loads((root / "finish.json").read_text()), row)
-            self.assertEqual(json.loads((root / "spawn.json").read_text())["pid"], job.pid)
+            spawn = json.loads((root / "spawn.json").read_text())
+            self.assertEqual(spawn["pid"], job.pid)
+            flags = spawn["job_limit_flags_readback"]
+            self.assertTrue(flags & recorder_job.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE)
+            self.assertFalse(flags & (recorder_job.JOB_OBJECT_LIMIT_BREAKAWAY_OK |
+                                      recorder_job.JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK))
             self.assertEqual(job.abort(receipt=root / "late-abort.json",
                                        unsafe_marker=root / "unsafe.json")["state"],
                              "ALREADY_TREE_EMPTY")
@@ -48,15 +82,13 @@ class RecorderJobTests(unittest.TestCase):
                                          stderr=err, unsafe_marker=root / "unsafe.json",
                                          start_receipt=root / "spawn.json",
                                          failure_receipt=root / "spawn-red.json")
-                deadline = time.monotonic() + 5
-                while recorder_job._active(job.job) < 2 and time.monotonic() < deadline:
-                    time.sleep(0.02)
-                self.assertEqual(recorder_job._active(job.job), 2)
-                job.process.communicate(b"q\n", timeout=5)
-                self.assertEqual(job.returncode, 0)
-                self.assertEqual(recorder_job._active(job.job), 1)
-                row = job.abort(receipt=root / "abort.json",
-                                unsafe_marker=root / "unsafe.json")
+                with self.contained(job, root):
+                    self.wait_active(job, 2)
+                    job.process.communicate(b"q\n", timeout=5)
+                    self.assertEqual(job.returncode, 0)
+                    self.wait_active(job, 1)
+                    row = job.abort(receipt=root / "abort.json",
+                                    unsafe_marker=root / "unsafe.json")
             self.assertEqual(row["state"], "ABORT_TREE_EMPTY")
             self.assertEqual(row["job_active_processes"], 0)
             self.assertTrue((root / "unsafe.json").exists())
@@ -73,12 +105,10 @@ class RecorderJobTests(unittest.TestCase):
                                          stderr=err, unsafe_marker=root / "unsafe.json",
                                          start_receipt=root / "spawn.json",
                                          failure_receipt=root / "spawn-red.json")
-                deadline = time.monotonic() + 5
-                while recorder_job._active(job.job) < 2 and time.monotonic() < deadline:
-                    time.sleep(0.02)
-                self.assertEqual(recorder_job._active(job.job), 2)
-                row = job.finish(receipt=root / "finish.json",
-                                 unsafe_marker=root / "unsafe.json", timeout=5)
+                with self.contained(job, root):
+                    self.wait_active(job, 2)
+                    row = job.finish(receipt=root / "finish.json",
+                                     unsafe_marker=root / "unsafe.json", timeout=5)
             self.assertEqual(row["state"], "RED_TREE_EMPTY")
             self.assertEqual(row["job_active_processes"], 0)
             self.assertTrue((root / "unsafe.json").exists())
@@ -145,13 +175,34 @@ class RecorderJobTests(unittest.TestCase):
                     stderr=err, unsafe_marker=root / "unsafe.json",
                     start_receipt=root / "spawn.json",
                     failure_receipt=root / "spawn-red.json")
-                with mock.patch.object(recorder_job, "_write_new", side_effect=fail_finish):
-                    with self.assertRaisesRegex(OSError, "fixture terminal receipt"):
-                        job.finish(receipt=finish, unsafe_marker=root / "unsafe.json",
-                                   timeout=5)
+                with self.contained(job, root):
+                    with mock.patch.object(recorder_job, "_write_new", side_effect=fail_finish):
+                        with self.assertRaisesRegex(OSError, "fixture terminal receipt"):
+                            job.finish(receipt=finish, unsafe_marker=root / "unsafe.json",
+                                       timeout=5)
             self.assertIsNone(job.job)
             self.assertEqual(job.returncode, 0)
             self.assertTrue((root / "unsafe.json").exists())
+
+    def test_actual_breakaway_flags_are_rejected_by_readback(self) -> None:
+        job = recorder_job._new_job()
+        try:
+            unsafe = recorder_job._ExtendedLimit()
+            unsafe.BasicLimitInformation.LimitFlags = (
+                recorder_job.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE |
+                recorder_job.JOB_OBJECT_LIMIT_BREAKAWAY_OK)
+            changed = recorder_job._set_job(
+                job, recorder_job.JOB_OBJECT_EXTENDED_LIMIT_INFORMATION,
+                recorder_job.ctypes.byref(unsafe), recorder_job.ctypes.sizeof(unsafe))
+            if changed:
+                with self.assertRaisesRegex(RuntimeError, "cannot contain descendants"):
+                    recorder_job._verified_limit_flags(job)
+            else:
+                # The kernel itself rejected the unsafe setting.
+                self.assertEqual(recorder_job._verified_limit_flags(job),
+                                 recorder_job.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE)
+        finally:
+            recorder_job._close(job)
 
 
 if __name__ == "__main__":

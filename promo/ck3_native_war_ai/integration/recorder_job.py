@@ -23,6 +23,8 @@ CREATE_SUSPENDED = 0x00000004
 TH32CS_SNAPTHREAD = 0x00000004
 THREAD_SUSPEND_RESUME = 0x0002
 JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x00002000
+JOB_OBJECT_LIMIT_BREAKAWAY_OK = 0x00000800
+JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK = 0x00001000
 JOB_OBJECT_EXTENDED_LIMIT_INFORMATION = 9
 JOB_OBJECT_BASIC_ACCOUNTING_INFORMATION = 1
 INVALID_HANDLE_VALUE = ctypes.c_void_p(-1).value
@@ -109,10 +111,26 @@ def _new_job() -> int:
         _check(_set_job(job, JOB_OBJECT_EXTENDED_LIMIT_INFORMATION,
                         ctypes.byref(info), ctypes.sizeof(info)),
                "SetInformationJobObject")
+        _verified_limit_flags(job)
         return job
     except BaseException:
         _close(job)
         raise
+
+
+def _verified_limit_flags(job: int) -> int:
+    info = _ExtendedLimit()
+    returned = wintypes.DWORD()
+    _check(_query_job(job, JOB_OBJECT_EXTENDED_LIMIT_INFORMATION,
+                      ctypes.byref(info), ctypes.sizeof(info), ctypes.byref(returned)),
+           "QueryInformationJobObject(ExtendedLimit)")
+    if returned.value < ctypes.sizeof(info):
+        raise RuntimeError("Job extended limit response is truncated")
+    flags = int(info.BasicLimitInformation.LimitFlags)
+    if not flags & JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE or flags & (
+            JOB_OBJECT_LIMIT_BREAKAWAY_OK | JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK):
+        raise RuntimeError(f"Job cannot contain descendants safely: LimitFlags=0x{flags:08X}")
+    return flags
 
 
 def _active(job: int) -> int:
@@ -323,11 +341,12 @@ def spawn(command: list[str], *, stdin: object = subprocess.PIPE,
         _check(_in_job(int(process._handle), job, ctypes.byref(member)), "IsProcessInJob")
         if not member.value or _active(job) != 1:
             raise RuntimeError("suspended recorder is not the sole Job member")
+        actual_flags = _verified_limit_flags(job)
         _resume_only_thread(process.pid)
         _write_new(start_receipt, {
             "schema": SCHEMA, "state": "ASSIGNED_AND_RESUMED",
             "pid": process.pid, "argv": command,
-            "job_limit_flags": JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE,
+            "job_limit_flags_readback": actual_flags,
             "member_verified_before_resume": True,
             "job_active_processes_before_resume": 1,
             "initial_thread_resume_prior_count": 1,
