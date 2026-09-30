@@ -1,5 +1,13 @@
 ﻿# 琉焰卿的永恒轮回（AGENTS 指南）
 
+## ie 研究隔离（2026-09-30 用户指令）
+
+- 战争研究和第二期完整六章视频继续在 `ie`；冻结 master 基线为 `c69260e65b63bf8f8b8ae42e3aee8f2a68561660`。
+- 在用户明确命令合回之前，禁止接收后续 master 变动：不 fetch/pull master，不 merge/rebase master，不 cherry-pick 或复制冻结点之后的 master 内容，不向 master 推送本任务。
+- 已冻结的旧执行树、原片、失败 attempt 和构建输入保留；新工作从固定的 ie 提交建立隔离树，研究补丁只交付到 ie。
+- 本机 Steam 必须持续保持当前离线模式。本任务没有切换在线、Workshop 上传或其他 Steam 联网授权；启动游戏前仍须按下文直接审阅当次新鲜离线原图。
+- 固定基线、工作目录与操作边界见 `docs/handover/2026-09-30-ie-research-isolation.md`。
+
 ## 项目结构
 
 - `XenoAmess_s_Eternal_Recurrence/` — CK3 mod 源目录；正式发布只使用 `build_release.py` 生成的 staging
