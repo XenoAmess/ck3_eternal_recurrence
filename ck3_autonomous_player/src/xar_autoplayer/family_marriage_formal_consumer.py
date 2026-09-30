@@ -875,6 +875,10 @@ def query_family_marriage_result_private(driver: object, *,
     if not recheck and ledger["pending"] != dict(pending):
         raise ValueError("first-heir marriage pending identity changed")
     status = result["status"]
+    if (pending.get("fulfill_existing_betrothal") is True
+            and (result.get("fulfill_existing_betrothal") is not True
+                 or status not in {"pending", "accepted_pending", "refused", "invalidated", "marriage"})):
+        raise ValueError("fulfillment result cannot consume the original betrothal")
     if recheck:
         matured = prior["status"] == "betrothal" and status == "marriage"
         if (status != prior["status"] and not matured

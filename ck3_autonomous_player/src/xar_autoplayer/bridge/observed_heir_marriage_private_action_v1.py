@@ -141,13 +141,17 @@ def query_observed_first_heir_marriage_result_private_v1(
         or not _positive(heir_id) or not _positive(candidate_id)
     ):
         raise BridgeUnavailableError("heir marriage needs a later-frame pending receipt")
-    result = _command(driver, RESULT_STEP,
-                      {"expected_revision": revision}, timeout_seconds)
+    fulfillment = pending.get("fulfill_existing_betrothal") is True
+    material_statuses = {"marriage"} if fulfillment else {"marriage", "betrothal"}
+    payload = {"expected_revision": revision}
+    if fulfillment:
+        payload["fulfill_existing_betrothal"] = True
+    result = _command(driver, RESULT_STEP, payload, timeout_seconds)
     status = result.get("status")
     if (
-        status not in {"pending", "accepted_pending", "refused", "invalidated",
-                       "marriage", "betrothal"}
-        or result.get("material_result") is not (status in {"marriage", "betrothal"})
+        status not in {"pending", "accepted_pending", "refused", "invalidated", *material_statuses}
+        or result.get("material_result") is not (status in material_statuses)
+        or (fulfillment and result.get("fulfill_existing_betrothal") is not True)
         or result.get("cold_recovery") is not False
         or result.get("pre_native_revision") != pre
         or result.get("post_native_revision") != revision
@@ -191,14 +195,21 @@ def query_observed_first_heir_marriage_cold_result_private_v1(
             primary[0].get("first_heir_character_id") != heir_id or
             _paused(driver)["native_revision"] != before["native_revision"]):
         raise BridgeUnavailableError("cold heir marriage changed first heir or frame")
-    result = _command(driver, RESULT_STEP, {
+    fulfillment = pending.get("fulfill_existing_betrothal") is True
+    payload = {
         "expected_revision": before["native_revision"],
         "cold_recovery": 1,
         "heir_character_id": heir_id,
         "candidate_character_id": candidate_id,
         "recipient_character_id": recipient_id,
         "source_date_raw": source_date,
-    }, timeout_seconds)
+    }
+    if fulfillment:
+        payload["fulfill_existing_betrothal"] = True
+        if type(pending.get("matrilineal_option_selected")) is not bool:
+            raise BridgeUnavailableError("cold fulfillment lacks its observed native lineality")
+        payload["matrilineal_option_selected"] = pending["matrilineal_option_selected"]
+    result = _command(driver, RESULT_STEP, payload, timeout_seconds)
     status = result.get("status")
     outbound_state = result.get("outbound_pending_state")
     if status == "pending":
@@ -211,7 +222,9 @@ def query_observed_first_heir_marriage_cold_result_private_v1(
     outbound_age = result.get("outbound_pending_age_days")
     outbound_cutoff = result.get("outbound_pending_ai_reply_cutoff_days")
     if (
-        status not in {"pending", "marriage", "betrothal"}
+        status not in ({"pending", "marriage"} if fulfillment
+                       else {"pending", "marriage", "betrothal"})
+        or (fulfillment and result.get("fulfill_existing_betrothal") is not True)
         or not valid_outbound
         or (active_outbound and
             (type(outbound_id) is not int or outbound_id == -1 or
