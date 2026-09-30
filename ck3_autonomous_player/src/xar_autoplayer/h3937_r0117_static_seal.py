@@ -25,6 +25,13 @@ RAW_DRIVER_SHA256 = "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC13
 SIDECAR_SHA256 = "798F16F572FB83399CC9AB7ABD16561E87C47CEF7109CF23D255DAE660A8D8A7"
 GAME_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
+ALLOCATOR_STDOUT = Path(r"D:\ck3-research-artifacts\war-h3937-next-admission-20260930\attempt-01\allocator-stdout.json")
+ALLOCATOR_STDOUT_SHA256 = "2A2B5DAC1E982485A4E7507E06666DE8530BF7CAF889B4C5157667A4DAB6274E"
+ALLOCATOR_COMMAND = ALLOCATOR_STDOUT.with_name("allocator-command.json")
+ALLOCATOR_COMMAND_SHA256 = "1D4D6AD98CE2614DEDCA9F4D0075C583E49ED8F903AD0E6BFBD5B7E876C34059"
+ALLOCATIONS = Path(r"C:\Users\1\AppData\Local\XarCk3Acceptance\live-run-ids-v1\desktop-3fevhd2-1c74096080\vanilla\allocations.jsonl")
+ALLOCATOR_COUNTER = ALLOCATIONS.with_name("counter.json")
+ALLOCATOR_STATUSES = ALLOCATIONS.with_name("statuses.jsonl")
 
 CANDIDATE = Path(r"D:\w\h3937_cold_admission")
 NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260930\attempt-14")
@@ -57,8 +64,15 @@ ENTRY_BLOBS = {
     "tools/codex_task_bus.py": "3e482b49dc9c44c4d88a171866459b4eb5195c8d",
 }
 
+# Populate only after independent review of a fresh official a14 package.
+# The hashes must include every generated proof listed below. Without this
+# second, code-reviewed anchor, self-consistent edited JSON cannot be sealed.
+FROZEN_A14_SHA256: dict[str, str] | None = None
+FROZEN_A14_PRODUCER: dict[str, tuple[Path, str]] | None = None
+
 
 def _sha(path: Path) -> str:
+    _reject_links(path)
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
@@ -66,14 +80,26 @@ def _sha(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
+def _reject_links(path: Path) -> None:
+    for item in (path, *path.parents):
+        if item.is_symlink() or getattr(item, "is_junction", lambda: False)():
+            raise ValueError(f"linked input ancestor refused: {item}")
+        if item.exists():
+            stat = item.stat(follow_symlinks=False)
+            if getattr(stat, "st_file_attributes", 0) & 0x400:
+                raise ValueError(f"reparse input ancestor refused: {item}")
+            if item.is_file() and stat.st_nlink != 1:
+                raise ValueError(f"hardlinked input refused: {item}")
+
+
 def _blob(path: Path) -> str:
+    _reject_links(path)
     raw = path.read_bytes()
     return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
 
 
 def _json(path: Path) -> dict[str, object]:
-    if path.is_symlink() or getattr(path, "is_junction", lambda: False)():
-        raise ValueError(f"linked JSON proof refused: {path}")
+    _reject_links(path)
     value = json.loads(path.read_text(encoding="utf-8"))
     if type(value) is not dict:
         raise ValueError(f"JSON object required: {path}")
@@ -86,8 +112,7 @@ def _same(actual: object, expected: object, label: str) -> None:
 
 
 def _file(path: Path, digest: str) -> str:
-    if path.is_symlink() or getattr(path, "is_junction", lambda: False)():
-        raise ValueError(f"linked input refused: {path}")
+    _reject_links(path)
     actual = _sha(path)
     if actual != digest.upper():
         raise ValueError(f"SHA-256 differs: {path}")
@@ -96,15 +121,20 @@ def _file(path: Path, digest: str) -> str:
 
 def _head(checkout: Path) -> str:
     pointer = checkout / ".git"
+    _reject_links(pointer)
     if pointer.is_file():
         value = pointer.read_text(encoding="utf-8").strip()
         if not value.startswith("gitdir: "):
             raise ValueError("invalid Git worktree pointer")
-        git_dir = (checkout / value[8:]).resolve()
+        git_dir = checkout / value[8:]
+        _reject_links(git_dir)
+        git_dir = git_dir.resolve()
     elif pointer.is_dir():
+        _reject_links(pointer)
         git_dir = pointer.resolve()
     else:
         raise ValueError("Git worktree pointer unavailable")
+    _reject_links(git_dir / "HEAD")
     head = (git_dir / "HEAD").read_text(encoding="ascii").strip()
     if head.startswith("ref: "):
         ref = head[5:]
@@ -113,12 +143,17 @@ def _head(checkout: Path) -> str:
         common = git_dir
         common_file = git_dir / "commondir"
         if common_file.is_file():
-            common = (git_dir / common_file.read_text(encoding="ascii").strip()).resolve()
+            _reject_links(common_file)
+            common = git_dir / common_file.read_text(encoding="ascii").strip()
+            _reject_links(common)
+            common = common.resolve()
         loose = common / ref
         if loose.is_file():
+            _reject_links(loose)
             head = loose.read_text(encoding="ascii").strip()
         else:
             packed = common / "packed-refs"
+            _reject_links(packed)
             matches = [line.split(" ", 1)[0] for line in packed.read_text(encoding="ascii").splitlines()
                        if line.endswith(" " + ref)] if packed.is_file() else []
             if len(matches) != 1:
@@ -131,8 +166,8 @@ def _head(checkout: Path) -> str:
 
 def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str, object]:
     """Read only the exact a14 materials and return a hash-bound seal payload."""
-    if no_launch.is_symlink() or getattr(no_launch, "is_junction", lambda: False)():
-        raise ValueError("linked no-launch attempt refused")
+    _reject_links(no_launch)
+    _reject_links(checkout)
     checkout = checkout.resolve()
     no_launch = no_launch.resolve()
     if no_launch.name != "attempt-14" or no_launch.parent != NO_LAUNCH.parent.resolve():
@@ -154,6 +189,30 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
     proof_before = {path: _sha(path) for path in (admission_path, manifest_path, identity_path,
                                                   no_launch / "source-validation.json",
                                                   no_launch / "interpreter-probe.json")}
+    if FROZEN_A14_SHA256 is None:
+        raise ValueError("independently reviewed a14 proof SHA-256 freeze is absent")
+    if FROZEN_A14_PRODUCER is None:
+        raise ValueError("independently reviewed a14 producer freeze is absent")
+    _same(set(FROZEN_A14_PRODUCER), {"operator_script", "command_receipt", "postcheck_receipt"},
+          "a14 producer proof set")
+    for label, (path, digest) in FROZEN_A14_PRODUCER.items():
+        _reject_links(path)
+        if not path.resolve().is_relative_to(no_launch.parent.resolve()):
+            raise ValueError(f"a14 {label} outside official external proof root")
+        _file(path, digest)
+    expected_proofs = {
+        "admission.json", "operator-manifest.json", "live-run-identity.json",
+        "source-validation.json", "interpreter-probe.json",
+        "state/native-session/driver-state.json",
+        "state/profile/xar-autoplayer-environment.json",
+        "state/ordinary-seed-rebind-v1.json",
+        "state/preflights/report.json",
+    }
+    _same(set(FROZEN_A14_SHA256), expected_proofs, "a14 reviewed proof set")
+    for relative, digest in FROZEN_A14_SHA256.items():
+        if relative == "state/preflights/report.json":
+            continue  # Its exact generated subdirectory is checked below.
+        _file(no_launch / relative, digest)
     admission, manifest, identity = map(_json, (admission_path, manifest_path, identity_path))
     state = no_launch / "state"
     if (state / "control" / "unsafe-cleanup.json").exists():
@@ -178,6 +237,29 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
     _same(identity.get("machine_id"), "desktop-3fevhd2-1c74096080", "allocator machine")
     _same(identity.get("mod_key"), "vanilla", "allocator mod")
     _same(identity.get("sequence"), 117, "allocator sequence")
+    _file(ALLOCATOR_STDOUT, ALLOCATOR_STDOUT_SHA256)
+    _file(ALLOCATOR_COMMAND, ALLOCATOR_COMMAND_SHA256)
+    _same(_json(ALLOCATOR_STDOUT), identity, "original allocator stdout")
+    allocator_command = _json(ALLOCATOR_COMMAND)
+    command_argv = allocator_command.get("argv")
+    if (type(command_argv) is not list or len(command_argv) < 5
+            or command_argv[2:5] != ["allocate", "--mod", "vanilla"]):
+        raise ValueError("original allocator command is not vanilla allocation")
+    _same(allocator_command.get("candidate_head"),
+          "e7a1849b5455ef5ee31564a9b27f6472fa88770c", "HEAD at R0117 allocation")
+    _reject_links(ALLOCATIONS)
+    allocations = ALLOCATIONS.read_text(encoding="utf-8").splitlines()
+    if len(allocations) < 117:
+        raise ValueError("original allocation journal is shorter than R0117")
+    allocation = json.loads(allocations[116])
+    _same(allocation, identity, "allocation journal R0117")
+    counter = _json(ALLOCATOR_COUNTER)
+    _same(counter.get("schema"), "xar.ck3-live-run-counter.v1", "allocator counter schema")
+    _same(counter.get("last_sequence"), 117, "allocator current sequence")
+    _same(counter.get("last_run_id"), RUN_ID, "allocator current run")
+    _reject_links(ALLOCATOR_STATUSES)
+    if any(RUN_ID in line for line in ALLOCATOR_STATUSES.read_text(encoding="utf-8").splitlines()):
+        raise ValueError("R0117 already has a status entry")
     _same(Path(str(manifest.get("python"))).resolve(), PYTHON.resolve(), "interpreter")
     _same(manifest.get("python_version"), "Python 3.14.7", "interpreter version")
     _same(Path(str(admission.get("prepared_state"))).resolve(), state, "admission state")
@@ -225,15 +307,35 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
     prepared_driver_sha = str(admission.get("prepared_driver_sha256", ""))
     _same(manifest.get("prepared_driver_sha256"), prepared_driver_sha, "prepared driver claim")
     _file(state / "native-session" / "driver-state.json", prepared_driver_sha)
+    prepared_driver = _json(state / "native-session" / "driver-state.json")
+    _same(prepared_driver.get("format_version"), 2, "prepared driver format")
+    _same(prepared_driver.get("pipe_name"), PIPE, "prepared driver pipe")
+    _same(prepared_driver.get("episode_run_id"), "native-29829-2bc2d599f7f9", "prepared driver episode")
+    _same(prepared_driver.get("episode_character_id"), 29829, "prepared driver actor")
+    prepared_checkpoint = prepared_driver.get("last_checkpoint")
+    if type(prepared_checkpoint) is not dict:
+        raise ValueError("prepared driver checkpoint unavailable")
+    _same(prepared_checkpoint.get("sha256", "").upper(), CHECKPOINT_SHA256, "prepared driver save")
+    _same(prepared_checkpoint.get("date_raw"), 53219928, "prepared driver date")
+    _same(prepared_checkpoint.get("history_index"), 3937, "prepared driver history")
     environment_sha = str(admission.get("environment_sha256", ""))
     _same(manifest.get("environment_sha256"), environment_sha, "environment claim")
     _file(state / "profile" / "xar-autoplayer-environment.json", environment_sha)
+    environment = _json(state / "profile" / "xar-autoplayer-environment.json")
+    _same(environment.get("format_version"), 1, "environment format")
+    runtime = environment.get("agent_runtime")
+    if (type(runtime) is not dict or type(runtime.get("files")) is not list
+            or type(runtime.get("file_count")) is not int
+            or runtime["file_count"] < 1
+            or runtime["file_count"] != len(runtime["files"])):
+        raise ValueError("environment runtime inventory malformed")
     rebind_path = state / "ordinary-seed-rebind-v1.json"
     proof_before[rebind_path] = _sha(rebind_path)
     rebind_sha = str(admission.get("official_rebind_receipt_sha256", ""))
     _same(manifest.get("rebind_receipt_sha256"), rebind_sha, "rebind claim")
     _file(rebind_path, rebind_sha)
     rebind = _json(rebind_path)
+    _same(rebind.get("schema"), "xar.ck3.ordinary-seed-rebind/v1", "rebind schema")
     _same(rebind.get("ok"), True, "rebind ok")
     _same(rebind.get("status"), "rebound", "rebind status")
     _same(rebind.get("ck3_launch_attempted"), False, "rebind launch")
@@ -242,14 +344,22 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
     _same(Path(str(rebind.get("state_dir"))).resolve(), state, "rebind state")
     _same(rebind.get("environment", {}).get("target_sha256"), environment_sha, "rebind environment")
     _same(rebind.get("driver_state", {}).get("target_sha256"), prepared_driver_sha, "rebind driver")
-    preflight_path = Path(str(admission.get("official_preflight_report"))).resolve()
+    raw_preflight_path = Path(str(admission.get("official_preflight_report")))
+    _reject_links(raw_preflight_path)
+    _reject_links(state / "preflights")
+    preflight_path = raw_preflight_path.resolve()
     if not preflight_path.is_relative_to((state / "preflights").resolve()):
         raise ValueError("preflight outside exact attempt-14 state")
+    _file(preflight_path, FROZEN_A14_SHA256["state/preflights/report.json"])
     proof_before[preflight_path] = _sha(preflight_path)
     preflight_sha = str(admission.get("official_preflight_report_sha256", ""))
     _same(manifest.get("preflight_report_sha256"), preflight_sha, "preflight claim")
     _file(preflight_path, preflight_sha)
     preflight = _json(preflight_path)
+    _same(preflight.get("format_version"), 1, "preflight format")
+    _same(preflight.get("kind"), "ck3_native_one_generation_preflight", "preflight kind")
+    _same(Path(str(preflight.get("report_path"))).resolve(), preflight_path, "preflight report path")
+    _same(preflight.get("pipe"), PIPE, "preflight pipe")
     _same(preflight.get("ok"), True, "preflight ok")
     _same(preflight.get("status"), "ready", "preflight status")
     _same(preflight.get("ck3_launch_attempted"), False, "preflight launch")
@@ -282,6 +392,7 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
     _same(manifest.get("interpreter_probe_sha256"), _sha(no_launch / "interpreter-probe.json"), "interpreter probe")
     _same(admission.get("interpreter_probe_sha256"), _sha(no_launch / "interpreter-probe.json"), "admission interpreter probe")
     source_validation = _json(no_launch / "source-validation.json")
+    _same(source_validation.get("schema"), "xar.war.h3937-combined-no-launch-source-validation.v1", "source validation schema")
     _same(source_validation.get("candidate_head"), HEAD, "source validation HEAD")
     _same(source_validation.get("candidate_clean"), True, "source validation clean")
     _same(source_validation.get("live_run_id"), RUN_ID, "source validation run")
@@ -302,6 +413,10 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
             raise ValueError(f"source validation missing {name}")
         _same(item.get("sha256"), digest, f"source validation {name}")
     probe = _json(no_launch / "interpreter-probe.json")
+    if (type(probe.get("schema")) is not str
+            or not probe["schema"].startswith("xar.war.h3937-a14-")
+            or not probe["schema"].endswith("-interpreter-dependency-probe.v1")):
+        raise ValueError("a14 interpreter probe schema differs")
     _same(probe.get("candidate_head"), HEAD, "interpreter probe HEAD")
     _same(probe.get("environment", {}).get("python"), str(PYTHON), "interpreter probe path")
     _same(probe.get("environment", {}).get("python_version"), "Python 3.14.7", "interpreter probe version")
@@ -313,6 +428,15 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
         _same(_blob(checkout / relative), expected, f"entry/bus readback {relative}")
     for path, digest in proof_before.items():
         _file(path, digest)
+    for path, digest in FROZEN_A14_PRODUCER.values():
+        _file(path, digest)
+    _file(ALLOCATOR_STDOUT, ALLOCATOR_STDOUT_SHA256)
+    _file(ALLOCATOR_COMMAND, ALLOCATOR_COMMAND_SHA256)
+    _same(json.loads(ALLOCATIONS.read_text(encoding="utf-8").splitlines()[116]), identity,
+          "allocation journal R0117 readback")
+    _same(_json(ALLOCATOR_COUNTER).get("last_run_id"), RUN_ID, "allocator counter readback")
+    if any(RUN_ID in line for line in ALLOCATOR_STATUSES.read_text(encoding="utf-8").splitlines()):
+        raise ValueError("R0117 status appeared during seal")
     for path, digest in (
         (checkout / "tools" / "codex_task_bus.py", BUS_SHA256),
         (GAME / "binaries" / "ck3.exe", GAME_SHA256),
@@ -341,11 +465,19 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
         "admission_sha256": _sha(admission_path),
         "operator_manifest_sha256": _sha(manifest_path),
         "live_run_identity_sha256": _sha(identity_path),
+        "original_allocator_stdout_sha256": ALLOCATOR_STDOUT_SHA256,
+        "original_allocator_command_sha256": ALLOCATOR_COMMAND_SHA256,
         "source_validation_sha256": _sha(no_launch / "source-validation.json"),
         "interpreter_probe_sha256": _sha(no_launch / "interpreter-probe.json"),
         "official_rebind_receipt_sha256": rebind_sha,
         "official_preflight_report_sha256": preflight_sha,
         "source_git_blobs": source_blobs,
+        "seal_scope": "frozen allowlist and reviewed a14 proof bytes",
+        "checkout_clean_independently_verified": False,
+        "a14_reviewed_proof_sha256": FROZEN_A14_SHA256,
+        "a14_reviewed_producer_sha256": {
+            label: {"path": str(path), "sha256": digest}
+            for label, (path, digest) in FROZEN_A14_PRODUCER.items()},
         "task_bus_source_sha256": BUS_SHA256,
         "dll_sha256": DLL_SHA256, "injector_sha256": INJECTOR_SHA256,
         "checkpoint_sha256": CHECKPOINT_SHA256,
@@ -366,12 +498,16 @@ def verify(checkout: Path = CANDIDATE, no_launch: Path = NO_LAUNCH) -> dict[str,
 def seal_attempt(output: Path, checkout: Path = CANDIDATE,
                  no_launch: Path = NO_LAUNCH) -> dict[str, object]:
     """Consume a new output directory even for STOP; never overwrite evidence."""
+    _reject_links(output)
+    _reject_links(OUTPUT_ROOT)
     if output.resolve().parent != OUTPUT_ROOT.resolve() or not output.name.startswith("attempt-"):
         raise ValueError("seal output must be a new external attempt directory")
+    if any(OUTPUT_ROOT.resolve().is_relative_to(item.resolve()) for item in (checkout, no_launch, LIVE_ROOT)):
+        raise ValueError("seal root overlaps candidate, no-launch or live roots")
     output.mkdir(parents=True, exist_ok=False)
     try:
         result = verify(checkout, no_launch)
-    except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError) as error:
+    except BaseException as error:
         result = {
             "schema": "xar.war.h3937-r0117-a14-static-seal.v1",
             "status": "STOP_INPUTS_INVALID", "candidate_head_expected": HEAD,

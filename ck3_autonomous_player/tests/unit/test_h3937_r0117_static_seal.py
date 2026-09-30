@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -64,17 +65,26 @@ def _fixture(monkeypatch, tmp_path: Path) -> tuple[Path, Path, Path]:
     game_sha = _put(game / "binaries" / "ck3.exe", b"game")
     _put(no_launch / "state" / "profile" / "save games" / "xar_checkpoint.ck3", b"save")
     _put(no_launch / "state" / "player-child-matrilineal-formal-v1.json", b"sidecar")
-    prepared_driver_sha = _put(no_launch / "state" / "native-session" / "driver-state.json", b"prepared")
-    environment_sha = _put(no_launch / "state" / "profile" / "xar-autoplayer-environment.json", b"environment")
+    prepared_driver = {"format_version": 2, "pipe_name": seal.PIPE,
+                       "episode_run_id": "native-29829-2bc2d599f7f9",
+                       "episode_character_id": 29829,
+                       "last_checkpoint": {"sha256": checkpoint_sha,
+                                           "date_raw": 53219928, "history_index": 3937}}
+    prepared_driver_sha = _put_json(no_launch / "state" / "native-session" / "driver-state.json", prepared_driver)
+    environment_sha = _put_json(no_launch / "state" / "profile" / "xar-autoplayer-environment.json",
+                                {"format_version": 1, "agent_runtime": {"file_count": 1,
+                                                                          "files": [{"path": "agent.py"}]}})
     state = no_launch / "state"
     identity = {"schema": "xar.ck3-live-run-identity.v1", "run_id": run_id,
                 "execution_id": execution_id, "machine_id": "desktop-3fevhd2-1c74096080",
                 "mod_key": "vanilla", "sequence": 117}
     identity_sha = _put_json(no_launch / "live-run-identity.json", identity)
-    probe = {"candidate_head": head,
+    probe = {"schema": "xar.war.h3937-a14-interpreter-dependency-probe.v1",
+             "candidate_head": head,
              "environment": {"python": str(python), "python_version": "Python 3.14.7"}}
     probe_sha = _put_json(no_launch / "interpreter-probe.json", probe)
     source_validation = {
+        "schema": "xar.war.h3937-combined-no-launch-source-validation.v1",
         "candidate_head": head, "candidate_clean": True, "live_run_id": run_id,
         "live_run_identity_sha256": identity_sha, "interpreter_probe_sha256": probe_sha,
         "screen_lease_acquired": False, "steam_fresh_offline_reviewed": False,
@@ -83,7 +93,8 @@ def _fixture(monkeypatch, tmp_path: Path) -> tuple[Path, Path, Path]:
             ("player-child-matrilineal-formal-v1.json", sidecar_sha),
             ("xar_ck3_bridge.dll", dll_sha), ("xar_ck3_bridge_injector.exe", injector_sha))}}
     _put_json(no_launch / "source-validation.json", source_validation)
-    rebind = {"ok": True, "status": "rebound", "ck3_launch_attempted": False,
+    rebind = {"schema": "xar.ck3.ordinary-seed-rebind/v1",
+              "ok": True, "status": "rebound", "ck3_launch_attempted": False,
               "desktop_interaction": False, "pipe_name": seal.PIPE,
               "state_dir": str(state), "environment": {"target_sha256": environment_sha},
               "driver_state": {"target_sha256": prepared_driver_sha}}
@@ -91,7 +102,8 @@ def _fixture(monkeypatch, tmp_path: Path) -> tuple[Path, Path, Path]:
     lifecycle = {"lifecycle": "ordinary_campaign_succession", "xar_enabled": "xar_off",
                  "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
                  "environment_sha256": environment_sha}
-    preflight = {"ok": True, "status": "ready", "ck3_launch_attempted": False,
+    preflight = {"format_version": 1, "kind": "ck3_native_one_generation_preflight",
+                 "ok": True, "status": "ready", "ck3_launch_attempted": False,
                  "desktop_interaction": False, "process_inventory": {"processes": []},
                  "resume_anchor": {"checkpoint": {"saved_date_raw": 53219928,
                                                    "history_index": 3937,
@@ -102,6 +114,8 @@ def _fixture(monkeypatch, tmp_path: Path) -> tuple[Path, Path, Path]:
                  "profile": {"environment_sha256": environment_sha,
                              "ck3_executable_sha256": game_sha}}
     preflight_path = state / "preflights" / "new" / "report.json"
+    preflight["report_path"] = str(preflight_path)
+    preflight["pipe"] = seal.PIPE
     preflight_sha = _put_json(preflight_path, preflight)
     admission = {
         "schema": "xar.war.h3937-cold-observer-disabled-no-launch-admission.v1",
@@ -150,6 +164,38 @@ def _fixture(monkeypatch, tmp_path: Path) -> tuple[Path, Path, Path]:
         "fresh_steam_offline_proven": False, "date_move_attack_authorized": False}
     _put_json(no_launch / "admission.json", admission)
     _put_json(no_launch / "operator-manifest.json", manifest)
+    allocator = tmp_path / "allocator"
+    allocator_stdout = allocator / "allocator-stdout.json"
+    allocator_stdout_sha = _put_json(allocator_stdout, identity)
+    allocator_command = allocator / "allocator-command.json"
+    allocator_command_sha = _put_json(allocator_command, {
+        "argv": [str(python), "allocator.py", "allocate", "--mod", "vanilla"],
+        "candidate_head": "e7a1849b5455ef5ee31564a9b27f6472fa88770c"})
+    allocations = allocator / "allocations.jsonl"
+    allocations.write_text("{}\n" * 116 + json.dumps(identity, sort_keys=True) + "\n",
+                           encoding="utf-8")
+    counter = allocator / "counter.json"
+    _put_json(counter, {"schema": "xar.ck3-live-run-counter.v1",
+                        "last_sequence": 117, "last_run_id": run_id})
+    statuses = allocator / "statuses.jsonl"
+    _put(statuses, b"")
+    producers = {}
+    for label, name in (("operator_script", "a14-operator.py"),
+                        ("command_receipt", "a14-command.json"),
+                        ("postcheck_receipt", "a14-postcheck.json")):
+        path = no_launch.parent / name
+        producers[label] = (path, _put(path, name.encode()))
+    frozen = {
+        "admission.json": seal._sha(no_launch / "admission.json"),
+        "operator-manifest.json": seal._sha(no_launch / "operator-manifest.json"),
+        "live-run-identity.json": seal._sha(no_launch / "live-run-identity.json"),
+        "source-validation.json": seal._sha(no_launch / "source-validation.json"),
+        "interpreter-probe.json": seal._sha(no_launch / "interpreter-probe.json"),
+        "state/native-session/driver-state.json": prepared_driver_sha,
+        "state/profile/xar-autoplayer-environment.json": environment_sha,
+        "state/ordinary-seed-rebind-v1.json": rebind_sha,
+        "state/preflights/report.json": preflight_sha,
+    }
     for name, value in (("HEAD", head), ("RUN_ID", run_id), ("EXECUTION_ID", execution_id),
                         ("SOURCE_BLOBS", source), ("ENTRY_BLOBS", entries),
                         ("BUS_SHA256", bus_sha), ("DLL_SHA256", dll_sha),
@@ -159,6 +205,16 @@ def _fixture(monkeypatch, tmp_path: Path) -> tuple[Path, Path, Path]:
                         ("SIDECAR_SHA256", sidecar_sha), ("GAME_SHA256", game_sha),
                         ("NO_LAUNCH", no_launch), ("OUTPUT_ROOT", output_root),
                         ("LIVE_ROOT", live_root), ("GAME", game), ("PYTHON", python)):
+        monkeypatch.setattr(seal, name, value)
+    for name, value in (("ALLOCATOR_STDOUT", allocator_stdout),
+                        ("ALLOCATOR_STDOUT_SHA256", allocator_stdout_sha),
+                        ("ALLOCATOR_COMMAND", allocator_command),
+                        ("ALLOCATOR_COMMAND_SHA256", allocator_command_sha),
+                        ("ALLOCATIONS", allocations),
+                        ("ALLOCATOR_COUNTER", counter),
+                        ("ALLOCATOR_STATUSES", statuses),
+                        ("FROZEN_A14_SHA256", frozen),
+                        ("FROZEN_A14_PRODUCER", producers)):
         monkeypatch.setattr(seal, name, value)
     monkeypatch.setattr(seal, "_head", lambda path: head)
     return checkout, no_launch, output_root
@@ -188,9 +244,9 @@ def test_static_seal_never_grants_live(monkeypatch, tmp_path) -> None:
 
 
 @pytest.mark.parametrize("mutation,expected", [
-    ("source", "source blob"), ("manifest", "six-read source blob"),
-    ("allocator", "allocator"), ("sidecar", "SHA-256"),
-    ("observer", "observer"), ("preflight", "preflight"),
+    ("source", "source blob"), ("manifest", "SHA-256"),
+    ("allocator", "SHA-256"), ("sidecar", "SHA-256"),
+    ("observer", "SHA-256"), ("preflight", "preflight"),
 ])
 def test_mutations_stop_before_any_live_action(monkeypatch, tmp_path, mutation, expected) -> None:
     checkout, no_launch, output_root = _fixture(monkeypatch, tmp_path)
@@ -240,3 +296,85 @@ def test_output_must_be_external_and_fresh(monkeypatch, tmp_path) -> None:
     with pytest.raises(ValueError, match="external"):
         seal.seal_attempt(no_launch / "attempt-01", checkout, no_launch)
     check(not (no_launch / "attempt-01").exists())
+
+
+def test_unsafe_marker_blocks_seal(monkeypatch, tmp_path) -> None:
+    checkout, no_launch, output_root = _fixture(monkeypatch, tmp_path)
+    _put(no_launch / "state" / "control" / "unsafe-cleanup.json", b"unsafe")
+    result = seal.seal_attempt(output_root / "attempt-01", checkout, no_launch)
+    check(result["status"] == "STOP_INPUTS_INVALID")
+    check("unsafe native cleanup marker" in result["reason"])
+
+
+def test_admission_change_during_final_readback_blocks_seal(monkeypatch, tmp_path) -> None:
+    checkout, no_launch, output_root = _fixture(monkeypatch, tmp_path)
+    original_sha = seal._sha
+    admission_path = no_launch / "admission.json"
+    calls = 0
+
+    def mutate_before_readback(path: Path) -> str:
+        nonlocal calls
+        if path == admission_path:
+            calls += 1
+            if calls == 2:
+                with path.open("ab") as stream:
+                    stream.write(b"changed after validation")
+        return original_sha(path)
+
+    monkeypatch.setattr(seal, "_sha", mutate_before_readback)
+    result = seal.seal_attempt(output_root / "attempt-01", checkout, no_launch)
+    check(result["status"] == "STOP_INPUTS_INVALID")
+    check("SHA-256 differs" in result["reason"])
+
+
+def test_unreviewed_a14_proof_freeze_stops_even_valid_fixture(monkeypatch, tmp_path) -> None:
+    checkout, no_launch, output_root = _fixture(monkeypatch, tmp_path)
+    monkeypatch.setattr(seal, "FROZEN_A14_SHA256", None)
+    result = seal.seal_attempt(output_root / "attempt-01", checkout, no_launch)
+    check(result["status"] == "STOP_INPUTS_INVALID")
+    check("proof SHA-256 freeze is absent" in result["reason"])
+
+
+def test_self_consistent_bad_rebind_nested_type_still_writes_stop(monkeypatch, tmp_path) -> None:
+    checkout, no_launch, output_root = _fixture(monkeypatch, tmp_path)
+    rebind_path = no_launch / "state" / "ordinary-seed-rebind-v1.json"
+    rebind = seal._json(rebind_path)
+    rebind["environment"] = []
+    new_sha = _put_json(rebind_path, rebind)
+    for name, field in (("admission.json", "official_rebind_receipt_sha256"),
+                        ("operator-manifest.json", "rebind_receipt_sha256")):
+        path = no_launch / name
+        value = seal._json(path)
+        value[field] = new_sha
+        _put_json(path, value)
+        seal.FROZEN_A14_SHA256[name] = seal._sha(path)
+    seal.FROZEN_A14_SHA256["state/ordinary-seed-rebind-v1.json"] = new_sha
+    result = seal.seal_attempt(output_root / "attempt-01", checkout, no_launch)
+    check(result["status"] == "STOP_INPUTS_INVALID")
+    check("AttributeError" in result["reason"])
+    check((output_root / "attempt-01" / "seal.json").is_file())
+
+
+def test_self_consistent_non_json_prepared_driver_still_stops(monkeypatch, tmp_path) -> None:
+    checkout, no_launch, output_root = _fixture(monkeypatch, tmp_path)
+    driver_path = no_launch / "state" / "native-session" / "driver-state.json"
+    new_sha = _put(driver_path, b"not JSON")
+    for name in ("admission.json", "operator-manifest.json"):
+        path = no_launch / name
+        value = seal._json(path)
+        value["prepared_driver_sha256"] = new_sha
+        _put_json(path, value)
+        seal.FROZEN_A14_SHA256[name] = seal._sha(path)
+    seal.FROZEN_A14_SHA256["state/native-session/driver-state.json"] = new_sha
+    result = seal.seal_attempt(output_root / "attempt-01", checkout, no_launch)
+    check(result["status"] == "STOP_INPUTS_INVALID")
+    check("JSONDecodeError" in result["reason"])
+
+
+def test_hardlinked_source_input_stops(monkeypatch, tmp_path) -> None:
+    checkout, no_launch, output_root = _fixture(monkeypatch, tmp_path)
+    source = checkout / "ck3_autonomous_player" / "src" / "xar_autoplayer" / "producer.py"
+    os.link(source, source.with_name("other-hardlink.py"))
+    result = seal.seal_attempt(output_root / "attempt-01", checkout, no_launch)
+    check(result["status"] == "STOP_INPUTS_INVALID")
+    check("hardlinked input" in result["reason"])
