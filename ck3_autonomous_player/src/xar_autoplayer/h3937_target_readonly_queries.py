@@ -34,7 +34,9 @@ from .h3937_combined_readonly_queries import (
 from .h3937_paused_war_scope_run import (
     ARMY_ID, EXPECTED_DATE_RAW, EXPECTED_EPISODE_RUN_ID, TARGET_PROVINCE_ID,
 )
-from .h3937_stationary_route_contact_query_run import _same_frame
+from .h3937_stationary_route_contact_query_run import (
+    _guarded_subject_unchanged, _query_history_unchanged, _same_frame,
+)
 from .strategy import _primary_defender_siege_relief_assessment
 
 
@@ -225,7 +227,9 @@ def collect_h3937_target_reads_in_session(
             raise AgentError("H3937 combined final frame is malformed")
         reobserved = service.snapshot()
         checks["combined_final_snapshot_reobserved"] = (
-            isinstance(reobserved, dict) and reobserved == current)
+            _same_frame(current, reobserved)
+            and _guarded_subject_unchanged(current, reobserved)
+            and _query_history_unchanged(current, reobserved))
         if not checks["combined_final_snapshot_reobserved"]:
             raise AgentError("H3937 combined final frame changed before target reads")
         current = reobserved
