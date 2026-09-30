@@ -352,6 +352,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // application-main boundary and cannot be supplied by protocol data.
   // Fixed private paused actor/army role read; absent in default builds.
   MainThreadQueryExecutorV1 permitted_actor_army_role_executor = nullptr;
+  // Fixed H2743 read-only stock predicate callback; no numbered slot reuse.
+  MainThreadQueryExecutorV1 permitted_h2743_stock_predicate_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
   // Optional only for the offline fixture. Production binds the frozen
   // module-relative dispatch slot and resolved function identities above.
@@ -563,6 +565,7 @@ struct MainThreadQueryMailboxV1 {
   // Fixed private paused actor/army role read; absent in default builds.
   MainThreadQueryExecutorV1 permitted_actor_army_role_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_scoped_variable_monitor_executor = nullptr;
+  MainThreadQueryExecutorV1 permitted_h2743_stock_predicate_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_semantic12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_factions12002 = nullptr;

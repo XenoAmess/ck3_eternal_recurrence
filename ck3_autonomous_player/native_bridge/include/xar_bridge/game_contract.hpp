@@ -913,6 +913,66 @@ struct WarTerminationExitTermsSnapshot {
                          const WarTerminationExitTermsSnapshot &) = default;
 };
 
+// Native read-only baseline for a primary defender in an individual county
+// de-jure war.  The typed unavailable fields are deliberate: this reader does
+// not execute or preview setup_de_jure_cb / resolve_title_and_vassal_change.
+// No caller may turn an observed balance or target ID into a surrender delta.
+struct DefenderDeJureTargetHolderPrestateV1 {
+  std::int32_t title_id = -1;
+  std::int32_t holder_character_id = -1;
+  std::optional<std::int32_t> holder_immediate_liege_character_id;
+
+  friend bool operator==(const DefenderDeJureTargetHolderPrestateV1 &,
+                         const DefenderDeJureTargetHolderPrestateV1 &) = default;
+};
+
+struct DefenderDeJureExitTermsV1 {
+  std::int32_t war_id = -1;
+  std::int32_t date_raw = 0;
+  std::int32_t casus_belli_database_index = -1;
+  std::string casus_belli_key;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::vector<std::int32_t> target_title_ids;
+  std::vector<DefenderDeJureTargetHolderPrestateV1> target_title_holder_prestate;
+  std::vector<WarExitResourceSnapshot> primary_resource_balances;
+  std::vector<WarExitCharacterFixedPointSnapshot> primary_monthly_gold_income;
+  // Partial inputs to the stock truce formula only. These are not a truce
+  // duration, expiry, or material exit terms.
+  struct TruceInput {
+    std::optional<bool> value;
+    std::string unavailable_reason = "read_only_input_not_observed";
+    friend bool operator==(const TruceInput &, const TruceInput &) = default;
+  };
+  TruceInput attacker_flexible_truces_perk;
+  TruceInput attacker_government_is_nomadic;
+  TruceInput defender_government_is_nomadic;
+  // Full WarManager storage scan is only a structural candidate for the
+  // stock any_character_war border-raid predicate. It is never a formal
+  // truce input until that evaluator equivalence is independently proven.
+  struct BorderRaidStorageCandidate {
+    std::optional<bool> value;
+    std::int32_t storage_capacity = 0;
+    std::int32_t active_war_count = 0;
+    std::int32_t matching_war_count = 0;
+    std::string unavailable_reason = "full_war_storage_scan_unavailable_or_drift";
+    friend bool operator==(const BorderRaidStorageCandidate &,
+                           const BorderRaidStorageCandidate &) = default;
+  };
+  BorderRaidStorageCandidate border_raid_storage_candidate;
+  std::string title_vassal_delta_unavailable_reason =
+      "runtime_target_scope_and_de_jure_change_semantics_unproven";
+  std::string signed_resource_delta_unavailable_reason =
+      "conditional_effects_and_cb_prestige_factor_unread";
+  std::string directed_truce_unavailable_reason =
+      "attacker_victory_truce_duration_unread";
+  bool same_frame_stable = false;
+  bool material_complete = false;
+
+  friend bool operator==(const DefenderDeJureExitTermsV1 &,
+                         const DefenderDeJureExitTermsV1 &) = default;
+};
+
 // One fully published Rogue one-life settlement. Adapters expose this object
 // only after the Mod's ready gate is exactly 1 and every required global can
 // be decoded without coercion. Integer fields are semantic values after exact
@@ -1998,6 +2058,16 @@ enum class ReadWarTerminationTermsResult {
   player_not_participant,
   unavailable,
 };
+enum class ReadDefenderDeJureExitTermsV1Result {
+  available_baseline,
+  unsupported_casus_belli,
+  requires_paused,
+  no_played_character,
+  war_not_found,
+  player_not_primary_defender,
+  unavailable,
+};
+
 enum class ReadWarTerminationExitTermsResult {
   available,
   unsupported_casus_belli,

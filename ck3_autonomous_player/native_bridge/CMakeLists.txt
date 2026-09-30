@@ -6809,3 +6809,7 @@ if(BUILD_TESTING)
   set_tests_properties(xar_ck3_native_bridge_running_attach
     PROPERTIES TIMEOUT 30)
 endif()
+
+# The flag stays numeric and default OFF. Only the fixed H2743 callback is
+# admitted by the bridge install owner when this candidate is explicitly ON.
+include(cmake/h2743_stock_predicate_reader_v1.cmake)

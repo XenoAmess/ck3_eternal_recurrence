@@ -9,6 +9,10 @@ from __future__ import annotations
 
 from typing import Any
 
+from ..h2743_stock_predicate_admission import (
+    EVIDENCE_SCHEMA, require_stock_admission,
+)
+
 
 SCHEMA = "xar.ck3.defender-de-jure-exit-terms.v1"
 PREFIX = "query-defender-de-jure-exit-terms-v1-"
@@ -91,7 +95,7 @@ def _normalize_border_raid_storage_candidate(value: Any) -> dict[str, Any]:
     return dict(value)
 
 
-def _normalize_truce_inputs(value: Any) -> dict[str, Any]:
+def _normalize_truce_inputs(value: Any, *, stock_admitted: bool = False) -> dict[str, Any]:
     if not isinstance(value, dict) or set(value) != TRUCE_INPUT_KEYS:
         raise ValueError("malformed partial truce input wire")
     if value["schema"] != "xar.ck3.defender-de-jure-truce-inputs.v1":
@@ -119,11 +123,20 @@ def _normalize_truce_inputs(value: Any) -> dict[str, Any]:
             raise ValueError(f"invalid {key} truce input status")
         normalized[key] = dict(field)
     for key in ("short", "long", "border_raid_pair"):
-        if normalized[key] != {
+        if not stock_admitted and normalized[key] != {
             "status": "unavailable", "value": None,
             "unavailable_reason": "stock_condition_reader_unavailable",
         }:
             raise ValueError(f"{key} truce condition was laundered")
+        if stock_admitted and normalized[key]["status"] == "unavailable":
+            if normalized[key]["unavailable_reason"] not in {
+                "stock_condition_" + reason for reason in (
+                    "reader_disabled", "wrong_session", "read_failed", "stale_identity",
+                    "cache_unavailable", "bounded_extent_exceeded", "identifier_unavailable",
+                    "phase_unavailable", "definition_unavailable", "unstable_sample",
+                )
+            }:
+                raise ValueError(f"unknown admitted {key} stock failure")
     attacker = normalized["attacker_government_is_nomadic"]
     defender = normalized["defender_government_is_nomadic"]
     both = normalized["nomad_both"]
@@ -140,6 +153,43 @@ def _normalize_truce_inputs(value: Any) -> dict[str, Any]:
     normalized["evaluated_days"] = None
     normalized["persisted_expiry_date_raw"] = None
     return normalized
+
+
+def _normalize_stock_evidence(value: Any, *, native_revision: int, date_raw: int,
+                              war_id: int, attacker_id: int, defender_id: int,
+                              truce_inputs: dict[str, Any]) -> dict[str, Any]:
+    keys = {
+        "schema", "native_revision", "date_raw", "actor_character_id", "war_id",
+        "attacker_character_id", "defender_character_id", "paused", "map_ready",
+        "application_main_thread_id", "pump_epoch", "mailbox_sequence",
+        "executor_invocations", "same_frame_stable", "stock_double_sample_stable",
+        "stock_parties_bound", "material_complete",
+    }
+    if not isinstance(value, dict) or set(value) != keys or value["schema"] != EVIDENCE_SCHEMA:
+        raise ValueError("malformed H2743 stock predicate provenance")
+    for key, expected in (
+        ("native_revision", native_revision), ("date_raw", date_raw), ("war_id", war_id),
+        ("actor_character_id", defender_id), ("attacker_character_id", attacker_id),
+        ("defender_character_id", defender_id),
+    ):
+        if _native_int(value[key], positive=key != "date_raw") != expected:
+            raise ValueError(f"H2743 stock predicate {key} differs from the native frame")
+    for key in ("application_main_thread_id", "pump_epoch", "mailbox_sequence"):
+        if type(value[key]) is not int or not 0 < value[key] <= 2**64 - 1:
+            raise ValueError(f"H2743 stock predicate {key} is unavailable")
+    if value["application_main_thread_id"] > 2**32 - 1:
+        raise ValueError("H2743 application-main thread ID exceeds DWORD")
+    if (type(value["executor_invocations"]) is not int or value["executor_invocations"] != 1
+            or value["paused"] is not True or value["map_ready"] is not True
+            or value["same_frame_stable"] is not True or value["material_complete"] is not False):
+        raise ValueError("H2743 stock executor/frame/material evidence differs")
+    for key in ("stock_double_sample_stable", "stock_parties_bound"):
+        if type(value[key]) is not bool:
+            raise ValueError(f"H2743 stock predicate {key} is malformed")
+    if any(truce_inputs[key]["status"] == "observed" for key in ("short", "long", "border_raid_pair")):
+        if value["stock_double_sample_stable"] is not True or value["stock_parties_bound"] is not True:
+            raise ValueError("observed H2743 stock predicate lacks bound stable native samples")
+    return dict(value)
 
 
 def query_defender_dejure_exit_terms_v1_step(war_id: int) -> str:
@@ -184,11 +234,16 @@ def normalize_defender_dejure_exit_terms_v1(
     expected_defender_id: int,
     expected_attacker_id: int,
     expected_target_title_ids: list[int],
+    stock_predicate_admission: object = None,
 ) -> dict[str, Any]:
     """Accept only a same-frame baseline with all material terms unavailable."""
+    admitted = stock_predicate_admission is not None
+    if admitted:
+        require_stock_admission(stock_predicate_admission)
+    extra = {"h2743_stock_predicate_evidence_v1"} if admitted else set()
     if not isinstance(value, dict) or set(value) not in (
-        KEYS, KEYS | {"truce_inputs_v1"},
-        KEYS | {"truce_inputs_v1", "border_raid_storage_candidate_v1"},
+        KEYS | extra, KEYS | {"truce_inputs_v1"} | extra,
+        KEYS | {"truce_inputs_v1", "border_raid_storage_candidate_v1"} | extra,
     ):
         raise ValueError("defender de-jure baseline schema is malformed")
     if value["schema"] != SCHEMA:
@@ -203,7 +258,8 @@ def normalize_defender_dejure_exit_terms_v1(
         if _native_int(value[key], positive=key != "date_raw") != expected:
             raise ValueError(f"defender de-jure baseline {key} changed")
     if (
-        value["casus_belli_database_index"] != 17
+        type(value["casus_belli_database_index"]) is not int
+        or value["casus_belli_database_index"] != 17
         or value["casus_belli_key"] != "individual_county_de_jure_cb"
         or expected_defender_id == expected_attacker_id
     ):
@@ -278,7 +334,18 @@ def normalize_defender_dejure_exit_terms_v1(
         normalized_income.append({"character_id": character_id, "value": _fixed(row["value"])})
     if {row["character_id"] for row in normalized_income} != expected_ids:
         raise ValueError("monthly income identities differ")
-    return {
+    truce_inputs = (_normalize_truce_inputs(value["truce_inputs_v1"], stock_admitted=admitted)
+                    if "truce_inputs_v1" in value else None)
+    stock_evidence = None
+    if admitted:
+        if truce_inputs is None:
+            raise ValueError("admitted H2743 stock wire lacks truce inputs")
+        stock_evidence = _normalize_stock_evidence(
+            value["h2743_stock_predicate_evidence_v1"], native_revision=expected_native_revision,
+            date_raw=expected_date_raw, war_id=expected_war_id,
+            attacker_id=expected_attacker_id, defender_id=expected_defender_id,
+            truce_inputs=truce_inputs)
+    result = {
         "schema": SCHEMA,
         "war_id": expected_war_id,
         "native_revision": expected_native_revision,
@@ -289,10 +356,7 @@ def normalize_defender_dejure_exit_terms_v1(
         "target_title_holder_prestate": normalized_prestate,
         "primary_resource_balances": normalized_balances,
         "primary_monthly_gold_income": normalized_income,
-        "truce_inputs_v1": (
-            _normalize_truce_inputs(value["truce_inputs_v1"])
-            if "truce_inputs_v1" in value else None
-        ),
+        "truce_inputs_v1": truce_inputs,
         "border_raid_storage_candidate_v1": (
             _normalize_border_raid_storage_candidate(
                 value["border_raid_storage_candidate_v1"])
@@ -308,3 +372,6 @@ def normalize_defender_dejure_exit_terms_v1(
         "recommended_outcome": None,
         "action_literal": None,
     }
+    if admitted:
+        result["h2743_stock_predicate_evidence_v1"] = stock_evidence
+    return result

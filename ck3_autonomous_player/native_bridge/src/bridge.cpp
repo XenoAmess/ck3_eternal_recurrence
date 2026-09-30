@@ -33,6 +33,7 @@
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/ck3_12002_phase_diagnostic.hpp"
+#include "xar_bridge/h2743_stock_private_query_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #endif
@@ -4595,6 +4596,165 @@ void AppendWarTerminationTerms(
   result += '}';
 }
 
+void AppendDefenderDeJureExitTermsV1(
+    std::string &result,
+    const xar::game::DefenderDeJureExitTermsV1 &terms,
+    std::uint64_t native_revision,
+    const xar::game::H2743StockPredicateResultV1 *stock = nullptr,
+    const xar::ck3_11906::H2743StockPrivateQueryV1 *stock_query = nullptr) {
+  result += "{\"schema\":\"xar.ck3.defender-de-jure-exit-terms.v1\",";
+  result += "\"native_revision\":";
+  result += Number(native_revision);
+  result += ",\"war_id\":";
+  result += SignedNumber(terms.war_id);
+  result += ",\"date_raw\":";
+  result += SignedNumber(terms.date_raw);
+  result += ",\"casus_belli_database_index\":";
+  result += SignedNumber(terms.casus_belli_database_index);
+  result += ",\"casus_belli_key\":";
+  AppendJsonString(result, terms.casus_belli_key);
+  result += ",\"primary_attacker_character_id\":";
+  result += SignedNumber(terms.primary_attacker_character_id);
+  result += ",\"primary_defender_character_id\":";
+  result += SignedNumber(terms.primary_defender_character_id);
+  result += ",\"target_title_ids\":[";
+  for (std::size_t index = 0; index < terms.target_title_ids.size(); ++index) {
+    if (index != 0) result += ',';
+    result += SignedNumber(terms.target_title_ids[index]);
+  }
+  result += "],\"target_title_holder_prestate\":[";
+  for (std::size_t index = 0;
+       index < terms.target_title_holder_prestate.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &row = terms.target_title_holder_prestate[index];
+    result += "{\"title_id\":";
+    result += SignedNumber(row.title_id);
+    result += ",\"holder_character_id\":";
+    result += SignedNumber(row.holder_character_id);
+    result += ",\"holder_immediate_liege_character_id\":";
+    if (row.holder_immediate_liege_character_id) {
+      result += SignedNumber(*row.holder_immediate_liege_character_id);
+    } else {
+      result += "null";
+    }
+    result += '}';
+  }
+  result += "],\"primary_resource_balances\":[";
+  for (std::size_t index = 0; index < terms.primary_resource_balances.size();
+       ++index) {
+    if (index != 0) result += ',';
+    const auto &row = terms.primary_resource_balances[index];
+    result += "{\"character_id\":";
+    result += SignedNumber(row.character_id);
+    result += ",\"resource\":";
+    AppendJsonString(result, row.resource_kind);
+    result += ",\"value\":";
+    AppendFixedPoint(result, row.value);
+    result += '}';
+  }
+  result += "],\"primary_monthly_gold_income\":[";
+  for (std::size_t index = 0;
+       index < terms.primary_monthly_gold_income.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &row = terms.primary_monthly_gold_income[index];
+    result += "{\"character_id\":";
+    result += SignedNumber(row.character_id);
+    result += ",\"value\":";
+    AppendFixedPoint(result, row.value);
+    result += '}';
+  }
+  result += "],\"truce_inputs_v1\":{\"schema\":"
+            "\"xar.ck3.defender-de-jure-truce-inputs.v1\"";
+  const auto append_input = [&result](
+      std::string_view key,
+      const xar::game::DefenderDeJureExitTermsV1::TruceInput &input) {
+    result += ",\"";
+    result += key;
+    result += "\":{\"status\":";
+    AppendJsonString(result, input.value ? "observed" : "unavailable");
+    result += ",\"value\":";
+    result += input.value ? (*input.value ? "true" : "false") : "null";
+    result += ",\"unavailable_reason\":";
+    if (input.value) result += "null";
+    else AppendJsonString(result, input.unavailable_reason);
+    result += '}';
+  };
+  append_input("attacker_flexible_truces_perk",
+               terms.attacker_flexible_truces_perk);
+  append_input("attacker_government_is_nomadic",
+               terms.attacker_government_is_nomadic);
+  append_input("defender_government_is_nomadic",
+               terms.defender_government_is_nomadic);
+  xar::game::DefenderDeJureExitTermsV1::TruceInput both{};
+  both.unavailable_reason = "party_government_flag_unavailable";
+  if (terms.attacker_government_is_nomadic.value &&
+      terms.defender_government_is_nomadic.value) {
+    both.value = *terms.attacker_government_is_nomadic.value &&
+                 *terms.defender_government_is_nomadic.value;
+    both.unavailable_reason.clear();
+  }
+  append_input("nomad_both", both);
+  for (const auto key : {"short", "long", "border_raid_pair"}) {
+    xar::game::DefenderDeJureExitTermsV1::TruceInput unavailable{};
+    unavailable.unavailable_reason = "stock_condition_reader_unavailable";
+#if XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1
+    if (stock != nullptr) {
+      const auto &value = std::string_view(key) == "short"
+          ? stock->short_truce
+          : std::string_view(key) == "long" ? stock->long_truce
+                                            : stock->border_raid_pair;
+      unavailable = xar::ck3_11906::H2743StockTypedInputV1(value);
+    }
+#else
+    (void)stock;
+#endif
+    append_input(key, unavailable);
+  }
+  result += ",\"evaluated_days\":null,"
+            "\"persisted_expiry_date_raw\":null}";
+  // A complete storage traversal is only a structural candidate. The stock
+  // any_character_war predicate above remains typed unavailable.
+  result += ",\"border_raid_storage_candidate_v1\":{\"schema\":"
+            "\"xar.ck3.h2743-border-raid-storage-candidate.v1\",\"status\":";
+  const auto &scan = terms.border_raid_storage_candidate;
+  AppendJsonString(result, scan.value ? "structural_candidate_only" :
+                                  "unavailable");
+  result += ",\"candidate\":";
+  result += scan.value ? (*scan.value ? "true" : "false") : "null";
+  result += ",\"storage_capacity\":";
+  result += SignedNumber(scan.storage_capacity);
+  result += ",\"active_war_count\":";
+  result += SignedNumber(scan.active_war_count);
+  result += ",\"matching_war_count\":";
+  result += SignedNumber(scan.matching_war_count);
+  result += ",\"unavailable_reason\":";
+  if (scan.value) result += "null";
+  else AppendJsonString(result, scan.unavailable_reason);
+  result += ",\"native_condition_observed\":false}";
+  result += ",\"title_vassal_delta\":null,";
+  result += "\"title_vassal_delta_unavailable_reason\":";
+  AppendJsonString(result, terms.title_vassal_delta_unavailable_reason);
+  result += ",\"signed_resource_delta\":null,";
+  result += "\"signed_resource_delta_unavailable_reason\":";
+  AppendJsonString(result, terms.signed_resource_delta_unavailable_reason);
+  result += ",\"directed_truce\":null,";
+  result += "\"directed_truce_unavailable_reason\":";
+  AppendJsonString(result, terms.directed_truce_unavailable_reason);
+  result += ",\"same_frame_stable\":";
+  result += terms.same_frame_stable ? "true" : "false";
+  result += ",\"material_complete\":";
+  result += terms.material_complete ? "true" : "false";
+#if XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1
+  if (stock_query != nullptr) {
+    result += ",\"h2743_stock_predicate_evidence_v1\":";
+    result += xar::ck3_11906::SerializeH2743StockPrivateEvidenceV1(*stock_query);
+  }
+#else
+  (void)stock_query;
+#endif
+  result += '}';
+}
+
 void AppendMarriageQueryDiagnostics(
     std::string &result,
     const xar::game::ArrangeMarriageQueryDiagnostics &diagnostics) {
@@ -8406,6 +8566,27 @@ std::string WarTerminationTermsResultFrame(
   return result;
 }
 
+std::string DefenderDeJureExitTermsResultFrameV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence, std::uint64_t native_revision,
+    const xar::game::DefenderDeJureExitTermsV1 &terms,
+    const xar::game::H2743StockPredicateResultV1 *stock = nullptr,
+    const xar::ck3_11906::H2743StockPrivateQueryV1 *stock_query = nullptr) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result +=
+      ",\"accepted\":true,\"status\":\"baseline_only\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"defender_de_jure_exit_terms_v1\":";
+  AppendDefenderDeJureExitTermsV1(result, terms, native_revision, stock, stock_query);
+  result += "}}";
+  return result;
+}
+
 std::string ArmyStrengthsResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     xar::game::ReadArmyStrengthsResult query_result,
@@ -9734,6 +9915,14 @@ std::optional<std::int32_t> WarTerminationTermsQueryStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> DefenderDeJureExitTermsQueryStepV1(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-defender-de-jure-exit-terms-v1-";
+  if (!step.starts_with(prefix)) return std::nullopt;
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
 std::optional<std::int32_t> RaiktorActualTruceExpiryQueryStep(
     std::string_view step) noexcept {
   const auto prefix =
@@ -10387,6 +10576,10 @@ public:
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
     environment.permitted_scoped_variable_monitor_executor = &xar::ck3_11906::ExecuteScopedVariableMonitorQueryV1;
 #endif
+#if XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1
+    environment.permitted_h2743_stock_predicate_executor =
+        &xar::ck3_11906::ExecuteH2743StockPrivateQueryV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -10760,6 +10953,7 @@ struct WorkerState {
   std::uint64_t war_prisoner_release_pairs_query_sequence = 0;
   std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
+  std::uint64_t defender_de_jure_exit_terms_query_sequence = 0;
   std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   std::uint64_t raiktor_war_bound_loss_cleanup_query_sequence = 0;
@@ -11626,6 +11820,8 @@ void RunConnectedSession(
   auto &war_termination_terms_query_sequence =
       state.war_termination_terms_query_sequence;
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+  auto &defender_de_jure_exit_terms_query_sequence =
+      state.defender_de_jure_exit_terms_query_sequence;
   auto &raiktor_actual_truce_expiry_query_sequence =
       state.raiktor_actual_truce_expiry_query_sequence;
 #endif
@@ -21902,6 +22098,177 @@ void RunConnectedSession(
           }
         }
 #endif
+        else if (step.starts_with(
+                       "query-defender-de-jure-exit-terms-v1-")) {
+#if XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1
+          std::int32_t parsed_war_id = -1;
+          const auto war_id = xar::ck3_11906::ParseH2743StockPrivateStepV1(
+                                  step, parsed_war_id)
+              ? std::optional<std::int32_t>{parsed_war_id} : std::nullopt;
+#else
+          const auto war_id = DefenderDeJureExitTermsQueryStepV1(step);
+#endif
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-defender-de-jure-exit-terms-v1-<war_id> step"));
+          } else {
+            std::uint64_t expected_revision = 0;
+            if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                    incoming.payload, expected_revision) ||
+                expected_revision != state_revision || state_revision == 0 ||
+                !previous_snapshot.has_value()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "de-jure exit baseline expected revision is stale or malformed"));
+            } else {
+              xar::game::Snapshot admission_snapshot{};
+              if (!xar::game::ReadSnapshot(game, admission_snapshot) ||
+                  admission_snapshot != previous_snapshot.value()) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "de-jure exit baseline admission snapshot changed; retry after heartbeat"));
+                }
+              } else if (!admission_snapshot.paused ||
+                         !admission_snapshot.map_ready ||
+                         !admission_snapshot.has_played_character ||
+                         !admission_snapshot.played_character_alive) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "de-jure exit baseline requires a ready paused living player snapshot"));
+              } else {
+                xar::game::DefenderDeJureExitTermsV1 baseline{};
+                const xar::game::H2743StockPredicateResultV1 *stock_result = nullptr;
+                const xar::ck3_11906::H2743StockPrivateQueryV1 *stock_query = nullptr;
+#if XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1
+                xar::game::H2743StockPredicateResultV1 stock{};
+                xar::ck3_11906::H2743StockPrivateQueryV1 query{};
+                query.mailbox = &g_main_thread_query_mailbox_v1;
+                query.game = &game;
+                query.module_base = reinterpret_cast<std::uintptr_t>(
+                    GetModuleHandleW(nullptr));
+                query.expected_revision = expected_revision;
+                query.expected_snapshot = admission_snapshot;
+                query.war_id = war_id.value();
+                auto read_result = xar::game::
+                    ReadDefenderDeJureExitTermsV1Result::unavailable;
+                int wait_result = -1;
+                int reclaim_result = -1;
+                const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1,
+                    &xar::ck3_11906::ExecuteH2743StockPrivateQueryV1,
+                    &query, query.ticket);
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::submitted) {
+                  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds,
+                      nullptr, 0);
+                  while (wait == xar::ck3_11906::
+                                     MainThreadQueryWaitResultV1::
+                                         timeout_executor_already_running) {
+                    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket,
+                        xar::ck3_11906::
+                            kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds,
+                        nullptr, 0);
+                  }
+                  wait_result = static_cast<int>(wait);
+                  if (wait == xar::ck3_11906::
+                                  MainThreadQueryWaitResultV1::completed &&
+                      query.completed && query.executor_invocations == 1 &&
+                      query.execution_stamp.paused &&
+                      query.execution_stamp.date_raw == admission_snapshot.date_raw) {
+                    read_result = query.read_result;
+                    baseline = query.baseline;
+                    stock = query.stock;
+                    stock_result = &stock;
+                    stock_query = &query;
+                  }
+                  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket);
+                  reclaim_result = static_cast<int>(reclaimed);
+                  if (reclaimed !=
+                      xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+                    read_result = xar::game::
+                        ReadDefenderDeJureExitTermsV1Result::unavailable;
+                    stock_result = nullptr;
+                    stock_query = nullptr;
+                  }
+                }
+#else
+                const auto read_result =
+                    xar::game::ReadDefenderDeJureExitTermsV1(
+                        game, war_id.value(), baseline);
+#endif
+                xar::game::Snapshot completion_snapshot{};
+                if (!xar::game::ReadSnapshot(game, completion_snapshot) ||
+                    completion_snapshot != admission_snapshot) {
+                  connected = PublishSnapshot(
+                      pipe, game, previous_snapshot, state_revision,
+                      checkpoint_submission, published_checkpoint_sequence);
+                  if (connected) {
+                    connected = xar::bridge::WriteFrame(
+                        pipe, CommandResultFrame(
+                                  request_id, step, false,
+                                  "de-jure exit baseline completion snapshot changed; retry after heartbeat"));
+                  }
+                } else if (
+                    read_result == xar::game::
+                                       ReadDefenderDeJureExitTermsV1Result::
+                                           available_baseline &&
+                    baseline.same_frame_stable && !baseline.material_complete) {
+                  const auto next_query_sequence =
+                      defender_de_jure_exit_terms_query_sequence + 1;
+                  connected = xar::bridge::WriteFrame(
+                      pipe, DefenderDeJureExitTermsResultFrameV1(
+                                request_id, step, next_query_sequence,
+                                state_revision, baseline, stock_result, stock_query));
+                  if (connected) {
+                    defender_de_jure_exit_terms_query_sequence =
+                        next_query_sequence;
+                  }
+                } else {
+                  std::string error =
+                      read_result == xar::game::
+                                         ReadDefenderDeJureExitTermsV1Result::
+                                             unsupported_casus_belli
+                          ? "de-jure exit baseline unsupported casus belli"
+                          : read_result == xar::game::
+                                               ReadDefenderDeJureExitTermsV1Result::
+                                                   player_not_primary_defender
+                                 ? "played character is not the primary de-jure defender"
+                                 : "de-jure exit baseline native read unavailable";
+#if XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1
+                  error += ";h2743_stock_query submit=" +
+                      std::to_string(static_cast<int>(submit)) +
+                      " wait=" + std::to_string(wait_result) +
+                      " reclaim=" + std::to_string(reclaim_result) +
+                      " sequence=" + std::to_string(query.ticket.sequence) +
+                      " invocations=" + std::to_string(query.executor_invocations) +
+                      " thread=" + std::to_string(query.execution_stamp.thread_id) +
+                      " pump_epoch=" + std::to_string(query.execution_stamp.pump_epoch) +
+                      " date=" + std::to_string(query.execution_stamp.date_raw) +
+                      " paused=" + std::to_string(query.execution_stamp.paused) +
+                      " read_result=" + std::to_string(static_cast<int>(query.read_result)) +
+                      " phase=" + std::string(query.failure_stage);
+#endif
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(request_id, step, false, error));
+                }
+              }
+            }
+          }
+        }
         else if (step.starts_with(
                        "query-war-termination-terms-v1-")) {
           const auto war_id = WarTerminationTermsQueryStep(step);

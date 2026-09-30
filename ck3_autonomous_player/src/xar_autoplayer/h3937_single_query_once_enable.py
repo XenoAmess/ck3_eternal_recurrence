@@ -60,7 +60,7 @@ def _build_artifact(value: object) -> Path:
     return path
 
 
-def _native_build(config: dict[str, object]) -> dict[str, object]:
+def _native_build_original_inventory_pair(config: dict[str, object]) -> dict[str, object]:
     """Consume the actual sole-builder manifest; never builds or runs a fixture."""
     path = Path(config["native_build_receipt"])
     if cold._sha(path) != config["native_build_receipt_sha256"].upper():
@@ -108,6 +108,91 @@ def _native_build(config: dict[str, object]) -> dict[str, object]:
     ):
         raise ValueError("single-query native author/fixture/review binding differs")
     return build
+
+
+_QUEUED_RETRY_HEAD = "12bb2b7de0e674588f066e8499b481b5fd94743f"
+_QUEUED_RETRY_FINGERPRINT = "5CEC2EBF027E8A77E06C10463434BCB6EB6C5059AF68B4C195711D6D443062AA"
+_QUEUED_RETRY_TREE = "6f9c44b1c2dd2cd10423e3e7b786130cec9dbbf8"
+_QUEUED_RETRY_ARTIFACTS = {
+    "source_freeze": "A5ED777A982E52F46B08D0B22FE0BB123E6A351CD18CE8448D24CE34C8265A30",
+    "focused_fixture": "EC81BC95468644CFB6704E1DE1BA1F41A9276B58B1729A091C938F3D3F59D19E",
+    "independent_review": "46FEE532430B106AD7F9A85570781BEDD67AF132EF6B6ABEA577460514DB420B",
+}
+
+
+def _native_build_queued_retry_pair(config: dict[str, object]) -> dict[str, object]:
+    """Consume only the reviewed 12bb family; an actual full pair is required."""
+    path = Path(config["native_build_receipt"])
+    if cold._sha(path) != config["native_build_receipt_sha256"].upper():
+        raise ValueError("single-query native build receipt bytes differ")
+    build = cold._read_json(path)
+    if not (
+        build.get("schema") == "xar.war.h3937.release-pair-noncanonical-diagnostics-static.v1"
+        and build.get("status") == "STATIC_GREEN_LIVE_PENDING"
+        and build.get("build_status") == "STATIC_READY_NO_CK3_LAUNCH"
+        and build.get("source_commit") == config["native_source_head"] == _QUEUED_RETRY_HEAD
+        and build.get("source_fingerprint_sha256") == _QUEUED_RETRY_FINGERPRINT
+        and build.get("native_bridge_tree") == _QUEUED_RETRY_TREE
+        and build.get("configuration") == "Release"
+        and build.get("cmake_option") == "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1=ON"
+        and build.get("no_ck3_launch") is True and build.get("screen_acquired") is False
+        and build.get("authorization_actions") == 0 and build.get("gameplay_actions") == 0
+    ):
+        raise ValueError("single-query queued-retry build source/options/status differ")
+    for name, field in (("dll", "bridge_dll_sha256"), ("injector", "bridge_injector_sha256")):
+        _build_artifact(build.get(name))
+        if (build[name]["sha256"].upper() != config[field].upper()
+                or build.get(name + "_sha256") != build[name]["sha256"]):
+            raise ValueError("single-query queued-retry build pair differs from config")
+    for name, digest in _QUEUED_RETRY_ARTIFACTS.items():
+        artifact = build.get(name)
+        _build_artifact(artifact)
+        if artifact["sha256"].upper() != digest:
+            raise ValueError("single-query queued-retry frozen artifact differs: " + name)
+    author = cold._read_json(_build_artifact(build.get("author_config")))
+    fixture = cold._read_json(Path(build["focused_fixture"]["path"]))
+    review = cold._read_json(Path(build["independent_review"]["path"]))
+    source_freeze = cold._read_json(Path(build["source_freeze"]["path"]))
+    ctest = build.get("ctest")
+    if not (
+        author.get("head") == fixture.get("head") == review.get("head") == _QUEUED_RETRY_HEAD
+        and author.get("native_source_fingerprint_sha256") == _QUEUED_RETRY_FINGERPRINT
+        and fixture.get("native_source_fingerprint_sha256") == _QUEUED_RETRY_FINGERPRINT
+        and source_freeze.get("source_head") == _QUEUED_RETRY_HEAD
+        and source_freeze.get("native_source_fingerprint_sha256") == _QUEUED_RETRY_FINGERPRINT
+        and source_freeze.get("native_tree") == _QUEUED_RETRY_TREE
+        and source_freeze.get("clean") is True
+        and author.get("source_freeze") == build.get("source_freeze")
+        and author.get("focused_fixture") == build.get("focused_fixture")
+        and author.get("review") == build.get("independent_review")
+        and fixture.get("schema") == "xar.h3937.actual-focused-callback-fixture/v1"
+        and fixture.get("status") == "NEW_CALLBACK_FIXTURE_PASS_NO_DLL_BUILD_NO_GAME"
+        and fixture.get("target") == "xar_ck3_h3937_route_contact_queued_retry_v1_test"
+        and fixture.get("ctest_name") == "xar_ck3_native_bridge_h3937_route_contact_queued_retry_v1"
+        and fixture.get("passed") == fixture.get("total") == 1
+        and fixture.get("configuration") == "Release"
+        and fixture.get("dll_built") is False and fixture.get("injector_built") is False
+        and fixture.get("ck3_started") is False and fixture.get("mcp_started") is False
+        and fixture.get("screen_acquired") is False
+        and review.get("schema") == "xar.h3937.independent-queued-retry-review.v1"
+        and review.get("status") == "CODE_ONLY_GREEN_SOURCE_AND_EXISTING_FOCUSED_CALLBACK"
+        and review.get("freeze", {}).get("sha256") == _QUEUED_RETRY_ARTIFACTS["source_freeze"]
+        and review.get("fixture_receipt", {}).get("sha256") == _QUEUED_RETRY_ARTIFACTS["focused_fixture"]
+        and isinstance(ctest, dict) and ctest.get("executed_in_this_full_build") is False
+        and ctest.get("same_source_focused_fixture") == build.get("focused_fixture")
+        and ctest.get("focused_test_name") == "xar_ck3_native_bridge_h3937_route_contact_queued_retry_v1"
+        and ctest.get("exit_code") == 0 and ctest.get("passed") == ctest.get("total") == 1
+    ):
+        raise ValueError("single-query queued-retry author/fixture/review binding differs")
+    return build
+
+
+def _native_build(config: dict[str, object]) -> dict[str, object]:
+    if config["native_source_head"] == "0d06a372d502723fcbba35295d38a28ae3852a12":
+        return _native_build_original_inventory_pair(config)
+    if config["native_source_head"] == _QUEUED_RETRY_HEAD:
+        return _native_build_queued_retry_pair(config)
+    raise ValueError("single-query native source family is not admitted")
 
 
 def _preparation(config: dict[str, object]) -> dict[str, object]:

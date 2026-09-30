@@ -570,6 +570,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
              step, "query-war-termination-terms-v1-")) {
     capability = "game.command.query-war-termination-terms-v1-N";
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
+             step, "query-defender-de-jure-exit-terms-v1-")) {
+    capability = "game.command.query-defender-de-jure-exit-terms-v1-N";
+  } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, ck3_11906::kRaiktorActualTruceExpiryV1StepPrefix)) {
     capability = ck3_11906::kRaiktorActualTruceExpiryV1Capability;
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
