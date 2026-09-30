@@ -22,6 +22,7 @@ class RecorderJobTests(unittest.TestCase):
                 job = recorder_job.spawn(
                     [sys.executable, "-c", "import sys; sys.stdin.readline()"],
                     stderr=err, unsafe_marker=root / "unsafe.json",
+                    start_receipt=root / "spawn.json",
                     failure_receipt=root / "spawn-red.json")
                 row = job.finish(receipt=root / "finish.json",
                                  unsafe_marker=root / "unsafe.json", timeout=5)
@@ -30,6 +31,7 @@ class RecorderJobTests(unittest.TestCase):
             self.assertEqual(row["returncode"], 0)
             self.assertFalse((root / "unsafe.json").exists())
             self.assertEqual(json.loads((root / "finish.json").read_text()), row)
+            self.assertEqual(json.loads((root / "spawn.json").read_text())["pid"], job.pid)
             self.assertEqual(job.abort(receipt=root / "late-abort.json",
                                        unsafe_marker=root / "unsafe.json")["state"],
                              "ALREADY_TREE_EMPTY")
@@ -44,6 +46,7 @@ class RecorderJobTests(unittest.TestCase):
             with (root / "stderr.bin").open("wb") as err:
                 job = recorder_job.spawn([sys.executable, "-c", parent],
                                          stderr=err, unsafe_marker=root / "unsafe.json",
+                                         start_receipt=root / "spawn.json",
                                          failure_receipt=root / "spawn-red.json")
                 deadline = time.monotonic() + 5
                 while recorder_job._active(job.job) < 2 and time.monotonic() < deadline:
@@ -68,6 +71,7 @@ class RecorderJobTests(unittest.TestCase):
             with (root / "stderr.bin").open("wb") as err:
                 job = recorder_job.spawn([sys.executable, "-c", parent],
                                          stderr=err, unsafe_marker=root / "unsafe.json",
+                                         start_receipt=root / "spawn.json",
                                          failure_receipt=root / "spawn-red.json")
                 deadline = time.monotonic() + 5
                 while recorder_job._active(job.job) < 2 and time.monotonic() < deadline:
@@ -90,6 +94,7 @@ class RecorderJobTests(unittest.TestCase):
                         recorder_job.spawn(
                             [sys.executable, "-c", code], stderr=err,
                             unsafe_marker=root / "unsafe.json",
+                            start_receipt=root / "spawn.json",
                             failure_receipt=root / "spawn-red.json")
             self.assertFalse(sentinel.exists())
             self.assertTrue((root / "unsafe.json").exists())
@@ -97,6 +102,56 @@ class RecorderJobTests(unittest.TestCase):
             self.assertEqual(row["state"], "RED_TREE_EMPTY")
             self.assertEqual(row["job_active_processes"], 0)
             self.assertIsNotNone(row["returncode"])
+
+    def test_start_receipt_write_failure_kills_job_and_keeps_red_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            start = root / "spawn.json"
+            real_write = recorder_job._write_new
+
+            def fail_start(path: Path, body: dict) -> None:
+                if path == start:
+                    raise OSError("fixture start receipt write failure")
+                real_write(path, body)
+
+            with (root / "stderr.bin").open("wb") as err:
+                with mock.patch.object(recorder_job, "_write_new", side_effect=fail_start):
+                    with self.assertRaisesRegex(OSError, "fixture start receipt"):
+                        recorder_job.spawn(
+                            [sys.executable, "-c", "import sys; sys.stdin.readline()"],
+                            stderr=err, unsafe_marker=root / "unsafe.json",
+                            start_receipt=start,
+                            failure_receipt=root / "spawn-red.json")
+            self.assertFalse(start.exists())
+            self.assertTrue((root / "unsafe.json").exists())
+            row = json.loads((root / "spawn-red.json").read_text())
+            self.assertEqual(row["state"], "RED_TREE_EMPTY")
+            self.assertEqual(row["job_active_processes"], 0)
+
+    def test_terminal_receipt_write_failure_keeps_red_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            finish = root / "finish.json"
+            real_write = recorder_job._write_new
+
+            def fail_finish(path: Path, body: dict) -> None:
+                if path == finish:
+                    raise OSError("fixture terminal receipt write failure")
+                real_write(path, body)
+
+            with (root / "stderr.bin").open("wb") as err:
+                job = recorder_job.spawn(
+                    [sys.executable, "-c", "import sys; sys.stdin.readline()"],
+                    stderr=err, unsafe_marker=root / "unsafe.json",
+                    start_receipt=root / "spawn.json",
+                    failure_receipt=root / "spawn-red.json")
+                with mock.patch.object(recorder_job, "_write_new", side_effect=fail_finish):
+                    with self.assertRaisesRegex(OSError, "fixture terminal receipt"):
+                        job.finish(receipt=finish, unsafe_marker=root / "unsafe.json",
+                                   timeout=5)
+            self.assertIsNone(job.job)
+            self.assertEqual(job.returncode, 0)
+            self.assertTrue((root / "unsafe.json").exists())
 
 
 if __name__ == "__main__":
