@@ -62,6 +62,7 @@ struct TitleMapNavigationCommandV1 {
       TitleMapNavigationCommandStatusV1::pending;
   bool initialized = false;
   bool dispatched = false;
+  const char *failure_predicate = ""; // Read-only, attempt-local diagnostic.
   // Borrowed identities only.  Every callback re-resolves and revalidates the
   // objects before comparing these values; no later callback dereferences a
   // pointer retained from an earlier pump.

@@ -1,4 +1,5 @@
 #include "xar_bridge/title_map_navigation_v1_mailbox.hpp"
+#include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
 
 #include <windows.h>
 
@@ -257,6 +258,27 @@ int main() {
   g_snapshot.has_played_character = true;
   g_snapshot.played_character_alive = true;
   g_snapshot.played_character_id = 0x02000001;
+
+
+  const auto unchanged = g_snapshot;
+  assert(xar::ck3_11906::TitleMapNavigationSnapshotDiffMaskV1(unchanged, g_snapshot) == 0);
+  auto changed = g_snapshot;
+  changed.speed += 1;
+  changed.pending_auto_accept_notification = !changed.pending_auto_accept_notification;
+  assert(xar::ck3_11906::TitleMapNavigationSnapshotDiffMaskV1(unchanged, changed) ==
+         ((std::uint64_t{1} << 1) | (std::uint64_t{1} << 21)));
+  assert(xar::ck3_11906::TitleMapNavigationSnapshotDiffNamesV1(
+         xar::ck3_11906::TitleMapNavigationSnapshotDiffMaskV1(unchanged, changed)) ==
+         "[\"speed\",\"pending_auto_accept_notification\"]");
+  xar::ck3_11906::MainThreadQueryMailboxV1 diagnostic_mailbox{};
+  xar::ck3_11906::TitleMapNavigationMailboxContextV1 diagnostic_query{};
+  PrimeExecuting(diagnostic_mailbox, diagnostic_query, 2, 2);
+  g_snapshot.speed += 1;
+  assert(xar::ck3_11906::ExecuteTitleMapNavigationMailboxV1(&diagnostic_query, Stamp(2)));
+  assert(diagnostic_query.command.status == xar::game::TitleMapNavigationCommandStatusV1::state_changed);
+  assert(std::string_view(diagnostic_query.snapshot_failure_predicate) == "owning-thread-snapshot-fields-differ");
+  assert(diagnostic_query.snapshot_diff_mask == (std::uint64_t{1} << 1));
+  g_snapshot = unchanged;
 
   assert(TestParsing());
   assert(TestDirectAndSamePumpRejection());

@@ -1,4 +1,5 @@
 #include "xar_bridge/title_map_navigation_v1_mailbox.hpp"
+#include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
 
 #include <windows.h>
 
@@ -60,10 +61,16 @@ bool ProxyCaptureFrame(
     return false;
   }
   game::Snapshot snapshot{};
-  if (!ReadSnapshot(proxy->query->bindings, snapshot) ||
-      snapshot != proxy->query->expected_snapshot || !snapshot.paused ||
-      !snapshot.map_ready ||
-      snapshot.date_raw != proxy->stamp->date_raw) {
+  const bool read = ReadSnapshot(proxy->query->bindings, snapshot);
+  if (!read || snapshot != proxy->query->expected_snapshot || !snapshot.paused ||
+      !snapshot.map_ready || snapshot.date_raw != proxy->stamp->date_raw) {
+    proxy->query->snapshot_failure_predicate =
+        !read ? "owning-thread-read-snapshot-unavailable" :
+        snapshot != proxy->query->expected_snapshot ? "owning-thread-snapshot-fields-differ" :
+        !snapshot.paused ? "owning-thread-not-paused" :
+        !snapshot.map_ready ? "owning-thread-map-not-ready" : "owning-thread-pump-date-differs";
+    proxy->query->snapshot_diff_mask = read ?
+        TitleMapNavigationSnapshotDiffMaskV1(proxy->query->expected_snapshot, snapshot) : 0;
     return false;
   }
   output.snapshot_revision =
@@ -302,6 +309,7 @@ bool ExecuteTitleMapNavigationMailboxV1(
     if (query != nullptr) {
       query->completion =
           TitleMapNavigationMailboxCompletionV1::infrastructure_rejected;
+      query->command.failure_predicate = "exact-mailbox-execution-slot-or-pump-rejected";
       query->command.status =
           game::TitleMapNavigationCommandStatusV1::state_changed;
     }

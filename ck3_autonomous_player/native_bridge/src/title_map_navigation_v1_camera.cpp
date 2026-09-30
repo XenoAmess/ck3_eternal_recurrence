@@ -725,11 +725,13 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     const auto resolved = ResolveLandedTitleMapAnchorV1(
         title_environment, access.title, command.request, binding, title);
     if (resolved != game::ResolveLandedTitleMapAnchorResultV1::resolved) {
+      command.failure_predicate = "title-anchor-resolver-rejected";
       command.status = MapResolverResult(resolved);
       return command.status;
     }
     if (command.initialized &&
         (binding != command.binding || title != command.title)) {
+      command.failure_predicate = "binding-or-title-drift";
       command.status = Status::state_changed;
       return command.status;
     }
@@ -744,6 +746,7 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     if (command.initialized &&
         (handler != command.native_handler_identity ||
          camera != command.native_camera_identity)) {
+      command.failure_predicate = "handler-or-camera-identity-drift";
       command.status = Status::state_changed;
       return command.status;
     }
@@ -760,6 +763,7 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
         BuildCameraPlan(camera_environment, access, handler, camera,
                         title.native_title, seed, plan);
     if (plan_result != BuildCameraPlanResultV1::ready) {
+      command.failure_predicate = "camera-plan-rebuild-rejected";
       command.status =
           plan_result == BuildCameraPlanResultV1::not_centerable
               ? Status::title_not_centerable
@@ -768,6 +772,7 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
       return command.status;
     }
     if (command.initialized && !SamePlan(FrozenPlan(command), plan)) {
+      command.failure_predicate = "camera-plan-drift";
       command.status = Status::state_changed;
       return command.status;
     }
@@ -796,6 +801,7 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
         NoTransientPositionShift(before) && target_is_canonical &&
         current_equals_target && zoom_matches) {
       if (!CaptureSameBinding(access, command.binding)) {
+        command.failure_predicate = "already-centered-binding-drift";
         command.status = Status::state_changed;
         return command.status;
       }
@@ -848,21 +854,25 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     // snapping current_state to target_state.
     if (before.target_write_blocked != 0 ||
         !NoTransientPositionShift(before)) {
+      command.failure_predicate = "post-dispatch-input-inhibition-or-transient-shift";
       command.status = Status::state_changed;
       return command.status;
     }
     const bool target_is_raw =
         SameExpectedPrefix(before.target, plan.raw_expected);
     if (!target_is_raw && !target_is_canonical) {
+      command.failure_predicate = "post-dispatch-target-position-drift";
       command.status = Status::state_changed;
       return command.status;
     }
     if (before.zoom_index != plan.zoom_index ||
         !SameFloat(before.target[3], plan.expected_zoom)) {
+      command.failure_predicate = "post-dispatch-zoom-drift";
       command.status = Status::state_changed;
       return command.status;
     }
     if (!CaptureSameBinding(access, command.binding)) {
+      command.failure_predicate = "post-dispatch-binding-drift";
       command.status = Status::state_changed;
       return command.status;
     }
