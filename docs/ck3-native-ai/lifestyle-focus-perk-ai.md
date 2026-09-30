@@ -1,5 +1,53 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## 2026-09-30 R0400：当前配置与正式机会消费入口
+
+本次定向追踪的策略源码为 `781c717b4d094c22b4c020457dfe7851271a981b`；
+文档工作基线 `36ccc4230efc0091d7a68f41418b182263da4cbc` 相对它只有报告文档增量。
+R0400 实际使用 Python 源码 `e097bf9322b9da2aceff57355af4505a5a993ef7`、
+native 源码 `ed2c916a91cc62ef3e0e306f8b295b135c59b60c` 和 DLL SHA-256
+`DB0D16062137CD5A1929FA24C9D9BBEE51147C7F2379D7FFAA948EE3F5B15C3B`。
+相关 LIFE 策略、消费者和 service 源码在 e097 与 781c 间未变。
+Robert actor `29829` / episode `native-29829-2bc2d599f7f9` 的持久配对是
+`h3935/raw53219928`；driver 的 3938 条命令不能替代这个 checkpoint 编号。
+
+旧 DLL 的 `XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1=OFF`，
+R0400 的 `allow_private_lifestyle_formal_trial=false` 和
+`require_initial_lifestyle_focus_before_date_advance=false`。该帧没有新的 focus、
+目标 XP、可用点数及 perk 读回，所以这些 OFF 只证明本次没有启用机会查询，
+不能证明点数为零、没有合法机会或已经漏消费。旧 h2133 的 centralization
+收据也不构成当前日期的点数观测。R0186/R0187 的窄实机资格继续保留。
+
+既有入口是 operator `--private-lifestyle-formal-trial` 对应正式运行参数
+`--allow-private-lifestyle-formal-trial`；有界候选需配套匹配 native flag ON。
+普通有 focus 的 perk 机会经过 `bridge/service.py` 的
+`plan_lifestyle_private`：同帧 feudal root、当前 focus/XP/点数、未拥有目标和
+原生最终合法性满足后，才提交既有 typed perk。只读战争 query 或
+`selected_step=null` 的 native-war RED 已能进入这条独立 LIFE 路径；无点数、
+无合法目标、查询失败或旧帧保留原战争 query/RED，不把未知当零。战争 gameplay
+动作仍按原合同优先。pending perk 先核物质收据，再评估下一次消费。
+
+无 focus 的首帧需显式使用既有
+`--require-initial-lifestyle-focus-before-date-advance`，它要求 LIFE trial。
+开局/继承 gate 先于普通家庭与 M5 服务：已有有效 focus 时核新鲜 proof 后释放
+gate，不重选 focus，也不把普通 perk 缓存为已消费；focusless 时复用已存在的
+教育/角色比较和 typed focus 路线。普通 trial 本身不会在战争 RED 下替代此 gate。
+Guy pending 的结果 query 可占用普通 LIFE 的一轮，但没有把未提交的 LIFE 动作
+标为已消费，后续 replan 仍可评估。
+
+证据为 [R0400 LIFE 追踪](D:/nw-life-current-trigger-20260930/EVIDENCE.json)
+SHA-256 `F57311637C97B70867F148181BEA32C6BD3D857D79E99A36C7620E975BE83503`，
+[入口审阅](D:/nw-life-current-trigger-20260930/TRIGGER-AUDIT.md)
+SHA-256 `27CADEF3D2547959E027BAD96093F9528769786A5F2219C3CDF7CD79D2AFD2A7`。
+下一匹配构建已将此 LIFE flag 与既有婚配/建设 flags 一起启用：
+[candidate index](D:/nw-econ-native-candidate-20260930/CANDIDATE-INDEX.json)
+SHA-256 `C0EDE29DFA50935E63043295025ED4711AF41033B01890E949D5E7CCF5997436`，
+源为 36ccc，DLL SHA-256
+`BE3AD066D0C28EE90C8902C51518734DF71C6C6B7BE3AEA91C4E460A63A971B1`。
+这只是匹配构建；本节没有新增 CK3 动作、日期、该候选的加载或冷恢复证据。
+首次实机仍需官方配对/no-launch、同帧读回、独立后置、下一 turn 和规定恢复。
+下方正式消费者图中的开关与 gate 节点是这条既有运行入口的注记，未改变原生 AI 树。
+
 ## NW-LIFE diplomacy Thoughtful successor candidate (2026-09-30; source contract)
 
 The existing first operable frame gate checks a natural successor's focus and
@@ -86,10 +134,14 @@ following turn and cold restore are still required for a live loop claim.
 
 ```mermaid
 flowchart LR
-  W[Blocked native war plan] --> L[Read same-frame LIFE opportunity]
-  L -->|legal point| P[Private typed perk; retain war RED]
-  L -->|none or unavailable| R[Keep war RED and record LIFE status]
-  P -. later receipt and replan .-> W
+  N[Matched native LIFE ON and bounded formal trial] --> G{Existing initial-focus gate enabled?}
+  G -->|yes| O[Fresh effective-focus proof or existing typed focus route]
+  O -. consume gate proof; later replan .-> W[Blocked native war plan or read-only war query]
+  G -->|no| W
+  W --> L[Same-frame root, focus, XP, points and native final legality]
+  L -->|focused, unowned and legal point| P[Private typed perk; retain war RED]
+  L -->|none, focusless or unavailable| R[Keep war RED and record LIFE status]
+  P -. independent receipt, next turn and replan .-> W
 ```
 
 ## NW-LIFE first-focus martial role candidate (2026-09-28; source contract)
