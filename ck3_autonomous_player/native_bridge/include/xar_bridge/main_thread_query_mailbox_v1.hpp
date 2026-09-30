@@ -543,6 +543,8 @@ void SignalMainThreadQueryMailboxProcessDetachV1(
 // Optional observation for queued application-main waits. A wake is the
 // existing inert WM_NULL thread message; it never executes a gameplay step.
 struct MainThreadQueryQueuedWakeTraceV1 {
+  // Captured on the initial post; queued reposts cannot follow a new owner.
+  std::uint32_t owner_thread_id = 0;
   std::uint64_t pump_epoch_at_start = 0;
   std::uint64_t pump_epoch_at_end = 0;
   std::uint32_t wake_attempts = 0;

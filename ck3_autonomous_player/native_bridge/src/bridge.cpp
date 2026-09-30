@@ -151,6 +151,7 @@
 #include "xar_bridge/phase2_wrapper_entry_observer_v1.hpp"
 #include "xar_bridge/phase2_wrapper_consumer_edge_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
+#include "xar_bridge/route_contact_horizon_v1_dispatch.hpp"
 #include "xar_bridge/physical_army_inventory_diagnostics_v1_json.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
 #include "xar_bridge/set_played_character_v1_mailbox.hpp"
@@ -8003,7 +8004,8 @@ std::string ActorArmyRolePrivateFailureDiagnosticsV1(
     const xar::ck3_11906::MainThreadQueryMailboxDiagnosticsV1 &before,
     xar::ck3_11906::MainThreadQuerySubmitResultV1 submit,
     int wait_enum, std::size_t response_bytes,
-    const xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1 &wake) {
+    const xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1 &wake,
+    const xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1 &initial_wake) {
   using namespace xar::ck3_11906;
   const auto &mailbox = *query.mailbox;
   const auto d = ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
@@ -8072,9 +8074,16 @@ std::string ActorArmyRolePrivateFailureDiagnosticsV1(
   result += ",\"slot_context_matches\":";
   result += !terminal_slot_owned ? "null" :
       mailbox.executor_context == &query ? "true" : "false";
-  number("initial_wake_attempts", wake.wake_attempts);
-  number("initial_wake_succeeded", wake.wake_succeeded);
-  number("initial_wake_failed", wake.wake_failed);
+  number("initial_wake_attempts", initial_wake.wake_attempts);
+  number("initial_wake_succeeded", initial_wake.wake_succeeded);
+  number("initial_wake_failed", initial_wake.wake_failed);
+  number("total_wake_attempts", wake.wake_attempts);
+  number("total_wake_succeeded", wake.wake_succeeded);
+  number("total_wake_failed", wake.wake_failed);
+  number("queued_wake_attempts", wake.wake_attempts - initial_wake.wake_attempts);
+  number("queued_wake_succeeded", wake.wake_succeeded - initial_wake.wake_succeeded);
+  number("queued_wake_failed", wake.wake_failed - initial_wake.wake_failed);
+  number("wake_owner_thread_id", wake.owner_thread_id);
   number("last_wake_error", wake.last_wake_error);
   number("wait_pump_epoch_at_start", wake.pump_epoch_at_start);
   number("wait_pump_epoch_at_end", wake.pump_epoch_at_end);
@@ -19344,6 +19353,7 @@ void RunConnectedSession(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteActorArmyRolePrivateQueryV1,
                   &query, query.ticket, &wake_trace);
+              const auto initial_wake_trace = wake_trace;
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
                 connected = xar::bridge::WriteFrame(
@@ -19351,13 +19361,13 @@ void RunConnectedSession(
                               request_id, step,
                               "actor army role application-main boundary unavailable",
                               ActorArmyRolePrivateFailureDiagnosticsV1(
-                                  query, diagnostics_before, submit, -1, 0, wake_trace)));
+                                  query, diagnostics_before, submit, -1, 0, wake_trace, initial_wake_trace)));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                     g_main_thread_query_mailbox_v1, query.ticket,
                     xar::ck3_11906::
                         kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds,
-                    &wake_trace, 0);
+                    &wake_trace, 250);
                 while (wait == xar::ck3_11906::
                                    MainThreadQueryWaitResultV1::
                                        timeout_executor_already_running) {
@@ -19379,7 +19389,7 @@ void RunConnectedSession(
                 const auto failure_diagnostics = response.empty()
                     ? ActorArmyRolePrivateFailureDiagnosticsV1(
                           query, diagnostics_before, submit,
-                          static_cast<int>(wait), response.size(), wake_trace)
+                          static_cast<int>(wait), response.size(), wake_trace, initial_wake_trace)
                     : std::string{};
                 if (response.empty()) {
                   const auto error = query.failure_stage.empty()
@@ -19392,7 +19402,7 @@ void RunConnectedSession(
                 const auto reclaim_diagnostics = failure_diagnostics.empty()
                     ? ActorArmyRolePrivateFailureDiagnosticsV1(
                           query, diagnostics_before, submit,
-                          static_cast<int>(wait), response.size(), wake_trace)
+                          static_cast<int>(wait), response.size(), wake_trace, initial_wake_trace)
                     : failure_diagnostics;
                 const auto reclaim = xar::ck3_11906::ReclaimMainThreadQueryV1(
                     g_main_thread_query_mailbox_v1, query.ticket);
@@ -21710,12 +21720,14 @@ void RunConnectedSession(
                     current_snapshot.active_wars.front().war_id;
               }
 #endif
-              const auto submit =
-                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
-                      g_main_thread_query_mailbox_v1,
-                      &xar::ck3_11906::
-                          ExecuteRouteContactHorizonMailboxQueryV1,
-                      &query, query.ticket);
+              xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1
+                  queued_wake_trace{};
+              const auto mailbox_before_submit = xar::ck3_11906::
+                  ReadMainThreadQueryMailboxDiagnosticsV1(
+                      g_main_thread_query_mailbox_v1);
+              const auto submit = xar::ck3_11906::
+                  SubmitRouteContactHorizonQueryV1(query, queued_wake_trace);
+              const auto initial_wake_trace = queued_wake_trace;
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
                 std::string_view error =
@@ -21732,10 +21744,8 @@ void RunConnectedSession(
                 connected = xar::bridge::WriteFrame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
-                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
-                    g_main_thread_query_mailbox_v1, query.ticket,
-                    xar::ck3_11906::
-                        kRouteContactHorizonV1QueuedWaitBudgetMilliseconds);
+                auto wait = xar::ck3_11906::WaitForRouteContactHorizonQueryV1(
+                    query, queued_wake_trace);
                 while (wait == xar::ck3_11906::
                                    MainThreadQueryWaitResultV1::
                                        timeout_executor_already_running) {
@@ -21748,6 +21758,9 @@ void RunConnectedSession(
                           kRouteContactHorizonV1ExecutingWaitSliceMilliseconds);
                 }
 
+                const auto mailbox_after_wait = xar::ck3_11906::
+                    ReadMainThreadQueryMailboxDiagnosticsV1(
+                        g_main_thread_query_mailbox_v1);
                 std::string response;
                 bool completion_snapshot_stable = false;
                 if (wait == xar::ck3_11906::
@@ -21775,8 +21788,11 @@ void RunConnectedSession(
                       RouteContactHorizonFailureDetailV1(
                           wait, query.completion, query.result,
                           completion_snapshot_stable);
-                  response =
-                      CommandResultFrame(request_id, step, false, error);
+                  response = xar::ck3_11906::
+                      RouteContactHorizonNegativeFrameWithDispatchV1(
+                          CommandResultFrame(request_id, step, false, error),
+                          wait, query, queued_wake_trace, initial_wake_trace,
+                          mailbox_before_submit, mailbox_after_wait);
                 }
                 const auto reclaimed =
                     xar::ck3_11906::ReclaimMainThreadQueryV1(
@@ -21787,6 +21803,11 @@ void RunConnectedSession(
                   response = CommandResultFrame(
                       request_id, step, false,
                       "application-main route-contact result was not reclaimable");
+                  response = xar::ck3_11906::
+                      RouteContactHorizonNegativeFrameWithDispatchV1(
+                          std::move(response), wait, query, queued_wake_trace,
+                          initial_wake_trace,
+                          mailbox_before_submit, mailbox_after_wait);
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

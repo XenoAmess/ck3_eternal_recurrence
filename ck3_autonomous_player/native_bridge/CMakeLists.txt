@@ -2465,6 +2465,34 @@ if(BUILD_TESTING)
     NAME xar_ck3_native_bridge_physical_inventory_diagnostics_v1
     COMMAND xar_ck3_physical_inventory_diagnostics_v1_test)
 
+  # The H3 producer fixture calls the actual route-contact executor through the
+  # installed SDL return-site hook; it does not run the game-access/queue suites.
+  get_target_property(H3937_DISPATCH_FIXTURE_SOURCES
+    xar_ck3_game_access_test SOURCES)
+  list(REMOVE_ITEM H3937_DISPATCH_FIXTURE_SOURCES src/ck3_11906_test.cpp)
+  add_executable(xar_ck3_h3937_route_contact_queued_retry_v1_test EXCLUDE_FROM_ALL
+    ${H3937_DISPATCH_FIXTURE_SOURCES}
+    src/main_thread_query_mailbox_v1.cpp
+    src/h3937_route_contact_queued_retry_v1_test.cpp)
+  target_include_directories(
+    xar_ck3_h3937_route_contact_queued_retry_v1_test PRIVATE include)
+  target_link_libraries(
+    xar_ck3_h3937_route_contact_queued_retry_v1_test PRIVATE bcrypt)
+  target_compile_definitions(
+    xar_ck3_h3937_route_contact_queued_retry_v1_test PRIVATE
+    ${H3937_DIAGNOSTIC_FIXTURE_DEFINITIONS})
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_h3937_route_contact_queued_retry_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_h3937_route_contact_queued_retry_v1
+    COMMAND xar_ck3_h3937_route_contact_queued_retry_v1_test)
+  set_tests_properties(
+    xar_ck3_native_bridge_h3937_route_contact_queued_retry_v1
+    PROPERTIES TIMEOUT 30 LABELS "h3937-focused")
+
   add_executable(xar_ck3_adapter_registry_test
     src/actual_contact_scope_v1_mailbox.cpp
     src/battle_control_snapshot_v1_mailbox.cpp
