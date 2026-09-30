@@ -1,8 +1,8 @@
-"""One exact, isolated H3937 combined read-only observation entry.
+"""Retired historical H3937 a11 combined read-only observation entry.
 
-Only an external, reviewed GO receipt can admit this one managed session. The
-three underlying module gates are enabled in memory for the call and restored in
-all outcomes. This module never authorizes a game date or gameplay action.
+The a11 attempt and its implementation remain here for historical review. Its
+unsequenced screen heartbeat cannot satisfy the current task-bus protocol. All
+operational entry points refuse before inspecting the bus or writing an attempt.
 """
 
 from __future__ import annotations
@@ -43,6 +43,15 @@ DLL = NO_LAUNCH / "source-verified" / "xar_ck3_bridge.dll"
 INJECTOR = NO_LAUNCH / "source-verified" / "xar_ck3_bridge_injector.exe"
 SUPERVISOR_TIMEOUT_SECONDS = 2050
 SUPERVISOR_HEARTBEAT_SECONDS = 120
+
+RETIRED_ENTRY_ERROR = (
+    "RED: historical H3937 a11 combined one-shot is retired; "
+    "use a separately reviewed current one-shot"
+)
+
+
+def _refuse_retired_entry() -> None:
+    raise RuntimeError(RETIRED_ENTRY_ERROR)
 
 
 def _monotonic() -> float:
@@ -108,6 +117,7 @@ def _image_inventory(image: str) -> dict[str, object]:
 
 def _require_live_screen_lease(expected_sequence: object | None = None) -> dict[str, object]:
     """Read the main cooperative bus, never a worktree-relative bus copy."""
+    _refuse_retired_entry()
     if not TASK_BUS.is_dir() or not (TASK_BUS / "tasks").is_dir():
         raise ValueError("main task bus unavailable")
     now = datetime.now(timezone.utc)
@@ -136,6 +146,7 @@ def _require_live_screen_lease(expected_sequence: object | None = None) -> dict[
 
 def _managed_screen_heartbeat() -> None:
     """Renew the exact main-bus lease while a long cold load is supervised."""
+    _refuse_retired_entry()
     _require_live_screen_lease()
     try:
         subprocess.run(
@@ -152,6 +163,7 @@ def _managed_screen_heartbeat() -> None:
 
 def issue_screen_challenge(entry_path: Path) -> dict[str, object]:
     """After screen acquisition, create a unique pre-capture challenge only."""
+    _refuse_retired_entry()
     entry = _require_entry_blob(entry_path)
     owner = _require_live_screen_lease()
     if not SCREEN.is_dir():
@@ -332,6 +344,7 @@ def _require_exact_admission() -> dict[str, object]:
 
 
 def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
+    _refuse_retired_entry()
     raw_go = GO.read_bytes()
     go_sha = hashlib.sha256(raw_go).hexdigest().upper()
     go = json.loads(raw_go.decode("utf-8"))
@@ -442,6 +455,7 @@ def _require_preworker_screen_gate(entry: dict[str, str]) -> None:
 
 def run_exact_once(claim_nonce: str) -> dict[str, object]:
     """Consume one exact output path; every failure remains as a RED attempt."""
+    _refuse_retired_entry()
     if not OUTPUT.is_dir():
         raise FileNotFoundError("one-shot supervisor claim directory missing")
     _write_json(OUTPUT / "worker-started.json", {
@@ -578,6 +592,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
 
 
 def main(claim_nonce: str) -> int:
+    _refuse_retired_entry()
     completion = run_exact_once(claim_nonce)
     print(json.dumps(completion, ensure_ascii=False))
     return 0 if completion["status"] == "GREEN_READ_ONLY" else 1
@@ -585,6 +600,7 @@ def main(claim_nonce: str) -> int:
 
 def supervise_exact_once(entry_path: Path) -> int:
     """Bound the worker, retain stdio, and prove its process tree is gone."""
+    _refuse_retired_entry()
     OUTPUT.mkdir(parents=True, exist_ok=False)
     try:
         entry = _require_entry_blob(entry_path)
@@ -762,4 +778,4 @@ def supervise_exact_once(entry_path: Path) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(RETIRED_ENTRY_ERROR)

@@ -13,6 +13,12 @@ import pytest
 from xar_autoplayer import h3937_combined_once_enable as once
 
 
+@pytest.fixture(autouse=True)
+def exercise_archived_logic_only(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Keep the historical fixtures executable without reopening a11 in production."""
+    monkeypatch.setattr(once, "_refuse_retired_entry", lambda: None)
+
+
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
