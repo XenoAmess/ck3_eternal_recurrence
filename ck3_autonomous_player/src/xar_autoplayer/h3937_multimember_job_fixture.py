@@ -42,6 +42,10 @@ FIXTURE_PYTHON = Path(
     r"D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe")
 FIXTURE_PYTHON_SHA256 = (
     "9B7BFFC26240463C965A2A2A5FADA1D8E741C21C25CD2E977728C339B82D9977")
+FIXTURE_BASE_PYTHON = Path(
+    r"C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\python.exe")
+FIXTURE_BASE_PYTHON_SHA256 = (
+    "4942B86A6597E5AEE0128DAA00050ED79BC21F6E709A78EB19CBFEB0C2F39AC9")
 
 
 class _BasicLimit(ctypes.Structure):
@@ -201,7 +205,10 @@ def _same_executable(first: object, second: object) -> bool:
         os.path.realpath(str(second)))
 
 
-def _dual_identity(kernel, pid: int, job, expected_argv: list[str]) -> dict[str, object]:
+def _dual_identity(kernel, pid: int, job, expected_argv: list[str],
+                   expected_executable: Path,
+                   expected_executable_sha256: str,
+                   require_wmi_exe: bool = False) -> dict[str, object]:
     """Capture WMI, Toolhelp, handle, and Job evidence while PID is alive."""
     pythoncom.CoInitialize()
     service = rows = row = None
@@ -217,6 +224,7 @@ def _dual_identity(kernel, pid: int, job, expected_argv: list[str]) -> dict[str,
         if toolhelp is None:
             raise RuntimeError(f"Toolhelp PID {pid} unavailable while running")
         handle = _handle_identity(kernel, pid, job)
+        executable_sha256 = _sha(Path(handle["exe"]))
         argv = psutil.Process(pid).cmdline()
         wmi_exe = str(row.ExecutablePath) if row.ExecutablePath else None
         checks = {
@@ -226,8 +234,11 @@ def _dual_identity(kernel, pid: int, job, expected_argv: list[str]) -> dict[str,
                 str(row.CreationDate), toolhelp["creation_date"]),
             "toolhelp_handle_exe": _same_executable(
                 toolhelp["executable"], handle["exe"]),
+            "expected_exe": _same_executable(handle["exe"], expected_executable),
+            "expected_exe_sha256": (
+                executable_sha256 == expected_executable_sha256),
             "wmi_toolhelp_exe_if_available": (
-                wmi_exe is None or _same_executable(
+                (wmi_exe is None and not require_wmi_exe) or _same_executable(
                     wmi_exe, toolhelp["executable"])),
             "wmi_handle_creation": same_process_creation_time(
                 str(row.CreationDate),
@@ -255,6 +266,7 @@ def _dual_identity(kernel, pid: int, job, expected_argv: list[str]) -> dict[str,
             "wmi_creation_date": str(row.CreationDate),
             "wmi_command_line": str(row.CommandLine),
             "wmi_executable_path": wmi_exe,
+            "executable_sha256": executable_sha256,
             "toolhelp": toolhelp,
             "wmi_toolhelp_cross_checked": True,
             "observed_while_running": True,
@@ -291,6 +303,9 @@ def run_no_ck3_fixture(
     python_sha = _sha(python_executable)
     if python_sha != FIXTURE_PYTHON_SHA256:
         raise RuntimeError("fixture Python bytes differ from frozen identity")
+    base_python_sha = _sha(FIXTURE_BASE_PYTHON)
+    if base_python_sha != FIXTURE_BASE_PYTHON_SHA256:
+        raise RuntimeError("fixture base Python bytes differ from frozen identity")
     started = time.monotonic()
     deadline = started + timeout_seconds
     output.mkdir(parents=True, exist_ok=False)
@@ -300,11 +315,16 @@ def run_no_ck3_fixture(
                    "status": "UNSAFE_UNTIL_INDEPENDENT_REVIEW",
                    "ck3_launch_attempted": False}, target)
         target.write("\n")
-    argv = [str(python_executable), "-u", "-c", FIXTURE_CODE]
+    argv = [str(python_executable), "-I", "-S", "-u", "-c", FIXTURE_CODE]
+    child_env = {"SystemRoot": os.environ["SystemRoot"]}
     record: dict[str, object] = {
         "schema": "xar.h3937-multimember-job-observation.v1",
         "status": "RED", "argv": argv,
         "python_sha256": python_sha,
+        "base_python_path": str(FIXTURE_BASE_PYTHON),
+        "base_python_sha256": base_python_sha,
+        "isolated_python_flags": ["-I", "-S", "-u"],
+        "child_environment_keys": sorted(child_env),
         "ck3_launch_attempted": False, "screen_touched": False,
         "authority_bus_touched": False,
         "deadline_seconds": timeout_seconds,
@@ -362,7 +382,7 @@ def run_no_ck3_fixture(
             require_time("launcher Popen")
             launcher = subprocess.Popen(
                 argv, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
-                creationflags=CREATE_SUSPENDED, close_fds=True)
+                creationflags=CREATE_SUSPENDED, close_fds=True, env=child_env)
             require_time("Job assignment")
             _require(kernel.AssignProcessToJobObject(job, launcher._handle),
                      "AssignProcessToJobObject")
@@ -370,10 +390,15 @@ def run_no_ck3_fixture(
             record["job_before_resume"] = _job_accounting(kernel, job)
             if record["job_before_resume"] != {"active": 1, "total": 1}:
                 raise RuntimeError("Job not exclusive before resume")
-            launcher_identity = _dual_identity(kernel, launcher.pid, job, argv)
+            launcher_identity = _dual_identity(
+                kernel, launcher.pid, job, argv,
+                FIXTURE_PYTHON, FIXTURE_PYTHON_SHA256)
             if launcher_identity["parent_pid"] != parent["pid"]:
                 raise RuntimeError("launcher parent PID differs")
             record["launcher_identity"] = launcher_identity
+            if (_sha(python_executable) != FIXTURE_PYTHON_SHA256 or
+                    _sha(FIXTURE_BASE_PYTHON) != FIXTURE_BASE_PYTHON_SHA256):
+                raise RuntimeError("Python bytes drifted before launcher resume")
             record["resumed_thread_id"] = _resume_single_thread(kernel, launcher.pid)
             require_time("actual child discovery")
             actual = None
@@ -384,14 +409,18 @@ def run_no_ck3_fixture(
                     raise RuntimeError("unexpected multiple Job children")
                 if children:
                     try:
-                        candidate = _dual_identity(kernel, children[0], job, argv)
+                        candidate = _dual_identity(
+                            kernel, children[0], job, argv,
+                            FIXTURE_BASE_PYTHON, FIXTURE_BASE_PYTHON_SHA256,
+                            require_wmi_exe=True)
                     except (psutil.Error, OSError, RuntimeError):
                         candidate = None
                     if candidate is not None:
                         if candidate["parent_pid"] != launcher.pid:
                             raise RuntimeError("actual child parent differs")
                         launcher_again = _dual_identity(
-                            kernel, launcher.pid, job, argv)
+                            kernel, launcher.pid, job, argv,
+                            FIXTURE_PYTHON, FIXTURE_PYTHON_SHA256)
                         if (launcher_again["creation_filetime_100ns"]
                                 != launcher_identity["creation_filetime_100ns"]):
                             raise RuntimeError("launcher PID identity drifted")
@@ -453,6 +482,14 @@ def run_no_ck3_fixture(
         record["stdout_sha256"] = _sha(stdout_path)
     if stderr_path.is_file():
         record["stderr_sha256"] = _sha(stderr_path)
+    try:
+        record["python_post_sha256"] = _sha(python_executable)
+        record["base_python_post_sha256"] = _sha(FIXTURE_BASE_PYTHON)
+        if (record["python_post_sha256"] != FIXTURE_PYTHON_SHA256 or
+                record["base_python_post_sha256"] != FIXTURE_BASE_PYTHON_SHA256):
+            error = error or "Python executable bytes changed during fixture"
+    except BaseException as caught:
+        error = error or f"Python postcheck:{type(caught).__name__}:{caught}"
     if error is not None:
         record["error"] = error
     observation_complete = (
@@ -465,8 +502,11 @@ def run_no_ck3_fixture(
         and record.get("job_after_cleanup", {}).get("active") == 0
         and time.monotonic() < deadline
     )
-    record["status"] = "OBSERVATION_ONLY" if observation_complete else "RED"
-    # Publish exactly once, after all fact collection. No provisional GREEN.
+    record["process_observation_complete_before_receipt"] = observation_complete
+    record["full_chain_deadline_proven"] = False
+    record["status"] = "RAW_UNSEALED" if observation_complete else "RED"
+    # Raw evidence is published once. An external verifier must check the
+    # terminal write and elapsed time; this file never claims deadline GREEN.
     with (output / "terminal-observation.json").open("x", encoding="utf-8") as target:
         json.dump(record, target, indent=2, ensure_ascii=True)
         target.write("\n")

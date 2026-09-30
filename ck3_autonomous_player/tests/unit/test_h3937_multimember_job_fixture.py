@@ -43,7 +43,23 @@ def test_rejects_any_other_executable_before_creating_attempt(tmp_path: Path) ->
     _require(not output.exists(), "rejected executable created an attempt")
 
 
-def test_venv_launcher_and_child_are_distinct_job_members(tmp_path: Path) -> None:
+def test_rejects_base_python_byte_drift_before_creating_attempt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture = _fixture_module()
+    if not fixture.FIXTURE_PYTHON.is_file():
+        pytest.skip("frozen main venv unavailable")
+    output = tmp_path / "base-byte-drift"
+    monkeypatch.setattr(fixture, "FIXTURE_BASE_PYTHON_SHA256", "0" * 64)
+    with pytest.raises(RuntimeError, match="base Python bytes differ"):
+        fixture.run_no_ck3_fixture(
+            output=output, python_executable=fixture.FIXTURE_PYTHON)
+    _require(not output.exists(), "base Python drift created an attempt")
+
+
+def test_venv_launcher_and_child_are_distinct_job_members(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
     fixture = _fixture_module()
     if not fixture.FIXTURE_PYTHON.is_file():
         pytest.skip("frozen main venv unavailable")
@@ -51,14 +67,30 @@ def test_venv_launcher_and_child_are_distinct_job_members(tmp_path: Path) -> Non
             fixture.FIXTURE_PYTHON_SHA256):
         pytest.skip("frozen main venv bytes unavailable")
 
+    hostile = tmp_path / "hostile-pythonpath"
+    hostile.mkdir()
+    canary = tmp_path / "sitecustomize-executed"
+    (hostile / "sitecustomize.py").write_text(
+        "from pathlib import Path\n"
+        f"Path({str(canary)!r}).write_text('executed')\n",
+        encoding="utf-8")
+    monkeypatch.setenv("PYTHONPATH", str(hostile))
+    monkeypatch.setenv("PYTHONHOME", str(hostile))
     output = tmp_path / "run"
     result = fixture.run_no_ck3_fixture(
         output=output, python_executable=fixture.FIXTURE_PYTHON,
         timeout_seconds=30)
-    _require(result["status"] == "OBSERVATION_ONLY", str(result.get("error")))
+    _require(result["status"] == "RAW_UNSEALED", str(result.get("error")))
+    _require(result["full_chain_deadline_proven"] is False,
+             "raw receipt claimed deadline proof")
     _require(result["ck3_launch_attempted"] is False, "CK3 boundary")
     _require(result["authority_bus_touched"] is False, "bus boundary")
     _require(result["screen_touched"] is False, "screen boundary")
+    _require(not canary.exists(), "sitecustomize executed before fixed snippet")
+    _require(result["isolated_python_flags"] == ["-I", "-S", "-u"],
+             "Python startup isolation flags")
+    _require(result["child_environment_keys"] == ["SystemRoot"],
+             "uncontrolled child environment")
     _require(result["job_before_resume"] == {"active": 1, "total": 1},
              "pre-resume Job membership")
     _require(result["job_with_child"]["active"] >= 2, "multi-member Job")
@@ -75,6 +107,12 @@ def test_venv_launcher_and_child_are_distinct_job_members(tmp_path: Path) -> Non
     _require(launcher["wmi_toolhelp_cross_checked"] is True,
              "launcher cross-check")
     _require(child["wmi_toolhelp_cross_checked"] is True, "child cross-check")
+    _require(launcher["executable_sha256"] == fixture.FIXTURE_PYTHON_SHA256,
+             "launcher executable bytes")
+    _require(child["executable_sha256"] == fixture.FIXTURE_BASE_PYTHON_SHA256,
+             "actual child executable bytes")
+    _require(result["base_python_post_sha256"] ==
+             fixture.FIXTURE_BASE_PYTHON_SHA256, "base executable drift")
     terminal = output / "terminal-observation.json"
     _require(json.loads(terminal.read_text(encoding="utf-8")) == result,
              "terminal receipt differs")
