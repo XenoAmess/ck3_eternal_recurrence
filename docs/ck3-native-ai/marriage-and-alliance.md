@@ -1451,3 +1451,30 @@ acceptance rule. The current native final legality and full value must still
 authorize any replacement. The paired resolved ledger is carried through
 the official checkpoint and cold restore; a still-pending proposal is not
 resent. Whether Guy's first proposal will be refused remains unknown.
+
+### R0398: default child submit blocked by an inverted option readback gate
+
+The [R0398 formal report](D:/ck3-nw-family-guy-h3911-readiness-c2-20260930/operator-runs/guy-h3911-readiness-c2-formal-1/formal-report.txt)
+(SHA-256 `DE8A3A2CC6272575372B93FB8F458AA4AE9A3521596865BD0B15EA40DA560719`)
+reached the paused H3911 `native:3` frame and selected Guy `38988` with
+candidate `37909`. On turn 6, the private typed default-child submit returned
+`selected player-child native legality or lineage changed`. It produced no
+marriage or betrothal readback; the original save stayed unchanged. The failed
+working driver has a conservative `may_have_submitted` ledger and cannot be
+reused for direct resubmission. The original H3911 save and driver remain an
+independent source for a newly prepared, officially paired candidate; reusing
+the failed driver instead requires its paired cold result read first.
+
+The exact-build native value reader sets `selected_option_readback` only when
+the matrilineal option is requested. A default fatherline value therefore has
+`request_matrilineal_option=false` and no selected-option readback; its
+independent final legality, recipient answer, lineage and cost fields remain
+mandatory. The value query already applies this rule, but the submit recheck
+in `bridge.cpp` used `!default_child_route || selected_option_readback`, which
+rejects the default route. The bounded source fix changes that one condition
+to `default_child_route || selected_option_readback`: default proposals still
+require the effective matrilineal bit to be off, and selected matrilineal
+proposals still require explicit selected-option readback. The failure occurs
+before the native proposal binder is called. This correction is source and
+build evidence until a distinct paired action, later result, next turn and
+cold recovery complete.

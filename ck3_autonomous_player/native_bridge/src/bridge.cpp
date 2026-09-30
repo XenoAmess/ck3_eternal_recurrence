@@ -14051,7 +14051,7 @@ void RunConnectedSession(
                         MarriageCandidateAlliancePrivateFailureV1::none &&
                     selected.requested_matrilineal_option ==
                         !default_child_route &&
-                    (!default_child_route || selected.selected_option_readback) &&
+                    (default_child_route || selected.selected_option_readback) &&
                     selected.projection.matrilineal_option_selected ==
                         !default_child_route &&
                     selected.effective_matrilineal_if_accepted ==
