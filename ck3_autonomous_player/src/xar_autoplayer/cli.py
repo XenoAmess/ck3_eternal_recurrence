@@ -404,6 +404,10 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--private-guy-default-first-heir-companion", action="store_true",
+        help="read the current first-heir relation beside a default child result, without another proposal",
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-m5-joint-collector",
         action="store_true",
         help=(
@@ -1090,6 +1094,10 @@ def main(argv: list[str] | None = None) -> int:
                 if args.private_child_matrilineal_first_heir_companion:
                     private_child_pending_options[
                         "private_child_matrilineal_first_heir_companion"
+                    ] = True
+                if args.private_guy_default_first_heir_companion:
+                    private_child_pending_options[
+                        "private_guy_default_first_heir_companion"
                     ] = True
                 if args.private_child_matrilineal_pending_recovery is not None:
                     private_child_pending_options.update({

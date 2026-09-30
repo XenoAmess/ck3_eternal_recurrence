@@ -436,6 +436,7 @@ def native_auto_run(
     allow_private_construction_formal_trial: bool = False,
     allow_private_family_marriage_formal_trial: bool = False,
     allow_private_guy_default_formal_trial: bool = False,
+    private_guy_default_first_heir_companion: bool = False,
     private_child_matrilineal_target: tuple[int, int] | None = None,
     private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
     private_child_matrilineal_first_heir_companion: bool = False,
@@ -547,6 +548,10 @@ def native_auto_run(
         raise AgentError("private first-heir marriage trial only admits a bounded contract")
     if allow_private_guy_default_formal_trial is True and completion_contract != "bounded":
         raise AgentError("private child default trial only admits a bounded contract")
+    if (private_guy_default_first_heir_companion is True
+            and (allow_private_guy_default_formal_trial is not True
+                 or allow_private_family_marriage_formal_trial is True)):
+        raise AgentError("Guy companion needs the bounded default trial with family trial off")
     if private_child_matrilineal_target is not None:
         if (completion_contract != "bounded"
                 or not isinstance(private_child_matrilineal_target, tuple)
@@ -1188,6 +1193,7 @@ def native_auto_run(
         driver.allow_private_current_first_heir_relationship_query = (
             allow_private_family_marriage_formal_trial is True
             or private_child_matrilineal_first_heir_companion is True
+            or private_guy_default_first_heir_companion is True
         )
         if opening_focus_gate is not None:
             driver.require_initial_lifestyle_focus_before_date_advance = True
@@ -3328,6 +3334,20 @@ def native_auto_run(
                     raise AgentError("child default readback lacks paired durable identity")
                 if terminal_pending or modal_decision_pending:
                     raise AgentError("child default readback cannot checkpoint on a decision frame")
+                if (step == PRIVATE_CHILD_DEFAULT_RESULT_STEP
+                        and private_guy_default_first_heir_companion is True):
+                    current_attempt["stage"] = "private_guy_default_first_heir_companion_read"
+                    private_first_heir_companion_observation = (
+                        observe_first_heir_companion_after_child(
+                            driver, service, before=before,
+                            child_observation={"same_frame": True},
+                            first_heir_resolved=read_family_marriage_ledger(
+                                driver.state_dir)["resolved"],
+                            turn_index=turn_index,
+                        )
+                    )
+                    turns[-1]["evidence"].append(
+                        "guy_default_first_heir_companion_observed")
                 checkpoint, checkpoint_snapshot = _materialize_checkpoint(
                     service, driver, spec.profile_dir / "save games",
                     session_done=session_done, session_state=session_state,
@@ -4022,6 +4042,9 @@ def native_auto_run(
                         and turn.get("status") == "executed"
                         for turn in default_turns)
                 and paired and cleanup.get("ok") is True
+                and (private_guy_default_first_heir_companion is not True
+                     or (isinstance(private_first_heir_companion_observation, dict)
+                         and private_first_heir_companion_observation.get("same_frame") is True))
             )
         if private_realm_law_paused_query is True:
             qualified = bool(
@@ -4352,7 +4375,8 @@ def native_auto_run(
         **(
             {"private_first_heir_companion_observation": copy.deepcopy(
                 private_first_heir_companion_observation)}
-            if private_child_matrilineal_first_heir_companion is True else {}
+            if (private_child_matrilineal_first_heir_companion is True
+                or private_guy_default_first_heir_companion is True) else {}
         ),
         **(
             {"private_realm_law_paused_observation": copy.deepcopy(
