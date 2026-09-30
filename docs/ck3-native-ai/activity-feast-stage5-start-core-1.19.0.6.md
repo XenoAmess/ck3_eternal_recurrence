@@ -48,3 +48,53 @@ separate four-cost, final CanStart, selected-option and hosted-identity
 readers, plus a Stage-5 paused fixture. Treasury/barter positive-cost routes
 also need exact native balance getters before their Start can pass. No public
 query/action or formal autonomous consumer is enabled by this source package.
+
+## Selected-member Start qualification (2026-09-30, source boundary)
+
+On baseline `23b2e6535bde313d08c105bf5ba61ff042640a32`, the final evaluator,
+original commit binder and independent hosted/resource post reader already
+exist. The private transport leaves `guest_route_qualified=false` forever,
+so even a positive native final gate and value decision cannot reach Start.
+The narrow repair reuses the existing selected-member observer at planner
+`+0x1678/+0x1684`; it does not select or invite an additional guest.
+
+The original [guest route tree](activity-feast-stage5-guest-route-proof-1.19.0.6.md)
+shows that `0x10B1910` examines selected rows and the join cache before
+confirmation, then reaches `0x10B13F0`. Actual guest acceptance and arrival
+are later outcomes, so they cannot serve as a prerequisite to submitting a
+feast which has not yet been created. The counter-policy nevertheless
+requires an observed selected non-host member with a positive original join
+prediction and a timely original arrival prediction. The member read,
+four-resource costs and final CanStart must share their paused frame and
+normal slot-12 refresh sequence.
+
+```mermaid
+flowchart TD
+    A[Exact paused Stage 5 generic feast] --> B[Native selected member full IDs]
+    B --> C[Original join and arrival predictions]
+    C --> D{Same cost frame and normal refresh; timely positive non-host?}
+    D -->|no| H[Hold with current observations]
+    D -->|yes| E{Final native CanStart and explicit resource/value policy?}
+    E -->|no| H
+    E -->|yes| F[Recapture identical selected members, costs, balances and hosted IDs]
+    F --> G[Original commit once; submitted_pending]
+    G --> P[Independent new hosted feast ID and actual resource debit]
+    G -.-> U[unknown: accepted guests, attendance and activity benefit]
+```
+
+The Start core binds the selected members' full IDs, signed join results and
+arrival fields across its two captures. The existing typed input schema,
+payload and independent post schema remain unchanged. The qualification is
+a selected-member prediction path; it does not qualify a global filtered
+candidate or unnamed category membership, and it does not advertise an
+accepted invitation. H3928's zero selected-member observation and native
+`CanStart=false` from the army-role condition remain a hold. New paused
+positive inputs, Start, debit, next turn and cold restore are still pending.
+
+Source validation: the Start and selected-member observer CTests pass in
+both Release and Debug (two tests per configuration). The actual private
+transport translation unit also compiles in both configurations. Logs are
+`D:\nw-activity-start-native-20260930\release-focused.log` and
+`D:\nw-activity-start-native-20260930\debug-focused.log`; build/temp outputs
+are in the same non-C task root. This package did not link or freeze a full
+DLL and did not launch CK3.

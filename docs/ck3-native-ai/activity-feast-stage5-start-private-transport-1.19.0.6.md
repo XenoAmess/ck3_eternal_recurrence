@@ -35,17 +35,24 @@ separate requirements.
 
 The `start-activity-feast-stage5-v1-private` route accepts the same frame
 identity, positive policy decision, unresolved-submit indicator, and four
-resource reserves. The native guest route is currently **unqualified**:
-`guest_route_qualified` is false in the transport and cannot be set by the
-request. Thus the route returns `native_guest_route_unqualified` with
-`submitted=false`; it cannot invoke the original Start branch. R0368
+resource reserves. The native guest route is derived from the current
+selected-member read: observed selected non-host IDs, original positive
+join and timely arrival predictions must match the same cost frame and
+normal refresh. It cannot be set by the request. A missing or nonpositive
+selected-member read returns `native_guest_route_unqualified` with
+`submitted=false`. The core repeats that read and binds the same members
+before invoking the original Start branch. R0368
 obtained a paused selected-row read with zero non-host selections, while a
 separate later H3928 read found a positive native-filtered pre-invitation
 candidate. Those different runs cannot form one Start decision. The new
 [read-only guest route proof](activity-feast-stage5-guest-route-proof-1.19.0.6.md)
 binds active rules, selected rows, candidate prediction and final CanStart
-on one paused frame. It deliberately leaves the action gate false: prediction
-does not prove acceptance or arrival, and H3928 final CanStart remains false.
+on one paused frame. That independent read-only proof leaves its action
+qualification false; filtered candidates are not selected-member evidence.
+Predictions do not prove acceptance or arrival, and H3928 final CanStart
+remains false. The new selected-member Start branch is source-ready until
+a matching positive paused frame and the complete action/post/recovery path
+are independently verified.
 
 If a future qualified Start invokes the original branch, the command result
 stays `submitted_pending` until the independent post read. A callback or

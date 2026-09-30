@@ -356,6 +356,9 @@ bool Capture(void *opaque,
   output.hosted_identities_observed = true;
   output.hosted_count = identities.hosted_count;
   output.hosted = identities.hosted;
+  output.selected_guests = guests;
+  query.guest_route_qualified =
+      bridge::IsActivityFeastSelectedGuestRouteQualifiedV1(output);
   return true;
 }
 
@@ -503,9 +506,6 @@ bool ExecuteActivityFeastStage5PrivateV1(
                                 query->guest_route_qualified;
       request.previous_submit_pending = query->previous_submit_pending;
       request.reserve_raw = query->reserve_raw;
-      // Planned-positive joins are not accepted or arrival evidence. Until a
-      // qualified native guest route is registered this stays false and the
-      // original commit function cannot be reached from this transport.
       query->start = bridge::StartActivityFeastStage5V1(environment, request);
       if (!query->guest_route_qualified)
         query->failure = "native_guest_route_unqualified";
