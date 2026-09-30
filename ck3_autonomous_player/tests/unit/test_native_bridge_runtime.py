@@ -313,6 +313,94 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             _require_injector_cleanup_before_marker_clear(process)
         process.resume.assert_not_called()
 
+    def test_slow_outer_executable_rehash_cannot_resume_ck3(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+
+        def slow_hash(_path: Path) -> str:
+            time.sleep(1.1)
+            return "a" * 64
+
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=self.outcome(command)), mock.patch(
+            "xar_autoplayer.runtime.sha256_file", side_effect=slow_hash
+        ), mock.patch("xar_autoplayer.runtime.NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS",
+                      1.0), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config)
+        self.assertEqual(process.injector_attestation["status"], "RED_TIMEOUT")
+        self.assertEqual(process.injector_attestation["deadline_phase"],
+                         "post-helper executable/report validation")
+        self.assertFalse(process.injector_attestation[
+            "complete_process_tree_proven"])
+        self.assertEqual(process.injector_attestation["contained_job_report"]["status"],
+                         "EXIT")
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+        process.resume.assert_not_called()
+
+    def test_outer_hash_exception_keeps_marker(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=self.outcome(command)), mock.patch(
+            "xar_autoplayer.runtime.sha256_file",
+            side_effect=RuntimeError("dummy hash read failed")
+        ), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config)
+        self.assertEqual(process.injector_attestation["status"],
+                         "RED_JOB_REPORT_VALIDATION")
+        self.assertFalse(process.injector_attestation[
+            "complete_process_tree_proven"])
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+        process.resume.assert_not_called()
+
+    def test_pre_ck3_resume_budget_is_separate_last_gate(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        valid = {
+            "schema": "xar.ck3.native-injector-attempt.v1",
+            "status": "INJECTOR_EXIT_ZERO_TREE_PROVEN",
+            "injector_root_reaped": True,
+            "complete_process_tree_proven": True,
+        }
+
+        def slow_inject(_process: object, _config: object) -> dict[str, object]:
+            time.sleep(1.1)
+            return dict(valid)
+
+        with mock.patch("xar_autoplayer.runtime._inject_native_bridge",
+                        side_effect=slow_inject), mock.patch(
+            "xar_autoplayer.runtime.NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS", 1.0
+        ), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config)
+        self.assertEqual(process.injector_attestation["status"], "RED_TIMEOUT")
+        self.assertEqual(process.injector_attestation["deadline_phase"],
+                         "pre-CK3-resume")
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+        process.resume.assert_not_called()
+
+    def test_slow_ck3_resume_retracts_success_and_keeps_marker(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock(
+            side_effect=lambda: time.sleep(1.1)))
+        valid = {
+            "schema": "xar.ck3.native-injector-attempt.v1",
+            "status": "INJECTOR_EXIT_ZERO_TREE_PROVEN",
+            "injector_root_reaped": True,
+            "complete_process_tree_proven": True,
+        }
+        with mock.patch("xar_autoplayer.runtime._inject_native_bridge",
+                        return_value=dict(valid)), mock.patch(
+            "xar_autoplayer.runtime.NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS", 1.0
+        ), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config)
+        process.resume.assert_called_once_with()
+        self.assertEqual(process.injector_attestation["status"], "RED_TIMEOUT")
+        self.assertEqual(process.injector_attestation["deadline_phase"],
+                         "post-CK3-resume")
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+
     def test_injection_completes_before_primary_thread_resume(self) -> None:
         calls: list[str] = []
         process = SimpleNamespace(resume=lambda: calls.append("resume"))
@@ -401,6 +489,25 @@ class WindowsInjectorJobTests(unittest.TestCase):
         self.assertEqual(result.stderr, b"B" * payload)
         self.assertTrue(result.report["complete_process_tree_proven"])
         self.assertEqual(result.report["job_pids_final"], [])
+
+    def test_slow_postproof_job_close_retracts_green(self) -> None:
+        import win32api
+
+        original = win32api.CloseHandle
+
+        def slow_close(handle: object) -> None:
+            time.sleep(1.2)
+            original(handle)
+
+        with mock.patch("win32api.CloseHandle", side_effect=slow_close):
+            result = run_contained_injector_command(
+                [self.python, "-c", "print('OK')"], timeout_seconds=1.0)
+        self.assertEqual(result.report["status"], "RED_TIMEOUT")
+        self.assertEqual(result.report["deadline_phase"], "post-Job cleanup")
+        self.assertFalse(result.report["complete_process_tree_proven"])
+        self.assertEqual(result.report["job_active_final"], 0)
+        self.assertEqual(result.report["job_pids_final"], [])
+        self.assertIsNotNone(result.error)
 
     def test_output_limit_terminates_job_and_refuses_tree_proof(self) -> None:
         result = run_contained_injector_command(
