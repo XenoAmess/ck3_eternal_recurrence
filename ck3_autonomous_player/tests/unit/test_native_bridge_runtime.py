@@ -163,10 +163,13 @@ class NativeBridgeInjectorTests(unittest.TestCase):
         )
 
     def test_harmless_python_job_report_matches_exact_schema(self) -> None:
-        command = [sys.executable, "-c", "print('fixture-only')"]
+        command = [str(Path(sys._base_executable).resolve()),
+                   "-c", "print('fixture-only')"]
         result = run_contained_injector_command(command, timeout_seconds=5.0)
         self.assertIsNone(result.error)
         self.assertEqual(result.report["status"], "EXIT")
+        self.assertEqual(result.report["returncode"], 0)
+        self.assertEqual(result.stdout.strip(), b"fixture-only")
         with mock.patch("xar_autoplayer.runtime.sha256_file",
                         return_value=result.report["executable_sha256"]):
             self.assertTrue(_contained_injector_report_matches(
@@ -187,6 +190,10 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             "stdout_sha256": hashlib.sha256(stdout).hexdigest().upper(),
             "stderr_sha256": hashlib.sha256(stderr).hexdigest().upper(),
             "stdout_bytes": len(stdout), "stderr_bytes": len(stderr),
+            "stdout_retained_bytes": len(stdout),
+            "stderr_retained_bytes": len(stderr),
+            "stdout_retained_sha256": hashlib.sha256(stdout).hexdigest().upper(),
+            "stderr_retained_sha256": hashlib.sha256(stderr).hexdigest().upper(),
             "stdout_complete": True, "stderr_complete": True,
             "stdout_overflow": False, "stderr_overflow": False,
             "stdout_reader_error": None, "stderr_reader_error": None,
@@ -237,6 +244,24 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             _resume_with_native_bridge(process, self.config,
                                        injector_evidence_dir=self.evidence_dir)
         process.resume.assert_not_called()
+        self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+
+    def test_red_job_retained_prefix_is_archived_before_refusal(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        prefix = b"BEFORE_FAILURE\r\n"
+        result = self.outcome(command, stdout=prefix, status="RED_INTERNAL",
+                              tree=False, error="fixture Job query failure")
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=result), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
+        process.resume.assert_not_called()
+        self.assertEqual((self.evidence_dir / "stdout.bin").read_bytes(), prefix)
+        self.assertEqual(process.injector_attestation["evidence"]["assets"][
+            "stdout"]["sha256"], hashlib.sha256(prefix).hexdigest().upper())
         self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
         with self.assertRaises(UnsafeCleanupError):
             _require_injector_cleanup_before_marker_clear(process)

@@ -2333,6 +2333,8 @@ def _contained_injector_report_matches(
         "resume_previous_count", "returncode", "injector_root_reaped",
         "complete_process_tree_proven", "stdout_sha256", "stderr_sha256",
         "stdout_bytes", "stderr_bytes", "stdout_complete", "stderr_complete",
+        "stdout_retained_bytes", "stderr_retained_bytes",
+        "stdout_retained_sha256", "stderr_retained_sha256",
         "stdout_overflow", "stderr_overflow", "stdout_reader_error",
         "stderr_reader_error", "output_limit_bytes",
     }
@@ -2364,6 +2366,12 @@ def _contained_injector_report_matches(
             or report.get("stderr_reader_error") is not None
             or type(report.get("output_limit_bytes")) is not int
             or report["output_limit_bytes"] != MAX_INJECTOR_OUTPUT_BYTES
+            or type(report.get("stdout_retained_bytes")) is not int
+            or report["stdout_retained_bytes"] != len(stdout)
+            or type(report.get("stderr_retained_bytes")) is not int
+            or report["stderr_retained_bytes"] != len(stderr)
+            or report.get("stdout_retained_sha256") != hashlib.sha256(stdout).hexdigest().upper()
+            or report.get("stderr_retained_sha256") != hashlib.sha256(stderr).hexdigest().upper()
             or len(stdout) > MAX_INJECTOR_OUTPUT_BYTES
             or len(stderr) > MAX_INJECTOR_OUTPUT_BYTES):
         return False
@@ -2525,6 +2533,8 @@ def _inject_native_bridge(
         "job_active_final", "job_pids_final", "resume_previous_count",
         "returncode", "injector_root_reaped", "complete_process_tree_proven",
         "stdout_sha256", "stderr_sha256", "stdout_bytes", "stderr_bytes",
+        "stdout_retained_sha256", "stderr_retained_sha256",
+        "stdout_retained_bytes", "stderr_retained_bytes",
     ):
         attestation[field] = result.report.get(field)
     attestation["contained_job_report"] = dict(result.report)
