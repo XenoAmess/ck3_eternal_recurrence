@@ -1,0 +1,608 @@
+﻿{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "frozen_executable": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/installation/binaries/ck3.exe",
+  "readiness": "static-ready nonreligious phase variables/modifiers/accolades/government/court leaf; owning-thread paused native callback verification pending",
+  "live_verified": false,
+  "runtime_registered": false,
+  "signature_anchors": [
+    {
+      "name": "accolade_has_parameter",
+      "rva": "0x27bf5e0",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 48 83 EC 20 48 8B 59 58 48 8B F1 4C 63 41 64 48"
+    },
+    {
+      "name": "can_be_acclaimed",
+      "rva": "0x2b91300",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 55 57 41 54 41 56 41 57 48 8D AC 24 A0 FD FF FF 48 81 EC 60 03 00"
+    },
+    {
+      "name": "character_government",
+      "rva": "0x28c2e10",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 83 EC 38 4C 8B 05 4D 47 3A 03 4C 8B 0D 4E 47 3A 03 81 79 1C 72 61 68 43 0F 85 C2 00 00 00 8B"
+    },
+    {
+      "name": "modifier_lookup",
+      "rva": "0xab8d20",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 89 5C 24 08 45 33 C0 48 63 DA 44 38 81 E0 0E 00 00 45 8B C8 41 0F 94 C1 45 8D 58 FE 45 85 C9 0F 84 8D 00 00 00 41 83 E9 01 74 3B 41 83 F9 01 0F 85 7D 00 00 00 F0 0F BA A9 A0 0E 00 00 00 73 0F F3 90 F0 0F BA A9 A0 0E 00 00 00 72 F3 66 90 8B 81 A0 0E 00 00 83 F8 01 76 04 F3 90 EB F1 41 B8 02 00 00 00 EB 4C 41 B8 02 00 00 00 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 74 31 0F 1F 40 00 41 8B C3 F0 0F C1 81 A0 0E 00 00 0F 1F 44 00 00 8B 81 A0 0E 00 00 A8 01 74 04 F3 90 EB F2 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 75 D3 41 B8 01 00 00 00 4C 63 89 8C 01 00 00 4C 8B 91 80 01 00 00 49 8B D1 48 23 D3 48 8D 04 52 B2 01 41 38 54 C2 04 49 8D 04 C2 72 10 3B 58 08 74 21 48 83 C0 18 FE C2 3A 50 04 76 F0 0F B6 81 90 01 00 00 FF C0 41 03 C1 48 98 48 8D 14 40 49 8D 04 D2 80 78 04 FF 74 06 48 8B 40 10 EB 07 48 8B 05 7F 52 26 05 41 83 E8 01 74 14 41 83 F8 01 75 17 F0 44 21 99 A0 0E 00 00 48 8B 5C 24 08 C3 F0 44 0F C1 99 A0 0E 00 00 48 8B 5C 24 08 C3"
+    },
+    {
+      "name": "character_accolade",
+      "rva": "0x27c0040",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 8B 91 B0 01 00 00 48 85 D2 74 38 48 8B 05 4D EC 55 03 48 85 C0 74 2C 44 8B 82 70 05 00 00 41"
+    },
+    {
+      "name": "has_saved_variable",
+      "rva": "0x37274c0",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 8B 41 10 4C 63 41 1C 49 C1 E0 05 4C 03 C0 49 3B C0 74 0E 39 50 08 74 09 48 83 C0 20 49 3B C0"
+    },
+    {
+      "name": "get_saved_variable",
+      "rva": "0x3727500",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "4C 8B 41 10 48 63 49 1C 48 C1 E1 05 49 03 C8 4C 3B C1 74 0F 41 39 50 08 74 09 49 83 C0 20 4C 3B"
+    },
+    {
+      "name": "is_acclaimed_trigger",
+      "rva": "0x2afb700",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 8B 02 66 83 38 04 75 05 8B 50 08 EB 05 BA FF FF FF FF 48 8B 05 4E BE 16 03 48 85 C0 74 23 8B"
+    },
+    {
+      "name": "has_court_position_trigger",
+      "rva": "0x2b07ba0",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 02 4C 8B CA 4C 8B D1 66 83 38 04 75 06 44 8B 40 08 EB 06 41 B8 FF FF FF FF 48 8B 15 9C F9 15 03 48 85 D2 74 26 41 8B C0 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 8B 42 20 48 03 C9 48 8B 5C C8 08 48 85 DB 74 06 44 39 43 18 74 07 48 8B 1D 72 F9 15 03 4D 8D 42 10 49 8B D1 49 8D 4A 40 E8 32 87 07 FF 48 8B F8 48 8B 83 B8 01 00 00 48 85 C0 75 07 E8 DE 3C DA FF EB 06 48 05 D0 00 00 00 48 8B 10 48 63 40 0C 4C 8D 1C 82 49 3B D3 74 52 4C 8B 0D CF 60 21 03 4C 8B 15 C0 60 21 03"
+    },
+    {
+      "name": "has_character_modifier_trigger",
+      "rva": "0x1afa160",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 8B 02 4C 8B C9 66 83 38 04 75 05 8B 50 08 EB 05 BA FF FF FF FF 4C 8B 05 EB D3 16 04 4D 85 C0"
+    },
+    {
+      "name": "court_type_database_constructor",
+      "rva": "0x2f4d380",
+      "confidence": "reviewed-static-nonreligious-phase-misc",
+      "pattern": "48 89 5C 24 18 48 89 4C 24 08 55 56 57 41 56 41 57 48 83 EC 70 48 8B EA 4C 8B F1 48 8D 05 F6 45"
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "character_extension",
+      "rva": "0x27c0040",
+      "bytes": "48 8B 91 B0 01 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0x1b0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_store_slot",
+      "rva": "0x27c004c",
+      "bytes": "48 8B 05 4D EC 55 03",
+      "instruction": "mov rax, qword ptr [rip + 0x355ec4d]",
+      "rip_targets": [
+        "0x5d1eca0"
+      ]
+    },
+    {
+      "purpose": "extension_accolade_id",
+      "rva": "0x27c0058",
+      "bytes": "44 8B 82 70 05 00 00",
+      "instruction": "mov r8d, dword ptr [rdx + 0x570]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "component_index_mask",
+      "rva": "0x27c0062",
+      "bytes": "81 E1 FF FF FF 00",
+      "instruction": "and ecx, 0xffffff",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_capacity",
+      "rva": "0x27c0068",
+      "bytes": "3B 48 2C",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_slots",
+      "rva": "0x27c006d",
+      "bytes": "48 8B 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_slot_object",
+      "rva": "0x27c0074",
+      "bytes": "48 8B 44 C8 08",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_generation_readback",
+      "rva": "0x27c007e",
+      "bytes": "44 39 40 08",
+      "instruction": "cmp dword ptr [rax + 8], r8d",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_fallback_slot",
+      "rva": "0x27c0084",
+      "bytes": "48 8B 05 B5 EB 55 03",
+      "instruction": "mov rax, qword ptr [rip + 0x355ebb5]",
+      "rip_targets": [
+        "0x5d1ec40"
+      ]
+    },
+    {
+      "purpose": "accolade_native_kind",
+      "rva": "0x2afb791",
+      "bytes": "81 78 0C 6F 63 63 41",
+      "instruction": "cmp dword ptr [rax + 0xc], 0x4163636f",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_native_null_id",
+      "rva": "0x2afb79a",
+      "bytes": "83 78 08 FF",
+      "instruction": "cmp dword ptr [rax + 8], -1",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_attribute_rows",
+      "rva": "0x27bf5f4",
+      "bytes": "48 8B 59 58",
+      "instruction": "mov rbx, qword ptr [rcx + 0x58]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_attribute_count",
+      "rva": "0x27bf5fb",
+      "bytes": "4C 63 41 64",
+      "instruction": "movsxd r8, dword ptr [rcx + 0x64]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_attribute_pointer",
+      "rva": "0x27bf610",
+      "bytes": "48 8B 48 10",
+      "instruction": "mov rcx, qword ptr [rax + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_attribute_native_kind",
+      "rva": "0x27bf619",
+      "bytes": "81 79 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rcx + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_attribute_stride",
+      "rva": "0x27bf622",
+      "bytes": "48 83 C0 18",
+      "instruction": "add rax, 0x18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_ranked_definition_span",
+      "rva": "0x27bf657",
+      "bytes": "48 81 C2 C0 03 00 00",
+      "instruction": "add rdx, 0x3c0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_ranked_definition_lookup",
+      "rva": "0x27bf65e",
+      "bytes": "E8 8D 06 3D 00",
+      "instruction": "call 0x2b8fcf0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_ranked_parameter_flags",
+      "rva": "0x27bf668",
+      "bytes": "48 8D 88 E0 05 00 00",
+      "instruction": "lea rcx, [rax + 0x5e0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_native_parameter_lookup",
+      "rva": "0x27bf66f",
+      "bytes": "E8 9C 3D 22 FE",
+      "instruction": "call 0x9e3410",
+      "rip_targets": []
+    },
+    {
+      "purpose": "accolade_category_span",
+      "rva": "0x2afc899",
+      "bytes": "48 8D 88 A8 03 00 00",
+      "instruction": "lea rcx, [rax + 0x3a8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "government_flag_span",
+      "rva": "0x2b1e476",
+      "bytes": "48 8D 48 50",
+      "instruction": "lea rcx, [rax + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_modifier_extension",
+      "rva": "0x1afa1ae",
+      "bytes": "48 8B 90 B0 01 00 00",
+      "instruction": "mov rdx, qword ptr [rax + 0x1b0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "extension_modifier_rows",
+      "rva": "0x1afa1bd",
+      "bytes": "48 8B 8A 88 01 00 00",
+      "instruction": "mov rcx, qword ptr [rdx + 0x188]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "extension_modifier_count",
+      "rva": "0x1afa1c4",
+      "bytes": "48 63 92 94 01 00 00",
+      "instruction": "movsxd rdx, dword ptr [rdx + 0x194]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "modifier_definition_compare",
+      "rva": "0x1afa1e0",
+      "bytes": "48 39 01",
+      "instruction": "cmp qword ptr [rcx], rax",
+      "rip_targets": []
+    },
+    {
+      "purpose": "modifier_row_stride",
+      "rva": "0x1afa1e5",
+      "bytes": "48 83 C1 48",
+      "instruction": "add rcx, 0x48",
+      "rip_targets": []
+    },
+    {
+      "purpose": "modifier_database_getter",
+      "rva": "0x1af5fbd",
+      "bytes": "E8 1E 75 E0 FE",
+      "instruction": "call 0x8fd4e0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "modifier_key_hash",
+      "rva": "0x1af5fd7",
+      "bytes": "E8 64 82 48 02",
+      "instruction": "call 0x3f7e240",
+      "rip_targets": []
+    },
+    {
+      "purpose": "modifier_definition_lookup",
+      "rva": "0x1af5fe1",
+      "bytes": "E8 3A 2D FC FE",
+      "instruction": "call 0xab8d20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "modifier_database_slot",
+      "rva": "0x2fbd991",
+      "bytes": "48 89 05 60 97 CA 02",
+      "instruction": "mov qword ptr [rip + 0x2ca9760], rax",
+      "rip_targets": [
+        "0x5c670f8"
+      ]
+    },
+    {
+      "purpose": "modifier_database_vtable",
+      "rva": "0x31299a9",
+      "bytes": "48 8D 05 F8 6A 79 01",
+      "instruction": "lea rax, [rip + 0x1796af8]",
+      "rip_targets": [
+        "0x48c04a8"
+      ]
+    },
+    {
+      "purpose": "modifier_fallback_slot",
+      "rva": "0xab8e2a",
+      "bytes": "48 8B 05 7F 52 26 05",
+      "instruction": "mov rax, qword ptr [rip + 0x526527f]",
+      "rip_targets": [
+        "0x5d1e0b0"
+      ]
+    },
+    {
+      "purpose": "character_court_relations",
+      "rva": "0x2b07c11",
+      "bytes": "48 8B 83 B8 01 00 00",
+      "instruction": "mov rax, qword ptr [rbx + 0x1b8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "relations_court_positions",
+      "rva": "0x2b07c24",
+      "bytes": "48 05 D0 00 00 00",
+      "instruction": "add rax, 0xd0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "relations_court_position_count",
+      "rva": "0x2b07c2d",
+      "bytes": "48 63 40 0C",
+      "instruction": "movsxd rax, dword ptr [rax + 0xc]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "court_position_id_stride",
+      "rva": "0x2b07c31",
+      "bytes": "4C 8D 1C 82",
+      "instruction": "lea r11, [rdx + rax*4]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "court_position_storage_slot",
+      "rva": "0x2b07c3a",
+      "bytes": "4C 8B 0D CF 60 21 03",
+      "instruction": "mov r9, qword ptr [rip + 0x32160cf]",
+      "rip_targets": [
+        "0x5d1dd10"
+      ]
+    },
+    {
+      "purpose": "court_position_fallback_slot",
+      "rva": "0x2b07c41",
+      "bytes": "4C 8B 15 C0 60 21 03",
+      "instruction": "mov r10, qword ptr [rip + 0x32160c0]",
+      "rip_targets": [
+        "0x5d1dd08"
+      ]
+    },
+    {
+      "purpose": "court_position_generation_readback",
+      "rva": "0x2b07c71",
+      "bytes": "44 39 40 08",
+      "instruction": "cmp dword ptr [rax + 8], r8d",
+      "rip_targets": []
+    },
+    {
+      "purpose": "court_position_type_pointer",
+      "rva": "0x2b07c7a",
+      "bytes": "48 39 B8 10 01 00 00",
+      "instruction": "cmp qword ptr [rax + 0x110], rdi",
+      "rip_targets": []
+    },
+    {
+      "purpose": "court_type_database_slot",
+      "rva": "0x2f43383",
+      "bytes": "48 89 05 A6 3F D2 02",
+      "instruction": "mov qword ptr [rip + 0x2d23fa6], rax",
+      "rip_targets": [
+        "0x5c67330"
+      ]
+    },
+    {
+      "purpose": "court_type_database_vtable",
+      "rva": "0x2f433cc",
+      "bytes": "48 8D 05 E5 D2 95 01",
+      "instruction": "lea rax, [rip + 0x195d2e5]",
+      "rip_targets": [
+        "0x48a06b8"
+      ]
+    },
+    {
+      "purpose": "court_type_fallback_slot",
+      "rva": "0x2f433e1",
+      "bytes": "48 8B 05 58 A9 DD 02",
+      "instruction": "mov rax, qword ptr [rip + 0x2dda958]",
+      "rip_targets": [
+        "0x5d1dd40"
+      ]
+    },
+    {
+      "purpose": "court_type_database_objects",
+      "rva": "0x2f4d431",
+      "bytes": "4D 89 7E 50",
+      "instruction": "mov qword ptr [r14 + 0x50], r15",
+      "rip_targets": []
+    },
+    {
+      "purpose": "court_type_database_count",
+      "rva": "0x2f4d459",
+      "bytes": "45 89 7E 5C",
+      "instruction": "mov dword ptr [r14 + 0x5c], r15d",
+      "rip_targets": []
+    },
+    {
+      "purpose": "court_type_native_objects_consumer",
+      "rva": "0x309b77c",
+      "bytes": "48 8D 41 50",
+      "instruction": "lea rax, [rcx + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "saved_variable_rows",
+      "rva": "0x37274c0",
+      "bytes": "48 8B 41 10",
+      "instruction": "mov rax, qword ptr [rcx + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "saved_variable_count",
+      "rva": "0x37274c4",
+      "bytes": "4C 63 41 1C",
+      "instruction": "movsxd r8, dword ptr [rcx + 0x1c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "saved_variable_stride",
+      "rva": "0x37274c8",
+      "bytes": "49 C1 E0 05",
+      "instruction": "shl r8, 5",
+      "rip_targets": []
+    },
+    {
+      "purpose": "saved_variable_identifier",
+      "rva": "0x37274d4",
+      "bytes": "39 50 08",
+      "instruction": "cmp dword ptr [rax + 8], edx",
+      "rip_targets": []
+    },
+    {
+      "purpose": "saved_variable_target",
+      "rva": "0x372752f",
+      "bytes": "49 8D 40 10",
+      "instruction": "lea rax, [r8 + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "liege_character_alive_death_data",
+      "rva": "0x28bfd19",
+      "bytes": "48 83 B8 D0 01 00 00 00",
+      "instruction": "cmp qword ptr [rax + 0x1d0], 0",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kPhaseMiscCharacterStoreSlot": "0x5C67568",
+    "kPhaseMiscCharacterFallbackSlot": "0x5C67570",
+    "kPhaseMiscAccoladeStoreSlot": "0x5D1ECA0",
+    "kPhaseMiscAccoladeFallbackSlot": "0x5D1EC40",
+    "kPhaseMiscCourtPositionStoreSlot": "0x5D1DD10",
+    "kPhaseMiscCourtPositionFallbackSlot": "0x5D1DD08",
+    "kPhaseMiscCourtTypeDatabaseSlot": "0x5C67330",
+    "kPhaseMiscCourtTypeFallbackSlot": "0x5D1DD40",
+    "kPhaseMiscModifierDatabaseSlot": "0x5C670F8",
+    "kPhaseMiscModifierFallbackSlot": "0x5D1E0B0",
+    "kPhaseMiscModifierLookupRva": "0xAB8D20",
+    "kPhaseMiscCanBeAcclaimedRva": "0x2B91300",
+    "kPhaseMiscAccoladeHasParameterRva": "0x27BF5E0",
+    "kPhaseMiscCharacterGovernmentRva": "0x28C2E10",
+    "kPhaseMiscCharacterExtensionOffset": "0x1B0",
+    "kPhaseMiscCharacterRelationsOffset": "0x1B8",
+    "kPhaseMiscCharacterDeathDataOffset": "0x1D0",
+    "kPhaseMiscAccoladeIdOffset": "0x570",
+    "kPhaseMiscAccoladeCategoriesOffset": "0x3A8",
+    "kPhaseMiscGovernmentFlagsOffset": "0x50",
+    "kPhaseMiscDatabaseObjectsOffset": "0x50",
+    "kPhaseMiscDatabaseCountOffset": "0x5C"
+  },
+  "source_header": "include/xar_bridge/ck3_12002_phase_misc.hpp",
+  "source_reader": "src/ck3_12002_phase_misc.cpp",
+  "source_test": "src/ck3_12002_phase_misc_test.cpp",
+  "script_contract": {
+    "source": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/installation/game/common/script_values/00_combat_values.txt",
+    "sha256": "999F4F340A7325397267E0B0F40B506B85F105EA29E801ACA2F7EBCF97166BFF",
+    "definition": "accolade_progress",
+    "line": 12,
+    "evaluation": "value=0; only if is_alive=yes and has_variable=accolade_progress, add var:accolade_progress; max=20"
+  },
+  "dependency_manifests": [
+    "research/ck3_1_20_0_2_phase_definitions.json",
+    "research/ck3_1_20_0_2_phase_character.json",
+    "research/ck3_1_20_0_2_campaign.json"
+  ],
+  "layouts": {
+    "saved_variable_context": {
+      "rows": "0x10",
+      "count": "0x1C",
+      "stride": "0x20",
+      "identifier": "0x08",
+      "target_kind": "0x10 uint16",
+      "target_payload": "0x18 int64"
+    },
+    "character": {
+      "full_id": "0x18",
+      "extension": "0x1B0",
+      "relations": "0x1B8",
+      "death_data": "0x1D0 (null = alive)"
+    },
+    "character_extension": {
+      "modifiers_data": "0x188",
+      "modifiers_count": "0x194",
+      "modifiers_stride": "0x48",
+      "modifier_definition": "0x00",
+      "accolade_id": "0x570"
+    },
+    "accolade": {
+      "full_id": "0x08",
+      "kind": "0x0C = 0x4163636F",
+      "attributes_data": "0x58",
+      "attributes_count": "0x64",
+      "attributes_stride": "0x18",
+      "attribute_pointer": "0x10"
+    },
+    "accolade_attribute": {
+      "kind": "0x38 = 0x4744624F",
+      "categories_data": "0x3A8",
+      "categories_count": "0x3B4",
+      "ranked_definitions": "0x3C0"
+    },
+    "government": {
+      "flags_data": "0x50",
+      "flags_count": "0x5C"
+    },
+    "court_relations": {
+      "position_ids_data": "0xD0",
+      "position_ids_count": "0xDC",
+      "id_stride": "0x04"
+    },
+    "court_position": {
+      "full_id": "0x08",
+      "type_pointer": "0x110"
+    },
+    "court_type_database": {
+      "objects_data": "0x50",
+      "objects_count": "0x5C"
+    },
+    "native_definition": {
+      "stable_key": "0x18 MSVC std::string"
+    }
+  },
+  "semantic_notes": [
+    "Variable target ABI reuses phase_definitions: uint16 kind at +0, int64 payload at +8; character=4, raw fixed=1.",
+    "Saved variable presence does not depend on truthiness of the numeric payload.",
+    "Optional referenced characters resolve complete generation IDs; dead liege accolade progress is zero before saved variable evaluation; living liege progress is upper-clamped to 2000000 only.",
+    "Accolade validation is inlined in 0x27BF5E0; no old standalone validator is required.",
+    "CAccolade primary vtable 0x4751B08 contains destructor followed by a COL; +8 is not a bool function. is_acclaimed mirrors native 0x2AFB700 kind/full-ID result.",
+    "Accolade categories use native attribute +0x3A8; parameters delegate native ranked-attribute evaluator 0x27BF5E0.",
+    "Court type database rows move from old +0x68/+0x74 to new +0x50/+0x5C.",
+    "No faith, doctrine, religion or holy-order fields are read by this leaf."
+  ],
+  "fixture_validation": {
+    "compiler": "MSVC 19.51 x64 /std:c++20 /W4",
+    "result": "13 fixture scenarios passed; process exit code 0",
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/phase-misc-fixture/phase_misc_test.exe",
+    "coverage": [
+      "exact image binding",
+      "all 27 nonreligious definitions",
+      "changed-offset decoys",
+      "legitimate absent values",
+      "native callback ABIs",
+      "character target typing/generation",
+      "accolade generation/magic",
+      "attribute validation",
+      "court generation",
+      "variable ambiguity",
+      "progress clamp and negative values",
+      "dead liege stale progress returns zero",
+      "other-leaf field preservation"
+    ],
+    "live_process_access": false
+  },
+  "known_gaps": [
+    "Production owning-thread paused fixture against the updated running image; cached definitions and full snapshot integration are coordinator-owned."
+  ]
+}

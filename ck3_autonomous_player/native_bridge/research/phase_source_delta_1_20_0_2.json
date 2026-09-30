@@ -1,0 +1,127 @@
+﻿{
+  "schema_version": 1,
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_only": true,
+  "ast_migrated": false,
+  "loaded_playset_verified": false,
+  "files": [
+    {
+      "relative_path": "common/combat_phase_events/_combat_phase_events.info",
+      "old_sha256": "48A25D3567762DD8A44A7C80AB01E59E4307C4FBEB245D2AA3A67330792E64BE",
+      "new_sha256": "48A25D3567762DD8A44A7C80AB01E59E4307C4FBEB245D2AA3A67330792E64BE",
+      "changed": false,
+      "frozen_source": "Z:\\Crusader Kings III\\Crusader Kings III_1.19.0.6_20260604\\game\\common\\combat_phase_events\\_combat_phase_events.info"
+    },
+    {
+      "relative_path": "common/combat_phase_events/00_commander_phase_events.txt",
+      "old_sha256": "0CC4675971279397F692512E334CE13B9498C2F02C08C29576961CD31080BFF1",
+      "new_sha256": "1A6EAC4A0714C947A822193E60AF589AEC31FA92857558DF0616A45317654871",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\combat_phase_events\\00_commander_phase_events.txt"
+    },
+    {
+      "relative_path": "common/combat_phase_events/00_knight_phase_events.txt",
+      "old_sha256": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1",
+      "new_sha256": "6307140E6F0543D9C44CACF40771710032A050279B82B0074A86DF7B68E3CADF",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\combat_phase_events\\00_knight_phase_events.txt"
+    },
+    {
+      "relative_path": "common/scripted_effects/00_commander_effects.txt",
+      "old_sha256": "7999F7731F56A63A5E6E615EF1805F6382101D958A5AD4967F9C68CF3E8EE6F6",
+      "new_sha256": "AB943C4AD0B68E2305F958A0031125EE7FA2543C47CF312C07BDBC8EAA7163F8",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\scripted_effects\\00_commander_effects.txt"
+    },
+    {
+      "relative_path": "common/scripted_effects/00_death_management_effects.txt",
+      "old_sha256": "921F06A614CA254EEAD3F57B4EB57F569F0B16B90369575A020461CE1877C397",
+      "new_sha256": "CB24C49A5FC09AE9C3314379BD9549D52D830A6DFD45FD9E1E47044446553111",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\scripted_effects\\00_death_management_effects.txt"
+    },
+    {
+      "relative_path": "common/scripted_effects/00_lifestyle_focus_effects.txt",
+      "old_sha256": "6891063B67F9954B01C54BC6201B9551A722F22437AEC0104746232622034C70",
+      "new_sha256": "051706E95FD0F0535AAA6201941ABFC86DF1C0E44DFCBA6BED5E6D9E94DB849C",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\scripted_effects\\00_lifestyle_focus_effects.txt"
+    },
+    {
+      "relative_path": "common/scripted_effects/20_health_effects.txt",
+      "old_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+      "new_sha256": "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\scripted_effects\\20_health_effects.txt"
+    },
+    {
+      "relative_path": "common/script_values/00_basic_values.txt",
+      "old_sha256": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096",
+      "new_sha256": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\script_values\\00_basic_values.txt"
+    },
+    {
+      "relative_path": "common/script_values/00_combat_values.txt",
+      "old_sha256": "39487E81EECFA5E175D83E91C7D8766E55B891BFB665F50EA2B2C6F7A229C256",
+      "new_sha256": "999F4F340A7325397267E0B0F40B506B85F105EA29E801ACA2F7EBCF97166BFF",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\script_values\\00_combat_values.txt"
+    },
+    {
+      "relative_path": "common/script_values/00_court_position_values.txt",
+      "old_sha256": "5D5D62E0FFD2E4758DAC5F736980105A16CAB0818A35F3BE12DB9DFABD08074A",
+      "new_sha256": "DBE4EA36A05A5E803626FB6FC3D4DCEF394F1CC53F812985439540FA48A854BC",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\script_values\\00_court_position_values.txt"
+    },
+    {
+      "relative_path": "common/script_values/04_ep2_accolade_values.txt",
+      "old_sha256": "62BE56D4FC84E7673A1BB6BA8B2BA60C5E865C92090F2DFE0EA69429A2A83567",
+      "new_sha256": "52B44E6E974C3CA32993B63F932B373C46AF3FB31595935897FA055D0ACE950C",
+      "changed": true,
+      "frozen_source": "artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\game\\common\\script_values\\04_ep2_accolade_values.txt"
+    }
+  ],
+  "known_script_changes": [
+    {
+      "field": "death_is_glory",
+      "old": "faith.has_doctrine_parameter",
+      "new": "rite.rite_has_parameter",
+      "migration": "owner-deferred religion field; do not reuse old faith ABI"
+    },
+    {
+      "field": "tenet_warmonger",
+      "old": "faith.has_doctrine",
+      "new": "rite.rite_has_tenet",
+      "migration": "owner-deferred religion field"
+    },
+    {
+      "field": "accolade.add_glory",
+      "old": "accolade =",
+      "new": "accolade ?=",
+      "migration": "nullable accolade effect scope"
+    },
+    {
+      "field": "tgp_cranial_trophies",
+      "old": "faith.has_doctrine = tenet_cranial_trophies",
+      "new": "tgp_cranial_trophies_collection_trigger",
+      "migration": "new source trigger and effect require separate AST migration before current-build evaluator admission"
+    },
+    {
+      "field": "beheaded_warrior_cooldown",
+      "old": "character_flag",
+      "new": "variable",
+      "migration": "variable-list trigger must not be interpreted as the old flag"
+    }
+  ],
+  "legacy_ast_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "legacy_ast_manifest_valid_for_new_build": false,
+  "nonreligious_ast_migrated": true,
+  "nonreligious_ast_sha256": "A6647A6DC0E3E15D6C9D0C050A18CE0C68D42FA498AE61704A4D9540B0137E66",
+  "nonreligious_ast_event_rows": 13,
+  "nonreligious_ast_source_definitions": 59,
+  "deferred_opaque_nodes": 17,
+  "canonical_source_delta_sha256": "878E82FD735D3D5A04715049242DB6A7FE560AFC6EEE54849CE29A69A56B04B7"
+}

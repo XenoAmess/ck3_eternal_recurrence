@@ -1,8 +1,10 @@
-"""Strict contract for the exact-build loaded feature manifest."""
+﻿"""Strict contract for the exact-build loaded feature manifest."""
 
 from __future__ import annotations
 
 from typing import Final
+
+from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
 
 
 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY: Final = (
@@ -65,6 +67,14 @@ _FEATURE_DEFINITIONS: Final = (
     (0x4101, "symbols_of_authority"),
     (0x4102, "songs_of_the_realm"),
 )
+_FEATURE_DEFINITIONS_BY_BUILD: Final = {
+    CK3_11906.game_version: _FEATURE_DEFINITIONS,
+    CK3_12002.game_version: (
+        *(_FEATURE_DEFINITIONS[:36]),
+        *(_FEATURE_DEFINITIONS[37:]),
+        (0x4169, "by_god_alone"),
+    ),
+}
 
 _FIELDS: Final = {
     "schema",
@@ -113,6 +123,16 @@ _PROVENANCE_VALUES: Final = {
     "feature_enum_table_rva": "0x42F7850..0x42F7900",
     "script_dlc_set_rva": "0x5762590",
     "backend_id": LOADED_FEATURE_MANIFEST_V1_BACKEND_ID,
+}
+_PROVENANCE_BY_BUILD: Final = {
+    CK3_11906.game_version: _PROVENANCE_VALUES,
+    CK3_12002.game_version: {
+        "feature_root_slot_rva": "0x5CB87F8",
+        "feature_bitset_rva": "root+0x2B0",
+        "feature_enum_table_rva": "0x47334C0..0x4733570",
+        "script_dlc_set_rva": "0x5CC15E0",
+        "backend_id": CK3_12002.backend_id("loaded-feature-manifest-v1"),
+    },
 }
 _UNAVAILABLE_REASONS: Final = {
     "unsupported_build",
@@ -181,28 +201,27 @@ def _stable_key(value: object, name: str) -> str:
 
 def _normalize_build(value: object) -> dict[str, str]:
     build = _exact_object(value, _BUILD_FIELDS, "build")
-    if (
-        build.get("version") != LOADED_FEATURE_MANIFEST_V1_GAME_VERSION
-        or build.get("exe_sha256")
-        != LOADED_FEATURE_MANIFEST_V1_EXECUTABLE_SHA256
-    ):
-        raise ValueError("build does not match the frozen exact build")
+    try:
+        identity = require_exact_native_build(build.get("version"), build.get("exe_sha256"))
+    except ValueError as error:
+        raise ValueError("build does not match the frozen exact build") from error
     return {
-        "version": LOADED_FEATURE_MANIFEST_V1_GAME_VERSION,
-        "exe_sha256": LOADED_FEATURE_MANIFEST_V1_EXECUTABLE_SHA256,
+        "version": identity.game_version,
+        "exe_sha256": identity.executable_sha256,
     }
 
 
-def _normalize_provenance(value: object) -> dict[str, str]:
+def _normalize_provenance(value: object, *, game_version: str) -> dict[str, str]:
     provenance = _exact_object(
         value, set(_PROVENANCE_VALUES), "provenance"
     )
+    expected_provenance = _PROVENANCE_BY_BUILD[game_version]
     if any(
         provenance.get(key) != expected
-        for key, expected in _PROVENANCE_VALUES.items()
+        for key, expected in expected_provenance.items()
     ):
         raise ValueError("provenance does not match the frozen exact build")
-    return dict(_PROVENANCE_VALUES)
+    return dict(expected_provenance)
 
 
 def _normalize_readiness(
@@ -245,7 +264,9 @@ def _normalize_feature_flags(
     *,
     available: bool,
     unavailable_reason: str | None,
+    game_version: str,
 ) -> dict[str, object]:
+    definitions = _FEATURE_DEFINITIONS_BY_BUILD[game_version]
     flags = _exact_object(
         value, _FEATURE_FLAGS_FIELDS, "effective_feature_flags"
     )
@@ -261,17 +282,17 @@ def _normalize_feature_flags(
     if (
         flags.get("status") != "available"
         or flags.get("unavailable_reason") is not None
-        or flags.get("native_count") != len(_FEATURE_DEFINITIONS)
+        or flags.get("native_count") != len(definitions)
     ):
         raise ValueError("available feature-flag header is invalid")
     raw_items = flags.get("items")
     if not isinstance(raw_items, list) or len(raw_items) != len(
-        _FEATURE_DEFINITIONS
+        definitions
     ):
         raise ValueError("effective feature flags must contain all 44 items")
     items: list[dict[str, object]] = []
     for index, (expected_id, expected_key) in enumerate(
-        _FEATURE_DEFINITIONS
+        definitions
     ):
         item = _exact_object(
             raw_items[index],
@@ -282,7 +303,7 @@ def _normalize_feature_flags(
             item.get("native_index"),
             f"effective_feature_flags.items[{index}].native_index",
             minimum=0,
-            maximum=len(_FEATURE_DEFINITIONS) - 1,
+            maximum=len(definitions) - 1,
         )
         cstring_id = _int(
             item.get("cstring_id"),
@@ -315,7 +336,7 @@ def _normalize_feature_flags(
     return {
         "status": "available",
         "unavailable_reason": None,
-        "native_count": len(_FEATURE_DEFINITIONS),
+        "native_count": len(definitions),
         "items": items,
     }
 
@@ -428,6 +449,7 @@ def normalize_loaded_feature_manifest_v1(
         frame.get("effective_feature_flags"),
         available=available,
         unavailable_reason=reason if isinstance(reason, str) else None,
+        game_version=build["version"],
     )
     dlcs = _normalize_script_dlc_keys(
         frame.get("script_dlc_keys"),
@@ -438,7 +460,9 @@ def normalize_loaded_feature_manifest_v1(
     readiness = _normalize_readiness(
         frame.get("readiness"), available=available
     )
-    provenance = _normalize_provenance(frame.get("provenance"))
+    provenance = _normalize_provenance(
+        frame.get("provenance"), game_version=build["version"],
+    )
     return {
         **frame,
         "schema": "loaded-feature-manifest-v1",

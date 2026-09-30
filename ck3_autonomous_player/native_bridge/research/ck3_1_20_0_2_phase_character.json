@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready non-religious combat phase character leaf readers; native callbacks need paused owning-thread live verification",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "trait_database",
+      "rva": "0x89e5b0",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "48 83 EC 38 48 8B 05 6D 8F 3C 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 39 EA BE 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44 24 20 41 8D 49 9D E8 65 D0 6E 03 48 8B 05 26 8F 3C 05 48 83 C4 38 C3 CC"
+    },
+    {
+      "name": "character_has_trait",
+      "rva": "0x28bb1f0",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "40 53 48 83 EC 20 8B 42 10 4C 8D 44 24 30 48 8B D9 89 44 24 30 48 8B 89 F8 00 00 00 48 63 83 04 01 00 00 48 8D 14 81 E8 14 52 FC FD 48 8B 8B F8 00 00 00 48 63 93 04 01 00 00 4C 8D 04 91 33 C9 49 3B C0 48 0F 44 C1 48 85 C0 0F 95 C0 48 83 C4 20 5B C3"
+    },
+    {
+      "name": "character_trait_tracks",
+      "rva": "0x28bb0f0",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "48 89 5C 24 20 56 48 83 EC 20 80 B9 A5 01 00 00 00"
+    },
+    {
+      "name": "trait_track_index",
+      "rva": "0x30e5710",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "48 89 5C 24 20 41 56 48 83 EC 20 4C 8B B1 90 02 00 00 48 63 81 9C 02 00 00 49 8B DE 48 89 74 24 38 48 69 F0 50 06 00 00"
+    },
+    {
+      "name": "is_human_player_character",
+      "rva": "0x2baa710",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "40 53 48 83 EC 20 48 8B 05 33 E5 0B 03 4C 8D 44 24 30 89 4C 24 30 48 8B 98 A0 00 00 00 48 8B 8B 58 23 02 00 48 63 83 64 23 02 00 48 8D 14 81 E8 EC 5C CD FD 48 8B 8B 58 23 02 00 48 63 93 64 23 02 00 4C 8D 04 91 33 C9 49 3B C0 48 0F 44 C1 48 85 C0 0F 95 C0 48 83 C4 20 5B C3"
+    },
+    {
+      "name": "effective_skills",
+      "rva": "0x28b16b0",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 30 48 63 DA 48 8B F9 48 83 FB 06 72 32 33 D2 48 8D 05 E9 01 BF 01 4C 8D 0D 16 D5 3A 03 48 89 44 24 20 33 C9 44 8D 42 01 E8 AA 94 6C 01 8B 84 9F D8 00 00 00 48 8B 5C 24 40 48 83 C4 30 5F C3 8B 84 99 D8 00 00 00 48 8B 5C 24 40 48 83 C4 30 5F C3"
+    },
+    {
+      "name": "knight_context",
+      "rva": "0x28bfc70",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "48 8B 81 C0 01 00 00 48 8B 91 B8 01 00 00 48 85 C0 74 1E 48 8B 80 C0 01 00 00 48 8B 40 28 81 78 1C 72 61 68 43 75 06 83 78 18 FF 75 48 48 8B C1 C3 48 85 D2 74 38 48 8B 05 BB 78 3A 03 48 85 C0 74 2C 44 8B 82 C8 00 00 00 41 8B C8 81 E1 FF FF FF 00 3B 48 2C 73 17 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 06 44 39 40 18 74 07 48 8B 05 8B 78 3A 03 C3"
+    },
+    {
+      "name": "knight_regiment_presence",
+      "rva": "0x28cc080",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "48 8B 81 B8 01 00 00 48 85 C0 74 0D 8B 80 F8 00 00 00 83 F8 FF 0F 95 C0 C3 B8 FF FF FF FF 3B C0 0F 95 C0 C3"
+    },
+    {
+      "name": "trait_database_indexed_read",
+      "rva": "0xc85f33",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "85 D2 78 12 3B 51 5C 7D 0D 48 8B 41 50 48 63 D2 48 8B 04 D0 EB 07 48 8B 05 C8 83 09 05 41 83 E8 01 74 0F 41 83 F8 01 75 12 F0 44 21 91 A0 0E 00 00 C3 F0 44 0F C1 91 A0 0E 00 00"
+    },
+    {
+      "name": "knight_context_native_consumer",
+      "rva": "0x2c06d30",
+      "confidence": "reviewed-static-character-leaf",
+      "pattern": "48 89 5C 24 10 57 48 83 EC 20 8B 9A EC 00 00 00 48 8B F9 48 8B CA E8 25 8F CB FF 48 8B D0 48 8D 4C 24 30 45 33 C0 E8 A5 FD FF FF"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CTraitDatabase",
+      "rva": "0x48d2698",
+      "function_rvas": [
+        "0x324d6a0",
+        "0x324f260",
+        "0x324de30",
+        "0x324f3e0",
+        "0x324f3a0",
+        "0x324f4b0"
+      ]
+    }
+  ],
+  "instruction_checks": [
+    {
+      "name": "trait_singleton_slot",
+      "rva": "0x89e5b4",
+      "bytes": "48 8B 05 6D 8F 3C 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53c8f6d]"
+    },
+    {
+      "name": "trait_definition_count",
+      "rva": "0x28bb124",
+      "bytes": "41 8B B8 9C 02 00 00",
+      "instruction": "mov edi, dword ptr [r8 + 0x29c]"
+    },
+    {
+      "name": "character_trait_ids",
+      "rva": "0x28bb205",
+      "bytes": "48 8B 89 F8 00 00 00",
+      "instruction": "mov rcx, qword ptr [rcx + 0xf8]"
+    },
+    {
+      "name": "character_trait_id_count",
+      "rva": "0x28bb20c",
+      "bytes": "48 63 83 04 01 00 00",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x104]"
+    },
+    {
+      "name": "track_disabled_flag",
+      "rva": "0x28bb0fa",
+      "bytes": "80 B9 A5 01 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x1a5], 0"
+    },
+    {
+      "name": "character_xp_array",
+      "rva": "0x28bb1b3",
+      "bytes": "48 8B 86 40 01 00 00",
+      "instruction": "mov rax, qword ptr [rsi + 0x140]"
+    },
+    {
+      "name": "character_xp_count",
+      "rva": "0x28bb1a4",
+      "bytes": "8B 96 4C 01 00 00",
+      "instruction": "mov edx, dword ptr [rsi + 0x14c]"
+    },
+    {
+      "name": "xp_output_count_offset",
+      "rva": "0x28bb1bf",
+      "bytes": "89 7B 08",
+      "instruction": "mov dword ptr [rbx + 8], edi"
+    },
+    {
+      "name": "trait_track_definitions",
+      "rva": "0x30e571b",
+      "bytes": "4C 8B B1 90 02 00 00",
+      "instruction": "mov r14, qword ptr [rcx + 0x290]"
+    },
+    {
+      "name": "trait_track_definition_count",
+      "rva": "0x30e5722",
+      "bytes": "48 63 81 9C 02 00 00",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x29c]"
+    },
+    {
+      "name": "trait_track_definition_stride",
+      "rva": "0x30e5731",
+      "bytes": "48 69 F0 50 06 00 00",
+      "instruction": "imul rsi, rax, 0x650"
+    },
+    {
+      "name": "effective_skill_array",
+      "rva": "0x28b16f8",
+      "bytes": "8B 84 99 D8 00 00 00",
+      "instruction": "mov eax, dword ptr [rcx + rbx*4 + 0xd8]"
+    },
+    {
+      "name": "knight_prowess_field",
+      "rva": "0x2c06bd1",
+      "bytes": "48 63 87 EC 00 00 00",
+      "instruction": "movsxd rax, dword ptr [rdi + 0xec]"
+    },
+    {
+      "name": "human_player_ids_array",
+      "rva": "0x2baa72d",
+      "bytes": "48 8B 8B 58 23 02 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0x22358]"
+    },
+    {
+      "name": "human_player_ids_count",
+      "rva": "0x2baa734",
+      "bytes": "48 63 83 64 23 02 00",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x22364]"
+    },
+    {
+      "name": "knight_link_field",
+      "rva": "0x28cc080",
+      "bytes": "48 8B 81 B8 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b8]"
+    },
+    {
+      "name": "knight_regiment_field",
+      "rva": "0x28cc08c",
+      "bytes": "8B 80 F8 00 00 00",
+      "instruction": "mov eax, dword ptr [rax + 0xf8]"
+    },
+    {
+      "name": "database_objects_count",
+      "rva": "0xc85f37",
+      "bytes": "3B 51 5C",
+      "instruction": "cmp edx, dword ptr [rcx + 0x5c]"
+    },
+    {
+      "name": "database_objects_array",
+      "rva": "0xc85f3c",
+      "bytes": "48 8B 41 50",
+      "instruction": "mov rax, qword ptr [rcx + 0x50]"
+    },
+    {
+      "name": "trait_name_string",
+      "rva": "0x324f3b2",
+      "bytes": "48 83 C0 18",
+      "instruction": "add rax, 0x18"
+    },
+    {
+      "name": "trait_name_string_length",
+      "rva": "0x324f3af",
+      "bytes": "8B 48 28",
+      "instruction": "mov ecx, dword ptr [rax + 0x28]"
+    },
+    {
+      "name": "knight_context_actual_consumer",
+      "rva": "0x2c06d46",
+      "bytes": "E8 25 8F CB FF",
+      "instruction": "call 0x28bfc70"
+    },
+    {
+      "name": "context_character_generation",
+      "rva": "0x28bfcd8",
+      "bytes": "44 39 40 18",
+      "instruction": "cmp dword ptr [rax + 0x18], r8d"
+    },
+    {
+      "name": "context_character_death",
+      "rva": "0x28bfd19",
+      "bytes": "48 83 B8 D0 01 00 00 00",
+      "instruction": "cmp qword ptr [rax + 0x1d0], 0"
+    },
+    {
+      "name": "context_character_kind",
+      "rva": "0x28bfd0a",
+      "bytes": "81 78 1C 72 61 68 43",
+      "instruction": "cmp dword ptr [rax + 0x1c], 0x43686172"
+    }
+  ],
+  "source_constants": {
+    "kTraitDatabaseRva": "0x89E5B0",
+    "kTraitDatabaseSlotRva": "0x5C67528",
+    "kCharacterHasTraitRva": "0x28BB1F0",
+    "kCharacterTraitTracksRva": "0x28BB0F0",
+    "kTraitTrackIndexRva": "0x30E5710",
+    "kIsHumanPlayerCharacterRva": "0x2BAA710",
+    "kKnightContextRva": "0x28BFC70",
+    "kTraitDatabaseObjectsOffset": "0x50",
+    "kTraitDatabaseCountOffset": "0x5C",
+    "kTraitTrackDefinitionCountOffset": "0x29C",
+    "kCharacterIdentityOffset": "0x18",
+    "kCharacterKindOffset": "0x1C",
+    "kCharacterDeathDataOffset": "0x1D0",
+    "kCharacterMartialOffset": "0xDC",
+    "kCharacterLearningOffset": "0xE8",
+    "kCharacterProwessOffset": "0xEC",
+    "kCharacterKnightLinkOffset": "0x1B8",
+    "kKnightLinkRegimentIdOffset": "0xF8"
+  },
+  "migration_changes": {
+    "effective_skill_array": {
+      "old": "0xD4",
+      "new": "0xD8"
+    },
+    "character_trait_ids": {
+      "old": [
+        "0xF0",
+        "0xFC"
+      ],
+      "new": [
+        "0xF8",
+        "0x104"
+      ]
+    },
+    "trait_database_definitions": {
+      "old": [
+        "0x68",
+        "0x74"
+      ],
+      "new": [
+        "0x50",
+        "0x5C"
+      ]
+    },
+    "trait_track_definitions": {
+      "old": [
+        "0x288",
+        "0x294"
+      ],
+      "new": [
+        "0x290",
+        "0x29C"
+      ]
+    },
+    "character_xp_array": {
+      "old": [
+        "0x138",
+        "0x144"
+      ],
+      "new": [
+        "0x140",
+        "0x14C"
+      ]
+    },
+    "native_xp_span_count": {
+      "actual": "0x08",
+      "legacy_combat_v3_reader": "0x0C",
+      "scope": "new-build reader uses actual native output layout; legacy user files left untouched"
+    }
+  },
+  "native_context_semantics": {
+    "function": "0x28BFC70",
+    "landed_context_field": "CCharacter+0x1C0 -> object+0x1C0 -> pointer+0x28; valid CharacterID returns liege, invalid returns current character",
+    "courtier_context_field": "CCharacter+0x1B8 -> full employer CharacterID+0xC8 -> CharacterStorage+0x20/+0x2C; full generation readback+0x18; unavailable resolves canonical fallback5C67570",
+    "distinct_strict_liege_function": "0x28BFCF0",
+    "consumer": "0x2C06D30 reads prowess+0xEC, calls0x28BFC70 at0x2C06D46, calls knight effectiveness0x2C06B00 at0x2C06D56"
+  },
+  "known_gaps": [
+    "paused production character/trait/XP reads on migrated owning thread; no live process was inspected",
+    "caller must retain full-generation storage resolve/revalidation and snapshot frame checks"
+  ],
+  "trait_key_migration": {
+    "wire_to_native_key": {
+      "scholar": "erudite"
+    },
+    "authority": "game/common/traits/trait_conversion.lookup:22",
+    "frozen_authority": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/phase-character-offline/trait_conversion.lookup",
+    "authority_sha256": "E6C743D3C861A5374C092DC00B3A1D0D1A979518040DCBEC5DBDE6E4778753D5",
+    "frozen_traits": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/installation/game/common/traits/00_traits.txt",
+    "traits_sha256": "93AD0316B733AA474D34841BD92FB3FC9336C111E9F06E7910178E74482185AA",
+    "wire_operand_count": 56,
+    "concrete_native_definition_count": 58,
+    "missing_concrete_native_keys": []
+  }
+}

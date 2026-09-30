@@ -178,6 +178,21 @@ using MainThreadMemoryProtectV1 = bool (*)(
     DWORD new_protect, DWORD &old_protect) noexcept;
 using MainThreadTlsContextGetterV1 = void *(__fastcall *)() noexcept;
 
+// Queue ownership and IAT lifetime are version independent. Each exact-build
+// adapter supplies only the executable-dependent addresses and byte verifier.
+using MainThreadPumpAnchorVerifierV1 = bool (*)(
+    std::uintptr_t module_base) noexcept;
+struct MainThreadQueryBuildProfileV1 {
+  std::uintptr_t pump_exact_return_rva = 0;
+  std::uintptr_t peek_message_iat_slot_rva = 0;
+  std::uintptr_t global_rng_wrapper_slot_rva = 0;
+  std::uintptr_t jomini_state_slot_rva = 0;
+  std::uintptr_t game_state_slot_rva = 0;
+  std::uintptr_t tls_initialized_flag_rva = 0;
+  std::uintptr_t tls_context_getter_rva = 0;
+  MainThreadPumpAnchorVerifierV1 verify_pump_anchors = nullptr;
+};
+
 // The production binder uses module_base plus the frozen RVAs.  The explicit
 // override surface exists only so the offline fixture can exercise atomic IAT
 // installation and queue state transitions without mapping a 0x5C2D000-byte
@@ -218,6 +233,14 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_undenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duodenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_thirdenary = nullptr;
+  // Null retains the complete 1.19.0.6 contract, including existing fixtures.
+  const MainThreadQueryBuildProfileV1 *build_profile = nullptr;
+  // A fixed adapter executor complements the thirteen typed query slots.
+  MainThreadQueryExecutorV1 permitted_executor_fourteenth = nullptr;
+  // Optional read-only observer runs on every valid TLS main-thread pump,
+  // including unpaused pumps. Context remains alive until uninstall succeeds.
+  MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
+  void *snapshot_observer_context = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -276,6 +299,7 @@ struct MainThreadQueryMailboxV1 {
 
   // Immutable after successful installation.
   std::uintptr_t module_base = 0;
+  std::uintptr_t pump_exact_return_rva = kSdlWindowsPumpFirstPeekReturnRva;
   void **peek_message_iat_slot = nullptr;
   PeekMessageWFunctionV1 original_peek_message = nullptr;
   std::uintptr_t global_rng_wrapper_slot = 0;
@@ -302,6 +326,9 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_undenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duodenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_thirdenary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_fourteenth = nullptr;
+  MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
+  void *snapshot_observer_context = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.

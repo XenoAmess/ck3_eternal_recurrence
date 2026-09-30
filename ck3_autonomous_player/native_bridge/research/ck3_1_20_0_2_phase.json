@@ -1,0 +1,586 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready complete nonreligious operands, constructor ledger, dynamic components and private source AST; complete v3 owner-deferred religion/rites",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "construct",
+      "rva": "0x264ca60",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B D9 C7 41 08 FF FF FF FF 80 3D F4 34 DE 02 00 74 1A 48"
+    },
+    {
+      "name": "populate",
+      "rva": "0x264de30",
+      "confidence": "reviewed-static-phase",
+      "pattern": "41 54 41 55 41 56 41 57 48 83 EC 28 8B 42 10 4C 8D 44 24 50 4C 8B F1 89 44 24 50 48 8B 49 10 4C 8B FA 49 63 46 1C 48 8D 14 81 E8 D1 25 23 FE 49"
+    },
+    {
+      "name": "select_commander",
+      "rva": "0x264d790",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 30 EE FF FF B8 D0 12 00 00 E8 16 70 BD 01 48 2B E0 4C 8B E9"
+    },
+    {
+      "name": "refresh_strength",
+      "rva": "0x26505e0",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 8B D1 33 C9 48 89 8A A0 00 00 00 4C 8B 42 28 48 63 42 34 4C 8D 0C 40 49 C1 E1 05 4D 03 C8 4D 3B C1 74 27 0F 1F 40 00 0F 1F 84 00 00 00 00 00"
+    },
+    {
+      "name": "read_strength",
+      "rva": "0x2651100",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 59 28 45 33 DB 48 63 41 34 48 8B F1 48 8D 3C 40 48 C1 E7 05 48 03 FB 48 3B DF 74 17 0F 1F 00"
+    },
+    {
+      "name": "destroy",
+      "rva": "0x25861a0",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B D9 C7 81 40 03 00 00 64 74 6C 44 48 81 C1 78 01 00 00 E8 28 C3 46 FE 48 8B 93 10 01 00 00 33"
+    },
+    {
+      "name": "resolve_advantage",
+      "rva": "0x258b510",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 57 48 83 EC 20 48 8B F1 48 83 C1 20 E8 55 55 0C 00 48 8D 8E 68 03 00 00 E8 49 55 0C 00 48 8B 96 B8 06 00 00 48 8D"
+    },
+    {
+      "name": "read_dynamic",
+      "rva": "0x258a470",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 54 41 56 41 57 48 81 EC 10 02 00 00 49 8B E9 4D 63 F0 4C 8B E2 48 8B F9 49 8B F6 4A 63 8C B1 D0 06 00 00"
+    },
+    {
+      "name": "province_has_holding",
+      "rva": "0xc6af20",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 8B 81 60 08 00 00 33 D2 48 3B 05 C8 F2 FF 04 7C 14 48 3B 05 B7 F2 FF 04 7D 14 BA 01 00 00 00 85 D2 0F 95 C0 C3 48 3B 05 A3 F2 FF 04 7C 14 48"
+    },
+    {
+      "name": "commander_sources",
+      "rva": "0x1ba1230",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 57 48 83 EC 30 49 8B 08 48 8B F2 E8 E6 27 6B 00 48 8B 58 10 48 63 40 1C 48 8D 3C 83 48 3B DF 0F 84 8D 00 00 00 4C"
+    },
+    {
+      "name": "knight_sources",
+      "rva": "0x1ba1150",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 57 48 83 EC 30 49 8B 08 48 8B F2 E8 C6 28 6B 00 48 8B 58 40 48 63 40 4C 48 8D 3C 40 48 C1 E7 05 48 03 FB 48 3B DF"
+    },
+    {
+      "name": "commander_dynamic",
+      "rva": "0x2589e10",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 48 89 4C 24 08 55 41 54 41 55 41 56 41 57 48 8D AC 24 F0 FE FF FF 48 81 EC 10 02 00 00 4D 63 E1 4D"
+    },
+    {
+      "name": "side_modifier",
+      "rva": "0x25899c0",
+      "confidence": "reviewed-static-phase",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 48 83 EC 30 48 8B BC 24 88 00 00 00 49 8B F0 48 8B DA 45 8B E1 4C 8B F9"
+    },
+    {
+      "name": "relation_kind",
+      "rva": "0x2589810",
+      "confidence": "reviewed-static-phase",
+      "pattern": "40 55 48 83 EC 20 48 63 EA 4C 8B C9 48 69 C5 48 03 00 00 48 89 7C 24 48 83 7C 08 3C 00 75 08 41 B8 FF FF FF FF EB 08 48 8B 44 08 30 44 8B 00 48"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CCombatSide",
+      "rva": "0x4745CF0",
+      "function_rvas": [
+        "0x264CBF0",
+        "0x3F7E2D0",
+        "0x264CC30",
+        "0x3F7E350",
+        "0x264D0D0"
+      ]
+    },
+    {
+      "name": "CCombat primary",
+      "rva": "0x473D138",
+      "function_rvas": [
+        "0x2586160"
+      ]
+    },
+    {
+      "name": "CCombat secondary",
+      "rva": "0x473D100",
+      "function_rvas": [
+        "0x25907C8",
+        "0x3F7E2D0",
+        "0x2588420",
+        "0x3F7E350",
+        "0x2588960"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "rva": "0x264ca7f",
+      "purpose": "static_native_phase_264CA7F",
+      "instruction": "mov dword ptr [rcx + 8], 0xffffffff",
+      "bytes": "C7 41 08 FF FF FF FF",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264caa9",
+      "purpose": "static_native_phase_264CAA9",
+      "instruction": "lea rax, [rip + 0x20f9240]",
+      "bytes": "48 8D 05 40 92 0F 02",
+      "rip_targets": [
+        "0x4745cf0"
+      ]
+    },
+    {
+      "rva": "0x264cae3",
+      "purpose": "static_native_phase_264CAE3",
+      "instruction": "mov qword ptr [rbx + 0x50], rax",
+      "bytes": "48 89 43 50",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264cb3e",
+      "purpose": "static_native_phase_264CB3E",
+      "instruction": "mov qword ptr [rbx + 0xb8], rdi",
+      "bytes": "48 89 BB B8 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264cb53",
+      "purpose": "static_native_phase_264CB53",
+      "instruction": "mov qword ptr [rbx + 0xc8], rbp",
+      "bytes": "48 89 AB C8 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264cbc3",
+      "purpose": "static_native_phase_264CBC3",
+      "instruction": "mov dword ptr [rbx + 0x340], 0x436f5369",
+      "bytes": "C7 83 40 03 00 00 69 53 6F 43",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264cbcd",
+      "purpose": "static_native_phase_264CBCD",
+      "instruction": "mov byte ptr [rbx + 0x344], bpl",
+      "bytes": "40 88 AB 44 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264cc09",
+      "purpose": "static_native_phase_264CC09",
+      "instruction": "mov edx, 0x348",
+      "bytes": "BA 48 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264cc11",
+      "purpose": "static_native_phase_264CC11",
+      "instruction": "call 0x4223f64",
+      "bytes": "E8 4E 73 BD 01",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264cf97",
+      "purpose": "static_native_phase_264CF97",
+      "instruction": "cmp byte ptr [rdi + 0x344], 0",
+      "bytes": "80 BF 44 03 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x25861b2",
+      "purpose": "static_native_phase_25861B2",
+      "instruction": "mov dword ptr [rcx + 0x340], 0x446c7464",
+      "bytes": "C7 81 40 03 00 00 64 74 6C 44",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x25862f4",
+      "purpose": "static_native_phase_25862F4",
+      "instruction": "mov edx, dword ptr [rbx + 8]",
+      "bytes": "8B 53 08",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258630f",
+      "purpose": "static_native_phase_258630F",
+      "instruction": "add rcx, 0x18",
+      "bytes": "48 83 C1 18",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2586313",
+      "purpose": "static_native_phase_2586313",
+      "instruction": "call 0x2aa4470",
+      "bytes": "E8 58 E1 51 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264de3c",
+      "purpose": "static_native_phase_264DE3C",
+      "instruction": "mov eax, dword ptr [rdx + 0x10]",
+      "bytes": "8B 42 10",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264de52",
+      "purpose": "static_native_phase_264DE52",
+      "instruction": "movsxd rax, dword ptr [r14 + 0x1c]",
+      "bytes": "49 63 46 1C",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264dea2",
+      "purpose": "static_native_phase_264DEA2",
+      "instruction": "movsxd rax, dword ptr [r15 + 0x44]",
+      "bytes": "49 63 47 44",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264df1a",
+      "purpose": "static_native_phase_264DF1A",
+      "instruction": "mov eax, dword ptr [rbp + 0x148]",
+      "bytes": "8B 85 48 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264df6b",
+      "purpose": "static_native_phase_264DF6B",
+      "instruction": "add qword ptr [r14 + 0xa8], rdi",
+      "bytes": "49 01 BE A8 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264e126",
+      "purpose": "static_native_phase_264E126",
+      "instruction": "mov r8d, dword ptr [rax + 0x124]",
+      "bytes": "44 8B 80 24 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba124a",
+      "purpose": "static_native_phase_1BA124A",
+      "instruction": "mov rbx, qword ptr [rax + 0x10]",
+      "bytes": "48 8B 58 10",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba124e",
+      "purpose": "static_native_phase_1BA124E",
+      "instruction": "movsxd rax, dword ptr [rax + 0x1c]",
+      "bytes": "48 63 40 1C",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba12a6",
+      "purpose": "static_native_phase_1BA12A6",
+      "instruction": "mov eax, dword ptr [rax + 0x120]",
+      "bytes": "8B 80 20 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba116a",
+      "purpose": "static_native_phase_1BA116A",
+      "instruction": "mov rbx, qword ptr [rax + 0x40]",
+      "bytes": "48 8B 58 40",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba116e",
+      "purpose": "static_native_phase_1BA116E",
+      "instruction": "movsxd rax, dword ptr [rax + 0x4c]",
+      "bytes": "48 63 40 4C",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba11a5",
+      "purpose": "static_native_phase_1BA11A5",
+      "instruction": "mov edx, dword ptr [rbx + 8]",
+      "bytes": "8B 53 08",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba11d0",
+      "purpose": "static_native_phase_1BA11D0",
+      "instruction": "mov eax, dword ptr [rax + 0x148]",
+      "bytes": "8B 80 48 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba1203",
+      "purpose": "static_native_phase_1BA1203",
+      "instruction": "add rbx, 0x60",
+      "bytes": "48 83 C3 60",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258b522",
+      "purpose": "static_native_phase_258B522",
+      "instruction": "add rcx, 0x20",
+      "bytes": "48 83 C1 20",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258b52b",
+      "purpose": "static_native_phase_258B52B",
+      "instruction": "lea rcx, [rsi + 0x368]",
+      "bytes": "48 8D 8E 68 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258b537",
+      "purpose": "static_native_phase_258B537",
+      "instruction": "mov rdx, qword ptr [rsi + 0x6b8]",
+      "bytes": "48 8B 96 B8 06 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258b55a",
+      "purpose": "static_native_phase_258B55A",
+      "instruction": "mov rbx, qword ptr [rsi + 0x6c8]",
+      "bytes": "48 8B 9E C8 06 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258b56f",
+      "purpose": "static_native_phase_258B56F",
+      "instruction": "call 0x258a470",
+      "bytes": "E8 FC EE FF FF",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258b586",
+      "purpose": "static_native_phase_258B586",
+      "instruction": "call 0x258a470",
+      "bytes": "E8 E5 EE FF FF",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258b58e",
+      "purpose": "static_native_phase_258B58E",
+      "instruction": "mov qword ptr [rsi + 0x710], rbx",
+      "bytes": "48 89 9E 10 07 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258a498",
+      "purpose": "static_native_phase_258A498",
+      "instruction": "movsxd rcx, dword ptr [rcx + r14*4 + 0x6d0]",
+      "bytes": "4A 63 8C B1 D0 06 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258a5d9",
+      "purpose": "static_native_phase_258A5D9",
+      "instruction": "imul r15, rsi, 0x348",
+      "bytes": "4C 69 FE 48 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2589e48",
+      "purpose": "static_native_phase_2589E48",
+      "instruction": "movsxd rdx, dword ptr [r8 + 0xdc]",
+      "bytes": "49 63 90 DC 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x265110f",
+      "purpose": "static_native_phase_265110F",
+      "instruction": "mov rbx, qword ptr [rcx + 0x28]",
+      "bytes": "48 8B 59 28",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2651116",
+      "purpose": "static_native_phase_2651116",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x34]",
+      "bytes": "48 63 41 34",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x265113b",
+      "purpose": "static_native_phase_265113B",
+      "instruction": "add rbx, 0x60",
+      "bytes": "48 83 C3 60",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2651144",
+      "purpose": "static_native_phase_2651144",
+      "instruction": "mov rbx, qword ptr [rsi + 0x40]",
+      "bytes": "48 8B 5E 40",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2651148",
+      "purpose": "static_native_phase_2651148",
+      "instruction": "movsxd rax, dword ptr [rsi + 0x4c]",
+      "bytes": "48 63 46 4C",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x265116b",
+      "purpose": "static_native_phase_265116B",
+      "instruction": "add rbx, 0x60",
+      "bytes": "48 83 C3 60",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2586057",
+      "purpose": "CCombat full ID",
+      "instruction": "mov dword ptr [rcx + 8], 0xffffffff",
+      "bytes": "C7 41 08 FF FF FF FF",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258605e",
+      "purpose": "CCombat new type tag",
+      "instruction": "mov dword ptr [rcx + 0xc], 0x436f6d62",
+      "bytes": "C7 41 0C 62 6D 6F 43",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2586065",
+      "purpose": "CCombat absent saved variables ID",
+      "instruction": "mov dword ptr [rcx + 0x18], 0xffffffff",
+      "bytes": "C7 41 18 FF FF FF FF",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258608f",
+      "purpose": "CCombat primary vtable",
+      "instruction": "lea rax, [rip + 0x21b70a2]",
+      "bytes": "48 8D 05 A2 70 1B 02",
+      "rip_targets": [
+        "0x473d138"
+      ]
+    },
+    {
+      "rva": "0x2586099",
+      "purpose": "CCombat secondary vtable",
+      "instruction": "lea rax, [rip + 0x21b7060]",
+      "bytes": "48 8D 05 60 70 1B 02",
+      "rip_targets": [
+        "0x473d100"
+      ]
+    },
+    {
+      "rva": "0x258664d",
+      "purpose": "CArmy gathering days",
+      "instruction": "cmp dword ptr [rax + 0x1d0], 0",
+      "bytes": "83 B8 D0 01 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2586657",
+      "purpose": "attacker gathering target +344",
+      "instruction": "mov byte ptr [rsi + 0x364], al",
+      "bytes": "88 86 64 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x25866a2",
+      "purpose": "defender CArmy gathering days",
+      "instruction": "cmp dword ptr [rax + 0x1d0], 0",
+      "bytes": "83 B8 D0 01 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x25866ac",
+      "purpose": "defender gathering target +344",
+      "instruction": "mov byte ptr [rsi + 0x6ac], al",
+      "bytes": "88 86 AC 06 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2589e48",
+      "purpose": "native effective martial +DC",
+      "instruction": "movsxd rdx, dword ptr [r8 + 0xdc]",
+      "bytes": "49 63 90 DC 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x25899dc",
+      "purpose": "side modifier receives sixth output-ledger argument",
+      "instruction": "mov rdi, qword ptr [rsp + 0x88]",
+      "bytes": "48 8B BC 24 88 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x258981c",
+      "purpose": "relation side offset348",
+      "instruction": "imul rax, rbp, 0x348",
+      "bytes": "48 69 C5 48 03 00 00",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kConstructPhaseSideRva": "0x264ca60",
+    "kPopulatePhaseSideRva": "0x264de30",
+    "kSelectPhaseCommanderRva": "0x264d790",
+    "kRefreshPhaseStrengthRva": "0x26505e0",
+    "kReadPhaseStrengthRva": "0x2651100",
+    "kDestroyPhaseSideRva": "0x25861a0",
+    "kResolvePhaseAdvantageRva": "0x258b510",
+    "kReadPhaseDynamicRva": "0x258a470",
+    "kPhaseProvinceHasHoldingRva": "0xc6af20",
+    "kPhaseCombatSideSize": "0x348",
+    "kPhaseCombatShellSize": "0x718",
+    "kPhaseGatheringOffset": "0x344",
+    "kPhaseCommanderDynamicRva": "0x2589e10",
+    "kPhaseSideModifierRva": "0x25899c0",
+    "kPhaseRelationKindRva": "0x2589810",
+    "kPhaseCombatPrimaryVtableRva": "0x473d138",
+    "kPhaseCombatSecondaryVtableRva": "0x473d100"
+  },
+  "layouts": {
+    "combat_side_size": "0x348",
+    "shell_size": "0x718",
+    "side_offsets": [
+      "0x20",
+      "0x368"
+    ],
+    "army_id_vector": "0x10/0x18/0x1c",
+    "knight_source_vector": "0x40/0x48/0x4c",
+    "knight_entry_stride": "0x60",
+    "knight_entry_regiment": "0x08",
+    "gathering_old": "0x340",
+    "gathering_new": "0x344",
+    "new_tag_offset": "0x340",
+    "new_tag_value": "0x436f5369",
+    "destroyed_tag": "0x446c7464"
+  },
+  "known_gaps": [
+    "paused owning-thread live equivalence and temporary object cleanup",
+    "owner-deferred religion/rites values and subtrees; complete v3 deliberately absent",
+    "loaded-playset source identity and original effect trace require live artifact"
+  ],
+  "integrated_modules": [
+    "phase_character",
+    "phase_definitions",
+    "phase_culture",
+    "phase_advantage",
+    "phase_misc"
+  ],
+  "nonreligious_ast_sha256": "A6647A6DC0E3E15D6C9D0C050A18CE0C68D42FA498AE61704A4D9540B0137E66",
+  "nonreligious_ast_event_rows": 13,
+  "nonreligious_ast_source_definitions": 59,
+  "deferred_source_opaque_nodes": 17,
+  "composition_fixture_source": "src/ck3_12002_phase_composition_test.cpp"
+}

@@ -1,0 +1,406 @@
+﻿{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready, fixture-only; pending real paused-game acceptance",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "redirect_six_roles",
+      "rva": "0x3148de0",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 60 FF FF FF 48 81 EC A0 01 00 00 49 8B F1 49 8B D8 4C 8B F2 48 8B F9 83 B9 14 18 00 00 00 0F 84 59 03 00 00 48 8D 4C 24 30 E8 36 11 74 FD 90 45 33 ED 44 89"
+    },
+    {
+      "name": "construct_all_roles",
+      "rva": "0x3076e50",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 4C 24 08 56 57 41 56 48 83 EC 20 41 8B D9 41 8B F8 48 8B EA 48 8B F1 48 89 11 48 83 C1 08 E8 E1 30 81 FD 90 48 8D 8E 70 01 00 00 E8 D4 30 81 FD 90 89 BE D8 02 00 00 89 9E DC 02 00 00 8B 44 24 60 89 86 E0 02 00 00 8B 44 24 68 89 86 E4 02 00 00 8B 44 24"
+    },
+    {
+      "name": "refresh_context",
+      "rva": "0x3078a60",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 30 48 8B D9 84 D2 74 10 48 8D 91 70 01 00 00 48 83 C1 08 E8 4A 24 6C 00 8B 83 D8 02 00 00 4C 8D 45 F0 8B 15 A6 32 CD 02 48 8D 4B 20 48 89 45 F8 45 33"
+    },
+    {
+      "name": "finalize_context",
+      "rva": "0x3078c90",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "40 53 57 41 57 48 83 EC 20 48 8B 01 48 8B D9 44 8B B8 64 22 00 00 44 39 B9 0C 03 00 00 74 3C 7D 30 41 8B D7 48 81 C1 00 03 00 00 E8 D0 D4 C2 FD 48 63 8B 0C 03 00 00 41 8B C7 2B C1 85 C0 7E 11 48 03 8B 00 03 00 00 33 D2 4C 63 C0 E8 4F E2 1A"
+    },
+    {
+      "name": "validate_context",
+      "rva": "0x307c040",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 00 00 00 48 8B FA 48 8B D9 4C 8B CA 41 B0 01 41 0F B6 D0 E8 0E EB FF FF 84 C0 0F 84 C9 00 00 00 48 8B 03 80 B8 1A 27 00 00 00 0F 85 CC 00 00 00 48 C7 44 24 20 00 00 00 00 45 33 C9 45 33 C0 33 D2 48 8B CB E8 ED FB FF FF 3C 02 0F 85 AB 00 00 00 48 85 FF 0F 84"
+    },
+    {
+      "name": "destroy_context",
+      "rva": "0x30773a0",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 48 8B 89 30 03 00 00 48 85 C9 74 0A 48 8B 01 BA 01 00 00 00 FF 10 48 8B 93 00 03 00 00 48 85 D2 74 32 48 8B 8B 10 03 00 00 41 B8 01 00 00 00 C7 83 0C 03 00 00 00 00 00 00 48 8B 01 FF 50 10 48 C7 83 00 03 00 00 00"
+    },
+    {
+      "name": "recipient_acceptance",
+      "rva": "0x307c460",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 01 00 00 48 8B DA 48 8B F9 8B 81 DC 02 00 00 39 81 D8 02 00 00 75 0C 48 C7 02 80 96 98 00 E9 AA 00 00 00 48 8D 51 08 48 8D 4C 24 20 E8 75 E8 6B 00 90 B8 04 00 00 00 66 89 44 24 20 8B 87 DC 02 00 00 48 89 44 24 28 48 8B 0F 48 81 C1 18 19 00 00 4C 8D 44 24 20"
+    },
+    {
+      "name": "intermediary_acceptance",
+      "rva": "0x307c360",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 01 00 00 48 8B DA 48 8B F9 8B 81 E8 02 00 00 83 F8 FF 0F 84 B8 00 00 00 39 81 D8 02 00 00 0F 84 AC 00 00 00 48 8D 51 08 48 8D 4C 24 20 E8 74 E9 6B 00 90 B8 04 00 00 00 66 89 44 24 20 8B 87 E8 02 00 00 48 89 44 24 28 48 8B 0F 48 81 C1 C8 18 00 00 4C 8D 44 24"
+    },
+    {
+      "name": "cost_evaluator",
+      "rva": "0x310cee0",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 C0 FC FF FF 48 81 EC 40 04 00 00 4D 8B F0 4C 8B E2 4C 8B E9 33 DB 48 8D B1 A0 09 00 00 4D 8B F8 0F 1F 40 00 48 63 C3 48 69 F8 F0 00 00 00 48 8D 4C 24 60 E8 2C 91 62 00 48 8D 8D 88 00 00 00 E8 70 90 62 00 4C 89 A5 30 03 00 00 4C 89 64 24 30 4C 89 64 24"
+    },
+    {
+      "name": "trigger_evaluator",
+      "rva": "0x372df30",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 30 04 00 00 48 8B DA 48 8B F9 48 8D 4C 24 50 E8 0E 81 00 00 48 8D 8C 24 78 01 00 00 E8 51 80 00 00 48 89 9C 24 20 04 00 00 48 89 5C 24 20 33 F6 48 89"
+    },
+    {
+      "name": "send_constructor",
+      "rva": "0x2968170",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B F1 C6 41 08 00 33 C0 48 89 41 0C 89 41 14 48 8D 05 42 3B B2 01 48 89 01 48 8D 05 08 3B B2 01 48 89 41 18 48 83 C1 20 E8 CB E9 70 00 90 8B 9F D8 02 00 00 48 8D 54 24 38 48 8B CF E8 97 41 71 00 48 8D 8E 58 03 00 00 44 8B C3 48 8B 10 E8 75 F6 28 00 8B 9F D8 02 00"
+    },
+    {
+      "name": "arrange_definition_registration",
+      "rva": "0x3214c90",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 8D 05 69 95 4F 01 C7 45 F8 1C 00 00 00 4C 8D 83 30 0F 00 00 48 89 45 F0 4C 8D 4D F0 C6 45 FC 00 48 8D 4D E0 48 89 7D E0 C7 45 E8 1E 00 00 00 C6 45 EC 00"
+    },
+    {
+      "name": "betrothed_link",
+      "rva": "0x1b97170",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "49 8B 00 4C 8B D2 66 83 38 04 75 06 44 8B 48 08 EB 06 41 B9 FF FF FF FF 4C 8B 05 D9 03 0D 04 48 8B 15 DA 03 0D 04 4D 85 C0 74 27 41 8B C1 25 FF FF FF 00 41 3B 40 2C 73 19 8B C8 49 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 06 44 39 48 18 74 03 48 8B C2 48 8B 88 A8 01 00 00 48 85 C9 74"
+    },
+    {
+      "name": "primary_spouse_link",
+      "rva": "0x1b97220",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "49 8B 08 4C 8B CA B8 FF FF FF FF 66 83 39 04 75 06 44 8B 41 08 EB 03 44 8B C0 48 8B 0D 27 03 0D 04 48 85 C9 74 25 41 8B D0 81 E2 FF FF FF 00 3B 51 2C 73 17 48 8B 49 20 48 03 D2 48 8B 4C D1 08 48 85 C9 74 06 44 39 41 18 74 07 48 8B 0D FE 02 0D 04 48 8B 91 A8 01 00 00 48 85 D2 74 03 8B 42 14 8B C8 49 8B C1 49 89 49 08 41 C7 01 04 00 00"
+    },
+    {
+      "name": "spouse_array_consumer",
+      "rva": "0x137598c",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 8B 82 A8 01 00 00 48 8D 78 20 48 85 C0 75 07 48 8D 3D E5 3B 0E 04 48 8B 0F 4C 8D 44 24 30 48 63 47 0C 48 8D 14 81 E8 78 AA 50 FF 48 8B 0F 48 63 57 0C"
+    },
+    {
+      "name": "marriage_native_redirect_and_construct",
+      "rva": "0x1aa80cd",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "C7 44 24 44 FF FF FF FF C7 44 24 58 FF FF FF FF 48 8D 44 24 58 48 89 44 24 30 48 8D 44 24 44 48 89 44 24 28 48 8D 44 24 48 48 89 44 24 20 4C 8D 4C 24 4C 4C 8D 44 24 50 48 8D 54 24 40 48 8B 0B E8 CE 0C 6A 01 48 8B 43 08 44 8B 44 24 40 44 3B 40 18 0F 85 EE 00 00 00 48 89 7C 24 38 8B 44 24 44 89 44 24 30 8B 44 24 48 89 44 24 28 8B 44 24 4C 89 44 24 20 44 8B 4C 24 50 48 8B 13 48 8D 8D 00 03 00 00 E8 FA EC 5C 01"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CSendCharacterInteractionCommand.primary",
+      "rva": "0x448bce0",
+      "function_rvas": [
+        "0x86be90",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29682a0",
+        "0x86d5c0",
+        "0x86d760"
+      ]
+    },
+    {
+      "name": "CSendCharacterInteractionCommand.secondary",
+      "rva": "0x448bcb0",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2968220",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "character_family_offset",
+      "rva": "0x1b971c5",
+      "instruction": "mov rcx, qword ptr [rax + 0x1a8]",
+      "bytes": "48 8B 88 A8 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "betrothed_id",
+      "rva": "0x1b971d6",
+      "instruction": "mov r9d, dword ptr [rcx + 0x10]",
+      "bytes": "44 8B 49 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "primary_spouse_id",
+      "rva": "0x1b9727e",
+      "instruction": "mov eax, dword ptr [rdx + 0x14]",
+      "bytes": "8B 42 14",
+      "rip_targets": []
+    },
+    {
+      "purpose": "family_spouse_array",
+      "rva": "0x1375993",
+      "instruction": "lea rdi, [rax + 0x20]",
+      "bytes": "48 8D 78 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "spouse_array_count",
+      "rva": "0x13759ab",
+      "instruction": "movsxd rax, dword ptr [rdi + 0xc]",
+      "bytes": "48 63 47 0C",
+      "rip_targets": []
+    },
+    {
+      "purpose": "database_slot",
+      "rva": "0x89da64",
+      "instruction": "mov rax, qword ptr [rip + 0x53c9acd]",
+      "bytes": "48 8B 05 CD 9A 3C 05",
+      "rip_targets": [
+        "0x5c67538"
+      ]
+    },
+    {
+      "purpose": "arrange_definition_name",
+      "rva": "0x3214c90",
+      "instruction": "lea rax, [rip + 0x14f9569]",
+      "bytes": "48 8D 05 69 95 4F 01",
+      "rip_targets": [
+        "0x470e200"
+      ]
+    },
+    {
+      "purpose": "arrange_definition_offset",
+      "rva": "0x3214c9e",
+      "instruction": "lea r8, [rbx + 0xf30]",
+      "bytes": "4C 8D 83 30 0F 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "added_redirect_role_stack_argument",
+      "rva": "0x1aa80e2",
+      "instruction": "mov qword ptr [rsp + 0x30], rax",
+      "bytes": "48 89 44 24 30",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native_marriage_redirect",
+      "rva": "0x1aa810d",
+      "instruction": "call 0x3148de0",
+      "bytes": "E8 CE 0C 6A 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native_marriage_construct_all_roles",
+      "rva": "0x1aa8151",
+      "instruction": "call 0x3076e50",
+      "bytes": "E8 FA EC 5C 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_secondary_actor",
+      "rva": "0x3076e9d",
+      "instruction": "mov dword ptr [rsi + 0x2e0], eax",
+      "bytes": "89 86 E0 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_secondary_recipient",
+      "rva": "0x3076ea7",
+      "instruction": "mov dword ptr [rsi + 0x2e4], eax",
+      "bytes": "89 86 E4 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_intermediary",
+      "rva": "0x3076eb1",
+      "instruction": "mov dword ptr [rsi + 0x2e8], eax",
+      "bytes": "89 86 E8 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_special_data",
+      "rva": "0x3076ed9",
+      "instruction": "mov qword ptr [rsi + 0x330], rbx",
+      "bytes": "48 89 9E 30 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autoaccept_trigger",
+      "rva": "0x2a2fe45",
+      "instruction": "mov rcx, qword ptr [rax + 0x2290]",
+      "bytes": "48 8B 88 90 22 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autoaccept_scalar",
+      "rva": "0x2a2fe51",
+      "instruction": "movzx eax, byte ptr [rax + 0x2718]",
+      "bytes": "0F B6 80 18 27 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_primary_vtable",
+      "rva": "0x2968197",
+      "instruction": "lea rax, [rip + 0x1b23b42]",
+      "bytes": "48 8D 05 42 3B B2 01",
+      "rip_targets": [
+        "0x448bce0"
+      ]
+    },
+    {
+      "purpose": "send_secondary_vtable",
+      "rva": "0x29681a1",
+      "instruction": "lea rax, [rip + 0x1b23b08]",
+      "bytes": "48 8D 05 08 3B B2 01",
+      "rip_targets": [
+        "0x448bcb0"
+      ]
+    },
+    {
+      "purpose": "send_context_copy",
+      "rva": "0x29681b0",
+      "instruction": "call 0x3076b80",
+      "bytes": "E8 CB E9 70 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_intermediary_score_offset",
+      "rva": "0x29681c9",
+      "instruction": "lea rcx, [rsi + 0x358]",
+      "bytes": "48 8D 8E 58 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_recipient_score_offset",
+      "rva": "0x29681ee",
+      "instruction": "lea rcx, [rsi + 0x360]",
+      "bytes": "48 8D 8E 60 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_block_offset",
+      "rva": "0x307c18d",
+      "instruction": "lea rcx, [r10 + 0x40]",
+      "bytes": "49 8D 4A 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_output_add",
+      "rva": "0x310d01c",
+      "instruction": "add qword ptr [r15], rax",
+      "bytes": "49 01 07",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_resource_count",
+      "rva": "0x310d025",
+      "instruction": "cmp ebx, 0xa",
+      "bytes": "83 FB 0A",
+      "rip_targets": []
+    },
+    {
+      "purpose": "recipient_score_definition_operand",
+      "rva": "0x307c4b4",
+      "instruction": "add rcx, 0x1918",
+      "bytes": "48 81 C1 18 19 00 00",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kMarriageInteractionDatabaseSlotRva": "0x5C67538",
+    "kMarriageArrangeMarriageInteractionOffset": "0xF30",
+    "kMarriageCharacterFamilyDataOffset": "0x1A8",
+    "kMarriageRedirectInteractionRolesRva": "0x3148DE0",
+    "kMarriageConstructInteractionAllRolesRva": "0x3076E50",
+    "kMarriageRefreshInteractionContextRva": "0x3078A60",
+    "kMarriageFinalizeInteractionContextRva": "0x3078C90",
+    "kMarriageValidateInteractionContextRva": "0x307C040",
+    "kMarriageDestroyInteractionContextRva": "0x30773A0",
+    "kMarriageRecipientInteractionAnswerScoreRva": "0x307C460",
+    "kMarriageIntermediaryInteractionAnswerScoreRva": "0x307C360",
+    "kMarriageInteractionCostEvaluatorRva": "0x310CEE0",
+    "kMarriageInteractionTriggerEvaluatorRva": "0x372DF30",
+    "kMarriageConstructSendInteractionCommandRva": "0x2968170",
+    "kMarriageSendInteractionPrimaryVtableRva": "0x448BCE0",
+    "kMarriageSendInteractionSecondaryVtableRva": "0x448BCB0"
+  },
+  "source_files": [
+    "include/xar_bridge/ck3_12002_context.hpp",
+    "src/ck3_12002_context.cpp",
+    "src/ck3_12002_context_test.cpp"
+  ],
+  "layouts": {
+    "CharacterFamily": "CCharacter+1A8; betrothed10, primaryspouse14, spouses-array20 (data20 cap28 count2C)",
+    "InteractionDatabase": "global slot5C67538; arrange_marriage_interaction+F30",
+    "CharacterInteractionContext": "338 bytes; definition0, primary scope8, actor2D8 recipient2DC secondaryActor2E0 secondaryRecipient2E4 intermediary2E8 initiatingActor2EC specialData330",
+    "SendCharacterInteractionCommand": "368 bytes; primary0 secondary18 context20 intermediaryScore358 recipientScore360",
+    "InteractionDefinition": "cost40, sendOptions2258/count2264/stride730, autoacceptTrigger2290, autoacceptScalar2718"
+  },
+  "known_gaps": [
+    "real paused-game native role/legality/cost/acceptance query acceptance",
+    "queued marriage command and resulting spouse/betrothed postcondition acceptance"
+  ],
+  "cost_resource_order": [
+    "gold",
+    "prestige",
+    "piety",
+    "renown",
+    "influence",
+    "herd",
+    "treasury",
+    "treasury_or_gold",
+    "merit",
+    "barter_goods"
+  ],
+  "cost_resource_order_evidence": {
+    "formatter_rva": "0x310B460",
+    "jump_table_rva": "0x310C0E8",
+    "render_rva": "0x310C1C0",
+    "render_compiled_row_rva": "0x310C250",
+    "render_formatter_ordinal_rva": "0x310C74B",
+    "render_formatter_call_rva": "0x310C752",
+    "row_and_formatter_increment_rvas": [
+      "0x310CC3E",
+      "0x310CC40"
+    ],
+    "render_ten_resource_limit_rva": "0x310CC48",
+    "formatter_branch_rvas": [
+      "0x310B4AF",
+      "0x310B5C8",
+      "0x310B6E1",
+      "0x310B7FA",
+      "0x310B913",
+      "0x310BA2C",
+      "0x310BB45",
+      "0x310BC5E",
+      "0x310BE82",
+      "0x310BF9B"
+    ],
+    "review_source": "shared exact-build native review by pending-interaction context migration; no runtime process reads"
+  }
+}

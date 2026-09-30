@@ -1,8 +1,10 @@
-"""Strict contract for the exact-build paused campaign root context."""
+﻿"""Strict contract for the exact-build paused campaign root context."""
 
 from __future__ import annotations
 
 from typing import Final
+
+from .version_identity import CK3_11906, CK3_12002, require_exact_native_backend
 
 
 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY: Final = (
@@ -73,6 +75,20 @@ _PROVENANCE_VALUES: Final = {
     "top_liege_rva": "0x2613600",
     "government_rva": "0x26165B0",
     "selected_game_rule_service_slot_rva": "0x5754B48",
+}
+_PROVENANCE_BY_BUILD: Final = {
+    CK3_11906.game_version: _PROVENANCE_VALUES,
+    CK3_12002.game_version: {
+        "game_version": CK3_12002.game_version,
+        "executable_sha256": CK3_12002.executable_sha256,
+        "backend_id": CK3_12002.backend_id("campaign-root-context-v1"),
+        "primary_title_rva": "0x289DA30",
+        "capital_province_rva": "0x28B1CD0",
+        "immediate_liege_rva": "0x28BFC70",
+        "top_liege_rva": "0x28BFDA0",
+        "government_rva": "0x28C2E10",
+        "selected_game_rule_service_slot_rva": "0x5CB3D78",
+    },
 }
 _UNAVAILABLE_REASONS: Final = {
     "unsupported_build",
@@ -200,14 +216,24 @@ def _normalize_readiness(
 
 def _normalize_provenance(value: object) -> dict[str, str]:
     provenance = _exact_object(value, _PROVENANCE_FIELDS, "provenance")
+    try:
+        build = require_exact_native_backend(
+            provenance.get("game_version"),
+            provenance.get("executable_sha256"),
+            provenance.get("backend_id"),
+            suffix="campaign-root-context-v1",
+        )
+    except ValueError as error:
+        raise ValueError("provenance does not match the frozen exact build") from error
+    expected_provenance = _PROVENANCE_BY_BUILD[build.game_version]
     if any(
         provenance.get(key) != expected
-        for key, expected in _PROVENANCE_VALUES.items()
+        for key, expected in expected_provenance.items()
     ):
         raise ValueError("provenance does not match the frozen exact build")
     return {
         key: str(provenance[key])
-        for key in _PROVENANCE_VALUES
+        for key in expected_provenance
     }
 
 

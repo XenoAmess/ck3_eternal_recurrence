@@ -1,0 +1,1394 @@
+{
+  "schema_version": 1,
+  "contract": "current-event-window-context-v1-static-migration",
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready typed event window reader, serializer and native-to-Python fixture; paused production live verification pending",
+  "read_only": true,
+  "live_verified": false,
+  "game_process_started": false,
+  "evidence_kind": "offline frozen exact executable plus synthetic native producer / Python consumer",
+  "scope": "materialized CEventWindow options, canonical definition identity, root/saved scopes, trait/stress/fulfillment/death/scheme GUI indicators",
+  "signature_anchors": [
+    {
+      "name": "idler_gfx_native_accessor",
+      "rva": "0xb20140",
+      "confidence": "reviewed-exact-static",
+      "pattern": "40 53 48 83 EC 30 8B D9 48 8B 0D D1 A3 14 05 48 85 C9 0F 84 A1 00 00 00 48 8B 49 10 4C 8D 0D FD 42 9F 04 4C 8D 05 CE 42 9F 04 C7 44 24 20 00 00"
+    },
+    {
+      "name": "idler_gfx_constructor",
+      "rva": "0xb1fbe0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 30 49 8B D8 48 8B F9 48 8D 05 07 C8 99 03 48 89 01 33 F6 48 89 71 08 48 89 71 10 48 8D"
+    },
+    {
+      "name": "manager_constructor",
+      "rva": "0xc454c0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 57 48 83 EC 20 48 8B F9 48 89 11 44 89 41 08 33 F6 48 89 71 10 48 89 71 18 48 89 71 20 48 8D 05 0D"
+    },
+    {
+      "name": "manager_tick",
+      "rva": "0xc45590",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 20 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 70 48 8B D9 48 8D 41 30 48 89 44 24 20 C6 44 24 28 00 41 BF 01 00 00 00 0F 1F 44 00 00"
+    },
+    {
+      "name": "manager_create_event_window",
+      "rva": "0xc45b30",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 56 41 57 48 81 EC 80 00 00 00 48 8B EA 48 8B F1 48 8B 9A B0 01 00 00 E8 A3 4C 34 03 4C 8D 05"
+    },
+    {
+      "name": "manager_append_window",
+      "rva": "0xc45ee0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 18 55 57 41 56 48 83 EC 20 48 63 41 0C 48 8B F9 8B 49 08 48 8B DA 3B C1 0F 85 CA 00 00 00 8D 68 01 66 0F 6E C1 48 8B 4F 10 41 B8 08 00 00 00 0F 5B C0 4C 89 7C 24 48 44 8B FD F3 0F 59 05 DA 04 DB 03 F3 0F 2C C0 3B E8 44 0F 4C F8 48 8B 01 41 8B D7 48 C1 E2 03 FF 50 08 48 8B 0B"
+    },
+    {
+      "name": "event_window_constructor",
+      "rva": "0x1829ca0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 18 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 10 FD FF FF 48 81 EC F0 03 00 00 4D 8B F1 4D 8B E0 4C 8B EA 48 8B F1"
+    },
+    {
+      "name": "event_window_destructor",
+      "rva": "0x182a080",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 8B F2 4C 8B F1 48 8D 05 6F D8 D6 02 48 89 01 48 8D 05 A5 D8 D6 02 48 89 41 10 48"
+    },
+    {
+      "name": "event_window_data_constructor",
+      "rva": "0x18502f0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 4C 89 44 24 18 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 49 8B E8 4C 8B EA 4C 8B F1 8B 82 BC 01 00 00 89 01 45"
+    },
+    {
+      "name": "event_window_setup_options",
+      "rva": "0x18528c0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "44 89 4C 24 20 4C 89 44 24 18 48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 81 EC A8 00 00 00 48 8D 6C 24 40 48 8B FA 48"
+    },
+    {
+      "name": "event_indicator_materializer",
+      "rva": "0x1858ff0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 80 FC FF FF 48 81 EC 80 04 00 00 4D 8B F8 4C 8B F2 4C 8B E9"
+    },
+    {
+      "name": "event_indicator_append",
+      "rva": "0x1859ef0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 18 48 89 7C 24 20 41 56 48 83 EC 20 4C 63 B1 94 00 00 00 48 8B F9 4C 8B 89 88 00 00 00 48 8B DA 4F 8D 04 76 4B 8D 0C C1 4C 3B C9 74"
+    },
+    {
+      "name": "event_cancel_widget",
+      "rva": "0x19d6220",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 55 57 41 56 48 8D 6C 24 B9 48 81 EC E0 00 00 00 49 63 F0 4C 8B F2 48 8B F9 48 8D 99 88 01 00 00 48 83 7B 10 00 0F"
+    },
+    {
+      "name": "stable_key_hash",
+      "rva": "0x3f7e240",
+      "confidence": "reviewed-exact-static",
+      "pattern": "89 4C 24 08 53 48 83 EC 20 33 C0 48 8D 4C 24 30 41 8B D8 89 44 24 30 45 8B C8 89 44 24 40 4C 8B C2 48 8D 54 24 40 E8 95 FE FF FF 8B 54 24 40 44"
+    },
+    {
+      "name": "generic_registry_getter",
+      "rva": "0x3795a80",
+      "confidence": "reviewed-exact-static",
+      "pattern": "40 53 48 83 EC 20 65 48 8B 04 25 58 00 00 00 BA 10 00 00 00 48 8B 08 8B 04 0A 39 05 34 47 5E 02 7F 0D 48 8D 05 47 D0 D5 01 48 83 C4 20 5B C3 48"
+    },
+    {
+      "name": "generic_type_name",
+      "rva": "0x3f4f900",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 83 EC 28 4C 63 C9 48 8B 05 DA F4 D6 01 BA 02 00 00 00 F0 0F C1 10 41 B8 FE FF FF FF F6 C2 01 74 27 41 8B C8 F0 0F C1 08 0F 1F 80 00 00 00 00"
+    },
+    {
+      "name": "script_identifier_table_getter",
+      "rva": "0x3f8a800",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 83 EC 28 65 48 8B 04 25 58 00 00 00 BA 10 00 00 00 48 8B 08 8B 04 0A 39 05 6A 6B E3 01 7F 0C 48 8D 05 69 6B E3 01 48 83 C4 28 C3 48 8D 0D 55"
+    },
+    {
+      "name": "script_identifier_name",
+      "rva": "0x3f8a6f0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 83 EC 28 B8 02 00 00 00 F0 0F C1 41 48 41 B8 FE FF FF FF A8 01 74 29 0F 1F 84 00 00 00 00 00 41 8B C0 F0 0F C1 41 48 8B 41 48 A8 01 74 04 F3"
+    },
+    {
+      "name": "script_identifier_lookup",
+      "rva": "0x3f8a680",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F2 48 8B D9 B8 02 00 00 00 F0 0F C1 41 48 BF FE FF FF FF A8 01 74 28 0F 1F 84 00 00 00 00 00"
+    },
+    {
+      "name": "active_event_default_constructor",
+      "rva": "0x29c6c20",
+      "confidence": "reviewed-exact-static",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 E8 32 33 EC FD 33 C9 48 C7 83 80 01 00 00 0F 00 00 00 48 89 8B 68 01 00 00 48 8B C3 48 89 8B 78 01 00 00 48 89 8B 88"
+    },
+    {
+      "name": "event_target_scope_constructor",
+      "rva": "0x889f60",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 33 FF C7 41 10 FF FF FF FF 89 39 48 8B D9 48 89 79 08 48 83 C1 18 E8 4B F6 FF FF 48 8D 05 5C 32 C0 03 48 89 BB 00"
+    },
+    {
+      "name": "event_target_scope_copy_constructor",
+      "rva": "0x373ae00",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 57 48 83 EC 20 48 8B DA 48 8B F9 33 F6 89 31 48 89 71 08 C7 41 10 FF FF FF FF 48 83 C1 18 E8 9E E7"
+    },
+    {
+      "name": "event_target_scope_serializer",
+      "rva": "0x2333030",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 20 49 8B F0 8B DA 48 8B F9 E8 54 5B C5 01 8B D3 48 8B CF E8 8A 5E C5 01 BA 01 00 00 00 48 8B CF E8 7D"
+    },
+    {
+      "name": "saved_scope_serializer",
+      "rva": "0x2613b20",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 18 55 56 57 41 56 41 57 48 83 EC 40 48 8B DA 48 8B F9 8B 51 10 85 D2 78 1A BA 03 00 00 00 E8 99 53 97 01 BA 10 00 00 00 48 8B CF E8"
+    },
+    {
+      "name": "generic_type_consumer",
+      "rva": "0x2253d50",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 55 57 41 54 41 56 41 57 48 8D AC 24 80 FD FF FF 48 81 EC 80 03 00 00 49 8B D8 48 8B F1 45 33 FF 44"
+    },
+    {
+      "name": "character_type4_registration",
+      "rva": "0x43fb20",
+      "confidence": "reviewed-exact-static",
+      "pattern": "4C 8B DC 48 81 EC C8 00 00 00 33 C0 4D 8D 43 A8 49 89 43 98 48 8D 0D 6D 73 83 05 49 89 43 A0 BA 04 00 00 00 C7 44 24 20 EC 06 00 00 48 8D 05 5D"
+    },
+    {
+      "name": "event_definition_duplicate_validator",
+      "rva": "0x37a1200",
+      "confidence": "reviewed-exact-static",
+      "pattern": "4C 8B DC 56 48 83 EC 70 48 63 51 4C 48 8B F1 83 FA 01 0F 8E D9 01 00 00 48 8B 41 40 49 89 5B 10 49 89 7B 20 4D 89 63 F0 4C 8B E2 48 8B 38 48 83"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CIngameInterfaceIdlerGfx.primary",
+      "rva": "0x44bc408",
+      "function_rvas": [
+        "0xb1fdc0",
+        "0xb200d0",
+        "0xb22510",
+        "0xb20270"
+      ]
+    },
+    {
+      "name": "CEventWindow.primary",
+      "rva": "0x4597910",
+      "function_rvas": [
+        "0x182a080",
+        "0x182abb0",
+        "0x9dc6b0",
+        "0x8523c0"
+      ]
+    },
+    {
+      "name": "CSchemeType.primary",
+      "rva": "0x48b9f20",
+      "function_rvas": [
+        "0x30d0e00",
+        "0x74736e6e235f7325",
+        "0x5f6e6f6834637572",
+        "0x6f635f7834656970"
+      ]
+    }
+  ],
+  "instruction_checks": [
+    {
+      "purpose": "idler-root-slot",
+      "rva": "0xb20148",
+      "bytes": "48 8b 0d d1 a3 14 05",
+      "instruction": "mov rcx, qword ptr [rip + 0x514a3d1]",
+      "rip_targets": [
+        "0x5c6a520"
+      ]
+    },
+    {
+      "purpose": "idler-root-owner-child",
+      "rva": "0xb20158",
+      "bytes": "48 8b 49 10",
+      "instruction": "mov rcx, qword ptr [rcx + 0x10]"
+    },
+    {
+      "purpose": "idler-rtti-gfx-type",
+      "rva": "0xb2015c",
+      "bytes": "4c 8d 0d fd 42 9f 04",
+      "instruction": "lea r9, [rip + 0x49f42fd]",
+      "rip_targets": [
+        "0x5514460"
+      ]
+    },
+    {
+      "purpose": "idler-dynamic-cast",
+      "rva": "0xb20174",
+      "bytes": "e8 1b 0d 74 03",
+      "instruction": "call 0x4260e94"
+    },
+    {
+      "purpose": "idler-gfx-primary-vtable",
+      "rva": "0xb1fbfa",
+      "bytes": "48 8d 05 07 c8 99 03",
+      "instruction": "lea rax, [rip + 0x399c807]",
+      "rip_targets": [
+        "0x44bc408"
+      ]
+    },
+    {
+      "purpose": "idler-create-window-manager",
+      "rva": "0xb1fc97",
+      "bytes": "e8 24 58 12 00",
+      "instruction": "call 0xc454c0"
+    },
+    {
+      "purpose": "idler-manager-field",
+      "rva": "0xb1fc9d",
+      "bytes": "48 89 47 28",
+      "instruction": "mov qword ptr [rdi + 0x28], rax"
+    },
+    {
+      "purpose": "manager-single-popup-default",
+      "rva": "0xc454e0",
+      "bytes": "48 89 71 10",
+      "instruction": "mov qword ptr [rcx + 0x10], rsi"
+    },
+    {
+      "purpose": "manager-window-vector-data-default",
+      "rva": "0xc454e4",
+      "bytes": "48 89 71 18",
+      "instruction": "mov qword ptr [rcx + 0x18], rsi"
+    },
+    {
+      "purpose": "manager-window-vector-capacity-count-default",
+      "rva": "0xc454e8",
+      "bytes": "48 89 71 20",
+      "instruction": "mov qword ptr [rcx + 0x20], rsi"
+    },
+    {
+      "purpose": "manager-window-vector-data",
+      "rva": "0xc457fd",
+      "bytes": "48 8b 7b 18",
+      "instruction": "mov rdi, qword ptr [rbx + 0x18]"
+    },
+    {
+      "purpose": "manager-window-vector-count",
+      "rva": "0xc45801",
+      "bytes": "48 63 4b 24",
+      "instruction": "movsxd rcx, dword ptr [rbx + 0x24]"
+    },
+    {
+      "purpose": "manager-normal-event-window-allocate",
+      "rva": "0xc45cf5",
+      "bytes": "b9 f0 08 00 00",
+      "instruction": "mov ecx, 0x8f0"
+    },
+    {
+      "purpose": "manager-normal-event-window-constructor",
+      "rva": "0xc45d13",
+      "bytes": "e8 88 3f be 00",
+      "instruction": "call 0x1829ca0"
+    },
+    {
+      "purpose": "manager-normal-event-window-vector",
+      "rva": "0xc45d29",
+      "bytes": "48 8d 4e 18",
+      "instruction": "lea rcx, [rsi + 0x18]"
+    },
+    {
+      "purpose": "manager-normal-event-window-append",
+      "rva": "0xc45d2d",
+      "bytes": "e8 ae 01 00 00",
+      "instruction": "call 0xc45ee0"
+    },
+    {
+      "purpose": "manager-separate-popup-allocate",
+      "rva": "0xc45b95",
+      "bytes": "b9 e0 00 00 00",
+      "instruction": "mov ecx, 0xe0"
+    },
+    {
+      "purpose": "manager-separate-popup-primary-vtable",
+      "rva": "0xc45c1a",
+      "bytes": "48 8d 05 17 11 95 03",
+      "instruction": "lea rax, [rip + 0x3951117]",
+      "rip_targets": [
+        "0x4596d38"
+      ]
+    },
+    {
+      "purpose": "manager-separate-popup-field",
+      "rva": "0xc45ce0",
+      "bytes": "4c 89 76 10",
+      "instruction": "mov qword ptr [rsi + 0x10], r14"
+    },
+    {
+      "purpose": "event-window-primary-vtable",
+      "rva": "0x1829f67",
+      "bytes": "48 8d 05 a2 d9 d6 02",
+      "instruction": "lea rax, [rip + 0x2d6d9a2]",
+      "rip_targets": [
+        "0x4597910"
+      ]
+    },
+    {
+      "purpose": "event-window-inline-data-constructor",
+      "rva": "0x1829f95",
+      "bytes": "48 8d 8e b8 00 00 00",
+      "instruction": "lea rcx, [rsi + 0xb8]"
+    },
+    {
+      "purpose": "event-window-data-constructor-call",
+      "rva": "0x1829fba",
+      "bytes": "e8 31 63 02 00",
+      "instruction": "call 0x18502f0"
+    },
+    {
+      "purpose": "event-window-inline-data-destructor",
+      "rva": "0x182a0e2",
+      "bytes": "49 8d 8e b8 00 00 00",
+      "instruction": "lea rcx, [r14 + 0xb8]"
+    },
+    {
+      "purpose": "event-window-data-instance-id-source",
+      "rva": "0x1850317",
+      "bytes": "8b 82 bc 01 00 00",
+      "instruction": "mov eax, dword ptr [rdx + 0x1bc]"
+    },
+    {
+      "purpose": "event-window-data-instance-id",
+      "rva": "0x185031d",
+      "bytes": "89 01",
+      "instruction": "mov dword ptr [rcx], eax"
+    },
+    {
+      "purpose": "event-window-data-options-data",
+      "rva": "0x1850326",
+      "bytes": "4c 89 79 10",
+      "instruction": "mov qword ptr [rcx + 0x10], r15"
+    },
+    {
+      "purpose": "event-window-data-options-capacity-count",
+      "rva": "0x185032a",
+      "bytes": "4c 89 79 18",
+      "instruction": "mov qword ptr [rcx + 0x18], r15"
+    },
+    {
+      "purpose": "setup-active-event-definition-pointer",
+      "rva": "0x1852903",
+      "bytes": "48 8b 87 b0 01 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0x1b0]"
+    },
+    {
+      "purpose": "authored-option-vector-header",
+      "rva": "0x185290a",
+      "bytes": "48 05 a0 01 00 00",
+      "instruction": "add rax, 0x1a0"
+    },
+    {
+      "purpose": "authored-option-count",
+      "rva": "0x1852914",
+      "bytes": "8b 58 0c",
+      "instruction": "mov ebx, dword ptr [rax + 0xc]"
+    },
+    {
+      "purpose": "event-option-item-owner",
+      "rva": "0x1858760",
+      "bytes": "48 89 9f 60 01 00 00",
+      "instruction": "mov qword ptr [rdi + 0x160], rbx"
+    },
+    {
+      "purpose": "event-option-item-resolved-name",
+      "rva": "0x185876e",
+      "bytes": "48 8d 97 70 01 00 00",
+      "instruction": "lea rdx, [rdi + 0x170]"
+    },
+    {
+      "purpose": "event-option-item-unavailable-reason",
+      "rva": "0x1858927",
+      "bytes": "0f 11 87 90 01 00 00",
+      "instruction": "movups xmmword ptr [rdi + 0x190], xmm0"
+    },
+    {
+      "purpose": "event-option-item-native-index",
+      "rva": "0x18589e3",
+      "bytes": "44 89 bf b0 01 00 00",
+      "instruction": "mov dword ptr [rdi + 0x1b0], r15d"
+    },
+    {
+      "purpose": "event-option-item-enabled",
+      "rva": "0x18589ea",
+      "bytes": "44 88 b7 b4 01 00 00",
+      "instruction": "mov byte ptr [rdi + 0x1b4], r14b"
+    },
+    {
+      "purpose": "event-option-item-fallback",
+      "rva": "0x18589f1",
+      "bytes": "c6 87 b5 01 00 00 00",
+      "instruction": "mov byte ptr [rdi + 0x1b5], 0"
+    },
+    {
+      "purpose": "event-option-item-stride-multiply",
+      "rva": "0x185d0e6",
+      "bytes": "48 69 d0 b8 01 00 00",
+      "instruction": "imul rdx, rax, 0x1b8"
+    },
+    {
+      "purpose": "event-option-item-stride-advance",
+      "rva": "0x185d2af",
+      "bytes": "48 81 c6 b8 01 00 00",
+      "instruction": "add rsi, 0x1b8"
+    },
+    {
+      "purpose": "cancel-authored-vector",
+      "rva": "0x19d62d5",
+      "bytes": "49 8b 86 a0 01 00 00",
+      "instruction": "mov rax, qword ptr [r14 + 0x1a0]"
+    },
+    {
+      "purpose": "cancel-authored-option-pointer",
+      "rva": "0x19d62dc",
+      "bytes": "48 8b 0c f0",
+      "instruction": "mov rcx, qword ptr [rax + rsi*8]"
+    },
+    {
+      "purpose": "cancel-new-option-field",
+      "rva": "0x19d62e0",
+      "bytes": "80 b9 12 04 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x412], 0"
+    },
+    {
+      "purpose": "indicator-materializer-collector",
+      "rva": "0x1859058",
+      "bytes": "e8 83 c5 f0 01",
+      "instruction": "call 0x37655e0"
+    },
+    {
+      "purpose": "indicator-combined-kind",
+      "rva": "0x18590a0",
+      "bytes": "c7 44 24 40 03 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x40], 3"
+    },
+    {
+      "purpose": "indicator-combined-primary-gain",
+      "rva": "0x18590aa",
+      "bytes": "0f 9f 44 24 44",
+      "instruction": "setg byte ptr [rsp + 0x44]"
+    },
+    {
+      "purpose": "indicator-combined-secondary-gain",
+      "rva": "0x18590b1",
+      "bytes": "0f 9f 44 24 45",
+      "instruction": "setg byte ptr [rsp + 0x45]"
+    },
+    {
+      "purpose": "indicator-stress-affected-trait",
+      "rva": "0x1859091",
+      "bytes": "88 44 24 46",
+      "instruction": "mov byte ptr [rsp + 0x46], al"
+    },
+    {
+      "purpose": "indicator-stress-critical",
+      "rva": "0x1859171",
+      "bytes": "88 44 24 47",
+      "instruction": "mov byte ptr [rsp + 0x47], al"
+    },
+    {
+      "purpose": "indicator-stress-kind",
+      "rva": "0x185917f",
+      "bytes": "bf 01 00 00 00",
+      "instruction": "mov edi, 1"
+    },
+    {
+      "purpose": "indicator-fulfillment-kind",
+      "rva": "0x1859286",
+      "bytes": "c7 44 24 40 02 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x40], 2"
+    },
+    {
+      "purpose": "indicator-death-kind",
+      "rva": "0x18592c9",
+      "bytes": "c7 44 24 40 04 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x40], 4"
+    },
+    {
+      "purpose": "indicator-scheme-payload",
+      "rva": "0x18584b6",
+      "bytes": "48 8b 43 70",
+      "instruction": "mov rax, qword ptr [rbx + 0x70]"
+    },
+    {
+      "purpose": "indicator-scheme-kind",
+      "rva": "0x18584c5",
+      "bytes": "c7 45 f0 05 00 00 00",
+      "instruction": "mov dword ptr [rbp - 0x10], 5"
+    },
+    {
+      "purpose": "indicator-scheme-append",
+      "rva": "0x18584ff",
+      "bytes": "e8 ec 19 00 00",
+      "instruction": "call 0x1859ef0"
+    },
+    {
+      "purpose": "indicator-vector-count",
+      "rva": "0x1859f00",
+      "bytes": "4c 63 b1 94 00 00 00",
+      "instruction": "movsxd r14, dword ptr [rcx + 0x94]"
+    },
+    {
+      "purpose": "indicator-vector-data",
+      "rva": "0x1859f0a",
+      "bytes": "4c 8b 89 88 00 00 00",
+      "instruction": "mov r9, qword ptr [rcx + 0x88]"
+    },
+    {
+      "purpose": "indicator-row-kind",
+      "rva": "0x1859f33",
+      "bytes": "8b 43 10",
+      "instruction": "mov eax, dword ptr [rbx + 0x10]"
+    },
+    {
+      "purpose": "indicator-row-primary-gain",
+      "rva": "0x1859f3c",
+      "bytes": "0f b6 43 14",
+      "instruction": "movzx eax, byte ptr [rbx + 0x14]"
+    },
+    {
+      "purpose": "indicator-row-affected-by-trait",
+      "rva": "0x1859f46",
+      "bytes": "0f b6 43 16",
+      "instruction": "movzx eax, byte ptr [rbx + 0x16]"
+    },
+    {
+      "purpose": "indicator-row-critical",
+      "rva": "0x1859f50",
+      "bytes": "0f b6 43 17",
+      "instruction": "movzx eax, byte ptr [rbx + 0x17]"
+    },
+    {
+      "purpose": "indicator-row-stride",
+      "rva": "0x1859f5a",
+      "bytes": "49 83 c1 18",
+      "instruction": "add r9, 0x18"
+    },
+    {
+      "purpose": "indicator-vector-capacity",
+      "rva": "0x1859f75",
+      "bytes": "8b 87 90 00 00 00",
+      "instruction": "mov eax, dword ptr [rdi + 0x90]"
+    },
+    {
+      "purpose": "indicator-row-last-eight-bytes-copy",
+      "rva": "0x1859fe8",
+      "bytes": "f2 0f 10 4b 10",
+      "instruction": "movsd xmm1, qword ptr [rbx + 0x10]"
+    },
+    {
+      "purpose": "trait-database-slot",
+      "rva": "0x89e5b4",
+      "bytes": "48 8b 05 6d 8f 3c 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53c8f6d]",
+      "rip_targets": [
+        "0x5c67528"
+      ]
+    },
+    {
+      "purpose": "trait-definition-count",
+      "rva": "0xc85f37",
+      "bytes": "3b 51 5c",
+      "instruction": "cmp edx, dword ptr [rcx + 0x5c]"
+    },
+    {
+      "purpose": "trait-definition-data",
+      "rva": "0xc85f3c",
+      "bytes": "48 8b 41 50",
+      "instruction": "mov rax, qword ptr [rcx + 0x50]"
+    },
+    {
+      "purpose": "trait-definition-array-stride",
+      "rva": "0xc85f43",
+      "bytes": "48 8b 04 d0",
+      "instruction": "mov rax, qword ptr [rax + rdx*8]"
+    },
+    {
+      "purpose": "trait-stable-key",
+      "rva": "0x324f3b2",
+      "bytes": "48 83 c0 18",
+      "instruction": "add rax, 0x18"
+    },
+    {
+      "purpose": "scheme-database-slot",
+      "rva": "0x8fd3c4",
+      "bytes": "48 8b 05 3d 9d 36 05",
+      "instruction": "mov rax, qword ptr [rip + 0x5369d3d]",
+      "rip_targets": [
+        "0x5c67108"
+      ]
+    },
+    {
+      "purpose": "scheme-lookup-key-hash",
+      "rva": "0xa99da1",
+      "bytes": "e8 9a 44 4e 03",
+      "instruction": "call 0x3f7e240"
+    },
+    {
+      "purpose": "scheme-lookup-hash-consumer",
+      "rva": "0xa99dab",
+      "bytes": "e8 f0 5d 02 00",
+      "instruction": "call 0xabfba0"
+    },
+    {
+      "purpose": "scheme-lookup-native-fallback",
+      "rva": "0xabfcaa",
+      "bytes": "48 8b 05 ef e5 25 05",
+      "instruction": "mov rax, qword ptr [rip + 0x525e5ef]",
+      "rip_targets": [
+        "0x5d1e2a0"
+      ]
+    },
+    {
+      "purpose": "scheme-type-primary-vtable",
+      "rva": "0x30cf9de",
+      "bytes": "48 8d 05 3b a5 7e 01",
+      "instruction": "lea rax, [rip + 0x17ea53b]",
+      "rip_targets": [
+        "0x48b9f20"
+      ]
+    },
+    {
+      "purpose": "active-event-zero-offset-scope-constructor",
+      "rva": "0x29c6c29",
+      "bytes": "e8 32 33 ec fd",
+      "instruction": "call 0x889f60"
+    },
+    {
+      "purpose": "active-event-data-pointer-default",
+      "rva": "0x29c6c5a",
+      "bytes": "48 89 8b b0 01 00 00",
+      "instruction": "mov qword ptr [rbx + 0x1b0], rcx"
+    },
+    {
+      "purpose": "scope-root-token-serializer",
+      "rva": "0x23330b3",
+      "bytes": "48 89 74 24 30",
+      "instruction": "mov qword ptr [rsp + 0x30], rsi"
+    },
+    {
+      "purpose": "scope-root-token-serializer-call",
+      "rva": "0x23330bb",
+      "bytes": "e8 b0 55 55 fe",
+      "instruction": "call 0x888670"
+    },
+    {
+      "purpose": "scope-saved-count",
+      "rva": "0x2333107",
+      "bytes": "83 7e 24 00",
+      "instruction": "cmp dword ptr [rsi + 0x24], 0"
+    },
+    {
+      "purpose": "scope-saved-header",
+      "rva": "0x233310d",
+      "bytes": "4c 8d 46 18",
+      "instruction": "lea r8, [rsi + 0x18]"
+    },
+    {
+      "purpose": "scope-saved-row-count",
+      "rva": "0x2613b62",
+      "bytes": "48 63 40 0c",
+      "instruction": "movsxd rax, dword ptr [rax + 0xc]"
+    },
+    {
+      "purpose": "scope-saved-row-stride-calculation",
+      "rva": "0x2613b66",
+      "bytes": "48 8d 0c 40",
+      "instruction": "lea rcx, [rax + rax*2]"
+    },
+    {
+      "purpose": "scope-saved-row-name-id",
+      "rva": "0x2613b80",
+      "bytes": "8b 1e",
+      "instruction": "mov ebx, dword ptr [rsi]"
+    },
+    {
+      "purpose": "scope-saved-row-name-table",
+      "rva": "0x2613b82",
+      "bytes": "e8 79 6c 97 01",
+      "instruction": "call 0x3f8a800"
+    },
+    {
+      "purpose": "scope-saved-row-name-resolver",
+      "rva": "0x2613b8c",
+      "bytes": "e8 5f 6b 97 01",
+      "instruction": "call 0x3f8a6f0"
+    },
+    {
+      "purpose": "scope-saved-row-token",
+      "rva": "0x2613c3d",
+      "bytes": "48 8d 46 08",
+      "instruction": "lea rax, [rsi + 8]"
+    },
+    {
+      "purpose": "scope-saved-row-stride",
+      "rva": "0x2613c60",
+      "bytes": "48 83 c6 18",
+      "instruction": "add rsi, 0x18"
+    },
+    {
+      "purpose": "generic-token-type-index",
+      "rva": "0x2253d88",
+      "bytes": "0f b7 3a",
+      "instruction": "movzx edi, word ptr [rdx]"
+    },
+    {
+      "purpose": "generic-registry-count",
+      "rva": "0x2253d90",
+      "bytes": "39 78 0c",
+      "instruction": "cmp dword ptr [rax + 0xc], edi"
+    },
+    {
+      "purpose": "generic-registry-stride-five",
+      "rva": "0x2253d9a",
+      "bytes": "48 8d 14 bf",
+      "instruction": "lea rdx, [rdi + rdi*4]"
+    },
+    {
+      "purpose": "generic-registry-stride-sixteen",
+      "rva": "0x2253d9e",
+      "bytes": "48 c1 e2 04",
+      "instruction": "shl rdx, 4"
+    },
+    {
+      "purpose": "generic-registry-data",
+      "rva": "0x2253da2",
+      "bytes": "48 03 10",
+      "instruction": "add rdx, qword ptr [rax]"
+    },
+    {
+      "purpose": "generic-registry-entry-name-identifier",
+      "rva": "0x2253dae",
+      "bytes": "8b 0a",
+      "instruction": "mov ecx, dword ptr [rdx]"
+    },
+    {
+      "purpose": "generic-registry-entry-name-resolver",
+      "rva": "0x2253db0",
+      "bytes": "e8 4b bb cf 01",
+      "instruction": "call 0x3f4f900"
+    },
+    {
+      "purpose": "generic-registry-exact-root",
+      "rva": "0x3795aa2",
+      "bytes": "48 8d 05 47 d0 d5 01",
+      "instruction": "lea rax, [rip + 0x1d5d047]",
+      "rip_targets": [
+        "0x54f2af0"
+      ]
+    },
+    {
+      "purpose": "generic-type-name-fallback",
+      "rva": "0x3f4f98f",
+      "bytes": "48 8d 05 92 17 e7 01",
+      "instruction": "lea rax, [rip + 0x1e71792]",
+      "rip_targets": [
+        "0x5dc1128"
+      ]
+    },
+    {
+      "purpose": "script-identifier-name-table",
+      "rva": "0x3f8a820",
+      "bytes": "48 8d 05 69 6b e3 01",
+      "instruction": "lea rax, [rip + 0x1e36b69]",
+      "rip_targets": [
+        "0x5dc1390"
+      ]
+    },
+    {
+      "purpose": "script-identifier-name-fallback",
+      "rva": "0x3f8a76f",
+      "bytes": "48 8d 05 f2 6b e3 01",
+      "instruction": "lea rax, [rip + 0x1e36bf2]",
+      "rip_targets": [
+        "0x5dc1368"
+      ]
+    },
+    {
+      "purpose": "character-type-four-registration",
+      "rva": "0x43fb3f",
+      "bytes": "ba 04 00 00 00",
+      "instruction": "mov edx, 4"
+    },
+    {
+      "purpose": "character-scope-native-resolver-registration",
+      "rva": "0x43fb83",
+      "bytes": "48 8d 05 76 e4 e1 01",
+      "instruction": "lea rax, [rip + 0x1e1e476]",
+      "rip_targets": [
+        "0x225e000"
+      ]
+    },
+    {
+      "purpose": "character-scope-native-type-four",
+      "rva": "0x225e000",
+      "bytes": "66 83 39 04",
+      "instruction": "cmp word ptr [rcx], 4"
+    },
+    {
+      "purpose": "character-scope-native-payload",
+      "rva": "0x225e006",
+      "bytes": "8b 51 08",
+      "instruction": "mov edx, dword ptr [rcx + 8]"
+    },
+    {
+      "purpose": "character-storage-slot",
+      "rva": "0x225e010",
+      "bytes": "48 8b 05 51 95 a0 03",
+      "instruction": "mov rax, qword ptr [rip + 0x3a09551]",
+      "rip_targets": [
+        "0x5c67568"
+      ]
+    },
+    {
+      "purpose": "character-storage-capacity",
+      "rva": "0x225e024",
+      "bytes": "3b 48 2c",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]"
+    },
+    {
+      "purpose": "character-storage-slots",
+      "rva": "0x225e029",
+      "bytes": "48 8b 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]"
+    },
+    {
+      "purpose": "character-storage-item-stride",
+      "rva": "0x225e030",
+      "bytes": "48 8b 44 c8 08",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]"
+    },
+    {
+      "purpose": "character-full-id-round-trip",
+      "rva": "0x225e03a",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx"
+    },
+    {
+      "purpose": "character-new-inline-validity-tag",
+      "rva": "0x225e046",
+      "bytes": "81 78 1c 72 61 68 43",
+      "instruction": "cmp dword ptr [rax + 0x1c], 0x43686172"
+    },
+    {
+      "purpose": "event-calculated-id",
+      "rva": "0x37a126d",
+      "bytes": "8b 48 08",
+      "instruction": "mov ecx, dword ptr [rax + 8]"
+    },
+    {
+      "purpose": "event-calculated-id-comparison",
+      "rva": "0x37a1270",
+      "bytes": "39 4a 08",
+      "instruction": "cmp dword ptr [rdx + 8], ecx"
+    },
+    {
+      "purpose": "event-canonical-definition-key",
+      "rva": "0x37a12a9",
+      "bytes": "4c 8d 7a 10",
+      "instruction": "lea r15, [rdx + 0x10]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-loaded-vector",
+      "rva": "0x37a14b0",
+      "bytes": "49 8b 46 40",
+      "instruction": "mov rax, qword ptr [r14 + 0x40]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-definition-pointer",
+      "rva": "0x37a14b4",
+      "bytes": "48 8b 0c d8",
+      "instruction": "mov rcx, qword ptr [rax + rbx*8]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-calculated-id",
+      "rva": "0x37a14bf",
+      "bytes": "8b 51 08",
+      "instruction": "mov edx, dword ptr [rcx + 8]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-loaded-id-array",
+      "rva": "0x37a14c6",
+      "bytes": "89 14 98",
+      "instruction": "mov dword ptr [rax + rbx*4], edx"
+    },
+    {
+      "purpose": "event-runtime-ordinal-producer",
+      "rva": "0x37a14d0",
+      "bytes": "89 78 0c",
+      "instruction": "mov dword ptr [rax + 0xc], edi"
+    },
+    {
+      "purpose": "event-runtime-ordinal-increment",
+      "rva": "0x37a179e",
+      "bytes": "ff c7",
+      "instruction": "inc edi"
+    }
+  ],
+  "source_contract": {
+    "range_convention": "start inclusive, end exclusive",
+    "span_provenance": "exact .pdata runtime-function regions; a region may be only one part of a logical function. Character resolver is a reviewed complete leaf without an unwind record.",
+    "exact_function_spans": [
+      {
+        "name": "idler_gfx_native_accessor_runtime_region",
+        "start_rva": "0xb20140",
+        "end_rva": "0xb2018a",
+        "byte_length": 74,
+        "sha256": "F9A875DF62D019FB1DD4BE9CCB9974903E6044A581100B33B20E7C7DA3CE46F5"
+      },
+      {
+        "name": "idler_gfx_constructor_runtime_region",
+        "start_rva": "0xb1fbe0",
+        "end_rva": "0xb1fdc0",
+        "byte_length": 480,
+        "sha256": "54052973DFA39CCB3438869CBDB92C4CB49DF5ACB34FE9DA544DDD641D4F5568"
+      },
+      {
+        "name": "manager_constructor_runtime_region",
+        "start_rva": "0xc454c0",
+        "end_rva": "0xc45581",
+        "byte_length": 193,
+        "sha256": "77663B107B68DA9B170F585CE5439206173AC0CCBBDEF9C7B674592F66301A98"
+      },
+      {
+        "name": "manager_tick_runtime_region",
+        "start_rva": "0xc45590",
+        "end_rva": "0xc45926",
+        "byte_length": 918,
+        "sha256": "09C63C4C56533E3E5AAD6B324FA4B22A0144254DDB1E2B83D12C426E90F7F7B1"
+      },
+      {
+        "name": "manager_create_event_window_runtime_region",
+        "start_rva": "0xc45b30",
+        "end_rva": "0xc45d75",
+        "byte_length": 581,
+        "sha256": "E7E37C3A82233616484CDB36CB0E3561AE89032ED0F6825DAF58301364DD43E0"
+      },
+      {
+        "name": "manager_append_window_runtime_region",
+        "start_rva": "0xc45ee0",
+        "end_rva": "0xc45f16",
+        "byte_length": 54,
+        "sha256": "FFA43F97224888960A68C6F8174A501D749DDA0239366B7520DC8A013E32E674"
+      },
+      {
+        "name": "event_window_constructor_runtime_region",
+        "start_rva": "0x1829ca0",
+        "end_rva": "0x182a07d",
+        "byte_length": 989,
+        "sha256": "4844B4DF8A7E8F07E6BF26CDBDC23E8FAF40CC0BE9724848DB7F3C53217F206A"
+      },
+      {
+        "name": "event_window_destructor_runtime_region",
+        "start_rva": "0x182a080",
+        "end_rva": "0x182a12d",
+        "byte_length": 173,
+        "sha256": "B37160A52BFA921132538FCD4F8ED25B436B4A4CD5AF208B6F645083B4CB5871"
+      },
+      {
+        "name": "event_window_data_constructor_runtime_region",
+        "start_rva": "0x18502f0",
+        "end_rva": "0x1850877",
+        "byte_length": 1415,
+        "sha256": "34CB1C09DDA1B9664E80EE83DAB93F740114694C9EF2E9ECFF3FD24276811A78"
+      },
+      {
+        "name": "event_window_setup_options_runtime_region",
+        "start_rva": "0x18528c0",
+        "end_rva": "0x1852fd1",
+        "byte_length": 1809,
+        "sha256": "8B09B0989E56793A482E031A2053E98BEFAAF69B9F122C5B6B57329B57BDB92F"
+      },
+      {
+        "name": "event_option_item_constructor_runtime_region",
+        "start_rva": "0x18581f0",
+        "end_rva": "0x18586bf",
+        "byte_length": 1231,
+        "sha256": "65663B004E286E5EBE3887F2ED1A465106B212949B0AF526F55C9F09C67D75FD"
+      },
+      {
+        "name": "event_indicator_materializer_runtime_region",
+        "start_rva": "0x1858ff0",
+        "end_rva": "0x18594a5",
+        "byte_length": 1205,
+        "sha256": "8F5F34BFF49332E56537C016250FBEFA4E8CD015E01880E369DF3648B9811027"
+      },
+      {
+        "name": "event_indicator_append_runtime_region",
+        "start_rva": "0x1859ef0",
+        "end_rva": "0x1859f98",
+        "byte_length": 168,
+        "sha256": "BE4F7BF15A946D486F521459A84C14D3842785A02A3B3989DC96BFC11C38E3B4"
+      },
+      {
+        "name": "event_cancel_widget_runtime_region",
+        "start_rva": "0x19d6220",
+        "end_rva": "0x19d64a7",
+        "byte_length": 647,
+        "sha256": "DF54B235DB391B6E014A76923CE6FBA194D5609A183680D53284452E5FD3DB6C"
+      },
+      {
+        "name": "scheme_hash_lookup_runtime_region",
+        "start_rva": "0xabfba0",
+        "end_rva": "0xabfcda",
+        "byte_length": 314,
+        "sha256": "7C116ABFCC96EBB19B00838A17761AE6224409E9A48594F86DCAD1A047299AB3"
+      },
+      {
+        "name": "stable_key_hash_runtime_region",
+        "start_rva": "0x3f7e240",
+        "end_rva": "0x3f7e2c7",
+        "byte_length": 135,
+        "sha256": "E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD"
+      },
+      {
+        "name": "generic_registry_getter_runtime_region",
+        "start_rva": "0x3795a80",
+        "end_rva": "0x3795b2b",
+        "byte_length": 171,
+        "sha256": "E1B71B8FC22E7C4D4D7483A503DA3619CEC6BE66A10BA7C9CA30B60934411F0D"
+      },
+      {
+        "name": "generic_type_name_runtime_region",
+        "start_rva": "0x3f4f900",
+        "end_rva": "0x3f4fa24",
+        "byte_length": 292,
+        "sha256": "0826BA5CDC3CAE6FB673D399CC98E9B5400B00DD548AEA12FE683430A9E7D2AE"
+      },
+      {
+        "name": "script_identifier_table_getter_runtime_region",
+        "start_rva": "0x3f8a800",
+        "end_rva": "0x3f8a8d3",
+        "byte_length": 211,
+        "sha256": "42C8A8858EF064392DE48A3143957F333CF31A6D3E7BB725D68F6D0EBC221A41"
+      },
+      {
+        "name": "script_identifier_name_runtime_region",
+        "start_rva": "0x3f8a6f0",
+        "end_rva": "0x3f8a7ff",
+        "byte_length": 271,
+        "sha256": "0FFF649171E7A96A53D1D0A1615B1F91DD32DFBB7AC7A69D350E1BA7A26C1491"
+      },
+      {
+        "name": "script_identifier_lookup_runtime_region",
+        "start_rva": "0x3f8a680",
+        "end_rva": "0x3f8a6ed",
+        "byte_length": 109,
+        "sha256": "5AD84C93E642050B4397F1DF278A8163C0AEB41E187A648D6FB7EA39A38C55FE"
+      },
+      {
+        "name": "active_event_default_constructor_runtime_region",
+        "start_rva": "0x29c6c20",
+        "end_rva": "0x29c6c98",
+        "byte_length": 120,
+        "sha256": "7D46779AF99CE4AFBB0128BE0DA1F03944E2CD377ED0E3245D542CC0D77EF9C7"
+      },
+      {
+        "name": "event_target_scope_constructor_runtime_region",
+        "start_rva": "0x889f60",
+        "end_rva": "0x88a01a",
+        "byte_length": 186,
+        "sha256": "4DF6DC87AF7BB67316C85ECCF99A8DC4AE1AA09A336ECFA08637E5F4D09AD39E"
+      },
+      {
+        "name": "event_target_scope_copy_constructor_runtime_region",
+        "start_rva": "0x373ae00",
+        "end_rva": "0x373aed9",
+        "byte_length": 217,
+        "sha256": "01AAC61F5551C5CE2B46A61BF8208FB1800FC99EC03FC678D73AC65CAAD2EDA9"
+      },
+      {
+        "name": "event_target_scope_serializer_runtime_region",
+        "start_rva": "0x2333030",
+        "end_rva": "0x23331c0",
+        "byte_length": 400,
+        "sha256": "D88C4522BE806B74F4D1B895B76FDC25D2AA419DD2FFB4820AE05A2D5E187790"
+      },
+      {
+        "name": "saved_scope_serializer_runtime_region",
+        "start_rva": "0x2613b20",
+        "end_rva": "0x2613cb2",
+        "byte_length": 402,
+        "sha256": "7A76900151448731B3729B6E70FE96EA88A46C3D87152237B2B9E42D969E2914"
+      },
+      {
+        "name": "generic_type_consumer_runtime_region",
+        "start_rva": "0x2253d50",
+        "end_rva": "0x2253f73",
+        "byte_length": 547,
+        "sha256": "20763C726FFAFE31E21ECFED598109CD0F1B2E833E1F5632DDB16F498C2B171E"
+      },
+      {
+        "name": "character_type4_registration_runtime_region",
+        "start_rva": "0x43fb20",
+        "end_rva": "0x43fbdd",
+        "byte_length": 189,
+        "sha256": "DFD526EE057A0CFE9928C88C94563610338F0493AB2FA4AB92C5F882B4E53F5F"
+      },
+      {
+        "name": "event_definition_duplicate_validator_runtime_region",
+        "start_rva": "0x37a1200",
+        "end_rva": "0x37a121c",
+        "byte_length": 28,
+        "sha256": "02E8C3DCA511186F2AB1AB0F0E1E117BAFD67EBE6AB8909636BBE024A5911864"
+      },
+      {
+        "name": "evidence_region_event-option-item-owner_runtime_region",
+        "start_rva": "0x18586f0",
+        "end_rva": "0x1858f5a",
+        "byte_length": 2154,
+        "sha256": "B6A44EB9611FB67D1D2D4B280101904C113E4D8EDABF3B283667FA7FF5423D88"
+      },
+      {
+        "name": "evidence_region_event-option-item-stride-multiply_runtime_region",
+        "start_rva": "0x185d080",
+        "end_rva": "0x185d367",
+        "byte_length": 743,
+        "sha256": "A827E8E5817E9E46EE45CB02CB8428E582ECA2C652B264CCE86C02D7E36DCFCD"
+      },
+      {
+        "name": "evidence_region_indicator-row-last-eight-bytes-copy_runtime_region",
+        "start_rva": "0x1859f98",
+        "end_rva": "0x185a07a",
+        "byte_length": 226,
+        "sha256": "DD4FCE544AE4B36262691AF0DBBE045558A66D2B6BB5785ACC7FBB55E960F0F9"
+      },
+      {
+        "name": "evidence_region_trait-database-slot_runtime_region",
+        "start_rva": "0x89e5b0",
+        "end_rva": "0x89e607",
+        "byte_length": 87,
+        "sha256": "58F28183FE49BEED3E2F7CE1CB4BBBF439204B857FCC75F33579AA3B1922EF64"
+      },
+      {
+        "name": "evidence_region_trait-stable-key_runtime_region",
+        "start_rva": "0x324f3a0",
+        "end_rva": "0x324f3d4",
+        "byte_length": 52,
+        "sha256": "B8BB22E253CB7EC5B7D593D210C2CAFFAB96886EE02B0DB286F8A62F6BBBFBE8"
+      },
+      {
+        "name": "evidence_region_scheme-database-slot_runtime_region",
+        "start_rva": "0x8fd3c0",
+        "end_rva": "0x8fd417",
+        "byte_length": 87,
+        "sha256": "662CA810C36CA2463638CFDE54782824ADF28B92320D59DDE4D86B4978FC8DFB"
+      },
+      {
+        "name": "evidence_region_scheme-lookup-key-hash_runtime_region",
+        "start_rva": "0xa99ce0",
+        "end_rva": "0xa99e50",
+        "byte_length": 368,
+        "sha256": "CDCB4E5F681D721CC001F9B7CB32F434980EDFDEFBDB31C321E737BC5722921D"
+      },
+      {
+        "name": "evidence_region_scheme-type-primary-vtable_runtime_region",
+        "start_rva": "0x30cf920",
+        "end_rva": "0x30cfeaf",
+        "byte_length": 1423,
+        "sha256": "417D70B6240FCE5CEDFA17DAF40F6BE2A32888392E52A72B169B46453E936908"
+      },
+      {
+        "name": "evidence_region_event-calculated-id_runtime_region",
+        "start_rva": "0x37a1238",
+        "end_rva": "0x37a132c",
+        "byte_length": 244,
+        "sha256": "2C15404FD03005E56BE182E301D2E3472757BD6B66A4E5B56B7FBA0C19B8D1C3"
+      },
+      {
+        "name": "evidence_region_event-runtime-ordinal-loaded-vector_runtime_region",
+        "start_rva": "0x37a1400",
+        "end_rva": "0x37a1842",
+        "byte_length": 1090,
+        "sha256": "872A762968467B8632216E4A74C8F36B0943DC7578EB45FF226E97FC8AE3CAAA"
+      },
+      {
+        "name": "character_type4_native_object_resolver_leaf",
+        "start_rva": "0x225e000",
+        "end_rva": "0x225e071",
+        "byte_length": 113,
+        "sha256": "AE32810DA9D2000D50DA9F1125AF084781DF84D72DBD499B40BFFE4DCC5C37AD",
+        "span_provenance": "complete decoded leaf through ret, no .pdata region"
+      }
+    ]
+  },
+  "source_constants": {
+    "include/xar_bridge/ck3_12002_event_window_context.hpp": {
+      "kEventWindowIdlerGfxVtableRva": "0x44BC408",
+      "kEventWindowPrimaryVtableRva": "0x4597910",
+      "kEventIndicatorSchemeTypeVtableRva": "0x48B9F20",
+      "kEventIndicatorTraitDatabaseSlotRva": "0x5C67528",
+      "kEventIndicatorSchemeDatabaseSlotRva": "0x5C67108",
+      "kEventIndicatorSchemeFallbackSlotRva": "0x5D1E2A0",
+      "kEventIndicatorHashStableKeyRva": "0x3F7E240",
+      "kEventIndicatorLookupSchemeTypeRva": "0xABFBA0",
+      "kEventGenericTypeRegistryGetterRva": "0x3795A80",
+      "kEventGenericTypeRegistryRva": "0x54F2AF0",
+      "kEventGenericTypeNameResolverRva": "0x3F4F900",
+      "kEventGenericTypeNameFallbackRva": "0x5DC1128",
+      "kEventScriptIdentifierTableGetterRva": "0x3F8A800",
+      "kEventScriptIdentifierLookupRva": "0x3F8A680",
+      "kEventScriptIdentifierNameResolverRva": "0x3F8A6F0",
+      "kEventScriptIdentifierNameFallbackRva": "0x5DC1368"
+    },
+    "src/ck3_12002_event_window_context.cpp": {
+      "kIdlerFromOwnerOffset": "0x10",
+      "kGameStateGameDataOffset": "0xA0",
+      "kActiveEventDataOffset": "0x1B0",
+      "kActiveEventInstanceIdOffset": "0x1BC",
+      "kEventDataCalculatedIdOffset": "0x08",
+      "kEventDataRuntimeStatsOrdinalOffset": "0x0C",
+      "kEventDataDefinitionKeyOffset": "0x10",
+      "kEventDataAuthoredOptionDataOffset": "0x1A0",
+      "kEventDataAuthoredOptionCapacityOffset": "0x1A8",
+      "kEventDataAuthoredOptionCountOffset": "0x1AC",
+      "kEventScopeRootOffset": "0x00",
+      "kEventScopeNamedDataOffset": "0x18",
+      "kEventScopeNamedCapacityOffset": "0x20",
+      "kEventScopeNamedCountOffset": "0x24",
+      "kEventScopeTokenTypeIndexOffset": "0x00",
+      "kEventScopeTokenSubtypeOffset": "0x02",
+      "kEventScopeTokenPayloadOffset": "0x08",
+      "kEventScopeNamedRowStride": "0x18",
+      "kEventScopeNamedRowIdentifierOffset": "0x00",
+      "kEventScopeNamedRowTokenOffset": "0x08",
+      "kGenericValueTypeRegistryDataOffset": "0x00",
+      "kGenericValueTypeRegistryCountOffset": "0x0C",
+      "kGenericValueTypeRegistryEntryStride": "0x50",
+      "kGenericValueTypeRegistryEntryIdentifierOffset": "0x00",
+      "kComponentStorageSlotsOffset": "0x20",
+      "kComponentStorageCapacityOffset": "0x2C",
+      "kComponentStorageSlotStride": "0x10",
+      "kComponentStorageSlotObjectOffset": "0x08",
+      "kCharacterIdOffset": "0x18",
+      "kEventOptionDefinitionIsCancelOffset": "0x412",
+      "kManagerFromIdlerOffset": "0x28",
+      "kManagerWindowDataOffset": "0x18",
+      "kManagerWindowCountOffset": "0x24",
+      "kWindowDataOffset": "0xB8",
+      "kDataInstanceIdOffset": "0x00",
+      "kDataOptionDataOffset": "0x10",
+      "kDataOptionCapacityOffset": "0x18",
+      "kDataOptionCountOffset": "0x1C",
+      "kOptionStride": "0x1B8",
+      "kOptionEffectDataOffset": "0x88",
+      "kOptionEffectCapacityOffset": "0x90",
+      "kOptionEffectCountOffset": "0x94",
+      "kOptionOwnerOffset": "0x160",
+      "kOptionNameOffset": "0x170",
+      "kOptionReasonOffset": "0x190",
+      "kOptionNativeIndexOffset": "0x1B0",
+      "kOptionEnabledOffset": "0x1B4",
+      "kOptionFallbackOffset": "0x1B5",
+      "kEffectIndicatorStride": "0x18",
+      "kEffectIndicatorPayload0Offset": "0x00",
+      "kEffectIndicatorPayload1Offset": "0x08",
+      "kEffectIndicatorKindOffset": "0x10",
+      "kEffectIndicatorGainOffset": "0x14",
+      "kEffectIndicatorSecondaryGainOffset": "0x15",
+      "kEffectIndicatorAffectedByTraitOffset": "0x16",
+      "kEffectIndicatorCriticalOffset": "0x17",
+      "kTraitDatabaseDataOffset": "0x50",
+      "kTraitDatabaseCountOffset": "0x5C",
+      "kTraitNativeIdOffset": "0x10",
+      "kTraitStableKeyOffset": "0x18",
+      "kSchemeTypeStableKeyOffset": "0x18"
+    }
+  },
+  "source_files": {
+    "include/xar_bridge/ck3_12002_event_window_context.hpp": "62F1B36A6637EFE0B01AAC608BF39B54DCFB011EEC45D477F52D25A490FE3C49",
+    "src/ck3_12002_event_window_context.cpp": "399ADF1815C8B3AB7B3A52277900118B2FEF5245A1CAF69853D0D0A047120D92",
+    "src/ck3_12002_event_window_context_serializer.cpp": "0579D1B6B97904CF7CEC6247304B439817F944729374B0AA7BD7C8285A5A0781",
+    "src/ck3_12002_event_window_context_test.cpp": "E9772791761F8EEC88FBA7320A7F0FC056DDEDA2C3347E6FB926084EF455E63D"
+  },
+  "shared_dto_dependency": "Existing uncommitted root/saved-scope DTO declarations in event_window_context_v1.hpp are included as required migration types alongside fulfillment enum values and secondary_gain; legacy reader/serializer/test edits are separate and remain untouched.",
+  "layouts": {
+    "gui_root": "module+0x5C6A520->owner+0x10->CIngameInterfaceIdlerGfx+0x28",
+    "manager_windows": {
+      "data": "0x18",
+      "capacity": "0x20",
+      "count": "0x24"
+    },
+    "manager_single_popup": {
+      "offset": "0x10",
+      "size": "0xE0",
+      "vtable_rva": "0x4596D38",
+      "supported_by_this_reader": false,
+      "native_normal_window_branch": "0xC45CF2..0xC45D2D creates CEventWindow and appends to manager+0x18"
+    },
+    "window_data": "inline+0xB8",
+    "authored_option_cancel": "0x412",
+    "indicator_row": {
+      "stride": "0x18",
+      "kind": "0x10",
+      "primary_gain": "0x14",
+      "secondary_gain": "0x15",
+      "affected_by_trait": "0x16",
+      "critical": "0x17"
+    },
+    "generic_non_character_payload": "opaque; no payload is read by this decoder"
+  },
+  "indicator_native_kinds": {
+    "0": "trait",
+    "1": "stress",
+    "2": "fulfillment",
+    "3": "stress_and_fulfillment",
+    "4": "death",
+    "5": "scheme"
+  },
+  "gui_evidence": {
+    "source": "game/gui/shared/event_windows.gui",
+    "frozen_artifact": "Z:/ck3_mod_rewrite/artifacts/migrations/2026-09-30/post-update-1.20.0.2/event-window/event_windows.gui",
+    "sha256": "6756FED934B15E20F2E9460A891C5B40F0012E6F8F51AC6AE45A018FD9A82639",
+    "named_functions": {
+      "OptionEffectItem.IsFulfillment": 2476,
+      "OptionEffectItem.IsStressAndFulfillment": 2498,
+      "OptionEffectItem.IsSecondaryGain": 2505,
+      "OptionEffectItem.IsSecondaryLoss": 2512
+    }
+  },
+  "wire": {
+    "coverage": "played-character-event-icon-indicators-1.20.0.2-v1",
+    "fulfillment_direction": "primary_gain",
+    "combined_direction": "primary stress; secondary fulfillment",
+    "magnitude": "unavailable",
+    "complete_effect_set": false,
+    "effect_preview_ready": false,
+    "semantic_decision_ready": false
+  },
+  "remaining_live_work": [
+    "new-build paused current event and unique materialized CEventWindow",
+    "root and complete saved-scope values plus stable name/type lookup on application-main",
+    "stock/new indicator rendering and native option selection outcome"
+  ],
+  "existing_semantic_limits": [
+    "complete structured effect previews and resource/relationship deltas are not part of this presentation slice",
+    "non-Character generic payload decoders remain outside this existing contract",
+    "general religion mechanisms and policy remain owner-deferred; fulfillment is only an already-materialized option indicator"
+  ]
+}

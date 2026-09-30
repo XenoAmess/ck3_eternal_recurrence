@@ -6,7 +6,8 @@ project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 # CMake 4.3 can misdecode the Simplified-Chinese prefix as mojibake while
 # cl.exe and Ninja exchange UTF-8, leaving every object with zero header deps.
 # Repair only that observed detection result; other compiler UI languages keep
-# their own prefix.
+# their own prefix. This installation has only the 2052 compiler resources;
+# setting VSLANG=1033 does not make its compiler output English.
 if(
   MSVC AND
   CMAKE_CXX_CL_SHOWINCLUDES_PREFIX STREQUAL
@@ -56,6 +57,24 @@ target_compile_definitions(xar_bridge_injector PUBLIC
   _UNICODE
 )
 
+# All new-build ABI code is private to this exact version. Keep it in one
+# library so production and synthetic fixtures exercise the same readers.
+file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
+list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
+add_library(xar_ck3_12002_runtime STATIC
+  ${XAR_CK3_12002_SOURCES}
+  src/main_thread_query_mailbox_v1.cpp
+)
+target_include_directories(xar_ck3_12002_runtime PUBLIC include)
+target_compile_definitions(xar_ck3_12002_runtime PUBLIC
+  NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+target_link_libraries(xar_ck3_12002_runtime PUBLIC bcrypt)
+if(MSVC)
+  target_compile_options(xar_ck3_12002_runtime PRIVATE
+    /W4 /permissive- /EHsc)
+endif()
+
 add_library(xar_ck3_bridge SHARED
   src/actual_contact_scope_v1_mailbox.cpp
   src/battle_control_snapshot_v1_mailbox.cpp
@@ -102,7 +121,8 @@ add_library(xar_ck3_bridge SHARED
   src/war_entry_assessments_v1_serializer.cpp
   src/war_entry_assessments_v1_mailbox.cpp
 )
-target_link_libraries(xar_ck3_bridge PRIVATE xar_bridge_protocol bcrypt)
+target_link_libraries(xar_ck3_bridge PRIVATE
+  xar_bridge_protocol xar_ck3_12002_runtime bcrypt)
 target_compile_definitions(xar_ck3_bridge PRIVATE
   XAR_BRIDGE_VERSION="${PROJECT_VERSION}"
 )
@@ -149,6 +169,29 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  set(XAR_CK3_12002_FROZEN_EXE
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../artifacts/migrations/2026-09-30/post-update-1.20.0.2/installation/binaries/ck3.exe"
+    CACHE FILEPATH "Disk-only exact CK3 1.20.0.2 image for offline fixtures")
+  set(XAR_CK3_11906_REFERENCE_EXE
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+    CACHE FILEPATH "Disk-only old image for the existing mailbox regression")
+  file(GLOB XAR_CK3_12002_FIXTURES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_*_test.cpp")
+  foreach(fixture IN LISTS XAR_CK3_12002_FIXTURES)
+    get_filename_component(fixture_name "${fixture}" NAME_WE)
+    set(fixture_target "xar_${fixture_name}")
+    add_executable(${fixture_target} "${fixture}")
+    target_link_libraries(${fixture_target} PRIVATE xar_ck3_12002_runtime)
+    if(MSVC)
+      # RelWithDebInfo otherwise removes the actual fixture assertions.
+      target_compile_options(${fixture_target} PRIVATE
+        /W4 /permissive- /EHsc /UNDEBUG)
+    else()
+      target_compile_options(${fixture_target} PRIVATE -UNDEBUG)
+    endif()
+    add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target}
+      "${XAR_CK3_12002_FROZEN_EXE}")
+  endforeach()
   add_executable(xar_ck3_12002_foundation_test
     src/ck3_12002.cpp
     src/ck3_12002_test.cpp
@@ -156,7 +199,7 @@ if(BUILD_TESTING)
   target_include_directories(xar_ck3_12002_foundation_test PRIVATE include)
   if(MSVC)
     target_compile_options(xar_ck3_12002_foundation_test PRIVATE
-      /W4 /permissive- /EHsc)
+      /W4 /permissive- /EHsc /UNDEBUG)
   endif()
   add_test(NAME xar_ck3_12002_offline_foundation
     COMMAND xar_ck3_12002_foundation_test)
@@ -257,7 +300,8 @@ if(BUILD_TESTING)
     src/game_adapter_test.cpp
   )
   target_include_directories(xar_ck3_adapter_registry_test PRIVATE include)
-  target_link_libraries(xar_ck3_adapter_registry_test PRIVATE bcrypt)
+  target_link_libraries(xar_ck3_adapter_registry_test PRIVATE
+    xar_ck3_12002_runtime bcrypt)
   target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
     NOMINMAX
     WIN32_LEAN_AND_MEAN
@@ -908,7 +952,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/main_thread_query_mailbox_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/main_thread_query_mailbox_v1_source_contract.json
       ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/main-thread-query-mailbox.md
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      "${XAR_CK3_11906_REFERENCE_EXE}"
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 

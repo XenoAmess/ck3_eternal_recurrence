@@ -1,0 +1,508 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready",
+  "live_verified": false,
+  "runtime_advertised": false,
+  "signature_anchors": [
+    {
+      "name": "war_resolution_context",
+      "rva": "0xcf57d0",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 4C 89 74 24 20 55 48 8D AC 24 90 FD FF FF 48 81 EC 70 03 00 00 41 0F B6 F0 4C 8B F1 8B BA 88 02 00 00 8B 1D F9 63 7E 04 3B FB 75 0C 8B BA 8C 02 00"
+    },
+    {
+      "name": "default_context",
+      "rva": "0x3077320",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 05 F7 69 CA 02 48 8B D9 48 89 01 48 83 C1 08 E8 20 2C 81 FD 48 8D 8B 70 01 00 00 E8 14 2C 81 FD 33 FF 48 C7 83 D8 02 00 00 FF FF FF FF 48 8D 8B 00 03 00 00"
+    },
+    {
+      "name": "construct_context",
+      "rva": "0x3076c90",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 54 41 55 41 56 41 57 48 83 EC 40 41 8B D9 41 8B F8 4C 8B F2 48 8B F1 48 89 11 48 83 C1 08 E8 97 32 81 FD 90 48 8D 8E 70 01 00"
+    },
+    {
+      "name": "destroy_context",
+      "rva": "0x30773a0",
+      "confidence": "reviewed-static",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 48 8B 89 30 03 00 00 48 85 C9 74 0A 48 8B 01 BA 01 00 00 00 FF 10 48 8B 93 00 03 00 00 48 85 D2 74 32 48 8B 8B 10 03 00 00 41 B8 01 00 00 00 C7 83 0C 03 00 00 00 00"
+    },
+    {
+      "name": "context_validator",
+      "rva": "0x307c040",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 00 00 00 48 8B FA 48 8B D9 4C 8B CA 41 B0 01 41 0F B6 D0 E8 0E EB FF FF 84 C0 0F 84 C9 00 00 00 48 8B 03 80 B8 1A 27 00 00 00 0F 85 CC 00 00 00 48 C7 44 24 20 00"
+    },
+    {
+      "name": "answer_score",
+      "rva": "0x307c460",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 01 00 00 48 8B DA 48 8B F9 8B 81 DC 02 00 00 39 81 D8 02 00 00 75 0C 48 C7 02 80 96 98 00 E9 AA 00 00 00 48 8D 51 08 48 8D 4C 24 20 E8 75 E8 6B 00 90 B8 04 00 00"
+    },
+    {
+      "name": "send_command_constructor",
+      "rva": "0x2968170",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B F1 C6 41 08 00 33 C0 48 89 41 0C 89 41 14 48 8D 05 42 3B B2 01 48 89 01 48 8D 05 08 3B B2 01 48 89 41 18 48 83 C1 20"
+    },
+    {
+      "name": "war_score",
+      "rva": "0x249ac40",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 40 48 8B F2 48 8B E9 4C 8B CA 45 33 C0 48 8B D1 48 8D 4C 24 30 E8 93 0B 77 00 0F 10 00 0F 11 44 24 20 66 0F 73 D8 08 66 48 0F 7E C0 48"
+    },
+    {
+      "name": "imprisonment_score",
+      "rva": "0x2c0c310",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 40 48 8B DA 4C 8B CA 48 8B D1 48 8B F9 48 8D 4C 24 30 45 33 C0 E8 CD F4 FF FF 0F 10 00 0F 11 44 24 20 66 0F 73 D8 08 66 48 0F 7E C0 48 C1 E8 28 84 C0 74 0F 8B 44 24"
+    },
+    {
+      "name": "battle_base_score",
+      "rva": "0x2c0c3b0",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 B0 FD FF FF 48 81 EC 50 03 00 00 4C 8B FA 48 8B F1 45 33 ED 41 8B FD 41 8B DD 48 8B 81 98 02 00 00 4C 63 81"
+    },
+    {
+      "name": "battle_side_score",
+      "rva": "0x2c0d000",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 48 8D AC 24 60 FE FF FF 48 81 EC A0 02 00 00 49 8B D8 0F B6 F2 4C 8B D1 80 FA 01 0F 84 3C 03 00 00 8B 81 88 02 00 00 4C 8B 0D 2A A5 05 03 4D 85"
+    },
+    {
+      "name": "occupation_score",
+      "rva": "0x2c0ddb0",
+      "confidence": "reviewed-static",
+      "pattern": "4C 89 44 24 18 88 54 24 10 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 98 F4 FF FF 48 81 EC 68 0C 00 00 44 0F B6 E2 48 8B F1 33 C0 89 85 C8 0B 00 00 89 44 24 30 4C 8B B1 00 01 00 00 4C 89"
+    },
+    {
+      "name": "ticking_side_score",
+      "rva": "0x2c0ee70",
+      "confidence": "reviewed-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 4C 89 64 24 20 55 41 56 41 57 48 8D AC 24 60 FE FF FF 48 81 EC A0 02 00 00 4D 8B F0 44 0F B6 D2 48 8B D1 41 80 F2 01 B8 78 00 00 00 B9 D8 00 00 00"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "send_primary",
+      "rva": "0x448bce0",
+      "function_rvas": [
+        "0x86be90",
+        "0x3f7e2d0",
+        "0x37eb3c0"
+      ]
+    },
+    {
+      "name": "send_secondary",
+      "rva": "0x448bcb0",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2968220",
+        "0x8522c0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "rva": "0xcf57fb",
+      "bytes": "8B BA 88 02 00 00",
+      "instruction": "mov edi, dword ptr [rdx + 0x288]",
+      "rip_targets": [],
+      "meaning": "war primary attacker +0x288"
+    },
+    {
+      "rva": "0xcf5801",
+      "bytes": "8B 1D F9 63 7E 04",
+      "instruction": "mov ebx, dword ptr [rip + 0x47e63f9]",
+      "rip_targets": [
+        "0x54dbc00"
+      ],
+      "meaning": "native played CharacterID global 0x5DDDC00"
+    },
+    {
+      "rva": "0xcf580b",
+      "bytes": "8B BA 8C 02 00 00",
+      "instruction": "mov edi, dword ptr [rdx + 0x28c]",
+      "rip_targets": [],
+      "meaning": "war primary defender +0x28C"
+    },
+    {
+      "rva": "0xcf5811",
+      "bytes": "40 80 F6 01",
+      "instruction": "xor sil, 1",
+      "rip_targets": [],
+      "meaning": "invert bool only for physical attacker"
+    },
+    {
+      "rva": "0xcf5823",
+      "bytes": "E8 38 82 BA FF",
+      "instruction": "call 0x89da60",
+      "rip_targets": [],
+      "meaning": "interaction database getter"
+    },
+    {
+      "rva": "0xcf5828",
+      "bytes": "40 FE C6",
+      "instruction": "inc sil",
+      "rip_targets": [],
+      "meaning": "special index preparation"
+    },
+    {
+      "rva": "0xcf5832",
+      "bytes": "48 8B 94 C8 00 10 00 00",
+      "instruction": "mov rdx, qword ptr [rax + rcx*8 + 0x1000]",
+      "rip_targets": [],
+      "meaning": "new special interaction database base +0x1000"
+    },
+    {
+      "rva": "0xcf583a",
+      "bytes": "81 7A 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rdx + 0x38], 0x4744624f",
+      "rip_targets": [],
+      "meaning": "GDbO runtime loaded identity"
+    },
+    {
+      "rva": "0xcf58c1",
+      "bytes": "E8 CA 13 38 02",
+      "instruction": "call 0x3076c90",
+      "rip_targets": [],
+      "meaning": "basic context constructor"
+    },
+    {
+      "rva": "0xcf58cf",
+      "bytes": "E8 7C 00 00 00",
+      "instruction": "call 0xcf5950",
+      "rip_targets": [],
+      "meaning": "copy context into initialized output"
+    },
+    {
+      "rva": "0x1044e37",
+      "bytes": "41 B0 01",
+      "instruction": "mov r8b, 1",
+      "rip_targets": [],
+      "meaning": "native UI player victory true for both physical sides"
+    },
+    {
+      "rva": "0x1044e3d",
+      "bytes": "E8 8E 09 CB FF",
+      "instruction": "call 0xcf57d0",
+      "rip_targets": [],
+      "meaning": "native UI victory builder call"
+    },
+    {
+      "rva": "0x1044e49",
+      "bytes": "8B 88 48 15 00 00",
+      "instruction": "mov ecx, dword ptr [rax + 0x1548]",
+      "rip_targets": [],
+      "meaning": "CB flags new +0x1548"
+    },
+    {
+      "rva": "0x1044e4f",
+      "bytes": "C1 E9 07",
+      "instruction": "shr ecx, 7",
+      "rip_targets": [],
+      "meaning": "white peace permission bit 7"
+    },
+    {
+      "rva": "0x1044e7a",
+      "bytes": "48 8B 90 18 10 00 00",
+      "instruction": "mov rdx, qword ptr [rax + 0x1018]",
+      "rip_targets": [],
+      "meaning": "white peace special index 3 at database+0x1018"
+    },
+    {
+      "rva": "0x1044ea8",
+      "bytes": "E8 E3 1D 03 02",
+      "instruction": "call 0x3076c90",
+      "rip_targets": [],
+      "meaning": "native white peace context constructor"
+    },
+    {
+      "rva": "0x1044ed5",
+      "bytes": "45 33 C0",
+      "instruction": "xor r8d, r8d",
+      "rip_targets": [],
+      "meaning": "native UI player defeat false for both physical sides"
+    },
+    {
+      "rva": "0x1044edb",
+      "bytes": "E8 F0 08 CB FF",
+      "instruction": "call 0xcf57d0",
+      "rip_targets": [],
+      "meaning": "native UI defeat builder call"
+    },
+    {
+      "rva": "0x10451d1",
+      "bytes": "E8 6A 6E 03 02",
+      "instruction": "call 0x307c040",
+      "rip_targets": [],
+      "meaning": "native UI validator before send"
+    },
+    {
+      "rva": "0x10451e2",
+      "bytes": "E8 89 2F 92 01",
+      "instruction": "call 0x2968170",
+      "rip_targets": [],
+      "meaning": "native UI construct send command"
+    },
+    {
+      "rva": "0x10451e8",
+      "bytes": "BA 0E 00 00 00",
+      "instruction": "mov edx, 0xe",
+      "rip_targets": [],
+      "meaning": "native send channel flags 0x0E"
+    },
+    {
+      "rva": "0x10451f0",
+      "bytes": "E8 BB C4 99 FF",
+      "instruction": "call 0x9e16b0",
+      "rip_targets": [],
+      "meaning": "native UI clone-submit wrapper"
+    },
+    {
+      "rva": "0x10451f6",
+      "bytes": "48 8D 4C 24 40",
+      "instruction": "lea rcx, [rsp + 0x40]",
+      "rip_targets": [],
+      "meaning": "caller-owned command context at command+0x20"
+    },
+    {
+      "rva": "0x10451fb",
+      "bytes": "E8 A0 21 03 02",
+      "instruction": "call 0x30773a0",
+      "rip_targets": [],
+      "meaning": "destroy caller-owned embedded context after clone-submit"
+    },
+    {
+      "rva": "0x307738b",
+      "bytes": "48 89 BB 30 03 00 00",
+      "instruction": "mov qword ptr [rbx + 0x330], rdi",
+      "rip_targets": [],
+      "meaning": "special context pointer +0x330 establishes complete context size0x338"
+    },
+    {
+      "rva": "0x30773a9",
+      "bytes": "48 8B 89 30 03 00 00",
+      "instruction": "mov rcx, qword ptr [rcx + 0x330]",
+      "rip_targets": [],
+      "meaning": "context destructor consumes special pointer"
+    },
+    {
+      "rva": "0x307c473",
+      "bytes": "8B 81 DC 02 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x2dc]",
+      "rip_targets": [],
+      "meaning": "answer-score recipient id at context+0x2DC"
+    },
+    {
+      "rva": "0x307c479",
+      "bytes": "39 81 D8 02 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x2d8], eax",
+      "rip_targets": [],
+      "meaning": "actor id context+0x2D8"
+    },
+    {
+      "rva": "0x307c48d",
+      "bytes": "48 8D 51 08",
+      "instruction": "lea rdx, [rcx + 8]",
+      "rip_targets": [],
+      "meaning": "native event scope context+8"
+    },
+    {
+      "rva": "0x307c4b4",
+      "bytes": "48 81 C1 18 19 00 00",
+      "instruction": "add rcx, 0x1918",
+      "rip_targets": [],
+      "meaning": "interaction accept script evaluator+0x1918"
+    },
+    {
+      "rva": "0x307c537",
+      "bytes": "48 8B C3",
+      "instruction": "mov rax, rbx",
+      "rip_targets": [],
+      "meaning": "native answer score returns caller-owned out pointer"
+    },
+    {
+      "rva": "0x2968197",
+      "bytes": "48 8D 05 42 3B B2 01",
+      "instruction": "lea rax, [rip + 0x1b23b42]",
+      "rip_targets": [
+        "0x448bce0"
+      ],
+      "meaning": "send primary vtable"
+    },
+    {
+      "rva": "0x29681a1",
+      "bytes": "48 8D 05 08 3B B2 01",
+      "instruction": "lea rax, [rip + 0x1b23b08]",
+      "rip_targets": [
+        "0x448bcb0"
+      ],
+      "meaning": "send secondary vtable"
+    },
+    {
+      "rva": "0x29681ac",
+      "bytes": "48 83 C1 20",
+      "instruction": "add rcx, 0x20",
+      "rip_targets": [],
+      "meaning": "embedded command context starts +0x20"
+    },
+    {
+      "rva": "0x29681b0",
+      "bytes": "E8 CB E9 70 00",
+      "instruction": "call 0x3076b80",
+      "rip_targets": [],
+      "meaning": "native context copy lifecycle"
+    },
+    {
+      "rva": "0x29681e9",
+      "bytes": "E8 72 42 71 00",
+      "instruction": "call 0x307c460",
+      "rip_targets": [],
+      "meaning": "send command derives own acceptance score"
+    },
+    {
+      "rva": "0x29681ee",
+      "bytes": "48 8D 8E 60 03 00 00",
+      "instruction": "lea rcx, [rsi + 0x360]",
+      "rip_targets": [],
+      "meaning": "send command last fixedpoint field+0x360 proves size0x368"
+    },
+    {
+      "rva": "0x2968553",
+      "bytes": "48 8B 88 90 22 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x2290]",
+      "rip_targets": [],
+      "meaning": "auto_accept compiled trigger +0x2290"
+    },
+    {
+      "rva": "0x296855f",
+      "bytes": "0F B6 80 18 27 00 00",
+      "instruction": "movzx eax, byte ptr [rax + 0x2718]",
+      "rip_targets": [],
+      "meaning": "auto_accept scalar +0x2718"
+    },
+    {
+      "rva": "0x2968568",
+      "bytes": "48 8D 53 08",
+      "instruction": "lea rdx, [rbx + 8]",
+      "rip_targets": [],
+      "meaning": "auto_accept receives context+8 scope"
+    },
+    {
+      "rva": "0x296856c",
+      "bytes": "E8 BF 59 DC 00",
+      "instruction": "call 0x372df30",
+      "rip_targets": [],
+      "meaning": "exact compiled trigger evaluator"
+    },
+    {
+      "rva": "0x2c0f1d8",
+      "bytes": "45 0F B6 C8",
+      "instruction": "movzx r9d, r8b",
+      "rip_targets": [],
+      "meaning": "aggregate ticking passes fourth selector bool"
+    },
+    {
+      "rva": "0x2c0f1e7",
+      "bytes": "E8 84 FC FF FF",
+      "instruction": "call 0x2c0ee70",
+      "rip_targets": [],
+      "meaning": "attacker ticking helper call"
+    },
+    {
+      "rva": "0x2c0f1f7",
+      "bytes": "B2 01",
+      "instruction": "mov dl, 1",
+      "rip_targets": [],
+      "meaning": "defender ticking selector"
+    },
+    {
+      "rva": "0x2c0f1fe",
+      "bytes": "E8 6D FC FF FF",
+      "instruction": "call 0x2c0ee70",
+      "rip_targets": [],
+      "meaning": "defender ticking helper call"
+    },
+    {
+      "rva": "0x2c0f208",
+      "bytes": "2B D8",
+      "instruction": "sub ebx, eax",
+      "rip_targets": [],
+      "meaning": "aggregate ticking is attacker minus defender"
+    }
+  ],
+  "source_constants": {
+    "kWarResolutionContextRva": "0xCF57D0",
+    "kInteractionDatabaseRva": "0x89DA60",
+    "kDefaultInteractionContextRva": "0x3077320",
+    "kConstructInteractionContextRva": "0x3076C90",
+    "kDestroyInteractionContextRva": "0x30773A0",
+    "kValidateInteractionContextRva": "0x307C040",
+    "kInteractionAnswerScoreRva": "0x307C460",
+    "kSendInteractionCommandRva": "0x2968170",
+    "kPlayedCharacterIdRva": "0x5DDDC00",
+    "kDiplomacyWarManagerOffset": "0x2EBE0",
+    "kCasusBelliFlagsOffset": "0x1548"
+  },
+  "layouts": {
+    "context_size": "0x338",
+    "context_special": "0x330",
+    "send_command_size": "0x368",
+    "send_command_context": "0x20",
+    "cb_flags": "0x1548",
+    "white_peace_database": "0x1018",
+    "played_character_id_global": "0x5DDDC00",
+    "autoaccept_trigger": "0x2290",
+    "autoaccept_scalar": "0x2718"
+  },
+  "native_bool_semantics": "ConstructWarResolutionContext bool is player_victory: native UI true for player victory, false for player defeat, on both physical war sides. Constructor alone maps the player-relative bool to special indexes 2/4.",
+  "integration": {
+    "header": "include/xar_bridge/ck3_12002_diplomacy.hpp",
+    "source": "src/ck3_12002_diplomacy.cpp",
+    "binder": "BindDiplomacyImage",
+    "query": "ReadWarTerminationOptions",
+    "commands": [
+      "SubmitEnforceDemands",
+      "SubmitSurrenderWar",
+      "SubmitOfferWhitePeace"
+    ],
+    "thread": "version-bound owning thread; native readers require a paused core frame"
+  },
+  "known_unsupported": [
+    "war_exit_terms_v2 remains disabled after the documented legacy live crash; no loaded-effect preview is attempted"
+  ],
+  "offline_fixture": {
+    "status": "GREEN",
+    "compiler": "MSVC 19.51 x64 C++20 /W4",
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/diplomacy-build/ck3_12002_diplomacy_test.exe",
+    "checks": [
+      "full-generation WarID",
+      "ended byte with adjacent nonzero decoy",
+      "both physical-side victory/surrender bool polarity",
+      "white-peace new CB flag",
+      "raw Q100000 answer score and autoaccept",
+      "context clone-submit-destroy lifecycle",
+      "native queue rejection",
+      "paused frame",
+      "native validator rejection"
+    ],
+    "source_sha256": {
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_diplomacy.hpp": "92d7926f00ff4dd2635e53e12d95330978239316c56cd113e607caea99578d60",
+      "ck3_autonomous_player/native_bridge/src/ck3_12002_diplomacy.cpp": "72aac813a82dbb6d094aee1f2ddc2e362f4576023b05d3ce993c8eed2bd4d476",
+      "ck3_autonomous_player/native_bridge/src/ck3_12002_diplomacy_test.cpp": "2e00366022c51c86e83d51bc1a927a7de53b616e1bc7f2284ee95bbb14fd606b"
+    },
+    "artifact_sha256": "17178122df43a984f3dfa6053f3c0d54570fe5830090a405d7eda6d5d180d6b7"
+  }
+}

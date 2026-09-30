@@ -1,4 +1,4 @@
-"""Headless gameplay driver for the injected CK3 named-pipe bridge.
+﻿"""Headless gameplay driver for the injected CK3 named-pipe bridge.
 
 The native DLL is the pipe client.  This module owns the Windows named-pipe
 server and translates its small length-prefixed JSON protocol into the same
@@ -32,6 +32,7 @@ from .driver import (
     UnsupportedStepError,
 )
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
+from .version_identity import require_exact_native_build
 from .event_contract import (
     choose_event_option_number,
     event_option_step,
@@ -132,8 +133,6 @@ from .campaign_root_context_contract import (
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
-    TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256,
-    TITLE_MAP_NAVIGATION_V1_GAME_VERSION,
     TITLE_MAP_NAVIGATION_V1_REJECTION_CODES,
     normalize_native_title_map_navigation_v1_result,
     normalize_title_map_navigation_v1_binding,
@@ -2205,15 +2204,14 @@ class NativeHeadlessGameplayDriver:
             if isinstance(hello, dict)
             else None
         )
-        if (
-            observed_version != TITLE_MAP_NAVIGATION_V1_GAME_VERSION
-            or not isinstance(observed_sha256, str)
-            or observed_sha256.upper()
-            != TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256
-        ):
+        try:
+            source_build = require_exact_native_build(
+                observed_version, observed_sha256
+            )
+        except ValueError as error:
             raise BridgeUnavailableError(
                 "native title-map navigation requires the frozen exact build"
-            )
+            ) from error
         try:
             raw = self._execute_primitive_step(
                 CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
@@ -2244,6 +2242,15 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native title-map navigation returned malformed data: {error}"
             ) from error
+        result_source = normalized_native["source"]
+        if (
+            result_source["game_version"] != source_build.game_version
+            or result_source["executable_sha256"]
+            != source_build.executable_sha256
+        ):
+            raise BridgeUnavailableError(
+                "native title-map navigation build mirror disagrees with bridge hello"
+            )
         ending = self.take_snapshot()
         try:
             ending_binding = _title_map_navigation_binding_from_snapshot(

@@ -1,4 +1,4 @@
-"""Strict typed contract for centering CK3 on one landed-title stable key."""
+﻿"""Strict typed contract for centering CK3 on one landed-title stable key."""
 
 from __future__ import annotations
 
@@ -7,6 +7,8 @@ import math
 import re
 import struct
 from typing import Final
+
+from .version_identity import require_exact_native_backend
 
 
 CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY: Final = (
@@ -317,14 +319,17 @@ def _normalize_result(
     ):
         raise ValueError("title-map camera postcondition is invalid")
     source = _exact_object(result.get("source"), _SOURCE_FIELDS, "source")
-    if (
-        source.get("game_version") != TITLE_MAP_NAVIGATION_V1_GAME_VERSION
-        or not isinstance(source.get("executable_sha256"), str)
-        or str(source["executable_sha256"]).upper()
-        != TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256
-        or source.get("backend_id") != TITLE_MAP_NAVIGATION_V1_BACKEND_ID
-    ):
-        raise ValueError("title-map source does not match the frozen exact build")
+    try:
+        build = require_exact_native_backend(
+            source.get("game_version"),
+            source.get("executable_sha256"),
+            source.get("backend_id"),
+            suffix="title-map-navigation-v1",
+        )
+    except ValueError as error:
+        raise ValueError(
+            "title-map source does not match the frozen exact build"
+        ) from error
 
     normalized_title = {
         **title,
@@ -339,7 +344,7 @@ def _normalize_result(
     }
     normalized_source = {
         **source,
-        "executable_sha256": TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256,
+        "executable_sha256": build.executable_sha256,
     }
     return {
         **copy.deepcopy(result),

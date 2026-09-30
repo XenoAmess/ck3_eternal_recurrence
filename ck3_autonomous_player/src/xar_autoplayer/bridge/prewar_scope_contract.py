@@ -1,4 +1,4 @@
-"""Fail-closed contract for the declaration-bound prewar primary scope.
+﻿"""Fail-closed contract for the declaration-bound prewar primary scope.
 
 This v1 slice intentionally stops before calling itself a participant or
 arrival forecast.  It binds a current declarable-war choice to the exact
@@ -12,6 +12,8 @@ false gates.
 from __future__ import annotations
 
 import re
+
+from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
 
 
 PREWAR_SCOPE_V1_CAPABILITY_CANDIDATE = "game.command.query-prewar-scope-v1-N"
@@ -57,6 +59,15 @@ _PROVENANCE = {
         "same_day_contact_insertion_order",
         "combat_v3_declaration_bound_prewar_admission",
     ],
+}
+_PROVENANCE_BY_BUILD = {
+    CK3_11906.game_version: _PROVENANCE,
+    CK3_12002.game_version: {
+        **_PROVENANCE,
+        "game_version": CK3_12002.game_version,
+        "executable_sha256": CK3_12002.executable_sha256,
+        "unit_storage_slot_rva": "0x5D1E380",
+    },
 }
 
 
@@ -185,7 +196,17 @@ def normalize_prewar_primary_scope(
     )
     if root.get("readiness") != _READINESS:
         raise ValueError("prewar primary scope readiness overclaims or drifted")
-    if root.get("provenance") != _PROVENANCE:
+    provenance = root.get("provenance")
+    if not isinstance(provenance, dict):
+        raise ValueError("prewar primary scope provenance drifted")
+    try:
+        build = require_exact_native_build(
+            provenance.get("game_version"), provenance.get("executable_sha256"),
+        )
+    except ValueError as error:
+        raise ValueError("prewar primary scope provenance drifted") from error
+    expected_provenance = _PROVENANCE_BY_BUILD[build.game_version]
+    if provenance != expected_provenance:
         raise ValueError("prewar primary scope provenance drifted")
     return {
         "schema_version": 1,
@@ -200,8 +221,8 @@ def normalize_prewar_primary_scope(
         "primary_raised_armies": armies,
         "readiness": dict(_READINESS),
         "provenance": {
-            **_PROVENANCE,
-            "unresolved_native_abis": list(_PROVENANCE["unresolved_native_abis"]),
+            **expected_provenance,
+            "unresolved_native_abis": list(expected_provenance["unresolved_native_abis"]),
         },
     }
 

@@ -1,0 +1,517 @@
+{
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready",
+  "live_verified": false,
+  "runtime_registered": false,
+  "scope": "non-religious phase definitions, difficulty, identifiers and Maa count operands",
+  "signature_anchors": [
+    {
+      "name": "maa_type_database_getter",
+      "rva": "0x899e40",
+      "pattern": "48 83 EC 38 48 8B 05 0D D7 3C 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 A9 31 BF 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "phase_combat_effect_database_getter",
+      "rva": "0x8fc3e0",
+      "pattern": "48 83 EC 38 48 8B 05 15 AE 36 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 09 0C B9 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "rule_token_lookup_hash",
+      "rva": "0x366c2c0",
+      "pattern": "48 89 5C 24 08 45 33 C0 48 63 DA 44 38 81 E0 0E 00 00 45 8B C8 41 0F 94 C1 45 8D 58 FE 45 85 C9 0F 84 8D 00 00 00 41 83 E9 01 74 3B 41 83 F9 01 0F 85 7D 00 00 00 F0 0F BA A9 A0 0E 00 00 00 73 0F F3 90 F0 0F BA A9 A0 0E 00 00 00 72 F3 66 90 8B 81 A0 0E 00 00 83 F8 01 76 04 F3 90 EB F1 41 B8 02 00 00 00 EB 4C 41 B8 02 00 00 00 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 74 31 0F 1F 40 00 41 8B C3 F0 0F C1 81 A0 0E 00 00 0F 1F 44 00 00 8B 81 A0 0E 00 00 A8 01 74 04 F3 90 EB F2 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 75 D3 41 B8 01 00 00 00 4C 63 89 8C 01 00 00 4C 8B 91 80 01 00 00 49 8B D1 48 23 D3 48 8D 04 52 B2 01 41 38 54 C2 04 49 8D 04 C2 72 10 3B 58 08 74 21 48 83 C0 18 FE C2 3A 50 04 76 F0 0F B6 81 90 01 00 00 FF C0 41 03 C1 48 98 48 8D 14 40 49 8D 04 D2 80 78 04 FF 74 06 48 8B 40 10 EB 07 48 8B 05 8F B6 6C 02 41 83 E8 01 74 14 41 83 F8 01 75 17 F0 44 21 99 A0 0E 00 00 48 8B 5C 24 08 C3 F0 44 0F C1 99 A0 0E 00 00 48 8B 5C 24 08 C3 CC CC CC CC CC CC",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "rule_key_hash",
+      "rva": "0x3f7e240",
+      "pattern": "89 4C 24 08 53 48 83 EC 20 33 C0 48 8D 4C 24 30 41 8B D8 89 44 24 30 45 8B C8 89 44 24 40 4C 8B C2 48 8D 54 24 40 E8 95 FE FF FF 8B 54 24 40 44 8B C2 8B 4C 24 30 44 8B C9 41 83 E0 03 74 1F B9",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "variable_context_for_scope",
+      "rva": "0x370eb10",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 0F B7 39 48 8B D9 E8 5B 6F 08 00 39 78 0C 7E 12 E8 51 6F 08 00 4C 8D 04 BF 49 C1 E0 04 4C 03 00 EB 07 4C 8D 05 CD 67 DE 01 49 8B 40 30 48 85 C0 75 0B 48 8B 5C 24",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "variable_identifier_table_getter",
+      "rva": "0x3f8a800",
+      "pattern": "48 83 EC 28 65 48 8B 04 25 58 00 00 00 BA 10 00 00 00 48 8B 08 8B 04 0A 39 05 6A 6B E3 01 7F 0C 48 8D 05 69 6B E3 01 48 83 C4 28 C3 48 8D 0D 55 6B E3 01 E8 6C 92 29 00 83 3D 49 6B E3 01 FF 75",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "variable_identifier_lookup",
+      "rva": "0x3f8a680",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F2 48 8B D9 B8 02 00 00 00 F0 0F C1 41 48 BF FE FF FF FF A8 01 74 28 0F 1F 84 00 00 00 00 00 8B C7 F0 0F C1 41 48 8B 41 48 A8 01 74 04 F3 90",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "variable_identifier_name",
+      "rva": "0x3f8a6f0",
+      "pattern": "48 83 EC 28 B8 02 00 00 00 F0 0F C1 41 48 41 B8 FE FF FF FF A8 01 74 29 0F 1F 84 00 00 00 00 00 41 8B C0 F0 0F C1 41 48 8B 41 48 A8 01 74 04 F3 90 EB F5 B8 02 00 00 00 F0 0F C1 41 48 A8 01 75",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "script_identifier_lookup",
+      "rva": "0x3f4f870",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 1D 67 F5 D6 01 4C 8B C1 B8 02 00 00 00 F0 0F C1 03 BF FE FF FF FF A8 01 74 27 66 66 0F 1F 84 00 00 00 00 00 8B C7 F0 0F C1 03 8B 03 A8 01 74 04 F3 90 EB F6",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "script_identifier_name",
+      "rva": "0x3f4f900",
+      "pattern": "48 83 EC 28 4C 63 C9 48 8B 05 DA F4 D6 01 BA 02 00 00 00 F0 0F C1 10 41 B8 FE FF FF FF F6 C2 01 74 27 41 8B C8 F0 0F C1 08 0F 1F 80 00 00 00 00 8B 08 F6 C1 01 74 04 F3 90 EB F5 B9 02 00 00 00",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    },
+    {
+      "name": "army_base_type_count_trigger",
+      "rva": "0x2b37af0",
+      "pattern": "40 53 48 8B 02 4C 8B C9 66 83 38 1B 75 05 8B 50 08 EB 05 BA FF FF FF FF 4C 8B 05 39 63 1E 03 4D 85 C0 74 25 8B C2 25 FF FF FF 00 41 3B 40 2C 73 18 8B C8 49 8B 40 20 48 03 C9 48 8B 4C C8 08 48",
+      "confidence": "exact-build native instructions and owner/caller semantics reviewed offline"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "maa_type_database",
+      "rva": "0x4883908",
+      "function_rvas": [
+        "0x2db6cc0",
+        "0x2d9a760",
+        "0x30c1a80",
+        "0x2d9a8e0",
+        "0x2d9a8a0"
+      ]
+    },
+    {
+      "name": "rule_setting_database",
+      "rva": "0x491c430",
+      "function_rvas": [
+        "0x366b5c0",
+        "0x8522c0",
+        "0x3668ce0",
+        "0x3668f00",
+        "0x3668de0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "Maa registry global",
+      "rva": "0x899e44",
+      "bytes": "48 8B 05 0D D7 3C 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53cd70d]",
+      "rip_targets": [
+        "0x5c67558"
+      ]
+    },
+    {
+      "purpose": "phase effect database global",
+      "rva": "0x8fc3e4",
+      "bytes": "48 8B 05 15 AE 36 05",
+      "instruction": "mov rax, qword ptr [rip + 0x536ae15]",
+      "rip_targets": [
+        "0x5c67200"
+      ]
+    },
+    {
+      "purpose": "rule database constructor slot",
+      "rva": "0x366c253",
+      "bytes": "48 89 05 FE 80 6C 02",
+      "instruction": "mov qword ptr [rip + 0x26c80fe], rax",
+      "rip_targets": [
+        "0x5d34358"
+      ]
+    },
+    {
+      "purpose": "rule database primary vtable",
+      "rva": "0x366c29c",
+      "bytes": "48 8D 05 8D 01 2B 01",
+      "instruction": "lea rax, [rip + 0x12b018d]",
+      "rip_targets": [
+        "0x491c430"
+      ]
+    },
+    {
+      "purpose": "rule-token hash mask",
+      "rva": "0x366c373",
+      "bytes": "4C 63 89 8C 01 00 00",
+      "instruction": "movsxd r9, dword ptr [rcx + 0x18c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "rule-token table",
+      "rva": "0x366c37a",
+      "bytes": "4C 8B 91 80 01 00 00",
+      "instruction": "mov r10, qword ptr [rcx + 0x180]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "rule-token fallback",
+      "rva": "0x366c3ca",
+      "bytes": "48 8B 05 8F B6 6C 02",
+      "instruction": "mov rax, qword ptr [rip + 0x26cb68f]",
+      "rip_targets": [
+        "0x5d37a60"
+      ]
+    },
+    {
+      "purpose": "loaded rule selection service",
+      "rva": "0x312b18f",
+      "bytes": "48 8B 0D E2 8B B8 02",
+      "instruction": "mov rcx, qword ptr [rip + 0x2b88be2]",
+      "rip_targets": [
+        "0x5cb3d78"
+      ]
+    },
+    {
+      "purpose": "selected rule virtual getter",
+      "rva": "0x312b1a2",
+      "bytes": "FF 50 10",
+      "instruction": "call qword ptr [rax + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "selected rule array",
+      "rva": "0x312b1ae",
+      "bytes": "4C 8B 70 08",
+      "instruction": "mov r14, qword ptr [rax + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "selected rule count",
+      "rva": "0x312b1b2",
+      "bytes": "48 63 40 14",
+      "instruction": "movsxd rax, dword ptr [rax + 0x14]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Maa loaded base array",
+      "rva": "0x30c1e12",
+      "bytes": "48 8B 99 F0 0E 00 00",
+      "instruction": "mov rbx, qword ptr [rcx + 0xef0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Maa loaded base count",
+      "rva": "0x30c1e19",
+      "bytes": "48 63 81 FC 0E 00 00",
+      "instruction": "movsxd rax, dword ptr [rcx + 0xefc]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Maa base stride",
+      "rva": "0x30c1e20",
+      "bytes": "4C 6B F8 58",
+      "instruction": "imul r15, rax, 0x58",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Maa base key",
+      "rva": "0x30c1e40",
+      "bytes": "48 8D 53 08",
+      "instruction": "lea rdx, [rbx + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Maa base enum",
+      "rva": "0x30c1e8c",
+      "bytes": "8B 03",
+      "instruction": "mov eax, dword ptr [rbx]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "regiment identity",
+      "rva": "0x2b37b9d",
+      "bytes": "44 39 41 10",
+      "instruction": "cmp dword ptr [rcx + 0x10], r8d",
+      "rip_targets": []
+    },
+    {
+      "purpose": "inner regiment type",
+      "rva": "0x2b37ba6",
+      "bytes": "48 8B 49 18",
+      "instruction": "mov rcx, qword ptr [rcx + 0x18]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "base enum migrated to 0x260",
+      "rva": "0x2b37bae",
+      "bytes": "39 B9 60 02 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x260], edi",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter resistance modifier",
+      "rva": "0x2c53405",
+      "bytes": "BD 14 01 00 00",
+      "instruction": "mov ebp, 0x114",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter efficiency modifier",
+      "rva": "0x2c534a0",
+      "bytes": "41 BE 13 01 00 00",
+      "instruction": "mov r14d, 0x113",
+      "rip_targets": []
+    },
+    {
+      "purpose": "commander roll modifier",
+      "rva": "0x258b60d",
+      "bytes": "B8 15 01 00 00",
+      "instruction": "mov eax, 0x115",
+      "rip_targets": []
+    },
+    {
+      "purpose": "terrain min roll modifier",
+      "rva": "0x258b653",
+      "bytes": "0F B7 B7 76 07 00 00",
+      "instruction": "movzx esi, word ptr [rdi + 0x776]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "terrain max roll modifier",
+      "rva": "0x258b65c",
+      "bytes": "0F B7 B7 78 07 00 00",
+      "instruction": "movzx esi, word ptr [rdi + 0x778]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "COMMANDER_MIN_ROLL global",
+      "rva": "0x237b1e3",
+      "bytes": "4C 8D 0D D2 E7 8E 03",
+      "instruction": "lea r9, [rip + 0x38ee7d2]",
+      "rip_targets": [
+        "0x5c699bc"
+      ]
+    },
+    {
+      "purpose": "COMMANDER_MIN_ROLL key",
+      "rva": "0x237b1f1",
+      "bytes": "4C 8D 05 B0 B9 39 02",
+      "instruction": "lea r8, [rip + 0x239b9b0]",
+      "rip_targets": [
+        "0x4716ba8"
+      ]
+    },
+    {
+      "purpose": "COMMANDER_MAX_ROLL global",
+      "rva": "0x237b4e3",
+      "bytes": "4C 8D 0D CE E4 8E 03",
+      "instruction": "lea r9, [rip + 0x38ee4ce]",
+      "rip_targets": [
+        "0x5c699b8"
+      ]
+    },
+    {
+      "purpose": "COMMANDER_MAX_ROLL key",
+      "rva": "0x237b4f1",
+      "bytes": "4C 8D 05 C8 B6 39 02",
+      "instruction": "lea r8, [rip + 0x239b6c8]",
+      "rip_targets": [
+        "0x4716bc0"
+      ]
+    },
+    {
+      "purpose": "KNIGHT_DAMAGE global",
+      "rva": "0x237c593",
+      "bytes": "4C 8D 0D 0E D4 8E 03",
+      "instruction": "lea r9, [rip + 0x38ed40e]",
+      "rip_targets": [
+        "0x5c699a8"
+      ]
+    },
+    {
+      "purpose": "KNIGHT_DAMAGE key",
+      "rva": "0x237c5a1",
+      "bytes": "4C 8D 05 40 A5 39 02",
+      "instruction": "lea r8, [rip + 0x239a540]",
+      "rip_targets": [
+        "0x4716ae8"
+      ]
+    },
+    {
+      "purpose": "KNIGHT_TOUGHNESS global",
+      "rva": "0x237c8d3",
+      "bytes": "4C 8D 0D D6 D0 8E 03",
+      "instruction": "lea r9, [rip + 0x38ed0d6]",
+      "rip_targets": [
+        "0x5c699b0"
+      ]
+    },
+    {
+      "purpose": "KNIGHT_TOUGHNESS key",
+      "rva": "0x237c8e1",
+      "bytes": "4C 8D 05 20 A1 39 02",
+      "instruction": "lea r8, [rip + 0x239a120]",
+      "rip_targets": [
+        "0x4716a08"
+      ]
+    },
+    {
+      "purpose": "MINIMUM_COMBAT_WIDTH global",
+      "rva": "0x237bac3",
+      "bytes": "4C 8D 0D FE DE 8E 03",
+      "instruction": "lea r9, [rip + 0x38edefe]",
+      "rip_targets": [
+        "0x5c699c8"
+      ]
+    },
+    {
+      "purpose": "MINIMUM_COMBAT_WIDTH key",
+      "rva": "0x237bad1",
+      "bytes": "4C 8D 05 60 B0 39 02",
+      "instruction": "lea r8, [rip + 0x239b060]",
+      "rip_targets": [
+        "0x4716b38"
+      ]
+    },
+    {
+      "purpose": "BASE_WIDTH_RATIO global",
+      "rva": "0x237b073",
+      "bytes": "4C 8D 0D 2E EB 8E 03",
+      "instruction": "lea r9, [rip + 0x38eeb2e]",
+      "rip_targets": [
+        "0x5c69ba8"
+      ]
+    },
+    {
+      "purpose": "BASE_WIDTH_RATIO key",
+      "rva": "0x237b081",
+      "bytes": "4C 8D 05 08 BB 39 02",
+      "instruction": "lea r8, [rip + 0x239bb08]",
+      "rip_targets": [
+        "0x4716b90"
+      ]
+    },
+    {
+      "purpose": "phase effect database native call",
+      "rva": "0x258a112",
+      "bytes": "E8 C9 22 37 FE",
+      "instruction": "call 0x8fc3e0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "no commander effect",
+      "rva": "0x258a117",
+      "bytes": "48 8B B8 F0 0E 00 00",
+      "instruction": "mov rdi, qword ptr [rax + 0xef0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "effect points migrated to 0x40",
+      "rva": "0x258a123",
+      "bytes": "48 63 47 40",
+      "instruction": "movsxd rax, dword ptr [rdi + 0x40]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "script identifier missing sentinel",
+      "rva": "0x3f4f8e8",
+      "bytes": "B8 0C 00 00 00",
+      "instruction": "mov eax, 0xc",
+      "rip_targets": []
+    },
+    {
+      "purpose": "CGameRuleSetting stable key at +0x18",
+      "rva": "0x3665947",
+      "bytes": "48 8D 4B 18",
+      "instruction": "lea rcx, [rbx + 0x18]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "CGameRuleSetting initialization tag at +0x38",
+      "rva": "0x3665985",
+      "bytes": "C7 43 38 4F 62 44 47",
+      "instruction": "mov dword ptr [rbx + 0x38], 0x4744624f",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kPhaseMaaTypeRegistrySlot": "0x5C67558",
+    "kPhaseGameRuleServiceSlot": "0x5CB3D78",
+    "kPhaseRuleTokenRegistrySlot": "0x5D34358",
+    "kPhaseRuleTokenFallbackSlot": "0x5D37A60",
+    "kPhaseRuleKeyHashRva": "0x3F7E240",
+    "kPhaseRuleTokenLookupRva": "0x366C2C0",
+    "kPhaseVariableContextRva": "0x370EB10",
+    "kPhaseVariableIdentifierTableRva": "0x3F8A800",
+    "kPhaseVariableIdentifierLookupRva": "0x3F8A680",
+    "kPhaseVariableIdentifierNameRva": "0x3F8A6F0",
+    "kPhaseScriptIdentifierLookupRva": "0x3F4F870",
+    "kPhaseScriptIdentifierNameRva": "0x3F4F900",
+    "kPhaseCombatEffectDatabaseRva": "0x8FC3E0",
+    "kPhaseCombatEffectDatabaseSlot": "0x5C67200",
+    "kPhaseCommanderMinRollSlot": "0x5C699BC",
+    "kPhaseCommanderMaxRollSlot": "0x5C699B8",
+    "kPhaseKnightDamageSlot": "0x5C699A8",
+    "kPhaseKnightToughnessSlot": "0x5C699B0",
+    "kPhaseMinimumCombatWidthSlot": "0x5C699C8",
+    "kPhaseBaseWidthRatioSlot": "0x5C69BA8",
+    "kPhaseMaaBaseTypeDataOffset": "0xEF0",
+    "kPhaseMaaBaseTypeCountOffset": "0xEFC",
+    "kPhaseMaaBaseTypeStride": "0x58",
+    "kPhaseCounterEfficiencyModifierIndex": "0x113",
+    "kPhaseCounterResistanceModifierIndex": "0x114",
+    "kPhaseCommanderMinRollModifierIndex": "0x115",
+    "kPhaseCommanderMaxRollModifierIndex": "0x116"
+  },
+  "define_keys": [
+    {
+      "key": "COMMANDER_MIN_ROLL",
+      "rva": "0x4716ba8"
+    },
+    {
+      "key": "COMMANDER_MAX_ROLL",
+      "rva": "0x4716bc0"
+    },
+    {
+      "key": "KNIGHT_DAMAGE_PER_PROWESS",
+      "rva": "0x4716ae8"
+    },
+    {
+      "key": "KNIGHT_TOUGHNESS_PER_PROWESS",
+      "rva": "0x4716a08"
+    },
+    {
+      "key": "MINIMUM_COMBAT_WIDTH",
+      "rva": "0x4716b38"
+    },
+    {
+      "key": "BASE_WIDTH_RATIO",
+      "rva": "0x4716b90"
+    }
+  ],
+  "native_layouts": {
+    "maa_base_types": {
+      "data": "0xEF0",
+      "count": "0xEFC",
+      "stride": "0x58",
+      "key": "0x08",
+      "enum": "0x00"
+    },
+    "inner_regiment_type": {
+      "regiment_type_pointer": "0x18",
+      "base_type_enum": "0x260"
+    },
+    "loaded_selected_rules": {
+      "vslot": "0x10",
+      "data": "0x08",
+      "count": "0x14"
+    },
+    "phase_effect": {
+      "no_commander": "0xEF0",
+      "points": "0x40"
+    }
+  }
+}

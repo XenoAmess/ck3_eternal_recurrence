@@ -1,0 +1,536 @@
+﻿{
+  "contract": "ck3-1.20.0.2-title-map-navigation-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "live_validated": false,
+  "production_wire_compiled": false,
+  "backend_id": "ck3-1.20.0.2-native-title-map-navigation-v1",
+  "capability": "game.command.center-map-on-landed-title-v1",
+  "source_contract": {
+    "range_convention": "start inclusive, end exclusive",
+    "exact_function_spans": [
+      {
+        "name": "resolve_landed_title_by_stable_key",
+        "start_rva": "0xa847a0",
+        "end_rva": "0xa8483b",
+        "sha256": "73AAEBBB970D86C42E2F68B06D989EF2711CCA6AC006F4F3279142B25512DA11"
+      },
+      {
+        "name": "landed_title_key_registry_lookup",
+        "start_rva": "0x29ebfa0",
+        "end_rva": "0x29ec0e7",
+        "sha256": "3E46DD18D62548F143DE4F1425BC6FCC87BE30A0BE03A775634D03365771B9AA"
+      },
+      {
+        "name": "landed_title_key_registry_build",
+        "start_rva": "0x29ef330",
+        "end_rva": "0x29ef55c",
+        "sha256": "6D0643AD5F8D8745B9D5C17FFF083207B536CF297FFB9C9EC8EA99E177C31F66"
+      },
+      {
+        "name": "resolve_title_capital_province_provenance",
+        "start_rva": "0x230f900",
+        "end_rva": "0x230f976",
+        "sha256": "21CBFDE5D804E550C0584431331DF1FCAEA77B7489964E66D6A3520FBC0A9ADE"
+      },
+      {
+        "name": "compute_recursive_title_bounds",
+        "start_rva": "0x2311040",
+        "end_rva": "0x23111d8",
+        "sha256": "EF4C2ED957BF7874BCCB2349A243E4FE976713B4239BE5618C6C09C064F55724"
+      },
+      {
+        "name": "query_ingame_handler_mode",
+        "start_rva": "0xaf2530",
+        "end_rva": "0xaf2625",
+        "sha256": "FEA7DB97EADCFBE991DEB9318BBB39F5B23EC63606EE33C4441F97D00F41F178"
+      },
+      {
+        "name": "center_camera_on_title",
+        "start_rva": "0xaf3fb0",
+        "end_rva": "0xaf40df",
+        "sha256": "E582A8CAE65B17D1C1F9A612AB0FE247F5C5AAA8481734207306122584CE816F"
+      },
+      {
+        "name": "write_camera_target",
+        "start_rva": "0xaf3e30",
+        "end_rva": "0xaf3f09",
+        "sha256": "ED56B92171014AB14D6D64A0ADF1BCE0C485C8BBB26A7FD0B753CF02EF6D273A"
+      },
+      {
+        "name": "canonicalize_camera_position_state",
+        "start_rva": "0x3846160",
+        "end_rva": "0x38461f2",
+        "sha256": "794EA61D89834F9623223EA6ABD4B7CD64E84EA56AC1A5E4E592F5970E6D1D71"
+      },
+      {
+        "name": "camera_vtable_update_entry",
+        "start_rva": "0x3843130",
+        "end_rva": "0x3843441",
+        "sha256": "624E3AD13C10C0F4D041988004964DB38929E750B7B27F5C3E9604D101F77B30"
+      },
+      {
+        "name": "camera_transition_update",
+        "start_rva": "0x3846200",
+        "end_rva": "0x38463fc",
+        "sha256": "1637BD748AA26A65C6EDAAE8E845717D031867F4A75D8743AC45BF10DDD5FBB7"
+      },
+      {
+        "name": "camera_transition_interpolate",
+        "start_rva": "0x3847d70",
+        "end_rva": "0x3847fae",
+        "sha256": "53A36EC1A65F0D4604F6FB75080EBBB8802E99B70E8A7940C480A58DF6E7A2DC"
+      },
+      {
+        "name": "camera_near_target_predicate",
+        "start_rva": "0x3847fb0",
+        "end_rva": "0x384805f",
+        "sha256": "1C0D1B10A7C689CB3C4C2A0D833BEBDBEF0F636EBF915828374BD9CCDC91F6BF"
+      }
+    ]
+  },
+  "instruction_checks": [
+    {
+      "rva": "0xa847a4",
+      "bytes": "48 8b 05 a5 44 1e 05",
+      "instruction": "mov rax, qword ptr [rip + 0x51e44a5]",
+      "rip_targets": [
+        "0x5c68c50"
+      ]
+    },
+    {
+      "rva": "0xa847e0",
+      "bytes": "49 8d 89 f8 2f 00 00",
+      "instruction": "lea rcx, [r9 + 0x2ff8]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xa847f2",
+      "bytes": "e8 a9 77 f6 01",
+      "instruction": "call 0x29ebfa0",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xa847f7",
+      "bytes": "4c 8b 05 fa 92 29 05",
+      "instruction": "mov r8, qword ptr [rip + 0x52992fa]",
+      "rip_targets": [
+        "0x5d1daf8"
+      ]
+    },
+    {
+      "rva": "0xa84825",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xa8482a",
+      "bytes": "48 8b 05 af 92 29 05",
+      "instruction": "mov rax, qword ptr [rip + 0x52992af]",
+      "rip_targets": [
+        "0x5d1dae0"
+      ]
+    },
+    {
+      "rva": "0x29ef383",
+      "bytes": "49 8b 7f 48",
+      "instruction": "mov rdi, qword ptr [r15 + 0x48]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x29ef38c",
+      "bytes": "48 8d 57 18",
+      "instruction": "lea rdx, [rdi + 0x18]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x230f900",
+      "bytes": "48 8b 41 48",
+      "instruction": "mov rax, qword ptr [rcx + 0x48]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x230f904",
+      "bytes": "83 78 64 02",
+      "instruction": "cmp dword ptr [rax + 0x64], 2",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x230f920",
+      "bytes": "83 b9 1c 01 00 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x11c], 0",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x230f930",
+      "bytes": "48 8b 81 10 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x110]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x230f96e",
+      "bytes": "48 8b 81 38 03 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x338]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x2311056",
+      "bytes": "81 b8 5c 08 00 00 76 6f 72 50",
+      "instruction": "cmp dword ptr [rax + 0x85c], 0x50726f76",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x231112f",
+      "bytes": "49 63 82 1c 01 00 00",
+      "instruction": "movsxd rax, dword ptr [r10 + 0x11c]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x231113b",
+      "bytes": "49 8b 9a 10 01 00 00",
+      "instruction": "mov rbx, qword ptr [r10 + 0x110]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x231118f",
+      "bytes": "e8 ac fe ff ff",
+      "instruction": "call 0x2311040",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3fb7",
+      "bytes": "81 7a 14 64 6e 61 4c",
+      "instruction": "cmp dword ptr [rdx + 0x14], 0x4c616e64",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3fee",
+      "bytes": "e8 4d d0 81 01",
+      "instruction": "call 0x2311040",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf4036",
+      "bytes": "48 63 15 ef 4b 94 04",
+      "instruction": "movsxd rdx, dword ptr [rip + 0x4944bef]",
+      "rip_targets": [
+        "0x5438c2c"
+      ]
+    },
+    {
+      "rva": "0xaf4050",
+      "bytes": "48 8b 0d c9 4b 94 04",
+      "instruction": "mov rcx, qword ptr [rip + 0x4944bc9]",
+      "rip_targets": [
+        "0x5438c20"
+      ]
+    },
+    {
+      "rva": "0xaf407a",
+      "bytes": "e8 b1 e4 ff ff",
+      "instruction": "call 0xaf2530",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf408b",
+      "bytes": "e8 a0 e4 ff ff",
+      "instruction": "call 0xaf2530",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf4094",
+      "bytes": "48 8b 05 9d 4b 94 04",
+      "instruction": "mov rax, qword ptr [rip + 0x4944b9d]",
+      "rip_targets": [
+        "0x5438c38"
+      ]
+    },
+    {
+      "rva": "0xaf40a1",
+      "bytes": "48 8b 05 a8 4b 94 04",
+      "instruction": "mov rax, qword ptr [rip + 0x4944ba8]",
+      "rip_targets": [
+        "0x5438c50"
+      ]
+    },
+    {
+      "rva": "0xaf40c4",
+      "bytes": "e8 67 fd ff ff",
+      "instruction": "call 0xaf3e30",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3e3b",
+      "bytes": "48 8b 89 70 06 00 00",
+      "instruction": "mov rcx, qword ptr [rcx + 0x670]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3e48",
+      "bytes": "80 b9 77 07 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x777], 0",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3e75",
+      "bytes": "f2 0f 11 81 28 07 00 00",
+      "instruction": "movsd qword ptr [rcx + 0x728], xmm0",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3eb4",
+      "bytes": "44 3b 81 bc 07 00 00",
+      "instruction": "cmp r8d, dword ptr [rcx + 0x7bc]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3ebd",
+      "bytes": "83 b9 d4 07 00 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x7d4], 0",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3ec4",
+      "bytes": "48 8b 81 b0 07 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x7b0]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3ecf",
+      "bytes": "89 91 34 07 00 00",
+      "instruction": "mov dword ptr [rcx + 0x734], edx",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3ed5",
+      "bytes": "44 89 81 44 07 00 00",
+      "instruction": "mov dword ptr [rcx + 0x744], r8d",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3ede",
+      "bytes": "48 8b 81 c8 07 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x7c8]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0xaf3eeb",
+      "bytes": "f3 0f 59 05 cd 21 f0 03",
+      "instruction": "mulss xmm0, dword ptr [rip + 0x3f021cd]",
+      "rip_targets": [
+        "0x49f60c0"
+      ]
+    },
+    {
+      "rva": "0x384620f",
+      "bytes": "f3 0f 10 99 5c 07 00 00",
+      "instruction": "movss xmm3, dword ptr [rcx + 0x75c]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x3846217",
+      "bytes": "48 8d b9 28 07 00 00",
+      "instruction": "lea rdi, [rcx + 0x728]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x384621e",
+      "bytes": "f3 0f 10 91 60 07 00 00",
+      "instruction": "movss xmm2, dword ptr [rcx + 0x760]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x3846226",
+      "bytes": "48 8d b1 10 07 00 00",
+      "instruction": "lea rsi, [rcx + 0x710]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x384629b",
+      "bytes": "ff 50 20",
+      "instruction": "call qword ptr [rax + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x38462a4",
+      "bytes": "e8 b7 fe ff ff",
+      "instruction": "call 0x3846160",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x38462ac",
+      "bytes": "e8 af fe ff ff",
+      "instruction": "call 0x3846160",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x9d47d4",
+      "bytes": "48 8b 0d 45 5d 29 05",
+      "instruction": "mov rcx, qword ptr [rip + 0x5295d45]",
+      "rip_targets": [
+        "0x5c6a520"
+      ]
+    },
+    {
+      "rva": "0x9d47e4",
+      "bytes": "48 8b 49 10",
+      "instruction": "mov rcx, qword ptr [rcx + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x9d47e8",
+      "bytes": "4c 8d 0d 71 fc b3 04",
+      "instruction": "lea r9, [rip + 0x4b3fc71]",
+      "rip_targets": [
+        "0x5514460"
+      ]
+    },
+    {
+      "rva": "0x9d47ef",
+      "bytes": "4c 8d 05 42 fc b3 04",
+      "instruction": "lea r8, [rip + 0x4b3fc42]",
+      "rip_targets": [
+        "0x5514438"
+      ]
+    },
+    {
+      "rva": "0x9d4800",
+      "bytes": "e8 8f c6 88 03",
+      "instruction": "call 0x4260e94",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x9d480a",
+      "bytes": "48 8b 80 88 00 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x88]",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "include/xar_bridge/ck3_12002_title_map.hpp": {
+      "kTitleMapGameStateSlotRva": "0x5C68C50",
+      "kTitleMapLandedTitleStorageSlotRva": "0x5D1DAF8",
+      "kTitleMapLandedTitleFallbackSlotRva": "0x5D1DAE0",
+      "kTitleMapResolveLandedTitleByKeyRva": "0xA847A0",
+      "kTitleMapResolveTitleProvinceRva": "0x230F900",
+      "kTitleMapIngameIdlerRootSlotRva": "0x5C6A520",
+      "kTitleMapRuntimeDynamicCastRva": "0x4260E94",
+      "kTitleMapIdlerBaseTypeDescriptorRva": "0x5514438",
+      "kTitleMapIngameIdlerTypeDescriptorRva": "0x5514460",
+      "kTitleMapHandlerVtableRva": "0x44BA890",
+      "kTitleMapCameraVtableRva": "0x44BA688",
+      "kTitleMapComputeBoundsRva": "0x2311040",
+      "kTitleMapQueryHandlerModeRva": "0xAF2530",
+      "kTitleMapCenterCameraOnTitleRva": "0xAF3FB0",
+      "kTitleMapCanonicalizeCameraStateRva": "0x3846160",
+      "kTitleMapBucketCountRva": "0x5438C2C",
+      "kTitleMapBucketThresholdsSlotRva": "0x5438C20",
+      "kTitleMapHorizontalOffsetsSlotRva": "0x5438C38",
+      "kTitleMapZoomIndexesSlotRva": "0x5438C50",
+      "kTitleMapDegreesToRadiansRva": "0x49F60C0",
+      "kTitleMapHandlerCameraOffset": "0x670",
+      "kTitleMapCameraCurrentStateOffset": "0x710",
+      "kTitleMapCameraTargetStateOffset": "0x728",
+      "kTitleMapCameraZoomIndexOffset": "0x744",
+      "kTitleMapCameraTransientXOffset": "0x75C",
+      "kTitleMapCameraTransientZOffset": "0x760",
+      "kTitleMapCameraTargetWriteBlockedOffset": "0x777",
+      "kTitleMapCameraZoomTableOffset": "0x7B0",
+      "kTitleMapCameraZoomCountOffset": "0x7BC",
+      "kTitleMapCameraParam4TableOffset": "0x7C8",
+      "kTitleMapCameraParam4EnabledOffset": "0x7D4"
+    },
+    "src/ck3_12002_title_map.cpp": {
+      "kLandedTitleIdentityOffset": "0x10",
+      "kLandedTitleTemplateOffset": "0x48",
+      "kLandedTitleTemplateKeyOffset": "0x18",
+      "kLandedTitleTemplateTierOffset": "0x64",
+      "kGameDataProvinceArrayOffset": "0x140",
+      "kGameDataProvinceCountOffset": "0x14C"
+    },
+    "src/ck3_12002_title_map_camera.cpp": {
+      "kIngameIdlerObjectOffset": "0x10",
+      "kIngameIdlerHandlerOffset": "0x88"
+    }
+  },
+  "vtable_prefixes": [
+    {
+      "name": "ingame_interface_handler",
+      "rva": "0x44ba890",
+      "function_rvas": [
+        "0xaec980",
+        "0xaed3e0",
+        "0xaef650",
+        "0xaef900",
+        "0xaef980",
+        "0xaef9e0"
+      ]
+    },
+    {
+      "name": "game_camera",
+      "rva": "0x44ba688",
+      "function_rvas": [
+        "0xaf4e30",
+        "0xd7bff0",
+        "0x3843130",
+        "0x38434a0",
+        "0x8522c0",
+        "0xb1ec30"
+      ]
+    },
+    {
+      "name": "ingame_idler_gfx",
+      "rva": "0x44bc408",
+      "function_rvas": [
+        "0xb1fdc0",
+        "0xb200d0",
+        "0xb22510",
+        "0xb20270"
+      ]
+    }
+  ],
+  "landed_title_layout": {
+    "identity": "0x10",
+    "template": "0x48",
+    "template_key": "0x18",
+    "template_tier": "0x64",
+    "recursive_child_ids": "0x110",
+    "recursive_child_count": "0x11c",
+    "direct_province": "0x338",
+    "province_type_tag": "0x85c",
+    "valid_province_type_tag": "0x50726f76",
+    "gamedata_province_array": "0x140",
+    "gamedata_province_count": "0x14c"
+  },
+  "camera_layout": {
+    "root_idler_object": "0x10",
+    "idler_handler": "0x88",
+    "handler_camera": "0x670",
+    "current_state": "0x710",
+    "target_state": "0x728",
+    "zoom_index": "0x744",
+    "transient_x": "0x75c",
+    "transient_z": "0x760",
+    "target_write_blocked": "0x777",
+    "zoom_table": "0x7b0",
+    "zoom_count": "0x7bc",
+    "param4_table": "0x7c8",
+    "param4_enabled": "0x7d4"
+  },
+  "offline_fixtures": {
+    "compiler": "MSVC 19.51 x64",
+    "title_resolution": "passed",
+    "camera_dispatch_and_later_pump_settlement": "passed",
+    "new_layout_with_old_layout_decoys": "passed",
+    "native_empty_province_is_optional_provenance": "passed",
+    "artifacts": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/build-title-map-msvc",
+    "success_serializer_new_build_identity": "passed"
+  },
+  "remaining_validation": [
+    "paused native title-key lookup and generation roundtrip",
+    "owning-thread stock camera dispatch and settled readback across separate pumps",
+    "production integration compile and typed dispatch fixture owned by coordinator"
+  ]
+}

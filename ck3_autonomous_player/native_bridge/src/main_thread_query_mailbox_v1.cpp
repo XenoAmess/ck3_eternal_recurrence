@@ -446,7 +446,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_denary == nullptr &&
       environment.permitted_executor_undenary == nullptr &&
       environment.permitted_executor_duodenary == nullptr &&
-      environment.permitted_executor_thirdenary == nullptr) {
+      environment.permitted_executor_thirdenary == nullptr &&
+      environment.permitted_executor_fourteenth == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -466,8 +467,19 @@ bool InstallMainThreadQueryMailboxV1(
   auto memory_query = environment.memory_query_override;
   auto memory_protect = environment.memory_protect_override;
   std::size_t system_page_size = environment.system_page_size_override;
+  const auto *profile = environment.build_profile;
+  const auto pump_exact_return_rva = profile == nullptr
+      ? kSdlWindowsPumpFirstPeekReturnRva : profile->pump_exact_return_rva;
+  if (pump_exact_return_rva == 0) {
+    AddFailure(mailbox, main_thread_query_failure_pump_anchor);
+    return false;
+  }
   if (!environment.offline_fixture) {
-    if (!ExactPumpAnchorsMatch(environment.module_base)) {
+    const bool anchors_match = profile == nullptr
+        ? ExactPumpAnchorsMatch(environment.module_base)
+        : profile->verify_pump_anchors != nullptr &&
+          profile->verify_pump_anchors(environment.module_base);
+    if (!anchors_match) {
       AddFailure(mailbox, main_thread_query_failure_pump_anchor);
       return false;
     }
@@ -485,6 +497,17 @@ bool InstallMainThreadQueryMailboxV1(
         environment.module_base + kMainThreadTlsInitializedFlagRva;
     tls_context_getter = reinterpret_cast<MainThreadTlsContextGetterV1>(
         environment.module_base + kMainThreadTlsContextGetterRva);
+    if (profile != nullptr) {
+      iat_slot = reinterpret_cast<void **>(
+          environment.module_base + profile->peek_message_iat_slot_rva);
+      rng_slot = environment.module_base + profile->global_rng_wrapper_slot_rva;
+      jomini_slot = environment.module_base + profile->jomini_state_slot_rva;
+      game_slot = environment.module_base + profile->game_state_slot_rva;
+      tls_initialized_flag =
+          environment.module_base + profile->tls_initialized_flag_rva;
+      tls_context_getter = reinterpret_cast<MainThreadTlsContextGetterV1>(
+          environment.module_base + profile->tls_context_getter_rva);
+    }
     memory_query = &DefaultMemoryQuery;
     memory_protect = &DefaultMemoryProtect;
     SYSTEM_INFO system_information{};
@@ -550,6 +573,7 @@ bool InstallMainThreadQueryMailboxV1(
   mailbox.observed_stamp_read_success.store(false,
                                              std::memory_order_release);
   mailbox.module_base = environment.module_base;
+  mailbox.pump_exact_return_rva = pump_exact_return_rva;
   mailbox.peek_message_iat_slot = iat_slot;
   mailbox.original_peek_message = original;
   mailbox.global_rng_wrapper_slot = rng_slot;
@@ -589,6 +613,10 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_duodenary;
   mailbox.permitted_executor_thirdenary =
       environment.permitted_executor_thirdenary;
+  mailbox.permitted_executor_fourteenth =
+      environment.permitted_executor_fourteenth;
+  mailbox.snapshot_observer_callback = environment.snapshot_observer_callback;
+  mailbox.snapshot_observer_context = environment.snapshot_observer_context;
   mailbox.executor = nullptr;
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
@@ -709,6 +737,8 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
   // but not yet incremented active_hook_calls.  Keeping both globals and this
   // mailbox alive until process exit makes that delayed entry harmless.  The
   // bridge must never FreeLibrary this v1 hook module.
+  mailbox.snapshot_observer_callback = nullptr;
+  mailbox.snapshot_observer_context = nullptr;
   mailbox.state.store(MainThreadQueryMailboxStateV1::detached,
                       std::memory_order_release);
   return MainThreadQueryUninstallResultV1::uninstalled;
@@ -733,7 +763,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_denary != nullptr ||
        mailbox.permitted_executor_undenary != nullptr ||
        mailbox.permitted_executor_duodenary != nullptr ||
-       mailbox.permitted_executor_thirdenary != nullptr) &&
+       mailbox.permitted_executor_thirdenary != nullptr ||
+       mailbox.permitted_executor_fourteenth != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -746,7 +777,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_denary &&
       executor != mailbox.permitted_executor_undenary &&
       executor != mailbox.permitted_executor_duodenary &&
-      executor != mailbox.permitted_executor_thirdenary) {
+      executor != mailbox.permitted_executor_thirdenary &&
+      executor != mailbox.permitted_executor_fourteenth) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {
@@ -884,7 +916,7 @@ MainThreadQueryReclaimResultV1 ReclaimMainThreadQueryV1(
 bool ObserveMainThreadPumpAndDrainV1(
     MainThreadQueryMailboxV1 &mailbox, std::uintptr_t return_rva,
     std::uint32_t current_thread_id) noexcept {
-  if (return_rva != kSdlWindowsPumpFirstPeekReturnRva) {
+  if (return_rva != mailbox.pump_exact_return_rva) {
     return false;
   }
   if (mailbox.stop_requested.load(std::memory_order_acquire)) {
@@ -927,6 +959,23 @@ bool ObserveMainThreadPumpAndDrainV1(
     }
     mailbox.drain_guard.clear(std::memory_order_release);
     return false;
+  }
+  // The TLS marker is initialized only for the native application owner.
+  // Full snapshots must be sampled here while CK3 is running as well as while
+  // paused. Reader unavailability belongs to the cache, not query transport.
+  if (mailbox.snapshot_observer_callback != nullptr &&
+      mailbox.snapshot_observer_context != nullptr) {
+#if defined(_MSC_VER)
+    __try {
+#endif
+      (void)mailbox.snapshot_observer_callback(
+          mailbox.snapshot_observer_context, before);
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      // The observer clears its cache before reading native objects. Preserve
+      // the established query mailbox behavior if a snapshot is unavailable.
+    }
+#endif
   }
   if (!before.paused) {
     ResetConsecutivePausedPumpProof(mailbox);

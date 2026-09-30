@@ -1,0 +1,582 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready nonreligious advantage constructor source plan; full advantage unavailable because owner-deferred religion sources",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "kAdvantageRuleDatabaseRva",
+      "rva": "0x8fc3e0",
+      "pattern": "48 83 EC 38 48 8B 05 15 AE 36 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 09 0C B9 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    },
+    {
+      "name": "kAdvantageSupplySelectorRva",
+      "rva": "0x25870b0",
+      "pattern": "40 57 48 83 EC 40 48 89 5C 24 58 48 8B D9 48 89 74 24 68 E8 18 53 37 FE 4C 8B 03 45 33 D2 48 63 4B 0C 45 33 DB 45 33 C9 48 89 44 24 50 48 8B F8",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    },
+    {
+      "name": "kAdvantageDebtSelectorRva",
+      "rva": "0x2bca620",
+      "pattern": "40 55 57 41 56 48 83 EC 20 8B EA 4C 8B F1 85 D2 74 05 83 FA 03 75 17 44 8B C5 48 8D 54 24 50 E8 6C EE CE FF 48 8B 7C 24 50 48 85 FF 78 0E B8 FF",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    },
+    {
+      "name": "kAdvantageResolveTreasuryRva",
+      "rva": "0x9d6df0",
+      "pattern": "48 8B 05 01 6D 34 05 48 85 C0 74 25 8B 11 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 05 39 50 10 74",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    },
+    {
+      "name": "kAdvantageCharacterGovernmentRva",
+      "rva": "0x28c2e10",
+      "pattern": "48 83 EC 38 4C 8B 05 4D 47 3A 03 4C 8B 0D 4E 47 3A 03 81 79 1C 72 61 68 43 0F 85 C2 00 00 00 8B 51 18 83 FA FF 0F 84 B6 00 00 00 48 8B 81 D0 01",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    },
+    {
+      "name": "kAdvantageModifierFlagRva",
+      "rva": "0x23037b0",
+      "pattern": "40 53 B8 FF FF 00 00 44 0F B7 D2 48 8B D9 66 3B D0 75 04 32 C0 5B C3 4C 8B 19 4C 63 49 0C 4D 8B C3 48 89 7C 24 10 49 8B C3 4B 8D 3C 4B 4D 85 C9",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    },
+    {
+      "name": "kAdvantageProvinceModifierRva",
+      "rva": "0x2c23360",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 48 83 EC 30 48 8B 3D 75 A7 0F 03 45 8B F1 48 8B 1D 53 A7 0F 03 45 0F B7",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    },
+    {
+      "name": "kAdvantageModifierValueRva",
+      "rva": "0x2c4d550",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 7C 24 20 41 56 48 83 EC 40 48 8B 5C 24 70 49 8B C1 41 0F B7 E8 4C 8B F2 48 8B F9 48 85 DB 75 08 48 89 19 E9",
+      "confidence": "reviewed-static-advantage-function-and-native-caller"
+    }
+  ],
+  "vtable_prefixes": [],
+  "semantic_checks": [
+    {
+      "name": "nonreligious_advantage_247A9CF",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247a9cf",
+      "bytes": "48 8B 94 F8 70 0F 00 00",
+      "instruction": "mov rdx, qword ptr [rax + rdi*8 + 0xf70]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247A9D7",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247a9d7",
+      "bytes": "81 7A 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rdx + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AA34",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aa34",
+      "bytes": "48 8B BC F8 A0 0F 00 00",
+      "instruction": "mov rdi, qword ptr [rax + rdi*8 + 0xfa0]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AA3C",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aa3c",
+      "bytes": "81 7F 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rdi + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AA84",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aa84",
+      "bytes": "E8 57 90 44 00",
+      "instruction": "call 0x28c3ae0",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AA89",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aa89",
+      "bytes": "48 8D 48 68",
+      "instruction": "lea rcx, [rax + 0x68]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AA8D",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aa8d",
+      "bytes": "BA A4 01 00 00",
+      "instruction": "mov edx, 0x1a4",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AA92",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aa92",
+      "bytes": "E8 19 8D E8 FF",
+      "instruction": "call 0x23037b0",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AAC4",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aac4",
+      "bytes": "48 8B 50 48",
+      "instruction": "mov rdx, qword ptr [rax + 0x48]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AAC8",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aac8",
+      "bytes": "81 7A 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rdx + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AAED",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aaed",
+      "bytes": "48 8B 50 50",
+      "instruction": "mov rdx, qword ptr [rax + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_247AAF1",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x247aaf1",
+      "bytes": "81 7A 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rdx + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586CA3",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586ca3",
+      "bytes": "48 63 42 40",
+      "instruction": "movsxd rax, dword ptr [rdx + 0x40]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586D61",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586d61",
+      "bytes": "4C 89 5C 24 20",
+      "instruction": "mov qword ptr [rsp + 0x20], r11",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586D68",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586d68",
+      "bytes": "48 89 54 24 28",
+      "instruction": "mov qword ptr [rsp + 0x28], rdx",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586D74",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586d74",
+      "bytes": "48 C7 C1 80 69 67 FF",
+      "instruction": "mov rcx, 0xffffffffff676980",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586D80",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586d80",
+      "bytes": "BA 80 96 98 00",
+      "instruction": "mov edx, 0x989680",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586E10",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586e10",
+      "bytes": "0F 10 44 24 20",
+      "instruction": "movups xmm0, xmmword ptr [rsp + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586F85",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586f85",
+      "bytes": "83 78 5C 00",
+      "instruction": "cmp dword ptr [rax + 0x5c], 0",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2586F8B",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2586f8b",
+      "bytes": "48 8B 97 00 0F 00 00",
+      "instruction": "mov rdx, qword ptr [rdi + 0xf00]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_258710E",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x258710e",
+      "bytes": "4C 8B 25 53 7A 79 03",
+      "instruction": "mov r12, qword ptr [rip + 0x3797a53]",
+      "rip_targets": [
+        "0x5d1eb68"
+      ]
+    },
+    {
+      "name": "nonreligious_advantage_258711A",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x258711a",
+      "bytes": "4C 8B 2D 1F 82 79 03",
+      "instruction": "mov r13, qword ptr [rip + 0x379821f]",
+      "rip_targets": [
+        "0x5d1f340"
+      ]
+    },
+    {
+      "name": "nonreligious_advantage_25871C5",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25871c5",
+      "bytes": "81 7E 14 67 52 72 41",
+      "instruction": "cmp dword ptr [rsi + 0x14], 0x41725267",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25871CE",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25871ce",
+      "bytes": "83 7E 10 FF",
+      "instruction": "cmp dword ptr [rsi + 0x10], -1",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25871D4",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25871d4",
+      "bytes": "83 BE 4C 01 00 00 01",
+      "instruction": "cmp dword ptr [rsi + 0x14c], 1",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587228",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587228",
+      "bytes": "80 BA 41 01 00 00 00",
+      "instruction": "cmp byte ptr [rdx + 0x141], 0",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587242",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587242",
+      "bytes": "8B 35 5C F2 EC 02",
+      "instruction": "mov esi, dword ptr [rip + 0x2ecf25c]",
+      "rip_targets": [
+        "0x54564a4"
+      ]
+    },
+    {
+      "name": "nonreligious_advantage_2587254",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587254",
+      "bytes": "49 F7 AF 80 01 00 00",
+      "instruction": "imul qword ptr [r15 + 0x180]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_258726D",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x258726d",
+      "bytes": "48 8B 2D 24 F2 EC 02",
+      "instruction": "mov rbp, qword ptr [rip + 0x2ecf224]",
+      "rip_targets": [
+        "0x5456498"
+      ]
+    },
+    {
+      "name": "nonreligious_advantage_2587395",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587395",
+      "bytes": "48 8B 87 30 0F 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0xf30]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25873A2",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25873a2",
+      "bytes": "48 8B 87 40 0F 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0xf40]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25873AF",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25873af",
+      "bytes": "48 8B 87 20 0F 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0xf20]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25874CB",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25874cb",
+      "bytes": "41 B8 EB 01 00 00",
+      "instruction": "mov r8d, 0x1eb",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25874E9",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25874e9",
+      "bytes": "E8 72 BE 69 00",
+      "instruction": "call 0x2c23360",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587506",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587506",
+      "bytes": "41 B8 D6 01 00 00",
+      "instruction": "mov r8d, 0x1d6",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587514",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587514",
+      "bytes": "48 8D 56 30",
+      "instruction": "lea rdx, [rsi + 0x30]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587529",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587529",
+      "bytes": "E8 22 60 6C 00",
+      "instruction": "call 0x2c4d550",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_258753B",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x258753b",
+      "bytes": "48 8B 95 10 0F 00 00",
+      "instruction": "mov rdx, qword ptr [rbp + 0xf10]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25876AE",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25876ae",
+      "bytes": "E8 6D 2F 64 00",
+      "instruction": "call 0x2bca620",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25876F9",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25876f9",
+      "bytes": "8B 88 DC 0F 00 00",
+      "instruction": "mov ecx, dword ptr [rax + 0xfdc]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_258773F",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x258773f",
+      "bytes": "48 8B 90 60 0F 00 00",
+      "instruction": "mov rdx, qword ptr [rax + 0xf60]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587750",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587750",
+      "bytes": "48 8B 80 D0 0F 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0xfd0]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587764",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587764",
+      "bytes": "81 7A 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rdx + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587781",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587781",
+      "bytes": "E8 8A B6 33 00",
+      "instruction": "call 0x28c2e10",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587786",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587786",
+      "bytes": "8B 48 40",
+      "instruction": "mov ecx, dword ptr [rax + 0x40]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587796",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587796",
+      "bytes": "48 83 BF B0 01 00 00 00",
+      "instruction": "cmp qword ptr [rdi + 0x1b0], 0",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25877A4",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25877a4",
+      "bytes": "48 8B 87 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0x1c0]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25877C4",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25877c4",
+      "bytes": "48 8B 87 D0 01 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0x1d0]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25877F2",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25877f2",
+      "bytes": "E8 F9 F5 44 FE",
+      "instruction": "call 0x9d6df0",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25877F7",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25877f7",
+      "bytes": "81 78 14 64 6E 61 4C",
+      "instruction": "cmp dword ptr [rax + 0x14], 0x4c616e64",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587804",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587804",
+      "bytes": "83 78 10 FF",
+      "instruction": "cmp dword ptr [rax + 0x10], -1",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_258780E",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x258780e",
+      "bytes": "48 83 B8 18 03 00 00 00",
+      "instruction": "cmp qword ptr [rax + 0x318], 0",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_258785A",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x258785a",
+      "bytes": "BA 03 00 00 00",
+      "instruction": "mov edx, 3",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_2587862",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x2587862",
+      "bytes": "E8 B9 2D 64 00",
+      "instruction": "call 0x2bca620",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25878AD",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25878ad",
+      "bytes": "8B 88 84 10 00 00",
+      "instruction": "mov ecx, dword ptr [rax + 0x1084]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25878CD",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25878cd",
+      "bytes": "48 8B 80 78 10 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x1078]",
+      "rip_targets": []
+    },
+    {
+      "name": "nonreligious_advantage_25878E1",
+      "purpose": "native_constructor_nonreligious_source_layout_or_selector",
+      "rva": "0x25878e1",
+      "bytes": "81 7A 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rdx + 0x38], 0x4744624f",
+      "rip_targets": []
+    }
+  ],
+  "source_header": "include/xar_bridge/ck3_12002_phase_advantage.hpp",
+  "source_constants": {
+    "kAdvantageRuleDatabaseRva": "0x8fc3e0",
+    "kAdvantageSupplySelectorRva": "0x25870b0",
+    "kAdvantageDebtSelectorRva": "0x2bca620",
+    "kAdvantageResolveTreasuryRva": "0x9d6df0",
+    "kAdvantageCharacterGovernmentRva": "0x28c2e10",
+    "kAdvantageModifierFlagRva": "0x23037b0",
+    "kAdvantageProvinceModifierRva": "0x2c23360",
+    "kAdvantageModifierValueRva": "0x2c4d550",
+    "kAdvantageSupplyUnitStorageRva": "0x5d1eb68",
+    "kAdvantageSupplyThresholdsRva": "0x5456498",
+    "kAdvantageSupplyThresholdCountRva": "0x54564a4"
+  },
+  "layouts": {
+    "effect_key": "stdstring+0x18",
+    "effect_validity": "uint32+0x38 == 0x4744624F",
+    "effect_advantage_points": "int32+0x40",
+    "terrain_effects": [
+      "0x48",
+      "0x50"
+    ],
+    "crossing_effect_bases": [
+      "0xF70",
+      "0xFA0"
+    ],
+    "gathering_effect": "0xF00",
+    "holding_effect": "0xF10",
+    "supply_effects": [
+      "0xF20",
+      "0xF30",
+      "0xF40"
+    ],
+    "no_income_effect": "0xF60",
+    "owner_debt_array": "0xFD0/0xFDC",
+    "treasury_debt_array": "0x1078/0x1084",
+    "constructor_gathering_input": "CArmy+0x5C; distinct from side gathering flag sourced from CArmy+0x1D0",
+    "holding_modifier_ids": [
+      "0x1EB",
+      "0x1D6"
+    ],
+    "no_water_crossing_penalty_flag": "0x1A4",
+    "native_effect_ledger": "16 bytes {effect pointer, points * Q100000 scale}; second field is contribution, not scale",
+    "treasury_gate": "government+0x40 bit29; character+0x1B0; realm containers+0x1C0 or+0x1D0; realm magic+0x14 ==Land, ID+0x10!=-1, balance+0x318<0"
+  },
+  "known_gaps": [
+    "Two religion constructor stages deferred by owner; do not derive absent religion bonus from omission",
+    "Owning-thread paused live validation required before production-live readiness"
+  ]
+}

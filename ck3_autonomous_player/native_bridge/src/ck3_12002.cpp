@@ -45,6 +45,14 @@ CoreBindings BindCoreImage(std::uintptr_t image_base,
   return result;
 }
 
+void *ResolveCoreCharacter(const CoreBindings &bindings,
+                           std::int32_t character_id) noexcept {
+  if (!bindings.enabled || bindings.character_storage_slot == nullptr) {
+    return nullptr;
+  }
+  return ResolveCharacter(*bindings.character_storage_slot, character_id);
+}
+
 bool ReadCoreSnapshot(const CoreBindings &bindings,
                       CoreSnapshotPrefix &output) noexcept {
   output = {};

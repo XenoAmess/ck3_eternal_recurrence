@@ -1,0 +1,62 @@
+﻿#pragma once
+
+#include "xar_bridge/game_contract.hpp"
+
+#include <cstdint>
+#include <span>
+#include <string_view>
+
+namespace xar::ck3_12002 {
+
+inline constexpr std::uintptr_t kUnitStorageSlotRva12002 = 0x5D1E380;
+inline constexpr std::uintptr_t kInternalArmyStorageSlotRva12002 = 0x5D1DE48;
+inline constexpr std::uintptr_t kRegimentStorageSlotRva12002 = 0x5D1F340;
+inline constexpr std::uintptr_t kUnitStateRva12002 = 0xD19140;
+inline constexpr std::uintptr_t kArmyCurrentSoldiersRva12002 = 0x2A95740;
+inline constexpr std::uintptr_t kArmyMaximumSoldiersRva12002 = 0x24E0450;
+
+struct ArmyBindings {
+  bool enabled = false;
+  void **game_state_slot = nullptr;
+  void **unit_storage_slot = nullptr;
+  void **internal_army_storage_slot = nullptr;
+  void **regiment_storage_slot = nullptr;
+  std::int32_t (*get_unit_state)(void *) = nullptr;
+  std::int32_t (*get_army_current_soldiers)(void *, std::uint8_t) = nullptr;
+  std::int32_t (*get_army_maximum_soldiers)(void *) = nullptr;
+};
+
+ArmyBindings BindArmyImage(std::uintptr_t image_base,
+                          std::string_view executable_sha256) noexcept;
+
+// Owning-thread native handles. Resolution requires full generation identity.
+void *ResolveArmyUnit(const ArmyBindings &bindings,
+                      std::int32_t unit_id) noexcept;
+void *ResolveInternalArmy(const ArmyBindings &bindings,
+                          std::int32_t internal_army_id) noexcept;
+bool ReadArmyGathering(const ArmyBindings &bindings, std::int32_t unit_id,
+                       bool &gathering) noexcept;
+
+// Called on the owning game thread. An empty owner span requests all units.
+// A valid empty storage returns true; unreadable storage returns false.
+bool ReadArmiesForCharacters(
+    const ArmyBindings &bindings, std::span<const std::int32_t> owners,
+    std::vector<game::ArmySnapshot> &output,
+    std::int32_t controlled_owner = -1) noexcept;
+
+struct ArmyStrengthScope {
+  std::int32_t army_id = -1;
+  game::ArmyStrengthScopeRole role = game::ArmyStrengthScopeRole::player;
+  std::vector<std::int32_t> war_ids;
+};
+
+game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
+    const ArmyBindings &bindings, std::span<const ArmyStrengthScope> scope,
+    std::vector<game::ArmyStrengthSnapshot> &output) noexcept;
+
+// The snapshot must have been read in the same paused owning-thread sample.
+game::ReadArmyStrengthsResult ReadArmyStrengths(
+    const ArmyBindings &bindings, const game::Snapshot &snapshot,
+    std::vector<game::ArmyStrengthSnapshot> &output) noexcept;
+
+} // namespace xar::ck3_12002

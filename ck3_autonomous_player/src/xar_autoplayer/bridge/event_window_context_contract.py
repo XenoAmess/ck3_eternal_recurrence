@@ -1,9 +1,11 @@
-"""Strict wire contract for the exact-build current event-window query."""
+﻿"""Strict wire contract for the exact-build current event-window query."""
 
 from __future__ import annotations
 
 import copy
 from typing import Any
+
+from .version_identity import CK3_11906, CK3_12002
 
 
 QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY = (
@@ -47,11 +49,24 @@ _OPTION_FIELDS = {
 }
 _READINESS_FIELDS = {
     "event_definition_identity_ready",
+    "root_scope_ready",
+    "saved_scopes_ready",
     "option_presentation_ready",
     "effect_indicators_ready",
     "effect_preview_ready",
     "semantic_decision_ready",
 }
+_LEGACY_READINESS_FIELDS = _READINESS_FIELDS - {
+    "root_scope_ready", "saved_scopes_ready",
+}
+_SCOPE_FIELDS = {
+    "status",
+    "raw_type_index",
+    "type_key",
+    "subtype",
+    "typed_identity",
+}
+_SAVED_SCOPE_FIELDS = {"name", "name_identifier", "scope"}
 
 _EFFECT_INDICATOR_COVERAGE = (
     "played-character-event-icon-indicators-1.19.0.6-v1"
@@ -61,6 +76,29 @@ _PROVENANCE_FIELDS = {
     "idler_vtable_rva",
     "manager_offset",
     "backend_id",
+}
+_EVENT_PROVENANCE_BY_BACKEND = {
+    CK3_11906.backend_id("event-window-v1"): {
+        "root": "module+0x570F7B8->+0x10",
+        "idler_vtable_rva": "0x40B1D30",
+        "manager_offset": "+0x28",
+        "backend_id": CK3_11906.backend_id("event-window-v1"),
+    },
+    CK3_12002.backend_id("event-window-v1"): {
+        "root": "module+0x5C6A520->+0x10",
+        "idler_vtable_rva": "0x44BC408",
+        "manager_offset": "+0x28",
+        "backend_id": CK3_12002.backend_id("event-window-v1"),
+    },
+}
+_EVENT_COVERAGE_BY_BACKEND = {
+    build.backend_id("event-window-v1"):
+    f"played-character-event-icon-indicators-{build.game_version}-v1"
+    for build in (CK3_11906, CK3_12002)
+}
+_EVENT_BUILD_BY_BACKEND = {
+    build.backend_id("event-window-v1"): build
+    for build in (CK3_11906, CK3_12002)
 }
 
 
@@ -95,7 +133,7 @@ def _stable_key(value: Any, label: str) -> str:
     return key
 
 
-def _effect_indicator(value: Any, label: str) -> None:
+def _effect_indicator(value: Any, label: str, *, game_version: str) -> None:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be an object")
     kind = value.get("kind")
@@ -121,26 +159,35 @@ def _effect_indicator(value: Any, label: str) -> None:
         else:
             raise ValueError(f"{label}.trait status is invalid")
         return
-    if kind == "stress":
+    if kind in {"stress", "fulfillment", "stress_and_fulfillment"}:
+        if kind != "stress" and game_version != CK3_12002.game_version:
+            raise ValueError(f"{label}.kind does not belong to this exact build")
+        fields = {
+            "kind", "direction", "magnitude", "affected_by_trait", "critical",
+        }
+        if kind == "stress_and_fulfillment":
+            fields.add("secondary_direction")
         row = _exact_object(
             value,
-            {
-                "kind",
-                "direction",
-                "magnitude",
-                "affected_by_trait",
-                "critical",
-            },
+            fields,
             label,
         )
         if row["direction"] not in {"increase", "decrease"}:
             raise ValueError(f"{label}.direction is invalid")
+        if kind == "stress_and_fulfillment" and row["secondary_direction"] not in {
+            "increase", "decrease",
+        }:
+            raise ValueError(f"{label}.secondary_direction is invalid")
         if row["magnitude"] != {"status": "unavailable"}:
             raise ValueError(f"{label}.magnitude must remain unavailable")
         if not isinstance(row["affected_by_trait"], bool) or not isinstance(
             row["critical"], bool
         ):
             raise ValueError(f"{label} stress flags must be booleans")
+        if kind == "fulfillment" and (
+            row["affected_by_trait"] is not False or row["critical"] is not False
+        ):
+            raise ValueError(f"{label} fulfillment row has unsupported stress flags")
         return
     if kind == "death":
         row = _exact_object(
@@ -191,10 +238,58 @@ def _effect_indicator(value: Any, label: str) -> None:
         raw_kind = _int(
             row["raw_kind"], f"{label}.raw_kind", -(2**31), 2**31 - 1
         )
-        if raw_kind in {0, 1, 2, 3}:
+        known_kinds = (
+            {0, 1, 2, 3, 4, 5} if game_version == CK3_12002.game_version
+            else {0, 1, 2, 3}
+        )
+        if raw_kind in known_kinds:
             raise ValueError(f"{label}.raw_kind aliases a known kind")
         return
     raise ValueError(f"{label}.kind is invalid")
+
+
+def _event_scope(value: Any, label: str) -> None:
+    scope = _exact_object(value, _SCOPE_FIELDS, label)
+    if scope["status"] != "available":
+        raise ValueError(f"{label}.status is invalid")
+    raw_type_index = _int(
+        scope["raw_type_index"],
+        f"{label}.raw_type_index",
+        1,
+        2**16 - 1,
+    )
+    type_key = _stable_key(scope["type_key"], f"{label}.type_key")
+    _int(scope["subtype"], f"{label}.subtype", 0, 2**16 - 1)
+    identity = scope["typed_identity"]
+    if raw_type_index == 4:
+        if type_key != "character":
+            raise ValueError(f"{label} character type key drifted")
+        identity = _exact_object(
+            identity,
+            {"status", "kind", "character_id"},
+            f"{label}.typed_identity",
+        )
+        if identity["status"] != "available" or identity["kind"] != "character":
+            raise ValueError(f"{label}.typed_identity is invalid")
+        _int(
+            identity["character_id"],
+            f"{label}.typed_identity.character_id",
+            1,
+            2**31 - 1,
+        )
+        return
+    if type_key == "character":
+        raise ValueError(f"{label} aliases the character type index")
+    identity = _exact_object(
+        identity,
+        {"status", "reason"},
+        f"{label}.typed_identity",
+    )
+    if identity != {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed",
+    }:
+        raise ValueError(f"{label}.typed_identity exceeds closed coverage")
 
 
 def normalize_current_event_window_context_v1(
@@ -242,26 +337,29 @@ def normalize_current_event_window_context_v1(
         0,
         32,
     )
-    if frame["root_scope"] is not None or frame["saved_scopes"] is not None:
-        raise ValueError("unclosed event scopes must remain null")
-    readiness = _exact_object(
-        frame["readiness"], _READINESS_FIELDS, "event readiness"
-    )
-    if any(not isinstance(readiness[key], bool) for key in _READINESS_FIELDS):
-        raise ValueError("event readiness values must be booleans")
     provenance = _exact_object(
         frame["provenance"], _PROVENANCE_FIELDS, "event provenance"
     )
     for key in _PROVENANCE_FIELDS:
         _string(provenance[key], f"event provenance.{key}", nonempty=True)
-    if (
-        provenance["root"] != "module+0x570F7B8->+0x10"
-        or provenance["idler_vtable_rva"] != "0x40B1D30"
-        or provenance["manager_offset"] != "+0x28"
-        or provenance["backend_id"]
-        != "ck3-1.19.0.6-native-event-window-v1"
-    ):
+    expected_provenance = _EVENT_PROVENANCE_BY_BACKEND.get(provenance["backend_id"])
+    if expected_provenance is None or provenance != expected_provenance:
         raise ValueError("event provenance exact-build locator drifted")
+    indicator_coverage = _EVENT_COVERAGE_BY_BACKEND[provenance["backend_id"]]
+    event_build = _EVENT_BUILD_BY_BACKEND[provenance["backend_id"]]
+    legacy_scopes = (
+        event_build == CK3_11906
+        and isinstance(frame["readiness"], dict)
+        and set(frame["readiness"]) == _LEGACY_READINESS_FIELDS
+    )
+    readiness_fields = _LEGACY_READINESS_FIELDS if legacy_scopes else _READINESS_FIELDS
+    readiness = _exact_object(frame["readiness"], readiness_fields, "event readiness")
+    if any(not isinstance(readiness[key], bool) for key in readiness_fields):
+        raise ValueError("event readiness values must be booleans")
+    if legacy_scopes and (
+        frame["root_scope"] is not None or frame["saved_scopes"] is not None
+    ):
+        raise ValueError("unclosed legacy event scopes must remain null")
 
     if frame["status"] == "unavailable":
         _string(
@@ -273,6 +371,8 @@ def normalize_current_event_window_context_v1(
             frame["event_definition_key"] is not None
             or frame["calculated_event_id"] is not None
             or frame["runtime_stats_ordinal"] is not None
+            or frame["root_scope"] is not None
+            or frame["saved_scopes"] is not None
             or frame["options"] is not None
             or any(readiness.values())
         ):
@@ -308,13 +408,45 @@ def normalize_current_event_window_context_v1(
         -(2**31),
         2**31 - 1,
     )
-    if readiness != {
+    if not legacy_scopes:
+        _event_scope(frame["root_scope"], "current event root_scope")
+        saved_scopes = frame["saved_scopes"]
+        if not isinstance(saved_scopes, list) or len(saved_scopes) > 1_024:
+            raise ValueError("current event saved_scopes must be a bounded list")
+        saved_names: set[str] = set()
+        saved_identifiers: set[int] = set()
+        for index, raw_saved in enumerate(saved_scopes):
+            saved = _exact_object(
+                raw_saved,
+                _SAVED_SCOPE_FIELDS,
+                f"current event saved scope {index}",
+            )
+            name = _stable_key(
+                saved["name"], f"current event saved scope {index}.name"
+            )
+            identifier = _int(
+                saved["name_identifier"],
+                f"current event saved scope {index}.name_identifier",
+                -(2**31),
+                2**31 - 1,
+            )
+            if name in saved_names or identifier in saved_identifiers:
+                raise ValueError("current event saved scope names are not unique")
+            saved_names.add(name)
+            saved_identifiers.add(identifier)
+            _event_scope(
+                saved["scope"], f"current event saved scope {index}.scope"
+            )
+    expected_readiness = {
         "event_definition_identity_ready": True,
         "option_presentation_ready": True,
         "effect_indicators_ready": True,
         "effect_preview_ready": False,
         "semantic_decision_ready": False,
-    }:
+    }
+    if not legacy_scopes:
+        expected_readiness.update(root_scope_ready=True, saved_scopes_ready=True)
+    if readiness != expected_readiness:
         raise ValueError("available event-window readiness is invalid")
     options = frame["options"]
     if not isinstance(options, list) or len(options) > 64:
@@ -352,7 +484,7 @@ def normalize_current_event_window_context_v1(
         )
         if (
             indicators["status"] != "available"
-            or indicators["coverage"] != _EFFECT_INDICATOR_COVERAGE
+            or indicators["coverage"] != indicator_coverage
             or indicators["complete_effect_set"] is not False
             or not isinstance(indicators["rows"], list)
             or len(indicators["rows"]) > 128
@@ -362,6 +494,7 @@ def normalize_current_event_window_context_v1(
             _effect_indicator(
                 indicator,
                 f"event option effect indicator {row_index}",
+                game_version=event_build.game_version,
             )
         effect = _exact_object(
             option["effect_preview"],

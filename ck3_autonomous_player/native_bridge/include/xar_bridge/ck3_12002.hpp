@@ -51,6 +51,11 @@ struct CoreBindings {
 CoreBindings BindCoreImage(std::uintptr_t image_base,
                            std::string_view executable_sha256) noexcept;
 
+// Resolves a character from this image's storage using the complete ID.
+// Shared by the new version's snapshot and native command modules.
+void *ResolveCoreCharacter(const CoreBindings &bindings,
+                           std::int32_t character_id) noexcept;
+
 struct CoreSnapshotPrefix {
   ClockPrefix clock;
   std::int32_t local_player_id = -1;

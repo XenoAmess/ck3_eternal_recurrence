@@ -1,0 +1,438 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready event/pending observation and command construction; live verification pending",
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "current_local_event",
+      "rva": "0x29c57a0",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 30 48 8D 05 EF 4A 2A 03 48 89 44 24 20 45 33 F6 44 89 74 24 28 B8 02 00 00 00 F0 0F C1 05 D5"
+    },
+    {
+      "name": "event_lookup",
+      "rva": "0x29c5710",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 B8 02 00 00 00 F0 0F C1 05 82 4B 2A 03 41 BB FE FF FF FF A8 01 74 2F 41 8B C3 F0 0F C1 05 6D 4B 2A 03 0F 1F 44 00 00"
+    },
+    {
+      "name": "select_event_option_validate",
+      "rva": "0x29bdfe0",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 83 EC 28 8B 51 20 85 D2 7E 26 48 8B 05 5E AC 2A 03 48 8B 88 A0 00 00 00 48 81 C1 80 44 03 00 E8 0B 77 00 00 48 85 C0 74 07 B0 01 48 83 C4 28"
+    },
+    {
+      "name": "select_event_option_execute",
+      "rva": "0x29bde00",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 20 02 00 00 48 8B F9 48 8B 05 39 AE 2A 03 48 8B 98 A0 00 00 00 8B 51 08 B8 02 00 00 00 F0 0F C1 05 7A C4 2A 03 41 BB"
+    },
+    {
+      "name": "select_event_option_clone",
+      "rva": "0x29be2d0",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 28 00 00 00 E8 CA 58 86 01 4C 8B C8 48 8D 05 A4 CD AC 01 49 89 01 48 8D 05 D2 50 DB 01 44 0F"
+    },
+    {
+      "name": "select_event_option_ui_submit",
+      "rva": "0x1857910",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 54 41 56 41 57 48 83 EC 50 44 8B FA 4C 8B E1 48 8B 05 15 13 41 04 48 8B 88 A0 00"
+    },
+    {
+      "name": "event_window_setup",
+      "rva": "0x18528c0",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "44 89 4C 24 20 4C 89 44 24 18 48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 81 EC A8 00 00 00 48 8D 6C 24 40 48 8B FA 48"
+    },
+    {
+      "name": "pending_is_for_character",
+      "rva": "0x136d1b0",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 83 EC 28 81 79 14 6E 49 68 43 75 1E 83 79 10 FF 74 18 44 8B 81 C0 05 00 00 45 85 C0 74 1B 41 83 E8 01 74 0D 41 83 F8 01 74 0F 32 C0 48 83 C4"
+    },
+    {
+      "name": "pending_reply_validate",
+      "rva": "0x2968490",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F9 83 79 24 04 0F 84 DB 00 00 00 48 8B 05 CD 67 3B 03 48 85 C0 74 26 8B 51 20 8B CA 81 E1 FF"
+    },
+    {
+      "name": "pending_reply_execute",
+      "rva": "0x29683d0",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "40 53 4C 8B 05 A7 68 3B 03 4C 8B D1 48 8B 15 8D 68 3B 03 4D 85 C0 74 2B 44 8B 49 08 41 8B C1 25 FF FF FF 00 41 3B 40 2C 73 19 8B C8 49 8B 40 20"
+    },
+    {
+      "name": "pending_reply_ui_ack",
+      "rva": "0x136e0e0",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "40 53 48 83 EC 50 48 8B D9 C6 44 24 28 00 33 C0 48 89 44 24 2C 89 44 24 34 48 8D 05 18 DB 11 03 48 89 44 24 20 48 8D 05 DC DA 11 03 48 89 44 24"
+    },
+    {
+      "name": "pending_constructor",
+      "rva": "0x2a32790",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 89 5C 24 10 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 4D 8B E9 4C 8B E2 48 8D 59 08 80 7B 40 00 0F 85 8D 01 00 00 80 7B 41"
+    },
+    {
+      "name": "interaction_context_copy",
+      "rva": "0x3076b80",
+      "confidence": "reviewed-static-event-interaction",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 57 41 56 41 57 48 83 EC 20 4C 8B F2 4C 8B F9 48 8B 02 48 89 01 48 83 C1 08 48 83 C2 08 E8 5F 41 6C"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CSelectEventOptionCommand.primary",
+      "rva": "0x47733d0",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0"
+      ]
+    },
+    {
+      "name": "CSelectEventOptionCommand.secondary",
+      "rva": "0x4773530",
+      "function_rvas": [
+        "0x29677a0",
+        "0x29bde00",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    },
+    {
+      "name": "CReplyCharacterInteractionCommand.primary",
+      "rva": "0x448bc18",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0"
+      ]
+    },
+    {
+      "name": "CReplyCharacterInteractionCommand.secondary",
+      "rva": "0x448bbe8",
+      "function_rvas": [
+        "0x29677a0",
+        "0x29683d0",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "rva": "0x29bdff9",
+      "purpose": "event manager embedded offset",
+      "instruction": "add rcx, 0x34480",
+      "rip_targets": [],
+      "bytes": "48 81 C1 80 44 03 00"
+    },
+    {
+      "rva": "0xa7d004",
+      "purpose": "local event consumer independently confirms manager",
+      "instruction": "add rcx, 0x34480",
+      "rip_targets": [],
+      "bytes": "48 81 C1 80 44 03 00"
+    },
+    {
+      "rva": "0x29c5817",
+      "purpose": "active event array pointer",
+      "instruction": "mov rdi, qword ptr [rcx + 0x1f18]",
+      "rip_targets": [],
+      "bytes": "48 8B B9 18 1F 00 00"
+    },
+    {
+      "rva": "0x29c581e",
+      "purpose": "active event array count",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x1f24]",
+      "rip_targets": [],
+      "bytes": "48 63 81 24 1F 00 00"
+    },
+    {
+      "rva": "0x29c5862",
+      "purpose": "active event definition pointer",
+      "instruction": "mov rcx, qword ptr [rdx + 0x1b0]",
+      "rip_targets": [],
+      "bytes": "48 8B 8A B0 01 00 00"
+    },
+    {
+      "rva": "0x29be1e3",
+      "purpose": "event instance ID retained",
+      "instruction": "mov r8d, dword ptr [r8 + 0x1bc]",
+      "rip_targets": [],
+      "bytes": "45 8B 80 BC 01 00 00"
+    },
+    {
+      "rva": "0x1852903",
+      "purpose": "definition source is active event +1B0",
+      "instruction": "mov rax, qword ptr [rdi + 0x1b0]",
+      "rip_targets": [],
+      "bytes": "48 8B 87 B0 01 00 00"
+    },
+    {
+      "rva": "0x185290a",
+      "purpose": "authored option array relocated to +1A0",
+      "instruction": "add rax, 0x1a0",
+      "rip_targets": [],
+      "bytes": "48 05 A0 01 00 00"
+    },
+    {
+      "rva": "0x1852914",
+      "purpose": "authored option count +1AC",
+      "instruction": "mov ebx, dword ptr [rax + 0xc]",
+      "rip_targets": [],
+      "bytes": "8B 58 0C"
+    },
+    {
+      "rva": "0x1857a35",
+      "purpose": "select command primary vtable",
+      "instruction": "lea rax, [rip + 0x2f1b994]",
+      "rip_targets": [
+        "0x47733d0"
+      ],
+      "bytes": "48 8D 05 94 B9 F1 02"
+    },
+    {
+      "rva": "0x1857a41",
+      "purpose": "select command secondary vtable",
+      "instruction": "lea rax, [rip + 0x2f1bae8]",
+      "rip_targets": [
+        "0x4773530"
+      ],
+      "bytes": "48 8D 05 E8 BA F1 02"
+    },
+    {
+      "rva": "0x1857a4d",
+      "purpose": "select current event instance payload",
+      "instruction": "mov eax, dword ptr [r14 + 0x1bc]",
+      "rip_targets": [],
+      "bytes": "41 8B 86 BC 01 00 00"
+    },
+    {
+      "rva": "0x1857a58",
+      "purpose": "select option index payload",
+      "instruction": "mov dword ptr [rsp + 0x44], r15d",
+      "rip_targets": [],
+      "bytes": "44 89 7C 24 44"
+    },
+    {
+      "rva": "0x1857a5d",
+      "purpose": "select channel flags 7",
+      "instruction": "mov edx, 7",
+      "rip_targets": [],
+      "bytes": "BA 07 00 00 00"
+    },
+    {
+      "rva": "0x136d1b4",
+      "purpose": "pending component validity magic",
+      "instruction": "cmp dword ptr [rcx + 0x14], 0x4368496e",
+      "rip_targets": [],
+      "bytes": "81 79 14 6E 49 68 43"
+    },
+    {
+      "rva": "0x136d1c3",
+      "purpose": "pending routing kind",
+      "instruction": "mov r8d, dword ptr [rcx + 0x5c0]",
+      "rip_targets": [],
+      "bytes": "44 8B 81 C0 05 00 00"
+    },
+    {
+      "rva": "0x136d1e2",
+      "purpose": "pending alternate recipient",
+      "instruction": "mov eax, dword ptr [rcx + 0x300]",
+      "rip_targets": [],
+      "bytes": "8B 81 00 03 00 00"
+    },
+    {
+      "rva": "0x136d1ea",
+      "purpose": "pending standard recipient",
+      "instruction": "mov eax, dword ptr [rcx + 0x2f4]",
+      "rip_targets": [],
+      "bytes": "8B 81 F4 02 00 00"
+    },
+    {
+      "rva": "0x136d1f0",
+      "purpose": "recipient character full ID comparison",
+      "instruction": "cmp eax, dword ptr [rdx + 0x18]",
+      "rip_targets": [],
+      "bytes": "3B 42 18"
+    },
+    {
+      "rva": "0x136d202",
+      "purpose": "pending context starts +18",
+      "instruction": "add rcx, 0x18",
+      "rip_targets": [],
+      "bytes": "48 83 C1 18"
+    },
+    {
+      "rva": "0x136d206",
+      "purpose": "native pending response state predicate",
+      "instruction": "call 0x307ab70",
+      "rip_targets": [],
+      "bytes": "E8 65 D9 D0 01"
+    },
+    {
+      "rva": "0x29684ac",
+      "purpose": "pending component storage global",
+      "instruction": "mov rax, qword ptr [rip + 0x33b67cd]",
+      "rip_targets": [
+        "0x5d1ec80"
+      ],
+      "bytes": "48 8B 05 CD 67 3B 03"
+    },
+    {
+      "rva": "0x29684c3",
+      "purpose": "component capacity +2C",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]",
+      "rip_targets": [],
+      "bytes": "3B 48 2C"
+    },
+    {
+      "rva": "0x29684cb",
+      "purpose": "component slot base +20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "rip_targets": [],
+      "bytes": "48 8B 40 20"
+    },
+    {
+      "rva": "0x29684d9",
+      "purpose": "component full generation ID check",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": [],
+      "bytes": "39 50 10"
+    },
+    {
+      "rva": "0x2a32828",
+      "purpose": "pending component stride 5C8",
+      "instruction": "imul r14, rax, 0x5c8",
+      "rip_targets": [],
+      "bytes": "4C 69 F0 C8 05 00 00"
+    },
+    {
+      "rva": "0x2a328dd",
+      "purpose": "pending context +18",
+      "instruction": "lea rcx, [r14 + 0x18]",
+      "rip_targets": [],
+      "bytes": "49 8D 4E 18"
+    },
+    {
+      "rva": "0x2a32911",
+      "purpose": "pending routing kind +5C0",
+      "instruction": "mov dword ptr [r14 + 0x5c0], ecx",
+      "rip_targets": [],
+      "bytes": "41 89 8E C0 05 00 00"
+    },
+    {
+      "rva": "0x2a3293a",
+      "purpose": "pending auto accept notification +5C6",
+      "instruction": "mov byte ptr [r14 + 0x5c6], cl",
+      "rip_targets": [],
+      "bytes": "41 88 8E C6 05 00 00"
+    },
+    {
+      "rva": "0x3076bc6",
+      "purpose": "actor role context +2D8, pending +2F0",
+      "instruction": "mov eax, dword ptr [r14 + 0x2d8]",
+      "rip_targets": [],
+      "bytes": "41 8B 86 D8 02 00 00"
+    },
+    {
+      "rva": "0x3076bd4",
+      "purpose": "recipient role context +2DC, pending +2F4",
+      "instruction": "mov eax, dword ptr [r14 + 0x2dc]",
+      "rip_targets": [],
+      "bytes": "41 8B 86 DC 02 00 00"
+    },
+    {
+      "rva": "0x3076bfe",
+      "purpose": "intermediary role context +2E8, pending +300",
+      "instruction": "mov eax, dword ptr [r14 + 0x2e8]",
+      "rip_targets": [],
+      "bytes": "41 8B 86 E8 02 00 00"
+    },
+    {
+      "rva": "0x136e111",
+      "purpose": "ack pending id UI source",
+      "instruction": "mov eax, dword ptr [rcx + 0xc8]",
+      "rip_targets": [],
+      "bytes": "8B 81 C8 00 00 00"
+    },
+    {
+      "rva": "0x136e11b",
+      "purpose": "ack reply discriminator 4",
+      "instruction": "mov dword ptr [rsp + 0x44], 4",
+      "rip_targets": [],
+      "bytes": "C7 44 24 44 04 00 00 00"
+    },
+    {
+      "rva": "0x136e123",
+      "purpose": "ack channel flags E",
+      "instruction": "mov edx, 0xe",
+      "rip_targets": [],
+      "bytes": "BA 0E 00 00 00"
+    },
+    {
+      "rva": "0x29be2e0",
+      "purpose": "select clone allocation 28",
+      "instruction": "mov ecx, 0x28",
+      "rip_targets": [],
+      "bytes": "B9 28 00 00 00"
+    },
+    {
+      "rva": "0x29be32c",
+      "purpose": "select clone event ID payload",
+      "instruction": "mov eax, dword ptr [rbx + 0x20]",
+      "rip_targets": [],
+      "bytes": "8B 43 20"
+    },
+    {
+      "rva": "0x29be333",
+      "purpose": "select clone option payload",
+      "instruction": "mov eax, dword ptr [rbx + 0x24]",
+      "rip_targets": [],
+      "bytes": "8B 43 24"
+    }
+  ],
+  "source_header": "include/xar_bridge/ck3_12002_events.hpp",
+  "source_constants": {
+    "kEventManagerOffset": "0x34480",
+    "kEventDataOptionCountOffset": "0x1AC",
+    "kGetCurrentEventRva": "0x29C57A0",
+    "kSelectEventOptionPrimaryVtableRva": "0x47733D0",
+    "kSelectEventOptionSecondaryVtableRva": "0x4773530",
+    "kPendingInteractionStorageSlotRva": "0x5D1EC80",
+    "kIsPendingInteractionForCharacterRva": "0x136D1B0",
+    "kValidateReplyInteractionRva": "0x2968490",
+    "kReplyInteractionPrimaryVtableRva": "0x448BC18",
+    "kReplyInteractionSecondaryVtableRva": "0x448BBE8"
+  },
+  "runtime_contract": {
+    "reader_thread": "owning main thread; enforced by adapter integration",
+    "command_submit": "bool compatibility callback backed by SubmitCommandCopyCompat",
+    "ack_reply": 4,
+    "reply_channel_flags": 14,
+    "select_channel_flags": 7,
+    "command_size": 40,
+    "event_option_count_changed_from": "0x1BC",
+    "event_option_count_changed_to": "0x1AC"
+  }
+}

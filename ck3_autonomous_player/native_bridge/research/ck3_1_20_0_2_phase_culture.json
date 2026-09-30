@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready non-religious culture, innovations, traditions, heritage, house/dynasty and character perks; paused owning-thread live verification pending",
+  "runtime_registered": false,
+  "live_verified": false,
+  "scope": "Only non-religious fields. No faith/religion/doctrine/tenet reader or definitions.",
+  "source_header": "include/xar_bridge/ck3_12002_phase_culture.hpp",
+  "signature_anchors": [
+    {
+      "name": "dynasty_perk_database",
+      "rva": "0xd2bda0",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 83 EC 38 48 8B 05 55 3E FF 04 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 49 12 76 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44 24 20 41 8D 49 9D E8 75 F8 25 03 48 8B 05 0E 3E FF 04 48 83 C4 38 C3"
+    },
+    {
+      "name": "character_perk_database",
+      "rva": "0x8fcd40",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 83 EC 38 48 8B 05 DD A3 36 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 A9 02 B9 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44 24 20 41 8D 49 9D E8 D5 E8 68 03 48 8B 05 96 A3 36 05 48 83 C4 38 C3"
+    },
+    {
+      "name": "character_perks",
+      "rva": "0x2919360",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 83 EC 28 48 8B 81 B0 01 00 00 48 85 C0 75 28 65 48 8B 04 25 58 00 00 00 BA 10 00 00 00 48 8B 08 8B 04 0A 39 05 52 EC 44 03 7F 17 48 8D 05 25 E5 BC 02 48 83 C4 28 C3 48 05 20 02 00 00 48 83 C4 28 C3 48 8D 0D 32 EC 44 03 E8 F5 A6 90 01 83 3D 26 EC 44 03 FF 75 D4 48 8D 0D A1 30 A5 01 E8 80 AB 90 01 48 8D 0D 11 EC 44 03 E8 74 A6 90 01 48 8D 05 E1 E4 BC 02 48 83 C4 28 C3"
+    },
+    {
+      "name": "culture_has_parameter",
+      "rva": "0x2549810",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 89 5C 24 10 57 48 8B 41 20 44 8B DA 48 8B D9 4C 8B 80 28 01 00 00 4D 63 48 14 4D 8B 50 08 4D 8B C2 4B 8D 3C 8A 4D 85 C9 7E 22 0F 1F 44 00 00 49 8B D1 48 D1 EA 4C 2B CA 45 39 1C 90 4B 8D 0C 88 4C 8B CA 4C 0F 4C C1 48 85 D2 75 E3 4C 3B C7 74 16 45 3B 18 7C 11 4D 2B C2 49 C1 F8 02 41 83 F8 FF 0F 85 88 00 00 00 4C 8B 93 18 05 00 00 48 63 83 24 05 00 00 48 89 74 24 10 49 8D 34 C2 4C 3B D6 74 59 49 8B 02 4C 63 88 1C 10 00 00 48 8B 98 10 10 00 00 48 8B C3 4A 8D 3C 8B 4D 85 C9 7E 1D 4D 8B C1 49 D1 E8 4D 2B C8 46 39 1C 80 4A 8D 14 88 4D 8B C8 48 0F 4C C2 4D 85 C0 75 E3 48 3B C7 74 11 44 3B 18 7C 0C 48 2B C3 48 C1 F8 02 83 F8 FF 75 09 49 83 C2 08 4C 3B D6 75 A7 33 C0 4C 3B D6 48 8B 74 24 10 4C 0F 44 D0 4D 85 D2 74 02 B0 01 48 8B 5C 24 18 5F C3"
+    },
+    {
+      "name": "compiled_has_innovation",
+      "rva": "0x2b117c0",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "40 53 48 83 EC 20 48 8B 02 4C 8B CA 4C 8B D1 66 83 38 1A 75 06 44 8B 40 08 EB 06 41 B8 FF FF FF FF 48 8B 15 08 CB 20 03 48 85 D2 74 26 41 8B C0 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 8B 42 20 48 03 C9 48 8B 5C C8 08 48 85 DB 74 06 44 39 43 10 74 07 48 8B 1D CE CA 20 03 4D 8D 42 10 49 8B D1 49 8D 4A 40 E8 A6 42 00 00 48 8D 8B 18 05 00 00 48 89 44 24 30 48 8D 54 24 30 E8 80 04 F0 FD 48 83 C4 20 5B C3"
+    },
+    {
+      "name": "compiled_has_pillar",
+      "rva": "0x2b12490",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 8B 02 4C 8B C1 66 83 38 1A 75 05 8B 50 08 EB 05 BA FF FF FF FF 48 8B 05 43 BE 20 03 48 85 C0 74 23 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 05 39 50 10 74 07 48 8B 05 0C BE 20 03 49 8B 50 60 0F B6 8A 20 15 00 00 80 F9 05 75 0E 48 8B 05 95 BE 20 03 48 3B C2 0F 94 C0 C3 48 8B 40 20 48 8B 80 28 01 00 00 48 8B 40 70 48 8B 04 C8 48 3B C2 0F 94 C0 C3"
+    },
+    {
+      "name": "compiled_has_tradition",
+      "rva": "0x2b12530",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 89 74 24 18 57 48 81 EC 40 02 00 00 48 8B 02 48 8B FA 48 8B F1 66 83 38 1A 75 06 44 8B 40 08 EB 06 41 B8 FF FF FF FF 48 8B 15 91 BD 20 03 48 89 9C 24 58 02 00 00 48 85 D2 74 26 41 8B C0 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 8B 42 20 48 03 C9 48 8B 5C C8 08 48 85 DB 74 06 44 39 43 10 74 07 48 8B 1D 4F BD 20 03 4C 8D 46 10 48 8B D7 48 8D 4E 40 E8 07 31 00 00 48 8B C8 81 78 38 4F 62 44 47 0F 84 85 00 00 00 80 7F 20 00 75 7B 33 C9 4C 8D 0D 38 4B C9 01 89 8C 24 30 02 00 00 4C 8D 05 A2 0F 99 01 48 8D 4C 24 30 BA 00 02 00 00 E8 DB A2 D6 FD B9 FF 01 00 00 3B C1 0F 4F C1 48 8D 4C 24 30 89 84 24 30 02 00 00 48 8D 44 24 30 48 89 44 24 20 48 C7 C0 FF FF FF FF 0F 1F 40 00 48 FF C0 80 3C 01 00 75 F7 89 44 24 28 48 8D 54 24 20 C6 44 24 2C 00 48 8B CE 0F 28 44 24 20 66 0F 7F 44 24 20 E8 16 E7 BF 00 32 C0 EB 47 48 8B 43 20 4C 8D 84 24 50 02 00 00 48 89 8C 24 50 02 00 00 48 8B 98 28 01 00 00 48 8B 4B 58 48 63 43 64 48 8D 14 C1 E8 F6 F8 EF FD 48 8B 4B 58 48 63 53 64 4C 8D 04 D1 33 C9 49 3B C0 48 0F 44 C1 48 85 C0 0F 95 C0 48 8B 9C 24 58 02 00 00 48 8B B4 24 60 02 00 00 48 81 C4 40 02 00 00 5F C3"
+    },
+    {
+      "name": "compiled_has_dynasty_perk",
+      "rva": "0x2b203c0",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "40 53 48 83 EC 20 48 8B 02 4C 8B C9 66 83 38 13 75 05 8B 50 08 EB 05 BA FF FF FF FF 4C 8B 05 95 DA 1F 03 4D 85 C0 74 25 8B C2 25 FF FF FF 00 41 3B 40 2C 73 18 8B C8 49 8B 40 20 48 03 C9 48 8B 5C C8 08 48 85 DB 74 05 39 53 10 74 07 48 8B 1D 14 DA 1F 03 49 8B 41 60 4C 8D 44 24 30 48 8B 8B 78 01 00 00 48 89 44 24 30 48 63 83 84 01 00 00 48 8D 14 C1 E8 27 1B EF FD 48 8B 8B 78 01 00 00 48 63 93 84 01 00 00 4C 8D 04 D1 33 C9 49 3B C0 48 0F 44 C1 48 85 C0 0F 95 C0 48 83 C4 20 5B C3"
+    },
+    {
+      "name": "script_identifier_lookup",
+      "rva": "0x3f4f870",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 1D 67 F5 D6 01 4C 8B C1 B8 02 00 00 00 F0 0F C1 03 BF FE FF FF FF A8 01 74 27 66 66 0F 1F 84 00 00 00 00 00 8B C7 F0 0F C1 03 8B 03 A8 01 74 04 F3 90 EB F6"
+    },
+    {
+      "name": "script_identifier_name",
+      "rva": "0x3f4f900",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 83 EC 28 4C 63 C9 48 8B 05 DA F4 D6 01 BA 02 00 00 00 F0 0F C1 10 41 B8 FE FF FF FF F6 C2 01 74 27 41 8B C8 F0 0F C1 08 0F 1F 80 00 00 00 00 8B 08 F6 C1 01 74 04 F3 90 EB F5 B9 02 00 00 00"
+    },
+    {
+      "name": "character_knight_context",
+      "rva": "0x28bfc70",
+      "confidence": "reviewed-static-native-consumer-and-object-layout",
+      "pattern": "48 8B 81 C0 01 00 00 48 8B 91 B8 01 00 00 48 85 C0 74 1E 48 8B 80 C0 01 00 00 48 8B 40 28 81 78 1C 72 61 68 43 75 06 83 78 18 FF 75 48 48 8B C1 C3 48 85 D2 74 38 48 8B 05 BB 78 3A 03 48 85 C0 74 2C 44 8B 82 C8 00 00 00 41 8B C8 81 E1 FF FF FF 00 3B 48 2C 73 17 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 06 44 39 40 18 74 07 48 8B 05 8B 78 3A 03 C3"
+    }
+  ],
+  "vtable_prefixes": [],
+  "semantic_checks": [
+    {
+      "name": "character_house_id",
+      "purpose": "character house id",
+      "rva": "0x9d56e1",
+      "bytes": "8B 87 58 01 00 00",
+      "instruction": "mov eax, dword ptr [rdi + 0x158]",
+      "rip_targets": []
+    },
+    {
+      "name": "house_store",
+      "purpose": "house store",
+      "rva": "0x9d56e7",
+      "bytes": "4C 8B 05 02 84 34 05",
+      "instruction": "mov r8, qword ptr [rip + 0x5348402]",
+      "rip_targets": [
+        "0x5d1daf0"
+      ]
+    },
+    {
+      "name": "house_fallback",
+      "purpose": "house fallback",
+      "rva": "0x9d5719",
+      "bytes": "48 8B 1D C8 83 34 05",
+      "instruction": "mov rbx, qword ptr [rip + 0x53483c8]",
+      "rip_targets": [
+        "0x5d1dae8"
+      ]
+    },
+    {
+      "name": "dynasty_store",
+      "purpose": "dynasty store",
+      "rva": "0xc78ccf",
+      "bytes": "48 8B 15 A2 51 0A 05",
+      "instruction": "mov rdx, qword ptr [rip + 0x50a51a2]",
+      "rip_targets": [
+        "0x5d1de78"
+      ]
+    },
+    {
+      "name": "house_dynasty_id",
+      "purpose": "house dynasty id",
+      "rva": "0xc78cdb",
+      "bytes": "44 8B 40 2C",
+      "instruction": "mov r8d, dword ptr [rax + 0x2c]",
+      "rip_targets": []
+    },
+    {
+      "name": "dynasty_identity",
+      "purpose": "dynasty identity",
+      "rva": "0xc78cff",
+      "bytes": "44 39 41 10",
+      "instruction": "cmp dword ptr [rcx + 0x10], r8d",
+      "rip_targets": []
+    },
+    {
+      "name": "dynasty_fallback",
+      "purpose": "dynasty fallback",
+      "rva": "0xc78d05",
+      "bytes": "48 8B 0D 1C 51 0A 05",
+      "instruction": "mov rcx, qword ptr [rip + 0x50a511c]",
+      "rip_targets": [
+        "0x5d1de28"
+      ]
+    },
+    {
+      "name": "culture_store",
+      "purpose": "culture store",
+      "rva": "0x2b117e1",
+      "bytes": "48 8B 15 08 CB 20 03",
+      "instruction": "mov rdx, qword ptr [rip + 0x320cb08]",
+      "rip_targets": [
+        "0x5d1e2f0"
+      ]
+    },
+    {
+      "name": "culture_fallback",
+      "purpose": "culture fallback",
+      "rva": "0x2b11813",
+      "bytes": "48 8B 1D CE CA 20 03",
+      "instruction": "mov rbx, qword ptr [rip + 0x320cace]",
+      "rip_targets": [
+        "0x5d1e2e8"
+      ]
+    },
+    {
+      "name": "character_culture_id",
+      "purpose": "character culture id",
+      "rva": "0xc6e0fb",
+      "bytes": "41 8B 85 B0 00 00 00",
+      "instruction": "mov eax, dword ptr [r13 + 0xb0]",
+      "rip_targets": []
+    },
+    {
+      "name": "innovation_database",
+      "purpose": "innovation database",
+      "rva": "0x254371d",
+      "bytes": "48 8B 05 C4 A7 7D 03",
+      "instruction": "mov rax, qword ptr [rip + 0x37da7c4]",
+      "rip_targets": [
+        "0x5d1dee8"
+      ]
+    },
+    {
+      "name": "innovation_database_count",
+      "purpose": "innovation database count",
+      "rva": "0x2543779",
+      "bytes": "48 63 70 5C",
+      "instruction": "movsxd rsi, dword ptr [rax + 0x5c]",
+      "rip_targets": []
+    },
+    {
+      "name": "innovation_fallback",
+      "purpose": "innovation fallback",
+      "rva": "0xe4bffd",
+      "bytes": "4C 8B 1D C4 42 ED 04",
+      "instruction": "mov r11, qword ptr [rip + 0x4ed42c4]",
+      "rip_targets": [
+        "0x5d202c8"
+      ]
+    },
+    {
+      "name": "tradition_database",
+      "purpose": "tradition database",
+      "rva": "0x2fb6d52",
+      "bytes": "48 8B 0D BF 7D D6 02",
+      "instruction": "mov rcx, qword ptr [rip + 0x2d67dbf]",
+      "rip_targets": [
+        "0x5d1eb18"
+      ]
+    },
+    {
+      "name": "tradition_fallback",
+      "purpose": "tradition fallback",
+      "rva": "0xf4bc0a",
+      "bytes": "48 8B 05 97 46 DD 04",
+      "instruction": "mov rax, qword ptr [rip + 0x4dd4697]",
+      "rip_targets": [
+        "0x5d202a8"
+      ]
+    },
+    {
+      "name": "dynasty_perk_database_slot",
+      "purpose": "dynasty perk database slot",
+      "rva": "0xd2bda4",
+      "bytes": "48 8B 05 55 3E FF 04",
+      "instruction": "mov rax, qword ptr [rip + 0x4ff3e55]",
+      "rip_targets": [
+        "0x5d1fc00"
+      ]
+    },
+    {
+      "name": "character_perk_database_slot",
+      "purpose": "character perk database slot",
+      "rva": "0x8fcd44",
+      "bytes": "48 8B 05 DD A3 36 05",
+      "instruction": "mov rax, qword ptr [rip + 0x536a3dd]",
+      "rip_targets": [
+        "0x5c67128"
+      ]
+    },
+    {
+      "name": "dynasty_perk_database_array",
+      "purpose": "dynasty perk database array",
+      "rva": "0x2457f0a",
+      "bytes": "48 8B 58 50",
+      "instruction": "mov rbx, qword ptr [rax + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "name": "dynasty_perk_database_count",
+      "purpose": "dynasty perk database count",
+      "rva": "0x2457f0e",
+      "bytes": "48 63 40 5C",
+      "instruction": "movsxd rax, dword ptr [rax + 0x5c]",
+      "rip_targets": []
+    },
+    {
+      "name": "character_perk_database_array",
+      "purpose": "character perk database array",
+      "rva": "0x2755186",
+      "bytes": "48 8B 58 50",
+      "instruction": "mov rbx, qword ptr [rax + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "name": "character_perk_database_count",
+      "purpose": "character perk database count",
+      "rva": "0x275518a",
+      "bytes": "48 63 40 5C",
+      "instruction": "movsxd rax, dword ptr [rax + 0x5c]",
+      "rip_targets": []
+    },
+    {
+      "name": "innovation_database_array",
+      "purpose": "innovation database array",
+      "rva": "0x254255e",
+      "bytes": "49 8B 5D 50",
+      "instruction": "mov rbx, qword ptr [r13 + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_database_array",
+      "purpose": "tradition database array",
+      "rva": "0x2fdc13a",
+      "bytes": "48 8B 56 50",
+      "instruction": "mov rdx, qword ptr [rsi + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_database_count_write",
+      "purpose": "tradition database count write",
+      "rva": "0x2fdc143",
+      "bytes": "44 89 7E 5C",
+      "instruction": "mov dword ptr [rsi + 0x5c], r15d",
+      "rip_targets": []
+    },
+    {
+      "name": "character_perks_component",
+      "purpose": "character perks component",
+      "rva": "0x2919364",
+      "bytes": "48 8B 81 B0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b0]",
+      "rip_targets": []
+    },
+    {
+      "name": "character_perks_span",
+      "purpose": "character perks span",
+      "rva": "0x2919398",
+      "bytes": "48 05 20 02 00 00",
+      "instruction": "add rax, 0x220",
+      "rip_targets": []
+    },
+    {
+      "name": "character_employer_link",
+      "purpose": "character employer link",
+      "rva": "0x28bfc77",
+      "bytes": "48 8B 91 B8 01 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0x1b8]",
+      "rip_targets": []
+    },
+    {
+      "name": "employer_full_id",
+      "purpose": "employer full id",
+      "rva": "0x28bfcb2",
+      "bytes": "44 8B 82 C8 00 00 00",
+      "instruction": "mov r8d, dword ptr [rdx + 0xc8]",
+      "rip_targets": []
+    },
+    {
+      "name": "character_storage",
+      "purpose": "character storage",
+      "rva": "0x28bfca6",
+      "bytes": "48 8B 05 BB 78 3A 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33a78bb]",
+      "rip_targets": [
+        "0x5c67568"
+      ]
+    },
+    {
+      "name": "character_fallback",
+      "purpose": "character fallback",
+      "rva": "0x28bfcde",
+      "bytes": "48 8B 05 8B 78 3A 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33a788b]",
+      "rip_targets": [
+        "0x5c67570"
+      ]
+    },
+    {
+      "name": "culture_template",
+      "purpose": "culture template",
+      "rva": "0x2b124fa",
+      "bytes": "48 8B 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "name": "template_resolved_data",
+      "purpose": "template resolved data",
+      "rva": "0x2b124fe",
+      "bytes": "48 8B 80 28 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x128]",
+      "rip_targets": []
+    },
+    {
+      "name": "resolved_selected_pillars",
+      "purpose": "resolved selected pillars",
+      "rva": "0x2b12505",
+      "bytes": "48 8B 40 70",
+      "instruction": "mov rax, qword ptr [rax + 0x70]",
+      "rip_targets": []
+    },
+    {
+      "name": "pillar_category",
+      "purpose": "pillar category",
+      "rva": "0x2b124e0",
+      "bytes": "0F B6 8A 20 15 00 00",
+      "instruction": "movzx ecx, byte ptr [rdx + 0x1520]",
+      "rip_targets": []
+    },
+    {
+      "name": "pillar_invalid_category",
+      "purpose": "pillar invalid category",
+      "rva": "0x2b124e7",
+      "bytes": "80 F9 05",
+      "instruction": "cmp cl, 5",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_definition_kind",
+      "purpose": "tradition definition kind",
+      "rva": "0x2b125ac",
+      "bytes": "81 78 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rax + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_template",
+      "purpose": "tradition template",
+      "rva": "0x2b1263e",
+      "bytes": "48 8B 43 20",
+      "instruction": "mov rax, qword ptr [rbx + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_resolved_data",
+      "purpose": "tradition resolved data",
+      "rva": "0x2b12652",
+      "bytes": "48 8B 98 28 01 00 00",
+      "instruction": "mov rbx, qword ptr [rax + 0x128]",
+      "rip_targets": []
+    },
+    {
+      "name": "resolved_tradition_array",
+      "purpose": "resolved tradition array",
+      "rva": "0x2b12659",
+      "bytes": "48 8B 4B 58",
+      "instruction": "mov rcx, qword ptr [rbx + 0x58]",
+      "rip_targets": []
+    },
+    {
+      "name": "resolved_tradition_count",
+      "purpose": "resolved tradition count",
+      "rva": "0x2b1265d",
+      "bytes": "48 63 43 64",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x64]",
+      "rip_targets": []
+    },
+    {
+      "name": "culture_innovation_array",
+      "purpose": "culture innovation array",
+      "rva": "0x2549878",
+      "bytes": "4C 8B 93 18 05 00 00",
+      "instruction": "mov r10, qword ptr [rbx + 0x518]",
+      "rip_targets": []
+    },
+    {
+      "name": "culture_innovation_count",
+      "purpose": "culture innovation count",
+      "rva": "0x254987f",
+      "bytes": "48 63 83 24 05 00 00",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x524]",
+      "rip_targets": []
+    },
+    {
+      "name": "dynasty_owned_perks_array",
+      "purpose": "dynasty owned perks array",
+      "rva": "0x2b2041d",
+      "bytes": "48 8B 8B 78 01 00 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0x178]",
+      "rip_targets": []
+    },
+    {
+      "name": "dynasty_owned_perks_count",
+      "purpose": "dynasty owned perks count",
+      "rva": "0x2b20429",
+      "bytes": "48 63 83 84 01 00 00",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x184]",
+      "rip_targets": []
+    },
+    {
+      "name": "culture_parameter_native_delegate",
+      "purpose": "culture parameter native delegate",
+      "rva": "0x2b127b0",
+      "bytes": "E9 5B 70 A3 FF",
+      "instruction": "jmp 0x2549810",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kHouseStoreSlot": "0x5D1DAF0",
+    "kHouseFallbackSlot": "0x5D1DAE8",
+    "kDynastyStoreSlot": "0x5D1DE78",
+    "kDynastyFallbackSlot": "0x5D1DE28",
+    "kCultureStoreSlot": "0x5D1E2F0",
+    "kCultureFallbackSlot": "0x5D1E2E8",
+    "kInnovationDatabaseSlot": "0x5D1DEE8",
+    "kInnovationFallbackSlot": "0x5D202C8",
+    "kTraditionDatabaseSlot": "0x5D1EB18",
+    "kTraditionFallbackSlot": "0x5D202A8",
+    "kDynastyPerkDatabaseSlot": "0x5D1FC00",
+    "kCharacterPerkDatabaseSlot": "0x5C67128",
+    "kCharacterKnightContextRva": "0x28BFC70",
+    "kCharacterPerksRva": "0x2919360",
+    "kCultureHasParameterRva": "0x2549810",
+    "kScriptIdentifierLookupRva": "0x3F4F870",
+    "kScriptIdentifierNameRva": "0x3F4F900",
+    "kCharacterHouseIdOffset": "0x158",
+    "kCharacterCultureIdOffset": "0xB0",
+    "kCharacterRelationOffset": "0x1B8",
+    "kRelationEmployerIdOffset": "0xC8",
+    "kHouseDynastyIdOffset": "0x2C",
+    "kDynastyPerksDataOffset": "0x178",
+    "kDynastyPerksCountOffset": "0x184",
+    "kCultureTemplateOffset": "0x20",
+    "kTemplateResolvedDataOffset": "0x128",
+    "kResolvedTraditionsDataOffset": "0x58",
+    "kResolvedTraditionsCountOffset": "0x64",
+    "kResolvedPillarsDataOffset": "0x70",
+    "kCultureInnovationsDataOffset": "0x518",
+    "kCultureInnovationsCountOffset": "0x524",
+    "kDefinitionObjectsOffset": "0x50",
+    "kDefinitionCountOffset": "0x5C"
+  },
+  "migration_changes": {
+    "character_house_id": [
+      "0x150",
+      "0x158"
+    ],
+    "character_relation_component": [
+      "0x1B0",
+      "0x1B8"
+    ],
+    "character_lifestyle_component": [
+      "0x1A8",
+      "0x1B0"
+    ],
+    "dynasty_perks_span": [
+      [
+        "0x170",
+        "0x17C"
+      ],
+      [
+        "0x178",
+        "0x184"
+      ]
+    ],
+    "loaded_definition_span": [
+      [
+        "0x68",
+        "0x74"
+      ],
+      [
+        "0x50",
+        "0x5C"
+      ]
+    ],
+    "culture_innovation_span": [
+      [
+        "0x758",
+        "0x764"
+      ],
+      [
+        "0x518",
+        "0x524"
+      ]
+    ],
+    "culture_traditions": [
+      "culture +0x178/+0x184",
+      "*( *(culture +0x20) +0x128) +0x58/+0x64"
+    ],
+    "culture_pillars": [
+      "culture +0x190 span",
+      "*( *(culture +0x20) +0x128) +0x70 pointer data, indexed native categories 0..4"
+    ],
+    "culture_parameter_algorithm": [
+      "direct culture map +0x148, then owned innovation parameters",
+      "resolved template parameter IDs, then owned innovation parameters"
+    ],
+    "tradition_validity": [
+      "primary vslot 0 constant true",
+      "native evaluator checks +0x38 kind 0x4744624F"
+    ]
+  },
+  "offline_fixture": {
+    "path": "src/ck3_12002_phase_culture_test.cpp",
+    "command": "MSVC 19.51 x64 /std:c++20 /EHsc /W4, compile phase_culture.cpp and phase_culture_test.cpp; run standalone fixture",
+    "passed": true,
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/build-phase-culture/phase-culture-test.exe",
+    "coverage": [
+      "actual culture ownership vs loaded-only definitions",
+      "new template/resolved-data pointer chain",
+      "old-offset decoys",
+      "house/dynasty/employer/liege full identities",
+      "owned dynasty and lifestyle perk pointers",
+      "north Germanic heritage",
+      "ten exact culture parameter identifiers",
+      "generation mismatch returns read failure",
+      "legal zero ownership returns false",
+      "malformed owned tradition span rejected",
+      "new definition-kind validation",
+      "duplicate loaded stable key rejected",
+      "legal missing culture returns false membership",
+      "faith/religion fields untouched"
+    ]
+  }
+}

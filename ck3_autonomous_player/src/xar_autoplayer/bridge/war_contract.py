@@ -1,8 +1,10 @@
-"""Canonical native CK3 war and army state shared by MCP and the planner."""
+﻿"""Canonical native CK3 war and army state shared by MCP and the planner."""
 
 from __future__ import annotations
 
 from collections.abc import Iterable
+
+from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
 
 
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
@@ -62,6 +64,22 @@ _TERMINATION_TERMS_NATIVE_READER = "CWar+0x270/+0x290;0x28B1AA0"
 _TERMINATION_TERMS_CLAIM_LIFECYCLE = (
     "present_only_vtable_slot_0_delete_flags_0"
 )
+_TERMINATION_TERMS_PROVENANCE_BY_BUILD = {
+    CK3_11906.game_version: {
+        "game_version": CK3_11906.game_version,
+        "executable_sha256": CK3_11906.executable_sha256,
+        "native_reader": _TERMINATION_TERMS_NATIVE_READER,
+        "present_claim_lifecycle": _TERMINATION_TERMS_CLAIM_LIFECYCLE,
+        "claim_script_sha256": _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256,
+    },
+    CK3_12002.game_version: {
+        "game_version": CK3_12002.game_version,
+        "executable_sha256": CK3_12002.executable_sha256,
+        "native_reader": "CWar+0x270/+0x290;0x2B9ECD0",
+        "present_claim_lifecycle": _TERMINATION_TERMS_CLAIM_LIFECYCLE,
+        "claim_script_sha256": "887BF0197401CB17CB4588978ADD556AB6B429BF55CB482E3E5F2D0E8351CFD4",
+    },
+}
 _TERMINATION_TERMS_OUTCOMES = {
     "attacker_victory": {
         "declared_title_disposition": (
@@ -1643,14 +1661,16 @@ def normalize_war_termination_terms(
 def _normalize_war_termination_terms_provenance(
     value: object,
 ) -> dict[str, str]:
-    expected = {
-        "game_version": _TERMINATION_TERMS_GAME_VERSION,
-        "executable_sha256": _TERMINATION_TERMS_EXECUTABLE_SHA256,
-        "native_reader": _TERMINATION_TERMS_NATIVE_READER,
-        "present_claim_lifecycle": _TERMINATION_TERMS_CLAIM_LIFECYCLE,
-        "claim_script_sha256": _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256,
-    }
-    if not isinstance(value, dict) or value != expected:
+    if not isinstance(value, dict):
+        raise ValueError("native war_termination_terms provenance is malformed")
+    try:
+        build = require_exact_native_build(
+            value.get("game_version"), value.get("executable_sha256"),
+        )
+    except ValueError as error:
+        raise ValueError("native war_termination_terms provenance is malformed") from error
+    expected = _TERMINATION_TERMS_PROVENANCE_BY_BUILD[build.game_version]
+    if value != expected:
         raise ValueError(
             "native war_termination_terms provenance is malformed"
         )

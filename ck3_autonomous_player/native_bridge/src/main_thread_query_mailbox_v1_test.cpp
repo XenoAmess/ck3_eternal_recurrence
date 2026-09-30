@@ -1125,6 +1125,7 @@ bool TestMailboxStateMachine() {
 }
 
 bool TestSourceContract(int argc, char **argv) {
+  g_failure_stage = "source_contract";
   if (argc != 7) {
     return false;
   }
@@ -1393,8 +1394,11 @@ bool TestSourceContract(int argc, char **argv) {
       "explicit WarEntryApplicationMainMailboxWorkerLifetime(");
   const auto maybe_install = bridge.find(
       "void MaybeInstall(const xar::game::Snapshot &snapshot)");
+  // The new-build observer installs before a full snapshot is available.
+  // Preserve the legacy paused-install contract by locating its own call.
   const auto iat_install = bridge.find(
-      "installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(");
+      "installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(",
+      maybe_install);
   const auto connected_session = bridge.find("void RunConnectedSession(");
   const auto hello_publish = bridge.find(
       "WriteFrame(pipe, HelloFrame(game))", connected_session);
@@ -1408,6 +1412,7 @@ bool TestSourceContract(int argc, char **argv) {
       !(lifetime_constructor < maybe_install && maybe_install < iat_install) ||
       !(connected_session < hello_publish &&
         hello_publish < readiness_observer)) {
+    g_failure_stage = "legacy_lifetime_install_order";
     return false;
   }
 
@@ -1503,6 +1508,7 @@ int main(int argc, char **argv) {
     return 1;
   }
   if (!TestSourceContract(argc, argv)) {
+    std::fprintf(stderr, "mailbox source contract failed at %s\n", g_failure_stage);
     return 2;
   }
   return 0;

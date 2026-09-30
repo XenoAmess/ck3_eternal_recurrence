@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "contract": "query-war-termination-terms-v1",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "runtime_advertised": false,
+  "build": {
+    "version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": 1790629985,
+    "image_base": "0x140000000",
+    "size_of_image": 102518784
+  },
+  "signature_anchors": [
+    {
+      "name": "claim_getter",
+      "rva": "0x2b9ecd0",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 50 49 8B E8 4C 8B F2 48 8B D9 48 8B CA E8 35 7D D2 FF",
+      "confidence": "static-confirmed"
+    },
+    {
+      "name": "claim_explicit_return_flags",
+      "rva": "0x2b9ed36",
+      "pattern": "48 89 33 41 8B 42 08 89 43 08 41 8B 42 0C 89 43 0C 41 0F B6 42 10 88 43 10 41 0F B6 42 11 88 43 11 C6 43 18 01",
+      "confidence": "static-confirmed"
+    },
+    {
+      "name": "claim_inherited_return_flags",
+      "rva": "0x2b9ee50",
+      "pattern": "48 89 33 8B 44 24 38 89 43 08 8B 44 24 3C 89 43 0C 0F B6 44 24 40 88 43 10 0F B6 44 24 41 88 43 11 C6 43 18 01",
+      "confidence": "static-confirmed"
+    },
+    {
+      "name": "claim_absent_optional_tag",
+      "rva": "0x2b9ee42",
+      "pattern": "E8 89 54 01 00 84 C0 75 05 88 43 18 EB",
+      "confidence": "static-confirmed"
+    },
+    {
+      "name": "claim_scalar_destructor",
+      "rva": "0xddc610",
+      "pattern": "40 53 48 83 EC 20 C7 41 0C 64 74 6C 44 48 8B D9 F6 C2 01 74 0A BA 18 00 00 00 E8 35 79 44 03 48 8B C3 48 83 C4 20 5B C3",
+      "confidence": "static-confirmed"
+    },
+    {
+      "name": "casus_belli_database_index_and_key",
+      "rva": "0x31f1acc",
+      "pattern": "44 89 46 10 66 0F 6F C6 66 0F 73 D8 08 66 41 0F 7E C0 66 48 0F 7E F2 E8 58 C7 D8 00 89 46 14 48 8D 4E 18 66 0F 6F C6 66 0F 73 D8 08 66 0F 7E C0 4C 63 C0 45 33 E4 4C 89 21 4C 89 61 10 48 C7 41 18 0F 00 00 00 44 88 21 66 48 0F 7E F2 E8 92 42 66 FD C7 46 38 4F 62 44 47",
+      "confidence": "static-confirmed"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CClaim",
+      "rva": "0x44F17D8",
+      "function_rvas": [
+        "0xDDC610",
+        "0x3F7E2D0",
+        "0x2662900"
+      ]
+    }
+  ],
+  "reader_abi": {
+    "native_reader": "CWar+0x270/+0x290;0x2B9ECD0",
+    "getter_rva": "0x2B9ECD0",
+    "arguments": "RCX caller-owned optional 0x20 bytes, RDX claimant CCharacter*, R8 CLandedTitle*; returns RCX output pointer",
+    "claim_size": "0x18",
+    "optional_size": "0x20",
+    "claim_vtable_rva": "0x44F17D8",
+    "destructor_slot": 0,
+    "destructor_delete_flags": 0,
+    "destructor_rva": "0xDDC610",
+    "title_id_offset": "0x08",
+    "type_marker_offset": "0x0C",
+    "strong_offset": "0x10",
+    "implicit_offset": "0x11",
+    "present_offset": "0x18",
+    "claim_array_stride": "0x18",
+    "absent_not_destroyed": true
+  },
+  "war_fields": {
+    "casus_belli": "0x100",
+    "target_title_ids": "0x270",
+    "target_title_capacity": "0x278",
+    "target_title_count": "0x27C",
+    "claimant_character_id": "0x290"
+  },
+  "identity_fields": {
+    "character_full_id": "0x18",
+    "title_full_id": "0x10",
+    "war_full_id": "0x08",
+    "casus_belli_database_index": "0x10",
+    "casus_belli_key": "0x18"
+  },
+  "claim_cb_script": {
+    "relative_path": "game/common/casus_belli_types/00_claim.txt",
+    "sha256": "887BF0197401CB17CB4588978ADD556AB6B429BF55CB482E3E5F2D0E8351CFD4",
+    "attacker_victory": "create_title_and_vassal_change type=conquest_claim add_claim_on_loss=yes",
+    "white_peace": "target_titles claimant make_claim_strong when has_weak_claim_on",
+    "attacker_defeat": "target_titles claimant remove_claim"
+  },
+  "evidence": {
+    "getter_range": [
+      "0x2B9ECD0",
+      "0x2B9EE92"
+    ],
+    "rtti_type_descriptor_rva": "0x56E5DC8",
+    "rtti_col_rva": "0x4AB0698",
+    "rtti_object_offset": 0,
+    "casus_belli_constructor_index_rva": "0x31F1ACC",
+    "casus_belli_constructor_key_rva": "0x31F1AEB",
+    "world_layout_manifest": "ck3_1_20_0_2_world.json",
+    "title_layout_manifest": "ck3_1_20_0_2_province.json"
+  },
+  "offline_fixture": {
+    "compiler": "MSVC 19.51 /std:c++20 /W4 /WX",
+    "result": "PASS",
+    "executable": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/claims-terms-fixture/claim_terms_test.exe",
+    "checks": [
+      "five claim states in declared title order",
+      "new optional/flag offsets with non-boolean old-offset marker decoy",
+      "present-only destruction with flags zero",
+      "paused/alive participant preconditions",
+      "full-generation war/claimant/title matching",
+      "unsupported CB tagged union",
+      "invalid claim rows clear output",
+      "war identity reread after native getter"
+    ]
+  },
+  "remaining_live": [
+    "new-build paused owning-thread claim getter and destructor probe",
+    "end-to-end MCP terms query and war outcome verification"
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "claim_array_count",
+      "rva": "0x2b9ecfe",
+      "instruction": "movsxd rax, dword ptr [rax + 0xc]",
+      "bytes": "48 63 40 0C",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_array_stride_first_factor",
+      "rva": "0x2b9ed02",
+      "instruction": "lea r9, [rax + rax*2]",
+      "bytes": "4C 8D 0C 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_array_stride_scaled_address",
+      "rva": "0x2b9ed06",
+      "instruction": "lea rax, [r10 + r9*8]",
+      "bytes": "4B 8D 04 CA",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_array_stride_increment",
+      "rva": "0x2b9ed18",
+      "instruction": "add r10, 0x18",
+      "bytes": "49 83 C2 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_title_full_id_compare",
+      "rva": "0x2b9ed12",
+      "instruction": "cmp dword ptr [r10 + 8], ecx",
+      "bytes": "41 39 4A 08",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_vtable_materialization",
+      "rva": "0x2b9ed2a",
+      "instruction": "lea rsi, [rip + 0x1952aa7]",
+      "bytes": "48 8D 35 A7 2A 95 01",
+      "rip_targets": [
+        "0x44f17d8"
+      ]
+    },
+    {
+      "purpose": "claim_return_title_id",
+      "rva": "0x2b9ed3d",
+      "instruction": "mov dword ptr [rbx + 8], eax",
+      "bytes": "89 43 08",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_return_type_marker",
+      "rva": "0x2b9ed44",
+      "instruction": "mov dword ptr [rbx + 0xc], eax",
+      "bytes": "89 43 0C",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_return_strong_source",
+      "rva": "0x2b9ed47",
+      "instruction": "movzx eax, byte ptr [r10 + 0x10]",
+      "bytes": "41 0F B6 42 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_return_strong_destination",
+      "rva": "0x2b9ed4c",
+      "instruction": "mov byte ptr [rbx + 0x10], al",
+      "bytes": "88 43 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_return_implicit_source",
+      "rva": "0x2b9ed4f",
+      "instruction": "movzx eax, byte ptr [r10 + 0x11]",
+      "bytes": "41 0F B6 42 11",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_return_implicit_destination",
+      "rva": "0x2b9ed54",
+      "instruction": "mov byte ptr [rbx + 0x11], al",
+      "bytes": "88 43 11",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_return_optional_present_true",
+      "rva": "0x2b9ed57",
+      "instruction": "mov byte ptr [rbx + 0x18], 1",
+      "bytes": "C6 43 18 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_local_type_marker",
+      "rva": "0x2b9ed6e",
+      "instruction": "mov dword ptr [rsp + 0x3c], 0x436c6169",
+      "bytes": "C7 44 24 3C 69 61 6C 43",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_return_optional_present_false",
+      "rva": "0x2b9ee4b",
+      "instruction": "mov byte ptr [rbx + 0x18], al",
+      "bytes": "88 43 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_inherited_return_type_marker",
+      "rva": "0x2b9ee5e",
+      "instruction": "mov dword ptr [rbx + 0xc], eax",
+      "bytes": "89 43 0C",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_inherited_return_strong",
+      "rva": "0x2b9ee66",
+      "instruction": "mov byte ptr [rbx + 0x10], al",
+      "bytes": "88 43 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_inherited_return_implicit",
+      "rva": "0x2b9ee6e",
+      "instruction": "mov byte ptr [rbx + 0x11], al",
+      "bytes": "88 43 11",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_inherited_return_optional_present_true",
+      "rva": "0x2b9ee71",
+      "instruction": "mov byte ptr [rbx + 0x18], 1",
+      "bytes": "C6 43 18 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_destructor_type_marker",
+      "rva": "0xddc616",
+      "instruction": "mov dword ptr [rcx + 0xc], 0x446c7464",
+      "bytes": "C7 41 0C 64 74 6C 44",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_destructor_delete_bit",
+      "rva": "0xddc620",
+      "instruction": "test dl, 1",
+      "bytes": "F6 C2 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "claim_destructor_object_size",
+      "rva": "0xddc625",
+      "instruction": "mov edx, 0x18",
+      "bytes": "BA 18 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_database_index",
+      "rva": "0x31f1acc",
+      "instruction": "mov dword ptr [rsi + 0x10], r8d",
+      "bytes": "44 89 46 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_key_address",
+      "rva": "0x31f1aeb",
+      "instruction": "lea rcx, [rsi + 0x18]",
+      "bytes": "48 8D 4E 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_key_capacity",
+      "rva": "0x31f1b09",
+      "instruction": "mov qword ptr [rcx + 0x18], 0xf",
+      "bytes": "48 C7 41 18 0F 00 00 00",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kClaimTermsGetterRva": "0x2B9ECD0",
+    "kClaimTermsClaimVtableRva": "0x44F17D8",
+    "kClaimTermsDestructorRva": "0xDDC610",
+    "kClaimTermsClaimArrayStride": "0x18",
+    "kClaimTermsStorageSize": "0x20",
+    "kClaimTermsTitleIdOffset": "0x08",
+    "kClaimTermsTypeMarkerOffset": "0x0C",
+    "kClaimTermsPresentOffset": "0x18",
+    "kClaimTermsStrongOffset": "0x10",
+    "kClaimTermsImplicitOffset": "0x11",
+    "kClaimTermsDestructorDeleteFlags": "0x00"
+  },
+  "source_constant_files": [
+    "include/xar_bridge/ck3_12002_claim_terms.hpp"
+  ],
+  "optional_size_evidence": "CClaim stride 0x18 is explicit in getter and sized destructor; getter writes optional present tag at +0x18. An 8-aligned optional object needs 0x20 caller-owned bytes. The fixture static_assert and full 0x20 scratch writes verify that buffer contract; no opcode separately encodes the optional sizeof."
+}
