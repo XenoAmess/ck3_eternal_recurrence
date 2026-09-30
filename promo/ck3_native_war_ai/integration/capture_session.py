@@ -27,8 +27,8 @@ import tempfile
 import threading
 import time
 
-from screen_bus_lease import (ScreenLeaseKeeper, abort_recorder_process,
-                              checked_cli_pair, renew_once)
+from recorder_job import RecorderJob, spawn as spawn_recorder
+from screen_bus_lease import ScreenLeaseKeeper, checked_cli_pair, renew_once
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
@@ -1579,17 +1579,38 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
         record_live_run_status(run, "completed-red", reason=str(error))
         raise
     stopped = threading.Event()
-    recorder = None
+    recorder: RecorderJob | None = None
+    recorder_cleanup: dict | None = None
     recorder_lock = threading.Lock()
 
     def abort_debug_recorder() -> None:
-        nonlocal recorder
+        nonlocal recorder_cleanup
         with recorder_lock:
-            if recorder is None or recorder.poll() is not None:
+            if recorder is None:
                 return
-            abort_recorder_process(
-                recorder, receipt=args.output_dir / "ffmpeg-abort.json",
+            row = recorder.abort(
+                receipt=args.output_dir / "ffmpeg-abort.json",
                 unsafe_marker=args.output_dir / "unsafe-ffmpeg-cleanup.json")
+            if row["state"] != "ALREADY_TREE_EMPTY":
+                recorder_cleanup = row
+
+    def finish_debug_recorder() -> None:
+        nonlocal recorder_cleanup
+        if recorder is None or recorder_cleanup is not None:
+            return
+        try:
+            row = recorder.finish(
+                receipt=args.output_dir / "ffmpeg-finish.json",
+                unsafe_marker=args.output_dir / "unsafe-ffmpeg-cleanup.json")
+            with recorder_lock:
+                if recorder_cleanup is None:
+                    recorder_cleanup = row
+        except BaseException:
+            # A failed finish must still stop the Job before keeper shutdown.
+            try:
+                abort_debug_recorder()
+            finally:
+                raise
 
     lease_keeper = ScreenLeaseKeeper(
         source=ROOT / "tools" / "codex_task_bus.py",
@@ -1767,7 +1788,11 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
                 with lease_keeper.process_create_gate():
                     with recorder_lock:
                         lease_keeper.require_live()
-                        recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
+                        recorder = spawn_recorder(
+                            command, stderr=err,
+                            unsafe_marker=args.output_dir / "unsafe-ffmpeg-cleanup.json",
+                            failure_receipt=args.output_dir / "ffmpeg-spawn-failure.json")
+                resources.callback(finish_debug_recorder)  # LIFO: before lease_keeper.stop.
                 time.sleep(1)
                 require(recorder.poll() is None, "Debug recorder exited before game launch")
             thread.start()
@@ -1801,13 +1826,6 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             thread.join(timeout=5)
         if supervisor_error is not None:
             prioritize_supervisor_failure(worker, supervisor_error)
-        with recorder_lock:
-            if recorder is not None and recorder.poll() is None:
-                try:
-                    recorder.communicate(b"q\n", timeout=30)
-                except subprocess.TimeoutExpired:
-                    recorder.terminate()
-                    recorder.wait(timeout=10)
         processes = ck3_process_inventory()
     write_new(args.output_dir / "session-result.json", session_result)
     write_new(args.output_dir / "observation-marks.json", worker["marks"])
@@ -1816,6 +1834,7 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
         "finished_at": utc(), "ck3_launch_attempted": args.native_session_invoked,
         "worker": worker, "cleanup_process_inventory": processes,
         "recorder_returncode": recorder.returncode if recorder is not None else None,
+        "recorder_tree": recorder_cleanup,
         "raw_video": identity(raw) if args.record_debug_desktop and raw.is_file() else None,
         "record_debug_desktop": args.record_debug_desktop,
         "recording_complete": False,
@@ -1841,6 +1860,7 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             and session_result.get("ok") is True and shutdown.get("cleanup_proven") is True
             and not processes["processes"])
     recording_good = (args.record_debug_desktop and recorder is not None and recorder.returncode == 0
+            and recorder_cleanup is not None and recorder_cleanup.get("state") == "NORMAL_TREE_EMPTY"
             and raw.is_file() and raw.stat().st_size > 0 and probe is not None and probe.returncode == 0)
     result["recording_complete"] = recording_good
     result["environment_session_complete"] = session_good
