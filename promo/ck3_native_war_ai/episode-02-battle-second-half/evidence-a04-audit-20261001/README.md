@@ -52,3 +52,8 @@
 R0128 已真实加载 J-d11 暂停场景并绑定 snapshot/control；原生地图定位返回 `state_changed`，没有请求日期推进或取得采样对。失败已保全，受管清理通过。增援 UI 缺口继续推进，失败记录不能当作补证完成。
 
 R0129 在聚焦后重新读取 snapshot/control 并重选战场，typed 定位仍返回 `state_changed`，同样零日期推进、零采样对。原有 public/native revision 转换经实际输入离线重放确认正确；具体原生拒绝条件未在回件暴露。两次旧失败都保留，接续施工限于此实际定位入口。
+
+
+## 2026-10-01 07:25 R0130 实际相机诊断补件
+
+新增 [实际诊断](reinforcement/native-center-R0130-diagnostic.json) 与 [全量封存](reinforcement/paused-join-R0130-diagnostic-failed.json)。observed_snapshot_read=true且字段无差异；相机执行后的post-dispatch-target-position-drift拒绝居中。本轮零推进、零采样对，cleanup/SDK实际结束及screen释放已核验。原历史逐句索引、R0128/R0129失败和a06成片保持原样。诊断分支190147独立，不接收或合入master；下一步修实际相机语义后新run采完整面板和战宽tooltip。

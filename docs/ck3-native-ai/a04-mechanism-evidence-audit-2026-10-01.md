@@ -84,3 +84,15 @@ a06 已完成：30:18.633、239659692 字节、SHA-256 `F716D9F4FA79F3471941FF7F
 新consumer于聚焦成功后重新取 paused snapshot/control、重选绑定战场，然后用当前public revision调用typed center恰好一次。实机仍返回state_changed，未推进日期，未取得完整战斗面板/采样对。public→native revision转换经固定源码和实际R0128输入离线重放确认正确；原生state_changed覆盖数个内部predicate，回件未标明哪一项，不能推断为焦点原因或能力缺失。新旧代码均保全；后续只修此实际blocker，不重复同一刷新尝试。
 
 完整 [R0129封存](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/paused-join-R0129-failed.json)，SHA F968E5B225E5E62705F7D537373424A18BD9AFC02B7DC1DD1EBC4E1E5D8DFBDC。受管树清空、watchdog退出、最终inventory为空；operator job exit0/SDK controller exit2，screen exact CAS3201→3202已释放。Steam保持离线，冻结源码与二进制原件不改写。
+
+
+### 07:25 增援 R0130：已定位真实相机拒绝条件
+
+从本地冻结 475b 新建独立诊断分支 `codex/jd11-center-diagnostic-20261001`，commit `1901473429deb1297be7d5d4451169082629858b`。仅添加诊断，原 guard、日期、绑定与 typed 接口保持；新 DLL SHA 为 `ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23`。静态 release build、居中/序列化/mailbox/battle-control 检查通过后，根直接审阅本次 Steam 离线原图并执行一个新的实机 run。
+
+真实 run `desktop-3fevhd2-1c74096080--vanilla--R0130` 的诊断为 `mailbox-camera-command-rejected` / `post-dispatch-target-position-drift`，`camera_status_raw=11`、`callback_count=2`，`initialized=true`、`dispatched=true`。`observed_snapshot_read=true`，全部 snapshot 比较字段无差异；expected/observed date raw 均53146488、actor均29829，revision/expected_native_revision均3。本次故障在相机命令执行后的目标位置校验，不能再把它归为 snapshot 漂移；也不能将此 predicate 倒填至未携带诊断的旧R0128/R0129。
+
+本轮未请求 life-advance，采样对仍0，未取得完整战斗面板/战宽 tooltip。受管进程树清空、watchdog退出、CK3 inventory为空；operator job exit0 / SDK controller exit2，screen exact CAS3219→3220已释放。Steam模式未切换，没有视频 clean span 或新增 signoff。下一步只修这条已观测的相机检查，再开新attempt取得实际前后暂停画面。没有接收或合入master，诊断代码分支未合入制作分支。
+
+
+实际字段原件见 [R0130诊断](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/native-center-R0130-diagnostic.json)，SHA `85522A300E6928E46CB04F54AD69628BA7E9E5A0E42C1BBC31830CE198EF7D9E`；全量过程资产索引见 [R0130封存](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/paused-join-R0130-diagnostic-failed.json)，SHA `4805787EE2483B9E8EC0CCDCAF45A23BC989AFFC01510DF7C4F2647941A09AD5`。
