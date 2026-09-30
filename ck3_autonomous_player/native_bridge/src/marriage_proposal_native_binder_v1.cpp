@@ -1,4 +1,5 @@
 #include "xar_bridge/marriage_proposal_native_binder_v1.hpp"
+#include "xar_bridge/marriage_native_outcome_classifier_v1.hpp"
 
 #include <algorithm>
 #include <array>
@@ -182,7 +183,9 @@ bool ValidDirectSubmission(const MarriageProposalSubmissionV1 &submission) {
       submission.predicted_outcome != MarriagePredictedOutcomeV1::unavailable;
   const bool observed_heir = submission.rankless_observed_heir &&
       submission.native_rank == 0 &&
-      submission.predicted_outcome == MarriagePredictedOutcomeV1::unavailable &&
+      (submission.fulfill_existing_betrothal
+           ? submission.predicted_outcome == MarriagePredictedOutcomeV1::marriage
+           : submission.predicted_outcome == MarriagePredictedOutcomeV1::unavailable) &&
       submission.roles.actor_character_id != submission.subject_character_id &&
       submission.recipient_answer_status_raw >= 0 &&
       submission.recipient_answer_status_raw <= 1;
@@ -190,6 +193,9 @@ bool ValidDirectSubmission(const MarriageProposalSubmissionV1 &submission) {
       submission.candidate_character_id != 0 &&
       !(submission.request_matrilineal_option &&
         submission.require_matrilineal_option_off) &&
+      (!submission.fulfill_existing_betrothal ||
+       (submission.rankless_observed_heir && !submission.request_matrilineal_option &&
+        !submission.require_matrilineal_option_off)) &&
       (!submission.request_matrilineal_option ||
        (submission.rankless_observed_heir &&
         submission.recipient_ai_accept_raw > 0)) &&
@@ -594,6 +600,16 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
                     action_submit_lifecycle_unavailable);
   if (!ValidDirectSubmission(submission))
     return fail(MarriageProposalNativeBinderFailureV1::invalid_submission);
+  if (submission.fulfill_existing_betrothal) {
+    MarriageProposalBilateralRelationshipV1 before{};
+    if (ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
+            binder, submission.subject_character_id, submission.candidate_character_id,
+            before) != MarriageProposalNativeReadbackResultV1::available ||
+        !before.subject_has_candidate_as_betrothed ||
+        !before.candidate_has_subject_as_betrothed ||
+        before.subject_has_candidate_as_spouse || before.candidate_has_subject_as_spouse)
+      return fail(MarriageProposalNativeBinderFailureV1::invalid_submission);
+  }
   const NativeRolesV1 roles = ToNativeRoles(submission.roles);
   if (!ResolveRoles(env, roles))
     return fail(
@@ -718,6 +734,50 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
     }
   }
 
+  auto same_fulfillment_lineality = [&](const void *context) {
+    ResolvedCharacterV1 subject{}, candidate{};
+    std::uint8_t subject_selector = 2, candidate_selector = 2;
+    if (ResolveCharacter(env, submission.subject_character_id, subject) !=
+            IdentityResultV1::available ||
+        ResolveCharacter(env, submission.candidate_character_id, candidate) !=
+            IdentityResultV1::available ||
+        !ReadAt(env, subject.character, kMarriageCharacterAdultSelectorOffsetV1,
+                subject_selector) ||
+        !ReadAt(env, candidate.character, kMarriageCharacterAdultSelectorOffsetV1,
+                candidate_selector) || subject_selector > 1 || candidate_selector > 1)
+      return false;
+    if (subject_selector == candidate_selector)
+      return (subject_selector != 0) == submission.expected_effective_matrilineal;
+    const bool option_bound = env.matrilineal_option_id_slot != 0 &&
+        env.read_boolean_option != nullptr &&
+        (env.offline_fixture ||
+         (env.matrilineal_option_id_slot == env.module_base +
+              kMarriageSubmitMatrilinealOptionSlotRvaV1 &&
+          reinterpret_cast<std::uintptr_t>(env.read_boolean_option) ==
+              env.module_base + kMarriageSubmitReadOptionRvaV1));
+    return option_bound &&
+        ReadMemory(env, env.matrilineal_option_id_slot, &selected_option_id,
+                   sizeof(selected_option_id)) && selected_option_id != 0 &&
+        env.read_boolean_option(context, selected_option_id) ==
+            submission.expected_effective_matrilineal;
+  };
+  if (submission.fulfill_existing_betrothal) {
+    ResolvedCharacterV1 subject{}, candidate{};
+    MarriagePredictedOutcomeV1 outcome = MarriagePredictedOutcomeV1::unavailable;
+    if (!env.outcome_classifier_certified ||
+        env.source_adapter.classify_outcome == nullptr ||
+        ResolveCharacter(env, submission.subject_character_id, subject) !=
+            IdentityResultV1::available ||
+        ResolveCharacter(env, submission.candidate_character_id, candidate) !=
+            IdentityResultV1::available ||
+        !env.source_adapter.classify_outcome(env.source_adapter.outcome_context,
+            subject.character, candidate.character, native_context, outcome) ||
+        outcome != MarriagePredictedOutcomeV1::marriage ||
+        !same_fulfillment_lineality(native_context)) {
+      destroy_context();
+      return fail(MarriageProposalNativeBinderFailureV1::invalid_submission);
+    }
+  }
   CommandStorageV1 command_storage{};
   void *const command = command_storage.bytes.data();
   if (env.construct_send_command(command, native_context) != command) {
@@ -755,6 +815,13 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
                MarriageProposalNativeBinderFailureV1::
                    selected_option_unavailable);
     return MarriageProposalNativeSubmitResultV1::rejected;
+  }
+  if (submission.fulfill_existing_betrothal &&
+      !same_fulfillment_lineality(command_storage.bytes.data() +
+          kMarriageSendInteractionContextOffsetV1)) {
+    destroy_command_context();
+    destroy_context();
+    return fail(MarriageProposalNativeBinderFailureV1::selected_option_unavailable);
   }
   std::uintptr_t primary = 0;
   std::uintptr_t secondary = 0;
