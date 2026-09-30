@@ -24,6 +24,50 @@ def sha(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
+def verify_terminal_frame(writer: dict, post: dict, date_raw: int) -> None:
+    """Bind A05's native terminal writer to its paused postbattle snapshot."""
+    body = writer.get("body") or {}
+    frame = post.get("body") or {}
+    source = body.get("source") or {}
+    transition = body.get("battle_terminal_transition") or {}
+    prior = transition.get("prior") or {}
+    journal = transition.get("terminal_journal") or {}
+    removal = transition.get("removal") or {}
+    subject = transition.get("subject") or {}
+    successor = transition.get("successor") or {}
+    revision = frame.get("revision")
+    native_revision = frame.get("native_revision")
+    snapshot_id = frame.get("snapshot_id")
+    require(writer.get("result") == post.get("result") == "CALL_COMPLETED" and
+            body.get("accepted") is True and body.get("status") == "available" and
+            transition.get("status") == "available" and
+            body.get("battle_terminal_transition_ready") is True and
+            type(revision) is int and type(native_revision) is int and
+            isinstance(snapshot_id, str) and bool(snapshot_id) and
+            frame.get("paused") is True and frame.get("date_raw") == date_raw and
+            body.get("queried_revision") == source.get("revision") == revision and
+            body.get("queried_native_revision") == source.get("native_revision") ==
+            body.get("snapshot_revision") == transition.get("snapshot_revision") ==
+            native_revision and
+            body.get("queried_snapshot_id") == source.get("snapshot_id") ==
+            snapshot_id and
+            source.get("date_raw") == transition.get("observed_date_raw") == date_raw and
+            source.get("paused") is True,
+            "A05 terminal writer and snapshot native frame binding")
+    require(transition.get("prior_combat_id") == prior.get("combat_id") == 16777218 and
+            transition.get("subject_public_cunit_id") == 18 and
+            prior.get("terminal_kind") == "normal_result" and
+            journal.get("event_status") == "observed" and
+            removal.get("prior_combat_strictly_resolves") is False and
+            removal.get("prior_province_contains_prior_combat_id") is False and
+            subject.get("exists") is True and subject.get("native_carmy_id") == 18 and
+            subject.get("combat_backlink_id") is None and
+            subject.get("active_combat_id") is None and
+            successor.get("state") == "subject_retreating" and
+            (prior.get("battle_warscore") or {}).get("war_id") == 4,
+            "A05 terminal closure and ArmyID 18 / WarID 4 identity")
+
+
 def main() -> None:
     receipt = json.loads(FACTS.read_text(encoding="utf-8"))
     index = json.loads(DATA.read_text(encoding="utf-8"))
@@ -68,6 +112,11 @@ def main() -> None:
         require(receipt["sources"][source_name]["sha256"] == a[field + "_sha256"],
                 f"A05 receipt/index source: {source_name}")
     verify_a05_sources(a)
+    verify_terminal_frame(
+        json.loads(Path(a["source_terminal"]).read_text(encoding="utf-8")),
+        json.loads(Path(a["source_post_snapshot"]).read_text(encoding="utf-8")),
+        a["terminal_date_raw"],
+    )
     run = receipt["run_identity"]
     preflight = json.loads(Path(receipt["sources"]["preflight"]["path"]).read_text(encoding="utf-8"))
     require((run["source_save_sha256"], run["start_date_raw"],
