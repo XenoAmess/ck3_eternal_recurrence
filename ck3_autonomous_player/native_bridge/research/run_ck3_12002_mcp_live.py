@@ -353,6 +353,7 @@ class PlanClient:
         self.results: dict[str, object] = {}
         self.snapshot: dict[str, object] = {}
         self.consumed_control_plans: set[tuple[str, int]] = set()
+        self.control_plan_execution_depth = 0
         self.calls = JsonLines(args.output.with_suffix(".mcp-calls.jsonl"))
 
     async def call(self, name: str, arguments: dict[str, object] | None = None) -> object:
@@ -566,14 +567,18 @@ class PlanClient:
         self.report["hold_until_utc_estimated"] = time.time() + seconds
         self.write()
         while time.monotonic() < deadline and not self.report.get("hold_finished_by_control_plan", False):
-            if self.args.control_plan_dir is not None:
+            if self.control_plan_execution_depth == 0 and self.args.control_plan_dir is not None:
                 for path in sorted(self.args.control_plan_dir.glob("*.json")):
                     identity = (str(path), path.stat().st_mtime_ns)
                     if identity not in self.consumed_control_plans:
                         plan = load_plan(path)
                         self.consumed_control_plans.add(identity)
                         self.report.setdefault("control_plans", []).append(str(path))
-                        await self.execute(plan)
+                        self.control_plan_execution_depth += 1
+                        try:
+                            await self.execute(plan)
+                        finally:
+                            self.control_plan_execution_depth -= 1
             await asyncio.sleep(min(0.25, max(0, deadline - time.monotonic())))
 
 

@@ -16,6 +16,40 @@ from run_ck3_12002_mcp_live import PlanClient, resolve, tool_payload
 
 
 class OfflinePlanTests(unittest.TestCase):
+    def test_nested_hold_finishes_first_control_plan_before_next_file(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            controls = root / "controls"
+            controls.mkdir()
+            (controls / "001.json").write_text(json.dumps({"steps": [
+                {"id": "submit1", "tool": "submit1"},
+                {"id": "settle", "kind": "hold", "seconds": 0.002},
+                {"id": "settled", "tool": "nestedholdend"},
+            ]}), encoding="utf-8-sig")
+            (controls / "002.json").write_text(json.dumps({"steps": [
+                {"id": "submit2", "tool": "submit2"},
+            ]}), encoding="utf-8-sig")
+            args = Namespace(output=root / "report.json", command_timeout=1,
+                             control_plan_dir=controls, hold_seconds=0)
+            report = {"steps": []}
+            client = PlanClient(None, args, report, lambda: None)
+            calls = []
+
+            async def invoke(name, arguments, **kwargs):
+                calls.append(name)
+                return {"submitted": True}
+
+            async def fresh():
+                return {"revision": len(calls)}
+
+            client.invoke, client.fresh = invoke, fresh
+            asyncio.run(client.hold(0.01))
+            self.assertEqual(calls, ["submit1", "nestedholdend", "submit2"])
+            self.assertEqual(client.control_plan_execution_depth, 0)
+            asyncio.run(client.hold(0.002))
+            self.assertEqual(calls, ["submit1", "nestedholdend", "submit2"])
+            self.assertEqual(len(client.consumed_control_plans), 2)
+
     def test_nested_hold_consumes_each_control_file_identity_once(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
