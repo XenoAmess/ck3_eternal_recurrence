@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import hashlib
 from pathlib import Path
 import subprocess
 import sys
@@ -14,7 +15,8 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
 
 from xar_autoplayer import cli  # noqa: E402
-from xar_autoplayer.errors import AgentError  # noqa: E402
+from xar_autoplayer.errors import AgentError, UnsafeCleanupError  # noqa: E402
+from xar_autoplayer.windows_injector_job import ContainedInjectorResult  # noqa: E402
 from xar_autoplayer.runtime import (  # noqa: E402
     DEFAULT_NATIVE_BRIDGE_PIPE,
     NATIVE_BRIDGE_DISABLED,
@@ -23,10 +25,12 @@ from xar_autoplayer.runtime import (  # noqa: E402
     NATIVE_BRIDGE_MODE_ENV,
     NATIVE_BRIDGE_PIPE_ENV,
     NativeBridgeLaunchConfig,
+    NativeInjectorError,
     _ck3_launch_command,
     _create_suspended_process,
     _inject_native_bridge,
     _native_bridge_child_environment,
+    _require_injector_cleanup_before_marker_clear,
     _resume_with_native_bridge,
     configure_native_bridge_launch_environment,
     native_bridge_launch_config_from_environment,
@@ -140,6 +144,9 @@ class NativeBridgeLaunchConfigurationTests(unittest.TestCase):
 
 class NativeBridgeInjectorTests(unittest.TestCase):
     def setUp(self) -> None:
+        digest = mock.patch("xar_autoplayer.runtime.sha256_file", return_value="a" * 64)
+        digest.start()
+        self.addCleanup(digest.stop)
         self.config = NativeBridgeLaunchConfig(
             mode="native-headless",
             pipe_name=r"\\.\pipe\test",
@@ -147,44 +154,98 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             injector_path=Path("C:/native/xar_ck3_bridge_injector.exe"),
         )
 
+    @staticmethod
+    def outcome(command: list[str], *, returncode: int = 0,
+                stdout: bytes = b"PASS\r\n", stderr: bytes = b"",
+                tree: bool = True, status: str = "EXIT",
+                error: str | None = None) -> ContainedInjectorResult:
+        return ContainedInjectorResult({
+            "schema": "xar.ck3.contained-injector-job.v1",
+            "status": status, "argv": command, "pid": 517,
+            "creation_utc": "2026-09-30T00:00:00.000000+00:00",
+            "pinned_executable": command[0], "executable_sha256": "A" * 64,
+            "job_limit_flags": 0x2008, "pre_resume_job_pids": [517],
+            "resume_previous_count": 1, "returncode": returncode,
+            "stdout_sha256": hashlib.sha256(stdout).hexdigest().upper(),
+            "stderr_sha256": hashlib.sha256(stderr).hexdigest().upper(),
+            "stdout_bytes": len(stdout), "stderr_bytes": len(stderr),
+            "stdout_complete": True, "stderr_complete": True,
+            "injector_root_reaped": True,
+            "complete_process_tree_proven": tree,
+            "job_active_final": 0 if tree else None,
+            "job_pids_final": [] if tree else None,
+        }, stdout, stderr, error)
+
     def test_existing_injector_cli_receives_pid_and_dll(self) -> None:
         process = SimpleNamespace(pid=4123)
-        result = SimpleNamespace(returncode=0, stdout="PASS", stderr="")
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
         with mock.patch(
-            "xar_autoplayer.runtime.subprocess.run", return_value=result
+            "xar_autoplayer.runtime.run_contained_injector_command",
+            return_value=self.outcome(command),
         ) as run:
-            _inject_native_bridge(process, self.config)
-        self.assertEqual(
-            run.call_args.args[0],
-            [
-                str(self.config.injector_path),
-                "4123",
-                str(self.config.dll_path),
-            ],
-        )
-        self.assertTrue(run.call_args.kwargs["capture_output"])
-        self.assertFalse(run.call_args.kwargs["check"])
+            attestation = _inject_native_bridge(process, self.config)
+        run.assert_called_once_with(command, timeout_seconds=30.0)
+        self.assertEqual(attestation["status"], "INJECTOR_EXIT_ZERO_TREE_PROVEN")
+        self.assertTrue(attestation["complete_process_tree_proven"])
 
     def test_injector_failure_reports_return_code_and_output(self) -> None:
         process = SimpleNamespace(pid=4123)
-        result = SimpleNamespace(
-            returncode=3,
-            stdout="partial output\n",
-            stderr="FAIL: InjectLibrary error=5\n",
-        )
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        result = self.outcome(command, returncode=3, stdout=b"partial output\n",
+                              stderr=b"FAIL: InjectLibrary error=5\n")
         with mock.patch(
-            "xar_autoplayer.runtime.subprocess.run", return_value=result
+            "xar_autoplayer.runtime.run_contained_injector_command", return_value=result
         ), self.assertRaisesRegex(
             AgentError, "rc=3.*InjectLibrary error=5"
         ):
             _inject_native_bridge(process, self.config)
+
+    def test_unproven_job_blocks_ck3_resume_and_marker_clear(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        result = self.outcome(command, tree=False, status="RED_TIMEOUT",
+                              error="deadline expired")
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=result), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config)
+        process.resume.assert_not_called()
+        self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+
+    def test_contradictory_job_result_blocks_resume_and_marker_clear(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        result = self.outcome(command, error="helper cleanup failed")
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=result), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config)
+        process.resume.assert_not_called()
+        self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+
+    def test_job_report_wrong_pid_blocks_resume_and_marker_clear(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        result = self.outcome(command)
+        result.report["pre_resume_job_pids"] = [518]
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=result), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config)
+        process.resume.assert_not_called()
+        self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
 
     def test_injection_completes_before_primary_thread_resume(self) -> None:
         calls: list[str] = []
         process = SimpleNamespace(resume=lambda: calls.append("resume"))
         with mock.patch(
             "xar_autoplayer.runtime._inject_native_bridge",
-            side_effect=lambda *_args: calls.append("inject"),
+            side_effect=lambda *_args: (calls.append("inject") or
+                                        {"injector_root_reaped": True,
+                                         "complete_process_tree_proven": True}),
         ):
             _resume_with_native_bridge(process, self.config)
         self.assertEqual(calls, ["inject", "resume"])

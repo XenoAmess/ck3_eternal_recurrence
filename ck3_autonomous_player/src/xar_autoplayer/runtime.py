@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import gzip
+import locale
 import math
 import os
 import re
@@ -47,6 +48,7 @@ from .integrity import protected_snapshot, verify_protected_unchanged
 from .locking import exclusive_launch_lock, exclusive_state_lock
 from .rules import MOD_RULES
 from .windows_process import create_process_via_windows_management
+from .windows_injector_job import run_contained_injector_command
 
 
 MAIN_MENU_REGION = (0.18, 0.28, 0.30, 0.50)
@@ -113,6 +115,15 @@ class SessionHandle:
     watchdog_creation_date: str
     job_handle: object | None
     pre_resume_inventory: dict[str, object] | None = None
+    injector_attestation: dict[str, object] | None = None
+
+
+class NativeInjectorError(AgentError):
+    """Injector failure carrying the exact attempted process identity."""
+
+    def __init__(self, message: str, attestation: dict[str, object]) -> None:
+        super().__init__(message)
+        self.attestation = dict(attestation)
 
 
 class _SuspendedWindowsProcess:
@@ -2301,36 +2312,171 @@ def _ck3_launch_command(
     return command
 
 
+def _injector_text(raw: bytes) -> str:
+    """Keep prior subprocess.run text replacement semantics for diagnostics."""
+    encoding = "utf-8" if sys.flags.utf8_mode else locale.getencoding()
+    return raw.decode(encoding, errors="replace").replace("\r\n", "\n").replace("\r", "\n")
+
+
+def _contained_injector_report_matches(
+    report: Mapping[str, object], command: list[str],
+    stdout: bytes | None, stderr: bytes | None,
+) -> bool:
+    """Validate the helper's identity and exact output before CK3 resume."""
+    if (report.get("schema") != "xar.ck3.contained-injector-job.v1"
+            or type(report.get("argv")) is not list
+            or report["argv"] != command
+            or type(report.get("pid")) is not int or report["pid"] <= 0
+            or type(report.get("returncode")) is not int
+            or report.get("injector_root_reaped") is not True
+            or report.get("complete_process_tree_proven") is not True
+            or type(report.get("job_limit_flags")) is not int
+            or report["job_limit_flags"] != 0x2008
+            or type(report.get("pre_resume_job_pids")) is not list
+            or report["pre_resume_job_pids"] != [report["pid"]]
+            or type(report.get("resume_previous_count")) is not int
+            or report["resume_previous_count"] != 1
+            or type(report.get("job_active_final")) is not int
+            or report["job_active_final"] != 0
+            or type(report.get("job_pids_final")) is not list
+            or report["job_pids_final"] != []
+            or stdout is None or stderr is None
+            or report.get("stdout_complete") is not True
+            or report.get("stderr_complete") is not True):
+        return False
+    created = report.get("creation_utc")
+    image = report.get("pinned_executable")
+    digest = report.get("executable_sha256")
+    if (not isinstance(created, str) or not created
+            or not isinstance(image, str) or not image
+            or os.path.normcase(os.path.abspath(image)) != os.path.normcase(
+                os.path.abspath(command[0]))
+            or not isinstance(digest, str)
+            or re.fullmatch(r"[0-9A-F]{64}", digest) is None):
+        return False
+    try:
+        when = datetime.fromisoformat(created)
+    except ValueError:
+        return False
+    if when.tzinfo is None or when.year < 2000:
+        return False
+    try:
+        if sha256_file(Path(image)).upper() != digest:
+            return False
+    except OSError:
+        return False
+    for label, raw in (("stdout", stdout), ("stderr", stderr)):
+        observed_hash = report.get(f"{label}_sha256")
+        observed_size = report.get(f"{label}_bytes")
+        if (type(observed_hash) is not str
+                or re.fullmatch(r"[0-9A-F]{64}", observed_hash) is None
+                or observed_hash != hashlib.sha256(raw).hexdigest().upper()
+                or type(observed_size) is not int or observed_size != len(raw)):
+            return False
+    return True
+
+
+def _require_native_injector_deadline(
+    attestation: dict[str, object], deadline: float, stage: str,
+) -> None:
+    if time.monotonic() >= deadline:
+        attestation["status"] = "RED_TIMEOUT"
+        attestation["deadline_phase"] = stage
+        attestation["complete_process_tree_proven"] = False
+        attestation["role_query_authorized"] = False
+        raise NativeInjectorError(
+            f"native bridge injector deadline expired during {stage}",
+            attestation,
+        )
+
+
 def _inject_native_bridge(
     process: _SuspendedWindowsProcess,
     config: NativeBridgeLaunchConfig,
-) -> None:
-    """Run the existing injector CLI while CK3's primary thread is suspended."""
-    command = [
-        str(config.injector_path),
-        str(process.pid),
-        str(config.dll_path),
-    ]
+) -> dict[str, object]:
+    """Run the existing CLI inside a one-process Job before CK3 resume."""
+    command = [str(config.injector_path), str(process.pid), str(config.dll_path)]
+    attestation: dict[str, object] = {
+        "schema": "xar.ck3.native-injector-attempt.v1",
+        "status": "STARTING", "argv": command,
+        "parent_pid": os.getpid(), "target_ck3_pid": process.pid,
+        "pid": None, "creation_utc": None,
+        "creation_source": "CreateProcess pinned handle/GetProcessTimes",
+        "returncode": None, "stdout_sha256": None, "stderr_sha256": None,
+        "stdout_bytes": None, "stderr_bytes": None,
+        "injector_root_reaped": False,
+        "complete_process_tree_proven": False,
+        "role_query_authorized": False,
+    }
+    process.injector_attestation = attestation
+    deadline = time.monotonic() + NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS
     try:
-        result = subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            errors="replace",
-            timeout=NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS,
-            check=False,
-        )
-    except (OSError, subprocess.TimeoutExpired) as error:
-        raise AgentError(
-            f"native bridge injector could not complete: {error}"
+        result = run_contained_injector_command(
+            command, timeout_seconds=NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS)
+    except Exception as error:
+        attestation["status"] = "RED_JOB_CALL"
+        raise NativeInjectorError(
+            f"native bridge injector could not complete: {error}", attestation
         ) from error
-    if result.returncode != 0:
-        stdout = result.stdout.strip()
-        stderr = result.stderr.strip()
-        raise AgentError(
-            "native bridge injector failed before CK3 resume: "
-            f"rc={result.returncode}, stdout={stdout!r}, stderr={stderr!r}"
+    if not isinstance(result.report, dict):
+        attestation["status"] = "RED_JOB_REPORT_MISMATCH"
+        raise NativeInjectorError(
+            "native bridge injector could not complete: Job report mismatch",
+            attestation,
         )
+    attestation.update(result.report)
+    attestation["schema"] = "xar.ck3.native-injector-attempt.v1"
+    attestation["contained_job_report"] = dict(result.report)
+    attestation["role_query_authorized"] = False
+    _require_native_injector_deadline(attestation, deadline, "Job helper return")
+    if (result.error is not None or attestation.get("status") != "EXIT"
+            or attestation.get("complete_process_tree_proven") is not True):
+        reason = result.error or "injector process tree is unproven"
+        if attestation.get("status") == "EXIT":
+            attestation["status"] = "RED_JOB_REPORT_MISMATCH"
+        attestation["complete_process_tree_proven"] = False
+        raise NativeInjectorError(
+            f"native bridge injector could not complete: {reason}", attestation
+        )
+    try:
+        report_matches = _contained_injector_report_matches(
+            result.report, command, result.stdout, result.stderr)
+    except Exception as error:
+        attestation["status"] = "RED_JOB_REPORT_VALIDATION"
+        attestation["complete_process_tree_proven"] = False
+        raise NativeInjectorError(
+            f"native bridge injector report validation failed: {error}",
+            attestation,
+        ) from error
+    _require_native_injector_deadline(attestation, deadline,
+                                      "post-helper executable/report validation")
+    if not report_matches:
+        attestation["status"] = "RED_JOB_REPORT_MISMATCH"
+        attestation["complete_process_tree_proven"] = False
+        raise NativeInjectorError(
+            "native bridge injector could not complete: Job report mismatch",
+            attestation,
+        )
+    returncode = attestation.get("returncode")
+    if type(returncode) is not int:
+        attestation["status"] = "RED_RETURN_CODE_UNPROVEN"
+        attestation["complete_process_tree_proven"] = False
+        raise NativeInjectorError(
+            "native bridge injector could not complete: return code is unproven",
+            attestation,
+        )
+    if returncode != 0:
+        attestation["status"] = "RED_RETURN_CODE"
+        stdout_text = _injector_text(result.stdout or b"").strip()
+        stderr_text = _injector_text(result.stderr or b"").strip()
+        raise NativeInjectorError(
+            "native bridge injector failed before CK3 resume: "
+            f"rc={returncode}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            attestation,
+        )
+    attestation["status"] = "INJECTOR_EXIT_ZERO_TREE_PROVEN"
+    _require_native_injector_deadline(attestation, deadline, "native injector result")
+    return dict(attestation)
 
 
 def _resume_with_native_bridge(
@@ -2339,14 +2485,36 @@ def _resume_with_native_bridge(
     *,
     before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
 ) -> None:
+    deadline = time.monotonic() + NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS
     if config is not None:
         # The injector is a separate child process. Keep the caller's CAS lock
         # through its entire lifetime, then acquire a fresh sequence before
         # CK3's suspended primary thread can run.
         with before_process_create() if before_process_create is not None else nullcontext():
-            _inject_native_bridge(process, config)
+            process.injector_attestation = _inject_native_bridge(process, config)
     with before_process_create() if before_process_create is not None else nullcontext():
+        if config is not None:
+            _require_native_injector_deadline(
+                process.injector_attestation, deadline, "pre-CK3-resume"
+            )
         process.resume()
+        if config is not None:
+            _require_native_injector_deadline(
+                process.injector_attestation, deadline, "post-CK3-resume"
+            )
+
+
+def _require_injector_cleanup_before_marker_clear(
+    process: _SuspendedWindowsProcess | None,
+) -> None:
+    attempt = getattr(process, "injector_attestation", None)
+    if (attempt is not None
+            and (not isinstance(attempt, Mapping)
+                 or attempt.get("injector_root_reaped") is not True
+                 or attempt.get("complete_process_tree_proven") is not True)):
+        raise UnsafeCleanupError(
+            "injector process tree cleanup is unproven; unsafe marker retained"
+        )
 
 
 def _assign_process_to_job(
@@ -2427,13 +2595,13 @@ def launch(
         if native_bridge is None
         else validate_native_bridge_launch_config(native_bridge)
     )
-    # The legacy injector uses subprocess.run, which cannot prove that any
-    # descendants have exited. A screen-gated session must not create even the
-    # watchdog until the injector has a reviewed Job containment proof.
+    # The Job helper is a code-only candidate. Screen-gated native bridge
+    # admission remains disabled until this integration and the surrounding
+    # recorder/supervisor cleanup have independent end-to-end review.
     if before_process_create is not None and native_bridge is not None:
         raise AgentError(
-            "screen-gated native bridge launch is stopped: injector tree "
-            "containment proof is unavailable"
+            "screen-gated native bridge launch is stopped: end-to-end "
+            "injector and recorder process-tree admission is unavailable"
         )
     if verify_prepared_profile:
         verify_profile(spec, xar_enabled=prepared_xar_enabled)
@@ -2665,6 +2833,7 @@ def launch(
             raise UnsafeCleanupError(
                 f"CK3 launch contract failed and its job is not empty: {error}"
             ) from error
+        _require_injector_cleanup_before_marker_clear(process)
         _close_job(job_handle)
         if process is not None:
             process.close()
@@ -2690,6 +2859,7 @@ def launch(
         watchdog_creation_date,
         job_handle,
         pre_resume_inventory,
+        getattr(process, "injector_attestation", None),
     )
 
 
@@ -2864,6 +3034,7 @@ def stop_tracked(
         errors.append(f"process watchdog reported failure: {detail}")
         watchdog_error.unlink(missing_ok=True)
     try:
+        _require_injector_cleanup_before_marker_clear(handle.process)
         handle.pid_file.unlink(missing_ok=True)
         handle.ready_file.unlink(missing_ok=True)
         watchdog_error.unlink(missing_ok=True)

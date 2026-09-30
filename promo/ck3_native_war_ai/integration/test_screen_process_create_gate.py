@@ -155,7 +155,7 @@ class ProcessCreateGateTests(unittest.TestCase):
                           side_effect=lambda *unused: calls.append("ck3-spawn")), \
              patch.object(runtime, "_inject_native_bridge",
                           side_effect=lambda *unused: calls.append("injector-spawn")):
-            with self.assertRaisesRegex(runtime.AgentError, "containment proof"):
+            with self.assertRaisesRegex(runtime.AgentError, "process-tree admission"):
                 runtime.launch(SimpleNamespace(), native_bridge=SimpleNamespace(),
                                before_process_create=gate)
         self.assertEqual(calls, [])
@@ -178,7 +178,7 @@ class ProcessCreateGateTests(unittest.TestCase):
             renew.assert_not_called()
             popen.assert_not_called()
             failure = (output / "entry-failure.json").read_text(encoding="utf-8")
-            self.assertIn("process-tree containment is not reviewed", failure)
+            self.assertIn("process-tree admission is not reviewed", failure)
             self.assertIn('"ck3_process_created": false', failure)
 
 

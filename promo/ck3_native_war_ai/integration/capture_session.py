@@ -1523,9 +1523,9 @@ def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None,
 
 
 def require_native_bridge_tree_proof() -> None:
-    """Stop every live video entry until the injector Job proof is reviewed."""
+    """Stop live video until injector integration and recorder cleanup are reviewed."""
     require(False,
-        "native bridge injector process-tree containment is not reviewed; "
+        "native bridge and recorder end-to-end process-tree admission is not reviewed; "
         "screen-gated capture remains stopped before any child process"
     )
 
