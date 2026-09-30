@@ -7845,6 +7845,108 @@ std::string ActorArmyRolePrivateResultFrame(
             ",\"backend_id\":\"native-headless\"}}";
   return result;
 }
+
+// Error-only telemetry. It does not admit a query, wake the pump, or change
+// any timeout/result predicate. Read counters before terminal slot reclaim.
+std::string ActorArmyRolePrivateFailureDiagnosticsV1(
+    const xar::ck3_11906::ActorArmyRolePrivateQueryV1 &query,
+    const xar::ck3_11906::MainThreadQueryMailboxDiagnosticsV1 &before,
+    xar::ck3_11906::MainThreadQuerySubmitResultV1 submit,
+    int wait_enum, std::size_t response_bytes,
+    const xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1 &wake) {
+  using namespace xar::ck3_11906;
+  const auto &mailbox = *query.mailbox;
+  const auto d = ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  const bool terminal_slot_owned = query.ticket.sequence != 0 &&
+      d.published_sequence == query.ticket.sequence &&
+      (d.state == MainThreadQueryMailboxStateV1::completed ||
+       d.state == MainThreadQueryMailboxStateV1::executor_failed ||
+       d.state == MainThreadQueryMailboxStateV1::infrastructure_failed ||
+       d.state == MainThreadQueryMailboxStateV1::cancelled);
+  std::string result = "{\"schema\":\"xar.war.r0368.native-failure-diagnostics.v1\"";
+  auto number = [&](std::string_view key, auto value) {
+    result += ",\""; result += key; result += "\":";
+    result += std::to_string(value);
+  };
+  auto boolean = [&](std::string_view key, bool value) {
+    result += ",\""; result += key; result += "\":";
+    result += value ? "true" : "false";
+  };
+  number("submit_enum", static_cast<std::uint32_t>(submit));
+  result += ",\"wait_enum\":";
+  result += wait_enum < 0 ? "null" : std::to_string(wait_enum);
+  number("ticket_sequence", query.ticket.sequence);
+  number("expected_native_revision", query.expected_revision);
+  number("expected_date_raw", query.expected_snapshot.date_raw);
+  number("actor_character_id", query.actor_character_id);
+  number("war_id", query.war_id);
+  number("public_army_id", query.public_army_id);
+  boolean("query_completed", query.completed);
+  number("query_executor_invocations", query.executor_invocations);
+  result += ",\"query_failure_stage\":";
+  AppendJsonString(result, query.failure_stage);
+  number("response_bytes_before_error", response_bytes);
+  number("query_thread_id", query.execution_stamp.thread_id);
+  number("query_pump_epoch", query.execution_stamp.pump_epoch);
+  number("query_date_raw", query.execution_stamp.date_raw);
+  boolean("query_paused", query.execution_stamp.paused);
+  number("mailbox_state_enum", static_cast<std::uint32_t>(d.state));
+  number("mailbox_failure_flags", d.failure_flags);
+  number("pump_epochs_before_submit", before.pump_epochs);
+  number("pump_epochs_at_error", d.pump_epochs);
+  number("owner_verified_pump_epochs", d.owner_verified_pump_epochs);
+  number("paused_owner_verified_pump_epochs", d.paused_owner_verified_pump_epochs);
+  number("published_sequence", d.published_sequence);
+  number("completed_sequence", d.completed_sequence);
+  number("executor_started_sequence", d.executor_started_sequence);
+  number("executor_started_pump_epoch", d.executor_started_pump_epoch);
+  number("executor_started_requests_before_submit", before.executor_started_requests);
+  number("executor_started_requests_at_error", d.executor_started_requests);
+  number("executed_requests_before_submit", before.executed_requests);
+  number("executed_requests_at_error", d.executed_requests);
+  number("owner_thread_id", d.owner_thread_id);
+  number("observed_current_thread_id", d.observed_current_thread_id);
+  number("observed_date_raw", d.observed_date_raw);
+  number("observed_tls_initialized", d.observed_tls_initialized);
+  number("observed_tls_main_thread_marker", d.observed_tls_main_thread_marker);
+  boolean("observed_paused", d.observed_paused);
+  boolean("observed_stamp_read_success", d.observed_stamp_read_success);
+  boolean("stop_requested", d.stop_requested);
+  boolean("ready", d.ready);
+  boolean("role_permission_matches", mailbox.permitted_actor_army_role_executor ==
+      &ExecuteActorArmyRolePrivateQueryV1);
+  boolean("terminal_slot_owned", terminal_slot_owned);
+  result += ",\"slot_callback_matches\":";
+  result += !terminal_slot_owned ? "null" :
+      mailbox.executor == &ExecuteActorArmyRolePrivateQueryV1 ? "true" : "false";
+  result += ",\"slot_context_matches\":";
+  result += !terminal_slot_owned ? "null" :
+      mailbox.executor_context == &query ? "true" : "false";
+  number("initial_wake_attempts", wake.wake_attempts);
+  number("initial_wake_succeeded", wake.wake_succeeded);
+  number("initial_wake_failed", wake.wake_failed);
+  number("last_wake_error", wake.last_wake_error);
+  number("wait_pump_epoch_at_start", wake.pump_epoch_at_start);
+  number("wait_pump_epoch_at_end", wake.pump_epoch_at_end);
+  result += "}";
+  return result;
+}
+
+std::string ActorArmyRolePrivateFailureFrameV1(
+    std::string_view request_id, std::string_view step,
+    std::string_view error, std::string_view diagnostics,
+    int reclaim_enum = -1) {
+  auto result = CommandResultFrame(request_id, step, false, error);
+  result.pop_back();
+  result += ",\"native_diagnostics\":";
+  result += diagnostics;
+  if (reclaim_enum >= 0) {
+    result += ",\"reclaim_result_enum\":" + std::to_string(reclaim_enum);
+  }
+  result += "}";
+  return result;
+}
+
 #endif
 
 #if defined(XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1)
@@ -19084,28 +19186,36 @@ void RunConnectedSession(
               query.actor_character_id = actor_character_id;
               query.war_id = war_id;
               query.public_army_id = public_army_id;
+              const auto diagnostics_before =
+                  xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
+                      g_main_thread_query_mailbox_v1);
+              xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1 wake_trace{};
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteActorArmyRolePrivateQueryV1,
-                  &query, query.ticket);
+                  &query, query.ticket, &wake_trace);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
                 connected = xar::bridge::WriteFrame(
-                    pipe, CommandResultFrame(
-                              request_id, step, false,
-                              "actor army role application-main boundary unavailable"));
+                    pipe, ActorArmyRolePrivateFailureFrameV1(
+                              request_id, step,
+                              "actor army role application-main boundary unavailable",
+                              ActorArmyRolePrivateFailureDiagnosticsV1(
+                                  query, diagnostics_before, submit, -1, 0, wake_trace)));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                     g_main_thread_query_mailbox_v1, query.ticket,
                     xar::ck3_11906::
-                        kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds);
+                        kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds,
+                    &wake_trace, 0);
                 while (wait == xar::ck3_11906::
                                    MainThreadQueryWaitResultV1::
                                        timeout_executor_already_running) {
                   wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1, query.ticket,
                       xar::ck3_11906::
-                          kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds);
+                          kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds,
+                      &wake_trace, 0);
                 }
                 std::string response;
                 if (wait == xar::ck3_11906::
@@ -19116,21 +19226,32 @@ void RunConnectedSession(
                   response = ActorArmyRolePrivateResultFrame(
                       request_id, step, query.result);
                 }
+                const auto failure_diagnostics = response.empty()
+                    ? ActorArmyRolePrivateFailureDiagnosticsV1(
+                          query, diagnostics_before, submit,
+                          static_cast<int>(wait), response.size(), wake_trace)
+                    : std::string{};
                 if (response.empty()) {
                   const auto error = query.failure_stage.empty()
                                          ? "actor army role private query unavailable"
                                          : "actor army role private query unavailable:" +
                                                query.failure_stage;
-                  response = CommandResultFrame(request_id, step, false,
-                                                error);
+                  response = ActorArmyRolePrivateFailureFrameV1(
+                      request_id, step, error, failure_diagnostics);
                 }
-                if (xar::ck3_11906::ReclaimMainThreadQueryV1(
-                        g_main_thread_query_mailbox_v1, query.ticket) !=
-                    xar::ck3_11906::
-                        MainThreadQueryReclaimResultV1::reclaimed) {
-                  response = CommandResultFrame(
-                      request_id, step, false,
-                      "actor army role result was not reclaimable");
+                const auto reclaim_diagnostics = failure_diagnostics.empty()
+                    ? ActorArmyRolePrivateFailureDiagnosticsV1(
+                          query, diagnostics_before, submit,
+                          static_cast<int>(wait), response.size(), wake_trace)
+                    : failure_diagnostics;
+                const auto reclaim = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaim != xar::ck3_11906::
+                                   MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = ActorArmyRolePrivateFailureFrameV1(
+                      request_id, step,
+                      "actor army role result was not reclaimable",
+                      reclaim_diagnostics, static_cast<int>(reclaim));
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

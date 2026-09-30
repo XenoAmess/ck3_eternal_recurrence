@@ -50,3 +50,28 @@ UIA 通过精确 HWND、Name、AutomationId 定位的语义动作不经过截图
 ```
 
 测试覆盖 X/Y 独立换算、不同宽高比、带偏移的预览内容矩形和所有越界/非法尺寸拒绝分支。
+
+## 只移动指针 / hover
+
+`--move` 只把指针立即移到换算后的点，不点击、不按按钮、不拖动、不切换窗口。
+仍须使用本轮原始 PNG、当前实际桌面尺寸和显式预览内容矩形；不得复用历史分辨率或倍率。
+另外必须提供同一预览坐标系内已直接审阅的安全区域
+`--reviewed-left/top/width/height`。区域须完全位于图像内容矩形内，观察点与舍入后的实际桌面点
+都须落在该区域内，否则拒绝输入。由执行者根据本轮实际原图确认区域，工具不推断画面已经审阅。
+
+以下数字只演示接口形状，不能直接用于实际桌面：
+
+```text
+"tools\.venv\Scripts\python.exe" "tools\desktop_coordinate_map.py" --source-image "D:\artifacts\before.png" --preview-left 100 --preview-top 50 --preview-width 800 --preview-height 600 --observed-x 500 --observed-y 350 --reviewed-left 300 --reviewed-top 200 --reviewed-width 400 --reviewed-height 300 --move --receipt "D:\artifacts\after-move.png"
+```
+
+移动前重新读取桌面尺寸、指针与前台窗口/控件焦点；移动后保存实际指针、当前桌面尺寸、前台窗口/焦点、
+原尺寸 PNG 和 `after-move.png.json`。JSON 绑定原图与回执图 SHA-256、原始坐标和 X/Y 换算结果。
+可加 `--expected-foreground-hwnd <本轮实际HWND>`，前台不匹配时拒绝移动。指针未到达目标、
+屏幕或回执尺寸改变、前台窗口/焦点改变时保留失败回执并返回非零，不能凭输入 ACK 称移动已验。
+移动前读取五种鼠标按钮状态；任一仍按下时拒绝位移，避免把 pointer-only 动作变成拖动；回执也记录移动后按钮状态。
+已有 PNG 或 JSON 回执拒绝覆盖；重新尝试须用新路径。
+
+在相同命令加 `--dry-run` 可只验证尺寸、几何与区域，输出计划 JSON；不发指针输入、不读焦点、
+不生成截图或回执。dry-run 仍读取当前 `pyautogui.size()` 作实际尺寸核对；它不证明实际移动完成。
+`--move` 与 `--click` 互斥，原有点击与回执流程保持原样。

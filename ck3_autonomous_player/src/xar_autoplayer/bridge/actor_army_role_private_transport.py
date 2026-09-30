@@ -232,12 +232,31 @@ def query_actor_army_role_private_v1(
         raise BridgeUnavailableError("actor army role requires exact episode, war and one current paused owned allied army")
     request_id = "war-actor-army-role-" + uuid.uuid4().hex
     step = STEP_PREFIX + str(actor) + "-" + str(war_id) + "-" + str(army_id)
-    driver.endpoint.send({
+    request = {
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": step,
         "expected_revision": native_revision,
-    })
+    }
+    diagnostic_sink = getattr(driver, "actor_army_role_diagnostic_sink", None)
+    if diagnostic_sink is not None:
+        diagnostic_binding = {
+            "snapshot_id": before.get("snapshot_id"), "revision": expected_revision,
+            "native_revision": native_revision, "date_raw": date_raw,
+            "episode_run_id": expected_episode_run_id, "actor_character_id": actor,
+            "war_id": war_id, "public_army_id": army_id,
+            "bridge_pid": bridge_pid, "connection_generation": generation,
+        }
+        diagnostic_sink("request", {
+            "binding": copy.deepcopy(diagnostic_binding),
+            "request": copy.deepcopy(request),
+        })
+    driver.endpoint.send(request)
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
+    if diagnostic_sink is not None:
+        diagnostic_sink("command-result", {
+            "binding": copy.deepcopy(diagnostic_binding),
+            "request": copy.deepcopy(request), "frame": copy.deepcopy(frame),
+        })
     if frame is None or frame.get("type") != "command_result" or frame.get("protocol_version") != 1 or frame.get("request_id") != request_id:
         raise BridgeUnavailableError("actor army role command_result missing or mismatched")
     if frame.get("ok") is not True:

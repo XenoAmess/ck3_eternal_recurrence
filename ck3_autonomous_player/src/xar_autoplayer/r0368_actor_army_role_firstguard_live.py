@@ -1,4 +1,4 @@
-"""Use the first-guard fixed pair through the existing R0368 managed entry.
+"""Use the failure diagnostics pair through the existing R0368 managed entry.
 
 Every mode requires explicit new manifest hashes. The existing source, prepare,
 read and cleanup code is reused within this process; historical providers are
@@ -40,7 +40,7 @@ def firstguard_pair_provider(*, expected_candidate_sha256: str,
 def main(argv=None) -> int:
     arguments = list(sys.argv[1:] if argv is None else argv)
     if "--help" in arguments or "-h" in arguments:
-        print("First-guard fixed pair: additionally required in every mode:\n"
+        print("Failure diagnostics pair: additionally required in every mode:\n"
               "  --expected-candidate-sha256 SHA256\n"
               "  --expected-release-pair-sha256 SHA256\n")
         return original_entry.main(["--help"])

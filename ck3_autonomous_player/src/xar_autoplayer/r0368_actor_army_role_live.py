@@ -147,6 +147,8 @@ def run_owned_role_read(*, spec, config, keeper, actor: int, episode: str,
             save_dir=spec.profile_dir / 'save games',
             succession_lifecycle_binding=lifecycle_binding)
         driver.allow_private_actor_army_role_query = True
+        driver.actor_army_role_diagnostic_sink = lambda phase, payload: write_new(
+            output / f'role-query-{phase}.json', payload)
         driver.query_actor_army_role_private_v1 = MethodType(query_actor_army_role_private_v1, driver)
         thread = threading.Thread(target=supervise, name='r0368-role-managed-session')
         thread.start()

@@ -1,4 +1,4 @@
-"""Read the separately frozen native pair that fixes ROLE dispatch and mailbox.
+"""Read the separately frozen native pair that retains ROLE failure diagnostics.
 
 This admission uses explicit manifest byte pins. The original role pair and its
 173-case receipt remain historical inputs to the original entry.
@@ -12,12 +12,12 @@ from . import r0368_actor_army_role_operator as original_role
 from .errors import AgentError
 
 
-NATIVE_SOURCE_COMMIT = "76655618acbae4135d4dad0c9a53177a0babe422"
-BRIDGE_SOURCE_SHA256 = "8FFCD611BF2E35B8291820D05A181BE8A2CA22DF97DA7F448439AFD206C28A8A"
-NATIVE_SOURCE_FINGERPRINT_SHA256 = "258E3B49151C22DD76B698389C852912BB757AB8BB1D2F75FC30AFD5ED3CBC9A"
+NATIVE_SOURCE_COMMIT = "244005a79d3acaa92a01a0a949edde4dad6fdbe7"
+BRIDGE_SOURCE_SHA256 = "418F733DA86448D4C3B66379EE62AC7F24EB7A6BF75F3D6A3FCD2C23165C620E"
+NATIVE_SOURCE_FINGERPRINT_SHA256 = "B68C99E67F849B7017A9FB3D5473D4045CAA41C63A55325B8C1C474B91B4AFCE"
 CK3_EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
-PAIR_SCHEMA = "xar.war.r0368.release-pair-mailbox-fix-static.v1"
-CANDIDATE_SCHEMA = "xar.war.r0368.role-mailbox-fix-candidate.v1"
+PAIR_SCHEMA = "xar.war.r0368.release-pair-failure-diagnostics-static.v1"
+CANDIDATE_SCHEMA = "xar.war.r0368.release-pair-failure-diagnostics-candidate.v1"
 _SHA = re.compile(r"[0-9A-Fa-f]{64}")
 _RAW_NAMES = (
     "xar_checkpoint.ck3", "driver-state.json",
@@ -89,7 +89,7 @@ def verify_firstguard_source_pair(
             != BRIDGE_SOURCE_SHA256):
         raise AgentError("R0368 new native source pair contract differs")
     if _digest(pair.get("source_fingerprint_sha256"), "native source fingerprint") != NATIVE_SOURCE_FINGERPRINT_SHA256:
-        raise AgentError("R0368 final mailbox native source fingerprint differs")
+        raise AgentError("R0368 failure diagnostics native source fingerprint differs")
     ctest = pair.get("ctest")
     expected_ctest = {
         "junit_tests": 1, "junit_failures": 0, "junit_skipped": 0,
@@ -132,7 +132,7 @@ def verify_firstguard_source_pair(
     if original_role._sha256(bridge_source) != BRIDGE_SOURCE_SHA256:
         raise AgentError("R0368 first-guard bridge source bytes differ")
     return {
-        "schema": "xar.war.r0368.role-mailbox-fix-no-launch.v1",
+        "schema": "xar.war.r0368.role-failure-diagnostics-no-launch.v1",
         "status": "SOURCE_BYTES_READY_SAME_FRAME_PENDING",
         "candidate_manifest_sha256": candidate_sha,
         "release_pair_manifest_sha256": pair_sha,
