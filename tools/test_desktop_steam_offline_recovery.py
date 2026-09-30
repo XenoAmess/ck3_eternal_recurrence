@@ -126,12 +126,13 @@ class DesktopRecoveryTests(unittest.TestCase):
         self.assertTrue(receipt["moving_edge_changed"])
         self.assertIn("SetForegroundWindow", receipt["foreground_restore_error"])
 
-    def test_stale_screen_record_is_ignored_only_when_its_pid_is_dead(self) -> None:
+    def test_stale_screen_record_blocks_even_when_its_pid_is_dead(self) -> None:
         old = {**task("old"), "stale": True, "pid": 2696}
         with patch.object(recovery.psutil, "pid_exists", return_value=False):
-            self.assertEqual(recovery.screen_owners([old, task(TASK)]), [TASK])
+            self.assertEqual(recovery.screen_owners([old, task(TASK)]), [TASK, "old"])
         with patch.object(recovery.psutil, "pid_exists", return_value=True):
             self.assertEqual(recovery.screen_owners([old, task(TASK)]), [TASK, "old"])
+        self.assertEqual(recovery.screen_owners([{**old, "state": "done"}]), ["old"])
 
     def test_foreign_screen_owner_blocks_even_when_steam_and_service_exist(self) -> None:
         reasons = recovery.preflight([task("other"), task(TASK)], TASK, [99],
@@ -145,6 +146,9 @@ class DesktopRecoveryTests(unittest.TestCase):
                              restart_running_todesk_on_stale=True,
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
+                  patch.object(recovery, "recovery_authorization",
+                               return_value={"marker_sha256": "fixture", "sequence": 1}),
+                  patch.object(recovery, "require_exclusive_screen"),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
                   patch.object(recovery, "recorder_pids", return_value=[]),
@@ -171,6 +175,9 @@ class DesktopRecoveryTests(unittest.TestCase):
                              restart_running_todesk_on_stale=True,
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
+                  patch.object(recovery, "recovery_authorization",
+                               return_value={"marker_sha256": "fixture", "sequence": 1}),
+                  patch.object(recovery, "require_exclusive_screen"),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
                   patch.object(recovery, "recorder_pids", return_value=[]),
@@ -197,6 +204,9 @@ class DesktopRecoveryTests(unittest.TestCase):
                              restart_running_todesk_on_stale=True,
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
+                  patch.object(recovery, "recovery_authorization",
+                               return_value={"marker_sha256": "fixture", "sequence": 1}),
+                  patch.object(recovery, "require_exclusive_screen"),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
                   patch.object(recovery, "recorder_pids", return_value=[99]),
@@ -219,6 +229,8 @@ class DesktopRecoveryTests(unittest.TestCase):
                              restart_running_todesk_on_stale=True,
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
+                  patch.object(recovery, "recovery_authorization",
+                               return_value={"marker_sha256": "fixture", "sequence": 1}),
                   patch.object(recovery, "task_bus_tasks", return_value=[task("other")]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
                   patch.object(recovery, "service_state", return_value={"status": "running", "pid": 11}),

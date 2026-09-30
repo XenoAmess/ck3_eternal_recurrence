@@ -8,8 +8,10 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import time
@@ -26,6 +28,11 @@ SERVICE = "ToDesk_Service"
 SCREEN_RESOURCE = "ck3-screen:acquired"
 STALE_CAPTURE_ERROR = "desktop capture did not respond to live Steam movement"
 DEFAULT_BUS = Path(r"D:\workspace\.codex-task-bus\bin\codex_task_bus.py")
+BUS_SOURCE = Path(__file__).with_name("codex_task_bus.py")
+RECOVERY_MARKER_NAME = "desktop-steam-recovery-authorization.json"
+UNSAFE_MARKER_NAME = "unsafe-cleanup.json"
+MARKER_SCHEMA = "ck3.desktop_steam_recovery_authorization.v1"
+BUS_SCHEMA = "codex.task_bus.v1"
 RECORDER_NAMES = {"ffmpeg.exe", "obs64.exe", "obs32.exe", "obs.exe"}
 
 
@@ -34,7 +41,13 @@ def now() -> str:
 
 
 def task_bus_tasks(bus: Path) -> list[dict]:
-    result = subprocess.run([sys.executable, str(bus), "list"],
+    bus_dir = bus.parent.parent
+    if (not bus.is_file() or not (bus_dir / "tasks").is_dir()
+            or not (bus_dir / ".lock").is_file()
+            or (bus_dir / ".lock").stat().st_size == 0):
+        raise RuntimeError("existing task bus is unavailable")
+    result = subprocess.run([sys.executable, str(bus), "--bus-dir",
+                             str(bus_dir), "list"],
                             capture_output=True, text=True, timeout=15, check=True)
     payload = json.loads(result.stdout)
     if payload.get("ok") is not True or not isinstance(payload.get("tasks"), list):
@@ -43,12 +56,130 @@ def task_bus_tasks(bus: Path) -> list[dict]:
 
 
 def screen_owners(tasks: list[dict]) -> list[str]:
-    return sorted(task["task_id"] for task in tasks
-                  if task.get("state") == "running"
-                  and (not task.get("stale", False)
-                       or (isinstance(task.get("pid"), int)
-                           and psutil.pid_exists(task["pid"])))
-                  and SCREEN_RESOURCE in task.get("resources", []))
+    """Treat every unreleased screen record as occupied, including stale/done."""
+    owners = []
+    for task in tasks:
+        if not isinstance(task, dict) or not isinstance(task.get("resources"), list):
+            raise RuntimeError("task bus contains an invalid task snapshot")
+        if SCREEN_RESOURCE in task["resources"]:
+            if not isinstance(task.get("task_id"), str):
+                raise RuntimeError("screen owner has no task ID")
+            owners.append(task["task_id"])
+    return sorted(owners)
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def recovery_authorization(args: argparse.Namespace) -> dict:
+    """Validate the frozen, attempt-specific marker without touching the bus."""
+    required = ("state_dir", "recovery_marker", "recovery_marker_sha256",
+                "expected_cli_sha256", "expected_sequence")
+    if any(getattr(args, name, None) is None for name in required):
+        raise RuntimeError("recovery requires state dir, marker, CLI SHA and sequence pins")
+    if type(args.expected_sequence) is not int or args.expected_sequence <= 0:
+        raise RuntimeError("recovery expected sequence is invalid")
+    if any(type(value) is not str
+           or re.fullmatch(r"[A-F0-9]{64}", value) is None for value in
+           (args.expected_cli_sha256, args.recovery_marker_sha256)):
+        raise RuntimeError("recovery SHA pins must be uppercase SHA-256")
+    state_dir = args.state_dir.resolve(strict=True)
+    control = state_dir / "control"
+    marker = args.recovery_marker.resolve(strict=True)
+    if (not control.is_dir() or args.recovery_marker.is_symlink()
+            or marker != control / RECOVERY_MARKER_NAME):
+        raise RuntimeError("recovery marker is not the exact state control file")
+    if (control / UNSAFE_MARKER_NAME).exists():
+        raise RuntimeError("unresolved unsafe cleanup marker blocks desktop recovery")
+    if (control / "desktop-recovery-unsafe.json").exists():
+        raise RuntimeError("unresolved desktop recovery marker blocks another attempt")
+    if _sha256(marker) != args.recovery_marker_sha256:
+        raise RuntimeError("recovery marker bytes changed")
+    payload = json.loads(marker.read_text(encoding="utf-8"))
+    bus = args.task_bus.resolve(strict=True)
+    source = BUS_SOURCE.resolve(strict=True)
+    if (bus.name != "codex_task_bus.py" or bus.parent.name != "bin"
+            or _sha256(bus) != args.expected_cli_sha256
+            or _sha256(source) != args.expected_cli_sha256):
+        raise RuntimeError("task bus source or installed CLI SHA differs from pin")
+    expected = {
+        "schema": MARKER_SCHEMA,
+        "purpose": "steam_offline_desktop_recovery",
+        "task_id": args.task_id,
+        "state_dir": str(state_dir),
+        "output_dir": str(args.output_dir.resolve()),
+        "task_bus": str(bus),
+        "bus_cli_sha256": args.expected_cli_sha256,
+        "expected_sequence": args.expected_sequence,
+    }
+    if not isinstance(payload, dict) or any(payload.get(key) != value
+                                                for key, value in expected.items()):
+        raise RuntimeError("recovery marker does not bind this exact attempt")
+    expiry = datetime.fromisoformat(str(payload.get("expires_at_utc", "")))
+    if expiry.tzinfo is None or not (0 < (expiry.astimezone(timezone.utc)
+                                        - datetime.now(timezone.utc)).total_seconds() <= 600):
+        raise RuntimeError("recovery marker is expired or too far in the future")
+    return {"marker_sha256": args.recovery_marker_sha256,
+            "cli_sha256": args.expected_cli_sha256,
+            "sequence": args.expected_sequence,
+            "state_dir": state_dir}
+
+
+def _readback_screen_heartbeat(args: argparse.Namespace, lease: dict,
+                               result: dict) -> None:
+    task, event = result.get("task"), result.get("event")
+    sequence = event.get("sequence") if isinstance(event, dict) else None
+    if (result.get("schema") != BUS_SCHEMA or result.get("ok") is not True
+            or not isinstance(task, dict) or not isinstance(event, dict)
+            or type(sequence) is not int or sequence <= lease["sequence"]
+            or task.get("task_id") != args.task_id
+            or task.get("state") != "running"
+            or task.get("resources") != [SCREEN_RESOURCE]
+            or task.get("last_sequence") != sequence
+            or event.get("task_id") != args.task_id
+            or event.get("kind") != "heartbeat"):
+        raise RuntimeError("screen heartbeat returned an invalid CAS receipt")
+    tasks = task_bus_tasks(args.task_bus)
+    if screen_owners(tasks) != [args.task_id]:
+        raise RuntimeError("screen owner changed after heartbeat")
+    matching = [row for row in tasks if row.get("task_id") == args.task_id]
+    if len(matching) != 1 or any(matching[0].get(key) != task.get(key) for key in
+                                 ("state", "resources", "last_sequence", "updated_at_utc")):
+        raise RuntimeError("screen task readback differs from CAS receipt")
+    bus_dir = args.task_bus.parent.parent
+    events = [json.loads(line) for line in (bus_dir / "events.jsonl")
+              .read_text(encoding="utf-8").splitlines() if line.strip()]
+    sequences = [row.get("sequence") for row in events]
+    tail = int((bus_dir / "sequence.txt").read_text(encoding="ascii").strip())
+    if (not sequences or len(sequences) != tail
+            or any(value != index for index, value in enumerate(sequences, 1))
+            or len([row for row in events if row == event]) != 1
+            or any(row.get("task_id") == args.task_id
+                   and row.get("sequence", 0) > sequence for row in events)):
+        raise RuntimeError("screen heartbeat event ledger readback differs")
+    lease["sequence"] = sequence
+
+
+def require_exclusive_screen(args: argparse.Namespace, lease: dict) -> None:
+    """Renew the unique owner with a pinned CAS before each desktop mutation."""
+    checked = recovery_authorization(args)
+    if checked["marker_sha256"] != lease["marker_sha256"]:
+        raise RuntimeError("recovery authorization changed")
+    if ck3_pids():
+        raise RuntimeError("CK3 started during recovery")
+    command = [sys.executable, str(BUS_SOURCE), "--bus-dir",
+               str(args.task_bus.parent.parent), "--expected-cli-sha256",
+               lease["cli_sha256"], "heartbeat", "--task", args.task_id,
+               "--expected-sequence", str(lease["sequence"])]
+    completed = subprocess.run(command, capture_output=True, text=True,
+                               timeout=15, check=False)
+    if completed.returncode != 0:
+        raise RuntimeError("screen heartbeat CAS rejected; stop without retry")
+    _readback_screen_heartbeat(args, lease, json.loads(completed.stdout))
+    recovery_authorization(args)
+    if ck3_pids():
+        raise RuntimeError("CK3 started after screen heartbeat")
 
 
 def ck3_pids() -> list[int]:
@@ -80,13 +211,6 @@ def preflight(tasks: list[dict], task_id: str, ck3: list[int], service: dict,
     if len(steam_windows) != 1:
         reasons.append("steam_window_not_unique")
     return reasons
-
-
-def require_exclusive_screen(bus: Path, task_id: str) -> None:
-    if screen_owners(task_bus_tasks(bus)) != [task_id]:
-        raise RuntimeError("exclusive screen lease changed during recovery")
-    if ck3_pids():
-        raise RuntimeError("CK3 started during recovery")
 
 
 def wait_service(expected: str, timeout_seconds: int) -> dict:
@@ -216,9 +340,16 @@ def reject_repeated_frame(reference_path: Path, receipt: dict,
 def inspect(bus: Path) -> dict:
     try:
         tasks = task_bus_tasks(bus)
+        owners = screen_owners(tasks)
+        stale_records = sorted(task["task_id"] for task in tasks
+                               if task.get("stale", False)
+                               and SCREEN_RESOURCE in task.get("resources", []))
         bus_error = None
-    except (OSError, ValueError, subprocess.SubprocessError) as exc:
+    except (KeyError, TypeError, OSError, ValueError, RuntimeError,
+            subprocess.SubprocessError) as exc:
         tasks = []
+        owners = []
+        stale_records = []
         bus_error = type(exc).__name__
     return {
         "schema": "ck3.desktop_steam_offline_recovery.v1",
@@ -229,10 +360,8 @@ def inspect(bus: Path) -> dict:
         "steam_windows": [{"hwnd": hwnd, "pid": pid}
                           for hwnd, pid in steam_offline_fresh_frame._steam_windows()],
         "foreground_hwnd": win32gui.GetForegroundWindow(),
-        "screen_owners": screen_owners(tasks),
-        "stale_screen_records": sorted(task["task_id"] for task in tasks
-                                       if task.get("stale", False)
-                                       and SCREEN_RESOURCE in task.get("resources", [])),
+        "screen_owners": owners,
+        "stale_screen_records": stale_records,
         "task_bus_error": bus_error,
         "steam_offline_status_observed": None,
     }
@@ -251,31 +380,42 @@ def recover(args: argparse.Namespace) -> dict:
     before = inspect(args.task_bus)
     record("preflight", state=before)
     try:
+        lease = recovery_authorization(args)
+        authorization_error = None
+    except (OSError, ValueError, RuntimeError) as exc:
+        lease = None
+        authorization_error = f"{type(exc).__name__}: {exc}"
+    try:
         tasks = task_bus_tasks(args.task_bus)
         bus_error = None
-    except (OSError, ValueError, subprocess.SubprocessError) as exc:
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
         tasks = []
         bus_error = type(exc).__name__
     windows = steam_offline_fresh_frame._steam_windows()
-    blockers = preflight(tasks, args.task_id, ck3_pids(), service_state(), windows)
+    try:
+        blockers = preflight(tasks, args.task_id, ck3_pids(), service_state(), windows)
+    except (KeyError, TypeError, ValueError, RuntimeError):
+        blockers = ["task_bus_screen_snapshot_invalid"]
+    if authorization_error:
+        blockers.append("recovery_authorization_invalid")
     if bus_error:
         blockers.append("task_bus_unavailable")
     if blockers:
         outcome = "blocked"
-        record("blocked", reasons=blockers)
+        record("blocked", reasons=blockers, authorization_error=authorization_error)
         fresh_frame = None
     else:
         hwnd, steam_pid = windows[0]
         outcome = "unverified"
         fresh_frame = None
         try:
-            require_exclusive_screen(args.task_bus, args.task_id)
+            require_exclusive_screen(args, lease)
             service_before = service_state()
             ensure_service_running(args.service_timeout_seconds)
             if service_before["status"] == "stopped":
                 record("todesk_started", state=service_state())
             for attempt in (1, 2):
-                require_exclusive_screen(args.task_bus, args.task_id)
+                require_exclusive_screen(args, lease)
                 probe_dir = output_dir / f"probe-{attempt}"
                 probe_dir.mkdir(exist_ok=False)
                 try:
@@ -301,7 +441,7 @@ def recover(args: argparse.Namespace) -> dict:
                             or not args.restart_running_todesk_on_stale):
                         outcome = "stale_or_unavailable"
                         break
-                    require_exclusive_screen(args.task_bus, args.task_id)
+                    require_exclusive_screen(args, lease)
                     recorders = recorder_pids()
                     if recorders:
                         record("restart_blocked", reason="recorder_running",
@@ -336,6 +476,11 @@ def main() -> None:
     recovery = subcommands.add_parser("recover")
     recovery.add_argument("--task-id", required=True)
     recovery.add_argument("--output-dir", type=Path, required=True)
+    recovery.add_argument("--state-dir", type=Path, required=True)
+    recovery.add_argument("--recovery-marker", type=Path, required=True)
+    recovery.add_argument("--recovery-marker-sha256", required=True)
+    recovery.add_argument("--expected-cli-sha256", required=True)
+    recovery.add_argument("--expected-sequence", type=int, required=True)
     recovery.add_argument("--bring-steam-forward", action="store_true")
     recovery.add_argument("--restart-running-todesk-on-stale", action="store_true")
     recovery.add_argument("--stale-clock-reference", type=Path,
