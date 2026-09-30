@@ -85,6 +85,43 @@ class FirstHeirCompanionTests(unittest.TestCase):
                          "existing_partner_no_new_proposal_value")
         self.assertIs(observed["resolved_pair_matches_native"], True)
         self.assertIs(observed["same_frame"], True)
+        self.assertEqual(observed["existing_betrothal_value_status"], "unknown")
+
+    def test_existing_pair_value_is_classified_without_action_or_ledger_change(self) -> None:
+        cases = (
+            ({"status": "unavailable", "adult_readback_available": True,
+              "ready_to_marry_betrothed": False}, "not_ready"),
+            ({"status": "unavailable", "adult_readback_available": True,
+              "ready_to_marry_betrothed": True, "final_legality_sampled": False}, "unknown"),
+            ({"status": "available", "ready_to_marry_betrothed": True,
+              "final_legality_sampled": True, "complete_can_send": False},
+             "native_final_illegal"),
+            ({"status": "available", "ready_to_marry_betrothed": True,
+              "final_legality_sampled": True, "complete_can_send": True,
+              "recipient_answer_status_raw": 0, "recipient_ai_accept_raw": 1000000,
+              "predicted_outcome_if_accepted": "marriage"},
+             "native_legal_marriage_value_observed"),
+            ({"status": "available", "ready_to_marry_betrothed": True,
+              "complete_can_send": True, "recipient_answer_status_raw": 2,
+              "recipient_ai_accept_raw": 1000000},
+             "recipient_answer_or_acceptance_not_positive"),
+        )
+        for value, expected in cases:
+            with self.subTest(expected=expected):
+                driver = Driver({**relation(), "betrothal_actionability": value})
+                before = deepcopy(driver.relation)
+                resolved = {"status": "betrothal", "material_result": True,
+                            "episode_run_id": "native-29829-test",
+                            "heir_character_id": 38822, "candidate_character_id": 38718}
+                original_resolved = deepcopy(resolved)
+                observed = self.observe(driver, resolved=resolved)
+                self.assertEqual(observed["existing_betrothal_value_status"], expected)
+                self.assertIs(observed["new_proposal_eligible"], False)
+                self.assertIs(observed["read_only"], True)
+                self.assertNotIn("selected_step", observed)
+                self.assertEqual(driver.relation, before)
+                self.assertEqual(resolved, original_resolved)
+                self.assertEqual(driver.revisions, [3])
 
     def test_unpartnered_does_not_claim_final_legality_or_value(self) -> None:
         observed = self.observe(Driver(relation(betrothed=None)))

@@ -212,3 +212,34 @@ checkpoint refresh is consumed without replacing the original Guy read
 revision. The generated operator command is parsed by the actual native CLI.
 These are fixture results; no new CK3 process, relationship outcome, date or
 candidate qualification is claimed here.
+
+## Current-pair Python consumption contract (2026-09-30; source candidate)
+
+The original existing-betrothal tree was recorded first in commit
+`b2c66e534f2770fb97fb5babfca8bdfb1b0443c9` / PR#764. The native worker's
+`D:\nw-family-current-pair-native-20260930\FIELD-CONTRACT.json` specifies an
+additive `betrothal_actionability` object on the existing private current-heir
+relationship query. Current actor/heir/bilateral partner binding, actual
+runtime adulthood thresholds, the finalized native verdict/answer, signed
+Q100000 resource costs and effective lineality remain native observations.
+`ready_to_marry_betrothed` does not imply final Can Send or proposal authority.
+
+The Python parser preserves independently observed fields on `unavailable`
+and treats a missing legacy-DLL object as unknown. The companion can distinguish
+not-ready, observed native rejection and a complete current-pair value read;
+it still does not select or submit a fulfillment action, replace a partner,
+rewrite a resolved ledger or infer acceptance/children. Existing new-partner
+eligibility remains false for an existing partner. Actual query, typed action,
+material marriage, next-turn and recovery evidence are still required before
+any live or formal-loop claim for the added input.
+
+The existing transport and companion tests pass 15/15 in normal Python and
+15/15 under `-O`, including parsed native value into the formal companion,
+legacy absence, partial unknown value, runtime thresholds, current bilateral
+pair binding and no proposal/ledger mutation. Logs are retained at
+`D:\nw-family-current-pair-python-tests-20260930\normal.log` and `optimized.log`.
+These are controlled source fixtures, not new paused gameplay observations.
+Python can be delivered first with unknown values for old DLLs; the matching
+native implementation then supplies the additive fields in a later frozen
+candidate. Existing step, schema version and public advertisement remain
+unchanged, so this increment requires no unrelated `open_kaishek` migration.
