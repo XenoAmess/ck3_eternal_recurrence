@@ -14,6 +14,37 @@ from types import SimpleNamespace
 # export, so never leave __pycache__ artefacts in that export.
 sys.dont_write_bytecode = True
 
+
+def _record_early_start() -> None:
+    """Leave diagnostic PID facts before imports; this is never ready proof."""
+    if len(sys.argv) not in {9, 10}:
+        return
+    try:
+        record = Path(sys.argv[6])
+        path = record.with_name(f"{record.stem}.{sys.argv[4]}.watchdog_start.json")
+        temporary = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+        with temporary.open("x", encoding="utf-8") as output:
+            json.dump({
+                "schema": "xar.watchdog-early-start.v1",
+                "nonce": sys.argv[4],
+                "parent_pid": int(sys.argv[1]),
+                "watchdog_pid": os.getpid(),
+                "watchdog_parent_pid": os.getppid(),
+                "python": sys.executable,
+            }, output, ensure_ascii=True, sort_keys=True)
+            output.write("\n")
+            output.flush()
+            os.fsync(output.fileno())
+        try:
+            os.link(temporary, path)
+        finally:
+            temporary.unlink(missing_ok=True)
+    except Exception:
+        pass
+
+
+_record_early_start()
+
 import win32api
 import win32com.client
 import win32con

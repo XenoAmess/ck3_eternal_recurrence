@@ -42,6 +42,7 @@ from .environment import (
     write_json_atomic,
     write_text_atomic,
 )
+from .watchdog_process_custody import WatchdogProcessCustody
 from .errors import AgentError, UnsafeCleanupError
 from .integrity import protected_snapshot, verify_protected_unchanged
 from .locking import exclusive_launch_lock, exclusive_state_lock
@@ -86,6 +87,7 @@ NATIVE_BRIDGE_INJECTOR_ENV = "XAR_CK3_BRIDGE_INJECTOR"
 NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS = 30.0
 _FALLBACK_WATCHDOG_COMMAND_LINES: dict[int, str] = {}
 _FALLBACK_WATCHDOG_PROCESSES: dict[int, subprocess.Popen[bytes]] = {}
+_WATCHDOG_PROCESS_CUSTODY: dict[int, WatchdogProcessCustody] = {}
 
 
 @dataclass(frozen=True)
@@ -1974,7 +1976,22 @@ def _stop_authenticated_watchdog(
         win32api.CloseHandle(process_handle)
 
 
+def _observe_watchdog_custody(
+    custody: WatchdogProcessCustody, operation: str, *arguments: object
+) -> object:
+    """Keep diagnostic failures out of watchdog authentication and cleanup."""
+    try:
+        return getattr(custody, operation)(*arguments)
+    except Exception as error:
+        if operation == "snapshot":
+            return [{"custody_error": f"{type(error).__name__}: {error}"}]
+        return None
+
+
 def _forget_fallback_watchdog(pid: int) -> None:
+    custody = _WATCHDOG_PROCESS_CUSTODY.pop(pid, None)
+    if custody is not None and not custody.defer_close:
+        _observe_watchdog_custody(custody, "close")
     process = _FALLBACK_WATCHDOG_PROCESSES.pop(pid, None)
     _FALLBACK_WATCHDOG_COMMAND_LINES.pop(pid, None)
     if process is None:
@@ -1995,6 +2012,9 @@ def _rebind_fallback_watchdog(bootstrap_pid: int, actual_pid: int) -> None:
             process.wait(timeout=1)
         except (subprocess.TimeoutExpired, OSError):
             pass
+    custody = _WATCHDOG_PROCESS_CUSTODY.pop(bootstrap_pid, None)
+    if custody is not None:
+        _WATCHDOG_PROCESS_CUSTODY[actual_pid] = custody
     if command is not None:
         _FALLBACK_WATCHDOG_COMMAND_LINES[actual_pid] = command
 
@@ -2115,12 +2135,21 @@ def _start_process_watchdog(
             bootstrap_pid = int(bootstrap_process.pid)
             _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
             _FALLBACK_WATCHDOG_PROCESSES[bootstrap_pid] = bootstrap_process
+    custody = WatchdogProcessCustody(_process_identity)
+    _observe_watchdog_custody(custody, "retain", bootstrap_pid)
+    _WATCHDOG_PROCESS_CUSTODY[bootstrap_pid] = custody
+    early_start_file = record_file.with_name(
+        f"{record_file.stem}.{nonce}.watchdog_start.json"
+    )
     error_file = record_file.with_suffix(".watchdog_error")
     actual_pid: int | None = None
     creation_date = ""
     try:
         deadline = time.monotonic() + 10
         while time.monotonic() < deadline:
+            _observe_watchdog_custody(
+                custody, "retain_early_receipt", early_start_file, parent_pid, nonce
+            )
             if error_file.is_file():
                 detail = error_file.read_text(
                     encoding="utf-8", errors="replace"
@@ -2150,6 +2179,7 @@ def _start_process_watchdog(
                         f"process watchdog ready identity differs: {ready!r}"
                     )
                 actual_pid = int(ready["watchdog_pid"])
+                _observe_watchdog_custody(custody, "retain", actual_pid)
                 _rebind_fallback_watchdog(bootstrap_pid, actual_pid)
                 identity = _process_identity(actual_pid)
                 if identity is None:
@@ -2169,34 +2199,67 @@ def _start_process_watchdog(
             f"process watchdog bootstrap PID {bootstrap_pid} did not become ready"
         )
     except Exception as bootstrap_error:
+        custody.defer_close = True
+        _observe_watchdog_custody(
+            custody, "retain_early_receipt", early_start_file, parent_pid, nonce
+        )
+        held_before_cleanup = _observe_watchdog_custody(custody, "snapshot")
         candidate = actual_pid if actual_pid is not None else bootstrap_pid
         cleanup_error: Exception | None = None
         try:
-            identity = _process_identity(candidate)
-            if identity is not None:
-                candidate_creation = str(identity["creation_date"])
-                _stop_authenticated_watchdog(
-                    candidate, candidate_creation, parent_pid, nonce
-                )
-        except Exception as error:
-            cleanup_error = error
-        if cleanup_error is None:
-            ready_file.unlink(missing_ok=True)
-        else:
             try:
-                error_file.write_text(
-                    f"bootstrap-cleanup:{cleanup_error}\n", encoding="utf-8"
+                identity = _process_identity(candidate)
+                if identity is not None:
+                    candidate_creation = str(identity["creation_date"])
+                    _stop_authenticated_watchdog(
+                        candidate, candidate_creation, parent_pid, nonce
+                    )
+            except Exception as error:
+                cleanup_error = error
+            if cleanup_error is None:
+                ready_file.unlink(missing_ok=True)
+            else:
+                try:
+                    error_file.write_text(
+                        f"bootstrap-cleanup:{cleanup_error}\n", encoding="utf-8"
+                    )
+                except OSError:
+                    pass
+            detail = (
+                f"; watchdog cleanup unproven: {cleanup_error}"
+                if cleanup_error is not None
+                else ""
+            )
+            raise UnsafeCleanupError(
+                f"process watchdog bootstrap failed: {bootstrap_error}{detail}"
+            ) from bootstrap_error
+        finally:
+            # These observations never authorize a stop or prove absence.
+            try:
+                write_json_atomic(
+                    record_file.with_suffix(".watchdog_bootstrap.json"),
+                    {
+                        "schema": "xar.watchdog-bootstrap-custody.v1",
+                        "nonce": nonce,
+                        "parent_pid": parent_pid,
+                        "bootstrap_pid": bootstrap_pid,
+                        "actual_pid": actual_pid,
+                        "bootstrap_error": str(bootstrap_error),
+                        "cleanup_error": str(cleanup_error) if cleanup_error else None,
+                        "held_watchdogs_before_cleanup": held_before_cleanup,
+                        "held_watchdogs_after_cleanup": _observe_watchdog_custody(
+                            custody, "snapshot"
+                        ),
+                        "ck3_launch_attempted": False,
+                    },
                 )
-            except OSError:
+            except Exception:
                 pass
-        detail = (
-            f"; watchdog cleanup unproven: {cleanup_error}"
-            if cleanup_error is not None
-            else ""
-        )
-        raise UnsafeCleanupError(
-            f"process watchdog bootstrap failed: {bootstrap_error}{detail}"
-        ) from bootstrap_error
+            finally:
+                _observe_watchdog_custody(custody, "close")
+                for held_pid in (bootstrap_pid, actual_pid):
+                    if _WATCHDOG_PROCESS_CUSTODY.get(held_pid) is custody:
+                        _WATCHDOG_PROCESS_CUSTODY.pop(held_pid, None)
 
 
 def _create_kill_on_close_job(name: str | None = None) -> object:
