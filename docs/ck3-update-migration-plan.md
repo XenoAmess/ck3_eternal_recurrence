@@ -1,6 +1,8 @@
 # CK3 本体更新：MCP 迁移策略与执行计划
 
-编制日期：2026-09-30（Asia/Shanghai）。状态：**迁移预案，尚未执行新版本适配或实机验收**。
+编制日期：2026-09-30（Asia/Shanghai）。状态：**更新前核心归档与废弃产物清理已执行；新版本适配、实机验收待更新后开始**。
+
+执行结果见 [更新前冻结与清理记录](ck3-pre-update-baseline-and-cleanup-2026-09-30.md)：核心恢复包已归档、三个安装的数据指纹已冻结、过时构建/worktree 已清理，13 个权限失败目录已提供管理员脚本。
 
 本计划针对即将发生的 CK3 二进制与原版数据更新。新版本号、Steam build ID、EXE SHA 和实际变化均待更新后冻结；不预设新版本的 ABI 或具体玩法变更。源码审阅基线为 `f82d0e2` 加当前工作树，未提交的实现不能当作已发布候选。
 
@@ -46,7 +48,7 @@ R2 不等于自然死亡的一代人自治；R3 不等于全游戏自治。若�
 
 ## 3. 更新前：现在应保存的材料
 
-以下是执行清单；本次只交付计划，**尚未新建安装备份、改动游戏或运行迁移**。如果更新窗口很短，先完成 A，再做 B；不为再跑一遍历史 GREEN 耽误冻结旧安装。
+以下是执行清单；用户后续已授权执行，本轮**已完成核心 state/native 二进制归档与 build/data/source 冻结**，游戏本体直接复用已有目录，没有改动安装或运行玩法验收。具体文件、哈希、缺口和清理结果以 [执行记录](ck3-pre-update-baseline-and-cleanup-2026-09-30.md) 为准。
 
 ### 已有旧游戏目录，可直接复用
 
@@ -58,7 +60,7 @@ Z:\Crusader Kings III\Crusader Kings III_1.19.0.6_20260604
 
 2026-09-30 20:16（Asia/Shanghai）只读检查确认：`binaries/ck3.exe` 大小为 `95,206,008` bytes，SHA-256 与第 2 节绑定值完全一致；`game/common`、`game/gui`、`game/events`、`launcher/launcher-settings.json` 存在，顶层同时保留 `clausewitz/`、`jomini/` 与 `launcher/`。这份目录可作为旧 build 的安装与逆向材料来源，**无需为了本计划再复制一份游戏本体**；保留原目录供新旧差异比较。
 
-这次没有启动旧目录做运行回退验收，也没有确认配套 production DLL/injector、userdir、存档和自动玩家 state 已归档。它们继续按 A.4–A.6 单独登记；游戏安装目录与玩家状态目录是两份材料。实际使用该旧安装时，将 CLI 的 `--game-dir` 显式指向上述目录。
+20:16 初次检查没有启动旧目录做运行回退验收，当时配套 DLL/userdir/state 尚未归档。后续执行已保存这些核心材料并核对现存 checkpoint/seed 的真实 hash；旧 production6b 临时 state 不存在的缺口已单列。运行回退尚未实测。游戏安装目录与玩家状态目录是两份材料；实际使用旧安装时，将 CLI 的 `--game-dir` 显式指向上述目录。
 
 ### A. 更新前必须保留
 
@@ -236,4 +238,4 @@ Mod 依赖另做最小修复与静态/本机验收：变动的生成器输入先
 - 执行环境：[`operator-mcp.md`](operator-mcp.md)；CK3 job 必须在正确的操作者 token/desktop 上运行，通用 operator MCP 不随 CK3 ABI 重写。
 - 原生树与能力债：[`ck3-native-ai/README.md`](ck3-native-ai/README.md)、[`one-generation-blocker-ledger.md`](autonomous-agent-progress/one-generation-blocker-ledger.md)。旧 build 结论保留版本标签，不能全局替换 SHA 就称新版 live。
 
-真正开始迁移时首先交付 M0 的差异表，随后依据实际变化确定 M1/M2 的最小改动。R1/R2/R3 的完成状态必须能回链新 build 的证据；本计划自身只完成迁移设计。
+更新前冻结现已执行；取得新版本后首先交付 M0 的差异表，随后依据实际变化确定 M1/M2 的最小改动。R1/R2/R3 的完成状态必须能回链新 build 的证据，旧版归档不代表新版兼容。
