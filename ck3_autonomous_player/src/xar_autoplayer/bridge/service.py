@@ -408,6 +408,12 @@ from ..family_marriage_formal_consumer import (
     query_family_marriage_result_private,
     query_family_marriage_alliance_result_private,
 )
+from ..current_first_heir_betrothal_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP,
+    plan_current_first_heir_betrothal_fulfillment_private,
+    submit_current_first_heir_betrothal_fulfillment_private,
+    query_current_first_heir_betrothal_fulfillment_result_private,
+)
 from ..player_child_matrilineal_formal_consumer import (
     ALLIANCE_RESULT_STEP as PRIVATE_CHILD_MATRILINEAL_ALLIANCE_STEP,
     RESULT_STEP as PRIVATE_CHILD_MATRILINEAL_RESULT_STEP,
@@ -990,20 +996,27 @@ class GameplayBridgeService:
                 **joint,
                 "plan": {**joint_plan, "selected_step": "life-advance"},
             }
-            family = plan_family_marriage_private(
-                self.driver, family_input, family_snapshot,
+            family = self._plan_private_family_opportunity_v1(
+                family_input, family_snapshot,
             )
             family_plan = family.get("plan")
             if not isinstance(family_plan, dict):
                 return joint
             if joint_plan.get("phase") == "m5_joint_query_only_red":
-                family_plan = {
-                    **family_plan,
-                    "selected_step": None,
-                    "phase": joint_plan["phase"],
-                    "reason": joint_plan.get("reason"),
-                    "m5_joint_red_reason": joint_plan.get("reason"),
-                }
+                independent_fixed_pair = (
+                    family_plan.get("current_betrothal_fulfillment") is True
+                    and family_plan.get("selected_step") in {
+                        PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP,
+                        PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
+                    }
+                )
+                family_plan = {**family_plan,
+                    "m5_joint_red_reason": joint_plan.get("reason")}
+                if not independent_fixed_pair:
+                    family_plan = {**family_plan,
+                        "selected_step": None,
+                        "phase": joint_plan["phase"],
+                        "reason": joint_plan.get("reason")}
             elif family_plan.get("selected_step") == "life-advance":
                 family_plan = {
                     **family_plan,
@@ -1210,8 +1223,8 @@ class GameplayBridgeService:
                     planned, family_snapshot,
                 )
             else:
-                planned = plan_family_marriage_private(
-                    self.driver, planned, family_snapshot,
+                planned = self._plan_private_family_opportunity_v1(
+                    planned, family_snapshot,
                     prewar_arbitration=prewar_arbitration,
                 )
         target = getattr(self.driver, "child_matrilineal_target_v1", None)
@@ -1233,6 +1246,29 @@ class GameplayBridgeService:
         if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
             planned = plan_ransom_private(self.driver, planned, snapshot)
         return planned
+
+    def _plan_private_family_opportunity_v1(
+        self, planned: dict[str, object], snapshot: dict[str, object], *,
+        prewar_arbitration: bool = False, wartime_arbitration: bool = False,
+    ) -> dict[str, object]:
+        """Use the fixed existing pair before the ordinary unpartnered route."""
+        if getattr(
+            self.driver, "allow_private_current_first_heir_betrothal_fulfillment", False
+        ) is True:
+            current = plan_current_first_heir_betrothal_fulfillment_private(
+                self.driver, planned, snapshot,
+                prewar_arbitration=prewar_arbitration,
+                wartime_arbitration=wartime_arbitration,
+            )
+            current_plan = current.get("plan")
+            if (isinstance(current_plan, dict)
+                    and current_plan.get("current_betrothal_fulfillment") is True):
+                return current
+        return plan_family_marriage_private(
+            self.driver, planned, snapshot,
+            prewar_arbitration=prewar_arbitration,
+            **({"wartime_arbitration": True} if wartime_arbitration else {}),
+        )
 
     def _plan_private_family_wartime_v1(
         self, planned: dict[str, object], snapshot: object,
@@ -1256,13 +1292,14 @@ class GameplayBridgeService:
                 or type(frame[2]) is not int
                 or frame == self._last_war_family_observation):
             return planned
-        result = plan_family_marriage_private(
-            self.driver, planned, snapshot, wartime_arbitration=True,
+        result = self._plan_private_family_opportunity_v1(
+            planned, snapshot, wartime_arbitration=True,
         )
         result_plan = result.get("plan")
         if (isinstance(result_plan, dict)
                 and result_plan.get("selected_step") == selected
-                and "family_marriage_pending" not in result_plan):
+                and "family_marriage_pending" not in result_plan
+                and "current_betrothal_pending" not in result_plan):
             self._last_war_family_observation = frame
         return result
 
@@ -2300,6 +2337,18 @@ class GameplayBridgeService:
                 result = query_construction_receipt(
                     self.driver, pending=pending, expected_revision=int(planned["revision"]),
                 )
+            elif selected_step == PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP:
+                result = submit_current_first_heir_betrothal_fulfillment_private(
+                    self.driver, plan=plan, snapshot=self.snapshot())
+            elif (selected_step == PRIVATE_FAMILY_MARRIAGE_RESULT_STEP
+                  and plan.get("current_betrothal_fulfillment") is True):
+                pending = plan.get("current_betrothal_pending")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError(
+                        "controlled betrothal fulfillment lacks pending identity")
+                result = query_current_first_heir_betrothal_fulfillment_result_private(
+                    self.driver, pending=pending,
+                    cold=plan.get("current_betrothal_cold_recovery") is True)
             elif selected_step == PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP:
                 if not (isinstance(plan.get("family_marriage_legality"), dict)
                         and isinstance(plan.get("family_marriage_choice"), dict)):
