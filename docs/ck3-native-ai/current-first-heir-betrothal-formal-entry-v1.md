@@ -78,7 +78,21 @@ flowchart TD
 Operator recovery fixtures pass in normal and optimized Python modes: new
 submit/save, new PID without resubmission, refusal to count the old betrothal
 as fulfilled, and the two existing ordinary pending-pair cases (`5/5` each).
-The full turn entry fixtures are pending the delivered consumer dependency.
+The exact committed consumer tree `66fc7fbb2268b937fd3c92ee2ba520eb2727c519`
+was loaded through an external production-module overlay, without copying
+dependency files into this source package. Eight real service route fixtures,
+one default-OFF formal-run fixture and one submit/pending/checkpoint/report
+fixture pass in normal and optimized modes (`10` conclusions each).
+The final run fixture feeds the actual compact `native_auto_run` report into
+the official pending-pair validator and confirms the checkpoint consumption
+revision can advance beyond the result-query revision without another submit.
+
+The first run-fixture expectation wrongly required an ACK and pending query
+to qualify the whole bounded run. The production result correctly remained
+`not_qualified` with `run_bound_exhausted`; the test now expects that result.
+The original failed attempt is retained in the package's external artifacts.
+Service fixtures use actor `101`; the formal-run harness uses actor `707`.
+Neither is evidence of a Robert proposal or a completed marriage.
 `open_kaishek` preflight is not applicable to this Python dispatch/checkpoint
 change; no CK3 script or finite script-runtime behavior was changed.
 
