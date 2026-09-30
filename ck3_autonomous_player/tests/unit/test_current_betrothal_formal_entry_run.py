@@ -10,15 +10,16 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
+sys.path.insert(0, str(ROOT.parent / 'tools'))
 
 import xar_autoplayer.native_auto_run as run_module
 from xar_autoplayer.current_first_heir_betrothal_formal_consumer import SUBMIT_STEP
 from xar_autoplayer.family_marriage_formal_consumer import RESULT_STEP, _write, read_family_marriage_ledger
-from test_native_auto_run import _NativeAutoRunHarness, _FakeGameplayService, NativeAutoRunTests
+import test_native_auto_run as native_harness
 import g2_preview_operator as operator
 
 
-class FulfillmentHarness(_NativeAutoRunHarness):
+class FulfillmentHarness(native_harness._NativeAutoRunHarness):
     def make_service(self, driver):
         self.events.append('service_init')
         return FulfillmentService(self, driver)
@@ -31,7 +32,7 @@ class FulfillmentHarness(_NativeAutoRunHarness):
         return result
 
 
-class FulfillmentService(_FakeGameplayService):
+class FulfillmentService(native_harness._FakeGameplayService):
     def auto_turn(self, *, before_submit=None):
         harness = self.harness
         harness.auto_turn_count += 1
@@ -76,8 +77,8 @@ class FulfillmentService(_FakeGameplayService):
 
 
 class CurrentBetrothalFormalRunTests(unittest.TestCase):
-    setUp = NativeAutoRunTests.setUp
-    tearDown = NativeAutoRunTests.tearDown
+    setUp = native_harness.NativeAutoRunTests.setUp
+    tearDown = native_harness.NativeAutoRunTests.tearDown
 
     def run_fixture(self, *, enabled):
         harness = FulfillmentHarness(self.spec, ['advance'], initial_unready_snapshot=False)
@@ -98,7 +99,10 @@ class CurrentBetrothalFormalRunTests(unittest.TestCase):
 
     def test_formal_option_pairs_ack_then_pending_read_without_material_claim(self):
         report, harness = self.run_fixture(enabled=True)
-        self.assertTrue(report['ok'], report.get('first_blocker'))
+        # A typed ACK plus pending read is deliberately no visible material action.
+        self.assertFalse(report['ok'])
+        self.assertEqual(report['outcome'], 'not_qualified')
+        self.assertEqual(report['first_blocker']['kind'], 'run_bound_exhausted')
         turns = report['auto_run']['turns']
         self.assertEqual([turn['selected_step'] for turn in turns], [SUBMIT_STEP, RESULT_STEP])
         self.assertIs(harness.driver.allow_private_current_first_heir_betrothal_fulfillment, True)
