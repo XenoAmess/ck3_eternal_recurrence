@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit calculation-cards.json or render_calculation_cards.py -->
+<rect x="0" y="0" width="2560" height="1440" rx="0" fill="#211813" stroke="#211813" stroke-width="2"/>
+<line x1="64" y1="30" x2="2496" y2="30" stroke="#61503C" stroke-width="1"/>
+<line x1="64" y1="30" x2="174" y2="30" stroke="#CBA56A" stroke-width="2"/>
+<line x1="2386" y1="30" x2="2496" y2="30" stroke="#CBA56A" stroke-width="2"/>
+<text x="90" y="105" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="700" text-anchor="start">战斗后半笔账  /  E2-02</text>
+<text x="2470" y="105" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="400" text-anchor="end">独立原版回放 A05 · 新同源实拍</text>
+<text x="90" y="188" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="70" font-weight="700" text-anchor="start">追击：先冻结第 28 日输入</text>
+<text x="92" y="238" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" text-anchor="start">A05 第 28 日单帧起算；败方掩护聚合为 0 的条件样本</text>
+<line x1="90" y1="255" x2="2470" y2="255" stroke="#61503C" stroke-width="2"/>
+<line x1="90" y1="1022" x2="2470" y2="1022" stroke="#CBA56A" stroke-width="2"/>
+<text x="92" y="1060" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="400" text-anchor="start">CK3 1.19.0.6  ·  CombatID 16777218  ·  WarID 4  ·  原生日戳 53146896</text>
+<text x="92" y="1100" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" text-anchor="start">原始回执 SHA-256  5693FDBED5B6EDDC077729A5C4C8E9AF68DDE5C5D5E1E59D4B3DF12426D059C7</text>
+<line x1="0" y1="1120" x2="2560" y2="1120" stroke="#CBA56A" stroke-width="2"/>
+<rect x="90" y="284" width="1138" height="665" rx="4" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<rect x="1332" y="284" width="1138" height="665" rx="4" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="344" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="700" text-anchor="start">败方 · 24 团软伤池</text>
+<line x1="125" y1="368" x2="1193" y2="368" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="447" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="42" font-weight="400" text-anchor="start">征召兵 soft    62,528,090</text>
+<text x="125" y="522" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="42" font-weight="400" text-anchor="start">兵士 soft      19,904,137</text>
+<line x1="125" y1="572" x2="1193" y2="572" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="664" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="65" font-weight="700" text-anchor="start">合计 82,432,227</text>
+<text x="125" y="730" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="42" font-weight="400" text-anchor="start">= 824.32227 人当量</text>
+<text x="125" y="836" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="400" text-anchor="start">这是第 28 日冻结输入，不是三日损失。</text>
+<text x="1367" y="344" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="700" text-anchor="start">追击方 · 当日中间账</text>
+<line x1="1367" y1="368" x2="2435" y2="368" stroke="#61503C" stroke-width="2"/>
+<text x="1367" y="445" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" text-anchor="start">追击伤害原始值</text>
+<text x="1367" y="536" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="74" font-weight="700" text-anchor="start">75,203,000</text>
+<text x="1367" y="606" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="39" font-weight="400" text-anchor="start">败方有效掩护聚合  0</text>
+<line x1="1367" y1="647" x2="2435" y2="647" stroke="#61503C" stroke-width="2"/>
+<text x="1367" y="712" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="400" text-anchor="start">首日 toughness-soft  1,489,459,979</text>
+<text x="1367" y="780" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="47" font-weight="700" text-anchor="start">首日软转硬  2,070,677</text>
+<text x="1367" y="842" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="400" text-anchor="start">逐团比例分配后再处理余数；无追击抽签结论。</text>
+<text x="95" y="997" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="400" text-anchor="start">只验证这次给定初态的条件计算；非零败方掩护仍待原版同帧取样。</text>
+</svg>
