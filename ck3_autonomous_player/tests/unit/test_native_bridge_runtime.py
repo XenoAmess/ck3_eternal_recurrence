@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import hashlib
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -144,6 +145,9 @@ class NativeBridgeLaunchConfigurationTests(unittest.TestCase):
 
 class NativeBridgeInjectorTests(unittest.TestCase):
     def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix="injector-evidence-test-")
+        self.addCleanup(temporary.cleanup)
+        self.evidence_dir = Path(temporary.name) / "attempt"
         digest = mock.patch("xar_autoplayer.runtime.sha256_file", return_value="a" * 64)
         digest.start()
         self.addCleanup(digest.stop)
@@ -170,6 +174,9 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             "stderr_sha256": hashlib.sha256(stderr).hexdigest().upper(),
             "stdout_bytes": len(stdout), "stderr_bytes": len(stderr),
             "stdout_complete": True, "stderr_complete": True,
+            "stdout_overflow": False, "stderr_overflow": False,
+            "stdout_reader_error": None, "stderr_reader_error": None,
+            "output_limit_bytes": 8 * 1024 * 1024,
             "injector_root_reaped": True,
             "complete_process_tree_proven": tree,
             "job_active_final": 0 if tree else None,
@@ -183,10 +190,16 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             "xar_autoplayer.runtime.run_contained_injector_command",
             return_value=self.outcome(command),
         ) as run:
-            attestation = _inject_native_bridge(process, self.config)
+            attestation = _inject_native_bridge(process, self.config, self.evidence_dir)
         run.assert_called_once_with(command, timeout_seconds=30.0)
         self.assertEqual(attestation["status"], "INJECTOR_EXIT_ZERO_TREE_PROVEN")
         self.assertTrue(attestation["complete_process_tree_proven"])
+        self.assertEqual((self.evidence_dir / "stdout.bin").read_bytes(), b"PASS\r\n")
+        self.assertEqual((self.evidence_dir / "stderr.bin").read_bytes(), b"")
+        self.assertEqual(json.loads((self.evidence_dir / "job-report.json").read_text(
+            encoding="utf-8"))["pid"], 517)
+        self.assertEqual(attestation["evidence"]["assets"]["stdout"]["sha256"],
+                         hashlib.sha256(b"PASS\r\n").hexdigest().upper())
 
     def test_injector_failure_reports_return_code_and_output(self) -> None:
         process = SimpleNamespace(pid=4123)
@@ -198,7 +211,7 @@ class NativeBridgeInjectorTests(unittest.TestCase):
         ), self.assertRaisesRegex(
             AgentError, "rc=3.*InjectLibrary error=5"
         ):
-            _inject_native_bridge(process, self.config)
+            _inject_native_bridge(process, self.config, self.evidence_dir)
 
     def test_unproven_job_blocks_ck3_resume_and_marker_clear(self) -> None:
         process = SimpleNamespace(pid=4123, resume=mock.Mock())
@@ -207,7 +220,8 @@ class NativeBridgeInjectorTests(unittest.TestCase):
                               error="deadline expired")
         with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
                         return_value=result), self.assertRaises(NativeInjectorError):
-            _resume_with_native_bridge(process, self.config)
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
         process.resume.assert_not_called()
         self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
         with self.assertRaises(UnsafeCleanupError):
@@ -219,7 +233,8 @@ class NativeBridgeInjectorTests(unittest.TestCase):
         result = self.outcome(command, error="helper cleanup failed")
         with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
                         return_value=result), self.assertRaises(NativeInjectorError):
-            _resume_with_native_bridge(process, self.config)
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
         process.resume.assert_not_called()
         self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
         with self.assertRaises(UnsafeCleanupError):
@@ -232,9 +247,84 @@ class NativeBridgeInjectorTests(unittest.TestCase):
         result.report["pre_resume_job_pids"] = [518]
         with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
                         return_value=result), self.assertRaises(NativeInjectorError):
-            _resume_with_native_bridge(process, self.config)
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
         process.resume.assert_not_called()
         self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+
+    def test_forged_target_pid_cannot_override_local_identity(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        result = self.outcome(command)
+        result.report["target_ck3_pid"] = 9999
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=result), self.assertRaises(NativeInjectorError):
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
+        process.resume.assert_not_called()
+        self.assertEqual(process.injector_attestation["target_ck3_pid"], 4123)
+        self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
+        self.assertEqual(json.loads((self.evidence_dir / "job-report.json").read_text(
+            encoding="utf-8"))["target_ck3_pid"], 9999)
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+
+    def test_overflow_or_reader_error_cannot_claim_complete_output(self) -> None:
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        for field, invalid in (("stdout_overflow", True),
+                               ("stderr_reader_error", "reader failed")):
+            with self.subTest(field=field):
+                process = SimpleNamespace(pid=4123, resume=mock.Mock())
+                evidence_dir = self.evidence_dir / field
+                result = self.outcome(command)
+                result.report[field] = invalid
+                with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                                return_value=result), self.assertRaises(NativeInjectorError):
+                    _resume_with_native_bridge(process, self.config,
+                                               injector_evidence_dir=evidence_dir)
+                process.resume.assert_not_called()
+                self.assertFalse(process.injector_attestation[
+                    "complete_process_tree_proven"])
+                self.assertTrue((evidence_dir / "job-report.json").is_file())
+
+    def test_raw_evidence_write_failure_blocks_resume_and_keeps_marker(self) -> None:
+        from xar_autoplayer import runtime
+
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        real_write = runtime._write_injector_evidence
+
+        def fail_stdout(path: Path, content: bytes) -> dict[str, object]:
+            if path.name == "stdout.bin":
+                raise OSError("fixture evidence disk failure")
+            return real_write(path, content)
+
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        return_value=self.outcome(command)), mock.patch.object(
+            runtime, "_write_injector_evidence", side_effect=fail_stdout
+        ), self.assertRaisesRegex(NativeInjectorError, "raw evidence"):
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
+        process.resume.assert_not_called()
+        self.assertEqual(process.injector_attestation["status"], "RED_EVIDENCE_WRITE")
+        self.assertTrue((self.evidence_dir / "argv.json").is_file())
+        with self.assertRaises(UnsafeCleanupError):
+            _require_injector_cleanup_before_marker_clear(process)
+
+    def test_existing_attempt_directory_cannot_be_overwritten(self) -> None:
+        process = SimpleNamespace(pid=4123, resume=mock.Mock())
+        self.evidence_dir.mkdir()
+        original = self.evidence_dir / "argv.json"
+        original.write_bytes(b"historical-attempt")
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command") as helper, \
+             self.assertRaisesRegex(NativeInjectorError, "evidence setup failed"):
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
+        helper.assert_not_called()
+        process.resume.assert_not_called()
+        self.assertEqual(original.read_bytes(), b"historical-attempt")
         with self.assertRaises(UnsafeCleanupError):
             _require_injector_cleanup_before_marker_clear(process)
 
@@ -247,7 +337,8 @@ class NativeBridgeInjectorTests(unittest.TestCase):
                                         {"injector_root_reaped": True,
                                          "complete_process_tree_proven": True}),
         ):
-            _resume_with_native_bridge(process, self.config)
+            _resume_with_native_bridge(process, self.config,
+                                       injector_evidence_dir=self.evidence_dir)
         self.assertEqual(calls, ["inject", "resume"])
 
     def test_disabled_launch_resumes_without_invoking_injector(self) -> None:
@@ -262,10 +353,12 @@ class NativeBridgeInjectorTests(unittest.TestCase):
     def test_injector_timeout_is_a_launch_error(self) -> None:
         process = SimpleNamespace(pid=4123)
         with mock.patch(
-            "xar_autoplayer.runtime.subprocess.run",
+            "xar_autoplayer.runtime.run_contained_injector_command",
             side_effect=subprocess.TimeoutExpired(["injector"], 30),
         ), self.assertRaisesRegex(AgentError, "could not complete"):
-            _inject_native_bridge(process, self.config)
+            _inject_native_bridge(process, self.config, self.evidence_dir)
+        self.assertTrue((self.evidence_dir / "argv.json").is_file())
+        self.assertTrue((self.evidence_dir / "call-error.json").is_file())
 
 
 class NativeBridgeCreateProcessTests(unittest.TestCase):

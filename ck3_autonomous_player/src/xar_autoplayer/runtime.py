@@ -48,7 +48,10 @@ from .integrity import protected_snapshot, verify_protected_unchanged
 from .locking import exclusive_launch_lock, exclusive_state_lock
 from .rules import MOD_RULES
 from .windows_process import create_process_via_windows_management
-from .windows_injector_job import run_contained_injector_command
+from .windows_injector_job import (
+    MAX_INJECTOR_OUTPUT_BYTES,
+    run_contained_injector_command,
+)
 
 
 MAIN_MENU_REGION = (0.18, 0.28, 0.30, 0.50)
@@ -2323,7 +2326,19 @@ def _contained_injector_report_matches(
     stdout: bytes | None, stderr: bytes | None,
 ) -> bool:
     """Validate the helper's identity and exact output before CK3 resume."""
-    if (report.get("schema") != "xar.ck3.contained-injector-job.v1"
+    expected_keys = {
+        "schema", "status", "argv", "pid", "creation_utc",
+        "pinned_executable", "executable_sha256", "job_limit_flags",
+        "pre_resume_job_pids", "job_active_final", "job_pids_final",
+        "resume_previous_count", "returncode", "injector_root_reaped",
+        "complete_process_tree_proven", "stdout_sha256", "stderr_sha256",
+        "stdout_bytes", "stderr_bytes", "stdout_complete", "stderr_complete",
+        "stdout_overflow", "stderr_overflow", "stdout_reader_error",
+        "stderr_reader_error", "output_limit_bytes",
+    }
+    if (set(report) != expected_keys
+            or report.get("schema") != "xar.ck3.contained-injector-job.v1"
+            or report.get("status") != "EXIT"
             or type(report.get("argv")) is not list
             or report["argv"] != command
             or type(report.get("pid")) is not int or report["pid"] <= 0
@@ -2342,7 +2357,15 @@ def _contained_injector_report_matches(
             or report["job_pids_final"] != []
             or stdout is None or stderr is None
             or report.get("stdout_complete") is not True
-            or report.get("stderr_complete") is not True):
+            or report.get("stderr_complete") is not True
+            or report.get("stdout_overflow") is not False
+            or report.get("stderr_overflow") is not False
+            or report.get("stdout_reader_error") is not None
+            or report.get("stderr_reader_error") is not None
+            or type(report.get("output_limit_bytes")) is not int
+            or report["output_limit_bytes"] != MAX_INJECTOR_OUTPUT_BYTES
+            or len(stdout) > MAX_INJECTOR_OUTPUT_BYTES
+            or len(stderr) > MAX_INJECTOR_OUTPUT_BYTES):
         return False
     created = report.get("creation_utc")
     image = report.get("pinned_executable")
@@ -2390,9 +2413,50 @@ def _require_native_injector_deadline(
         )
 
 
+def _write_injector_evidence(path: Path, content: bytes) -> dict[str, object]:
+    """Create one immutable attempt asset, flushing bytes before it is cited."""
+    with path.open("xb") as output:
+        output.write(content)
+        output.flush()
+        os.fsync(output.fileno())
+    return {"path": str(path.resolve()), "bytes": len(content),
+            "sha256": hashlib.sha256(content).hexdigest().upper()}
+
+
+def _injector_json_bytes(value: object) -> bytes:
+    return (json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+
+
+def _preserve_injector_result(evidence_dir: Path, result: object) -> dict[str, object]:
+    """Preserve raw helper output and full report before trusting either one."""
+    assets: dict[str, object] = {}
+    for label in ("stdout", "stderr"):
+        raw = getattr(result, label, None)
+        if raw is None:
+            assets[label] = {"present": False}
+        elif type(raw) is bytes:
+            assets[label] = {"present": True, **_write_injector_evidence(
+                evidence_dir / f"{label}.bin", raw)}
+        else:
+            raise TypeError(f"injector {label} is not bytes or None")
+    assets["job_report"] = _write_injector_evidence(
+        evidence_dir / "job-report.json",
+        _injector_json_bytes(getattr(result, "report", None)),
+    )
+    assets["helper_error"] = _write_injector_evidence(
+        evidence_dir / "helper-error.json",
+        _injector_json_bytes({"error": getattr(result, "error", None)}),
+    )
+    index = {"schema": "xar.ck3.injector-evidence.v1", "assets": assets}
+    index["index"] = _write_injector_evidence(
+        evidence_dir / "evidence-index.json", _injector_json_bytes(index))
+    return index
+
+
 def _inject_native_bridge(
     process: _SuspendedWindowsProcess,
     config: NativeBridgeLaunchConfig,
+    evidence_dir: Path,
 ) -> dict[str, object]:
     """Run the existing CLI inside a one-process Job before CK3 resume."""
     command = [str(config.injector_path), str(process.pid), str(config.dll_path)]
@@ -2411,12 +2475,41 @@ def _inject_native_bridge(
     process.injector_attestation = attestation
     deadline = time.monotonic() + NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS
     try:
+        evidence_dir.mkdir(parents=True, exist_ok=False)
+        attestation["evidence_dir"] = str(evidence_dir.resolve())
+        attestation["argv_asset"] = _write_injector_evidence(
+            evidence_dir / "argv.json", _injector_json_bytes(command))
+    except Exception as error:
+        attestation["status"] = "RED_EVIDENCE_WRITE"
+        raise NativeInjectorError(
+            f"native bridge injector evidence setup failed: {error}", attestation
+        ) from error
+    try:
         result = run_contained_injector_command(
             command, timeout_seconds=NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS)
     except Exception as error:
         attestation["status"] = "RED_JOB_CALL"
+        try:
+            attestation["call_error_asset"] = _write_injector_evidence(
+                evidence_dir / "call-error.json",
+                _injector_json_bytes({"type": type(error).__name__, "error": str(error)}),
+            )
+        except Exception as evidence_error:
+            attestation["status"] = "RED_EVIDENCE_WRITE"
+            raise NativeInjectorError(
+                f"native bridge injector call and evidence failed: {error}; "
+                f"evidence={evidence_error}", attestation
+            ) from evidence_error
         raise NativeInjectorError(
             f"native bridge injector could not complete: {error}", attestation
+        ) from error
+    try:
+        attestation["evidence"] = _preserve_injector_result(evidence_dir, result)
+    except Exception as error:
+        attestation["status"] = "RED_EVIDENCE_WRITE"
+        raise NativeInjectorError(
+            f"native bridge injector raw evidence could not be preserved: {error}",
+            attestation,
         ) from error
     if not isinstance(result.report, dict):
         attestation["status"] = "RED_JOB_REPORT_MISMATCH"
@@ -2424,8 +2517,16 @@ def _inject_native_bridge(
             "native bridge injector could not complete: Job report mismatch",
             attestation,
         )
-    attestation.update(result.report)
-    attestation["schema"] = "xar.ck3.native-injector-attempt.v1"
+    # Keep locally observed target/parent/argv/evidence immutable. The helper
+    # report is untrusted until exact-schema validation below succeeds.
+    for field in (
+        "status", "pid", "creation_utc", "pinned_executable",
+        "executable_sha256", "job_limit_flags", "pre_resume_job_pids",
+        "job_active_final", "job_pids_final", "resume_previous_count",
+        "returncode", "injector_root_reaped", "complete_process_tree_proven",
+        "stdout_sha256", "stderr_sha256", "stdout_bytes", "stderr_bytes",
+    ):
+        attestation[field] = result.report.get(field)
     attestation["contained_job_report"] = dict(result.report)
     attestation["role_query_authorized"] = False
     _require_native_injector_deadline(attestation, deadline, "Job helper return")
@@ -2484,14 +2585,26 @@ def _resume_with_native_bridge(
     config: NativeBridgeLaunchConfig | None,
     *,
     before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
+    injector_evidence_dir: Path | None = None,
 ) -> None:
     deadline = time.monotonic() + NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS
     if config is not None:
+        if injector_evidence_dir is None:
+            process.injector_attestation = {
+                "status": "RED_EVIDENCE_SETUP",
+                "injector_root_reaped": False,
+                "complete_process_tree_proven": False,
+            }
+            raise NativeInjectorError(
+                "native bridge injector requires a new evidence directory",
+                process.injector_attestation,
+            )
         # The injector is a separate child process. Keep the caller's CAS lock
         # through its entire lifetime, then acquire a fresh sequence before
         # CK3's suspended primary thread can run.
         with before_process_create() if before_process_create is not None else nullcontext():
-            process.injector_attestation = _inject_native_bridge(process, config)
+            process.injector_attestation = _inject_native_bridge(
+                process, config, injector_evidence_dir)
     with before_process_create() if before_process_create is not None else nullcontext():
         if config is not None:
             _require_native_injector_deadline(
@@ -2807,7 +2920,11 @@ def launch(
                 f"{visible!r}"
             )
         _resume_with_native_bridge(
-            process, native_bridge, before_process_create=before_process_create
+            process, native_bridge, before_process_create=before_process_create,
+            injector_evidence_dir=(
+                spec.state_dir / "injector-attempts" / nonce
+                if native_bridge is not None else None
+            ),
         )
     except Exception as error:
         # A process that has not resumed cannot have spawned descendants. Once

@@ -107,7 +107,8 @@ class ProcessCreateGateTests(unittest.TestCase):
         with patch.object(runtime, "_inject_native_bridge",
                           side_effect=lambda *unused: calls.append("injector")):
             runtime._resume_with_native_bridge(
-                process, SimpleNamespace(), before_process_create=gate)
+                process, SimpleNamespace(), before_process_create=gate,
+                injector_evidence_dir=Path("unused-fixture-attempt"))
         self.assertEqual(calls, ["gate-enter", "injector", "gate-exit",
                                  "gate-enter", "resume", "gate-exit"])
 
@@ -135,7 +136,8 @@ class ProcessCreateGateTests(unittest.TestCase):
         with patch.object(runtime, "_inject_native_bridge", side_effect=delayed_injector):
             with self.assertRaisesRegex(RuntimeError, "lease lost"):
                 runtime._resume_with_native_bridge(
-                    process, SimpleNamespace(), before_process_create=gate)
+                    process, SimpleNamespace(), before_process_create=gate,
+                    injector_evidence_dir=Path("unused-fixture-attempt"))
         self.assertEqual(calls, ["gate-enter", "injector-start", "injector-exit",
                                  "gate-exit", "gate-enter"])
 
