@@ -237,20 +237,42 @@ def _require_screen_bus_files(bus: Path) -> int:
     if sequence < 0:
         raise CompareConflict("screen task bus sequence is invalid")
     tail = 0
+    latest_task_events: dict[str, dict[str, object]] = {}
     try:
         with (bus / "events.jsonl").open("r", encoding="utf-8") as source:
             for line in source:
                 if not line.strip():
-                    continue
+                    raise CompareConflict("task bus event stream contains a blank line")
                 event = json.loads(line)
                 event_sequence = event.get("sequence")
-                if type(event_sequence) is not int or event_sequence <= tail:
-                    raise CompareConflict("task bus event sequence is not increasing")
+                if type(event_sequence) is not int or event_sequence != tail + 1:
+                    raise CompareConflict("task bus event sequence has a gap or duplicate")
                 tail = event_sequence
+                if event.get("kind") in {"registered", "status", "completed", "heartbeat"}:
+                    value = event.get("task_id")
+                    if (type(value) is not str
+                            or TASK_ID_PATTERN.fullmatch(value) is None):
+                        raise CompareConflict("task bus mutating event has invalid task ID")
+                    latest_task_events[value] = event
     except (OSError, ValueError, TypeError, AttributeError) as error:
         raise CompareConflict("task bus event stream is unreadable") from error
     if tail != sequence:
         raise CompareConflict("task bus sequence differs from event tail")
+    for value, event in latest_task_events.items():
+        try:
+            snapshot = read_json(task_path(bus, value))
+        except (OSError, ValueError) as error:
+            raise CompareConflict("task bus mutating event snapshot is unreadable") from error
+        if (
+            type(snapshot) is not dict
+            or snapshot.get("schema") != SCHEMA
+            or snapshot.get("task_id") != value
+            or type(snapshot.get("last_sequence")) is not int
+            or snapshot["last_sequence"] != event["sequence"]
+            or snapshot.get("state") != event.get("state")
+            or snapshot.get("resources") != event.get("resources")
+        ):
+            raise CompareConflict("task bus mutating event and task snapshot diverge")
     return sequence
 
 

@@ -18,6 +18,10 @@ from unittest import mock
 
 
 SOURCE = Path(__file__).with_name("codex_task_bus.py")
+# The bus CLI needs only the standard library. Invoke the same-version base
+# interpreter directly so the venv redirector cannot outlive a timed CLI test
+# while its real child still holds the captured stdout pipe.
+CLI_PYTHON = getattr(sys, "_base_executable", sys.executable)
 SPEC = importlib.util.spec_from_file_location("codex_task_bus_patched", SOURCE)
 assert SPEC and SPEC.loader
 bus_module = importlib.util.module_from_spec(SPEC)
@@ -36,11 +40,16 @@ class ScreenReleaseCasTests(unittest.TestCase):
         (self.bus / "tasks").mkdir(parents=True)
         (self.bus / ".lock").write_bytes(b"0")
         (self.bus / "sequence.txt").write_text("10\n", encoding="ascii")
+        events = [
+            {"schema": bus_module.SCHEMA, "sequence": sequence,
+             "kind": "notification", "task_id": TASK}
+            for sequence in range(1, 10)
+        ]
+        events.append({"schema": bus_module.SCHEMA, "sequence": 10,
+                       "kind": "registered", "task_id": TASK,
+                       "state": "running", "resources": [RESOURCE]})
         (self.bus / "events.jsonl").write_text(
-            json.dumps({"schema": bus_module.SCHEMA, "sequence": 10,
-                        "kind": "registered", "task_id": TASK}) + "\n",
-            encoding="utf-8",
-        )
+            "".join(json.dumps(event) + "\n" for event in events), encoding="utf-8")
         installed = self.bus / "bin" / "codex_task_bus.py"
         installed.parent.mkdir()
         installed.write_bytes(SOURCE.read_bytes())
@@ -54,7 +63,7 @@ class ScreenReleaseCasTests(unittest.TestCase):
         self.addCleanup(self.identity.stop)
 
     def screen_cli(self) -> list[str]:
-        return [sys.executable, str(SOURCE), "--bus-dir", str(self.bus),
+        return [CLI_PYTHON, str(SOURCE), "--bus-dir", str(self.bus),
                 "--expected-cli-sha256", self.cli_sha]
 
     def seed(self, task: str, *, sequence: int = 10,
@@ -74,6 +83,15 @@ class ScreenReleaseCasTests(unittest.TestCase):
             "git": None,
         }
         bus_module.write_json_atomic(bus_module.task_path(self.bus, task), snapshot)
+        if task == TASK and sequence == 10:
+            events = bus_module.read_events(self.bus)
+            if len(events) >= 10 and events[9].get("task_id") == TASK:
+                events[9]["state"] = state
+                events[9]["resources"] = snapshot["resources"]
+                (self.bus / "events.jsonl").write_text(
+                    "".join(json.dumps(event) + "\n" for event in events),
+                    encoding="utf-8",
+                )
 
     def bytes_before(self) -> tuple[bytes, bytes, bytes]:
         return (
@@ -100,8 +118,44 @@ class ScreenReleaseCasTests(unittest.TestCase):
         self.assertEqual(task["resources"], [])
         self.assertEqual(bus_module.read_json(bus_module.task_path(self.bus, TASK)), task)
         events = bus_module.read_events(self.bus)
-        self.assertEqual(len(events), 2)
+        self.assertEqual(len(events), 11)
         self.assertEqual(events[-1]["event_id"], event["event_id"])
+
+    def test_missing_event_sequence_refuses_release_without_write(self) -> None:
+        events = bus_module.read_events(self.bus)
+        events.pop(4)  # The tail still matches sequence.txt, but event 5 is gone.
+        (self.bus / "events.jsonl").write_text(
+            "".join(json.dumps(event) + "\n" for event in events), encoding="utf-8")
+        self.assert_conflict_without_write()
+
+    def test_snapshot_same_sequence_but_screen_resources_changed_refuses(self) -> None:
+        task_path = bus_module.task_path(self.bus, TASK)
+        snapshot = bus_module.read_json(task_path)
+        snapshot["resources"] = []
+        bus_module.write_json_atomic(task_path, snapshot)
+        self.assert_conflict_without_write()
+
+    def test_partial_screen_claim_event_without_snapshot_blocks_next_claim(self) -> None:
+        self.seed(TASK, state="done", resources=[])
+        with mock.patch.object(bus_module, "write_json_atomic", side_effect=OSError("disk error")):
+            with self.assertRaises(OSError):
+                bus_module.update_task(
+                    self.bus, OTHER, state="running", summary="claim", next_step="",
+                    repo=None, resources=[RESOURCE], kind="registered",
+                    expected_cli_sha256=self.cli_sha,
+                )
+        self.assertFalse(bus_module.task_path(self.bus, OTHER).exists())
+        self.assertEqual(bus_module.read_events(self.bus)[-1]["task_id"], OTHER)
+        self.assertEqual((self.bus / "sequence.txt").read_text(encoding="ascii").strip(), "11")
+        before = self.bytes_before()
+        with self.assertRaises(bus_module.CompareConflict):
+            bus_module.update_task(
+                self.bus, "war-third-cas-test", state="running", summary="claim",
+                next_step="", repo=None, resources=[RESOURCE], kind="registered",
+                expected_cli_sha256=self.cli_sha,
+            )
+        self.assertEqual(self.bytes_before(), before)
+        self.assertFalse(bus_module.task_path(self.bus, "war-third-cas-test").exists())
 
     def test_heartbeat_sequence_race_rejects_without_write(self) -> None:
         bus_module.update_task(
@@ -315,6 +369,8 @@ class ScreenReleaseCasTests(unittest.TestCase):
 
     def test_two_concurrent_screen_claims_have_one_winner(self) -> None:
         bus_module.task_path(self.bus, TASK).unlink()
+        (self.bus / "sequence.txt").write_text("0\n", encoding="ascii")
+        (self.bus / "events.jsonl").write_text("", encoding="utf-8")
         barrier = threading.Barrier(3)
 
         def claim(task: str) -> str:
@@ -333,7 +389,7 @@ class ScreenReleaseCasTests(unittest.TestCase):
             barrier.wait()
             outcomes = [future.result(timeout=10) for future in futures]
         self.assertCountEqual(outcomes, ["claimed", "conflict"])
-        self.assertEqual(len(bus_module.read_events(self.bus)), 2)
+        self.assertEqual(len(bus_module.read_events(self.bus)), 1)
         owners = [task for task in (TASK, OTHER)
                   if bus_module.task_path(self.bus, task).is_file()]
         self.assertEqual(len(owners), 1)
@@ -371,7 +427,7 @@ class ScreenReleaseCasTests(unittest.TestCase):
             barrier.wait()
             outcomes = [future.result(timeout=10) for future in futures]
         self.assertCountEqual(outcomes, ["completed", "conflict"])
-        self.assertEqual(len(bus_module.read_events(self.bus)), 2)
+        self.assertEqual(len(bus_module.read_events(self.bus)), 11)
         self.assertEqual(bus_module.read_json(bus_module.task_path(self.bus, TASK))["last_sequence"], 11)
 
     def test_write_then_transport_error_requires_authoritative_readback(self) -> None:
@@ -396,7 +452,7 @@ class ScreenReleaseCasTests(unittest.TestCase):
         self.assertEqual(task["state"], "running")
         self.assertEqual(task["resources"], [RESOURCE])
         self.assertEqual(task["last_sequence"], 10)
-        self.assertEqual(len(bus_module.read_events(self.bus)), 2)
+        self.assertEqual(len(bus_module.read_events(self.bus)), 11)
         self.assertEqual((self.bus / "sequence.txt").read_text(encoding="ascii").strip(), "11")
         self.assert_conflict_without_write(expected_sequence=10)
 
@@ -404,7 +460,7 @@ class ScreenReleaseCasTests(unittest.TestCase):
         installed = self.bus / "bin" / "codex_task_bus.py"
         before = installed.read_bytes()
         blocked = subprocess.run(
-            [sys.executable, str(SOURCE), "--bus-dir", str(self.bus), "install"],
+            [CLI_PYTHON, str(SOURCE), "--bus-dir", str(self.bus), "install"],
             capture_output=True, text=True, check=False, timeout=10,
         )
         self.assertEqual(blocked.returncode, 3)
@@ -412,7 +468,7 @@ class ScreenReleaseCasTests(unittest.TestCase):
         self.assertEqual(installed.read_bytes(), before)
         self.seed(TASK, state="done", resources=[])
         completed = subprocess.run(
-            [sys.executable, str(SOURCE), "--bus-dir", str(self.bus), "install"],
+            [CLI_PYTHON, str(SOURCE), "--bus-dir", str(self.bus), "install"],
             capture_output=True, text=True, check=False, timeout=10,
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)
@@ -446,14 +502,14 @@ class ScreenReleaseCasTests(unittest.TestCase):
         self.assertFalse(bus_module.task_path(self.bus, OTHER).exists())
 
         allowed = subprocess.run(
-            [sys.executable, str(SOURCE), "--bus-dir", str(self.bus),
+            [CLI_PYTHON, str(SOURCE), "--bus-dir", str(self.bus),
              "register", "--task", OTHER, "--summary", "ordinary",
              "--resource", "ordinary-resource"],
             capture_output=True, text=True, check=False, timeout=10,
         )
         self.assertEqual(allowed.returncode, 0, allowed.stderr)
         done = subprocess.run(
-            [sys.executable, str(SOURCE), "--bus-dir", str(self.bus),
+            [CLI_PYTHON, str(SOURCE), "--bus-dir", str(self.bus),
              "status", "--task", OTHER, "--state", "done"],
             capture_output=True, text=True, check=False, timeout=10,
         )
