@@ -1,0 +1,84 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-war-ai-episode02-story-review-a03",
+    "title": "四倍兵力，还能只看人数吗？"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-longform-zh-v2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 1920
+  },
+  "chapters": [
+    {
+      "id": "opening",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "开场与前情：接近四比一，足够判断吗？"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "pursuit",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "追击三日"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "knights",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "骑士事件：名单、属性与死亡写回"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "reinforcement",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "增援入账：当前人数、旧缓存与新战宽"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "terminal",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "终局与战争账本"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "closing",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "结语：下一场战斗怎样看"
+      },
+      "cues": [],
+      "artifact_ids": []
+    }
+  ]
+}
