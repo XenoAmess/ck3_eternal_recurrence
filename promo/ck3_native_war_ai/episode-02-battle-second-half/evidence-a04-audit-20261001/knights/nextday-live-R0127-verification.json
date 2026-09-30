@@ -1,0 +1,1921 @@
+{
+  "schema": "ck3.a04.knights.nextday-R0127-independent-verification.v1",
+  "created_at_utc": "2026-09-30T22:14:07.724313+00:00",
+  "status": "VERIFIED_NEW_RUN_SAVED_LIFE_TRANSITION_WITH_TRACE_AND_UI_LIMITS",
+  "reviewer": "a04_knights_evidence independent evidence review",
+  "run_root": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0127",
+  "episode_run_id": "native-29829-f83be45dbbd9",
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]"
+  },
+  "read_only_game_and_screen": true,
+  "ck3_launches_this_verification": 0,
+  "desktop_inputs_this_verification": 0,
+  "master_intake": false,
+  "index": {
+    "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-live-R0127.json",
+    "bytes": 1619186,
+    "sha256": "A9EE8C44927BEB4882019AC23DEE5A8DCA8C81167A34D41D9DF444B925C6D0EE"
+  },
+  "strict_receipt": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+    "bytes": 6984,
+    "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+  },
+  "checks": [
+    {
+      "name": "sealed_supplement_index",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "strict_receipt_exact_bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "run_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "strict_status_scope",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "strict_source_save",
+      "passed": true,
+      "detail": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+        "bytes": 52880496,
+        "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+      }
+    },
+    {
+      "name": "strict_source_receipt",
+      "passed": true,
+      "detail": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\ck3-output\\interactive-requests-responses\\d26-save.json",
+        "bytes": 13452,
+        "sha256": "78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C"
+      }
+    },
+    {
+      "name": "strict_evidence_preflight",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\preflight.json",
+        "bytes": 20889,
+        "sha256": "28B36DED719C067C4FA8C2E384EA8173D067A668EAE77C868C8A8EA1936B7D26"
+      }
+    },
+    {
+      "name": "strict_evidence_readback",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\native-start-readback.json",
+        "bytes": 31109,
+        "sha256": "BA63F6CD4591EC9D5846817C18CD52910DDEC8CF66A8F58F48D7540B2554942D"
+      }
+    },
+    {
+      "name": "strict_evidence_before_save_receipt",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\e2-05-d26-before-save.json",
+        "bytes": 13272,
+        "sha256": "4F7B85407F83590A3DD5AE087FD306D5E6B20966EF18A52E0713684EEE32111D"
+      }
+    },
+    {
+      "name": "strict_evidence_before_snapshot",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\e2-05-d26-pre-advance-snapshot.json",
+        "bytes": 34591,
+        "sha256": "3ACD69FDCEDC893965B98C5287F1A84AD62DC260AC6A557DCCA50E90F64E7362"
+      }
+    },
+    {
+      "name": "strict_evidence_after_save_receipt",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\new-d27-save.json",
+        "bytes": 13481,
+        "sha256": "D4A45D370CD3C7E2C32EE4890B1E5F019C84D65DADC0940F9FF2ED1AAF2A84C1"
+      }
+    },
+    {
+      "name": "strict_evidence_after_snapshot",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\new-d27-snapshot.json",
+        "bytes": 130825,
+        "sha256": "815F257A43F86701D29CA2CE50FD4040D9D6F321F2FFFAE9EB4A4530165CC768"
+      }
+    },
+    {
+      "name": "pinned_parser",
+      "passed": true,
+      "detail": {
+        "path": "C:\\w\\ep2a04\\ck3_autonomous_player\\tools\\project_native_phase_event_save_feedback.py",
+        "bytes": 12315,
+        "sha256": "E80A2C025584528766B4C4BB73C8696B39525FCA52F27454B1FB26C9B4B52F30"
+      }
+    },
+    {
+      "name": "pinned_rakaly",
+      "passed": true,
+      "detail": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "bytes": 6552576,
+        "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+      }
+    },
+    {
+      "name": "fixed_reader_pin",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed_rakaly_pin",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_save_0",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-immutable.ck3",
+        "bytes": 52881742,
+        "sha256": "73BE8C2EEFF25CB524D83D03D5FDDE9AD4838B035693515DAAB16D998EF7A63A"
+      }
+    },
+    {
+      "name": "preserved_melted_0",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\before-melted.ck3",
+        "bytes": 81787236,
+        "sha256": "C66DD1D461169D8A6514F0F24CF67FC59E844B8C80CA05184D1A31BBDEB1E30D"
+      }
+    },
+    {
+      "name": "independent_character_reparse_0",
+      "passed": true,
+      "detail": {
+        "character_id": 33437,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          50,
+          76,
+          54,
+          16,
+          236
+        ],
+        "trait_keys": [
+          "temperate",
+          "callous",
+          "diligent",
+          "education_martial_2",
+          "logistician"
+        ],
+        "base_skill_values": [
+          4,
+          0,
+          4,
+          6,
+          6,
+          2
+        ],
+        "prestige_currency": "300.3456",
+        "prestige_accumulated": "1000.3456",
+        "wounded_rank": 0,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 65,
+        "character_block_sha256": "9550E8E5838E1BABF2F39F7C45F098B9E7612D6F0253B53E4B316BB3ADDA80F1"
+      }
+    },
+    {
+      "name": "actual_melt_argv_0",
+      "passed": true,
+      "detail": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-immutable.ck3",
+        "--unknown-key",
+        "stringify",
+        "--format",
+        "ck3",
+        "--out",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\before-melted.ck3"
+      ]
+    },
+    {
+      "name": "native_save_1",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-immutable.ck3",
+        "bytes": 52797811,
+        "sha256": "0F4437B1B7E6EAC582C41B136AE7BB19789C1A6A3E5ADD8660C6D8BBA852804C"
+      }
+    },
+    {
+      "name": "preserved_melted_1",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\after-melted.ck3",
+        "bytes": 81660058,
+        "sha256": "8737B24EA2F52B7961BA71B68F9EA7A623FBD2212760C1F482AB73348BD2BA24"
+      }
+    },
+    {
+      "name": "independent_character_reparse_1",
+      "passed": true,
+      "detail": {
+        "character_id": 33437,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          50,
+          76,
+          54,
+          16,
+          236
+        ],
+        "trait_keys": [
+          "temperate",
+          "callous",
+          "diligent",
+          "education_martial_2",
+          "logistician"
+        ],
+        "base_skill_values": [
+          4,
+          0,
+          4,
+          6,
+          6,
+          2
+        ],
+        "prestige_currency": null,
+        "prestige_accumulated": null,
+        "wounded_rank": 0,
+        "alive_data_present": false,
+        "dead_data_present": true,
+        "death_date": "1066.12.30",
+        "death_reason": "death_battle",
+        "killer_character_id": 34120,
+        "regiment_id": null,
+        "character_block_sha256": "59EAAF0917F2813B6BB6644706D695DA7E6404D8DC584EF51CBB24079C98DE48"
+      }
+    },
+    {
+      "name": "actual_melt_argv_1",
+      "passed": true,
+      "detail": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-immutable.ck3",
+        "--unknown-key",
+        "stringify",
+        "--format",
+        "ck3",
+        "--out",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\after-melted.ck3"
+      ]
+    },
+    {
+      "name": "unique_life_transition",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact_saved_death_fields",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "saved_base_prowess_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "saved_before_regiment",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "civil_dates_in_actual_saves",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source_load_admitted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "preflight_source_pair",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "readback_source_pair",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "request_bytes_d26-after-save-snapshot",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\d26-after-save-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    },
+    {
+      "name": "driver_identity_d26-after-save-snapshot",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_d26-before-one-day-snapshot",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\d26-before-one-day-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    },
+    {
+      "name": "driver_identity_d26-before-one-day-snapshot",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_e2-05-d26-before-save",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\e2-05-d26-before-save.json",
+        "bytes": 104,
+        "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+      }
+    },
+    {
+      "name": "driver_identity_e2-05-d26-before-save",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_e2-05-d26-native-control",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\e2-05-d26-native-control.json",
+        "bytes": 148,
+        "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+      }
+    },
+    {
+      "name": "driver_identity_e2-05-d26-native-control",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_e2-05-d26-pre-advance-snapshot",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\e2-05-d26-pre-advance-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    },
+    {
+      "name": "driver_identity_e2-05-d26-pre-advance-snapshot",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_knight-new-one-day",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\knight-new-one-day.json",
+        "bytes": 129,
+        "sha256": "2CBD90297A8C9AC01B09D8A27E46D1204C45D6C366EB06820E4902E640DB608D"
+      }
+    },
+    {
+      "name": "driver_identity_knight-new-one-day",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_knight-new-trace-begin",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\knight-new-trace-begin.json",
+        "bytes": 220,
+        "sha256": "5A28C7673FB14CD9D52AB9E55AC6DCFA364FF50608319B697FE526DC919E78C3"
+      }
+    },
+    {
+      "name": "driver_identity_knight-new-trace-begin",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_knight-new-trace-finish",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\knight-new-trace-finish.json",
+        "bytes": 193,
+        "sha256": "2FB7957B563004CF9E65786A2047F833DCA91C6B4C5145723047D7616B2153E5"
+      }
+    },
+    {
+      "name": "driver_identity_knight-new-trace-finish",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_new-d27-native-control",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\new-d27-native-control.json",
+        "bytes": 148,
+        "sha256": "AD723073044D80F2DF5E9BDF21E29C677883CA22C552547B54B88D37A97F5980"
+      }
+    },
+    {
+      "name": "driver_identity_new-d27-native-control",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_new-d27-save",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\new-d27-save.json",
+        "bytes": 104,
+        "sha256": "12488D0097E1E68909A1F2AB2A35180CD12E78A74694228933A96F4ADEB0F0D3"
+      }
+    },
+    {
+      "name": "driver_identity_new-d27-save",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_new-d27-snapshot",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\new-d27-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    },
+    {
+      "name": "driver_identity_new-d27-snapshot",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "request_bytes_root-finish",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\root-finish.json",
+        "bytes": 26,
+        "sha256": "AC5577035C4584644915D6D8230C407D7DE384810CFBFCD5FD9878821DEDB93F"
+      }
+    },
+    {
+      "name": "driver_identity_root-finish",
+      "passed": true,
+      "detail": [
+        "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+        1,
+        4496
+      ]
+    },
+    {
+      "name": "before_snapshot_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "before_save_revision",
+      "passed": true,
+      "detail": {
+        "snapshot_revision": 4,
+        "save_request": {
+          "action": "mcp",
+          "tool": "ck3_save_checkpoint",
+          "arguments": {
+            "expected_revision": 4
+          }
+        }
+      }
+    },
+    {
+      "name": "before_control_revision",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "before_native_checkpoint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "after_snapshot_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "after_save_revision",
+      "passed": true,
+      "detail": {
+        "snapshot_revision": 8,
+        "save_request": {
+          "action": "mcp",
+          "tool": "ck3_save_checkpoint",
+          "arguments": {
+            "expected_revision": 8
+          }
+        }
+      }
+    },
+    {
+      "name": "after_control_revision",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "after_native_checkpoint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "one_advance_two_checkpoint_requests",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_exact_one_day",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "advance_bound_to_saved_paused_state",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "trace_flags_retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "managed_checkpoint_one_day",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "d26-before_png",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-before-window.png",
+        "bytes": 1053648,
+        "sha256": "701AA4C72BA2418F7003C4F89485A1DF77EBD801B66EFCE963E9F0F9127C9D5B"
+      }
+    },
+    {
+      "name": "d26-before_image_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "d27-after_png",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-after-window.png",
+        "bytes": 1060506,
+        "sha256": "9C8E73CA3CAAF3E0C205DDA7851B5F090A74A037A92049158DFB3F380E19C052"
+      }
+    },
+    {
+      "name": "d27-after_image_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "sdk_completion",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight-sdk-a04\\completion.json",
+        "bytes": 1191,
+        "sha256": "DF7C5229569A4E6442536C3DB84501D43EB120E103DDA115152A817678FA4FE4"
+      }
+    },
+    {
+      "name": "no_video_clean_span",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "managed_process_cleanup",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "warmup_cleanup",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "sdk_job_and_process_gates",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "screen_lease_released",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "controller_source_prepare_knight_operator_a04",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\prepare_knight_operator_a04.py",
+        "bytes": 6691,
+        "sha256": "F32C6A0E389611F9245234DB66423D059B46F2EE443119840049638ECDAE736C"
+      }
+    },
+    {
+      "name": "controller_source_run_knight_sdk_a04",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\run_knight_sdk_a04.py",
+        "bytes": 3773,
+        "sha256": "230F23EF7CBFA70274502CD713A6E7E7D20BC3D21310EB7DEF7B3B5A0B3BDC03"
+      }
+    },
+    {
+      "name": "controller_source_knight_saved_pair",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight_saved_pair.py",
+        "bytes": 10493,
+        "sha256": "B746855B981A4D3F646563DEDD19133FE03146A5B7190A40E4C39CB6056EA3F5"
+      }
+    },
+    {
+      "name": "controller_source_knight_saved_pair_a02",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight_saved_pair_a02.py",
+        "bytes": 10711,
+        "sha256": "E8A60B37E236D870D9EB3DEF3F6A6F2B676720A346294329ECA7168F1CC38790"
+      }
+    },
+    {
+      "name": "controller_source_run_knight_strict_check",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\run_knight_strict_check.py",
+        "bytes": 2542,
+        "sha256": "F78E32B40D95AF5A0352831F5E07909B8083C7B617A5E695E9CDCFE1A5308C71"
+      }
+    },
+    {
+      "name": "controller_source_review_d26_and_advance",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\review_d26_and_advance.py",
+        "bytes": 1270,
+        "sha256": "427C91EFCE4A17ABD42C48AA4B247975ADF5940B375172DEE319FF10B02DEF7C"
+      }
+    },
+    {
+      "name": "controller_source_review_d27",
+      "passed": true,
+      "detail": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\review_d27.py",
+        "bytes": 959,
+        "sha256": "0E2E3A1097B38FB4E16013B30AFC4D78A2F8D95C074F26D08B00B12E505278E0"
+      }
+    },
+    {
+      "name": "frozen_index_match_saved-status-receipt.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_preflight.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_native-start-readback.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_e2-05-d26-before-save.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_e2-05-d26-pre-advance-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_new-d27-save.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_new-d27-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d26-immutable.ck3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_before-melted.ck3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_before-melt-command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_before-melt.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_before-melt.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d27-immutable.ck3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_after-melted.ck3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_after-melt-command.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_after-melt.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_after-melt.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d26-after-save-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d26-after-save-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d26-before-one-day-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d26-before-one-day-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_e2-05-d26-before-save.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_e2-05-d26-native-control.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_e2-05-d26-native-control.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_e2-05-d26-pre-advance-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_knight-new-one-day.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_knight-new-one-day.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_knight-new-trace-begin.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_knight-new-trace-begin.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_knight-new-trace-finish.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_knight-new-trace-finish.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_new-d27-native-control.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_new-d27-native-control.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_new-d27-save.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_new-d27-snapshot.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_root-finish.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_root-finish.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_one-day-intent.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d26-before-window-receipt.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d26-before-window.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d27-after-window-receipt.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_d27-after-window.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_capture-report.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_index_match_session-result.json",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "all_checks_passed": true,
+  "native_connection": [
+    "\\\\.\\pipe\\xar-ep2-knight-nextday-20261001-a03",
+    1,
+    4496
+  ],
+  "native_raw_date_pair": [
+    53146848,
+    53146872
+  ],
+  "actual_saved_and_ui_dates": [
+    "1066.12.29",
+    "1066.12.30"
+  ],
+  "saved_character_reparse": [
+    {
+      "character": {
+        "character_id": 33437,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          50,
+          76,
+          54,
+          16,
+          236
+        ],
+        "trait_keys": [
+          "temperate",
+          "callous",
+          "diligent",
+          "education_martial_2",
+          "logistician"
+        ],
+        "base_skill_values": [
+          4,
+          0,
+          4,
+          6,
+          6,
+          2
+        ],
+        "prestige_currency": "300.3456",
+        "prestige_accumulated": "1000.3456",
+        "wounded_rank": 0,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 65,
+        "character_block_sha256": "9550E8E5838E1BABF2F39F7C45F098B9E7612D6F0253B53E4B316BB3ADDA80F1"
+      },
+      "meta_dates": [
+        "1066.12.29"
+      ],
+      "direct_regiment_field_values": [
+        "65"
+      ],
+      "save": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-immutable.ck3",
+        "bytes": 52881742,
+        "sha256": "73BE8C2EEFF25CB524D83D03D5FDDE9AD4838B035693515DAAB16D998EF7A63A"
+      },
+      "melted": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\before-melted.ck3",
+        "bytes": 81787236,
+        "sha256": "C66DD1D461169D8A6514F0F24CF67FC59E844B8C80CA05184D1A31BBDEB1E30D"
+      }
+    },
+    {
+      "character": {
+        "character_id": 33437,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          50,
+          76,
+          54,
+          16,
+          236
+        ],
+        "trait_keys": [
+          "temperate",
+          "callous",
+          "diligent",
+          "education_martial_2",
+          "logistician"
+        ],
+        "base_skill_values": [
+          4,
+          0,
+          4,
+          6,
+          6,
+          2
+        ],
+        "prestige_currency": null,
+        "prestige_accumulated": null,
+        "wounded_rank": 0,
+        "alive_data_present": false,
+        "dead_data_present": true,
+        "death_date": "1066.12.30",
+        "death_reason": "death_battle",
+        "killer_character_id": 34120,
+        "regiment_id": null,
+        "character_block_sha256": "59EAAF0917F2813B6BB6644706D695DA7E6404D8DC584EF51CBB24079C98DE48"
+      },
+      "meta_dates": [
+        "1066.12.30"
+      ],
+      "direct_regiment_field_values": [],
+      "save": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-immutable.ck3",
+        "bytes": 52797811,
+        "sha256": "0F4437B1B7E6EAC582C41B136AE7BB19789C1A6A3E5ADD8660C6D8BBA852804C"
+      },
+      "melted": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\after-melted.ck3",
+        "bytes": 81660058,
+        "sha256": "8737B24EA2F52B7961BA71B68F9EA7A623FBD2212760C1F482AB73348BD2BA24"
+      }
+    }
+  ],
+  "trace": {
+    "outer_accepted": true,
+    "outer_status": "trace_unavailable",
+    "status": "failed",
+    "failure_flags": 1040,
+    "record_count": 7,
+    "managed_checkpoint": {
+      "recoverable_checkpoint_created": true,
+      "exact_one_day_observed": true,
+      "boundary_dates_match_checkpoint": true,
+      "detours_uninstalled": true,
+      "before": {
+        "managed_daily_sequence_token": 6100103,
+        "pump_epoch": 31803,
+        "thread_id": 16032,
+        "date_raw": 53146848,
+        "combat_id": 16777218,
+        "paused": true
+      },
+      "after": {
+        "managed_daily_sequence_token": 6100103,
+        "pump_epoch": 32183,
+        "thread_id": 16032,
+        "date_raw": 53146872,
+        "combat_id": 16777218,
+        "paused": true
+      }
+    },
+    "record_summaries": [
+      {
+        "boundary": "native_capture_before_side0_schedule_call_0x27FB58F",
+        "capture_failure_flags": 0,
+        "native_date_raw": 53146848,
+        "full_mutable_transition_bundle_complete": false
+      },
+      {
+        "boundary": "native_capture_after_side1_schedule_return_0x27FB5AC",
+        "capture_failure_flags": 0,
+        "native_date_raw": 53146848,
+        "full_mutable_transition_bundle_complete": false
+      },
+      {
+        "boundary": "native_capture_before_side0_phase_fire_entry_0x23C9900",
+        "capture_failure_flags": 0,
+        "native_date_raw": 53146872,
+        "full_mutable_transition_bundle_complete": false
+      },
+      {
+        "boundary": "native_capture_after_side0_phase_fire_return_0x2309EF7",
+        "capture_failure_flags": 0,
+        "native_date_raw": 53146872,
+        "full_mutable_transition_bundle_complete": false
+      },
+      {
+        "boundary": "native_capture_before_side1_phase_fire_entry_0x23C9900",
+        "capture_failure_flags": 0,
+        "native_date_raw": 53146872,
+        "full_mutable_transition_bundle_complete": false
+      },
+      {
+        "boundary": "native_capture_after_side1_phase_fire_return_0x2309EFF",
+        "capture_failure_flags": 0,
+        "native_date_raw": 53146872,
+        "full_mutable_transition_bundle_complete": false
+      },
+      {
+        "boundary": "paused_next_day_stable_query",
+        "capture_failure_flags": 16,
+        "native_date_raw": 53146872,
+        "full_mutable_transition_bundle_complete": false
+      }
+    ],
+    "selector_evidence_verified": false,
+    "sole_causation_verified": false
+  },
+  "original_ui_review": [
+    {
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-before-window.png",
+        "bytes": 1053648,
+        "sha256": "701AA4C72BA2418F7003C4F89485A1DF77EBD801B66EFCE963E9F0F9127C9D5B"
+      },
+      "width": 1024,
+      "height": 768,
+      "pid": 4496,
+      "hwnd": 264284,
+      "direct_original_pixel_review": true,
+      "observed_date": "1066.12.29",
+      "paused_label_visible": true,
+      "target_character_card_visible": false,
+      "battle_knights_roster_visible": false,
+      "death_notification_visible": false
+    },
+    {
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-after-window.png",
+        "bytes": 1060506,
+        "sha256": "9C8E73CA3CAAF3E0C205DDA7851B5F090A74A037A92049158DFB3F380E19C052"
+      },
+      "width": 1024,
+      "height": 768,
+      "pid": 4496,
+      "hwnd": 264284,
+      "direct_original_pixel_review": true,
+      "observed_date": "1066.12.30",
+      "paused_label_visible": true,
+      "target_character_card_visible": false,
+      "battle_knights_roster_visible": false,
+      "death_notification_visible": false
+    }
+  ],
+  "old_a02_nextday_life_status": "UNKNOWN_UNCHANGED",
+  "old_a02_selector_status": "UNKNOWN_UNCHANGED",
+  "cleanup": {
+    "managed_session": {
+      "nonce": "085aa1aced56460681741fb1c87de9bc",
+      "ck3_pid": 4496,
+      "ck3_creation_date": "20261001054452.695140+480",
+      "ck3_exit_code": 1,
+      "job_active_processes_before_termination": 1,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 15180,
+      "watchdog_creation_date": "20261001054450.420936+480",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\ck3.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\watchdog-085aa1aced56460681741fb1c87de9bc.ready.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\ck3.watchdog_error": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    },
+    "warmup": {
+      "nonce": "528a76cc472642009280d78154524323",
+      "ck3_pid": 1404,
+      "ck3_creation_date": "20260930214346.455552+000",
+      "ck3_exit_code": 1,
+      "job_active_processes_before_termination": 1,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 7192,
+      "watchdog_creation_date": "20260930214342.770671+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\ck3.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\watchdog-528a76cc472642009280d78154524323.ready.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\ck3.watchdog_error": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    },
+    "sdk_completion": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight-sdk-a04\\completion.json",
+      "bytes": 1191,
+      "sha256": "DF7C5229569A4E6442536C3DB84501D43EB120E103DDA115152A817678FA4FE4"
+    },
+    "screen_release_receipt": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight-screen-release.json",
+      "bytes": 1891,
+      "sha256": "E59B78D0ECCE1D1E38930F8CE11D533D8B70ED5F5928E2D725EC6DDB3CDD00B4"
+    },
+    "screen_release_sequence": 3167
+  },
+  "sentence_mapping": [
+    {
+      "key": "knights-k001",
+      "zh": "第二本账看骑士。要分别看人物是否留在名单，以及他此刻的勇武；人数和属性会有不同的变化。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k002",
+      "zh": "先看这份独立冷载的界面。防御方有十一名骑士，第五行骑士的勇武是七，上面一行同名人物的勇武是十二。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k003",
+      "zh": "右侧的七是勇武，名单标题的十一才是骑士人数。这张画面只有当前状态，没有展示这名骑士此前的属性。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k004",
+      "zh": "同版原版规则里，每点勇武提供五十基础伤害与十基础坚韧，再受骑士战斗力影响；人数相同，属性也可能不同。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k005",
+      "zh": "现在切到历史回放零三九与零四零。这是同版原生记录，原始界面未留存，下面展示绑定原件的记录投影。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k006",
+      "zh": "零三九从第五日检查点另起回放。新增战报是骑士三四三三三被四七零三二致残，受害者仍然存活。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k007",
+      "zh": "源档已有另一条受伤战报，最终列表同时保留两条。所以本日新增事件要看前后差集，不能把累计列表整份算进今天。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k008",
+      "zh": "同源前后存档显示，他新增独腿与受伤两个特质，基础勇武仍是三；这里把伤势和基础技能分别列出，避免混读。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k009",
+      "zh": "他的对手四七零三二得到一百五十威望；这次成长列表选中第零项，没有增加对手的基础勇武，两笔变化也要分开。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k010",
+      "zh": "零四零逐字节载入零三九保存的第六日状态，没有再推进日期；我们读取这份伤后存档的下一暂停帧。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k011",
+      "zh": "骑士总名单仍是二十四人，五十一条兵团记录也没减少；他的六十一号兵团当前仍为一人，变化落在属性列里。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k012",
+      "zh": "原生读到的有效勇武从十一变成七，骑士战斗力仍为一点七五；有效勇武与刚才存档里的基础勇武是不同口径。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k013",
+      "zh": "伤前这一帧，十一乘一点七五，再乘每点五十的基础伤害，得到九百六十二点五；卡上同时保留原生属性读数。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k014",
+      "zh": "伤后用七点有效勇武重算，同样的一点七五和五十，得到六百一十二点五，与零四零这帧的原生伤害属性一致。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k015",
+      "zh": "坚韧按每点十来算，同一链里从一百九十二点五降到一百二十二点五；于是名单人数不变，战斗输入已经变弱。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k016",
+      "zh": "伤害是战斗属性，不能念成每天杀死同样人数。其他兵团也有正常伤亡，所有人数差不能都归给这次致残。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k017",
+      "zh": "再切到第26日的独立历史回放零二零。原版选中的事件是骑士被杀，我们先追谁被选为对手，再看死亡怎样写回。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k018",
+      "zh": "原生来源有十九名敌方骑士，按这条事件的勇武门槛过滤后，只有十四人参加抽取；这里的候选数是十四。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k019",
+      "zh": "过滤顺序也会改变结果。原生容器删掉不合格项时，用尾项填进空位，再检查这个位置，而不是让后面各行依次前移。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k020",
+      "zh": "索引从零开始，八是第九个位置。原生顺序这里是三四一二零，稳定删除却会变成五四一四零，随机数相同也会选错人。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k021",
+      "zh": "这个分支没有候选权重。按选择器记录的局部随机状态复算，得到十四亿零八十一万三千九百一十二；除以十四余八。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k022",
+      "zh": "原生选择器直接记录的返回项就是三四一二零，新增击杀战报的对手也是他；抽签计算与实际执行在这一步对上。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k023",
+      "zh": "被杀目标是三三四三七，对应六十五号兵团。在一个执行边界，他仍然存活、有效勇武为四，并且仍链接这个兵团。",
+      "addition_category": "PARTIAL_NEW_INDEPENDENT_REPLAY",
+      "new_evidence_addition": "R0127源保存态33437唯一存活，regiment65。",
+      "remaining_limits": "不证明020执行边界或有效勇武4；不是旧a02人物证据。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k024",
+      "zh": "后一个捕获边界已有死亡标记，人物与兵团的连接被清空，有效勇武读成二；前后存档里的基础勇武却始终是二。",
+      "addition_category": "PARTIAL_NEW_INDEPENDENT_REPLAY",
+      "new_evidence_addition": "R0127后保存态33437唯一死亡，前后基础勇武2→2。",
+      "remaining_limits": "不证明020死亡标记捕获边界、有效勇武4→2、实时反链清空或旧a02缺行。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k025",
+      "zh": "四变二不是基础技能被扣两点。后存档记下战死与击杀者编号；击杀者的威望货币和累计威望各增加一百五十。",
+      "addition_category": "PARTIAL_NEW_INDEPENDENT_REPLAY",
+      "new_evidence_addition": "R0127同run后档明确death_date1066.12.30、death_battle、killer34120。",
+      "remaining_limits": "本次未另核击杀者威望两字段+150，不关闭选择器或完整因果。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k026",
+      "zh": "击杀者还会进入另一张成长列表。这里必须换成零七零来源卡：它从相同第26日源档另起，是独立的权重实采。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k027",
+      "zh": "零七零直接读取的三个运行时权重是四十、三十、十五，总和八十五；这是本次列表的权重，不能念成每天的概率。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k028",
+      "zh": "按列表自己的局部状态复算，抽签值为五千一百五十一万零三百四十；比例阈值为二，落在不作成长的第零项。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k029",
+      "zh": "这不是只看勇武没有变化再倒猜分支：采集还把实际执行的条目与原生列表绑定，证明这一次确实选中了第零项。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k030",
+      "zh": "要看下一暂停帧的名册，我们再换来源。零三六保存自己的事件后状态，零三八逐字节复载这份存档，读取第27日。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k031",
+      "zh": "这条链的兵团名册从六十九条变成六十八条，骑士从三十人变成二十九人；缺的正是三三四三七和六十五号兵团。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k032",
+      "zh": "击杀者三四一二零仍在下一帧名单，勇武仍为七；这里只核对保留名册与基础输入，没有证明全部伤亡状态相同。",
+      "addition_category": "OLD_SUPPORT_UNCHANGED_NO_NEW_DIRECT_EVIDENCE",
+      "new_evidence_addition": "该句沿用已审原来源证据；R0127没有新增直接证据。",
+      "remaining_limits": "不可用R0127替代其声明的来源、UI或机制口径。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k033",
+      "zh": "零二零解释选择和死亡写回，零七零解释成长权重，零三六到零三八解释后档名册；这些记录不能剪成同一次连续录像。",
+      "addition_category": "SOURCE_BOUNDARY_REINFORCED",
+      "new_evidence_addition": "新增独立R0127亦必须单列，不能剪成020/070/036→038/旧a02连续录像。",
+      "remaining_limits": "新run原始视频为空；不替代历史UI。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k034",
+      "zh": "回到另一段独立实录。十二月三十日，同一录像的相邻两帧里，防御方骑士从十一变成十；这次变化能直接从界面读到。",
+      "addition_category": "OLD_UI_FACT_UNCHANGED_WITH_DATE_ERRATUM",
+      "new_evidence_addition": "旧a02画面12/30与11→10事实维持；原生d27数值在新run实际也显示12/30。",
+      "remaining_limits": "R0127截图无骑士列表；旧a02净少1未逐ID归因。旧审计将12/30片段判为非d27的转换文字需按新增勘误纠正。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k035",
+      "zh": "随后战报清楚写着，一名我方骑士被敌方骑士击杀；我们放大这条中文通告，同时保留十名骑士与当天日期。",
+      "addition_category": "OLD_UI_FACT_UNCHANGED",
+      "new_evidence_addition": "旧a02通告/十名骑士/当天12/30仍由旧素材证明。",
+      "remaining_limits": "R0127地图截图没有通告；不是新的inset素材，也未认证影片clean span。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k036",
+      "zh": "这份实录没有证明历史抽签发生在本次画面里，也没有逐编号证明名单净少一人的完整原因；我们只读它真正显示的内容。",
+      "addition_category": "UNKNOWN_BOUNDARY_RETAINED",
+      "new_evidence_addition": "旧a02 selector与33437次日人物状态仍UNKNOWN；R0127只增加自身保存态生命状态。",
+      "remaining_limits": "新runtrace同样failed/1040，不证明事件选择或唯一完整因果。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k037",
+      "zh": "现在两种风险更清楚了：致残者可以仍在阵中，却带着更弱的有效属性；阵亡者会在已核对的后档链里退出骑士名单。",
+      "addition_category": "PARTIAL_NEW_INDEPENDENT_REPLAY",
+      "new_evidence_addition": "新run保存态生命转移再次支持阵亡风险存在这一部分。",
+      "remaining_limits": "不证明036→038名册69→68/30→29；R0127未核全部名册差集或原生next-input属性。",
+      "old_audit_modified": false
+    },
+    {
+      "key": "knights-k038",
+      "zh": "这些还不是完整人物风险分布。其他分支、条件权重与未来每日刷新仍需验证；本期也不提前宣布治疗结果。",
+      "addition_category": "LIMITS_UNCHANGED",
+      "new_evidence_addition": "增加一个独立生命状态样本。",
+      "remaining_limits": "未建立完整风险分布、成长权重、未来刷新或治疗结果。",
+      "old_audit_modified": false
+    }
+  ],
+  "civil_date_errata": [
+    {
+      "old_file": "capture-nextday-plan.json",
+      "old_claim": "raw53146848=d26=1066.12.30; raw53146872=d27=1066.12.31",
+      "correction": "本次同原生源pair的实际save/UI是53146848→1066.12.29，53146872→1066.12.30；d26/d27仍为案例日编号。"
+    },
+    {
+      "old_file": "sentence-audit.md",
+      "old_claim": "末段将旧a02 raw12/30片段称第26日而否定第27日；k025缺口举12/31后档",
+      "correction": "不能由12/30否定原生d27，且本次后档meta_date12/30。旧a02缺少的是人物逐编号生命状态/selector，而非画面日期必须12/31。历史020的日期文字未重跑核验；撤回未经原件支持的12/31解释。"
+    }
+  ],
+  "verification_limits": [
+    "Reparsed preserved melted bytes using the pinned existing parser, without remelting or launching CK3",
+    "No same-frame native CharacterID life query",
+    "No full event/selector causal chain",
+    "No new battle roster/character-card UI",
+    "No raw_video or clean-span certification; no human1x film signoff",
+    "Historical attempts and failed olda02 are not rewritten"
+  ],
+  "critical_inventory": [
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-live-R0127.json",
+      "bytes": 1619186,
+      "sha256": "A9EE8C44927BEB4882019AC23DEE5A8DCA8C81167A34D41D9DF444B925C6D0EE"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+      "bytes": 6984,
+      "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+      "bytes": 52880496,
+      "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\ck3-output\\interactive-requests-responses\\d26-save.json",
+      "bytes": 13452,
+      "sha256": "78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\preflight.json",
+      "bytes": 20889,
+      "sha256": "28B36DED719C067C4FA8C2E384EA8173D067A668EAE77C868C8A8EA1936B7D26"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\native-start-readback.json",
+      "bytes": 31109,
+      "sha256": "BA63F6CD4591EC9D5846817C18CD52910DDEC8CF66A8F58F48D7540B2554942D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\e2-05-d26-before-save.json",
+      "bytes": 13272,
+      "sha256": "4F7B85407F83590A3DD5AE087FD306D5E6B20966EF18A52E0713684EEE32111D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\e2-05-d26-pre-advance-snapshot.json",
+      "bytes": 34591,
+      "sha256": "3ACD69FDCEDC893965B98C5287F1A84AD62DC260AC6A557DCCA50E90F64E7362"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\new-d27-save.json",
+      "bytes": 13481,
+      "sha256": "D4A45D370CD3C7E2C32EE4890B1E5F019C84D65DADC0940F9FF2ED1AAF2A84C1"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\new-d27-snapshot.json",
+      "bytes": 130825,
+      "sha256": "815F257A43F86701D29CA2CE50FD4040D9D6F321F2FFFAE9EB4A4530165CC768"
+    },
+    {
+      "path": "C:\\w\\ep2a04\\ck3_autonomous_player\\tools\\project_native_phase_event_save_feedback.py",
+      "bytes": 12315,
+      "sha256": "E80A2C025584528766B4C4BB73C8696B39525FCA52F27454B1FB26C9B4B52F30"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-immutable.ck3",
+      "bytes": 52881742,
+      "sha256": "73BE8C2EEFF25CB524D83D03D5FDDE9AD4838B035693515DAAB16D998EF7A63A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\before-melted.ck3",
+      "bytes": 81787236,
+      "sha256": "C66DD1D461169D8A6514F0F24CF67FC59E844B8C80CA05184D1A31BBDEB1E30D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\before-melt-command.json",
+      "bytes": 550,
+      "sha256": "84479BBBC5B996C47013AF99748D26CD889BF11907122E6A0A46213F991D4486"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\before-melt.stdout.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\before-melt.stderr.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-immutable.ck3",
+      "bytes": 52797811,
+      "sha256": "0F4437B1B7E6EAC582C41B136AE7BB19789C1A6A3E5ADD8660C6D8BBA852804C"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\after-melted.ck3",
+      "bytes": 81660058,
+      "sha256": "8737B24EA2F52B7961BA71B68F9EA7A623FBD2212760C1F482AB73348BD2BA24"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\after-melt-command.json",
+      "bytes": 549,
+      "sha256": "98C7A1DEEDF5FFCBB797E2196F7E436642185F58F890381DF000B500F1BDA9EE"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\after-melt.stdout.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\after-melt.stderr.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\d26-after-save-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\d26-after-save-snapshot.json",
+      "bytes": 120171,
+      "sha256": "BD996BFC34161C99163ED3D5D4407835EF2347C5157644C515207D26233DBABC"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\d26-before-one-day-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\d26-before-one-day-snapshot.json",
+      "bytes": 120177,
+      "sha256": "5223F8C65ADE1851F0161D1BF95F1A6BFAC3B5C4D7E59C9D8BCF0487869F496C"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\e2-05-d26-before-save.json",
+      "bytes": 104,
+      "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\e2-05-d26-native-control.json",
+      "bytes": 148,
+      "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\e2-05-d26-native-control.json",
+      "bytes": 83336,
+      "sha256": "59B6A511520C6DFC41360FDCC32093707341B4577AEE5E6988D9AAAC7FB38EEF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\e2-05-d26-pre-advance-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\knight-new-one-day.json",
+      "bytes": 129,
+      "sha256": "2CBD90297A8C9AC01B09D8A27E46D1204C45D6C366EB06820E4902E640DB608D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\knight-new-one-day.json",
+      "bytes": 19940,
+      "sha256": "7C14EC3D2DC6DBA956EA9A75703997653783A8421D0D5AC01C283E1C82E7CC3E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\knight-new-trace-begin.json",
+      "bytes": 220,
+      "sha256": "5A28C7673FB14CD9D52AB9E55AC6DCFA364FF50608319B697FE526DC919E78C3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\knight-new-trace-begin.json",
+      "bytes": 11503,
+      "sha256": "76D7ED18925A2A7CF73D9C50DCFE4E6A2BD033A5689B60F81AD882B2FE04D7CF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\knight-new-trace-finish.json",
+      "bytes": 193,
+      "sha256": "2FB7957B563004CF9E65786A2047F833DCA91C6B4C5145723047D7616B2153E5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\knight-new-trace-finish.json",
+      "bytes": 432002,
+      "sha256": "C9E9403BA03B904895911BA01A0B04AE94A0A0E9DB192411A463531E61ABEC09"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\new-d27-native-control.json",
+      "bytes": 148,
+      "sha256": "AD723073044D80F2DF5E9BDF21E29C677883CA22C552547B54B88D37A97F5980"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\new-d27-native-control.json",
+      "bytes": 82627,
+      "sha256": "764FAB7D6799209DC139B94511D6F95FF668C015737892284AB12FE35654605D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\new-d27-save.json",
+      "bytes": 104,
+      "sha256": "12488D0097E1E68909A1F2AB2A35180CD12E78A74694228933A96F4ADEB0F0D3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\new-d27-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests\\root-finish.json",
+      "bytes": 26,
+      "sha256": "AC5577035C4584644915D6D8230C407D7DE384810CFBFCD5FD9878821DEDB93F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\interactive-requests-responses\\root-finish.json",
+      "bytes": 11416,
+      "sha256": "84A451042B052FBD343E465261F8267A07AD45CF6E56D1D306AF11EC9A7F5678"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\one-day-intent.json",
+      "bytes": 1180,
+      "sha256": "27197ABA1647C94B7115D825FCF0324620FEC69412487EC9BAA30B9B1ABD918C"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-before-window-receipt.json",
+      "bytes": 718,
+      "sha256": "7AE2AB048D70BF7CCA7073450788E3958FACEC28AF9AABA6C8CF693F86CE2D19"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-before-window.png",
+      "bytes": 1053648,
+      "sha256": "701AA4C72BA2418F7003C4F89485A1DF77EBD801B66EFCE963E9F0F9127C9D5B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-after-window-receipt.json",
+      "bytes": 717,
+      "sha256": "F58A7494127E1015CAC5FA4BFA0FD1DD346294DE792E7A45AB67213CB9E6BED3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-after-window.png",
+      "bytes": 1060506,
+      "sha256": "9C8E73CA3CAAF3E0C205DDA7851B5F090A74A037A92049158DFB3F380E19C052"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\capture-report.json",
+      "bytes": 9225,
+      "sha256": "9791762D13CF3C04A7D9B8756DA31B20157E7D87FBA5C0D96BD0EC62222E33D6"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\ck3-output\\session-result.json",
+      "bytes": 12966,
+      "sha256": "A98CD9BBBF43385652CA243CDF768D10651C0B89CCC55AC4D5D1CAABBB28E8D7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight-sdk-a04\\completion.json",
+      "bytes": 1191,
+      "sha256": "DF7C5229569A4E6442536C3DB84501D43EB120E103DDA115152A817678FA4FE4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight-screen-release.json",
+      "bytes": 1891,
+      "sha256": "E59B78D0ECCE1D1E38930F8CE11D533D8B70ED5F5928E2D725EC6DDB3CDD00B4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\prepare_knight_operator_a04.py",
+      "bytes": 6691,
+      "sha256": "F32C6A0E389611F9245234DB66423D059B46F2EE443119840049638ECDAE736C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\run_knight_sdk_a04.py",
+      "bytes": 3773,
+      "sha256": "230F23EF7CBFA70274502CD713A6E7E7D20BC3D21310EB7DEF7B3B5A0B3BDC03"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight_saved_pair.py",
+      "bytes": 10493,
+      "sha256": "B746855B981A4D3F646563DEDD19133FE03146A5B7190A40E4C39CB6056EA3F5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\knight_saved_pair_a02.py",
+      "bytes": 10711,
+      "sha256": "E8A60B37E236D870D9EB3DEF3F6A6F2B676720A346294329ECA7168F1CC38790"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\run_knight_strict_check.py",
+      "bytes": 2542,
+      "sha256": "F78E32B40D95AF5A0352831F5E07909B8083C7B617A5E695E9CDCFE1A5308C71"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\review_d26_and_advance.py",
+      "bytes": 1270,
+      "sha256": "427C91EFCE4A17ABD42C48AA4B247975ADF5940B375172DEE319FF10B02DEF7C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\review_d27.py",
+      "bytes": 959,
+      "sha256": "0E2E3A1097B38FB4E16013B30AFC4D78A2F8D95C074F26D08B00B12E505278E0"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\sentence-audit.json",
+      "bytes": 298721,
+      "sha256": "23941CC8DC0669240C4A77D65577A50AC40541F0FC3E3E5F3E6E421FCAED20ED"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\sentence-audit.md",
+      "bytes": 17725,
+      "sha256": "5AB1DC95CE0503EA5400136DEFC3D3F073716C0BF8CEAC8C4664354AFA4958AF"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\capture-nextday-plan.json",
+      "bytes": 16117,
+      "sha256": "E5862F62E2108EBD22C17217138BA32CA9513DD1450AD4F5035607204A77AA2E"
+    }
+  ],
+  "all_5185_assets_rehashed": false
+}

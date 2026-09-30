@@ -11,7 +11,7 @@
 | 1 | 当前 a02 的骑士 33437 次日状态。最终 trace 失败，没有 d27 该人物生命行、抽选行或冻结存档；旧 020 的死亡标记及存档、036→038 的名单移除不能替代当前 a02。 | 从已冻结 d26 检查点开新 run，前态与次日暂停原生帧绑定 actor/date/revision；推进恰一天后只保存一次 checkpoint，复制成不可变 d27 保存态，严格核对人物 33437 的 alive/dead/death_date/death_reason/killer。保存态证据与 live targeted query 分开报告；旧 a02 UNKNOWN 保持。 |
 | 2 | 增援 A01 的原图只与同 run、对应日期相符；缺战宽 tooltip 和 UI 到 hook 瞬间的精确帧绑定。 | 新 run 推进前后两组暂停原图、人数及战宽 tooltip、snapshot/control，绑定同 run/date/native frame/revision/CombatID/参与军队。新读数现场记录，不强迫复现旧 A01。暂停后逐团 current 可能已承受伤亡，不能冒充 join 返回时刻的值。 |
 
-这里 d26/d27 是案例日编号，分别是 **1066-12-30 / 1066-12-31**（raw `53146848 / 53146872`），不是 12 月 26、27 日。现有死亡通告片段从 raw PTS 233 秒起，画面日期为 12 月 30 日，不能充作次日生命状态。
+这里 d26/d27 是案例日编号，raw 为 `53146848 / 53146872`。2026-10-01 新 run R0127 的原始暂停画面实际显示 **1066-12-29 / 1066-12-30**，与保存态死亡日期 `1066.12.30` 一致。此前补采计划把它们写成 12/30、12/31，偏晚一天；计划原件保留，当前日历标签以新原图为准。现有死亡通告片段从 raw PTS 233 秒起、画面为 12 月 30 日，单独的通告仍不能代替保存态生命字段。
 
 增援旧证据中的 join 入口、返回及首次出伤已齐：同 CombatID `16777218`、ArmyID `22`、日期 raw `53146512`、thread `20844`，旧 side0 27 行及 side1 24 行九字段不变，缓存残差归零；incoming current 合计 2560，战宽 `1480→2220`，首次出伤参数 2220。原图是前日 `893/1603`、后日 `827/4106`；这些事实不证明图像已锁定到 hook 的同一瞬间。
 
@@ -53,3 +53,34 @@ a06 已完成：30:18.633、239659692 字节、SHA-256 `F716D9F4FA79F3471941FF7F
 164句在其声明的边界内支持；另3句机制有据但存在旧a04制作问题，已在新a06修复。此分母是审计覆盖，不是全部机制能力完成率。两项优先实采仍0次新增观测。
 
 此外，逐句表保留以下范围缺口：每次追击一项hard unavailable（共3），UI内部取数公式未证，非零败方screen无自然同帧逐团实机，分子与硬账差10人当量的成因未闭合；其他CB/特殊部队/资格与枚举生命周期、普通AI主动撤退及完整概率尚未覆盖。本片没有据此作完成声明，后续扩展须分别取证。
+
+## 2026-10-01 05:54：骑士次日保存态已补出
+
+本次从固定 d26 输入对启动独立 run `desktop-3fevhd2-1c74096080--vanilla--R0127`，native episode `native-29829-f83be45dbbd9`。固定执行源为 `C:/w/ep2a04`，没有接收 master。新 Steam 原始 HWND 画面直接显示正文及底部“离线模式”，连续帧有真实新像素；CK3 的 WGC 和本次 GDI 原图均显示实际游戏 HUD。
+
+| 保存态 | 原生 raw 日期 | 实际原图日历 | 人物 33437 |
+| --- | --- | --- | --- |
+| 推进前 | 53146848 | 1066.12.29 | `alive_data=true`、`dead_data=false`、`regiment_id=65` |
+| 推进后 | 53146872 | 1066.12.30 | `alive_data=false`、`dead_data=true`、`death_date=1066.12.30`、`death_reason=death_battle`、`killer_character_id=34120` |
+
+前后 snapshot/control/save 绑定同一 native PID、连接 generation、actor 29829、War 4、Combat 16777218、Army 18。只提交一次 life-advance；原版 managed checkpoint 返回 `exact_one_day_observed=true`。每次 native save 后立即复制精确字节成为不可变存档，再用已固定 SHA 的 Rakaly 0.8.19 与既有严格人物解析器读取；前后 `alive_data XOR dead_data` 均唯一，checker 返回 `SAVED_NEXTDAY_STATUS_OBSERVED`。
+
+严格回执 SHA-256 为 `44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722`。推进前存档 SHA 为 `73BE8C2EEFF25CB524D83D03D5FDDE9AD4838B035693515DAAB16D998EF7A63A`，推进后为 `0F4437B1B7E6EAC582C41B136AE7BB19789C1A6A3E5ADD8660C6D8BBA852804C`。原件目录是 `C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-nextday-live-20261001-a03/`，完整精确过程资产索引见 [R0127 补证封存](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/nextday-live-R0127.json)。
+
+这关闭的是**新 run 的骑士次日保存态缺口**。原失败 a02 的 UNKNOWN 永久保持。此次 phase trace 仍为 `failed`，`failure_flags=1040`，抽选人物与完整事件变化链未闭合；保存态不作为其抽选因果证明。原图是暂停地形及角色 HUD，没有人物 33437 详情或战斗面板，也没有新视频 clean span / 真人 1× 审片签核。
+
+本次两个早先入口失败都发生在游戏启动前：第一项是管道名称格式错误，第二项是中文 tasklist 输出被 UTF-8 错解。均保全新 attempt。第三项显式采用 `-X utf8=0`、子环境 `PYTHONUTF8=0` 和 `PYTHONIOENCODING=utf-8` 后，原版 tasklist+Toolhelp 双重清单通过。受管结束证明 Job tree 为空、watchdog 已退出、CK3 inventory 为空；实际 SDK job exit code 为 0。屏幕租约已 exact CAS 释放，另领固定源的增援补采租约。
+
+
+### 06:22 增援 R0128：原生地图定位实际失败，零日期推进
+
+固定 `475bdbf` 的 J-d11 原版实机已取得 actor 29829、War 4、Army 18、Combat 16777218、暂停 raw date 53146488 的 snapshot/control，且显式 HWND 聚焦回读成功。随后 `ck3_center_map_on_landed_title_v1(title_key=b_messina, expected_revision=4)` 实际返回 `state_changed`，本轮没有请求 life-advance，采样对数为 0，不能计为增援 UI 补证。
+
+失败现场全部保留于新 attempt；受管 tree 清空、watchdog 消失、最终 CK3 inventory 为空，operator job exit 0、SDK controller exit 2，屏幕槽 exact CAS 3184→3185 已释放。新旧失败状态分别保留，接续只修正此条实际定位失败后新开 attempt。新增索引为 [paused-join-R0128-failed.json](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/paused-join-R0128-failed.json)。
+
+
+### 06:41 增援 R0129：聚焦后刷新仍失败
+
+新consumer于聚焦成功后重新取 paused snapshot/control、重选绑定战场，然后用当前public revision调用typed center恰好一次。实机仍返回state_changed，未推进日期，未取得完整战斗面板/采样对。public→native revision转换经固定源码和实际R0128输入离线重放确认正确；原生state_changed覆盖数个内部predicate，回件未标明哪一项，不能推断为焦点原因或能力缺失。新旧代码均保全；后续只修此实际blocker，不重复同一刷新尝试。
+
+完整 [R0129封存](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/paused-join-R0129-failed.json)，SHA F968E5B225E5E62705F7D537373424A18BD9AFC02B7DC1DD1EBC4E1E5D8DFBDC。受管树清空、watchdog退出、最终inventory为空；operator job exit0/SDK controller exit2，screen exact CAS3201→3202已释放。Steam保持离线，冻结源码与二进制原件不改写。
