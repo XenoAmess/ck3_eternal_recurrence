@@ -30,6 +30,7 @@ from .faction_gift_pending_v1 import read_faction_gift_ledger_v1
 from .family_marriage_formal_consumer import (
     plan_family_marriage_private, read_family_marriage_ledger,
 )
+from .player_child_default_formal_consumer import read_child_default_ledger
 from .bridge.observed_heir_marriage_private_action_v1 import (
     SUBMIT_STEP as FAMILY_SUBMIT_STEP,
 )
@@ -77,6 +78,15 @@ def query_m5_peacetime_proposal_sources_v1(
                      if family_enabled else None)
     pending_family = (family_ledger["pending"] if family_enabled else None)
     family_claims = _pending_family_commitments(pending_family, frame)
+    child_default_ledger = read_child_default_ledger(state_dir)
+    pending_child_default = child_default_ledger["pending"]
+    child_default_claims = _pending_child_default_commitments(
+        pending_child_default, frame,
+    )
+    family_claims = {
+        key: sorted(set(family_claims[key]) | set(child_default_claims[key]))
+        for key in family_claims
+    }
     if construction_ledger.get("pending") is not None:
         raise BridgeUnavailableError(
             "M5 peacetime source has an unresolved construction action"
@@ -268,6 +278,10 @@ def query_m5_peacetime_proposal_sources_v1(
         raise BridgeUnavailableError(
             "M5 peacetime family ledger changed during readback"
         )
+    if read_child_default_ledger(state_dir) != child_default_ledger:
+        raise BridgeUnavailableError(
+            "M5 peacetime child-default ledger changed during readback"
+        )
 
     domains: dict[str, object] = {}
     if construction_status == "selected":
@@ -315,8 +329,12 @@ def query_m5_peacetime_proposal_sources_v1(
             "pending_family_commitment_source": (
                 "formal_pending_ledger" if pending_family is not None else None
             ),
+            "pending_child_default_commitment_source": (
+                "formal_pending_ledger" if pending_child_default is not None else None
+            ),
             "pending_formal_ledgers_empty": (
-                not family_enabled or family_ledger["pending"] is None),
+                (not family_enabled or family_ledger["pending"] is None)
+                and pending_child_default is None),
             "formal_action_ready": False,
         },
     }
@@ -358,6 +376,55 @@ def _pending_family_commitments(
         "ally_character_ids": [recipient] if alliance_attempt else [],
         "character_ids": sorted({heir, candidate, recipient}),
         "commitment_keys": [f"first-heir-marriage:{heir}"],
+    }
+
+
+def _pending_child_default_commitments(
+    pending: object, frame: Mapping[str, object],
+) -> dict[str, list[int] | list[str]]:
+    if pending is None:
+        return _pending_family_commitments(None, frame)
+    if not isinstance(pending, Mapping) or (
+        pending.get("episode_run_id") != frame["episode_run_id"]
+        or pending.get("played_character_id") != frame["played_character_id"]
+    ):
+        raise BridgeUnavailableError(
+            "M5 pending child-default commitment crossed the actor episode"
+        )
+    actor = frame["played_character_id"]
+    subject = pending.get("heir_character_id")
+    candidate = pending.get("candidate_character_id")
+    recipient = pending.get("recipient_character_id")
+    if (any(type(value) is not int or value <= 0
+            for value in (subject, candidate, recipient))
+            or subject == candidate or actor in {subject, candidate}):
+        raise BridgeUnavailableError(
+            "M5 pending child-default commitment lacks exact role identities"
+        )
+    projection = pending.get("selected_value_projection")
+    costs = projection.get("generic_costs") if isinstance(projection, Mapping) else None
+    pairs = (projection.get("possible_alliance_pairs")
+             if isinstance(projection, Mapping) else None)
+    if (not isinstance(costs, Mapping)
+            or costs.get("application_timing") != "on_send"
+            or not isinstance(pairs, list)):
+        raise BridgeUnavailableError(
+            "M5 pending child-default resource projection is unavailable"
+        )
+    allies: set[int] = set()
+    for pair in pairs:
+        if (not isinstance(pair, Mapping)
+                or type(pair.get("would_attempt_if_accepted")) is not bool
+                or any(type(pair.get(key)) is not int or pair[key] <= 0
+                       for key in ("first_character_id", "second_character_id"))):
+            raise BridgeUnavailableError("M5 pending child-default alliance claim is unreadable")
+        members = {pair["first_character_id"], pair["second_character_id"]}
+        if pair["would_attempt_if_accepted"] and actor in members:
+            allies.update(members - {actor})
+    return {
+        "ally_character_ids": sorted(allies),
+        "character_ids": sorted({subject, candidate, recipient} - {actor}),
+        "commitment_keys": [f"player-child-default-marriage:{subject}"],
     }
 
 
