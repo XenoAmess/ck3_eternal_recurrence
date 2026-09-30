@@ -124,7 +124,7 @@ class RecoveryCasTests(unittest.TestCase):
                 recovery.recovery_authorization(self.args)
         self.assertEqual(len(bus_module.read_events(self.bus_dir)), 1)
 
-    def test_symlinked_cli_alias_uses_canonical_bus_for_all_cas_work(self) -> None:
+    def test_symlinked_cli_alias_cannot_divert_cas_to_private_bus(self) -> None:
         alias_dir = self.root / "alias"
         (alias_dir / "bin").mkdir(parents=True)
         (alias_dir / "tasks").mkdir()
@@ -137,12 +137,11 @@ class RecoveryCasTests(unittest.TestCase):
         except OSError as exc:
             self.skipTest(f"symlink creation unavailable: {exc}")
         self.args.task_bus = alias
-        lease = recovery.recovery_authorization(self.args)
-        self.assertEqual(lease["bus_dir"], self.bus_dir.resolve())
-        with patch.object(recovery, "ck3_pids", return_value=[]):
-            recovery.require_exclusive_screen(self.args, lease)
+        with self.assertRaisesRegex(RuntimeError, "fixed authority CLI"):
+            recovery.recovery_authorization(self.args)
         self.assertEqual((alias_dir / "sequence.txt").read_text(encoding="ascii"), "0\n")
-        self.assertEqual(lease["sequence"], self.sequence + 1)
+        self.assertEqual((self.bus_dir / "sequence.txt").read_text(encoding="ascii"),
+                         f"{self.sequence}\n")
 
     def test_hardlink_cli_alias_with_identical_bytes_is_not_authority(self) -> None:
         alias = self.root / "other-bin" / "codex_task_bus.py"
@@ -170,6 +169,22 @@ class RecoveryCasTests(unittest.TestCase):
         ensure.assert_not_called()
         restart.assert_not_called()
         capture.assert_not_called()
+
+    def test_recover_rejects_private_bus_before_executing_its_script(self) -> None:
+        private = self.root / "private-bus" / "bin" / "codex_task_bus.py"
+        private.parent.mkdir(parents=True)
+        sentinel = self.root / "untrusted-script-ran"
+        private.write_text(
+            "from pathlib import Path\n"
+            f"Path({str(sentinel)!r}).write_text('ran')\n",
+            encoding="utf-8",
+        )
+        self.args.task_bus = private
+        report = recovery.recover(self.args)
+        self.assertEqual(report["outcome"], "blocked")
+        self.assertFalse(sentinel.exists())
+        self.assertEqual(report["preflight"]["inspection_skipped"],
+                         "recovery_authorization_invalid")
 
     def test_stale_foreign_owner_stops_before_desktop_even_if_cas_writes(self) -> None:
         other = bus_module.read_json(bus_module.task_path(self.bus_dir, TASK)).copy()

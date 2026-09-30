@@ -51,7 +51,7 @@ def task_bus_tasks(bus: Path) -> list[dict]:
             or not (bus_dir / ".lock").is_file()
             or (bus_dir / ".lock").stat().st_size == 0):
         raise RuntimeError("existing task bus is unavailable")
-    result = subprocess.run([sys.executable, str(bus), "--bus-dir",
+    result = subprocess.run([sys.executable, str(BUS_SOURCE.resolve(strict=True)), "--bus-dir",
                              str(bus_dir), "list"],
                             capture_output=True, text=True, timeout=15, check=True)
     payload = json.loads(result.stdout)
@@ -89,6 +89,11 @@ def recovery_authorization(args: argparse.Namespace) -> dict:
            or re.fullmatch(r"[A-F0-9]{64}", value) is None for value in
            (args.expected_cli_sha256, args.recovery_marker_sha256)):
         raise RuntimeError("recovery SHA pins must be uppercase SHA-256")
+    if args.task_bus != DEFAULT_BUS:
+        raise RuntimeError("recovery task bus is not the fixed authority CLI")
+    contract = APPROVED_RECOVERY_CONTRACT_SHA256
+    if contract is None or re.fullmatch(r"[A-F0-9]{64}", contract) is None:
+        raise RuntimeError("authoritative recovery contract is not approved")
     state_dir = args.state_dir.resolve(strict=True)
     control = state_dir / "control"
     marker = args.recovery_marker.resolve(strict=True)
@@ -103,11 +108,6 @@ def recovery_authorization(args: argparse.Namespace) -> dict:
         raise RuntimeError("recovery marker bytes changed")
     payload = json.loads(marker.read_text(encoding="utf-8"))
     bus = args.task_bus.resolve(strict=True)
-    if bus != DEFAULT_BUS.resolve():
-        raise RuntimeError("recovery task bus is not the fixed authority CLI")
-    contract = APPROVED_RECOVERY_CONTRACT_SHA256
-    if contract is None or re.fullmatch(r"[A-F0-9]{64}", contract) is None:
-        raise RuntimeError("authoritative recovery contract is not approved")
     source = BUS_SOURCE.resolve(strict=True)
     if (bus.name != "codex_task_bus.py" or bus.parent.name != "bin"
             or _sha256(bus) != args.expected_cli_sha256
@@ -390,29 +390,38 @@ def recover(args: argparse.Namespace) -> dict:
             stream.write(json.dumps({"at_utc": now(), "kind": kind, **fields},
                                     ensure_ascii=False) + "\n")
 
-    before = inspect(args.task_bus)
-    record("preflight", state=before)
     try:
         lease = recovery_authorization(args)
         authorization_error = None
     except (OSError, ValueError, RuntimeError) as exc:
         lease = None
         authorization_error = f"{type(exc).__name__}: {exc}"
-    try:
-        tasks = task_bus_tasks(lease["bus_path"] if lease is not None else args.task_bus)
-        bus_error = None
-    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
+    if lease is None:
+        before = {
+            "schema": "ck3.desktop_steam_offline_recovery.v1",
+            "observed_at_utc": now(),
+            "inspection_skipped": "recovery_authorization_invalid",
+            "steam_offline_status_observed": None,
+        }
         tasks = []
-        bus_error = type(exc).__name__
-    windows = steam_offline_fresh_frame._steam_windows()
-    try:
-        blockers = preflight(tasks, args.task_id, ck3_pids(), service_state(), windows)
-    except (KeyError, TypeError, ValueError, RuntimeError):
-        blockers = ["task_bus_screen_snapshot_invalid"]
-    if authorization_error:
-        blockers.append("recovery_authorization_invalid")
-    if bus_error:
-        blockers.append("task_bus_unavailable")
+        windows = []
+        blockers = ["recovery_authorization_invalid"]
+    else:
+        before = inspect(lease["bus_path"])
+        try:
+            tasks = task_bus_tasks(lease["bus_path"])
+            bus_error = None
+        except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
+            tasks = []
+            bus_error = type(exc).__name__
+        windows = steam_offline_fresh_frame._steam_windows()
+        try:
+            blockers = preflight(tasks, args.task_id, ck3_pids(), service_state(), windows)
+        except (KeyError, TypeError, ValueError, RuntimeError):
+            blockers = ["task_bus_screen_snapshot_invalid"]
+        if bus_error:
+            blockers.append("task_bus_unavailable")
+    record("preflight", state=before)
     if blockers:
         outcome = "blocked"
         record("blocked", reasons=blockers, authorization_error=authorization_error)
