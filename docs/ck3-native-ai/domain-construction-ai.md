@@ -17,7 +17,7 @@
 `XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=OFF`、
 `XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1=OFF`，运行中的
 `allow_private_construction_formal_trial=false`、`allow_private_m5_joint_collector=false`。
-driver 没有建设命令，state 没有建设 ledger。当前同帧 root 的玩家净月收入为
+driver 没有建设命令，state 没有建设 ledger。当前同帧 root 的玩家月收入为
 raw `420502` / Q100000、直辖 `5/6`；收入不能替代当前金库、建筑槽位、合法性、
 成本或收益读回，不能据此认定可负担、没有机会或已经漏消费。
 
