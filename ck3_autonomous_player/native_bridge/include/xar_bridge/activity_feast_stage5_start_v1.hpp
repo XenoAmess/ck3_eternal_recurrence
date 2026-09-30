@@ -2,6 +2,7 @@
 
 #include "xar_bridge/activity_feast_resource_balance_v1.hpp"
 #include "xar_bridge/activity_stage5_feast_full_cost_v1.hpp"
+#include "xar_bridge/activity_stage5_feast_guest_join_v1.hpp"
 
 #include <array>
 #include <cstdint>
@@ -25,8 +26,11 @@ struct ActivityFeastStage5StartSnapshotV1 {
   bool hosted_identities_observed = false;
   std::uint32_t hosted_count = 0;
   std::array<ActivityHostedIdentityV1, 64> hosted{};
-
+  ActivityFeastGuestJoinResultV1 selected_guests{};
 };
+
+bool IsActivityFeastSelectedGuestRouteQualifiedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept;
 
 using ActivityFeastStage5CaptureV1 = bool (*)(
     void *, const ActivityHostedIdentityFrameV1 &,

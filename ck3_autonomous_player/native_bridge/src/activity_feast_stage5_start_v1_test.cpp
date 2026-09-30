@@ -24,6 +24,7 @@ struct Fake {
   int capture_count = 0;
   int commit_count = 0;
   bool drift = false;
+  bool guest_drift = false;
   bool commit_return = true;
 
   template <typename T> void Put(std::uintptr_t at, T value) {
@@ -61,6 +62,8 @@ bool Capture(void *opaque, const ActivityHostedIdentityFrameV1 &expected,
   if (fake.frame != expected) return false;
   output = fake.snapshot;
   if (++fake.capture_count == 2 && fake.drift) output.planner += 8;
+  if (fake.capture_count == 2 && fake.guest_drift)
+    output.selected_guests.rows[0].character_id += 1;
   return true;
 }
 
@@ -103,6 +106,16 @@ void Init(Fake &fake) {
   s.balances.available = {true, false, true, false};
   s.balances.raw = {120644281, 0, 4000000, 0};
   s.hosted_identities_observed = true;
+  auto &guests = s.selected_guests;
+  guests.status = ActivityFeastGuestJoinStatusV1::observed;
+  guests.frame = {fake.frame.revision, fake.frame.date_raw,
+                  fake.frame.actor_character_id, true, true, true, true};
+  guests.normal_refresh_sequence = s.normal_cost_refresh_sequence;
+  guests.selected_nonhost_count = 1;
+  guests.positive_join_count = 1;
+  guests.timely_positive_join_count = 1;
+  guests.arrival_time_observed = true;
+  guests.rows[0] = {43699, 100000, true, 53220000, 3, false};
 }
 
 ActivityFeastStage5StartEnvironmentV1 StartEnv(Fake &fake) {
@@ -128,6 +141,7 @@ int main() {
   request.expected = fake.frame;
   request.policy_approved = true;
   request.reserve_raw[0] = 50000000;
+  Check(IsActivityFeastSelectedGuestRouteQualifiedV1(fake.snapshot));
   auto result = StartActivityFeastStage5V1(StartEnv(fake), request);
   Check(result.status == ActivityFeastStage5StartStatusV1::submitted_pending);
   Check(result.invoked && fake.commit_count == 1 && fake.capture_count == 2);
@@ -177,6 +191,32 @@ int main() {
   result = StartActivityFeastStage5V1(StartEnv(fake), request);
   Check(result.status == ActivityFeastStage5StartStatusV1::rejected);
   fake.snapshot.final_can_start = true;
+  const auto selected_guests = fake.snapshot.selected_guests;
+  fake.snapshot.selected_guests.selected_nonhost_count = 0;
+  fake.snapshot.selected_guests.timely_positive_join_count = 0;
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected &&
+        fake.commit_count == 1);
+  fake.snapshot.selected_guests = selected_guests;
+  fake.snapshot.selected_guests.frame.date_raw++;
+  Check(!IsActivityFeastSelectedGuestRouteQualifiedV1(fake.snapshot));
+  fake.snapshot.selected_guests = selected_guests;
+  fake.snapshot.selected_guests.normal_refresh_sequence++;
+  Check(!IsActivityFeastSelectedGuestRouteQualifiedV1(fake.snapshot));
+  fake.snapshot.selected_guests = selected_guests;
+  fake.snapshot.selected_guests.arrival_time_observed = false;
+  Check(!IsActivityFeastSelectedGuestRouteQualifiedV1(fake.snapshot));
+  fake.snapshot.selected_guests = selected_guests;
+  fake.snapshot.selected_guests.status =
+      ActivityFeastGuestJoinStatusV1::planner_unavailable;
+  Check(!IsActivityFeastSelectedGuestRouteQualifiedV1(fake.snapshot));
+  fake.snapshot.selected_guests = selected_guests;
+  fake.guest_drift = true;
+  fake.capture_count = 0;
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected &&
+        fake.commit_count == 1);
+  fake.guest_drift = false;
   fake.drift = true;
   fake.capture_count = 0;
   result = StartActivityFeastStage5V1(StartEnv(fake), request);

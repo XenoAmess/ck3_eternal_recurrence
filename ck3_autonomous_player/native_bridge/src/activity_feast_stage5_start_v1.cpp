@@ -43,6 +43,7 @@ bool Valid(const ActivityFeastStage5StartSnapshotV1 &snapshot,
       !snapshot.feast_type_verified || !snapshot.generic_option_verified ||
       !snapshot.final_can_start_observed || !snapshot.final_can_start ||
       !snapshot.four_costs_observed ||
+      !IsActivityFeastSelectedGuestRouteQualifiedV1(snapshot) ||
       !snapshot.hosted_identities_observed ||
       snapshot.hosted_count > snapshot.hosted.size())
     return false;
@@ -83,7 +84,20 @@ bool Same(const ActivityFeastStage5StartSnapshotV1 &a,
       a.balances.available != b.balances.available ||
       a.balances.raw != b.balances.raw ||
       a.hosted_identities_observed != b.hosted_identities_observed ||
-      a.hosted_count != b.hosted_count)
+      a.hosted_count != b.hosted_count ||
+      a.selected_guests.status != b.selected_guests.status ||
+      a.selected_guests.frame != b.selected_guests.frame ||
+      a.selected_guests.normal_refresh_sequence !=
+          b.selected_guests.normal_refresh_sequence ||
+      a.selected_guests.selected_nonhost_count !=
+          b.selected_guests.selected_nonhost_count ||
+      a.selected_guests.positive_join_count !=
+          b.selected_guests.positive_join_count ||
+      a.selected_guests.timely_positive_join_count !=
+          b.selected_guests.timely_positive_join_count ||
+      a.selected_guests.arrival_time_observed !=
+          b.selected_guests.arrival_time_observed ||
+      a.selected_guests.rows != b.selected_guests.rows)
     return false;
   for (std::size_t index = 0; index < a.hosted_count; ++index) {
     const auto &left = a.hosted[index];
@@ -98,6 +112,23 @@ bool Same(const ActivityFeastStage5StartSnapshotV1 &a,
 }
 
 } // namespace
+
+bool IsActivityFeastSelectedGuestRouteQualifiedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept {
+  const auto &guests = snapshot.selected_guests;
+  const auto &frame = snapshot.frame;
+  const ActivityPlannerDiagFrameV1 expected{
+      frame.revision, frame.date_raw, frame.actor_character_id,
+      frame.application_main_thread, frame.paused, frame.map_ready,
+      frame.actor_alive};
+  return guests.status == ActivityFeastGuestJoinStatusV1::observed &&
+         guests.frame == expected &&
+         snapshot.normal_cost_refresh_sequence != 0 &&
+         guests.normal_refresh_sequence ==
+             snapshot.normal_cost_refresh_sequence &&
+         guests.arrival_time_observed && guests.selected_nonhost_count > 0 &&
+         guests.timely_positive_join_count > 0;
+}
 
 bool InvokeActivityFeastNativeCommitV1(void *, std::uintptr_t module_base,
                                       std::uintptr_t planner) noexcept {

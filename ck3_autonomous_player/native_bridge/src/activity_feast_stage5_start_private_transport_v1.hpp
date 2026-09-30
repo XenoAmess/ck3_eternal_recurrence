@@ -54,7 +54,6 @@ struct ActivityFeastStage5PrivateQueryV1 {
   std::uint32_t positive_join_count = 0;
   std::uint32_t timely_positive_join_count = 0;
   bool arrival_time_observed = false;
-  // Stage-5 invited-guest arrival/benefit source is not yet live qualified.
   bool guest_route_qualified = false;
   bool completed = false;
   bool frame_changed = false;
