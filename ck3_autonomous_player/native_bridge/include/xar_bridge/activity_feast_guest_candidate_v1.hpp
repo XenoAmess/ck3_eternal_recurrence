@@ -12,6 +12,7 @@ namespace xar::bridge {
 enum class ActivityFeastGuestCandidateStatusV1 {
   observed,
   no_qualified_candidate,
+  target_not_filtered,
   exact_build_rejected,
   frame_changed,
   planner_unavailable,
@@ -32,6 +33,7 @@ struct ActivityFeastGuestCandidateResultV1 {
   std::int32_t filtered_group_count = 0;
   std::int32_t selected_row_count = 0;
   bool native_filtered = false;
+  bool selected_member = false;
   std::int32_t character_id = -1;
   std::int64_t planner_join_raw = 0;
   std::int32_t travel_days = 0;
@@ -44,7 +46,8 @@ struct ActivityFeastGuestCandidateResultV1 {
 
 ActivityFeastGuestCandidateResultV1 ReadActivityFeastGuestCandidateV1(
     const ActivityFeastGuestJoinEnvironmentV1 &environment,
-    const ActivityPlannerDiagFrameV1 &expected) noexcept;
+    const ActivityPlannerDiagFrameV1 &expected,
+    std::int32_t target_character_id = 0) noexcept;
 
 std::string_view ActivityFeastGuestCandidateStatusKeyV1(
     ActivityFeastGuestCandidateStatusV1 status) noexcept;

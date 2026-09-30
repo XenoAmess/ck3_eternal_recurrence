@@ -47,6 +47,10 @@ from .bridge.activity_feast_guest_route_proof_private_transport import (
     STEP as _PRIVATE_ACTIVITY_GUEST_ROUTE_PROOF_STEP,
     query_activity_feast_guest_route_proof_private_v1,
 )
+from .bridge.activity_feast_guest_target_private_transport import (
+    STEP as _PRIVATE_ACTIVITY_GUEST_TARGET_STEP,
+    query_activity_feast_guest_target_private_v1,
+)
 from .bridge.activity_feast_guest_opinion_private_transport import (
     STEP as _PRIVATE_ACTIVITY_GUEST_OPINION_STEP,
     query_activity_feast_guest_opinion_private_v1,
@@ -450,6 +454,7 @@ def native_auto_run(
     private_activity_feast_stage5_start_read: bool = False,
     private_activity_feast_guest_candidate_read: bool = False,
     private_activity_feast_guest_route_proof_read: bool = False,
+    private_activity_feast_guest_target_character_id: int | None = None,
     private_activity_feast_guest_opinion_character_id: int | None = None,
     private_activity_feast_guest_rule_key: str | None = None,
     private_activity_feast_guest_rule_candidate_id: int | None = None,
@@ -669,12 +674,28 @@ def native_auto_run(
     if (private_activity_feast_guest_route_proof_read is True
             and private_activity_feast_stage5_full_cost_read is not True):
         raise AgentError("private feast guest route proof requires the full-cost Stage-5 route")
+    if private_activity_feast_guest_target_character_id is not None and (
+        completion_contract != "bounded"
+        or type(private_activity_feast_guest_target_character_id) is not int
+        or not 0 < private_activity_feast_guest_target_character_id <= 0x7FFFFFFF
+        or private_activity_feast_stage5_full_cost_read is not True
+    ):
+        raise AgentError("private feast guest target read needs a full CharacterID and Stage-5 cost route")
+    combined_target_opinion = (
+        private_activity_feast_guest_target_character_id is not None
+        and private_activity_feast_guest_opinion_character_id
+            == private_activity_feast_guest_target_character_id
+        and private_activity_feast_guest_rule_key is not None
+        and private_activity_feast_guest_rule_candidate_id
+            == private_activity_feast_guest_target_character_id
+    )
     if private_activity_feast_guest_opinion_character_id is not None:
         if (completion_contract != "bounded"
                 or type(private_activity_feast_guest_opinion_character_id) is not int
                 or not 0 < private_activity_feast_guest_opinion_character_id <= 0x7FFFFFFF):
             raise AgentError("private feast guest opinion read needs a bounded full CharacterID")
-        if (private_activity_feast_planner_open is True
+        if (not combined_target_opinion
+                and (private_activity_feast_planner_open is True
                 or private_activity_feast_stage1_option_read is True
                 or private_activity_feast_stage1_confirm is True
                 or private_activity_feast_stage2_gate_read is True
@@ -684,7 +705,7 @@ def native_auto_run(
                 or private_activity_feast_stage5_start_read is True
                 or private_activity_feast_guest_candidate_read is True
                 or private_activity_feast_guest_route_proof_read is True
-                or private_activity_feast_guest_rule_key is not None):
+                or private_activity_feast_guest_rule_key is not None)):
             raise AgentError("private feast guest opinion read uses its own paused frame run")
     if (private_activity_feast_guest_rule_key is not None
             and private_activity_feast_stage5_full_cost_read is not True):
@@ -703,7 +724,9 @@ def native_auto_run(
         or type(private_activity_feast_guest_rule_candidate_id) is not int
         or not 0 < private_activity_feast_guest_rule_candidate_id <= 0x7FFFFFFF
         or private_activity_feast_guest_rule_key is None
-        or private_activity_feast_guest_candidate_read is not True
+        or (private_activity_feast_guest_candidate_read is not True
+            and private_activity_feast_guest_target_character_id
+                != private_activity_feast_guest_rule_candidate_id)
     ):
         raise AgentError("private feast rule provenance needs a named rule and same-run candidate read")
     if (allow_private_prisoner_ransom_formal_trial is True
@@ -856,6 +879,8 @@ def native_auto_run(
     private_activity_feast_stage5_start_observation: dict[str, object] | None = None
     private_activity_feast_guest_candidate_observation: dict[str, object] | None = None
     private_activity_feast_guest_route_proof_observation: dict[str, object] | None = None
+    private_activity_feast_guest_target_observation: dict[str, object] | None = None
+    private_activity_feast_guest_target_recheck_observation: dict[str, object] | None = None
     private_activity_feast_guest_opinion_observation: dict[str, object] | None = None
     private_activity_feast_guest_rule_observation: dict[str, object] | None = None
     private_activity_feast_stage5_start_following_turn: dict[str, object] | None = None
@@ -1117,6 +1142,9 @@ def native_auto_run(
         )
         driver.allow_private_activity_feast_guest_route_proof_query = (
             private_activity_feast_guest_route_proof_read is True
+        )
+        driver.allow_private_activity_feast_guest_target_query = (
+            private_activity_feast_guest_target_character_id is not None
         )
         driver.allow_private_activity_feast_guest_opinion_query = (
             private_activity_feast_guest_opinion_character_id is not None
@@ -1439,7 +1467,8 @@ def native_auto_run(
                 )
                 status = "private_activity_planner_diag_observed"
                 break
-            if private_activity_feast_guest_opinion_character_id is not None:
+            if (private_activity_feast_guest_opinion_character_id is not None
+                    and not combined_target_opinion):
                 current_attempt["stage"] = "private_activity_feast_guest_opinion_read"
                 status = "private_activity_feast_guest_opinion_unresolved"
                 private_activity_feast_guest_opinion_observation = (
@@ -1576,6 +1605,21 @@ def native_auto_run(
                                             )
                                         )
                                         status = "private_activity_feast_guest_route_proof_read"
+                                    if private_activity_feast_guest_target_character_id is not None:
+                                        current_attempt["stage"] = "private_activity_feast_guest_target_read"
+                                        status = "private_activity_feast_guest_target_unresolved"
+                                        private_activity_feast_guest_target_observation = (
+                                            _read_private_activity_feast_guest_target_once(
+                                                driver, service=service, before=before,
+                                                cost_observation=(
+                                                    private_activity_feast_stage5_full_cost_observation
+                                                ),
+                                                target_character_id=(
+                                                    private_activity_feast_guest_target_character_id
+                                                ), turn_index=turn_index,
+                                            )
+                                        )
+                                        status = "private_activity_feast_guest_target_read"
                                     if private_activity_feast_guest_rule_key is not None:
                                         current_attempt["stage"] = "private_activity_feast_guest_rule_read"
                                         private_activity_feast_guest_rule_observation = (
@@ -1591,10 +1635,61 @@ def native_auto_run(
                                                 candidate_observation=(
                                                     private_activity_feast_guest_candidate_observation
                                                 ),
+                                                target_observation=(
+                                                    private_activity_feast_guest_target_observation
+                                                ),
                                                 turn_index=turn_index,
                                             )
                                         )
                                         status = "private_activity_feast_guest_rule_read"
+                                    if (private_activity_feast_guest_target_character_id is not None
+                                            and private_activity_feast_guest_rule_candidate_id
+                                                == private_activity_feast_guest_target_character_id):
+                                        current_attempt["stage"] = "private_activity_feast_guest_target_recheck"
+                                        private_activity_feast_guest_target_recheck_observation = (
+                                            _read_private_activity_feast_guest_target_once(
+                                                driver, service=service, before=before,
+                                                cost_observation=(
+                                                    private_activity_feast_stage5_full_cost_observation
+                                                ),
+                                                target_character_id=(
+                                                    private_activity_feast_guest_target_character_id
+                                                ), turn_index=turn_index,
+                                            )
+                                        )
+                                        first_target = private_activity_feast_guest_target_observation[
+                                            "target_read"]
+                                        repeated_target = private_activity_feast_guest_target_recheck_observation[
+                                            "target_read"]
+                                        rule_membership = private_activity_feast_guest_rule_observation[
+                                            "candidate_category_membership"]
+                                        if (first_target != repeated_target
+                                                or (rule_membership is True
+                                                    and first_target["native_filtered_member"] is not True)):
+                                            raise StepPostconditionError(
+                                                "private feast target and named rule crossed native source",
+                                                step_result={
+                                                    "step": _PRIVATE_ACTIVITY_GUEST_TARGET_STEP,
+                                                    "status": "red", "accepted": False,
+                                                    "postcondition_verified": False,
+                                                    "first_target": first_target,
+                                                    "repeated_target": repeated_target,
+                                                    "rule_membership": rule_membership,
+                                                },
+                                                selected_step=_PRIVATE_ACTIVITY_GUEST_TARGET_STEP,
+                                            )
+                                    if combined_target_opinion:
+                                        current_attempt["stage"] = "private_activity_feast_guest_opinion_read"
+                                        status = "private_activity_feast_guest_opinion_unresolved"
+                                        private_activity_feast_guest_opinion_observation = (
+                                            _read_private_activity_feast_guest_opinion_once(
+                                                driver, service=service, before=before,
+                                                guest_character_id=(
+                                                    private_activity_feast_guest_target_character_id
+                                                ), turn_index=turn_index,
+                                            )
+                                        )
+                                        status = "private_activity_feast_guest_opinion_read"
                                     if private_activity_feast_stage5_start_read is True:
                                         current_attempt["stage"] = "private_activity_feast_stage5_start_read"
                                         private_activity_feast_stage5_start_observation = (
@@ -3833,7 +3928,8 @@ def native_auto_run(
                 and not turns
                 and not date_advanced
             )
-        if private_activity_feast_guest_opinion_character_id is not None:
+        if (private_activity_feast_guest_opinion_character_id is not None
+                and not combined_target_opinion):
             qualified = bool(
                 primary_error is None
                 and status == "private_activity_feast_guest_opinion_read"
@@ -3874,10 +3970,14 @@ def native_auto_run(
                 and status == (
                     "private_activity_feast_stage5_start_assessed"
                     if private_activity_feast_stage5_start_read is True
+                    else "private_activity_feast_guest_opinion_read"
+                    if combined_target_opinion
                     else "private_activity_feast_guest_rule_read"
                     if private_activity_feast_guest_rule_key is not None
                     else "private_activity_feast_guest_route_proof_read"
                     if private_activity_feast_guest_route_proof_read is True
+                    else "private_activity_feast_guest_target_read"
+                    if private_activity_feast_guest_target_character_id is not None
                     else "private_activity_feast_guest_candidate_read"
                     if private_activity_feast_guest_candidate_read is True
                     else "private_activity_feast_stage5_full_cost_observed"
@@ -3926,11 +4026,30 @@ def native_auto_run(
                          and private_activity_feast_guest_route_proof_observation.get("same_frame") is True
                          and private_activity_feast_guest_route_proof_observation.get("read_only") is True
                          and private_activity_feast_guest_route_proof_observation.get("decision") == "hold"))
+                and (private_activity_feast_guest_target_character_id is None
+                     or (isinstance(private_activity_feast_guest_target_observation, dict)
+                         and private_activity_feast_guest_target_observation.get("same_frame") is True
+                         and private_activity_feast_guest_target_observation.get("read_only") is True
+                         and private_activity_feast_guest_target_observation.get("decision") == "hold"
+                         and private_activity_feast_guest_target_observation.get("formal_action_ready") is False))
                 and (private_activity_feast_guest_rule_key is None
                      or (isinstance(private_activity_feast_guest_rule_observation, dict)
                          and private_activity_feast_guest_rule_observation.get("same_frame") is True
                          and private_activity_feast_guest_rule_observation.get("read_only") is True
                          and private_activity_feast_guest_rule_observation.get("decision") == "hold"))
+                and (private_activity_feast_guest_target_character_id is None
+                     or private_activity_feast_guest_rule_candidate_id
+                         != private_activity_feast_guest_target_character_id
+                     or (isinstance(private_activity_feast_guest_target_recheck_observation, dict)
+                         and private_activity_feast_guest_target_recheck_observation.get("same_frame") is True
+                         and private_activity_feast_guest_target_recheck_observation.get("target_read")
+                             == private_activity_feast_guest_target_observation.get("target_read")))
+                and (not combined_target_opinion
+                     or (isinstance(private_activity_feast_guest_opinion_observation, dict)
+                         and private_activity_feast_guest_opinion_observation.get("same_frame") is True
+                         and private_activity_feast_guest_opinion_observation.get("read_only") is True
+                         and private_activity_feast_guest_opinion_observation.get("opinion_status") == "observed"
+                         and private_activity_feast_guest_opinion_observation.get("formal_action_ready") is False))
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
@@ -4164,6 +4283,16 @@ def native_auto_run(
             {"private_activity_feast_guest_route_proof_observation": copy.deepcopy(
                 private_activity_feast_guest_route_proof_observation)}
             if private_activity_feast_guest_route_proof_read is True else {}
+        ),
+        **(
+            {"private_activity_feast_guest_target_observation": copy.deepcopy(
+                private_activity_feast_guest_target_observation)}
+            if private_activity_feast_guest_target_character_id is not None else {}
+        ),
+        **(
+            {"private_activity_feast_guest_target_recheck_observation": copy.deepcopy(
+                private_activity_feast_guest_target_recheck_observation)}
+            if private_activity_feast_guest_target_recheck_observation is not None else {}
         ),
         **(
             {"private_activity_feast_guest_opinion_observation": copy.deepcopy(
@@ -7463,12 +7592,69 @@ def _read_private_activity_feast_guest_route_proof_once(
     }
 
 
+def _read_private_activity_feast_guest_target_once(
+    driver: NativeHeadlessGameplayDriver,
+    *, service: GameplayBridgeService, before: dict[str, object],
+    cost_observation: dict[str, object], target_character_id: int,
+    turn_index: int,
+) -> dict[str, object]:
+    """Read one full CharacterID from native filtered Stage-5 groups."""
+    step = _PRIVATE_ACTIVITY_GUEST_TARGET_STEP
+    pre = service.snapshot()
+    if (cost_observation.get("same_frame") is not True
+            or not _private_activity_same_paused_frame(before, pre)):
+        raise StepPostconditionError(
+            "private feast target lacks same-frame Stage-5 cost source",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False}, selected_step=step)
+    try:
+        read = query_activity_feast_guest_target_private_v1(
+            driver, expected_revision=pre["revision"],
+            target_character_id=target_character_id,
+            timeout_seconds=float(driver.command_timeout_seconds),
+        )
+        post = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private feast target unresolved",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False,
+                         "native_error": type(exc).__name__ + ": " + str(exc)},
+            selected_step=step) from exc
+    same_frame = bool(
+        _private_activity_same_paused_frame(before, post)
+        and all(pre.get(key) == post.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and read["queried_snapshot_id"] == pre["snapshot_id"]
+        and read["post_snapshot_id"] == post["snapshot_id"]
+    )
+    if not same_frame or read["status"] != "observed":
+        raise StepPostconditionError(
+            "private feast target unavailable or crossed paused frame",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False,
+                         "target_status": read["target_status"],
+                         "target_read": read}, selected_step=step)
+    return {
+        "status": "guest_target_read", "turn_index": turn_index,
+        "same_frame": True, "read_only": True,
+        "source_frame": _public_binding(pre),
+        "post_frame": _public_binding(post),
+        "target_read": read, "target_character_id": target_character_id,
+        "decision": "hold", "formal_action_ready": False,
+        "native_guest_route_qualified": False,
+    }
+
+
 def _read_private_activity_feast_guest_rule_once(
     driver: NativeHeadlessGameplayDriver,
     *, service: GameplayBridgeService, before: dict[str, object],
     cost_observation: dict[str, object], authored_rule_key: str,
     candidate_character_id: int | None = None,
     candidate_observation: dict[str, object] | None = None,
+    target_observation: dict[str, object] | None = None,
     turn_index: int,
 ) -> dict[str, object]:
     """Observe one category, optionally binding passive provenance to a guest."""
@@ -7483,15 +7669,28 @@ def _read_private_activity_feast_guest_rule_once(
             step_result={"step": step, "status": "red", "accepted": False,
                          "postcondition_verified": False}, selected_step=step)
     if candidate_character_id is not None:
+        target_read = (target_observation.get("target_read")
+                       if isinstance(target_observation, dict) else None)
+        target_bound = bool(
+            isinstance(target_observation, dict)
+            and target_observation.get("same_frame") is True
+            and isinstance(target_read, dict)
+            and target_read.get("status") == "observed"
+            and target_read.get("target_character_id") == candidate_character_id
+            and type(target_read.get("native_filtered_member")) is bool
+        )
         candidate_read = (candidate_observation.get("candidate_read")
                           if isinstance(candidate_observation, dict) else None)
         candidate = (candidate_read.get("candidate")
                      if isinstance(candidate_read, dict) else None)
-        if (not isinstance(candidate_observation, dict)
-                or candidate_observation.get("same_frame") is not True
-                or not isinstance(candidate, dict)
-                or candidate_read.get("status") != "observed"
-                or candidate.get("character_id") != candidate_character_id):
+        legacy_bound = bool(
+            isinstance(candidate_observation, dict)
+            and candidate_observation.get("same_frame") is True
+            and isinstance(candidate, dict)
+            and candidate_read.get("status") == "observed"
+            and candidate.get("character_id") == candidate_character_id
+        )
+        if not target_bound and not legacy_bound:
             raise StepPostconditionError(
                 "private feast rule provenance lacks same-frame filtered candidate",
                 step_result={"step": step, "status": "red", "accepted": False,
@@ -8611,6 +8810,7 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
         _PRIVATE_ACTIVITY_STAGE2_DESTINATION_SELECT_STEP,
         _PRIVATE_ACTIVITY_STAGE5_FULL_COST_READ_STEP,
         _PRIVATE_ACTIVITY_GUEST_CANDIDATE_STEP,
+        _PRIVATE_ACTIVITY_GUEST_TARGET_STEP,
         _PRIVATE_ACTIVITY_GUEST_OPINION_STEP,
         _PRIVATE_ACTIVITY_GUEST_RULE_QUERY_STEP,
         _PRIVATE_ACTIVITY_GUEST_RULE_PROVENANCE_STEP,
@@ -8625,6 +8825,7 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
             "destination_postcondition_verified", "destination_native_receipt",
             "full_cost", "native_error", "candidate_status", "candidate_read",
             "rule_status", "rule_read", "opinion_status", "opinion_read",
+            "target_status", "target_read",
         ):
             if key in result:
                 compact[key] = copy.deepcopy(result[key])

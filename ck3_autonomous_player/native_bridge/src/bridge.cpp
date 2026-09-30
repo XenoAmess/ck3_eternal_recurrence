@@ -10592,6 +10592,8 @@ void RunConnectedSession(
                                   kActivityFeastGuestCandidatePrivateStepV1
                    && step != xar::ck3_11906::
                                   kActivityFeastGuestRouteProofPrivateStepV1
+                   && step != xar::ck3_11906::
+                                  kActivityFeastGuestTargetPrivateStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1)
                    && step != xar::ck3_11906::
@@ -11573,9 +11575,14 @@ void RunConnectedSession(
           if (step == xar::ck3_11906::
                           kActivityFeastGuestCandidatePrivateStepV1 ||
               step == xar::ck3_11906::
-                          kActivityFeastGuestRouteProofPrivateStepV1) {
+                          kActivityFeastGuestRouteProofPrivateStepV1 ||
+              step == xar::ck3_11906::
+                          kActivityFeastGuestTargetPrivateStepV1) {
             std::uint64_t expected_revision = 0, expected_date_raw = 0;
             std::uint64_t expected_actor_id = 0, expected_stage = 0;
+            std::uint64_t target_id = 0;
+            const bool target_mode =
+                step == xar::ck3_11906::kActivityFeastGuestTargetPrivateStepV1;
             std::string expected_activity_key;
             xar::game::Snapshot current{};
             if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
@@ -11591,6 +11598,11 @@ void RunConnectedSession(
                 !xar::bridge::JsonStringField(
                     incoming.payload, "expected_activity_key",
                     expected_activity_key, 96) ||
+                (target_mode &&
+                 (!xar::bridge::JsonUnsignedField(
+                      incoming.payload, "target_character_id", target_id) ||
+                  target_id == 0 || target_id > INT32_MAX ||
+                  target_id == expected_actor_id)) ||
                 expected_activity_key != "activity_feast" ||
                 expected_stage != 5 || expected_revision == 0 ||
                 expected_revision != state_revision ||
@@ -11616,7 +11628,10 @@ void RunConnectedSession(
               query.expected_revision = expected_revision;
               query.route_proof =
                   step == xar::ck3_11906::
-                              kActivityFeastGuestRouteProofPrivateStepV1;
+                              kActivityFeastGuestRouteProofPrivateStepV1 ||
+                  target_mode;
+              query.target_character_id =
+                  target_mode ? static_cast<std::int32_t>(target_id) : 0;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteActivityFeastGuestCandidatePrivateV1,
@@ -11642,11 +11657,14 @@ void RunConnectedSession(
                     query.completed && !query.frame_changed &&
                     xar::game::ReadSnapshot(game, after) && after == current;
                 const auto native = stable
-                    ? (query.route_proof
+                    ? (target_mode
                            ? xar::ck3_11906::
-                                 SerializeActivityFeastGuestRouteProofPrivateV1(query)
-                           : xar::ck3_11906::
-                                 SerializeActivityFeastGuestCandidatePrivateV1(query))
+                                 SerializeActivityFeastGuestTargetPrivateV1(query)
+                           : query.route_proof
+                                 ? xar::ck3_11906::
+                                       SerializeActivityFeastGuestRouteProofPrivateV1(query)
+                                 : xar::ck3_11906::
+                                       SerializeActivityFeastGuestCandidatePrivateV1(query))
                     : std::string{};
                 std::string response;
                 if (!native.empty()) {
@@ -11670,7 +11688,9 @@ void RunConnectedSession(
                       std::string(available ? "available" : "unavailable") +
                       "\",\"private_build\":true,\"read_only\":true,"
                       "\"advertised\":false,\"" +
-                      std::string(query.route_proof
+                      std::string(target_mode
+                                      ? "activity_feast_guest_target"
+                                      : query.route_proof
                                       ? "activity_feast_guest_route_proof"
                                       : "activity_feast_guest_candidate") +
                       "\":" + native +

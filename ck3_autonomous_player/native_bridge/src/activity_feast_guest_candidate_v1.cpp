@@ -222,7 +222,8 @@ ActivityFeastGuestCandidateStatusV1 ReadOne(
     const ActivityFeastGuestJoinEnvironmentV1 &env,
     const ActivityCostSlot12CaptureV1 &capture,
     const ActivityPlannerDiagFrameV1 &expected,
-    ActivityFeastGuestCandidateResultV1 &result) noexcept {
+    ActivityFeastGuestCandidateResultV1 &result,
+    std::int32_t target_character_id) noexcept {
   const auto &source = env.diagnostic;
   std::uintptr_t groups = 0, selected = 0, rules = 0;
   std::uintptr_t current_planner = 0;
@@ -302,6 +303,7 @@ ActivityFeastGuestCandidateStatusV1 ReadOne(
     const auto id = candidates[i];
     if (id <= 0)
       return ActivityFeastGuestCandidateStatusV1::candidate_source_unavailable;
+    if (target_character_id != 0 && id != target_character_id) continue;
     if (id == host_id) continue;
     bool already_selected = false;
     for (std::int32_t j = 0; j < selected_count; ++j) {
@@ -311,36 +313,40 @@ ActivityFeastGuestCandidateStatusV1 ReadOne(
         return ActivityFeastGuestCandidateStatusV1::candidate_source_unavailable;
       if (selected_id == id) { already_selected = true; break; }
     }
-    if (already_selected) continue;
+    if (target_character_id == 0 && already_selected) continue;
     std::uintptr_t character = 0;
     std::int64_t join_raw = 0;
     if (!ResolveCharacter(source, id, character) ||
         !invoke_join(env.join_context, source.module_base, capture.planner,
                      character, join_raw))
       return ActivityFeastGuestCandidateStatusV1::native_evaluation_failed;
-    if (join_raw <= 0) continue;
+    if (target_character_id == 0 && join_raw <= 0) continue;
     std::int32_t travel_days = 0, arrival_raw = 0, start_raw = 0;
     const auto arrival = Arrival(env, capture, expected, id, character,
                                  travel_days, arrival_raw, start_raw);
     if (arrival != ActivityFeastGuestCandidateStatusV1::observed)
       return arrival;
-    if (arrival_raw > start_raw) continue;
+    if (target_character_id == 0 && arrival_raw > start_raw) continue;
     result.character_id = id;
     result.planner_join_raw = join_raw;
     result.travel_days = travel_days;
     result.arrival_raw = arrival_raw;
     result.planned_start_raw = start_raw;
     result.native_filtered = true;
+    result.selected_member = already_selected;
     return ActivityFeastGuestCandidateStatusV1::observed;
   }
-  return ActivityFeastGuestCandidateStatusV1::no_qualified_candidate;
+  return target_character_id == 0
+             ? ActivityFeastGuestCandidateStatusV1::no_qualified_candidate
+             : ActivityFeastGuestCandidateStatusV1::target_not_filtered;
 }
 
 } // namespace
 
 ActivityFeastGuestCandidateResultV1 ReadActivityFeastGuestCandidateV1(
     const ActivityFeastGuestJoinEnvironmentV1 &env,
-    const ActivityPlannerDiagFrameV1 &expected) noexcept {
+    const ActivityPlannerDiagFrameV1 &expected,
+    std::int32_t target_character_id) noexcept {
   ActivityFeastGuestCandidateResultV1 result{};
   result.frame = expected;
   if (!VerifyAbi(env)) return result;
@@ -373,8 +379,10 @@ ActivityFeastGuestCandidateResultV1 ReadActivityFeastGuestCandidateV1(
     return result;
   }
   ActivityFeastGuestCandidateResultV1 first{}, second{};
-  const auto first_status = ReadOne(env, capture, expected, first);
-  const auto second_status = ReadOne(env, capture, expected, second);
+  const auto first_status = ReadOne(env, capture, expected, first,
+                                    target_character_id);
+  const auto second_status = ReadOne(env, capture, expected, second,
+                                     target_character_id);
   const auto after = ReadActivityPlannerDiagV1(env.diagnostic, expected);
   ActivityCostSlot12CaptureV1 capture_after{};
   if (after.status != ActivityPlannerDiagStatusV1::observed ||
@@ -390,7 +398,9 @@ ActivityFeastGuestCandidateResultV1 ReadActivityFeastGuestCandidateV1(
   }
   result.status = first_status;
   if (first_status == ActivityFeastGuestCandidateStatusV1::observed ||
-      first_status == ActivityFeastGuestCandidateStatusV1::no_qualified_candidate) {
+      first_status == ActivityFeastGuestCandidateStatusV1::no_qualified_candidate ||
+      (target_character_id != 0 &&
+       first_status == ActivityFeastGuestCandidateStatusV1::target_not_filtered)) {
     result = first;
     result.frame = expected;
     result.status = first_status;
@@ -405,6 +415,8 @@ std::string_view ActivityFeastGuestCandidateStatusKeyV1(
   case ActivityFeastGuestCandidateStatusV1::observed: return "observed";
   case ActivityFeastGuestCandidateStatusV1::no_qualified_candidate:
     return "no_qualified_candidate";
+  case ActivityFeastGuestCandidateStatusV1::target_not_filtered:
+    return "target_not_filtered";
   case ActivityFeastGuestCandidateStatusV1::exact_build_rejected:
     return "exact_build_rejected";
   case ActivityFeastGuestCandidateStatusV1::frame_changed:

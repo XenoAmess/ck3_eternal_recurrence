@@ -53,3 +53,28 @@ Read-only inspection confirmed the loaded candidate DLL and frozen EXE matched t
 
 - The original CMake focused target passed Debug and Release under MSVC `/W4 /WX`, but its ABI fixture held the wrong GUI instruction RVA; R0371 exposed that gap. The corrected fixture now models the two adjacent instructions. On the repair branch based on master `593c72bdd14ae97d8ef4030c1e1f531a80e66bd5`, the full bridge DLL built in Release and Debug and `xar_ck3_native_bridge_activity_feast_guest_candidate_v1` passed 1/1 in both configurations. These are source/fixture checks, not a new paused result.
 - R0371 did not observe a candidate ID, complete empty set, invitation, acceptance, attendance or Start. A fresh paired paused query is required to close this RED. If it returns a positive native-filtered candidate, final invitation legality, selected/pending state and later outcome still need independent evidence.
+
+### Target CharacterID branch after R0396 (source and fixture only)
+
+The admitted game is still **1.19.0.6-steam23530548**, EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`. R0396's H3928 paused report (SHA-256 `3AF5FB0F1D3B27AF8E54548C960D36D56398999072D207853D3FD259D571ADD7`) read `activity_invite_rule_vassals` as active. The old first positive/timely candidate was CharacterID 38293, but that character's **named-rule membership was false**. CharacterID 43699 appeared in the rule's filtered member list; the old first-candidate read did not measure that member's join or arrival. H3928's separately read final `CanStart` was false. These are R0396 observations, not observations from the new query.
+
+The same exact-build native branch now accepts an optional **full generation-bearing CharacterID** in the existing bounded group enumeration. In target mode it retains the original signed Q100000 join result even when nonpositive, and the original travel/arrival result even when late. A complete enumeration without the target returns `target_not_filtered`; an unresolved full ID, unreadable source or failed evaluator remains unavailable. The selected guest rows and final `CanStart` are read independently; neither a filtered member nor a positive timely result asserts invitation authority. The default-OFF private step `query-activity-feast-stage5-guest-target-v1-private` returns schema `activity-feast-stage5-guest-target-private-v1`; its MCP query exists only with the private driver opt-in. Neither path issues Start or Invite.
+
+```mermaid
+flowchart TD
+    A[Paused Stage 5 feast, exact EXE and snapshot] --> B[Read native filtered group IDs and selected rows]
+    B --> C{Requested full CharacterID present?}
+    C -->|no, complete source| D[target_not_filtered]
+    C -->|yes| E[Resolve matching generation-bearing Character]
+    E --> F[Original planner join; retain signed value]
+    F --> G[Original travel and predicted arrival; retain late result]
+    G --> H[Read selected membership and final CanStart separately]
+    H --> I[Read named authored rule provenance for same ID]
+    I --> J[Re-read target fields and source fingerprint]
+    J --> K[Same paused-frame opinion read for same ID]
+    K -.-> U[unknown: actual Invite legality, acceptance, attendance and Start outcome]
+```
+
+The runner combines target, authored-rule provenance and opinion only for the same full ID. It re-reads the target after the separate provenance callback and requires all native target fields, refresh sequence and source fingerprint to match; named-rule membership true also requires global filtered membership true. This avoids treating the two different hook refresh counters as the same sequence. Changed or contradictory reads hold the route as RED. Even when these readbacks succeed, H3928's `CanStart=false` and the missing action/outcome evidence keep `formal_action_ready=false`; the new fields are **not yet live verified**. A newly paired paused H3928 read of target 43699 is the next evidence gate, followed separately by any lawful action and independent outcome proof.
+
+On the independent D-drive source branch based on master `a1fe9562a41626590dd612d443bff9eb241a01df`, the focused native candidate fixture passed Debug 1/1 and Release 1/1 under MSVC `/W4 /WX`. The full private bridge DLL linked in both modes; Release candidate, named-rule provenance and opinion fixtures passed 3/3. Python transport, combined runner and operator focused tests passed in normal mode, and transport/runner passed with `-O`. Build/test logs are under `D:\nw-activity-target-member-native-20260930\`; these prove source and fixture wiring only. No CK3 session or new H3928 paused snapshot was run for this branch.

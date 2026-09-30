@@ -1,15 +1,29 @@
 #include "xar_bridge/activity_feast_guest_candidate_v1.hpp"
 
+#include <cstdio>
+#include <cstdlib>
+
 #define main ActivityStage5GoldFixtureMain
 #include "activity_stage5_gold_cost_v1_test.cpp"
 #undef main
+
+#define Expect(condition)                                                        \
+  do {                                                                           \
+    if (!(condition)) {                                                          \
+      std::fprintf(stderr, "guest candidate fixture failed at line %d\n",     \
+                   __LINE__);                                                    \
+      std::exit(1);                                                              \
+    }                                                                            \
+  } while (false)
 
 namespace {
 
 constexpr std::uintptr_t kGroups = 0x1000C000;
 constexpr std::uintptr_t kRules = 0x1000D000;
+constexpr std::uintptr_t kSelected = 0x1000D800;
 constexpr std::uintptr_t kIds = 0x1000E000;
 constexpr std::uintptr_t kGuest = 0x1000F000;
+constexpr std::uintptr_t kEarlierGuest = 0x1000F800;
 constexpr std::uintptr_t kWorld = 0x10010000;
 constexpr std::uintptr_t kProvinceTable = 0x10011000;
 constexpr std::uintptr_t kProvinces = 0x10012000;
@@ -18,6 +32,7 @@ constexpr std::uintptr_t kActivity = 0x10014000;
 constexpr std::uintptr_t kActivityRows = 0x10015000;
 constexpr std::uintptr_t kLocationRow = 0x10016000;
 constexpr std::int32_t kGuestId = 31000;
+constexpr std::int32_t kEarlierGuestId = 30000;
 
 struct CandidateFixture {
   Fixture *memory = nullptr;
@@ -31,11 +46,12 @@ bool Join(void *opaque, std::uintptr_t base, std::uintptr_t planner,
           std::uintptr_t character, std::int64_t &value) noexcept {
   auto &fixture = *static_cast<CandidateFixture *>(opaque);
   ++fixture.join_calls;
-  if (base != kBase || planner != kPlanner || character != kGuest)
+  if (base != kBase || planner != kPlanner ||
+      (character != kGuest && character != kEarlierGuest))
     return false;
   if (fixture.mutate_group)
     fixture.memory->Put(kRules + 8, std::int32_t{2});
-  value = fixture.join_raw;
+  value = character == kEarlierGuest ? 500000 : fixture.join_raw;
   return true;
 }
 
@@ -48,10 +64,11 @@ bool Travel(void *opaque, std::uintptr_t base,
             std::uintptr_t character, std::uintptr_t destination,
             std::int32_t &days) noexcept {
   const auto &fixture = *static_cast<CandidateFixture *>(opaque);
-  if (base != kBase || character != kGuest ||
+  if (base != kBase ||
+      (character != kGuest && character != kEarlierGuest) ||
       destination != kDestination)
     return false;
-  days = fixture.travel_days;
+  days = character == kEarlierGuest ? 3 : fixture.travel_days;
   return true;
 }
 
@@ -141,6 +158,54 @@ int main() {
   Expect(result.source_fingerprint != 0 && result.normal_refresh_sequence == 1);
   Expect(result.active_rule_count == 1 && result.filtered_group_count == 1 &&
          result.selected_row_count == 0);
+
+  fixture.Put(kGroups + 0x0C, std::int32_t{2});
+  fixture.Put(kIds, kEarlierGuestId);
+  fixture.Put(kIds + 4, kGuestId);
+  fixture.Put(kSlots + kEarlierGuestId * 0x10 + 8, kEarlierGuest);
+  fixture.Put(kEarlierGuest + 0x18, kEarlierGuestId);
+  result = ReadActivityFeastGuestCandidateV1(env, expected);
+  Expect(result.status == ActivityFeastGuestCandidateStatusV1::observed &&
+         result.character_id == kEarlierGuestId);
+  candidate.join_raw = -1;
+  result = ReadActivityFeastGuestCandidateV1(env, expected, kGuestId);
+  Expect(result.status == ActivityFeastGuestCandidateStatusV1::observed &&
+         result.character_id == kGuestId && result.native_filtered &&
+         result.planner_join_raw == -1 && result.arrival_raw <= result.planned_start_raw);
+  candidate.join_raw = 500000;
+  candidate.travel_days = 20;
+  result = ReadActivityFeastGuestCandidateV1(env, expected, kGuestId);
+  Expect(result.status == ActivityFeastGuestCandidateStatusV1::observed &&
+         result.character_id == kGuestId && result.arrival_raw > result.planned_start_raw);
+  result = ReadActivityFeastGuestCandidateV1(env, expected, 32000);
+  Expect(result.status == ActivityFeastGuestCandidateStatusV1::target_not_filtered &&
+         result.character_id == -1 && !result.native_filtered &&
+         result.source_fingerprint != 0 && result.normal_refresh_sequence == 1);
+  fixture.Put(kPlanner + 0x1678, kSelected);
+  fixture.Put(kPlanner + 0x1684, std::int32_t{1});
+  fixture.Fill(kSelected, 16);
+  fixture.Put(kSelected + 8, kGuestId);
+  Expect(RecordActivityCostSlot12NormalReturnV1(
+      observer, kBase + kActivityCostSlot12ReturnRvaV1, kPlanner));
+  result = ReadActivityFeastGuestCandidateV1(env, expected, kGuestId);
+  Expect(result.status == ActivityFeastGuestCandidateStatusV1::observed &&
+         result.selected_member && result.character_id == kGuestId);
+  fixture.Put(kPlanner + 0x1678, std::uintptr_t{0});
+  fixture.Put(kPlanner + 0x1684, std::int32_t{0});
+  Expect(RecordActivityCostSlot12NormalReturnV1(
+      observer, kBase + kActivityCostSlot12ReturnRvaV1, kPlanner));
+  fixture.Put(kGuest + 0x18, kGuestId + 0x01000000);
+  result = ReadActivityFeastGuestCandidateV1(env, expected, kGuestId);
+  Expect(result.status == ActivityFeastGuestCandidateStatusV1::native_evaluation_failed);
+  fixture.Put(kGuest + 0x18, kGuestId);
+  candidate.mutate_group = true;
+  result = ReadActivityFeastGuestCandidateV1(env, expected, kGuestId);
+  Expect(result.status == ActivityFeastGuestCandidateStatusV1::configuration_changed);
+  candidate.mutate_group = false;
+  fixture.Put(kRules + 8, std::int32_t{1});
+  fixture.Put(kGroups + 0x0C, std::int32_t{1});
+  fixture.Put(kIds, kGuestId);
+  candidate.travel_days = 5;
 
   candidate.join_raw = -1;
   result = ReadActivityFeastGuestCandidateV1(env, expected);
