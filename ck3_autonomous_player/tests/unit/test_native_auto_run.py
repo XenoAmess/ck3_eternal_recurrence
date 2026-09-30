@@ -136,6 +136,7 @@ class _NativeAutoRunHarness:
         self.activity_guest_target_character_id: int | None = None
         self.activity_guest_target_member = True
         self.activity_guest_target_fingerprint_changes = False
+        self.activity_guest_target_refresh_sequences = (1, 1)
         self.activity_guest_opinion_query_count = 0
         self.activity_guest_opinion_status = "observed"
         self.activity_guest_rule_query_count = 0
@@ -2057,7 +2058,8 @@ class _FakeActivityFeastState:
                         "target_status": "observed" if member else "target_not_filtered",
                         "target_character_id": request["target_character_id"],
                         "selected_status": "observed", "start_gate_status": "observed",
-                        "normal_refresh_sequence": 1,
+                        "normal_refresh_sequence": self.harness.activity_guest_target_refresh_sequences[
+                            self.harness.activity_guest_target_query_count - 1],
                         "source_fingerprint": fingerprint,
                         "active_rule_count": 3, "filtered_group_count": 3,
                         "selected_row_count": 0,
@@ -2788,6 +2790,7 @@ class NativeAutoRunTests(unittest.TestCase):
         private_activity_feast_guest_target_character_id: int | None = None,
         activity_guest_target_member: bool = True,
         activity_guest_target_fingerprint_changes: bool = False,
+        activity_guest_target_refresh_sequences: tuple[int, int] = (1, 1),
         activity_guest_route_proof_status: str = "observed",
         activity_guest_candidate_status: str = "observed",
         private_activity_feast_guest_opinion_character_id: int | None = None,
@@ -2943,6 +2946,7 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_guest_target_character_id = private_activity_feast_guest_target_character_id
         harness.activity_guest_target_member = activity_guest_target_member
         harness.activity_guest_target_fingerprint_changes = activity_guest_target_fingerprint_changes
+        harness.activity_guest_target_refresh_sequences = activity_guest_target_refresh_sequences
         harness.activity_guest_opinion_status = activity_guest_opinion_status
         harness.activity_guest_rule_status = activity_guest_rule_status
         harness.activity_guest_rule_provenance_status = activity_guest_rule_provenance_status
@@ -4181,6 +4185,41 @@ class NativeAutoRunTests(unittest.TestCase):
         with self.assertRaisesRegex(AgentError, "own paused frame run"):
             self._run(["advance"], **{**opts,
                 "private_activity_feast_guest_opinion_character_id": 38293})
+
+    def test_private_feast_target_recheck_accepts_unchanged_source_after_refresh(self) -> None:
+        # R0401's passive observer refreshed between queries without changing
+        # the target source or its negative join/arrival/CanStart result.
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            private_activity_feast_stage2_destination_province_id=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_guest_target_character_id=43699,
+            private_activity_feast_guest_rule_key="activity_invite_rule_vassals",
+            private_activity_feast_guest_rule_candidate_id=43699,
+            private_activity_feast_guest_opinion_character_id=43699,
+            activity_guest_target_refresh_sequences=(952, 1506),
+            activity_feast_open_stage=1,
+        )
+        self.assertTrue(report["ok"], report.get("first_blocker"))
+        self.assertEqual(report["status"], "private_activity_feast_guest_opinion_read")
+        first = report["private_activity_feast_guest_target_observation"]["target_read"]
+        repeated = report["private_activity_feast_guest_target_recheck_observation"]["target_read"]
+        self.assertEqual(first["normal_refresh_sequence"], 952)
+        self.assertEqual(repeated["normal_refresh_sequence"], 1506)
+        self.assertEqual(
+            {key: value for key, value in first.items() if key != "normal_refresh_sequence"},
+            {key: value for key, value in repeated.items() if key != "normal_refresh_sequence"},
+        )
+        self.assertEqual(first["planner_join_raw"], -100000)
+        self.assertIs(first["timely_arrival"], False)
+        self.assertIs(first["final_can_start"], False)
+        self.assertEqual(harness.activity_guest_opinion_query_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["counts"]["gameplay"], 0)
+        self.assertEqual(report["auto_run"]["counts"]["checkpoint"], 0)
+        self.assertIs(report["qualification_gates"]["date_advanced"], False)
+        self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_action, False)
 
     def test_private_feast_stage5_full_cost_requires_destination(self) -> None:
         with self.assertRaisesRegex(AgentError, "requires verified stage-2 destination"):

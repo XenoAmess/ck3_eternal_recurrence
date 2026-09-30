@@ -1753,7 +1753,8 @@ def native_auto_run(
                                             "target_read"]
                                         rule_membership = private_activity_feast_guest_rule_observation[
                                             "candidate_category_membership"]
-                                        if (first_target != repeated_target
+                                        if (not _private_activity_feast_guest_target_same_source(
+                                                first_target, repeated_target)
                                                 or (rule_membership is True
                                                     and first_target["native_filtered_member"] is not True)):
                                             raise StepPostconditionError(
@@ -4180,8 +4181,9 @@ def native_auto_run(
                          != private_activity_feast_guest_target_character_id
                      or (isinstance(private_activity_feast_guest_target_recheck_observation, dict)
                          and private_activity_feast_guest_target_recheck_observation.get("same_frame") is True
-                         and private_activity_feast_guest_target_recheck_observation.get("target_read")
-                             == private_activity_feast_guest_target_observation.get("target_read")))
+                         and _private_activity_feast_guest_target_same_source(
+                             private_activity_feast_guest_target_recheck_observation.get("target_read"),
+                             private_activity_feast_guest_target_observation.get("target_read"))))
                 and (not combined_target_opinion
                      or (isinstance(private_activity_feast_guest_opinion_observation, dict)
                          and private_activity_feast_guest_opinion_observation.get("same_frame") is True
@@ -7757,6 +7759,20 @@ def _read_private_activity_feast_guest_route_proof_once(
         "decision": "hold", "formal_action_ready": False,
         "native_guest_route_qualified": False,
     }
+
+
+def _private_activity_feast_guest_target_same_source(
+    first: object, repeated: object,
+) -> bool:
+    """Compare target content across queries, retaining refreshed diagnostics."""
+    if not isinstance(first, dict) or not isinstance(repeated, dict):
+        return False
+    # Each normal paused return increments this observer-local count even when
+    # every source and target value is unchanged. Native per-query checks stay.
+    return (
+        {key: value for key, value in first.items() if key != "normal_refresh_sequence"}
+        == {key: value for key, value in repeated.items() if key != "normal_refresh_sequence"}
+    )
 
 
 def _read_private_activity_feast_guest_target_once(

@@ -1,7 +1,8 @@
 # Ordinary feast guest rule provenance: passive exact-build read
 
-Status: **source and focused fixture; paused membership remains RED**. This
-private default-OFF path has not produced an observed membership result. It
+Status: **R0401 observed private target and named-rule membership; the bounded
+route remains RED at the Python target recheck, before opinion**. This
+private default-OFF path now has a paused membership result, described below. It
 applies to CK3 1.19.0.6, EXE SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 It extends the [ordinary rule binding](activity-feast-guest-rule-toggle-1-19-0-6.md)
@@ -77,7 +78,8 @@ The bounded Python runner and operator now expose this read only when a named
 rule and the same run's filtered candidate read are requested. The transport
 checks the exact envelope, candidate identity and unchanged paused frame;
 observed membership still yields `hold` with invitation and Start disabled.
-No live membership result exists yet. In H3928,
+The R0401 increment below records the first observed membership; its failed
+caller did not complete the bounded target/rule/opinion route. In H3928,
 R0378 separately found Stage-5 `final_can_start=false`: actor 29829 failed
 `is_available_adult` because `in_army=no`. A future action trial therefore
 needs a fresh legal paused frame with `final_can_start=true`, a matching
@@ -189,5 +191,74 @@ refresh and intersects the original per-rule outputs with the filtered group.
 At read time it requires current stage 5, the same feast type and unchanged
 active-rule and filtered-group fingerprints. A changed group or rule remains
 `frame_changed`; no aggregate group is substituted for a rule-specific result.
-This is a source/fixture repair only until a new frozen DLL returns an actual
-paused membership boolean.
+R0401 below subsequently returned a paused membership boolean; that result
+does not turn its failed whole route into a successful run.
+
+## R0401 target recheck: passive refresh count is not a changed guest source
+
+R0401 used frozen Python `e12801a91676caf0837a9094b2d3216b9c659e69` and
+Release DLL SHA-256
+`BF66E08513393E7744E35A53C905ACBEE2E14DD8E66FF8F60289E0F3733602B5`.
+Its immutable report is
+`D:\nw-activity-target-h3928-python-c6-20260930\operator-runs\feast-target43699-h3928-python-c6-1\formal-report.txt`
+(1,543,939,699 bytes). The compact fault extract is
+`D:\nw-activity-r0401-target-rule-source-20260930\R0401-COMPACT-FAULT.json`;
+an independent audit is retained beside the C6 candidate as
+`INDEPENDENT-R0401-EVIDENCE.json`.
+
+The first target read and the read after named-rule provenance both observed
+CharacterID 43699 on actor 29829's paused H3928 frame, date 53219928,
+snapshot `native:3`, public revision 4 and native revision 3. Both source
+fingerprints were `0xe161ec03ef105649`. Every returned target field matched
+except `normal_refresh_sequence`, which advanced from 952 to 1506. The named
+vassals rule independently observed membership `true`, with 9 raw IDs and
+the single post-filter ID 43699. Its sequence was 2, from a different observer.
+
+The native definition explains the difference. In
+`src/activity_cost_slot12_passive_v1.cpp`,
+`RecordActivityCostSlot12NormalReturnV1` increments
+`candidate.sequence = observer.latest.sequence + 1` on each valid natural
+paused return. `src/activity_feast_guest_candidate_v1.cpp` copies that count
+into the target result. It still requires the sequence, planner and
+configuration fingerprint to remain unchanged **inside one atomic native
+query** (`capture_after.sequence != capture.sequence` remains a rejection).
+The separate rule observer increments its own count in
+`EndActivityGuestRuleRefreshV1`; its counter is not the target observer's
+source identity. No observer or native per-query gate changes here.
+
+```mermaid
+flowchart TD
+  A[Valid natural paused slot-12 return] --> B[Increment diagnostic capture sequence]
+  B --> C[Atomic target query checks unchanged capture and source]
+  C --> D[Named-rule query checks its own captured IDs and current groups]
+  D --> E[Later atomic target query]
+  E --> F{Same target values, source fingerprint and paused identities?}
+  F -- yes, refresh count may advance --> G[Continue bounded opinion read, hold]
+  F -- no --> H[Keep source RED]
+```
+
+The production Python caller compared the entire target dictionaries and
+therefore raised `StepPostconditionError` at 03:40:26 UTC despite unchanged
+content. The minimal Python fix excludes only this diagnostic count from
+cross-query dictionary equality, reusing the same content comparison at the
+immediate recheck and the final bounded qualification. Both caller positions
+previously compared the whole dictionary; a focused production regression
+confirmed that fixing only the first still left final qualification RED.
+It keeps the original counts in the report,
+all other target fields in the comparison, both per-read paused-frame gates,
+and the rule-membership/filtered-target consistency check. The next candidate's
+outer verifier must use the same comparison; the frozen C6 helper also used
+whole-dictionary equality and remains preserved with its failed attempt.
+
+The actual target was filtered but unselected, with join raw -98,700,000,
+travel 73 days, arrival 53221680 later than planned start 53221344, and native
+`final_can_start=false`. These negative values remain unchanged. Opinion was
+not reached. R0401 completed 0/1 formal turns, zero gameplay/checkpoint/date
+advances, retained the original save SHA
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`,
+and reported the owned process tree gone at 03:40:29 UTC. Source repair and
+offline production replay do not close this live RED, authorize Invite/Start,
+or claim a successful opinion, action, next turn or recovery.
+
+`open_kaishek` preflight is not applicable: this change compares Python
+observation dictionaries and changes no Paradox authored-script semantics.
