@@ -37,6 +37,8 @@ from .bridge.activity_stage5_feast_full_cost_private_transport import (
 )
 from .bridge.activity_feast_stage5_start_private_transport import (
     INPUT_STEP as _PRIVATE_ACTIVITY_STAGE5_START_INPUT_STEP,
+    POST_STEP as _PRIVATE_ACTIVITY_FEAST_HOSTED_POST_STEP,
+    START_STEP as _PRIVATE_ACTIVITY_FEAST_START_STEP,
     query_activity_feast_stage5_start_inputs_private_v1,
 )
 from .bridge.activity_feast_guest_candidate_private_transport import (
@@ -66,7 +68,9 @@ from .bridge.activity_feast_guest_rule_provenance_private_transport import (
 from .activity_feast_stage5_start_formal_consumer import (
     LEDGER_FILE as PRIVATE_FEAST_START_LEDGER_FILE,
     assess_feast_start_private_v1,
+    consume_feast_start_private_v1,
     consume_feast_start_following_turn,
+    read_feast_start_ledger,
 )
 from .activity_feast_stage5_budget_v1 import observe_feast_start_budget_v1
 from .bridge.pending_character_interaction_context_contract import (
@@ -453,6 +457,7 @@ def native_auto_run(
     private_activity_feast_stage2_destination_province_id: int | None = None,
     private_activity_feast_stage5_full_cost_read: bool = False,
     private_activity_feast_stage5_start_read: bool = False,
+    allow_private_activity_feast_stage5_start_formal_trial: bool = False,
     private_activity_feast_guest_candidate_read: bool = False,
     private_activity_feast_guest_route_proof_read: bool = False,
     private_activity_feast_guest_target_character_id: int | None = None,
@@ -669,6 +674,10 @@ def native_auto_run(
     if (private_activity_feast_stage5_start_read is True
             and private_activity_feast_stage5_full_cost_read is not True):
         raise AgentError("private stage-5 Start read requires the full-cost Stage-5 route")
+    if (allow_private_activity_feast_stage5_start_formal_trial is True
+            and (private_activity_feast_stage5_start_read is not True
+                 or completion_contract != "bounded")):
+        raise AgentError("private feast Start formal trial requires bounded Start input assessment")
     if (private_activity_feast_guest_candidate_read is True
             and private_activity_feast_stage5_full_cost_read is not True):
         raise AgentError("private feast guest candidate read requires the full-cost Stage-5 route")
@@ -878,6 +887,7 @@ def native_auto_run(
     private_activity_feast_stage2_destination_observation: dict[str, object] | None = None
     private_activity_feast_stage5_full_cost_observation: dict[str, object] | None = None
     private_activity_feast_stage5_start_observation: dict[str, object] | None = None
+    private_activity_feast_stage5_start_formal: dict[str, object] | None = None
     private_activity_feast_guest_candidate_observation: dict[str, object] | None = None
     private_activity_feast_guest_route_proof_observation: dict[str, object] | None = None
     private_activity_feast_guest_target_observation: dict[str, object] | None = None
@@ -1159,9 +1169,9 @@ def native_auto_run(
         # Category membership and target value are not yet observable.  A
         # successful category read does not authorize activation.
         driver.allow_private_activity_feast_guest_rule_action = False
-        # This route only reads Start inputs.  No formal action mode supplies
-        # the guest/budget evidence yet, so it must not enable Start.
-        driver.allow_private_activity_feast_stage5_start_action = False
+        driver.allow_private_activity_feast_stage5_start_action = (
+            allow_private_activity_feast_stage5_start_formal_trial is True
+        )
         driver.allow_private_player_child_matrilineal_action = (
             private_child_matrilineal_target is not None
             or private_child_matrilineal_pending_read_target is not None
@@ -1394,6 +1404,66 @@ def native_auto_run(
                     )
             return None
 
+        def finish_private_feast_start_trial(
+            formal: dict[str, object], *, before: dict[str, object], turn_index: int,
+        ) -> str:
+            nonlocal visible_gameplay_turns
+            result = formal["result"]
+            if formal["status"] == "held":
+                return "private_activity_feast_stage5_start_held"
+            result_status = result["status"]
+            if result_status in {
+                "applied", "already_applied", "submission_unresolved",
+                "pending_post_read_red", "pending_post_unresolved",
+            }:
+                current_attempt["stage"] = "private_activity_feast_stage5_start_checkpoint"
+                checkpoint, snapshot = _materialize_checkpoint(
+                    service, driver, spec.profile_dir / "save games",
+                    session_done=session_done, session_state=session_state,
+                    timeout_seconds=min(
+                        readiness_timeout, max(0.001, run_deadline - time.monotonic())),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                actor = snapshot.get("played_character")
+                if (checkpoint.get("date_raw") != before.get("date_raw")
+                        or not isinstance(actor, dict)
+                        or actor.get("character_id") != before.get("played_character_id")):
+                    raise AgentError("private feast Start checkpoint changed actor/date")
+                counts["checkpoint"] += 1
+                checkpoints.append({"turn_index": turn_index,
+                                    "phase": "private_feast_start_" + result_status,
+                                    **checkpoint})
+                formal["checkpoint_saved"] = True
+            after = _compact_binding(driver.capabilities(), driver.take_snapshot())
+            current_attempt["after"] = _public_binding(after)
+            current_attempt["result"] = result
+            material = result.get("postcondition_verified") is True
+            action_attempted = formal["action_attempted"] is True
+            turn_class = "gameplay" if action_attempted else "query"
+            selected_step = (_PRIVATE_ACTIVITY_FEAST_START_STEP if action_attempted
+                             else _PRIVATE_ACTIVITY_FEAST_HOSTED_POST_STEP)
+            current_attempt["selected_step"] = selected_step
+            counts[turn_class] += 1
+            if material and action_attempted:
+                visible_gameplay_turns += 1
+            turns.append(_turn_record(
+                turn_index, formal["started_at"], turn_class=turn_class,
+                outcome={"status": "executed" if material else "pending",
+                         "selected_step": selected_step, "result": result},
+                before=before, after=after,
+                evidence=["private_feast_hosted_identity_and_resource_post"
+                          if material and action_attempted
+                          else "private_feast_restored_hosted_identity"
+                          if material else "private_feast_start_unresolved"],
+            ))
+            if not material:
+                current_attempt["stage"] = "private_activity_feast_stage5_start_postcondition"
+                raise StepPostconditionError(
+                    "private feast Start lacks independent material poststate",
+                    step_result=result, selected_step=selected_step)
+            return "private_activity_feast_stage5_start_" + result_status
+
         for turn_index in range(1, turn_count + 1):
             # A first Ctrl+C is deferred by the CLI until the previous typed
             # action and its independent postcondition have both completed.
@@ -1436,6 +1506,19 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if allow_private_activity_feast_stage5_start_formal_trial is True:
+                feast_ledger = read_feast_start_ledger(driver.state_dir)
+                if feast_ledger["pending"] is not None or feast_ledger["resolved"] is not None:
+                    current_attempt["stage"] = "private_activity_feast_stage5_start_recovery"
+                    private_activity_feast_stage5_start_formal = {
+                        "status": "recovery", "started_at": utc_now(),
+                        "action_attempted": False, "checkpoint_saved": False,
+                        "result": consume_feast_start_private_v1(driver, inputs={}),
+                    }
+                    status = finish_private_feast_start_trial(
+                        private_activity_feast_stage5_start_formal,
+                        before=before, turn_index=turn_index)
+                    break
             if private_child_matrilineal_pending_read_target is not None:
                 current_attempt["stage"] = "private_child_matrilineal_pending_read"
                 private_child_matrilineal_pending_observation = (
@@ -1702,6 +1785,32 @@ def native_auto_run(
                                             )
                                         )
                                         status = "private_activity_feast_stage5_start_assessed"
+                                        if allow_private_activity_feast_stage5_start_formal_trial is True:
+                                            observation = private_activity_feast_stage5_start_observation
+                                            policy = observation["policy_assessment"]
+                                            observation.update({
+                                                "decision": policy["decision"],
+                                                "decision_reason": policy.get("reason"),
+                                                "formal_action_ready": policy["decision"] == "start",
+                                            })
+                                            private_activity_feast_stage5_start_formal = {
+                                                "status": "submitted" if policy["decision"] == "start" else "held",
+                                                "started_at": utc_now(),
+                                                "action_attempted": policy["decision"] == "start",
+                                                "checkpoint_saved": False,
+                                                "result": policy,
+                                            }
+                                            if policy["decision"] == "start":
+                                                current_attempt["stage"] = "private_activity_feast_stage5_start_formal"
+                                                private_activity_feast_stage5_start_formal["result"] = (
+                                                    consume_feast_start_private_v1(
+                                                        driver, inputs=observation["inputs"],
+                                                        budget=observation["budget_observation"]["budget"],
+                                                    )
+                                                )
+                                            status = finish_private_feast_start_trial(
+                                                private_activity_feast_stage5_start_formal,
+                                                before=before, turn_index=turn_index)
                     else:
                         status = "private_activity_feast_stage1_option_observed"
                 elif private_activity_cost_slot12_raw_read is True:
@@ -4072,6 +4181,21 @@ def native_auto_run(
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
+        if allow_private_activity_feast_stage5_start_formal_trial is True:
+            formal = private_activity_feast_stage5_start_formal
+            qualified = bool(
+                primary_error is None and cleanup.get("ok") is True
+                and not date_advanced and isinstance(formal, dict)
+                and (
+                    (formal.get("status") == "held" and not turns
+                     and isinstance(private_activity_feast_stage5_start_observation, dict)
+                     and private_activity_feast_stage5_start_observation.get("same_frame") is True
+                     and formal["result"].get("decision") == "hold")
+                    or (formal["result"].get("postcondition_verified") is True
+                        and formal.get("checkpoint_saved") is True
+                        and len(turns) == 1)
+                )
+            )
     candidate_intercept_qualified = bool(
         before_submit is not None
         and opening_focus_gate is None
@@ -4163,6 +4287,14 @@ def native_auto_run(
             if (private_active_scheme_sway_target is not None
                 and allow_private_active_scheme_sway_formal_trial is True
                 and qualified)
+            else ("private_action_applied"
+                  if private_activity_feast_stage5_start_formal["action_attempted"]
+                  else "private_action_restored")
+            if (allow_private_activity_feast_stage5_start_formal_trial is True
+                and qualified
+                and private_activity_feast_stage5_start_formal["result"].get("postcondition_verified") is True)
+            else "read_only_observed"
+            if allow_private_activity_feast_stage5_start_formal_trial is True and qualified
             else "gui_open_observed"
             if (private_activity_feast_planner_open is True
                 and private_activity_cost_slot12_raw_read is not True
@@ -4279,6 +4411,11 @@ def native_auto_run(
             {"private_activity_feast_stage5_start_observation": copy.deepcopy(
                 private_activity_feast_stage5_start_observation)}
             if private_activity_feast_stage5_start_read is True else {}
+        ),
+        **(
+            {"private_activity_feast_stage5_start_formal": copy.deepcopy(
+                private_activity_feast_stage5_start_formal)}
+            if allow_private_activity_feast_stage5_start_formal_trial is True else {}
         ),
         **(
             {"private_activity_feast_guest_candidate_observation": copy.deepcopy(

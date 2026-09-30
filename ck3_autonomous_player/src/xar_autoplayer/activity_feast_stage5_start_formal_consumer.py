@@ -179,10 +179,45 @@ def reconcile_feast_start_private_v1(driver: object) -> dict[str, object]:
                 "date_raw": post["date_raw"],
                 "post_native_revision": post["snapshot_revision"],
                 "next_turn_consumed": False,
+                "activity_id": next(row["activity_id"] for row in post["hosted_activities"]
+                                    if row["activity_id"] not in {
+                                        item["activity_id"] for item in pending["pre_hosted_activities"]}),
+                "source_pending": pending,
                 "native_ack": pending.get("native_ack"),
                 "post": post}
     _write(state_dir, {**ledger, "pending": None, "resolved": resolved})
     return resolved
+
+
+def read_feast_start_resolved_private_v1(driver: object) -> dict[str, object]:
+    """Read the recorded feast identity before consuming a restored intent."""
+    ledger = read_feast_start_ledger(driver.state_dir)
+    resolved = ledger["resolved"]
+    if not isinstance(resolved, dict):
+        return {"status": "no_resolved", "postcondition_verified": False}
+    snapshot = driver.take_snapshot()
+    actor = snapshot.get("played_character")
+    if (not isinstance(actor, Mapping)
+            or actor.get("character_id") != resolved.get("actor_character_id")
+            or snapshot.get("paused") is not True):
+        return {"status": "resolved_other_actor_or_frame", "postcondition_verified": False}
+    try:
+        post = query_activity_feast_hosted_post_private_v1(
+            driver, expected_revision=snapshot["revision"])
+    except BridgeUnavailableError as exc:
+        return {"status": "resolved_post_read_red", "postcondition_verified": False,
+                "error": str(exc)}
+    activity_id = resolved.get("activity_id")
+    if (type(activity_id) is not int or not any(
+            row["activity_id"] == activity_id
+            and row["host_character_id"] == resolved["actor_character_id"]
+            and row["activity_type_key"] == "activity_feast"
+            for row in post["hosted_activities"])):
+        return {"status": "resolved_activity_unobserved", "postcondition_verified": False,
+                "post": post, "resolved": resolved}
+    return {"status": "already_applied", "postcondition_verified": True,
+            "restored_activity_observed": True, "restored_post": post,
+            "resolved": resolved}
 
 
 def consume_feast_start_private_v1(
@@ -198,8 +233,7 @@ def consume_feast_start_private_v1(
     if isinstance(ledger["pending"], dict):
         return reconcile_feast_start_private_v1(driver)
     if isinstance(ledger["resolved"], dict):
-        return {"status": "already_applied", "postcondition_verified": True,
-                "resolved": ledger["resolved"]}
+        return read_feast_start_resolved_private_v1(driver)
     decision = assess_feast_start_private_v1(inputs, guest=guest, budget=budget)
     if decision["decision"] != "start":
         return {**decision, "status": decision["status"]}

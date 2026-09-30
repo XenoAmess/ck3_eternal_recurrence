@@ -504,6 +504,10 @@ def parser() -> argparse.ArgumentParser:
         help="after four-cost read, assess native Start inputs; unknown guest and budget remain hold",
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-activity-feast-stage5-start-formal-trial", action="store_true",
+        help="default-off bounded feast Start consumer; requires native guest, CanStart and budget qualification",
+    )
+    native_auto_run_parser.add_argument(
         "--private-activity-feast-guest-candidate-read", action="store_true",
         help="after four-cost read, read one native filtered pre-invitation guest candidate without inviting",
     )
@@ -1160,6 +1164,8 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_activity_feast_stage5_full_cost_read else {}),
                     **({"private_activity_feast_stage5_start_read": True}
                       if args.private_activity_feast_stage5_start_read else {}),
+                    **({"allow_private_activity_feast_stage5_start_formal_trial": True}
+                      if args.allow_private_activity_feast_stage5_start_formal_trial else {}),
                     **({"private_activity_feast_guest_candidate_read": True}
                       if args.private_activity_feast_guest_candidate_read else {}),
                     **({"private_activity_feast_guest_route_proof_read": True}

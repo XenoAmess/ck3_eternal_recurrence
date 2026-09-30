@@ -629,6 +629,26 @@ class G2PreviewOperatorTest(unittest.TestCase):
         )
         self.assertIn("--private-activity-feast-stage5-start-read", command)
 
+    def test_feast_start_formal_trial_is_explicit_and_defaults_off(self) -> None:
+        common = ["run", "--manifest", "Z:/candidate/manifest.json",
+                  "--output", "Z:/candidate/run"]
+        self.assertFalse(g2_preview_operator.parser().parse_args(common)
+                         .private_activity_feast_stage5_start_formal_trial)
+        self.assertTrue(g2_preview_operator.parser().parse_args([
+            *common, "--private-activity-feast-stage5-start-formal-trial",
+        ]).private_activity_feast_stage5_start_formal_trial)
+        options = dict(turns=1, timeout=600, readiness_timeout=300,
+                       private_faction_round_id_value=None,
+                       private_activity_feast_stage5_start_read=True)
+        self.assertNotIn("--allow-private-activity-feast-stage5-start-formal-trial",
+                         g2_preview_operator.native_auto_run_command(
+                             ["python", "-m", "xar_autoplayer"], **options))
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], **options,
+            private_activity_feast_stage5_start_formal_trial=True)
+        self.assertIn("--allow-private-activity-feast-stage5-start-formal-trial", command)
+        self.assertIn("--private-activity-feast-stage5-start-read", command)
+
     def test_feast_guest_candidate_read_is_separate_private_flag(self) -> None:
         parsed = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "Z:/candidate/manifest.json",

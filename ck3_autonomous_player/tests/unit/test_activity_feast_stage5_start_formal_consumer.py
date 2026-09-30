@@ -167,6 +167,23 @@ class FeastStartConsumerTest(unittest.TestCase):
             self.assertIsNone(consume_feast_start_following_turn(
                 driver.state_dir, following))
 
+    def test_resolved_restore_reads_exact_hosted_id_without_resubmit(self) -> None:
+        with TemporaryDirectory() as temp:
+            driver = Driver(Path(temp))
+            qualified = inputs()
+            qualified["native_guest_route_qualified"] = True
+            first = consume_feast_start_private_v1(
+                driver, inputs=qualified, guest=guest(), budget=budget())
+            self.assertEqual(first["activity_id"], 77)
+            restored = consume_feast_start_private_v1(driver, inputs={})
+            self.assertEqual(restored["status"], "already_applied")
+            self.assertTrue(restored["restored_activity_observed"])
+            driver.post["hosted_activities"][0]["activity_id"] = 78
+            missing = consume_feast_start_private_v1(driver, inputs={})
+            self.assertEqual(missing["status"], "resolved_activity_unobserved")
+            self.assertFalse(missing["postcondition_verified"])
+            self.assertEqual(sum(row["step"] == START_STEP for row in driver.sent), 1)
+
     def test_timeout_or_ambiguous_post_never_retries_start(self) -> None:
         with TemporaryDirectory() as temp:
             driver = Driver(Path(temp))
