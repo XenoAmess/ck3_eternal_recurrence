@@ -1402,6 +1402,7 @@ def native_auto_run_command(
     private_activity_feast_stage2_destination_province: int | None = None,
     private_activity_feast_stage5_full_cost_read: bool = False,
     private_activity_feast_stage5_start_read: bool = False,
+    private_activity_feast_stage5_start_formal_trial: bool = False,
     private_activity_feast_guest_candidate_read: bool = False,
     private_activity_feast_guest_route_proof_read: bool = False,
     private_activity_feast_guest_target_character_id: int | None = None,
@@ -1494,6 +1495,8 @@ def native_auto_run_command(
         command.append("--private-activity-feast-stage5-full-cost-read")
     if private_activity_feast_stage5_start_read:
         command.append("--private-activity-feast-stage5-start-read")
+    if private_activity_feast_stage5_start_formal_trial:
+        command.append("--allow-private-activity-feast-stage5-start-formal-trial")
     if private_activity_feast_guest_candidate_read:
         command.append("--private-activity-feast-guest-candidate-read")
     if private_activity_feast_guest_route_proof_read:
@@ -2186,6 +2189,10 @@ def command_run(args: argparse.Namespace) -> int:
     if (args.private_activity_feast_stage5_start_read
             and not args.private_activity_feast_stage5_full_cost_read):
         raise ValueError("private stage-5 Start read requires the full-cost route")
+    if (args.private_activity_feast_stage5_start_formal_trial
+            and (not args.private_activity_feast_stage5_start_read
+                 or args.turns not in {None, 1})):
+        raise ValueError("private feast Start formal trial requires one bounded Start input assessment")
     if (args.private_activity_feast_guest_candidate_read
             and not args.private_activity_feast_stage5_full_cost_read):
         raise ValueError("private feast guest candidate read requires the full-cost route")
@@ -2430,6 +2437,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_feast_stage5_start_read": (
             args.private_activity_feast_stage5_start_read
         ),
+        "private_activity_feast_stage5_start_formal_trial": (
+            args.private_activity_feast_stage5_start_formal_trial
+        ),
         "private_activity_feast_guest_candidate_read": (
             args.private_activity_feast_guest_candidate_read
         ),
@@ -2558,6 +2568,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_activity_feast_stage5_start_read=(
                     args.private_activity_feast_stage5_start_read
+                ),
+                private_activity_feast_stage5_start_formal_trial=(
+                    args.private_activity_feast_stage5_start_formal_trial
                 ),
                 private_activity_feast_guest_candidate_read=(
                     args.private_activity_feast_guest_candidate_read
@@ -3451,6 +3464,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-feast-stage5-start-read", action="store_true",
         help="after Stage-5 cost read, assess private Start inputs without assuming guests",
+    )
+    run.add_argument(
+        "--private-activity-feast-stage5-start-formal-trial", action="store_true",
+        help="default-off single bounded Start consumer with native guest/CanStart/budget gates",
     )
     run.add_argument(
         "--private-activity-feast-guest-candidate-read", action="store_true",

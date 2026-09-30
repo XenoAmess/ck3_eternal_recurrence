@@ -121,6 +121,13 @@ class _NativeAutoRunHarness:
         self.activity_stage2_destination_select_count = 0
         self.activity_stage5_full_cost_query_count = 0
         self.activity_stage5_start_inputs_query_count = 0
+        self.activity_start_guest_qualified = False
+        self.activity_start_final_can_start = True
+        self.activity_start_submit_count = 0
+        self.activity_start_post_count = 0
+        self.activity_start_material = True
+        self.activity_start_gold_raw = 120_000_000
+        self.activity_start_hosted: list[dict[str, object]] = []
         self.activity_guest_candidate_query_count = 0
         self.activity_guest_candidate_status = "observed"
         self.activity_guest_route_proof_query_count = 0
@@ -1532,6 +1539,8 @@ class _FakeActivityFeastEndpoint:
             "select-activity-feast-stage2-destination-v1-private",
             "query-activity-stage5-feast-full-cost-v1-private",
             "query-activity-feast-stage5-start-inputs-v1-private",
+            "start-activity-feast-stage5-v1-private",
+            "query-activity-feast-hosted-post-v1-private",
             "query-activity-feast-guest-candidate-v1",
             "query-activity-feast-stage5-guest-route-proof-v1-private",
             "query-activity-feast-stage5-guest-target-v1-private",
@@ -1618,6 +1627,13 @@ class _FakeActivityFeastEndpoint:
             self.harness.activity_stage5_full_cost_query_count += 1
         elif request["step"] == "query-activity-feast-stage5-start-inputs-v1-private":
             self.harness.activity_stage5_start_inputs_query_count += 1
+        elif request["step"] == "start-activity-feast-stage5-v1-private":
+            assert request["policy_positive"] is True
+            assert request["previous_submit_pending"] is False
+            assert request["reserve_gold_raw"] == 20_000_000
+            self.harness.activity_start_submit_count += 1
+        elif request["step"] == "query-activity-feast-hosted-post-v1-private":
+            self.harness.activity_start_post_count += 1
         elif request["step"] == "query-activity-feast-guest-candidate-v1":
             self.harness.activity_guest_candidate_query_count += 1
         elif request["step"] == "query-activity-feast-stage5-guest-route-proof-v1-private":
@@ -1880,7 +1896,7 @@ class _FakeActivityFeastState:
             }
         if request["step"] == "query-activity-feast-stage5-start-inputs-v1-private":
             assert self.harness.activity_feast_open_stage == 5
-            return {
+            frame = {
                 "type": "command_result", "protocol_version": 1,
                 "request_id": request_id, "ok": True,
                 "result": {
@@ -1896,7 +1912,7 @@ class _FakeActivityFeastState:
                         "selected_option_key": "feast_type_generic",
                         "planning_stage": 5, "scale": 100000,
                         "normal_refresh_sequence": 1,
-                        "final_can_start": True,
+                        "final_can_start": self.harness.activity_start_final_can_start,
                         "resources": {
                             "gold": {"resource_index": 0, "configured_cost_raw": 500000},
                             "treasury": {"resource_index": 1, "configured_cost_raw": 0},
@@ -1904,7 +1920,7 @@ class _FakeActivityFeastState:
                             "barter_goods": {"resource_index": 3, "configured_cost_raw": 0},
                         },
                         "balances": {
-                            "gold": {"available": True, "raw": 1_000_000},
+                            "gold": {"available": True, "raw": self.harness.activity_start_gold_raw},
                             "treasury": {"available": False, "raw": None},
                             "piety": {"available": False, "raw": None},
                             "barter_goods": {"available": False, "raw": None},
@@ -1920,6 +1936,57 @@ class _FakeActivityFeastState:
                     },
                     "backend_id": "native-headless",
                 },
+            }
+            if self.harness.activity_start_guest_qualified:
+                frame["result"]["activity_feast_stage5_start_inputs"].update({
+                    "native_guest_route_qualified": True, "guest_join_status": "observed",
+                    "selected_nonhost_count": 1, "positive_join_count": 1,
+                    "timely_positive_join_count": 1, "arrival_time_observed": True,
+                })
+            return frame
+        if request["step"] == "start-activity-feast-stage5-v1-private":
+            if self.harness.activity_start_material:
+                self.harness.activity_start_gold_raw -= 500000
+                self.harness.activity_start_hosted = [{
+                    "activity_id": 77, "activity_type_key": "activity_feast",
+                    "host_character_id": self.harness.played_character_id,
+                }]
+                self.harness.native_revision += 1
+                self.harness.public_revision += 1
+            return {
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True,
+                "result": {"step": request["step"], "accepted": True,
+                           "status": "pending", "private_build": True,
+                           "read_only": False, "advertised": False,
+                           "backend_id": "native-headless",
+                           "activity_feast_stage5_start": {
+                               "schema": "activity-feast-stage5-start-private-action-v1",
+                               "submitted": True, "native_status": "submitted_pending",
+                               "precondition": {},
+                           }},
+            }
+        if request["step"] == "query-activity-feast-hosted-post-v1-private":
+            return {
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True,
+                "result": {"step": request["step"], "accepted": True,
+                           "status": "available", "private_build": True,
+                           "read_only": True, "advertised": False,
+                           "backend_id": "native-headless",
+                           "activity_feast_hosted_post": {
+                               "schema": "activity-feast-hosted-post-private-read-v1",
+                               "snapshot_revision": self.harness.native_revision,
+                               "date_raw": self.harness.date_raw,
+                               "actor_character_id": self.harness.played_character_id,
+                               "balances": {
+                                   "gold": {"available": True, "raw": self.harness.activity_start_gold_raw},
+                                   **{key: {"available": False, "raw": None}
+                                      for key in ("treasury", "piety", "barter_goods")},
+                               },
+                               "hosted_activities": self.harness.activity_start_hosted,
+                               "read_only": True, "advertised": False,
+                           }},
             }
         if request["step"] == "query-activity-feast-stage5-guest-route-proof-v1-private":
             assert self.harness.activity_feast_open_stage == 5
@@ -2709,6 +2776,11 @@ class NativeAutoRunTests(unittest.TestCase):
         private_activity_feast_stage2_destination_province_id: int | None = None,
         private_activity_feast_stage5_full_cost_read: bool = False,
         private_activity_feast_stage5_start_read: bool = False,
+        allow_private_activity_feast_stage5_start_formal_trial: bool = False,
+        activity_start_guest_qualified: bool = False,
+        activity_start_final_can_start: bool = True,
+        activity_start_material: bool = True,
+        activity_start_restored_id: int | None = None,
         private_activity_feast_guest_candidate_read: bool = False,
         private_activity_feast_guest_route_proof_read: bool = False,
         private_activity_feast_guest_target_character_id: int | None = None,
@@ -2846,6 +2918,15 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_stage2_location_error = activity_stage2_location_error
         harness.activity_stage2_destination_error = activity_stage2_destination_error
         harness.activity_stage5_full_cost_error = activity_stage5_full_cost_error
+        harness.activity_start_guest_qualified = activity_start_guest_qualified
+        harness.activity_start_final_can_start = activity_start_final_can_start
+        harness.activity_start_material = activity_start_material
+        if activity_start_restored_id is not None:
+            harness.activity_start_hosted = [{
+                "activity_id": activity_start_restored_id,
+                "activity_type_key": "activity_feast",
+                "host_character_id": harness.played_character_id,
+            }]
         harness.activity_guest_candidate_status = activity_guest_candidate_status
         harness.activity_guest_route_proof_status = activity_guest_route_proof_status
         harness.activity_guest_target_character_id = private_activity_feast_guest_target_character_id
@@ -3007,6 +3088,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_activity_feast_stage5_start_read=(
                     private_activity_feast_stage5_start_read
+                ),
+                allow_private_activity_feast_stage5_start_formal_trial=(
+                    allow_private_activity_feast_stage5_start_formal_trial
                 ),
                 private_activity_feast_guest_candidate_read=(
                     private_activity_feast_guest_candidate_read
@@ -3700,6 +3784,95 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_query, True)
         self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_action, False)
         self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_start_formal_trial_defaults_off_and_holds(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run", "--turns", "1"]
+        self.assertFalse(cli.parser().parse_args(common)
+                         .allow_private_activity_feast_stage5_start_formal_trial)
+        self.assertTrue(cli.parser().parse_args([
+            *common, "--allow-private-activity-feast-stage5-start-formal-trial",
+        ]).allow_private_activity_feast_stage5_start_formal_trial)
+        route = dict(
+            private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            private_activity_feast_stage2_destination_province_id=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_stage5_start_read=True,
+            allow_private_activity_feast_stage5_start_formal_trial=True,
+            activity_feast_open_stage=1,
+        )
+        for native_can_start, qualified, reason in (
+            (True, False, "native_guest_route_unqualified"),
+            (False, True, "native_final_start_unavailable"),
+        ):
+            with self.subTest(reason=reason):
+                report, harness = self._run(
+                    ["advance"], **route, activity_start_final_can_start=native_can_start,
+                    activity_start_guest_qualified=qualified)
+                self.assertTrue(report["ok"], report.get("first_blocker"))
+                self.assertEqual(report["outcome"], "read_only_observed")
+                formal = report["private_activity_feast_stage5_start_formal"]
+                self.assertEqual(formal["result"]["reason"], reason)
+                self.assertFalse(formal["action_attempted"])
+                self.assertEqual(harness.activity_start_submit_count, 0)
+                self.assertEqual(harness.auto_turn_count, 0)
+                self.assertEqual(report["auto_run"]["counts"]["gameplay"], 0)
+
+    def test_private_feast_start_formal_material_checkpoint_and_restore(self) -> None:
+        route = dict(
+            private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            private_activity_feast_stage2_destination_province_id=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_stage5_start_read=True,
+            allow_private_activity_feast_stage5_start_formal_trial=True,
+            activity_start_guest_qualified=True, activity_feast_open_stage=1,
+        )
+        report, harness = self._run(["advance"], **route)
+        self.assertTrue(report["ok"], report.get("first_blocker"))
+        self.assertEqual(report["outcome"], "private_action_applied")
+        formal = report["private_activity_feast_stage5_start_formal"]
+        self.assertTrue(formal["result"]["postcondition_verified"])
+        self.assertTrue(formal["checkpoint_saved"])
+        self.assertEqual(formal["result"]["activity_id"], 77)
+        self.assertEqual(harness.activity_start_submit_count, 1)
+        self.assertEqual(harness.activity_start_post_count, 1)
+        self.assertEqual(harness.activity_start_gold_raw, 119_500_000)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["counts"]["gameplay"], 1)
+        restored, resumed = self._run(
+            ["advance"], **route, activity_start_restored_id=77)
+        self.assertTrue(restored["ok"], restored.get("first_blocker"))
+        self.assertEqual(restored["outcome"], "private_action_restored")
+        self.assertEqual(resumed.activity_start_post_count, 1)
+        self.assertEqual(resumed.activity_start_submit_count, 0)
+        self.assertEqual(resumed.activity_feast_open_count, 0)
+        self.assertEqual(restored["auto_run"]["counts"]["gameplay"], 0)
+        self.assertEqual(restored["auto_run"]["counts"]["query"], 1)
+
+    def test_private_feast_start_ack_without_effect_stays_red_pending(self) -> None:
+        route = dict(
+            private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            private_activity_feast_stage2_destination_province_id=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_stage5_start_read=True,
+            allow_private_activity_feast_stage5_start_formal_trial=True,
+            activity_start_guest_qualified=True, activity_start_material=False,
+            activity_feast_open_stage=1,
+        )
+        first, submitted = self._run(["advance"], **route)
+        self.assertFalse(first["ok"])
+        self.assertEqual(first["private_activity_feast_stage5_start_formal"]
+                         ["result"]["status"], "pending_post_unresolved")
+        self.assertTrue(first["private_activity_feast_stage5_start_formal"]["checkpoint_saved"])
+        self.assertEqual(first["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertEqual(submitted.activity_start_submit_count, 1)
+        second, resumed = self._run(["advance"], **route)
+        self.assertFalse(second["ok"])
+        self.assertEqual(resumed.activity_start_submit_count, 0)
+        self.assertEqual(resumed.activity_feast_open_count, 0)
+        self.assertEqual(resumed.activity_start_post_count, 1)
 
     def test_private_feast_guest_candidate_remains_pre_invitation(self) -> None:
         common = ["--bridge-mode", "native-headless", "native-auto-run", "--turns", "1"]
