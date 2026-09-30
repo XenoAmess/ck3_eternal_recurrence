@@ -50,6 +50,58 @@
 
 [086 同暂停帧回放](active-combat-forecast-input-gap-2026-09-27.md#086-同暂停帧双查询实采)实证修复后的 battle-control 返回成功，也把现役输入边界量化：真实战宽 `1645/1480`，同帧 v3 的假定首次接战战宽 `1539/1385`。v3 的 `available` 指向可读的 precontact slice，不是对已开战 CombatID 续算的授权；现役 typed receipt 仍报告五个操作数域未齐。当前战前估计继续实际使用，现役继续由独立 battle-control 读口与撤退合法性控制。
 
+## 2026-09-30：R0402 同省多守军的消费适配
+
+[live input + production-path replay; no new battle/action] R0402 从 Robert
+`h3935` / driver history `3938` 的官方配对恢复，运行源
+`e718c905875bde661cfda2ef569a8677726c49c6`，原版 EXE 与本专题冻结身份相同。
+turn 8 在 `native:4` / public revision `5` / raw `53219928` 被围城解围入口阻塞。
+玩家 Army `83886367` 驻 `2610`，目标 `2629` 有敌 Army
+`50331920`、`83886484`，明确入场边 `2630`。原生 v3 查询精确使用这两个
+有序 defender ID；外层和 base 的 `input_observation_ready=true`，三军完整，
+所选军队 `ongoing_combats=[]`。`planner_usable=false`、正式 EU
+`producer_unavailable` 仍是原有独立合同状态，不会关闭既有有界模型。
+
+实际报告：
+`D:\ck3-nw-robert-formal-nonwar-candidate-20260930\operator-runs\robert-formal-nonwar-opportunity-8turn-1\formal-report.txt`，
+SHA-256 `338AB130904596D32572966753DF115FA56C8FD5712EF5D109B576595CC80773`。
+一次 mmap 从该轮 driver 提取的完整原生 v3：
+`D:\nw-pending-progress-review-20260930\r0402-exact-v3-payload.json`，
+SHA-256 `D6C1E18CCEF7EF500FB5ABA5CF963A0081E0511CC033B41D0E948665217DE157`。
+
+源码核实 `forecast_fixed_contact` 已接收非空有序多军名单，原生优势适配也从
+每方全部同帧军队匹配选中的将领；模型和原生接口无须重建。旧围城 helper
+在调用前残留 `len(defender_army_ids)==1`，导致本例直接返回
+`same_frame_encounter_scope_mismatch`。完整真实输入的旧 helper replay
+复现该状态，模型调用次数为 `0`，己方实际冻结兵数 `2333`。
+本包只将该残留单军限制改为已有合同的非空名单条件，保留同帧、目标、入场边、
+双方有序名单、侧别、首次接战及现有防守风险预算；不修改模型、原生桥或正式 EU 开关。
+
+```mermaid
+flowchart TD
+  A[同帧原生 v3: 明确目标/入场边/有序双方名单] --> B{完整输入与非空守军名单匹配?}
+  B -->|是| C[既有固定参战者 whole-battle 试算]
+  B -->|否| D[保留 typed unavailable]
+  C --> E{原有防守风险预算及短段行军合同通过?}
+  E -->|是| F[既有 typed 移动消费者]
+  E -->|否| G[保留实际模型拒绝理由]
+  F -.-> U[unknown: 当前 Robert 新接战/独立战果后置]
+```
+
+修复后的同一完整输入经生产 helper 调用未改动模型一次，保留全部三军，
+512 trial / 120 日及原防守风险预算，返回 `provisional_admissible`。
+该结果是有来源和假设的模型估计，不是校准原版胜率或已执行移动。
+前后冻结输入 SHA 相同；replay 位于
+`D:\nw-r0402-multi-defender-20260930\replay-before.json`
+（SHA-256 `66060384DC6E45E21A61EBDC8165AA53D76664BF8D832675A5E437E2EC94A9DF`）与
+`replay-after.json`
+（SHA-256 `0D39FC1470A4F1ACF6E551C3F5C64A41B3E8C7929D0A97F7F4A81AF6AEBC26D2`）。
+既有围城 canary 聚焦测试 normal / `-O` 各 `9/9`、另 `2` subtest 通过；
+新回归核完整有序双守军转交和模型 unavailable 的原样保留，原有空名单及
+错序拒绝仍通过。日志在同目录 `normal/test.log`、`optimized/test.log`。
+没有新增 CK3 轮次、游戏动作、日期或公共能力资格；后续匹配候选仍须正式消费者、
+独立后置、下一 turn 与规定恢复。
+
 ## 静态验收
 
 ```text

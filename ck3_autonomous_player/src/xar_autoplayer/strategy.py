@@ -16877,7 +16877,7 @@ def _provisional_defense_research_assessment(
         and scenario.get("attacker_side") == "player_or_allied"
         and scenario.get("defender_side") == "enemy"
         and scenario.get("actual_route_dependency") is False
-        and len(defender_army_ids) == 1
+        and bool(defender_army_ids)
         and friendly_current_soldiers > 0
     ):
         return {"status": "same_frame_encounter_scope_mismatch"}
