@@ -1,0 +1,41 @@
+{
+  "response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-center-diag-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-b8fda33bc6da-center.json",
+    "bytes": 12306,
+    "sha256": "7A24DAED302015211969AD5396DF6B0CB4824CFC857EC05DD9169EF5D4AB6C52"
+  },
+  "actual_reply_result": "RED",
+  "actual_reply_error": "RuntimeError('MCP call failed: ck3_center_map_on_landed_title_v1; inspect journal')",
+  "diagnostic_frames": [
+    {
+      "type": "snapshot_publish_diagnostic",
+      "protocol_version": 1,
+      "request_id": "step-4-a48fc7a0cfa7",
+      "phase": "end",
+      "status": "title-map-navigation-failure",
+      "payload_bytes": 0,
+      "diagnostic_kind": "title-map-navigation-failure-v1",
+      "revision": 3,
+      "expected_native_revision": 3,
+      "failure_stage": "mailbox-camera-command-rejected",
+      "observed_snapshot_read": true,
+      "different_snapshot_fields": [],
+      "expected_date_raw": 53146488,
+      "observed_date_raw": 53146488,
+      "expected_actor_id": 29829,
+      "observed_actor_id": 29829,
+      "camera_failure_predicate": "post-dispatch-target-position-drift",
+      "mailbox_snapshot_failure_predicate": "",
+      "mailbox_snapshot_different_fields": [],
+      "camera_status_raw": 11,
+      "callback_count": 2,
+      "last_pump_epoch": 18161,
+      "initialized": true,
+      "dispatched": true
+    }
+  ],
+  "diagnostic_observed": true,
+  "classification_rule": "observed_snapshot_read=false means read unavailable, regardless of drift stage text; no differing-fields claim is valid for an unread snapshot",
+  "preserved_before_cleanup": true,
+  "new_center_success_claimed": false
+}
