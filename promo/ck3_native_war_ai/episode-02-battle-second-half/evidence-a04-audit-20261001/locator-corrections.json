@@ -1,0 +1,736 @@
+{
+  "schema": "ck3.a04.evidence-locator-corrections.v1",
+  "at_utc": "2026-09-30T19:27:14.759121+00:00",
+  "files": [
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a04-v2.json",
+      "before": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a04-v2.json",
+        "bytes": 256474,
+        "sha256": "697EDD37D55DFC6F11BD5B7FCF4DDFD8A28D4342A66010A772932C08B3F96378"
+      },
+      "after": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a04-v2.json",
+        "bytes": 256417,
+        "sha256": "F1D62CCF8D141D6CE41508D108B32CC52C2572A5B11E8BEC46A9F0E337A9851B"
+      },
+      "only_citation_fields_changed": true,
+      "facts": [
+        {
+          "key": "opening-o002",
+          "fact_index": 1,
+          "before": {
+            "claim": "sameA05 War4明确targeted_title_ids[2111]、objective_province2638；fixed name mapping给2111=c_siracusa/holder31549/name塞尔古塞。",
+            "source_path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-snapshot.json",
+            "source_field_or_line": "snapshot.body.active_wars[war_id=4]: player_side=attacker,primary_opponent=31549,targeted_title_ids=[2111],objective_province=2638；Title name见C:/w/ep2a03/docs/ck3-native-ai/episode01-day11-day21-combat-human-names-2026-09-27.md:14；verification agent已只读核对。",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "sameA05 War4明确targeted_title_ids[2111]、objective_province2638；fixed name mapping给2111=c_siracusa/holder31549/name塞尔古塞。",
+            "source_path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-snapshot.json",
+            "source_field_or_line": "/body/active_wars/0; Title name: C:/w/ep2a03/docs/ck3-native-ai/episode01-day11-day21-combat-human-names-2026-09-27.md:14",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\ck3-output\\interactive-requests-responses\\e2t-s02-d32-snapshot.json",
+            "bytes": 580630,
+            "sha256": "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7"
+          },
+          "resolved_values": {
+            "/body/active_wars/0": {
+              "war_id": 4,
+              "player_side": "attacker",
+              "primary_opponent_character_id": 31549,
+              "player_is_primary_war_leader": true,
+              "enemy_primary_default_raise_province_id": 2638,
+              "targeted_title_ids": [
+                2111
+              ],
+              "war_objective_province_ids": [
+                2638
+              ],
+              "objective_province_states": [
+                {
+                  "province_id": 2638,
+                  "occupation_observable": true,
+                  "is_occupied": false,
+                  "occupying_character_id": null,
+                  "fort_level": 3,
+                  "garrison_size": 444,
+                  "besieging_strength": 0,
+                  "siege_observable": true,
+                  "active_siege": null
+                }
+              ],
+              "player_relative_war_score": -50,
+              "allied_armies": [
+                {
+                  "army_id": 18,
+                  "owner_character_id": 29829,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": 2619,
+                  "move_target_observable": true,
+                  "controllable": true,
+                  "source": "native",
+                  "route_province_ids": [
+                    2627,
+                    2626,
+                    8753,
+                    2629,
+                    2630,
+                    2631,
+                    2624,
+                    2619
+                  ],
+                  "in_combat": false,
+                  "retreating": true,
+                  "army_state": "retreating",
+                  "army_state_code": 6,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                }
+              ],
+              "enemy_armies": [
+                {
+                  "army_id": 16777221,
+                  "owner_character_id": 31549,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 16777231,
+                  "owner_character_id": 32725,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 22,
+                  "owner_character_id": 32231,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 27,
+                  "owner_character_id": 34320,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 28,
+                  "owner_character_id": 34474,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                }
+              ],
+              "source": "native"
+            }
+          }
+        },
+        {
+          "key": "terminal-t003",
+          "fact_index": 0,
+          "before": {
+            "claim": "真实战争进攻方；旁列battle side1/war attacker",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.player_combat_side; terminal.player_war_side; ui_anchors[war_before]",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "真实战争进攻方；旁列battle side1/war attacker",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/player_combat_side; /terminal/player_war_side; /ui_anchors/2/visible",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/player_combat_side": 1,
+            "/terminal/player_war_side": "attacker",
+            "/ui_anchors/2/visible": "战争窗左侧罗贝尔为进攻方；战争分数0%，剑图标战斗分项0%。"
+          }
+        },
+        {
+          "key": "terminal-t004",
+          "fact_index": 0,
+          "before": {
+            "claim": "Army18败后撤退状态；保留中央事件遮挡，原生后态in_combat=false/retreating=true",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.successor; terminal.poststate_army; ui_anchors[writer_near]",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "Army18败后撤退状态；保留中央事件遮挡，原生后态in_combat=false/retreating=true",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/successor; /terminal/poststate_army; /ui_anchors/3/visible",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/successor": "subject_retreating",
+            "/terminal/poststate_army": {
+              "army_id": 18,
+              "in_combat": false,
+              "retreating": true
+            },
+            "/ui_anchors/3/visible": "中央诺曼人的西西里事件窗遮挡；左下军队明确撤退至阿普利亚，不能把此帧当无遮挡战果界面。"
+          }
+        },
+        {
+          "key": "terminal-t005",
+          "fact_index": 0,
+          "before": {
+            "claim": "war_before0%与war_after-50%；两段明确标录制段",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "ui_anchors[war_before].visible; ui_anchors[war_after].visible",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "war_before0%与war_after-50%；两段明确标录制段",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/ui_anchors/2/visible; /ui_anchors/4/visible",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/ui_anchors/2/visible": "战争窗左侧罗贝尔为进攻方；战争分数0%，剑图标战斗分项0%。",
+            "/ui_anchors/4/visible": "战争分数-50%，剑图标战斗分项-50%；中央事件窗遮挡，需聚焦底部战争窗。"
+          }
+        },
+        {
+          "key": "terminal-t014",
+          "fact_index": 0,
+          "before": {
+            "claim": "同run terminal numerator53662042与defender participant_hard_total_raw52662042差1000000；不是终局新增杀伤",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.numerator_raw; terminal.participant_hard_raw; terminal.numerator_minus_hard_ledger_raw",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "同run terminal numerator53662042与defender participant_hard_total_raw52662042差1000000；不是终局新增杀伤",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/numerator_raw; /terminal/participant_hard_raw; /terminal/numerator_minus_hard_ledger_raw",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/numerator_raw": 53662042,
+            "/terminal/participant_hard_raw": 52662042,
+            "/terminal/numerator_minus_hard_ledger_raw": 1000000
+          }
+        },
+        {
+          "key": "terminal-t015",
+          "fact_index": 0,
+          "before": {
+            "claim": "明确标计分输入/逐团账口径不同；不是死亡人数",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.numerator_not_literal_verified_deaths; excluded_claims",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "明确标计分输入/逐团账口径不同；不是死亡人数",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/numerator_not_literal_verified_deaths; /excluded_claims",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/numerator_not_literal_verified_deaths": true,
+            "/excluded_claims": [
+              "四天追击造成63人损失",
+              "63名伤员全部伤势加深或治疗失败",
+              "当前作战兵力额外减少63人",
+              "536人实际战死已由逐团账核实",
+              "996为当场当前兵力或全军满员兵力",
+              "战争进攻方等于战斗进攻方",
+              "追击属性按某固定几率击杀",
+              "人工完整1x审片或clean span已完成"
+            ]
+          }
+        },
+        {
+          "key": "terminal-t037",
+          "fact_index": 0,
+          "before": {
+            "claim": "保留真实战争窗结尾；不出现胜率或战争终结宣告",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.do_not_generalize; terminal-score",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "保留真实战争窗结尾；不出现胜率或战争终结宣告",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/do_not_generalize; /excluded_claims",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/do_not_generalize": "本次战争总分也为-50，已由独立snapshot和UI验证；单场战斗贡献不等于一般战争总分。败退不是已验证主动撤退策略。",
+            "/excluded_claims": [
+              "四天追击造成63人损失",
+              "63名伤员全部伤势加深或治疗失败",
+              "当前作战兵力额外减少63人",
+              "536人实际战死已由逐团账核实",
+              "996为当场当前兵力或全军满员兵力",
+              "战争进攻方等于战斗进攻方",
+              "追击属性按某固定几率击杀",
+              "人工完整1x审片或clean span已完成"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a04.json",
+      "before": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a04.json",
+        "bytes": 256330,
+        "sha256": "E6644B63B3F70B4894D90EE76D18D4A23AB1A4CC6D80279E39173A070996C9A6"
+      },
+      "after": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a04.json",
+        "bytes": 256273,
+        "sha256": "7396452CDCF7C71674709198BCB1AB1BE745C18094D78943100A46A6C03A820A"
+      },
+      "only_citation_fields_changed": true,
+      "facts": [
+        {
+          "key": "opening-o002",
+          "fact_index": 1,
+          "before": {
+            "claim": "sameA05 War4明确targeted_title_ids[2111]、objective_province2638；fixed name mapping给2111=c_siracusa/holder31549/name塞尔古塞。",
+            "source_path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-snapshot.json",
+            "source_field_or_line": "snapshot.body.active_wars[war_id=4]: player_side=attacker,primary_opponent=31549,targeted_title_ids=[2111],objective_province=2638；Title name见C:/w/ep2a03/docs/ck3-native-ai/episode01-day11-day21-combat-human-names-2026-09-27.md:14；verification agent已只读核对。",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "sameA05 War4明确targeted_title_ids[2111]、objective_province2638；fixed name mapping给2111=c_siracusa/holder31549/name塞尔古塞。",
+            "source_path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-snapshot.json",
+            "source_field_or_line": "/body/active_wars/0; Title name: C:/w/ep2a03/docs/ck3-native-ai/episode01-day11-day21-combat-human-names-2026-09-27.md:14",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\ck3-output\\interactive-requests-responses\\e2t-s02-d32-snapshot.json",
+            "bytes": 580630,
+            "sha256": "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7"
+          },
+          "resolved_values": {
+            "/body/active_wars/0": {
+              "war_id": 4,
+              "player_side": "attacker",
+              "primary_opponent_character_id": 31549,
+              "player_is_primary_war_leader": true,
+              "enemy_primary_default_raise_province_id": 2638,
+              "targeted_title_ids": [
+                2111
+              ],
+              "war_objective_province_ids": [
+                2638
+              ],
+              "objective_province_states": [
+                {
+                  "province_id": 2638,
+                  "occupation_observable": true,
+                  "is_occupied": false,
+                  "occupying_character_id": null,
+                  "fort_level": 3,
+                  "garrison_size": 444,
+                  "besieging_strength": 0,
+                  "siege_observable": true,
+                  "active_siege": null
+                }
+              ],
+              "player_relative_war_score": -50,
+              "allied_armies": [
+                {
+                  "army_id": 18,
+                  "owner_character_id": 29829,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": 2619,
+                  "move_target_observable": true,
+                  "controllable": true,
+                  "source": "native",
+                  "route_province_ids": [
+                    2627,
+                    2626,
+                    8753,
+                    2629,
+                    2630,
+                    2631,
+                    2624,
+                    2619
+                  ],
+                  "in_combat": false,
+                  "retreating": true,
+                  "army_state": "retreating",
+                  "army_state_code": 6,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                }
+              ],
+              "enemy_armies": [
+                {
+                  "army_id": 16777221,
+                  "owner_character_id": 31549,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 16777231,
+                  "owner_character_id": 32725,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 22,
+                  "owner_character_id": 32231,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 27,
+                  "owner_character_id": 34320,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                },
+                {
+                  "army_id": 28,
+                  "owner_character_id": 34474,
+                  "soldiers": null,
+                  "current_province_id": 2633,
+                  "move_target_province_id": null,
+                  "move_target_observable": false,
+                  "controllable": false,
+                  "source": "native",
+                  "route_province_ids": [],
+                  "in_combat": false,
+                  "retreating": false,
+                  "army_state": "sieging",
+                  "army_state_code": 3,
+                  "siege_days_left": null,
+                  "siege_province_holder_character_id": null,
+                  "siege_province_in_player_subrealm": null
+                }
+              ],
+              "source": "native"
+            }
+          }
+        },
+        {
+          "key": "terminal-t003",
+          "fact_index": 0,
+          "before": {
+            "claim": "真实战争进攻方；旁列battle side1/war attacker",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.player_combat_side; terminal.player_war_side; ui_anchors[war_before]",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "真实战争进攻方；旁列battle side1/war attacker",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/player_combat_side; /terminal/player_war_side; /ui_anchors/2/visible",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/player_combat_side": 1,
+            "/terminal/player_war_side": "attacker",
+            "/ui_anchors/2/visible": "战争窗左侧罗贝尔为进攻方；战争分数0%，剑图标战斗分项0%。"
+          }
+        },
+        {
+          "key": "terminal-t004",
+          "fact_index": 0,
+          "before": {
+            "claim": "Army18败后撤退状态；保留中央事件遮挡，原生后态in_combat=false/retreating=true",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.successor; terminal.poststate_army; ui_anchors[writer_near]",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "Army18败后撤退状态；保留中央事件遮挡，原生后态in_combat=false/retreating=true",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/successor; /terminal/poststate_army; /ui_anchors/3/visible",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/successor": "subject_retreating",
+            "/terminal/poststate_army": {
+              "army_id": 18,
+              "in_combat": false,
+              "retreating": true
+            },
+            "/ui_anchors/3/visible": "中央诺曼人的西西里事件窗遮挡；左下军队明确撤退至阿普利亚，不能把此帧当无遮挡战果界面。"
+          }
+        },
+        {
+          "key": "terminal-t005",
+          "fact_index": 0,
+          "before": {
+            "claim": "war_before0%与war_after-50%；两段明确标录制段",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "ui_anchors[war_before].visible; ui_anchors[war_after].visible",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "war_before0%与war_after-50%；两段明确标录制段",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/ui_anchors/2/visible; /ui_anchors/4/visible",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/ui_anchors/2/visible": "战争窗左侧罗贝尔为进攻方；战争分数0%，剑图标战斗分项0%。",
+            "/ui_anchors/4/visible": "战争分数-50%，剑图标战斗分项-50%；中央事件窗遮挡，需聚焦底部战争窗。"
+          }
+        },
+        {
+          "key": "terminal-t014",
+          "fact_index": 0,
+          "before": {
+            "claim": "同run terminal numerator53662042与defender participant_hard_total_raw52662042差1000000；不是终局新增杀伤",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.numerator_raw; terminal.participant_hard_raw; terminal.numerator_minus_hard_ledger_raw",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "同run terminal numerator53662042与defender participant_hard_total_raw52662042差1000000；不是终局新增杀伤",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/numerator_raw; /terminal/participant_hard_raw; /terminal/numerator_minus_hard_ledger_raw",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/numerator_raw": 53662042,
+            "/terminal/participant_hard_raw": 52662042,
+            "/terminal/numerator_minus_hard_ledger_raw": 1000000
+          }
+        },
+        {
+          "key": "terminal-t015",
+          "fact_index": 0,
+          "before": {
+            "claim": "明确标计分输入/逐团账口径不同；不是死亡人数",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.numerator_not_literal_verified_deaths; excluded_claims",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "明确标计分输入/逐团账口径不同；不是死亡人数",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/numerator_not_literal_verified_deaths; /excluded_claims",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/numerator_not_literal_verified_deaths": true,
+            "/excluded_claims": [
+              "四天追击造成63人损失",
+              "63名伤员全部伤势加深或治疗失败",
+              "当前作战兵力额外减少63人",
+              "536人实际战死已由逐团账核实",
+              "996为当场当前兵力或全军满员兵力",
+              "战争进攻方等于战斗进攻方",
+              "追击属性按某固定几率击杀",
+              "人工完整1x审片或clean span已完成"
+            ]
+          }
+        },
+        {
+          "key": "terminal-t037",
+          "fact_index": 0,
+          "before": {
+            "claim": "保留真实战争窗结尾；不出现胜率或战争终结宣告",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+            "source_field_or_line": "terminal.do_not_generalize; terminal-score",
+            "confidence": "verified"
+          },
+          "after": {
+            "claim": "保留真实战争窗结尾；不出现胜率或战争终结宣告",
+            "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+            "source_field_or_line": "/terminal/do_not_generalize; /excluded_claims",
+            "confidence": "verified"
+          },
+          "source": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\pursuit\\pursuit-verification-a03.json",
+            "bytes": 20495,
+            "sha256": "A9E39E22311973B53E37993E75BBB9FE5EF4F28B9A4354C7D3219CDA1E16D2AC"
+          },
+          "resolved_values": {
+            "/terminal/do_not_generalize": "本次战争总分也为-50，已由独立snapshot和UI验证；单场战斗贡献不等于一般战争总分。败退不是已验证主动撤退策略。",
+            "/excluded_claims": [
+              "四天追击造成63人损失",
+              "63名伤员全部伤势加深或治疗失败",
+              "当前作战兵力额外减少63人",
+              "536人实际战死已由逐团账核实",
+              "996为当场当前兵力或全军满员兵力",
+              "战争进攻方等于战斗进攻方",
+              "追击属性按某固定几率击杀",
+              "人工完整1x审片或clean span已完成"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "seven_cues_fixed_in_each_catalog": true,
+  "narration_or_timing_changed": false,
+  "old_a04_a05_run_bytes_changed": false,
+  "new_live_evidence": false
+}

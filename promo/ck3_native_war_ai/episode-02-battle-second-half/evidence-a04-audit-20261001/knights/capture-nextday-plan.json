@@ -1,0 +1,312 @@
+{
+  "schema": "ck3.a04.knights.capture-nextday-plan.v1",
+  "created_at_utc": "2026-09-30T19:17:11.701153+00:00",
+  "status": "NOT_RUN_ENVIRONMENT_RED",
+  "not_run": true,
+  "ck3_launches": 0,
+  "new_live_run_id": null,
+  "environment": "Root reported black/stale Steam desktop and failed recovery; no fresh offline proof. Root released its screen lease. This plan performs no desktop/game action.",
+  "branch": "codex/war-series-brown-gold-20261001",
+  "master_intake_allowed": false,
+  "new_run_root": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01",
+  "isolation": "Create a new workdir/profile/pipe/recording/run ID; never reuse old a02 profile or replace historical assets.",
+  "exact_input": {
+    "save": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-paired-counter-trace-attempt-010/d26-immutable.ck3",
+      "bytes": 52880496,
+      "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+    },
+    "receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-paired-counter-trace-attempt-010/ck3-output/interactive-requests-responses/d26-save.json",
+      "bytes": 13452,
+      "sha256": "78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C"
+    },
+    "actor_character_id": 29829,
+    "combat_id": 16777218,
+    "war_id": 4,
+    "player_army_id": 18,
+    "date_raw": 53146848,
+    "ui_date": "1066.12.30",
+    "source_day_index": 26,
+    "game_version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "target": {
+    "character_id": 33437,
+    "expected_before": "ALIVE must be read from this new run's native d26 checkpoint",
+    "next_date_raw": 53146872,
+    "next_ui_date": "1066.12.31",
+    "next_day_index": 27,
+    "after_status": "Observe ALIVE or DEAD; do not prefill the historical020 result or killer34120."
+  },
+  "source_reuse": {
+    "capture_script": {
+      "path": "C:/w/ep2a04/promo/ck3_native_war_ai/integration/capture_session.py",
+      "bytes": 119380,
+      "sha256": "49162E48007028E9AE3D61CBAA194F014A978DD038A6514F2280A322159FFAE7"
+    },
+    "remaining_step": {
+      "path": "C:/w/ep2a04/promo/ck3_native_war_ai/episode-02-battle-second-half/remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    "request_transport": {
+      "path": "C:/w/ep2a04/promo/ck3_native_war_ai/episode-02-battle-second-half/pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    },
+    "transport_callable": "pursuit_live_step.call(output: Path, name: str, tool: str, arguments: dict, timeout: float)",
+    "strict_reader_source": {
+      "path": "C:/w/ep2a04/ck3_autonomous_player/tools/project_native_phase_event_save_feedback.py",
+      "bytes": 12315,
+      "sha256": "E80A2C025584528766B4C4BB73C8696B39525FCA52F27454B1FB26C9B4B52F30"
+    },
+    "strict_reader_callable": "project_native_phase_event_save_feedback._character_snapshot(melted_text: str, character_id: int)",
+    "checker": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\check_nextday_saved_status.py",
+      "bytes": 9584,
+      "sha256": "0EE37CC21287CB67794FB8C0DD4D47CD24151D5E8F5B2B3DA0FE5597F67DDA49"
+    },
+    "checker_validation": "--help completed; 5 synthetic valid/ambiguous lifecycle checks passed without modifying state fields; no new live input admitted; root admission aligned with actual capture adapter; 5 disk binding cases and full frozen GUI source binding passed offline",
+    "synthetic_check_report": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-attempt-02\\saved-status-synthetic-check.json",
+      "sha256": "9E16E327428B15E5CB697FE7C1BAA6250A3C7CDD3B04944003D1E445BCD686F0"
+    },
+    "gui_settings_snapshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.pdx.txt",
+      "bytes": 6891,
+      "sha256": "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D"
+    },
+    "gui_preservation_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.json",
+      "bytes": 2452,
+      "sha256": "69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779"
+    },
+    "root_binding_validation": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-attempt-02\\capture-root-binding-offline.json",
+      "bytes": 31010,
+      "sha256": "7E207FD5E977EFC4FEF7897C35AEDE585A789BA8AD3D7AA44AE90BBEF0649D39"
+    }
+  },
+  "ABI_provider": {
+    "current_native_pair": {
+      "dll_sha256": "EB643577E0DE6214582A667B3C6C52DB712CA75E46374BECB9DB5C36204F67E7",
+      "injector_sha256": "CE8A20C7B25A697058AB69B03629D6B7655BB2935AD147DF1E84895A826BF247"
+    },
+    "save_route_available": true,
+    "targeted_paused_character_query_available": false,
+    "status_route": "Use existing MCP save-checkpoint and pinned strict save reader; saved state, not same-frame live CharacterID query.",
+    "selector_admission": "Old currenta02 has no selector rows. Selector-capable newer candidate still requires its exact admission/review; not required merely to read saved d27 target status.",
+    "native_patch_needed_for_saved_route": false,
+    "minimum_if_live_query_required": [
+      "full CharacterID native storage resolution and equality",
+      "native_valid/death_marker_present/alive/regiment_id",
+      "paused date_raw/revision and before/after frame identity",
+      "explicit missing/fault/stale result; no alive inference from combat roster"
+    ]
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "not_run": true,
+      "action": "Root acquires exclusive CK3/screen slot, resolves desktop environment and directly reviews fresh Steam offline image; allocate live run ID only at actual admitted launch."
+    },
+    {
+      "step": 2,
+      "not_run": true,
+      "action": "Run capture_session in new isolated state/output/pipe with exact input pair. Retain preflight.json and native-start-readback.json that bind actor/date/save/receipt and exact binary pair. Import only the exact reviewed 54-byte GUI block using actual supported flags and actual source files; retain the independent screen-task lease parameters required by --capture.",
+      "capture_cli_argv_template": [
+        "<verified-python>",
+        "C:\\w\\ep2a04\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+        "--game-dir",
+        "<exact-build-game-dir>",
+        "--bridge-dll",
+        "<verified-DLL>",
+        "--bridge-injector",
+        "<verified-injector>",
+        "--state-dir",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-state",
+        "--output-dir",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output",
+        "--pipe-name",
+        "<new-local-pipe>",
+        "--checkpoint-save",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+        "--checkpoint-receipt",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\ck3-output\\interactive-requests-responses\\d26-save.json",
+        "--gui-scale",
+        "1.0",
+        "--import-a04-ui-gui-100",
+        "--a04-ui-settings-snapshot",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.pdx.txt",
+        "--a04-ui-preservation-receipt",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.json",
+        "--interactive-seconds",
+        "3600",
+        "--enable-private-phase-trace",
+        "--steam-offline-receipt",
+        "<fresh-reviewed-offline-receipt>",
+        "--screen-task-id",
+        "<actual-new-screen-task-id>",
+        "--screen-expected-sequence",
+        "<fresh-task-last-sequence>",
+        "--screen-cli-sha256",
+        "<identical-source-installed-CAS-CLI-SHA256>",
+        "--capture"
+      ]
+    },
+    {
+      "step": 3,
+      "not_run": true,
+      "native_calls": [
+        {
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": "<current-paused-d26-revision>"
+          }
+        }
+      ],
+      "accept": "53146848/paused=true/actor29829/Combat16777218; snapshot/control same revision. Actual UI12/30 and targetID/name need their own same-run binding."
+    },
+    {
+      "step": 4,
+      "not_run": true,
+      "action": "Reuse remaining_live_step observe/advance only after recorder intent and native marked source frame match. Its advance saves d26 once, then one private begin→one life-advance→one finish. Preserve the d26 save bytes BEFORE any d27 save overwrites xar_checkpoint.",
+      "existing_cli_examples": [
+        [
+          "<verified-python>",
+          "C:\\w\\ep2a04\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+          "observe",
+          "--track",
+          "e2-05-d26",
+          "--session-output",
+          "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output"
+        ],
+        [
+          "<verified-python>",
+          "C:\\w\\ep2a04\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+          "advance",
+          "--track",
+          "e2-05-d26",
+          "--session-output",
+          "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output",
+          "--recorder-workdir",
+          "<new-running-recorder-workdir>",
+          "--sequence-token",
+          "<new-positive-token>"
+        ]
+      ],
+      "do_not_retry": "An ambiguous or timed-out life-advance is never resubmitted; inspect and preserve the run."
+    },
+    {
+      "step": 5,
+      "not_run": true,
+      "action": "After actual53146872, acquire new paused snapshot/control same revision, retain actualUI12/31, then only once ck3_save_checkpoint(expected_revision=that snapshot revision). Copy exact native saved path into this new root's exclusive evidence/d27-immutable.ck3 and bind bytes/SHA/date/actor/episode_run_id.",
+      "native_calls": [
+        {
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": "<paused-d27-revision>"
+          }
+        },
+        {
+          "tool": "ck3_save_checkpoint",
+          "arguments": {
+            "expected_revision": "<paused-d27-revision>"
+          }
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "not_run": true,
+      "action": "Run saved-status checker below. It validates newroot input/run/connection/native save/date/revision/SHA and invokes pinned Rakaly0.8.19 on newly supplied d26+d27 byte copies, then calls existing strict character parser for33437.",
+      "accept": "Unique alive_data XOR dead_data, beforeALIVE, after observedALIVE/DEAD; ifDEAD retain death_date/reason/killer. Missing or ambiguous staysUNKNOWN. Neither old020 nor a02 assets are accepted as new run evidence."
+    }
+  ],
+  "rakaly": {
+    "version": "0.8.19",
+    "exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+    "actual_cli_argv": [
+      "<pinned-rakaly>",
+      "melt",
+      "<new-immutable.ck3>",
+      "--unknown-key",
+      "stringify",
+      "--format",
+      "ck3",
+      "--out",
+      "<new-exclusive-melted.ck3>"
+    ]
+  },
+  "checker_cli_argv_template": [
+    "<verified-python>",
+    "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\check_nextday_saved_status.py",
+    "--new-run-root",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01",
+    "--source-save",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+    "--source-receipt",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\ck3-output\\interactive-requests-responses\\d26-save.json",
+    "--preflight",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output\\preflight.json",
+    "--readback",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output\\native-start-readback.json",
+    "--before-save",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\evidence\\d26-immutable.ck3",
+    "--before-save-receipt",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output\\interactive-requests-responses\\e2-05-d26-before-save.json",
+    "--before-snapshot",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output\\interactive-requests-responses\\e2-05-d26-pre-advance-snapshot.json",
+    "--after-save",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\evidence\\d27-immutable.ck3",
+    "--after-save-receipt",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output\\interactive-requests-responses\\new-d27-save.json",
+    "--after-snapshot",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output\\interactive-requests-responses\\new-d27-snapshot.json",
+    "--rakaly-exe",
+    "<pinned-rakaly-exe>",
+    "--parser-source",
+    "C:\\w\\ep2a04\\ck3_autonomous_player\\tools\\project_native_phase_event_save_feedback.py",
+    "--parser-sha256",
+    "E80A2C025584528766B4C4BB73C8696B39525FCA52F27454B1FB26C9B4B52F30",
+    "--expected-episode-run-id",
+    "<actual-new-run-id-from-native-checkpoint>",
+    "--output",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\strict-save-check-attempt-01"
+  ],
+  "completion_boundaries": {
+    "old_a02_postframe_status": "UNKNOWN remains permanently",
+    "newrun_status": "NOT_RUN",
+    "selector_choice": "not supplied by saved status checker",
+    "live_targeted_death_query": "not supplied",
+    "human_clean_span": "not supplied",
+    "historical_UI": "new coldload/replay cannot be renamed original020/039/036 footage"
+  },
+  "corrected_at_utc": "2026-09-30T19:32:34.796978+00:00",
+  "capture_root_admission": {
+    "actual_callable": "capture_session.bind_a04_ui_target(args, checkpoint)",
+    "parent": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation",
+    "checker_prefix": "episode02-e2-05-d26-nextday-live-",
+    "adapter_track_prefix": "episode02-e2-05-d26-",
+    "state_dir": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-state",
+    "output_dir": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-output",
+    "userdir": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a01\\ck3-state\\profile",
+    "offline_validation": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-attempt-02\\capture-root-binding-offline.json",
+      "bytes": 31010,
+      "sha256": "7E207FD5E977EFC4FEF7897C35AEDE585A789BA8AD3D7AA44AE90BBEF0649D39"
+    },
+    "no_gui_contract_bypass": true
+  }
+}

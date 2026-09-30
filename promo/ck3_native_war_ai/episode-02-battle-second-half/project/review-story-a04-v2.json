@@ -49,7 +49,7 @@
             {
               "claim": "sameA05 War4明确targeted_title_ids[2111]、objective_province2638；fixed name mapping给2111=c_siracusa/holder31549/name塞尔古塞。",
               "source_path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-snapshot.json",
-              "source_field_or_line": "snapshot.body.active_wars[war_id=4]: player_side=attacker,primary_opponent=31549,targeted_title_ids=[2111],objective_province=2638；Title name见C:/w/ep2a03/docs/ck3-native-ai/episode01-day11-day21-combat-human-names-2026-09-27.md:14；verification agent已只读核对。",
+              "source_field_or_line": "/body/active_wars/0; Title name: C:/w/ep2a03/docs/ck3-native-ai/episode01-day11-day21-combat-human-names-2026-09-27.md:14",
               "confidence": "verified"
             },
             {
@@ -2698,8 +2698,8 @@
           "facts": [
             {
               "claim": "真实战争进攻方；旁列battle side1/war attacker",
-              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
-              "source_field_or_line": "terminal.player_combat_side; terminal.player_war_side; ui_anchors[war_before]",
+              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+              "source_field_or_line": "/terminal/player_combat_side; /terminal/player_war_side; /ui_anchors/2/visible",
               "confidence": "verified"
             }
           ]
@@ -2716,8 +2716,8 @@
           "facts": [
             {
               "claim": "Army18败后撤退状态；保留中央事件遮挡，原生后态in_combat=false/retreating=true",
-              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
-              "source_field_or_line": "terminal.successor; terminal.poststate_army; ui_anchors[writer_near]",
+              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+              "source_field_or_line": "/terminal/successor; /terminal/poststate_army; /ui_anchors/3/visible",
               "confidence": "verified"
             }
           ]
@@ -2734,8 +2734,8 @@
           "facts": [
             {
               "claim": "war_before0%与war_after-50%；两段明确标录制段",
-              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
-              "source_field_or_line": "ui_anchors[war_before].visible; ui_anchors[war_after].visible",
+              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+              "source_field_or_line": "/ui_anchors/2/visible; /ui_anchors/4/visible",
               "confidence": "verified"
             }
           ]
@@ -2896,8 +2896,8 @@
           "facts": [
             {
               "claim": "同run terminal numerator53662042与defender participant_hard_total_raw52662042差1000000；不是终局新增杀伤",
-              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
-              "source_field_or_line": "terminal.numerator_raw; terminal.participant_hard_raw; terminal.numerator_minus_hard_ledger_raw",
+              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+              "source_field_or_line": "/terminal/numerator_raw; /terminal/participant_hard_raw; /terminal/numerator_minus_hard_ledger_raw",
               "confidence": "verified"
             }
           ]
@@ -2914,8 +2914,8 @@
           "facts": [
             {
               "claim": "明确标计分输入/逐团账口径不同；不是死亡人数",
-              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
-              "source_field_or_line": "terminal.numerator_not_literal_verified_deaths; excluded_claims",
+              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+              "source_field_or_line": "/terminal/numerator_not_literal_verified_deaths; /excluded_claims",
               "confidence": "verified"
             }
           ]
@@ -3310,8 +3310,8 @@
           "facts": [
             {
               "claim": "保留真实战争窗结尾；不出现胜率或战争终结宣告",
-              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
-              "source_field_or_line": "terminal.do_not_generalize; terminal-score",
+              "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/pursuit/pursuit-verification-a03.json",
+              "source_field_or_line": "/terminal/do_not_generalize; /excluded_claims",
               "confidence": "verified"
             }
           ]
