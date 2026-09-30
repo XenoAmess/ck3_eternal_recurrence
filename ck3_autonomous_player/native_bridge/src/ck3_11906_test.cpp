@@ -9255,6 +9255,57 @@ int main() {
       !family_candidates.empty()) {
     return Fail("stale heir generation reached marriage context");
   }
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  // Unlike the positive-only family inventory, the actual fixed pair reader
+  // must expose a real negative Can Send and retain independent answer data.
+  std::array<std::byte, 0x40> current_heir_family{}, current_partner_family{};
+  Store(current_heir_family, 0x10, enemy_character_id);
+  Store(current_heir_family, 0x14, std::int32_t{-1});
+  Store(current_partner_family, 0x10, kFixtureAllyCharacterId);
+  Store(current_partner_family, 0x14, std::int32_t{-1});
+  void *old_heir_family = nullptr, *old_partner_family = nullptr;
+  std::memcpy(&old_heir_family, g_ally_character.data() + 0x1A0, sizeof(void *));
+  std::memcpy(&old_partner_family, g_target_character.data() + 0x1A0, sizeof(void *));
+  Store(g_ally_character, 0x1A0, static_cast<void *>(current_heir_family.data()));
+  Store(g_target_character, 0x1A0, static_cast<void *>(current_partner_family.data()));
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  const auto current_betrothal = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
+      bindings, kFixtureAllyCharacterId);
+  if (current_betrothal.failure != xar::ck3_11906::
+          CurrentFirstHeirRelationshipFailureV1::none ||
+      current_betrothal.relationship.betrothed_character_id != enemy_character_id)
+    return Fail("actual bilateral current betrothal fixture unavailable");
+  g_marriage_validate_result = false;
+  g_family_marriage_answer = 2;
+  g_submit_called = false;
+  const auto negative_current_pair =
+      xar::ck3_11906::ReadCurrentFirstHeirBetrothalActionabilityV1(
+          bindings, current_betrothal, {}, {});
+  if (!negative_current_pair.has_betrothal ||
+      negative_current_pair.actor_character_id != played_character_id ||
+      negative_current_pair.heir_character_id != kFixtureAllyCharacterId ||
+      negative_current_pair.partner_character_id != enemy_character_id ||
+      negative_current_pair.recipient_character_id != kMarriageMatchmakerCharacterId ||
+      !negative_current_pair.final_legality_sampled ||
+      negative_current_pair.complete_can_send ||
+      !negative_current_pair.recipient_acceptance_ready ||
+      negative_current_pair.recipient_answer_status_raw != 2 ||
+      negative_current_pair.recipient_ai_accept_raw != 1'250'000 ||
+      negative_current_pair.adult_readback_available || g_submit_called)
+    return Fail("fixed current betrothal hid native negative Can Send or invented adult data");
+  g_family_marriage_answer = 3;
+  const auto unknown_current_answer =
+      xar::ck3_11906::ReadCurrentFirstHeirBetrothalActionabilityV1(
+          bindings, current_betrothal, {}, {});
+  if (!unknown_current_answer.final_legality_sampled ||
+      unknown_current_answer.complete_can_send ||
+      unknown_current_answer.recipient_acceptance_ready || g_submit_called)
+    return Fail("fixed current betrothal converted missing answer to rejection");
+  Store(g_ally_character, 0x1A0, old_heir_family);
+  Store(g_target_character, 0x1A0, old_partner_family);
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  g_marriage_validate_result = true;
+#endif
   g_family_marriage_fixture_active = false;
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
   Store(g_played_family_data, 0x5C, std::int32_t{0});

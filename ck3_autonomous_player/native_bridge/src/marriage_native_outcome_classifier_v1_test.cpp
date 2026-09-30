@@ -197,12 +197,48 @@ void TestIdentityAndVersionFailClosed() {
              exact_build_not_admitted);
 }
 
+void TestIndependentExistingPairAdultRead() {
+  Fixture fixture{};
+  bridge::MarriageNativeOutcomeClassifierStateV1 state{};
+  Initialize(fixture, state);
+  // An unrelated/missing proposal context cannot hide an existing pair's
+  // actual adult inputs. Runtime thresholds deliberately differ from 16.
+  Write(fixture.context, bridge::kMarriageContextSecondaryRecipientIdOffsetV1,
+        kSubjectId);
+  bridge::MarriageNativeOutcomeDetailsV1 details{};
+  assert(bridge::ReadMarriageAdultPairDetailsExactV1(
+      state, reinterpret_cast<std::uintptr_t>(fixture.subject.data()),
+      reinterpret_cast<std::uintptr_t>(fixture.candidate.data()), details));
+  assert(details.subject_is_adult && details.candidate_is_adult &&
+         details.subject_adult_threshold_raw == 10 &&
+         details.candidate_adult_threshold_raw == 12 &&
+         details.predicted_outcome == bridge::MarriagePredictedOutcomeV1::unavailable);
+  Write(fixture.candidate, bridge::kMarriageCharacterAdultMeasureOffsetV1,
+        std::int16_t{11});
+  assert(bridge::ReadMarriageAdultPairDetailsExactV1(
+      state, reinterpret_cast<std::uintptr_t>(fixture.subject.data()),
+      reinterpret_cast<std::uintptr_t>(fixture.candidate.data()), details));
+  assert(details.subject_is_adult && !details.candidate_is_adult);
+  Write(fixture.candidate, bridge::kMarriageCharacterAdultSelectorOffsetV1,
+        std::uint8_t{2});
+  assert(!bridge::ReadMarriageAdultPairDetailsExactV1(
+      state, reinterpret_cast<std::uintptr_t>(fixture.subject.data()),
+      reinterpret_cast<std::uintptr_t>(fixture.candidate.data()), details));
+  Write(fixture.candidate, bridge::kMarriageCharacterAdultSelectorOffsetV1,
+        std::uint8_t{1});
+  state.environment.adult_threshold_one_slot = 0;
+  assert(!bridge::ReadMarriageAdultPairDetailsExactV1(
+      state, reinterpret_cast<std::uintptr_t>(fixture.subject.data()),
+      reinterpret_cast<std::uintptr_t>(fixture.candidate.data()), details));
+}
+
 } // namespace
 
 int main() {
   TestExactBindingAndBinderConfiguration();
   TestAdultGrandWeddingAndMinorBranches();
   TestIdentityAndVersionFailClosed();
+  TestIndependentExistingPairAdultRead();
   std::cout << "marriage native outcome classifier v1 tests passed\n";
   return 0;
 }

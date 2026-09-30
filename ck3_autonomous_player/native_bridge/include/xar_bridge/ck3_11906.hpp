@@ -1129,11 +1129,35 @@ enum class CurrentFirstHeirRelationshipFailureV1 : std::uint8_t {
   bilateral_inconsistent,
 };
 
+struct CurrentFirstHeirBetrothalActionabilityReadV1 {
+  bool has_betrothal = false;
+  std::string_view unavailable_reason = "relationship_unavailable";
+  std::int32_t actor_character_id = -1;
+  std::int32_t heir_character_id = -1;
+  std::int32_t partner_character_id = -1;
+  std::int32_t recipient_character_id = -1;
+  std::int32_t intermediary_character_id = -1;
+  bool adult_readback_available = false;
+  bridge::MarriageNativeOutcomeDetailsV1 adult{};
+  bool final_legality_sampled = false;
+  bool complete_can_send = false;
+  bool recipient_acceptance_ready = false;
+  std::int64_t recipient_ai_accept_raw = 0;
+  std::uint8_t recipient_answer_status_raw = 3;
+  bool generic_costs_available = false;
+  std::array<std::int64_t, bridge::kMarriageGenericCostResourceCountV1>
+      generic_cost_raw{};
+  bool outcome_available = false;
+  bool lineality_available = false;
+  bool effective_matrilineal_if_accepted = false;
+};
+
 struct CurrentFirstHeirRelationshipReadV1 {
   CurrentFirstHeirRelationshipFailureV1 failure =
       CurrentFirstHeirRelationshipFailureV1::heir_unavailable;
   std::int32_t heir_character_id = -1;
   MarriageHeirRelationshipV1 relationship{};
+  CurrentFirstHeirBetrothalActionabilityReadV1 betrothal_actionability{};
 };
 
 // Independent current relation read for the same-revision public first heir.
@@ -1141,6 +1165,15 @@ struct CurrentFirstHeirRelationshipReadV1 {
 // is never reported as an empty relation.
 CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
     const Bindings &bindings, std::int32_t heir_character_id) noexcept;
+
+// Application-main only. Evaluates exactly the independently observed current
+// betrothed pair, including a real negative Can Send; it never scans candidates
+// or creates an action proof/command.
+CurrentFirstHeirBetrothalActionabilityReadV1
+ReadCurrentFirstHeirBetrothalActionabilityV1(
+    const Bindings &bindings, const CurrentFirstHeirRelationshipReadV1 &relationship,
+    const bridge::MarriageNativeOutcomeClassifierEnvironmentV1 &outcome_environment,
+    const bridge::MarriageCandidateAllianceProjectionEnvironmentV1 &option_environment) noexcept;
 
 enum class PlayerChildMarriageSubjectFailureV1 : std::uint8_t {
   none = 0,

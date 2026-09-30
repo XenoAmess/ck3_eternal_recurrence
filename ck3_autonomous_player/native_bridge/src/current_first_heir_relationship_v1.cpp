@@ -74,5 +74,68 @@ bool ValidateCurrentFirstHeirBilateralRelationshipV1(
   return true;
 }
 
+std::string CurrentFirstHeirBetrothalActionabilityJsonV1(
+    const CurrentFirstHeirBetrothalActionabilityReadV1 &read) {
+  const bool available = read.unavailable_reason.empty();
+  const bool not_applicable =
+      read.unavailable_reason == "current_heir_has_no_betrothal";
+  std::string json = "{\"status\":\"";
+  json += available ? "available" : not_applicable ? "not_applicable" : "unavailable";
+  json += "\",\"unavailable_reason\":";
+  json += available ? "null" : "\"" + std::string(read.unavailable_reason) + "\"";
+  const auto id = [&](std::string_view key, std::int32_t value) {
+    json += ",\"" + std::string(key) + "\":";
+    json += value > 0 ? std::to_string(value) : "null";
+  };
+  id("actor_character_id", read.actor_character_id);
+  id("heir_character_id", read.heir_character_id);
+  id("partner_character_id", read.partner_character_id);
+  id("recipient_character_id", read.recipient_character_id);
+  id("intermediary_character_id", read.intermediary_character_id);
+  const auto boolean = [&](std::string_view key, bool known, bool value) {
+    json += ",\"" + std::string(key) + "\":";
+    json += known ? (value ? "true" : "false") : "null";
+  };
+  const auto number = [&](std::string_view key, bool known, std::int64_t value) {
+    json += ",\"" + std::string(key) + "\":";
+    json += known ? std::to_string(value) : "null";
+  };
+  boolean("adult_readback_available", true, read.adult_readback_available);
+  boolean("heir_is_adult", read.adult_readback_available, read.adult.subject_is_adult);
+  boolean("partner_is_adult", read.adult_readback_available, read.adult.candidate_is_adult);
+  number("heir_adult_measure_raw", read.adult_readback_available, read.adult.subject_adult_measure_raw);
+  number("partner_adult_measure_raw", read.adult_readback_available, read.adult.candidate_adult_measure_raw);
+  number("heir_adult_threshold_raw", read.adult_readback_available, read.adult.subject_adult_threshold_raw);
+  number("partner_adult_threshold_raw", read.adult_readback_available, read.adult.candidate_adult_threshold_raw);
+  boolean("ready_to_marry_betrothed", read.has_betrothal && read.adult_readback_available,
+          read.adult.subject_is_adult && read.adult.candidate_is_adult);
+  boolean("final_legality_sampled", true, read.final_legality_sampled);
+  boolean("complete_can_send", read.final_legality_sampled, read.complete_can_send);
+  boolean("recipient_acceptance_ready", true, read.recipient_acceptance_ready);
+  number("recipient_ai_accept_raw", read.recipient_acceptance_ready, read.recipient_ai_accept_raw);
+  number("recipient_answer_status_raw", read.recipient_acceptance_ready, read.recipient_answer_status_raw);
+  json += ",\"generic_costs\":";
+  if (!read.generic_costs_available) {
+    json += "null";
+  } else {
+    constexpr std::array<std::string_view, 10> keys{
+        "gold_raw", "prestige_raw", "piety_raw", "renown_raw", "influence_raw",
+        "herd_raw", "treasury_raw", "treasury_or_gold_raw", "merit_raw", "barter_goods_raw"};
+    json += "{\"raw_scale\":100000,\"payer_role\":\"actor\",\"application_timing\":\"on_send\"";
+    for (std::size_t index = 0; index < keys.size(); ++index) {
+      json += ",\"" + std::string(keys[index]) + "\":" + std::to_string(read.generic_cost_raw[index]);
+    }
+    json += '}';
+  }
+  boolean("effective_matrilineal_if_accepted", read.lineality_available,
+          read.effective_matrilineal_if_accepted);
+  json += ",\"predicted_outcome_if_accepted\":";
+  json += !read.outcome_available ? "null" :
+      read.adult.predicted_outcome == bridge::MarriagePredictedOutcomeV1::marriage
+          ? "\"marriage\"" : "\"betrothal\"";
+  json += '}';
+  return json;
+}
+
 } // namespace xar::ck3_11906
 #endif

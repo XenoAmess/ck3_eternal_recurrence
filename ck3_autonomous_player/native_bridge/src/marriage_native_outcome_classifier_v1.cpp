@@ -162,6 +162,67 @@ MarriageNativeOutcomeClassifierFailureV1 ReadSample(
 
 } // namespace
 
+bool ReadMarriageAdultPairDetailsExactV1(
+    MarriageNativeOutcomeClassifierStateV1 &state,
+    std::uintptr_t subject_character, std::uintptr_t candidate_character,
+    MarriageNativeOutcomeDetailsV1 &output) noexcept {
+  output = {};
+  const auto failure = Validate(state.environment);
+  if (failure != MarriageNativeOutcomeClassifierFailureV1::none) {
+    SetFailure(state, failure);
+    return false;
+  }
+  if (subject_character == 0 || candidate_character == 0 ||
+      subject_character == candidate_character) {
+    SetFailure(state, MarriageNativeOutcomeClassifierFailureV1::invalid_input);
+    return false;
+  }
+  const auto read = [&](OutcomeSampleV1 &sample) {
+    const auto &env = state.environment;
+    return ReadAt(env, subject_character, kMarriageCharacterIdOffsetV1,
+                  sample.subject_object_id) &&
+        ReadAt(env, candidate_character, kMarriageCharacterIdOffsetV1,
+               sample.candidate_object_id) &&
+        sample.subject_object_id > 0 && sample.candidate_object_id > 0 &&
+        sample.subject_object_id != sample.candidate_object_id &&
+        ReadAt(env, subject_character, kMarriageCharacterAdultSelectorOffsetV1,
+               sample.subject_selector) &&
+        ReadAt(env, candidate_character, kMarriageCharacterAdultSelectorOffsetV1,
+               sample.candidate_selector) &&
+        sample.subject_selector <= 1 && sample.candidate_selector <= 1 &&
+        ReadAt(env, subject_character, kMarriageCharacterAdultMeasureOffsetV1,
+               sample.subject_adult_measure) &&
+        ReadAt(env, candidate_character, kMarriageCharacterAdultMeasureOffsetV1,
+               sample.candidate_adult_measure) &&
+        ReadMemory(env, env.adult_threshold_zero_slot,
+                   &sample.adult_threshold_zero, sizeof(std::int32_t)) &&
+        ReadMemory(env, env.adult_threshold_one_slot,
+                   &sample.adult_threshold_one, sizeof(std::int32_t));
+  };
+  OutcomeSampleV1 first{}, second{};
+  if (!read(first) || !read(second)) {
+    SetFailure(state,
+               MarriageNativeOutcomeClassifierFailureV1::runtime_threshold_unavailable);
+    return false;
+  }
+  if (first != second) {
+    SetFailure(state, MarriageNativeOutcomeClassifierFailureV1::outcome_sample_drift);
+    return false;
+  }
+  output.subject_adult_measure_raw = second.subject_adult_measure;
+  output.candidate_adult_measure_raw = second.candidate_adult_measure;
+  output.subject_adult_threshold_raw = second.subject_selector == 0
+      ? second.adult_threshold_zero : second.adult_threshold_one;
+  output.candidate_adult_threshold_raw = second.candidate_selector == 0
+      ? second.adult_threshold_zero : second.adult_threshold_one;
+  output.subject_is_adult = output.subject_adult_measure_raw >=
+                            output.subject_adult_threshold_raw;
+  output.candidate_is_adult = output.candidate_adult_measure_raw >=
+                              output.candidate_adult_threshold_raw;
+  SetFailure(state, MarriageNativeOutcomeClassifierFailureV1::none);
+  return true;
+}
+
 MarriageNativeOutcomeClassifierEnvironmentV1
 BindMarriageNativeOutcomeClassifierEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted,

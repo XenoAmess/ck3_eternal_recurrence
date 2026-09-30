@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_11906.hpp"
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace xar::ck3_11906 {
@@ -32,6 +33,9 @@ bool ValidateCurrentFirstHeirBilateralRelationshipV1(
     std::int32_t heir_character_id,
     const MarriageHeirRelationshipV1 &heir,
     const std::vector<CurrentFirstHeirPartnerRelationshipV1> &partners) noexcept;
+
+std::string CurrentFirstHeirBetrothalActionabilityJsonV1(
+    const CurrentFirstHeirBetrothalActionabilityReadV1 &read);
 
 #endif
 } // namespace xar::ck3_11906
