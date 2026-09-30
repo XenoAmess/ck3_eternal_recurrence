@@ -6,6 +6,30 @@ from copy import deepcopy
 from typing import Mapping
 
 
+def _existing_betrothal_value_status(relation: Mapping[str, object]) -> str:
+    value = relation.get("betrothal_actionability")
+    if not isinstance(value, Mapping):
+        return "unknown"
+    if value.get("status") == "not_applicable":
+        return "not_applicable"
+    if (value.get("adult_readback_available") is True
+            and value.get("ready_to_marry_betrothed") is False):
+        return "not_ready"
+    if (value.get("final_legality_sampled") is True
+            and value.get("complete_can_send") is False):
+        return "native_final_illegal"
+    if (value.get("status") != "available"
+            or value.get("ready_to_marry_betrothed") is not True
+            or value.get("complete_can_send") is not True):
+        return "unknown"
+    if (value.get("recipient_answer_status_raw") == 2
+            or value.get("recipient_ai_accept_raw", 0) <= 0):
+        return "recipient_answer_or_acceptance_not_positive"
+    return ("native_legal_marriage_value_observed"
+            if value.get("predicted_outcome_if_accepted") == "marriage"
+            else "native_legal_betrothal_value_observed")
+
+
 def observe_first_heir_companion_after_child(
     driver: object,
     service: object,
@@ -85,6 +109,7 @@ def observe_first_heir_companion_after_child(
         "first_heir_relationship": deepcopy(relation),
         "new_proposal_eligible": proposal_eligible,
         "new_proposal_value_status": value_status,
+        "existing_betrothal_value_status": _existing_betrothal_value_status(relation),
         "resolved_pair_matches_native": resolved_pair_matches_native,
         "read_only": True, "advertised": False,
     }
