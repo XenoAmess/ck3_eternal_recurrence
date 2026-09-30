@@ -468,6 +468,12 @@ from .active_combat_retreat_contract import (
     parse_preview_active_combat_retreat_v1_step,
     preview_active_combat_retreat_v1_step,
 )
+from .h3937_date_hold import (
+    H3937_EPISODE_RUN_ID,
+    h3937_date_hold_active,
+    is_army_move_control_step,
+    is_date_control_step,
+)
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
@@ -487,6 +493,8 @@ from .war_contract import (
     QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
     QUERY_ARMY_STRENGTHS_CAPABILITY,
     QUERY_ARMY_STRENGTHS_STEP,
+    QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY,
+    QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX,
     QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY,
     QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
     QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY,
@@ -518,6 +526,7 @@ from .war_contract import (
     move_army_step,
     normalize_active_wars,
     normalize_army_strengths,
+    normalize_province_local_siege_result,
     normalize_route_contact_horizon,
     normalize_outbound_war_white_peace_status,
     normalize_war_termination_options,
@@ -536,6 +545,7 @@ from .war_contract import (
     parse_preview_move_army_step,
     parse_advance_route_contact_horizon_step,
     parse_query_route_contact_horizon_step,
+    parse_query_province_local_siege_step,
     parse_query_outbound_war_white_peace_status_step,
     parse_query_war_termination_options_step,
     parse_query_war_prisoner_release_pairs_v1_step,
@@ -570,6 +580,9 @@ from .raiktor_war_bound_regiment_contract import (
 )
 from .raiktor_surrender_session_binding_contract import (
     bind_raiktor_surrender_aggregate_session,
+)
+from ..physical_army_inventory_v1 import (
+    validate_native_physical_inventory_mailbox_v1,
 )
 from .war31_one_shot_surrender import (
     STEP as WAR31_ONE_SHOT_SURRENDER_STEP,
@@ -2090,6 +2103,18 @@ class NativeHeadlessGameplayDriver:
         ):
             action_steps.add(_START_NEXT_EPISODE_STEP)
             composite_action_steps.append(_START_NEXT_EPISODE_STEP)
+        if h3937_date_hold_active(current_snapshot):
+            action_steps = {
+                step for step in action_steps
+                if not is_date_control_step(step)
+                and not is_army_move_control_step(step)
+            }
+            composite_action_steps = [
+                step
+                for step in composite_action_steps
+                if not is_date_control_step(step)
+                and not is_army_move_control_step(step)
+            ]
         return {
             **result,
             "action_steps": sorted(action_steps),
@@ -6069,6 +6094,17 @@ class NativeHeadlessGameplayDriver:
     def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        # The immutable in-process episode binding allows an early deny without
+        # taking an extra native frame or altering ordinary revision races.
+        if is_date_control_step(step) or is_army_move_control_step(step):
+            with self._episode_identity_lock:
+                held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
+            if held_episode:
+                control = "date" if is_date_control_step(step) else "move"
+                raise BridgeUnavailableError(
+                    f"H3937 {control} hold: physical hostile inventory and formal "
+                    "war/cash policy remain uncertified"
+                )
         if step == CENTER_MAP_ON_LANDED_TITLE_V1_STEP:
             raise UnsupportedStepError(
                 "title-map navigation requires its typed driver method"
@@ -6463,6 +6499,15 @@ class NativeHeadlessGameplayDriver:
                 "malformed active-combat retreat order step"
             )
         route_contact_query = parse_query_route_contact_horizon_step(step)
+        province_local_siege_query = parse_query_province_local_siege_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX)
+            and province_local_siege_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed province-local-siege ProvinceID step"
+            )
         route_contact_advance = parse_advance_route_contact_horizon_step(step)
         if (
             isinstance(step, str)
@@ -6783,6 +6828,17 @@ class NativeHeadlessGameplayDriver:
             ):
                 raise UnsupportedStepError(
                     "native DLL cannot query the actual contact scope"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
+        if province_local_siege_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY not in bridge_capabilities:
+                raise UnsupportedStepError(
+                    "native DLL cannot query local Province siege state"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
@@ -8158,6 +8214,15 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
+        if is_date_control_step(step) or is_army_move_control_step(step):
+            with self._episode_identity_lock:
+                held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
+            if held_episode:
+                control = "date" if is_date_control_step(step) else "move"
+                raise BridgeUnavailableError(
+                    f"H3937 {control} hold: physical hostile inventory and formal "
+                    "war/cash policy remain uncertified"
+                )
         capabilities = (
             self.state.capabilities()
             if internal_semantic_snapshot
@@ -8195,6 +8260,18 @@ class NativeHeadlessGameplayDriver:
                 self.take_internal_semantic_snapshot()
                 if internal_semantic_snapshot
                 else self.take_snapshot()
+            )
+        # Use the same submission snapshot as the primitive.  A second read
+        # here would change revision-race behavior for unrelated episodes.
+        if is_date_control_step(step) and h3937_date_hold_active(snapshot):
+            raise BridgeUnavailableError(
+                "H3937 date hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
+        if is_army_move_control_step(step) and h3937_date_hold_active(snapshot):
+            raise BridgeUnavailableError(
+                "H3937 move hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
             )
         revision = int(snapshot["revision"])
         if expected_revision is not None:
@@ -9259,6 +9336,13 @@ class NativeHeadlessGameplayDriver:
         expected_revision: int | None,
     ) -> dict[str, object]:
         """Consume a preview token, re-prove it, and submit player movement."""
+        with self._episode_identity_lock:
+            held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
+        if held_episode:
+            raise BridgeUnavailableError(
+                "H3937 move hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         request = parse_order_active_combat_retreat_v1_step(step)
         if request is None:
             raise UnsupportedStepError(
@@ -9578,6 +9662,7 @@ class NativeHeadlessGameplayDriver:
         war_bound_loss_cleanup_war_id = (
             parse_query_raiktor_war_bound_loss_cleanup_v1_step(step)
         )
+        province_local_siege_id = parse_query_province_local_siege_step(step)
         internal_read_only_query = bool(
             termination_query_war_id is not None
             or prisoner_release_war_id is not None
@@ -9585,6 +9670,7 @@ class NativeHeadlessGameplayDriver:
             or termination_terms_query_war_id is not None
             or actual_truce_expiry_toward is not None
             or war_bound_loss_cleanup_war_id is not None
+            or province_local_siege_id is not None
             or parse_preview_move_army_step(step) is not None
             or parse_query_route_contact_horizon_step(step) is not None
         )
@@ -9593,12 +9679,52 @@ class NativeHeadlessGameplayDriver:
             if internal_read_only_query
             else self.take_snapshot()
         )
+        if is_army_move_control_step(step) and h3937_date_hold_active(starting):
+            raise BridgeUnavailableError(
+                "H3937 move hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         starting_revision = int(starting["revision"])
         selected_revision = (
             expected_revision
             if expected_revision is not None
             else starting_revision
         )
+        if province_local_siege_id is not None:
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError(
+                    "native province-local-siege query requires a paused map"
+                )
+            native_revision = starting.get("native_revision")
+            date_raw = starting.get("date_raw")
+            if (
+                isinstance(native_revision, bool)
+                or not isinstance(native_revision, int)
+                or native_revision <= 0
+                or isinstance(date_raw, bool)
+                or not isinstance(date_raw, int)
+            ):
+                raise BridgeUnavailableError(
+                    "native province-local-siege query lacks a frozen frame"
+                )
+            raw = self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY,
+                internal_semantic_snapshot=True,
+            )
+            try:
+                return normalize_province_local_siege_result(
+                    raw,
+                    expected_step=step,
+                    expected_province_id=province_local_siege_id,
+                    expected_snapshot_revision=native_revision,
+                    expected_date_raw=date_raw,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native province-local-siege result is malformed: {error}"
+                ) from error
         if prisoner_release_war_id is not None:
             raw = self._execute_primitive_step(
                 step,
@@ -10155,7 +10281,7 @@ class NativeHeadlessGameplayDriver:
             )
             if (
                 set(result)
-                != {
+                not in ({
                     "step",
                     "accepted",
                     "status",
@@ -10163,7 +10289,16 @@ class NativeHeadlessGameplayDriver:
                     "snapshot_revision",
                     "route_contact_horizon",
                     "backend_id",
-                }
+                }, {
+                    "step",
+                    "accepted",
+                    "status",
+                    "query_sequence",
+                    "snapshot_revision",
+                    "route_contact_horizon",
+                    "physical_army_inventory",
+                    "backend_id",
+                })
                 or result.get("step") != step
                 or result.get("accepted") is not True
                 or result.get("status") != "available"
@@ -10197,9 +10332,28 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native route-contact horizon crossed a snapshot revision"
                 )
+            native_inventory = result.get("physical_army_inventory")
+            inventory_check = (
+                validate_native_physical_inventory_mailbox_v1(
+                    native_inventory,
+                    starting=starting,
+                    current=current,
+                    horizon=horizon,
+                    query_sequence=query_sequence,
+                    subject_army_id=subject_army_id,
+                    requested_hostiles=hostile_army_ids,
+                )
+                if "physical_army_inventory" in result
+                else None
+            )
             return {
                 **result,
                 "route_contact_horizon": horizon,
+                **({"physical_army_inventory_check": {
+                    "valid": inventory_check.valid,
+                    "reason": inventory_check.reason,
+                    "date_or_action_authorized": False,
+                }} if inventory_check is not None else {}),
                 "queried_snapshot_id": starting.get("snapshot_id"),
                 "queried_revision": starting.get("revision"),
                 "queried_native_revision": native_revision,
@@ -18100,6 +18254,11 @@ class NativeHeadlessGameplayDriver:
             if starting_snapshot is not None
             else self.take_internal_semantic_snapshot()
         )
+        if h3937_date_hold_active(starting):
+            raise BridgeUnavailableError(
+                "H3937 date hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         starting_revision = int(starting["revision"])
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
@@ -18647,6 +18806,11 @@ class NativeHeadlessGameplayDriver:
             if starting_snapshot is not None
             else self.take_internal_semantic_snapshot()
         )
+        if h3937_date_hold_active(starting):
+            raise BridgeUnavailableError(
+                "H3937 date hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         if starting.get("map_ready") is not True:
             starting = self._wait_for_life_advance_snapshot(
                 starting,
@@ -19404,6 +19568,7 @@ class ConfiguredHybridFallbackDriver:
             for step in action_steps
             if (
                 not is_native_war_step(step)
+                and not is_army_move_control_step(step)
                 and not is_native_declaration_step(step)
                 and not is_native_marriage_step(step)
             )
@@ -21223,6 +21388,7 @@ class ConfiguredHybridFallbackDriver:
         if (
             (
                 is_native_war_step(step)
+                or is_army_move_control_step(step)
                 or is_native_declaration_step(step)
                 or is_native_marriage_step(step)
             )
@@ -25210,6 +25376,10 @@ def _action_steps(
             # This query needs the current paused declarable-target set. The
             # concrete literal is added below from that snapshot; never expose
             # the adapter's `-N` capability template as an executable action.
+            continue
+        elif capability == QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY:
+            # Explicit callers provide a canonical ProvinceID; never expose
+            # the adapter's -N template as an executable action.
             continue
         elif capability == QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY:
             expand_termination_queries = True

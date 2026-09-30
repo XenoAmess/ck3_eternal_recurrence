@@ -39,6 +39,11 @@ QUERY_ARMY_STRENGTHS_CAPABILITY = (
     "game.command.query-army-strengths-v1"
 )
 QUERY_ARMY_STRENGTHS_STEP = "query-army-strengths-v1"
+QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY = (
+    "game.command.query-province-local-siege-v1-N"
+)
+QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX = "query-province-local-siege-v1-"
+MAX_NATIVE_ROUTE_SOURCE_COUNT = 4096
 SURRENDER_WAR_CAPABILITY = "game.command.surrender-war-N"
 OFFER_WHITE_PEACE_CAPABILITY = "game.command.offer-white-peace-N"
 ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
@@ -564,6 +569,78 @@ def _normalize_objective_province_state(
     }
 
 
+def query_province_local_siege_step(province_id: int) -> str:
+    """Build one canonical read-only local Province query literal."""
+    return (
+        QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX
+        + str(_positive_int32_id(province_id, "province_id"))
+    )
+
+
+def parse_query_province_local_siege_step(step: object) -> int | None:
+    if not isinstance(step, str) or not step.startswith(
+        QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX
+    ):
+        return None
+    suffix = step.removeprefix(QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX)
+    if not suffix or not suffix.isascii() or not suffix.isdecimal():
+        return None
+    try:
+        province_id = _positive_int32_id(int(suffix), "province_id")
+    except ValueError:
+        return None
+    return province_id if str(province_id) == suffix else None
+
+
+def normalize_province_local_siege_result(
+    value: object,
+    *,
+    expected_step: str,
+    expected_province_id: int,
+    expected_snapshot_revision: int,
+    expected_date_raw: int,
+) -> dict[str, object]:
+    """Keep partial native fields typed; this never proves hostile scope."""
+    if not isinstance(value, dict) or set(value) != {
+        "step", "accepted", "status", "query_sequence",
+        "snapshot_revision", "date_raw", "province_state", "backend_id",
+    }:
+        raise ValueError("native province-local-siege result schema is malformed")
+    if (
+        value.get("step") != expected_step
+        or value.get("accepted") is not True
+        or value.get("backend_id") != "native-headless"
+    ):
+        raise ValueError("native province-local-siege query identity changed")
+    sequence = value.get("query_sequence")
+    revision = value.get("snapshot_revision")
+    date_raw = value.get("date_raw")
+    if (
+        isinstance(sequence, bool) or not isinstance(sequence, int)
+        or not 1 <= sequence <= 2**64 - 1
+        or revision != expected_snapshot_revision
+        or isinstance(revision, bool)
+        or date_raw != expected_date_raw
+        or isinstance(date_raw, bool)
+    ):
+        raise ValueError("native province-local-siege frame binding changed")
+    state = _normalize_objective_province_state(
+        value.get("province_state"), name="province_state"
+    )
+    if state["province_id"] != expected_province_id:
+        raise ValueError("native province-local-siege ProvinceID changed")
+    complete = bool(
+        state["occupation_observable"]
+        and state["fort_level"] is not None
+        and state["garrison_size"] is not None
+        and state["besieging_strength"] is not None
+        and state["siege_observable"]
+    )
+    if value.get("status") != ("available" if complete else "partial"):
+        raise ValueError("native province-local-siege status disagrees with fields")
+    return {**value, "province_state": state}
+
+
 def _normalize_active_siege(
     value: object, *, name: str
 ) -> dict[str, object]:
@@ -768,6 +845,58 @@ def normalize_armies(
                     else []
                 )
             ]
+        has_route_status = "route_read_status" in raw_army
+        has_route_count = "route_source_count" in raw_army
+        if has_route_status != has_route_count:
+            raise ValueError(
+                f"native {name}[{index}] route status/count must appear together"
+            )
+        if has_route_status:
+            status = raw_army["route_read_status"]
+            count = raw_army["route_source_count"]
+            if not isinstance(status, str) or status not in {
+                "not_attempted", "complete_empty", "complete_nonempty",
+                "target_only", "invalid_header", "unresolved_entry",
+            }:
+                raise ValueError(
+                    f"native {name}[{index}].route_read_status is malformed"
+                )
+            if count is not None and (
+                isinstance(count, bool)
+                or not isinstance(count, int)
+                or not 0 <= count <= MAX_NATIVE_ROUTE_SOURCE_COUNT
+            ):
+                raise ValueError(
+                    f"native {name}[{index}].route_source_count is malformed"
+                )
+            route = normalized.get("route_province_ids")
+            if not isinstance(route, list):
+                raise ValueError(
+                    f"native {name}[{index}] route status requires route array"
+                )
+            valid = (
+                (status == "complete_empty" and count == 0
+                 and not route and not move_target_observable
+                 and move_target is None)
+                or (status == "complete_nonempty" and isinstance(count, int)
+                    and count > 0 and len(route) == count
+                    and move_target_observable and move_target == route[-1])
+                or (status == "target_only" and isinstance(count, int)
+                    and count > 0 and not route
+                    and move_target_observable and move_target is not None)
+                or (status == "unresolved_entry" and isinstance(count, int)
+                    and count > 0 and not route and not move_target_observable
+                    and move_target is None)
+                or (status in {"not_attempted", "invalid_header"}
+                    and count is None and not route
+                    and not move_target_observable and move_target is None)
+            )
+            if not valid:
+                raise ValueError(
+                    f"native {name}[{index}] route status/count disagrees with fields"
+                )
+            normalized["route_read_status"] = status
+            normalized["route_source_count"] = count
         for optional_flag in ("in_combat", "retreating"):
             flag = raw_army.get(optional_flag)
             if flag is not None and not isinstance(flag, bool):
@@ -3851,6 +3980,7 @@ def is_native_war_step(step: object) -> bool:
     return (
         step == RAISE_TROOPS_STEP
         or step == QUERY_ARMY_STRENGTHS_STEP
+        or parse_query_province_local_siege_step(step) is not None
         or parse_preview_move_army_step(step) is not None
         or parse_query_route_contact_horizon_step(step) is not None
         or parse_move_army_step(step) is not None
