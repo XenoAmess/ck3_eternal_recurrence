@@ -484,6 +484,9 @@ class WindowsInjectorJobTests(unittest.TestCase):
         self.assertTrue(os.path.samefile(result.report["pinned_executable"], self.python))
         self.assertEqual(result.report["stdout_sha256"],
                          hashlib.sha256(b"OUT\r\n").hexdigest().upper())
+        self.assertEqual(result.report["stdout_retained_bytes"], len(b"OUT\r\n"))
+        self.assertEqual(result.report["stdout_retained_sha256"],
+                         hashlib.sha256(b"OUT\r\n").hexdigest().upper())
 
     def test_timeout_terminates_job_and_refuses_tree_proof(self) -> None:
         result = run_contained_injector_command(
@@ -494,6 +497,22 @@ class WindowsInjectorJobTests(unittest.TestCase):
         self.assertFalse(result.report["complete_process_tree_proven"])
         self.assertEqual(result.report["job_active_final"], 0)
         self.assertEqual(result.report["job_pids_final"], [])
+
+    def test_timeout_preserves_raw_partial_stdout_and_stderr(self) -> None:
+        result = run_contained_injector_command(
+            [self.python, "-c", "import sys,time;"
+             "sys.stdout.buffer.write(b'OUTPRE');sys.stdout.flush();"
+             "sys.stderr.buffer.write(b'ERRPRE');sys.stderr.flush();"
+             "time.sleep(30)"],
+            timeout_seconds=2.0)
+        self.assertEqual(result.report["status"], "RED_TIMEOUT")
+        self.assertFalse(result.report["complete_process_tree_proven"])
+        self.assertEqual(result.stdout, b"OUTPRE")
+        self.assertEqual(result.stderr, b"ERRPRE")
+        for label, raw in (("stdout", b"OUTPRE"), ("stderr", b"ERRPRE")):
+            self.assertEqual(result.report[f"{label}_retained_bytes"], len(raw))
+            self.assertEqual(result.report[f"{label}_retained_sha256"],
+                             hashlib.sha256(raw).hexdigest().upper())
 
     def test_large_two_pipe_output_is_bounded_and_complete(self) -> None:
         payload = 1024 * 1024
@@ -610,7 +629,10 @@ class WindowsInjectorJobTests(unittest.TestCase):
         self.assertEqual(result.report["status"], "RED_OUTPUT_OR_IO")
         self.assertFalse(result.report["complete_process_tree_proven"])
         self.assertTrue(result.report["stdout_overflow"])
-        self.assertIsNone(result.stdout)
+        self.assertEqual(result.stdout, b"X" * 1024)
+        self.assertEqual(result.report["stdout_retained_bytes"], 1024)
+        self.assertEqual(result.report["stdout_retained_sha256"],
+                         hashlib.sha256(b"X" * 1024).hexdigest().upper())
         self.assertEqual(result.report["job_active_final"], 0)
 
     def test_job_rejects_child_and_breakaway_before_root_exit(self) -> None:
@@ -743,6 +765,10 @@ class WindowsInjectorJobTests(unittest.TestCase):
         self.assertEqual(result.report["status"], "RED_INTERNAL")
         self.assertTrue(result.report["injector_root_reaped"])
         self.assertFalse(result.report["complete_process_tree_proven"])
+        self.assertEqual(result.stdout, b"done\r\n")
+        self.assertEqual(result.stderr, b"")
+        self.assertEqual(result.report["stdout_retained_sha256"],
+                         hashlib.sha256(b"done\r\n").hexdigest().upper())
 
     def test_relative_or_missing_executable_fails_closed(self) -> None:
         for executable in ("python.exe", "D:/missing-r0368-injector.exe"):
