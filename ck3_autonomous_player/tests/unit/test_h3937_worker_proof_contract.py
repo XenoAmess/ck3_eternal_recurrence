@@ -30,12 +30,16 @@ class WorkerProofContractTest(unittest.TestCase):
         self.output = Path(self.temporary.name) / "fixture"
         worker_dir = self.output / "worker"
         worker_dir.mkdir(parents=True)
-        self.executable = Path(sys._base_executable)
+        self.executable = Path(sys.executable)
+        self.actual_executable = Path(sys._base_executable)
         self.argv = (str(self.executable), str(self.output / "harmless_dummy.py"))
         self.frozen = contract.FrozenWorkerCommand(
             argv=self.argv, executable_sha256=_sha(self.executable),
-            actual_argv=self.argv, actual_executable_sha256=_sha(self.executable),
+            actual_argv=self.argv,
+            actual_executable_path=str(self.actual_executable),
+            actual_executable_sha256=_sha(self.actual_executable),
             expected_parent_pid=100,
+            expected_parent_creation_filetime_100ns=133999999999999999,
             timeout_seconds=2.0,
         )
         (worker_dir / "worker.stdout.bin").write_bytes(b"dummy stdout\n")
@@ -49,17 +53,20 @@ class WorkerProofContractTest(unittest.TestCase):
             "worker_pid": 123,
             "worker_identity": {
                 "pid": 123, "parent_pid": 100,
+                "parent_creation_filetime_100ns": 133999999999999999,
                 "creation_filetime_100ns": 134000000000000000,
                 "creation_utc": datetime.now(timezone.utc).isoformat(),
                 "exe": str(self.executable), "argv": list(self.argv),
+                "job_member": True,
             },
             "actual_worker_identity": {
                 "pid": 124, "parent_pid": 123,
                 "creation_filetime_100ns": 134000000000000100,
                 "creation_utc": datetime.now(timezone.utc).isoformat(),
-                "exe": str(self.executable), "argv": list(self.argv),
+                "exe": str(self.actual_executable), "argv": list(self.argv),
                 "observed_while_running": True,
                 "wmi_toolhelp_cross_checked": True,
+                "job_member": True,
             },
             "worker_returncode": 1, "worker_exited": True,
             "timeout": False, "watchdog_error": None,
@@ -111,6 +118,8 @@ class WorkerProofContractTest(unittest.TestCase):
     def test_pid_creation_argv_or_executable_drift_rejected(self) -> None:
         for field, value in (
             ("pid", 124), ("creation_filetime_100ns", 0),
+            ("parent_creation_filetime_100ns", 12),
+            ("job_member", False),
             ("creation_utc", "2026-09-30T09:00:00"),
             ("exe", str(self.output / "wrong-python.exe")),
             ("argv", [self.argv[0], "other.py"]),
@@ -144,9 +153,10 @@ class WorkerProofContractTest(unittest.TestCase):
 
     def test_actual_child_unknown_or_unbound_is_rejected(self) -> None:
         for field, value in (
-            ("pid", 0), ("parent_pid", 122),
+            ("pid", 0), ("pid", 123), ("parent_pid", 122),
             ("observed_while_running", "true"),
             ("wmi_toolhelp_cross_checked", False),
+            ("job_member", False),
             ("creation_utc", "not-a-time"),
             ("argv", [str(self.executable), "other.py"]),
         ):
@@ -199,12 +209,39 @@ class WorkerProofContractTest(unittest.TestCase):
 
     def test_wrong_frozen_executable_bytes_rejected(self) -> None:
         frozen = contract.FrozenWorkerCommand(
-            self.argv, "0" * 64, self.argv, _sha(self.executable), 100, 2.0)
+            argv=self.argv, executable_sha256="0" * 64,
+            actual_argv=self.argv,
+            actual_executable_path=str(self.actual_executable),
+            actual_executable_sha256=_sha(self.actual_executable),
+            expected_parent_pid=100,
+            expected_parent_creation_filetime_100ns=133999999999999999,
+            timeout_seconds=2.0,
+        )
         with self.assertRaises(contract.WorkerProofError):
             contract.verify_worker_exit(
                 output=self.output, frozen=frozen,
                 started_monotonic=100.0, now=lambda: 100.1,
             )
+
+    def test_actual_os_executable_is_separate_from_argv_zero(self) -> None:
+        proof = self._verify()
+        self.assertEqual(proof.actual_executable, str(self.actual_executable))
+        self.assertEqual(proof.actual_argv[0], str(self.executable))
+        wrong_path = contract.FrozenWorkerCommand(
+            argv=self.argv, executable_sha256=_sha(self.executable),
+            actual_argv=self.argv,
+            actual_executable_path=str(self.executable),
+            actual_executable_sha256=_sha(self.executable),
+            expected_parent_pid=100,
+            expected_parent_creation_filetime_100ns=133999999999999999,
+            timeout_seconds=2.0,
+        )
+        if self.executable.resolve() != self.actual_executable.resolve():
+            with self.assertRaises(contract.WorkerProofError):
+                contract.verify_worker_exit(
+                    output=self.output, frozen=wrong_path,
+                    started_monotonic=100.0, now=lambda: 100.1,
+                )
 
     def test_real_harmless_popen_without_job_receipt_is_unproven(self) -> None:
         command = [str(self.executable), "-c", "import os; print(os.getpid())"]
@@ -219,7 +256,7 @@ class WorkerProofContractTest(unittest.TestCase):
             child.communicate(timeout=5)
             raise
         self.assertEqual(child.returncode, 0, stderr)
-        self.assertEqual(int(stdout.strip()), child.pid)
+        self.assertGreater(int(stdout.strip()), 0)
         # A successful Popen and matching PID alone never prove a Job tree.
         (self.output / "worker" / "receipt.json").unlink()
         with self.assertRaises(contract.WorkerProofError):

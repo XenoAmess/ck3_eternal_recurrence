@@ -1,7 +1,8 @@
-"""Fail-closed, process-only receipt contract for a future H3937 worker.
+"""Fail-closed, process-only receipt shape for a future H3937 worker.
 
 This module cannot launch a worker or release a screen lease. The Windows Job
 backend is deliberately supplied by the caller and needs separate review.
+The Job and WMI fields here are backend claims, not fresh OS observations.
 """
 
 from __future__ import annotations
@@ -70,8 +71,10 @@ class FrozenWorkerCommand:
     argv: tuple[str, ...]
     executable_sha256: str
     actual_argv: tuple[str, ...]
+    actual_executable_path: str
     actual_executable_sha256: str
     expected_parent_pid: int
+    expected_parent_creation_filetime_100ns: int
     timeout_seconds: float
 
     def validate(self) -> None:
@@ -80,16 +83,19 @@ class FrozenWorkerCommand:
             or not all(type(part) is str and part for part in self.argv)
             or len(self.actual_argv) < 2
             or not all(type(part) is str and part for part in self.actual_argv)
+            or type(self.actual_executable_path) is not str
+            or not self.actual_executable_path
             or re.fullmatch(r"[A-F0-9]{64}", self.executable_sha256) is None
             or re.fullmatch(r"[A-F0-9]{64}", self.actual_executable_sha256) is None
             or not _positive_int(self.expected_parent_pid)
+            or not _positive_int(self.expected_parent_creation_filetime_100ns)
             or type(self.timeout_seconds) not in (float, int)
             or self.timeout_seconds <= 0
         ):
             raise WorkerProofError("frozen worker command is malformed")
         if _sha(Path(self.argv[0])) != self.executable_sha256:
             raise WorkerProofError("worker executable bytes changed")
-        if _sha(Path(self.actual_argv[0])) != self.actual_executable_sha256:
+        if _sha(Path(self.actual_executable_path)) != self.actual_executable_sha256:
             raise WorkerProofError("actual Python child executable bytes changed")
 
 
@@ -116,10 +122,12 @@ def verify_worker_exit(
     *, output: Path, frozen: FrozenWorkerCommand,
     started_monotonic: float, now: Callable[[], float] = time.monotonic,
 ) -> WorkerExitEvidence:
-    """Prove a pinned Job worker exited; never certify query or native cleanup.
+    """Validate a pinned Job exit receipt; never certify native cleanup.
 
     Call after the backend has returned. Hashing and JSON parsing count against
     the original full-chain deadline; no slow final receipt can become GREEN.
+    External mutation after this function returns remains a separate operator
+    release gate, and the clock provider must be trusted and side-effect free.
     """
     frozen.validate()
     if output.is_symlink() or not output.is_dir():
@@ -180,6 +188,9 @@ def verify_worker_exit(
         not _positive_int(pid)
         or pid != inner.get("worker_pid")
         or identity.get("parent_pid") != frozen.expected_parent_pid
+        or identity.get("parent_creation_filetime_100ns")
+           != frozen.expected_parent_creation_filetime_100ns
+        or identity.get("job_member") is not True
         or not _positive_int(creation_filetime)
         or not _created_utc(created)
         or not _same_path(identity.get("exe"), Path(frozen.argv[0]))
@@ -193,13 +204,14 @@ def verify_worker_exit(
         not _positive_int(actual_pid)
         or not _positive_int(actual.get("creation_filetime_100ns"))
         or not _created_utc(actual.get("creation_utc"))
-        or not _same_path(actual.get("exe"), Path(frozen.actual_argv[0]))
+        or not _same_path(actual.get("exe"), Path(frozen.actual_executable_path))
         or type(actual_argv) is not list
         or tuple(actual_argv) != frozen.actual_argv
         or actual.get("observed_while_running") is not True
         or actual.get("wmi_toolhelp_cross_checked") is not True
-        or (actual_pid != pid and actual.get("parent_pid") != pid)
-        or (actual_pid == pid and actual.get("parent_pid") != identity.get("parent_pid"))
+        or actual.get("job_member") is not True
+        or actual_pid == pid
+        or actual.get("parent_pid") != pid
     ):
         raise WorkerProofError("actual Python child identity or launcher chain unproven")
     returncode = inner.get("worker_returncode")
