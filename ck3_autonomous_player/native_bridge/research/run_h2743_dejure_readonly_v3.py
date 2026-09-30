@@ -1,8 +1,10 @@
 """Exact H2743 defender de-jure baseline read; never submits a war action.
 
 The default and --check-static modes do not create an attempt or start CK3.
---run requires a separately prepared fresh attempt, human-reviewed fresh Steam
-offline evidence, and a live exclusive ck3-screen task-bus lease.
+--seal-no-launch creates a static-only v5 attempt without a child process or
+ck3-screen lease. It is not a prepared state. --prepare-live-profile requires
+a separately acquired screen lease to consume that seal. --run requires the
+prepared state, human-reviewed fresh Steam offline evidence, and the lease.
 """
 
 from __future__ import annotations
@@ -311,7 +313,7 @@ def verify_head_storage_pair() -> None:
         raise RuntimeError("new H2743 v5 DLL focused CTest failed")
 
 
-def check_static() -> dict[str, object]:
+def check_static(*, static_only: bool = False) -> dict[str, object]:
     expected = {SOURCE / name: digest for name, digest in SOURCE_HASHES.items()}
     expected.update({DLL: DLL_SHA, INJECTOR: INJECTOR_SHA, EXE: EXE_SHA,
                      WAR_VALUES: WAR_VALUES_SHA})
@@ -333,34 +335,40 @@ def check_static() -> dict[str, object]:
             raise RuntimeError("H2743 candidate build manifest content differs")
     if CANDIDATE == HEAD_STORAGE_CANDIDATE:
         verify_head_storage_pair()
-    for path in (PYTHON, TASK_BUS, REPO / "ck3_autonomous_player/src/xar_autoplayer/cli.py",
-                 REPO / "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"):
+    required_tools = [PYTHON, REPO / "ck3_autonomous_player/src/xar_autoplayer/cli.py",
+                      REPO / "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"]
+    if not static_only:
+        required_tools.append(TASK_BUS)
+    for path in required_tools:
         if not path.is_file():
             raise RuntimeError(f"required local tool missing: {path}")
-    for module in ("mcp", "psutil"):
-        if importlib.util.find_spec(module) is None:
-            raise RuntimeError(f"selected interpreter lacks required dependency: {module}")
-    import psutil
-    own_maps = psutil.Process().memory_maps(grouped=False)
-    if not own_maps or not any(getattr(item, "path", None) for item in own_maps):
-        raise RuntimeError("selected interpreter cannot read its own process module map")
     if {item.name for item in SOURCE.iterdir() if item.name != "transfer-receipt.json"} != set(SOURCE_HASHES):
         raise RuntimeError("H2743 source set is no longer the exact four files")
-    for entry, help_args in ((CLI_ENTRY, ["--help"]),
-                             (CLI_ENTRY, ["native-session", "--help"]),
-                             (MCP_ENTRY, ["--help"])):
-        probe = subprocess.run([str(PYTHON), "-c", entry, *help_args], cwd=REPO,
-                               capture_output=True, text=True, encoding="utf-8",
-                               timeout=STATIC_HELP_SECONDS)
-        if probe.returncode != 0 or "usage:" not in probe.stdout.lower():
-            raise RuntimeError(f"branch CLI help probe failed: {help_args}")
+    if not static_only:
+        for module in ("mcp", "psutil"):
+            if importlib.util.find_spec(module) is None:
+                raise RuntimeError(f"selected interpreter lacks required dependency: {module}")
+        import psutil
+        own_maps = psutil.Process().memory_maps(grouped=False)
+        if not own_maps or not any(getattr(item, "path", None) for item in own_maps):
+            raise RuntimeError("selected interpreter cannot read its own process module map")
+        for entry, help_args in ((CLI_ENTRY, ["--help"]),
+                                 (CLI_ENTRY, ["native-session", "--help"]),
+                                 (MCP_ENTRY, ["--help"])):
+            probe = subprocess.run([str(PYTHON), "-c", entry, *help_args], cwd=REPO,
+                                   capture_output=True, text=True, encoding="utf-8",
+                                   timeout=STATIC_HELP_SECONDS)
+            if probe.returncode != 0 or "usage:" not in probe.stdout.lower():
+                raise RuntimeError(f"branch CLI help probe failed: {help_args}")
     return {"status": "static_bytes_verified_no_launch", "candidate_kind": CANDIDATE,
             "readiness_seconds": READINESS_SECONDS,
             "session_timeout_seconds": SESSION_SECONDS, "paths_sha256": {str(path): digest for path, digest in expected.items()},
             "allowed_query_steps": [QUERY, OPTIONS_QUERY],
             "python_source_sha256": provenance_source_hashes(),
             "candidate_build_manifest_sha256": candidate_manifest_sha256(),
-            "process_module_map_probe": "self_readable",
+            "process_module_map_probe": "not_run_static_only" if static_only else "self_readable",
+            "cli_help_probes": "not_run_static_only" if static_only else "passed",
+            "task_bus_file_checked": not static_only,
             "gameplay_action_submitted": False}
 
 
@@ -467,22 +475,80 @@ def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
     return state, ready
 
 
-def prepare_no_launch(attempt_name: str, task_id: str | None) -> None:
-    """Fresh exact source pairing and native preflight, with no CK3 launch."""
+def static_seal(attempt_name: str) -> None:
+    """Seal exact v5 inputs without a lease, child process, profile or game."""
+    if CANDIDATE != HEAD_STORAGE_CANDIDATE:
+        raise RuntimeError("screen-free static seal is limited to the current-HEAD v5 pair")
     if not valid_attempt_name(attempt_name):
         raise RuntimeError("use a fresh literal attempt-N-dejure-baseline-no-launch name")
-    check_static()
+    verified = check_static(static_only=True)
+    attempt = ROOT / attempt_name
+    attempt.mkdir(exist_ok=False)
+    write_new(attempt / "static-seal.json", {
+        "schema": "xar.ck3.h2743.v5.static-no-launch-seal.v1",
+        "status": "STATIC_SEALED_LIVE_PREPARE_PENDING",
+        "candidate_kind": CANDIDATE,
+        "head": HEAD_STORAGE_HEAD,
+        "runner_sha256": sha256(Path(__file__).resolve()),
+        "static_verification": verified,
+        "source_hashes": SOURCE_HASHES,
+        "candidate_dll_sha256": DLL_SHA,
+        "injector_sha256": INJECTOR_SHA,
+        "candidate_build_manifest_sha256": HEAD_STORAGE_PAIR_SHA,
+        "screen_lease_checked": False,
+        "child_process_started": False,
+        "ck3_launch_attempted": False,
+        "gameplay_action_submitted": False,
+        "created_at_utc": utc_now().isoformat(),
+    })
+    print(json.dumps({"status": "STATIC_SEALED_LIVE_PREPARE_PENDING",
+                      "attempt": str(attempt)}, ensure_ascii=False))
+
+
+def verify_static_seal(attempt: Path) -> None:
+    if (CANDIDATE != HEAD_STORAGE_CANDIDATE or attempt.resolve().parent != ROOT.resolve()
+            or not valid_attempt_name(attempt.name)):
+        raise RuntimeError("sealed attempt is not a current-HEAD v5 child")
+    seal = json.loads((attempt / "static-seal.json").read_text(encoding="utf-8"))
+    if (seal.get("schema") != "xar.ck3.h2743.v5.static-no-launch-seal.v1"
+            or seal.get("status") != "STATIC_SEALED_LIVE_PREPARE_PENDING"
+            or seal.get("candidate_kind") != CANDIDATE
+            or seal.get("head") != HEAD_STORAGE_HEAD
+            or seal.get("runner_sha256") != sha256(Path(__file__).resolve())
+            or seal.get("source_hashes") != SOURCE_HASHES
+            or seal.get("candidate_dll_sha256") != DLL_SHA
+            or seal.get("injector_sha256") != INJECTOR_SHA
+            or seal.get("candidate_build_manifest_sha256") != HEAD_STORAGE_PAIR_SHA
+            or seal.get("screen_lease_checked") is not False
+            or seal.get("child_process_started") is not False
+            or seal.get("ck3_launch_attempted") is not False
+            or seal.get("gameplay_action_submitted") is not False
+            or seal.get("static_verification") != check_static(static_only=True)):
+        raise RuntimeError("current-HEAD v5 static seal changed or is incomplete")
+    if {entry.name for entry in attempt.iterdir()} != {"static-seal.json"}:
+        raise RuntimeError("sealed attempt already contains preparation or unexpected files")
+
+
+def prepare_no_launch(attempt_name: str, task_id: str | None,
+                      *, sealed_attempt: bool = False) -> None:
+    """Screen-owned live profile preparation; legacy CLI remains available."""
+    if not valid_attempt_name(attempt_name):
+        raise RuntimeError("use a fresh literal attempt-N-dejure-baseline-no-launch name")
+    attempt = ROOT / attempt_name
+    if sealed_attempt:
+        verify_static_seal(attempt)
     if task_id is None:
         if CANDIDATE != EXISTING_TRUCE_CANDIDATE:
             raise RuntimeError("offscreen no-launch preflight is limited to the new H2743 candidate")
     else:
         screen_lease(task_id)
+    check_static()
     import psutil
     if any((item.info.get("name") or "").casefold() == "ck3.exe" for item in psutil.process_iter(["name"])):
         raise RuntimeError("CK3 is already running; defer no-launch profile work")
-    attempt = ROOT / attempt_name
     state = attempt / "state"
-    attempt.mkdir(exist_ok=False)
+    if not sealed_attempt:
+        attempt.mkdir(exist_ok=False)
     write_new(attempt / "source-pair.json", {"schema": "xar.ck3.h2743.dejure-exit-read-port-no-launch.v3",
         "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
         "candidate_dll": str(DLL), "candidate_dll_sha256": DLL_SHA,
@@ -1155,7 +1221,12 @@ def main() -> None:
                         help="exact pinned read-only DLL; default preserves the v3 reader")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check-static", action="store_true", help="hash exact inputs; no profile or CK3 launch")
-    mode.add_argument("--prepare-no-launch", action="store_true", help="new exact attempt; profile/preflight only")
+    mode.add_argument("--seal-no-launch", action="store_true",
+                      help="new v5 static seal; no screen lease or child process")
+    mode.add_argument("--prepare-live-profile", action="store_true",
+                      help="screen-owned profile/preflight from an exact static seal")
+    mode.add_argument("--prepare-no-launch", action="store_true",
+                      help="legacy screen-owned profile/preflight in a fresh attempt")
     parser.add_argument("--attempt-name", help="fresh attempt-N-dejure-baseline-no-launch")
     mode.add_argument("--run", action="store_true", help="consume a separately prepared exact attempt")
     parser.add_argument("--prepared-attempt", type=Path)
@@ -1169,6 +1240,17 @@ def main() -> None:
         if args.prepare_no_launch or args.attempt_name:
             parser.error("--run cannot also prepare a profile")
         run(args.prepared_attempt, args.steam_gate, args.task_id)
+    elif args.seal_no_launch:
+        if not args.attempt_name or args.prepared_attempt or args.steam_gate or args.task_id:
+            parser.error("--seal-no-launch requires only --attempt-name")
+        static_seal(args.attempt_name)
+    elif args.prepare_live_profile:
+        if (not args.prepared_attempt or not args.task_id or args.attempt_name
+                or args.steam_gate):
+            parser.error("--prepare-live-profile requires --prepared-attempt and --task-id only")
+        if args.prepared_attempt.resolve().parent != ROOT.resolve():
+            parser.error("--prepared-attempt must be a direct child of the selected candidate root")
+        prepare_no_launch(args.prepared_attempt.name, args.task_id, sealed_attempt=True)
     elif args.prepare_no_launch:
         if (not args.attempt_name or args.prepared_attempt or args.steam_gate
                 or (not args.task_id and args.candidate != EXISTING_TRUCE_CANDIDATE)):

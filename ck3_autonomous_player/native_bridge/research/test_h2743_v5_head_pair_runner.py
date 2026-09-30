@@ -84,6 +84,58 @@ class HeadStoragePairTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("war-storage-candidate-v5-head24c51", result.stdout)
         self.assertIn("war-storage-candidate-v5,", result.stdout)
+        self.assertIn("--seal-no-launch", result.stdout)
+        self.assertIn("--prepare-live-profile", result.stdout)
+        self.assertIn("--prepare-no-launch", result.stdout)
+
+    def test_static_only_check_never_spawns_a_child(self) -> None:
+        runner = self.runner
+        runner.select_candidate(runner.HEAD_STORAGE_CANDIDATE)
+        with patch.object(runner.subprocess, "run", side_effect=AssertionError("child spawned")), \
+                patch.object(runner.subprocess, "Popen", side_effect=AssertionError("child spawned")):
+            result = runner.check_static(static_only=True)
+        self.assertEqual(result["candidate_kind"], runner.HEAD_STORAGE_CANDIDATE)
+        self.assertEqual(result["cli_help_probes"], "not_run_static_only")
+        self.assertEqual(result["process_module_map_probe"], "not_run_static_only")
+        self.assertIs(result["task_bus_file_checked"], False)
+
+    def test_static_seal_is_append_only_and_not_live_ready(self) -> None:
+        runner = self.runner
+        runner.select_candidate(runner.HEAD_STORAGE_CANDIDATE)
+        with tempfile.TemporaryDirectory(prefix="h2743-v5-static-seal-") as folder, \
+                patch.object(runner, "ROOT", Path(folder)), \
+                patch.object(runner, "check_static", return_value={"status": "test-static"}) as checked, \
+                patch.object(runner.subprocess, "run", side_effect=AssertionError("child spawned")), \
+                patch.object(runner.subprocess, "Popen", side_effect=AssertionError("child spawned")):
+            runner.static_seal("attempt-900001-dejure-baseline-no-launch")
+            attempt = Path(folder) / "attempt-900001-dejure-baseline-no-launch"
+            self.assertEqual([entry.name for entry in attempt.iterdir()], ["static-seal.json"])
+            seal = json.loads((attempt / "static-seal.json").read_text(encoding="utf-8"))
+            self.assertEqual(seal["status"], "STATIC_SEALED_LIVE_PREPARE_PENDING")
+            self.assertIs(seal["child_process_started"], False)
+            self.assertIs(seal["screen_lease_checked"], False)
+            runner.verify_static_seal(attempt)
+            with self.assertRaises(FileExistsError):
+                runner.static_seal("attempt-900001-dejure-baseline-no-launch")
+            seal["candidate_dll_sha256"] = "0" * 64
+            (attempt / "static-seal.json").write_text(json.dumps(seal), encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "static seal changed"):
+                runner.verify_static_seal(attempt)
+            checked.assert_called_with(static_only=True)
+
+    def test_sealed_live_prepare_requires_a_screen_before_child_probes(self) -> None:
+        runner = self.runner
+        runner.select_candidate(runner.HEAD_STORAGE_CANDIDATE)
+        with tempfile.TemporaryDirectory(prefix="h2743-v5-static-seal-") as folder, \
+                patch.object(runner, "ROOT", Path(folder)), \
+                patch.object(runner, "check_static", return_value={"status": "test-static"}), \
+                patch.object(runner, "screen_lease", side_effect=RuntimeError("no screen lease")), \
+                patch.object(runner.subprocess, "run", side_effect=AssertionError("child spawned")), \
+                patch.object(runner.subprocess, "Popen", side_effect=AssertionError("child spawned")):
+            runner.static_seal("attempt-900002-dejure-baseline-no-launch")
+            with self.assertRaisesRegex(RuntimeError, "no screen lease"):
+                runner.prepare_no_launch("attempt-900002-dejure-baseline-no-launch",
+                                         "h2743-test-task", sealed_attempt=True)
 
 
 if __name__ == "__main__":
