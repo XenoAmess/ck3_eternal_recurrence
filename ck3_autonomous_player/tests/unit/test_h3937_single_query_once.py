@@ -16,7 +16,10 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer import h3937_single_query_once_enable as entry
 from xar_autoplayer import h3937_stationary_route_contact_query_run as query
-from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.native_driver import (
+    NativeHeadlessGameplayDriver, NativeProtocolState, _NativeCommandRejectedError,
+    QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
+)
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.war_contract import query_route_contact_horizon_step
 from xar_autoplayer.operator_mcp import load_operator_profile, OperatorService, HostIdentity
@@ -62,6 +65,65 @@ def route_result(frame):
 
 
 class SingleQueryTests(unittest.TestCase):
+    def test_negative_decoded_frame_sealed_before_reject_and_ascii_cli(self):
+        frame = snapshot()
+        step = route_result(frame)["step"]
+        error = "application-main route-contact query timed out before execution"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "decoded-command-result.json"
+            driver = NativeHeadlessGameplayDriver.__new__(NativeHeadlessGameplayDriver)
+            driver.state = NativeProtocolState("fixture-not-a-pipe")
+            driver.take_internal_semantic_snapshot = lambda: copy.deepcopy(frame)
+            driver._request_sequence = 0
+            driver.command_timeout_seconds = 1
+            driver.route_contact_raw_result_observer = Mock()
+            driver.route_contact_command_result_observer = lambda payload: query._seal_decoded_command_result(path, payload)
+            sent, received = [], []
+            def send(request):
+                sent.append(copy.deepcopy(request))
+                response = {"type": "command_result", "protocol_version": 1,
+                            "request_id": request["request_id"], "ok": False, "error": error,
+                            "result": {"physical_army_inventory_diagnostics": {"fixture_only": "拒绝\ufffd"}},
+                            "extra_native_field": {"preserve": [1, 2]}}
+                received.append(copy.deepcopy(response))
+                driver.state.ingest(response)
+            driver.endpoint = Mock()
+            driver.endpoint.send.side_effect = send
+            with patch.object(driver.state, "capabilities", return_value={"bridge_capabilities": [QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY]}):
+                with self.assertRaises(_NativeCommandRejectedError) as caught:
+                    driver._execute_primitive_step(step, expected_revision=7,
+                        required_capability=QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
+                        internal_semantic_snapshot=True)
+            self.assertEqual(caught.exception.native_error, error)
+            raw = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(raw, {"request": sent[0], "command_result": received[0]})
+            self.assertEqual(sent[0]["expected_revision"], frame["native_revision"])
+            self.assertEqual(len(sent), 1)
+            self.assertIsNone(driver.state.wait_for_command_result(sent[0]["request_id"], 0))
+            driver.route_contact_raw_result_observer.assert_not_called()
+            with self.assertRaises(FileExistsError):
+                query._seal_decoded_command_result(path, raw)
+            unrelated = Mock()
+            driver.route_contact_command_result_observer = unrelated
+            with patch.object(driver.state, "capabilities", return_value={"bridge_capabilities": ["fixture.other-read"]}):
+                with self.assertRaises(_NativeCommandRejectedError):
+                    driver._execute_primitive_step("fixture-read", expected_revision=7,
+                        required_capability="fixture.other-read", internal_semantic_snapshot=True)
+            unrelated.assert_not_called()
+            payload = {"ok": False, "status": "RED", "error": error,
+                       "original_terminal_text": "拒绝\ufffd", "decoded_command_result_path": str(path)}
+            output_bytes = io.BytesIO()
+            stdout = io.TextIOWrapper(output_bytes, encoding="cp936", errors="strict")
+            with patch.object(entry, "_configure", return_value={}), \
+                    patch.object(entry, "run_once", return_value=payload), redirect_stdout(stdout):
+                rc = entry.main(["--config", "fixture.json", "--live"])
+                stdout.flush()
+            encoded = output_bytes.getvalue()
+            self.assertEqual(rc, 1)
+            encoded.decode("ascii")
+            self.assertEqual(json.loads(encoded), payload)
+
     def test_real_report_inventory_red_and_post_query_failure_retain_raw(self):
         frame = snapshot()
         with tempfile.TemporaryDirectory() as directory:

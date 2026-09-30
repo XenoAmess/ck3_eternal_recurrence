@@ -8318,6 +8318,11 @@ class NativeHeadlessGameplayDriver:
         frame = self.state.wait_for_command_result(
             request_id, command_timeout_seconds
         )
+        if frame is not None and required_capability == QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY:
+            frame_observer = getattr(self, "route_contact_command_result_observer", None)
+            if frame_observer is not None:
+                frame_observer({"request": copy.deepcopy(request),
+                                "command_result": copy.deepcopy(frame)})
         if frame is None:
             if step == QUERY_DECLARABLE_WARS_STEP:
                 raise _NativeCommandResultTimeoutError(step, request_id)

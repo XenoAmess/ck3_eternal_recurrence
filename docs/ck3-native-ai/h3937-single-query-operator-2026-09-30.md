@@ -111,3 +111,25 @@ receipts remain historical source evidence and are not rerun for this delta.
 本次仅在固定 ie 起点 `d5f3c51215439b23f578c8973d5d74ac01f1493c` 上接入冻结的 H3937 producer 与 single consumer 源码。master 冻结点为 `c69260e65b63bf8f8b8ae42e3aee8f2a68561660`；未接收冻结点之后的 master 内容，只交付 ie。
 
 复用的 fixture、pair、no-launch 与实机记录分别绑定其原始执行树。旧 `0d06` pair 不认证本次适配后的原生树；本次没有构建、启动游戏或认证六读，formal 仍为 0。Steam 持续离线。
+
+## Rejected command-result retention candidate
+
+R0125 received a negative decoded `command_result` and raised inside the
+primitive before either success-result sink was reachable. Its original full
+request/frame was not retained; the timeout text does not establish that the
+eight-slot inventory diagnostics were generated or lost.
+
+The next candidate adds an optional route-contact observer immediately after
+the primitive's keyed wait returns a decoded frame, before the original reject.
+Only the admitted single-query driver installs it. The create-only
+`decoded-command-result.json` retains the full request and decoded frame,
+including request ID, result, error and any diagnostic siblings. The two
+existing raw success layers remain separate. Completion hashes this third
+artifact even when the original rejection is raised. Legacy default is None.
+
+The single entry prints ASCII-escaped JSON so a GBK terminal can return the
+intended RED/RC1 after the UTF-8 completion artifact is persisted. Artifact
+serialization is unchanged. One new offline primitive rejection fixture also
+checks scoped callback behavior, immutable retention and strict CP936 output.
+This source candidate does not qualify a new native build or live tuple; any
+new native receipt must retain exact same-source fixture/review binding.
