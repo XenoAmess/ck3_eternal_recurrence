@@ -9031,9 +9031,7 @@ class NativeHeadlessGameplayDriver:
                     "sha256": None,
                     "date_raw": submitted_date_raw,
                     "strategy": "native-autosave-command-v1",
-                    "succession_lifecycle": copy.deepcopy(
-                        self._succession_lifecycle
-                    ),
+                    **self._checkpoint_lifecycle_metadata(),
                 },
                 "materialization": {
                     "available": False,
@@ -9054,9 +9052,7 @@ class NativeHeadlessGameplayDriver:
             "date_raw": submitted_date_raw,
             "overwrite_confirmed": before is not None,
             "strategy": "native-autosave-command-v1",
-            "succession_lifecycle": copy.deepcopy(
-                self._succession_lifecycle
-            ),
+            **self._checkpoint_lifecycle_metadata(),
         }
         with self._driver_state_lock:
             checkpoint["history_index"] = len(self._command_history) + 1
@@ -9078,6 +9074,13 @@ class NativeHeadlessGameplayDriver:
                 "mtime_ns": mtime_ns,
             },
         }
+
+    def _checkpoint_lifecycle_metadata(self) -> dict[str, object]:
+        if self.episode_projection == "native_campaign":
+            # This report must not turn an unused legacy driver default into
+            # a claim about the current CK3 rules or native succession behavior.
+            return {"episode_projection": "native_campaign", "succession_lifecycle": None}
+        return {"succession_lifecycle": copy.deepcopy(self._succession_lifecycle)}
 
     def _establish_episode_seed(
         self,

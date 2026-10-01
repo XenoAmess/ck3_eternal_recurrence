@@ -170,7 +170,7 @@ jump dates, skip simulation ticks or alter AI behavior. It performs no desktop
 input or OCR. Live attach and gameplay are left to the exclusive desktop owner.
 
 Validation: 6 read-only clock tests, 18 profile/bootstrap/ordinary-player tests,
-5 real-provider endpoint campaign-projection tests and 11 existing semantic-profile tests
+7 real-provider endpoint campaign-projection tests and 11 existing semantic-profile tests
 plus 4 real-provider delayed postcondition tests
 passed, including official in-memory MCP schemas, stale process/Steam/lease
 rejection, wrong userdir and artifact rejection, native hello/build rejection,
