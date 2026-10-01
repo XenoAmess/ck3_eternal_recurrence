@@ -629,5 +629,62 @@ void NotificationNamedScopes(){
   Fixture duplicate_key;Key(duplicate_key.names[0].data(),"dead_character");auto duplicated_key=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(!Arm(*duplicated_key,duplicate_key));
   std::cout<<"named scope primary / fallback / duplicates first match / primary kind0 shadows / absent padding unknown / wrong kind / full generation / counts / identifier changes / memory fault / real writer edges retain changed named target PASS\n";
 }
+void NotificationIdentifierAppend(){
+  ScopedNotificationNamedDeadCharacterV1 unobserved{};
+  assert(!unobserved.read&&unobserved.failure_stage==ScopedNotificationNamedReadFailureV1::not_observed);
+  Fixture f;auto m=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(Arm(*m,f));
+  constexpr auto key=std::int32_t(0x01000003);
+  std::array<std::byte,0x20> row{};Put(row.data(),0,key);Put(row.data(),8,std::uint64_t(0xABCDEFAA00000004ULL));Put(row.data(),0x10,std::int64_t(101));
+  Put(f.saved_targets.data(),0,reinterpret_cast<std::uintptr_t>(row.data()));Put(f.saved_targets.data(),0xC,std::int32_t(1));
+  std::array<std::array<std::byte,0x20>,6> appended{};
+  for(std::size_t i=0;i<4;++i)appended[i]=f.names[i];Key(appended[4].data(),"new_identifier");Key(appended[5].data(),"another");
+  ScopedNotificationNamedDeadCharacterV1 read{};
+  auto query=[&]{return ReadScopedNotificationNamedDeadCharacterV1(*m,reinterpret_cast<std::uintptr_t>(f.context.data()),read);};
+  assert(query()&&read.identifier_count==4&&read.prearmed_identifier_count==4&&read.identifier_header_read&&read.identifier_key_name_matches);
+  const auto before_append=read;
+  Put(f.table.data(),0x30,reinterpret_cast<std::uintptr_t>(appended.data()));Put(f.table.data(),0x3C,std::int32_t(5));
+  assert(query()&&read.read&&read.stable_two_reads&&read.matches_monitored_victim&&read.identifier_count==5&&read.prearmed_identifier_count==4&&
+    read.identifier_table==reinterpret_cast<std::uintptr_t>(f.table.data())&&read.identifier_data==reinterpret_cast<std::uintptr_t>(appended.data())&&
+    read.identifier_epoch==1&&read.prearmed_identifier_epoch==1&&read.identifier_key_index==3&&read.identifier_key_name_matches&&
+    read.failure_stage==ScopedNotificationNamedReadFailureV1::none&&m->identifier_count==4&&m->identifier_epoch==1&&m->dead_character_key_id==key);
+  const auto append=read;ScopedNotificationNamedDeadCharacterV1 compared{};
+  assert(!ValidateScopedNotificationNamedDeadCharacterPairV1(before_append,append,compared)&&!compared.read&&compared.failure_stage==ScopedNotificationNamedReadFailureV1::snapshots_differ);
+  Put(f.table.data(),0x3C,std::int32_t(3));assert(!query()&&read.identifier_header_read&&read.identifier_count==3&&read.failure_stage==ScopedNotificationNamedReadFailureV1::identifier_count_shrunk);
+  Put(f.table.data(),0x3C,std::int32_t(5));Put(f.table.data(),0,std::uint8_t(2));assert(!query()&&read.identifier_epoch==2&&read.failure_stage==ScopedNotificationNamedReadFailureV1::identifier_epoch);
+  Put(f.table.data(),0,std::uint8_t(1));const auto original_key=m->dead_character_key_id;m->dead_character_key_id=0x01000006;
+  assert(!query()&&read.identifier_key_index==6&&read.failure_stage==ScopedNotificationNamedReadFailureV1::identifier_key_index);m->dead_character_key_id=original_key;
+  Key(appended[3].data(),"other");assert(!query()&&read.identifier_header_read&&!read.identifier_key_name_matches&&read.failure_stage==ScopedNotificationNamedReadFailureV1::identifier_key_name);Key(appended[3].data(),"dead_character");
+  assert(query());auto first=read;
+  Put(f.table.data(),0x3C,std::int32_t(6));assert(query());auto count_drift=read;
+  assert(!ValidateScopedNotificationNamedDeadCharacterPairV1(first,count_drift,compared)&&compared.identifier_count==6&&compared.failure_stage==ScopedNotificationNamedReadFailureV1::snapshots_differ);
+  auto other_names=appended;Put(f.table.data(),0x30,reinterpret_cast<std::uintptr_t>(other_names.data()));assert(query());auto data_drift=read;
+  assert(!ValidateScopedNotificationNamedDeadCharacterPairV1(count_drift,data_drift,compared)&&compared.identifier_data==reinterpret_cast<std::uintptr_t>(other_names.data())&&compared.failure_stage==ScopedNotificationNamedReadFailureV1::snapshots_differ);
+  auto other_table=f.table;const auto original_table=m->identifier_table;m->identifier_table=reinterpret_cast<std::uintptr_t>(other_table.data());assert(query());auto table_drift=read;
+  assert(!ValidateScopedNotificationNamedDeadCharacterPairV1(data_drift,table_drift,compared)&&compared.identifier_table!=original_table&&compared.failure_stage==ScopedNotificationNamedReadFailureV1::snapshots_differ);m->identifier_table=original_table;
+  auto malformed=first;malformed.identifier_header_read=false;assert(!ValidateScopedNotificationNamedDeadCharacterPairV1(malformed,malformed,compared)&&compared.failure_stage==ScopedNotificationNamedReadFailureV1::observations_unread);
+  m->identifier_table=1;assert(!query()&&!read.read&&read.identifier_table==1&&read.failure_stage==ScopedNotificationNamedReadFailureV1::access_fault);m->identifier_table=original_table;
+  assert(FinishScopedCharacterVariableMonitorV1(*m,true)&&m->failure_flags.load()==0);
+
+  auto *space=static_cast<std::byte*>(VirtualAlloc(nullptr,0x6000000,MEM_RESERVE,PAGE_NOACCESS));assert(space);
+  assert(VirtualAlloc(space+0x44CF000,4096,MEM_COMMIT,PAGE_READWRITE));const auto module=reinterpret_cast<std::uintptr_t>(space);
+  Fixture live;live.Events(module);g_fixture=&live;Put(live.node.data(),0,module+0x44D19B0);Put(g_ordinary_nested_root.data(),0,module+0x44CF030);
+  Put(live.saved_targets.data(),0,reinterpret_cast<std::uintptr_t>(row.data()));Put(live.saved_targets.data(),0xC,std::int32_t(1));
+  std::array<std::array<std::byte,0x20>,5> live_names{};for(std::size_t i=0;i<4;++i)live_names[i]=live.names[i];Key(live_names[4].data(),"new_identifier");
+  auto actual=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(BindScopedVariableMonitorOfflineOriginalsV1(Owner,Setter,Effect,House,RootOriginal));
+  assert(StartScopedCharacterVariableMonitorV1(*actual,live.bindings,module,{101,201},92,true,true,
+    reinterpret_cast<std::uintptr_t>(live.table.data()),reinterpret_cast<std::uintptr_t>(&live.date_slot),reinterpret_cast<std::uintptr_t>(&live.event_manager_slot)));
+  Put(live.table.data(),0x30,reinterpret_cast<std::uintptr_t>(live_names.data()));Put(live.table.data(),0x3C,std::int32_t(5));
+  ObservedScopedEventImmediateRootV1(live.event_roots[2].data(),live.context.data());
+  const auto &left=Find(*actual,ScopedVariableMonitorBoundaryV1::variable_write_enter);const auto &right=Find(*actual,ScopedVariableMonitorBoundaryV1::variable_write_return);
+  for(const auto *p:{&left.event_producer,&right.event_producer})for(const auto *n:{&p->named_dead_character_at_activation,&p->named_dead_character_at_observation})
+    assert(n->read&&n->stable_two_reads&&n->matches_monitored_victim&&n->identifier_count==5&&n->prearmed_identifier_count==4&&n->failure_stage==ScopedNotificationNamedReadFailureV1::none);
+  assert(left.event_producer.root_scope_words[1]==201&&left.event_producer.named_dead_character_at_observation.character_id==101);
+  assert(FinishScopedCharacterVariableMonitorV1(*actual,true)&&actual->failure_flags.load()==0&&actual->identifier_count==4);
+  const auto wire=SerializeScopedCharacterVariableMonitorV1(*actual);
+  assert(wire.find("\"identifier_count\":5")!=std::string::npos&&wire.find("\"prearmed_identifier_count\":4")!=std::string::npos&&wire.find("\"failure_stage\":\"none\"")!=std::string::npos&&wire.find("\"failure_stage\":\"not_observed\"")!=std::string::npos);
+  std::cout<<"{\"kind\":\"OFFLINE_IDENTIFIER_APPEND_NAMED_MONITOR_FIXTURE_NOT_GAME_TRUTH\",\"scoped_variable_monitor\":"<<wire<<"}\n";
+  assert(VirtualFree(space,0,MEM_RELEASE));
+  std::cout<<"named identifier append / immutable prearm / shrink / epoch / index / rename / table-data-count drift / unread / access fault / original stable victim and receiver distinction PASS\n";
 }
-int main(){Observation();Guards();ExactAnchorsAndRollback();WholeCallbackAndParentLifetime();EventProducerIdentity();SynchronousDeathCommitAttribution();DeadNullRepeatedAndTransitions();ConcurrentDeadNullReturns();ContextsWritersAndOverflow();NullProducerContexts();DirectCommitIndependentArguments();NotificationNamedScopes();std::cout<<"passive monitor offline checks passed; no CK3 process invoked\n";}
+}
+int main(){Observation();Guards();ExactAnchorsAndRollback();WholeCallbackAndParentLifetime();EventProducerIdentity();SynchronousDeathCommitAttribution();DeadNullRepeatedAndTransitions();ConcurrentDeadNullReturns();ContextsWritersAndOverflow();NullProducerContexts();DirectCommitIndependentArguments();NotificationNamedScopes();NotificationIdentifierAppend();std::cout<<"passive monitor offline checks passed; no CK3 process invoked\n";}

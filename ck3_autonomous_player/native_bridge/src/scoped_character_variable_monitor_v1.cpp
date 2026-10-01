@@ -173,17 +173,31 @@ bool ResolveDeadCharacterKey(ScopedCharacterVariableMonitorV1 &session) noexcept
 bool ReadNamedDeadCharacterOnce(const ScopedCharacterVariableMonitorV1 &s,std::uintptr_t context,
     ScopedNotificationNamedDeadCharacterV1 &out) noexcept {
   out.execution_context=context;out.key_id=s.dead_character_key_id;
-  if(!NamedExtent(context,0x20) || out.key_id<0 || !NamedExtent(s.identifier_table,0x40))return false;
+  out.failure_stage=ScopedNotificationNamedReadFailureV1::none;
+  out.identifier_table=s.identifier_table;out.prearmed_identifier_count=s.identifier_count;
+  out.prearmed_identifier_epoch=s.identifier_epoch;
+  out.identifier_key_index=static_cast<std::uint32_t>(out.key_id)&0xFFFFFF;
+  const auto fail=[&](ScopedNotificationNamedReadFailureV1 stage){out.failure_stage=stage;return false;};
+  if(!NamedExtent(context,0x20))return fail(ScopedNotificationNamedReadFailureV1::context_extent);
+  if(out.key_id<0 || (static_cast<std::uint32_t>(out.key_id)>>24)!=s.identifier_epoch)
+    return fail(ScopedNotificationNamedReadFailureV1::prearmed_key);
+  if(!NamedExtent(s.identifier_table,0x40))return fail(ScopedNotificationNamedReadFailureV1::identifier_table_extent);
   const auto names=Read<std::uintptr_t>(s.identifier_table,0x30);
   const auto count=Read<std::int32_t>(s.identifier_table,0x3C);
   const auto epoch=Read<std::uint8_t>(s.identifier_table);
-  const auto index=static_cast<std::uint32_t>(out.key_id)&0xFFFFFF;
-  if(!names || count<=0 || count>1048576 || !NamedExtent(names,static_cast<std::uintptr_t>(count)*0x20) ||
-      static_cast<std::uint32_t>(count)!=s.identifier_count || epoch!=s.identifier_epoch ||
-      index>=static_cast<std::uint32_t>(count) || !KeyEquals(names+index*0x20ULL,"dead_character",14))return false;
-  out.store=Read<std::uintptr_t>(context,0x18);if(!NamedExtent(out.store,0x10))return false;
+  out.identifier_data=names;out.identifier_count=count;out.identifier_epoch=epoch;out.identifier_header_read=true;
+  const auto index=out.identifier_key_index;
+  if(!names || count<=0 || count>1048576 || !NamedExtent(names,static_cast<std::uintptr_t>(count)*0x20))
+    return fail(ScopedNotificationNamedReadFailureV1::identifier_names_span);
+  if(static_cast<std::uint32_t>(count)<s.identifier_count)
+    return fail(ScopedNotificationNamedReadFailureV1::identifier_count_shrunk);
+  if(epoch!=s.identifier_epoch)return fail(ScopedNotificationNamedReadFailureV1::identifier_epoch);
+  if(index>=static_cast<std::uint32_t>(count))return fail(ScopedNotificationNamedReadFailureV1::identifier_key_index);
+  out.identifier_key_name_matches=KeyEquals(names+index*0x20ULL,"dead_character",14);
+  if(!out.identifier_key_name_matches)return fail(ScopedNotificationNamedReadFailureV1::identifier_key_name);
+  out.store=Read<std::uintptr_t>(context,0x18);if(!NamedExtent(out.store,0x10))return fail(ScopedNotificationNamedReadFailureV1::store_extent);
   out.primary_data=Read<std::uintptr_t>(out.store);out.primary_count=Read<std::int32_t>(out.store,0xC);
-  if(!NamedRows(out.primary_data,out.primary_count,0x20))return false;
+  if(!NamedRows(out.primary_data,out.primary_count,0x20))return fail(ScopedNotificationNamedReadFailureV1::primary_rows);
   for(std::int32_t i=0;i<out.primary_count;++i){const auto row=out.primary_data+i*0x20ULL;
     if(Read<std::int32_t>(row)!=out.key_id)continue;
     out.present=true;out.source_level=1;out.found_row=row;out.found_index=i;
@@ -191,13 +205,13 @@ bool ReadNamedDeadCharacterOnce(const ScopedCharacterVariableMonitorV1 &s,std::u
   }
   // Original3359690 consults the parent only after no primary key match, even when the primary value is kind0.
   if(!out.present){
-    if(!NamedExtent(out.store,0x3D8))return false;
+    if(!NamedExtent(out.store,0x3D8))return fail(ScopedNotificationNamedReadFailureV1::fallback_store_extent);
     out.fallback_pointer_read=true;out.fallback_parent=Read<std::uintptr_t>(out.store,0x3D0);
     if(out.fallback_parent){
-      if(!NamedExtent(out.fallback_parent,0x28))return false;
+      if(!NamedExtent(out.fallback_parent,0x28))return fail(ScopedNotificationNamedReadFailureV1::fallback_parent_extent);
       out.fallback_header_read=true;out.fallback_data=Read<std::uintptr_t>(out.fallback_parent,0x18);
       out.fallback_count=Read<std::int32_t>(out.fallback_parent,0x24);
-      if(!NamedRows(out.fallback_data,out.fallback_count,0x18))return false;
+      if(!NamedRows(out.fallback_data,out.fallback_count,0x18))return fail(ScopedNotificationNamedReadFailureV1::fallback_rows);
       for(std::int32_t i=0;i<out.fallback_count;++i){const auto row=out.fallback_data+i*0x18ULL;
         if(Read<std::int32_t>(row)!=out.key_id)continue;
         out.present=true;out.source_level=2;out.found_row=row;out.found_index=i;
@@ -215,15 +229,17 @@ bool ReadNamedDeadCharacterOnce(const ScopedCharacterVariableMonitorV1 &s,std::u
     }
     if(out.kind==4 && out.character_id>0){
       out.resolved_character=ResolveCharacter(s.bindings,out.character_id);
-      if(out.resolved_character){if(!NamedExtent(out.resolved_character,0x1C))return false;
+      if(out.resolved_character){if(!NamedExtent(out.resolved_character,0x1C))return fail(ScopedNotificationNamedReadFailureV1::resolved_character_extent);
         out.character_identity_read=true;out.observed_character_id=Read<std::int32_t>(out.resolved_character,0x18);
         out.character_full_identity_matches=out.observed_character_id==out.character_id;
         out.matches_monitored_victim=out.character_full_identity_matches && out.character_id==s.character_ids[0] &&
           out.resolved_character==s.character_objects[0];}
     }
   }
-  return Read<std::uintptr_t>(s.identifier_table,0x30)==names && Read<std::int32_t>(s.identifier_table,0x3C)==count &&
-      Read<std::uint8_t>(s.identifier_table)==epoch;
+  if(Read<std::uintptr_t>(s.identifier_table,0x30)!=names || Read<std::int32_t>(s.identifier_table,0x3C)!=count ||
+      Read<std::uint8_t>(s.identifier_table)!=epoch)return fail(ScopedNotificationNamedReadFailureV1::identifier_header_changed);
+  if(!KeyEquals(names+index*0x20ULL,"dead_character",14))return fail(ScopedNotificationNamedReadFailureV1::identifier_key_changed);
+  return true;
 }
 bool ReadSignature(const ScopedCharacterVariableMonitorV1 &session, std::uintptr_t container,
                    ScopedVariableValueV1 &value) noexcept {
@@ -471,11 +487,22 @@ bool ReadScopedNotificationNamedDeadCharacterV1(const ScopedCharacterVariableMon
     std::uintptr_t context,ScopedNotificationNamedDeadCharacterV1 &out) noexcept {
   out={};
   __try {
-    ScopedNotificationNamedDeadCharacterV1 first{},second{};
-    const bool first_read=ReadNamedDeadCharacterOnce(session,context,first);out=first;
-    if(!first_read || !ReadNamedDeadCharacterOnce(session,context,second) || first!=second)return false;
-    out.read=true;out.stable_two_reads=true;return true;
-  } __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+    if(!ReadNamedDeadCharacterOnce(session,context,out))return false;
+    const auto first=out;out={};
+    if(!ReadNamedDeadCharacterOnce(session,context,out))return false;
+    const auto second=out;
+    return ValidateScopedNotificationNamedDeadCharacterPairV1(first,second,out);
+  } __except(EXCEPTION_EXECUTE_HANDLER){out.read=false;out.stable_two_reads=false;
+    out.failure_stage=ScopedNotificationNamedReadFailureV1::access_fault;return false;}
+}
+bool ValidateScopedNotificationNamedDeadCharacterPairV1(const ScopedNotificationNamedDeadCharacterV1 &first,
+    const ScopedNotificationNamedDeadCharacterV1 &second,ScopedNotificationNamedDeadCharacterV1 &out) noexcept {
+  const auto a=first,b=second;out=b;out.read=false;out.stable_two_reads=false;
+  if(a.failure_stage!=ScopedNotificationNamedReadFailureV1::none){out=a;out.read=false;out.stable_two_reads=false;return false;}
+  if(b.failure_stage!=ScopedNotificationNamedReadFailureV1::none)return false;
+  if(!a.identifier_header_read || !b.identifier_header_read){out.failure_stage=ScopedNotificationNamedReadFailureV1::observations_unread;return false;}
+  if(a!=b){out.failure_stage=ScopedNotificationNamedReadFailureV1::snapshots_differ;return false;}
+  out.read=true;out.stable_two_reads=true;return true;
 }
 
 void ObserveScopedVariableMonitorOriginalDeathCommitV1(bool entering, void *manager,
@@ -791,7 +818,38 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
        <<",\"artifact_id_read\":"<<c.artifact_id_read<<",\"artifact_id\":"<<c.artifact_id<<'}';
   };
   auto named=[&](const ScopedNotificationNamedDeadCharacterV1 &n){
+    const auto failure=[](ScopedNotificationNamedReadFailureV1 f){switch(f){
+      case ScopedNotificationNamedReadFailureV1::none:return "none";
+      case ScopedNotificationNamedReadFailureV1::context_extent:return "context_extent";
+      case ScopedNotificationNamedReadFailureV1::identifier_table_extent:return "identifier_table_extent";
+      case ScopedNotificationNamedReadFailureV1::prearmed_key:return "prearmed_key";
+      case ScopedNotificationNamedReadFailureV1::identifier_names_span:return "identifier_names_span";
+      case ScopedNotificationNamedReadFailureV1::identifier_count_shrunk:return "identifier_count_shrunk";
+      case ScopedNotificationNamedReadFailureV1::identifier_epoch:return "identifier_epoch";
+      case ScopedNotificationNamedReadFailureV1::identifier_key_index:return "identifier_key_index";
+      case ScopedNotificationNamedReadFailureV1::identifier_key_name:return "identifier_key_name";
+      case ScopedNotificationNamedReadFailureV1::store_extent:return "store_extent";
+      case ScopedNotificationNamedReadFailureV1::primary_rows:return "primary_rows";
+      case ScopedNotificationNamedReadFailureV1::fallback_store_extent:return "fallback_store_extent";
+      case ScopedNotificationNamedReadFailureV1::fallback_parent_extent:return "fallback_parent_extent";
+      case ScopedNotificationNamedReadFailureV1::fallback_rows:return "fallback_rows";
+      case ScopedNotificationNamedReadFailureV1::resolved_character_extent:return "resolved_character_extent";
+      case ScopedNotificationNamedReadFailureV1::identifier_header_changed:return "identifier_header_changed";
+      case ScopedNotificationNamedReadFailureV1::identifier_key_changed:return "identifier_key_changed";
+      case ScopedNotificationNamedReadFailureV1::snapshots_differ:return "snapshots_differ";
+      case ScopedNotificationNamedReadFailureV1::observations_unread:return "observations_unread";
+      case ScopedNotificationNamedReadFailureV1::access_fault:return "access_fault";
+      case ScopedNotificationNamedReadFailureV1::not_observed:return "not_observed";
+    }return "unknown_failure_stage";};
     out<<"{\"read\":"<<n.read<<",\"stable_two_reads\":"<<n.stable_two_reads<<",\"present\":"<<n.present
+       <<",\"identifier_header_read\":"<<n.identifier_header_read<<",\"identifier_table_token\":"<<n.identifier_table
+       <<",\"identifier_data_token\":"<<n.identifier_data<<",\"identifier_count\":"<<n.identifier_count
+       <<",\"identifier_epoch\":"<<static_cast<unsigned>(n.identifier_epoch)
+       <<",\"prearmed_identifier_count\":"<<n.prearmed_identifier_count
+       <<",\"prearmed_identifier_epoch\":"<<static_cast<unsigned>(n.prearmed_identifier_epoch)
+       <<",\"identifier_key_index\":"<<n.identifier_key_index
+       <<",\"identifier_key_name_matches\":"<<n.identifier_key_name_matches
+       <<",\"failure_stage\":\""<<failure(n.failure_stage)<<'"'
        <<",\"execution_context_token\":"<<n.execution_context<<",\"saved_target_store_token\":"<<n.store
        <<",\"key_id\":"<<n.key_id<<",\"primary_data_token\":"<<n.primary_data<<",\"primary_count\":"<<n.primary_count
        <<",\"fallback_pointer_read\":"<<n.fallback_pointer_read<<",\"fallback_parent_token\":"<<n.fallback_parent

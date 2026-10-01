@@ -5,6 +5,14 @@
   "static_ready_sha256":"5A0D2FC989D915BC1715CB7C7A9CD7B67D0C7F7FBEA865E3B742C7EA03583D23",
   "original_execution_context_proof":"336ABD5/336ABD9 copy executionctx+18 to evaluationctx+18;340F864/340F868 pass it to3359690. No ActiveEvent layout inference.",
   "identifier":"read-only unique dead_character scan in already-initialized table585F240; current byte epoch/index and MSVC names+30/count+3C stable; no original helper invoked",
+  "identifier_append_contract": {
+    "schema":"named snapshot additive identifier-header diagnostics v1",
+    "rule":"Current same-epoch identifier count may append beyond prearmed count, never shrink. Current indexed dead_character name must match exactly before and after lookup; two whole original snapshots must agree, including current table/data/count/epoch. Prearmed session header/key is never overwritten.",
+    "actual_R0147_motivation":"Old monitor prearmed_count51543 but adjoining real setter native flag readers reported51544; old fixed-count gate returned unread before store lookup. R0147 RED remains unchanged; exact failed-stage was not published then.",
+    "per_snapshot_fields":["identifier_header_read","identifier_table_token","identifier_data_token","identifier_count","identifier_epoch","prearmed_identifier_count","prearmed_identifier_epoch","identifier_key_index","identifier_key_name_matches","failure_stage"],
+    "failure_stage":"Explicit original observation gate or snapshots_differ/access_fault; never-attempted DTO defaults publish not_observed. read=false is never present=false proof. On a failed second read its current partial header is retained, never replaced with cached prearm.",
+    "no_runtime_change":"No new hook/getter/virtual call/lock/capacity or native world write; optional pure DTO pair comparison only."
+  },
   "lookup": {
     "primary":{"store_from_execution_context":"+0x18","data":"store+0","signed_count":"store+0xC","stride":32,"key":0,"typed_scope16":8},
     "fallback":{"only_when_primary_key_absent":true,"parent":"store+0x3D0","data":"parent+0x18","signed_count":"parent+0x24","stride":24,"key":0,"typed_scope16":8},
