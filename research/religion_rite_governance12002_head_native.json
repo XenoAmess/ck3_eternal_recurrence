@@ -1,0 +1,278 @@
+{
+  "schema": "ck3_12002_religion_rite_heads_native_v1",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "game_version": "1.20.0.2",
+  "provider_constants": {
+    "kRiteHeadIdGetterRva": "0xd55cf0",
+    "kRiteHeadObjectGetterRva": "0x24fc610",
+    "kFaithReligiousHeadGetterRva": "0x2439e10",
+    "kFaithReligiousHeadTitleGetterRva": "0x2443fa0",
+    "kRiteHeadCharacterIdOffset": "0x4c0",
+    "kFaithReligiousHeadTitleIdOffset": "0x300",
+    "kTitleReferenceIdOffset": "0x10",
+    "kTitleHolderCharacterIdOffset": "0x128"
+  },
+  "native_spans": [
+    {
+      "name": "Rite.head.full_character_reference",
+      "start_rva": "0xd55cf0",
+      "end_exclusive_rva": "0xd55cfc",
+      "kind": "complete_function",
+      "abi": "uint32_t*(Rite*,uint32_t*out)",
+      "sha256": "eac468a6728bbe227df6656513138a43e2285fcd5d8b38b28abd757c06419171",
+      "bytes": "8b 81 c0 04 00 00 89 02 48 8b c2 c3"
+    },
+    {
+      "name": "Rite.GetHeadOfRite",
+      "start_rva": "0x24fc610",
+      "end_exclusive_rva": "0x24fc672",
+      "kind": "complete_function",
+      "abi": "Character*(Rite*)",
+      "sha256": "c9cfaffb76cbc5bc34c4e53127f2df051aae4b94952f3c38596bf1675718df90",
+      "bytes": "48 89 54 24 10 48 83 ec 28 48 8d 54 24 38 e8 cd 96 85 fe 4c 8b 0d 3e af 76 03 4c 8b 05 3f af 76 03 4d 85 c9 74 2a 8b 44 24 38 8b c8 81 e1 ff ff ff 00 41 3b 49 2c 73 18 8b d1 49 8b 49 20 48 03 d2 48 8b 4c d1 08 48 85 c9 74 05 39 41 18 74 03 49 8b c8 48 85 c9 49 0f 44 c8 48 8b c1 48 83 c4 28 c3"
+    },
+    {
+      "name": "Faith.GetReligiousHead.core",
+      "start_rva": "0x2439e10",
+      "end_exclusive_rva": "0x2439e8d",
+      "kind": "complete_function",
+      "abi": "Character*(Faith*) via religious title holder",
+      "sha256": "63b93a6b0be15fcdc9f7c741c94f4b3ed7cdb1dc51745d00c883ad9801bf5cd1",
+      "bytes": "48 8b 05 e1 3c 8e 03 48 85 c0 74 29 8b 91 00 03 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 10 74 07 48 8b 05 94 3c 8e 03 48 8b 15 15 d7 82 03 48 85 d2 74 2d 44 8b 80 28 01 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 18 74 07 48 8b 05 e4 d6 82 03 c3"
+    },
+    {
+      "name": "Faith.GetReligiousHead.thunk",
+      "start_rva": "0x2443df0",
+      "end_exclusive_rva": "0x2443df5",
+      "kind": "complete_function",
+      "abi": "Character*(Faith*)",
+      "sha256": "530a0cb779bb4a0b195fad54a72d621295d66419e94426712a2487747fc83e24",
+      "bytes": "e9 1b 60 ff ff"
+    },
+    {
+      "name": "Faith.GetReligiousHeadTitle.core",
+      "start_rva": "0x2443fa0",
+      "end_exclusive_rva": "0x2443fdd",
+      "kind": "complete_function",
+      "abi": "Title*(Faith*)",
+      "sha256": "b48cb7d3a424066f54316a90c5b1c03a9e0a4e9ad1dfab046498ada9aa0a2519",
+      "bytes": "48 8b 05 51 9b 8d 03 48 85 c0 74 29 8b 91 00 03 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 10 74 07 48 8b 05 04 9b 8d 03 c3"
+    },
+    {
+      "name": "Faith.GetReligiousHeadTitle.reflection",
+      "start_rva": "0x2443fe0",
+      "end_exclusive_rva": "0x244404d",
+      "kind": "complete_function",
+      "abi": "reflection wrapper",
+      "sha256": "f756649e18cb4c4f10393b4b23ecfd65370abba57fd5b09d1687ecb20f980947",
+      "bytes": "4c 89 44 24 18 48 83 ec 28 4c 8b c2 48 85 c9 74 55 48 8b 05 00 9b 8d 03 48 85 c0 74 29 8b 91 00 03 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 10 74 07 48 8b 05 b3 9a 8d 03 48 8d 54 24 40 48 89 44 24 40 49 8b c8 e8 c1 38 6d fe b0 01 48 83 c4 28 c3 32 c0 48 83 c4 28 c3"
+    },
+    {
+      "name": "Faith.GetReligiousHead.registration",
+      "start_rva": "0x4d4bc8",
+      "end_exclusive_rva": "0x4d4bfe",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "3658f3f5ac286099b51f9b3486b81ad54b34a824760c6e2db23f3884c6fa3d49",
+      "bytes": "40 0f 10 05 f0 ae 25 04 0f 11 00 c6 40 10 00 48 89 44 24 30 48 8d 44 24 50 48 89 44 24 20 4c 8d 0d 13 f2 f6 01 4c 8d 05 fc f1 f6 01 48 8d 54 24 30 e8 42 f2 f6 01"
+    },
+    {
+      "name": "Faith.GetReligiousHeadTitle.registration",
+      "start_rva": "0x4d4cb8",
+      "end_exclusive_rva": "0x4d4d01",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "f9c8775fb3450fdad38acf352daab80720e6452ccd250da0799ab2774a291c66",
+      "bytes": "40 0f 10 05 18 ae 25 04 0f 11 00 8b 0d 1f ae 25 04 89 48 10 0f b6 0d 19 ae 25 04 88 48 14 c6 40 15 00 48 89 44 24 30 48 8d 44 24 50 48 89 44 24 20 4c 8d 0d f0 f2 f6 01 4c 8d 05 a9 f2 f6 01 48 8d 54 24 30 e8 4f f3 f6 01"
+    },
+    {
+      "name": "Rite.GetHeadOfRite.registration",
+      "start_rva": "0x4efb52",
+      "end_exclusive_rva": "0x4efc57",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "3447bf01d30ad927146300c70a9143c946aa32ffe82cebf5d0036a9735b80953",
+      "bytes": "f2 0f 10 05 c6 83 24 04 f2 0f 11 44 24 78 8b 05 c2 83 24 04 89 45 80 0f b6 05 bc 83 24 04 88 45 84 40 88 7d 85 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 73 63 36 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 4b 47 38 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 37 ca 00 02 48 8d 4c 24 78 e8 0d 03 01 02 48 8d 45 d0 48 89 45 38 48 8d 54 24 40 48 8d 4d d0 e8 07 63 36 00 90 48 8d 45 f0 48 89 45 40 0f 57 c0 0f 11 45 f0 48 89 7d f0 48 89 7d f8 48 89 5d 00 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d f0 e8 df 46 38 00 90 48 8d 45 d0 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 33 ca 00 02 48 8d 4c 24 78 e8 49 07 01 02"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "rite_head_full_reference",
+      "rva": "0xd55cf0",
+      "bytes": "8b 81 c0 04 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x4c0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_head_id_getter_call",
+      "rva": "0x24fc61e",
+      "bytes": "e8 cd 96 85 fe",
+      "instruction": "call 0xd55cf0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0xd55cf0"
+      ]
+    },
+    {
+      "name": "rite_head_character_storage",
+      "rva": "0x24fc623",
+      "bytes": "4c 8b 0d 3e af 76 03",
+      "instruction": "mov r9, qword ptr [rip + 0x376af3e]",
+      "rip_targets": [
+        "0x5c67568"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_head_character_full_generation",
+      "rva": "0x24fc65b",
+      "bytes": "39 41 18",
+      "instruction": "cmp dword ptr [rcx + 0x18], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_head_title_reference",
+      "rva": "0x2439e1c",
+      "bytes": "8b 91 00 03 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x300]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_title_full_generation",
+      "rva": "0x2439e40",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_title_holder_reference",
+      "rva": "0x2439e58",
+      "bytes": "44 8b 80 28 01 00 00",
+      "instruction": "mov r8d, dword ptr [rax + 0x128]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_holder_full_generation",
+      "rva": "0x2439e7f",
+      "bytes": "44 39 40 18",
+      "instruction": "cmp dword ptr [rax + 0x18], r8d",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_head_thunk_to_core",
+      "rva": "0x2443df0",
+      "bytes": "e9 1b 60 ff ff",
+      "instruction": "jmp 0x2439e10",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2439e10"
+      ]
+    },
+    {
+      "name": "faith_title_getter_reference",
+      "rva": "0x2443fac",
+      "bytes": "8b 91 00 03 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x300]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_title_getter_generation",
+      "rva": "0x2443fd0",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_head_registration_getter",
+      "rva": "0x4d4bed",
+      "bytes": "4c 8d 05 fc f1 f6 01",
+      "instruction": "lea r8, [rip + 0x1f6f1fc]",
+      "rip_targets": [
+        "0x2443df0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_title_registration_getter",
+      "rva": "0x4d4cf0",
+      "bytes": "4c 8d 05 a9 f2 f6 01",
+      "instruction": "lea r8, [rip + 0x1f6f2a9]",
+      "rip_targets": [
+        "0x2443fa0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_head_registration_getter",
+      "rva": "0x4efbd2",
+      "bytes": "48 8d 15 37 ca 00 02",
+      "instruction": "lea rdx, [rip + 0x200ca37]",
+      "rip_targets": [
+        "0x24fc610"
+      ],
+      "direct_targets": []
+    }
+  ],
+  "stock_evidence": [
+    {
+      "path": "common/religion/doctrine_types/20_doctrines.txt",
+      "sha256": "e5e4b38240f3382ff1c4ef159c8ab68a2a50fabd39c1b0293f3a047a3939387f",
+      "selected_nonmilitary_windows": [
+        {
+          "first_line": 1170,
+          "last_line": 1221,
+          "text": "doctrine_no_head = {\n\tdoctrine_group_type = doctrine_head_of_faith\n\tindex = 0\n\tdivergence = 10\n\n\ticon = \"doctrine_no_head\"\n\n\tvisible = no\n\n\tpiety_cost = {\n\t\tvalue = faith_doctrine_cost_mid\n\t\tif = {\n\t\t\tlimit = { rite_has_doctrine = doctrine_no_head }\n\t\t\tmultiply = faith_unchanged_doctrine_cost_mult\n\t\t}\n\t}\n\n\tparameters = {\n\t\tno_head_of_faith\n\t}\n\tspecial_parameters = {\n\t\tbonus_fervor_gain = 0.5\n\t\t# We protect against this because one main rite swap can turn several rites heretical at once\n\t\tbonus_heresy_protection = 1\n\t\t# We sit this above heresy outbreak and below rite-conversion balance so both still happen\n\t\tminimum_fervor = 45\n\t\theresy_threshold = 5\n\t}\n}\n\ndoctrine_spiritual_head = {\n\tdoctrine_group_type = doctrine_head_of_faith\n\tindex = 1\n\tdivergence = 30\n\n\ticon = \"doctrine_spiritual_head\"\n\n\tvisible = no\n\n\tpiety_cost = {\n\t\tvalue = faith_doctrine_cost_high\n\t\tif = {\n\t\t\tlimit = { rite_has_doctrine = doctrine_spiritual_head }\n\t\t\tmultiply = faith_unchanged_doctrine_cost_mult\n\t\t}\n\t}\n\n\tparameters = {\n\t\tspiritual_head_of_faith\n\t\tspiritual_head_of_faith_claims\n\t\tspiritual_head_of_faith_gold\n\t}"
+        },
+        {
+          "first_line": 1224,
+          "last_line": 1256,
+          "text": "doctrine_temporal_head = {\n\tdoctrine_group_type = doctrine_head_of_faith\n\tindex = 2\n\tdivergence = 10\n\n\ticon = \"doctrine_temporal_head\"\n\n\tvisible = no\n\n\tpiety_cost = {\n\t\tvalue = faith_doctrine_cost_massive\n\t\tif = {\n\t\t\tlimit = { rite_has_doctrine = doctrine_temporal_head }\n\t\t\tmultiply = faith_unchanged_doctrine_cost_mult\n\t\t}\n\t}\n\n\tcan_pick = {\n\t\tcustom_description = {\n\t\t\ttext = incompatible_doctrine_theocracy_temporal_trigger\n\t\t\tNOT = { doctrine:doctrine_theocracy_temporal = { is_in_list = selected_doctrines } }\n\t\t}\n\t\tcustom_description = {\n\t\t\ttext = incompatible_doctrine_spiritual_appointment_temporal_trigger\n\t\t\tNOR = {\n\t\t\t\tdoctrine:doctrine_clerical_succession_spiritual_appointment = { is_in_list = selected_doctrines }\n\t\t\t\tdoctrine:doctrine_clerical_succession_spiritual_fixed_appointment = { is_in_list = selected_doctrines }\n\t\t\t}\n\t\t}\n\t}\n\n\tparameters = {\n\t\ttemporal_head_of_faith"
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "selected_nonmilitary_windows": [
+        {
+          "first_line": 1485,
+          "last_line": 1512,
+          "text": "pam_actor_is_clerical_title_authority_of_this_trigger = {\n\ttrigger_if = {\n\t\tlimit = { exists = religious_head_or_challenger }\n\t\treligious_head_or_challenger = scope:puppet_or_actor\n\t}\n\ttrigger_else = {\n\t\tfaith.main_rite.head_of_rite ?= scope:puppet_or_actor\n\t}\n}\n\npam_is_clerical_title_authority_trigger = {\n\ttrigger_if = {\n\t\tlimit = { exists = religious_head_or_challenger }\n\t\treligious_head_or_challenger = this\n\t}\n\ttrigger_else = {\n\t\tfaith.main_rite.head_of_rite ?= this\n\t}\n}\n\npam_recipient_is_clerical_title_authority_trigger = {\n\ttrigger_if = {\n\t\tlimit = { exists = scope:puppet_or_actor.religious_head_or_challenger }\n\t\tscope:puppet_or_actor.religious_head_or_challenger ?= scope:recipient\n\t}\n\ttrigger_else = {\n\t\tscope:puppet_or_actor.faith.main_rite.head_of_rite ?= scope:recipient\n\t}"
+        }
+      ]
+    },
+    {
+      "path": "gui/window_faith.gui",
+      "sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521",
+      "selected_nonmilitary_windows": [
+        {
+          "first_line": 5429,
+          "last_line": 5429,
+          "text": "\t\t\t\tdatacontext = \"[Faith.GetReligiousHeadTitle]\""
+        },
+        {
+          "first_line": 5698,
+          "last_line": 5698,
+          "text": "\t\t\tdatacontext = \"[Faith.GetReligiousHeadTitle]\""
+        }
+      ]
+    }
+  ],
+  "scope": "nonmilitary identity relations only",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "unresolved": [
+    "effective doctrine head institution classification dependency",
+    "religious_head_or_challenger final authority",
+    "Rite head distinct own title mapping",
+    "native AI head selection/appointment tree"
+  ]
+}
