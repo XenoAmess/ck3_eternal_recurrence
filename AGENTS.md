@@ -5,7 +5,7 @@
 - `XenoAmess_s_Eternal_Recurrence/` — CK3 mod 源目录；正式发布只使用 `build_release.py` 生成的 staging
 - `Eternal_Recurrence_Vivhite_Courtier/` — 白绮特供独立版源目录；正式发布只使用 `build_vivhite_release.py` 生成的 27 文件 staging
 - `mod_remove_mandala/` — “肃清曼荼罗伪信”独立版源目录；正式发布只使用 `build_remove_mandala_release.py` 生成的 15 文件 staging
-- `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 26 文件 staging
+- `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 27 文件 staging
 - `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 36 文件 staging
 - `mod_tributary_expansion_directives/` — “驱策朝贡国 / Tributary Expansion Directives”独立版源目录；Workshop item id：**3801490405**；正式发布只使用 `build_tributary_expansion_directives_release.py` 生成的 16 文件 staging
 - `mod_celestial_commerce_corruption/` — “天朝制允许经商&贪腐框架（XenoAmess维护版）”源码；维护版 Workshop item id：**3804807463**；上游 **3596263413** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_celestial_commerce_corruption_release.py` 生成的 22 文件 staging；上游未携带许可证，仓库所有者已于 2026-09-20 明确确认取得原作者再分发与发布许可，授权原件待补档
