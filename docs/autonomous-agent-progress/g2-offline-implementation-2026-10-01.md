@@ -502,3 +502,9 @@ Sway 当前原生 CanContinue 返回值已补齐 mode1/linked1 ABI 与 serialize
 新增 loaded Doctrine registry 完整只读目录与稳定 key resolver，包含实际加载的 mod definitions、当前玩家/日期/epoch 和 complete/source DTO；注册表行本身不代表玩家最终合法选择。O2 /W4 /WX 11检查与3实际C++ JSON GREEN，复用旧ABI/矩阵；状态 static-ready。后续独立 mailbox9 已有owner交付，本次仅provider5；中央默认OFF接线、Python SDK与root paused读回待后续。未访问 CK3/进程/pipe/UI/Steam，live/G2 新计分为0。 Owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\catalogue\provider-delivery-result.json SHA-256 3c295c51854972330f67527accc042e776ab4ee7024d5db49b10de60a134a1bf。文件资格清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ready-packages-1730\doctrine-catalogue\qualification.json。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:50:19 CE1 native treatment and recovery mailboxes
+
+CE1 当前构建的治疗与恢复只读 Handle→真实 mailbox→owner callback→冻结 provider→稳定 serializer→完整 caller command_result 已形成增量。本包仅 static-ready：复用治疗 Debug/Release /W4 /WX 各31项 GREEN，恢复 Od/O2 /W4 /WX 各13项 GREEN及已冻结完整 packet；不重跑旧 provider/Python 矩阵。治疗 attempt-001/002 编译 harness RED、恢复 attempt-001 named-registration harness RED 均保留，最终新增 owner/caller fixture GREEN。后续仍需中央 R4 default-OFF flags、named callback/worker 接线、Python actual-packet SDK 增量和 root 串行 paused/natural-event 实机读回。本次只读核对 owner manifest 与源文件 SHA，按已提交 L2 b995fad1f25838c3b31e82086da9c116b2d77b80 的相同文件字节排除 0 项，准备提交 10 项。证据清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\events12002\ce1-mailbox-delivery-result.json（SHA-256 94b102947874b8a4a09383b06bd2a433d68e1ec3428773cfa274b0af1fd4a259）；完整 pins、artifact 与待办保留于 Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ready-packages-1730\ce1-mailboxes\qualification.json。无 CK3/进程/pipe/UI/Steam 操作，没有新增 live、游戏日、G2 或 lifetime 计分；Git、公共接线与共享报告由 root 独占。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
