@@ -1,0 +1,54 @@
+{
+  "schema": "ck3-12002-player-religion-doctrines-python-fixtures-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "fixtures": [
+    {
+      "file": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_doctrines/library/current-scopes.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\query-provider\\O2\\current-scopes.json",
+      "sha256": "8403368833a5e2cfae5015a3e61798073392f5da907ff14ede291f166315d74f",
+      "evidence_scope": "actual cross-provider production getter -> serializer against owned fixture memory"
+    },
+    {
+      "file": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_doctrines/library/known-empty.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\query-provider\\O2\\known-empty.json",
+      "sha256": "ae340ccdf81616c98f9e71957e815f6339703dff8b28af490cfcb64728a65db0",
+      "evidence_scope": "actual cross-provider production getter -> serializer against owned fixture memory"
+    },
+    {
+      "file": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_doctrines/library/parameter-unavailable.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\query-provider\\O2\\parameter-unavailable.json",
+      "sha256": "d5965685fc0a21aaccef1c512bfed598a210fe7c7d6f3d7fda71515fc09bfda0",
+      "evidence_scope": "actual cross-provider production getter -> serializer against owned fixture memory"
+    },
+    {
+      "file": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_doctrines/mailbox/current-scopes.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\mailbox\\O2\\current-scopes.json",
+      "sha256": "166f350c8a334d2ab0e7540f3188de5f95fd01c7e7038a6e2ae8fdf267049561",
+      "evidence_scope": "actual TrySubmit -> owner drain -> three production readers -> Finish -> Wait/Reclaim -> full command_result serializer against owned fixture memory"
+    },
+    {
+      "file": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_doctrines/mailbox/legal-zero-rite.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\mailbox\\O2\\legal-zero-rite.json",
+      "sha256": "10b280a9fa29cc02da531b2d586477147f00e789fcbd1a69c0d44a95c97d3782",
+      "evidence_scope": "actual TrySubmit -> owner drain -> three production readers -> Finish -> Wait/Reclaim -> full command_result serializer against owned fixture memory"
+    },
+    {
+      "file": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_doctrines/mailbox/known-empty.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\mailbox\\O2\\known-empty.json",
+      "sha256": "9f6360d61b235f69df9372700de4c510ec310fa1cc9501e8d5299ad42d31df0a",
+      "evidence_scope": "actual TrySubmit -> owner drain -> three production readers -> Finish -> Wait/Reclaim -> full command_result serializer against owned fixture memory"
+    },
+    {
+      "file": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_doctrines/mailbox/parameter-unavailable.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\mailbox\\O2\\parameter-unavailable.json",
+      "sha256": "259673c4ddd35104bd529dc92854cbda0cd5635d7b72c50caf25b664053a6cf1",
+      "evidence_scope": "actual TrySubmit -> owner drain -> three production readers -> Finish -> Wait/Reclaim -> full command_result serializer against owned fixture memory"
+    }
+  ],
+  "native_receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\mailbox\\result.json",
+  "native_receipt_sha256": "1b48fba5d482e7239cf44b7b3b902f2e269fa50bba93f260e33fc6b4ad2e6f0e",
+  "live": false,
+  "local_ck3_operations": [],
+  "packet_preservation": "Full original C++ packet bytes; only test endpoint request correlation rewrites generated request_id on in-memory return"
+}

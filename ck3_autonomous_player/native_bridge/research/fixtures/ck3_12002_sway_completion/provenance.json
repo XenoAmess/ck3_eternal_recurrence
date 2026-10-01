@@ -1,0 +1,73 @@
+{
+  "schema": "xar.ck3_12002_sway_completion_fixture_provenance.v1",
+  "producer": "actual production reader + owning QueryMailboxEnvelope + production serializer/full-envelope formatter",
+  "synthetic_memory_and_calls": true,
+  "paused_live": false,
+  "ck3_process_access": false,
+  "shared_worker_dispatch_included": false,
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion.cpp": "09ee40b8a7c454f371b8b04593c884c43ec76e28ee79658eafe3c2150348a419",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_mailbox.cpp": "478b2741cbc515381da2b4bab43cc609052ff0459c660a5c0a0fdc148832619f",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_serializer.cpp": "2ab728520eaa195ec59d7bf4a2adf984bd71256c32c01e314b32250055bd8f5d",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_test.cpp": "ad780ee09163954661ae843b28e673f0b625ef9d1872932003aa13f5e29c3e1d",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_handler.cpp": "4573beea4461ecce6664cc17ecc1407da59e0edfb474a016df698362df8fd629",
+    "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_fixture.py": "be31e3cfeaff240acdc7d613a105ce2dded419d0d69eef91064d6bb474379f5d",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002.hpp": "3a6a701735402a75dd4c99deb6aa1027aff7283d1a636784ebb8efb68d41308c",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_state.hpp": "ded51e4942944f02627463c3e8fc4562e1cc6dbfee2ae19331bf4bfbedaf47b2",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion.hpp": "e099a2b70a35b008d8148802d1a79253cdb79295af026e29f43b9411ad124d0d",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_mailbox.hpp": "6f2b69707b497090a29dab2e6f822f60b714f60d2932b4d766029fd8b5972879"
+  },
+  "payload_sha256": {
+    "core-unavailable-wire.json": "37760df215efd21fd4db3819806c5729faab0bd4a6f0820c9e0e9266913da2b6",
+    "current-wire.json": "d88281a2ad39fb5467aadda569c0504e491667fedff4823778a7515ff0a22128",
+    "invalid-sentinel-wire.json": "1d12ec7fa7bb9f9c3f0c24b9a6ea376d5eddec9750cbfed66d938e60c3d72a15",
+    "purged-absence-wire.json": "772d78afc9ded519ff7a7b69f3f4b50aaa2643be7eea689c2a318dfe6a620bbc",
+    "reused-slot-wire.json": "106ef7c56d3f403141a3840d9b891998c28143247a5291377f67931b18152b75",
+    "terminated-owner-cleared-wire.json": "a11412072325cd6b85604e5de4371b2d9b8d4775a9acf560cff25bac7ea47a4a",
+    "unavailable-wire.json": "a69e6867b241e5844d62d0947cba11b28ea6cac93fedebf6eb64a71b77fb043a"
+  },
+  "native_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-provider\\final-v3\\result.json",
+  "native_result_sha256": "e4fd9a51899553d6b8656ca81e4e6a80fdebde857ace7fc29a8bae3fc7af52c5",
+  "native_suites": [
+    {
+      "mode": "Debug",
+      "status": "GREEN",
+      "compiler": "MSVC /W4 /WX",
+      "optimization": "/Od",
+      "exe_sha256": "a872d510b09599960cefc446026b5318ba78f3d03157ade33ae5f29622e719a6",
+      "wires_sha256": {
+        "core-unavailable-wire.json": "37760df215efd21fd4db3819806c5729faab0bd4a6f0820c9e0e9266913da2b6",
+        "current-wire.json": "d88281a2ad39fb5467aadda569c0504e491667fedff4823778a7515ff0a22128",
+        "invalid-sentinel-wire.json": "1d12ec7fa7bb9f9c3f0c24b9a6ea376d5eddec9750cbfed66d938e60c3d72a15",
+        "purged-absence-wire.json": "772d78afc9ded519ff7a7b69f3f4b50aaa2643be7eea689c2a318dfe6a620bbc",
+        "reused-slot-wire.json": "106ef7c56d3f403141a3840d9b891998c28143247a5291377f67931b18152b75",
+        "terminated-owner-cleared-wire.json": "a11412072325cd6b85604e5de4371b2d9b8d4775a9acf560cff25bac7ea47a4a",
+        "unavailable-wire.json": "a69e6867b241e5844d62d0947cba11b28ea6cac93fedebf6eb64a71b77fb043a"
+      },
+      "output": "PASS Sway current/terminal/cleared-owner/absence/reused/sentinel/unavailable/binding cases; actual reader + owner QueryMailboxEnvelope + serializer"
+    },
+    {
+      "mode": "Release",
+      "status": "GREEN",
+      "compiler": "MSVC /W4 /WX",
+      "optimization": "/O2",
+      "exe_sha256": "46144e6ecae61c6d61e75a0fb659b6482e7e56617ae551941dba63dddfc9a9c5",
+      "wires_sha256": {
+        "core-unavailable-wire.json": "37760df215efd21fd4db3819806c5729faab0bd4a6f0820c9e0e9266913da2b6",
+        "current-wire.json": "d88281a2ad39fb5467aadda569c0504e491667fedff4823778a7515ff0a22128",
+        "invalid-sentinel-wire.json": "1d12ec7fa7bb9f9c3f0c24b9a6ea376d5eddec9750cbfed66d938e60c3d72a15",
+        "purged-absence-wire.json": "772d78afc9ded519ff7a7b69f3f4b50aaa2643be7eea689c2a318dfe6a620bbc",
+        "reused-slot-wire.json": "106ef7c56d3f403141a3840d9b891998c28143247a5291377f67931b18152b75",
+        "terminated-owner-cleared-wire.json": "a11412072325cd6b85604e5de4371b2d9b8d4775a9acf560cff25bac7ea47a4a",
+        "unavailable-wire.json": "a69e6867b241e5844d62d0947cba11b28ea6cac93fedebf6eb64a71b77fb043a"
+      },
+      "output": "PASS Sway current/terminal/cleared-owner/absence/reused/sentinel/unavailable/binding cases; actual reader + owner QueryMailboxEnvelope + serializer"
+    }
+  ],
+  "consumer_packet_adaptation": "dynamic request_id correlation only; all other fields unchanged",
+  "boundary": "Current retained row observation, not durable result history, terminal cause, production worker dispatch or paused live acceptance."
+}

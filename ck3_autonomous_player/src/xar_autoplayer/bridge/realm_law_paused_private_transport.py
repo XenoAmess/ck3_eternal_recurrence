@@ -117,10 +117,20 @@ def query_realm_law_final_terms_private_v1(
             "private realm-law native RED: " + str(frame.get("error", "unknown"))
         )
     envelope = frame.get("result")
-    if (not isinstance(envelope, dict) or set(envelope) != {
+    envelope_keys = {
         "step", "accepted", "status", "private_build", "read_only",
         "advertised", "realm_law_final_terms", "backend_id",
-    } or envelope.get("step") != STEP or envelope.get("accepted") is not True
+    }
+    allowed_envelope_keys = (envelope_keys,)
+    if provenance["exact_ck3_build"] == "1.20.0.2":
+        # The new common ReadOnlyFrame repeats the owning revision outside
+        # the unchanged DTO. Legacy eight-key envelopes remain supported.
+        allowed_envelope_keys += (envelope_keys | {"snapshot_revision"},)
+    if (not isinstance(envelope, dict) or set(envelope) not in allowed_envelope_keys
+            or ("snapshot_revision" in envelope and (
+                type(envelope["snapshot_revision"]) is not int
+                or envelope["snapshot_revision"] != native_revision))
+            or envelope.get("step") != STEP or envelope.get("accepted") is not True
             or envelope.get("status") != "available"
             or envelope.get("private_build") is not True
             or envelope.get("read_only") is not True

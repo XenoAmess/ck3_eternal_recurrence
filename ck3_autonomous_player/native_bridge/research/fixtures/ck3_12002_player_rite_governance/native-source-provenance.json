@@ -1,0 +1,40 @@
+{
+  "status": "GREEN",
+  "owned_paths": [
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_context_test.cpp",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_mailbox_test.cpp",
+    "ck3_autonomous_player/native_bridge/research/religion_rite_governance12002_run_tests.py",
+    "ck3_autonomous_player/native_bridge/research/religion_rite_governance12002_test_manifest.json"
+  ],
+  "files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_context_test.cpp",
+      "sha256": "6ee15b6e348ce6baa2ffa17fe0a8667c6eef6c39b52a465c0baa774fb547d4cf"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_mailbox_test.cpp",
+      "sha256": "7c70b2a298f45ab4674b9c33a61c56920353952c0b1fecdbace3ec5b30129c0d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/religion_rite_governance12002_run_tests.py",
+      "sha256": "70ac16f848eaa424f587b6b51ff629d15fc64f283b163177ac403c0721c40559"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/religion_rite_governance12002_test_manifest.json",
+      "sha256": "fb3130971515e2cca5858d5790e82a331fae22c36fdc56f1c41c97978d79bba5"
+    }
+  ],
+  "result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\rite-governance\\runtime\\attempt-002\\result.json",
+  "result_sha256": "e0317d206ede0e00ae2498bf761d5b31683f66a068c2977a496d4f681b12882c",
+  "actual_cpp_wire_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\rite-governance\\runtime\\attempt-002\\O2\\mailbox-wire",
+  "actual_cpp_wire_sha256": {
+    "distinct-zero.json": "67e17a0da8adb70b7877fe7f20732827446f33eb109e55d7209c28c40b50c676",
+    "legal-absent.json": "83da8b795ad8c086138fcc63db431a411ff27be6b19f748e172b7c0b6531732e",
+    "heads-unavailable.json": "49231deda5ec01ed211e512f2fbfa1c31b01d91cd573a61bed598c7c7d5195b4",
+    "components-unavailable.json": "fd64721094f2104be64f25dce1e2226ab6e5eb25f3ffcf8dd508296b5c07b3ae"
+  },
+  "test_summary": "Od/O2 each: 16 aggregate checks / 5 cases; 46 worker mailbox checks / 6 cases; Python validates 4 actual command_result envelopes and changed-frame rejection per mode.",
+  "readiness": "static-ready",
+  "live": false,
+  "report_fields": "Religion governance aggregate now retains independently observed state Rite and organization when native head lookup fails. Actor/main/own/realm Rite identities and three distinct head sources remain separate; legal absence is null, actual count zero is zero. Real worker owner mailbox contract and native protocol metadata pass Od/O2 W4/WX. No CK3/process/pipe/desktop touched; dedicated central registration, SDK and paused live acceptance remain pending. First harness compile RED C4389 retained and fixed only in test typed-zero comparison. No G2 milestone increment or completed religion action claimed."
+}

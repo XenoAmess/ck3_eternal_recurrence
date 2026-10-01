@@ -370,3 +370,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 实际GOV增量构建触发CMake CONFIGURE_DEPENDS，把7个其它worker正在写的CE1/Sway源纳入target；编译input清单实证RED已保留，不把它们冒充已冻结候选。仅按实际7源明确排除R2 target，首L/制品不变，受影响runtime/DLL增量重建，旧4集成检查复用；R3以READY接线后纳入。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-integration\precise-source-exclusion-source.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:06:59 Four actual readonly query SDKs and live transport fixes
+
+58精确源：shared2、Swaycompletion/Doctrine/Ritegovernance/Conversionterms四域42、LAW实际outerrevision点修8、GOV真实cache SDK6。新增协议链均actual NativeProtocolState.ingest/wait→真实driver→官方MCP Client；22focused tests14subtests累计通过（6新增SDK），不重复旧native/provider矩阵。LAW原真实frame8候选费用/原因保真；GOV旧raw RED及修复wire留存。当前SDK皆离线，root随后实际新DLL paused/cold验收。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\FINAL-FOUR-QUERY-SOURCE.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

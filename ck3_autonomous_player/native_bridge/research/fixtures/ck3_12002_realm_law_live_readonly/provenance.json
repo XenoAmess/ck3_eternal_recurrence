@@ -1,0 +1,23 @@
+{
+  "schema": "xar.ck3_12002_realm_law_live_readonly_fixture_provenance.v1",
+  "source": "actual paused live query frames captured by root; copied bytes unchanged",
+  "capture_root": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\live-raw\\readonly-20261001T084323Z",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "captured_paused_live_frames": true,
+  "replay_ck3_process_access": false,
+  "frame_sha256": {
+    "hello.json": "903601d50c4aead632635479f47e6cca26187c26cc3b6df1b72ed676686c219d",
+    "initial-state.json": "76d81d330fddca0246b34683d02502cb6ea9bafc8fc5e8d9defa86ff6c230600",
+    "final-state.json": "76d81d330fddca0246b34683d02502cb6ea9bafc8fc5e8d9defa86ff6c230600",
+    "law-request.json": "6857803b3d91eeafb95657f6cb483c90462070a1140eb6f1f9cbddae24abd632",
+    "law-response.json": "463f3a563a9e3300a0d45557383d57f10271c5bf7fd981184a97da4d817bd316"
+  },
+  "pre_fix_consumer_sha256": "5298dc582a3c61630a3b448359aaa23d3ad4782457d60c6c541b2d4efcfdbecb",
+  "actual_native_revision": 2,
+  "actor_character_id": 29829,
+  "date_raw": 53169072,
+  "replay_chain": "NativeProtocolState.ingest hello/state/command_result -> real wait_for_command_result -> production LAW wrapper/normalizer -> official in-memory MCP Client",
+  "consumer_packet_adaptation": "dynamic request_id correlation only; no added/removed protocol/build/payload fields",
+  "boundary": "Replaying real captured native fields repairs Python compatibility. It does not enact a law, access a game or establish a new live action/OODA result."
+}

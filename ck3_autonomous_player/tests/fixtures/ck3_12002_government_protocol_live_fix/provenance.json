@@ -1,0 +1,26 @@
+{
+  "origin": "Unmodified actual C++ caller packet plus preserved production-live RED packet/state/hello.",
+  "local_ck3_operations": [],
+  "fixtures": [
+    {
+      "file": "caller-protocol-v3.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\government\\caller-protocol-v3\\Od\\wire\\caller-unavailable.json",
+      "sha256": "87c16cc7c4c98fa0df525407ddb956116ff7fa79f31c3d00f7f0944e80396b1e"
+    },
+    {
+      "file": "initial-state.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\live-raw\\readonly-20261001T084349Z\\initial-state.json",
+      "sha256": "9a72a9031afd3e2d71289ad23168448424c0d0e2dff074b2c5f26ce684a22c2b"
+    },
+    {
+      "file": "hello.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\live-raw\\readonly-20261001T084349Z\\hello.json",
+      "sha256": "6783edc193bdf8a559ab01976c1b7add02aaf184e00829a84c1185ed2d0e3897"
+    },
+    {
+      "file": "government-response-red.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\live-raw\\readonly-20261001T084349Z\\government-response.json",
+      "sha256": "3004d5020ccb605507f4f7346fa2ea41df6e88a998ff5a2240a04480735adad4"
+    }
+  ]
+}

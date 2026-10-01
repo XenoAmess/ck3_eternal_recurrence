@@ -1,0 +1,7 @@
+{
+  "type": "execute_step",
+  "protocol_version": 1,
+  "request_id": "law-raw-912eda3135ab4d89a2aace789b24c25c",
+  "step": "query-realm-law-final-terms-v1-private",
+  "expected_revision": 2
+}

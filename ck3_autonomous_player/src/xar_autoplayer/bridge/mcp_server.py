@@ -1568,6 +1568,39 @@ def create_server(
                 expected_revision=expected_revision,
             )
 
+    if getattr(driver, "allow_private_player_religion_doctrines_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_doctrines_v1(expected_revision: int) -> dict[str, object]:
+            """Read current and main Faith doctrines and native parameter rows."""
+            return driver.query_player_religion_doctrines_private_v1(expected_revision=expected_revision)
+
+    if getattr(driver, "allow_private_player_rite_governance_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_rite_governance_v1(expected_revision: int) -> dict[str, object]:
+            """Read the state Rite, heads and organization with separate source status."""
+            return driver.query_player_rite_governance_private_v1(expected_revision=expected_revision)
+
+    if getattr(driver, "allow_private_player_religion_conversion_terms_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_conversion_terms_v1(
+            expected_revision: int, target_rite_id: int,
+        ) -> dict[str, object]:
+            """Read the native conversion gate and quoted costs for the selected Rite."""
+            return driver.query_player_religion_conversion_terms_private_v1(
+                expected_revision=expected_revision, target_rite_id=target_rite_id,
+            )
+
+    if getattr(driver, "allow_private_active_scheme_sway_completion_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_active_scheme_sway_completion_private_v1(
+            expected_revision: int, target_character_id: int, scheme_instance_id: int,
+        ) -> dict[str, object]:
+            """Read exact Sway instance state without inferring its terminal cause."""
+            return driver.query_active_scheme_sway_completion_private_v1(
+                expected_revision=expected_revision, target_character_id=target_character_id,
+                scheme_instance_id=scheme_instance_id,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3351,6 +3384,22 @@ def parser() -> argparse.ArgumentParser:
         "--private-player-religion-context-query", action="store_true",
         help="enable the private current-player native Rite/Faith/Religion context read",
     )
+    result.add_argument(
+        "--private-player-religion-doctrines-query", action="store_true",
+        help="enable the private current and main Faith doctrine read",
+    )
+    result.add_argument(
+        "--private-player-rite-governance-query", action="store_true",
+        help="enable private state Rite, heads and organization observations",
+    )
+    result.add_argument(
+        "--private-player-religion-conversion-terms-query", action="store_true",
+        help="enable private native conversion terms for an explicitly selected Rite",
+    )
+    result.add_argument(
+        "--private-active-scheme-sway-completion-query", action="store_true",
+        help="enable the private exact Sway instance terminal-state observation",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3427,7 +3476,11 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_active_scheme_sway_action or args.private_council_action
             or args.private_faction_gift_query or args.private_faction_gift_action
             or args.private_prisoner_ransom_action
-            or args.private_player_religion_context_query) and (
+            or args.private_player_religion_context_query
+            or args.private_player_religion_doctrines_query
+            or args.private_player_rite_governance_query
+            or args.private_player_religion_conversion_terms_query
+            or args.private_active_scheme_sway_completion_query) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
         raise ValueError("private nonwar MCP queries require native-headless stdio")
@@ -3483,6 +3536,14 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_prisoner_ransom_action = True
     if args.private_player_religion_context_query:
         driver.allow_private_player_religion_context_query = True
+    if args.private_player_religion_doctrines_query:
+        driver.allow_private_player_religion_doctrines_query = True
+    if args.private_player_rite_governance_query:
+        driver.allow_private_player_rite_governance_query = True
+    if args.private_player_religion_conversion_terms_query:
+        driver.allow_private_player_religion_conversion_terms_query = True
+    if args.private_active_scheme_sway_completion_query:
+        driver.allow_private_active_scheme_sway_completion_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

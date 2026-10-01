@@ -1,0 +1,201 @@
+{
+  "type": "command_result",
+  "protocol_version": 1,
+  "request_id": "law-raw-912eda3135ab4d89a2aace789b24c25c",
+  "ok": true,
+  "result": {
+    "step": "query-realm-law-final-terms-v1-private",
+    "accepted": true,
+    "status": "available",
+    "snapshot_revision": 2,
+    "private_build": true,
+    "read_only": true,
+    "advertised": false,
+    "realm_law_final_terms": {
+      "schema": "realm-law-final-terms-private-read-v1",
+      "snapshot_revision": 2,
+      "date_raw": 53169072,
+      "actor_character_id": 29829,
+      "cost_scale": 100000,
+      "cost_slots": [
+        "gold",
+        "prestige",
+        "piety",
+        "renown",
+        "influence",
+        "herd",
+        "treasury",
+        "treasury_or_gold",
+        "merit",
+        "barter_goods"
+      ],
+      "groups": [
+        {
+          "group_key": "crown_authority",
+          "active_law_key": "crown_authority_0",
+          "candidates": [
+            {
+              "law_key": "crown_authority_0",
+              "active": true,
+              "final_status": "already_active",
+              "final_can_enact": false,
+              "native_reason": "\u0015high 当前法律\u0015!",
+              "cost_raw": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "law_key": "crown_authority_1",
+              "active": false,
+              "final_status": "can_enact",
+              "final_can_enact": true,
+              "native_reason": "",
+              "cost_raw": [
+                0,
+                22300000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "law_key": "crown_authority_2",
+              "active": false,
+              "final_status": "engine_blocked",
+              "final_can_enact": false,
+              "native_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你\u0015bold 没\u0015!有\u0015V; \u0015TOOLTIP:LAW,crown_authority_1 \u0015L; 有限君权\u0015!\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,law 法律\u0015!\u0015!\u0015!\u0015!",
+              "cost_raw": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "law_key": "crown_authority_3",
+              "active": false,
+              "final_status": "engine_blocked",
+              "final_can_enact": false,
+              "native_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你\u0015bold 没\u0015!有\u0015V; \u0015TOOLTIP:LAW,crown_authority_2 \u0015L; 高君权\u0015!\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,law 法律\u0015!\u0015!\u0015!\u0015!",
+              "cost_raw": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "group_key": "succession_order_laws",
+          "active_law_key": "confederate_partition_succession_law",
+          "candidates": [
+            {
+              "law_key": "confederate_partition_succession_law",
+              "active": true,
+              "final_status": "already_active",
+              "final_can_enact": false,
+              "native_reason": "\u0015high 当前法律\u0015!",
+              "cost_raw": [
+                0,
+                50000000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "law_key": "partition_succession_law",
+              "active": false,
+              "final_status": "engine_blocked",
+              "final_can_enact": false,
+              "native_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你没有\u0015TOOLTIP:LAW,crown_authority_2 \u0015L; 高君权\u0015!\u0015!或更高的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,crown_authority 君权\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 有至少一个\u0015E; \u0015TOOLTIP:GAME_CONCEPT,powerful_vassals 强力封臣\u0015!\u0015!对你的好感为负且反对所有\u0015E; \u0015TOOLTIP:GAME_CONCEPT,succession_law 继承法\u0015!\u0015!更改\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X \u0015ONCLICK:CULTURE,73 \u0015TOOLTIP:CULTURE,73 \u0015L; 诺曼\u0015!\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,culture 文化\u0015!\u0015!\u0015bold 没有\u0015!\u0015TOOLTIP:CULTURE_INNOVATION,73,20 \u0015L; 世袭统治\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,innovation 革新\u0015!\u0015!\u0015!\u0015!",
+              "cost_raw": [
+                0,
+                50000000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "law_key": "high_partition_succession_law",
+              "active": false,
+              "final_status": "engine_blocked",
+              "final_can_enact": false,
+              "native_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你没有\u0015TOOLTIP:LAW,crown_authority_2 \u0015L; 高君权\u0015!\u0015!或更高的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,crown_authority 君权\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 有至少一个\u0015E; \u0015TOOLTIP:GAME_CONCEPT,powerful_vassals 强力封臣\u0015!\u0015!对你的好感为负且反对所有\u0015E; \u0015TOOLTIP:GAME_CONCEPT,succession_law 继承法\u0015!\u0015!更改\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X \u0015ONCLICK:CULTURE,73 \u0015TOOLTIP:CULTURE,73 \u0015L; 诺曼\u0015!\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,culture 文化\u0015!\u0015!\u0015bold 没有\u0015!\u0015TOOLTIP:CULTURE_INNOVATION,73,39 \u0015L; 纹章学\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,innovation 革新\u0015!\u0015!\u0015!\u0015!",
+              "cost_raw": [
+                0,
+                50000000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "law_key": "single_heir_succession_law",
+              "active": false,
+              "final_status": "engine_blocked",
+              "final_can_enact": false,
+              "native_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你没有\u0015TOOLTIP:LAW,crown_authority_2 \u0015L; 高君权\u0015!\u0015!或更高的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,crown_authority 君权\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 有至少一个\u0015E; \u0015TOOLTIP:GAME_CONCEPT,powerful_vassals 强力封臣\u0015!\u0015!对你的好感为负且反对所有\u0015E; \u0015TOOLTIP:GAME_CONCEPT,succession_law 继承法\u0015!\u0015!更改\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X \u0015ONCLICK:CULTURE,73 \u0015TOOLTIP:CULTURE,73 \u0015L; 诺曼\u0015!\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,culture 文化\u0015!\u0015!\u0015bold 没有\u0015!\u0015TOOLTIP:CULTURE_INNOVATION,73,57 \u0015L; 长子继承制\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,innovation 革新\u0015!\u0015!\u0015!\u0015!",
+              "cost_raw": [
+                0,
+                50000000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "backend_id": "native-headless"
+  }
+}
