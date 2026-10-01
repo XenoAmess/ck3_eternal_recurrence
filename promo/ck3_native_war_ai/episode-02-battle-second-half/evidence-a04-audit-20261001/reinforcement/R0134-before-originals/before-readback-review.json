@@ -1,0 +1,65 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review/v1",
+  "stage": "before-readback",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "reviewer": "Codex /root (direct original PNG inspection)",
+  "observed_at": "2026-10-01T01:08:37.144079+00:00",
+  "root_actually_viewed": true,
+  "approved_for_current_action": true,
+  "expected_ck3_pid": 15780,
+  "expected_foreground_hwnd": 2951276,
+  "frames": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-panel.png",
+      "bytes": 4931554,
+      "sha256": "E1DCCA3FE652301F7EDA5A98AE45BD42B201CA9FB23EEBAC32D442D0C1A7E988"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-width.png",
+      "bytes": 4911675,
+      "sha256": "24EABF00D0CE8FEEFE16A5E141BEB0DC74FB2EF732AD8A011C0D9C86EF837511"
+    }
+  ],
+  "current_ui_region_reviewed": true,
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1",
+  "scoped_native_context": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-scoped-native-context.json",
+    "bytes": 3056,
+    "sha256": "C6A4F803F1BEA34ED0B056218665AE8708FA139CCB6671B01B680441A09DFAFC"
+  },
+  "full_battle_panel": false,
+  "ui_actor_numeric_id_visible": false,
+  "ui_army_numeric_id_visible": false,
+  "required_regions_visible": true,
+  "battle_context_visible": true,
+  "current_date_and_pause_visible": true,
+  "top_counts_visible": true,
+  "required_regions_unobscured": true,
+  "visible_values": {
+    "battle_title": "墨西拿之战",
+    "date_text": "公元1066年12月14日",
+    "paused": true,
+    "left_coat_context": "蓝边白红橙斜格盾牌，左893，防御方",
+    "right_coat_context": "绿底金色城堡盾牌，右1603，进攻方",
+    "player_soldiers": 893,
+    "opponent_soldiers": 1603,
+    "tooltip_title": "相对军力",
+    "width_label_text": "战线宽度：1480",
+    "battle_width": 1480,
+    "tooltip_soldier_counts": {
+      "player": 827,
+      "opponent": 1546
+    },
+    "base_width": 1645,
+    "forest_percent": 90
+  },
+  "root_visible_evidence": {
+    "originals": "Root directly viewed current before-panel E1DCCA3F... and before-width24EABF00... original2560x1440; actual CK3 HWND2951276 PID15780.",
+    "actual": "Both show paused 公元1066年12月14日、墨西拿之战、top893/1603, left diagonal-grid coat and right green castle coat; actual相对军力tooltip reads战线宽度1480/基础1645/森林90% and separately827对阵1546士兵. Required regions unobscured.",
+    "scope": "Full lower composition remains unverified; numeric actor/army ID bound only by current native context; no hook-instant claim."
+  },
+  "relative_soldiers_tooltip_visible": true,
+  "width_tooltip_numeric_visible": true,
+  "counts_sources_bound_to_this_battle": true
+}

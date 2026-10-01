@@ -1,0 +1,120 @@
+{
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "source_checkout": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\ui-controller-config.frozen-scoped-supplement-a01.json",
+    "bytes": 13937,
+    "sha256": "FB86DEB70CBBBB8E41330983D12C4927C4C23887B2B62838C19A30DE5237A05D"
+  },
+  "consumer_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\hwnd_wgc_frame.py",
+      "bytes": 9830,
+      "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\native_locale_probe.py",
+      "bytes": 1428,
+      "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\paused_join_pair.py",
+      "bytes": 58432,
+      "sha256": "1756F8DA0C45CE98EF70E0D370A7A2252B8287909821DF8E032EBBF5B97D1D94"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\README.md",
+      "bytes": 9444,
+      "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\run_paused_join_sdk.py",
+      "bytes": 7042,
+      "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\verify_offline_entry.py",
+      "bytes": 19267,
+      "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+    }
+  ],
+  "helper_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+      "bytes": 29587,
+      "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+      "bytes": 13247,
+      "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+      "bytes": 21461,
+      "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\ui-controller-config.frozen-center-diag-a01.json",
+      "bytes": 10178,
+      "sha256": "04EBDB33D779442075B1F7018078F25648B38459C99B17AEAB48F786CF8757E4"
+    }
+  ],
+  "no_launch_runner": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\run_no_launch_candidate.py",
+    "bytes": 12721,
+    "sha256": "0468BA3FF0F3BD37EE1820E2D2877AD2830497F0FF16C7C6656CF98A979D7C55"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\bootstrap_profile.py",
+    "bytes": 6528,
+    "sha256": "C35B2515F26687DE0DDF5AA9E98BD75E67EBE223B741068B6528CDE675A35BF7"
+  },
+  "runtime_entry": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  "runtime_bindings": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\runtime-input-bindings.json",
+    "bytes": 2641,
+    "sha256": "A117A7280FEC0206CAA4A60003EA21AB3D05A883F9E836190B4AFD23C495C5E8"
+  },
+  "layout_consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\paused_join_pair.py",
+    "bytes": 58432,
+    "sha256": "1756F8DA0C45CE98EF70E0D370A7A2252B8287909821DF8E032EBBF5B97D1D94"
+  },
+  "scope_contract": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\scoped-review-contract-a01.json",
+    "bytes": 1993,
+    "sha256": "705EF2A38543F18337A2685AEC211CBF8F78C09AA1963330A993C336818A437E"
+  },
+  "native_candidate_manifest": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+    "bytes": 7243,
+    "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+  },
+  "native_pair": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+    "bytes": 851,
+    "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+  },
+  "targeted_scoped_offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\scoped-variant-offline-verification-a01.json",
+    "bytes": 5055,
+    "sha256": "F5A33D27FB16464076C494BDD636ABD23B866DA1DF5C09E8979393BE756B91F1"
+  },
+  "historical_scope_predecessor": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\variant-freeze.json",
+    "bytes": 6432,
+    "sha256": "5853CB71534AE534AE81E76EB67EC9A428637F1EB36021B83BF55C9F4CA42A63"
+  },
+  "guard_regions_unchanged": true,
+  "source_DLL_or_stock_GUI_changed": false,
+  "actual_new_scoped_pair_width_evidence": "NOT_OBSERVED",
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "numeric_UI_actor_army_identity_claimed": false,
+  "new_native_game_screen_inputs_by_freezer": false
+}

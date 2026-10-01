@@ -1,0 +1,50 @@
+[
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\paused_join_pair.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\consumer\\paused_join_pair.py",
+    "bytes": 58432,
+    "sha256": "1756F8DA0C45CE98EF70E0D370A7A2252B8287909821DF8E032EBBF5B97D1D94"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\run_paused_join_sdk.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\consumer\\run_paused_join_sdk.py",
+    "bytes": 7042,
+    "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\entry_reentry.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\bootstrap_profile.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\bootstrap_profile.py",
+    "bytes": 6528,
+    "sha256": "C35B2515F26687DE0DDF5AA9E98BD75E67EBE223B741068B6528CDE675A35BF7"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\variant-freeze.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\variant-freeze.json",
+    "bytes": 6262,
+    "sha256": "C38AEC1C5358761B87672DCFE7FCD1989B12EEC5500BA8168293EE35D16387C9"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\scoped-review-contract-a01.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\scoped-review-contract-a01.json",
+    "bytes": 1993,
+    "sha256": "705EF2A38543F18337A2685AEC211CBF8F78C09AA1963330A993C336818A437E"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\ui-controller-config.frozen-scoped-supplement-a01.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\ui-controller-config.frozen-scoped-supplement-a01.json",
+    "bytes": 13937,
+    "sha256": "FB86DEB70CBBBB8E41330983D12C4927C4C23887B2B62838C19A30DE5237A05D"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-independent-review-other-a01\\review.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\scoped-consumer-a01\\independent-review.json",
+    "bytes": 13621,
+    "sha256": "74B35501B89AAD0C7790E2EBD542CC6649D195FD57F04E22FAB0F9AFEDA3CF2B"
+  }
+]

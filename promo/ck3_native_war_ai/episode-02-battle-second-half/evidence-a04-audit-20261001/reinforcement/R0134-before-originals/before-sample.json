@@ -1,0 +1,411 @@
+{
+  "schema": "xar.jd11.scoped-top-width.sample/v1",
+  "created_at": "2026-10-01T01:08:37.826358+00:00",
+  "stage": "before",
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "scoped_admission": {
+    "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+    "required_regions_admitted": true,
+    "full_battle_panel": false,
+    "full_panel_lower_composition_gap_open": true,
+    "numeric_UI_actor_army_claimed": false,
+    "actor_army_native_bound_only": true,
+    "whole_G2_complete": false,
+    "visible_values": {
+      "battle_title": "墨西拿之战",
+      "date_text": "公元1066年12月14日",
+      "paused": true,
+      "left_coat_context": "蓝边白红橙斜格盾牌，左893，防御方",
+      "right_coat_context": "绿底金色城堡盾牌，右1603，进攻方",
+      "player_soldiers": 893,
+      "opponent_soldiers": 1603,
+      "tooltip_title": "相对军力",
+      "width_label_text": "战线宽度：1480",
+      "battle_width": 1480,
+      "tooltip_soldier_counts": {
+        "player": 827,
+        "opponent": 1546
+      },
+      "base_width": 1645,
+      "forest_percent": 90
+    }
+  },
+  "scoped_native_context": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-scoped-native-context.json",
+    "bytes": 3056,
+    "sha256": "C6A4F803F1BEA34ED0B056218665AE8708FA139CCB6671B01B680441A09DFAFC"
+  },
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "actor_army_native_bound_only": true,
+  "numeric_UI_actor_army_claimed": false,
+  "receipts": {
+    "snapshot": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-scoped-supplement-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-879a8cf606bd-before-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-scoped-supplement-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-879a8cf606bd-before-snapshot.json",
+        "bytes": 367413,
+        "sha256": "97C36ECE332CA06136F20FC86A0E533A1701F0CA1A88F9F4DE0377890C0AC618"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "control": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-scoped-supplement-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-879a8cf606bd-before-control.json",
+        "bytes": 148,
+        "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-scoped-supplement-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-879a8cf606bd-before-control.json",
+        "bytes": 111520,
+        "sha256": "51FED65C71C0B76DD586AC2B82833594832F63294522CB1C785BE43955BAE764"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "values": {
+      "date_raw": 53146488,
+      "paused": true,
+      "actor": 29829,
+      "revision": 4,
+      "native_revision": 3,
+      "snapshot_id": "native:3",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat"
+    },
+    "control_values": {
+      "accepted": true,
+      "status": "available",
+      "root_native_revision": 3,
+      "snapshot_native_revision": 3,
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "queried_snapshot_id": "native:3",
+      "source_revision": 4,
+      "source_native_revision": 3,
+      "source_snapshot_id": "native:3",
+      "source_date_raw": 53146488,
+      "source_paused": true,
+      "observed_date_raw": 53146488,
+      "subject_army_id": 18,
+      "native_army_id": 18,
+      "owner_character_id": 29829,
+      "combat_id": 16777218,
+      "combat_province_id": 2633,
+      "battle_control_ready": true
+    }
+  },
+  "after_pixels_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-scoped-supplement-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-879a8cf606bd-before-after-pixels.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-scoped-supplement-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-879a8cf606bd-before-after-pixels.json",
+      "bytes": 483370,
+      "sha256": "9D1B285108D8352E41767ED708107FFC4E67B8F1C1521B01A42D09D686422837"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "after_pixels_values": {
+    "date_raw": 53146488,
+    "paused": true,
+    "actor": 29829,
+    "revision": 4,
+    "native_revision": 3,
+    "snapshot_id": "native:3",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat"
+  },
+  "panel": {
+    "schema": "xar.jd11.a15.original-ui-frame/v1",
+    "screenshot": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-panel.png",
+      "bytes": 4931554,
+      "sha256": "E1DCCA3FE652301F7EDA5A98AE45BD42B201CA9FB23EEBAC32D442D0C1A7E988"
+    },
+    "captured_at": "2026-10-01T01:05:46.948456+00:00",
+    "image_size": [
+      2560,
+      1440
+    ],
+    "before": {
+      "observed_at": "2026-10-01T01:05:46.219036+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 2951276,
+        "foreground_pid": 15780,
+        "foreground_thread_id": 11600,
+        "focus_hwnd": 2951276,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 15780
+    },
+    "after": {
+      "observed_at": "2026-10-01T01:05:46.919144+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 2951276,
+        "foreground_pid": 15780,
+        "foreground_thread_id": 11600,
+        "focus_hwnd": 2951276,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 15780
+    },
+    "current_run_only": true,
+    "foreground_required_for_input": true
+  },
+  "tooltip": {
+    "schema": "xar.jd11.a15.original-ui-frame/v1",
+    "screenshot": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-width.png",
+      "bytes": 4911675,
+      "sha256": "24EABF00D0CE8FEEFE16A5E141BEB0DC74FB2EF732AD8A011C0D9C86EF837511"
+    },
+    "captured_at": "2026-10-01T01:06:49.281628+00:00",
+    "image_size": [
+      2560,
+      1440
+    ],
+    "before": {
+      "observed_at": "2026-10-01T01:06:48.504492+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 2951276,
+        "foreground_pid": 15780,
+        "foreground_thread_id": 11600,
+        "focus_hwnd": 2951276,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 15780
+    },
+    "after": {
+      "observed_at": "2026-10-01T01:06:49.258963+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 2951276,
+        "foreground_pid": 15780,
+        "foreground_thread_id": 11600,
+        "focus_hwnd": 2951276,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 15780
+    },
+    "current_run_only": true,
+    "foreground_required_for_input": true
+  },
+  "pointer_hover": {
+    "mapper_receipt": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-width-hover-receipt.png.json",
+      "bytes": 2082,
+      "sha256": "AF8FAA53593093A5D32355840DBE1266919E9F439C52710867A8B91F86CA5D79"
+    },
+    "receipt_image": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-width-hover-receipt.png",
+      "bytes": 4912230,
+      "sha256": "B075F17A936A018F8B6932B599006EE8C4F9DDEBD1E347EBBC0E4DD9E26E571E"
+    },
+    "source_frame": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-panel.png",
+      "bytes": 4931554,
+      "sha256": "E1DCCA3FE652301F7EDA5A98AE45BD42B201CA9FB23EEBAC32D442D0C1A7E988"
+    },
+    "before": {
+      "observed_at": "2026-10-01T01:06:45.755214+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 2951276,
+        "foreground_pid": 15780,
+        "foreground_thread_id": 11600,
+        "focus_hwnd": 2951276,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 15780
+    },
+    "after": {
+      "observed_at": "2026-10-01T01:06:47.466942+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 2951276,
+        "foreground_pid": 15780,
+        "foreground_thread_id": 11600,
+        "focus_hwnd": 2951276,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 15780
+    },
+    "exit_code": 0,
+    "action": "move"
+  },
+  "actual_visual_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "before-readback",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T01:08:37.144079+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 15780,
+    "expected_foreground_hwnd": 2951276,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-panel.png",
+        "bytes": 4931554,
+        "sha256": "E1DCCA3FE652301F7EDA5A98AE45BD42B201CA9FB23EEBAC32D442D0C1A7E988"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-width.png",
+        "bytes": 4911675,
+        "sha256": "24EABF00D0CE8FEEFE16A5E141BEB0DC74FB2EF732AD8A011C0D9C86EF837511"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+    "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1",
+    "scoped_native_context": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-scoped-native-context.json",
+      "bytes": 3056,
+      "sha256": "C6A4F803F1BEA34ED0B056218665AE8708FA139CCB6671B01B680441A09DFAFC"
+    },
+    "full_battle_panel": false,
+    "ui_actor_numeric_id_visible": false,
+    "ui_army_numeric_id_visible": false,
+    "required_regions_visible": true,
+    "battle_context_visible": true,
+    "current_date_and_pause_visible": true,
+    "top_counts_visible": true,
+    "required_regions_unobscured": true,
+    "visible_values": {
+      "battle_title": "墨西拿之战",
+      "date_text": "公元1066年12月14日",
+      "paused": true,
+      "left_coat_context": "蓝边白红橙斜格盾牌，左893，防御方",
+      "right_coat_context": "绿底金色城堡盾牌，右1603，进攻方",
+      "player_soldiers": 893,
+      "opponent_soldiers": 1603,
+      "tooltip_title": "相对军力",
+      "width_label_text": "战线宽度：1480",
+      "battle_width": 1480,
+      "tooltip_soldier_counts": {
+        "player": 827,
+        "opponent": 1546
+      },
+      "base_width": 1645,
+      "forest_percent": 90
+    },
+    "root_visible_evidence": {
+      "originals": "Root directly viewed current before-panel E1DCCA3F... and before-width24EABF00... original2560x1440; actual CK3 HWND2951276 PID15780.",
+      "actual": "Both show paused 公元1066年12月14日、墨西拿之战、top893/1603, left diagonal-grid coat and right green castle coat; actual相对军力tooltip reads战线宽度1480/基础1645/森林90% and separately827对阵1546士兵. Required regions unobscured.",
+      "scope": "Full lower composition remains unverified; numeric actor/army ID bound only by current native context; no hook-instant claim."
+    },
+    "relative_soldiers_tooltip_visible": true,
+    "width_tooltip_numeric_visible": true,
+    "counts_sources_bound_to_this_battle": true
+  },
+  "same_paused_frame_verified": true,
+  "image_kind": "original-desktop-gdi",
+  "battle_width_ui_observed": true,
+  "battle_width_ui_gap": false,
+  "mouse_inputs": "explicit desktop-gated mapper receipts",
+  "hook_instant_same_frame_claimed": false,
+  "native_side_cache_and_entries_distinct": true,
+  "historical_number_substitution": false
+}

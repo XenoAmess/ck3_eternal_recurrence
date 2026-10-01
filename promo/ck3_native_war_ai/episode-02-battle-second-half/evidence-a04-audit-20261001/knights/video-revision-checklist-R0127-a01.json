@@ -1,0 +1,862 @@
+{
+  "schema": "xar.a04.a06.R0127.minimum-followup-video-revision-checklist/v1",
+  "created_at_utc": "2026-10-01T00:54:23.322556+00:00",
+  "reviewer": "/root/a04_knights_evidence",
+  "scope": [
+    "knights-k023",
+    "knights-k024",
+    "knights-k025",
+    "knights-k037"
+  ],
+  "conclusion": "NO_CALENDAR_ERROR_IN_THE_FOUR_EXISTING_CUES; ADD_SEPARATE_R0127_SAVED_STATE_CARD_ONLY_IF_INCLUDING_NEW_SUPPLEMENT",
+  "mandatory_video_date_corrections": [],
+  "mandatory_narration_or_subtitle_rewrites": [],
+  "old_plan_date_error": {
+    "incorrect": [
+      "1066.12.30",
+      "1066.12.31"
+    ],
+    "correct_R0127": [
+      "1066.12.29",
+      "1066.12.30"
+    ],
+    "already_recorded_create_only_erratum": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-supplement.md",
+      "bytes": 8999,
+      "sha256": "5572C990B5759DD207D4C2F9001DF2683D5CB86E29E5B7F2A4A62D47427278F9"
+    },
+    "old_plan_or_sentence_audit_or_index_modified": false,
+    "new_video_inputs_must_not_copy_old_calendar_conversion": true,
+    "historical020_source_case_day26_is_not_a_literal_12_30_to_12_31_claim": true
+  },
+  "bound_existing_finals": {
+    "a04": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\CK3-War-AI-Episode02-Review-20260930-a04.mp4",
+      "bytes": 240710781,
+      "sha256": "CB141C63966D86BDC8E267B4D958A79C1BB06A8EF69814DC0D6788F0345B8C7E"
+    },
+    "a06": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+      "bytes": 239659692,
+      "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+    }
+  },
+  "a06_existing_delivery_receipt_read_only": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\delivery\\final-delivery.json",
+    "bytes": 3524,
+    "sha256": "01A39E659492022B7B421F8B8172EEC6F7B1A002FAB438121CF34BEC97BF2547"
+  },
+  "inspection": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\literal-inspection.json",
+    "bytes": 97495,
+    "sha256": "339ACCA753BA8C1CA78321DB9F19B71FEAD0EEF7C57D6B1CDEAF6F0DB3803875"
+  },
+  "decoded_frames_index": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\index.json",
+    "bytes": 11625,
+    "sha256": "2DBB2EF3044BBF900C52F615E57FA5808C8E3D551D24931F964C6336E2C0E634"
+  },
+  "checks": [
+    {
+      "name": "knights-k023:a04_a06_literal_audio_timing_source_equal",
+      "passed": true,
+      "fields": {
+        "zh": true,
+        "en": true,
+        "global_start_seconds": true,
+        "global_end_seconds": true,
+        "facts": true,
+        "audio": true
+      }
+    },
+    {
+      "name": "knights-k023:a04:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k023:a04:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k023:a06:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k023:a06:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k023:no_12_31_calendar_claim_in_actual_cue_inputs",
+      "passed": true
+    },
+    {
+      "name": "knights-k024:a04_a06_literal_audio_timing_source_equal",
+      "passed": true,
+      "fields": {
+        "zh": true,
+        "en": true,
+        "global_start_seconds": true,
+        "global_end_seconds": true,
+        "facts": true,
+        "audio": true
+      }
+    },
+    {
+      "name": "knights-k024:a04:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k024:a04:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k024:a06:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k024:a06:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k024:no_12_31_calendar_claim_in_actual_cue_inputs",
+      "passed": true
+    },
+    {
+      "name": "knights-k025:a04_a06_literal_audio_timing_source_equal",
+      "passed": true,
+      "fields": {
+        "zh": true,
+        "en": true,
+        "global_start_seconds": true,
+        "global_end_seconds": true,
+        "facts": true,
+        "audio": true
+      }
+    },
+    {
+      "name": "knights-k025:a04:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k025:a04:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k025:a06:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k025:a06:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k025:no_12_31_calendar_claim_in_actual_cue_inputs",
+      "passed": true
+    },
+    {
+      "name": "knights-k037:a04_a06_literal_audio_timing_source_equal",
+      "passed": true,
+      "fields": {
+        "zh": true,
+        "en": true,
+        "global_start_seconds": true,
+        "global_end_seconds": true,
+        "facts": true,
+        "audio": true
+      }
+    },
+    {
+      "name": "knights-k037:a04:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k037:a04:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k037:a06:burn_subtitle_source_zh_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k037:a06:burn_subtitle_source_en_matches",
+      "passed": true
+    },
+    {
+      "name": "knights-k037:no_12_31_calendar_claim_in_actual_cue_inputs",
+      "passed": true
+    }
+  ],
+  "all_checks_passed": true,
+  "cues": [
+    {
+      "key": "knights-k023",
+      "global_start_seconds": 708.2333333333335,
+      "global_end_seconds": 719.7666666666668,
+      "literal_narration_zh": "被杀目标是三三四三七，对应六十五号兵团。在一个执行边界，他仍然存活、有效勇武为四，并且仍链接这个兵团。",
+      "literal_narration_en": "The victim is three three four three seven, linked to regiment sixty-five. At one execution boundary he is alive, has four effective prowess, and still links to that regiment.",
+      "actual_bilingual_subtitle_literals": [
+        {
+          "start_in_chunk": 67.97,
+          "end_in_chunk": 79.5,
+          "text": "{\\an8\\pos(960,910)}被杀目标是三三四三七，对应六十五号兵团。在一个执行边界，他仍然存活、有效勇武为四\\N，并且仍链接这个兵团。"
+        },
+        {
+          "start_in_chunk": 67.97,
+          "end_in_chunk": 79.5,
+          "text": "{\\an8\\pos(960,1008)}The victim is three three four three seven, linked to regiment sixty-five. At one execution boundary\\Nhe is alive, has four effective prowess, and still links to that regiment."
+        }
+      ],
+      "actual_card_title": "死亡前执行边界",
+      "actual_case_literal": "历史独立回放020／第26日／原UI未留存",
+      "actual_card_diagram_lines": [
+        "原UI未留存",
+        "此边界：目标仍存活",
+        "有效勇武：4",
+        "人物仍连接原兵团"
+      ],
+      "actual_card_footer": "右栏为历史原生记录；历史原UI未留存",
+      "actual_left_UI_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "old_fact_locators": [
+        {
+          "claim": "33437执行边界仍存活，有效勇武4，兵团链接65",
+          "source_path": "C:/w/ep2a03/ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json",
+          "source_field_or_line": "target_character_id; target_at_fire_boundary",
+          "confidence": "verified"
+        }
+      ],
+      "old_fact_file_identities": [
+        {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json",
+          "bytes": 5305,
+          "sha256": "752D2257D358159FCA918885A9B16B6909D81FEC835F0FA9205868CE882876CA"
+        }
+      ],
+      "a04_final_frame": {
+        "key": "knights-k023",
+        "version": "a04",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\CK3-War-AI-Episode02-Review-20260930-a04.mp4",
+          "bytes": 240710781,
+          "sha256": "CB141C63966D86BDC8E267B4D958A79C1BB06A8EF69814DC0D6788F0345B8C7E"
+        },
+        "requested_seek_seconds": 714.0000000000001,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k023-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k023-stderr.bin",
+          "bytes": 3594,
+          "sha256": "F0B6A5008607BDEDE1127090BB2E730C4CFB83A89D579F1E567FD0C4AAAC69E4"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k023.png",
+          "bytes": 621903,
+          "sha256": "CBD163F440B1633C60FE65E3C21154A871BA3DC5FD89A5540C56E83A0CDA2D1F"
+        }
+      },
+      "a06_final_frame": {
+        "key": "knights-k023",
+        "version": "a06",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+          "bytes": 239659692,
+          "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+        },
+        "requested_seek_seconds": 714.0000000000001,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k023-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k023-stderr.bin",
+          "bytes": 3615,
+          "sha256": "A0E2CF6620319C3382F7D591996D294AE3F1C59D65E7477CD78D0F4C8DD10F33"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k023.png",
+          "bytes": 635340,
+          "sha256": "4E6CB318B0E39F4592A34C11A6F2EEC59A3B273773B4DA4CCF96CFF5E5D8C862"
+        }
+      },
+      "direct_original_board_pngs_and_decoded_final_frames_viewed": true,
+      "old_scope": "历史020 fire捕获边界：33437存活、有效勇武4、实时兵团65及反链匹配；原人物UI未留存。左a08只是另一独立当前UI示例。",
+      "new_support": "独立R0127前保存态：33437唯一alive_data，dead_data不存在，regiment65。",
+      "new_json_pointers": [
+        "/states/0/state/character_id",
+        "/states/0/state/alive_data_present",
+        "/states/0/state/dead_data_present",
+        "/states/0/state/regiment_id"
+      ],
+      "not_added_by_new_run": [
+        "020执行边界身份",
+        "有效勇武4",
+        "实时兵团反链匹配",
+        "旧a02的同编号人物状态"
+      ],
+      "revision_decision": "既有旁白/字幕/020卡片无日期错误，不改。可在新增R0127补证对象中引用前保存态，不重指向旧复合claim。"
+    },
+    {
+      "key": "knights-k024",
+      "global_start_seconds": 719.7666666666668,
+      "global_end_seconds": 730.2666666666668,
+      "literal_narration_zh": "后一个捕获边界已有死亡标记，人物与兵团的连接被清空，有效勇武读成二；前后存档里的基础勇武却始终是二。",
+      "literal_narration_en": "A later captured boundary has a death marker, no regiment link, and two effective prowess. Yet base prowess in both the before and after saves remains two.",
+      "actual_bilingual_subtitle_literals": [
+        {
+          "start_in_chunk": 79.5,
+          "end_in_chunk": 90.0,
+          "text": "{\\an8\\pos(960,910)}后一个捕获边界已有死亡标记，人物与兵团的连接被清空，有效勇武读成二；前后存档里的\\N基础勇武却始终是二。"
+        },
+        {
+          "start_in_chunk": 79.5,
+          "end_in_chunk": 90.0,
+          "text": "{\\an8\\pos(960,1008)}A later captured boundary has a death marker, no regiment link, and two effective prowess. Yet base\\Nprowess in both the before and after saves remains two."
+        }
+      ],
+      "actual_card_title": "死亡后执行边界",
+      "actual_case_literal": "历史独立回放020／第26日／原UI未留存",
+      "actual_card_diagram_lines": [
+        "原UI未留存",
+        "死亡标记新增；兵团连接清空",
+        "有效勇武：4→2",
+        "前后存档基础勇武：2→2"
+      ],
+      "actual_card_footer": "右栏为历史原生记录；历史原UI未留存",
+      "actual_left_UI_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "old_fact_locators": [
+        {
+          "claim": "死亡标记与链接清空，有效勇武4→2，基础勇武保持2",
+          "source_path": "C:/w/ep2a03/ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json",
+          "source_field_or_line": "target_at_final_boundary; target_before_save.base_skill_values; target_after_save.base_skill_values",
+          "confidence": "verified"
+        }
+      ],
+      "old_fact_file_identities": [
+        {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json",
+          "bytes": 5305,
+          "sha256": "752D2257D358159FCA918885A9B16B6909D81FEC835F0FA9205868CE882876CA"
+        }
+      ],
+      "a04_final_frame": {
+        "key": "knights-k024",
+        "version": "a04",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\CK3-War-AI-Episode02-Review-20260930-a04.mp4",
+          "bytes": 240710781,
+          "sha256": "CB141C63966D86BDC8E267B4D958A79C1BB06A8EF69814DC0D6788F0345B8C7E"
+        },
+        "requested_seek_seconds": 725.0166666666668,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k024-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k024-stderr.bin",
+          "bytes": 3579,
+          "sha256": "982D45DB3A7B78FF4959041014B7AB3D16BD019EBB76712043CD6B81BCE345BE"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k024.png",
+          "bytes": 613438,
+          "sha256": "9359AA2E3F7B0D03437AACDB02AA56E1E0599EA81B4D7BA3F6EAF745FF2E060A"
+        }
+      },
+      "a06_final_frame": {
+        "key": "knights-k024",
+        "version": "a06",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+          "bytes": 239659692,
+          "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+        },
+        "requested_seek_seconds": 725.0166666666668,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k024-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k024-stderr.bin",
+          "bytes": 3600,
+          "sha256": "E157CDDC28341D21AA6AE5D6D3CECF79AEB05C2DF4661ADE6F3B5DFC59A824F0"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k024.png",
+          "bytes": 627898,
+          "sha256": "3C6837D33BD0B720FEF63A50E520E93E7BB429ECC3840EBCC6BF7386216BE24A"
+        }
+      },
+      "direct_original_board_pngs_and_decoded_final_frames_viewed": true,
+      "old_scope": "历史020 later捕获边界：死亡标记true、current_regiment_id0、有效勇武4→2；同次前后存档基础勇武2→2。",
+      "new_support": "独立R0127后保存态：alive_data不存在，唯一dead_data；前后基础技能数组相同、基础勇武2→2。",
+      "new_json_pointers": [
+        "/states/0/state/base_skill_values/5",
+        "/states/1/state/base_skill_values/5",
+        "/states/1/state/alive_data_present",
+        "/states/1/state/dead_data_present"
+      ],
+      "not_added_by_new_run": [
+        "020死亡标记捕获边界",
+        "有效勇武4→2",
+        "实时兵团连接清空",
+        "后保存态regiment=null不能等同实时current_regiment_id0",
+        "旧a02最终行缺口"
+      ],
+      "revision_decision": "既有句沿用020来源无需勘误；新run仅作为独立保存态平行补证，不能把整个旧卡改标R0127。"
+    },
+    {
+      "key": "knights-k025",
+      "global_start_seconds": 730.2666666666669,
+      "global_end_seconds": 741.9666666666669,
+      "literal_narration_zh": "四变二不是基础技能被扣两点。后存档记下战死与击杀者编号；击杀者的威望货币和累计威望各增加一百五十。",
+      "literal_narration_en": "Four to two is not a base-skill penalty. The post-save records death in battle and the killer’s ID; his prestige currency and accumulated prestige each rise by one hundred fifty.",
+      "actual_bilingual_subtitle_literals": [
+        {
+          "start_in_chunk": 0.0,
+          "end_in_chunk": 11.7,
+          "text": "{\\an8\\pos(960,910)}四变二不是基础技能被扣两点。后存档记下战死与击杀者编号；击杀者的威望货币和累计威\\N望各增加一百五十。"
+        },
+        {
+          "start_in_chunk": 0.0,
+          "end_in_chunk": 11.7,
+          "text": "{\\an8\\pos(960,1008)}Four to two is not a base-skill penalty. The post-save records death in battle and the killer’s ID;\\Nhis prestige currency and accumulated prestige each rise by one hundred fifty."
+        }
+      ],
+      "actual_card_title": "战死写回与威望收益",
+      "actual_case_literal": "历史独立回放020／第26日／原UI未留存",
+      "actual_card_diagram_lines": [
+        "原UI未留存",
+        "后档记下战死及击杀者",
+        "威望货币：＋150",
+        "累计威望：＋150",
+        "基础勇武保持2"
+      ],
+      "actual_card_footer": "右栏为历史原生记录；历史原UI未留存",
+      "actual_left_UI_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "old_fact_locators": [
+        {
+          "claim": "基础勇武无减少，战死/killer34120，击杀者两种威望各+150",
+          "source_path": "C:/w/ep2a03/ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json",
+          "source_field_or_line": "target_base_prowess_change; target_after_save.death_reason; target_after_save.killer_character_id; killer_prestige_currency_delta; killer_prestige_accumulated_delta",
+          "confidence": "verified"
+        }
+      ],
+      "old_fact_file_identities": [
+        {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json",
+          "bytes": 5305,
+          "sha256": "752D2257D358159FCA918885A9B16B6909D81FEC835F0FA9205868CE882876CA"
+        }
+      ],
+      "a04_final_frame": {
+        "key": "knights-k025",
+        "version": "a04",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\CK3-War-AI-Episode02-Review-20260930-a04.mp4",
+          "bytes": 240710781,
+          "sha256": "CB141C63966D86BDC8E267B4D958A79C1BB06A8EF69814DC0D6788F0345B8C7E"
+        },
+        "requested_seek_seconds": 736.1166666666669,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k025-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k025-stderr.bin",
+          "bytes": 3579,
+          "sha256": "DD193BA92DD3D5D06E2B6A73E1E984278D6E6C6270C8A870905388DBBAE8FBE4"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k025.png",
+          "bytes": 602899,
+          "sha256": "C27F0A2FDF9CCA938CB9A4AE47216237385C4633541A79034D3259C1C55AAA0A"
+        }
+      },
+      "a06_final_frame": {
+        "key": "knights-k025",
+        "version": "a06",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+          "bytes": 239659692,
+          "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+        },
+        "requested_seek_seconds": 736.1166666666669,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k025-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k025-stderr.bin",
+          "bytes": 3599,
+          "sha256": "BADA017C4A9692162C71AF9C3D3C9E11C60FE0E0B34A0D7EA5EA60920E6BBF0B"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k025.png",
+          "bytes": 620078,
+          "sha256": "C6101F830833D02790C447A0A63725A53546CA877BF6343C58E6432ACD6E9975"
+        }
+      },
+      "direct_original_board_pngs_and_decoded_final_frames_viewed": true,
+      "old_scope": "历史020前后存档：基础勇武无扣点、战死及killer34120、击杀者prestige currency与accumulated分别+150。",
+      "new_support": "独立R0127同run后档明确death_date1066.12.30、death_battle、killer_character_id34120，基础勇武2→2。日期锚点前后为1066.12.29→1066.12.30。",
+      "new_json_pointers": [
+        "/states/1/state/death_date",
+        "/states/1/state/death_reason",
+        "/states/1/state/killer_character_id",
+        "/states/0/state/base_skill_values/5",
+        "/states/1/state/base_skill_values/5"
+      ],
+      "not_added_by_new_run": [
+        "本次击杀者两种威望各+150未新增核验",
+        "本次selector",
+        "本次完整唯一因果",
+        "任何12/31后保存态"
+      ],
+      "revision_decision": "最小后续视频补证落在本cue：新增独立R0127保存态小卡和拆分facts locators；原020威望卡/旁白/字幕保持原来源。无必改日期错误，无需重TTS。"
+    },
+    {
+      "key": "knights-k037",
+      "global_start_seconds": 864.4000000000001,
+      "global_end_seconds": 875.5333333333334,
+      "literal_narration_zh": "现在两种风险更清楚了：致残者可以仍在阵中，却带着更弱的有效属性；阵亡者会在已核对的后档链里退出骑士名单。",
+      "literal_narration_en": "The two risks are clearer now: a maimed knight can remain with weaker effective stats, while a dead knight leaves the roster in the verified post-save chain.",
+      "actual_bilingual_subtitle_literals": [
+        {
+          "start_in_chunk": 45.23,
+          "end_in_chunk": 56.37,
+          "text": "{\\an8\\pos(960,910)}现在两种风险更清楚了：致残者可以仍在阵中，却带着更弱的有效属性；阵亡者会在已核对\\N的后档链里退出骑士名单。"
+        },
+        {
+          "start_in_chunk": 45.23,
+          "end_in_chunk": 56.37,
+          "text": "{\\an8\\pos(960,1008)}The two risks are clearer now: a maimed knight can remain with weaker effective stats, while a dead\\Nknight leaves the roster in the verified post-save chain."
+        }
+      ],
+      "actual_card_title": "致残与死亡影响不同",
+      "actual_case_literal": "历史独立案例汇总／原UI未留存",
+      "actual_card_diagram_lines": [
+        "原UI未留存",
+        "039→040：留在名册、有效属性下降",
+        "036→038：死亡者退出后名册",
+        "两条独立链分别核对"
+      ],
+      "actual_card_footer": "右栏为历史原生记录；历史原UI未留存",
+      "actual_left_UI_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "old_fact_locators": [
+        {
+          "claim": "致残者留阵但有效属性下降",
+          "source_path": "C:/w/ep2a03/ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json",
+          "source_field_or_line": "knights_before_after; maimed_next_input_after",
+          "confidence": "verified"
+        },
+        {
+          "claim": "另一已核后档链中阵亡者退出名单",
+          "source_path": "C:/w/ep2a03/ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_next_input_v1.json",
+          "source_field_or_line": "removed_knight_character_id",
+          "confidence": "verified"
+        }
+      ],
+      "old_fact_file_identities": [
+        {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json",
+          "bytes": 3894,
+          "sha256": "961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100"
+        },
+        {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_kill_next_input_v1.json",
+          "bytes": 2034,
+          "sha256": "8F4050AF785DED4A166BF4C671F914820E65B588C7E83251ECCA3EAB8CA45AF6"
+        }
+      ],
+      "a04_final_frame": {
+        "key": "knights-k037",
+        "version": "a04",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\CK3-War-AI-Episode02-Review-20260930-a04.mp4",
+          "bytes": 240710781,
+          "sha256": "CB141C63966D86BDC8E267B4D958A79C1BB06A8EF69814DC0D6788F0345B8C7E"
+        },
+        "requested_seek_seconds": 869.9666666666667,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k037-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k037-stderr.bin",
+          "bytes": 3589,
+          "sha256": "ABC9FA73C024CE29E0383ECDA21E45E2BB3D46E377188D7BDFE543361FDC9C69"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a04-knights-k037.png",
+          "bytes": 629213,
+          "sha256": "BCC2A9C57BBDDE2D92998A0E417D3FC9BD4DA68294F72A3C8BCB383B205927D3"
+        }
+      },
+      "a06_final_frame": {
+        "key": "knights-k037",
+        "version": "a06",
+        "source_video": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+          "bytes": 239659692,
+          "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+        },
+        "requested_seek_seconds": 869.9666666666667,
+        "exact_source_PTS_observed": false,
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k037-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k037-stderr.bin",
+          "bytes": 3610,
+          "sha256": "473C878BC1445ECBE2DC291464D972E8FC45CD6851A6A4758515E39191B159B2"
+        },
+        "image": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knights-video-revision-attempt-01\\decoded-final-frames-a01\\a06-knights-k037.png",
+          "bytes": 643136,
+          "sha256": "C015CF977D589BCC30C415CB10F187881602D37E03A7AB7BB3234C0B54F1D357"
+        }
+      },
+      "direct_original_board_pngs_and_decoded_final_frames_viewed": true,
+      "old_scope": "历史039→040：致残者留阵、有效属性下降；另一历史036→038：逐ID名册差集确认33437退出、69→68个兵团、30→29名骑士。两链独立。",
+      "new_support": "R0127只新增本次33437存活→战死保存态，补强死亡风险确实出现这一局部事实。",
+      "new_json_pointers": [
+        "/states/0/state/alive_data_present",
+        "/states/1/state/dead_data_present"
+      ],
+      "not_added_by_new_run": [
+        "039→040致残/有效属性链",
+        "036→038逐ID名册退出",
+        "R0127全部名册差集",
+        "R0127 next-input有效属性",
+        "旧a02名单净少1唯一归因"
+      ],
+      "revision_decision": "原总结旁白/字幕/卡片不需改；继续保留036→038与039→040标识，不重标R0127为已验证退出名单。"
+    }
+  ],
+  "new_R0127_facts": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0127",
+    "episode_run_id": "native-29829-f83be45dbbd9",
+    "raw_date_pair": [
+      53146848,
+      53146872
+    ],
+    "calendar_pair": [
+      "1066.12.29",
+      "1066.12.30"
+    ],
+    "strict_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+      "bytes": 6984,
+      "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+    },
+    "independent_verification": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-live-R0127-verification.json",
+      "bytes": 78106,
+      "sha256": "47FB04B5EE2FCB3C637EB151940D658E62D439EF5CFBEF38EA9A22862084F549"
+    },
+    "after_death_date": "1066.12.30",
+    "after_death_reason": "death_battle",
+    "after_killer_id": 34120,
+    "character_id": 33437,
+    "before_life": "ALIVE",
+    "after_life": "DEAD",
+    "before_regiment_id": 65,
+    "after_saved_regiment_field": null,
+    "base_prowess_pair": [
+      2,
+      2
+    ],
+    "trace_status": "failed",
+    "trace_failure_flags": 1040,
+    "selector_verified": false,
+    "sole_cause_verified": false,
+    "map_UI_date_images": [
+      {
+        "image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d26-before-window.png",
+          "bytes": 1053648,
+          "sha256": "701AA4C72BA2418F7003C4F89485A1DF77EBD801B66EFCE963E9F0F9127C9D5B"
+        },
+        "width": 1024,
+        "height": 768,
+        "pid": 4496,
+        "hwnd": 264284,
+        "direct_original_pixel_review": true,
+        "observed_date": "1066.12.29",
+        "paused_label_visible": true,
+        "target_character_card_visible": false,
+        "battle_knights_roster_visible": false,
+        "death_notification_visible": false
+      },
+      {
+        "image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\evidence\\d27-after-window.png",
+          "bytes": 1060506,
+          "sha256": "9C8E73CA3CAAF3E0C205DDA7851B5F090A74A037A92049158DFB3F380E19C052"
+        },
+        "width": 1024,
+        "height": 768,
+        "pid": 4496,
+        "hwnd": 264284,
+        "direct_original_pixel_review": true,
+        "observed_date": "1066.12.30",
+        "paused_label_visible": true,
+        "target_character_card_visible": false,
+        "battle_knights_roster_visible": false,
+        "death_notification_visible": false
+      }
+    ],
+    "UI_character_or_roster_or_death_notice": false
+  },
+  "minimal_followup_changes": [
+    {
+      "id": "proposed-R0127-independent-save-card-at-k025",
+      "required_to_correct_existing_date_error": false,
+      "purpose": "后续新版本若纳入此次补证，只追加一个清楚分源的保存态卡和独立locator；旧成片无需为不存在的日期错误重做。",
+      "cue": "knights-k025",
+      "cue_seconds": [
+        730.2666666666669,
+        741.9666666666669
+      ],
+      "surface": "新增版本k025画面左栏，替换原a08当前界面示例；右栏020威望内容保留来源。不得覆盖当前a06文件。",
+      "narration_or_existing_bilingual_subtitle_revision_needed": false,
+      "display_header": "独立补采R0127｜保存态，非020续帧",
+      "display_lines": [
+        "1066.12.29存活 → 1066.12.30战死",
+        "人物33437；基础勇武2→2",
+        "后档：战死；击杀者34120",
+        "本次选择器与唯一因果仍未证"
+      ],
+      "if_using_real_R0127_PNGs_label": "前后原版地图日期锚点；人物生命状态来自同run保存态读回",
+      "new_locator_objects": [
+        {
+          "claim": "独立R0127前档33437唯一存活、保存态兵团65",
+          "source": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+            "bytes": 6984,
+            "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+          },
+          "json_pointers": [
+            "/states/0/state/character_id",
+            "/states/0/state/alive_data_present",
+            "/states/0/state/dead_data_present",
+            "/states/0/state/regiment_id"
+          ],
+          "evidence_layer": "strict-save-readback"
+        },
+        {
+          "claim": "独立R0127后档33437唯一死亡、前后基础勇武2→2",
+          "source": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+            "bytes": 6984,
+            "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+          },
+          "json_pointers": [
+            "/states/0/state/base_skill_values/5",
+            "/states/1/state/base_skill_values/5",
+            "/states/1/state/alive_data_present",
+            "/states/1/state/dead_data_present"
+          ],
+          "evidence_layer": "strict-save-readback"
+        },
+        {
+          "claim": "独立R0127后档明确死亡日期1066.12.30、death_battle及killer34120",
+          "source": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+            "bytes": 6984,
+            "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+          },
+          "json_pointers": [
+            "/states/1/state/death_date",
+            "/states/1/state/death_reason",
+            "/states/1/state/killer_character_id"
+          ],
+          "evidence_layer": "strict-save-readback"
+        },
+        {
+          "claim": "独立R0127源前后日历1066.12.29→1066.12.30；raw53146848→53146872",
+          "source": {
+            "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-live-R0127-verification.json",
+            "bytes": 78106,
+            "sha256": "47FB04B5EE2FCB3C637EB151940D658E62D439EF5CFBEF38EA9A22862084F549"
+          },
+          "json_pointers": [
+            "/actual_saved_and_ui_dates",
+            "/native_raw_date_pair",
+            "/original_ui_review"
+          ],
+          "evidence_layer": "same-run-native-plus-save-meta-date-plus-original-map-UI"
+        }
+      ],
+      "old_composite_fact_objects_repointed": false,
+      "display_or_timing_rendered_or_approved": false
+    }
+  ],
+  "other_12_31_calendar_literals": [
+    {
+      "version": "a04",
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\edit.json",
+        "bytes": 335395,
+        "sha256": "070AB7147243291DBD7FF2580D19075E2AF8D7F310C6458A6BCAD842203A0FD1"
+      },
+      "pointer": "/utterances/pursuit-p029/spec/extra_ui/0/label",
+      "literal": "第28日 · 1066-12-31 · 824",
+      "in_four_reviewed_cues": false
+    },
+    {
+      "version": "a06",
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\edit.json",
+        "bytes": 341380,
+        "sha256": "42B0697BAF66C4F1DEA50CC64312B8FEA367ADC1B728BB49CEDDFD21EF01ED26"
+      },
+      "pointer": "/utterances/pursuit-p029/spec/extra_ui/0/label",
+      "literal": "第28日 · 1066-12-31 · 824",
+      "in_four_reviewed_cues": false
+    }
+  ],
+  "collector_search_limit_note": "literal-inspection.json initial12_31 counter omitted hyphen12-31. This final report explicitly searches hyphen too: other pursuit-card dates exist; no whole-film absence claim is made, and this task does not reassess unrelated pursuit evidence.",
+  "continuing_limits": [
+    "旧a02人物33437最终生命状态及selector仍UNKNOWN",
+    "R0127 trace failed1040不关闭selector或完整唯一因果",
+    "保存态regiment字段缺失不能证明实时反链清空",
+    "R0127未另核威望两字段+150或完整名册差集",
+    "R0127地图PNG不是人物卡、名册或死亡通告",
+    "原020/070/036→038/039→040与新R0127不能剪成同一次连续实录"
+  ],
+  "operations": {
+    "only_new_scripts_reports_and_decoded_local_video_frames_written": true,
+    "old_audio_index_run_modified": false,
+    "source_or_master_intake": false,
+    "screen_display_Steam_game_bus_inputs": false,
+    "new_render_or_TTS": false,
+    "full_1x_movie_signoff": false,
+    "OneDrive_transfer_or_download": false
+  }
+}

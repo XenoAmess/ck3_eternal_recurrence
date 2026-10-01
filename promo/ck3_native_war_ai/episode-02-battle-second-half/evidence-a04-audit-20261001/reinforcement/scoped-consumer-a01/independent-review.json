@@ -1,0 +1,387 @@
+{
+  "schema": "xar.jd11.independent-scoped-contract-source-review/v1",
+  "created_at_utc": "2026-10-01T00:53:59.996884+00:00",
+  "reviewer": "/root/a04_other_mechanisms",
+  "result": "PASS_SCOPED_PREPARATION_ONLY",
+  "reviewed_originals": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\paused_join_pair.py",
+      "bytes": 58432,
+      "sha256": "1756F8DA0C45CE98EF70E0D370A7A2252B8287909821DF8E032EBBF5B97D1D94"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+      "bytes": 54571,
+      "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\variant-freeze.json",
+      "bytes": 6262,
+      "sha256": "C38AEC1C5358761B87672DCFE7FCD1989B12EEC5500BA8168293EE35D16387C9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\scoped-review-contract-a01.json",
+      "bytes": 1993,
+      "sha256": "705EF2A38543F18337A2685AEC211CBF8F78C09AA1963330A993C336818A437E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\ui-controller-config.frozen-scoped-supplement-a01.json",
+      "bytes": 13937,
+      "sha256": "FB86DEB70CBBBB8E41330983D12C4927C4C23887B2B62838C19A30DE5237A05D"
+    }
+  ],
+  "guard_source_equality": [
+    {
+      "function": "center_once_after_pointer",
+      "unchanged_vs_attempt21": true,
+      "sha256": "010699E50B7E8504E89C8AE808928921C924023C79C2205CF578B473188DEBB3",
+      "new_lines": [
+        507,
+        516
+      ]
+    },
+    {
+      "function": "verify_pointer_ready",
+      "unchanged_vs_attempt21": true,
+      "sha256": "7411AC52BF0712117A922B90D7DCBA1BBF49688137B9AF094E03A05737293070",
+      "new_lines": [
+        450,
+        480
+      ]
+    },
+    {
+      "function": "paused",
+      "unchanged_vs_attempt21": true,
+      "sha256": "59BDBDFF56D55C6491E52E52DE0B8C14397A9FEB7EF93C671CA06B28396C5757",
+      "new_lines": [
+        664,
+        672
+      ]
+    },
+    {
+      "function": "same_paused_frame",
+      "unchanged_vs_attempt21": true,
+      "sha256": "263B234D68F0D76F1A670E0E3DF8ABC14AB863E5B287160550C9C45D77373441",
+      "new_lines": [
+        316,
+        318
+      ]
+    },
+    {
+      "function": "collect_after_independent_of_trace",
+      "unchanged_vs_attempt21": true,
+      "sha256": "547801443752C07D5EEB0C84D96D2075B67BA6AD090F84B9B4AB6CB712EEA772",
+      "new_lines": [
+        401,
+        423
+      ]
+    },
+    {
+      "function": "preserve_center_failure_diagnostic",
+      "unchanged_vs_attempt21": true,
+      "sha256": "66DE1A52679A41768701595AE26DF274C0A5B21FA240F36B83E00D423169CC2D",
+      "new_lines": [
+        426,
+        447
+      ]
+    },
+    {
+      "function": "trace_contract",
+      "unchanged_vs_attempt21": true,
+      "sha256": "148152BC2D18669099F746A619348295DAC1835FC2477AA8F207FABB5711C2FE",
+      "new_lines": [
+        321,
+        348
+      ]
+    },
+    {
+      "function": "trace_observation",
+      "unchanged_vs_attempt21": true,
+      "sha256": "B10D4A3790CC561A9A74399AB8A369B637C455C1AD4A8503249D7D1405FF14F7",
+      "new_lines": [
+        351,
+        398
+      ]
+    },
+    {
+      "region": "after_original_pixels_native_snapshot_check",
+      "unchanged_vs_attempt21": true,
+      "sha256": "DDCBAFDB787F22B676DF5EAD235E8DA4B67411854E5DCD54772E24EDF22B2FD2"
+    },
+    {
+      "region": "single_day_request_and_trace_independent_after_collection",
+      "unchanged_vs_attempt21": true,
+      "sha256": "779D4116C446ECD1F8FD3438F3FBBA1714E017AB23ECCEB3C287548737421D9F"
+    },
+    {
+      "region": "same_owner_finish_and_cleanup_inventory",
+      "unchanged_vs_attempt21": true,
+      "sha256": "FF4368DAD2231CE972586725842898B7ADB00E390693C8F0E1994582844A9AB2"
+    }
+  ],
+  "unchanged_other_consumers": [
+    {
+      "new": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\hwnd_wgc_frame.py",
+        "bytes": 9830,
+        "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+      },
+      "old": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\hwnd_wgc_frame.py",
+        "bytes": 9830,
+        "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+      },
+      "exact_equal": true
+    },
+    {
+      "new": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\native_locale_probe.py",
+        "bytes": 1428,
+        "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+      },
+      "old": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\native_locale_probe.py",
+        "bytes": 1428,
+        "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+      },
+      "exact_equal": true
+    },
+    {
+      "new": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\README.md",
+        "bytes": 9444,
+        "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+      },
+      "old": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\README.md",
+        "bytes": 9444,
+        "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+      },
+      "exact_equal": true
+    },
+    {
+      "new": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\run_paused_join_sdk.py",
+        "bytes": 7042,
+        "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+      },
+      "old": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\run_paused_join_sdk.py",
+        "bytes": 7042,
+        "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+      },
+      "exact_equal": true
+    },
+    {
+      "new": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\verify_offline_entry.py",
+        "bytes": 19267,
+        "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+      },
+      "old": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\verify_offline_entry.py",
+        "bytes": 19267,
+        "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+      },
+      "exact_equal": true
+    }
+  ],
+  "config_policy_changes": [
+    {
+      "path": "/full_battle_panel_admission_requested",
+      "before": null,
+      "after": false
+    },
+    {
+      "path": "/post_open_tooltip_neutralization/target_policy",
+      "before": null,
+      "after": "root this run original-image target on top progress bar or non-control background with no tooltip; never preset coordinates"
+    },
+    {
+      "path": "/run_attempt",
+      "before": "layout-repair-a01",
+      "after": "scoped-supplement-a01"
+    },
+    {
+      "path": "/scope_gaps_kept_open",
+      "before": null,
+      "after": [
+        "full_battle_panel_lower_composition",
+        "numeric_UI_actor_and_army_identity",
+        "whole_G2"
+      ]
+    },
+    {
+      "path": "/scope_mode",
+      "before": null,
+      "after": "paused-battle-top-counts-and-width-tooltip"
+    },
+    {
+      "path": "/scoped_review_contract",
+      "before": null,
+      "after": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\scoped-review-contract-a01.json",
+        "bytes": 1993,
+        "sha256": "705EF2A38543F18337A2685AEC211CBF8F78C09AA1963330A993C336818A437E"
+      }
+    },
+    {
+      "path": "/scoped_review_schema",
+      "before": null,
+      "after": "xar.jd11.scoped-top-width-review/v1"
+    },
+    {
+      "path": "/whole_G2_admission_requested",
+      "before": null,
+      "after": false
+    }
+  ],
+  "pure_validator_cases": [
+    {
+      "name": "actual_width_native_match",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_fixture_only": true
+    },
+    {
+      "name": "294_not_width",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "UI width and native width differ",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "312_not_width",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "UI width and native width differ",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "numeric_width_without_width_label_rejected",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual CV_TT_RELATIVE_SOLDIERS width section missing",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "missing_relative_strength_tooltip_rejected",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "scoped actual tooltip gate failed: relative_soldiers_tooltip_visible",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "fullpanel_claim_rejected",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "whole panel or numeric UI identity must remain an explicit gap",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "UI_actor_ID_claim_rejected",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "whole panel or numeric UI identity must remain an explicit gap",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "UI_army18_ID_claim_rejected",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "whole panel or numeric UI identity must remain an explicit gap",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "covered_required_region_rejected",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual scoped region gate failed: required_regions_unobscured",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "native_context_substitution_rejected",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "scoped review does not bind current native context bytes",
+      "offline_fixture_only": true
+    },
+    {
+      "name": "after_width_requires_actual_native_match",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_fixture_only": true
+    }
+  ],
+  "trace_failure_after_collection_case": {
+    "pass": true,
+    "sequence": [
+      "paused_next_day_native_probe",
+      "finish_trace_failed",
+      "preserve_failed_trace_reply",
+      "collect_after_pixels"
+    ],
+    "trace_closed": false,
+    "actual_live_trace_or_pixels": false
+  },
+  "findings": [
+    {
+      "id": "width_semantics",
+      "status": "PASS_SOURCE_CONTRACT",
+      "detail": "相对军力 tooltip plus explicit 战线宽度 label and its integer are required; 294 and 312 fail native-width comparison in independent offline fixtures."
+    },
+    {
+      "id": "after_pixels_binding",
+      "status": "PASS_SOURCE_CONTRACT",
+      "detail": "After original pixels, a new snapshot_case plus unchanged same_paused_frame validates paused actor/date/army and identical snapshot/revision/native_revision binding; no UI numeric actor/Army18 claim."
+    },
+    {
+      "id": "one_day_only",
+      "status": "PASS_SOURCE_CONTRACT",
+      "detail": "One life-advance call only, no resubmit on timeout; fresh paused native DATE+24 readback is mandatory before after pixels. The action region is byte-identical to attempt21."
+    },
+    {
+      "id": "trace_failure_and_cleanup",
+      "status": "PASS_SOURCE_CONTRACT",
+      "detail": "After collection precedes trace completeness adjudication even on failed finish. Same-owner managed_finish and empty cleanup process inventory guards are unchanged. Trace failure is retained as incomplete, never promoted."
+    },
+    {
+      "id": "manual_transcription_boundary",
+      "status": "EXPLICIT_REVIEW_REQUIREMENT",
+      "detail": "Validator requires non-empty visible date/coat transcript and current native context identity; it does not OCR date text or infer heraldry identity. Root must directly review actual original pixels and record date/pause/title/counts/coat plus real width section."
+    },
+    {
+      "id": "old_failed_attempts",
+      "status": "PRESERVED",
+      "detail": "Attempt21, source190, native candidate/pair and frozen helpers are unchanged. New narrower scope is explicit policy; old fullpanel failure is not relabelled GREEN."
+    }
+  ],
+  "permanent_open_gaps": {
+    "full_battle_panel": false,
+    "ui_actor_numeric_id_visible": false,
+    "ui_army_numeric_id_visible": false,
+    "whole_G2_complete": false,
+    "lower_composition_panel_verified": false
+  },
+  "actual_live_scoped_pair_or_width_proven_by_review": false,
+  "human_video_1x_review_or_signoff": false,
+  "side_effects": {
+    "CK3_or_Steam_or_display_operations": false,
+    "desktop_input": false,
+    "source_edits": false,
+    "created_only_in_review_directory": true
+  }
+}

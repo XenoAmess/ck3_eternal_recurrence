@@ -1,0 +1,51 @@
+{
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1",
+  "existing_envelope_schema_required_by_frozen_helper": "xar.jd11.a15.root-ui-review/v1",
+  "layout_and_sample_required_flags": [
+    "required_regions_visible",
+    "battle_context_visible",
+    "current_date_and_pause_visible",
+    "top_counts_visible",
+    "required_regions_unobscured"
+  ],
+  "explicit_gap_fields": {
+    "full_battle_panel": false,
+    "ui_actor_numeric_id_visible": false,
+    "ui_army_numeric_id_visible": false
+  },
+  "required_visible_values": [
+    "battle_title",
+    "date_text",
+    "paused",
+    "left_coat_context",
+    "right_coat_context",
+    "player_soldiers",
+    "opponent_soldiers"
+  ],
+  "expected_battle_title": "墨西拿之战",
+  "expected_initial_top_counts": {
+    "player_soldiers": 893,
+    "opponent_soldiers": 1603
+  },
+  "sample_additional_flags": [
+    "relative_soldiers_tooltip_visible",
+    "width_tooltip_numeric_visible",
+    "counts_sources_bound_to_this_battle"
+  ],
+  "sample_visible_values_extra": {
+    "tooltip_title": "相对军力",
+    "width_label_text": "actual 战线宽度 label text",
+    "battle_width": "actual integer transcribed from tooltip"
+  },
+  "native_context_binding": "review.scoped_native_context must exactly equal frames[-1].scoped_native_context identity",
+  "numeric_actor_army_binding": "native snapshot/control only; not claimed visible in UI",
+  "width_readback": "actual tooltip integer must equal same paused control final_combat_width; fresh snapshot AFTER original pixels must match paused actor/date/army/revision",
+  "out_of_scope": [
+    "whole stock lower composition panel",
+    "map tooltip outside required battle/date/width regions",
+    "whole G2 admission"
+  ],
+  "post_open_pointer": "root this run original-image target on top progress bar or non-control background with no tooltip; never preset coordinates",
+  "actual_live_scoped_supplement": "NOT_RUN"
+}
