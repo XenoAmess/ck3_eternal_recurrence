@@ -306,3 +306,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 真实dynamic int32 native piety报价与paid最终命令distinct，quote available不代表affordable/allowed。ABI6complete functions/5slices/38anchors6bindings及Od/O2各9场景14checks5wire通过；复用Rite包command结构。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\cost\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:47:20 Native Faith conversion candidate query
+
+世界Faith候选及原生1D635E0 rule_only判定，最终paid门另读；fullgeneration保留。ABI11func22指令3functor11constants及Od/O2各17checks6actualwire通过。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\faith\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
