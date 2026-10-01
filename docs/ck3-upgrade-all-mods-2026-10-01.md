@@ -15,10 +15,10 @@
 | 产品 | 源码/静态检查状态 | 新版实机状态 |
 | --- | --- | --- |
 | 永恒轮回 | 特质目录、Rite、原生继承窗投影已迁移；L0 GREEN | 待隔离验证 |
-| 白绮独立版 | 上游与本机候选合成、独立快照/文案合同验证中 | 待隔离验证 |
+| 白绮独立版 | 独立新版快照、Rite、文案与 LF 字节合同已合成；L0 GREEN | 待隔离验证 |
 | 肃清曼荼罗 | L0、可复现构建、profile-free parser GREEN | R0001：9 个严格核心断言通过，日志无错误；fixture 核心覆盖 |
 | XenoAmess 体验优化 | 三类总督任命及改信/释放/赎金迁移；L0 GREEN、26 文件构建 | 待隔离验证 |
-| 重整河山 | 新版原生臣服、政府预算与毁头衔后果迁移中 | 待隔离验证 |
+| 重整河山 | 新版原生臣服、政府预算与毁头衔后果已迁移；30 项测试和 L0 GREEN | 待隔离验证 |
 | 驱策朝贡国 | L0、构建、parser GREEN；外置核心后果夹具已准备 | 待隔离验证 |
 | 天朝经商贪腐维护版 | 从新原版保留政府机制，只加经商能力；L0 GREEN | 待隔离验证 |
 | 自动升级建筑维护版 | 45 项门禁按新版 potential/rite/DLC 迁移；L0 GREEN | 待隔离验证 |
@@ -36,3 +36,28 @@
 外置根目录：`C:/workspace/ck3-upgrade-20261001/`。`new-build/identity.json` 绑定本次游戏；`audits/`、各产品目录绑定原版差异与 L0；`live/<完整ID>/` 保留 raw PNG、坐标换算回执、独立 userdir、生产 staging、游戏日志和启动身份。所有失败 attempt 与过程素材保留。
 
 源码工作包按必要验证后逐包提交推送。报告后续追加实际功能结果、修复和最终主线身份，不把待验项目填成 GREEN。
+
+## 15:15 串行实机与 CI 增量
+
+本机已从冻结 `d19e794041eae408666702a1039bde41639cbf6f` 另行构建精确 1.20 native 候选，
+DLL SHA `c02b8d83d5ddef813a69d3cf9745d51e889ba3961342fe70cad2dce2761c87ab`，
+injector SHA `523d22dc3bcedf3be5fd399275049d451b430296a30cb1acd077aafccdf3628e`。
+foundation 检查 17 signatures、7 vtables、34 instruction checks；四项 C++ 测试、10 项 harness 测试通过。
+SDK smoke 仅为模拟 server 检查；实际 TED R0001 的 native snapshot 另证明当前 EXE/build 匹配、暂停地图可读。
+以上证据不推广成所有 advertised query/action 已通过。外置 `native/candidate-manifest.json` SHA
+`cb95015460879d4bfc667fcc9024d67b54450baf014777e2f8f83c6ec747d66a` 保持冻结。
+
+TED R0001 在实际地图之后因计划中非必需的 campaign query 失败结束，保留 HARNESS_RED；后续使用仅检查暂停地图的计划。
+TED R0002 和主 mod R0001 在进入地图前触发控制会话等待超时，未形成产品功能结论。
+主 mod R0002 查出夹具缺失 tooltip，修复准备器的三项文本后冻结新夹具，旧 attempt 均保留。
+后续会话延长等待时限，并由唯一桌面验收负责者连续操作；每次仍须新鲜 Steam 离线证明、独立 profile 和完整 run ID。
+
+主 mod R0003 已在大厅真实核对禁用轮回、继承 100%、成长计分和 standalone 测试规则；空保存预设菜单不影响该实证。
+其窗口、交付、Rite、死亡、保存及跨进程导入仍在执行。另八个场景及 TED/AUB/XCCC/361/Ox 的独立输入均已准备，
+文件与 parser 证据仅记录准备资格，不填实机 PASS。十个玩家产品以表格为验收清单；`tools/fixtures` 属于验收夹具，
+`ck3_autonomous_player/mod_bridge` 为开发桥接工具，另列其文件与测试检查，不能冒充独立产品功能通过。
+
+[CI 审计](ck3-1.20.0.2-github-ci-audit-2026-10-01.md)确认旧 workflow success 隐藏了命令失败。
+[退出传播修复](ck3-ci-command-failure-propagation-2026-10-01.md)已推主线；新 run 36823839237 如实显示
+TED 离线依赖失败，后续[导入与安装路径修复](ck3-ci-runner-import-closure-2026-10-01.md)在独立环境 5 项测试通过。
+361 的 52 failures 和 1 error 的输入与升级前逐字节相同，未以刷新审阅批准消除旧 RED；本轮实际引擎问题独立归因。
