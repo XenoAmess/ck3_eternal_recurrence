@@ -152,6 +152,9 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         "root_only_live_execution": True,
     })
     identity = offline.read_object(args.canonical_seed_root / "SEED-IDENTITY.json")
+    religion_context_query_wired = (
+        "--private-player-religion-context-query" in inputs["config"]["private_mcp_read_queries"]
+    )
     write_json(output / "MCP-READONLY-NEXT-PLAN.json", {
         "schema": "xar.ck3.g2-candidate-mcp-read-plan/v1", "executed": False,
         "requires_real_restored_candidate_and_paused_frame": True,
@@ -179,8 +182,10 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
                   "allocate and attach the actual supervised run ID", "new PID cold native-session",
                   "MCP current snapshot and verified paused frame", "representative nonwar queries",
                   "necessary explicitly selected typed actions and independent outcome/checkpoint"],
-        "war_or_religion_private_permits_added": False,
-        "religion_research_authorized_but_not_yet_wired": True,
+        "war_or_religion_private_permits_added": religion_context_query_wired,
+        "war_private_permits_added": False,
+        "religion_context_read_query_wired": religion_context_query_wired,
+        "religion_research_authorized_but_not_yet_wired": not religion_context_query_wired,
     })
     file_hashes = {str(path): offline.digest(path) for path in output.rglob("*.json")}
     if args.prepare_profile_files:

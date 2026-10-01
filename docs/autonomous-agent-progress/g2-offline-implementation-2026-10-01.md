@@ -430,3 +430,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 实际knowledge/recency/stateRite与baseFulfillment target/current输入经完整owned readonly mailbox，Od/O2各51checks6实际完整packet通过；两fixture harness RED保存，原reader矩阵不重跑。不把预测base差值冒充actualgain/finalAI desire。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\inputs\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:15:48 Prepare R2 readonly profile from the real next checkpoint
+
+4工具/config/handover文件复用原prepare/stage，新增41ON4OFF context readonly配置及实际CLI parser测试，5tests通过。真实+1day官方save/full82-driver pair原样冻结save4e14c9d/driver89bf040/episode与pipe保留，旧canonicalseed不覆盖。实际完整lifecycle旧环境绑定会阻断新profile恢复，正式rebinder独立修复在途；候选尚未launch。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\r2-file-only\R2-RUNNER-PREP-READY.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

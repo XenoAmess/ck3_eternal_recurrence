@@ -149,6 +149,33 @@ class CandidateFileTests(unittest.TestCase):
         self.assertNotIn("full-lifetime", ids)
         self.assertNotIn("next-episode-after-settlement", ids)
 
+    def test_r2_config_adds_only_readonly_religion_permit_to_41_flag_candidate(self) -> None:
+        self.args.config = candidate.REPO / "ck3_autonomous_player/configs/ck3-1.20.0.2-g2-religion-readonly-runner.json"
+        config = candidate.offline.read_object(self.args.config)
+        manifest = candidate.offline.read_object(self.manifest)
+        new_flag = "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1"
+        manifest["build"]["selected_private"]["flags"][new_flag] = "ON"
+        manifest["build"]["shipping"]["flags"][new_flag] = "OFF"
+        candidate.write_json(self.manifest, manifest)
+        self.args.integration_manifest_sha256 = candidate.offline.digest(self.manifest)
+        receipt = candidate.prepare(self.args)
+        self.assertEqual(len(config["native_candidate_required_on"]), 41)
+        self.assertEqual(len(config["native_candidate_required_off"]), 4)
+        self.assertEqual(receipt["formal_consumer_trials_enabled"], [])
+        query = candidate.offline.read_object(self.args.output_dir / "MCP-READONLY-NEXT-PLAN.json")
+        parsed = mcp_parser().parse_args(query["argv"][3:])
+        self.assertTrue(parsed.private_player_religion_context_query)
+        self.assertFalse(parsed.private_faction_gift_action)
+        self.assertFalse(parsed.private_council_action)
+        self.assertFalse(parsed.private_realm_law_crown_action)
+        self.assertFalse(parsed.private_active_scheme_sway_action)
+        self.assertFalse(query["formal_action_permits_enabled"])
+        supervision = candidate.offline.read_object(self.args.output_dir / "PAUSED-MCP-SUPERVISION-PLAN.json")
+        self.assertTrue(supervision["religion_context_read_query_wired"])
+        self.assertFalse(supervision["religion_research_authorized_but_not_yet_wired"])
+        self.assertFalse(supervision["war_private_permits_added"])
+        self.assertTrue(supervision["native_session_has_no_autonomous_policy_loop"])
+
 
 if __name__ == "__main__":
     unittest.main()
