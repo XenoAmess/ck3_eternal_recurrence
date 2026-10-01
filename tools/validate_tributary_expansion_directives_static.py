@@ -90,7 +90,7 @@ def validate() -> list[str]:
         'tags={\n\t"Gameplay"\n}\n'
         'name="Tributary Expansion Directives — 驱策朝贡国"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.19.0.6"\n'
+        'supported_version="1.20.0.2"\n'
     )
     if descriptor.replace("\r\n", "\n") != expected_descriptor:
         errors.append("descriptor.mod fields or ordering differ from the release contract")
