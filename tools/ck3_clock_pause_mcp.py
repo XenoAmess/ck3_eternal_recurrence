@@ -153,7 +153,8 @@ class ClockPauseProfileService(native.NativeClockProfileService):
                 or clock["local_player_id"] < 0 or type(clock.get("played_character_id")) is not int
                 or clock["played_character_id"] <= 0 or clock.get("process_access") != 0x410
                 or str(contract.get("executable_sha256", "")).lower() != self._target()["executable_sha256"].lower()
-                or self.profile["game_version"] != "1.20.0.2"):
+                or self.profile["game_version"] not in {"1.20.0.2", "1.20.0.3"}
+                or contract.get("game_version") != self.profile["game_version"]):
             raise RuntimeError("qualified native campaign clock is unavailable or mismatched")
         binding = tuple(contract.get(key) for key in ("executable_sha256", "header_sha256", "source_sha256", "reader_sha256"))
         if any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-fA-F]{64}", value) for value in binding):

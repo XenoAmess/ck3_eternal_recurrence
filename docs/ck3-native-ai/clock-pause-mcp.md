@@ -30,7 +30,9 @@ From the verified `<installation>/binaries/ck3.exe`, the controller derives
 the complete bytes and exactly one assignment must bind `pause="SPACE"`.
 It checks those source bytes again before an action. No project path, build SHA,
 key choice, mod ID or run identity is hardcoded into the generic controller.
-Current clock ABI support remains the existing exact CK3 1.20.0.2 reader.
+Clock ABI support uses the existing exact CK3 1.20.0.2 and 1.20.0.3 reader.
+The reader's source-contract version must equal the frozen profile version;
+mixed patch identities and other versions reject before input.
 
 The official MCP server exposes only three closed, zero-argument tools:
 
@@ -176,3 +178,24 @@ length. `open_kaishek` prevalidation is not applicable to Python MCP transport,
 fixed desktop input and source qualification; existing clock ABI fixtures were
 included instead. Live acceptance requires the root's frozen profile, unchanged
 campaign identity, original receipts and actual paused-clock proof.
+
+## CK3 1.20.0.3 consumer qualification, 2026-10-02
+
+The existing native migration supplies the exact .3 identity header and reviewed
+.2 clock layout. The pause consumer's remaining `.2`-only check prevented using
+that reader in a `.3` campaign. The minimal adaptation accepts those two
+supported versions and requires the returned source-contract version to match
+the profile. It keeps the same fixed input, guard, one-shot latch and bounded
+readback. No native source or DLL is changed by this consumer package.
+
+Fixtures replay the authoritative .3 clock layout through the real controller,
+cover already-paused zero input and running delayed true state after one input,
+and reject mixed `.2`/`.3` or unknown versions with zero input. They supplement
+the existing exact-EXE reader, official MCP, fixed-driver and policy tests.
+The .3 bridge and its separate live evidence are documented in
+[the native migration](crozier-1.20.0.3-native-migration.md). Those remote-machine
+binary paths are not a claim that their artifacts exist on this machine; a
+consumer must pin its actual qualified local DLL/injector bytes separately.
+The profile still has seven fields, now setting `game_version` to `1.20.0.3`
+and binding its own reviewed current guard/installation sources. No project
+run identifier, mod ID or installation path is added to the tool schema.

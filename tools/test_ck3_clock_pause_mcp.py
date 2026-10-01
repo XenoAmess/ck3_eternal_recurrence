@@ -42,7 +42,8 @@ class PauseBackend(Backend):
     def __init__(self, profile):
         super().__init__(profile)
         self.clock.update(local_player_id=1, played_character_id=42, process_access=0x410,
-            source_contract={"executable_sha256": profile["guard"]["target"]["executable_sha256"],
+            source_contract={"game_version": profile["game_version"],
+                "executable_sha256": profile["guard"]["target"]["executable_sha256"],
                 "header_sha256": "b"*64, "source_sha256": "c"*64, "reader_sha256": "d"*64})
         self.keys = {key: False for key in ("shift", "control", "alt", "left_windows", "right_windows", "space")}
         self.inputs = 0
@@ -97,6 +98,47 @@ class PauseTests(unittest.TestCase):
             self.assertEqual(result["schema"], pause.SCHEMA)
             self.assertNotIn("pipe_name", result)
             self.assertEqual(json.loads(Path(result["receipt_path"]).read_text()), result)
+
+    def test_patch3_real_clock_layout_replay_preserves_identity_for_paused_and_running(self):
+        import ck3_native_clock_reader as clock
+        from test_ck3_native_clock_reader import MemoryFixture
+        for already_paused in (True, False):
+            with self.subTest(already_paused=already_paused), tempfile.TemporaryDirectory() as temporary:
+                service, backend, _, _ = self.make_service(Path(temporary))
+                contract = clock.source_contract("1.20.0.3")
+                service.profile["game_version"] = "1.20.0.3"
+                target = service.profile["guard"]["target"]
+                target["executable_sha256"] = contract["executable_sha256"]
+                target["build_id"] = "25652598"
+                backend.desktop.overrides.update(executable_sha256=target["executable_sha256"], build_id=target["build_id"])
+                backend.clock = clock.read_bound_clock(MemoryFixture(), contract)
+                backend.clock["paused"] = already_paused
+                backend.materialize_after = 3
+                elapsed = [0.0]
+                def advance(seconds):
+                    elapsed[0] += seconds
+                with patch.object(pause, "time", SimpleNamespace(monotonic=lambda: elapsed[0], sleep=advance)):
+                    result = service.pause()
+                self.assertEqual(result["status"], "gameplay_pause_verified", result)
+                self.assertEqual(result["target_identity"]["game_version"], "1.20.0.3")
+                self.assertEqual(result["clock_after"]["source_contract"], contract)
+                self.assertTrue(result["clock_after"]["paused"])
+                self.assertEqual(result["input_dispatch_attempts"], int(not already_paused))
+                self.assertEqual((backend.inputs, backend.injections), (int(not already_paused), []))
+
+    def test_cross_patch_clock_identity_and_unknown_version_reject_without_input(self):
+        for profile_version, contract_version in (("1.20.0.3", "1.20.0.2"),
+                                                  ("1.20.0.2", "1.20.0.3"),
+                                                  ("1.20.0.4", "1.20.0.4")):
+            with self.subTest(profile_version=profile_version, contract_version=contract_version), tempfile.TemporaryDirectory() as temporary:
+                service, backend, _, _ = self.make_service(Path(temporary))
+                service.profile["game_version"] = profile_version
+                backend.clock["source_contract"]["game_version"] = contract_version
+                backend.clock["paused"] = False
+                result = service.pause()
+                self.assertEqual(result["status"], "RED")
+                self.assertIn("unavailable or mismatched", result["reason"])
+                self.assertEqual((backend.inputs, backend.injections), (0, []))
 
     def test_late_pause_reads_until_true_after_exactly_one_input(self):
         with tempfile.TemporaryDirectory() as temporary:
