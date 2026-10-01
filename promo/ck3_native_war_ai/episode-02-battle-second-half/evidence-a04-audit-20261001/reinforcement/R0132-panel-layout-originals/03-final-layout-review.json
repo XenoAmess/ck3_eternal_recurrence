@@ -1,0 +1,35 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review/v1",
+  "stage": "03-final-layout",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "reviewer": "Codex /root (direct original PNG inspection)",
+  "observed_at": "2026-10-01T00:05:46.012865+00:00",
+  "root_actually_viewed": true,
+  "approved_for_current_action": true,
+  "expected_ck3_pid": 4212,
+  "expected_foreground_hwnd": 4851780,
+  "frames": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\03-stability-start.png",
+      "bytes": 1197584,
+      "sha256": "8638A5D58D880EC2FE5378E7777A43817E3A815C056AFE5A1168C37B04C30E5A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\04-stability-end.png",
+      "bytes": 1200586,
+      "sha256": "5228C88EFAD2A39A5809AF1F2B171C6466D9996013E3CA85C11ABC87F2AD138E"
+    }
+  ],
+  "current_ui_region_reviewed": true,
+  "camera_stable": true,
+  "full_battle_panel": false,
+  "date_actor_army_battle_readable": false,
+  "overlay_free": false,
+  "root_visible_evidence": {
+    "two_original_frames": "Directly viewed both actual original1024x768 stability frames8638A5D5... and5228C88E...; same scene and camera, current CK3 HWND4851780/PID4212.",
+    "actual_panel": "墨西拿之战 combat panel opened at bottom center. Top counts893/1603 and leaders are visible, but the lower panel is clipped by the768px desktop bottom. Full panel and all army identity text cannot be confirmed.",
+    "actual_overlay": "Map battle-icon tooltip remains near479,344. Overlay-free gate is not met.",
+    "actual_date": "Paused 公元1066年12月14日 in both frames.",
+    "decision_scope": "Record actual camera and panel opening progress; reject full-layout gate. No day advance or new width UI evidence is authorized by this incomplete layout."
+  }
+}
