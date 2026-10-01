@@ -275,9 +275,11 @@ class CopyAuditSlices011012Tests(unittest.TestCase):
                         self.assertEqual(placeholders[key], self.english[key])
 
     def test_regenerated_ledgers_still_bind_exact_slice_membership(self) -> None:
+        # The two reviewed visible cards (zg361ch.949 and zg361.54) sort before
+        # zg361m, moving these bounded shards two mechanism IDs earlier.
         expected_ranges = {
-            "events-011.json": set(range(232, 272)),
-            "events-012.json": set(range(272, 312)),
+            "events-011.json": set(range(230, 270)),
+            "events-012.json": set(range(270, 310)),
         }
         combined: set[int] = set()
         for name, expected in expected_ranges.items():

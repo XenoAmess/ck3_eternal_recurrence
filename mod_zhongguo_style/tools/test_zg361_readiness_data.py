@@ -190,7 +190,7 @@ class ReadinessDataTests(unittest.TestCase):
 
         self.assertEqual(
             audit.sidecar_commit,
-            "c66a1efae11117c21db383d8992b9ccfac85d9cd",
+            "dbb84a92d188489b659992f8bb438476e0b530d3",
         )
         self.assertEqual(
             sidecar["source_snapshot"]["git_commit"],
@@ -223,8 +223,8 @@ class ReadinessDataTests(unittest.TestCase):
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
         self.assertIn("简体中文文案审计闭合状态", ledger)
         self.assertIn(audit.sidecar_index, ledger)
-        self.assertIn("626 个 visible events", ledger)
-        self.assertIn("4994 个最终简中 key", ledger)
+        self.assertIn("628 个 visible events", ledger)
+        self.assertIn("5206 个最终简中 key", ledger)
         self.assertIn("machine_failures=0", ledger)
         self.assertIn("user_named_static_open_items=0", ledger)
         self.assertIn("live_render_validation_status=pending", ledger)

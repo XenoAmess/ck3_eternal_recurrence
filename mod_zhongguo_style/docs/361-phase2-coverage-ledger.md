@@ -11,9 +11,9 @@
 
 ## 简体中文文案审计闭合状态（不改变逐号等级）
 
-- 可复验 sidecar：`docs/content-audits/zg361-copy-ledger/index.json`，提交 `c66a1efae11117c21db383d8992b9ccfac85d9cd`；其输入快照提交为
-  `4974324fece6ba152bada6069f8a12718e4da8f6`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。
-- 当前绑定 626 个 visible events、4994 个最终简中 key；
+- 可复验 sidecar：`docs/content-audits/zg361-copy-ledger/index.json`，最近发布基线提交 `dbb84a92d188489b659992f8bb438476e0b530d3`；当前输入快照生成基线为
+  `f189a0711b9328f572f267f6e03a4b2e656580d0`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。
+- 当前绑定 628 个 visible events、5206 个最终简中 key；
   `machine_failures=0`、`user_named_static_open_items=0`、
   `machine_checks_status=pass`。用户点名的句首标点、标题/正文无价值复写、
   正文替按钮罗列选择以及抽象按钮标签等已知静态问题均为 0 个未闭合项。
@@ -21,7 +21,7 @@
   该状态只由逐卡复读清单与 16 个最终事件分片的精确 SHA-256 全部匹配后提升，机器规则不会自行冒充人工结论；
   `live_render_validation_status=pending`。动态插值、实机排版和最终游戏内措辞仍为
   **LIVE PENDING**，本节不能声称文案实机 GREEN，也不提升任何逐号 readiness。
-- 边界：626 张可见事件已逐卡复读并与最终 title、desc、按钮、tooltip、event 及 effect/业务账簿消费端对齐；16 个事件分片由独立人工复审清单逐哈希绑定，非事件决议、互动、京察入口与 GUI 也已复核，静态未修项为 0。动态插值、实机排版和最终游戏内语境仍为 LIVE PENDING；后者必须由 CK3 实机验收，不能由静态审计冒充。
+- 边界：保留原 626 张可见事件的逐卡复读；两张新增事件、改动卡片与按钮已按实际 effect/业务账簿消费端增量复核，当前累计绑定 628 张。16 个事件分片由人工复审清单逐哈希绑定；非事件决议、互动、京察入口与 GUI 的原复核证据沿用，改动面另行增量复核。静态未修项为 0。动态插值、实机排版和最终游戏内语境仍为 LIVE PENDING；后者必须由 CK3 实机验收，不能由静态审计冒充。
 
 ## R111–R118 增量全量候选验收记录（不改变逐号等级）
 

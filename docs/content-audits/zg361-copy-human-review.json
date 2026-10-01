@@ -3,7 +3,7 @@
   "status": "pass",
   "language": "simp_chinese",
   "review_completed_at": "2026-09-06T19:39:49+08:00",
-  "source_input_digest_sha256": "028a946e1e4132a66c3b4fd8b592e5addf649fdeea83e76964d9dace18781960",
+  "source_input_digest_sha256": "6ea6ea1d936467e8e622c9ee615864efdf9a18d76a06a5c919c463a96212f167",
   "reviewed_visible_events": 628,
   "review_method": "Every visible event card was reread against its final title, body, bound options, tooltips, event script, and authoritative effect or business-ledger consumer. A second hash-bound reread followed the first repair pass.",
   "reviewed_event_shards": [
@@ -30,7 +30,7 @@
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-005.json",
       "records": 40,
-      "sha256": "1367c69956ab89abe30e898429e19e4b9b6c852f2224e264055f83a1d3aa55a6"
+      "sha256": "3b00bb3f40db567017c02cc41c3a17dd2506a2f2eba84adb6ce7b31a11bf5be3"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-006.json",
@@ -149,85 +149,57 @@
     "evidence_commit": "690727253a099a19c9ff1e69ed0c957239499c4f"
   },
   "latest_review_binding": {
-    "reviewed_at": "2026-10-01T17:38:29+08:00",
-    "reviewer": "Codex ci_361_current_fix/copy_ledger_source; compensation effect cross-check by copy_sources",
-    "source_base_commit": "b995fad1f25838c3b31e82086da9c116b2d77b80",
-    "previous_review_manifest_sha256": "b6688656bd9a9e1fbcb4a01426beccd8e37402182165ce48aa001076ad19fa4f",
-    "previous_source_input_digest_sha256": "86af08746f5c9a2861ededa9177b97fbed23caa7f6b850892cb8e58c6998a561",
-    "baseline_review_evidence_commit": "4974324fece6ba152bada6069f8a12718e4da8f6",
-    "method": "Incremental semantic reread against the retained 626-card review. Reuse unchanged reviewed content; reread the two added visible events, four changed primary event bindings, all new Career/HC and compensation option tooltips, revised player decision surfaces, and event-source deltas. Rebind source locations and generated shard hashes after the source changes; no full 628-card reread is claimed.",
-    "added_visible_event_keys": [
-      "zg361ch.949",
-      "zg361.54"
-    ],
-    "changed_primary_event_keys": [
-      "zg361ch.950",
-      "zg361ch.906",
-      "zg361cl.390",
-      "zg361comp.1"
-    ],
-    "retained_primary_event_bindings": 622,
-    "career_hc_option_tooltip_reread": "132/132: three options for mechanisms 019-025 and 092-128",
-    "compensation_option_tooltip_reread": "42/42: L1-L4, AE1-AE5 and AF1-AF5",
-    "compensation_short_label_effect_crosscheck": "16/16 corrected labels checked against actual special_payload, finance_apply, bonus_path and stage route dispatch by copy_sources; remaining 26 labels retain their reviewed effects in the bound tooltip.",
-    "source_delta_review": [
-      {
-        "path": "mod_zhongguo_style/events/zg361_career_hc_runtime_events.txt",
-        "result": "949 stores/removes only the persistent owner preference; each new portfolio copies it into its own frozen route. 950 applies all 44 numbered guarded original consumers, falls back to the exact card for failed conditions, and retains the detailed route. 906 now describes closure of all six domains; intermediate receipts are suppressed and existing delayed obligations remain."
-      },
-      {
-        "path": "mod_zhongguo_style/events/zg361_events.txt",
-        "result": "54 is player gated and writes only the 10/5/0 ratio override. The existing bottom-slots script value floors cohort x 10%/5%, preserves the strict five-person minimum, and uses zero for off. The event does not reopen a frozen quota."
-      },
-      {
-        "path": "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
-        "result": "All 42 options bind their stage-specific .tt; amounts, payer accounts, deferred dates, rights and share treatment agree with the real route effects. Visible names summarize the action; tooltip carries the detailed terms."
-      },
-      {
-        "path": "mod_zhongguo_style/events/zg361_manager_governance_runtime_events.txt",
-        "result": "90 is a newly hidden player-originated publication callback and increases the hidden count only. Existing visible manager cards retain their wording."
-      },
-      {
-        "path": "mod_zhongguo_style/events/zg361_b1_runtime_events.txt",
-        "result": "The two hidden polling callbacks gain the empty-cycle recovery call; no visible card wording changes."
-      },
-      {
-        "path": "mod_zhongguo_style/events/zg361_jingcha_events.txt",
-        "result": "42 adds the same polling recovery before its existing progression; no visible card wording changes."
-      },
-      {
-        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml",
-        "result": "Persistent custody, one-portfolio choice, final receipt and 132 option tooltip additions match the 44-mechanism authority, original consumers, seven dual-account costs, domain-majority prestige/stress outcomes, and M116 bounded release/defer semantics."
-      },
+    "reviewed_at": "2026-10-01T18:31:28+08:00",
+    "reviewer": "Codex ci_361_current_fix",
+    "previous_review_manifest_sha256": "dbf6b8b9e2b02edc8b2607ce754b551c7fab4538c4c8622bd31b4b4929f4ea25",
+    "previous_source_input_digest_sha256": "26f43338c247839275393dc147787a8998d1c5f82f12edc8897abf6e43f7b6d8",
+    "method": "Resolve the actual delivery content conflict by retaining upstream's total compensation and explicit internal-transfer semantics, then reread exactly four final button strings against the prior effect evidence and unchanged bound tooltips. Only two L1 strings differ from upstream's generated copy; no full-copy reread is claimed.",
+    "origin_publication_head": "427a33d363e277b69864feacb9c4519cade978c1",
+    "source_inventory_delta_from_origin": [
       {
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_compensation_runtime_l_simp_chinese.yml",
-        "result": "Reread all 42 action names and detailed tooltips; the 16 shortened names now preserve immediate payment versus debt, total compensation versus bonus, authority versus salary, and existing versus newly converted shares."
-      },
-      {
-        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
-        "result": "New ratio entry and current-policy text match existing values. Early review starts the shared assessment, does not claim Jingcha responsibility, preserves roster freezing and existing 330-day/year limits, and no longer repeats the title at the opening."
-      },
-      {
-        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
-        "result": "The next-mechanism decision readiness message describes an outstanding queued ruling, without changing a business effect."
-      },
-      {
-        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_004_ac_mechanisms_stage04_06_events.txt",
-        "result": "Actual-byte inventory differs but Git text delta is empty; retained visible copy is unchanged."
-      },
-      {
-        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_learning_l_simp_chinese.yml",
-        "result": "The digest counters use the .GetValue accessor already described by the retained September 9 review binding; prose and authoritative portfolio-digest effect are unchanged."
+        "origin_sha256": "7286dc5b024f5f1c034c474cdbe86d5533427242a7a7af15b8f32ba7a5fc753e",
+        "current_sha256": "5acddeef79f9b6b029223652bd490cae8b75208a69c8f236308631d75998a8ca"
       }
     ],
-    "findings_fixed": 18,
-    "findings_fixed_description": "Two duplicate title/body readings and 16 compensation action labels corrected by copy_sources.",
+    "localization_delta_from_origin": [
+      "zg361comp.1.l1.r1",
+      "zg361comp.1.l1.r2"
+    ],
+    "changed_primary_event_keys": [
+      "zg361comp.1"
+    ],
+    "reviewed_labels": [
+      {
+        "key": "zg361comp.1.l1.r1",
+        "text": "总酬四十五，奖现付十四待结六",
+        "result": "Keeps upstream's total compensation forty-five and explicitly retains the bonus's immediate fourteen and pending six. The unchanged tooltip gives bonus twenty and payer split fourteen/six.",
+        "length": 14
+      },
+      {
+        "key": "zg361comp.1.l1.r2",
+        "text": "总酬三十七，奖现付十待结六",
+        "result": "Keeps upstream's total compensation thirty-seven and explicitly retains the bonus's immediate ten and pending six. The unchanged tooltip gives bonus sixteen and payer split eleven/five.",
+        "length": 13
+      },
+      {
+        "key": "zg361comp.1.af2.r3",
+        "text": "取消转换，不付奖不增份额",
+        "result": "Retains upstream's concise cancellation/no bonus/no additional share grant wording and the original zero-payment, no-conversion route; it does not confiscate existing shares.",
+        "length": 12
+      },
+      {
+        "key": "zg361comp.1.af5.r3",
+        "text": "内调：没收未归属，保留已归属",
+        "result": "Retains upstream's explicit internal transfer and both actual share outcomes. The unchanged tooltip specifies no repurchase and zero payment.",
+        "length": 14
+      }
+    ],
+    "width_limit": 14,
+    "width_limit_unchanged": true,
     "unfixed": 0,
-    "copy_sources_review_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\ci-361-current-fix\\copy-sources\\render-receipt.json",
-    "copy_sources_review_artifact_sha256": "b30d3cf590957e31e0df4cccafabd72218e644f792b80d30d2b4d033bbc0db35",
     "live_render_validation_status": "pending",
-    "copy_sources_delivery_manifest": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\ci-361-current-fix\\copy-sources\\delivery-manifest.json",
-    "copy_sources_delivery_manifest_sha256": "5c4df8bcc8ad1778703fb52dfd27a4fd22875abf9fffa021a80f033b09ff7a09"
+    "source_publication_base_commit": "f189a0711b9328f572f267f6e03a4b2e656580d0"
   },
   "live_render_validation_status": "pending",
   "boundary": "Static semantic review is complete through the recorded October 1 incremental review; the retained 626-card baseline was not repeated. Dynamic scope interpolation, rendered layout, and in-game context remain CK3 live acceptance work and are not claimed by this manifest.",
@@ -247,5 +219,136 @@
     "unfixed": 0,
     "reason": "Rebind zg361cl.390 after its two numeric counters gained the CK3-supported .GetValue accessor; the Chinese wording, bound option and authoritative portfolio-digest effect are unchanged."
   },
-  "baseline_reviewed_visible_events": 626
+  "baseline_reviewed_visible_events": 626,
+  "incremental_review_history": [
+    {
+      "reviewed_at": "2026-10-01T17:38:29+08:00",
+      "reviewer": "Codex ci_361_current_fix/copy_ledger_source; compensation effect cross-check by copy_sources",
+      "source_base_commit": "b995fad1f25838c3b31e82086da9c116b2d77b80",
+      "previous_review_manifest_sha256": "b6688656bd9a9e1fbcb4a01426beccd8e37402182165ce48aa001076ad19fa4f",
+      "previous_source_input_digest_sha256": "86af08746f5c9a2861ededa9177b97fbed23caa7f6b850892cb8e58c6998a561",
+      "baseline_review_evidence_commit": "4974324fece6ba152bada6069f8a12718e4da8f6",
+      "method": "Incremental semantic reread against the retained 626-card review. Reuse unchanged reviewed content; reread the two added visible events, four changed primary event bindings, all new Career/HC and compensation option tooltips, revised player decision surfaces, and event-source deltas. Rebind source locations and generated shard hashes after the source changes; no full 628-card reread is claimed.",
+      "added_visible_event_keys": [
+        "zg361ch.949",
+        "zg361.54"
+      ],
+      "changed_primary_event_keys": [
+        "zg361ch.950",
+        "zg361ch.906",
+        "zg361cl.390",
+        "zg361comp.1"
+      ],
+      "retained_primary_event_bindings": 622,
+      "career_hc_option_tooltip_reread": "132/132: three options for mechanisms 019-025 and 092-128",
+      "compensation_option_tooltip_reread": "42/42: L1-L4, AE1-AE5 and AF1-AF5",
+      "compensation_short_label_effect_crosscheck": "16/16 corrected labels checked against actual special_payload, finance_apply, bonus_path and stage route dispatch by copy_sources; remaining 26 labels retain their reviewed effects in the bound tooltip.",
+      "source_delta_review": [
+        {
+          "path": "mod_zhongguo_style/events/zg361_career_hc_runtime_events.txt",
+          "result": "949 stores/removes only the persistent owner preference; each new portfolio copies it into its own frozen route. 950 applies all 44 numbered guarded original consumers, falls back to the exact card for failed conditions, and retains the detailed route. 906 now describes closure of all six domains; intermediate receipts are suppressed and existing delayed obligations remain."
+        },
+        {
+          "path": "mod_zhongguo_style/events/zg361_events.txt",
+          "result": "54 is player gated and writes only the 10/5/0 ratio override. The existing bottom-slots script value floors cohort x 10%/5%, preserves the strict five-person minimum, and uses zero for off. The event does not reopen a frozen quota."
+        },
+        {
+          "path": "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
+          "result": "All 42 options bind their stage-specific .tt; amounts, payer accounts, deferred dates, rights and share treatment agree with the real route effects. Visible names summarize the action; tooltip carries the detailed terms."
+        },
+        {
+          "path": "mod_zhongguo_style/events/zg361_manager_governance_runtime_events.txt",
+          "result": "90 is a newly hidden player-originated publication callback and increases the hidden count only. Existing visible manager cards retain their wording."
+        },
+        {
+          "path": "mod_zhongguo_style/events/zg361_b1_runtime_events.txt",
+          "result": "The two hidden polling callbacks gain the empty-cycle recovery call; no visible card wording changes."
+        },
+        {
+          "path": "mod_zhongguo_style/events/zg361_jingcha_events.txt",
+          "result": "42 adds the same polling recovery before its existing progression; no visible card wording changes."
+        },
+        {
+          "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml",
+          "result": "Persistent custody, one-portfolio choice, final receipt and 132 option tooltip additions match the 44-mechanism authority, original consumers, seven dual-account costs, domain-majority prestige/stress outcomes, and M116 bounded release/defer semantics."
+        },
+        {
+          "path": "mod_zhongguo_style/localization/simp_chinese/zg361_compensation_runtime_l_simp_chinese.yml",
+          "result": "Reread all 42 action names and detailed tooltips; the 16 shortened names now preserve immediate payment versus debt, total compensation versus bonus, authority versus salary, and existing versus newly converted shares."
+        },
+        {
+          "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
+          "result": "New ratio entry and current-policy text match existing values. Early review starts the shared assessment, does not claim Jingcha responsibility, preserves roster freezing and existing 330-day/year limits, and no longer repeats the title at the opening."
+        },
+        {
+          "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
+          "result": "The next-mechanism decision readiness message describes an outstanding queued ruling, without changing a business effect."
+        },
+        {
+          "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_004_ac_mechanisms_stage04_06_events.txt",
+          "result": "Actual-byte inventory differs but Git text delta is empty; retained visible copy is unchanged."
+        },
+        {
+          "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_learning_l_simp_chinese.yml",
+          "result": "The digest counters use the .GetValue accessor already described by the retained September 9 review binding; prose and authoritative portfolio-digest effect are unchanged."
+        }
+      ],
+      "findings_fixed": 18,
+      "findings_fixed_description": "Two duplicate title/body readings and 16 compensation action labels corrected by copy_sources.",
+      "unfixed": 0,
+      "copy_sources_review_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\ci-361-current-fix\\copy-sources\\render-receipt.json",
+      "copy_sources_review_artifact_sha256": "b30d3cf590957e31e0df4cccafabd72218e644f792b80d30d2b4d033bbc0db35",
+      "live_render_validation_status": "pending",
+      "copy_sources_delivery_manifest": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\ci-361-current-fix\\copy-sources\\delivery-manifest.json",
+      "copy_sources_delivery_manifest_sha256": "5c4df8bcc8ad1778703fb52dfd27a4fd22875abf9fffa021a80f033b09ff7a09"
+    },
+    {
+      "reviewed_at": "2026-10-01T18:12:26+08:00",
+      "reviewer": "Codex ci_361_current_fix",
+      "previous_review_manifest_sha256": "bc28a77de59d26de915a5bf68f6bac51e260259c995f81d4cece637ec76c086c",
+      "previous_source_input_digest_sha256": "028a946e1e4132a66c3b4fd8b592e5addf649fdeea83e76964d9dace18781960",
+      "method": "Reread only four shortened compensation action labels against the retained prior exact effect review and their unchanged authoritative route effects/tooltips; preserve the full historical and October 1 incremental review. No repeat 628-card audit is claimed.",
+      "changed_primary_event_keys": [
+        "zg361comp.1"
+      ],
+      "changed_localization_keys": [
+        "zg361comp.1.l1.r1",
+        "zg361comp.1.l1.r2",
+        "zg361comp.1.af2.r3",
+        "zg361comp.1.af5.r3"
+      ],
+      "reviewed_labels": [
+        {
+          "key": "zg361comp.1.l1.r1",
+          "text": "核准奖金现付十四、待结六",
+          "result": "Retains route-1's immediate bonus fourteen and deferred six. Fixed pay and total compensation remain in the unchanged bound tooltip; no payment or contract effect changes.",
+          "length": 12
+        },
+        {
+          "key": "zg361comp.1.l1.r2",
+          "text": "核准奖金现付十、待结六",
+          "result": "Retains route-2's reduced immediate bonus ten and deferred six. Fixed pay and total compensation remain in the unchanged bound tooltip.",
+          "length": 11
+        },
+        {
+          "key": "zg361comp.1.af2.r3",
+          "text": "取消转换，不付奖金、不增份额",
+          "result": "Cancels conversion without paying the bonus or adding share grants; it does not imply confiscation of existing shares.",
+          "length": 14
+        },
+        {
+          "key": "zg361comp.1.af5.r3",
+          "text": "调动：没收未归属，保留已归属",
+          "result": "Internal-move route forfeits unvested shares and retains vested shares; it does not promise a repurchase. Existing tooltip retains the internal-move context.",
+          "length": 14
+        }
+      ],
+      "findings_fixed": 4,
+      "unfixed": 0,
+      "width_limit": 14,
+      "width_limit_unchanged": true,
+      "live_render_validation_status": "pending",
+      "source_publication_base_commit": "98723d7537512fb911a7a2d3280a37bdac875016"
+    }
+  ]
 }

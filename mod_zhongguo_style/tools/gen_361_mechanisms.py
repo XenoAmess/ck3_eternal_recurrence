@@ -2011,7 +2011,7 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
         "",
         "## 简体中文文案审计闭合状态（不改变逐号等级）",
         "",
-        f"- 可复验 sidecar：`{copy_audit.sidecar_index}`，提交 `{copy_audit.sidecar_commit}`；其输入快照提交为",
+        f"- 可复验 sidecar：`{copy_audit.sidecar_index}`，最近发布基线提交 `{copy_audit.sidecar_commit}`；当前输入快照生成基线为",
         f"  `{copy_audit.source_snapshot_git_commit}`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。",
         f"- 当前绑定 {copy_audit.visible_events} 个 visible events、{copy_audit.final_zh_keys} 个最终简中 key；",
         f"  `machine_failures={copy_audit.machine_failures}`、`user_named_static_open_items={copy_audit.user_named_static_open_items}`、",
