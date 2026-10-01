@@ -1,0 +1,37 @@
+{
+  "schema": "xar.ck3.nonwar-offline-runner-config/v1",
+  "game_version": "1.20.0.2",
+  "game_executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "bridge_mode": "native-headless",
+  "display_mode": "fullscreen",
+  "ordinary": {
+    "xar_enabled": "xar_off",
+    "succession_lifecycle": "ordinary_campaign_succession",
+    "ordinary_campaign_no_pact": true,
+    "formal_turns": 20,
+    "timeout_seconds": 1800,
+    "readiness_timeout_seconds": 300
+  },
+  "rogue": {
+    "xar_enabled": "xar_on",
+    "succession_lifecycle": "rogue_one_life",
+    "ordinary_campaign_no_pact": false,
+    "max_turns": 100000,
+    "timeout_seconds": 604800,
+    "readiness_timeout_seconds": 300,
+    "checkpoint_every_advances": 5,
+    "route_contact_speed": 3
+  },
+  "history": {
+    "g2_completed": 3,
+    "g2_total": 8,
+    "robert_durable_days": 3153,
+    "robert_target_days": 36524,
+    "robert_date_raw": 53220000,
+    "robert_checkpoint_history": 4025,
+    "robert_game_version": "1.19.0.6",
+    "robert_pair_migration_live_verified": false
+  },
+  "private_formal_trials_enabled": [],
+  "religion_policy": "owner-deferred except existing narrow holy-war and marriage native final results"
+}
