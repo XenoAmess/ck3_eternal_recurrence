@@ -133,6 +133,15 @@ void RegisterNonwarMailboxExecutorsV1(
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
   environment.permitted_executor_religion_draft_groups12002 = executors.religion_draft_groups;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_draft_doctrine_choices12002 = executors.religion_draft_doctrine_choices;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_draft_tenet_choices12002 = executors.religion_draft_tenet_choices;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_draft_resource_costs12002 = executors.religion_draft_resource_costs;
+#endif
   (void)environment;
   (void)executors;
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)

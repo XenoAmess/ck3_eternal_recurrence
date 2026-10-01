@@ -11429,6 +11429,24 @@ void RunConnectedSession(
           bool revision_parsed = status_only;
           bool current_revision_allowed = false;
           if (!status_only) {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionDraftDoctrineChoicesPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionDraftDoctrineChoicesRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionDraftTenetChoicesPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionDraftTenetChoicesRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionDraftResourceCostsPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionDraftResourceCostsRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
             if (xar::ck3_12002::IsPlayerReligionDraftGroupsPrivateStep12002(step)) {
               current_revision_allowed = true;

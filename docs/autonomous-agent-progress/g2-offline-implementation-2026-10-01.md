@@ -849,3 +849,9 @@ Two owned documents failed actual official6ac CI step36 due to shell code fences
 Nine frozen new wrapper, runner and topic sources. One new O2/W4/WX named-only scene per domain passed7/8/8checks; whole actual packets match generic outputs. Other permits null. Tenet topic uses separate current Python-example CI delta, historical receipts unchanged. Old provider/generic/SDK matrices not repeated, actual paused pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\three-query-named-source-only9.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 21:17:51 Integrate three complete readonly religion draft queries
+
+Eleven frozen central sources. Explicit59ON4OFF, three new named readonly executors and six new leaf compilation sources. Targeted new registration and routes plus jobs64 default/candidate DLL and injector builds GREEN. Actual compiler-input Git freeze and paused qualification follow this commit; no new actions or war research. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r8\central-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

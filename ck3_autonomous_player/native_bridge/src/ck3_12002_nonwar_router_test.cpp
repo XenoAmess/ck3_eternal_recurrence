@@ -25,6 +25,14 @@ std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
 std::size_t draft_groups_calls = 0;
 constexpr std::string_view draft_groups_step = "query-player-religion-draft-groups-v1";
+std::array<std::size_t, 3> r8_calls{};
+constexpr std::array<std::string_view, 3> r8_steps{
+    "query-player-religion-draft-doctrine-choices-v1",
+    "query-player-religion-draft-tenet-choices-v1",
+    "query-player-religion-draft-resource-costs-v1"};
+constexpr std::array<std::string_view, 3> r8_outputs{
+    "draft-doctrine-choices-forwarded", "draft-tenet-choices-forwarded",
+    "draft-resource-costs-forwarded"};
 std::array<std::size_t, 2> r6_calls{};
 [[maybe_unused]] const void *expected_sway_invalidation_reason_recorder = nullptr;
 constexpr std::array<std::string_view, 2> r6_steps{
@@ -707,6 +715,65 @@ bool HandlePlayerReligionDraftGroupsPrivate12002(const game::GameAdapter &adapte
 }
 #endif
 
+// R8 three readonly domain spies: central routing evidence only.
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
+bool IsPlayerReligionDraftDoctrineChoicesPrivateStep12002(std::string_view step) noexcept {
+  return step == r8_steps[0];
+}
+bool ExecutePlayerReligionDraftDoctrineChoicesMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionDraftDoctrineChoicesPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == r8_steps[0], "R8 exact selector reaches its owning handler");
+  ++r8_calls[0];
+  serialized = r8_outputs[0];
+  return true;
+}
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1)
+bool IsPlayerReligionDraftTenetChoicesPrivateStep12002(std::string_view step) noexcept {
+  return step == r8_steps[1];
+}
+bool ExecutePlayerReligionDraftTenetChoicesMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionDraftTenetChoicesPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == r8_steps[1], "R8 exact selector reaches its owning handler");
+  ++r8_calls[1];
+  serialized = r8_outputs[1];
+  return true;
+}
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
+bool IsPlayerReligionDraftResourceCostsPrivateStep12002(std::string_view step) noexcept {
+  return step == r8_steps[2];
+}
+bool ExecutePlayerReligionDraftResourceCostsMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == r8_steps[2], "R8 exact selector reaches its owning handler");
+  ++r8_calls[2];
+  serialized = r8_outputs[2];
+  return true;
+}
+#endif
+
 } // namespace xar::ck3_12002
 
 // The R7 probe executes only the new path/default-OFF behavior. The prior
@@ -751,8 +818,76 @@ bool HandlePlayerReligionDraftGroupsPrivate12002(const game::GameAdapter &adapte
   return 0;
 }
 
+// R8 executes only the three new routes. R7/R6 frozen receipts retain prior coverage.
+[[maybe_unused]] int RunThreeDraftQueriesRouterIncrement() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  RouterAdapter adapter;
+  ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  game::Snapshot published{};
+  published.date_raw = 53175816;
+  published.played_character_id = 29829;
+  NonwarPrivateState12002 state{};
+  state.faction_query_sequence = 42;
+  NonwarMailboxExecutorsV1 executors{};
+  PopulateNonwarRouterExecutors12002(executors);
+  std::array<bool, 3> enabled{};
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
+  enabled[0] = true;
+  Check(executors.religion_draft_doctrine_choices == &ExecutePlayerReligionDraftDoctrineChoicesMailbox12002,
+        "R8 selected exact callback registered");
+#else
+  Check(executors.religion_draft_doctrine_choices == nullptr, "R8 default-OFF callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1)
+  enabled[1] = true;
+  Check(executors.religion_draft_tenet_choices == &ExecutePlayerReligionDraftTenetChoicesMailbox12002,
+        "R8 selected exact callback registered");
+#else
+  Check(executors.religion_draft_tenet_choices == nullptr, "R8 default-OFF callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
+  enabled[2] = true;
+  Check(executors.religion_draft_resource_costs == &ExecutePlayerReligionDraftResourceCostsMailbox12002,
+        "R8 selected exact callback registered");
+#else
+  Check(executors.religion_draft_resource_costs == nullptr, "R8 default-OFF callback absent");
+#endif
+  constexpr std::array<std::string_view, 3> payloads{
+      R"json({"expected_snapshot_revision":916})json",
+      R"json({"expected_revision":917})json",
+      R"json({"expected_snapshot_revision":918,"expected_revision":918})json"};
+  constexpr std::array<std::string_view, 3> request_ids{
+      "R8-draft-doctrine-choices", "R8-draft-tenet-choices", "R8-draft-resource-costs"};
+  for (std::size_t i = 0; i != r8_steps.size(); ++i) {
+    Check(IsNonwarPrivateStep12002(r8_steps[i]) == enabled[i], "R8 canonical visibility follows flag");
+    const std::uint64_t revision = 916 + i;
+    expected = {&adapter, &mailbox, &published, &state, revision,
+                r8_steps[i], payloads[i], request_ids[i]};
+    std::string serialized = "stale-output", failure = "stale-failure";
+    Check(HandleNonwarPrivate12002(adapter, mailbox, published, revision, r8_steps[i],
+        payloads[i], request_ids[i], state, serialized, failure) == enabled[i],
+        "R8 actual dispatch follows flag");
+    Check(serialized == (enabled[i] ? r8_outputs[i] : ""), "R8 result returned unchanged");
+    Check(failure.empty(), "R8 failure returned unchanged");
+    Check(state.faction_query_sequence == 42, "R8 preserves unrelated persistent sequence");
+    Check(!IsNonwarPrivateStep12002(std::string(r8_steps[i]) + "-unregistered"),
+          "R8 selector requires exact match");
+    Check(r8_calls[i] == (enabled[i] ? 1u : 0u), "R8 exact owning handler call count");
+  }
+  std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
+            << ",\"draft_doctrine_choices_forwarded\":" << r8_calls[0]
+            << ",\"draft_tenet_choices_forwarded\":" << r8_calls[1]
+            << ",\"draft_resource_costs_forwarded\":" << r8_calls[2]
+            << ",\"old_router_matrix_reexecuted\":false,\"native_provider_credit\":false"
+            << ",\"live_verified\":false,\"ck3_touched\":false}\n";
+  return 0;
+}
+
 int main() {
-#if defined(XAR_G2_ROUTER_INCREMENT_DRAFT_GROUPS_ONLY)
+#if defined(XAR_G2_ROUTER_INCREMENT_THREE_DRAFT_QUERIES_ONLY)
+  return RunThreeDraftQueriesRouterIncrement();
+#elif defined(XAR_G2_ROUTER_INCREMENT_DRAFT_GROUPS_ONLY)
   return RunDraftGroupsRouterIncrement();
 #else
   using namespace xar;
