@@ -2,6 +2,9 @@ from __future__ import annotations
 import copy
 from pathlib import Path
 import sys
+import tempfile
+from types import SimpleNamespace
+from unittest.mock import patch
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from xar_autoplayer.bridge.ingame_ui_contract import normalize_ui_result, validate_ui_request
@@ -23,6 +26,8 @@ def result(kind="combat",operation="query",subject=0):
             "native_army_id":0,"owner_character_id":29829 if kind=="knights" else 0,
             "dispatch_invoked":operation!="query","verification_pending":operation!="query",
             "date_raw":53146848,"paused":True,"played_character_id":29829,"native_revision":3,"pump_epoch":14,"thread_id":77,
+            "application_owner_thread_verified":True,"gui_owner_binding_verified":True,
+            "gui_context_address":1001,"gui_owner_address":1002,"rng_owner_thread_id":0,"rng_owner_is_ui_admission_gate":False,
             "unavailable_reason":"","knights_list_scope":"military_eligible_not_active_combat_roster",
             "combat_knights_read_available":False,"left_knight_count":-1,"right_knight_count":-1,
             "left_knight_breakdown":"","right_knight_breakdown":"","combat_roster_full_ids_available":False,
@@ -53,6 +58,18 @@ class DriverFixture(NativeHeadlessGameplayDriver):
     def capabilities(self):
         return {"backend_id":"native-headless","bridge_capabilities":["game.command.navigate-ingame-ui-v1","game.command.query-ingame-ui-window-v1"],
                 "action_steps":[]}
+
+class PrimitiveUiFixture(DriverFixture):
+    """Runs the real primitive and UI validation with explicit offline pipe stubs."""
+    def __init__(self,raw,state_dir,*,native_ok=True):
+        super().__init__(raw);self.state_dir=state_dir;self.sent=[];self._request_sequence=0
+        self.command_timeout_seconds=1
+        self.endpoint=SimpleNamespace(send=self.sent.append)
+        self.state=SimpleNamespace(wait_for_command_result=lambda request_id,timeout: {
+            "type":"command_result","request_id":request_id,"ok":native_ok,
+            "result":copy.deepcopy(raw),"error":"offline original native rejection"})
+    def _execute_primitive_step(self,step,**kwargs):
+        return NativeHeadlessGameplayDriver._execute_primitive_step(self,step,**kwargs)
 
 class IngameUiTests(unittest.TestCase):
     def normalize(self,value,kind="combat",operation="query",subject=0):
@@ -89,6 +106,73 @@ class IngameUiTests(unittest.TestCase):
         for key,value in [("dispatch_invoked",True),("verification_pending",True),("status","completed")]:
             raw=result();raw[key]=value
             with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw)
+    def test_original_application_gui_binding_required_rng_owner_is_diagnostic(self):
+        for rng in (0,77,999):
+            raw=result();raw["rng_owner_thread_id"]=rng
+            self.assertEqual(self.normalize(raw)["rng_owner_thread_id"],rng)
+        for key,value in [("application_owner_thread_verified",False),("gui_owner_binding_verified",False),
+                          ("gui_context_address",0),("gui_owner_address",0),("gui_context_address",True),
+                          ("rng_owner_is_ui_admission_gate",True),("rng_owner_thread_id",2**32)]:
+            raw=result();raw[key]=value
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw)
+    def test_failed_identity_keeps_unmodified_raw_in_command_history(self):
+        raw=result();raw.update(date_raw=0,available=False,accepted=False,status="unavailable",
+                               unavailable_reason="application_paused_owner_stamp_unverified")
+        driver=DriverFixture(raw)
+        with self.assertRaisesRegex(ValueError,"date_raw"):
+            driver.query_ingame_ui_window_v1("combat",expected_revision=4)
+        saved=driver.records[-1][1]
+        self.assertFalse(saved["ok"])
+        self.assertEqual(saved["result"]["raw_native_ui_result"],raw)
+        self.assertEqual(saved["result"]["raw_native_ui_result"]["date_raw"],0)
+    def test_raw_native_return_is_create_only_before_validation(self):
+        import json,hashlib
+        with tempfile.TemporaryDirectory() as temp:
+            driver=object.__new__(NativeHeadlessGameplayDriver);driver.state_dir=Path(temp)
+            request={"step":"navigate-ingame-ui-v1","subject_id":33437,"expected_revision":3}
+            frame={"ok":True,"result":{"date_raw":0,"unavailable_reason":"original native refusal"}}
+            with patch("xar_autoplayer.bridge.native_driver.uuid.uuid4",return_value=SimpleNamespace(hex="fixed-offline-test")):
+                receipt=driver._preserve_ingame_ui_native_frame(request,frame,snapshot())
+                data=Path(receipt["path"]).read_bytes();saved=json.loads(data)
+                self.assertEqual(saved["original_parsed_command_result"],frame)
+                self.assertEqual(saved["validation_state"],"unvalidated")
+                self.assertFalse(saved["wire_bytes_preserved"])
+                self.assertEqual(receipt["sha256"],hashlib.sha256(data).hexdigest())
+                with self.assertRaises(FileExistsError):driver._preserve_ingame_ui_native_frame(request,frame,snapshot())
+                self.assertEqual(Path(receipt["path"]).read_bytes(),data)
+    def test_real_primitive_preserves_native_body_before_binding_failure(self):
+        import json
+        with tempfile.TemporaryDirectory() as temp:
+            raw=result();raw.update(date_raw=0,available=False,accepted=False,status="unavailable",
+                                   unavailable_reason="original paused owner refusal")
+            driver=PrimitiveUiFixture(raw,Path(temp))
+            with self.assertRaisesRegex(ValueError,"date_raw"):
+                driver.query_ingame_ui_window_v1("combat",expected_revision=4)
+            files=list(Path(temp).rglob("native-ui-*.json"));self.assertEqual(len(files),1)
+            saved=json.loads(files[0].read_text(encoding="utf-8"))
+            self.assertEqual(saved["original_parsed_command_result"]["result"],raw)
+            self.assertEqual(saved["request"],driver.sent[0])
+            self.assertEqual(saved["actual_pre_submission_snapshot"]["date_raw"],53146848)
+            self.assertEqual(saved["original_parsed_command_result"]["result"]["date_raw"],0)
+    def test_real_primitive_native_command_red_also_preserved(self):
+        import json
+        with tempfile.TemporaryDirectory() as temp:
+            driver=PrimitiveUiFixture(result(),Path(temp),native_ok=False)
+            with self.assertRaisesRegex(Exception,"offline original native rejection"):
+                driver.query_ingame_ui_window_v1("combat",expected_revision=4)
+            saved=json.loads(next(Path(temp).rglob("native-ui-*.json")).read_text(encoding="utf-8"))
+            self.assertIs(saved["original_parsed_command_result"]["ok"],False)
+            self.assertEqual(len(driver.sent),1)
+    def test_missing_or_invalid_evidence_directory_never_dispatches(self):
+        driver=PrimitiveUiFixture(result(),None)
+        with self.assertRaisesRegex(Exception,"state_dir"):
+            driver.query_ingame_ui_window_v1("combat",expected_revision=4)
+        self.assertFalse(driver.sent)
+        with tempfile.TemporaryDirectory() as temp:
+            file=Path(temp)/"not-a-directory";file.write_text("preserve me",encoding="utf-8")
+            driver=PrimitiveUiFixture(result(),file)
+            with self.assertRaises(OSError):driver.query_ingame_ui_window_v1("combat",expected_revision=4)
+            self.assertFalse(driver.sent);self.assertEqual(file.read_text(encoding="utf-8"),"preserve me")
     def test_knights_explicit_owner_and_scope(self):
         self.normalize(result("knights"),kind="knights")
         for key,value in [("owner_character_id",33437),("current_subject_id",33437),("subject_id_available",False),

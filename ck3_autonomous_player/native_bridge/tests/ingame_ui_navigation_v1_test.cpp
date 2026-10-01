@@ -11,7 +11,14 @@ namespace xar::ck3_11906 {
 bool ResolveNamedGuiWidgetV1(const ZhongguoScoreboardNativeEnvironmentV1 &,const ZhongguoScoreboardAccessV1 &,std::string_view,std::string_view,void *&,void *&) noexcept {return false;}
 bool ReadGuiWidgetRuntimeV1(const ZhongguoScoreboardAccessV1 &,void *,std::string &,void *&,bool &,bool &) noexcept {return false;}
 bool InspectNamedGuiSubtreeV1(const ZhongguoScoreboardAccessV1 &,std::uintptr_t,void *,std::string_view,NamedGuiTreeInspectionV1 &) noexcept {return false;}
-bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(const ZhongguoScoreboardNativeEnvironmentV1 &,const ZhongguoScoreboardAccessV1 &,void *&,void *&) noexcept {return false;}
+// Pure offline GUI-chain resolver responses. No native GUI function executes.
+static bool fixture_gui_available=false;
+static std::uint32_t fixture_gui_reads=0;
+static IngameUiGuiOwnerBindingV1 fixture_gui_first{},fixture_gui_second{};
+bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(const ZhongguoScoreboardNativeEnvironmentV1 &,const ZhongguoScoreboardAccessV1 &,void *&context,void *&owner) noexcept {
+  const auto &row=fixture_gui_reads++==0?fixture_gui_first:fixture_gui_second;
+  context=row.context;owner=row.owner;return fixture_gui_available;
+}
 }
 int main() {
   using namespace xar::ck3_11906;
@@ -75,10 +82,64 @@ int main() {
   assert(VirtualFree(image,0,MEM_RELEASE));
   IngameUiResultV1 result{};ZhongguoScoreboardNativeEnvironmentV1 env{};
   xar::game::Snapshot snapshot{};MainThreadExecutionStampV1 stamp{};
-  assert(ExecuteIngameUiNavigationV1(env,r,snapshot,stamp,result) && !result.available);
+  IngameUiGuiOwnerBindingV1 gui_binding{};
+  assert(ExecuteIngameUiNavigationV1(env,r,snapshot,stamp,gui_binding,result) && !result.available);
   env.exact_build_admitted=true;env.module_base=1;env.offline_fixture_function_overrides=true;
   snapshot.paused=true;snapshot.map_ready=true;snapshot.has_played_character=true;
   stamp.paused=true;stamp.thread_id=GetCurrentThreadId();stamp.pump_epoch=1;
-  assert(ExecuteIngameUiNavigationV1(env,r,snapshot,stamp,result) && !result.available);
-  std::cout<<"offline parser/full-generation/RTTI/admission negative cases PASS; no game calls\n";
+  assert(ExecuteIngameUiNavigationV1(env,r,snapshot,stamp,gui_binding,result) && !result.available);
+  // Production's exact paused UI gateway, not a mirrored RNG predicate.
+  MainThreadQueryMailboxV1 mailbox{};
+  stamp.thread_id=GetCurrentThreadId();stamp.pump_epoch=17;stamp.paused=true;
+  stamp.tls_initialized_flag_address=1;stamp.tls_initialized=1;
+  stamp.tls_context=2;stamp.tls_main_thread_marker=1;stamp.jomini_state=3;stamp.game_state=4;
+  mailbox.owner_thread_id.store(stamp.thread_id);
+  mailbox.owner_verified_pump_epochs.store(2);mailbox.paused_owner_verified_pump_epochs.store(2);
+  stamp.rng_wrapper=0;stamp.rng_state=0;stamp.rng_owner_thread_id=0;
+  assert(IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()));
+  stamp.rng_owner_thread_id=GetCurrentThreadId()+1;
+  assert(IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()));
+  assert(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()+1));
+  auto bad=stamp;bad.thread_id=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.tls_initialized=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.tls_main_thread_marker=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.tls_context=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.tls_initialized_flag_address=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.paused=false;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.jomini_state=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.game_state=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  bad=stamp;bad.pump_epoch=0;assert(!IsIngameUiPausedOwnerStampV1(mailbox,bad,GetCurrentThreadId()));
+  mailbox.owner_thread_id.store(GetCurrentThreadId()+1);
+  assert(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()));
+  mailbox.owner_thread_id.store(GetCurrentThreadId());mailbox.owner_verified_pump_epochs.store(1);
+  assert(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()));
+  mailbox.owner_verified_pump_epochs.store(2);mailbox.paused_owner_verified_pump_epochs.store(1);
+  assert(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()));
+  // Current original GUI object chain must match in both fresh reads. A stale
+  // object/address, failed read, or transient replacement cannot become a gate.
+  env.offline_fixture_function_overrides=false;
+  fixture_gui_available=true;fixture_gui_reads=0;
+  fixture_gui_first={reinterpret_cast<void *>(101),reinterpret_cast<void *>(201)};
+  fixture_gui_second=fixture_gui_first;
+  assert(ReadIngameUiGuiOwnerBindingV1(env,gui_binding) && gui_binding==fixture_gui_first && fixture_gui_reads==2);
+  const auto pinned_gui=gui_binding;
+  fixture_gui_reads=0;fixture_gui_second.owner=reinterpret_cast<void *>(202);
+  assert(!ReadIngameUiGuiOwnerBindingV1(env,gui_binding) && !gui_binding.context && !gui_binding.owner);
+  fixture_gui_reads=0;fixture_gui_second=fixture_gui_first;fixture_gui_second.context=reinterpret_cast<void *>(102);
+  assert(!ReadIngameUiGuiOwnerBindingV1(env,gui_binding));
+  fixture_gui_reads=0;fixture_gui_available=false;
+  assert(!ReadIngameUiGuiOwnerBindingV1(env,gui_binding));
+  fixture_gui_available=true;fixture_gui_reads=0;fixture_gui_first={nullptr,reinterpret_cast<void *>(201)};fixture_gui_second=fixture_gui_first;
+  assert(!ReadIngameUiGuiOwnerBindingV1(env,gui_binding));
+  fixture_gui_reads=0;fixture_gui_first={reinterpret_cast<void *>(102),reinterpret_cast<void *>(202)};fixture_gui_second=fixture_gui_first;
+  assert(ReadIngameUiGuiOwnerBindingV1(env,gui_binding) && gui_binding!=pinned_gui); // post-call replacement is rejected by the frontend exact equality
+  r={IngameUiOperationV1::open_character,IngameUiWindowKindV1::character,33437};
+  assert(ValidateIngameUiRequestV1(r));
+  fixture_gui_reads=0;snapshot.date_raw=53146848;snapshot.played_character_id=29829;stamp.date_raw=snapshot.date_raw;
+  assert(ExecuteIngameUiNavigationV1(env,r,snapshot,stamp,pinned_gui,result) && !result.available);
+  assert(result.unavailable_reason=="current_gui_owner_binding_changed_before_navigation");
+  assert(result.date_raw==53146848 && result.thread_id==GetCurrentThreadId());
+  const auto serialized=SerializeIngameUiResultV1(r,result,3);
+  assert(serialized.find("\"rng_owner_is_ui_admission_gate\":false")!=std::string::npos);
+  std::cout<<"offline parser/full-generation/RTTI/application-owner/RNG0/GUI-double-read/admission negative cases PASS; no game calls\n";
 }

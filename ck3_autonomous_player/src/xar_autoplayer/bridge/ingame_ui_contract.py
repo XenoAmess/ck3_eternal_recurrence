@@ -36,7 +36,8 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         if type(actual) is not type(target) or actual != target:
             raise ValueError(f"native UI binding mismatch: {key}")
     for key in ("accepted", "available", "dispatch_invoked", "verification_pending", "window_exists",
-                "effective_visible", "enabled", "subject_id_available"):
+                "effective_visible", "enabled", "subject_id_available", "application_owner_thread_verified",
+                "gui_owner_binding_verified"):
         if type(value.get(key)) is not bool:
             raise ValueError(f"native UI boolean missing: {key}")
     for key in ("current_subject_id", "native_army_id", "owner_character_id", "thread_id", "pump_epoch"):
@@ -45,7 +46,16 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             raise ValueError(f"native UI typed integer missing: {key}")
     if value["available"] != value["accepted"]:
         raise ValueError("native UI availability/acceptance differs")
+    if value.get("rng_owner_is_ui_admission_gate") is not False:
+        raise ValueError("native UI must use original application/GUI ownership rather than RNG ownership")
+    for key,limit in (("gui_context_address",2**64),("gui_owner_address",2**64),("rng_owner_thread_id",2**32)):
+        n=value.get(key)
+        if isinstance(n,bool) or not isinstance(n,int) or not 0<=n<limit:
+            raise ValueError(f"native UI owner diagnostic missing: {key}")
     if value["available"]:
+        if (not value["application_owner_thread_verified"] or not value["gui_owner_binding_verified"] or
+                not value["gui_context_address"] or not value["gui_owner_address"]):
+            raise ValueError("native UI original application/GUI binding unverified")
         if not value["thread_id"] or not value["pump_epoch"] or not value["window_exists"]:
             raise ValueError("native UI lacks owner/target-window observation")
         if operation == "query":

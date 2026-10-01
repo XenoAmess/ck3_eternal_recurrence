@@ -449,14 +449,31 @@ std::string_view IngameUiWindowNameV1(IngameUiWindowKindV1 k) noexcept {
   switch(k){case IngameUiWindowKindV1::character:return "character_window";case IngameUiWindowKindV1::army:return "army_window";
     case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";default:return "unavailable";}
 }
+bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
+                                IngameUiGuiOwnerBindingV1 &out) noexcept {
+  out={};
+  if(!env.exact_build_admitted || env.offline_fixture_function_overrides || !env.module_base)return false;
+  ZhongguoScoreboardAccessV1 access{};
+  IngameUiGuiOwnerBindingV1 first{},second{};
+  if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,first.context,first.owner) ||
+     !first.context || !first.owner ||
+     !ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,second.context,second.owner) ||
+     first!=second)return false;
+  out=first;return true;
+}
 bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,const IngameUiRequestV1 &request,
-                                const game::Snapshot &snapshot,const MainThreadExecutionStampV1 &stamp,IngameUiResultV1 &out) noexcept {
+                                const game::Snapshot &snapshot,const MainThreadExecutionStampV1 &stamp,
+                                const IngameUiGuiOwnerBindingV1 &gui_binding,IngameUiResultV1 &out) noexcept {
   out={};out.date_raw=snapshot.date_raw;out.paused=snapshot.paused;out.played_character_id=snapshot.played_character_id;
   out.pump_epoch=stamp.pump_epoch;out.thread_id=stamp.thread_id;
   if(!env.exact_build_admitted || env.offline_fixture_function_overrides || !env.module_base ||
       !ValidateIngameUiRequestV1(request) || !snapshot.paused || !snapshot.map_ready || !snapshot.has_played_character ||
       !stamp.paused || stamp.date_raw!=snapshot.date_raw || stamp.thread_id!=GetCurrentThreadId() || !stamp.pump_epoch) {
     out.unavailable_reason="paused_exact_build_owner_admission_failed";return true;
+  }
+  IngameUiGuiOwnerBindingV1 current_gui{};
+  if(!gui_binding.context || !gui_binding.owner || !ReadIngameUiGuiOwnerBindingV1(env,current_gui) || current_gui!=gui_binding) {
+    out.unavailable_reason="current_gui_owner_binding_changed_before_navigation";return true;
   }
   void *handler=nullptr;
   if(!ResolveHandler(env.module_base,handler)){out.unavailable_reason="ingame_handler_unverified";return true;}
@@ -480,6 +497,7 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   // Actions are refused behind modal receivers; they do not synthesize input.
   ZhongguoScoreboardAccessV1 access{};void *context=nullptr;void *owner=nullptr;std::uint32_t modal_count=0;
   if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner) ||
+      context!=gui_binding.context || owner!=gui_binding.owner ||
       !Value(context,kZhongguoGuiModalReceiverCountOffset,modal_count) || modal_count!=0) {
     out.unavailable_reason="modal_context_blocks_navigation";return true;
   }
@@ -562,6 +580,10 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
    <<",\"dispatch_invoked\":"<<v.dispatch_invoked<<",\"verification_pending\":"<<v.verification_pending
    <<",\"date_raw\":"<<v.date_raw<<",\"paused\":"<<v.paused<<",\"played_character_id\":"<<v.played_character_id
    <<",\"native_revision\":"<<revision<<",\"pump_epoch\":"<<v.pump_epoch<<",\"thread_id\":"<<v.thread_id
+   <<",\"application_owner_thread_verified\":"<<v.application_owner_thread_verified
+   <<",\"gui_owner_binding_verified\":"<<v.gui_owner_binding_verified
+   <<",\"gui_context_address\":"<<v.gui_context_address<<",\"gui_owner_address\":"<<v.gui_owner_address
+   <<",\"rng_owner_thread_id\":"<<v.rng_owner_thread_id<<",\"rng_owner_is_ui_admission_gate\":false"
    <<",\"combat_knights_read_available\":"<<v.combat_knights_read_available
    <<",\"left_knight_count\":"<<v.left_knight_count<<",\"right_knight_count\":"<<v.right_knight_count
    <<",\"left_knight_breakdown\":\""<<JsonEscape(v.left_knight_breakdown)<<"\",\"right_knight_breakdown\":\""<<JsonEscape(v.right_knight_breakdown)
