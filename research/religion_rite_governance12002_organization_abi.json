@@ -1,0 +1,231 @@
+{
+  "schema": "ck3_12002_rite_organization_research_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "production_scope": "current_player_rite_native_cached_counts",
+  "live_verified": false,
+  "provider_source_constants": {
+    "kCountyCountRva": "0xb80410",
+    "kCharacterFollowerCountRva": "0xeddb90",
+    "kCountyCountOffset": "0x18",
+    "kCharacterFollowerCountOffset": "0x1c"
+  },
+  "native_spans": [
+    {
+      "name": "Rite.counties.leaf",
+      "start_rva": "0xb80410",
+      "end_exclusive_rva": "0xb80414",
+      "kind": "int32_t(Rite*)",
+      "bytes": "8b 41 18 c3",
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941"
+    },
+    {
+      "name": "Rite.followers.leaf",
+      "start_rva": "0xeddb90",
+      "end_exclusive_rva": "0xeddb94",
+      "kind": "int32_t(Rite*)",
+      "bytes": "8b 41 1c c3",
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5"
+    },
+    {
+      "name": "Rite.GetNumberOfCountiesOfRite.callback",
+      "start_rva": "0x2444640",
+      "end_exclusive_rva": "0x2444678",
+      "kind": "reflection callback",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1e e8 b9 bd 73 fe 48 8d 54 24 40 89 44 24 40 48 8b cb e8 e8 53 43 fe b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3",
+      "sha256": "f9cdd02ff8f28ec2da818e85428fa871d1e3b30dc074c40faca039f1e0318656"
+    },
+    {
+      "name": "Rite.GetNumberOfFollowers.callback",
+      "start_rva": "0x24fc210",
+      "end_exclusive_rva": "0x24fc248",
+      "kind": "reflection callback",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1e e8 69 19 9e fe 48 8d 54 24 40 89 44 24 40 48 8b cb e8 18 d8 37 fe b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3",
+      "sha256": "f67cb902a82d8962e7856d349a5cb998c121028569815326f0fe4317383d4b02"
+    },
+    {
+      "name": "Rite.GetNumberOfCountiesOfRite.registration",
+      "start_rva": "0x4eef43",
+      "end_exclusive_rva": "0x4eefdc",
+      "kind": "registration slice",
+      "bytes": "0f 10 05 66 8f 24 04 0f 11 00 f2 0f 10 0d 6b 8f 24 04 f2 0f 11 48 10 0f b6 0d 67 8f 24 04 88 48 18 40 88 78 19 48 89 45 ef 48 8d 45 0f 48 89 45 67 48 8d 55 b7 48 8d 4d 0f e8 7f 6f 36 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 59 53 38 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 6d 56 f5 01 48 8d 4d ef e8 c4 00 01 02",
+      "sha256": "142a85d80391938367fa1e08f8aa1625a0e27a75fce999fad7504f890b925f3a"
+    },
+    {
+      "name": "Rite.GetNumberOfFollowers.registration",
+      "start_rva": "0x4ef0d3",
+      "end_exclusive_rva": "0x4ef15e",
+      "kind": "registration slice",
+      "bytes": "0f 10 05 8e 0a 24 04 0f 11 00 8b 0d 95 0a 24 04 89 48 10 40 88 78 14 48 89 45 ef 48 8d 45 0f 48 89 45 67 48 8d 55 b7 48 8d 4d 0f e8 fd 6d 36 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 d7 51 38 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 bb d0 00 02 48 8d 4d ef e8 42 ff 00 02",
+      "sha256": "83ed3a0a7327b75e8e67299ccf94dbb0a90d93d64681b34f96dfeb170ebe0d21"
+    },
+    {
+      "name": "CFaithCharacterList.alive_source_filter",
+      "start_rva": "0x1c6113e",
+      "end_exclusive_rva": "0x1c61225",
+      "kind": "native Faith collector slice",
+      "bytes": "48 8b 05 0b 7b 00 04 48 8b 88 a0 00 00 00 48 8b 99 60 ee 02 00 48 63 81 6c ee 02 00 48 8d 2c c3 48 3b dd 0f 84 b1 00 00 00 4c 8b 0d 8a d1 0b 04 4c 8b 15 fb 64 00 04 4c 89 74 24 58 4c 89 7c 24 60 90 48 8b 13 4d 85 c9 74 2e 44 8b 82 b4 00 00 00 41 8b c0 25 ff ff ff 00 41 3b 41 2c 73 19 8b c8 49 8b 41 20 48 03 c9 48 8b 4c c8 08 48 85 c9 74 06 44 39 41 08 74 03 49 8b ca 8b 46 08 39 81 b8 04 00 00 75 3d 48 83 ba d0 01 00 00 00 75 33 8b 47 08 39 47 0c 74 38 8b 42 18 48 8b cf 48 8d 54 24 20 48 89 44 24 28 c7 44 24 20 04 00 00 00 e8 3d f0 c1 fe 4c 8b 0d fe d0 0b 04 4c 8b 15 6f 64 00 04 48 83 c3 08 48 3b dd 0f 85 72 ff ff ff 4c 8b 74 24 58 4c 8b 7c 24 60 48 8b 74 24 50 48 83 c4 30 5f 5d 5b c3",
+      "sha256": "c651d7cf8096ed98b8e33a431b454297355634c40a32ac709d1687c861903381"
+    },
+    {
+      "name": "CRiteTitleListBuilder.rite_scope",
+      "start_rva": "0x1d40cd6",
+      "end_exclusive_rva": "0x1d40d24",
+      "kind": "Rite 0x2A scope slice",
+      "bytes": "49 8b 00 66 83 38 2a 75 05 8b 50 08 eb 05 ba ff ff ff ff 4c 8b 05 08 d6 fd 03 4d 85 c0 74 25 8b c2 25 ff ff ff 00 41 3b 40 2c 73 18 8b c8 48 03 c9 49 8b 40 20 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 4f 69 f2 03 8b 78 18",
+      "sha256": "1273a4143a479bc389194307229da0237739e25b5bceae6facda575acad64499"
+    },
+    {
+      "name": "CRiteTitleListBuilder.ranked_title_downstream",
+      "start_rva": "0x1d40e13",
+      "end_exclusive_rva": "0x1d40e27",
+      "kind": "ranked Title collector call slice",
+      "bytes": "45 0f b6 0f 4d 8b c6 48 8d 54 24 30 49 8b cc e8 89 15 fe ff",
+      "sha256": "aae8475e062345ee5f53494315aa8152232d0c831ee5db9d67986c4101c0bbbe"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "county_signed_int32",
+      "rva": "0xb80410",
+      "bytes": "8b 41 18",
+      "instruction": "mov eax, dword ptr [rcx + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "followers_signed_int32",
+      "rva": "0xeddb90",
+      "bytes": "8b 41 1c",
+      "instruction": "mov eax, dword ptr [rcx + 0x1c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "county_registration_name",
+      "rva": "0x4eef43",
+      "bytes": "0f 10 05 66 8f 24 04",
+      "instruction": "movups xmm0, xmmword ptr [rip + 0x4248f66]",
+      "rip_targets": [
+        "0x4737eb0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "county_registration_callback",
+      "rva": "0x4eefcc",
+      "bytes": "48 8d 15 6d 56 f5 01",
+      "instruction": "lea rdx, [rip + 0x1f5566d]",
+      "rip_targets": [
+        "0x2444640"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "county_callback_leaf",
+      "rva": "0x2444652",
+      "bytes": "e8 b9 bd 73 fe",
+      "instruction": "call 0xb80410",
+      "rip_targets": [],
+      "direct_targets": [
+        "0xb80410"
+      ]
+    },
+    {
+      "name": "follower_registration_name",
+      "rva": "0x4ef0d3",
+      "bytes": "0f 10 05 8e 0a 24 04",
+      "instruction": "movups xmm0, xmmword ptr [rip + 0x4240a8e]",
+      "rip_targets": [
+        "0x472fb68"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "follower_registration_callback",
+      "rva": "0x4ef14e",
+      "bytes": "48 8d 15 bb d0 00 02",
+      "instruction": "lea rdx, [rip + 0x200d0bb]",
+      "rip_targets": [
+        "0x24fc210"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "follower_callback_leaf",
+      "rva": "0x24fc222",
+      "bytes": "e8 69 19 9e fe",
+      "instruction": "call 0xeddb90",
+      "rip_targets": [],
+      "direct_targets": [
+        "0xeddb90"
+      ]
+    },
+    {
+      "name": "faith_source_array",
+      "rva": "0x1c6114c",
+      "bytes": "48 8b 99 60 ee 02 00",
+      "instruction": "mov rbx, qword ptr [rcx + 0x2ee60]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_source_length",
+      "rva": "0x1c61153",
+      "bytes": "48 63 81 6c ee 02 00",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x2ee6c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_filter_not_rite_filter",
+      "rva": "0x1c611bc",
+      "bytes": "39 81 b8 04 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x4b8], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_alive_filter",
+      "rva": "0x1c611c4",
+      "bytes": "48 83 ba d0 01 00 00 00",
+      "instruction": "cmp qword ptr [rdx + 0x1d0], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_output_character_full_ref",
+      "rva": "0x1c611d6",
+      "bytes": "8b 42 18",
+      "instruction": "mov eax, dword ptr [rdx + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "title_collector_scope_rite_enum",
+      "rva": "0x1d40cd9",
+      "bytes": "66 83 38 2a",
+      "instruction": "cmp word ptr [rax], 0x2a",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "ranked_title_native_collector_call",
+      "rva": "0x1d40e22",
+      "bytes": "e8 89 15 fe ff",
+      "instruction": "call 0x1d223b0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1d223b0"
+      ]
+    }
+  ],
+  "unresolved": [
+    "Rite count refresh producer timing",
+    "complete native Rite member collector ABI",
+    "county collector output ownership/stride",
+    "full governance final gates"
+  ]
+}

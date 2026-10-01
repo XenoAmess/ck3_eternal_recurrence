@@ -264,3 +264,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 分别真实观测actor Rite head、mainRite head、Faith宗教头衔holder，合法vacant/absent区分，不按null猜制度。ABI6func/3regs/14sites、Od/O2各18checks6wire通过。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-rite-governance\head\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:46:32 Native Rite organization counters
+
+读取实际玩家Rite cached county/character follower counts，nil与合法零区分。ABI9 spans/15指令/4constants及Od/O2各13checks4actualwire通过；完整成员collector另包继续，不以计数冒充名单。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-rite-governance\organization\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
