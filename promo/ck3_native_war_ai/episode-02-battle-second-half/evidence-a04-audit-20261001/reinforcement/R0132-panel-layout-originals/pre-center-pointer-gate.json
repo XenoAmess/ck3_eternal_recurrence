@@ -1,0 +1,78 @@
+{
+  "actual_focus": {
+    "foreground_hwnd": 4851780,
+    "foreground_pid": 4212,
+    "foreground_thread_id": 9152,
+    "focus_hwnd": 4851780,
+    "title": "Crusader Kings III"
+  },
+  "actual_desktop_size": [
+    1024,
+    768
+  ],
+  "actual_pointer": [
+    512,
+    384
+  ],
+  "mapper_receipt_status": "pointer-move-readback-matched",
+  "no_click_or_keyboard_requested": true,
+  "edge_pan_cause_proven": false,
+  "source_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+    "bytes": 794123,
+    "sha256": "3EC70D74119EC55210541E56B8F44D58CDB7977EA9BCEC08D858103B3765CA32"
+  },
+  "safe_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\00-pre-center-pointer-safe.png",
+    "bytes": 800035,
+    "sha256": "426A70F3DDA1BF33E1E1B90D01BE1B3D81F93EE1D2EB7FE73DE0851924F2A604"
+  },
+  "mapper_receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png.json",
+    "bytes": 2085,
+    "sha256": "FB3218EFFAD166986499284F12DD44309538F8621FC4797D5FB82209B8A28C25"
+  },
+  "root_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "00-pre-center-pointer",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T00:03:27.138900+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 4212,
+    "expected_foreground_hwnd": 4851780,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+        "bytes": 794123,
+        "sha256": "3EC70D74119EC55210541E56B8F44D58CDB7977EA9BCEC08D858103B3765CA32"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "pointer_safe_for_native_center": true,
+    "observed_point": {
+      "x": 512,
+      "y": 384
+    },
+    "preview_content_rect": {
+      "left": 0,
+      "top": 0,
+      "width": 1024,
+      "height": 768
+    },
+    "reviewed_safe_region": {
+      "left": 300,
+      "top": 250,
+      "width": 400,
+      "height": 300
+    },
+    "root_visible_evidence": {
+      "current_original_png": "Directly viewed actual 3EC70D74119EC55210541E56B8F44D58CDB7977EA9BCEC08D858103B3765CA32 original desktop PNG, without resizing or cropping.",
+      "actual_geometry": "Original image content occupies left0/top0/width1024/height768; current desktop readbacks before/after are both1024x768.",
+      "actual_scene": "Paused terrain map, 1066年12月14日; center rectangle300,250,400,300 contains map interior with no UI controls or overlays. Newly selected current point512,384 is far from all edges.",
+      "actual_focus": "Foreground and focused CK3 HWND4851780/PID4212. Current pointer1023,276 at right edge; all mouse buttons are up.",
+      "authorized_current_action": "One formal mapper move only to the currently reviewed safe point; no mouse click or keyboard."
+    }
+  }
+}

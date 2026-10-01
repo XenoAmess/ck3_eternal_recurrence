@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 4851780,
+    "foreground_hwnd": 4851780,
+    "foreground_pid": 4212,
+    "foreground_thread_id": 9152,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 4851780,
+    "foreground_hwnd": 4851780,
+    "foreground_pid": 4212,
+    "foreground_thread_id": 9152,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    1024,
+    768
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    512.0,
+    384.0
+  ],
+  "pointer_after": [
+    512,
+    384
+  ],
+  "pointer_before": [
+    1023,
+    276
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1024,
+    768
+  ],
+  "receipt_image_size": [
+    1024,
+    768
+  ],
+  "receipt_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png",
+  "receipt_sha256": "7027B74C4D7D690C2C7C3AAC0DAC89B74AFED8C073B117442C28AADD73FE55A1",
+  "reviewed_bounds": [
+    300.0,
+    250.0,
+    400,
+    300
+  ],
+  "screen_point": [
+    512,
+    384
+  ],
+  "screen_size_after": [
+    1024,
+    768
+  ],
+  "screen_size_before": [
+    1024,
+    768
+  ],
+  "sidecar_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png.json",
+  "source_image": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-20-root-review-reentry-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+    "sha256": "3EC70D74119EC55210541E56B8F44D58CDB7977EA9BCEC08D858103B3765CA32"
+  },
+  "source_image_size": [
+    1024,
+    768
+  ],
+  "status": "pointer-move-readback-matched"
+}
