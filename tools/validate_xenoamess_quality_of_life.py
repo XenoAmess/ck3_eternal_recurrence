@@ -254,6 +254,9 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("full hook payments must require the native uncapped obligation")
     if "gold >= golden_obligation_value" in effects:
         errors.append("native wallet-capped obligation cannot filter full hook payments")
+    full_payment = re.search(r"(?ms)^xqol_bulk_demand_payment_full_effect = \{(.*?)^\}", effects)
+    if full_payment is None or not re.search(r"every_hooked_character = \{\s+save_scope_as = recipient\s+if = \{\s+limit = \{\s+gold >= xqol_full_golden_obligation_value", full_payment.group(1)):
+        errors.append("full hook payments must bind each native recipient before calculating its uncapped quote")
     for relative, text in generated.items():
         expected = b"\xef\xbb\xbf" + text.replace("\r\n", "\n").encode("utf-8")
         if (MOD / relative).read_bytes() != expected:

@@ -87,8 +87,16 @@ def events(governors_only: bool) -> str:
     after_disable = ('''                    debug_log = "ZQA120: TEST DONE governor_core"
                     set_variable = { name = zqa120_stage value = 99 }''' if governors_only else
                      '''                    zqa_setup_payment_matrix_effect = yes
-                    xqol_bulk_demand_payment_full_effect = yes
-                    set_variable = { name = zqa120_stage value = 3 }''')
+                     save_scope_value_as = { name = zqa120_payment_expected_gold value = var:zqa_payment_expected_gold }
+                     save_scope_value_as = { name = zqa120_payment_expected_count value = var:zqa_payment_expected_count }
+                     xqol_bulk_demand_payment_full_effect = yes
+                     zqa120_payment_full_diagnostic_effect = yes
+                     zqa_verify_payment_full_effect = yes
+                     xqol_bulk_demand_payment_any_effect = yes
+                     zqa_verify_payment_any_effect = yes
+                     set_variable = { name = xqol_mass_conversion_threshold value = 50 }
+                     xqol_bulk_conversion_dispatch_effect = yes
+                     set_variable = { name = zqa120_stage value = 5 }''')
     tick = '''        change_variable = { name = zqa120_ticks add = 1 }
         if = {
             limit = { var:zqa120_stage = 1 has_character_flag = zqa_await_product_toggles }
@@ -187,6 +195,28 @@ AFTER_DISABLE
     return "namespace = zqa120\n\n" + event("zqa120.1", initialize) + "\n" + event("zqa120.2", tick)
 
 
+def payment_diagnostic() -> str:
+    checks = {
+        "count": "var:xqol_last_bulk_payment_count = var:zqa_payment_expected_count",
+        "actor_gold": "gold >= var:zqa_payment_expected_gold NOT = { gold > var:zqa_payment_expected_gold }",
+        "full_hook_consumed": "NOT = { has_usable_hook = var:zqa_payment_full_target }",
+        "any_hook_preserved": "has_usable_hook = var:zqa_payment_any_target",
+        "one_hook_preserved": "has_usable_hook = var:zqa_payment_one_gold_target",
+        "full_wallet": "var:zqa_payment_full_target = { gold < 1 }",
+        "any_wallet": "var:zqa_payment_any_target = { gold >= 2 NOT = { gold > 2 } }",
+        "one_wallet": "var:zqa_payment_one_gold_target = { gold >= 1 NOT = { gold > 1 } }",
+    }
+    lines = ["zqa120_payment_full_diagnostic_effect = {",
+             "\tsave_scope_value_as = { name = zqa120_payment_actual_gold value = gold }",
+             "\tsave_scope_value_as = { name = zqa120_payment_actual_count value = var:xqol_last_bulk_payment_count }"]
+    for short in ("full", "any", "one_gold"):
+        lines.append(f"\tvar:zqa_payment_{short}_target = {{ save_scope_as = zqa120_payment_{short}_target save_scope_value_as = {{ name = zqa120_payment_{short}_wallet value = gold }} }}")
+    for name, condition in checks.items():
+        lines.append(f'\tif = {{ limit = {{ {condition} }} debug_log = "ZQA120: OBSERVED payment_{name}_PASS" }} else = {{ debug_log = "ZQA120: OBSERVED payment_{name}_FAIL" }}')
+    lines += ['\tdebug_log = "ZQA120: OBSERVED payment_full_transaction_scopes"', "\tdebug_log_scopes = yes", "}"]
+    return "\n".join(lines) + "\n"
+
+
 def prepare(repo: Path, output: Path, scenario: str) -> dict:
     repo, output = prep.checked_output(repo, output)
     source = repo / "tools/fixtures/xqol_acceptance"
@@ -201,6 +231,22 @@ def prepare(repo: Path, output: Path, scenario: str) -> dict:
         defense_init = prep.balanced_excerpt(base, rf"^{key}\s*=\s*\{{")
         base = prep.replace_once(base, defense_init, "# Legacy defense initializer/callback excluded from this core fixture.")
     base = base.replace("golden_obligation_value", "xqol_full_golden_obligation_value")
+    # The 1.20 native quote reads actor (strong hooks) and recipient (rich
+    # courtiers). Compute expected native transfers in that same context.
+    payment_setup = prep.balanced_excerpt(base, r"^zqa_setup_payment_matrix_effect\s*=\s*\{")
+    changed_payment = prep.replace_once(payment_setup, "zqa_setup_payment_matrix_effect = {", "zqa_setup_payment_matrix_effect = {\n\tsave_scope_as = actor\n\tsave_scope_as = puppet_or_actor")
+    expected_loop = prep.balanced_excerpt(changed_payment, r"^\tevery_hooked_character\s*=\s*\{")
+    loop_body = expected_loop[expected_loop.index("{") + 1:expected_loop.rfind("}")]
+    changed_loop = "\tevery_hooked_character = {\n\t\tsave_scope_as = recipient\n\t\tif = {" + "\n".join("\t" + line if line else line for line in loop_body.splitlines()) + "\n\t\t}\n\t}"
+    changed_loop = prep.replace_once(changed_loop, "add = scope:zqa_payment_expected_candidate.xqol_full_golden_obligation_value", """add = {
+                    if = {
+                        limit = { scope:zqa_payment_expected_candidate = { gold > golden_obligation_value } }
+                        value = scope:zqa_payment_expected_candidate.golden_obligation_value
+                    }
+                    else = { value = scope:zqa_payment_expected_candidate.gold floor = yes }
+                }""")
+    changed_payment = prep.replace_once(changed_payment, expected_loop, changed_loop)
+    base = prep.replace_once(base, payment_setup, changed_payment)
     # Baselines must refer to actual appointment governors, not estate titles
     # or frail randomly chosen incumbents. Preserve the strict heir assertion.
     init = prep.balanced_excerpt(base, r"^zqa_initialize_effect\s*=\s*\{")
@@ -257,7 +303,7 @@ def prepare(repo: Path, output: Path, scenario: str) -> dict:
         body, proof = prep.decision_effect(repo, "mod_xenoamess_quality_of_life", "common/decisions/xqol_decisions.txt", decision)
         effects.append(f"zqa120_{short}_effect = {{\n{body}\n}}\n")
         projections.append(proof)
-    prep.write_script(output, "common/scripted_effects/zqa120_production_effects.txt", "\n".join(effects) + "\n" + RITE_PROBE)
+    prep.write_script(output, "common/scripted_effects/zqa120_production_effects.txt", "\n".join(effects) + "\n" + RITE_PROBE + "\n" + payment_diagnostic())
     prep.write_script(output, "common/on_action/zqa120_on_actions.txt", START)
     prep.write_script(output, "events/zqa120_events.txt", events(scenario == "administrative"))
     markers = prep.required_markers(repo / "tools/run_xenoamess_quality_of_life_acceptance.py")

@@ -5,24 +5,26 @@ xqol_bulk_demand_payment_full_effect = {
 	save_scope_as = puppet_or_actor
 	set_variable = { name = xqol_last_bulk_payment_count value = 0 }
 	every_hooked_character = {
-		limit = {
-			gold >= xqol_full_golden_obligation_value
-			scope:actor = {
-				is_character_interaction_potentially_accepted = {
-					recipient = prev
-					interaction = demand_payment_interaction
+		save_scope_as = recipient
+		if = {
+			limit = {
+				gold >= xqol_full_golden_obligation_value
+				scope:actor = {
+					is_character_interaction_potentially_accepted = {
+						recipient = scope:recipient
+						interaction = demand_payment_interaction
+					}
 				}
 			}
-		}
-		save_temporary_scope_as = xqol_payment_candidate
-		scope:actor = {
-			run_interaction = {
-				interaction = demand_payment_interaction
-				actor = scope:actor
-				recipient = scope:xqol_payment_candidate
-				execute_threshold = accept
+			scope:actor = {
+				run_interaction = {
+					interaction = demand_payment_interaction
+					actor = scope:actor
+					recipient = scope:recipient
+					execute_threshold = accept
+				}
+				change_variable = { name = xqol_last_bulk_payment_count add = 1 }
 			}
-			change_variable = { name = xqol_last_bulk_payment_count add = 1 }
 		}
 	}
 	xqol_bulk_payment_finish_effect = yes
