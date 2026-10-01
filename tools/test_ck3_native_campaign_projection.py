@@ -80,6 +80,31 @@ class NativeCampaignProjectionTests(unittest.TestCase):
                 NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint, **arguments)
             self.assertIsNone(endpoint.on_frame)
 
+    def test_server_current_pause_uses_real_provider_submission_revision_once(self):
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint,
+                    episode_projection="native_campaign", command_timeout_seconds=0.2)
+        try:
+            endpoint.publish(_hello("game.state.snapshot", "game.command.pause-map"))
+            endpoint.publish(_snapshot(1, speed=5, paused=False))
+            observed = driver.take_snapshot()
+            endpoint.publish(_snapshot(2, speed=5, paused=False))
+            def answer(frame):
+                if frame.get("type") != "execute_step": return
+                endpoint.publish({"type": "command_result", "protocol_version": 1,
+                                  "request_id": frame["request_id"], "ok": True,
+                                  "result": {"accepted": True, "status": "submitted"}})
+                endpoint.publish(_snapshot(3, speed=5, paused=True))
+            endpoint.send_hook = answer
+            driver.execute_step("pause-map", expected_revision=None)
+            submitted = [frame for frame in endpoint.frames if frame.get("type") == "execute_step"]
+            self.assertEqual(len(submitted), 1)
+            self.assertEqual(submitted[0]["expected_revision"], 2)
+            self.assertTrue(driver.take_snapshot()["paused"])
+            self.assertLess(observed["revision"], driver.take_snapshot()["revision"])
+        finally:
+            driver.close()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -292,6 +292,37 @@ class NativeProfileService:
         return self._ordinary_action("simulation-" + action, expected_revision,
             lambda service: service.execute_step(steps[action], expected_revision=expected_revision), verify)
 
+    def pause_current(self) -> dict:
+        """Pause the bound live campaign using the provider's submission frame."""
+        with self._lock:
+            self.guard()
+            gameplay = self._gameplay_service()
+            self.backend.poll(self.profile)
+            self.guard()
+            before = self._snapshot()
+            if (before.get("map_ready") is not True or type(before.get("revision")) is not int
+                    or before["revision"] < 0):
+                raise RuntimeError("current native pause requires a map-ready native revision")
+            try:
+                # This stateless desired-state command is the sole exception to
+                # caller revision matching. The existing provider binds its own
+                # fresh native submission frame; event/save/resume remain strict.
+                result = gameplay.execute_step("pause-map", expected_revision=None)
+                after = self._snapshot()
+                observation = self.guard()
+                if (after.get("map_ready") is not True or after["paused"] is not True
+                        or after["date_raw"] < before["date_raw"]):
+                    raise RuntimeError("current native pause postcondition did not materialize")
+                return self._receipt("simulation-pause-current", {
+                    "status": "native_gameplay_postcondition_verified", "result": result,
+                    "snapshot_before": before, "snapshot_after": after,
+                    "observation_after": observation, "revision_binding": "provider_submission_frame",
+                    "uses_ocr": False, "uses_desktop_input": False})
+            except Exception as error:
+                # Never resend after a command ACK, timeout or failed readback.
+                return self._receipt("simulation-pause-current", {"status": "RED",
+                    "snapshot_before": before, "reason": f"{type(error).__name__}: {error}"})
+
     def select_event(self, option_number: int, event_instance_id: int, expected_revision: int) -> dict:
         if type(option_number) is not int or not 1 <= option_number <= 64:
             raise ValueError("option_number must be a public 1-based option ordinal")
@@ -370,6 +401,9 @@ def create_server(service: NativeProfileService):
     ) -> dict[str, object]:
         return service.simulation(action, expected_revision)
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
+    def ck3_pause_profile_simulation_v1() -> dict[str, object]:
+        return service.pause_current()
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
     def ck3_select_profile_event_option_v1(option_number: int, event_instance_id: int, expected_revision: int) -> dict[str, object]:
         return service.select_event(option_number, event_instance_id, expected_revision)
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
@@ -377,6 +411,7 @@ def create_server(service: NativeProfileService):
         return service.checkpoint(expected_revision)
     for name in ("ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
                  "ck3_query_profile_event_window_v1", "ck3_set_profile_simulation_v1",
+                 "ck3_pause_profile_simulation_v1",
                  "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"):
         _forbid_unknown_tool_arguments_v1(server, name)
     return server

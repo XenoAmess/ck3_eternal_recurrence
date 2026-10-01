@@ -234,16 +234,19 @@ class McpTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual({tool.name for tool in tools}, {
                     "ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
                     "ck3_query_profile_event_window_v1", "ck3_set_profile_simulation_v1",
+                    "ck3_pause_profile_simulation_v1",
                     "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"})
                 for tool in tools:
                     self.assertFalse(tool.input_schema["additionalProperties"])
-                    if tool.name in {"ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1"}:
+                    if tool.name in {"ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1", "ck3_pause_profile_simulation_v1"}:
                         self.assertEqual(tool.input_schema["properties"], {})
                 simulation = next(tool for tool in tools if tool.name == "ck3_set_profile_simulation_v1")
                 self.assertEqual(set(simulation.input_schema["properties"]["action"]["enum"]),
                                  {"pause", "resume", "speed_1", "speed_3", "speed_5"})
                 denied = await client.call_tool("ck3_set_profile_simulation_v1", {"action": "observe", "expected_revision": 7})
                 self.assertTrue(denied.is_error)
+                denied_pause = await client.call_tool("ck3_pause_profile_simulation_v1", {"expected_revision": 7})
+                self.assertTrue(denied_pause.is_error)
                 rejected = await client.call_tool("ck3_attach_profile_bridge_v1", {"pid": 99, "session_id": "spoof"})
                 self.assertTrue(rejected.is_error)
                 self.assertEqual(backend.injections, [])
@@ -293,6 +296,79 @@ class OrdinaryGameplayTests(unittest.TestCase):
                 self.assertTrue(Path(result["receipt_path"]).is_file())
             self.assertEqual(calls, [("resume-map", 7), ("pause-map", 7), ("set-speed-5", 7)])
             self.assertEqual(len(backend.polls), 4) # attach plus three normal actions
+
+    def test_running_pause_binds_current_provider_frame_after_poll_without_replaying(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            service, backend, driver, calls = self.setup_gameplay(Path(temporary))
+            driver.snapshot.update(paused=False, speed=5)
+            original_poll = backend.poll
+            def advance_during_poll(profile):
+                driver.snapshot["revision"] += 1
+                driver.snapshot["date_raw"] += 24
+                return original_poll(profile)
+            backend.poll = advance_during_poll
+            with self.assertRaisesRegex(RuntimeError, "expected map-ready"):
+                service.simulation("pause", 7)
+            self.assertEqual(calls, [])
+            result = service.pause_current()
+            self.assertEqual(calls, [("pause-map", None)])
+            self.assertEqual(result["snapshot_before"]["revision"], 9)
+            self.assertFalse(result["snapshot_before"]["paused"])
+            self.assertTrue(result["snapshot_after"]["paused"])
+            self.assertEqual(result["revision_binding"], "provider_submission_frame")
+            self.assertEqual(result["status"], "native_gameplay_postcondition_verified")
+            self.assertTrue(Path(result["receipt_path"]).is_file())
+
+    def test_current_pause_guard_or_unready_map_issues_zero_commands(self):
+        for mode in ("foreground", "offline", "lease", "userdir", "crash", "map", "poll_guard"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                service, backend, driver, calls = self.setup_gameplay(Path(temporary))
+                driver.snapshot["paused"] = False
+                if mode == "foreground": backend.desktop.overrides["focus"] = {"foreground_hwnd": 999, "foreground_pid": 999}
+                elif mode == "offline": backend.desktop.overrides["steam_offline_flags"] = ["0"]
+                elif mode == "lease": backend.desktop.overrides["screen_lease_fresh"] = False
+                elif mode == "userdir": backend.command_line[-1] = "-userdir=other"
+                elif mode == "crash":
+                    directory = Path(service.profile["userdir"]) / "crashes"
+                    directory.mkdir()
+                    (directory / "incomplete").mkdir()
+                elif mode == "map": driver.snapshot["map_ready"] = False
+                else:
+                    backend.poll = lambda profile: backend.desktop.overrides.update(focus={"foreground_hwnd": 999, "foreground_pid": 999})
+                with self.assertRaises(RuntimeError): service.pause_current()
+                self.assertEqual(calls, [])
+
+    def test_current_pause_ack_failure_and_crash_readback_are_red_after_one_submission(self):
+        for mode in ("ack_only", "crash", "pid", "date_backwards", "timeout"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                service, _, driver, calls = self.setup_gameplay(Path(temporary))
+                driver.snapshot["paused"] = False
+                def submit(step, *, expected_revision):
+                    calls.append((step, expected_revision))
+                    if mode == "timeout": raise TimeoutError("fixture command timeout")
+                    if mode != "ack_only": driver.snapshot["paused"] = True
+                    if mode == "crash":
+                        directory = Path(service.profile["userdir"]) / "crashes"
+                        directory.mkdir()
+                        (directory / "incomplete").mkdir()
+                    elif mode == "pid": driver.snapshot["diagnostics"]["bridge_pid"] = 999
+                    elif mode == "date_backwards": driver.snapshot["date_raw"] -= 24
+                    return {"status": "ACK"}
+                service._gameplay.execute_step = submit
+                result = service.pause_current()
+                self.assertEqual(calls, [("pause-map", None)])
+                self.assertEqual(result["status"], "RED")
+                self.assertTrue(Path(result["receipt_path"]).is_file())
+
+    def test_event_save_and_resume_keep_exact_revision_after_current_pause(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            service, _, driver, calls = self.setup_gameplay(Path(temporary))
+            driver.snapshot["revision"] = 9
+            for operation in (lambda: service.simulation("resume", 7),
+                              lambda: service.select_event(1, 123, 7),
+                              lambda: service.checkpoint(7)):
+                with self.assertRaises(RuntimeError): operation()
+            self.assertEqual(calls, [])
 
     def test_invalid_identity_revision_lease_and_unpaused_save_issue_no_action(self):
         for mode in ("revision", "boolean", "lease", "unpaused", "step"):

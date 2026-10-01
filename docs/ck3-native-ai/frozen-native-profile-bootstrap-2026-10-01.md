@@ -6,9 +6,9 @@ already launched, isolated run. A calling project supplies target-side profile
 data; the tool contains no mod identity, project run name, screenshot point or
 project absolute path.
 
-The bootstrap exposes seven closed MCP tools. The first three take no arguments;
-the ordinary-player tools accept only typed native revision/event identities and
-a fixed semantic simulation enum:
+The bootstrap exposes eight closed MCP tools. The first three and current-frame
+pause take no arguments. Other ordinary-player tools accept only typed native
+revision/event identities and a fixed semantic simulation enum:
 
 | Tool | Result |
 | --- | --- |
@@ -17,6 +17,7 @@ a fixed semantic simulation enum:
 | `ck3_take_profile_native_snapshot_v1` | Reads the existing native provider and saves a receipt. |
 | `ck3_query_profile_event_window_v1` | Queries the current event's existing native context from a paused, bound revision. |
 | `ck3_set_profile_simulation_v1` | Performs only `pause`, `resume`, `speed_1`, `speed_3` or `speed_5` and verifies the native result. |
+| `ck3_pause_profile_simulation_v1` | Pauses the current running campaign using the provider's own submission frame, with native postcondition and full guard readback. |
 | `ck3_select_profile_event_option_v1` | Selects one enabled authored option through the existing event service and verifies the selected event is no longer active. |
 | `ck3_save_profile_checkpoint_v1` | Uses the existing fixed native save command and verifies actual save bytes, path, SHA-256 and raw date. |
 
@@ -168,8 +169,8 @@ The bootstrap does not start the one-generation controller, observe, reseed,
 jump dates, skip simulation ticks or alter AI behavior. It performs no desktop
 input or OCR. Live attach and gameplay are left to the exclusive desktop owner.
 
-Validation: 6 read-only clock tests, 14 profile/bootstrap/ordinary-player tests,
-4 real-provider endpoint campaign-projection tests and 11 existing semantic-profile tests
+Validation: 6 read-only clock tests, 18 profile/bootstrap/ordinary-player tests,
+5 real-provider endpoint campaign-projection tests and 11 existing semantic-profile tests
 passed, including official in-memory MCP schemas, stale process/Steam/lease
 rejection, wrong userdir and artifact rejection, native hello/build rejection,
 ACK without containment proof, one-shot attachment across server instances and
