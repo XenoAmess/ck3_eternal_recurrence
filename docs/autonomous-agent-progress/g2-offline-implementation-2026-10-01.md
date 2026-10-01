@@ -496,3 +496,9 @@ Sway 当前原生 CanContinue 返回值已补齐 mode1/linked1 ABI 与 serialize
 新增实际只读 reasons mailbox：生产 submit/drain/wait/reclaim、原生格式化解释与完整 protocol1 command_result。Od/O2 /W4 /WX 各59检查 GREEN，各8完整JSON与2拒绝收据；复用已冻结 reasons library，不重跑旧矩阵。状态 static-ready，中央 named permit/dispatch、Python SDK 与 root paused native文本读回仍待集成。没有执行改宗或访问 CK3/进程/pipe/UI/Steam，live/G2 新计分为0。 Owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\reasons-query\delivery-result.json SHA-256 49287e07595c822262046d81a62998fc5ee6bfa832dfabd353f6e554fef33247。文件资格清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ready-packages-1730\conversion-reasons-query\qualification.json。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:50:13 Loaded Doctrine registry native catalogue
+
+新增 loaded Doctrine registry 完整只读目录与稳定 key resolver，包含实际加载的 mod definitions、当前玩家/日期/epoch 和 complete/source DTO；注册表行本身不代表玩家最终合法选择。O2 /W4 /WX 11检查与3实际C++ JSON GREEN，复用旧ABI/矩阵；状态 static-ready。后续独立 mailbox9 已有owner交付，本次仅provider5；中央默认OFF接线、Python SDK与root paused读回待后续。未访问 CK3/进程/pipe/UI/Steam，live/G2 新计分为0。 Owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\catalogue\provider-delivery-result.json SHA-256 3c295c51854972330f67527accc042e776ab4ee7024d5db49b10de60a134a1bf。文件资格清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ready-packages-1730\doctrine-catalogue\qualification.json。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
