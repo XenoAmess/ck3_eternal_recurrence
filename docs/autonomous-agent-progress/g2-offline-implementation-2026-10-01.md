@@ -837,3 +837,9 @@ One owned topic records actual paused DraftGroups with29selectedslots and source
 Eight frozen native research and documentation files. Exact daily preparation,24hour clock update,AIexecution and rare countdown/reset sources closed; twelve functions25slices53anchors and eight production fixture cases reused. Readonly library static-ready only, no actualAI context/MCP/action/live credit. No war research. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\schedule-source-only8.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 21:12:54 Fix two actual Python-only CI document failures
+
+Two owned documents failed actual official6ac CI step36 due to shell code fences. Only those examples replaced with Python subprocess argument lists; exact existing validator once PASS. Prior native and live evidence unchanged, historical receipts preserved; official latest head pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-r8-two-doc-current-fix\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

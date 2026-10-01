@@ -42,11 +42,18 @@ flowchart TD
 
 保存材料提取命令如下；脚本只读现有文件，不发起游戏操作：
 
-```powershell
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe `
-  ck3_autonomous_player/native_bridge/research/event12002_r6_event_adapter_saved_review.py `
-  --source-root Z:\ck3_mod_rewrite\.task-tmp\g2live6 `
-  --candidate-root Z:\ck3_mod_rewrite\.task-tmp\g2src `
-  --artifact-root Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01 `
-  --output ck3_autonomous_player/native_bridge/research/event12002_r6_event_adapter_saved_review.json
+```python
+import subprocess
+
+subprocess.run(
+    [
+        r"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe",
+        "ck3_autonomous_player/native_bridge/research/event12002_r6_event_adapter_saved_review.py",
+        "--source-root", r"Z:\ck3_mod_rewrite\.task-tmp\g2live6",
+        "--candidate-root", r"Z:\ck3_mod_rewrite\.task-tmp\g2src",
+        "--artifact-root", r"Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01",
+        "--output", "ck3_autonomous_player/native_bridge/research/event12002_r6_event_adapter_saved_review.json",
+    ],
+    check=True,
+)
 ```

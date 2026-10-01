@@ -43,8 +43,18 @@
 
 必要时复现新场景，输出必须使用新的 artifact 目录：
 
-```powershell
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe ck3_autonomous_player\native_bridge\research\religion_reform12002_tenet_sources_mailbox_tests.py --artifacts <new-attempt> --provider-objects Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\tenet-sources\fixture
+```python
+import subprocess
+
+subprocess.run(
+    [
+        r"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe",
+        "ck3_autonomous_player/native_bridge/research/religion_reform12002_tenet_sources_mailbox_tests.py",
+        "--artifacts", "<new-attempt>",
+        "--provider-objects", r"Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\tenet-sources\fixture",
+    ],
+    check=True,
+)
 ```
 
 日/周报告字段：2026-10-01 / 2026-W40；完成了 all-source Tenet observer 的实际只读队列及完整返回包，以解除“仅当前缓存可观测”的输入缺口。readiness 为 static-ready，无本轮 RED；旧提供器矩阵未重复、未操作 CK3、未操作 Git。下一项由中央集成专用 named slot、Python/官方 SDK 单例，再由协调者进行 paused 实机等价性验收。未交付选择、创建、编辑或宗教 OODA。commit/push 由 root 统一执行。
