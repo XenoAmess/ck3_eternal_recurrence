@@ -2716,6 +2716,19 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_religion_context_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the current player's native Rite, Faith and Religion context."""
+        from .player_religion_context_private_transport import (
+            query_player_religion_context_private_v1,
+        )
+
+        return query_player_religion_context_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_family_obligations_private_v1(
         self, *, expected_revision: int, subject_character_id: int,
         candidate_character_id: int, request_matrilineal_option: bool = False,

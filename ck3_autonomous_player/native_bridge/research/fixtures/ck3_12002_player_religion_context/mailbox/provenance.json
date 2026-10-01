@@ -1,0 +1,66 @@
+{
+  "schema": "xar.ck3_12002_player_religion_context_mailbox_fixture_provenance.v1",
+  "producer": "actual source bindings -> TrySubmit -> owning ObservePumpDrain -> actual Core/provider -> Wait/Reclaim -> command_result serializer",
+  "source_fixture": true,
+  "paused_live": false,
+  "running_process_access": false,
+  "memory_and_native_callbacks": "synthetic owned native objects/calls; not observed CK3 state",
+  "game_version": "1.20.0.2",
+  "exact_build_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_religion_context.cpp": "1f9f487f1fba7c74bc75ccf72747acd56dc466cf7073d0b1ca112204cfcd6eb5",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp": "36b297e7d3891a709c94225ec7ee08478986009cc3f1bd056d8484c0d67aa30e",
+    "ck3_autonomous_player/native_bridge/src/protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_religion_mailbox.cpp": "ef39c2c882058325c141244a59f755a9a9fd184bf2f043beace5e511138c0dee",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_religion_mailbox_test.cpp": "4354ba2813bd3edd7e933c32ad21683054b808a1e3ec2cb192fa829ec1866e4f",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_religion_context.hpp": "620c7d0508d78035c9c1b189ebf5e12bde0b2ab19cf80a0167d4e068e4f2bc63",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_religion_mailbox.hpp": "a4e76664e2ed96ba3be9139821d8e955dfe408eb6d26d3a285751ec86a8d76da",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_query_mailbox.hpp": "c3ff170ce4811f9f0a08c6cf1b81aa76e7601272b1b8ca46c37e699e9ac11df5",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp": "7545c7751dec1e2b8cc638a98f1e7f73b6a2105f1dccd06122eed25da35cef07"
+  },
+  "payload_sha256": {
+    "current-zero.json": "b360491047450fb37bab2a4f755751783c381a5564af9c576a3e887a27fd65ee",
+    "signed-values.json": "93ac9c26b14d067fe8d090500cf10a95e7524821696413a01c8ea666e3190164",
+    "native-default.json": "aecb74999ae42a0e4faf6175a65878633cb72f1b9c278d19d5e47cefb1d48ace",
+    "legal-absent.json": "398dd3f643c7a0fcabf783b57fe2e024785cd16b7a0559b3e5e2e6c4684f2ad3",
+    "faith-unavailable.json": "1c90f0e2f612a62c7131c3b764f781760ea2fadce7bb075ee58508cb0461405a",
+    "fervor-unavailable.json": "5922b7a6f5da9041b387138a7aa395e40ed6ca1b7aae1c0baaf6eb8671e63b83"
+  },
+  "native_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\mailbox\\result.json",
+  "native_result_sha256": "404fb92878edcd38d8374a33fdd5b312c156f8d05194c13a11468b4e98c15d76",
+  "native_fixture_runs": [
+    {
+      "mode": "Od",
+      "returncode": 0,
+      "stdout": "PASS checks=41 actual_core=true actual_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true live=false",
+      "actual_wire_sha256": {
+        "current-zero.json": "b360491047450fb37bab2a4f755751783c381a5564af9c576a3e887a27fd65ee",
+        "signed-values.json": "93ac9c26b14d067fe8d090500cf10a95e7524821696413a01c8ea666e3190164",
+        "native-default.json": "aecb74999ae42a0e4faf6175a65878633cb72f1b9c278d19d5e47cefb1d48ace",
+        "legal-absent.json": "398dd3f643c7a0fcabf783b57fe2e024785cd16b7a0559b3e5e2e6c4684f2ad3",
+        "faith-unavailable.json": "1c90f0e2f612a62c7131c3b764f781760ea2fadce7bb075ee58508cb0461405a",
+        "fervor-unavailable.json": "5922b7a6f5da9041b387138a7aa395e40ed6ca1b7aae1c0baaf6eb8671e63b83"
+      },
+      "fixture_executable_sha256": "2deda72dfad756e86b81f063b7567d4929bd1ac767a696060114fa778e1a1c31"
+    },
+    {
+      "mode": "O2",
+      "returncode": 0,
+      "stdout": "PASS checks=41 actual_core=true actual_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true live=false",
+      "actual_wire_sha256": {
+        "current-zero.json": "b360491047450fb37bab2a4f755751783c381a5564af9c576a3e887a27fd65ee",
+        "signed-values.json": "93ac9c26b14d067fe8d090500cf10a95e7524821696413a01c8ea666e3190164",
+        "native-default.json": "aecb74999ae42a0e4faf6175a65878633cb72f1b9c278d19d5e47cefb1d48ace",
+        "legal-absent.json": "398dd3f643c7a0fcabf783b57fe2e024785cd16b7a0559b3e5e2e6c4684f2ad3",
+        "faith-unavailable.json": "1c90f0e2f612a62c7131c3b764f781760ea2fadce7bb075ee58508cb0461405a",
+        "fervor-unavailable.json": "5922b7a6f5da9041b387138a7aa395e40ed6ca1b7aae1c0baaf6eb8671e63b83"
+      },
+      "fixture_executable_sha256": "7a4a8b11768ded2d7dab814403ab91ad9fdd7800bd76ede74be55763015f8e76"
+    }
+  ],
+  "resolved_attempt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\mailbox-attempt-001-no-protocol",
+  "consumer_packet_adaptation": "dynamic request_id correlation only; no injected protocol/build/domain fields",
+  "boundary": "Uses existing offline primary mailbox permit. Named religion central capability registration, production driver/MCP wrappers and paused CK3 acceptance are separate next work."
+}

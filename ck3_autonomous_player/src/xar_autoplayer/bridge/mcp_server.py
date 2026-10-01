@@ -1558,6 +1558,16 @@ def create_server(
                 expected_revision=expected_revision, war_id=war_id, outcome=outcome,
             )
 
+    if getattr(driver, "allow_private_player_religion_context_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_context_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read current native Rite/Faith/Religion IDs, keys and raw resources."""
+            return driver.query_player_religion_context_private_v1(
+                expected_revision=expected_revision,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3337,6 +3347,10 @@ def parser() -> argparse.ArgumentParser:
         "--private-prisoner-ransom-action", action="store_true",
         help="enable an explicit private ransom using the current native collection quote",
     )
+    result.add_argument(
+        "--private-player-religion-context-query", action="store_true",
+        help="enable the private current-player native Rite/Faith/Religion context read",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3412,7 +3426,8 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_realm_law_crown_action
             or args.private_active_scheme_sway_action or args.private_council_action
             or args.private_faction_gift_query or args.private_faction_gift_action
-            or args.private_prisoner_ransom_action) and (
+            or args.private_prisoner_ransom_action
+            or args.private_player_religion_context_query) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
         raise ValueError("private nonwar MCP queries require native-headless stdio")
@@ -3466,6 +3481,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.private_prisoner_ransom_action:
         driver.allow_private_prisoner_collection_query = True
         driver.allow_private_prisoner_ransom_action = True
+    if args.private_player_religion_context_query:
+        driver.allow_private_player_religion_context_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

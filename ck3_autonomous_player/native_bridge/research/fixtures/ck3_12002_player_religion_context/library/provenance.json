@@ -1,0 +1,40 @@
+{
+  "schema": "xar.ck3_12002_player_religion_context_library_fixture_provenance.v1",
+  "producer": "actual native library reader and serializer with synthetic memory and call bindings",
+  "source_fixture": true,
+  "paused_live": false,
+  "running_process_access": false,
+  "game_version": "1.20.0.2",
+  "exact_build_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_religion_context.cpp": "1f9f487f1fba7c74bc75ccf72747acd56dc466cf7073d0b1ca112204cfcd6eb5",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_religion_context_test.cpp": "4e0d8ea42a2ecaab8bb04e29ed70ff3c155f3c66bcf6cd64f230f34dfa10344d",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_religion_context.hpp": "620c7d0508d78035c9c1b189ebf5e12bde0b2ab19cf80a0167d4e068e4f2bc63"
+  },
+  "payload_sha256": {
+    "current-zero.json": "cd4ff423c271a554dcc4990db319dedb22fd0d36e11204c297b59304034e1348",
+    "signed-values.json": "871fd9d833ad844764f1d5e62c07ddbb6c3aead6a188e95e4025023f5180047e",
+    "legal-absent.json": "dd9a20fe9e77994511b256a5eb4e7ce0ec5a48ac3d96adcaccc5283c06fa99a9",
+    "native-default.json": "8154f7202eb74fc590a13d80796b693eb394ebfc136888716d669dfbcc56fd2f",
+    "faith-unavailable.json": "5b60b2a9233f5781b0a0425111b11555ece7acc2f8dfa6abf41a53fef43b748e"
+  },
+  "native_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\provider\\result.json",
+  "native_fixture_runs": [
+    {
+      "mode": "Od",
+      "returncode": 0,
+      "stdout": "PASS checks=20 actual_provider=true actual_serializer=true live=false",
+      "actual_wire_cases": 5,
+      "executable_sha256": "5775b7f7b0a7fd3ebb03db900b974eac9f623af2847af82f437435d9d907333e"
+    },
+    {
+      "mode": "O2",
+      "returncode": 0,
+      "stdout": "PASS checks=20 actual_provider=true actual_serializer=true live=false",
+      "actual_wire_cases": 5,
+      "executable_sha256": "51b5ba25aa1bd53d31c05e739d512c06e33125d571a73fc1f0d4a2b38fdeeefd"
+    }
+  ],
+  "boundary": "These are library fixture values, not observed CK3 state or a completed mailbox/MCP query."
+}
