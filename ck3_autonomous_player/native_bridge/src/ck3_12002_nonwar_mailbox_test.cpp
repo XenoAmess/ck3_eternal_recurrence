@@ -120,6 +120,10 @@ void ExerciseMailbox(MainThreadQueryInstallEnvironmentV1 environment,
          environment.permitted_executor_religion_numeric_special_parameters12002);
   assert(mailbox.permitted_executor_sway_completion_termination12002 ==
          environment.permitted_executor_sway_completion_termination12002);
+  assert(mailbox.permitted_executor_religion_personal_parameters12002 ==
+         environment.permitted_executor_religion_personal_parameters12002);
+  assert(mailbox.permitted_executor_sway_completion_invalidation_reason12002 ==
+         environment.permitted_executor_sway_completion_invalidation_reason12002);
   assert(iat == reinterpret_cast<void *>(&XarMainThreadPeekMessageWHookV1));
   const auto return_rva = environment.build_profile->pump_exact_return_rva;
   for (std::size_t i = 0; i < 3; ++i) {
@@ -210,6 +214,8 @@ int main() {
   callbacks.religion_conversion_outcome = &Executor<1200255>;
   callbacks.religion_numeric_special_parameters = &Executor<1200256>;
   callbacks.sway_completion_termination = &Executor<1200257>;
+  callbacks.religion_personal_parameters = &Executor<1200258>;
+  callbacks.sway_completion_invalidation_reason = &Executor<1200259>;
   RegisterNonwarMailboxExecutorsV1(environment, callbacks);
   assert(environment.build_profile == profile);
   assert(environment.permitted_executor == &Executor<1>);
@@ -478,9 +484,19 @@ int main() {
 #else
   Check(environment.permitted_executor_sway_completion_termination12002, callbacks.sway_completion_termination, false, 1200257, selected);
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_personal_parameters12002, callbacks.religion_personal_parameters, true, 1200258, selected);
+#else
+  Check(environment.permitted_executor_religion_personal_parameters12002, callbacks.religion_personal_parameters, false, 1200258, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  Check(environment.permitted_executor_sway_completion_invalidation_reason12002, callbacks.sway_completion_invalidation_reason, true, 1200259, selected);
+#else
+  Check(environment.permitted_executor_sway_completion_invalidation_reason12002, callbacks.sway_completion_invalidation_reason, false, 1200259, selected);
+#endif
   ExerciseMailbox(environment, selected);
   const auto wrong = BindThreadRuntimeImage(0x100000, "unsupported", typed);
   assert(wrong.build_profile == nullptr);
-  std::cout << "PASS: all52 private slot mappings, " << selected.size()
+  std::cout << "PASS: all54 private slot mappings, " << selected.size()
             << " installed callbacks submit/drain, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
 }

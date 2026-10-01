@@ -23,6 +23,13 @@ std::size_t sway_calls = 0;
 std::size_t prisoner_calls = 0;
 std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
+std::array<std::size_t, 2> r6_calls{};
+[[maybe_unused]] const void *expected_sway_invalidation_reason_recorder = nullptr;
+constexpr std::array<std::string_view, 2> r6_steps{
+    "query-player-religion-personal-parameters-v1",
+    "query-sway-completion-invalidation-reason-v1-private"};
+constexpr std::array<std::string_view, 2> r6_outputs{
+    "personal-parameters-forwarded", "sway-invalidation-reason-forwarded"};
 std::array<std::size_t, 3> r5_calls{};
 [[maybe_unused]] const void *expected_sway_termination_recorder = nullptr;
 constexpr std::array<std::string_view, 3> r5_steps{
@@ -181,6 +188,19 @@ void CheckForwarded(const game::GameAdapter &adapter,
   Check(step == r5_steps[index], "R5 readonly handler matches its exact canonical selector");
   ++r5_calls[index];
   serialized = r5_outputs[index];
+  return true;
+}
+
+[[maybe_unused]] bool R6ReadonlySpy(std::size_t index,
+    const game::GameAdapter &adapter, ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == r6_steps[index], "R6 readonly handler matches its exact canonical selector");
+  ++r6_calls[index];
+  serialized = r6_outputs[index];
   return true;
 }
 
@@ -629,6 +649,41 @@ bool HandleSwayCompletionTerminationV1(const game::GameAdapter &adapter,
 }
 #endif
 
+// R6 two readonly domain spies: existing provider and parser matrices are reused.
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+bool IsPlayerReligionPersonalParametersPrivateStep12002(std::string_view step) noexcept {
+  return step == r6_steps[0];
+}
+bool ExecutePlayerReligionPersonalParametersMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionPersonalParametersPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return R6ReadonlySpy(0, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+bool ExecuteSwayCompletionInvalidationReasonMailboxV1(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandleSwayCompletionInvalidationReasonV1(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const SwayInvalidationReasonRecorder12002 &recorder,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  Check(&recorder == expected_sway_invalidation_reason_recorder,
+        "Sway invalidation query receives the fixture-owned long-lived recorder identity");
+  Check(expected.state->sway_invalidation_reason_recorder == &recorder,
+        "Sway invalidation query preserves its worker state recorder binding");
+  return R6ReadonlySpy(1, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
 } // namespace xar::ck3_12002
 
 int main() {
@@ -684,6 +739,9 @@ int main() {
   SwayTerminationRecorder12002 owned_sway_termination_recorder{};
   state.sway_termination_recorder = &owned_sway_termination_recorder;
   expected_sway_termination_recorder = &owned_sway_termination_recorder;
+  SwayInvalidationReasonRecorder12002 owned_sway_invalidation_reason_recorder{};
+  state.sway_invalidation_reason_recorder = &owned_sway_invalidation_reason_recorder;
+  expected_sway_invalidation_reason_recorder = &owned_sway_invalidation_reason_recorder;
   Check(executors.sway_state == &ExecuteActiveSwayMailbox12002, "Sway query callback registered");
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
   Check(executors.sway_action == &ExecuteActiveSwayMailbox12002, "Sway formal callback registered");
@@ -793,6 +851,16 @@ int main() {
   Check(executors.sway_completion_termination == &ExecuteSwayCompletionTerminationMailboxV1, "sway_completion_termination R5 callback registered");
 #else
   Check(executors.sway_completion_termination == nullptr, "disabled sway_completion_termination R5 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+  Check(executors.religion_personal_parameters == &ExecutePlayerReligionPersonalParametersMailbox12002, "religion_personal_parameters R6 callback registered");
+#else
+  Check(executors.religion_personal_parameters == nullptr, "disabled religion_personal_parameters R6 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  Check(executors.sway_completion_invalidation_reason == &ExecuteSwayCompletionInvalidationReasonMailboxV1, "sway_completion_invalidation_reason R6 callback registered");
+#else
+  Check(executors.sway_completion_invalidation_reason == nullptr, "disabled sway_completion_invalidation_reason R6 callback absent");
 #endif
   Check(executors.council == nullptr && executors.law_action == nullptr &&
         executors.feast_open == nullptr && executors.factions == nullptr &&
@@ -1012,6 +1080,20 @@ int main() {
 #endif
   Check(!IsNonwarPrivateStep12002(std::string(r5_steps[2]) + "-unregistered"),
         "R5 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+  exercise(r6_steps[0], true, r6_outputs[0], R"json({"expected_snapshot_revision":916,"expected_revision":916})json");
+#else
+  exercise(r6_steps[0], false, "", R"json({"expected_snapshot_revision":916,"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r6_steps[0]) + "-unregistered"),
+        "R6 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  exercise(r6_steps[1], true, r6_outputs[1], R"json({"expected_revision":916,"actor_character_id":29829,"target_character_id":43699,"scheme_instance_id":0,"after_sequence":7})json");
+#else
+  exercise(r6_steps[1], false, "", R"json({"expected_revision":916,"actor_character_id":29829,"target_character_id":43699,"scheme_instance_id":0,"after_sequence":7})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r6_steps[1]) + "-unregistered"),
+        "R6 readonly selector requires an exact match");
   exercise("query-unregistered-router-fixture", false, "");
   Check(!IsNonwarPrivateStep12002("query-active-scheme-sway-v1-private-43699"),
         "obsolete Sway query prefix not selected");
@@ -1180,6 +1262,22 @@ int main() {
         "sway_completion_termination R5 selector obeys the selected build flag");
   std::size_t r5_total = 0;
   for (const auto value : r5_calls) r5_total += value;
+  Check(r6_calls[0] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_personal_parameters R6 selector obeys the selected build flag");
+  Check(r6_calls[1] ==
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+        1,
+#else
+        0,
+#endif
+        "sway_completion_invalidation_reason R6 selector obeys the selected build flag");
+  std::size_t r6_total = 0;
+  for (const auto value : r6_calls) r6_total += value;
   std::size_t readonly_total = 0;
   for (const auto value : readonly_calls) readonly_total += value;
   std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
@@ -1190,6 +1288,7 @@ int main() {
             << ",\"new_readonly_selectors_forwarded\":" << readonly_total
             << ",\"R4_readonly_selectors_forwarded\":" << r4_total
             << ",\"R5_readonly_selectors_forwarded\":" << r5_total
+            << ",\"R6_readonly_selectors_forwarded\":" << r6_total
             << ",\"fallback_calls\":" << fallback_calls
             << ",\"live_verified\":false,\"ck3_touched\":false}\n";
 }

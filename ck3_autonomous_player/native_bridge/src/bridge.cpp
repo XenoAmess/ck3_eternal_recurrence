@@ -377,8 +377,21 @@ static xar::ck3_12002::SwayTerminationRecorder12002
     g_sway_completion_termination_recorder12002{};
 static xar::ck3_12002::SwayTerminationInstall12002
     g_sway_completion_termination_install12002{};
+struct SwayInvalidationReasonSinkContext12002 {
+  xar::ck3_12002::SwayInvalidationReasonBindings12002 bindings{};
+  xar::ck3_12002::SwayInvalidationReasonRecorder12002 recorder{};
+};
+static SwayInvalidationReasonSinkContext12002
+    g_sway_invalidation_reason_sink12002{};
+static void CaptureSwayInvalidationReasonSink12002(
+    void *opaque, const void *effect, const void *effect_context) noexcept {
+  auto &context = *static_cast<SwayInvalidationReasonSinkContext12002 *>(opaque);
+  (void)xar::ck3_12002::CaptureAndRecordSwayInvalidationReason12002(
+      context.bindings, effect, effect_context, context.recorder);
+}
 struct SwayCompletionExecutionWorkerLifetime12002 {
   ~SwayCompletionExecutionWorkerLifetime12002() noexcept {
+    g_sway_invalidation_reason_sink12002.recorder.SetObserverAttached(false);
     (void)xar::ck3_12002::UninstallSwayCompletionTermination12002(
         g_sway_completion_termination_install12002);
     (void)xar::ck3_12002::UninstallSwayCompletionExecution12002(
@@ -11416,6 +11429,12 @@ void RunConnectedSession(
           bool revision_parsed = status_only;
           bool current_revision_allowed = false;
           if (!status_only) {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionPersonalParametersPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionPersonalParametersRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
             if (xar::ck3_12002::IsPlayerReligionNumericSpecialParametersPrivateStep12002(step)) {
               current_revision_allowed = true;
@@ -22993,6 +23012,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
   if (new_build)
     state.nonwar_private12002.sway_termination_recorder =
         &g_sway_completion_termination_recorder12002;
+  if (new_build)
+    state.nonwar_private12002.sway_invalidation_reason_recorder =
+        &g_sway_invalidation_reason_sink12002.recorder;
 #endif
   state.zhongguo_scoreboard_provider_session_id = NewProviderSessionId();
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
@@ -23073,11 +23095,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   }
   if (game->descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64") {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
-    if (!xar::ck3_12002::InstallSwayCompletionExecution12002(
+    g_sway_invalidation_reason_sink12002.bindings =
+        xar::ck3_12002::BindSwayInvalidationReasonImage12002(
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+            game->descriptor().executable_sha256);
+    if (!xar::ck3_12002::InstallSwayCompletionExecutionWithSecondarySink12002(
             reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
             game->descriptor().executable_sha256,
             g_sway_completion_execution_recorder12002,
-            g_sway_completion_execution_install12002))
+            g_sway_completion_execution_install12002,
+            &CaptureSwayInvalidationReasonSink12002,
+            &g_sway_invalidation_reason_sink12002))
       return FALSE;
     if (!xar::ck3_12002::InstallSwayCompletionTermination12002(
             reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
@@ -23085,6 +23113,7 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             g_sway_completion_termination_recorder12002,
             g_sway_completion_termination_install12002))
       return FALSE;
+    g_sway_invalidation_reason_sink12002.recorder.SetObserverAttached(true);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     const auto cost_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));

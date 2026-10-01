@@ -64,6 +64,12 @@
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12002_sway_completion_termination_mailbox.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_doctrine12002_personal_parameters_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+#include "xar_bridge/ck3_12002_sway_completion_invalidation_reason_mailbox.hpp"
+#endif
 #include "xar_bridge/game_adapter.hpp"
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
 #include "xar_bridge/ck3_12002_council_transport.hpp"
@@ -97,6 +103,7 @@ struct NonwarPrivateState12002 {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   ActiveSwayState12002 sway{};
   const SwayTerminationRecorder12002 *sway_termination_recorder = nullptr;
+  const SwayInvalidationReasonRecorder12002 *sway_invalidation_reason_recorder = nullptr;
   const SwayExecutionRecorder12002 *sway_execution_recorder = nullptr;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
