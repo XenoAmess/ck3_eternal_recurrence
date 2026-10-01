@@ -2,6 +2,42 @@
 
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
+## 07:43 真实续写：建设新PID读回及 v8 三项静态交付
+
+2026-10-02 07:43（Asia/Shanghai）补入实际Murchad cold03：GAME98664于07:27:15正常停止，h2001/save SHA256 `22b95ec228d48b85eb1e8842f18dd07fecb94eeb5ce472caf213e15aafc306b9`，raw53327160未推进。新PID独立construction receipt仍是action `construction-submit-f0ff9299cc8341af93cd62957c60ecbd`、tuple528/48/604/1，原150金支出、remaining work109500000/divisor0及verified施工中状态保留；下一成功正式turn消费仍open，未完工、未计净收益或M4跨episode窗口。
+
+Family实际五候选的首两行ReadRaw失败已定位，首继承36403存在且无partner：活31749的历史配偶31596已亡1082.11.13，活47078的历史配偶32513已亡1087.7.5；其余三候选available。当前living API误要求这些历史亡peer可读，导致heir_relationship_unavailable，不能将此错误标签解释为继承人缺失。六行最小修复只从API current-living数组投影排除已亡前配偶，保留完整positive ID、原关系数组、五候选、scalar/gate/年龄/费用及原策略。旧生产fixture实际FAIL、新最终fixturePASS；修复仍static-ready，新DLL同档paused五行实测待完成，无婚姻proposal或信用晋级。
+
+v8另外两包已静态交付：Spy只读15文件、Python22/native5聚焦GREEN，零live/任命/天数/M4信用；Feast ordinary route17文件、四实际adapter编译及生产Start core/serializer/SDK/DTO/consumer和原生命周期共34 Python测试GREEN，未Start/扣款。v7 close_family正成员与vassals负成员实证继续有效，新ordinary路由与Spy实测待组合v8。G2仍3/8、恢复191/rogue243、Robert3153/36524，Murchad新增日0；v8源冻结/build独立推进，本轮仅报告交付。
+
+证据根 `artifacts/g2-maintainer-2026-10-02/resume-12003/`：`m4-construction/ACTUAL-MURCHAD-COLD03-PROOF.json`、`m5-family/murchad-h1999-candidate-relationships`、`m5-family/widow-production-regression-final-new/result.json`（旧FAIL复用`widow-production-regression/old/run.log`）、`m4-council/spymaster-readonly/REPORT-FIELDS.json`、`m6-feast/guest-route-next/ordinary-route-static-ready.json`；原Family与Feast专题同步真实API历史边界/原生树和待实机分支。旧RED、原存档与已提交动作均保留。
+
+## 07:19 收到 Murchad 正式回合结果：两次可见操作后婚姻观测阻断
+
+2026-10-02 07:19（Asia/Shanghai）收到正式16-requested run回执后真实追加，替代07:11等待结果口径。`actual-v7-nonwar-16turns-01` 实际GAME101276于07:05:08→07:06:11运行，请求16、返回/尝试5、成功step4、可见新动作2：turn1生活方式focus提交→turn2独立材料receipt，turn3建设提交→turn4独立材料receipt。counts gameplay4包括两条只读receipt，不能当成四次新动作。raw53327160始终不变，Murchad新增日0；正常cleanup后GAME101276已退出。原first/cold GREEN与原full1986/save1984仍保留。
+
+建设实机 `construction-submit-f0ff9299cc8341af93cd62957c60ecbd` 已applied、postcondition_verified=true、in_progress：`cereal_fields_01`/type604、barony528/province48/slot1，原occupant572，属于已有占用槽。独立金币raw76862522→61862522，实际扣150金币；remaining work109500000/divisor0为本帧原生值。施工尚未完工，目标著录0.5/月不能记为净新增收益。该结果属于Murchad31853原episode，不能与rogue29829的Sway合并为M4同episode治理窗口。
+
+turn5 planning记 `construction_receipt_consumed`，但one of five exact marriage outcome or lineage reads is unavailable，status=blocked、step/result=null，不能记成功下一turn或新cold。此前consumer在unavailable分支没有保留具体family失败raw，本回执无法指认候选或provider；这是实际观测阻点，区别于前面的外置version-label harness RED。Family owner沿root一次targeted只读采样补齐当前outcome/lineage材料，当前诊断cold结果待回执；没有婚姻proposal、没有建设重发。
+
+原样冻结的最后Murchadpair为full1999/saveh1997/raw53327160，actor31853/episode `native-31853-af642d76cb41`、原dynasty_continuity/reconciled_successions0及construction pending sidecar保留。save105,030,436B/SHA256 `541e17b231a8eb19bf7473550a4cc76eb350e9a88607bef0899d4228dcd78263`；窄RED proof SHA256 `942fa957128d8b9b3893c759b8ffb7cc784275f502c2d0e8a68087deb95c1343`。没有日期推进、自然继承、政府类型或广seed资格新增，M7仍in_progress；G2 3/8、Robert3153/36524、恢复191/rogue243保持。两个生产动作/材料已可见，完整目标导向续跑因真实family输入阻断仍未收口。
+
+证据根仍为 `artifacts/g2-maintainer-2026-10-02/resume-12003/`：`m7-murchad/actual-v7-nonwar-16turns-01/native-auto-run-report.json`、`m7-murchad/nonwar-red-pair-proof-0b489e68-v7-01/M7-MURCHAD-NONWAR-RED-PROOF.json`及`REPORT-FIELDS.json`、`m5-family/murchad-v7-actual-blocker.md`。建设与Family owner的窄交付字段合并于此，不重复读取全domain frame或已充分验证的矩阵；root继续源施工/freeze，报告可随后独立提交，保持高并发。
+
+## 07:11 真实续写：v7实际业务与第二封建存档暂停冷恢复
+
+2026-10-02 07:11（Asia/Shanghai）据已返回实机回执续写。代码 `af1ba8e` 与报告 `0b489e680b26d201547803de611d3d368e9bdc75` 已普通推送，[准确Official Runner CI run36936656844](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36936656844) 于06:45:51 SUCCESS。v7实际runtime绑定933个consumer源输入，native/preflight正常；初次外置全仓clean检查误含5个历史promo JSON，root移除该误阻断后沿真实runtime输入绑定继续，没有把这些文件当游戏故障。
+
+G2新GAME111460在raw53175192 cold Sway读取GREEN：同actor29829/target33433/full50331723/gen3，255/355、CanContinue=true，较原v6 raw53174952的245增加10单位，仅记这10实际日区间。三attached ring为空/无gap，两modifier可读且缺席，好感仍−25、无phase/终态/收益。六Sway查询没有当前root角色；此前direct-vassal证据仍属于v6旧日期。该包保存h621/72,854,791B/SHA256 `68d078d522272bfef80bc6300659fff601baf74cca28f084e5f81aff195436c4`。
+
+同PID fresh Feast candidate37502仍signed join+200000、行程19日、早137日到达。named vassals provenance实际active但raw7/filter0/member=false；完整负证据保留。随后 `close-family-v7-live-01` 实际close_family active/member=true、raw38/filter19，正负类别分别可读，不能用此前聚合人数代替membership。ordinary-route在native Start/Python consumer的最小施工继续，尚未Start/扣款/完成生命周期。close_family只读正常另存最新G2 h623/raw53175192、72,854,955B/SHA256 `40167f37f4ebbfe393b83abb9cc2db6945699adf853b6d2b99633139ed7bf738`；h621是此前Sway锚点，保存没有新增日期。root于06:55:49正常停止GAME111460、exit0。恢复191日/rogue243日、Robert3153/36524和G2 3/8不变；v7诊断已实际加载，旧读取RED及未知guard不因这些成功查询而改写。
+
+M7第二seed Murchad完成真实官方prepare/verify、4个opaque原文件按原SHA复制及rebind，原full1986/saveh1984保留。first GAME38316 `first-paused-02` GREEN，raw53327160、actor31853/episode `native-31853-af642d76cb41`、ordinary xar_off；既有消费者正常产出并消费 `dynasty_continuity`/reconciled_successions0、feudal_government/core_landed/44 features，观察到下一plan为life-advance但未执行。正常保存full1987/h1987，save104,905,248B/SHA256 `3fb69354ffa33bc60c193000175ac4569ed625c77f42766a4a3bb446a85c8451`。初次 `first-paused-01` RED为外置helper把native语义版本1.20.0.3与含Steam后缀的artifact label误比；当时exact SHA/build-match真实通过。最小外置修正后同PID继续，保留原traceback/hello，不算ABI或capability RED。
+
+GAME38316正常停止后，新GAME98452 `cold-paused-02` GREEN，full1989/save anchor1987，new PID/goal/next plan/government/checkpoint source五项真实匹配，raw53327160仍未推进；root于07:05:03正常停止、exit0。Murchad窄proof SHA256 `59082c3e7f69d807f16eea329b8f0e4a2ff141d40f7cc30a0b789ab71011c103`。目前是两个既有feudal seeds的same-ruler paused checkpoint/newPID cold `production-live primitive`，没有新增government type、自然继承、seed资格或完整M7信用；本段Murchad新增日0，Robert/rogue不混加。后续 `actual-v7-nonwar-16turns-01` 已启动，实际turns/days尚待结果，返回后按真实时间另录，不能预填16日或资格。
+
+证据根 `artifacts/g2-maintainer-2026-10-02/resume-12003/`：`official-ci-0b489e68/terminal-status.json`、`runtime-freeze-0b489e68-v7.json`、`m4-sway/v7-cold-01/result.json`与`v7-after-10d-proof.json`、`m6-feast/guest-route-next/v7-candidate-vassals-negative-proof.json`、`close-family-v7-live-01/result.json`；Murchad为 `m7-murchad/actual-v7-prepare-01`/`actual-v7-verify-01`/`actual-v7-stage-pair-01`/`actual-v7-rebind-01`，`archive-root-review-0b489e68-v7-01/first-paused-02/result.json`与`cold-paused-02/result.json`，以及 `paused-cold-proof-0b489e68-v7-01/M7-MURCHAD-PAUSED-COLD-PROOF.json`。继续高并发文件施工和各域材料消费，root唯一实机/Git；完成合同和分母保持原定义。
+
 ## 06:39 真实续写：191 日、v6 业务材料与 v7 诊断构建
 
 本段于2026-10-02 06:39（Asia/Shanghai）根据已读取的实际回执续写。生产来源 `dcd61a5b7d6b94536cab3b0272e220d8f211b1b9`/v6 的 `formal-run-v6-06` 实际推进10日，raw53174952→53175192，随后campaign-root读取RED；整批原error保留。累计恢复191日、独立rogue243日；Robert3153/36524、G2 3/8不变，不报总体百分比。成功10日已独立保存 `checkpoint-v6-10d-01`：full619/h619、paused、actor29829/原rogue episode，save72,854,757B/SHA256 `9fc24912e58682f763a0218553ffa48f67d386f452bb14a32559d35414d9a79e`，driver6,722,366B/SHA256 `c7027366a82525006a5cd0cb27326a1c8cd7f960b69da3b39af6960b7e4c99f1`。root已正常停止GAME PID97800，supervisor exit0；后续从此保存点继续，已保存日数不重复推进。
