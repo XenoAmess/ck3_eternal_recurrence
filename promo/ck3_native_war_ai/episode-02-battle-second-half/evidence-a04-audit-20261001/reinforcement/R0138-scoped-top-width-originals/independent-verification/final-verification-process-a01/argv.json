@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-R0138-readonly-validation-attempt-01\\validate_r0138_a02.py",
+    "--verify"
+  ],
+  "environment_overrides": {
+    "PYTHONUTF8": "0",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "read_only_originals_verifier": true,
+  "native_game_screen_bus_requests": false
+}

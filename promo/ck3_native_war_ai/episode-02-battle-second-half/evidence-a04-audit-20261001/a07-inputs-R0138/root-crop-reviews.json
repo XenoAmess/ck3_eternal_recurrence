@@ -1,0 +1,112 @@
+{
+  "schema": "ck3.a07.root-original-tooltip-crops/v1",
+  "run_id": "R0138",
+  "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+  "human_video_1x_review": false,
+  "before": {
+    "sample": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+      "bytes": 17251,
+      "sha256": "22637EF5AC6D8316A933DC856EE5B7072CC51852A897754767ED44732A24E0CB"
+    },
+    "tooltip": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+      "bytes": 4723967,
+      "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+    },
+    "crop_xyxy": [
+      1040,
+      980,
+      1540,
+      1265
+    ],
+    "crop_review": {
+      "reviewer": "Codex /root (direct original-pixel crop inspection)",
+      "reviewed_at": "2026-10-01T03:16:20.499218+00:00",
+      "direct_original_pixel_review": true,
+      "contains_width_tooltip": true,
+      "source_sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33",
+      "crop_xyxy": [
+        1040,
+        980,
+        1540,
+        1265
+      ]
+    },
+    "actual_observation": {
+      "battle_title": "墨西拿之战",
+      "tooltip_title": "相对军力",
+      "battle_width": 1480,
+      "base_width": 1645,
+      "forest_percent": 90,
+      "top_counts": [
+        893,
+        1603
+      ],
+      "tooltip_counts": [
+        827,
+        1546
+      ],
+      "original_pixel_crop": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\root-crop-candidates\\before-width-crop-candidate.png",
+        "bytes": 179685,
+        "sha256": "A711761912E268DBF7C1C00CA0093E58DCD9C24568F948CF720E4564140DB1C9"
+      },
+      "date_and_pause_bound_in_current_original_full_frame": true,
+      "whole_panel_or_numeric_actor_army_UI_claimed": false
+    }
+  },
+  "after": {
+    "sample": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-sample.json",
+      "bytes": 17208,
+      "sha256": "0FDF85253DC4F5E7F068ADC54F7DB5144002A47730F28D26841DCC36DB5CCD04"
+    },
+    "tooltip": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+      "bytes": 4795457,
+      "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+    },
+    "crop_xyxy": [
+      1040,
+      980,
+      1540,
+      1265
+    ],
+    "crop_review": {
+      "reviewer": "Codex /root (direct original-pixel crop inspection)",
+      "reviewed_at": "2026-10-01T03:16:20.667780+00:00",
+      "direct_original_pixel_review": true,
+      "contains_width_tooltip": true,
+      "source_sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA",
+      "crop_xyxy": [
+        1040,
+        980,
+        1540,
+        1265
+      ]
+    },
+    "actual_observation": {
+      "battle_title": "墨西拿之战",
+      "tooltip_title": "相对军力",
+      "battle_width": 2220,
+      "base_width": 2467,
+      "forest_percent": 90,
+      "top_counts": [
+        827,
+        4106
+      ],
+      "tooltip_counts": [
+        740,
+        4047
+      ],
+      "original_pixel_crop": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\root-crop-candidates\\after-width-crop-candidate.png",
+        "bytes": 174973,
+        "sha256": "585E82CD918A4A08905130B1D3DCE84BFA3DE48EED1736F13B4068A161DB8254"
+      },
+      "date_and_pause_bound_in_current_original_full_frame": true,
+      "whole_panel_or_numeric_actor_army_UI_claimed": false
+    }
+  }
+}

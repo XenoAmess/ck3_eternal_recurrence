@@ -1,0 +1,442 @@
+{
+  "schema": "ck3.a07.independent-offline-composer-review/v1",
+  "created_at_utc": "2026-10-01T02:25:32.136392+00:00",
+  "reviewer": "/root/a04_other_mechanisms",
+  "result": "PASS_OFFLINE_SCOPE_ONLY",
+  "reviewed_inputs": [
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\compose_evidence_a07.py",
+      "bytes": 68592,
+      "sha256": "F7001557BB8F18E6C2BCFCC93121012B440E4F73F41AED6A72A0E51FCC65C0A6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\composer-handoff.json",
+      "bytes": 5344,
+      "sha256": "CE89A11FE22DB6B82D93D7746A71602C9545BE6346ACBA26CAB7F31A8E1DD6FA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-26-scoped-supplement-sdk\\paused-pair-controller\\before-sample.json",
+      "bytes": 14173,
+      "sha256": "85306C9AC28BE74B7171C45E730471C04E8AA1AF15C25669535676FCAA3B9F59"
+    }
+  ],
+  "supersedes_failed_review_by_exact_changed_source_only": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-composer-independent-review-other-a01\\independent-composer-review.json",
+  "isolated_functions_tested": [
+    "RefChecks",
+    "chunk_mapping",
+    "native_call_body",
+    "original_control_values",
+    "original_snapshot_values",
+    "plan",
+    "pointer",
+    "require",
+    "validate_capture_identity",
+    "validate_inputs",
+    "validate_k025",
+    "validate_stage"
+  ],
+  "offline_cases": [
+    {
+      "name": "baseline_original_before_receipts_with_explicit_test_crop",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": null,
+      "offline_test_fixture_only": true,
+      "summary": {
+        "date_raw": 53146488,
+        "actor": 29829,
+        "army_id": 18,
+        "width": 1480
+      }
+    },
+    {
+      "name": "bad_PNG_hash_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "input identity differs: C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-composer-independent-review-other-a03\\offline-fixtures\\bad_PNG_hash_refused\\paused-pair-controller\\before-tooltip.png",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "no_crop_review_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "root direct crop review must bind this exact PNG and rectangle",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "crop_SHA_mismatch_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "root direct crop review must bind this exact PNG and rectangle",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "crop_outside_original_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "crop outside original image dimensions",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "294_as_width_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "actual tooltip and same-pause native width differ",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "312_as_width_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "actual tooltip and same-pause native width differ",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "no_original_root_review_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "before original pixels require root direct review",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "after_pixels_summary_revision_drift_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "before state changed around the original screenshot",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "fullpanel_claim_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": false,
+      "error": "before scope boundary differs: full_battle_panel",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "derived_date_changed_but_raw_JSON_and_PNG_still_before",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": true,
+      "error": "after summary differs from original snapshot JSON body",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "derived_actor_changed_but_raw_JSON_actor_unchanged",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": true,
+      "error": "before summary differs from original snapshot JSON body",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "derived_army_changed_but_raw_JSON_army18_unchanged",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": true,
+      "error": "before summary differs from original snapshot JSON body",
+      "offline_test_fixture_only": true,
+      "summary": null
+    },
+    {
+      "name": "complete_pair_with_fake_plus24_and_R9999_caption_against_original_R0134_before_receipts",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "semantic_counterexample": true,
+      "error": "after summary differs from original snapshot JSON body",
+      "offline_test_fixture_only": true,
+      "raw_after_receipt_is_original_before": true,
+      "both_UI_PNGs_are_copied_original_before": true
+    },
+    {
+      "name": "original_snapshot_body_positive",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "original_control_body_positive",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_actor999",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original snapshot Actor29829 identity differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_wrong_war",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original snapshot War4 identity differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_wrong_player_army",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original snapshot Army18 census differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_not_paused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original snapshot date/paused/revision provenance differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_snapshot_id_revision_mismatch",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original snapshot date/paused/revision provenance differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_snapshot_backend_mismatch",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original snapshot backend/provenance differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_control_wrong_combat",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original control Actor/Army/Combat/Province identity differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_control_wrong_native_revision",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original control revision/date provenance differs from original snapshot",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_control_source_date_mismatch",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original control revision/date provenance differs from original snapshot",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "raw_control_owner999",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original control Actor/Army/Combat/Province identity differs",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "transport_valid_original_binding",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "transport_wrong_request_tool",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original native request tool/arguments differ",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "transport_wrong_request_arguments",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original native request tool/arguments differ",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "transport_reply_RED",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original native response transport did not complete",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "transport_missing_body",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "native response lacks JSON body",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "transport_wrong_bound_request_hash",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "input identity differs: C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-composer-independent-review-other-a03\\offline-fixtures\\transport\\transport_wrong_bound_request_hash\\ck3-output\\interactive-requests\\OFFLINE_ONLY.json",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_identity_positive_offline",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_caption_R9999_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "caption run-id differs from actual capture-report/controller run-id",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_actual_run_id_mismatch_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "caption run-id differs from actual capture-report/controller run-id",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_completed_only_one_sample_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual controller did not complete two samples and one real date advance",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_controller_RED_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual controller remains RED; cannot admit an invented pair",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_controller_sample_substitution_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual controller after sample differs from the explicit admitted sample",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_no_real_date_advance_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual controller did not complete two samples and one real date advance",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_same_original_PNG_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original before/after panel PNG bytes are identical; stale/date-substitution refused",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_same_original_RGB_reencoded_PNG_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "original before/after panel PNG decoded pixels are identical; metadata/re-encoding cannot substitute a new frame",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_reused_original_native_JSON_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "same original native JSON bytes reused across different dates",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_nonempty_cleanup_inventory_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual capture cleanup inventory is not empty",
+      "offline_test_fixture_only": true
+    },
+    {
+      "name": "capture_no_day_receipt_and_no_ambiguity_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "actual controller lacks original one-day action receipt or recorded ambiguity",
+      "offline_test_fixture_only": true
+    }
+  ],
+  "blocking_findings": [],
+  "nonblocking_source_contract_checks": {
+    "three_chunks_recompiled_and_other21_exact_copy": "source enforces EXPECTED_CHUNKS plus copied MP4 SHA and bytes",
+    "all24_ASS_identical": "source compares exact ASS bytes after compilation/copy",
+    "audio_timing_and_k035_inset": "timeline exact copied, TTS trimmed refs checked, k035 affected chunk excluded, final a04 AAC -c copy",
+    "right_column_old_claims": "width cards preserve diagram fields and pixel-diff outside approved left/footer rectangles; extend_catalog restores exact prior catalog after stripping appended facts",
+    "no_automatic_human_signoff": "no signoff function/CLI; outputs not-provided and production_clean_admission=false",
+    "native_config_snapshot": "prepare calls formal toolchain start-run on created config then validate; actual manifest/snapshot remains future work",
+    "failure_retention": "main creates phase-failure and append failed phase where native manifest exists; partial files retained and preserve --failed available",
+    "current_formal_wheel": "prepare queries fresh formal release, requires installed version and wheel release digest; installed distribution archive SHA is compared to the freshly supplied formal release wheel SHA; install URL is not required to match because identical wheel bytes may be installed locally",
+    "actual_prepare_render_or_preservation": "not executed by this review"
+  },
+  "no_actual_new_run_or_encoding_or_FFmpeg_TTS": "true",
+  "no_game_screen_Steam_cloud_source_edits": true,
+  "all_test_review_booleans_and_crops_are_explicit_OFFLINE_fixtures_not_actual_admission": true,
+  "writes_create_only_under_this_review_directory": true
+}

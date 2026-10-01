@@ -1,0 +1,41 @@
+{
+  "status": {
+    "schema_version": 1,
+    "server_instance_id": "d862d8b8-28a5-416a-91be-6ede22456208",
+    "target_id": "ck3-local-screen-identity-20260930",
+    "identity": {
+      "token_user": "1",
+      "desktop": "WinSta0\\Default",
+      "machine": "DESKTOP-3FEVHD2",
+      "process_id": 3648
+    },
+    "identity_matches_profile": true,
+    "process_gates": {
+      "bridge_injector.exe": [],
+      "ck3.exe": [],
+      "dll_injector.exe": [],
+      "dowser.exe": [],
+      "ffmpeg.exe": [],
+      "obs64.exe": [],
+      "xar_ck3_bridge_injector.exe": []
+    },
+    "process_gate_errors": {},
+    "jobs": [
+      {
+        "job_id": "f1666444-a4f4-4651-be16-5b5492399fea",
+        "request_id": "jd11-manual-contract-20261001-a01",
+        "job_name": "episode02-jd11-paused-pair",
+        "pid": 16432,
+        "state": "exited",
+        "exit_code": 0,
+        "started_unix": 1790823243.1519022,
+        "stdout_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-37-manual-contract-profile\\operator-state\\jobs\\f1666444-a4f4-4651-be16-5b5492399fea\\stdout.log",
+        "stderr_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-37-manual-contract-profile\\operator-state\\jobs\\f1666444-a4f4-4651-be16-5b5492399fea\\stderr.log",
+        "available_controls": []
+      }
+    ]
+  },
+  "controller_exit_code": 0,
+  "human_video_1x_review": false,
+  "recorder_requested": false
+}

@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-01T03:14:31.216726+00:00",
+  "actual_mode": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "desktop_size": [
+    1024,
+    768
+  ],
+  "original_image_size": [
+    1024,
+    768
+  ],
+  "verified": true,
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\display-restore-original-a01\\original-desktop-after-restore.png",
+    "bytes": 598748,
+    "sha256": "574D168F1F6D0A1CA4FBE9403C3A765A550B3E592496DAAA442E277FD8D95BD4"
+  },
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

@@ -1,0 +1,484 @@
+{
+  "schema": "xar.jd11.scoped-top-width.sample/v1",
+  "created_at": "2026-10-01T03:06:00.947483+00:00",
+  "stage": "before",
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "scoped_admission": {
+    "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+    "required_regions_admitted": true,
+    "full_battle_panel": false,
+    "full_panel_lower_composition_gap_open": true,
+    "numeric_UI_actor_army_claimed": false,
+    "actor_army_native_bound_only": true,
+    "whole_G2_complete": false,
+    "visible_values": {
+      "battle_title": "墨西拿之战",
+      "paused": true,
+      "date_text": "公元1066年12月14日",
+      "left_coat_context": "蓝底红白菱形防御方",
+      "right_coat_context": "绿底金色城塔进攻方",
+      "player_soldiers": 893,
+      "opponent_soldiers": 1603,
+      "tooltip_title": "相对军力",
+      "width_label_text": "战线宽度:1480",
+      "battle_width": 1480,
+      "tooltip_player_soldiers": 827,
+      "tooltip_opponent_soldiers": 1546,
+      "base_width": 1645,
+      "forest_percent": 90
+    }
+  },
+  "scoped_native_context": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-post-hover-review-scoped-native-context.json",
+    "bytes": 3120,
+    "sha256": "D4B6B56ADEA9F99CC9150DCE2D0032E6BBF6180E32C4FD5158BE6A65E7953BA2"
+  },
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "actor_army_native_bound_only": true,
+  "numeric_UI_actor_army_claimed": false,
+  "receipts": {
+    "snapshot": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-hover-review-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-hover-review-snapshot.json",
+        "bytes": 483378,
+        "sha256": "7D48EC3D5ED912DABCBBE7D28CC0ED1B0A8F3DEE63AC25A7F0E9CDC23AA0B560"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "control": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-hover-review-control.json",
+        "bytes": 148,
+        "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-hover-review-control.json",
+        "bytes": 111534,
+        "sha256": "CEEB32F70FDA9C70F88670D111B69BD97DBBCF0725C01A54845579E939D55DC4"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "values": {
+      "date_raw": 53146488,
+      "paused": true,
+      "actor": 29829,
+      "revision": 4,
+      "native_revision": 3,
+      "snapshot_id": "native:3",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat"
+    },
+    "control_values": {
+      "accepted": true,
+      "status": "available",
+      "root_native_revision": 3,
+      "snapshot_native_revision": 3,
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "queried_snapshot_id": "native:3",
+      "source_revision": 4,
+      "source_native_revision": 3,
+      "source_snapshot_id": "native:3",
+      "source_date_raw": 53146488,
+      "source_paused": true,
+      "observed_date_raw": 53146488,
+      "subject_army_id": 18,
+      "native_army_id": 18,
+      "owner_character_id": 29829,
+      "combat_id": 16777218,
+      "combat_province_id": 2633,
+      "battle_control_ready": true
+    }
+  },
+  "post_visible_review_receipts": {
+    "snapshot": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-visible-review-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-visible-review-snapshot.json",
+        "bytes": 599333,
+        "sha256": "1F682BC01A5EBB1027CDE152C9808A9ED6F011BB2E77EC42CB47E279E61B8925"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "control": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-visible-review-control.json",
+        "bytes": 148,
+        "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-visible-review-control.json",
+        "bytes": 111536,
+        "sha256": "BB2C2428B4091C76B47E0CC1C1A210AD660F391B2FD3EA14AFB7E247189E4644"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "values": {
+      "date_raw": 53146488,
+      "paused": true,
+      "actor": 29829,
+      "revision": 4,
+      "native_revision": 3,
+      "snapshot_id": "native:3",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat"
+    },
+    "control_values": {
+      "accepted": true,
+      "status": "available",
+      "root_native_revision": 3,
+      "snapshot_native_revision": 3,
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "queried_snapshot_id": "native:3",
+      "source_revision": 4,
+      "source_native_revision": 3,
+      "source_snapshot_id": "native:3",
+      "source_date_raw": 53146488,
+      "source_paused": true,
+      "observed_date_raw": 53146488,
+      "subject_army_id": 18,
+      "native_army_id": 18,
+      "owner_character_id": 29829,
+      "combat_id": 16777218,
+      "combat_province_id": 2633,
+      "battle_control_ready": true
+    }
+  },
+  "post_visible_review_values": {
+    "date_raw": 53146488,
+    "paused": true,
+    "actor": 29829,
+    "revision": 4,
+    "native_revision": 3,
+    "snapshot_id": "native:3",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat"
+  },
+  "after_pixels_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-after-pixels.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-after-pixels.json",
+      "bytes": 715270,
+      "sha256": "614E1889D3BCDED9F28A0C247BB162AC614567092FC11C7FE8E1FD034CBCDC6D"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "after_pixels_values": {
+    "date_raw": 53146488,
+    "paused": true,
+    "actor": 29829,
+    "revision": 4,
+    "native_revision": 3,
+    "snapshot_id": "native:3",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat"
+  },
+  "panel": {
+    "schema": "xar.jd11.a15.original-ui-frame/v1",
+    "screenshot": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-panel.png",
+      "bytes": 4933281,
+      "sha256": "2B7E214C488B52479B263BD7B83E79C9982067D9908FDCE3138F711A65D24750"
+    },
+    "captured_at": "2026-10-01T03:04:08.401508+00:00",
+    "image_size": [
+      2560,
+      1440
+    ],
+    "before": {
+      "observed_at": "2026-10-01T03:04:07.667900+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "after": {
+      "observed_at": "2026-10-01T03:04:08.377485+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "current_run_only": true,
+    "foreground_required_for_input": true
+  },
+  "tooltip": {
+    "schema": "xar.jd11.a15.original-ui-frame/v1",
+    "screenshot": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+      "bytes": 4723967,
+      "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+    },
+    "captured_at": "2026-10-01T03:04:48.915449+00:00",
+    "image_size": [
+      2560,
+      1440
+    ],
+    "before": {
+      "observed_at": "2026-10-01T03:04:48.198643+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "after": {
+      "observed_at": "2026-10-01T03:04:48.898820+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "current_run_only": true,
+    "foreground_required_for_input": true
+  },
+  "pointer_hover": {
+    "mapper_receipt": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width-hover-receipt.png.json",
+      "bytes": 2073,
+      "sha256": "EE290169924ACFD6A2217EEE8947C14A04AF933E98A0F96ADCA5D59D7E1D765F"
+    },
+    "receipt_image": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width-hover-receipt.png",
+      "bytes": 4730947,
+      "sha256": "2E3EBB5B33C69A95F91077E1D8C75A5A7E33BEAC9468C8F9A1727E6EF2CC55A1"
+    },
+    "source_frame": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-panel.png",
+      "bytes": 4933281,
+      "sha256": "2B7E214C488B52479B263BD7B83E79C9982067D9908FDCE3138F711A65D24750"
+    },
+    "before": {
+      "observed_at": "2026-10-01T03:04:45.569967+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "after": {
+      "observed_at": "2026-10-01T03:04:47.164835+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "exit_code": 0,
+    "action": "move"
+  },
+  "actual_visual_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "before-readback",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T03:05:58.484657+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 16428,
+    "expected_foreground_hwnd": 19925112,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-panel.png",
+        "bytes": 4933281,
+        "sha256": "2B7E214C488B52479B263BD7B83E79C9982067D9908FDCE3138F711A65D24750"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+        "bytes": 4723967,
+        "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "full_battle_panel": false,
+    "ui_actor_numeric_id_visible": false,
+    "ui_army_numeric_id_visible": false,
+    "required_regions_visible": true,
+    "battle_context_visible": true,
+    "current_date_and_pause_visible": true,
+    "top_counts_visible": true,
+    "required_regions_unobscured": true,
+    "relative_soldiers_tooltip_visible": true,
+    "width_tooltip_numeric_visible": true,
+    "counts_sources_bound_to_this_battle": true,
+    "visible_values": {
+      "battle_title": "墨西拿之战",
+      "paused": true,
+      "date_text": "公元1066年12月14日",
+      "left_coat_context": "蓝底红白菱形防御方",
+      "right_coat_context": "绿底金色城塔进攻方",
+      "player_soldiers": 893,
+      "opponent_soldiers": 1603,
+      "tooltip_title": "相对军力",
+      "width_label_text": "战线宽度:1480",
+      "battle_width": 1480,
+      "tooltip_player_soldiers": 827,
+      "tooltip_opponent_soldiers": 1546,
+      "base_width": 1645,
+      "forest_percent": 90
+    },
+    "root_visible_evidence": {
+      "original_binding": "Currentbefore-panel2B7E214C andbefore-widthE365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33 directly viewed through bound full-previews and current width1:1 panel/calendar crops.",
+      "actual": "Both currentframes show paused1066.12.14/top8931603/title/coats. Current original tooltip reads相对军力,827对阵1546士兵,战线宽度1480,基础1645(战斗开始时所有士兵数目的一半),森林90%. Top and tooltip count sources kept separate; lower composition remains clipped.",
+      "native_binding": "Read actual before-post-hover-review-scoped-native-context; raw53146488 paused actor29829 public4/native3/native:3 Army18 combat16777218 control matches width1480. This root transcription still requires consumer post-review fresh snapshot/control and afterpixels guards."
+    },
+    "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+    "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1",
+    "scoped_native_context": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-post-hover-review-scoped-native-context.json",
+      "bytes": 3120,
+      "sha256": "D4B6B56ADEA9F99CC9150DCE2D0032E6BBF6180E32C4FD5158BE6A65E7953BA2"
+    }
+  },
+  "same_paused_frame_verified": true,
+  "image_kind": "original-desktop-gdi",
+  "battle_width_ui_observed": true,
+  "battle_width_ui_gap": false,
+  "mouse_inputs": "explicit desktop-gated mapper receipts",
+  "hook_instant_same_frame_claimed": false,
+  "native_side_cache_and_entries_distinct": true,
+  "historical_number_substitution": false
+}

@@ -1,0 +1,169 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\w\\desktop_pointer_20260930\\tools\\desktop_coordinate_map.py",
+    "--source-image",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-panel.png",
+    "--preview-left",
+    "0",
+    "--preview-top",
+    "0",
+    "--preview-width",
+    "1280",
+    "--preview-height",
+    "720",
+    "--observed-x",
+    "640",
+    "--observed-y",
+    "589",
+    "--move",
+    "--receipt",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width-hover-receipt.png",
+    "--reviewed-left",
+    "600",
+    "--reviewed-top",
+    "583",
+    "--reviewed-width",
+    "100",
+    "--reviewed-height",
+    "13",
+    "--expected-foreground-hwnd",
+    "19925112"
+  ],
+  "root_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "after-width-hover",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T03:10:36.439879+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 16428,
+    "expected_foreground_hwnd": 19925112,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-panel.png",
+        "bytes": 4649841,
+        "sha256": "81E99F8160CD8E52DFEFBDA3AA0BE425011A7B3B860569DF36089BD5671B64BB"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "relative_soldiers_tooltip_target_reviewed": true,
+    "observed_point": {
+      "x": 640,
+      "y": 589
+    },
+    "preview_content_rect": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    },
+    "reviewed_safe_region": {
+      "left": 600,
+      "top": 583,
+      "width": 100,
+      "height": 13
+    },
+    "root_visible_evidence": {
+      "original_binding": "Currentafter-panel81E99F8160CD8E52DFEFBDA3AA0BE425011A7B3B860569DF36089BD5671B64BB, bound1280x720 full-preview3DB356EF, original1:1 panel/tooltip/calendar crops directly viewed.",
+      "actual": "Paused1066.12.15, top8274106/title墨西拿之战/currentcheckered andgreen-tower coats. Actual relative-soldiers bar includes preview640589; tooltip already reads width2220/base2467 and740对阵4047士兵. Original screenshot changed after native one day.",
+      "action": "Formal mapper one current-frame move with receipt and fresh paused context; no extra day/keyboard."
+    }
+  },
+  "source_frame": {
+    "schema": "xar.jd11.a15.original-ui-frame/v1",
+    "screenshot": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-panel.png",
+      "bytes": 4649841,
+      "sha256": "81E99F8160CD8E52DFEFBDA3AA0BE425011A7B3B860569DF36089BD5671B64BB"
+    },
+    "captured_at": "2026-10-01T03:06:11.002234+00:00",
+    "image_size": [
+      2560,
+      1440
+    ],
+    "before": {
+      "observed_at": "2026-10-01T03:06:10.257333+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "after": {
+      "observed_at": "2026-10-01T03:06:10.968896+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 19925112,
+        "foreground_pid": 16428,
+        "foreground_thread_id": 6912,
+        "focus_hwnd": 19925112,
+        "title": "Crusader Kings III"
+      },
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 16428
+    },
+    "current_run_only": true,
+    "foreground_required_for_input": true
+  },
+  "before": {
+    "observed_at": "2026-10-01T03:10:39.012386+00:00",
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "pointer": [
+      1280,
+      1178
+    ],
+    "focus": {
+      "foreground_hwnd": 19925112,
+      "foreground_pid": 16428,
+      "foreground_thread_id": 6912,
+      "focus_hwnd": 19925112,
+      "title": "Crusader Kings III"
+    },
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "expected_ck3_pid": 16428
+  },
+  "action": "move"
+}

@@ -1,0 +1,119 @@
+{
+  "at_utc": "2026-10-01T02:20:09.314594+00:00",
+  "source": {
+    "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\compose_evidence_a07.py",
+    "bytes": 68592,
+    "sha256": "F7001557BB8F18E6C2BCFCC93121012B440E4F73F41AED6A72A0E51FCC65C0A6"
+  },
+  "status": "ORIGINAL_BODY_AND_ACTUAL_RUN_ID_GATES_FIXED; INDEPENDENT_RETEST_PENDING; REAL_PAIR_RENDER_PENDING",
+  "prior_handoff": {
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-03\\composer-handoff.json",
+    "bytes": 3843,
+    "sha256": "DFEAE073C7D1CDE2DB19CC71ADD2E5D4F0EF1B10C2CF4689D7F55470D7550297"
+  },
+  "prior_attempts_01_02_03_unchanged": true,
+  "fixes": [
+    "Parse original transport envelope/request/body. Enforce exact request action/tool/arguments and response request path/bytes/SHA.",
+    "Recompute original Actor29829/War4/Army18/Province2633, native snapshot date/revisions/paused, and complete original control DTO Combat16777218/source/selected-side provenance.",
+    "Compare original snapshot/control/afterpixels states to all sample/context summaries; parse optional post_visible_review_receipts/values similarly.",
+    "Bind capture-report.run_id, controller-result.actual_run_id, explicit full actual_run_id and short caption run_id. Require actual completed2/one_day_proven/checkpoint/dateadvance/cleanup; reject RED controller.",
+    "Reject identical before/after panel/tooltip file hashes or decoded RGB pixels, and any original response JSON reuse across different dates.",
+    "Fresh formal wheel in prepare additionally requires actual installed distribution direct_url archive SHA to match supplied release wheel."
+  ],
+  "actual_input_fields": [
+    "reinforcement.run_id",
+    "reinforcement.actual_run_id",
+    "reinforcement.live_root",
+    "reinforcement.sdk_controller",
+    "reinforcement.capture_report",
+    "reinforcement.controller_result",
+    "reinforcement.before",
+    "reinforcement.after",
+    "reinforcement.session_cleanup"
+  ],
+  "input_receipt_rule": "Every report/sample/context/native request/response/original PNG requires exact path/bytes/SHA; copy actual embedded screenshot and report refs.",
+  "pending_binding_template": {
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\a07-bindings-pending-real-pair.json",
+    "bytes": 1745,
+    "sha256": "08943D69E58FD2E8930D92006DC405106B00ABA7486B9418FAB939877672FD82"
+  },
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "syntax_pass": true,
+  "offline_commands": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\compose_evidence_a07.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\help.stdout.txt",
+        "bytes": 1091,
+        "sha256": "A589E2CEF8A54AD06C9E5A7B061566C6901D170813902E5B605D309DBBC49192"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\help.stderr.txt",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\compose_evidence_a07.py",
+        "plan",
+        "--bindings",
+        "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\a07-bindings-pending-real-pair.json"
+      ],
+      "exit_code": 2,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\plan-missing-pair.stdout.txt",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\plan-missing-pair.stderr.txt",
+        "bytes": 219,
+        "sha256": "473C38596AA64970EE6373B50674D82ACA21CFB588ADCDC8DF5DE037F6913FD4"
+      }
+    }
+  ],
+  "meaningful_body_cases": {
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\original-body-offline-report.json",
+    "bytes": 7663,
+    "sha256": "A9A8282378CF0467C9F4C08108F79801BE0C7150640250B005FEFE775A8F5255"
+  },
+  "meaningful_body_case_count": 23,
+  "AST_helper_names": [
+    "native_call_body",
+    "original_snapshot_values",
+    "original_control_values",
+    "validate_capture_identity"
+  ],
+  "real_CLI": {
+    "plan": "plan --bindings PATH",
+    "prepare": "prepare --bindings PATH --run NEW_EXTERNAL_PATH --wheel ACTUAL_LATEST_FORMAL_WHEEL",
+    "render": "render --run PREPARED_A07_RUN",
+    "preserve": "preserve --run A07_RUN",
+    "preserve_failed": "preserve --run FAILED_A07_RUN --failed"
+  },
+  "preserved_media_policy": "3 chunks revised/21 exact-copy; old RHS/hook facts and all167cue audio/text/timing,24ASS,13raw and k035 chunk unchanged; originala04 AAC stream-copy.",
+  "not_executed": [
+    "prepare",
+    "render",
+    "preserve",
+    "FFmpeg",
+    "TTS",
+    "new native run",
+    "game",
+    "screen",
+    "cloud"
+  ],
+  "human_signoff": "not-provided",
+  "no_master_intake": true
+}

@@ -1,0 +1,277 @@
+{
+  "schema": "xar.jd11.a15.original-ui-frame/v1",
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-pre-focus.png",
+    "bytes": 5216646,
+    "sha256": "5AE08A459F52B65F8729BFC468DB353E49C38324E25380F84EA80587709C66B3"
+  },
+  "captured_at": "2026-10-01T03:00:19.541068+00:00",
+  "image_size": [
+    2560,
+    1440
+  ],
+  "before": {
+    "observed_at": "2026-10-01T03:00:18.834625+00:00",
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "pointer": [
+      1206,
+      642
+    ],
+    "focus": {
+      "foreground_hwnd": 197612,
+      "foreground_pid": 7068,
+      "foreground_thread_id": 2940,
+      "focus_hwnd": 197098,
+      "gui_thread_info": {
+        "succeeded": true,
+        "last_error": 0,
+        "thread_id": 2940,
+        "flags": 0,
+        "active_hwnd": 197612,
+        "focus_hwnd": 197098,
+        "capture_hwnd": 0,
+        "menu_owner_hwnd": 0,
+        "move_size_hwnd": 0,
+        "caret_hwnd": 0,
+        "caret_rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "focus_hwnd": 197098,
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "expected_ck3_pid": 16428,
+    "expected_process": {
+      "pid": 16428,
+      "create_time": 1790823324.5391905,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+    },
+    "windows": [
+      {
+        "hwnd": 197612,
+        "pid": 7068,
+        "thread_id": 2940,
+        "title": "Steam",
+        "visible": true,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          962,
+          768
+        ],
+        "client_rect": [
+          0,
+          0,
+          962,
+          768
+        ]
+      },
+      {
+        "hwnd": 13633658,
+        "pid": 16428,
+        "thread_id": 6912,
+        "title": "Default IME",
+        "visible": false,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "client_rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "hwnd": 19662992,
+        "pid": 16428,
+        "thread_id": 6912,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "client_rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "hwnd": 19925112,
+        "pid": 16428,
+        "thread_id": 6912,
+        "title": "Crusader Kings III",
+        "visible": true,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          2560,
+          1440
+        ],
+        "client_rect": [
+          0,
+          0,
+          2560,
+          1440
+        ]
+      }
+    ]
+  },
+  "after": {
+    "observed_at": "2026-10-01T03:00:19.524377+00:00",
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "pointer": [
+      1206,
+      642
+    ],
+    "focus": {
+      "foreground_hwnd": 197612,
+      "foreground_pid": 7068,
+      "foreground_thread_id": 2940,
+      "focus_hwnd": 197098,
+      "gui_thread_info": {
+        "succeeded": true,
+        "last_error": 0,
+        "thread_id": 2940,
+        "flags": 0,
+        "active_hwnd": 197612,
+        "focus_hwnd": 197098,
+        "capture_hwnd": 0,
+        "menu_owner_hwnd": 0,
+        "move_size_hwnd": 0,
+        "caret_hwnd": 0,
+        "caret_rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "focus_hwnd": 197098,
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "expected_ck3_pid": 16428,
+    "expected_process": {
+      "pid": 16428,
+      "create_time": 1790823324.5391905,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+    },
+    "windows": [
+      {
+        "hwnd": 197612,
+        "pid": 7068,
+        "thread_id": 2940,
+        "title": "Steam",
+        "visible": true,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          962,
+          768
+        ],
+        "client_rect": [
+          0,
+          0,
+          962,
+          768
+        ]
+      },
+      {
+        "hwnd": 13633658,
+        "pid": 16428,
+        "thread_id": 6912,
+        "title": "Default IME",
+        "visible": false,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "client_rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "hwnd": 19662992,
+        "pid": 16428,
+        "thread_id": 6912,
+        "title": "MSCTFIME UI",
+        "visible": false,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "client_rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "hwnd": 19925112,
+        "pid": 16428,
+        "thread_id": 6912,
+        "title": "Crusader Kings III",
+        "visible": true,
+        "minimized": false,
+        "window_rect": [
+          0,
+          0,
+          2560,
+          1440
+        ],
+        "client_rect": [
+          0,
+          0,
+          2560,
+          1440
+        ]
+      }
+    ]
+  },
+  "current_run_only": true,
+  "foreground_required_for_input": false
+}

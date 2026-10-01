@@ -1,0 +1,52 @@
+{
+  "schema": "ck3.root.one-shot-semantic-focus/v1",
+  "at": "2026-10-01T03:00:19.732790+00:00",
+  "request": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-root-focus-request.json",
+    "bytes": 9360,
+    "sha256": "090AF02A5DC82D0394A852DD103A738C4D394B20310ED140BA7715DE8D5DFAAE"
+  },
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+    "bytes": 21461,
+    "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+    "--request",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-root-focus-request.json",
+    "--hwnd",
+    "19925112",
+    "--focus",
+    "--receipt",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-root-focus-result.json",
+    "--evidence-dir",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-root-focus-evidence"
+  ],
+  "lease": {
+    "git": {
+      "branch": "codex/jd11-center-diagnostic-20261001",
+      "dirty_entries": 0,
+      "head": "1901473429deb1297be7d5d4451169082629858b"
+    },
+    "last_sequence": 3346,
+    "next_step": "fresh_offline_then_same_run_pair",
+    "pid": 13712,
+    "repo": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "R0138_manual_contract_corrected",
+    "task_id": "war-reinforcement-screen-20261001-a16",
+    "updated_at_utc": "2026-10-01T03:00:17.068680+00:00"
+  },
+  "one_shot": true,
+  "manual_review_created": false,
+  "mouse_or_gameplay_action_by_watcher": false
+}

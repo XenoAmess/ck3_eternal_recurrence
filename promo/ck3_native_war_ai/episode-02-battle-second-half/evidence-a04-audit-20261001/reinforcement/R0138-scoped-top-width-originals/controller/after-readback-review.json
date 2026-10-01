@@ -1,0 +1,63 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review/v1",
+  "stage": "after-readback",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "reviewer": "Codex /root (direct original PNG inspection)",
+  "observed_at": "2026-10-01T03:13:18.899465+00:00",
+  "root_actually_viewed": true,
+  "approved_for_current_action": true,
+  "expected_ck3_pid": 16428,
+  "expected_foreground_hwnd": 19925112,
+  "frames": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-panel.png",
+      "bytes": 4649841,
+      "sha256": "81E99F8160CD8E52DFEFBDA3AA0BE425011A7B3B860569DF36089BD5671B64BB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+      "bytes": 4795457,
+      "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+    }
+  ],
+  "current_ui_region_reviewed": true,
+  "full_battle_panel": false,
+  "ui_actor_numeric_id_visible": false,
+  "ui_army_numeric_id_visible": false,
+  "required_regions_visible": true,
+  "battle_context_visible": true,
+  "current_date_and_pause_visible": true,
+  "top_counts_visible": true,
+  "required_regions_unobscured": true,
+  "relative_soldiers_tooltip_visible": true,
+  "width_tooltip_numeric_visible": true,
+  "counts_sources_bound_to_this_battle": true,
+  "visible_values": {
+    "battle_title": "墨西拿之战",
+    "paused": true,
+    "date_text": "公元1066年12月15日",
+    "left_coat_context": "蓝底红白菱形防御方",
+    "right_coat_context": "绿底金色城塔进攻方",
+    "player_soldiers": 827,
+    "opponent_soldiers": 4106,
+    "tooltip_title": "相对军力",
+    "width_label_text": "战线宽度:2220",
+    "battle_width": 2220,
+    "tooltip_player_soldiers": 740,
+    "tooltip_opponent_soldiers": 4047,
+    "base_width": 2467,
+    "forest_percent": 90
+  },
+  "root_visible_evidence": {
+    "original_binding": "Currentafter-panel81E99F81 andafter-width5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA directly viewed via currentbound full-previews and original1:1 panel/calendar crops.",
+    "actual": "Both currentframes paused1066.12.15/top8274106/title墨西拿之战/currentcoats. Actualtooltip相对军力,740对阵4047士兵,战线宽度2220,基础2467(战斗开始时所有士兵数目的一半),森林90%. Smallrow350353 is not width; lower composition remains clipped.",
+    "native_binding": "Read actualafter-post-hover-review-scoped-native-context:raw53146512 paused actor29829 public8/native7/native:7 Army18 combat16777218 width2220. Consumer must still execute fresh post-review snapshot/control and afterpixels equality guards; no extra day authorized."
+  },
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1",
+  "scoped_native_context": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-post-hover-review-scoped-native-context.json",
+    "bytes": 3117,
+    "sha256": "D0630E8196611471F6151C2FE64D31FC56716696281D96289D2FAD09548C48BC"
+  }
+}

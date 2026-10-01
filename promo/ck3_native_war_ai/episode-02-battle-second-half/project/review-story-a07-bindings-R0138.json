@@ -1,0 +1,120 @@
+{
+  "schema": "ck3.a07.explicit-evidence-bindings/v1",
+  "previous_run": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01",
+  "previous_final": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+    "bytes": 239659692,
+    "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+  },
+  "r0127_contract": {
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-03\\k025-left-card-contract.json",
+    "bytes": 9598,
+    "sha256": "AE1AC10E27629F7AEA43827409D533FA6156CD13283CD5EDCE28A59DD84F58A9"
+  },
+  "reinforcement": {
+    "run_id": "R0138",
+    "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+    "live_root": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01",
+    "sdk_controller": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller",
+    "capture_report": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+      "bytes": 9229,
+      "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+    },
+    "controller_result": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+      "bytes": 72914,
+      "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+    },
+    "session_cleanup": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\session-result.json",
+      "bytes": 14096,
+      "sha256": "2629D37248A253A0B58EBE44DC07B70B6E4D26200425DEA778F11C161102AAEE"
+    },
+    "before": {
+      "sample": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+        "bytes": 17251,
+        "sha256": "22637EF5AC6D8316A933DC856EE5B7072CC51852A897754767ED44732A24E0CB"
+      },
+      "tooltip": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+        "bytes": 4723967,
+        "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+      },
+      "crop_xyxy": [
+        1040,
+        980,
+        1540,
+        1265
+      ],
+      "crop_review": {
+        "reviewer": "Codex /root (direct original-pixel crop inspection)",
+        "reviewed_at": "2026-10-01T03:16:20.499218+00:00",
+        "direct_original_pixel_review": true,
+        "contains_width_tooltip": true,
+        "source_sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33",
+        "crop_xyxy": [
+          1040,
+          980,
+          1540,
+          1265
+        ]
+      }
+    },
+    "after": {
+      "sample": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-sample.json",
+        "bytes": 17208,
+        "sha256": "0FDF85253DC4F5E7F068ADC54F7DB5144002A47730F28D26841DCC36DB5CCD04"
+      },
+      "tooltip": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+        "bytes": 4795457,
+        "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+      },
+      "crop_xyxy": [
+        1040,
+        980,
+        1540,
+        1265
+      ],
+      "crop_review": {
+        "reviewer": "Codex /root (direct original-pixel crop inspection)",
+        "reviewed_at": "2026-10-01T03:16:20.667780+00:00",
+        "direct_original_pixel_review": true,
+        "contains_width_tooltip": true,
+        "source_sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA",
+        "crop_xyxy": [
+          1040,
+          980,
+          1540,
+          1265
+        ]
+      }
+    }
+  },
+  "assembly_sources": {
+    "root_crop_reviews": {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\R0138-root-crop-reviews-a01.json",
+      "bytes": 3769,
+      "sha256": "AB622B1A6C3B99572D928F1A965CDBD151128564FF5A26EBDDCD281B2FA51B6A"
+    },
+    "composer": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\compose_evidence_a07.py",
+      "bytes": 68592,
+      "sha256": "F7001557BB8F18E6C2BCFCC93121012B440E4F73F41AED6A72A0E51FCC65C0A6"
+    },
+    "assembler": {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\assemble_actual_binding.py",
+      "bytes": 10195,
+      "sha256": "968658AEF53A73BBA715D865298AF472E6E635FA432AB822B20E299BA40F6721"
+    },
+    "local_formal_wheel": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\inputs\\xar_promo_toolchain-0.2.1-py3-none-any.whl",
+      "bytes": 190405,
+      "sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621"
+    }
+  },
+  "human_signoff": "not-provided"
+}

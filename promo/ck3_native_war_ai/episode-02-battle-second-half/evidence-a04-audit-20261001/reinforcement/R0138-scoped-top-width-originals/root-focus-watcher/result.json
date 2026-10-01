@@ -1,0 +1,11 @@
+{
+  "exit_code": 0,
+  "receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-root-focus-result.json",
+    "bytes": 18326,
+    "sha256": "1B3D0FEC462AF3C9D82CF9E53C6B594C94B78447255F8C0C4ECFDA5887CDA4CD"
+  },
+  "status": "FOREGROUND_MATCHED_CURRENT_CK3",
+  "helper_called_once": true,
+  "manual_UI_approval_created": false
+}

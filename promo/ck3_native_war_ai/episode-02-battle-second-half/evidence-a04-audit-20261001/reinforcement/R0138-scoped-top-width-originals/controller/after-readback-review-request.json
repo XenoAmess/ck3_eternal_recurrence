@@ -1,0 +1,158 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review-request/v1",
+  "stage": "after-readback",
+  "frames": [
+    {
+      "schema": "xar.jd11.a15.original-ui-frame/v1",
+      "screenshot": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-panel.png",
+        "bytes": 4649841,
+        "sha256": "81E99F8160CD8E52DFEFBDA3AA0BE425011A7B3B860569DF36089BD5671B64BB"
+      },
+      "captured_at": "2026-10-01T03:06:11.002234+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "before": {
+        "observed_at": "2026-10-01T03:06:10.257333+00:00",
+        "desktop_size": [
+          2560,
+          1440
+        ],
+        "pointer": [
+          1280,
+          1178
+        ],
+        "focus": {
+          "foreground_hwnd": 19925112,
+          "foreground_pid": 16428,
+          "foreground_thread_id": 6912,
+          "focus_hwnd": 19925112,
+          "title": "Crusader Kings III"
+        },
+        "mouse_buttons": {
+          "left": false,
+          "right": false,
+          "middle": false,
+          "x1": false,
+          "x2": false
+        },
+        "expected_ck3_pid": 16428
+      },
+      "after": {
+        "observed_at": "2026-10-01T03:06:10.968896+00:00",
+        "desktop_size": [
+          2560,
+          1440
+        ],
+        "pointer": [
+          1280,
+          1178
+        ],
+        "focus": {
+          "foreground_hwnd": 19925112,
+          "foreground_pid": 16428,
+          "foreground_thread_id": 6912,
+          "focus_hwnd": 19925112,
+          "title": "Crusader Kings III"
+        },
+        "mouse_buttons": {
+          "left": false,
+          "right": false,
+          "middle": false,
+          "x1": false,
+          "x2": false
+        },
+        "expected_ck3_pid": 16428
+      },
+      "current_run_only": true,
+      "foreground_required_for_input": true,
+      "scoped_native_context": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-post-hover-review-scoped-native-context.json",
+        "bytes": 3117,
+        "sha256": "D0630E8196611471F6151C2FE64D31FC56716696281D96289D2FAD09548C48BC"
+      },
+      "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+      "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1"
+    },
+    {
+      "schema": "xar.jd11.a15.original-ui-frame/v1",
+      "screenshot": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+        "bytes": 4795457,
+        "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+      },
+      "captured_at": "2026-10-01T03:10:42.573299+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "before": {
+        "observed_at": "2026-10-01T03:10:41.781963+00:00",
+        "desktop_size": [
+          2560,
+          1440
+        ],
+        "pointer": [
+          1280,
+          1178
+        ],
+        "focus": {
+          "foreground_hwnd": 19925112,
+          "foreground_pid": 16428,
+          "foreground_thread_id": 6912,
+          "focus_hwnd": 19925112,
+          "title": "Crusader Kings III"
+        },
+        "mouse_buttons": {
+          "left": false,
+          "right": false,
+          "middle": false,
+          "x1": false,
+          "x2": false
+        },
+        "expected_ck3_pid": 16428
+      },
+      "after": {
+        "observed_at": "2026-10-01T03:10:42.547569+00:00",
+        "desktop_size": [
+          2560,
+          1440
+        ],
+        "pointer": [
+          1280,
+          1178
+        ],
+        "focus": {
+          "foreground_hwnd": 19925112,
+          "foreground_pid": 16428,
+          "foreground_thread_id": 6912,
+          "focus_hwnd": 19925112,
+          "title": "Crusader Kings III"
+        },
+        "mouse_buttons": {
+          "left": false,
+          "right": false,
+          "middle": false,
+          "x1": false,
+          "x2": false
+        },
+        "expected_ck3_pid": 16428
+      },
+      "current_run_only": true,
+      "foreground_required_for_input": true,
+      "scoped_native_context": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-post-hover-review-scoped-native-context.json",
+        "bytes": 3117,
+        "sha256": "D0630E8196611471F6151C2FE64D31FC56716696281D96289D2FAD09548C48BC"
+      },
+      "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+      "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1"
+    }
+  ],
+  "review_file": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-readback-review.json",
+  "remaining_seconds": 599.9999189000009,
+  "actual_root_view_required": true,
+  "video_clean_signoff": false
+}

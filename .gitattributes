@@ -65,3 +65,10 @@ promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-2026100
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/review-wait-consumer-a01/** -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0137-root-review-field-rejected-originals/** -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/semantic-focus-watcher-a01/** -text whitespace=cr-at-eol
+
+# Preserve exact R0138 and a07 config/evidence snapshots.
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0138-scoped-top-width-originals/** -text whitespace=-blank-at-eol,cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/manual-contract-consumer-a01/** -text whitespace=-blank-at-eol,cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/a07-inputs-R0138/** -text whitespace=-blank-at-eol,cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/project/review-story-a07-project.json -text whitespace=-blank-at-eol,cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/project/review-story-a07-bindings-R0138.json -text whitespace=-blank-at-eol,cr-at-eol

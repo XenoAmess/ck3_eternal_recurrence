@@ -1,0 +1,139 @@
+{
+  "status": "READY_FOR_PREPARE_PENDING_FRESH_TOOLCHAIN_RELEASE_QUERY",
+  "read_only": true,
+  "new_run_created": false,
+  "binding": {
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\a07-R0138-actual-bindings-a01.json",
+    "bytes": 5317,
+    "sha256": "1EA579969B923150C85D27FB26C4EB515123504FBA0DD4A744946A0CB27F66E5"
+  },
+  "source_identity_method": "small receipts and PNG hashes; a06 final size/declared identity; full a06 hash deferred to prepare",
+  "target_keys": [
+    "knights-k025",
+    "reinforcement-r022",
+    "reinforcement-r029"
+  ],
+  "recompile_chunks": [
+    {
+      "chapter": "knights",
+      "chunk_index": 4,
+      "keys": [
+        "knights-k025",
+        "knights-k026",
+        "knights-k027",
+        "knights-k028",
+        "knights-k029",
+        "knights-k030",
+        "knights-k031",
+        "knights-k032"
+      ],
+      "duration_expected": 88.9,
+      "global_start": 730.2666666666669,
+      "local_start": 259.3666666666667,
+      "previous_receipt": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\knights\\chunk-04\\chunk.mp4",
+        "bytes": 6586831,
+        "sha256": "7E47D7A8149955DF875EA329C2E09DC45E154C8C80B2BB251B53EA67C1637956",
+        "duration_expected": 88.9
+      },
+      "affected_keys": [
+        "knights-k025"
+      ]
+    },
+    {
+      "chapter": "reinforcement",
+      "chunk_index": 3,
+      "keys": [
+        "reinforcement-r017",
+        "reinforcement-r018",
+        "reinforcement-r019",
+        "reinforcement-r020",
+        "reinforcement-r021",
+        "reinforcement-r022",
+        "reinforcement-r023",
+        "reinforcement-r024"
+      ],
+      "duration_expected": 88.46666666666667,
+      "global_start": 1058.3333333333335,
+      "local_start": 171.86666666666667,
+      "previous_receipt": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-03\\chunk.mp4",
+        "bytes": 7138096,
+        "sha256": "3AFFF93D1D0BD8B641D007A838B63B637798D17DC87BE219186C4AFBC188BC4E",
+        "duration_expected": 88.46666666666667
+      },
+      "affected_keys": [
+        "reinforcement-r022"
+      ]
+    },
+    {
+      "chapter": "reinforcement",
+      "chunk_index": 4,
+      "keys": [
+        "reinforcement-r025",
+        "reinforcement-r026",
+        "reinforcement-r027",
+        "reinforcement-r028",
+        "reinforcement-r029",
+        "reinforcement-r030",
+        "reinforcement-r031",
+        "reinforcement-r032"
+      ],
+      "duration_expected": 91.3,
+      "global_start": 1146.8000000000002,
+      "local_start": 260.3333333333333,
+      "previous_receipt": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-04\\chunk.mp4",
+        "bytes": 7196178,
+        "sha256": "1F21FFFE74EC1C40AA437AECD449D0C8F8AFB5CA4EA0614F5306F87CC3A3D004",
+        "duration_expected": 91.3
+      },
+      "affected_keys": [
+        "reinforcement-r029"
+      ]
+    }
+  ],
+  "exact_copy_chunk_count": 21,
+  "timed_k035_inset_exact_copy": true,
+  "capture_run_id": "R0138",
+  "capture_identity": {
+    "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+    "capture_report": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+      "bytes": 9229,
+      "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+    },
+    "controller_result": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+      "bytes": 72914,
+      "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+    }
+  },
+  "actual_paused_widths": {
+    "before": 1480,
+    "after": 2220
+  },
+  "actual_paused_dates": {
+    "before": {
+      "visible_date": "公元1066年12月14日",
+      "native_date_raw": 53146488,
+      "sample": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+        "bytes": 17251,
+        "sha256": "22637EF5AC6D8316A933DC856EE5B7072CC51852A897754767ED44732A24E0CB"
+      }
+    },
+    "after": {
+      "visible_date": "公元1066年12月15日",
+      "native_date_raw": 53146512,
+      "sample": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-sample.json",
+        "bytes": 17208,
+        "sha256": "0FDF85253DC4F5E7F068ADC54F7DB5144002A47730F28D26841DCC36DB5CCD04"
+      }
+    }
+  },
+  "native_date_delta": 24,
+  "human_signoff": "not-provided",
+  "production_clean_admission": false
+}

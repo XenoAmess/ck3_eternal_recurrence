@@ -1,0 +1,3337 @@
+{
+  "edit": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\edit.json",
+    "bytes": 349136,
+    "sha256": "A82015D36C21871EDCBF88B4CCC3F3D69DB33BFE398745672E5D1546F3C23D06"
+  },
+  "claim_catalog": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\claim-catalog.json",
+    "bytes": 268930,
+    "sha256": "A1DB0EB8689A7862125688647B6D38B2E947AF735E467EF4612F450FCBA8C152"
+  },
+  "claim_additions": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\claim-additions.json",
+    "bytes": 11694,
+    "sha256": "298D35A317211B719C0B49E374C5683C370EF3DC7263BF8BA317442092154689"
+  },
+  "new_boards": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\boards\\visuals\\knights-k025.png",
+      "bytes": 131531,
+      "sha256": "452CBEC65FC977187D8EB68440948EE5FFAEEBF8B4A82AFBE8BFA73B99D5A3A7"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\boards\\visuals\\reinforcement-r022.png",
+      "bytes": 540945,
+      "sha256": "5BB0F73A835FAC643C25DC3BCE7F2A657CF325430FFE42AB3F0CB0E2CA4408DD"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\boards\\visuals\\reinforcement-r029.png",
+      "bytes": 537057,
+      "sha256": "FC593673F81FD4BDB49660AB609A1FD9BB2F961ABF3234AEE7A7BA7D1E342173"
+    }
+  ],
+  "all_original_raw_shots": [
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/raw/e2-09-terminal-a02.mkv",
+      "start": 80,
+      "source_duration": 11.766666666666667,
+      "case": "A05 独立后段回放 · 第28日追击",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\visual_map.json",
+          "bytes": 15807,
+          "sha256": "C7DA57637302A02B7B47C5B1CB3CB2A2BB7D9655DCC130A8DC923477B2AB6288"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p002.png",
+        "source_kind": "actual-ui",
+        "case": "A05 独立追击回放 · 第28日",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-80.png",
+          "bytes": 2567517,
+          "sha256": "64F1B2B3A300A7AACAF973E691DCAC215EA919C0A502DD082228A5F77D0427F4"
+        },
+        "source_crop": [
+          755,
+          800,
+          1185,
+          1020
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p002.png",
+          "bytes": 526722,
+          "sha256": "C7895B01C4F2CCD4EE086A8D3CD6659E1E8E3CF89BC76046CC17ACDB1BA073EE"
+        },
+        "spec": {
+          "title": "战败之后，追击继续",
+          "case": "A05 独立追击回放 · 第28日",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+          "crop_xyxy": [
+            755,
+            800,
+            1185,
+            1020
+          ],
+          "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+          "diagram_title": "胜负与损失结算",
+          "diagram_lines": [
+            "玩家罗贝尔：战败、撤退中",
+            "敌军：追击中",
+            "损失账继续结算"
+          ],
+          "footer": "同次独立回放实帧 · 对照不同暂停日期",
+          "source_kind": "actual-ui"
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/raw/e2-09-terminal-a02.mkv",
+      "start": 100,
+      "source_duration": 11.966666666666667,
+      "case": "A05 同次回放 · 第29日803",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\visual_map.json",
+          "bytes": 15807,
+          "sha256": "C7DA57637302A02B7B47C5B1CB3CB2A2BB7D9655DCC130A8DC923477B2AB6288"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p017.png",
+        "source_kind": "native-trace",
+        "case": "A05 独立追击回放 · 第29日",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-100.png",
+          "bytes": 2529822,
+          "sha256": "DAC001FB4E56790A1D8569DB109ADD993933C72F03BDFD870910034C90D65DE4"
+        },
+        "source_crop": [
+          760,
+          808,
+          1180,
+          900
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p017.png",
+          "bytes": 535308,
+          "sha256": "CC567892FA666BE12C32DDF98257BD70E6DC8877DA1009619ED7BF456E609580"
+        },
+        "spec": {
+          "title": "揭开第29日的实际结果",
+          "case": "A05 独立追击回放 · 第29日",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-100.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "ui_label": "真实UI：803 · 战败／撤退中／追击中",
+          "diagram_title": "同次原生记录：第1次结算",
+          "diagram_lines": [
+            "真实UI：824 → 803",
+            "原生逐团新增hard：20.70677",
+            "人当量；由逐团记录汇总",
+            "第28 → 29日：一次跨日结算"
+          ],
+          "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+          "source_kind": "native-trace"
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/raw/e2-09-terminal-a02.mkv",
+      "start": 185,
+      "source_duration": 12.4,
+      "case": "A05 同次回放 · 第30日782",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\visual_map.json",
+          "bytes": 15807,
+          "sha256": "C7DA57637302A02B7B47C5B1CB3CB2A2BB7D9655DCC130A8DC923477B2AB6288"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p021.png",
+        "source_kind": "native-trace",
+        "case": "A05 独立追击回放 · 第30日",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-185.png",
+          "bytes": 2564688,
+          "sha256": "C01E2F513B90AEF0555C837E6F1458D24D7F3E4E8E8E4009CC65B56FF844B058"
+        },
+        "source_crop": [
+          760,
+          808,
+          1180,
+          900
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p021.png",
+          "bytes": 529574,
+          "sha256": "F81FD05ECE9286809FEC65299990F316135B5F377FE2A0D50E5230F79CC1E8FF"
+        },
+        "spec": {
+          "title": "第30日：第二次结算",
+          "case": "A05 独立追击回放 · 第30日",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-185.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "ui_label": "真实UI：782 · 战败／撤退中／追击中",
+          "diagram_title": "同次原生记录：第2次结算",
+          "diagram_lines": [
+            "真实UI：803 → 782",
+            "原生新增hard：20.97473人当量",
+            "soft：24／24项零差",
+            "可读hard：23／23项零差"
+          ],
+          "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+          "source_kind": "native-trace"
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/raw/e2-09-terminal-a02.mkv",
+      "start": 300,
+      "source_duration": 13.433333333333334,
+      "case": "A05 同次回放 · 第31日761",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\visual_map.json",
+          "bytes": 15807,
+          "sha256": "C7DA57637302A02B7B47C5B1CB3CB2A2BB7D9655DCC130A8DC923477B2AB6288"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p022.png",
+        "source_kind": "native-trace",
+        "case": "A05 独立追击回放 · 第31日",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-300.png",
+          "bytes": 2561122,
+          "sha256": "D423EC5729443041468543C8518B9D2B97ED445C8BC9A469D46566F855ACBADB"
+        },
+        "source_crop": [
+          760,
+          808,
+          1180,
+          900
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\pursuit-p022.png",
+          "bytes": 525157,
+          "sha256": "CBF2CD8C615B5661F644877555A4F920519D53E4A8238F75130461DCF3273287"
+        },
+        "spec": {
+          "title": "第31日：第三次结算",
+          "case": "A05 独立追击回放 · 第31日",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+          "diagram_title": "同次原生记录：第3次结算",
+          "diagram_lines": [
+            "真实UI：782 → 761",
+            "原生新增hard：21.26119人当量",
+            "soft：24／24项零差",
+            "可读hard：23／23项零差"
+          ],
+          "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+          "source_kind": "native-trace"
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-05-d26-live-20260929-a02/recording-e2-05-d26-a01/raw/e2-05-d26.mkv",
+      "start": 232.5,
+      "source_duration": 11.633333333333333,
+      "case": "a02 独立阵亡实录 · 11→10；非历史020/070",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-05-d26-live-20260929-a02\\recording-e2-05-d26-a01\\raw\\e2-05-d26.mkv",
+        "bytes": 2451530594,
+        "sha256": "7FC3D614C50AD958DA57359248A196A230BD2B0B5B511EF242596837042C1C0F",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\knights-ui-edit-map.json",
+          "bytes": 12819,
+          "sha256": "08BE9B5E4F64D8D4B617E16D3D3B9D65B2B6D27428B59672890AC2F85E93FFE3"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\knights-k034.png",
+        "source_kind": "actual-ui",
+        "case": "独立录制a02／第26日／原版实录",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\a02_count_11_before.png",
+          "bytes": 5789794,
+          "sha256": "A2DD883306EFF9B6D925A0F68E21819EEBE0544A9A91CD9CA936E129701A349B"
+        },
+        "source_crop": [
+          1080,
+          1407,
+          1190,
+          1440
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\knights-k034.png",
+          "bytes": 474679,
+          "sha256": "D7599D7A162547D5AEBBF4C1BFD0243E44A73CEDA4BEE22432FB76AB92F132BC"
+        },
+        "spec": {
+          "title": "回到真实相邻界面",
+          "case": "独立录制a02／第26日／原版实录",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_11_before.png",
+          "crop_xyxy": [
+            1080,
+            1407,
+            1190,
+            1440
+          ],
+          "ui_label": "a02独立实录｜原始PTS 232.533｜前帧11名",
+          "diagram_title": "独立实录a02：11→10名骑士",
+          "diagram_lines": [
+            "日期：1066年12月30日",
+            "相邻前帧：11名骑士",
+            "相邻后帧：10名骑士",
+            "两帧原始PTS：232.533／232.567"
+          ],
+          "footer": "原始相邻后帧232.567：10名；日期12月30日",
+          "source_kind": "actual-ui",
+          "highlight_line": 2,
+          "extra_ui": [
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_10_after.png",
+              "crop_xyxy": [
+                1080,
+                1407,
+                1190,
+                1440
+              ],
+              "label": "同录像相邻后帧：10名骑士"
+            },
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_10_after.png",
+              "crop_xyxy": [
+                2170,
+                1406,
+                2388,
+                1440
+              ],
+              "label": "原版日期：1066年12月30日"
+            }
+          ]
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-05-d26-live-20260929-a02/recording-e2-05-d26-a01/raw/e2-05-d26.mkv",
+      "start": 233.0,
+      "source_duration": 10.866666666666667,
+      "case": "a02 同次实录 · 中文阵亡通知",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-05-d26-live-20260929-a02\\recording-e2-05-d26-a01\\raw\\e2-05-d26.mkv",
+        "bytes": 2451530594,
+        "sha256": "7FC3D614C50AD958DA57359248A196A230BD2B0B5B511EF242596837042C1C0F",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\knights-ui-edit-map.json",
+          "bytes": 12819,
+          "sha256": "08BE9B5E4F64D8D4B617E16D3D3B9D65B2B6D27428B59672890AC2F85E93FFE3"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\knights-k035.png",
+        "source_kind": "actual-ui",
+        "case": "独立录制a02／第26日／原版实录",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\a02_kill_notice_readable.png",
+          "bytes": 5763851,
+          "sha256": "E0A0B01CCC8C5F94C538A69F4CABFCC164B618D86720ECA83C680A5030E6F033"
+        },
+        "source_crop": [
+          1070,
+          1008,
+          1492,
+          1119
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\knights-k035.png",
+          "bytes": 490615,
+          "sha256": "91C333678743B190F8C8C7D87D34ED3427A163E39DBFAC991BE32A902B1DB576"
+        },
+        "spec": {
+          "title": "可读原文的阵亡通告",
+          "case": "独立录制a02／第26日／原版实录",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+          "crop_xyxy": [
+            1070,
+            1008,
+            1492,
+            1119
+          ],
+          "ui_label": "a02独立实录｜原始PTS 233.000｜击杀通告",
+          "diagram_title": "独立实录a02：后续阵亡通告",
+          "diagram_lines": [
+            "通告内容：我方骑士被敌方骑士击杀",
+            "通知可读帧：原始PTS 233.000",
+            "防御方仍显示：10名骑士",
+            "原帧日期：1066年12月30日"
+          ],
+          "footer": "后续通知可读；这段录像不证明历史选择器执行",
+          "source_kind": "actual-ui",
+          "highlight_line": 0,
+          "extra_ui": [
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+              "crop_xyxy": [
+                1080,
+                1407,
+                1190,
+                1440
+              ],
+              "label": "同原帧：10名骑士"
+            },
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+              "crop_xyxy": [
+                2170,
+                1406,
+                2388,
+                1440
+              ],
+              "label": "同原帧：12月30日"
+            }
+          ]
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending.",
+      "raw_notice_inset": {
+        "source_path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-05-d26-live-20260929-a02/recording-e2-05-d26-a01/raw/e2-05-d26.mkv",
+        "source_dimensions": [
+          2560,
+          1440
+        ],
+        "crop_xywh": [
+          1070,
+          1008,
+          422,
+          111
+        ],
+        "output_dimensions": [
+          844,
+          222
+        ],
+        "output_xy": [
+          1010,
+          140
+        ],
+        "visible_duration_seconds": 2.5,
+        "source_pts_interval": [
+          233.0,
+          235.5
+        ],
+        "scope": "Same displayed death notice enlarged; 12/30 UI retained; no d27-state claim"
+      }
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+      "start": 345,
+      "source_duration": 10.466666666666667,
+      "case": "A01 独立第11日检查点回放",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+        "bytes": 1325156480,
+        "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+          "bytes": 11671,
+          "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r001.png",
+        "source_kind": "native-trace",
+        "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "source_crop": [
+          1625,
+          550,
+          1885,
+          735
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r001.png",
+          "bytes": 466233,
+          "sha256": "D9C5F187A45E3024AB3CC680830A29C8BEBE23A177E071BDFF4458A3117A90E3"
+        },
+        "spec": {
+          "title": "独立检查点回到第十一日",
+          "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+          "crop_xyxy": [
+            1625,
+            550,
+            1885,
+            735
+          ],
+          "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+          "diagram_title": "同次原生记录：A01独立回放",
+          "diagram_lines": [
+            "第11日检查点重新载入",
+            "原版CK3 1.19.0.6",
+            "与骑士回放来源分别保留"
+          ],
+          "footer": "右栏标同次原生记录／复算；保留原UI数值",
+          "source_kind": "native-trace",
+          "highlight_line": 0,
+          "extra_ui": []
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+      "start": 350,
+      "source_duration": 10.1,
+      "case": "A01 同次实录 · 我方893／敌方1603",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+        "bytes": 1325156480,
+        "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+          "bytes": 11671,
+          "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r002.png",
+        "source_kind": "actual-ui",
+        "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "source_crop": [
+          1625,
+          550,
+          1885,
+          735
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r002.png",
+          "bytes": 545444,
+          "sha256": "CCB79D1486381E89BB44C17C2F3126DE784FCF021ACD0736B7E2277A34484E45"
+        },
+        "spec": {
+          "title": "十二月十四日原版读数",
+          "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+          "crop_xyxy": [
+            1625,
+            550,
+            1885,
+            735
+          ],
+          "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+          "diagram_title": "真实UI读数：入场前画面",
+          "diagram_lines": [
+            "1066年12月14日",
+            "战斗我方：893；敌方：1603",
+            "海上红色军牌：2570",
+            "军牌未显示人物姓名或军队编号"
+          ],
+          "footer": "原图只放大真实像素；跨日净差不等于入场人数",
+          "source_kind": "actual-ui",
+          "highlight_line": 2,
+          "extra_ui": [
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+              "crop_xyxy": [
+                752,
+                790,
+                1175,
+                930
+              ],
+              "label": "同日真实面板：893／1603"
+            },
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+              "crop_xyxy": [
+                1540,
+                1046,
+                1730,
+                1080
+              ],
+              "label": "原版日期：12月14日"
+            }
+          ]
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+      "start": 365,
+      "source_duration": 10.2,
+      "case": "A01 同次实录 · 我方827／敌方4106",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+        "bytes": 1325156480,
+        "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+          "bytes": 11671,
+          "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r003.png",
+        "source_kind": "actual-ui",
+        "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "source_crop": [
+          752,
+          790,
+          1175,
+          930
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r003.png",
+          "bytes": 538273,
+          "sha256": "F3A8D2B2BF4A36A8EB2D9A02111D7003B8C862F4C323323D597B2D6A43DF2143"
+        },
+        "spec": {
+          "title": "十二月十五日原版读数",
+          "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+          "diagram_title": "真实UI读数：次日画面",
+          "diagram_lines": [
+            "1066年12月15日",
+            "战斗我方：827；敌方：4106",
+            "前日：我方893；敌方1603",
+            "两张采样画面相隔一天"
+          ],
+          "footer": "原图只放大真实像素；跨日净差不等于入场人数",
+          "source_kind": "actual-ui",
+          "highlight_line": 1,
+          "extra_ui": [
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+              "crop_xyxy": [
+                752,
+                790,
+                1175,
+                930
+              ],
+              "label": "前日真实面板：893／1603"
+            },
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+              "crop_xyxy": [
+                1540,
+                1046,
+                1730,
+                1080
+              ],
+              "label": "主图原版日期：12月15日"
+            }
+          ]
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+      "start": 375,
+      "source_duration": 10.866666666666667,
+      "case": "A01 真实界面 · 内部战宽由原生解释图另述",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+        "bytes": 1325156480,
+        "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+          "bytes": 11671,
+          "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r037.png",
+        "source_kind": "native-trace",
+        "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "source_crop": [
+          752,
+          790,
+          1175,
+          930
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r037.png",
+          "bytes": 540070,
+          "sha256": "857D0507F26E01EDBF29752355D49E51D02F021BCB2A2FB408D820EC99E1CFCF"
+        },
+        "spec": {
+          "title": "回到面板和记录卡",
+          "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+          "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+          "diagram_title": "真实UI与同次原生记录分别标注",
+          "diagram_lines": [
+            "原UI：893／1603→827／4106",
+            "原生当前新军：2560",
+            "入口缓存残差：两侧分别记录",
+            "原生最终战宽：1480→2220"
+          ],
+          "footer": "右栏标同次原生记录／复算；保留原UI数值",
+          "source_kind": "native-trace",
+          "highlight_line": 0,
+          "extra_ui": [
+            {
+              "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+              "crop_xyxy": [
+                752,
+                790,
+                1175,
+                930
+              ],
+              "label": "前日真实面板：893／1603"
+            }
+          ]
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/raw/e2-09-terminal-a02.mkv",
+      "start": 470,
+      "source_duration": 8.766666666666667,
+      "case": "A05 同次后段回放 · 普通终局",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\visual_map.json",
+          "bytes": 15807,
+          "sha256": "C7DA57637302A02B7B47C5B1CB3CB2A2BB7D9655DCC130A8DC923477B2AB6288"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\terminal-t001.png",
+        "source_kind": "actual-ui",
+        "case": "A05 独立回放",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+          "bytes": 2439831,
+          "sha256": "19AEF8FB259965A399BD06E9270AA68208E90677B993987CD5D464844C1E08E3"
+        },
+        "source_crop": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\terminal-t001.png",
+          "bytes": 560902,
+          "sha256": "536116D0AD99AF4E1ABA19B418CE81C0D71032BD2494C66F682C12063BDE68E1"
+        },
+        "spec": {
+          "title": "第32日：战场向战争账本交账",
+          "case": "A05 独立回放",
+          "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+          "crop_xyxy": [
+            0,
+            0,
+            1920,
+            1080
+          ],
+          "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+          "diagram_title": "A05 回放位置",
+          "diagram_lines": [
+            "A05 独立载入第27日检查点",
+            "三次追击结算后，进入第32日",
+            "本页回到同次战争后态"
+          ],
+          "footer": "A05 第32日 · 保留中央事件遮挡",
+          "source_kind": "actual-ui"
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/raw/e2-09-terminal-a02.mkv",
+      "start": 480,
+      "source_duration": 9.533333333333333,
+      "case": "A05 同次原生战争界面 · 总分与战斗项−50%",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\visual_map.json",
+          "bytes": 15807,
+          "sha256": "C7DA57637302A02B7B47C5B1CB3CB2A2BB7D9655DCC130A8DC923477B2AB6288"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\terminal-t006.png",
+        "source_kind": "actual-ui",
+        "case": "A05 独立回放",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+          "bytes": 2439831,
+          "sha256": "19AEF8FB259965A399BD06E9270AA68208E90677B993987CD5D464844C1E08E3"
+        },
+        "source_crop": [
+          668,
+          895,
+          1233,
+          985
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\terminal-t006.png",
+          "bytes": 509812,
+          "sha256": "7DA83E2E9119E96A55DFFA02E22761C55A5ADC575F17E10CF48E740AA8DEC63A"
+        },
+        "spec": {
+          "title": "放大可读的战争窗口下半部",
+          "case": "A05 独立回放",
+          "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+          "crop_xyxy": [
+            668,
+            895,
+            1233,
+            985
+          ],
+          "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+          "diagram_title": "真实UI · 两处可见读数",
+          "diagram_lines": [
+            "总分：−50%",
+            "剑形图标分项：−50%",
+            "上半部被剧情事件遮挡",
+            "放大原图下部，不补造遮挡内容"
+          ],
+          "footer": "A05 a02 第32日 · 原图下部真实像素",
+          "source_kind": "actual-ui"
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    },
+    {
+      "kind": "raw-excerpt",
+      "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+      "start": 225,
+      "source_duration": 9.833333333333334,
+      "case": "A01 独立回放示例 · 海上2570；非下一战预测",
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+        "bytes": 1325156480,
+        "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+        "identity_provenance": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+          "bytes": 11671,
+          "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+        },
+        "method": "Previously completed full hash in frozen capture/UI receipts; current exact file size checked. Not a new raw hash or clean-span approval."
+      },
+      "still_alternative": {
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\closing-c006.png",
+        "source_kind": "actual-ui",
+        "case": "A01 独立增援回放",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "source_crop": [
+          789,
+          441,
+          1885,
+          735
+        ],
+        "rendered_image": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\closing-c006.png",
+          "bytes": 586599,
+          "sha256": "755025180E3486AF05ADDF7D11DECBB7FC2D5246B531B02A4264BDCC40D8EDA0"
+        },
+        "spec": {
+          "title": "继续观察：海上军队何时入场",
+          "case": "A01 独立增援回放",
+          "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "crop_xyxy": [
+            789,
+            441,
+            1885,
+            735
+          ],
+          "ui_label": "A01 12月14日真实地图：海上军队2570",
+          "diagram_title": "实际UI观察 · 到场前后",
+          "diagram_lines": [
+            "同次A01海上军队牌：2570",
+            "加入前敌方面板：1603",
+            "加入后敌方面板：4106",
+            "前后日期与人数分别比较",
+            "不可用1603+2570直接解释4106"
+          ],
+          "footer": "A01同次图源 · sea225、before350、after365",
+          "source_kind": "actual-ui",
+          "extra_ui": [
+            {
+              "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+              "crop_xyxy": [
+                752,
+                790,
+                1175,
+                930
+              ],
+              "label": "A01加入前：893对1603"
+            },
+            {
+              "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+              "crop_xyxy": [
+                752,
+                790,
+                1175,
+                930
+              ],
+              "label": "A01加入后：827对4106"
+            }
+          ]
+        }
+      },
+      "admission": "Review excerpt anchored to documented actual frames; continuous human clean-span approval pending."
+    }
+  ],
+  "raw_binding_method": "retained original exact receipt and current size; no repeated full raw hashing",
+  "timeline_audio": [
+    {
+      "key": "opening-o001",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o001\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o001\\attempt-01\\speech.mp3",
+        "bytes": 44928,
+        "sha256": "7E2F1CE196CC24697909DCDB1A172C5C14655BFFEEA3801222BEFEB3B078D5E6"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o001\\speech-trimmed.wav",
+        "bytes": 1321806,
+        "sha256": "2E8662B3D665C82133A0419633EDA90C4363A641E13EA599192B4CDCE414EFB0"
+      }
+    },
+    {
+      "key": "opening-o002",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o002\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o002\\attempt-01\\speech.mp3",
+        "bytes": 70704,
+        "sha256": "454FDA7F23DA235874988245A082AEA35A66388D67AA9F3706DBAEE7F90A0280"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o002\\speech-trimmed.wav",
+        "bytes": 2150654,
+        "sha256": "A418C2F45D76D500DB6AFA37DC656F4E3E2F8EF5ABF2A4302673433938583F7E"
+      }
+    },
+    {
+      "key": "opening-o003",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o003\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o003\\attempt-01\\speech.mp3",
+        "bytes": 72432,
+        "sha256": "DB2923CE186B8051169D80B9A60ADCFFDFC4559FA6037688809EDFA534068847"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o003\\speech-trimmed.wav",
+        "bytes": 2205686,
+        "sha256": "7DFFE9F41F478B28D4602C3FBCB4DA42AB56938B0AAA9C1C1F1895E1D814444E"
+      }
+    },
+    {
+      "key": "opening-o004",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o004\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o004\\attempt-01\\speech.mp3",
+        "bytes": 69696,
+        "sha256": "4DF54A5FDAFE0DC5B163D84DDCA989D907452053E540515673CA397B882A9A61"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o004\\speech-trimmed.wav",
+        "bytes": 2113438,
+        "sha256": "D3D8E1A7E6698293EF3ECA699A777AFEFB4BBD32E112C21980DF4468AEE032ED"
+      }
+    },
+    {
+      "key": "opening-o005",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o005\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o005\\attempt-01\\speech.mp3",
+        "bytes": 70416,
+        "sha256": "6678B6757EBC4BA0DD7626E02F6A3314B7D69390EC8CBAEA8081A1E2DD484C10"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o005\\speech-trimmed.wav",
+        "bytes": 2136758,
+        "sha256": "37405DD6902331098F28BDB664B22AF7CE8FC146DA7949C7CB27633C57FC863D"
+      }
+    },
+    {
+      "key": "opening-o006",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o006\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o006\\attempt-01\\speech.mp3",
+        "bytes": 71280,
+        "sha256": "2C268F33B7F1D5B4086F73EBE46FC48D03521C38429E26F6A49EAAB0FE21351C"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o006\\speech-trimmed.wav",
+        "bytes": 2168862,
+        "sha256": "E250E5B67D41FA96707EC635454E1B43F5062F0B41E8CEA483A6140A5FFC90DB"
+      }
+    },
+    {
+      "key": "opening-o007",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o007\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o007\\attempt-01\\speech.mp3",
+        "bytes": 73872,
+        "sha256": "A2619E8EBE27686E8491E7AA157F8A0CC02B31528BBC352B4EAEF71DE9D00BC2"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o007\\speech-trimmed.wav",
+        "bytes": 2247654,
+        "sha256": "7493D3D54E2F25B6E50515FC0C45F5C98672F4AD7B318669AD44FFC217F41B35"
+      }
+    },
+    {
+      "key": "opening-o008",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o008\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o008\\attempt-01\\speech.mp3",
+        "bytes": 64368,
+        "sha256": "79DCB5F09A534E14BDEF03ECFC24D7896AB41ABE9EEE7AFF6E04363072F192CE"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o008\\speech-trimmed.wav",
+        "bytes": 1947686,
+        "sha256": "DA7FAF712E5EA6EA63B9635F672D29206D7FA7F3E9B4A25524E2DCC4570ADDE1"
+      }
+    },
+    {
+      "key": "opening-o009",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o009\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o009\\attempt-01\\speech.mp3",
+        "bytes": 65376,
+        "sha256": "119DBDD031965AD319A26B1A9FCD2126FE377F1D0233D53EF247A0F8AC16B1B2"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o009\\speech-trimmed.wav",
+        "bytes": 1972686,
+        "sha256": "572383E23862D11A7749A54997992A80E194295585475973B64DB7219517F799"
+      }
+    },
+    {
+      "key": "opening-o010",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o010\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\opening-o010\\attempt-01\\speech.mp3",
+        "bytes": 66096,
+        "sha256": "95E8A636A73D0581EE00E79A9AC42F6E3BCC48594FABA6414E867414546163A5"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\opening-o010\\speech-trimmed.wav",
+        "bytes": 1995838,
+        "sha256": "A570B729170F031639F96F19FFF7138A123E5AA98A1D7D5007DB8C1761D4CDF1"
+      }
+    },
+    {
+      "key": "pursuit-p001",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p001\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p001\\attempt-01\\speech.mp3",
+        "bytes": 70128,
+        "sha256": "631250DFE82AC8C9159437A6454340A54583F76DB1E0204EE7D1AD841D948F20"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p001\\speech-trimmed.wav",
+        "bytes": 2131598,
+        "sha256": "D4F67CF4B93058EED9F09E1C6AAD32D46831883D3CB5E98D4280D75F1BC736A2"
+      }
+    },
+    {
+      "key": "pursuit-p002",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p002\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p002\\attempt-01\\speech.mp3",
+        "bytes": 74016,
+        "sha256": "896B5BFF7BB7088090752CA880F2ADB2D2411B3C32103DB3DB4720906F5A292D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p002\\speech-trimmed.wav",
+        "bytes": 2257086,
+        "sha256": "9E807F0BD2F9C1800FA3E9D379B73DD48ABC935FB1336328289FDB43526F042C"
+      }
+    },
+    {
+      "key": "pursuit-p003",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p003\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p003\\attempt-01\\speech.mp3",
+        "bytes": 73728,
+        "sha256": "7FC69F7E3D79B0E72BB98FB607F11DE1912E6CA7F73D755277F3D3D1A52483C1"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p003\\speech-trimmed.wav",
+        "bytes": 2245822,
+        "sha256": "9948EEB43C3CDD77A4B3101E1566B9ED8B50236CD1109581EE806DEF78A8971C"
+      }
+    },
+    {
+      "key": "pursuit-p004",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p004\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p004\\attempt-01\\speech.mp3",
+        "bytes": 74592,
+        "sha256": "D323B73ABCA9C972D7ECC7E3031258CEA179AE53A974D2245BD250D1E6630940"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p004\\speech-trimmed.wav",
+        "bytes": 2269734,
+        "sha256": "1DC177123C2A2146FCD185D4311FE0F33F1C54F8DBA79F73860B212C1024FC7A"
+      }
+    },
+    {
+      "key": "pursuit-p005",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p005\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p005\\attempt-01\\speech.mp3",
+        "bytes": 73296,
+        "sha256": "E8C1AD4CA69828FFDF7348FE6D7D6FA3F8D17A2AD119F1751050AB09DBB524EB"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p005\\speech-trimmed.wav",
+        "bytes": 2234158,
+        "sha256": "DCAE7A39A137A4E603129E63F9D7C97266C790A5F5D32F881159347BC1A3E3BC"
+      }
+    },
+    {
+      "key": "pursuit-p006",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p006\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p006\\attempt-01\\speech.mp3",
+        "bytes": 73872,
+        "sha256": "B08F0F187CE99F4BFF7C3A92DF077BB49585DFEA7E7B9E8F94B4060E558A926C"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p006\\speech-trimmed.wav",
+        "bytes": 2242718,
+        "sha256": "142ECC25B9298242B4449FC828E1B9CE6A8947B65A59B1D1D8BC4697B174A3F1"
+      }
+    },
+    {
+      "key": "pursuit-p007",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p007\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p007\\attempt-01\\speech.mp3",
+        "bytes": 74592,
+        "sha256": "F52555130E8B6A830483F6AD9794A4CF7DF49811866BEDE23FDFEF6DD5E5A234"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p007\\speech-trimmed.wav",
+        "bytes": 2276966,
+        "sha256": "532B9F2DE4540C959C9DFC9568646BE8A3C63484C556EED014F9E048DA662D52"
+      }
+    },
+    {
+      "key": "pursuit-p008",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p008\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p008\\attempt-01\\speech.mp3",
+        "bytes": 75312,
+        "sha256": "140EFFD787A048E62F9A421E05A704120B060B3863F5481A752E51DC45C3A48A"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p008\\speech-trimmed.wav",
+        "bytes": 2294238,
+        "sha256": "96B5274134F5BA14D84BBC3701398DFA8AE75E6C02CDBC75A5B39853F55A5852"
+      }
+    },
+    {
+      "key": "pursuit-p009",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p009\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p009\\attempt-01\\speech.mp3",
+        "bytes": 75456,
+        "sha256": "964E32A5289952FF0CCA0A2F72F2F62698854D38E76D8AECC983C4DACB832DF1"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p009\\speech-trimmed.wav",
+        "bytes": 2304462,
+        "sha256": "75989533067283F24BC7CED3616A2CB11EA4F4CB2705719C734C29390A9592B5"
+      }
+    },
+    {
+      "key": "pursuit-p010",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p010\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p010\\attempt-01\\speech.mp3",
+        "bytes": 70128,
+        "sha256": "0A6ED123CBAC3EC3C468EC27D4DD59A616CC27E4850B38992AD028D8BAFDBA33"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p010\\speech-trimmed.wav",
+        "bytes": 2123550,
+        "sha256": "8435901A4B5AE49307A950258894511A625BDDFB067D4CB71F7C4BDC0BF293F6"
+      }
+    },
+    {
+      "key": "pursuit-p011",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p011\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p011\\attempt-01\\speech.mp3",
+        "bytes": 74448,
+        "sha256": "2FB8FB2FCB54D022AE320D5DE83F32E1967398D9AEB9EB52F0833A41335D7714"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p011\\speech-trimmed.wav",
+        "bytes": 2264886,
+        "sha256": "09C057131C96D7B4341A50079EC09F7A7A161EECEFBF1782DDAFED42407248BA"
+      }
+    },
+    {
+      "key": "pursuit-p012",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p012\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p012\\attempt-01\\speech.mp3",
+        "bytes": 77040,
+        "sha256": "6A38ACE424A8F2AB01446279A2FCBF2E429A94BAA9B00A42FE37924477341A79"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p012\\speech-trimmed.wav",
+        "bytes": 2353998,
+        "sha256": "06C11FEA22CA848036E2A80C29A3B83977067C27E40C92B6E150FA6046C9F9C9"
+      }
+    },
+    {
+      "key": "pursuit-p013",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p013\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p013\\attempt-01\\speech.mp3",
+        "bytes": 78192,
+        "sha256": "CEE881F0AC79A383AC516DC103B1C87E8039E3747DDDE75A06182F5BBDB26B25"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p013\\speech-trimmed.wav",
+        "bytes": 2393886,
+        "sha256": "C1F2CEFA8790785640CA59544327958B48A61EEAD96EEAE4AFBD47E071171C78"
+      }
+    },
+    {
+      "key": "pursuit-p014",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p014\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p014\\attempt-01\\speech.mp3",
+        "bytes": 80064,
+        "sha256": "A8BA8BB70FD6BC9EBE398C16B0FFA0B5D2EBEF6B2323DCE5F469B36495D3AD78"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p014\\speech-trimmed.wav",
+        "bytes": 2447534,
+        "sha256": "158D83A446480B8BD380BAC64CD18AE563FBEAC7A90987C6EE0A93BDB2153B39"
+      }
+    },
+    {
+      "key": "pursuit-p015",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p015\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p015\\attempt-01\\speech.mp3",
+        "bytes": 78192,
+        "sha256": "C54361BFBFABCF20EE768B202030739CB27633D421B77CFBD7CECFE7C1A1F54D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p015\\speech-trimmed.wav",
+        "bytes": 2385230,
+        "sha256": "AECB365F2FF501133CE485B2CDE6E4824D1D2B8A3939D2EC237D6030BB1983CF"
+      }
+    },
+    {
+      "key": "pursuit-p016",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p016\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p016\\attempt-01\\speech.mp3",
+        "bytes": 74448,
+        "sha256": "E395B16BCAB0C4B1C11BD051E987116CE3F2B037A8C234F41C1AE44F0D8058B4"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p016\\speech-trimmed.wav",
+        "bytes": 2265150,
+        "sha256": "3E331FFFAFA90778F17F091A967746CB8F12DE813E7BC2A818AEE859C919A088"
+      }
+    },
+    {
+      "key": "pursuit-p017",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p017\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p017\\attempt-01\\speech.mp3",
+        "bytes": 75312,
+        "sha256": "0BBC2E6AF1CD30BFFE94A3094F6178C3F896987911BA271B8877A29C10AD88EF"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p017\\speech-trimmed.wav",
+        "bytes": 2291830,
+        "sha256": "F90DD8C1BB611307CA6CE9325C11E1C6D84DD659395A8A10F0F1807D0EABF1AB"
+      }
+    },
+    {
+      "key": "pursuit-p018",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p018\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p018\\attempt-01\\speech.mp3",
+        "bytes": 77472,
+        "sha256": "A4351047A0992605E882C92F8BEC4479D2222AF30214FA74FDC4B1CFA8D4A6E6"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p018\\speech-trimmed.wav",
+        "bytes": 2361142,
+        "sha256": "7527AA375239A04EF3C0D510A16927079BB3EAB5D7F8469E1609FF5F6B55E204"
+      }
+    },
+    {
+      "key": "pursuit-p019",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p019\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p019\\attempt-01\\speech.mp3",
+        "bytes": 73008,
+        "sha256": "F303964FF654B6B4B2CBE3120E3DB00697D15446F92D604E6CDFD9FA0C8E180A"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p019\\speech-trimmed.wav",
+        "bytes": 2214126,
+        "sha256": "E0EF758899B88AC62BD2062D4C0205AB3D9AAFCEDC98EC84945C8992117B9D75"
+      }
+    },
+    {
+      "key": "pursuit-p020",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p020\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p020\\attempt-01\\speech.mp3",
+        "bytes": 77184,
+        "sha256": "79509894A63F07F0806293696B53EEC215A82C25A984E3CBE74CA955F4690B95"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p020\\speech-trimmed.wav",
+        "bytes": 2355854,
+        "sha256": "1F237ED83D5F580A06947493D6C73BD1DCE042918C179423CC96AF823F749A45"
+      }
+    },
+    {
+      "key": "pursuit-p021",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p021\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p021\\attempt-01\\speech.mp3",
+        "bytes": 77904,
+        "sha256": "298FD6C1518350E7DFADB3A2463E27A7CB9722DEF55B529B3F7D608E714CB6F2"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p021\\speech-trimmed.wav",
+        "bytes": 2379182,
+        "sha256": "B3E2147945E0BBC186369D1F086988849454269162F54F540CBEC51CD7F616BF"
+      }
+    },
+    {
+      "key": "pursuit-p022",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p022\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p022\\attempt-01\\speech.mp3",
+        "bytes": 84096,
+        "sha256": "04B75F510DEB7D741802BCD786C8B6807733FC433AFDD93B29E1059B3373C34B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p022\\speech-trimmed.wav",
+        "bytes": 2575334,
+        "sha256": "4FE2EB82529C2D6A03210F079540CBEABC00E179DEB6C6253DAF247E605CA1B4"
+      }
+    },
+    {
+      "key": "pursuit-p023",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p023\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p023\\attempt-01\\speech.mp3",
+        "bytes": 78480,
+        "sha256": "68234FA2BE2FCE8B901FB528791155F92537CA1553FE2FA5BF3ACE6AE15EE6E2"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p023\\speech-trimmed.wav",
+        "bytes": 2400310,
+        "sha256": "DEA795AD7897385486B7A99ACD58EB05A23EAFBE029DC03370AE48EB571A8340"
+      }
+    },
+    {
+      "key": "pursuit-p024",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p024\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p024\\attempt-01\\speech.mp3",
+        "bytes": 77904,
+        "sha256": "C162BF5B21F4D2AA460EE82F4D703E4CC0A513573EB2D679946F9EFED5320FC4"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p024\\speech-trimmed.wav",
+        "bytes": 2384230,
+        "sha256": "F678300017D12EFECD0CB14345DEDC202CA55FB834D074BAE090747F26A20517"
+      }
+    },
+    {
+      "key": "pursuit-p025",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p025\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p025\\attempt-01\\speech.mp3",
+        "bytes": 82368,
+        "sha256": "D00663A847750F5D928ED90F82AC4392AF9893218FE67A03C41E5B14B2E57889"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p025\\speech-trimmed.wav",
+        "bytes": 2521046,
+        "sha256": "54A204FB3AD26E5A431FF706CCFCD1A61B3494A934ADC3A9F051413A13A87A0E"
+      }
+    },
+    {
+      "key": "pursuit-p026",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p026\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p026\\attempt-01\\speech.mp3",
+        "bytes": 80496,
+        "sha256": "6044B3F6692922E8E718DA4A79058BA6995452C971E2ADEB4C0A504D83BDC2DD"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p026\\speech-trimmed.wav",
+        "bytes": 2457534,
+        "sha256": "0B2768ACCDB1BF43E4AA5E8F48CF7B750C1FCA7501CCE039DB1B467FD182A8AC"
+      }
+    },
+    {
+      "key": "pursuit-p027",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p027\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p027\\attempt-01\\speech.mp3",
+        "bytes": 77328,
+        "sha256": "EAEDB0BA222139189C04C7F975A33F76909E15875F0DB34E8336EAEC3D9F8C35"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p027\\speech-trimmed.wav",
+        "bytes": 2361086,
+        "sha256": "A83DED4C5BB7ACE7687E5D51ECBDCDAD94F2961E1D1D3E376BB62047170080F3"
+      }
+    },
+    {
+      "key": "pursuit-p028",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p028\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p028\\attempt-01\\speech.mp3",
+        "bytes": 77760,
+        "sha256": "93B9F2874754B621444C6F04C2749DC11F4FAE7160368BCCAD9B968B7F6C953B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p028\\speech-trimmed.wav",
+        "bytes": 2371518,
+        "sha256": "5549953FC3149A2C9725F2BE8103A51DB242A0591E3951C0859DC81A333D0426"
+      }
+    },
+    {
+      "key": "pursuit-p029",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p029\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p029\\attempt-01\\speech.mp3",
+        "bytes": 75744,
+        "sha256": "E1B9ED97CE199EE0EB10A7CACB71EFB7A5EF6FA2C8C464FF95E1E2F1CF704008"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p029\\speech-trimmed.wav",
+        "bytes": 2310382,
+        "sha256": "26CC644F1D53DC7596ABD21E58B0D2AF54721F45F8975EBD6F36725851841284"
+      }
+    },
+    {
+      "key": "pursuit-p030",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p030\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\pursuit-p030\\attempt-01\\speech.mp3",
+        "bytes": 83664,
+        "sha256": "91FB624D414B2136920C81AE26022B6903328A13F17ADDE963A85CA6EF2DFECB"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\pursuit-p030\\speech-trimmed.wav",
+        "bytes": 2561702,
+        "sha256": "D6AADA98A66669F93D17B786A0E2ACB91550580A8E75F7DB76C6D67C53FC2A53"
+      }
+    },
+    {
+      "key": "knights-k001",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k001\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k001\\attempt-01\\speech.mp3",
+        "bytes": 61632,
+        "sha256": "E85F59F5E357AE83D545AE935880EE6E7E5A2AB11A43CAE05A28A836D9549575"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k001\\speech-trimmed.wav",
+        "bytes": 1860030,
+        "sha256": "C143404FB78BAABB6244D5ED68B560919C43B8F6A0FC59418C2C740D9A424DCD"
+      }
+    },
+    {
+      "key": "knights-k002",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k002\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k002\\attempt-01\\speech.mp3",
+        "bytes": 64944,
+        "sha256": "F9C6F64F3F0345E66A469BA72F88FFFEB5ED9611F5B7EDD611832C91A3849AB9"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k002\\speech-trimmed.wav",
+        "bytes": 1960502,
+        "sha256": "84AC32036FD3F623455AE40CA4DB40470A664C84C736F9FF6733BFE8434AC37B"
+      }
+    },
+    {
+      "key": "knights-k003",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k003\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k003\\attempt-01\\speech.mp3",
+        "bytes": 66240,
+        "sha256": "E5E852BCBBE61A707089FDE2A417FE078811B859F2CAB9BA2C6270A43656D1BB"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k003\\speech-trimmed.wav",
+        "bytes": 2008054,
+        "sha256": "4355ADC512A87F26A7D757EA531FCB07E4BA37EDCB628024B17D2693E2E6B99E"
+      }
+    },
+    {
+      "key": "knights-k004",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k004\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k004\\attempt-01\\speech.mp3",
+        "bytes": 70128,
+        "sha256": "458C824F43EAE4375A1409DE45C9F82669543C0502BE657C0AF8B484AF8E686F"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k004\\speech-trimmed.wav",
+        "bytes": 2138206,
+        "sha256": "B9F37C901BBE12900DA8DD45399F225B3863FAAC001A2EBC66B35E6F2093E69C"
+      }
+    },
+    {
+      "key": "knights-k005",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k005\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k005\\attempt-01\\speech.mp3",
+        "bytes": 67536,
+        "sha256": "CCD0C510DCA4DF990465C0647EDDA53CA83D1F0C03E7C715AC4A96292B24E8A6"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k005\\speech-trimmed.wav",
+        "bytes": 2044422,
+        "sha256": "0EB67A2D5B1F05532565D3E824DE7974A95597DD3E0625CC901D3C55FE7E15D9"
+      }
+    },
+    {
+      "key": "knights-k006",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k006\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k006\\attempt-01\\speech.mp3",
+        "bytes": 66240,
+        "sha256": "8C18FDF6D2C7B8DF5DD565AD14428C3BC681062ED9ED70A1B2F214CE464B09C9"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k006\\speech-trimmed.wav",
+        "bytes": 2007486,
+        "sha256": "C2003F41C01E7C226A1A7146C16139D83CA7EB865D3C2AA9AB973DDACDD742A8"
+      }
+    },
+    {
+      "key": "knights-k007",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k007\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k007\\attempt-01\\speech.mp3",
+        "bytes": 74304,
+        "sha256": "A4E1F278A92ADE27F08C502C43A2B895C4DBFE44DAA6B8E9633E5373D4B0CA56"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k007\\speech-trimmed.wav",
+        "bytes": 2265974,
+        "sha256": "98AB7B280A80A0332D0A025649AE98F5A48BA9E0D29AF0AD3FAADF2CE7B78AA0"
+      }
+    },
+    {
+      "key": "knights-k008",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k008\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k008\\attempt-01\\speech.mp3",
+        "bytes": 68688,
+        "sha256": "C01F91080BA2E8D5889E693C6B1A517669B0390890ABD895BCB400D14C534EDB"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k008\\speech-trimmed.wav",
+        "bytes": 2088878,
+        "sha256": "CF445A238E94C5CA908E5E8DA55516A5B732A5E05AE004FF0A91D2AEED4B8EA4"
+      }
+    },
+    {
+      "key": "knights-k009",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k009\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k009\\attempt-01\\speech.mp3",
+        "bytes": 68256,
+        "sha256": "C77AC99FA8AD0E8677C6A529F8FEB2B204544F79BA222F4221215C70F6258205"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k009\\speech-trimmed.wav",
+        "bytes": 2073934,
+        "sha256": "EB1F2DBD6BFFC91DE88187F9674ED39F7F50FE3D4873EAA748E070E8735ECBD5"
+      }
+    },
+    {
+      "key": "knights-k010",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k010\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k010\\attempt-01\\speech.mp3",
+        "bytes": 58608,
+        "sha256": "6951011043D14F738434DD6716780A453216133B081A966E2DDD63F6A29A5762"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k010\\speech-trimmed.wav",
+        "bytes": 1767358,
+        "sha256": "F7DA383E569909694588CF456B596AFFFC68E20CA8F46CB7CF16EF6C696C8112"
+      }
+    },
+    {
+      "key": "knights-k011",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k011\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k011\\attempt-01\\speech.mp3",
+        "bytes": 66960,
+        "sha256": "51DAABF5AA5FB6C65D24543E282E8E19AAE9252D08E4E271A88964E5FAE610A9"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k011\\speech-trimmed.wav",
+        "bytes": 2031614,
+        "sha256": "B5B77BD7225C6D7069FD72DEFB9E81107BDCB2A381DA85D5B941E6B881C9AD43"
+      }
+    },
+    {
+      "key": "knights-k012",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k012\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k012\\attempt-01\\speech.mp3",
+        "bytes": 68112,
+        "sha256": "07D25BF16A9E3464FF9559D22E4E7B287689127455865E7F5CA4E00C733E485A"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k012\\speech-trimmed.wav",
+        "bytes": 2068046,
+        "sha256": "4C43549E0FC4C72E13B908DFF8FE5E36EDD8777904A43B9E35F1F5862D1722D2"
+      }
+    },
+    {
+      "key": "knights-k013",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k013\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k013\\attempt-01\\speech.mp3",
+        "bytes": 67392,
+        "sha256": "E37B396BB9EA8D6082C4964692B3A4A9FB4E2A76CCFEF42D7B13C8126AD58037"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k013\\speech-trimmed.wav",
+        "bytes": 2037694,
+        "sha256": "0704C21692402A368F17BF6528C4FCC04F6282667CAD9439831B342D61E1C9CB"
+      }
+    },
+    {
+      "key": "knights-k014",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k014\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k014\\attempt-01\\speech.mp3",
+        "bytes": 67536,
+        "sha256": "F6E0F17F773529CF01E1B2E3E40CEBF91831FCD50192F9590900D52C86229008"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k014\\speech-trimmed.wav",
+        "bytes": 2047126,
+        "sha256": "11C4FDF704C0AC730F1216F79C8239C0FE23A1E5DB7650ECF59B4E18DD74B002"
+      }
+    },
+    {
+      "key": "knights-k015",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k015\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k015\\attempt-01\\speech.mp3",
+        "bytes": 65520,
+        "sha256": "A60E5037D4870891410155BF51B0DA7A421FFF20A57AACD5F200A68E9C7A82D6"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k015\\speech-trimmed.wav",
+        "bytes": 1977150,
+        "sha256": "B11C6F2C03AA21B1AB32388A02AE99E97AC09485270A9F86904AA8CB2D3BDDFA"
+      }
+    },
+    {
+      "key": "knights-k016",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k016\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k016\\attempt-01\\speech.mp3",
+        "bytes": 68544,
+        "sha256": "11B5896339BA85C50847A21CE25EBE9D770F661174BEAD8FF83A8D371A23E610"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k016\\speech-trimmed.wav",
+        "bytes": 2082014,
+        "sha256": "E9343738AC7C7A66F11E52CEC9792CDF1EF27D3C02BA67B31296A2F5D6297E33"
+      }
+    },
+    {
+      "key": "knights-k017",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k017\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k017\\attempt-01\\speech.mp3",
+        "bytes": 73440,
+        "sha256": "BF2F61E635F5D005B396B0F867D56D6F0654E32F1FC14DE7799EAB33DDCB8CE0"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k017\\speech-trimmed.wav",
+        "bytes": 2237486,
+        "sha256": "713659020321DF3BDF1A4EAA2CA1931E80E5ECA646F7A03C0A0874D52A626C4A"
+      }
+    },
+    {
+      "key": "knights-k018",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k018\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k018\\attempt-01\\speech.mp3",
+        "bytes": 63360,
+        "sha256": "3F40416092E60665F9FC2796F72A4453DA2624BC00B6E8DBBC875A4D7B7D51F5"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k018\\speech-trimmed.wav",
+        "bytes": 1916006,
+        "sha256": "5481BAA897D0AF7B70C2D9F8B1D40110274B12CBA9F6EABF8574EBF5A7713C6B"
+      }
+    },
+    {
+      "key": "knights-k019",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k019\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k019\\attempt-01\\speech.mp3",
+        "bytes": 73872,
+        "sha256": "79D4687E2C42B31C715B31EF31E8C541B7375B0DA4587A5B3A099BD5B76EF5E7"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k019\\speech-trimmed.wav",
+        "bytes": 2252070,
+        "sha256": "1C59C65C90EF76B1899EB3FF26288DD99E4A0EA61313271691F2484097C8D7FB"
+      }
+    },
+    {
+      "key": "knights-k020",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k020\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k020\\attempt-01\\speech.mp3",
+        "bytes": 78624,
+        "sha256": "0E6BFCF247C2E36D1CB418E800EE7808B61CC9740CF462CBD0FB4A91286E8896"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k020\\speech-trimmed.wav",
+        "bytes": 2404470,
+        "sha256": "DEF2818748651E432C997968D6C3570DBA56F0EEED8217F1CAF5074CAD4969EB"
+      }
+    },
+    {
+      "key": "knights-k021",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k021\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k021\\attempt-01\\speech.mp3",
+        "bytes": 71712,
+        "sha256": "2F082CF5F17E557C6AEC6495F1617C117EBDD081748E7EAEC28022F0D2B0069D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k021\\speech-trimmed.wav",
+        "bytes": 2180574,
+        "sha256": "07EEE2300056217D4B772C292E805330F408CE33ADAA662392D5AB0412A7E93B"
+      }
+    },
+    {
+      "key": "knights-k022",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k022\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k022\\attempt-01\\speech.mp3",
+        "bytes": 67680,
+        "sha256": "33E3DBFFDFC1744FFADEF4CB258E2E2751C1E432DBB7F35EFB9F35882BC85B88"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k022\\speech-trimmed.wav",
+        "bytes": 2045278,
+        "sha256": "E2F83962C73BB8B86F10F096FA87D533D2EB5A4D7ECEFCC602CFBF09AAF5CB9D"
+      }
+    },
+    {
+      "key": "knights-k023",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k023\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k023\\attempt-01\\speech.mp3",
+        "bytes": 72576,
+        "sha256": "03FF872F6783A870359A7C30C6812BF07CA24DE016304ABA8B285DED6CC7084E"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k023\\speech-trimmed.wav",
+        "bytes": 2209102,
+        "sha256": "51AE36BCC50E01F31A6F7527E856A80B50BA0854139CD5214F13AFEA78AD3279"
+      }
+    },
+    {
+      "key": "knights-k024",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k024\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k024\\attempt-01\\speech.mp3",
+        "bytes": 66528,
+        "sha256": "43874ECC5EC8D1D12D8117C499D77887307CC2B2619D8117497B760DF0B65D6E"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k024\\speech-trimmed.wav",
+        "bytes": 2010646,
+        "sha256": "49B4D6D30F11D8BB692D3B5365AA530D3F1603721716BB52565E527118E77C53"
+      }
+    },
+    {
+      "key": "knights-k025",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k025\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k025\\attempt-01\\speech.mp3",
+        "bytes": 73584,
+        "sha256": "62E80EEF47926EA4F4113854B942D1662CF333E313B9B3EC9DF321F366C05DF0"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k025\\speech-trimmed.wav",
+        "bytes": 2240550,
+        "sha256": "DB90C948741ED3F3F6F67612FE4B7AB8A621DC2D4560AA400A457E97C2358A28"
+      }
+    },
+    {
+      "key": "knights-k026",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k026\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k026\\attempt-01\\speech.mp3",
+        "bytes": 69264,
+        "sha256": "59756218E24FC7AD6435C1EE6F43B1CEFB81D904473E8A20EFC420C089AB7744"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k026\\speech-trimmed.wav",
+        "bytes": 2100766,
+        "sha256": "3D5F9D2F68181E7FBA973BBABE8D487F8AFB0D8F0A4DB8C047F1141F7E2DEC62"
+      }
+    },
+    {
+      "key": "knights-k027",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k027\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k027\\attempt-01\\speech.mp3",
+        "bytes": 69984,
+        "sha256": "DEB470DD892FD9B73BFD752B569719AF387EB2980FF70A87683FF17E9BBAB910"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k027\\speech-trimmed.wav",
+        "bytes": 2127350,
+        "sha256": "050D97F032167D11ABC29071389AE16F8A702520B75ACF522B35345AF4530871"
+      }
+    },
+    {
+      "key": "knights-k028",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k028\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k028\\attempt-01\\speech.mp3",
+        "bytes": 65520,
+        "sha256": "2057904EE754FDEBF786453363C6B55378A4C1C76F0DF62A31E036032AEEFF89"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k028\\speech-trimmed.wav",
+        "bytes": 1980422,
+        "sha256": "33F41EBCFCC76DFFF90E2A26B26ACE06B252375E82AF10986A0B7E0A722F8A33"
+      }
+    },
+    {
+      "key": "knights-k029",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k029\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k029\\attempt-01\\speech.mp3",
+        "bytes": 68544,
+        "sha256": "C9FB3E21EFF45B7F5757AC548F1AD12B36A69EFB5897CAA77FCFE1C328342CC8"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k029\\speech-trimmed.wav",
+        "bytes": 2078534,
+        "sha256": "71493887C992A766FA91D00BE3582940ADBCEBA6301AB69A4E38BFC66908CAC0"
+      }
+    },
+    {
+      "key": "knights-k030",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k030\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k030\\attempt-01\\speech.mp3",
+        "bytes": 73440,
+        "sha256": "92861ACA9AE2E29F04B8775BFD3C9B5160CDB96BB1CCBAC0CD1CE8E8E32472B1"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k030\\speech-trimmed.wav",
+        "bytes": 2232134,
+        "sha256": "F4C7E03B9DE9EE1F12F26EEB3FC0D7EE0D1B506C87B0342AA765C98CDEBCC725"
+      }
+    },
+    {
+      "key": "knights-k031",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k031\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k031\\attempt-01\\speech.mp3",
+        "bytes": 69984,
+        "sha256": "8A6B73541B9EDE5701CDAAAD2FFFFE7AF4CE4E1A7D9636EE4C3470CE4F4A001D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k031\\speech-trimmed.wav",
+        "bytes": 2129990,
+        "sha256": "4CC27DE7DACDFC425241AE3E5AA3B5F24A06DC44992BF44E31306D06EA94D679"
+      }
+    },
+    {
+      "key": "knights-k032",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k032\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k032\\attempt-01\\speech.mp3",
+        "bytes": 70560,
+        "sha256": "9DE53D6EAFED074F2F2C2CA7691F764DECAB4BE7327075A26C736BF841F6FE97"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k032\\speech-trimmed.wav",
+        "bytes": 2151342,
+        "sha256": "5A98A444910F751408CC4BBD8BECDF370BDAC965910CAD659FC345B597D72AB2"
+      }
+    },
+    {
+      "key": "knights-k033",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k033\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k033\\attempt-01\\speech.mp3",
+        "bytes": 73152,
+        "sha256": "AAB9B0ADA02184B9C7D922DC987ADC45A2462973910D7F705CBA351EDA163CB5"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k033\\speech-trimmed.wav",
+        "bytes": 2224094,
+        "sha256": "233B4E5D7413838B860E96F64E82EAC463D7E2B2808ABF1D3427F9959A2B5E02"
+      }
+    },
+    {
+      "key": "knights-k034",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k034\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k034\\attempt-01\\speech.mp3",
+        "bytes": 73440,
+        "sha256": "0008D6322F1AE748C2A77C9DE13878B51759C0BEB8850FF8F161DCDECAA6158C"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k034\\speech-trimmed.wav",
+        "bytes": 2232030,
+        "sha256": "4CA7E5E1E638A362E1774FC6D1DF100859CE4B00F1A98DCAFA6BC258871E6906"
+      }
+    },
+    {
+      "key": "knights-k035",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k035\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k035\\attempt-01\\speech.mp3",
+        "bytes": 68688,
+        "sha256": "DADED38C7D56FAD0E3618FCEBEAD31DAE27C03D7654FC3346BBB7C2932D53CB1"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k035\\speech-trimmed.wav",
+        "bytes": 2082758,
+        "sha256": "ADA0E2D7887D0A435D1225F1A63954A7E33A0D6813FEB6485FC31CF01A18357B"
+      }
+    },
+    {
+      "key": "knights-k036",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k036\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k036\\attempt-01\\speech.mp3",
+        "bytes": 70272,
+        "sha256": "6C1A39FA9BA2D91B9610FEE77C4AE1307B76E884195799EFB8333B2D935B24E5"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k036\\speech-trimmed.wav",
+        "bytes": 2137006,
+        "sha256": "1738A07D5D672305C706504C457CFCFFE54B756D6E128CBFAEF63368190473B0"
+      }
+    },
+    {
+      "key": "knights-k037",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k037\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k037\\attempt-01\\speech.mp3",
+        "bytes": 70272,
+        "sha256": "F2F6601FB5550EF70135D8A9E7B50807A8912D7549B89F605267E8E65C3C057D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k037\\speech-trimmed.wav",
+        "bytes": 2136806,
+        "sha256": "EA1FAFB910EE16E5BA4C06156812D666486AB5CB2A49945872616ACA392389AA"
+      }
+    },
+    {
+      "key": "knights-k038",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k038\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\knights-k038\\attempt-01\\speech.mp3",
+        "bytes": 69264,
+        "sha256": "E1157BCADF88969906DC0D22253F9765803D3EF1365249E6CA890A00D07DE86C"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\knights-k038\\speech-trimmed.wav",
+        "bytes": 2095270,
+        "sha256": "62E5293635440F372408F0BC6595D0B6706CFC323FE0D537F790E7B8E294679B"
+      }
+    },
+    {
+      "key": "reinforcement-r001",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r001\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r001\\attempt-01\\speech.mp3",
+        "bytes": 66240,
+        "sha256": "858CB6DA75420525D4EA09D3B2ED9112A92AB0908D1B771D29ACD405C747AE54"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r001\\speech-trimmed.wav",
+        "bytes": 2004270,
+        "sha256": "DE701C998601AFA67154A707D5DB5145182E8844C9C8927BC3C254F63DD56548"
+      }
+    },
+    {
+      "key": "reinforcement-r002",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r002\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r002\\attempt-01\\speech.mp3",
+        "bytes": 64080,
+        "sha256": "38D84F6DF2D69E0EEFF522746004A1C202D3A29A8E33771617873CC8D311FE61"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r002\\speech-trimmed.wav",
+        "bytes": 1933366,
+        "sha256": "170C2D6CFB42B881DCF40F5E53ED1EF07D387E52BD3F23596C14DD7706D39989"
+      }
+    },
+    {
+      "key": "reinforcement-r003",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r003\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r003\\attempt-01\\speech.mp3",
+        "bytes": 64656,
+        "sha256": "DDB4E5535900FB1A813E8E3F4EAFBB74A004B79D33940310252B4C82859B3B5D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r003\\speech-trimmed.wav",
+        "bytes": 1954782,
+        "sha256": "54E25AD0E2C7A05B8B38962FD30360A0F9901A909957247AFE52FE3B37042E02"
+      }
+    },
+    {
+      "key": "reinforcement-r004",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r004\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r004\\attempt-01\\speech.mp3",
+        "bytes": 66384,
+        "sha256": "0DCC13C943F37821D4F30FBED10A4533B478E2F895223FFB324F580ECEA880D0"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r004\\speech-trimmed.wav",
+        "bytes": 2009222,
+        "sha256": "CC0023E73BC48EB5BBF5F714F1CC5CEED996F28CA83F8648E43459EA7CD7287C"
+      }
+    },
+    {
+      "key": "reinforcement-r005",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r005\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r005\\attempt-01\\speech.mp3",
+        "bytes": 66672,
+        "sha256": "B4E895218A158C188F3A6C44E3206FE1E6C05AF6FFF516E3F81CF6524709BB87"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r005\\speech-trimmed.wav",
+        "bytes": 2018158,
+        "sha256": "061CCA09588ED65FA3E102EB4F039D11FEA55D8E50B5DA914DB908D54EE9E4FF"
+      }
+    },
+    {
+      "key": "reinforcement-r006",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r006\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r006\\attempt-01\\speech.mp3",
+        "bytes": 67104,
+        "sha256": "1CCBB1DF844D1B1C98B94CB7EBB5C87F16609283EF83F65A8D1C944809A2DCF4"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r006\\speech-trimmed.wav",
+        "bytes": 2037334,
+        "sha256": "D58DD0199561D19C40318BA0E507451A75A56D787F82383EBF9D1CDC48C3EA50"
+      }
+    },
+    {
+      "key": "reinforcement-r007",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r007\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r007\\attempt-01\\speech.mp3",
+        "bytes": 69120,
+        "sha256": "208A4119FEAD010BCC198A137A278C893D5F040931EF7660054EC19ABBAB9E08"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r007\\speech-trimmed.wav",
+        "bytes": 2091702,
+        "sha256": "DA5540D6736ED75B2C04F804E4FC64EA763940F059A825328AE52D55CD96A3D8"
+      }
+    },
+    {
+      "key": "reinforcement-r008",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r008\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r008\\attempt-01\\speech.mp3",
+        "bytes": 68832,
+        "sha256": "C5615D4F9B549A5BAD9DDA6CE7F8A3BB65AB9E5D94B9542F3725473B355BD036"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r008\\speech-trimmed.wav",
+        "bytes": 2087982,
+        "sha256": "83C13AB22F536FF393930B2A2010618C840AD1FFF5F673C7DCC0CE64AAF1E99E"
+      }
+    },
+    {
+      "key": "reinforcement-r009",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r009\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r009\\attempt-01\\speech.mp3",
+        "bytes": 66672,
+        "sha256": "6CE418695B99014B7B6B446FF5015D43CC53E22FB78A0CDB3C7D2C3A292EC7AF"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r009\\speech-trimmed.wav",
+        "bytes": 2020830,
+        "sha256": "FB60DE17040EA1CD4F52426AFD0DE709431F4E4A26BB6155C593954DC8719DC5"
+      }
+    },
+    {
+      "key": "reinforcement-r010",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r010\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r010\\attempt-01\\speech.mp3",
+        "bytes": 66384,
+        "sha256": "21ACF53BA22357C4FBA639FFC03D61F4A2AD5C6E93532A5597A262E151EDCC87"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r010\\speech-trimmed.wav",
+        "bytes": 2011678,
+        "sha256": "7F4FBFDEA0007CD141D8CEFAC5CB2E1A9FFB22C53D344FDD11E7F58460E1957F"
+      }
+    },
+    {
+      "key": "reinforcement-r011",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r011\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r011\\attempt-01\\speech.mp3",
+        "bytes": 69408,
+        "sha256": "C6884CB27F1426445E7B7B0A96258108B99E70B9A5706A7AD1D4FA7BBA30B5DF"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r011\\speech-trimmed.wav",
+        "bytes": 2104590,
+        "sha256": "93B2186E11CB2C80E0CA092666FD47A78561B20440E5DF4C49F00B0636330F1C"
+      }
+    },
+    {
+      "key": "reinforcement-r012",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r012\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r012\\attempt-01\\speech.mp3",
+        "bytes": 72144,
+        "sha256": "82B70B7A4EA1278D7DF72C12DACC0210DB2B60BED3B2208F4A9345DCDFB20B50"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r012\\speech-trimmed.wav",
+        "bytes": 2195678,
+        "sha256": "C36DA6C6094A8058394C7424959A676E5AE1AD15A7BA929DDE0B75BFEA836F1A"
+      }
+    },
+    {
+      "key": "reinforcement-r013",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r013\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r013\\attempt-01\\speech.mp3",
+        "bytes": 71280,
+        "sha256": "1B6B7CCAFE62239C6BCC814078EBBBD59C933A3444C728A32F885CBDD9F1D1C3"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r013\\speech-trimmed.wav",
+        "bytes": 2162198,
+        "sha256": "B80A0F5C60F8D04A8648FDB0D81ECA732BED43078F185E9EDE3A97959ACFFEE2"
+      }
+    },
+    {
+      "key": "reinforcement-r014",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r014\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r014\\attempt-01\\speech.mp3",
+        "bytes": 62928,
+        "sha256": "21132B93842400AB05E2E7FD836E91556D15A24F89720F5679535A62371A5DE8"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r014\\speech-trimmed.wav",
+        "bytes": 1898078,
+        "sha256": "9B1F6198DF340EC7EE103E1BB4752E440C94E378B5DE37B166B4DAAF7A45822F"
+      }
+    },
+    {
+      "key": "reinforcement-r015",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r015\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r015\\attempt-01\\speech.mp3",
+        "bytes": 77616,
+        "sha256": "1753F419072F28C60877D798A8E1C39A89A9783FE33B173612C912F9FFC62B16"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r015\\speech-trimmed.wav",
+        "bytes": 2369478,
+        "sha256": "247AD2636A6EB687C3478A95132C1FFF41D1204A54261B5D6B13D1A39C36BF58"
+      }
+    },
+    {
+      "key": "reinforcement-r016",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r016\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r016\\attempt-01\\speech.mp3",
+        "bytes": 67248,
+        "sha256": "373D935C1C520294BE12FB27A260353294E256E91020B690604D7BDB76078304"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r016\\speech-trimmed.wav",
+        "bytes": 2041814,
+        "sha256": "40B8F8A32ED37321D4C2327685ED86B8C4C87FFB7C9A5D164DB21D2A0E89CAB2"
+      }
+    },
+    {
+      "key": "reinforcement-r017",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r017\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r017\\attempt-01\\speech.mp3",
+        "bytes": 66816,
+        "sha256": "ED455CFBEA30F88C995A02C7F9A5487B723785F42CB3C4E7DD56F3D7E9906601"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r017\\speech-trimmed.wav",
+        "bytes": 2027278,
+        "sha256": "32C8B70931392554E0B9F6C09A2BB76335BD3A8EEB67B0C9E047B2294B1E1C93"
+      }
+    },
+    {
+      "key": "reinforcement-r018",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r018\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r018\\attempt-01\\speech.mp3",
+        "bytes": 68112,
+        "sha256": "8B1BD4B99044D844D475B1ED85580EBD61C7003074F650788DE04D369F9A3D5D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r018\\speech-trimmed.wav",
+        "bytes": 2068750,
+        "sha256": "181453C6E084A614BC474101816E52CC22C83517E4E03ABC161A0631CBEBB0C2"
+      }
+    },
+    {
+      "key": "reinforcement-r019",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r019\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r019\\attempt-02\\speech.mp3",
+        "bytes": 69840,
+        "sha256": "6C0F3AB13B4945AD580D1DAFFD84CCC8B57DCFF4750FCBE750ED45878DA05715"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r019\\speech-trimmed.wav",
+        "bytes": 2124374,
+        "sha256": "A60CEC44AA92D7827F6B72E3044DA9513E3D6AC999F8FDF3FD5E425E2BB6507C"
+      }
+    },
+    {
+      "key": "reinforcement-r020",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r020\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r020\\attempt-02\\speech.mp3",
+        "bytes": 70416,
+        "sha256": "E4E33C7AC31EDC4BD08C56488CD3C30DCC0309124E59407736BE0691536FFF9E"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r020\\speech-trimmed.wav",
+        "bytes": 2136470,
+        "sha256": "184688D896AC51C7030BEA8860681B0EB8FED77952698ACFA278554C48F8289C"
+      }
+    },
+    {
+      "key": "reinforcement-r021",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r021\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r021\\attempt-01\\speech.mp3",
+        "bytes": 69408,
+        "sha256": "684B2A0B8F98B6AB139ED6E32F56A869A5CD4B499A483A77A6E1ED99A57AE1F6"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r021\\speech-trimmed.wav",
+        "bytes": 2110262,
+        "sha256": "43F6622D5DAAD68578906539FBA2D662CE42143F5001D44F32140B2D9C2DBC15"
+      }
+    },
+    {
+      "key": "reinforcement-r022",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r022\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r022\\attempt-01\\speech.mp3",
+        "bytes": 70560,
+        "sha256": "E47EA93F9CD437E756E54F023EFB5EF535A1D94F0D094F809E8C0501B88CD420"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r022\\speech-trimmed.wav",
+        "bytes": 2144382,
+        "sha256": "53DBE4C9FF12A55DEC0C285B79A091C457871E09550C311A5676327DBD3EB1EB"
+      }
+    },
+    {
+      "key": "reinforcement-r023",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r023\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r023\\attempt-01\\speech.mp3",
+        "bytes": 68832,
+        "sha256": "B656D48A8E845A82AA7888B9C9485BAFAAE3E5DAB80CB5B1D68267B5CFBE141F"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r023\\speech-trimmed.wav",
+        "bytes": 2083990,
+        "sha256": "A14314CF88F6CD6D24961997F2E7096164E69C9B81D447B3380D23805B70EB6E"
+      }
+    },
+    {
+      "key": "reinforcement-r024",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r024\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r024\\attempt-01\\speech.mp3",
+        "bytes": 74304,
+        "sha256": "A3BFB85531A2A7D055181A8075D7C703B4E2F68813F1F9D6E4FC7592952FCCE0"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r024\\speech-trimmed.wav",
+        "bytes": 2266806,
+        "sha256": "28B0B88B9840DB5A8399E5AC670524F928C3CE93CC61FBD71EB9EB1EBED7E21C"
+      }
+    },
+    {
+      "key": "reinforcement-r025",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r025\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r025\\attempt-01\\speech.mp3",
+        "bytes": 66384,
+        "sha256": "9CE9F87D4EDBB28EC0773C2B29F4A369C02B015A26A897BF931DF95BBC2F403F"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r025\\speech-trimmed.wav",
+        "bytes": 2009310,
+        "sha256": "04363B2351BFE946DF8C778CCA0F9CAB2DF94593C1FD67BF1EFA708975CA704D"
+      }
+    },
+    {
+      "key": "reinforcement-r026",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r026\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r026\\attempt-01\\speech.mp3",
+        "bytes": 76032,
+        "sha256": "30D5CB9C69C96541A5C0C03C5DFB667DEA65EB952D98B4311DC770B4F15484EB"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r026\\speech-trimmed.wav",
+        "bytes": 2316798,
+        "sha256": "54F4A3FAA6646CD5978066D008098E9CE59544BCDABD73E9FFB426D56C20BC5E"
+      }
+    },
+    {
+      "key": "reinforcement-r027",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r027\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r027\\attempt-01\\speech.mp3",
+        "bytes": 72432,
+        "sha256": "C82E19D178FBAE086E363747DE36DF148ABFCC4839CC2DF5C3C0BFEB22B15F0F"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r027\\speech-trimmed.wav",
+        "bytes": 2197614,
+        "sha256": "43589C99579322A36559FB1C088CC8DFF5FA06FE7E9A78C96018280266A15BBB"
+      }
+    },
+    {
+      "key": "reinforcement-r028",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r028\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r028\\attempt-01\\speech.mp3",
+        "bytes": 73008,
+        "sha256": "E2B541BD35F794C511A095E406EC447C2FFF63D713709B8F9AEF4DC7F28323DF"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r028\\speech-trimmed.wav",
+        "bytes": 2222078,
+        "sha256": "E36DA8EAAC08524CBBF2AD4889A62D1E8CA4D67F9FA0BE49D2DF9EF6EDFC7012"
+      }
+    },
+    {
+      "key": "reinforcement-r029",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r029\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r029\\attempt-01\\speech.mp3",
+        "bytes": 71136,
+        "sha256": "6F9F6CDE981A0E88EA66D0B8D137A7D25A03B72112030AD99FBC4FD6A2AA0123"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r029\\speech-trimmed.wav",
+        "bytes": 2167886,
+        "sha256": "E5AE424A0D6E929E68D900E576DFD335E47F07E3C5A32565DE179B1DCE4B4102"
+      }
+    },
+    {
+      "key": "reinforcement-r030",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r030\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r030\\attempt-01\\speech.mp3",
+        "bytes": 74160,
+        "sha256": "14F49441623531804026F2D4A8CB6C3E8C2481CB6C280230FA4C29E784FBAB33"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r030\\speech-trimmed.wav",
+        "bytes": 2256006,
+        "sha256": "58CF990AE46A39E16B17E0E1A2096CE670B974C0E704F1E6FE051BE27373A44D"
+      }
+    },
+    {
+      "key": "reinforcement-r031",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r031\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r031\\attempt-01\\speech.mp3",
+        "bytes": 69552,
+        "sha256": "0BB675AAF607A9BBC0D0F21502DB51A1DD5ECDE7335373C66AAF6A97AD678659"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r031\\speech-trimmed.wav",
+        "bytes": 2108646,
+        "sha256": "EB3D95CDCCDE64BAA2AE07428985D322B7307F3AE56E370FDF96F4E08251F369"
+      }
+    },
+    {
+      "key": "reinforcement-r032",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r032\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r032\\attempt-01\\speech.mp3",
+        "bytes": 73296,
+        "sha256": "64DA04AB07E3DD250FB61C75238DCB9F1776EAE2797F8C5F2D17192FCBE48597"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r032\\speech-trimmed.wav",
+        "bytes": 2233366,
+        "sha256": "16CDF53926A1B9D0DD52A7D9B5AFE9F23AA1EFAC69877DDC3E38C42EFC7F6EE0"
+      }
+    },
+    {
+      "key": "reinforcement-r033",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r033\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r033\\attempt-01\\speech.mp3",
+        "bytes": 69984,
+        "sha256": "1703F7AB48A26E79A1EE1352D2076CB887D544F8C6BA274B45F5774EDF870933"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r033\\speech-trimmed.wav",
+        "bytes": 2123846,
+        "sha256": "9D4C0A0A1B6852236D6AC0ED007B44BCDCB46C25DFE25A11B5E657B152ABB5AC"
+      }
+    },
+    {
+      "key": "reinforcement-r034",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r034\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r034\\attempt-01\\speech.mp3",
+        "bytes": 66528,
+        "sha256": "DBC6BE3B4F9D7169D66C9474285474BBCA98AF1B97DF29A87DE54E15E2236776"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r034\\speech-trimmed.wav",
+        "bytes": 2011926,
+        "sha256": "608EF4EF0EFA94B75094F929952F34FA144854150147C37AAC3AA07D545B39F7"
+      }
+    },
+    {
+      "key": "reinforcement-r035",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r035\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r035\\attempt-01\\speech.mp3",
+        "bytes": 72144,
+        "sha256": "E0DD4ED3635EE93817929B477067059565AFCA39E71EBD7825AB31FFB1704F33"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r035\\speech-trimmed.wav",
+        "bytes": 2194854,
+        "sha256": "87708E8D4D58232BB3731C8701103EC26C648A681E569319E347792ADC64A2E3"
+      }
+    },
+    {
+      "key": "reinforcement-r036",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r036\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r036\\attempt-01\\speech.mp3",
+        "bytes": 71424,
+        "sha256": "5C0B3F34351EBA295C75ADAFA70DDF588EE0341292940A327924ACED80FCC376"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r036\\speech-trimmed.wav",
+        "bytes": 2168006,
+        "sha256": "284B7F15A1E5A4E7DD301012C59C56BF85A0CC93FD7933F3CF7D97EB13F5071D"
+      }
+    },
+    {
+      "key": "reinforcement-r037",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r037\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r037\\attempt-01\\speech.mp3",
+        "bytes": 68832,
+        "sha256": "144C3CF2F871DFBC42321B64B88E4616BF50817961EDBAB9661EBA35F81AB472"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r037\\speech-trimmed.wav",
+        "bytes": 2080654,
+        "sha256": "3A7C42E6190B06A6E8674A7D6BD1ACCEA4F7F23393692EFDB7CDBD274BCAEF56"
+      }
+    },
+    {
+      "key": "reinforcement-r038",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r038\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r038\\attempt-01\\speech.mp3",
+        "bytes": 72864,
+        "sha256": "347EB46AA99FA9BE8139072306EB26086C508B333623E47D94971B295C0AEFBC"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r038\\speech-trimmed.wav",
+        "bytes": 2218870,
+        "sha256": "5F4CAA6470127B25C428AC469B71043DBA9715FC5F4B8665028C1133D7267586"
+      }
+    },
+    {
+      "key": "reinforcement-r039",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r039\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r039\\attempt-01\\speech.mp3",
+        "bytes": 66240,
+        "sha256": "8E44E93461A84A6DE540E10F21A2FF5D68E4838484EFE61323DC77B203B36D6B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r039\\speech-trimmed.wav",
+        "bytes": 2011806,
+        "sha256": "0057CF4EF0C2FB8EADFC3AB4979327A668BE8DD4B28D3FB33DD55C4164354980"
+      }
+    },
+    {
+      "key": "reinforcement-r040",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r040\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r040\\attempt-01\\speech.mp3",
+        "bytes": 71424,
+        "sha256": "FCE89093043DF638561FA7EDBBCD4906135D368AD3DD6886728F87C6336C836B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r040\\speech-trimmed.wav",
+        "bytes": 2178054,
+        "sha256": "84F24A2B8E548F1C5109CFA2C2A953870CBF7EEB6F322ADC2417BAA17FC42340"
+      }
+    },
+    {
+      "key": "reinforcement-r041",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r041\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r041\\attempt-01\\speech.mp3",
+        "bytes": 67392,
+        "sha256": "119439FFC9CCE68295B1071C003EF6E6983A840B3C4BFF7147A3D0E9EEB4A4C1"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r041\\speech-trimmed.wav",
+        "bytes": 2044694,
+        "sha256": "ABBE095410F521049CB03DE469B5445A2C5136B0FAF77E3556D15CD0D7D2D6ED"
+      }
+    },
+    {
+      "key": "reinforcement-r042",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r042\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\reinforcement-r042\\attempt-01\\speech.mp3",
+        "bytes": 70560,
+        "sha256": "EF923296176D4AC0B5BF0758E687136991742AA2F69D93BFB72D7E9FD4D24FEF"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\reinforcement-r042\\speech-trimmed.wav",
+        "bytes": 2140070,
+        "sha256": "D76D92379938DC80CBAA3FD313C5B951A7EBFE29208882BD4A15D5FD1CCC5A45"
+      }
+    },
+    {
+      "key": "terminal-t001",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t001\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t001\\attempt-01\\speech.mp3",
+        "bytes": 56304,
+        "sha256": "989A0A941F5196ADFB0244D157390EB0173D14BE9B1112F26BB5FFC764501285"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t001\\speech-trimmed.wav",
+        "bytes": 1679990,
+        "sha256": "86A9E5725E1E75B5AD850FB44FF33D9B51D73A29409832D971CA127FD5EEF54F"
+      }
+    },
+    {
+      "key": "terminal-t002",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t002\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t002\\attempt-01\\speech.mp3",
+        "bytes": 56304,
+        "sha256": "548A72CF15C3C4ABCF749BC5D1C136B807AC064C42B257221B4FE96402BB18B7"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t002\\speech-trimmed.wav",
+        "bytes": 1686998,
+        "sha256": "EEAA1CF011921370DCA377D947424A2BB9B907206670D32AEF8D8032E5AC6FDC"
+      }
+    },
+    {
+      "key": "terminal-t003",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t003\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t003\\attempt-01\\speech.mp3",
+        "bytes": 61200,
+        "sha256": "AF35E68B2E22E900E5B74F6FF3D0BA10DDACCEC5F82AFE8C9A9A9E451EDB9099"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t003\\speech-trimmed.wav",
+        "bytes": 1847022,
+        "sha256": "1565551E547FD784E22FAD6A58C68FB4009B3F5B0EF2BD2083999BCF9C75C423"
+      }
+    },
+    {
+      "key": "terminal-t004",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t004\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t004\\attempt-01\\speech.mp3",
+        "bytes": 68256,
+        "sha256": "E39228C6345F52EA3D99828BE11675BDF8D4E44E0E016375BFD3D9598B297D14"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t004\\speech-trimmed.wav",
+        "bytes": 2065982,
+        "sha256": "940DF11B3DFBC30878A4D3E2A8A2BE1BE824EA6AB5C99A48DE1BA19099D9DB10"
+      }
+    },
+    {
+      "key": "terminal-t005",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t005\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t005\\attempt-01\\speech.mp3",
+        "bytes": 59040,
+        "sha256": "DE5D505B25DE6CF34B96AEAF1DF9F7B0F36DBE3477E7CCCACB2F53D69A2A615C"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t005\\speech-trimmed.wav",
+        "bytes": 1776206,
+        "sha256": "9494EC146FB2B03EC322D60906A7C7518AC57244F0C946DF6CD51485C72AA6B0"
+      }
+    },
+    {
+      "key": "terminal-t006",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t006\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t006\\attempt-01\\speech.mp3",
+        "bytes": 60624,
+        "sha256": "CDB4A2E76A43688C6D2AB307B11042C66B55B91FBA20DF4F1D25066F98A5BBA0"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t006\\speech-trimmed.wav",
+        "bytes": 1829582,
+        "sha256": "482776A0C2AF8D68B3F2CE9330F30459722E37AD7AF16177139A3DF288E0DACE"
+      }
+    },
+    {
+      "key": "terminal-t007",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t007\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t007\\attempt-01\\speech.mp3",
+        "bytes": 62928,
+        "sha256": "DF106B997BB625711B7A84D677A4C6C6FD888232681C149331B4A6FFBA953025"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t007\\speech-trimmed.wav",
+        "bytes": 1900030,
+        "sha256": "1F3288ABD47960E9C5B76FD7004E450FD9A6743C329E3FDCBF59762613FA2055"
+      }
+    },
+    {
+      "key": "terminal-t008",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t008\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t008\\attempt-01\\speech.mp3",
+        "bytes": 61632,
+        "sha256": "B8756C3356C7B37AD21E578FC67097B6B2BE62DDA7DA3903ABAF3E69CB08A49A"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t008\\speech-trimmed.wav",
+        "bytes": 1858878,
+        "sha256": "42656CA8F06406689DADD383D41D9C1FE72BF96AC160BEF553EA1FEC6E282F13"
+      }
+    },
+    {
+      "key": "terminal-t009",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t009\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t009\\attempt-01\\speech.mp3",
+        "bytes": 61200,
+        "sha256": "11C574D8323C1D9E0B82CAF8B0938A31F8D96EFF7AD26E619B53D4073A86AE50"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t009\\speech-trimmed.wav",
+        "bytes": 1847758,
+        "sha256": "B1E4BED0D5C025B2CEDAF6F7E55A6B94B8CD19000A6350A71632ED5AC61FE49C"
+      }
+    },
+    {
+      "key": "terminal-t010",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t010\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t010\\attempt-01\\speech.mp3",
+        "bytes": 67104,
+        "sha256": "9E2015FC268EC6D0F15617C800BE86991DA78FB34F3E642FB6C1E8087FA9CD9A"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t010\\speech-trimmed.wav",
+        "bytes": 2034854,
+        "sha256": "B522A297DB1B49E46B0F82002B81416BE6D7C1C56D6E00E93136FD2C477809D6"
+      }
+    },
+    {
+      "key": "terminal-t011",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t011\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t011\\attempt-01\\speech.mp3",
+        "bytes": 56736,
+        "sha256": "52B735A68EA6803C27D9AB3F7016BEE998BEB314388DE2DEFF561489052A2C16"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t011\\speech-trimmed.wav",
+        "bytes": 1700182,
+        "sha256": "4BCDDD17A0CD75382C88AE39FA12FE927BDD7F55CDFDD9A70BDD53B300233526"
+      }
+    },
+    {
+      "key": "terminal-t012",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t012\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t012\\attempt-01\\speech.mp3",
+        "bytes": 55872,
+        "sha256": "2C9C383609A7912BD9080484A585EDF46E1B00C152C4B8241515EAE331817722"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t012\\speech-trimmed.wav",
+        "bytes": 1672870,
+        "sha256": "E413059B6AACA1BCB3197C8BAFB5F6A7984BA7C3F4F70FBF20B0B2B0FE3BD8A3"
+      }
+    },
+    {
+      "key": "terminal-t013",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t013\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t013\\attempt-01\\speech.mp3",
+        "bytes": 60624,
+        "sha256": "1F9132EDDBF8C633F8F105F267AF802EAEE1DC34B8EC1CEAEF16CCC0EF29C7B6"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t013\\speech-trimmed.wav",
+        "bytes": 1825126,
+        "sha256": "C640BC3E234D4F11A457813F58805DF5297CAFB300D93B856C27EFDF3DAFC7D0"
+      }
+    },
+    {
+      "key": "terminal-t014",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t014\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t014\\attempt-01\\speech.mp3",
+        "bytes": 64800,
+        "sha256": "9904538E6807E6EE8D11CD479529E6EA69F7800C795996A43049260F307F1024"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t014\\speech-trimmed.wav",
+        "bytes": 1959934,
+        "sha256": "524B826F23F728E94A496133468547D8A6596F53544C145028B8D880D0F30D24"
+      }
+    },
+    {
+      "key": "terminal-t015",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t015\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t015\\attempt-01\\speech.mp3",
+        "bytes": 68400,
+        "sha256": "8E028C1B244FDF8DEA22334A94BAA321A4D2446DBAA92AF2E9E97B422B7DF35E"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t015\\speech-trimmed.wav",
+        "bytes": 2067974,
+        "sha256": "A817DEBDB8EDB42D9539763B8FCD7B300FF991F9940012D43D886105C7BBFE4A"
+      }
+    },
+    {
+      "key": "terminal-t016",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t016\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t016\\attempt-01\\speech.mp3",
+        "bytes": 67824,
+        "sha256": "0FDE34A8D09AE082085DC94875D5F909EC671750D62AB3A783C55CE0A64940B3"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t016\\speech-trimmed.wav",
+        "bytes": 2056022,
+        "sha256": "E81F35FC51D2C78BFEAA63F19B79A2E002264240884152C7699B34C1778D4049"
+      }
+    },
+    {
+      "key": "terminal-t017",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t017\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t017\\attempt-01\\speech.mp3",
+        "bytes": 59040,
+        "sha256": "5465C2532175BB1B9FD0BBF80EAD87E17E63ECB87ED0C9DE37E6A9A9A2D78717"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t017\\speech-trimmed.wav",
+        "bytes": 1774718,
+        "sha256": "72E093623B25804C6F9A1C8CC507E0D952FF196493B1180CDC5DB4A9843844FA"
+      }
+    },
+    {
+      "key": "terminal-t018",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t018\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t018\\attempt-01\\speech.mp3",
+        "bytes": 57456,
+        "sha256": "185B5876E03A23F05E624B79FD8C16BD5F105F898144798F023764A14C6CD09B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t018\\speech-trimmed.wav",
+        "bytes": 1727278,
+        "sha256": "6E1038EF71C9F3518A0A531BCA6FE5D51A66718EB62B865357B530C7649A6FFB"
+      }
+    },
+    {
+      "key": "terminal-t019",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t019\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t019\\attempt-01\\speech.mp3",
+        "bytes": 67824,
+        "sha256": "7342B8580D012432B25923978E188ED7526C69765FE071C5F054885732C8DCAC"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t019\\speech-trimmed.wav",
+        "bytes": 2056326,
+        "sha256": "D8BD63532B36B58D19D4A29DE5A508ABC40C912BD3CAFBD1CAD4A6F45E5DF60B"
+      }
+    },
+    {
+      "key": "terminal-t020",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t020\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t020\\attempt-01\\speech.mp3",
+        "bytes": 69984,
+        "sha256": "646227FB5C08EB16EC020872E49234CDD9D9F26E76552D7B90716C6D47FA5562"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t020\\speech-trimmed.wav",
+        "bytes": 2123830,
+        "sha256": "B1B5F507DA47C8A162FE0B5F11ECD9A44E3F7D8787B333330631B5645A9E0594"
+      }
+    },
+    {
+      "key": "terminal-t021",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t021\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t021\\attempt-01\\speech.mp3",
+        "bytes": 69120,
+        "sha256": "E2F8E02A8B606592D39C931420BFCA8837DEFFD55D4CBEA886D0B289B5DCA6CB"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t021\\speech-trimmed.wav",
+        "bytes": 2090998,
+        "sha256": "0C947AA939C5AA857A11EF5CB9D4E90CA65155A89BA2ECDFFB5AFA8C56D4A083"
+      }
+    },
+    {
+      "key": "terminal-t022",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t022\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t022\\attempt-01\\speech.mp3",
+        "bytes": 66384,
+        "sha256": "B4976EF6BBC986BB2C7B3BAA3DF06B0903F06250403A401F2D30F310DAC9DD42"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t022\\speech-trimmed.wav",
+        "bytes": 2011782,
+        "sha256": "0D20F541EB050551A174E6E454EBF2588527AB27E5B49937DA1965F879588396"
+      }
+    },
+    {
+      "key": "terminal-t023",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t023\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t023\\attempt-01\\speech.mp3",
+        "bytes": 60048,
+        "sha256": "9E3DD4D66B00A75417BDF985C832631151A89DA051D748445311E83DD9FE2115"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t023\\speech-trimmed.wav",
+        "bytes": 1812142,
+        "sha256": "BEA8FD74C5688AE1F76B7182DED31EF8823609848A6CF38C13724CB5D030C266"
+      }
+    },
+    {
+      "key": "terminal-t024",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t024\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t024\\attempt-01\\speech.mp3",
+        "bytes": 57888,
+        "sha256": "F2FAE45C492754E1745CD1E6ACFFA9EA0A7C601E5806C89138AAB8EAD325329B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t024\\speech-trimmed.wav",
+        "bytes": 1730742,
+        "sha256": "ABE7FF37262EFC0FA782249CCADCF613749A8CA737EC41809EC817C4AE5FDC20"
+      }
+    },
+    {
+      "key": "terminal-t025",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t025\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t025\\attempt-01\\speech.mp3",
+        "bytes": 64512,
+        "sha256": "1AD8F504CE303109132C4474DACE02A3063D875F20CFE6F1A8AF0A675B01CF1C"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t025\\speech-trimmed.wav",
+        "bytes": 1947294,
+        "sha256": "DEAE4B70FD14865F1A698D02EFE86616F8865ECB185E46C5434F706B5DB71EBF"
+      }
+    },
+    {
+      "key": "terminal-t026",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t026\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t026\\attempt-01\\speech.mp3",
+        "bytes": 60480,
+        "sha256": "2E7EAE2B9567D496E275E8AABDC698E77A4542CBA63878AC4C4B51F0A6165ECF"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t026\\speech-trimmed.wav",
+        "bytes": 1822286,
+        "sha256": "03DB322BAD227450F1DFB17F3ECCD9432BC93EFBA59345DC849B999174F7655B"
+      }
+    },
+    {
+      "key": "terminal-t027",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t027\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t027\\attempt-01\\speech.mp3",
+        "bytes": 61920,
+        "sha256": "7BD4B20BDED286E3755F5DF6C4BD861A4A2F08BC2A63047E0F8CDC6CC2E664BC"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t027\\speech-trimmed.wav",
+        "bytes": 1868694,
+        "sha256": "AFEA8BD39D0AC71C5237F5631F73856E8E35DCCD59B3E8CE65ABF7E3B47DFE95"
+      }
+    },
+    {
+      "key": "terminal-t028",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t028\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t028\\attempt-01\\speech.mp3",
+        "bytes": 64800,
+        "sha256": "E2CC35A1775DD42BAB01081AF1D1C5539061EADBA2A7F201E4571B233C76CC58"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t028\\speech-trimmed.wav",
+        "bytes": 1959254,
+        "sha256": "CF07B8174E3DF91833351C7BC13A36FC47ECEBFD25D62688F81E1F7B2D2485FF"
+      }
+    },
+    {
+      "key": "terminal-t029",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t029\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t029\\attempt-01\\speech.mp3",
+        "bytes": 66528,
+        "sha256": "CEF9292B7EDE43D54284D120CE7AC4C77EC76A126FE8AEC6603C8EBC59EB65E3"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t029\\speech-trimmed.wav",
+        "bytes": 2019238,
+        "sha256": "59E860554D6055D798AFB489729058EC245602164517FF9AE68469418359DC06"
+      }
+    },
+    {
+      "key": "terminal-t030",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t030\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t030\\attempt-01\\speech.mp3",
+        "bytes": 59616,
+        "sha256": "FF2535E1077E3B3457D2C509A7ED235DE5FC3A5CDA5D7C7767FC92673231B313"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t030\\speech-trimmed.wav",
+        "bytes": 1794830,
+        "sha256": "DA4D6E7AF3F3A8FE54E6C63C2B4D4842550E09C50B9F560B8A1E6779F9AB13CC"
+      }
+    },
+    {
+      "key": "terminal-t031",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t031\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t031\\attempt-01\\speech.mp3",
+        "bytes": 68832,
+        "sha256": "3B5BE38E3A44C3E1ECA3145A21187E7BC1D330201B845D69CDD944BA460FB106"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t031\\speech-trimmed.wav",
+        "bytes": 2090150,
+        "sha256": "8C3138E39CEFF28A5C70CEA7AF8F62445829CE692AA6654A7F3347CBDB31658A"
+      }
+    },
+    {
+      "key": "terminal-t032",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t032\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t032\\attempt-01\\speech.mp3",
+        "bytes": 73728,
+        "sha256": "C4FFDFC4FA6649A9D4AAE22B43E64B879E74A90149A8A0F7ACE39B82EEDD48B5"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t032\\speech-trimmed.wav",
+        "bytes": 2247854,
+        "sha256": "72DDED130F6C828C33337F82D13848B3611915CEE7B0A9F861C5DCAA37F47DB1"
+      }
+    },
+    {
+      "key": "terminal-t033",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t033\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t033\\attempt-01\\speech.mp3",
+        "bytes": 65952,
+        "sha256": "03E387BABD810622D0E7F00E83A1033B793F5DEF90A1CC663E8BD56662DD37E2"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t033\\speech-trimmed.wav",
+        "bytes": 1993622,
+        "sha256": "8FD0B14E45595FE6B1DE2AF468EA88D2D7B11906EE1BAB2D4B8ACB42B9192A1A"
+      }
+    },
+    {
+      "key": "terminal-t034",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t034\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t034\\attempt-01\\speech.mp3",
+        "bytes": 65088,
+        "sha256": "74E745917B27A9D4463FE8201FD4243816177B1ED4A545B95B47A0BE540EE854"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t034\\speech-trimmed.wav",
+        "bytes": 1968766,
+        "sha256": "ECB5147ED5CF0FACAD153BBE43D3D5820B9DF27FE9E544A4CF9E2EFAE98FC505"
+      }
+    },
+    {
+      "key": "terminal-t035",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t035\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t035\\attempt-01\\speech.mp3",
+        "bytes": 59328,
+        "sha256": "4BD6B1AA486DE7C1DBF844C627EBF3D217A0E4CC36E8B4659AFE1233009D80F7"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t035\\speech-trimmed.wav",
+        "bytes": 1784670,
+        "sha256": "7708376A24815B1B4AC9BC70A6A4B78376EA92995579082E826720ACEA14C951"
+      }
+    },
+    {
+      "key": "terminal-t036",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t036\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t036\\attempt-01\\speech.mp3",
+        "bytes": 67968,
+        "sha256": "B481E060CD36145D56D7D47D8B3B53B5DB0BDBCA226A227908E22F8BFF60A5EE"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t036\\speech-trimmed.wav",
+        "bytes": 2060006,
+        "sha256": "B50CAB83EA66B809409F70F181A36475F294E143F61EAC27CAEAA76264F59D7B"
+      }
+    },
+    {
+      "key": "terminal-t037",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t037\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\terminal-t037\\attempt-01\\speech.mp3",
+        "bytes": 68976,
+        "sha256": "51A20A2CFFA1CAE282213197BF7419D9EF46A621700A8E2DA67EFB536FA28131"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\terminal-t037\\speech-trimmed.wav",
+        "bytes": 2095102,
+        "sha256": "389CFAFE2B11B940DD3F64549175793D8F7B683B47009AD5578C6FD42000EF83"
+      }
+    },
+    {
+      "key": "closing-c001",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c001\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c001\\attempt-01\\speech.mp3",
+        "bytes": 62064,
+        "sha256": "D93706D447357AAE08AD86F9CADF3CC858FE702C8E0524EFCB3CB23A1A85D66B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c001\\speech-trimmed.wav",
+        "bytes": 1871238,
+        "sha256": "EB08CD0D2B0410BF5ECBDBAF6387DFE7F12ED8C55DEB7BE8113116D5D3951CF7"
+      }
+    },
+    {
+      "key": "closing-c002",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c002\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c002\\attempt-01\\speech.mp3",
+        "bytes": 56592,
+        "sha256": "65A9EA9D848FAC45D3DDD101A06C484434AF39BDA88B746B4409617F1C4974B3"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c002\\speech-trimmed.wav",
+        "bytes": 1700614,
+        "sha256": "34C45DE43C423BE7D9ABC679555C9C5CE78CC8D53D1DAF1AA0E4FBD526D0567D"
+      }
+    },
+    {
+      "key": "closing-c003",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c003\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c003\\attempt-01\\speech.mp3",
+        "bytes": 58608,
+        "sha256": "11EEAAF5D39B89644B393CAB13E343487E7CF0D2637EC7F1D0C711E84CD42C47"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c003\\speech-trimmed.wav",
+        "bytes": 1763022,
+        "sha256": "73B3925379AFCA38D2C998EB26594B69EBD0FA1B84AE46F99D7461D2E4A1D237"
+      }
+    },
+    {
+      "key": "closing-c004",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c004\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c004\\attempt-01\\speech.mp3",
+        "bytes": 58320,
+        "sha256": "4453069370C91B030AA4AA0EB749EB378F2FB1182A2262BB705E0D229A508154"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c004\\speech-trimmed.wav",
+        "bytes": 1743094,
+        "sha256": "E279A361DA9DAD63D887A46AB727E3108E1A1494A0AAA2C9F8722DD852E9B83F"
+      }
+    },
+    {
+      "key": "closing-c005",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c005\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c005\\attempt-01\\speech.mp3",
+        "bytes": 66672,
+        "sha256": "0682A944CD5E20DAD93A693D6BD80B2B38A88C354D772488AFEC33197554400C"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c005\\speech-trimmed.wav",
+        "bytes": 2026742,
+        "sha256": "2EC83B6AE187AA7943E0FD2D81B670C13BD7ACBEA74AA6CCBCC6F63984F806FB"
+      }
+    },
+    {
+      "key": "closing-c006",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c006\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c006\\attempt-01\\speech.mp3",
+        "bytes": 62640,
+        "sha256": "14AF2501996D32A0DEFA96CB6A03A30877C52D44788E8395329FF25F048CA9CB"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c006\\speech-trimmed.wav",
+        "bytes": 1887838,
+        "sha256": "90E42B388271EDF512D2BA993E5D05A80389E52703776808FE9BE3C1E4AFAF09"
+      }
+    },
+    {
+      "key": "closing-c007",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c007\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c007\\attempt-01\\speech.mp3",
+        "bytes": 65664,
+        "sha256": "08906793A022B365FC2F34D9FDA911DADB3648ACE6B04BB39336AF7C0554880B"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c007\\speech-trimmed.wav",
+        "bytes": 1989566,
+        "sha256": "5C48650A2D110EE070308AA178DC538D89D6E3999033F425376F4184EFE39D77"
+      }
+    },
+    {
+      "key": "closing-c008",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c008\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c008\\attempt-01\\speech.mp3",
+        "bytes": 65808,
+        "sha256": "BEA7BF78D968CFC3BBE8AB86A7075D0EE70B5C91AB41F84E9FE6C89BB019C76D"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c008\\speech-trimmed.wav",
+        "bytes": 1992254,
+        "sha256": "9D9C6B148E3DFC238F4E16B46D1A324EA489C5DFD71E9733652A6DB231D62A85"
+      }
+    },
+    {
+      "key": "closing-c009",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c009\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c009\\attempt-01\\speech.mp3",
+        "bytes": 64080,
+        "sha256": "694170008B94068A83AE7D72D187F364ED63268FFFCA35CCEA587208EA3AE4E5"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c009\\speech-trimmed.wav",
+        "bytes": 1930366,
+        "sha256": "37C42E3E5E8AEAD60789B00844D6FEBCFDE72704827EEDE5750CABD780DFD3E1"
+      }
+    },
+    {
+      "key": "closing-c010",
+      "audio": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c010\\speech-trimmed.wav",
+      "tts_raw": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a02\\tts\\closing-c010\\attempt-01\\speech.mp3",
+        "bytes": 79920,
+        "sha256": "F5C8810609DCDAA6B0661F4A9E45235689F345A5F06F8840B7386E74D9425B24"
+      },
+      "tts_trimmed": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a03\\tts\\closing-c010\\speech-trimmed.wav",
+        "bytes": 2431414,
+        "sha256": "856DC122245BBAA50B1BB3CD6C290578BE355D29AC702243BC59BAAC7F8B26C7"
+      }
+    }
+  ]
+}

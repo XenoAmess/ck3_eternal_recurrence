@@ -1,0 +1,54 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review/v1",
+  "stage": "03-final-layout",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "reviewer": "Codex /root (direct original PNG inspection)",
+  "observed_at": "2026-10-01T03:04:05.675905+00:00",
+  "root_actually_viewed": true,
+  "approved_for_current_action": true,
+  "expected_ck3_pid": 16428,
+  "expected_foreground_hwnd": 19925112,
+  "frames": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\03-stability-start.png",
+      "bytes": 4950535,
+      "sha256": "9977AC92DE6C5FE6D5FD32F10B35210F2A369FEEAEC5118893DE5DD6C092B996"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\04-stability-end.png",
+      "bytes": 4937910,
+      "sha256": "9113A3A4C6171CACF8AC52C9EAD86B6F1E709E28F9E4DB315B235E26CBAA79E6"
+    }
+  ],
+  "current_ui_region_reviewed": true,
+  "camera_stable": true,
+  "full_battle_panel": false,
+  "ui_actor_numeric_id_visible": false,
+  "ui_army_numeric_id_visible": false,
+  "required_regions_visible": true,
+  "battle_context_visible": true,
+  "current_date_and_pause_visible": true,
+  "top_counts_visible": true,
+  "required_regions_unobscured": true,
+  "visible_values": {
+    "battle_title": "墨西拿之战",
+    "paused": true,
+    "date_text": "公元1066年12月14日",
+    "left_coat_context": "蓝底红白菱形防御方",
+    "right_coat_context": "绿底金色城塔进攻方",
+    "player_soldiers": 893,
+    "opponent_soldiers": 1603
+  },
+  "root_visible_evidence": {
+    "original_binding": "Both current9977AC92 and9113A3A4 originals2560x1440 viewed through bound1280x720 full-previews45910D85 andFBB6F83F; actual1:1 panel/calendar crops of latter directly viewed.",
+    "actual": "Stable land/coast/fort/battle badge framing between10-second captures; paused1066.12.14, title墨西拿之战/top8931603 and both coats unobscured. Relative-soldiers tooltip visible above panel without obscuring title/counts; lower composition remains clipped.",
+    "native_binding": "Read current layout-scoped-native-context F361AAF0 original: raw53146488 paused actor29829 revision4/native3 Army18 combat16777218 width1480; actor/army numeric IDs are native-only."
+  },
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "scoped_review_schema": "xar.jd11.scoped-top-width-review/v1",
+  "scoped_native_context": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\layout-scoped-native-context.json",
+    "bytes": 3661,
+    "sha256": "F361AAF0B358D9A3C45B3165B370373CE7431AA121D375A5D391A184ABE41A6B"
+  }
+}

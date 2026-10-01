@@ -1,0 +1,68 @@
+{
+  "schema": "xar.jd11.paused-pair.advance-intent/v1",
+  "created_at": "2026-10-01T03:06:01.377319+00:00",
+  "binding": {
+    "track": "e2-06-d11",
+    "spec": {
+      "save": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "receipt": "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5",
+      "dll": "ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23",
+      "injector": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F",
+      "date": 53146488,
+      "control": true
+    },
+    "preflight": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\preflight.json",
+      "bytes": 24406,
+      "sha256": "1C9479625F27F2AE47FB475601465EC4E567A109583F418DA0FD7CB1D0F949AE"
+    },
+    "loaded": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\native-start-readback.json",
+      "bytes": 31317,
+      "sha256": "7AA14A8DD8408FF0ED251C588840F998AB1AA3D9EAA8FF7E414CD139CD2B409D"
+    },
+    "command": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\command.json",
+      "bytes": 2790,
+      "sha256": "C2BC27A31E83CD9B8F9A66B5F4BE865A86142C462796F4659CFDC85B988343BA"
+    },
+    "admission": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\seal\\admission-lock.json",
+      "bytes": 7786,
+      "sha256": "DCE20F1A42C7CB6B1BB219F83D80C058350F200895B397255C3A822CEE8ADF4F"
+    },
+    "helper": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    "request_primitive": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    }
+  },
+  "before_sample": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+    "bytes": 17251,
+    "sha256": "22637EF5AC6D8316A933DC856EE5B7072CC51852A897754767ED44732A24E0CB"
+  },
+  "pre_advance_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-pre-advance.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-pre-advance.json",
+      "bytes": 715262,
+      "sha256": "46E4A352C4DF33EB22E9142B6D25F1D1E992F4098C965CC6EF474430C043654A"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "sequence_token": 748078035,
+  "maximum_days": 1,
+  "retry_allowed": false,
+  "recorder_requested": false
+}

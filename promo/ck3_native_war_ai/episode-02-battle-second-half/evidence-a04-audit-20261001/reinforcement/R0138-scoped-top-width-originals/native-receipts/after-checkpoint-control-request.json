@@ -1,0 +1,8 @@
+{
+  "action": "mcp",
+  "tool": "ck3_query_battle_control_snapshot_v1",
+  "arguments": {
+    "subject_army_id": 18,
+    "expected_revision": 5
+  }
+}

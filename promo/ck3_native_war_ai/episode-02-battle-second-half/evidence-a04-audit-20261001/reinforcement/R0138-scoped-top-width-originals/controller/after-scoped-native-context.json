@@ -1,0 +1,89 @@
+{
+  "schema": "xar.jd11.scoped-top-width-native-context/v1",
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "values": {
+    "date_raw": 53146512,
+    "paused": true,
+    "actor": 29829,
+    "revision": 8,
+    "native_revision": 7,
+    "snapshot_id": "native:7",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat"
+  },
+  "receipts": {
+    "snapshot": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-after-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-snapshot.json",
+        "bytes": 746184,
+        "sha256": "5A41C381C0EEF5281D347383F0E7AEE269BAF064069C3812B6835BED047524A6"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "control": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-after-control.json",
+        "bytes": 148,
+        "sha256": "AD723073044D80F2DF5E9BDF21E29C677883CA22C552547B54B88D37A97F5980"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-control.json",
+        "bytes": 131601,
+        "sha256": "B23FF25CF7EB7F4E059DFB4BE325040E64D91AAD0C00DC3D09E7C2739CCAEF39"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "values": {
+      "date_raw": 53146512,
+      "paused": true,
+      "actor": 29829,
+      "revision": 8,
+      "native_revision": 7,
+      "snapshot_id": "native:7",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat"
+    },
+    "control_values": {
+      "accepted": true,
+      "status": "available",
+      "root_native_revision": 7,
+      "snapshot_native_revision": 7,
+      "queried_revision": 8,
+      "queried_native_revision": 7,
+      "queried_snapshot_id": "native:7",
+      "source_revision": 8,
+      "source_native_revision": 7,
+      "source_snapshot_id": "native:7",
+      "source_date_raw": 53146512,
+      "source_paused": true,
+      "observed_date_raw": 53146512,
+      "subject_army_id": 18,
+      "native_army_id": 18,
+      "owner_character_id": 29829,
+      "combat_id": 16777218,
+      "combat_province_id": 2633,
+      "battle_control_ready": true
+    }
+  },
+  "native_actor_and_army_only": {
+    "actor": 29829,
+    "army": 18,
+    "combat": 16777218
+  },
+  "native_width": 2220,
+  "not_UI_transcription": true,
+  "numeric_UI_actor_army_claimed": false
+}
