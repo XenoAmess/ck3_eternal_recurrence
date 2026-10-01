@@ -3,7 +3,6 @@
 		create_cadet_branches = yes
 		rulers_should_have_dynasty = yes
 		dynasty_named_realms = no
-		administrative = yes
 		landless_playable = yes
 		legitimacy = yes
 		use_as_base_on_landed = yes
@@ -17,6 +16,7 @@
 		barter = yes
 
 		treasury = yes
+		treasury_vassal_development = yes
 		merit = yes
 		replace_gold_cost_by_treasury = yes
 		block_alliance_child_marriage = yes
@@ -29,6 +29,7 @@
 	blocked_subject_courts = { meritocratic_government celestial_government japan_administrative_government administrative_government steppe_admin_government }
 
 	domicile_type = east_asian_estate
+	mechanic_type = administrative
 	main_administrative_tier = duchy
 	min_appointment_tier = county
 	minimum_provincial_maa_tier = county
@@ -90,6 +91,7 @@
 		government_has_merit
 		government_has_influence
 		government_has_treasury
+		government_has_east_asian_estate
 		government_has_title_men_at_arms
 		government_has_powerful_families
 		government_has_county_tier_noble_families
@@ -99,6 +101,14 @@
 		government_uses_admin_province_obligations
 		government_uses_merit_family_aspirations
 		has_special_house_aspirations
+		government_uses_celestial_bureaucracy
+		government_uses_salary_budget
+		government_uses_military_budget
+		government_uses_ministry_budget
+	}
+
+	ai = {
+		use_legends = yes
 	}
 
 	# The hegemon cannot reassign ministers
@@ -109,6 +119,8 @@
 	currency_levels_cap = {
 		merit = 9
 	}
+
+	possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }
 
 	color = { 250 230 10 }
 	realm_mask_offset = { 0.0 0.1 }

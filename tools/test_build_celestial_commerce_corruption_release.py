@@ -124,6 +124,57 @@ class BuildCelestialCommerceCorruptionReleaseTests(unittest.TestCase):
         self.assertEqual(loaded["product_id"], release.PRODUCT_ID)
         self.assertEqual(loaded["mod_version"], "1.0.0")
 
+    def government_path(self) -> Path:
+        return self.source / "common/governments/xccc_celestial_government.txt"
+
+    def test_new_native_capabilities_cannot_be_dropped_from_build(self) -> None:
+        path = self.government_path()
+        original = path.read_text(encoding="utf-8-sig")
+        for line in (
+            "mechanic_type = administrative",
+            "treasury_vassal_development = yes",
+            "government_has_east_asian_estate",
+            "government_uses_celestial_bureaucracy",
+            "government_uses_salary_budget",
+            "government_uses_military_budget",
+            "government_uses_ministry_budget",
+            "use_legends = yes",
+            "possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }",
+        ):
+            with self.subTest(capability=line):
+                self.assertIn(line, original)
+                path.write_text(original.replace(line, "", 1), encoding="utf-8-sig")
+                with self.assertRaisesRegex(ValueError, "differs from frozen CK3 1.20.0.2"):
+                    self.build()
+
+    def test_barter_is_one_rule_in_the_native_rules_block(self) -> None:
+        path = self.government_path()
+        original = path.read_text(encoding="utf-8-sig")
+        invalid = {
+            "missing": original.replace("barter = yes", "", 1),
+            "disabled": original.replace("barter = yes", "barter = no", 1),
+            "duplicate": original.replace("barter = yes", "barter = yes\n\t\tbarter = yes", 1),
+            "outside_rules": original.replace("barter = yes", "", 1).replace(
+                "royal_court = any", "barter = yes\n\troyal_court = any", 1
+            ),
+        }
+        for case, text in invalid.items():
+            with self.subTest(case=case):
+                path.write_text(text, encoding="utf-8-sig")
+                with self.assertRaisesRegex(ValueError, "barter"):
+                    self.build()
+
+    def test_formatting_comments_do_not_change_frozen_semantics(self) -> None:
+        path = self.government_path()
+        text = path.read_text(encoding="utf-8-sig")
+        path.write_text(
+            "# Reviewed native CK3 1.20.0.2 projection\n" + text.replace(
+                "mechanic_type = administrative", "mechanic_type   = administrative # native mechanic"
+            ),
+            encoding="utf-8-sig",
+        )
+        self.build()
+
 
 if __name__ == "__main__":
     unittest.main()

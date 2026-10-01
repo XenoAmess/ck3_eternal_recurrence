@@ -46,3 +46,19 @@ and instructed the release to proceed on that basis. The permission artifact its
 available for attachment because the owner was away from it; it remains a documentation follow-up
 and is not represented here as independently inspected. This dated owner attestation resolves the
 project's publication-authorization gate for the 1.0.0 release workflow.
+
+## CK3 1.20.0.2 development migration on 2026-10-01
+
+The current source government projection now uses the complete reviewed CK3 1.20.0.2
+`celestial_government` definition plus the single `barter = yes` rule. It preserves the new
+administrative mechanic, treasury development, estate/bureaucracy/budget flags, AI legend support
+and grantable clergy governments. The vanilla obligations definition did not change and the
+product obligations file remains byte-identical to its previous source baseline.
+
+The builder and static gate freeze the native government semantic SHA-256 even without a local
+game installation; installed-game comparisons additionally check the reviewed baseline. L0,
+11 builder tests and the 22-file reproducibility check passed once. New-version runtime validation
+is pending, the descriptor still declares the previously tested 1.19.0.6 version, and this work
+does not update the public release or weaken old native-bridge contracts. Full input identities,
+checks and evidence are recorded in
+[the CK3 1.20.0.2 compatibility topic](../../docs/ck3-1.20.0.2-celestial-commerce-corruption-compatibility-2026-10-01.md).

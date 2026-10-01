@@ -208,9 +208,18 @@ def validate() -> list[str]:
         "accolades = -1",
         "house_aspirations = yes",
         "has_special_house_aspirations",
+        "mechanic_type = administrative",
+        "treasury_vassal_development = yes",
+        "government_has_east_asian_estate",
+        "government_uses_celestial_bureaucracy",
+        "government_uses_salary_budget",
+        "government_uses_military_budget",
+        "government_uses_ministry_budget",
+        "use_legends = yes",
+        "possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }",
     ):
         if fragment not in government:
-            errors.append(f"CK3 1.19 celestial government field missing: {fragment}")
+            errors.append(f"CK3 {builder.GOVERNMENT_BASELINE_VERSION} celestial government field missing: {fragment}")
     if "active_accolades" in government:
         errors.append("obsolete active_accolades modifier remains")
     vanilla_path = next((path for path in GAME_GOVERNMENTS if path.is_file()), None)
@@ -218,6 +227,10 @@ def validate() -> list[str]:
         vanilla = vanilla_path.read_bytes().decode("utf-8-sig")
         try:
             vanilla_block = extract_named_block(vanilla, "celestial_government")
+            if builder.government_semantic_sha256(
+                builder.government_semantic_tokens(vanilla_block)
+            ) != builder.VANILLA_CELESTIAL_GOVERNMENT_SEMANTIC_SHA256:
+                errors.append("installed celestial government differs from the reviewed frozen baseline")
             maintained_block = extract_named_block(government, "celestial_government")
             maintained_without_barter = maintained_block.replace("barter = yes", "", 1)
             if semantic_tokens(maintained_without_barter) != semantic_tokens(vanilla_block):

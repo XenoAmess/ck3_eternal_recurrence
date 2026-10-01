@@ -65,6 +65,56 @@ FORBIDDEN_WORKSHOP_ITEM_IDS = frozenset(
 FULL_GIT_SHA = re.compile(r"[0-9a-f]{40}")
 SEMANTIC_VERSION = re.compile(r"\d+\.\d+\.\d+")
 WORKSHOP_ITEM_ID = re.compile(r"[1-9][0-9]*", re.ASCII)
+GOVERNMENT_BASELINE_VERSION = "1.20.0.2"
+# SHA-256 of compact JSON semantic tokens for the reviewed vanilla block.
+# This freezes the single barter extension even on CI without a game install.
+VANILLA_CELESTIAL_GOVERNMENT_SEMANTIC_SHA256 = (
+    "5c1f9556464e5593b5f128e5490f3a33c6afc67eaf0c8d702ac4ea0aac0b7bc8"
+)
+
+
+def government_semantic_tokens(value: str) -> list[str]:
+    return [
+        match.group()
+        for match in re.finditer(
+            r'"(?:[^"\\]|\\.)*"|#[^\r\n]*|>=|<=|!=|[={}<>]|[^\s={}<>#"]+',
+            value,
+        )
+        if not match.group().startswith("#")
+    ]
+
+
+def government_semantic_sha256(tokens: list[str]) -> str:
+    return sha256_bytes(json.dumps(tokens, separators=(",", ":")).encode("utf-8"))
+
+
+def celestial_government_errors(value: str) -> list[str]:
+    tokens = government_semantic_tokens(value)
+    barter = [
+        index for index in range(len(tokens) - 2)
+        if tokens[index:index + 3] == ["barter", "=", "yes"]
+    ]
+    if len(barter) != 1 or tokens.count("barter") != 1:
+        return ["celestial government must enable barter exactly once"]
+    if tokens.count("government_rules") != 1:
+        return ["celestial government must contain exactly one government_rules block"]
+    rules = tokens.index("government_rules")
+    if tokens[rules + 1:rules + 3] != ["=", "{"]:
+        return ["celestial government government_rules block is invalid"]
+    depth = 1
+    end = rules + 3
+    while end < len(tokens) and depth:
+        depth += (tokens[end] == "{") - (tokens[end] == "}")
+        end += 1
+    if depth or not rules + 3 <= barter[0] < end - 1:
+        return ["barter extension must be inside celestial government_rules"]
+    baseline = tokens[:barter[0]] + tokens[barter[0] + 3:]
+    if government_semantic_sha256(baseline) != VANILLA_CELESTIAL_GOVERNMENT_SEMANTIC_SHA256:
+        return [
+            f"celestial government differs from frozen CK3 {GOVERNMENT_BASELINE_VERSION} "
+            "beyond barter = yes"
+        ]
+    return []
 
 
 def _allowed_directories() -> frozenset[str]:
@@ -175,6 +225,8 @@ def release_source_errors(
             for old_id in FORBIDDEN_WORKSHOP_ITEM_IDS:
                 if old_id in value:
                     errors.append(f"existing Workshop item ID {old_id} is forbidden: {relative}")
+            if relative == "common/governments/xccc_celestial_government.txt":
+                errors.extend(celestial_government_errors(value))
     return errors
 
 
