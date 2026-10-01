@@ -1,0 +1,227 @@
+{
+  "schema": "ck3.1.20.0.2.prewar-forced-participants.abi.v1",
+  "game_version": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "exe_size": 101039736,
+  "image_size": 102518784,
+  "readiness": "static-ready",
+  "live_verified": false,
+  "complete_initial_participants_ready": false,
+  "source_token": "native_forced_tributary_contract",
+  "bindings": {
+    "character_storage_slot": "0x5C67568",
+    "subject_contract_storage_slot": "0x5D1EB88",
+    "subject_contract_fallback_slot": "0x5D1EB40",
+    "subject_contract_database_slot": "0x5D1DED0",
+    "subject_contract_primary_vtable": "0x4735878",
+    "subject_contract_type_descriptor": "0x573EF98",
+    "subject_contract_col": "0x4DD8C08"
+  },
+  "layout": {
+    "character_land": "0x1C0",
+    "source_contract_data": "0x248",
+    "source_contract_count": "0x254",
+    "contract_full_id": "0x08",
+    "subject_character": "0x20",
+    "suzerain_character": "0x28",
+    "contract_terms": "0x38",
+    "contract_terms_count": "0x44",
+    "contract_current_levels": "0x68",
+    "obligation_database_term": "0xF00",
+    "obligation_default_level": "0x9F28"
+  },
+  "exact_spans": [
+    {
+      "name": "obligation_predicate",
+      "start_rva": "0x24c5300",
+      "size": 119,
+      "sha256": "decde62b4d483e83afad6b717a72ec743afd664cc71a3047520bea427ad7fcdf"
+    },
+    {
+      "name": "default_comparator",
+      "start_rva": "0x24c3c00",
+      "size": 106,
+      "sha256": "dd6ccf509e705215da00638761aa45304f31802af92551de446b70bcfea4481d"
+    },
+    {
+      "name": "forced_contract_stage",
+      "start_rva": "0x2a7eae0",
+      "size": 651,
+      "sha256": "f91f17e0f5464166d09b70958a0f6bf96aafe95f98f4549fd39e5fb4db54e5f0"
+    },
+    {
+      "name": "obligation_database_getter",
+      "start_rva": "0xa149d0",
+      "size": 87,
+      "sha256": "4230c261ab667091deb741a04ebfa105c1ebf00bd5d51fe53692d34ebf42254f"
+    },
+    {
+      "name": "obligation_term_registration",
+      "start_rva": "0x31c76a0",
+      "size": 351,
+      "sha256": "5b0bf2f78a080a3ab26586072ba4512fd631dbae9c0a236a99d71d08a5938bdc"
+    },
+    {
+      "name": "war_builder_callsite",
+      "start_rva": "0x2a7f698",
+      "size": 14,
+      "sha256": "f09e58c28b9408414b8481c65fa127abfd92d6ea3e128ff8512cf2ff4b1caa0b"
+    }
+  ],
+  "instruction_checks": [
+    {
+      "name": "primary_land_extension",
+      "rva": "0x2a7eb29",
+      "bytes": "48 8B 83 C0 01 00 00"
+    },
+    {
+      "name": "primary_contract_collection",
+      "rva": "0x2a7eb3c",
+      "bytes": "48 05 48 02 00 00"
+    },
+    {
+      "name": "contract_storage_slot",
+      "rva": "0x2a7eb62",
+      "bytes": "4C 8B 05 1F 00 2A 03"
+    },
+    {
+      "name": "contract_fallback_slot",
+      "rva": "0x2a7eb94",
+      "bytes": "48 8B 35 A5 FF 29 03"
+    },
+    {
+      "name": "obligation_database_slot",
+      "rva": "0x2a7ec48",
+      "bytes": "48 8B 05 81 F2 29 03"
+    },
+    {
+      "name": "obligation_database_field",
+      "rva": "0x2a7ec8b",
+      "bytes": "48 8B A8 00 0F 00 00"
+    },
+    {
+      "name": "obligation_default_level_field",
+      "rva": "0x2a7ed0b",
+      "bytes": "3A 95 28 9F 00 00"
+    },
+    {
+      "name": "registered_obligation_key",
+      "rva": "0x31c7778",
+      "bytes": "48 8D 05 11 1E 70 01"
+    },
+    {
+      "name": "registered_database_field",
+      "rva": "0x31c7786",
+      "bytes": "4C 8D 83 00 0F 00 00"
+    },
+    {
+      "name": "attacker_collision_character_ids",
+      "rva": "0x2a7ebab",
+      "bytes": "8B 45 18 39 42 18"
+    }
+  ],
+  "direct_calls": [
+    {
+      "site_rva": "0x2a7f6a1",
+      "target_rva": "0x2a7eae0"
+    },
+    {
+      "site_rva": "0x2a7eb9e",
+      "target_rva": "0x24c5300"
+    },
+    {
+      "site_rva": "0x24c530d",
+      "target_rva": "0xa149d0"
+    },
+    {
+      "site_rva": "0x24c5354",
+      "target_rva": "0x24c3c00"
+    },
+    {
+      "site_rva": "0x2a7ebcc",
+      "target_rva": "0x24961e0"
+    },
+    {
+      "site_rva": "0x2a7ed25",
+      "target_rva": "0x24961e0"
+    },
+    {
+      "site_rva": "0x2a7ebb6",
+      "target_rva": "0x28a7690"
+    }
+  ],
+  "rip_bindings": [
+    {
+      "site_rva": "0x2a7eb62",
+      "target_rva": "0x5d1eb88"
+    },
+    {
+      "site_rva": "0x2a7ec12",
+      "target_rva": "0x5d1eb88"
+    },
+    {
+      "site_rva": "0x2a7eb94",
+      "target_rva": "0x5d1eb40"
+    },
+    {
+      "site_rva": "0x2a7ec41",
+      "target_rva": "0x5d1eb40"
+    },
+    {
+      "site_rva": "0x2a7ec48",
+      "target_rva": "0x5d1ded0"
+    },
+    {
+      "site_rva": "0xa149d4",
+      "target_rva": "0x5d1ded0"
+    },
+    {
+      "site_rva": "0x31c7778",
+      "target_rva": "0x48c9590"
+    }
+  ],
+  "literal_checks": [
+    {
+      "name": "obligation_key",
+      "rva": "0x48C9590",
+      "ascii": "tributary_war_participation_obligation"
+    },
+    {
+      "name": "subject_contract_rtti",
+      "rva": "0x573EFA8",
+      "ascii": ".?AVCSubjectContract@@"
+    }
+  ],
+  "native_semantics": {
+    "term_search": "first pointer identity match; term must be explicit",
+    "forced": "active level byte differs from term default level byte",
+    "array_order": "attacker contracts in native order followed by defender contracts in native order; no deduplication",
+    "attacker_collision": "subject is primary defender: not appended; native builder redirects to world-writing helper",
+    "defender_collision": "no corresponding primary-attacker exclusion"
+  },
+  "forbidden_passive_calls": [
+    "0xA149D0",
+    "0x24C5300",
+    "0x24C3C00",
+    "0x2A7EAE0",
+    "0x24961E0",
+    "0x28A7690"
+  ],
+  "remaining_live": [
+    "paused exact-build primaries and real contract graph",
+    "compare actual new CWar forced-contract subset"
+  ],
+  "excluded_domains": [
+    "voluntary allies and acceptance",
+    "overlord and top-liege participation",
+    "other CB-specific initial participants",
+    "post-declaration state changes"
+  ],
+  "stock_sources": [
+    {
+      "game_relative_path": "common/subject_contracts/contracts/special_contracts.txt",
+      "sha256": "6740231d6158f14850d7e0b819427fe69407a1ee08649df7af847c0fa8b19dd3",
+      "semantics": "explicit comment restricts to default versus non-default"
+    }
+  ]
+}

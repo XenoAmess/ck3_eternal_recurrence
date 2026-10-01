@@ -53,3 +53,9 @@ G2 仍 `3/8`，Robert `3153/36524`，新增游戏日为零。宗教/holy order �
 既有observer/source adapter/binder现已按双版本真实绑定：1.20 campaign/features原生producer→同帧sourceadapter→语义选择器→owned query serializer。新版44项feature实际含by_god_alone而移除barter_troops；旧版44项profile与136项stockflags继续保持，新版18 government rows/171 flags按冻结原版读取。宗教/holy-order身份仅opaque/deferred，其它政府仍为adapter_spec_ready_not_implemented，未外推18政府策略完成。旧3个fixture与实际new44producer在/Od及/O2/W4/WX通过；stock差异增量后只重建新fixture，最终receipt `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/government/stock-profile-final-v2/receipt.json` SHA `f08560ac3eb9155e2e21e079effdfa9abe994c5e0f3dc173021c7b46e5903169`。新版stock verifier18/171及旧sourcecontract4项GREEN；实际C++available/unavailable JSON→driver→官方MCP SDK list/call6项GREEN，Python/中央permit尚另包接回。专题[新版政府适配](../ck3-native-ai/government-runtime-adapter-1.20.0.2.md)。本包native/source消费static-ready，真实paused、封建正式效果、跨ruler/seed/government仍需live。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 14:50:20 M5强制朝贡参战者实际reader交付
+
+现有强制朝贡参战链已移植真实1.20 direct-slot source reader，读取完整ID并保留原生顺序与重复；实际新版land `+0x1C0`、DB `+0xF00`、default `+0x9F28`已落代码。Exact ABI核对6 spans/10 instructions/7 calls/7 RIP/2 literals及RTTI/stock SHA GREEN，MSVC `/Od`与`/O2 /W4 /WX`生产fixture各11 cases通过，真实serializer JSON已解析。耐久结果：`Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/prewar/participants/fixture-result.json`、`abi-verification.json`、`Od/forced-participants-wire.json`及`O2/forced-participants-wire.json`。专题[战前强制参与者](../ck3-native-ai/ck3-1.20.0.2-prewar-participants.md)。本包只提升这一来源static-ready，完整宣战参与者、自愿盟友、集结与未来补给不外推完成；其具体producer与中央MCP route仍并行施工，真实paused最终互证待live。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
