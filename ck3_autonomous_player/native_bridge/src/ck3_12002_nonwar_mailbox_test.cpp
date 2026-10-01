@@ -124,6 +124,8 @@ void ExerciseMailbox(MainThreadQueryInstallEnvironmentV1 environment,
          environment.permitted_executor_religion_personal_parameters12002);
   assert(mailbox.permitted_executor_sway_completion_invalidation_reason12002 ==
          environment.permitted_executor_sway_completion_invalidation_reason12002);
+  assert(mailbox.permitted_executor_religion_draft_groups12002 ==
+         environment.permitted_executor_religion_draft_groups12002);
   assert(iat == reinterpret_cast<void *>(&XarMainThreadPeekMessageWHookV1));
   const auto return_rva = environment.build_profile->pump_exact_return_rva;
   for (std::size_t i = 0; i < 3; ++i) {
@@ -216,6 +218,7 @@ int main() {
   callbacks.sway_completion_termination = &Executor<1200257>;
   callbacks.religion_personal_parameters = &Executor<1200258>;
   callbacks.sway_completion_invalidation_reason = &Executor<1200259>;
+  callbacks.religion_draft_groups = &Executor<1200260>;
   RegisterNonwarMailboxExecutorsV1(environment, callbacks);
   assert(environment.build_profile == profile);
   assert(environment.permitted_executor == &Executor<1>);
@@ -494,9 +497,21 @@ int main() {
 #else
   Check(environment.permitted_executor_sway_completion_invalidation_reason12002, callbacks.sway_completion_invalidation_reason, false, 1200259, selected);
 #endif
-  ExerciseMailbox(environment, selected);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_draft_groups12002, callbacks.religion_draft_groups, true, 1200260, selected);
+#else
+  Check(environment.permitted_executor_religion_draft_groups12002, callbacks.religion_draft_groups, false, 1200260, selected);
+#endif
+  // The frozen R6 receipt already exercises the prior callbacks. This delta
+  // retains their registration shape and executes only the new DraftGroups slot.
+  std::vector<Slot> delta;
+  if (environment.permitted_executor_religion_draft_groups12002 != nullptr) {
+    delta.push_back({environment.permitted_executor_religion_draft_groups12002, 1200260});
+  }
+  ExerciseMailbox(environment, delta);
   const auto wrong = BindThreadRuntimeImage(0x100000, "unsupported", typed);
   assert(wrong.build_profile == nullptr);
-  std::cout << "PASS: all54 private slot mappings, " << selected.size()
-            << " installed callbacks submit/drain, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
+  std::cout << "PASS: all55 private slot mappings, " << selected.size()
+            << " registered callbacks, " << delta.size()
+            << " new callbacks submit/drain, prior R6 callbacks shape-only, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
 }

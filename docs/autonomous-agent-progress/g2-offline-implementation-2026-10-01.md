@@ -747,3 +747,9 @@ Eleven frozen Python SDK and documentation sources. One new official SDK case pa
 New single O2 actual named callback case seven checks passed; default generic callbacks null, one exact DraftGroups owner callback. Four old query cases not repeated, no game or live claim. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\query-group-named\final-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:06:02 Integrate readonly religion draft groups query
+
+Eleven central sources, explicit56ON4OFF and only model/mailbox two new compilation inputs. Actual dualDLL/injector jobs64 GREEN; focused defaultOFF/candidate newroute and registration passed, prior R6 matrices reused. Actual Git compiler-input freeze and paused R7 qualification follow root commit. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r7\central-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

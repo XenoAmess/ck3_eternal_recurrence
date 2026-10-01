@@ -60,6 +60,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 sway_completion_termination = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_personal_parameters = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 sway_completion_invalidation_reason = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_draft_groups = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_collection = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_ransom = nullptr;
 };

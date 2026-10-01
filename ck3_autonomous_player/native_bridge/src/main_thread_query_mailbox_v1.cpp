@@ -552,6 +552,7 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_prewar12002 == nullptr &&
        environment.permitted_executor_government12002 == nullptr &&
        environment.permitted_executor_religion12002 == nullptr &&
+       environment.permitted_executor_religion_draft_groups12002 == nullptr &&
        environment.permitted_executor_religion_personal_parameters12002 == nullptr &&
        environment.permitted_executor_sway_completion_invalidation_reason12002 == nullptr &&
        environment.permitted_executor_religion_conversion_outcome12002 == nullptr &&
@@ -890,6 +891,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_government12002;
   mailbox.permitted_executor_religion12002 =
       environment.permitted_executor_religion12002;
+  mailbox.permitted_executor_religion_draft_groups12002 =
+      environment.permitted_executor_religion_draft_groups12002;
   mailbox.permitted_executor_religion_personal_parameters12002 =
       environment.permitted_executor_religion_personal_parameters12002;
   mailbox.permitted_executor_sway_completion_invalidation_reason12002 =
@@ -1226,6 +1229,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
         mailbox.permitted_executor_prewar12002 != nullptr ||
          mailbox.permitted_executor_government12002 != nullptr ||
          mailbox.permitted_executor_religion12002 != nullptr ||
+         mailbox.permitted_executor_religion_draft_groups12002 != nullptr ||
          mailbox.permitted_executor_religion_personal_parameters12002 != nullptr ||
          mailbox.permitted_executor_sway_completion_invalidation_reason12002 != nullptr ||
          mailbox.permitted_executor_religion_conversion_outcome12002 != nullptr ||
@@ -1326,6 +1330,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_prewar12002 &&
        executor != mailbox.permitted_executor_government12002 &&
        executor != mailbox.permitted_executor_religion12002 &&
+      executor != mailbox.permitted_executor_religion_draft_groups12002 &&
       executor != mailbox.permitted_executor_religion_personal_parameters12002 &&
       executor != mailbox.permitted_executor_sway_completion_invalidation_reason12002 &&
       executor != mailbox.permitted_executor_religion_conversion_outcome12002 &&

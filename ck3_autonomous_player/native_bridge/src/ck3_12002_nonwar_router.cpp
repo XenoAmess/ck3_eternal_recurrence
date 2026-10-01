@@ -195,6 +195,9 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   out.sway_completion_invalidation_reason = &ExecuteSwayCompletionInvalidationReasonMailboxV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  out.religion_draft_groups = &ExecutePlayerReligionDraftGroupsMailbox12002;
+#endif
   (void)out;
 }
 
@@ -304,6 +307,9 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   if (step == kSwayCompletionInvalidationReasonStepV1) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDraftGroupsPrivateStep12002(step)) return true;
+#endif
   return IsActivityFeastPrivateStep12002(step);
 }
 
@@ -325,6 +331,12 @@ bool HandleNonwarPrivate12002(
   serialized.clear(); failure.clear();
   try {
     const auto &native = NativeAdapter12002(adapter);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionDraftGroupsPrivateStep12002(step))
+      return HandlePlayerReligionDraftGroupsPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
     if (IsPlayerReligionPersonalParametersPrivateStep12002(step))
       return HandlePlayerReligionPersonalParametersPrivate12002(native, mailbox, published, revision,

@@ -130,6 +130,9 @@ void RegisterNonwarMailboxExecutorsV1(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   environment.permitted_executor_sway_completion_invalidation_reason12002 = executors.sway_completion_invalidation_reason;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_draft_groups12002 = executors.religion_draft_groups;
+#endif
   (void)environment;
   (void)executors;
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)

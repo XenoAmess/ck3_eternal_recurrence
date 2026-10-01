@@ -23,6 +23,8 @@ std::size_t sway_calls = 0;
 std::size_t prisoner_calls = 0;
 std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
+std::size_t draft_groups_calls = 0;
+constexpr std::string_view draft_groups_step = "query-player-religion-draft-groups-v1";
 std::array<std::size_t, 2> r6_calls{};
 [[maybe_unused]] const void *expected_sway_invalidation_reason_recorder = nullptr;
 constexpr std::array<std::string_view, 2> r6_steps{
@@ -684,9 +686,75 @@ bool HandleSwayCompletionInvalidationReasonV1(const game::GameAdapter &adapter,
 }
 #endif
 
+// R7 single readonly domain spy: this proves central routing only.
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+bool IsPlayerReligionDraftGroupsPrivateStep12002(std::string_view step) noexcept {
+  return step == draft_groups_step;
+}
+bool ExecutePlayerReligionDraftGroupsMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionDraftGroupsPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == draft_groups_step, "DraftGroups receives the exact canonical selector");
+  ++draft_groups_calls;
+  serialized = "draft-groups-forwarded";
+  return true;
+}
+#endif
+
 } // namespace xar::ck3_12002
 
+// The R7 probe executes only the new path/default-OFF behavior. The prior
+// full main below remains available; its frozen R6 receipt supplies old coverage.
+[[maybe_unused]] int RunDraftGroupsRouterIncrement() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  RouterAdapter adapter;
+  ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  game::Snapshot published{};
+  published.date_raw = 53175816;
+  published.played_character_id = 29829;
+  NonwarPrivateState12002 state{};
+  state.faction_query_sequence = 42;
+  NonwarMailboxExecutorsV1 executors{};
+  PopulateNonwarRouterExecutors12002(executors);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  constexpr bool enabled = true;
+  Check(executors.religion_draft_groups == &ExecutePlayerReligionDraftGroupsMailbox12002,
+        "selected DraftGroups exact callback registered");
+#else
+  constexpr bool enabled = false;
+  Check(executors.religion_draft_groups == nullptr, "default OFF DraftGroups callback absent");
+#endif
+  Check(IsNonwarPrivateStep12002(draft_groups_step) == enabled, "DraftGroups canonical visibility");
+  const std::string_view payload = R"json({"expected_snapshot_revision":916,"expected_revision":916})json";
+  constexpr std::string_view request_id = "draft-groups-router-increment";
+  expected = {&adapter, &mailbox, &published, &state, 916, draft_groups_step, payload, request_id};
+  std::string serialized = "stale-output", failure = "stale-failure";
+  Check(HandleNonwarPrivate12002(adapter, mailbox, published, 916, draft_groups_step,
+      payload, request_id, state, serialized, failure) == enabled, "DraftGroups dispatch follows flag");
+  Check(serialized == (enabled ? "draft-groups-forwarded" : ""), "DraftGroups result returned unchanged");
+  Check(failure.empty(), "DraftGroups failure returned unchanged");
+  Check(state.faction_query_sequence == 42, "DraftGroups retains unrelated persistent sequence");
+  Check(!IsNonwarPrivateStep12002("query-player-religion-draft-groups-v1-unregistered"),
+        "DraftGroups selector requires exact match");
+  Check(draft_groups_calls == (enabled ? 1u : 0u), "DraftGroups exact handler count");
+  std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
+            << ",\"draft_groups_selectors_forwarded\":" << draft_groups_calls
+            << ",\"old_router_matrix_reexecuted\":false,\"native_provider_credit\":false"
+            << ",\"live_verified\":false,\"ck3_touched\":false}\n";
+  return 0;
+}
+
 int main() {
+#if defined(XAR_G2_ROUTER_INCREMENT_DRAFT_GROUPS_ONLY)
+  return RunDraftGroupsRouterIncrement();
+#else
   using namespace xar;
   using namespace xar::ck3_12002;
   RouterAdapter adapter;
@@ -861,6 +929,12 @@ int main() {
   Check(executors.sway_completion_invalidation_reason == &ExecuteSwayCompletionInvalidationReasonMailboxV1, "sway_completion_invalidation_reason R6 callback registered");
 #else
   Check(executors.sway_completion_invalidation_reason == nullptr, "disabled sway_completion_invalidation_reason R6 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  Check(executors.religion_draft_groups == &ExecutePlayerReligionDraftGroupsMailbox12002,
+        "DraftGroups callback registered");
+#else
+  Check(executors.religion_draft_groups == nullptr, "disabled DraftGroups callback absent");
 #endif
   Check(executors.council == nullptr && executors.law_action == nullptr &&
         executors.feast_open == nullptr && executors.factions == nullptr &&
@@ -1094,6 +1168,13 @@ int main() {
 #endif
   Check(!IsNonwarPrivateStep12002(std::string(r6_steps[1]) + "-unregistered"),
         "R6 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  exercise(draft_groups_step, true, "draft-groups-forwarded",
+           R"json({"expected_snapshot_revision":916,"expected_revision":916})json");
+#else
+  exercise(draft_groups_step, false, "",
+           R"json({"expected_snapshot_revision":916,"expected_revision":916})json");
+#endif
   exercise("query-unregistered-router-fixture", false, "");
   Check(!IsNonwarPrivateStep12002("query-active-scheme-sway-v1-private-43699"),
         "obsolete Sway query prefix not selected");
@@ -1278,6 +1359,13 @@ int main() {
         "sway_completion_invalidation_reason R6 selector obeys the selected build flag");
   std::size_t r6_total = 0;
   for (const auto value : r6_calls) r6_total += value;
+  Check(draft_groups_calls ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "DraftGroups selector obeys its selected flag");
   std::size_t readonly_total = 0;
   for (const auto value : readonly_calls) readonly_total += value;
   std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
@@ -1289,6 +1377,8 @@ int main() {
             << ",\"R4_readonly_selectors_forwarded\":" << r4_total
             << ",\"R5_readonly_selectors_forwarded\":" << r5_total
             << ",\"R6_readonly_selectors_forwarded\":" << r6_total
+            << ",\"R7_draft_groups_selectors_forwarded\":" << draft_groups_calls
             << ",\"fallback_calls\":" << fallback_calls
             << ",\"live_verified\":false,\"ck3_touched\":false}\n";
+#endif
 }
