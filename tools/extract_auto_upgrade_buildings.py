@@ -18,11 +18,9 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_GAME_ROOT = Path(
-    r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game"
-)
-OUTPUT = ROOT / "tools" / "auto_upgrade_buildings_1_19_0_6.json"
-EXPECTED_GAME_VERSION = "1.19.0.6"
+DEFAULT_GAME_ROOT = ROOT / "Crusader Kings III" / "game"
+OUTPUT = ROOT / "tools" / "auto_upgrade_buildings_1_20_0_2.json"
+EXPECTED_GAME_VERSION = "1.20.0.2"
 GATE_FIELDS = (
     "is_enabled",
     "can_construct_potential",

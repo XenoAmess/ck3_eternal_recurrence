@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_19_0_6.json
+# Source: tools/auto_upgrade_buildings_1_20_0_2.json
 
 aub_start_global_loop_effect = {
 	if = {

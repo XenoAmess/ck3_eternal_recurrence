@@ -55,7 +55,7 @@
 - `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006`（legacy `R410`）：最终 7 文件 production projection 与外置
   fixture 均按精确 tree hash 挂载，CK3 进程持续响应，但 1800 秒内仍停在
   “启动游戏中……”画面，未进入主菜单或 fixture 场景。`error.log` 为空，报告未发现产品诊断；产品与 fixture 前后 tree hash 不变，
-  真实用户资料不变，退出后以 Get-Process/WMI 双源确认 CK3 进程数为 0。该结果只能分类为 environment RED，不能证明玩法 GREEN，
+  真实用户资料不变，退出后以进程枚举／WMI 双源确认 CK3 进程数为 0。该结果只能分类为 environment RED，不能证明玩法 GREEN，
   也没有证据把它归因于本 mod。证据保存在
   `D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`。
 - R0006 的环境 RED 根因已确认：本任务早先遗留的 `rg.exe` PID 12388（父 legacy shell PID 22848）从 21:45 起扫描整个
@@ -131,3 +131,12 @@ Steam 在下载核验后恢复离线，未注销账号。发布事实、构建�
 - 纯数据 Mod 脚本既不能读取聚合后的 modifier/最终 `GUIPotentialBuildingItem.GetCost`，也不能对指定普通建筑调用原版 `Construct` 入口；手工维护修正白名单会成为不完整近似。
 - 本轮因此判定为不可施工，没有修改产品、提升版本或上传 Workshop。完整证据与重新评估条件见 [实时费用减免可达性调研](auto-upgrade-buildings-dynamic-cost-feasibility.md)。
 - 新探针采用 MCP-first/fail-closed 合同，功能断言 OCR 数为 0；语义前端被 DLC list overlay 阻断时保存原生 GUI tree 并 RED，未回退到桌面识别或点击。
+
+## 2026-10-01 CK3 1.20.0.2 建筑资格迁移
+
+当前开发快照已切换到 Crozier `1.20.0.2`、Steam build `25588574`：989 个建筑定义、609 条原版升级边，生产仍为 605 条边／165 条链，
+4 条曼荼罗 Great Project 边继续排除。逐项审阅的 45 个变化全部属于原版 target gate；既有费用、升级范围、扫描周期、资金与玩家策略保持原政策。
+提取／生成、14 项合同与构建测试、安装原版静态比对、17 文件可复现构建均 GREEN。
+本节没有新版游戏内验收或 Workshop 发布事实，旧 R0024／R0042 仍仅证明旧 build。
+新版的完整变更清单、独立冻结 SHA-256、外置报告与后续实机验收范围见
+[1.20.0.2 兼容专题](ck3-1.20.0.2-auto-upgrade-buildings-compatibility-2026-10-01.md)。

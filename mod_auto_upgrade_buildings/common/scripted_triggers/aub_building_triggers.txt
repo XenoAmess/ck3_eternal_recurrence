@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_19_0_6.json
+# Source: tools/auto_upgrade_buildings_1_20_0_2.json
 # Every trigger reproduces the target building's four vanilla construction gates.
 
 aub_can_pay_gold_building_cost_trigger = {
@@ -1214,12 +1214,12 @@ aub_can_upgrade_to_charnel_grounds_02_trigger = {
 		LEVEL = 01
 	}
 	building_requirement_tribal = no
-	faith = {
-		has_doctrine_parameter = sky_burials_active
+	rite = {
+		rite_has_parameter = sky_burials_active
 	}
 	# vanilla can_construct_showing_failures_only
-	faith = {
-		has_doctrine_parameter = sky_burials_active
+	rite = {
+		rite_has_parameter = sky_burials_active
 	}
 }
 
@@ -1233,12 +1233,12 @@ aub_can_upgrade_to_charnel_grounds_03_trigger = {
 		LEVEL = 01
 	}
 	building_requirement_tribal = no
-	faith = {
-		has_doctrine_parameter = sky_burials_active
+	rite = {
+		rite_has_parameter = sky_burials_active
 	}
 	# vanilla can_construct_showing_failures_only
-	faith = {
-		has_doctrine_parameter = sky_burials_active
+	rite = {
+		rite_has_parameter = sky_burials_active
 	}
 }
 
@@ -1312,6 +1312,8 @@ aub_can_upgrade_to_citadel_shrine_02_trigger = {
 }
 
 aub_can_upgrade_to_citadel_shrine_03_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -1319,10 +1321,11 @@ aub_can_upgrade_to_citadel_shrine_03_trigger = {
 	culture = {
 		has_innovation = innovation_manorialism
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_citadel_shrine_04_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -1330,10 +1333,11 @@ aub_can_upgrade_to_citadel_shrine_04_trigger = {
 	culture = {
 		has_innovation = innovation_manorialism
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_citadel_shrine_05_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -1341,10 +1345,11 @@ aub_can_upgrade_to_citadel_shrine_05_trigger = {
 	culture = {
 		has_innovation = innovation_windmills
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_citadel_shrine_06_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -1352,10 +1357,11 @@ aub_can_upgrade_to_citadel_shrine_06_trigger = {
 	culture = {
 		has_innovation = innovation_windmills
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_citadel_shrine_07_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -1363,10 +1369,11 @@ aub_can_upgrade_to_citadel_shrine_07_trigger = {
 	culture = {
 		has_innovation = innovation_cranes
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_citadel_shrine_08_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -1374,7 +1381,6 @@ aub_can_upgrade_to_citadel_shrine_08_trigger = {
 	culture = {
 		has_innovation = innovation_cranes
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_citadel_thang_long_02_trigger = {
@@ -4754,14 +4760,17 @@ aub_can_upgrade_to_megalith_02_trigger = {
 	# vanilla is_enabled
 	custom_tooltip = {
 		text = province_is_of_a_megalith_faith_tt
-		county.faith = {
-			has_doctrine_parameter = can_build_megaliths
+		county.rite = {
+			rite_has_parameter = can_build_megaliths
 		}
 	}
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_01
-	scope:holder.faith = {
-		has_doctrine_parameter = can_build_megaliths
+	OR = {
+		has_building_or_higher = temple_01
+		has_building_or_higher = temple_citadel_01
+	}
+	scope:holder.rite = {
+		rite_has_parameter = can_build_megaliths
 	}
 	# vanilla can_construct_showing_failures_only
 }
@@ -4770,14 +4779,17 @@ aub_can_upgrade_to_megalith_03_trigger = {
 	# vanilla is_enabled
 	custom_tooltip = {
 		text = province_is_of_a_megalith_faith_tt
-		county.faith = {
-			has_doctrine_parameter = can_build_megaliths
+		county.rite = {
+			rite_has_parameter = can_build_megaliths
 		}
 	}
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_01
-	scope:holder.faith = {
-		has_doctrine_parameter = can_build_megaliths
+	OR = {
+		has_building_or_higher = temple_01
+		has_building_or_higher = temple_citadel_01
+	}
+	scope:holder.rite = {
+		rite_has_parameter = can_build_megaliths
 	}
 	# vanilla can_construct_showing_failures_only
 	scope:holder.culture = {
@@ -4790,14 +4802,17 @@ aub_can_upgrade_to_megalith_04_trigger = {
 	# vanilla is_enabled
 	custom_tooltip = {
 		text = province_is_of_a_megalith_faith_tt
-		county.faith = {
-			has_doctrine_parameter = can_build_megaliths
+		county.rite = {
+			rite_has_parameter = can_build_megaliths
 		}
 	}
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_02
-	scope:holder.faith = {
-		has_doctrine_parameter = can_build_megaliths
+	OR = {
+		has_building_or_higher = temple_02
+		has_building_or_higher = temple_citadel_02
+	}
+	scope:holder.rite = {
+		rite_has_parameter = can_build_megaliths
 	}
 	# vanilla can_construct_showing_failures_only
 	scope:holder.culture = {
@@ -4810,14 +4825,17 @@ aub_can_upgrade_to_megalith_05_trigger = {
 	# vanilla is_enabled
 	custom_tooltip = {
 		text = province_is_of_a_megalith_faith_tt
-		county.faith = {
-			has_doctrine_parameter = can_build_megaliths
+		county.rite = {
+			rite_has_parameter = can_build_megaliths
 		}
 	}
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_02
-	scope:holder.faith = {
-		has_doctrine_parameter = can_build_megaliths
+	OR = {
+		has_building_or_higher = temple_02
+		has_building_or_higher = temple_citadel_02
+	}
+	scope:holder.rite = {
+		rite_has_parameter = can_build_megaliths
 	}
 	# vanilla can_construct_showing_failures_only
 	scope:holder.culture = {
@@ -4830,14 +4848,17 @@ aub_can_upgrade_to_megalith_06_trigger = {
 	# vanilla is_enabled
 	custom_tooltip = {
 		text = province_is_of_a_megalith_faith_tt
-		county.faith = {
-			has_doctrine_parameter = can_build_megaliths
+		county.rite = {
+			rite_has_parameter = can_build_megaliths
 		}
 	}
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_02
-	scope:holder.faith = {
-		has_doctrine_parameter = can_build_megaliths
+	OR = {
+		has_building_or_higher = temple_02
+		has_building_or_higher = temple_citadel_02
+	}
+	scope:holder.rite = {
+		rite_has_parameter = can_build_megaliths
 	}
 	# vanilla can_construct_showing_failures_only
 	scope:holder.culture = {
@@ -4850,14 +4871,17 @@ aub_can_upgrade_to_megalith_07_trigger = {
 	# vanilla is_enabled
 	custom_tooltip = {
 		text = province_is_of_a_megalith_faith_tt
-		county.faith = {
-			has_doctrine_parameter = can_build_megaliths
+		county.rite = {
+			rite_has_parameter = can_build_megaliths
 		}
 	}
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_02
-	scope:holder.faith = {
-		has_doctrine_parameter = can_build_megaliths
+	OR = {
+		has_building_or_higher = temple_02
+		has_building_or_higher = temple_citadel_02
+	}
+	scope:holder.rite = {
+		rite_has_parameter = can_build_megaliths
 	}
 	# vanilla can_construct_showing_failures_only
 	scope:holder.culture = {
@@ -4870,14 +4894,17 @@ aub_can_upgrade_to_megalith_08_trigger = {
 	# vanilla is_enabled
 	custom_tooltip = {
 		text = province_is_of_a_megalith_faith_tt
-		county.faith = {
-			has_doctrine_parameter = can_build_megaliths
+		county.rite = {
+			rite_has_parameter = can_build_megaliths
 		}
 	}
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_02
-	scope:holder.faith = {
-		has_doctrine_parameter = can_build_megaliths
+	OR = {
+		has_building_or_higher = temple_02
+		has_building_or_higher = temple_citadel_02
+	}
+	scope:holder.rite = {
+		rite_has_parameter = can_build_megaliths
 	}
 	# vanilla can_construct_showing_failures_only
 	scope:holder.culture = {
@@ -4888,7 +4915,9 @@ aub_can_upgrade_to_megalith_08_trigger = {
 
 aub_can_upgrade_to_meteora_02_trigger = {
 	# vanilla is_enabled
-	scope:holder.faith = faith:orthodox
+	scope:holder.rite = {
+		rite_has_doctrine = special_doctrine_is_eastern_christian_faith
+	}
 	# vanilla can_construct
 	scope:holder.culture = {
 		has_innovation = innovation_cranes
@@ -5192,13 +5221,16 @@ aub_can_upgrade_to_monastic_schools_02_trigger = {
 	# vanilla can_construct_potential
 	trigger_if = {
 		limit = {
-			scope:holder.faith = {
+			scope:holder.rite = {
 				NOT = {
-					has_doctrine_parameter = monastic_schools_allowed_in_every_holding_type
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
 				}
 			}
 		}
-		has_holding_type = church_holding
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
 	}
 	building_requirement_castle_city_church_temple_citadel_tribe = {
 		LEVEL = 01
@@ -5220,13 +5252,16 @@ aub_can_upgrade_to_monastic_schools_03_trigger = {
 	# vanilla can_construct
 	trigger_if = {
 		limit = {
-			scope:holder.faith = {
+			scope:holder.rite = {
 				NOT = {
-					has_doctrine_parameter = monastic_schools_allowed_in_every_holding_type
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
 				}
 			}
 		}
-		has_holding_type = church_holding
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
 	}
 	trigger_if = {
 		limit = {
@@ -5258,13 +5293,16 @@ aub_can_upgrade_to_monastic_schools_04_trigger = {
 	# vanilla can_construct
 	trigger_if = {
 		limit = {
-			scope:holder.faith = {
+			scope:holder.rite = {
 				NOT = {
-					has_doctrine_parameter = monastic_schools_allowed_in_every_holding_type
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
 				}
 			}
 		}
-		has_holding_type = church_holding
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
 	}
 	trigger_if = {
 		limit = {
@@ -5296,13 +5334,16 @@ aub_can_upgrade_to_monastic_schools_05_trigger = {
 	# vanilla can_construct
 	trigger_if = {
 		limit = {
-			scope:holder.faith = {
+			scope:holder.rite = {
 				NOT = {
-					has_doctrine_parameter = monastic_schools_allowed_in_every_holding_type
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
 				}
 			}
 		}
-		has_holding_type = church_holding
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
 	}
 	trigger_if = {
 		limit = {
@@ -5334,13 +5375,16 @@ aub_can_upgrade_to_monastic_schools_06_trigger = {
 	# vanilla can_construct
 	trigger_if = {
 		limit = {
-			scope:holder.faith = {
+			scope:holder.rite = {
 				NOT = {
-					has_doctrine_parameter = monastic_schools_allowed_in_every_holding_type
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
 				}
 			}
 		}
-		has_holding_type = church_holding
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
 	}
 	trigger_if = {
 		limit = {
@@ -5372,13 +5416,16 @@ aub_can_upgrade_to_monastic_schools_07_trigger = {
 	# vanilla can_construct
 	trigger_if = {
 		limit = {
-			scope:holder.faith = {
+			scope:holder.rite = {
 				NOT = {
-					has_doctrine_parameter = monastic_schools_allowed_in_every_holding_type
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
 				}
 			}
 		}
-		has_holding_type = church_holding
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
 	}
 	trigger_if = {
 		limit = {
@@ -5410,13 +5457,16 @@ aub_can_upgrade_to_monastic_schools_08_trigger = {
 	# vanilla can_construct
 	trigger_if = {
 		limit = {
-			scope:holder.faith = {
+			scope:holder.rite = {
 				NOT = {
-					has_doctrine_parameter = monastic_schools_allowed_in_every_holding_type
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
 				}
 			}
 		}
-		has_holding_type = church_holding
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
 	}
 	trigger_if = {
 		limit = {
@@ -5530,13 +5580,17 @@ aub_can_upgrade_to_mont_st_michel_04_trigger = {
 
 aub_can_upgrade_to_mount_athos_02_trigger = {
 	# vanilla is_enabled
-	scope:holder.faith = faith:orthodox
+	scope:holder.rite = {
+		rite_has_doctrine = special_doctrine_is_eastern_christian_faith
+	}
 	# vanilla can_construct
 }
 
 aub_can_upgrade_to_mount_athos_03_trigger = {
 	# vanilla is_enabled
-	scope:holder.faith = faith:orthodox
+	scope:holder.rite = {
+		rite_has_doctrine = special_doctrine_is_eastern_christian_faith
+	}
 	# vanilla can_construct
 	scope:holder.culture = {
 		has_innovation = innovation_cranes
@@ -6166,7 +6220,7 @@ aub_can_upgrade_to_palace_of_ctesiphon_02_trigger = {
 				zoroastrian_or_syncretic_with_eastern_trigger = {
 					CHARACTER = scope:holder
 				}
-				faith = faith:manichean
+				faith = faith:manichaean_faith
 				faith = faith:nestorian
 				faith = faith:hellenic_pagan
 			}
@@ -7523,6 +7577,8 @@ aub_can_upgrade_to_sacred_pool_02_trigger = {
 }
 
 aub_can_upgrade_to_sacred_pool_03_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -7547,10 +7603,11 @@ aub_can_upgrade_to_sacred_pool_03_trigger = {
 			has_innovation = innovation_city_planning
 		}
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_sacred_pool_04_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -7575,10 +7632,11 @@ aub_can_upgrade_to_sacred_pool_04_trigger = {
 			has_innovation = innovation_city_planning
 		}
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_sacred_pool_05_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -7603,10 +7661,11 @@ aub_can_upgrade_to_sacred_pool_05_trigger = {
 			has_innovation = innovation_manorialism
 		}
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_sacred_pool_06_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -7631,10 +7690,11 @@ aub_can_upgrade_to_sacred_pool_06_trigger = {
 			has_innovation = innovation_manorialism
 		}
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_sacred_pool_07_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -7659,10 +7719,11 @@ aub_can_upgrade_to_sacred_pool_07_trigger = {
 			has_innovation = innovation_windmills
 		}
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_sacred_pool_08_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -7687,7 +7748,6 @@ aub_can_upgrade_to_sacred_pool_08_trigger = {
 			has_innovation = innovation_windmills
 		}
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_sado_mines_02_trigger = {
@@ -7800,7 +7860,10 @@ aub_can_upgrade_to_schwaz_mines_04_trigger = {
 
 aub_can_upgrade_to_scriptorium_02_trigger = {
 	# vanilla can_construct_potential
-	has_building_or_higher = temple_01
+	OR = {
+		has_building_or_higher = temple_01
+		has_building_or_higher = temple_citadel_01
+	}
 	has_dlc_feature = legends
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
@@ -7813,7 +7876,10 @@ aub_can_upgrade_to_scriptorium_03_trigger = {
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
-	has_building_or_higher = temple_02
+	OR = {
+		has_building_or_higher = temple_02
+		has_building_or_higher = temple_citadel_02
+	}
 	culture = {
 		has_innovation = innovation_manorialism
 	}
@@ -7824,7 +7890,10 @@ aub_can_upgrade_to_scriptorium_04_trigger = {
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
-	has_building_or_higher = temple_02
+	OR = {
+		has_building_or_higher = temple_02
+		has_building_or_higher = temple_citadel_02
+	}
 	culture = {
 		has_innovation = innovation_manorialism
 	}
@@ -7835,7 +7904,10 @@ aub_can_upgrade_to_scriptorium_05_trigger = {
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
-	has_building_or_higher = temple_03
+	OR = {
+		has_building_or_higher = temple_03
+		has_building_or_higher = temple_citadel_03
+	}
 	culture = {
 		has_innovation = innovation_windmills
 	}
@@ -7846,7 +7918,10 @@ aub_can_upgrade_to_scriptorium_06_trigger = {
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
-	has_building_or_higher = temple_03
+	OR = {
+		has_building_or_higher = temple_03
+		has_building_or_higher = temple_citadel_03
+	}
 	culture = {
 		has_innovation = innovation_windmills
 	}
@@ -7857,7 +7932,10 @@ aub_can_upgrade_to_scriptorium_07_trigger = {
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
-	has_building_or_higher = temple_04
+	OR = {
+		has_building_or_higher = temple_04
+		has_building_or_higher = temple_citadel_04
+	}
 	culture = {
 		has_innovation = innovation_cranes
 	}
@@ -7868,7 +7946,10 @@ aub_can_upgrade_to_scriptorium_08_trigger = {
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
-	has_building_or_higher = temple_03
+	OR = {
+		has_building_or_higher = temple_04
+		has_building_or_higher = temple_citadel_04
+	}
 	culture = {
 		has_innovation = innovation_cranes
 	}
@@ -9177,6 +9258,8 @@ aub_can_upgrade_to_vihara_halls_02_trigger = {
 }
 
 aub_can_upgrade_to_vihara_halls_03_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -9184,10 +9267,11 @@ aub_can_upgrade_to_vihara_halls_03_trigger = {
 	culture = {
 		has_innovation = innovation_manorialism
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_vihara_halls_04_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -9195,10 +9279,11 @@ aub_can_upgrade_to_vihara_halls_04_trigger = {
 	culture = {
 		has_innovation = innovation_manorialism
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_vihara_halls_05_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -9206,10 +9291,11 @@ aub_can_upgrade_to_vihara_halls_05_trigger = {
 	culture = {
 		has_innovation = innovation_windmills
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_vihara_halls_06_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -9217,10 +9303,11 @@ aub_can_upgrade_to_vihara_halls_06_trigger = {
 	culture = {
 		has_innovation = innovation_windmills
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_vihara_halls_07_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -9228,10 +9315,11 @@ aub_can_upgrade_to_vihara_halls_07_trigger = {
 	culture = {
 		has_innovation = innovation_cranes
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_vihara_halls_08_trigger = {
+	# vanilla can_construct_potential
+	has_dlc = "All Under Heaven"
 	# vanilla can_construct_showing_failures_only
 	building_requirement_tribal = no
 	# vanilla can_construct
@@ -9239,7 +9327,6 @@ aub_can_upgrade_to_vihara_halls_08_trigger = {
 	culture = {
 		has_innovation = innovation_cranes
 	}
-	has_dlc = "All Under Heaven"
 }
 
 aub_can_upgrade_to_wantilan_02_trigger = {

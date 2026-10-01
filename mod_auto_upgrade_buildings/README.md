@@ -26,15 +26,22 @@
 
 本维护版保留上游署名和来源，并已获得原 Mod 作者授权进行二次开发与发布。
 
+2026-10-01 开发树已迁移到 CK3 `1.20.0.2 (Crozier)`、Steam build `25588574` 的建筑快照，保留原有 605 条升级边，
+同步 45 处原版资格条件变化。新版提取、生成、14 项合同／构建测试、静态检查与可复现构建已通过；
+新版实机验收尚未执行，descriptor 仍保持原公开兼容声明。完整差异和证据见
+[`1.20.0.2 兼容专题`](../docs/ck3-1.20.0.2-auto-upgrade-buildings-compatibility-2026-10-01.md)。
+
 ## 生成与校验
 
 `common/scripted_effects/build_scripted_effect.txt` 与 `common/scripted_triggers/aub_building_triggers.txt` 是生成文件。建筑图谱来自
-`../tools/auto_upgrade_buildings_1_19_0_6.json`；刷新 exact 原版定义时先运行提取器，再运行生成器：
+`../tools/auto_upgrade_buildings_1_20_0_2.json`；旧 `1_19_0_6` 快照保留为历史政策对照。
+刷新 exact 原版定义时先运行提取器、审阅全部图谱／费用／资格差异，再更新独立冻结合同并运行生成器。
+普通提取器与生成器不会更新 `auto_upgrade_buildings_data.py` 的政策和资格 SHA-256。当前快照的只读检查与构建命令为：
 
 ```text
-py tools/extract_auto_upgrade_buildings.py --check
-py tools/gen_auto_upgrade_buildings.py
-py tools/validate_auto_upgrade_buildings_static.py
-py tools/test_build_auto_upgrade_buildings_release.py
-py tools/build_auto_upgrade_buildings_release.py --check
+tools\.venv\Scripts\python.exe tools\extract_auto_upgrade_buildings.py --check
+tools\.venv\Scripts\python.exe tools\gen_auto_upgrade_buildings.py --check
+tools\.venv\Scripts\python.exe tools\validate_auto_upgrade_buildings_static.py
+tools\.venv\Scripts\python.exe tools\test_build_auto_upgrade_buildings_release.py
+tools\.venv\Scripts\python.exe tools\build_auto_upgrade_buildings_release.py --check
 ```

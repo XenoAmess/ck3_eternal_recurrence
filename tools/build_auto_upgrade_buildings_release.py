@@ -14,6 +14,8 @@ import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+import gen_auto_upgrade_buildings as generator
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCT_ID = "mod_auto_upgrade_buildings"
@@ -132,6 +134,11 @@ def source_errors(source: Path) -> list[str]:
                 errors.append(f"canonical runtime contains remote_file_id: {relative}")
             if UPSTREAM_WORKSHOP_ITEM_ID in value:
                 errors.append(f"upstream Workshop identity leaked into runtime: {relative}")
+    for path, expected in generator.generated_outputs().items():
+        relative = path.relative_to(DEFAULT_SOURCE)
+        actual = source / relative
+        if actual.is_file() and actual.read_bytes() != expected:
+            errors.append(f"generated runtime differs from reviewed building contract: {relative.as_posix()}")
     return errors
 
 

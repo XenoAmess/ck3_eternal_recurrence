@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate all CK3 1.19.0.6 Auto Upgrade Buildings runtime branches."""
+"""Generate all CK3 1.20.0.2 Auto Upgrade Buildings runtime branches."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from auto_upgrade_buildings_data import CHAINS, EDGES, BuildingChain, BuildingEdge
+from auto_upgrade_buildings_data import CHAINS, EDGES, SNAPSHOT, BuildingChain, BuildingEdge
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,7 +32,7 @@ def chain_effect_name(chain: BuildingChain) -> str:
 def render_triggers() -> str:
     lines = [
         "# GENERATED FILE. DO NOT EDIT.",
-        "# Source: tools/auto_upgrade_buildings_1_19_0_6.json",
+        f"# Source: tools/{SNAPSHOT.name}",
         "# Every trigger reproduces the target building's four vanilla construction gates.",
         "",
         "aub_can_pay_gold_building_cost_trigger = {",
@@ -163,7 +163,7 @@ def render_chain(chain: BuildingChain) -> list[str]:
 def render_effects() -> str:
     lines = [
         "# GENERATED FILE. DO NOT EDIT.",
-        "# Source: tools/auto_upgrade_buildings_1_19_0_6.json",
+        f"# Source: tools/{SNAPSHOT.name}",
         "",
         "aub_start_global_loop_effect = {",
         "\tif = {",

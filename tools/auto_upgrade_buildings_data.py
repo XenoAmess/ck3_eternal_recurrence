@@ -1,8 +1,9 @@
-"""Frozen CK3 1.19.0.6 province-building graph for Auto Upgrade Buildings."""
+"""Frozen CK3 1.20.0.2 province-building graph for Auto Upgrade Buildings."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -10,8 +11,13 @@ from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT = ROOT / "tools" / "auto_upgrade_buildings_1_19_0_6.json"
-EXPECTED_GAME_VERSION = "1.19.0.6"
+SNAPSHOT = ROOT / "tools" / "auto_upgrade_buildings_1_20_0_2.json"
+EXPECTED_GAME_VERSION = "1.20.0.2"
+# Independently reviewed contracts; extracting/generating never refreshes these.
+# Policy hashes every edge field except vanilla gates, the primary roots and
+# Great Project exclusions. It is identical to the 1.19.0.6 policy contract.
+EXPECTED_POLICY_SHA256 = "ceb41a0eb82a0710c3e80ead0c258c113d05b6694e23186b77503fcc466ac699"
+EXPECTED_GATES_SHA256 = "fa5e919ad881a53835d58928be7b0a476fd204999f8138c10143794921f164ff"
 IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 EXPECTED_TYPES = {"regular": 370, "special": 205, "duchy_capital": 30}
 EXPECTED_COST_KINDS = {
@@ -68,6 +74,32 @@ def _count(values: Iterable[str]) -> dict[str, int]:
     for value in values:
         result[value] = result.get(value, 0) + 1
     return result
+
+
+def _semantic_sha256(value: object) -> str:
+    data = json.dumps(
+        value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(data).hexdigest()
+
+
+def validate_snapshot_contract(payload: dict[str, object]) -> None:
+    policy = {
+        "primary_building_roots": payload["primary_building_roots"],
+        "excluded_edges": payload["excluded_edges"],
+        "included_edges": [
+            {key: value for key, value in edge.items() if key != "gates"}
+            for edge in payload["included_edges"]
+        ],
+    }
+    gates = [
+        {key: edge[key] for key in ("source", "target", "gates")}
+        for edge in payload["included_edges"]
+    ]
+    if _semantic_sha256(policy) != EXPECTED_POLICY_SHA256:
+        raise ValueError("reviewed building upgrade policy contract drifted")
+    if _semantic_sha256(gates) != EXPECTED_GATES_SHA256:
+        raise ValueError("reviewed CK3 1.20.0.2 building gate contract drifted")
 
 
 def _load() -> tuple[dict[str, object], tuple[BuildingEdge, ...], tuple[ExcludedEdge, ...]]:
@@ -139,7 +171,7 @@ def validate_data() -> None:
     if SNAPSHOT_DATA.get("game_version") != EXPECTED_GAME_VERSION:
         raise ValueError("building snapshot game version drifted")
     expected_counts = {
-        "building_definition_count": 981,
+        "building_definition_count": 989,
         "vanilla_edge_count": 609,
         "included_edge_count": 605,
         "excluded_edge_count": 4,
@@ -207,6 +239,7 @@ def validate_data() -> None:
         "tribe_01",
     }:
         raise ValueError("primary-building root inventory drifted")
+    validate_snapshot_contract(SNAPSHOT_DATA)
 
 
 validate_data()

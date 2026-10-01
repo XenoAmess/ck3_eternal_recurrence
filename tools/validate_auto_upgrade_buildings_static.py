@@ -14,7 +14,9 @@ import build_auto_upgrade_buildings_release as builder
 import compose_auto_upgrade_buildings_decision_art as decision_art
 import extract_auto_upgrade_buildings as extractor
 import gen_auto_upgrade_buildings as generator
-from auto_upgrade_buildings_data import CHAINS, EDGES, EXCLUDED_EDGES, SNAPSHOT
+from auto_upgrade_buildings_data import (
+    CHAINS, EDGES, EXCLUDED_EDGES, EXPECTED_GAME_VERSION, SNAPSHOT
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +24,7 @@ MOD = ROOT / "mod_auto_upgrade_buildings"
 FIXTURE = ROOT / "tools" / "fixtures" / "auto_upgrade_buildings_acceptance"
 WORKSHOP_DESCRIPTION = ROOT / "workshop" / "auto_upgrade_buildings_description.bbcode"
 GAME_ROOT_CANDIDATES = (
+    ROOT / "Crusader Kings III" / "game",
     Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game"),
     Path(r"C:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game"),
 )
@@ -167,7 +170,7 @@ def validate_vanilla(game_root: Path) -> tuple[list[str], bool]:
         return [f"installed vanilla extraction failed: {error}"], True
     if current != frozen:
         return [
-            "installed vanilla building graph differs from the frozen CK3 1.19.0.6 snapshot; "
+            f"installed vanilla building graph differs from the frozen CK3 {EXPECTED_GAME_VERSION} snapshot; "
             "run extract_auto_upgrade_buildings.py and review the full inventory diff"
         ], True
     return [], True
@@ -796,7 +799,7 @@ def main(argv: list[str] | None = None) -> int:
         "AUTO UPGRADE BUILDINGS STATIC VALIDATION OK\n"
         f"Runtime files: {len(builder.RUNTIME_FILES)}\n"
         f"Building chains: {len(CHAINS)}\n"
-        f"Installed vanilla 1.19 metadata checked: {'yes' if vanilla_checked else 'not installed'}"
+        f"Installed vanilla {EXPECTED_GAME_VERSION} metadata checked: {'yes' if vanilla_checked else 'not installed'}"
     )
     return 0
 
