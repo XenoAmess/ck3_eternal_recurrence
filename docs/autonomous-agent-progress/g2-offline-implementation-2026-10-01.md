@@ -759,3 +759,9 @@ Eleven central sources, explicit56ON4OFF and only model/mailbox two new compilat
 Actual R4 cleanup pause rejected and escaped before the existing retry, leaving the map running. Four focused complete production-path tests verify the minimal exact-error catch and existing two-attempt bound, with success only after a paused frame. Other native errors stay unchanged; static-ready reliability fix pending ordinary R7 live timing. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\pause-map-rejected-retry\root-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:17:01 Record actual heir betrothal and cold checkpoint recovery
+
+One family topic records fixed-five native values, one zero-cost proposal, bilateral betrothal, h94 checkpoint and real new-PID cold result without resubmission. Both children8under16 and no alliance; actual day7 pause failure and initial cold root-query timeout retained. Bounded production-live marriage loop includes cold; ordinary G2 score unchanged. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\family-live-next\root-cold-doc-package-r6.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
