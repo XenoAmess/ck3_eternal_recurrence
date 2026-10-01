@@ -90,6 +90,9 @@ struct Fixture {
   std::array<Candidate, 2> candidates{};
   bridge::RealmLawGovernanceTitleBaselineV1 titles{};
   std::int64_t prestige = 500;
+  std::int64_t gold = 0;
+  std::int64_t piety = 0;
+  std::uint32_t resource_count = 1;
   std::size_t proof_reads = 0;
   std::size_t frame_reads = 0;
   std::size_t player_resolves = 0;
@@ -254,11 +257,15 @@ bool ReadResources(void *context,
   output.proof_epoch = snapshot.proof_epoch;
   output.date_raw = snapshot.date_raw;
   output.player_character_id = snapshot.played_character_id;
-  output.resource_count = 1;
+  output.resource_count = fixture.resource_count;
   const bool variant = fixture.resource_variant_after_read != 0 &&
       fixture.resource_reads >= fixture.resource_variant_after_read;
   output.resources[0] = {Key("prestige"),
                          fixture.prestige - (variant ? 1 : 0)};
+  if (fixture.resource_count == 3) {
+    output.resources[1] = {Key("gold"), fixture.gold};
+    output.resources[2] = {Key("piety"), fixture.piety};
+  }
   return true;
 }
 
@@ -410,6 +417,52 @@ void TestBoundLaw4ActionSubmitsOnceAndKeepsAckPending() {
   assert(fixture.submit_calls == 1);
 }
 
+void TestBoundObservationPreservesActualSignedDebt() {
+  // Real paused 1.20.0.3 snapshot: actor 29829 at date 53170608,
+  // resource raw values use the engine's q100000 scale. The source table
+  // remains an offline fixture; no law enactment is requested here.
+  constexpr std::string_view executable_sha256 =
+      "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
+  Fixture fixture{};
+  fixture.frame.played_character_id = 29'829;
+  fixture.frame.date_raw = 53'170'608;
+  fixture.player.character_id = 29'829;
+  fixture.container.owner_character_id = 29'829;
+  fixture.prestige = 192'371'400;
+  fixture.gold = 146'227'407;
+  fixture.piety = -104'190'000;
+  fixture.resource_count = 3;
+  assert(bridge::AssignRealmLawNativeDigestV1(
+      executable_sha256, fixture.proof.executable_sha256));
+  auto environment = Environment(fixture);
+  environment.admitted_executable_sha256 = executable_sha256;
+  environment.expected_executable_sha256 = executable_sha256;
+  auto state = std::make_unique<bridge::RealmLawNativeBinderStateV1>();
+  assert(bridge::BindRealmLawNativeV1(environment, *state));
+  const auto access = bridge::MakeRealmLawNativeActionAccessV1(*state);
+  auto observation =
+      std::make_unique<bridge::RealmLawEnactActionObservationV1>();
+  assert(access.capture_observation(access.context, *observation));
+  assert(observation->available && observation->paused);
+  assert(observation->law_snapshot.status ==
+         bridge::RealmLawGovernanceSnapshotV1Status::available);
+  assert(observation->law_snapshot.played_character_id == 29'829);
+  assert(observation->law_snapshot.date_raw == 53'170'608);
+  assert(observation->resources_complete && observation->resource_count == 3);
+  assert(observation->resources[0].currency_key == Key("prestige"));
+  assert(observation->resources[0].amount_raw == 192'371'400);
+  assert(observation->resources[1].currency_key == Key("gold"));
+  assert(observation->resources[1].amount_raw == 146'227'407);
+  assert(observation->resources[2].currency_key == Key("piety"));
+  assert(observation->resources[2].amount_raw == -104'190'000);
+  assert(state->last_action_observation_available);
+  assert(state->last_action_observation.resources[2].amount_raw ==
+         -104'190'000);
+  assert(fixture.frame_reads == 2 && fixture.candidate_reads == 4);
+  assert(fixture.resource_reads == 1 && fixture.submit_calls == 0);
+  assert(!state->submit_pending && !state->source_transaction_open);
+}
+
 void TestSignatureGenerationAndProofDriftFailClosed() {
   Fixture signature{};
   auto state = Bind(signature);
@@ -554,14 +607,20 @@ void TestEvidenceDocumentKeepsUnknownOffsetsUnknown(const char *path) {
 int main(int argc, char **argv) {
   assert(argc == 2);
   static_assert(kSignatureManifest.size() == 64);
+  if (std::string_view(argv[1]) == "--signed-debt-only") {
+    TestBoundObservationPreservesActualSignedDebt();
+    std::cout << "realm_law_native_binder_v1_test: signed debt capture GREEN\n";
+    return 0;
+  }
   TestExactBuildSignatureAndCompleteTableBinding();
   TestBoundLaw3SourcePublishesOnlyStableValues();
   TestBoundLaw4ActionSubmitsOnceAndKeepsAckPending();
+  TestBoundObservationPreservesActualSignedDebt();
   TestSignatureGenerationAndProofDriftFailClosed();
   TestResourceAndSuccessionDriftNeverReachSubmit();
   TestReceiptDistinguishesEnactedRejectedAndFailed();
   TestUnknownOrPostSubmitProofDriftCannotBecomeSuccess();
   TestEvidenceDocumentKeepsUnknownOffsetsUnknown(argv[1]);
-  std::cout << "realm_law_native_binder_v1_test: 8/8 GREEN\n";
+  std::cout << "realm_law_native_binder_v1_test: 9/9 GREEN\n";
   return 0;
 }

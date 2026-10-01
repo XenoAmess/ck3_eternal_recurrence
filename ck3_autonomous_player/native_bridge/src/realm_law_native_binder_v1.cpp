@@ -222,8 +222,9 @@ bool ValidResourceSample(
   for (std::uint32_t index = 0; index < sample.resource_count; ++index) {
     const auto &resource = sample.resources[index];
     const auto key = RealmLawGovernanceKeyViewV1(resource.currency_key);
-    if (key.empty() || key.size() != resource.currency_key.size ||
-        resource.amount_raw < 0) {
+    // Observed CK3 balances may contain real debt, including negative piety.
+    // Preserve the signed amount; action affordability is evaluated separately.
+    if (key.empty() || key.size() != resource.currency_key.size) {
       return false;
     }
     for (std::uint32_t prior = 0; prior < index; ++prior) {
