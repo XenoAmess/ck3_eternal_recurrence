@@ -194,6 +194,8 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         "status": "PASS_STATIC_PROFILE_AND_FILE_PAIR" if pair else "PASS_FROZEN_BUILD_COMMAND_PLAN",
         "readiness": "static-ready", "source_repo": str(REPO),
         "source_commit": inputs["source_head"],
+        "build_source_commit": inputs["manifest"].get("build_source_head", inputs["source_head"]),
+        "source_freeze": inputs["manifest"].get("source_freeze"),
         "integration_manifest": str(args.integration_manifest.resolve()),
         "integration_manifest_sha256": inputs["manifest_sha256"],
         "config": str(args.config.resolve()), "config_sha256": offline.digest(args.config),

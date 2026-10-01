@@ -228,3 +228,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 共享native_driver／service／MCP及剩余58非战争清单最终冻结（其中已交leaf无diff），绑定真实GOV／family／prisoner／Council／gift／Sway／law／Feast packet及typed private wrappers；全部正式trial默认OFF，仅显式私有permit可调用。新增赎金必需既有retention实际positive／known-empty wire经SDK1案例（2packet）通过；不抹既有pending／successor承诺。另9文件只保留停止指令前已经验证的历史cash transport依赖，lazy import一致性所需，候选cashflag OFF，未继续研发或复验。真paused／material／next/cold尚待root实机，不以mock SDK完成OODA。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\FINAL-SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:02:42 Distinguish compiled input and final source metadata
+
+runner receipt增加build_source_commit／source_freeze两metadata字段并说明最终source与实际target source pins；不改runtime，不重跑已经通过的接口。最终profile按中央已编译binary和最终已提交源码绑定，metadata freeze不称重新编译或实机。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
