@@ -1,0 +1,98 @@
+{
+  "schema": "ck3.R0141.ui-hidden-modal-source-intent/v1",
+  "timestamp_utc": "2026-10-01T10:11:27.512956+00:00",
+  "source_private_base": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+  "four_changed_sources": [
+    {
+      "old": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+        "bytes": 6061,
+        "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+      },
+      "old_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\original-fda-exact-copies\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+        "bytes": 6061,
+        "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+      },
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+        "bytes": 6702,
+        "sha256": "9E53E5BD77F3EF19FAA6832F12A2A1C4D3FA551DC491502498E61384740E7725"
+      },
+      "diff": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-deltas\\ingame_ui_navigation_v1.hpp",
+        "bytes": 1612,
+        "sha256": "5409D8CCDECE43C8CD574420ACAF030F30CE1CBA9D38E87F01346DB562D0DD32"
+      }
+    },
+    {
+      "old": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+        "bytes": 40749,
+        "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+      },
+      "old_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\original-fda-exact-copies\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+        "bytes": 40749,
+        "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+      },
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+        "bytes": 43853,
+        "sha256": "DD6393FD8B901565C9FE089FD331774310238F72FE01859EF5F4B76E57763819"
+      },
+      "diff": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-deltas\\ingame_ui_navigation_v1.cpp",
+        "bytes": 6112,
+        "sha256": "E071BC38AC1ADCE550B8A0C3F4F5F5D13D15E8F2A1DDFECE35BBD1C10E3ABEDF"
+      }
+    },
+    {
+      "old": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+        "bytes": 11542,
+        "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+      },
+      "old_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\original-fda-exact-copies\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+        "bytes": 11542,
+        "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+      },
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+        "bytes": 15861,
+        "sha256": "0F73CB6BDB2543EF6A346382D29111599B9DFD024374F5A11029BEAEE5A25A0D"
+      },
+      "diff": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-deltas\\ingame_ui_navigation_v1_test.cpp",
+        "bytes": 5106,
+        "sha256": "65BCF90D3A91603601C2AC7CC3D822230078BAC4C36612EABBBB908079C31180"
+      }
+    },
+    {
+      "old": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+        "bytes": 13028,
+        "sha256": "6DDD376FFE2216ABF58BA5DEDAB87AA22E1B20786779588906E96966A6C7A26A"
+      },
+      "old_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\original-fda-exact-copies\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+        "bytes": 13028,
+        "sha256": "6DDD376FFE2216ABF58BA5DEDAB87AA22E1B20786779588906E96966A6C7A26A"
+      },
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+        "bytes": 15409,
+        "sha256": "279EFF1C0ABACDFBD63CDDC51CF1D5F1D04569A2A854224EFEDA269654C2CD2F"
+      },
+      "diff": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-deltas\\ingame_ui_navigation_v1_abi.json",
+        "bytes": 3450,
+        "sha256": "EA0865930E02708C8032FAF5A5E1AC07B032A269E90AA30D6C2FF58DCAC28FF8"
+      }
+    }
+  ],
+  "no_Git_no_frozen_source_no_live_io": true,
+  "R0141_original_unavailable_preserved": true,
+  "new_live_pending": true
+}

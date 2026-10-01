@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "core.longpaths=true",
+    "diff",
+    "--cached",
+    "--check"
+  ],
+  "returncode": 2,
+  "stdout": null,
+  "stderr": ""
+}

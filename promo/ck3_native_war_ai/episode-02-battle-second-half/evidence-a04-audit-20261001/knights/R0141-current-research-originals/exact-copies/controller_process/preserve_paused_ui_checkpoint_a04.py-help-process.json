@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a04.py",
+    "--help"
+  ],
+  "returncode": 0,
+  "stdout": "usage: preserve_paused_ui_checkpoint_a04.py [-h] --bindings BINDINGS\n                                            --phase {before,after}\n                                            --label LABEL\n\nPreserve an extra same-process checkpoint before a paused UI window, without\nreplacing the main pair.\n\noptions:\n  -h, --help            show this help message and exit\n  --bindings BINDINGS\n  --phase {before,after}\n  --label LABEL\n",
+  "stderr": "",
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a04.py",
+    "bytes": 5029,
+    "sha256": "83E5F881DB7DF5C5580DE15DD859A6E88A18893651405EBAB0BE735D9E7D3F10"
+  }
+}

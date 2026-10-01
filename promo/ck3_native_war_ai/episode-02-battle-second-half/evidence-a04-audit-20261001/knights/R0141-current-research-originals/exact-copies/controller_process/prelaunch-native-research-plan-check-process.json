@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\w\\e2cap1001c\\tools\\native_research_plan.py",
+    "check",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prelaunch-native-research-plan.json",
+    "--for-observation",
+    "--output",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prelaunch-native-research-plan-check.json"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

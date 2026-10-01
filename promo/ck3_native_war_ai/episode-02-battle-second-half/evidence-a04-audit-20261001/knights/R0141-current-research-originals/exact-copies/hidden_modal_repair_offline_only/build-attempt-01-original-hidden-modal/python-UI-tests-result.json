@@ -1,0 +1,14 @@
+{
+  "name": "python-UI-tests",
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stdout.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stderr.bin",
+    "bytes": 5092,
+    "sha256": "63AE0F9DA4FF6546D7015974F0191B2543FAA5312B6D1525826DFCC1CF7737C3"
+  }
+}

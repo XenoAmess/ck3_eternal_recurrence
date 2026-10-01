@@ -1,0 +1,8 @@
+{
+  "action": "mcp",
+  "tool": "ck3_open_character_window_v1",
+  "arguments": {
+    "character_id": 33437,
+    "expected_revision": 5
+  }
+}

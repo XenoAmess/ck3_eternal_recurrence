@@ -1,0 +1,14 @@
+{
+  "name": "actual-three-TUs-and-fixture",
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stdout.bin",
+    "bytes": 553,
+    "sha256": "9D2A06E56FCABA00D28529520CB5AA7E8D2D2735D7788B98C0A0AFEC94456AC7"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

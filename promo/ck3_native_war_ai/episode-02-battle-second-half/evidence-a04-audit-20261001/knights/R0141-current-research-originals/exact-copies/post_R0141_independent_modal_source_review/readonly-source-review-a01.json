@@ -1,0 +1,1288 @@
+{
+  "schema": "ck3.R0141.hidden-modal-independent-readonly-review/v1",
+  "kind": "READONLY_STATIC_SOURCE_AND_EXISTING_OFFLINE_EVIDENCE_NOT_LIVE_TRUTH",
+  "created_utc": "2026-10-01T10:36:54.134448+00:00",
+  "reviewer": "/root/a04_knights_evidence",
+  "status": "PASS_NARROW_REVIEW_NO_MATERIAL_FINDINGS",
+  "source_freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source-ready-and-test-receipt.json",
+    "bytes": 22222,
+    "sha256": "BED9386BAD72A03160BBDFC2BCA0C6B4268BC8C3274580EACEBA6A6018FC334F"
+  },
+  "baseline_private_source": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+  "four_source_diff": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-hidden-modal-independent-review-knights-a01\\four-source-diff-a01.txt",
+    "bytes": 16280,
+    "sha256": "44E1698B0F2AE3CE8537587A74D29EA8B8CCBDD02FD4B50915C66F66DDAE5252"
+  },
+  "sources": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_ui_navigation_v1.hpp",
+      "changed": true,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+        "bytes": 6702,
+        "sha256": "9E53E5BD77F3EF19FAA6832F12A2A1C4D3FA551DC491502498E61384740E7725"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+        "bytes": 6702,
+        "sha256": "9E53E5BD77F3EF19FAA6832F12A2A1C4D3FA551DC491502498E61384740E7725"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+        "bytes": 6061,
+        "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": false
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+      "changed": true,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+        "bytes": 43853,
+        "sha256": "DD6393FD8B901565C9FE089FD331774310238F72FE01859EF5F4B76E57763819"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+        "bytes": 43853,
+        "sha256": "DD6393FD8B901565C9FE089FD331774310238F72FE01859EF5F4B76E57763819"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+        "bytes": 40749,
+        "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": false
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/tests/ingame_ui_navigation_v1_test.cpp",
+      "changed": true,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+        "bytes": 15861,
+        "sha256": "0F73CB6BDB2543EF6A346382D29111599B9DFD024374F5A11029BEAEE5A25A0D"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+        "bytes": 15861,
+        "sha256": "0F73CB6BDB2543EF6A346382D29111599B9DFD024374F5A11029BEAEE5A25A0D"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+        "bytes": 11542,
+        "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": false
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/ingame_ui_navigation_v1_abi.json",
+      "changed": true,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+        "bytes": 15409,
+        "sha256": "279EFF1C0ABACDFBD63CDDC51CF1D5F1D04569A2A854224EFEDA269654C2CD2F"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+        "bytes": 15409,
+        "sha256": "279EFF1C0ABACDFBD63CDDC51CF1D5F1D04569A2A854224EFEDA269654C2CD2F"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+        "bytes": 13028,
+        "sha256": "6DDD376FFE2216ABF58BA5DEDAB87AA22E1B20786779588906E96966A6C7A26A"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": false
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/frontend_gui_route_v1.cpp",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+        "bytes": 31175,
+        "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+        "bytes": 31175,
+        "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+        "bytes": 31175,
+        "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1092626,
+        "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1092626,
+        "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1092626,
+        "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_scoreboard_state_v1.hpp",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+        "bytes": 15729,
+        "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+        "bytes": 15729,
+        "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+        "bytes": 15729,
+        "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/zhongguo_scoreboard_state_v1.cpp",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+        "bytes": 93513,
+        "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+        "bytes": 93513,
+        "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+        "bytes": 93513,
+        "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/zhongguo_scoreboard_action_v1.cpp",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_action_v1.cpp",
+        "bytes": 40572,
+        "sha256": "713677FFC5D2BC137483E2A1EA4FF7ABCF9B2E36CE62CD29075DCC220EAB09CC"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_action_v1.cpp",
+        "bytes": 40572,
+        "sha256": "713677FFC5D2BC137483E2A1EA4FF7ABCF9B2E36CE62CD29075DCC220EAB09CC"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_action_v1.cpp",
+        "bytes": 40572,
+        "sha256": "713677FFC5D2BC137483E2A1EA4FF7ABCF9B2E36CE62CD29075DCC220EAB09CC"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/protocol.cpp",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\protocol.cpp",
+        "bytes": 6868,
+        "sha256": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\protocol.cpp",
+        "bytes": 6868,
+        "sha256": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\protocol.cpp",
+        "bytes": 6868,
+        "sha256": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 233042,
+        "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 233042,
+        "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 233042,
+        "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1182986,
+        "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1182986,
+        "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1182986,
+        "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+        "bytes": 13854,
+        "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+        "bytes": 13854,
+        "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+        "bytes": 13854,
+        "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py",
+      "changed": false,
+      "current": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+        "bytes": 23223,
+        "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+      },
+      "frozen_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+        "bytes": 23223,
+        "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+      },
+      "previous_fda": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+        "bytes": 23223,
+        "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+      },
+      "same_current_and_frozen_bytes": true,
+      "unchanged_baseline_bytes": true
+    }
+  ],
+  "original_function": {
+    "executable": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 95206008,
+      "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "rva_begin": "0x36e1c40",
+    "rva_end": "0x36e1d35",
+    "original_raw": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\NativeShortcutManagerActivate-original-rva-0x36e1c40.bin",
+      "bytes": 245,
+      "sha256": "0A97BEABF9B0D6520B68A26ABC50DE77FE536C34BEBB828B69554BF0492DD025"
+    },
+    "exact_exe_bytes_match": true,
+    "independent_disassembly_matches": true,
+    "instructions": [
+      {
+        "rva": "0x36e1c40",
+        "bytes": "48895c2408",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rsp + 8], rbx"
+      },
+      {
+        "rva": "0x36e1c45",
+        "bytes": "48896c2410",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rsp + 0x10], rbp"
+      },
+      {
+        "rva": "0x36e1c4a",
+        "bytes": "4889742418",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rsp + 0x18], rsi"
+      },
+      {
+        "rva": "0x36e1c4f",
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": "rdi"
+      },
+      {
+        "rva": "0x36e1c50",
+        "bytes": "4883ec60",
+        "mnemonic": "sub",
+        "operands": "rsp, 0x60"
+      },
+      {
+        "rva": "0x36e1c54",
+        "bytes": "498bf0",
+        "mnemonic": "mov",
+        "operands": "rsi, r8"
+      },
+      {
+        "rva": "0x36e1c57",
+        "bytes": "8bea",
+        "mnemonic": "mov",
+        "operands": "ebp, edx"
+      },
+      {
+        "rva": "0x36e1c59",
+        "bytes": "488bf9",
+        "mnemonic": "mov",
+        "operands": "rdi, rcx"
+      },
+      {
+        "rva": "0x36e1c5c",
+        "bytes": "498b5948",
+        "mnemonic": "mov",
+        "operands": "rbx, qword ptr [r9 + 0x48]"
+      },
+      {
+        "rva": "0x36e1c60",
+        "bytes": "f683d00000000a",
+        "mnemonic": "test",
+        "operands": "byte ptr [rbx + 0xd0], 0xa"
+      },
+      {
+        "rva": "0x36e1c67",
+        "bytes": "0f85ae000000",
+        "mnemonic": "jne",
+        "operands": "0x36e1d1b"
+      },
+      {
+        "rva": "0x36e1c6d",
+        "bytes": "4c8b01",
+        "mnemonic": "mov",
+        "operands": "r8, qword ptr [rcx]"
+      },
+      {
+        "rva": "0x36e1c70",
+        "bytes": "4d63909c020000",
+        "mnemonic": "movsxd",
+        "operands": "r10, dword ptr [r8 + 0x29c]"
+      },
+      {
+        "rva": "0x36e1c77",
+        "bytes": "458d4aff",
+        "mnemonic": "lea",
+        "operands": "r9d, [r10 - 1]"
+      },
+      {
+        "rva": "0x36e1c7b",
+        "bytes": "4585c9",
+        "mnemonic": "test",
+        "operands": "r9d, r9d"
+      },
+      {
+        "rva": "0x36e1c7e",
+        "bytes": "7839",
+        "mnemonic": "js",
+        "operands": "0x36e1cb9"
+      },
+      {
+        "rva": "0x36e1c80",
+        "bytes": "4d8b8090020000",
+        "mnemonic": "mov",
+        "operands": "r8, qword ptr [r8 + 0x290]"
+      },
+      {
+        "rva": "0x36e1c87",
+        "bytes": "660f1f840000000000",
+        "mnemonic": "nop",
+        "operands": "word ptr [rax + rax]"
+      },
+      {
+        "rva": "0x36e1c90",
+        "bytes": "4963c1",
+        "mnemonic": "movsxd",
+        "operands": "rax, r9d"
+      },
+      {
+        "rva": "0x36e1c93",
+        "bytes": "498b0cc0",
+        "mnemonic": "mov",
+        "operands": "rcx, qword ptr [r8 + rax*8]"
+      },
+      {
+        "rva": "0x36e1c97",
+        "bytes": "f681d000000008",
+        "mnemonic": "test",
+        "operands": "byte ptr [rcx + 0xd0], 8"
+      },
+      {
+        "rva": "0x36e1c9e",
+        "bytes": "7408",
+        "mnemonic": "je",
+        "operands": "0x36e1ca8"
+      },
+      {
+        "rva": "0x36e1ca0",
+        "bytes": "4183e901",
+        "mnemonic": "sub",
+        "operands": "r9d, 1"
+      },
+      {
+        "rva": "0x36e1ca4",
+        "bytes": "79ea",
+        "mnemonic": "jns",
+        "operands": "0x36e1c90"
+      },
+      {
+        "rva": "0x36e1ca6",
+        "bytes": "eb11",
+        "mnemonic": "jmp",
+        "operands": "0x36e1cb9"
+      },
+      {
+        "rva": "0x36e1ca8",
+        "bytes": "488bd3",
+        "mnemonic": "mov",
+        "operands": "rdx, rbx"
+      },
+      {
+        "rva": "0x36e1cab",
+        "bytes": "4b8b4cd0f8",
+        "mnemonic": "mov",
+        "operands": "rcx, qword ptr [r8 + r10*8 - 8]"
+      },
+      {
+        "rva": "0x36e1cb0",
+        "bytes": "e86bc9fbff",
+        "mnemonic": "call",
+        "operands": "0x369e620"
+      },
+      {
+        "rva": "0x36e1cb5",
+        "bytes": "84c0",
+        "mnemonic": "test",
+        "operands": "al, al"
+      },
+      {
+        "rva": "0x36e1cb7",
+        "bytes": "7462",
+        "mnemonic": "je",
+        "operands": "0x36e1d1b"
+      },
+      {
+        "rva": "0x36e1cb9",
+        "bytes": "c744242800000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [rsp + 0x28], 0"
+      },
+      {
+        "rva": "0x36e1cc1",
+        "bytes": "c74424301d000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [rsp + 0x30], 0x1d"
+      },
+      {
+        "rva": "0x36e1cc9",
+        "bytes": "c644243401",
+        "mnemonic": "mov",
+        "operands": "byte ptr [rsp + 0x34], 1"
+      },
+      {
+        "rva": "0x36e1cce",
+        "bytes": "488d05a35de200",
+        "mnemonic": "lea",
+        "operands": "rax, [rip + 0xe25da3]"
+      },
+      {
+        "rva": "0x36e1cd5",
+        "bytes": "4889442420",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rsp + 0x20], rax"
+      },
+      {
+        "rva": "0x36e1cda",
+        "bytes": "488bd6",
+        "mnemonic": "mov",
+        "operands": "rdx, rsi"
+      },
+      {
+        "rva": "0x36e1cdd",
+        "bytes": "488d4c2438",
+        "mnemonic": "lea",
+        "operands": "rcx, [rsp + 0x38]"
+      },
+      {
+        "rva": "0x36e1ce2",
+        "bytes": "e8997910fd",
+        "mnemonic": "call",
+        "operands": "0x7e9680"
+      },
+      {
+        "rva": "0x36e1ce7",
+        "bytes": "896c2458",
+        "mnemonic": "mov",
+        "operands": "dword ptr [rsp + 0x58], ebp"
+      },
+      {
+        "rva": "0x36e1ceb",
+        "bytes": "4c8d442420",
+        "mnemonic": "lea",
+        "operands": "r8, [rsp + 0x20]"
+      },
+      {
+        "rva": "0x36e1cf0",
+        "bytes": "488bd3",
+        "mnemonic": "mov",
+        "operands": "rdx, rbx"
+      },
+      {
+        "rva": "0x36e1cf3",
+        "bytes": "488b0f",
+        "mnemonic": "mov",
+        "operands": "rcx, qword ptr [rdi]"
+      },
+      {
+        "rva": "0x36e1cf6",
+        "bytes": "e8a597feff",
+        "mnemonic": "call",
+        "operands": "0x36cb4a0"
+      },
+      {
+        "rva": "0x36e1cfb",
+        "bytes": "84c0",
+        "mnemonic": "test",
+        "operands": "al, al"
+      },
+      {
+        "rva": "0x36e1cfd",
+        "bytes": "740b",
+        "mnemonic": "je",
+        "operands": "0x36e1d0a"
+      },
+      {
+        "rva": "0x36e1cff",
+        "bytes": "807c243400",
+        "mnemonic": "cmp",
+        "operands": "byte ptr [rsp + 0x34], 0"
+      },
+      {
+        "rva": "0x36e1d04",
+        "bytes": "7404",
+        "mnemonic": "je",
+        "operands": "0x36e1d0a"
+      },
+      {
+        "rva": "0x36e1d06",
+        "bytes": "b301",
+        "mnemonic": "mov",
+        "operands": "bl, 1"
+      },
+      {
+        "rva": "0x36e1d08",
+        "bytes": "eb02",
+        "mnemonic": "jmp",
+        "operands": "0x36e1d0c"
+      },
+      {
+        "rva": "0x36e1d0a",
+        "bytes": "32db",
+        "mnemonic": "xor",
+        "operands": "bl, bl"
+      },
+      {
+        "rva": "0x36e1d0c",
+        "bytes": "488d4c2438",
+        "mnemonic": "lea",
+        "operands": "rcx, [rsp + 0x38]"
+      },
+      {
+        "rva": "0x36e1d11",
+        "bytes": "e8ba7a10fd",
+        "mnemonic": "call",
+        "operands": "0x7e97d0"
+      },
+      {
+        "rva": "0x36e1d16",
+        "bytes": "0fb6c3",
+        "mnemonic": "movzx",
+        "operands": "eax, bl"
+      },
+      {
+        "rva": "0x36e1d19",
+        "bytes": "eb02",
+        "mnemonic": "jmp",
+        "operands": "0x36e1d1d"
+      },
+      {
+        "rva": "0x36e1d1b",
+        "bytes": "32c0",
+        "mnemonic": "xor",
+        "operands": "al, al"
+      },
+      {
+        "rva": "0x36e1d1d",
+        "bytes": "488b5c2470",
+        "mnemonic": "mov",
+        "operands": "rbx, qword ptr [rsp + 0x70]"
+      },
+      {
+        "rva": "0x36e1d22",
+        "bytes": "488b6c2478",
+        "mnemonic": "mov",
+        "operands": "rbp, qword ptr [rsp + 0x78]"
+      },
+      {
+        "rva": "0x36e1d27",
+        "bytes": "488bb42480000000",
+        "mnemonic": "mov",
+        "operands": "rsi, qword ptr [rsp + 0x80]"
+      },
+      {
+        "rva": "0x36e1d2f",
+        "bytes": "4883c460",
+        "mnemonic": "add",
+        "operands": "rsp, 0x60"
+      },
+      {
+        "rva": "0x36e1d33",
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "rdi"
+      },
+      {
+        "rva": "0x36e1d34",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "checks": [
+    {
+      "id": "EXACT_ORIGINAL_ABI",
+      "status": "PASS_STATIC",
+      "evidence": "Original EXE SHA, complete 245-byte function range, and every Capstone instruction independently matched frozen original bytes.",
+      "interpretation": "Original sign-extends count+29C, reads vector+290 with stride8, and skips each receiver whose D0 bit08 is set. A visible receiver reaches original descendant check against the absolute top; new global navigation policy refuses every visible receiver conservatively."
+    },
+    {
+      "id": "BOUNDED_FAIL_CLOSED_MODAL_READ",
+      "status": "PASS_SOURCE_REVIEW",
+      "location": "ingame_ui_navigation_v1.cpp:62",
+      "evidence": "Signed count0..256, required readable non-null vector when count>0, required non-null entry, D0 byte read, mandatory equal header re-read. Zero-count may have null vector. Negative/oversize/bad reads/header change reject. No names or descendant bypass."
+    },
+    {
+      "id": "HIDDEN_VISIBLE_SEMANTICS",
+      "status": "PASS_SOURCE_AND_EXISTING_OFFLINE_TEST",
+      "evidence": "B8 has bit08 and allows; D0=0 and local-hidden10 alone reject; mixed vectors reject regardless of order; all256 hidden allow. Mask08 is unchanged in supporting header."
+    },
+    {
+      "id": "OWNER_PAUSE_FULL_ID_PRESERVED",
+      "status": "PASS_DIFF_REVIEW",
+      "location": "ingame_ui_navigation_v1.cpp:494",
+      "evidence": "Only old modal_count==0 block replaced. Existing exact-build/no-offline-override/snapshot paused/map/actor/stamp date/thread/pump/GUI double-binding guards remain identical. Char fullID18, unit fullID10/actor/native army/backref, combat fullID8/player-army scope, MilitaryView owner and hover/fit context guards remain identical. Frontend/bridge/TLS/action ticket and after-binding dependencies unchanged byte-for-byte."
+    },
+    {
+      "id": "ACTION_SCOPE_AND_OUTCOME",
+      "status": "PASS_DIFF_REVIEW",
+      "evidence": "All actions use one modal helper after current GUI binding; query early return remains read-only. Dispatch still verification_pending; no new public pointer parameter, pixel signoff, date advance, or game-state write added by this modal helper."
+    },
+    {
+      "id": "RAW_FAILURE_DIAGNOSTICS",
+      "status": "PASS_SOURCE_AND_EXISTING_OFFLINE_TEST",
+      "evidence": "Unread header serializes receiver_count:null. Actual addresses/raw flags are recorded when read. Failure does not create an observed zero count. Serializer fixture checks null count and raw flags184."
+    },
+    {
+      "id": "EXISTING_ACTUAL_TEST_RESULTS",
+      "status": "PASS_REHASHED_EXISTING_PROCESS_EVIDENCE",
+      "evidence": "Five recorded steps exit0; three actual Release TUs compiled; native CTest1/failures0; production helper fixture15 cases+serializer2; Python24/OK. Rehashed stdio/objects/argv/JUnit and source-before/after. Configure stderr44733B exists; other build/CTest/fixture stderr empty. No test rerun in this independent review.",
+      "coverage_limit": "Header-change rejection is reviewed in production source; supplied offline helper fixture does not dynamically change a header during reading. Full DLL link and fresh actual UI success are not supplied by this receipt."
+    }
+  ],
+  "material_findings": [],
+  "existing_process_evidence": {
+    "build_receipt": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-offline-receipt.json",
+      "bytes": 5083,
+      "sha256": "DD77D3F7ED1608856205754808CD62BA17514F8A666E399A736E9BE55FEBD27E"
+    },
+    "steps": [
+      {
+        "name": "cmake-configure",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stdout.bin",
+          "bytes": 713,
+          "sha256": "6E3EB54F929044C1548148383DE78AB9EF0BFBCFD2228D86E9B397DE0193D88D"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stderr.bin",
+          "bytes": 44733,
+          "sha256": "2A69F02EC63FC10EFA1545960F79DFEE14E1CAE1FC62D9D3DD12AA43A927F820"
+        }
+      },
+      {
+        "name": "actual-three-TUs-and-fixture",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stdout.bin",
+          "bytes": 553,
+          "sha256": "9D2A06E56FCABA00D28529520CB5AA7E8D2D2735D7788B98C0A0AFEC94456AC7"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stderr.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        }
+      },
+      {
+        "name": "native-UI-CTest",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stdout.bin",
+          "bytes": 350,
+          "sha256": "7F4D900FE1409FBB72F2F23954BEA610479B04D2979A0C9B273F5FFB24F586A4"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stderr.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        }
+      },
+      {
+        "name": "native-UI-fixture-original-stdout",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stdout.bin",
+          "bytes": 258,
+          "sha256": "BA632EE6C8A89F707E80061E84351E22D17B099DAD67ED7261F07A0E07E3E580"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stderr.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        }
+      },
+      {
+        "name": "python-UI-tests",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stdout.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "stderr": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stderr.bin",
+          "bytes": 5092,
+          "sha256": "63AE0F9DA4FF6546D7015974F0191B2543FAA5312B6D1525826DFCC1CF7737C3"
+        }
+      }
+    ],
+    "CTest_tests": 1,
+    "CTest_failures": 0,
+    "Python_UI_tests": 24,
+    "native_fixture_original_stdout": "offline original modal helper: 15 bounded/hidden/visible/mixed/null/unreadable cases and 2 actual serializer checks PASS; no game calls\noffline parser/full-generation/RTTI/application-owner/RNG0/GUI-double-read/admission negative cases PASS; no game calls\n",
+    "source_before_after_identical": true
+  },
+  "evidence_index": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 95206008,
+      "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\DefaultOnCharacterClick-disassembly-a01.txt",
+      "bytes": 1716,
+      "sha256": "05E9FF72FA00266D12FA469910FDBEBABC2E95EFF39948F7F83B90F3A6F9D1E2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\DefaultOnCharacterClick-original-rva-0xa04530.bin",
+      "bytes": 169,
+      "sha256": "2A04CF114C3FB2B3795ED3E7C42DC7F67C1F28B9433FCA19F25BB7B4AF577074"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\DeliverGuiEvent-disassembly-a01.txt",
+      "bytes": 370,
+      "sha256": "E1A5B2F478969199A5B32EBA6BAADEEFB8BB3DA11E221B11742FF23A03E59658"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\DeliverGuiEvent-original-rva-0x36cb4a0.bin",
+      "bytes": 34,
+      "sha256": "785A11154C45C19A743BF57B6BDCFF10AB716EC8EE7B2E95BBBEFBCFE7F04EF0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\NativeShortcutManagerActivate-disassembly-a01.txt",
+      "bytes": 2499,
+      "sha256": "4803EF67D880551F8217A0B4C520D2896E33DAAC3ADB4DFB11D3859A11CE0F4B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\NativeShortcutManagerActivate-original-rva-0x36e1c40.bin",
+      "bytes": 245,
+      "sha256": "0A97BEABF9B0D6520B68A26ABC50DE77FE536C34BEBB828B69554BF0492DD025"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\StrictDescendant-disassembly-a01.txt",
+      "bytes": 1660,
+      "sha256": "F8630CC4868C97BA01417C8F8F05423D48EEC0133AB8498A5C4F255028745CFD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\StrictDescendant-original-rva-0x369e620.bin",
+      "bytes": 157,
+      "sha256": "62C712BB46F0BBD13726077C0DE1F4500D0C76B43DC7E5E913D666A8814FDACF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+      "bytes": 6061,
+      "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+      "bytes": 15729,
+      "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+      "bytes": 13028,
+      "sha256": "6DDD376FFE2216ABF58BA5DEDAB87AA22E1B20786779588906E96966A6C7A26A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+      "bytes": 40749,
+      "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_action_v1.cpp",
+      "bytes": 40572,
+      "sha256": "713677FFC5D2BC137483E2A1EA4FF7ABCF9B2E36CE62CD29075DCC220EAB09CC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+      "bytes": 93513,
+      "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1_serializer.cpp",
+      "bytes": 16635,
+      "sha256": "4C7E5F1E2010DD55FD67BBB08643134434975BB150A9501C4A6C0A927DC9C3A1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 109163,
+      "sha256": "E95680894031176F50FAAA4C5C9B980F846C17DAE20AE615FE44423206E8402A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\zhongguo_scoreboard_state_contract.py",
+      "bytes": 18067,
+      "sha256": "AFE199408D36DFC28980E3588E1832AA27715A3A90572AE7200BBBD6A935D9BD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\frozen-source-exact-copies\\docs\\ck3-native-ai\\zhongguo-scoreboard-state-v1.md",
+      "bytes": 25965,
+      "sha256": "D8C67057947A4CD5374347040811E944CD0A3F0E4AC360FCB03B68EB879A2E81"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\readonly-diagnosis-a01.json",
+      "bytes": 11276,
+      "sha256": "C77853587BCBC2F98625D101B607BF0F84219A90399FB6FBC03D19C0CF1301C1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\static-modal-anchors-a01.json",
+      "bytes": 34342,
+      "sha256": "4165872C563931C331CDF2537041D9BA705C690A2226A2E32ED5AC005F0B32FE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\static_modal_anchors_a01.py",
+      "bytes": 3815,
+      "sha256": "5FD83FC5CBB56205EC22F4CE3EBDC018A8F540648B351FFB05DA8307BB24FBF4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-offline-receipt.json",
+      "bytes": 5083,
+      "sha256": "DD77D3F7ED1608856205754808CD62BA17514F8A666E399A736E9BE55FEBD27E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-argv.json",
+      "bytes": 738,
+      "sha256": "39863BF8AEA8CBB8C24E896837F9BE10D6A069792F32E558B0B601335EBC4B5B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stdout.bin",
+      "bytes": 553,
+      "sha256": "9D2A06E56FCABA00D28529520CB5AA7E8D2D2735D7788B98C0A0AFEC94456AC7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\bridge.cpp.obj",
+      "bytes": 2947481,
+      "sha256": "00B45AD189EDE9FF7027BB6BB9821558A096C648F104B6E1DF1824B3C94F59F4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\frontend_gui_route_v1.cpp.obj",
+      "bytes": 201250,
+      "sha256": "55D85ED3864485BFE9C88D85EA6F3184D4F4B85E4664F93EDF4790E03AF999B0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\ingame_ui_navigation_v1.cpp.obj",
+      "bytes": 468265,
+      "sha256": "AD30868BD2FAAE3771804C1D5946F079755A90B4D975959A76E3E87E8D150460"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stderr.bin",
+      "bytes": 44733,
+      "sha256": "2A69F02EC63FC10EFA1545960F79DFEE14E1CAE1FC62D9D3DD12AA43A927F820"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stdout.bin",
+      "bytes": 713,
+      "sha256": "6E3EB54F929044C1548148383DE78AB9EF0BFBCFD2228D86E9B397DE0193D88D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\ctest-junit.xml",
+      "bytes": 672,
+      "sha256": "F7A13FA455E9E676AC9E473F39F6CF09CA48DBB76E8713EF596E3C830BF9E3DC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stdout.bin",
+      "bytes": 350,
+      "sha256": "7F4D900FE1409FBB72F2F23954BEA610479B04D2979A0C9B273F5FFB24F586A4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stdout.bin",
+      "bytes": 258,
+      "sha256": "BA632EE6C8A89F707E80061E84351E22D17B099DAD67ED7261F07A0E07E3E580"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stderr.bin",
+      "bytes": 5092,
+      "sha256": "63AE0F9DA4FF6546D7015974F0191B2543FAA5312B6D1525826DFCC1CF7737C3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\sources-after.json",
+      "bytes": 2426,
+      "sha256": "B34A71ED416E8F03F9688A32598011CBBD58F2C283BBA06FB1F922CE872022BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\sources-before.json",
+      "bytes": 2426,
+      "sha256": "B34A71ED416E8F03F9688A32598011CBBD58F2C283BBA06FB1F922CE872022BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\freeze_source_ready_a02.py",
+      "bytes": 6186,
+      "sha256": "ED1E6717E1571D35F56DD8B832FAF5CB3DA31CCF613F7EF607F6FA0AA835DFA6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-change-intent-a01.json",
+      "bytes": 4989,
+      "sha256": "57968571CC9F8490674503A5B90B534A4C7BF1DA38D6061C231A5985841E5C7E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 233042,
+      "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+      "bytes": 6702,
+      "sha256": "9E53E5BD77F3EF19FAA6832F12A2A1C4D3FA551DC491502498E61384740E7725"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+      "bytes": 15729,
+      "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+      "bytes": 15409,
+      "sha256": "279EFF1C0ABACDFBD63CDDC51CF1D5F1D04569A2A854224EFEDA269654C2CD2F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1092626,
+      "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+      "bytes": 31175,
+      "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+      "bytes": 43853,
+      "sha256": "DD6393FD8B901565C9FE089FD331774310238F72FE01859EF5F4B76E57763819"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\protocol.cpp",
+      "bytes": 6868,
+      "sha256": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_action_v1.cpp",
+      "bytes": 40572,
+      "sha256": "713677FFC5D2BC137483E2A1EA4FF7ABCF9B2E36CE62CD29075DCC220EAB09CC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+      "bytes": 93513,
+      "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+      "bytes": 15861,
+      "sha256": "0F73CB6BDB2543EF6A346382D29111599B9DFD024374F5A11029BEAEE5A25A0D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+      "bytes": 13854,
+      "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1182986,
+      "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\source-freeze-ui-hidden-modal-a02\\source\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+      "bytes": 23223,
+      "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 233042,
+      "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+      "bytes": 6061,
+      "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+      "bytes": 15729,
+      "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+      "bytes": 13028,
+      "sha256": "6DDD376FFE2216ABF58BA5DEDAB87AA22E1B20786779588906E96966A6C7A26A"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1092626,
+      "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+      "bytes": 31175,
+      "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+      "bytes": 40749,
+      "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\protocol.cpp",
+      "bytes": 6868,
+      "sha256": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_action_v1.cpp",
+      "bytes": 40572,
+      "sha256": "713677FFC5D2BC137483E2A1EA4FF7ABCF9B2E36CE62CD29075DCC220EAB09CC"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+      "bytes": 93513,
+      "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1_serializer.cpp",
+      "bytes": 16635,
+      "sha256": "4C7E5F1E2010DD55FD67BBB08643134434975BB150A9501C4A6C0A927DC9C3A1"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+      "bytes": 11542,
+      "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+      "bytes": 13854,
+      "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 109163,
+      "sha256": "E95680894031176F50FAAA4C5C9B980F846C17DAE20AE615FE44423206E8402A"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1182986,
+      "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\zhongguo_scoreboard_state_contract.py",
+      "bytes": 18067,
+      "sha256": "AFE199408D36DFC28980E3588E1832AA27715A3A90572AE7200BBBD6A935D9BD"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+      "bytes": 23223,
+      "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+    },
+    {
+      "path": "C:\\w\\e2cap1001c\\docs\\ck3-native-ai\\zhongguo-scoreboard-state-v1.md",
+      "bytes": 25965,
+      "sha256": "D8C67057947A4CD5374347040811E944CD0A3F0E4AC360FCB03B68EB879A2E81"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 233042,
+      "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+      "bytes": 6702,
+      "sha256": "9E53E5BD77F3EF19FAA6832F12A2A1C4D3FA551DC491502498E61384740E7725"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+      "bytes": 15729,
+      "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+      "bytes": 15409,
+      "sha256": "279EFF1C0ABACDFBD63CDDC51CF1D5F1D04569A2A854224EFEDA269654C2CD2F"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1092626,
+      "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+      "bytes": 31175,
+      "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+      "bytes": 43853,
+      "sha256": "DD6393FD8B901565C9FE089FD331774310238F72FE01859EF5F4B76E57763819"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\protocol.cpp",
+      "bytes": 6868,
+      "sha256": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_action_v1.cpp",
+      "bytes": 40572,
+      "sha256": "713677FFC5D2BC137483E2A1EA4FF7ABCF9B2E36CE62CD29075DCC220EAB09CC"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+      "bytes": 93513,
+      "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+      "bytes": 15861,
+      "sha256": "0F73CB6BDB2543EF6A346382D29111599B9DFD024374F5A11029BEAEE5A25A0D"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+      "bytes": 13854,
+      "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1182986,
+      "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+      "bytes": 23223,
+      "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+    }
+  ],
+  "boundaries": {
+    "source_written_by_review": false,
+    "original_assets_modified": false,
+    "new_build_or_tests_run": false,
+    "game_or_process_read_called": false,
+    "desktop_Steam_Git_master_action": false,
+    "full_DLL_linked_here": false,
+    "live_success_proven_by_review": false,
+    "R0141_date_advancement": 0,
+    "R0141_no_day_fact_source": "Parent reported actual run RED/no advancement and SDK cleanup; this review does not re-run or infer after-state.",
+    "six_gaps_closed": false,
+    "global_bundle_complete": false,
+    "human_approval_created": false,
+    "video_modified": false
+  },
+  "script": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-hidden-modal-independent-review-knights-a01\\create_readonly_review_a01.py",
+    "bytes": 10529,
+    "sha256": "7AB753D6564D46491A4E5DE2899D7255073DAB112859ABFA635DACFAEEF97DA8"
+  },
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]"
+}

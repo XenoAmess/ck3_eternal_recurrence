@@ -1,0 +1,38 @@
+{
+  "at_utc": "2026-10-01T10:31:32.978551+00:00",
+  "prior_alignment": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display-align-attempt-01\\readback.json",
+    "bytes": 1156,
+    "sha256": "F6E7E8C676446098B074B6573B12E66DEB048CF026D5F38D44150CD4DAD52819"
+  },
+  "actual_new_align_operation_to_recorded_original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\restoration-and-release-attempt-03\\native-restoration-align\\readback.json",
+    "bytes": 1194,
+    "sha256": "3B11F936A9DF1DD282560A9A17F3B268614158D1CDBC868346DAEB1FDB3619AB"
+  },
+  "operation_mode_stays_align": true,
+  "original_mode_exact_match": true,
+  "root_original_image_actually_reviewed": true,
+  "root_observation": "1024x768 original desktop; Steam BG3 library is visible with current offline text; no game window.",
+  "actual_bus_readbacks": [
+    {
+      "original_current_bus_task": "D:\\workspace\\.codex-task-bus\\tasks\\war-e2-six-gap-scoped-ui-screen-20261001-a04.json",
+      "preserved": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\restoration-and-release-attempt-03\\war-e2-six-gap-scoped-ui-screen-20261001-a04-actual-task-readback.json",
+        "bytes": 647,
+        "sha256": "A4F2DCE79003FEC91E61FCE753B399EA4199F4E5BE73A956041CFBD16173DA70"
+      }
+    },
+    {
+      "original_current_bus_task": "D:\\workspace\\.codex-task-bus\\tasks\\war-e2-scoped-ui-restoration-screen-20261001-a01.json",
+      "preserved": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\restoration-and-release-attempt-03\\war-e2-scoped-ui-restoration-screen-20261001-a01-actual-task-readback.json",
+        "bytes": 574,
+        "sha256": "08CB650E15BBAFD8481B04A3E6100B5EE30F6883A7F478E6AEB2EA8970A2D162"
+      }
+    }
+  ],
+  "current_game_recorder_injector_processes": [],
+  "R0141_mechanism_stays_RED_no_day_advance": true,
+  "movie_signoff": false
+}

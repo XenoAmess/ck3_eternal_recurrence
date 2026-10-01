@@ -1,0 +1,227 @@
+--- C:\w\e2cap1001c\ck3_autonomous_player\native_bridge\include\xar_bridge\ingame_ui_navigation_v1.hpp
++++ C:\w\e2research1001\ck3_autonomous_player\native_bridge\include\xar_bridge\ingame_ui_navigation_v1.hpp
+@@ -5,6 +5,7 @@
+ #include <cstdint>
+ #include <string>
+ #include <string_view>
++#include <vector>
+ 
+ namespace xar::ck3_11906 {
+ 
+@@ -48,6 +49,22 @@
+   friend bool operator==(const IngameUiGuiOwnerBindingV1 &,
+                          const IngameUiGuiOwnerBindingV1 &) = default;
+ };
++// Diagnostic raw observations only. A registered hidden receiver does not
++// imply a visible modal; no flags are read from caller-supplied game pointers.
++struct IngameUiModalReceiverV1 {
++  std::uintptr_t address = 0;
++  std::uint8_t flags_d0 = 0;
++};
++struct IngameUiModalAdmissionV1 {
++  bool attempted = false;
++  bool header_read = false;
++  bool receivers_verified = false;
++  std::int32_t receiver_count = 0;
++  std::uintptr_t vector_address = 0;
++  std::uint32_t effective_visible_count = 0;
++  std::vector<IngameUiModalReceiverV1> receivers;
++  std::string unavailable_reason;
++};
+ // Application-event ownership comes from the original SDL/TLS mailbox proof.
+ // The global RNG wrapper has its own scoped subsystem owner and is diagnostic.
+ inline bool IsIngameUiPausedOwnerStampV1(
+@@ -86,6 +103,7 @@
+   std::uintptr_t gui_context_address = 0;
+   std::uintptr_t gui_owner_address = 0;
+   std::uint32_t rng_owner_thread_id = 0;
++  IngameUiModalAdmissionV1 modal_admission{};
+   bool combat_knights_read_available = false;
+   std::int32_t left_knight_count = -1;
+   std::int32_t right_knight_count = -1;
+--- C:\w\e2cap1001c\ck3_autonomous_player\native_bridge\src\ingame_ui_navigation_v1.cpp
++++ C:\w\e2research1001\ck3_autonomous_player\native_bridge\src\ingame_ui_navigation_v1.cpp
+@@ -55,6 +55,48 @@
+   return Read(reinterpret_cast<const std::uint8_t *>(object)+offset,&value,sizeof(value));
+ }
+ template<class T> bool Slot(std::uintptr_t address,T &value) noexcept {return Read(reinterpret_cast<void *>(address),&value,sizeof(value));}
++// Original ShortcutManagerActivate 36E1C70..36E1CA6 scans receiver+D0 bit08
++// rather than treating nonzero registration count as an active modal. Global
++// typed navigation is conservatively stricter: any effective-visible receiver
++// refuses navigation, with no descendant allowance or exception by name.
++bool ReadModalNavigationAdmission(const void *context,
++                                 IngameUiModalAdmissionV1 &out) noexcept {
++  out={};out.attempted=true;
++  void **receivers=nullptr;
++  if(!Value(context,kZhongguoGuiModalReceiversOffset,receivers) ||
++     !Value(context,kZhongguoGuiModalReceiverCountOffset,out.receiver_count)) {
++    out.unavailable_reason="modal_receiver_header_unreadable";return false;
++  }
++  out.header_read=true;out.vector_address=reinterpret_cast<std::uintptr_t>(receivers);
++  if(out.receiver_count<0 || out.receiver_count>256) {
++    out.unavailable_reason="modal_receiver_count_out_of_bounds";return false;
++  }
++  if(out.receiver_count && !receivers) {
++    out.unavailable_reason="modal_receiver_vector_missing";return false;
++  }
++  for(std::int32_t index=0;index<out.receiver_count;++index) {
++    void *receiver=nullptr;std::uint8_t flags=0;
++    if(!Value(receivers,static_cast<std::size_t>(index)*sizeof(void *),receiver) || !receiver) {
++      out.unavailable_reason="modal_receiver_entry_unreadable_or_null";return false;
++    }
++    if(!Value(receiver,kZhongguoWidgetHiddenFlagsOffset,flags)) {
++      out.unavailable_reason="modal_receiver_flags_unreadable";return false;
++    }
++    out.receivers.push_back({reinterpret_cast<std::uintptr_t>(receiver),flags});
++    if((flags & kZhongguoWidgetEffectiveHiddenMask)==0)++out.effective_visible_count;
++  }
++  void **later_receivers=nullptr;std::int32_t later_count=0;
++  if(!Value(context,kZhongguoGuiModalReceiversOffset,later_receivers) ||
++     !Value(context,kZhongguoGuiModalReceiverCountOffset,later_count) ||
++     later_receivers!=receivers || later_count!=out.receiver_count) {
++    out.unavailable_reason="modal_receiver_header_changed_during_read";return false;
++  }
++  out.receivers_verified=true;
++  if(out.effective_visible_count) {
++    out.unavailable_reason="effective_visible_modal_receiver_blocks_navigation";return false;
++  }
++  return true;
++}
+ bool Object(std::uintptr_t base,std::uintptr_t storage_rva,std::uint32_t id,std::size_t id_offset,void *&object) noexcept {
+   object=nullptr;
+   if (id==(std::numeric_limits<std::uint32_t>::max)()) return false;
+@@ -494,12 +536,15 @@
+     if(request.window_kind==IngameUiWindowKindV1::combat)ReadCombatHover(env,out);
+     out.available=true;out.status="observed";return true;
+   }
+-  // Actions are refused behind modal receivers; they do not synthesize input.
+-  ZhongguoScoreboardAccessV1 access{};void *context=nullptr;void *owner=nullptr;std::uint32_t modal_count=0;
++  // All actions, including semantic hover and fit, share the same original GUI
++  // context and conservative effective-visible modal admission.
++  ZhongguoScoreboardAccessV1 access{};void *context=nullptr;void *owner=nullptr;
+   if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner) ||
+-      context!=gui_binding.context || owner!=gui_binding.owner ||
+-      !Value(context,kZhongguoGuiModalReceiverCountOffset,modal_count) || modal_count!=0) {
+-    out.unavailable_reason="modal_context_blocks_navigation";return true;
++      context!=gui_binding.context || owner!=gui_binding.owner) {
++    out.unavailable_reason="modal_gui_context_binding_changed";return true;
++  }
++  if(!ReadModalNavigationAdmission(context,out.modal_admission)) {
++    out.unavailable_reason=out.modal_admission.unavailable_reason;return true;
+   }
+   const auto expected=request.operation==IngameUiOperationV1::open_knights ? static_cast<std::uint32_t>(snapshot.played_character_id):request.subject_id;
+   if((request.operation==IngameUiOperationV1::open_character || request.operation==IngameUiOperationV1::open_combat ||
+@@ -590,8 +635,20 @@
+    <<"\",\"combat_roster_full_ids_available\":false,\"native_backend_id\":\"ck3-1.19.0.6-native-ingame-ui-v1\""
+    <<",\"hover_state_available\":"<<v.hover_state_available<<",\"hovered_widget_name\":\""<<v.hovered_widget_name
+    <<"\",\"hovered_ui_side\":\""<<v.hovered_ui_side<<"\",\"hovered_combat_id\":"<<v.hovered_combat_id
+-   <<",\"hover_readback_is_pixels\":false"
+-   <<",\"combat_geometry\":{\"available\":"<<v.combat_geometry.available
++   <<",\"hover_readback_is_pixels\":false";
++  const auto &m=v.modal_admission;
++  o<<",\"modal_admission\":{\"attempted\":"<<m.attempted<<",\"header_read\":"<<m.header_read
++   <<",\"receivers_verified\":"<<m.receivers_verified<<",\"receiver_count\":";
++  if(m.header_read)o<<m.receiver_count;else o<<"null";
++  o<<",\"vector_address\":"<<m.vector_address<<",\"effective_visible_count\":"<<m.effective_visible_count
++   <<",\"effective_hidden_mask\":8,\"policy\":\"refuse_any_effective_visible_receiver\""
++   <<",\"unavailable_reason\":\""<<JsonEscape(m.unavailable_reason)<<"\",\"receivers\":[";
++  for(std::size_t index=0;index<m.receivers.size();++index) {
++    if(index)o<<',';
++    o<<"{\"address\":"<<m.receivers[index].address<<",\"flags_d0\":"<<static_cast<unsigned>(m.receivers[index].flags_d0)<<'}';
++  }
++  o<<"]}";
++  o<<",\"combat_geometry\":{\"available\":"<<v.combat_geometry.available
+    <<",\"combat_id\":"<<v.combat_geometry.combat_id<<",\"widget_count\":"<<v.combat_geometry.widget_count
+    <<",\"coordinate_space\":\"native_gui_absolute\",\"scope\":\"visible_widget_union_and_verified_stock_background_margins\""
+    <<",\"stock_margin_source_verified\":"<<v.combat_geometry.stock_margin_source_verified
+--- C:\w\e2cap1001c\ck3_autonomous_player\native_bridge\tests\ingame_ui_navigation_v1_test.cpp
++++ C:\w\e2research1001\ck3_autonomous_player\native_bridge\tests\ingame_ui_navigation_v1_test.cpp
+@@ -57,6 +57,53 @@
+   assert(!ComputeCombatUiFitTranslationV1({0,0,2560,1440},{0,0,-1,400},delta));
+   assert(!ComputeCombatUiFitTranslationV1({0,0,2560,1440},{(std::numeric_limits<float>::quiet_NaN)(),0,800,400},delta));
+   assert(JsonEscape("a\"b\\c\n")=="a\\\"b\\\\c\\u000A");
++  // Actual production modal helper uses ReadProcessMemory over offline buffers.
++  // Registered hidden receivers are not active blocking modals; a visible
++  // earlier entry must still refuse even when the absolute last entry is hidden.
++  std::array<unsigned char,0x300> modal_context{};
++  std::array<unsigned char,0xD1> hidden_receiver{},visible_receiver{};
++  hidden_receiver[0xD0]=0xB8;visible_receiver[0xD0]=0;
++  std::array<void *,256> modal_entries{};
++  const auto set_modal=[&](std::int32_t n,void *data){
++    std::memcpy(modal_context.data()+kZhongguoGuiModalReceiversOffset,&data,sizeof(data));
++    std::memcpy(modal_context.data()+kZhongguoGuiModalReceiverCountOffset,&n,sizeof(n));
++  };
++  IngameUiModalAdmissionV1 modal{};
++  set_modal(0,nullptr);
++  assert(ReadModalNavigationAdmission(modal_context.data(),modal) && modal.header_read && modal.receivers_verified && modal.receivers.empty());
++  set_modal(1,modal_entries.data());modal_entries[0]=hidden_receiver.data();
++  assert(ReadModalNavigationAdmission(modal_context.data(),modal) && modal.receiver_count==1 && modal.receivers_verified && modal.effective_visible_count==0 && modal.receivers[0].flags_d0==0xB8);
++  modal_entries[0]=visible_receiver.data();
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.receivers_verified && modal.effective_visible_count==1 && modal.unavailable_reason=="effective_visible_modal_receiver_blocks_navigation");
++  visible_receiver[0xD0]=0x10; // local hidden alone is not effective-hidden
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.effective_visible_count==1);
++  visible_receiver[0xD0]=0;
++  set_modal(2,modal_entries.data());modal_entries[0]=visible_receiver.data();modal_entries[1]=hidden_receiver.data();
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.effective_visible_count==1 && modal.receivers.size()==2);
++  modal_entries[0]=hidden_receiver.data();modal_entries[1]=visible_receiver.data();
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.effective_visible_count==1);
++  for(auto &entry:modal_entries)entry=hidden_receiver.data();set_modal(256,modal_entries.data());
++  assert(ReadModalNavigationAdmission(modal_context.data(),modal) && modal.receivers.size()==256);
++  set_modal(-1,modal_entries.data());
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.receiver_count==-1 && modal.unavailable_reason=="modal_receiver_count_out_of_bounds");
++  set_modal(257,modal_entries.data());assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.receivers.empty());
++  set_modal(1,nullptr);assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.unavailable_reason=="modal_receiver_vector_missing");
++  set_modal(1,modal_entries.data());modal_entries[0]=nullptr;
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.unavailable_reason=="modal_receiver_entry_unreadable_or_null");
++  set_modal(1,reinterpret_cast<void *>(1));
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.unavailable_reason=="modal_receiver_entry_unreadable_or_null");
++  set_modal(1,modal_entries.data());modal_entries[0]=reinterpret_cast<void *>(1);
++  assert(!ReadModalNavigationAdmission(modal_context.data(),modal) && modal.unavailable_reason=="modal_receiver_flags_unreadable");
++  assert(!ReadModalNavigationAdmission(nullptr,modal) && !modal.header_read && modal.unavailable_reason=="modal_receiver_header_unreadable");
++  assert(!ReadModalNavigationAdmission(reinterpret_cast<void *>(1),modal) && !modal.header_read);
++  IngameUiResultV1 modal_result{};modal_result.modal_admission=modal;
++  auto modal_json=SerializeIngameUiResultV1(r,modal_result,3);
++  assert(modal_json.find("\"receiver_count\":null")!=std::string::npos);
++  set_modal(1,modal_entries.data());modal_entries[0]=hidden_receiver.data();
++  assert(ReadModalNavigationAdmission(modal_context.data(),modal_result.modal_admission));
++  modal_json=SerializeIngameUiResultV1(r,modal_result,3);
++  assert(modal_json.find("\"receiver_count\":1")!=std::string::npos && modal_json.find("\"flags_d0\":184")!=std::string::npos);
++  std::cout<<"offline original modal helper: 15 bounded/hidden/visible/mixed/null/unreadable cases and 2 actual serializer checks PASS; no game calls\n";
+   // Real ReadProcessMemory over offline buffers exercises storage indexing and
+   // full generation identity; a low-24-bit match alone must fail.
+   auto *image=static_cast<unsigned char *>(VirtualAlloc(nullptr,kImageSize,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE));
+--- C:\w\e2cap1001c\ck3_autonomous_player\native_bridge\research\ingame_ui_navigation_v1_abi.json
++++ C:\w\e2research1001\ck3_autonomous_player\native_bridge\research\ingame_ui_navigation_v1_abi.json
+@@ -66,7 +66,7 @@
+       "MouseEnter_code": "0x11",
+       "MouseLeave_code": "0x12",
+       "native_event_delivery": "0x36CB4A0",
+-      "target": "fixed combat_window descendant left_knights or right_knights; visible/enabled; CPdxGuiTextWidget RTTI5020010; widget+D8==resolved GuiContext; current fullCombatID matches request; modal_count0",
++      "target": "fixed combat_window descendant left_knights or right_knights; visible/enabled; CPdxGuiTextWidget RTTI5020010; widget+D8==resolved GuiContext; current fullCombatID matches request; bounded original modal vector: count0 or all effective-hidden; any effective-visible receiver refused",
+       "postcondition": "independent query target==context+F0, same current CombatID; pending stock tooltip dwell/pixels must be verified separately"
+     }
+   },
+@@ -239,5 +239,23 @@
+     "game_launched": false,
+     "human_full_panel_review": false,
+     "human_video_signoff": false
++  },
++  "modal_admission_revision_v2": {
++    "trigger": "R0141 actual owner/TLS/GUI binding passed; count-only gate refused navigation. Original parsed unavailable stays RED/no-day.",
++    "evidence_level": "exact original EXE bytes + two later readonly PID6320 memory reads; source/offline validation; new live pending",
++    "original_exact_EXE_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
++    "original_shortcut_manager_rva": "0x36E1C40..0x36E1D35",
++    "effective_hidden_scan_rva": "0x36E1C70..0x36E1CA6",
++    "count_layout": "GUI context signed int32 +0x29C, bounded 0..256; vector data +0x290, pointer stride8; receiver flags +0xD0 bit08 is effective-hidden cache",
++    "policy": "all global open/select/hover/fit actions reject any effective-visible receiver; count0 or fully readable all-hidden receivers allowed; no exception by runtime_name and no native descendant allowance",
++    "failed_read_policy": "header/negative/excessive count/null vector/null or unreadable entries/unreadable flags/header change => unavailable; GUI context/owner equality and all original main-thread paused/fullID/actor guards preserved",
++    "raw_native_diagnostic": "modal_admission object: attempted/header_read/receivers_verified/actual signed count or null/vector address/observed receiver addresses and D0 flags/effective-visible count/reason; existing driver create-only original parsed command_result persists it before validation. No new public MCP parameters or extra gameplay capability.",
++    "MCP_normalized_scope": "Optional raw diagnostic remains in original parsed return; no claim that the current Python normalized UI response publishes it.",
++    "readonly_current_memory_report": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-modal-admission-diagnosis-other-a01/readonly-modal-receivers-a01.json",
++    "readonly_current_memory_SHA256": "FDC019E55D420FB7BBCF54B4F76470EABF086B18981B071C668A0A681EAD283F",
++    "static_anchors_report_SHA256": "4165872C563931C331CDF2537041D9BA705C690A2226A2E32ED5AC005F0B32FE",
++    "temporal_limit": "Later RPM does not reconstruct the failed call execution-time count/vector; the failed native reason had conflated resolver/pointer/read/count branches.",
++    "live_claim": false,
++    "human_approval_created": false
+   }
+ }

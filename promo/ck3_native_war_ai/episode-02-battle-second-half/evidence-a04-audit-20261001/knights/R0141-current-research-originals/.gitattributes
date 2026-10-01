@@ -1,0 +1,2 @@
+# Original bytes and append-only evidence must survive Git unchanged.
+* -text -diff

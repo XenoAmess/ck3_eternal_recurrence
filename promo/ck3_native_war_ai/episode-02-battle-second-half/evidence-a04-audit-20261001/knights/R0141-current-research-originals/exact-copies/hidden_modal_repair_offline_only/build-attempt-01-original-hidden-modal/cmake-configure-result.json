@@ -1,0 +1,14 @@
+{
+  "name": "cmake-configure",
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stdout.bin",
+    "bytes": 713,
+    "sha256": "6E3EB54F929044C1548148383DE78AB9EF0BFBCFD2228D86E9B397DE0193D88D"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stderr.bin",
+    "bytes": 44733,
+    "sha256": "2A69F02EC63FC10EFA1545960F79DFEE14E1CAE1FC62D9D3DD12AA43A927F820"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a08.py",
+    "--help"
+  ],
+  "returncode": 0,
+  "stdout": "usage: prepare_runtime_binding_and_plan_a08.py [-h]\n                                               --candidate-manifest CANDIDATE_MANIFEST\n                                               --launch-plan LAUNCH_PLAN\n                                               --live-root LIVE_ROOT\n\nBind an actually allocated new run to its source/build and research plan.\n\noptions:\n  -h, --help            show this help message and exit\n  --candidate-manifest CANDIDATE_MANIFEST\n  --launch-plan LAUNCH_PLAN\n  --live-root LIVE_ROOT\n",
+  "stderr": "",
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a08.py",
+    "bytes": 11728,
+    "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+  }
+}

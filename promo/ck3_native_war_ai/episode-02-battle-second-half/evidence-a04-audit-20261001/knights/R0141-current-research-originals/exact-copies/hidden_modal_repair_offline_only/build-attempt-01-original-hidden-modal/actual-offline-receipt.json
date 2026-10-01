@@ -1,0 +1,99 @@
+{
+  "schema": "ck3.R0141.original-hidden-modal-build-receipt/v1",
+  "status": "ACTUAL_3_RELEASE_TUS_UI_CTEST_FIXTURE_PYTHON_PASS",
+  "steps": [
+    {
+      "name": "cmake-configure",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stdout.bin",
+        "bytes": 713,
+        "sha256": "6E3EB54F929044C1548148383DE78AB9EF0BFBCFD2228D86E9B397DE0193D88D"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\cmake-configure-stderr.bin",
+        "bytes": 44733,
+        "sha256": "2A69F02EC63FC10EFA1545960F79DFEE14E1CAE1FC62D9D3DD12AA43A927F820"
+      }
+    },
+    {
+      "name": "actual-three-TUs-and-fixture",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stdout.bin",
+        "bytes": 553,
+        "sha256": "9D2A06E56FCABA00D28529520CB5AA7E8D2D2735D7788B98C0A0AFEC94456AC7"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\actual-three-TUs-and-fixture-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "native-UI-CTest",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stdout.bin",
+        "bytes": 350,
+        "sha256": "7F4D900FE1409FBB72F2F23954BEA610479B04D2979A0C9B273F5FFB24F586A4"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "native-UI-fixture-original-stdout",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stdout.bin",
+        "bytes": 258,
+        "sha256": "BA632EE6C8A89F707E80061E84351E22D17B099DAD67ED7261F07A0E07E3E580"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "python-UI-tests",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stdout.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\python-UI-tests-stderr.bin",
+        "bytes": 5092,
+        "sha256": "63AE0F9DA4FF6546D7015974F0191B2543FAA5312B6D1525826DFCC1CF7737C3"
+      }
+    }
+  ],
+  "sources_unchanged_during_validation": true,
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "actual_native_objects": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\ingame_ui_navigation_v1.cpp.obj",
+      "bytes": 468265,
+      "sha256": "AD30868BD2FAAE3771804C1D5946F079755A90B4D975959A76E3E87E8D150460"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\frontend_gui_route_v1.cpp.obj",
+      "bytes": 201250,
+      "sha256": "55D85ED3864485BFE9C88D85EA6F3184D4F4B85E4664F93EDF4790E03AF999B0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\bridge.cpp.obj",
+      "bytes": 2947481,
+      "sha256": "00B45AD189EDE9FF7027BB6BB9821558A096C648F104B6E1DF1824B3C94F59F4"
+    }
+  ],
+  "full_DLL_linked": false,
+  "new_live_pass_claim": false,
+  "R0141_original_unavailable_preserved": true
+}

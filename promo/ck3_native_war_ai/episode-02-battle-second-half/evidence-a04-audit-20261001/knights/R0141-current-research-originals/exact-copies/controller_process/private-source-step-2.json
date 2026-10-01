@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "git",
+    "add",
+    "--",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_ui_navigation_v1.hpp",
+    "ck3_autonomous_player/native_bridge/src/frontend_gui_route_v1.cpp",
+    "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+    "ck3_autonomous_player/native_bridge/tests/ingame_ui_navigation_v1_test.cpp",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py",
+    "ck3_autonomous_player/src/xar_autoplayer/simulation/knight_variable_monitor_projection.py",
+    "ck3_autonomous_player/native_bridge/research/verify_knight_variable_monitor_run.py"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

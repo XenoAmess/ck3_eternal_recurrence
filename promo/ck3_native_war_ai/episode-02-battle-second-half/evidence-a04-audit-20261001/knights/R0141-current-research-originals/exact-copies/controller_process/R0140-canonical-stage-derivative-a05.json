@@ -1,0 +1,18 @@
+{
+  "previous_stage_result": "REJECTED_BEFORE_COMMIT_BY_CANONICAL_SHA_CHECK",
+  "cause": "Git add retained stat-cached normalized index entries; renormalize explicitly reapplies new -text attributes.",
+  "exact_original_bytes_unchanged": true,
+  "fresh_process_records_required": true,
+  "derivative": {
+    "predecessor": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\commit_exact_R0140_archive_a04.py",
+      "bytes": 5406,
+      "sha256": "5C5F335C1E04F996BA47009F94CDCA0DDF157D115977352AB36AF44A7AF8ACAD"
+    },
+    "derivative": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\commit_exact_R0140_archive_a05.py",
+      "bytes": 5526,
+      "sha256": "2E58B6A03437A3C980DEA12C50EB48F73EC50363DC7AE5444A159B7208623030"
+    }
+  }
+}

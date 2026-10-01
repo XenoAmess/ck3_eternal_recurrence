@@ -1,0 +1,34 @@
+{
+  "schema": "ck3.e2.R0141-final-archive-verification/v2",
+  "status": "PASS_DISK_BYTES",
+  "original_count": 6027,
+  "copy_count": 845,
+  "first_archive_files_unchanged": true,
+  "no_legacy_input_or_video_changes": true,
+  "summary": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/derived-facts/current-native-research-R0141-final-a02.json",
+    "bytes": 4479,
+    "sha256": "6945524428164271FB07EF3DC3C6CBE05D0F73D838137D5FFD7B56C6D86F7D74"
+  },
+  "combined_index": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/all-assets-index-final-a02.json",
+    "bytes": 4993672,
+    "sha256": "C983386453B965913D0321DB6ACDAFFDA3B75BF5B3F3C9006AF9EC889C9DCD33"
+  },
+  "copy_verification": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/copy-verification-final-a02.json",
+    "bytes": 632687,
+    "sha256": "12FCE3B432F4EA3CC48CCFBFC7C745512425974538381A7E71E579CAC26AD123"
+  },
+  "new_offline_append_record": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/later-offline-review-record-a01.md",
+    "bytes": 1136,
+    "sha256": "0514B6E93208A2684A92EB23EC9CB62380CBD4EDC5BEDD13FB98FF36A125D404"
+  },
+  "raw_attributes": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/.gitattributes",
+    "bytes": 84,
+    "sha256": "DC5A6611B86DE6F1D822F27442FE6C033FB19491CEB7A558997B2BA1BE323B2B"
+  },
+  "canonical_Git_index_and_blob_verification_reserved_for_authorized_committer": true
+}

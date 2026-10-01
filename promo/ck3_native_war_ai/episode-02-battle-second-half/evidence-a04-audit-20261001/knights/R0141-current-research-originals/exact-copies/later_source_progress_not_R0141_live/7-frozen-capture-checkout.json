@@ -1,0 +1,126 @@
+{
+  "schema": "ck3.e2.clean-private-capture-checkout/v1",
+  "source": "C:\\w\\e2research1001",
+  "source_commit": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "checkout": "C:\\w\\e2cap1001d",
+  "branch": "codex/war-e2-hidden-modal-capture-20261001",
+  "sparse_patterns": [
+    "/ck3_autonomous_player/",
+    "/docs/ck3-native-ai/",
+    "/promo/ck3_native_war_ai/integration/",
+    "/promo/ck3_native_war_ai/episode-02-battle-second-half/*.py",
+    "/tools/*.py",
+    "/tools/requirements*.txt"
+  ],
+  "pins": [
+    {
+      "path": "C:\\w\\e2cap1001d\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 233042,
+      "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+      "bytes": 122365,
+      "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+      "bytes": 15409,
+      "sha256": "279EFF1C0ABACDFBD63CDDC51CF1D5F1D04569A2A854224EFEDA269654C2CD2F"
+    }
+  ],
+  "owner": "/root",
+  "reason": "Keep admitted runtime source immutable while independent verification proceeds",
+  "acceptance": "Exact-build six-gap causal and original UI evidence before any video revision",
+  "deadline": "Retain branch until user explicitly authorizes integration",
+  "master_intake_or_merge": false,
+  "no_game_launch": true,
+  "steps": [
+    {
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "--no-checkout",
+        "-b",
+        "codex/war-e2-hidden-modal-capture-20261001",
+        "C:\\w\\e2cap1001d",
+        "4ad477ee33e15a93e412f711c7b05b216a2e6651"
+      ],
+      "cwd": "C:\\w\\e2research1001",
+      "stdin": null,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Preparing worktree (new branch 'codex/war-e2-hidden-modal-capture-20261001')\n",
+      "at_utc": "2026-10-01T10:30:12.387766+00:00"
+    },
+    {
+      "argv": [
+        "git",
+        "sparse-checkout",
+        "set",
+        "--no-cone",
+        "--stdin"
+      ],
+      "cwd": "C:\\w\\e2cap1001d",
+      "stdin": "/ck3_autonomous_player/\n/docs/ck3-native-ai/\n/promo/ck3_native_war_ai/integration/\n/promo/ck3_native_war_ai/episode-02-battle-second-half/*.py\n/tools/*.py\n/tools/requirements*.txt\n",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "at_utc": "2026-10-01T10:30:12.447486+00:00"
+    },
+    {
+      "argv": [
+        "git",
+        "read-tree",
+        "-mu",
+        "HEAD"
+      ],
+      "cwd": "C:\\w\\e2cap1001d",
+      "stdin": null,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "at_utc": "2026-10-01T10:30:16.968299+00:00"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "C:\\w\\e2cap1001d",
+      "stdin": null,
+      "returncode": 0,
+      "stdout": "4ad477ee33e15a93e412f711c7b05b216a2e6651\n",
+      "stderr": "",
+      "at_utc": "2026-10-01T10:30:17.014685+00:00"
+    },
+    {
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "cwd": "C:\\w\\e2cap1001d",
+      "stdin": null,
+      "returncode": 0,
+      "stdout": "codex/war-e2-hidden-modal-capture-20261001\n",
+      "stderr": "",
+      "at_utc": "2026-10-01T10:30:17.056853+00:00"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "cwd": "C:\\w\\e2cap1001d",
+      "stdin": null,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "at_utc": "2026-10-01T10:30:17.445153+00:00"
+    }
+  ]
+}

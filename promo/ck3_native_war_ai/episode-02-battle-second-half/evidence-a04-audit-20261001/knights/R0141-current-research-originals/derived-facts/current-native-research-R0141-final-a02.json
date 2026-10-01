@@ -1,0 +1,99 @@
+{
+  "schema": "ck3.e2.current-native-research-preservation/v4",
+  "desktop_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0141",
+  "native_episode_run_id": "native-29829-08fa9723ff63",
+  "status": "RED_MODAL_UI_ADMISSION_NO_DAY_ADVANCE_RESEARCH_OPEN",
+  "source_commit": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+  "bridge_sha256": "1B3AC08147D86D34D69390331D2AD7C486B64C07D4F795E10DA4A3E5DE2CE324",
+  "PID": 6320,
+  "actual_day_advance": 0,
+  "main_before_sample_created": false,
+  "raw_native_UI_return_preserved": true,
+  "raw_native_UI_reason": "modal_context_blocks_navigation",
+  "SDK_job_exit0_and_cleanup_complete": true,
+  "display_restored_to_original_1024x768": true,
+  "restoration_task_done_sequence": 3428,
+  "old_expired_task_waiting_no_resources": true,
+  "six_gaps": [
+    {
+      "key": "nextday_character_ui",
+      "name": "骑士次日角色界面",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "knight_roster_change",
+      "name": "骑士名单变化",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "complete_battle_window",
+      "name": "完整战斗窗",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "knight_selector",
+      "name": "骑士选择器",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "unique_actual_death_execution_path",
+      "name": "本次受害者唯一实际死亡执行路径",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "full_case_13_domain_mutable_chain",
+      "name": "本案13域完整可变状态链",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    }
+  ],
+  "six_gap_evidence_closed": false,
+  "global_mutable_bundle_complete": false,
+  "later_RPM_not_failed_call_count": true,
+  "repair_offline_only_no_new_live": true,
+  "repair_source_ready_SHA256": "BED9386BAD72A03160BBDFC2BCA0C6B4268BC8C3274580EACEBA6A6018FC334F",
+  "facts": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/derived-facts/R0141-actual-facts-a01.json",
+    "bytes": 20361,
+    "sha256": "B8D341DDD4F388ED1C11CA05891DC5D886F7376E757378D152FCDE09F31647CE"
+  },
+  "all_assets_index": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/all-assets-index-final-a02.json",
+    "bytes": 4993672,
+    "sha256": "C983386453B965913D0321DB6ACDAFFDA3B75BF5B3F3C9006AF9EC889C9DCD33"
+  },
+  "copy_verification": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/copy-verification-final-a02.json",
+    "bytes": 632687,
+    "sha256": "12FCE3B432F4EA3CC48CCFBFC7C745512425974538381A7E71E579CAC26AD123"
+  },
+  "inventory_count": 6027,
+  "repository_exact_copy_count": 845,
+  "video_revision_started": false,
+  "human_full_movie_signoff": false,
+  "master_intake_merge_or_push": false,
+  "first_summary_retained": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/current-native-research-R0141.json",
+    "bytes": 3093,
+    "sha256": "D6451FCE61996C2E10FBA5BD3386C7988CFAB649461C0A5969661A2291549B69"
+  },
+  "first_document_retained": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/current-native-research-R0141.md",
+    "bytes": 3685,
+    "sha256": "7A3549DC36441B8785300856F07D7B006E062D8042C938EBB7FF9AE5D3C5607E"
+  },
+  "later_independent_offline_review": {
+    "evidence": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-hidden-modal-independent-review-knights-a01/readonly-source-review-a01.json",
+      "bytes": 58696,
+      "sha256": "763ABA846EB365D3368FFA894A4C376E7F1C3BD25B0106FD7245814B41A3CDA9"
+    },
+    "asset_index": {
+      "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/later-offline-review-assets-index-a01.json",
+      "bytes": 3593,
+      "sha256": "B646B503ABCF3B236F29C3B0ED86F2504A8A5BA20F33FE4D5A83760DB0A118D4"
+    },
+    "live_pass_claim": false,
+    "R0141_mechanism_status_unchanged": true
+  },
+  "first_snapshot_counts_retained_in_original_summary_doc": true
+}

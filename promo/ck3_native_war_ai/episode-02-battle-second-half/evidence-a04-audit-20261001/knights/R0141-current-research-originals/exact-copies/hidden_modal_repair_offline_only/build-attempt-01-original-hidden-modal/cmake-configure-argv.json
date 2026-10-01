@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "-S",
+    "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\build",
+    "-G",
+    "Ninja",
+    "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DBUILD_TESTING=ON",
+    "-DXAR_CK3_EXECUTABLE_PATH=C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+  ],
+  "cwd": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge",
+  "shell": false,
+  "utc": "2026-10-01T10:12:36.400123+00:00"
+}

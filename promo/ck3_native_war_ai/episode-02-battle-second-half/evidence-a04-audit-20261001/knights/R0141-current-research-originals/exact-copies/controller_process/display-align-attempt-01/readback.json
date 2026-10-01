@@ -1,0 +1,44 @@
+{
+  "at_utc": "2026-10-01T09:32:13.576404+00:00",
+  "screen_task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a04",
+  "mode": "align",
+  "device_name": "\\\\.\\DISPLAY1",
+  "before_mode": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "actual_mode": {
+    "PelsWidth": 2560,
+    "PelsHeight": 1440,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "original_image_size": [
+    2560,
+    1440
+  ],
+  "verified": true,
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display-align-attempt-01\\original-desktop-after-mode.png",
+    "bytes": 676837,
+    "sha256": "8B59FF1770E66C3D03D9126753E67DD050B5B5BE8E3664D2B7A84C07047A781E"
+  },
+  "visual_review": "pending root original image inspection",
+  "registry_update_requested": false,
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

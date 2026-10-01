@@ -1,0 +1,14 @@
+{
+  "name": "native-UI-CTest",
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stdout.bin",
+    "bytes": 350,
+    "sha256": "7F4D900FE1409FBB72F2F23954BEA610479B04D2979A0C9B273F5FFB24F586A4"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-CTest-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

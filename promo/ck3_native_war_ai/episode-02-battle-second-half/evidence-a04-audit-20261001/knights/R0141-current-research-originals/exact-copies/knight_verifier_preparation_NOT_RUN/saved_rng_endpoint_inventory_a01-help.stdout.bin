@@ -1,0 +1,22 @@
+usage: saved_rng_endpoint_inventory_a01.py [-h] --before-melted BEFORE_MELTED
+                                           --after-melted AFTER_MELTED
+                                           --before-raw BEFORE_RAW
+                                           --after-raw AFTER_RAW
+                                           --decoder-before-receipt DECODER_BEFORE_RECEIPT
+                                           --decoder-after-receipt DECODER_AFTER_RECEIPT
+                                           --output OUTPUT
+
+Read existing Rakaly text endpoints; no native calls or RNG evaluation.
+Inventories saved keys with RNG-like names, rather than claiming these contain
+all engine or execution-context RNG. Repeated event ordinals are locations
+only.
+
+options:
+  -h, --help            show this help message and exit
+  --before-melted BEFORE_MELTED
+  --after-melted AFTER_MELTED
+  --before-raw BEFORE_RAW
+  --after-raw AFTER_RAW
+  --decoder-before-receipt DECODER_BEFORE_RECEIPT
+  --decoder-after-receipt DECODER_AFTER_RECEIPT
+  --output OUTPUT

@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "kind": "R0141_READONLY_VERIFICATION_PREPARATION_NOT_RUN",
+  "created_at_utc": "2026-10-01T09:50:21.204749+00:00",
+  "sources": [
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_causal_run.py",
+        "bytes": 21185,
+        "sha256": "73A9AC0A7030470314660DE62E327F1DD8D23AD6431B07A649357BBCA534B281"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_knight_causal_run.py",
+        "bytes": 21185,
+        "sha256": "73A9AC0A7030470314660DE62E327F1DD8D23AD6431B07A649357BBCA534B281"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+        "bytes": 13443,
+        "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_knight_variable_monitor_run.py",
+        "bytes": 13443,
+        "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\verify_signature_commit_correlation_run_a01.py",
+        "bytes": 6820,
+        "sha256": "ACD2C4CA4543FF9E6BB31C3A6ADD83BF5136E1C79C8F6CA0A3C6DE17A929B6C7"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_signature_commit_correlation_run_a01.py",
+        "bytes": 6820,
+        "sha256": "ACD2C4CA4543FF9E6BB31C3A6ADD83BF5136E1C79C8F6CA0A3C6DE17A929B6C7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\saved_rng_endpoint_inventory_a01.py",
+        "bytes": 6567,
+        "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\saved_rng_endpoint_inventory_a01.py",
+        "bytes": 6567,
+        "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\signature_commit_correlation_a02.py",
+        "bytes": 8939,
+        "sha256": "3C15C0E56A814A2D8F72489925D5FBF87312F1B60D3AC84640D001A783E3C0F5"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\signature_commit_correlation_a02.py",
+        "bytes": 8939,
+        "sha256": "3C15C0E56A814A2D8F72489925D5FBF87312F1B60D3AC84640D001A783E3C0F5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+        "bytes": 17942,
+        "sha256": "6DFAB0C073FE068A3703D9F9AD0B7B378AD19346565013B499D805E4BA7F0973"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\knight_variable_monitor_projection.py",
+        "bytes": 17942,
+        "sha256": "6DFAB0C073FE068A3703D9F9AD0B7B378AD19346565013B499D805E4BA7F0973"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a08.py",
+        "bytes": 34603,
+        "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\scoped_ui_research_a08.py",
+        "bytes": 34603,
+        "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a08.py",
+        "bytes": 11728,
+        "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\prepare_runtime_binding_and_plan_a08.py",
+        "bytes": 11728,
+        "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\prepare_R0141_readonly_verification_a01.py",
+        "bytes": 6156,
+        "sha256": "8CC2E0D9047718619E758B3CACE4CD530709AFC12A64275AFE819FB314EA2F1C"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\prepare_R0141_readonly_verification_a01.py",
+        "bytes": 6156,
+        "sha256": "8CC2E0D9047718619E758B3CACE4CD530709AFC12A64275AFE819FB314EA2F1C"
+      }
+    }
+  ],
+  "actual_helps": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_causal_run.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_knight_causal_run-help.stdout.bin",
+        "bytes": 1642,
+        "sha256": "D1596551FC0DADE4A96ACE9D0E96EA6CAF99F1F085DB59B153377FF0850A2A1C"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_knight_causal_run-help.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_knight_variable_monitor_run-help.stdout.bin",
+        "bytes": 698,
+        "sha256": "F9677C98666588984BB965D98B2404C96EDE4D44EBED64AC1A231B065FAF46BF"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_knight_variable_monitor_run-help.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\verify_signature_commit_correlation_run_a01.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_signature_commit_correlation_run_a01-help.stdout.bin",
+        "bytes": 834,
+        "sha256": "60D41B386D89312A34E683CE1E30677F44E506BC80F8EEC6EF1588F82F82CCCF"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\verify_signature_commit_correlation_run_a01-help.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\saved_rng_endpoint_inventory_a01.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\saved_rng_endpoint_inventory_a01-help.stdout.bin",
+        "bytes": 1069,
+        "sha256": "349ECD3E39A385A14BC56320B0D07A2B5AB873D9CB546B48C2CCB9698D90B9AA"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\preparation-attempt-01\\saved_rng_endpoint_inventory_a01-help.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    }
+  ],
+  "frozen_candidate_manifest": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\candidate-manifest.json",
+    "bytes": 2905,
+    "sha256": "9A204E090E8AFC72A664CC0FA0CF7B30AFFB9C887B4575D9B537AB0CE39B0DB2"
+  },
+  "exact_DLL": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bytes": 3553792,
+    "sha256": "1B3AC08147D86D34D69390331D2AD7C486B64C07D4F795E10DA4A3E5DE2CE324"
+  },
+  "exact_injector": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "2CA0E8889E7CC2AA59517F038B731ECD0C535E410A512C3A62BE8EC772627DB8"
+  },
+  "decoder": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "bytes": 6552576,
+    "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+  },
+  "root_reported_expected_run": "R0141",
+  "root_reported_expected_PID": 6320,
+  "same_PID_session_admission": "pending actual current-run-bindings/native receipt/hello reading after root finish notice",
+  "raw_run_bindings_expected_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\current-run-bindings.json",
+  "commands_not_executed": [
+    {
+      "phase": "main causal save/trace/selector",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_causal_run.py",
+        "--before-pair",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+        "--after-pair",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+        "--before-save",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+        "--after-save",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+        "--trace",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\ck3-output\\interactive-requests-responses\\scoped-chain-finish-once.json",
+        "--rakaly",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "--output-dir",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\causal-run-attempt-01",
+        "--expected-source-head",
+        "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+        "--expected-dll-sha256",
+        "1B3AC08147D86D34D69390331D2AD7C486B64C07D4F795E10DA4A3E5DE2CE324",
+        "--episode-character-id",
+        "29829",
+        "--victim",
+        "33437",
+        "--related",
+        "34120",
+        "--day-finished",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\one-day-finished.json"
+      ]
+    },
+    {
+      "phase": "monitor receipt/lifecycle/operations",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+        "--begin",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\variable-monitor-begin.json",
+        "--finish",
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\variable-monitor-finish.json",
+        "--causal-projection",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\causal-run-attempt-01\\knight-causal-run-verification.json",
+        "--output-dir",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\variable-monitor-attempt-01"
+      ]
+    },
+    {
+      "phase": "original-current-commit signature ancestry",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\verify_signature_commit_correlation_run_a01.py",
+        "--monitor-verification",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\variable-monitor-attempt-01\\knight-variable-monitor-run-verification.json",
+        "--causal-verification",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\causal-run-attempt-01\\knight-causal-run-verification.json",
+        "--output-dir",
+        "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\signature-commit-attempt-01"
+      ]
+    }
+  ],
+  "four_save_windows": [
+    {
+      "phase": "before",
+      "pre_UI_pair": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-saved-pair.json",
+      "post_UI_pair": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+      "new_output": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\ui-window-before-attempt-01",
+      "time_scope": "same-date serialized endpoints, not a second day or all RNG proof"
+    },
+    {
+      "phase": "after",
+      "pre_UI_pair": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-saved-pair.json",
+      "post_UI_pair": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+      "new_output": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0141-readonly-verification-attempt-01\\ui-window-after-attempt-01",
+      "time_scope": "same-date serialized endpoints, not a second day or all RNG proof"
+    }
+  ],
+  "required_future_semantic_verdict": {
+    "six_gaps": [
+      "next-day character original UI",
+      "same-ID combat roster/list change",
+      "complete original battle panel",
+      "selector materializer/filter/RNG/return",
+      "case-specific unique correlated death request/queue/commit cause",
+      "13 case write domains with time resolution"
+    ],
+    "verdict_status": "NOT_RUN_NO_CURRENT_ORIGINAL_FACTS_READ",
+    "global_bundle_complete": false,
+    "signoff": false
+  },
+  "old_run_values_filled": false,
+  "unfinished_live_result_files_read": false,
+  "game_calls": 0,
+  "desktop_inputs": 0,
+  "git_operations": 0,
+  "master_intake": false
+}

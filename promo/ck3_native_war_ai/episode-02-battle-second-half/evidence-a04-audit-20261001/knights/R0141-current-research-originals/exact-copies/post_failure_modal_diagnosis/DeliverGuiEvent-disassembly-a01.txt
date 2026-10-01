@@ -1,0 +1,12 @@
+0x36cb4a0: 4154  push r12
+0x36cb4a2: 4157  push r15
+0x36cb4a4: 4883ec38  sub rsp, 0x38
+0x36cb4a8: f682d000000001  test byte ptr [rdx + 0xd0], 1
+0x36cb4af: 4d8be0  mov r12, r8
+0x36cb4b2: 4c8bfa  mov r15, rdx
+0x36cb4b5: 740b  je 0x36cb4c2
+0x36cb4b7: 32c0  xor al, al
+0x36cb4b9: 4883c438  add rsp, 0x38
+0x36cb4bd: 415f  pop r15
+0x36cb4bf: 415c  pop r12
+0x36cb4c1: c3  ret 

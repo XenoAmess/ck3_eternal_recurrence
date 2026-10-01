@@ -1,0 +1,98 @@
+{
+  "kind": "ADDITIONAL_C08_AFTER_PHASE_AND_MONITOR_EXACT_AST_MOCK_NOT_NATIVE_TRUTH",
+  "source_inputs": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a08.py",
+      "bytes": 34603,
+      "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\review_scoped_ui_C07_reinforcement_a01.py",
+      "bytes": 12913,
+      "sha256": "783B03E350BBF91C77771FA929239DD61722A3C1E8A389E8224F125EA281C971"
+    }
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\review_C08_after_monitor_a03.py",
+    "bytes": 5948,
+    "sha256": "292AED4E7CD08CE195C0646B4A971D64DF4345F0E71445962A0B33971DA79A72"
+  },
+  "cases": [
+    {
+      "name": "original_ui-after-plus24-current-paused-frame",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"ORIGINAL_UI_CAPTURED_PENDING_VISUAL_REVIEW\", \"record\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\\\cases\\\\original_ui-after-positive\\\\original_ui-after-positive-original-ui-binding.json\"}\n"
+    },
+    {
+      "name": "fit_combat_panel-after-plus24-current-paused-frame",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"ORIGINAL_FULL_PANEL_CAPTURED_PENDING_PIXEL_REVIEW\", \"record\": {\"path\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\\\cases\\\\fit_combat_panel-after-positive\\\\fit_combat_panel-after-positive-full-combat-panel-binding.json\", \"bytes\": 11026, \"sha256\": \"D3E237ED44AFBF7A5E975082DB09A4AE453D3D1B71DA3ED3BB6E09E348142E30\"}}\n"
+    },
+    {
+      "name": "knight_hover-after-plus24-current-paused-frame",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"ORIGINAL_KNIGHTS_TOOLTIP_CAPTURED_PENDING_VISUAL_REVIEW\", \"record\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\\\cases\\\\knight_hover-after-positive\\\\knight_hover-after-positive-original-knights-tooltip-binding.json\"}\n"
+    },
+    {
+      "name": "monitor-begin-only-once-independent-token",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"MONITOR_ARMED\", \"record\": {\"path\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\\\cases\\\\monitor-positive-False\\\\variable-monitor-begin.json\", \"bytes\": 1562, \"sha256\": \"E728D85D3D69C13E14FE186F44584FBEE57932FA3A8E84C349A988B49FCBD0E9\"}}\n"
+    },
+    {
+      "name": "monitor-finish-only-once-independent-token",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"MONITOR_DRAINED_SEMANTICS_PENDING\", \"record\": {\"path\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\\\cases\\\\monitor-positive-True\\\\variable-monitor-finish.json\", \"bytes\": 1613, \"sha256\": \"FA7888E05634C77FF1A9A6E8BA6A3C78FDD90F3A60D6694BFFC6DBA9260828A2\"}}\n"
+    },
+    {
+      "name": "monitor-timeout-intent-kept-no-retry",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": ""
+    },
+    {
+      "name": "monitor-refused-intent-kept-no-retry",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": ""
+    },
+    {
+      "name": "monitor-finish-before-required-after-artifacts-rejected",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "No bound monitor begin"
+      },
+      "mock_stdout": ""
+    }
+  ],
+  "count": 8,
+  "passed": 8,
+  "consumer_ready_for_root_owned_live": true,
+  "no_other_case_repeated": true,
+  "native_requests": 0,
+  "screen_actions": 0,
+  "source_or_git_mutations": 0,
+  "mechanisms_or_UI_pixels_closed": false,
+  "requires_actual_root_fresh_full_DLL_eight_tests_and_offline_admission": true
+}

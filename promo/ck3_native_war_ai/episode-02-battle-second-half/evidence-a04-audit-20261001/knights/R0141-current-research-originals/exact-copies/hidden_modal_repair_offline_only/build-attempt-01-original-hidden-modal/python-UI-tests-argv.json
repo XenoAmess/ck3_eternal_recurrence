@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/unit",
+    "-p",
+    "test_ingame_ui_navigation_v1.py",
+    "-v"
+  ],
+  "cwd": "C:\\w\\e2research1001\\ck3_autonomous_player",
+  "shell": false,
+  "utc": "2026-10-01T10:12:56.199437+00:00"
+}

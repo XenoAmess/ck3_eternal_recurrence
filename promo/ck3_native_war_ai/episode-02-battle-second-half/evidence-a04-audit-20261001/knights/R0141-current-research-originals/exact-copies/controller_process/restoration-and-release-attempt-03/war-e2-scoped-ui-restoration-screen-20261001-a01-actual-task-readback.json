@@ -1,0 +1,17 @@
+{
+  "git": {
+    "branch": "codex/war-e2-scoped-ui-owner-capture-20261001",
+    "dirty_entries": 0,
+    "head": "fda53e7b3e83053f235be3d5725a6238b89db9f0"
+  },
+  "last_sequence": 3428,
+  "next_step": "",
+  "pid": 14556,
+  "repo": "C:\\w\\e2cap1001c",
+  "resources": [],
+  "schema": "codex.task_bus.v1",
+  "state": "done",
+  "summary": "R0141_SDK_cleaned_original_1024_768_native_enumerated_restored_root_image_reviewed_steam_offline",
+  "task_id": "war-e2-scoped-ui-restoration-screen-20261001-a01",
+  "updated_at_utc": "2026-10-01T10:26:52.804846+00:00"
+}

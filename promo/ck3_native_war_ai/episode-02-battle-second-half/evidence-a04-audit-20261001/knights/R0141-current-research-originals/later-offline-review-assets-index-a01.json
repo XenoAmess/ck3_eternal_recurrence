@@ -1,0 +1,60 @@
+{
+  "schema": "ck3.e2.append-only-later-source-review-assets/v1",
+  "arrived_after_base_asset_inventory_started": true,
+  "source_root": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-hidden-modal-independent-review-knights-a01",
+  "all_assets": [
+    {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-hidden-modal-independent-review-knights-a01/create_readonly_review_a01.py",
+      "bytes": 10529,
+      "sha256": "7AB753D6564D46491A4E5DE2899D7255073DAB112859ABFA635DACFAEEF97DA8",
+      "source_group": "post_R0141_independent_modal_source_review",
+      "relative_to_source_group": "create_readonly_review_a01.py",
+      "evidence_layer": "POST_R0141_INDEPENDENT_STATIC_AND_OFFLINE_SOURCE_REVIEW_ONLY_NOT_LIVE_UI",
+      "retained_external_original": true,
+      "original_mtime_ns": 1790850995945688400,
+      "repository_copy": {
+        "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/exact-copies/post_R0141_independent_modal_source_review/create_readonly_review_a01.py",
+        "bytes": 10529,
+        "sha256": "7AB753D6564D46491A4E5DE2899D7255073DAB112859ABFA635DACFAEEF97DA8",
+        "verified_exact_bytes": true,
+        "no_text_line_ending_or_whitespace_change": true
+      }
+    },
+    {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-hidden-modal-independent-review-knights-a01/four-source-diff-a01.txt",
+      "bytes": 16280,
+      "sha256": "44E1698B0F2AE3CE8537587A74D29EA8B8CCBDD02FD4B50915C66F66DDAE5252",
+      "source_group": "post_R0141_independent_modal_source_review",
+      "relative_to_source_group": "four-source-diff-a01.txt",
+      "evidence_layer": "POST_R0141_INDEPENDENT_STATIC_AND_OFFLINE_SOURCE_REVIEW_ONLY_NOT_LIVE_UI",
+      "retained_external_original": true,
+      "original_mtime_ns": 1790851013686941400,
+      "repository_copy": {
+        "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/exact-copies/post_R0141_independent_modal_source_review/four-source-diff-a01.txt",
+        "bytes": 16280,
+        "sha256": "44E1698B0F2AE3CE8537587A74D29EA8B8CCBDD02FD4B50915C66F66DDAE5252",
+        "verified_exact_bytes": true,
+        "no_text_line_ending_or_whitespace_change": true
+      }
+    },
+    {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-hidden-modal-independent-review-knights-a01/readonly-source-review-a01.json",
+      "bytes": 58696,
+      "sha256": "763ABA846EB365D3368FFA894A4C376E7F1C3BD25B0106FD7245814B41A3CDA9",
+      "source_group": "post_R0141_independent_modal_source_review",
+      "relative_to_source_group": "readonly-source-review-a01.json",
+      "evidence_layer": "POST_R0141_INDEPENDENT_STATIC_AND_OFFLINE_SOURCE_REVIEW_ONLY_NOT_LIVE_UI",
+      "retained_external_original": true,
+      "original_mtime_ns": 1790851014419205400,
+      "repository_copy": {
+        "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/exact-copies/post_R0141_independent_modal_source_review/readonly-source-review-a01.json",
+        "bytes": 58696,
+        "sha256": "763ABA846EB365D3368FFA894A4C376E7F1C3BD25B0106FD7245814B41A3CDA9",
+        "verified_exact_bytes": true,
+        "no_text_line_ending_or_whitespace_change": true
+      }
+    }
+  ],
+  "status": "POST_R0141_SOURCE_REVIEW_ONLY; SIX_GAPS_PENDING; NO_LIVE_SUCCESS",
+  "no_original_archive_file_rewritten": true
+}

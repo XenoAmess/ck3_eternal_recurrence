@@ -1,0 +1,31 @@
+test_real_mcp_registration_query_and_strict_handle_negative_cases (test_ingame_ui_navigation_v1.IngameUiMcpTests.test_real_mcp_registration_query_and_strict_handle_negative_cases) ... Executing <Task pending name='Task-2' coro=<IngameUiMcpTests.test_real_mcp_registration_query_and_strict_handle_negative_cases() running at C:\w\e2research1001\ck3_autonomous_player\tests\unit\test_ingame_ui_navigation_v1.py:273> wait_for=<Future pending cb=[Task.task_wakeup()] created at D:\workspace\ck3_eternal_recurrence\tools\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:1007> cb=[_run_until_complete_cb() at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:181] created at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:110> took 2.723 seconds
+Executing <Task pending name='Task-2' coro=<IngameUiMcpTests.test_real_mcp_registration_query_and_strict_handle_negative_cases() running at C:\w\e2research1001\ck3_autonomous_player\tests\unit\test_ingame_ui_navigation_v1.py:282> cb=[_run_until_complete_cb() at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:181, <1 more>, WorkerThread.stop()] created at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:110> took 0.115 seconds
+ok
+test_action_ack_remains_pending (test_ingame_ui_navigation_v1.IngameUiTests.test_action_ack_remains_pending) ... ok
+test_bad_request_never_reaches_native (test_ingame_ui_navigation_v1.IngameUiTests.test_bad_request_never_reaches_native) ... ok
+test_census_bound_and_availability_reason (test_ingame_ui_navigation_v1.IngameUiTests.test_census_bound_and_availability_reason) ... ok
+test_changed_session_actor_date_and_connection_rejected (test_ingame_ui_navigation_v1.IngameUiTests.test_changed_session_actor_date_and_connection_rejected) ... ok
+test_failed_identity_keeps_unmodified_raw_in_command_history (test_ingame_ui_navigation_v1.IngameUiTests.test_failed_identity_keeps_unmodified_raw_in_command_history) ... ok
+test_fit_action_uses_current_combat_only_and_still_pending (test_ingame_ui_navigation_v1.IngameUiTests.test_fit_action_uses_current_combat_only_and_still_pending) ... ok
+test_fit_already_inside_is_no_dispatch_pending_not_full_pixels (test_ingame_ui_navigation_v1.IngameUiTests.test_fit_already_inside_is_no_dispatch_pending_not_full_pixels) ... ok
+test_geometry_fit_bound_source_and_false_pixels_contract (test_ingame_ui_navigation_v1.IngameUiTests.test_geometry_fit_bound_source_and_false_pixels_contract) ... ok
+test_hover_ack_uses_fixed_side_and_remains_pending (test_ingame_ui_navigation_v1.IngameUiTests.test_hover_ack_uses_fixed_side_and_remains_pending) ... ok
+test_knights_explicit_owner_and_scope (test_ingame_ui_navigation_v1.IngameUiTests.test_knights_explicit_owner_and_scope) ... ok
+test_missing_or_invalid_evidence_directory_never_dispatches (test_ingame_ui_navigation_v1.IngameUiTests.test_missing_or_invalid_evidence_directory_never_dispatches) ... ok
+test_native_hover_is_bound_to_current_visible_full_combat (test_ingame_ui_navigation_v1.IngameUiTests.test_native_hover_is_bound_to_current_visible_full_combat) ... ok
+test_native_mismatched_ids_native_revision_date_and_actor_rejected (test_ingame_ui_navigation_v1.IngameUiTests.test_native_mismatched_ids_native_revision_date_and_actor_rejected) ... ok
+test_original_application_gui_binding_required_rng_owner_is_diagnostic (test_ingame_ui_navigation_v1.IngameUiTests.test_original_application_gui_binding_required_rng_owner_is_diagnostic) ... ok
+test_original_count_breakdown_read_is_scoped_and_not_full_roster (test_ingame_ui_navigation_v1.IngameUiTests.test_original_count_breakdown_read_is_scoped_and_not_full_roster) ... ok
+test_query_cannot_be_action_ack (test_ingame_ui_navigation_v1.IngameUiTests.test_query_cannot_be_action_ack) ... ok
+test_query_is_independent_owner_read_with_target_census (test_ingame_ui_navigation_v1.IngameUiTests.test_query_is_independent_owner_read_with_target_census) ... ok
+test_raw_native_return_is_create_only_before_validation (test_ingame_ui_navigation_v1.IngameUiTests.test_raw_native_return_is_create_only_before_validation) ... ok
+test_real_primitive_native_command_red_also_preserved (test_ingame_ui_navigation_v1.IngameUiTests.test_real_primitive_native_command_red_also_preserved) ... ok
+test_real_primitive_preserves_native_body_before_binding_failure (test_ingame_ui_navigation_v1.IngameUiTests.test_real_primitive_preserves_native_body_before_binding_failure) ... ok
+test_stale_revision_never_dispatches (test_ingame_ui_navigation_v1.IngameUiTests.test_stale_revision_never_dispatches) ... ok
+test_truncated_window_census_retained_without_full_claim (test_ingame_ui_navigation_v1.IngameUiTests.test_truncated_window_census_retained_without_full_claim) ... ok
+test_unavailable_geometry_cannot_retain_coordinates_or_fit_claim (test_ingame_ui_navigation_v1.IngameUiTests.test_unavailable_geometry_cannot_retain_coordinates_or_fit_claim) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 3.276s
+
+OK

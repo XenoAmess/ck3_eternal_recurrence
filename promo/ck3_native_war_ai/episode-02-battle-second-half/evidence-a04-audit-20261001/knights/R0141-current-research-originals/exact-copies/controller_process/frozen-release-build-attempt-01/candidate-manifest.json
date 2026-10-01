@@ -1,0 +1,50 @@
+{
+  "schema": "ck3.e2.six-gap-native-research-candidate/v1",
+  "status": "RELEASE_BUILD_OFFLINE_CHECKS_PASSED_LIVE_PENDING",
+  "source_commit": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+  "source": "C:\\w\\e2cap1001c",
+  "source_fingerprint_sha256": "522227B4CC1E50B8DDD73D88A15DB01BCA551174CC8B7AFD465C45AEE5586033",
+  "exact_executable": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "dll": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bytes": 3553792,
+    "sha256": "1B3AC08147D86D34D69390331D2AD7C486B64C07D4F795E10DA4A3E5DE2CE324"
+  },
+  "injector": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "2CA0E8889E7CC2AA59517F038B731ECD0C535E410A512C3A62BE8EC772627DB8"
+  },
+  "targets": {
+    "scope": "Changed native observers, native UI fixture, and their existing ring/mailbox/managed regressions",
+    "build_targets": [
+      "xar_ck3_ingame_ui_navigation_v1_test",
+      "xar_ck3_combat_scoped_transition_chain_v1_test",
+      "xar_ck3_scoped_character_variable_monitor_v1_test",
+      "xar_ck3_combat_phase_event_trace_ring_v1_test",
+      "xar_ck3_combat_phase_event_trace_detour_v1_test",
+      "xar_ck3_combat_phase_event_trace_wire_v1_test",
+      "xar_ck3_combat_phase_event_trace_managed_v1_test",
+      "xar_ck3_main_thread_query_mailbox_v1_test"
+    ],
+    "expected_ctest_names": [
+      "xar_ck3_ingame_ui_navigation_v1_test",
+      "xar_ck3_native_bridge_combat_scoped_transition_chain_v1",
+      "xar_ck3_native_bridge_scoped_character_variable_monitor_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_ring_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_detour_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_wire_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_managed_v1",
+      "xar_ck3_native_bridge_main_thread_query_mailbox_v1"
+    ],
+    "ctest_regex": "^(xar_ck3_ingame_ui_navigation_v1_test|xar_ck3_native_bridge_combat_scoped_transition_chain_v1|xar_ck3_native_bridge_scoped_character_variable_monitor_v1|xar_ck3_native_bridge_combat_phase_event_trace_ring_v1|xar_ck3_native_bridge_combat_phase_event_trace_detour_v1|xar_ck3_native_bridge_combat_phase_event_trace_wire_v1|xar_ck3_native_bridge_combat_phase_event_trace_managed_v1|xar_ck3_native_bridge_main_thread_query_mailbox_v1)$",
+    "note": "Reviewed intent only; actual compilation and exact eight non-skipped results remain pending"
+  },
+  "build_does_not_prove_real_ui_or_causal_chain": true,
+  "human_movie_signoff": false,
+  "duration_seconds": 437.68
+}

@@ -1,0 +1,49 @@
+{
+  "at_utc": "2026-10-01T09:32:10.308380+00:00",
+  "screen_owner": {
+    "git": {
+      "branch": "codex/war-e2-scoped-ui-owner-capture-20261001",
+      "dirty_entries": 0,
+      "head": "fda53e7b3e83053f235be3d5725a6238b89db9f0"
+    },
+    "last_sequence": 3407,
+    "next_step": "align_original_display_fresh_offline_evidence_after_full_build_then_same_owner_capture",
+    "pid": 10292,
+    "repo": "C:\\w\\e2cap1001c",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "fresh_private_owner_fix_build_original_UI_one_day_six_gap_research",
+    "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a04",
+    "updated_at_utc": "2026-10-01T09:31:57.466376+00:00"
+  },
+  "mode": "align",
+  "device_name": "\\\\.\\DISPLAY1",
+  "busy_inventory": [],
+  "before_mode": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "enumerated_target": {
+    "PelsWidth": 2560,
+    "PelsHeight": 1440,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "alignment_receipt": null,
+  "registry_update_requested": false,
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

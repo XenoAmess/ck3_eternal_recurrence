@@ -1,0 +1,1006 @@
+{
+  "kind": "INDEPENDENT_EXACT_C08_AST_MOCK_REVIEW_NOT_LIVE_OR_PIXEL_TRUTH",
+  "source_inputs": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a08.py",
+      "bytes": 34603,
+      "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a07.py",
+      "bytes": 5060,
+      "sha256": "F1F78D3DDCD1B4D96CCDF1DAFC024C95C08B8C3D3CE02D3CE1B0708BB08263AB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a06.py",
+      "bytes": 5029,
+      "sha256": "ED1E49026FB55DAE58D4669CB3C37B8ABEFFC46060DF49EC14E43A1E4DFCCD12"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a08.py",
+      "bytes": 11728,
+      "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+    }
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\review_scoped_ui_C08_reinforcement_a02.py",
+    "bytes": 4035,
+    "sha256": "33630A41B56CC19BBC3EDC584CACAB42BC0F4E9E40A514BEA78D098EF16DEAA7"
+  },
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "exact_AST_functions": [
+    "advance",
+    "fit_combat_panel",
+    "geometry_gate",
+    "knight_hover",
+    "monitor_payload",
+    "original_combat_knight_fields",
+    "original_gui_owner_identity",
+    "original_ui",
+    "require",
+    "stable_combat_window",
+    "variable_monitor",
+    "verify_window"
+  ],
+  "cases": [
+    {
+      "name": "owner-application_owner_thread_verified-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original application thread or GUI object binding not verified"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-application_owner_thread_verified-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original application thread or GUI object binding not verified"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-gui_owner_binding_verified-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original application thread or GUI object binding not verified"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-gui_owner_binding_verified-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original application thread or GUI object binding not verified"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-rng_owner_is_ui_admission_gate-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "RNG ownership cannot substitute for UI ownership"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-rng_owner_is_ui_admission_gate-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "RNG ownership cannot substitute for UI ownership"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-gui_context_address-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "No actual original GUI pointer: gui_context_address"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-gui_context_address-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "No actual original GUI pointer: gui_context_address"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-gui_owner_address-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "No actual original GUI pointer: gui_owner_address"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-gui_owner_address-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "No actual original GUI pointer: gui_owner_address"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-thread_id-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "No actual original application owner thread"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-thread_id-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "No actual original application owner thread"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-rng_owner_thread_id-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Missing actual RNG diagnostic; zero must remain zero"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "owner-rng_owner_thread_id-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Missing actual RNG diagnostic; zero must remain zero"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "actual-RNG-zero-admitted-with-actual-GUI-owner",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-current_subject_id-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: current_subject_id"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-current_subject_id-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: current_subject_id"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-native_revision-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: native_revision"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-native_revision-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: native_revision"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-queried_revision-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: queried_revision"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-queried_revision-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: queried_revision"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-date_raw-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: date_raw"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-date_raw-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: date_raw"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-queried_snapshot_id-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: queried_snapshot_id"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-queried_snapshot_id-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: queried_snapshot_id"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-episode_run_id-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: episode_run_id"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-episode_run_id-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: episode_run_id"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-paused-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: paused"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "window-paused-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Window postcondition differs: paused"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-combat_knights_read_available-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original combat knight getter unavailable"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-combat_knights_read_available-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original combat knight getter unavailable"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-left_knight_count-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: left_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-left_knight_count-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: left_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-right_knight_count-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: right_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-right_knight_count-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: right_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-left_knight_breakdown-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight breakdown markup missing or invalid: left_knight_breakdown"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-left_knight_breakdown-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight breakdown markup missing or invalid: left_knight_breakdown"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-right_knight_breakdown-absent",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight breakdown markup missing or invalid: right_knight_breakdown"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-right_knight_breakdown-wrong-type",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight breakdown markup missing or invalid: right_knight_breakdown"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-count-bound--1",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: right_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-count-bound-4097",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: right_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "getter-zero-count-empty-markup-is-legal",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-positive-RNG0",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"ORIGINAL_UI_CAPTURED_PENDING_VISUAL_REVIEW\", \"record\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-independent-review-reinforcement-a02\\\\cases\\\\original_ui-positive\\\\original_ui-positive-original-ui-binding.json\"}\n"
+    },
+    {
+      "name": "original_ui-post-pixels-thread_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the character/army/window frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-gui_context_address-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the character/army/window frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-gui_owner_address-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the character/army/window frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-revision-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-native_revision-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-date_raw-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-actor-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-army_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-episode_run_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-connection_generation-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "original_ui-post-pixels-bridge_pid-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed while capturing pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-positive-RNG0",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"ORIGINAL_FULL_PANEL_CAPTURED_PENDING_PIXEL_REVIEW\", \"record\": {\"path\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-independent-review-reinforcement-a02\\\\cases\\\\fit_combat_panel-positive\\\\fit_combat_panel-positive-full-combat-panel-binding.json\", \"bytes\": 11019, \"sha256\": \"406764316BA0BC2DCDDE310CBF0BC1D919135CD89D316E0014FBF77F89AF1FC5\"}}\n"
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-thread_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the full combat panel frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-gui_context_address-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the full combat panel frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-gui_owner_address-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the full combat panel frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-revision-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-native_revision-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-date_raw-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-actor-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-army_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-episode_run_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-connection_generation-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "fit_combat_panel-post-pixels-bridge_pid-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during full-panel original frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-positive-RNG0",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"ORIGINAL_KNIGHTS_TOOLTIP_CAPTURED_PENDING_VISUAL_REVIEW\", \"record\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\scoped-ui-C08-independent-review-reinforcement-a02\\\\cases\\\\knight_hover-positive\\\\knight_hover-positive-original-knights-tooltip-binding.json\"}\n"
+    },
+    {
+      "name": "knight_hover-post-pixels-thread_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the knight tooltip frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-gui_context_address-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the knight tooltip frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-gui_owner_address-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original GUI owner changed around the knight tooltip frame"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-revision-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-native_revision-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-date_raw-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-actor-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-army_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-episode_run_id-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-connection_generation-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "knight_hover-post-pixels-bridge_pid-drift",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Paused source changed during tooltip pixels"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "hover-missing-counts-and-markup-must-reject",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: left_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "hover-counts-and-markup-types-must-reject",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Original knight count missing or invalid: left_knight_count"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "one-day-only-plus24-snapshot-before-finish-no-retry",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "status": "PASS",
+      "error": null,
+      "mock_stdout": "{\"result\": \"ONE_DAY_AND_TRACE_FINISH_RETURNED_PENDING_VERIFICATION\", \"values\": {\"date_raw\": 53146872, \"revision\": 4, \"native_revision\": 3, \"snapshot_id\": \"native:3\", \"episode_run_id\": \"OFFLINE-ONLY\", \"connection_generation\": 1, \"bridge_pid\": 999999, \"native_hello_session_generation\": 0, \"actor\": 29829, \"army_id\": 18, \"paused\": true}}\n"
+    },
+    {
+      "name": "monitor-token-independent-collision-rejected",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Independent fresh monitor token required"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "monitor-exact-one-payload-missing",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "One exact scoped_variable_monitor payload required"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "monitor-exact-one-payload-duplicate",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "One exact scoped_variable_monitor payload required"
+      },
+      "mock_stdout": ""
+    },
+    {
+      "name": "monitor-exact-one-payload-non-dict",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "status": "PASS",
+      "error": {
+        "type": "RuntimeError",
+        "message": "One exact scoped_variable_monitor payload required"
+      },
+      "mock_stdout": ""
+    }
+  ],
+  "case_count": 85,
+  "passed": 85,
+  "failures": [],
+  "structural_checks": {
+    "stage_has_all_before_after_character_army_knights_combat_fit_and_two_hover_operations": true,
+    "stage_never_calls_advance_and_never_approves_pixels": true,
+    "main_requires_monitor_before_ui_and_save": true,
+    "monitor_finish_requires_after_ui_actual_review_and_save": true,
+    "single_day_mutation_calls_in_AST": true,
+    "single_trace_finish_calls_in_AST": true,
+    "C07_other_functions_AST_byte_semantics_equal": [
+      "require",
+      "identity",
+      "write",
+      "read",
+      "bind",
+      "snapshot",
+      "capture_window",
+      "original_gui_owner_identity",
+      "original_ui",
+      "knight_hover",
+      "stable_combat_window",
+      "geometry_gate",
+      "fit_combat_panel",
+      "monitor_payload",
+      "variable_monitor",
+      "save",
+      "advance",
+      "finish",
+      "main"
+    ]
+  },
+  "source_bytes_unchanged": true,
+  "native_requests": 0,
+  "game_or_screen_actions": 0,
+  "git_mutations": 0,
+  "conclusion": "C08 targeted getter regressions and inherited GUI owner/RNG0/same-frame/day/monitor guards PASS; suitable for root-owned live only with new exact source/DLL/eight-test admission and fresh offline/screen prerequisites",
+  "consumer_ready_for_root_owned_live": true,
+  "mechanism_or_pixels_closed": false,
+  "full_DLL_eight_tests_and_fresh_root_admission_still_required": true,
+  "offline_checks_do_not_close_any_mechanism": true
+}

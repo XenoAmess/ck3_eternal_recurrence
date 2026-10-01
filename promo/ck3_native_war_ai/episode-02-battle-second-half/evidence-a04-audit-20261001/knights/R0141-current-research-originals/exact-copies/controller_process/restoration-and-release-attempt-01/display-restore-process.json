@@ -1,0 +1,23 @@
+{
+  "at_utc": "2026-10-01T10:14:32.762591+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display_mode_research.py",
+    "--mode",
+    "restore",
+    "--screen-task-id",
+    "war-e2-six-gap-scoped-ui-screen-20261001-a04",
+    "--expected-sequence",
+    "3425",
+    "--alignment-receipt",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display-align-attempt-01\\readback.json",
+    "--output-dir",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\restoration-and-release-attempt-01\\display-restore"
+  ],
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display_mode_research.py\", line 121, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display_mode_research.py\", line 55, in main\n    require(0 <= age <= 600, 'Current screen lease is stale')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display_mode_research.py\", line 19, in require\n    raise RuntimeError(message)\nRuntimeError: Current screen lease is stale\n"
+}

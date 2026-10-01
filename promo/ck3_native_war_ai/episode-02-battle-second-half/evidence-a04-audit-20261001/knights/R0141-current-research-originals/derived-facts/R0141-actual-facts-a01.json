@@ -1,0 +1,659 @@
+{
+  "schema": "ck3.e2.R0141-actual-research-facts/v1",
+  "status": "RED_MODAL_UI_ADMISSION_NO_DAY_ADVANCE_RESEARCH_OPEN",
+  "desktop_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0141",
+  "native_episode_run_id": "native-29829-08fa9723ff63",
+  "source_commit": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+  "DLL": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bytes": 3553792,
+    "sha256": "1B3AC08147D86D34D69390331D2AD7C486B64C07D4F795E10DA4A3E5DE2CE324"
+  },
+  "PID": 6320,
+  "scope": {
+    "actor_id": 29829,
+    "war_id": 4,
+    "public_unit_id": 18,
+    "combat_id": 16777218,
+    "victim_id": 33437,
+    "killer_id": 34120
+  },
+  "before_date_raw": 53146848,
+  "planned_nextday_raw_not_observed": 53146872,
+  "actual_last_date_raw": 53146848,
+  "actual_day_advance": 0,
+  "unique_UI_attempt": {
+    "source_line": 359,
+    "exact_line": {
+      "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/derived-exact-line-slices/mcp-calls-line-359.jsonl",
+      "bytes": 214355,
+      "sha256": "59DE74C9A01D10927A5D91FA1D15A634FD46415027C4AFFB1A762BCE38572C04"
+    },
+    "arguments": {
+      "character_id": 33437,
+      "expected_revision": 5
+    },
+    "is_error": false,
+    "body": {
+      "accepted": false,
+      "available": false,
+      "status": "unavailable",
+      "dispatch_invoked": false,
+      "unavailable_reason": "modal_context_blocks_navigation",
+      "date_raw": 53146848,
+      "paused": true,
+      "thread_id": 17776,
+      "native_revision": 4
+    }
+  },
+  "transport_vs_mechanism": "MCP journal is_error=false/CALL_COMPLETED; actual native accepted=false/available=false/dispatch_invoked=false caused root UI stage refusal. Transport/lifecycle success does not make mechanism GREEN.",
+  "original_parsed_native_UI_return": {
+    "path": "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-ui-live-20261001-a05/ck3-state/native-session/ingame-ui-native-results/native-ui-9219ec80c3e8488d8b10a3dde31eee34.json",
+    "bytes": 163019,
+    "sha256": "32774778FDCC8E8E1FA510CA4D87029756F1FFDEC69B365E5B4A2C96B5AFD765"
+  },
+  "original_native_call_not_wirebytes": true,
+  "original_native_result_fields": {
+    "accepted": false,
+    "available": false,
+    "status": "unavailable",
+    "dispatch_invoked": false,
+    "date_raw": 53146848,
+    "paused": true,
+    "played_character_id": 29829,
+    "native_revision": 4,
+    "pump_epoch": 17901,
+    "thread_id": 17776,
+    "application_owner_thread_verified": true,
+    "gui_owner_binding_verified": true,
+    "gui_context_address": 2825866765552,
+    "gui_owner_address": 2825866765552,
+    "rng_owner_thread_id": 0,
+    "rng_owner_is_ui_admission_gate": false,
+    "unavailable_reason": "modal_context_blocks_navigation"
+  },
+  "snapshot_dates_observed": [
+    {
+      "source_line": 322,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 323,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 324,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 325,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 326,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 327,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 328,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 329,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 330,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 331,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 332,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 333,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 334,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 335,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 336,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 337,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 338,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 339,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 340,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 341,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 342,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 343,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 344,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 345,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 346,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 347,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 348,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 349,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 350,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 351,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 352,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 353,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 354,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 355,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "source_line": 357,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "source_line": 358,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "source_line": 360,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "source_line": 361,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "source_line": 362,
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    }
+  ],
+  "extra_pre_UI_checkpoint": {
+    "evidence": {
+      "path": "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-ui-live-20261001-a05/scoped-ui-research-attempt-01/before-pre-ui-checkpoint-saved-pair.json",
+      "bytes": 5878,
+      "sha256": "39B62C2D9E2A1C356C039C604E58D4AB759BE763A622D80E59BC67FFB9C6525E"
+    },
+    "immutable": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52881742,
+      "sha256": "AE6D79341BA5DA19427AC490C03140E4A71BD8C025A743442855AAF69C6C27C9"
+    },
+    "source_values": {
+      "date_raw": 53146848,
+      "paused": true,
+      "actor": 29829,
+      "revision": 4,
+      "native_revision": 3,
+      "snapshot_id": "native:3",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat",
+      "episode_run_id": "native-29829-08fa9723ff63",
+      "connection_generation": 1,
+      "bridge_pid": 6320,
+      "native_hello_session_generation": 0
+    },
+    "post_values": {
+      "date_raw": 53146848,
+      "paused": true,
+      "actor": 29829,
+      "revision": 5,
+      "native_revision": 4,
+      "snapshot_id": "native:4",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat",
+      "episode_run_id": "native-29829-08fa9723ff63",
+      "connection_generation": 1,
+      "bridge_pid": 6320,
+      "native_hello_session_generation": 0
+    },
+    "role": "extra checkpoint only; not the main before sample"
+  },
+  "absent_main_pair_and_nextday_files": [
+    "before-saved-pair.json",
+    "after-saved-pair.json",
+    "one-day-finished.json",
+    "before-ui-root-review.json",
+    "after-ui-root-review.json"
+  ],
+  "six_gaps": [
+    {
+      "key": "nextday_character_ui",
+      "name": "骑士次日角色界面",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "knight_roster_change",
+      "name": "骑士名单变化",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "complete_battle_window",
+      "name": "完整战斗窗",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "knight_selector",
+      "name": "骑士选择器",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "unique_actual_death_execution_path",
+      "name": "本次受害者唯一实际死亡执行路径",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    },
+    {
+      "key": "full_case_13_domain_mutable_chain",
+      "name": "本案13域完整可变状态链",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0141"
+    }
+  ],
+  "six_gap_evidence_closed": false,
+  "global_mutable_bundle_complete": false,
+  "monitor": {
+    "evidence": {
+      "path": "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-ui-live-20261001-a05/scoped-ui-research-attempt-01/failed-modal-ui-monitor-end.json",
+      "bytes": 71706,
+      "sha256": "B06E43B7CEB0F7DCA59DF617C2C110D200EC23FA61A0B6E4870C89B8F1571387"
+    },
+    "failure_flags": 0,
+    "detours_uninstalled": true,
+    "truncated": false,
+    "record_count": 4,
+    "record_boundaries": {
+      "arm": 1,
+      "original_owner_return": 1,
+      "final_paused": 2
+    },
+    "normal_research_lifecycle_complete": false,
+    "research_status": "RED_MODAL_UI_ADMISSION_NO_DAY_ADVANCE",
+    "prearmed_definition_count": 7,
+    "prearm_not_execution": true,
+    "whole_game_mutable_bundle_complete": false
+  },
+  "later_RPM": {
+    "evidence": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-modal-admission-diagnosis-other-a01/readonly-modal-receivers-a01.json",
+      "bytes": 16197,
+      "sha256": "FDC019E55D420FB7BBCF54B4F76470EABF086B18981B071C668A0A681EAD283F"
+    },
+    "two_passes_stable": true,
+    "context_owner_match_failed_action": true,
+    "receiver_count": 1,
+    "receiver": [
+      {
+        "address": 2836486883488,
+        "address_hex": "0x2946bcb08a0",
+        "note": "Names/visibility are widget raw-field observations, not proof of blocking.",
+        "vtable": 140696404774560,
+        "RTTI_COL_fields": {
+          "signature": 1,
+          "offset": 0,
+          "constructor_displacement": 0,
+          "type_descriptor_rva": 85512160,
+          "hierarchy_rva": 73330944,
+          "self_rva": 79248560
+        },
+        "RTTI_type_name": ".?AVCPdxGuiWidget@@",
+        "raw_widget_flags_D0_D1_D2": "b84020",
+        "cached_effective_visible_from_D0_bit08": false,
+        "local_visible_from_D0_bit10": false,
+        "cached_enabled_from_D0_bit02": true,
+        "parent_address": 2825866102912,
+        "name_length": 43,
+        "name_capacity": 47,
+        "runtime_name": "JominiMultiplayerEndPreparationConfirmation"
+      }
+    ],
+    "original_failed_call_count_NOT_serialized": true,
+    "not_failed_execution_time_observation": true,
+    "game_date_pause_not_read_by_RPM": true,
+    "inference_boundary": "Failed reason is raw native truth. Hidden receiver/count root-cause explanation combines exact source and later matching-context RPM; do not label later count as failed-call wire."
+  },
+  "SDK_lifecycle": {
+    "completion": {
+      "path": "C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/native-sdk-attempt-01/completion.json",
+      "bytes": 1163,
+      "sha256": "A81CE6D8E9D774FB71801DE0320A22EDC6AA1536E2620932232B029D910340F4"
+    },
+    "job_exit_code": 0,
+    "job_state": "exited",
+    "process_gates": {
+      "ck3.exe": [],
+      "dowser.exe": [],
+      "ffmpeg.exe": [],
+      "obs64.exe": [],
+      "xar_ck3_bridge_injector.exe": []
+    },
+    "game_shutdown": {
+      "nonce": "136b0a049d5d4944b89ad1357db6c907",
+      "ck3_pid": 6320,
+      "ck3_creation_date": "20261001174240.896128+480",
+      "ck3_exit_code": 1,
+      "job_active_processes_before_termination": 1,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 3180,
+      "watchdog_creation_date": "20261001174238.440104+480",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\ck3-state\\control\\ck3.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\ck3-state\\control\\watchdog-136b0a049d5d4944b89ad1357db6c907.ready.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\ck3-state\\control\\ck3.watchdog_error": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\ck3-state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    },
+    "CK3_controlled_termination_code_is_1_not_0": true,
+    "cleanup_success_not_mechanism_GREEN": true
+  },
+  "display_and_resource_restoration": {
+    "actual_readback": {
+      "path": "C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/restoration-and-release-attempt-03/native-restoration-align/readback.json",
+      "bytes": 1194,
+      "sha256": "3B11F936A9DF1DD282560A9A17F3B268614158D1CDBC868346DAEB1FDB3619AB"
+    },
+    "root_review": {
+      "path": "C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/restoration-and-release-attempt-03/original-mode-restoration-root-review.json",
+      "bytes": 2005,
+      "sha256": "B1C1C940B111E3EB07692C9022CBA114D346CECB8CF6E9834B4B872F0CA78AEE"
+    },
+    "actual_mode": {
+      "PelsWidth": 1024,
+      "PelsHeight": 768,
+      "BitsPerPel": 32,
+      "DisplayFrequency": 60,
+      "DisplayOrientation": 0,
+      "Position_x": 0,
+      "Position_y": 0,
+      "DisplayFlags": 0
+    },
+    "original_mode_exact_match": true,
+    "root_original_image_actually_reviewed": true,
+    "root_observation": "1024x768 original desktop; Steam BG3 library is visible with current offline text; no game window.",
+    "old_expired_task": {
+      "git": {
+        "branch": "codex/war-e2-scoped-ui-owner-capture-20261001",
+        "dirty_entries": 0,
+        "head": "fda53e7b3e83053f235be3d5725a6238b89db9f0"
+      },
+      "last_sequence": 3426,
+      "next_step": "align_original_display_fresh_offline_evidence_after_full_build_then_same_owner_capture",
+      "pid": 2976,
+      "repo": "C:\\w\\e2cap1001c",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R0141_RED_UI_no_day_SDK_cleaned_expired_own_claim_release_display_restoration_pending",
+      "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a04",
+      "updated_at_utc": "2026-10-01T10:19:56.903947+00:00"
+    },
+    "new_restoration_task": {
+      "git": {
+        "branch": "codex/war-e2-scoped-ui-owner-capture-20261001",
+        "dirty_entries": 0,
+        "head": "fda53e7b3e83053f235be3d5725a6238b89db9f0"
+      },
+      "last_sequence": 3428,
+      "next_step": "",
+      "pid": 14556,
+      "repo": "C:\\w\\e2cap1001c",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0141_SDK_cleaned_original_1024_768_native_enumerated_restored_root_image_reviewed_steam_offline",
+      "task_id": "war-e2-scoped-ui-restoration-screen-20261001-a01",
+      "updated_at_utc": "2026-10-01T10:26:52.804846+00:00"
+    }
+  },
+  "followup_sampling_repair": {
+    "evidence": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-ui-hidden-modal-repair-other-a01/source-freeze-ui-hidden-modal-a02/source-ready-and-test-receipt.json",
+      "bytes": 22222,
+      "sha256": "BED9386BAD72A03160BBDFC2BCA0C6B4268BC8C3274580EACEBA6A6018FC334F"
+    },
+    "status": "ACTUAL_3_TU_CTEST_AND_PYTHON_OFFLINE_PASS_NEW_FULL_DLL_AND_LIVE_REQUIRED",
+    "not_this_run_source_or_DLL": true,
+    "no_R0141_relabel_to_GREEN": true,
+    "optional_native_modal_admission_forwarding": "normalize_ui_result returns dict(value), so optional raw diagnostic is forwarded but not independently typed validated; original pre-validation parsed return remains immutable."
+  },
+  "video_or_signoff_action_performed": false,
+  "archivist_pixel_review_performed": false,
+  "Git_master_intake_merge_push_performed": false,
+  "target_evidence_worktree_start_head_reported_by_root": "32985c506bced642dc21c468b515fe959e86f53c"
+}

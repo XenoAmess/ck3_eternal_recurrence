@@ -1,0 +1,12 @@
+{
+  "schema": "ck3.source-freeze-helper-firstattempt-red/v1",
+  "utc": "2026-10-01T10:16:21.629451+00:00",
+  "old_script": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\freeze_source_ready_a01.py",
+    "bytes": 6165,
+    "sha256": "A1E0D1E0B44FC7876E13DD1E6A8112BA60E5731B470BBD76DB1549F836DFAC5E"
+  },
+  "status": "freeze receipt writer RED; native/UI actual tests remain PASS",
+  "reason": "Writer checked LF-only OK token against actual Windows CRLF unittest stderr. No native/UI source or verification behavior changed. Partial first freeze exact copies preserved. New a02 normalizes CRLF for token checking only.",
+  "first_freeze_receipt_exists": false
+}

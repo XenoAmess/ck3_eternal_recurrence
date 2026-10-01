@@ -1,0 +1,200 @@
+{
+  "schema": "ck3.R0141.modal-admission-readonly-diagnosis/v1",
+  "created_utc": "2026-10-01T10:04:21.398361+00:00",
+  "source_private_commit": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+  "status": "CONCRETE_CURRENT_MODAL_VECTOR_MISCLASSIFICATION; SOURCE_FIX_NOT_APPLIED",
+  "scope": {
+    "game_api_called": false,
+    "native_function_invoked": false,
+    "process_write": false,
+    "desktop_or_input": false,
+    "game_day_command": false,
+    "source_modified": false,
+    "git_modified": false,
+    "approval_or_signoff_created": false
+  },
+  "existing_MCP_diagnostic_gap": {
+    "registered_scoreboard_query": {
+      "name": "ck3_query_zhongguo_scoreboard_state_v1",
+      "signature": "request_nonce: str, expected_revision: int"
+    },
+    "reason_not_invoked": "Public scoreboard DTO/serializer expose widgets, ACL, actions, readiness and semantic fingerprints. Actual modal count, vector entries and receiver addresses are not public fields. +0x290/+0x29C appear only as provenance offset strings. Fixed mod-specific allowlist cannot be substituted for the requested global modal diagnostic.",
+    "other_queries": "query_ingame_ui_window_v1 and ck3_inspect_frontend_gui_tree_v1 do not publish global modal count/vector. Local callable ALL_TOOLS CK3 GUI inventory was empty; source registry is authoritative for root SDK calls.",
+    "source_anchors": [
+      "native_bridge/src/zhongguo_scoreboard_state_v1_serializer.cpp:304-407 public serialization",
+      "native_bridge/src/zhongguo_scoreboard_state_v1.cpp:844-889 fixed-widget scope",
+      "native_bridge/src/zhongguo_scoreboard_state_v1.cpp:1363-1394 modal relation independent fingerprint input; modal_blocking explicitly unfrozen",
+      "src/xar_autoplayer/bridge/mcp_server.py:2037-2047 registered call signature"
+    ]
+  },
+  "original_action_actual_return": {
+    "date_raw": 53146848,
+    "paused": true,
+    "thread_id": 17776,
+    "gui_context_address": 2825866765552,
+    "gui_owner_address": 2825866765552,
+    "rng_owner_thread_id": 0,
+    "application_owner_thread_verified": true,
+    "gui_owner_binding_verified": true,
+    "dispatch_invoked": false,
+    "available": false,
+    "unavailable_reason": "modal_context_blocks_navigation",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "actual_current_RPM": {
+    "evidence": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\readonly-modal-receivers-a01.json",
+      "bytes": 16197,
+      "sha256": "FDC019E55D420FB7BBCF54B4F76470EABF086B18981B071C668A0A681EAD283F"
+    },
+    "PID": 6320,
+    "process_creation_filetime_100ns": 134353213608961285,
+    "actual_executable": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 95206008,
+      "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "actual_module": {
+      "name": "ck3.exe",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "base": 140696332402688,
+      "bytes": 96653312
+    },
+    "process_access": "PROCESS_QUERY_INFORMATION|PROCESS_VM_READ (0x0410)",
+    "total_RPM_bytes": 764,
+    "raw_read_records": 30,
+    "two_passes_stable": true,
+    "matches_original_action_GUI_context_and_owner": true,
+    "context": 2825866765552,
+    "owner": 2825866765552,
+    "vector_data": 2834309891760,
+    "count_int32": 1,
+    "receivers": [
+      {
+        "address": 2836486883488,
+        "address_hex": "0x2946bcb08a0",
+        "note": "Names/visibility are widget raw-field observations, not proof of blocking.",
+        "vtable": 140696404774560,
+        "RTTI_COL_fields": {
+          "signature": 1,
+          "offset": 0,
+          "constructor_displacement": 0,
+          "type_descriptor_rva": 85512160,
+          "hierarchy_rva": 73330944,
+          "self_rva": 79248560
+        },
+        "RTTI_type_name": ".?AVCPdxGuiWidget@@",
+        "raw_widget_flags_D0_D1_D2": "b84020",
+        "cached_effective_visible_from_D0_bit08": false,
+        "local_visible_from_D0_bit10": false,
+        "cached_enabled_from_D0_bit02": true,
+        "parent_address": 2825866102912,
+        "name_length": 43,
+        "name_capacity": 47,
+        "runtime_name": "JominiMultiplayerEndPreparationConfirmation"
+      }
+    ],
+    "temporal_limit": "These are two later readonly process-memory observations. The original failed native return did not serialize the count/vector; the RPM must not be labelled its exact execution-time wire evidence. No fresh game snapshot/date/pause was read by this RPM."
+  },
+  "exact_original_static_anchors": {
+    "evidence": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\static-modal-anchors-a01.json",
+      "bytes": 34342,
+      "sha256": "4165872C563931C331CDF2537041D9BA705C690A2226A2E32ED5AC005F0B32FE"
+    },
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "DefaultOnCharacterClick": {
+      "span": "RVA 0xA04530..0xA045D9",
+      "bytes": 169,
+      "observation": "No +0x29C modal-count condition within this original function. Full CharacterID lookup and handler-mode routing then tail-call 0xA7EFA0 or 0xA78BB0. This does not prove all downstream functions lack independent modal policy."
+    },
+    "NativeShortcutManagerActivate": {
+      "span": "RVA 0x36E1C40..0x36E1D35",
+      "bytes": 245,
+      "observations": [
+        "0x36E1C70: signed count from GUI context+0x29C.",
+        "0x36E1C80: vector data from context+0x290.",
+        "0x36E1C90..0x36E1CA6: reverse scan each receiver+D0 effective-hidden bit08; if all hidden, proceeds directly to 0x36E1CB9.",
+        "If any receiver is effective-visible, 0x36E1CAB takes absolute vector[count-1] and invokes original StrictDescendant 0x369E620. It does not equate every registered receiver to a visible blocking modal."
+      ]
+    },
+    "existing_exact_build_bridge_match": "zhongguo_scoreboard_action_v1.cpp:189-223 reproduces original count bounds/vector reads/effective-hidden scan/absolute-top descendant condition."
+  },
+  "current_source_error": {
+    "path": "C:/w/e2cap1001c/ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+    "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B",
+    "lines": "497-502",
+    "actual_rule": "Reject any uint32 modal_count != 0, without examining original vector or receiver effective visibility.",
+    "why_wrong": "Current stable count1 consists solely of an effective-hidden CPdxGuiWidget named JominiMultiplayerEndPreparationConfirmation (raw D0=B8; bit08 set). Original native shortcut routing allows an all-hidden vector. Existing docs also explicitly leave generic modal_blocking unfrozen.",
+    "original_call_cause_confidence": "Strong source + matching current-memory inference; original execution-time count/read-success was not emitted. Other branches sharing modal_context_blocks_navigation were resolver failure, pointer drift and failed Value read."
+  },
+  "minimal_defensible_followup": [
+    "Retain exact build, fresh snapshots, same paused date/full IDs, application owner/TLS/ticket/thread epochs and GUI context/owner binding.",
+    "Read original signed int32 count, bounded 0..256, and vector pointer; reject failed reads, negative/excessive count, missing data/non-null entries and invalid flag reads.",
+    "For global typed navigation conservatively reject ANY effective-visible receiver (D0 bit08 clear). Permit count0 or a fully validated all-hidden vector. This is more restrictive than native descendant allowance and needs no arbitrary target or exception by widget name.",
+    "Re-read current GUI context/owner and bounded vector/flags immediately at action admission; preserve actual diagnostic reason/count/addresses/flags in the existing create-only parsed native result. Do not substitute expected/default values for reads.",
+    "Meaningful offline cases: hidden-count1 eligible; zero eligible; visible-count1 refused; mixed visible/hidden refused even when absolute top is hidden; negative/count257/vector missing/entry missing/read failure refused; current context/owner drift refused.",
+    "Source change requires parent authorization and new freeze/build/run. Preserve R0141 unavailable, no-day state and all original inputs; no resend into current run."
+  ],
+  "still_unproven": [
+    "Exact execution-time modal header/entry fields of the already-failed call.",
+    "Hidden receiver registration/unregistration lifecycle or why it remains in the vector.",
+    "Successful character/army/combat/knights/fit/hover live postconditions.",
+    "Six-item mechanism/UI closure; global_mutable_bundle_complete remains false."
+  ],
+  "stock_gui_search": {
+    "argv": [
+      "rg",
+      "-n",
+      "-F",
+      "JominiMultiplayerEndPreparationConfirmation",
+      "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui"
+    ],
+    "shell": false,
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\stock-gui-rg-stdout.bin",
+      "bytes": 143,
+      "sha256": "B37904EE6971734AEE1937B6714B20D1F87A2E99FC7D8D69D2868DD1A3F07EF0"
+    },
+    "stderr": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\stock-gui-rg-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    }
+  },
+  "exact_copies": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\ck3-state\\native-session\\ingame-ui-native-results\\native-ui-9219ec80c3e8488d8b10a3dde31eee34.json",
+        "bytes": 163019,
+        "sha256": "32774778FDCC8E8E1FA510CA4D87029756F1FFDEC69B365E5B4A2C96B5AFD765"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\actual-parsed-return-exact-copy.json",
+        "bytes": 163019,
+        "sha256": "32774778FDCC8E8E1FA510CA4D87029756F1FFDEC69B365E5B4A2C96B5AFD765"
+      },
+      "same_bytes": true
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\modal-rejection-diagnostic.json",
+        "bytes": 159309,
+        "sha256": "3C3FD387E37B39E75066438726C82E1C94CD55FB5190C5E62F39B857599C90C4"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\root-modal-rejection-diagnostic-exact-copy.json",
+        "bytes": 159309,
+        "sha256": "3C3FD387E37B39E75066438726C82E1C94CD55FB5190C5E62F39B857599C90C4"
+      },
+      "same_bytes": true
+    }
+  ],
+  "machine_read_does_not_equal_human_review": true,
+  "script": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-modal-admission-diagnosis-other-a01\\write_diagnosis_receipt_a01.py",
+    "bytes": 8791,
+    "sha256": "832D9D1A229B167ABEEA2C5A8C77381C8F16A9EBB331C3BD479183FEF80F74DA"
+  }
+}
