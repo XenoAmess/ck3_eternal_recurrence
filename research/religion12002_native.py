@@ -28,9 +28,10 @@ SOURCE_RVAS = {
     "kRiteFaithRva": 0x24FC560, "kFaithReligionRva": 0x2443D40,
     "kFaithMainRiteRva": 0x2444360, "kFaithFervorRva": 0x243EA90,
     "kCharacterSpiritualFulfillmentRva": 0x28BCE40,
-    "kFaithTagRva": 0xB801A0, "kReligionTagRva": 0x247CA20,
+    "kFaithTagRva": 0xB801A0,
     "kCharacterRiteIdOffset": 0xB4, "kRiteFaithIdOffset": 0x4B8,
     "kFaithReligionIdOffset": 0x8C, "kFaithMainRiteIdOffset": 0x98,
+    "kReligionDefinitionPointerOffset": 0x20, "kReligionDefinitionTagOffset": 0x18,
     "kReferenceIdentityOffset": 0x08,
 }
 
@@ -50,8 +51,10 @@ SPANS = [
     ("Character.spiritual_fulfillment.default", 0x2BFB4C0, 0x2BFB6E7, "int64_t*(int64_t* out,Character*)"),
     ("Faith.GetTag.core", 0xB801A0, 0xB801A8, "CString*(Faith*)"),
     ("Faith.GetTag.thunk", 0x2443240, 0x2443283, "reflection wrapper; complete chained spans"),
-    ("Religion.GetTag.core", 0x247CA20, 0x247CA29, "CString*(Religion*)"),
-    ("Religion.GetTag.thunk", 0x24819E0, 0x2481A23, "reflection wrapper; complete chained spans"),
+    ("GetTag.previous_religion_binding", 0x247CA20, 0x247CA29,
+     "abandoned binding: +0x28 points into actual CReligion definition string metadata; exact reflection type unresolved"),
+    ("GetTag.previous_religion_wrapper", 0x24819E0, 0x2481A23,
+     "preserved reflection wrapper; exact reflection type unresolved; not used by provider"),
     ("Religion.GetID.thunk", 0x2481A30, 0x2481A63, "reflection integer from +0x10; not full ref"),
     ("Rite.GetTenets.collection_address", 0x1CF98A0, 0x1CF98A8, "opaque collection*(Rite*); row layout unresolved"),
     ("Rite.GetTenets.thunk", 0x24FC1B0, 0x24FC207, "reflection collection wrapper"),
@@ -66,7 +69,7 @@ REGISTRATION_SLICES = [
     ("Faith.GetFervor.registration", 0x4D55D9, 0x4D5664),
     ("Character.GetSpiritualFulfillment.registration", 0x55D2B3, 0x55D357),
     ("Faith.GetTag.registration", 0x4D201D, 0x4D20A8),
-    ("Religion.GetTag.registration", 0x4DE53D, 0x4DE5C8),
+    ("GetTag.previous_religion_registration", 0x4DE53D, 0x4DE5C8),
     ("Rite.GetTenets.registration", 0x4EEDC9, 0x4EEE54),
 ]
 SITES = [
@@ -83,8 +86,8 @@ SITES = [
     ("character_spiritual_native_default_call", 0x28BCE6E),
     ("character_spiritual_core_call", 0x28CFC37),
     ("faith_tag_address", 0xB801A0),
-    ("religion_tag_definition_pointer", 0x247CA20),
-    ("religion_tag_definition_string_address", 0x247CA24),
+    ("previous_religion_tag_definition_pointer", 0x247CA20),
+    ("previous_religion_tag_metadata_address_not_used", 0x247CA24),
     ("religion_reflection_integer_identity", 0x2481A41),
     ("rite_tenets_collection_address", 0x1CF98A0),
     ("rite_tenets_collection_core_call", 0x24FC1BE),
@@ -135,8 +138,9 @@ def extract(exe: Path) -> tuple[dict, str]:
                                                 if op.type == X86_OP_IMM and ins.mnemonic in ("call", "jmp")]})
     # Obtain actual class descriptors without matching template visitors.
     rtti = []
-    for cls in ["CFaith", "CRite", "CReligion"]:
-        encoded = f".?AV{cls}@@".encode() + b"\0"
+    for cls, spelling in [("CFaith", ".?AVCFaith@@"), ("CRite", ".?AVCRite@@"),
+                          ("CReligion", ".?AVCReligion@@"), ("SReligionType", ".?AUSReligionType@@")]:
+        encoded = spelling.encode() + b"\0"
         offset = data.find(encoded)
         if offset < 0 or data.find(encoded, offset + 1) >= 0:
             raise ValueError(f"Exact class RTTI not unique: {cls}")
@@ -149,7 +153,8 @@ def extract(exe: Path) -> tuple[dict, str]:
             "native_spans": spans, "semantic_instructions": instructions, "exact_class_rtti": rtti,
             "unresolved": ["effective doctrine collection and merging ABI", "personal tenet collection row ABI",
                            "faith knowledge native getter", "conversion final gates/cost ABI",
-                           "Rite stable authored key getter", "native AI selection branches"]}, "\n".join(dump) + "\n"
+                           "Rite stable authored key getter", "native AI selection branches",
+                           "exact type of abandoned +0x28 GetTag reflection branch; current Religion tag uses observed definition +0x18"]}, "\n".join(dump) + "\n"
 
 
 def main() -> int:

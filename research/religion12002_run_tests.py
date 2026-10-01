@@ -11,6 +11,7 @@ import subprocess
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--mode", choices=("Od", "O2"), help="Run only the selected compiler mode")
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
     native = root / "ck3_autonomous_player/native_bridge"
@@ -25,7 +26,8 @@ def main() -> int:
         ("ck3_12002.cpp", "ck3_12002_religion_context.cpp", "ck3_12002_religion_context_test.cpp")]
     pins = sources + [native / "include/xar_bridge/ck3_12002_religion_context.hpp"]
     runs = []
-    for mode in ("Od", "O2"):
+    modes = (args.mode,) if args.mode else ("Od", "O2")
+    for mode in modes:
         target = output / mode
         target.mkdir(exist_ok=True)
         temp = target / "tmp"
@@ -53,7 +55,8 @@ def main() -> int:
         zero, absent, missing = wire["current-zero.json"], wire["legal-absent.json"], wire["faith-unavailable.json"]
         if not (zero["rite_id"] == 0 and zero["faith_fervor_raw"] == 0 and
                 zero["spiritual_fulfillment_raw"] == 0 and zero["faith_key"] == 'faith"key' and
-                zero["religion_id"] == 0x84000005 and absent["rite_id"] is None and
+                zero["religion_id"] == 0x84000005 and zero["religion_key"] == "christianity_religion" and
+                absent["rite_id"] is None and
                 absent["faith_fervor_raw"] is None and absent["available"] and
                 not missing["available"] and missing["faith_fervor_raw"] is None):
             raise ValueError("Actual C++ wire lost zero/absence/full-ref/failure distinction")
@@ -63,7 +66,7 @@ def main() -> int:
         print(mode, run.stdout.strip())
     result = {"status": "GREEN", "readiness": "static-ready", "live_verified": False,
         "local_ck3_touched": False, "actual_provider": True, "actual_serializer": True,
-        "compiler": "MSVC /W4 /WX /Od and /O2", "runs": runs,
+        "compiler": "MSVC /W4 /WX " + " and ".join("/" + mode for mode in modes), "runs": runs,
         "source_sha256": {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in pins}}
     (output / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return 0

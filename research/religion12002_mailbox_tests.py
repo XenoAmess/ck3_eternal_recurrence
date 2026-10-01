@@ -17,6 +17,7 @@ def digest(path: Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--mode", choices=("Od", "O2"), help="Run only the selected compiler mode")
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
     native = root / "ck3_autonomous_player/native_bridge"
@@ -36,7 +37,8 @@ def main() -> int:
         "ck3_12002_religion_context.hpp", "ck3_12002_religion_mailbox.hpp",
         "ck3_12002_query_mailbox.hpp", "main_thread_query_mailbox_v1.hpp")]
     runs = []
-    for mode in ("Od", "O2"):
+    modes = (args.mode,) if args.mode else ("Od", "O2")
+    for mode in modes:
         target = output / mode
         target.mkdir(exist_ok=True)
         temp = target / "tmp"
@@ -82,6 +84,7 @@ def main() -> int:
         assert zero["rite_id"] == zero["faith_fervor_raw"] == zero["spiritual_fulfillment_raw"] == 0
         assert zero["religion_id"] == 0x84000005 and zero["faith_id"] == 0x83000003
         assert zero["faith_main_rite_id"] != zero["rite_id"] and zero["faith_key"] == 'faith"信'
+        assert zero["religion_key"] == "christianity_religion"
         signed = packets["signed-values.json"]["result"]["player_religion_context"]
         assert signed["faith_fervor_raw"] == -123456 and signed["spiritual_fulfillment_raw"] == 345678
         absent = packets["legal-absent.json"]["result"]["player_religion_context"]
@@ -99,7 +102,7 @@ def main() -> int:
         "fixture_native_callbacks": "Synthetic objects and canonical getter behavior in owned fixture memory",
         "fixture_adapter_unwrap": "Bare GameAdapter identity branch only; no WorkerAdapter implementation substituted",
         "fixture_executor_permit": "Actual permitted_executor_religion12002 named slot with fixture-owned memory",
-        "compiler": "MSVC /W4 /WX /Od and /O2", "runs": runs,
+        "compiler": "MSVC /W4 /WX " + " and ".join("/" + mode for mode in modes), "runs": runs,
         "source_sha256": {str(p.relative_to(root)): digest(p) for p in pins}}
     (output / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return 0

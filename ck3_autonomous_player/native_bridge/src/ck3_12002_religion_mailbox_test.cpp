@@ -57,12 +57,15 @@ struct Fixture {
     Put(faith, 0x2F8, std::int64_t{0}); Put(extension, 0xA0, std::int64_t{0});
     Put(religion, 8, religion_id); Put(religion, 0x10, std::int32_t{7});
     Put(religion, 0x20, religion_definition.data());
-    Tag(faith, 0xE0, "faith\"key"); Tag(religion_definition, 0x28, "christianity");
+    Tag(faith, 0xE0, "faith\"key");
+    Tag(religion_definition, 0x18, "christianity_religion");
   }
   template <typename Buffer> static void Tag(Buffer &object, std::size_t at, std::string_view value) {
-    std::memcpy(object.data() + at, value.data(), value.size());
+    std::memset(object.data() + at, 0, 0x20);
+    if (value.size() < 16) std::memcpy(object.data() + at, value.data(), value.size());
+    else Put(object, at, value.data());
     Put(object, at + 0x10, static_cast<std::uint64_t>(value.size()));
-    Put(object, at + 0x18, std::uint64_t{15});
+    Put(object, at + 0x18, static_cast<std::uint64_t>(value.size() < 16 ? 15 : 31));
   }
 };
 Fixture *f = nullptr;
@@ -85,9 +88,6 @@ std::int64_t *Fulfillment(void *character, std::int64_t *out) {
   return out;
 }
 const void *FaithTag(void *faith) { return static_cast<const std::byte *>(faith) + 0xE0; }
-const void *ReligionTag(void *religion) {
-  return static_cast<const std::byte *>(Get<const void *>(religion, 0x20)) + 0x28;
-}
 r::Bindings Bind(Fixture &fixture) {
   f = &fixture;
   r::Bindings b{}; b.enabled = true;
@@ -95,7 +95,9 @@ r::Bindings Bind(Fixture &fixture) {
   b.character_rite = &CharacterRite; b.character_faith = &CharacterFaith;
   b.rite_faith = &RiteFaith; b.faith_religion = &FaithReligion; b.faith_main_rite = &FaithMainRite;
   b.faith_fervor = &Fervor; b.character_spiritual_fulfillment = &Fulfillment;
-  b.faith_tag = &FaithTag; b.religion_tag = &ReligionTag; return b;
+  b.faith_tag = &FaithTag;
+  b.religion_tag = r::BindReligionContextImage12002(0x140000000, c::kExecutableSha256).religion_tag;
+  return b;
 }
 } // namespace
 
@@ -241,7 +243,8 @@ int main(int argc, char **argv) {
     Check(Query(fixture, adapter, directory, "current-zero.json", observed) && observed.available &&
           observed.rite_id == 0U && observed.faith_id == Fixture::faith_id &&
           observed.religion_id == Fixture::religion_id && observed.faith_fervor_raw == 0 &&
-          observed.spiritual_fulfillment_raw == 0 && observed.faith_main_rite_id != observed.rite_id,
+          observed.spiritual_fulfillment_raw == 0 && observed.faith_main_rite_id != observed.rite_id &&
+          observed.religion_key == "christianity_religion",
           "actual provider full IDs, zero values and independent main rite through mailbox");
     Put(fixture.faith, 0x2F8, std::int64_t{-123456});
     Put(fixture.extension, 0xA0, std::int64_t{345678});

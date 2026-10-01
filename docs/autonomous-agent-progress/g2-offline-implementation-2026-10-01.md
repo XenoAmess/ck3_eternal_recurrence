@@ -532,3 +532,9 @@ CE1 当前构建的治疗与恢复只读 Handle→真实 mailbox→owner callbac
 42精确源三只读SDK：Reform16、Recovery8、Execution16+shared2；12focused tests通过，其中3新增实际cache→productionDriver→officialMCPClient单例，不重跑旧矩阵。状态static-ready，当前R4实际DLL与paused后验待root。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\REFORM-RECOVERY-EXECUTION-SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:13:50 Fix actual current religion tag observation
+
+R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证samepauseddate/current fullIDs/FaithSSO/Religionheap，RTTI与actualdefinition闭合。9源正式binder弃用错类247CA20，改只读CReligion+20→SReligionType+18 stablekey，FaithCString/API/DTO不变。一次O2 provider20checks及namedmailbox41checks6fullpacket通过，19/10/25/4/15 exactmap GREEN。首actualcapabilityRED及rawdiagnostics保留；root R4 actualpaused复验未冒称已完成。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-context-live-fix\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

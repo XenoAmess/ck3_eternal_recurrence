@@ -15,11 +15,12 @@ inline constexpr std::uintptr_t kFaithMainRiteRva = 0x2444360;
 inline constexpr std::uintptr_t kFaithFervorRva = 0x243EA90;
 inline constexpr std::uintptr_t kCharacterSpiritualFulfillmentRva = 0x28BCE40;
 inline constexpr std::uintptr_t kFaithTagRva = 0xB801A0;
-inline constexpr std::uintptr_t kReligionTagRva = 0x247CA20;
 inline constexpr std::size_t kCharacterRiteIdOffset = 0xB4;
 inline constexpr std::size_t kRiteFaithIdOffset = 0x4B8;
 inline constexpr std::size_t kFaithReligionIdOffset = 0x8C;
 inline constexpr std::size_t kFaithMainRiteIdOffset = 0x98;
+inline constexpr std::size_t kReligionDefinitionPointerOffset = 0x20;
+inline constexpr std::size_t kReligionDefinitionTagOffset = 0x18;
 inline constexpr std::size_t kReferenceIdentityOffset = 0x08;
 inline constexpr std::uint32_t kAbsentReference = 0xFFFFFFFFU;
 

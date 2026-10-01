@@ -57,12 +57,16 @@ struct Fixture {
     Put(faith, 0x2F8, std::int64_t{0}); Put(extension, 0xA0, std::int64_t{0});
     Put(religion, 8, religion_id); Put(religion, 0x10, std::int32_t{7});
     Put(religion, 0x20, religion_definition.data());
-    Tag(faith, 0xE0, "faith\"key"); Tag(religion_definition, 0x28, "christianity");
+    Tag(faith, 0xE0, "faith\"key");
+    // The live CReligion definition's authored key is a heap CString at +0x18.
+    Tag(religion_definition, 0x18, "christianity_religion");
   }
   template <typename Buffer> static void Tag(Buffer &object, std::size_t at, std::string_view value) {
-    std::memcpy(object.data() + at, value.data(), value.size());
+    std::memset(object.data() + at, 0, 0x20);
+    if (value.size() < 16) std::memcpy(object.data() + at, value.data(), value.size());
+    else Put(object, at, value.data());
     Put(object, at + 0x10, static_cast<std::uint64_t>(value.size()));
-    Put(object, at + 0x18, std::uint64_t{15});
+    Put(object, at + 0x18, static_cast<std::uint64_t>(value.size() < 16 ? 15 : 31));
   }
 };
 Fixture *f = nullptr;
@@ -85,9 +89,6 @@ std::int64_t *Fulfillment(void *character, std::int64_t *out) {
   return out;
 }
 const void *FaithTag(void *faith) { return static_cast<const std::byte *>(faith) + 0xE0; }
-const void *ReligionTag(void *religion) {
-  return static_cast<const std::byte *>(Get<const void *>(religion, 0x20)) + 0x28;
-}
 r::Bindings Bind(Fixture &fixture) {
   f = &fixture;
   r::Bindings b{}; b.enabled = true;
@@ -95,7 +96,9 @@ r::Bindings Bind(Fixture &fixture) {
   b.character_rite = &CharacterRite; b.character_faith = &CharacterFaith;
   b.rite_faith = &RiteFaith; b.faith_religion = &FaithReligion; b.faith_main_rite = &FaithMainRite;
   b.faith_fervor = &Fervor; b.character_spiritual_fulfillment = &Fulfillment;
-  b.faith_tag = &FaithTag; b.religion_tag = &ReligionTag; return b;
+  b.faith_tag = &FaithTag;
+  b.religion_tag = r::BindReligionContextImage12002(0x140000000, c::kExecutableSha256).religion_tag;
+  return b;
 }
 int checks = 0;
 bool Check(bool condition, const char *message) {
@@ -117,7 +120,8 @@ int main(int argc, char **argv) {
       !Check(out.faith_main_rite_id != out.rite_id, "main rite and character rite differ") ||
       !Check(out.faith_fervor_raw && *out.faith_fervor_raw == 0, "observed fervor zero") ||
       !Check(out.spiritual_fulfillment_raw && *out.spiritual_fulfillment_raw == 0, "observed fulfillment zero") ||
-      !Check(out.faith_key == "faith\"key" && out.religion_key == "christianity", "native tags copied")) return 1;
+      !Check(out.faith_key == "faith\"key" && out.religion_key == "christianity_religion",
+             "native Faith SSO and live-shaped Religion heap tags copied")) return 1;
   Wire(directory, "current-zero.json", out);
   Put(q.faith, 0x2F8, std::int64_t{-123456}); Put(q.extension, 0xA0, std::int64_t{345678});
   if (!Check(r::ReadPlayedReligionContext12002(b, 89, out) && out.faith_fervor_raw == -123456 &&
@@ -155,7 +159,8 @@ int main(int argc, char **argv) {
   if (!Check(actual.enabled && actual.core.enabled &&
              reinterpret_cast<std::uintptr_t>(actual.character_rite) == 0x1428D2F90 &&
              reinterpret_cast<std::uintptr_t>(actual.character_faith) == 0x14289E750 &&
-             reinterpret_cast<std::uintptr_t>(actual.character_spiritual_fulfillment) == 0x1428BCE40,
+             reinterpret_cast<std::uintptr_t>(actual.character_spiritual_fulfillment) == 0x1428BCE40 &&
+             actual.religion_tag(q.religion.data()) == q.religion_definition.data() + 0x18,
              "actual exact-image binder addresses") ||
       !Check(!r::BindReligionContextImage12002(0x140000000, "old").enabled &&
              !r::BindReligionContextImage12002(0, c::kExecutableSha256).enabled,

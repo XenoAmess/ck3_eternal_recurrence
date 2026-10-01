@@ -17,11 +17,12 @@
     "kFaithFervorRva": "0x243ea90",
     "kCharacterSpiritualFulfillmentRva": "0x28bce40",
     "kFaithTagRva": "0xb801a0",
-    "kReligionTagRva": "0x247ca20",
     "kCharacterRiteIdOffset": "0xb4",
     "kRiteFaithIdOffset": "0x4b8",
     "kFaithReligionIdOffset": "0x8c",
     "kFaithMainRiteIdOffset": "0x98",
+    "kReligionDefinitionPointerOffset": "0x20",
+    "kReligionDefinitionTagOffset": "0x18",
     "kReferenceIdentityOffset": "0x8"
   },
   "native_spans": [
@@ -143,20 +144,20 @@
       "bytes": "40 57 48 83 ec 20 48 8b fa 48 85 c9 74 2d 48 89 5c 24 30 e8 48 cf 73 fe 48 8b d8 e8 b0 8b 43 fe 4c 8b c0 48 8b d3 48 8b cf e8 22 61 43 fe 48 8b 5c 24 30 b0 01 48 83 c4 20 5f c3 32 c0 48 83 c4 20 5f c3"
     },
     {
-      "name": "Religion.GetTag.core",
+      "name": "GetTag.previous_religion_binding",
       "start_rva": "0x247ca20",
       "end_exclusive_rva": "0x247ca29",
       "kind": "complete_function",
-      "abi": "CString*(Religion*)",
+      "abi": "abandoned binding: +0x28 points into actual CReligion definition string metadata; exact reflection type unresolved",
       "sha256": "9cd338268418b234b755c4346ed52265016ea977a64ef1249b900703685917cb",
       "bytes": "48 8b 41 20 48 83 c0 28 c3"
     },
     {
-      "name": "Religion.GetTag.thunk",
+      "name": "GetTag.previous_religion_wrapper",
       "start_rva": "0x24819e0",
       "end_exclusive_rva": "0x2481a23",
       "kind": "complete_function",
-      "abi": "reflection wrapper; complete chained spans",
+      "abi": "preserved reflection wrapper; exact reflection type unresolved; not used by provider",
       "sha256": "68b3d34ce9f139eb7658a7690287ec67ca999ed01347ff1e81706a1ed77b0d58",
       "bytes": "40 57 48 83 ec 20 48 8b fa 48 85 c9 74 2d 48 89 5c 24 30 e8 28 b0 ff ff 48 8b d8 e8 10 a4 3f fe 4c 8b c0 48 8b d3 48 8b cf e8 82 79 3f fe 48 8b 5c 24 30 b0 01 48 83 c4 20 5f c3 32 c0 48 83 c4 20 5f c3"
     },
@@ -269,7 +270,7 @@
       "bytes": "8b 05 61 dd 25 04 89 45 ef 0f b7 05 5b dd 25 04 66 89 45 f3 40 88 7d f5 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 b6 3e 38 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 90 22 3a 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 a4 11 f7 01 48 8d 4d ef e8 0b 57 f7 01 90 48 39"
     },
     {
-      "name": "Religion.GetTag.registration",
+      "name": "GetTag.previous_religion_registration",
       "start_rva": "0x4de53d",
       "end_exclusive_rva": "0x4de5c8",
       "kind": "registration_slice",
@@ -399,7 +400,7 @@
       "direct_targets": []
     },
     {
-      "name": "religion_tag_definition_pointer",
+      "name": "previous_religion_tag_definition_pointer",
       "rva": "0x247ca20",
       "bytes": "48 8b 41 20",
       "instruction": "mov rax, qword ptr [rcx + 0x20]",
@@ -407,7 +408,7 @@
       "direct_targets": []
     },
     {
-      "name": "religion_tag_definition_string_address",
+      "name": "previous_religion_tag_metadata_address_not_used",
       "rva": "0x247ca24",
       "bytes": "48 83 c0 28",
       "instruction": "add rax, 0x28",
@@ -526,6 +527,11 @@
       "class": "CReligion",
       "type_descriptor_rva": "0x59f1b80",
       "name": ".?AVCReligion@@"
+    },
+    {
+      "class": "SReligionType",
+      "type_descriptor_rva": "0x55c8eb8",
+      "name": ".?AUSReligionType@@"
     }
   ],
   "unresolved": [
@@ -534,6 +540,7 @@
     "faith knowledge native getter",
     "conversion final gates/cost ABI",
     "Rite stable authored key getter",
-    "native AI selection branches"
+    "native AI selection branches",
+    "exact type of abandoned +0x28 GetTag reflection branch; current Religion tag uses observed definition +0x18"
   ]
 }

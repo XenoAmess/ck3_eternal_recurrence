@@ -26,6 +26,12 @@ bool CopyTag(const void *native_string, std::optional<std::string> &output) {
   return true;
 }
 
+const void *ReligionDefinitionTag(void *religion) noexcept {
+  const auto *definition = Load<const void *>(religion, kReligionDefinitionPointerOffset);
+  return definition ? static_cast<const std::byte *>(definition) + kReligionDefinitionTagOffset
+                    : nullptr;
+}
+
 Failure ReadOnce(const Bindings &b, std::uint64_t epoch, Context &out) {
   CoreSnapshotPrefix frame{};
   if (!ReadCoreSnapshot(b.core, frame) || !frame.map_ready ||
@@ -123,7 +129,9 @@ Bindings BindReligionContextImage12002(std::uintptr_t base, std::string_view sha
   b.faith_fervor = reinterpret_cast<FixedPointGetter>(base + kFaithFervorRva);
   b.character_spiritual_fulfillment = reinterpret_cast<FixedPointGetter>(base + kCharacterSpiritualFulfillmentRva);
   b.faith_tag = reinterpret_cast<TagGetter>(base + kFaithTagRva);
-  b.religion_tag = reinterpret_cast<TagGetter>(base + kReligionTagRva);
+  // The old 0x247CA20 reflection branch points into string metadata on this
+  // build. Read the observed CReligion definition's authored CString instead.
+  b.religion_tag = &ReligionDefinitionTag;
   return b;
 }
 
