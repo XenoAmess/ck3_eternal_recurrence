@@ -972,8 +972,22 @@ def mechanic_checks(errors):
             "clear_global_variable_list = xar_cc_catalog_culture_heritages",
             "every_culture_global = {", "has_same_culture_heritage = prev",
             "every_religion_global = {", "every_faith = {",
-            "name = xar_cc_catalog_faiths")):
+            "name = xar_cc_catalog_faiths", "xar_cc_resolve_selected_rite_effect = yes")):
         errors.append("paid custom courtier origin catalogs lost their loaded-game rebuild")
+    courtier_rite_resolver = extract_block(
+        courtier_effects, "xar_cc_resolve_selected_rite_effect") or ""
+    if not all(token in courtier_rite_resolver for token in (
+            "exists = var:xar_cc_selected_rite",
+            "var:xar_cc_selected_rite.faith = var:xar_cc_selected_faith",
+            "remove_variable = xar_cc_selected_rite",
+            "faith = var:xar_cc_selected_faith",
+            "name = xar_cc_selected_rite value = root.rite",
+            "name = xar_cc_selected_rite value = var:xar_cc_selected_faith.main_rite")):
+        errors.append("paid custom courtier lost its retained Rite or legacy Faith migration")
+    faith_selection = extract_block(courtier_guis, "xar_cc_select_faith_gui") or ""
+    if ("xar_cc_resolve_selected_rite_effect = yes" not in faith_selection
+            or "name = xar_cc_catalog_faiths target = scope:faith" not in faith_selection):
+        errors.append("paid custom courtier Faith selection does not resolve a catalog-backed Rite")
     if not all(token in courtier_access for token in (
             "is_ai = no", "is_alive = yes", "has_character_flag = xa_enabled",
             "has_character_flag = xar_cc_open")):
@@ -985,6 +999,8 @@ def mechanic_checks(errors):
         "var:xar_cc_age >= 0", "var:xar_cc_age <= 120",
         "exists = var:xar_cc_selected_culture",
         "exists = var:xar_cc_selected_faith",
+        "exists = var:xar_cc_selected_rite",
+        "var:xar_cc_selected_rite.faith = var:xar_cc_selected_faith",
         "name = xar_cc_catalog_cultures",
         "name = xar_cc_catalog_faiths",
         "var:xar_cc_same_house = 0", "var:xar_cc_same_house = 1",
@@ -1023,6 +1039,7 @@ def mechanic_checks(errors):
         "name = xar_cc_same_house value = 0",
         "name = xar_cc_selected_culture value = root.culture",
         "name = xar_cc_selected_faith value = root.faith",
+        "name = xar_cc_selected_rite value = root.rite",
         "trait:education_martial_3",
         "name = xar_cc_selected_education",
         "name = xar_cc_commander_count value = 0",
@@ -1054,8 +1071,8 @@ def mechanic_checks(errors):
             "multiply = 2.5", "var:xar_cc_age < 45", "multiply = 2")):
         errors.append("paid custom courtier arbitrary-age anchors drifted")
     if courtier_catalog_values.count(
-            "xar_cc_trait_is_selected_trigger = { TRAIT = trait:") != 224:
-        errors.append("paid custom courtier trait-cost projection is not 224 entries")
+            "xar_cc_trait_is_selected_trigger = { TRAIT = trait:") != gen_courtier_creator.EXPECTED_UNION_COUNT:
+        errors.append("paid custom courtier trait-cost projection does not match its pinned catalog")
 
     preconfirm_sources = "\n".join((
         courtier_decision, courtier_bridge, courtier_guis, courtier_gui,
@@ -1092,9 +1109,16 @@ def mechanic_checks(errors):
             "xar_cc_valid_configuration_trigger = yes",
             "gold >= xar_courtier_creator_cost")):
         errors.append("paid custom courtier purchase does not revalidate on confirm")
+    if compact_script(
+            "scope:xar_cc_created_courtier = { is_courtier_of = root "
+            "culture = root.var:xar_cc_selected_culture "
+            "faith = root.var:xar_cc_selected_faith "
+            "rite = root.var:xar_cc_selected_rite }") not in compact_script(courtier_purchase):
+        errors.append("paid custom courtier charges without verifying the delivered Faith and Rite")
     if not all(token in courtier_create for token in (
             "employer = root", "culture = root.var:xar_cc_selected_culture",
             "faith = root.var:xar_cc_selected_faith", "dynasty = none",
+            "rite = root.var:xar_cc_selected_rite",
             "age = root.var:xar_cc_age", "random_traits = no",
             "diplomacy = 0", "martial = 0", "stewardship = 0",
             "intrigue = 0", "learning = 0", "prowess = 0",
@@ -1160,6 +1184,7 @@ def mechanic_checks(errors):
     if not all(token in courtier_gui for token in (
             "Scope.Trait", "Trait.MakeScope", 'blockoverride "faith_context"',
             "GetPlayer.MakeScope.Var('xar_cc_selected_faith').Faith",
+            "GetPlayer.MakeScope.Var('xar_cc_selected_rite').Rite",
             "xar_cc_catalog_education", "xar_cc_catalog_commander",
             "xar_cc_catalog_physical", "xar_cc_catalog_personality",
             "xar_cc_catalog_other", "Scope.Culture.GetHeritage",
@@ -2058,7 +2083,8 @@ def package_checks(errors):
     ci_requirements = (
         "runs-on: windows-latest", "pull_request:", "workflow_dispatch:",
         "tools/requirements-static.txt", "python -m compileall -q tools",
-        "python tools/test_gen_no_heir_gui.py", "python tools/test_build_release.py",
+        "python tools/test_gen_no_heir_gui.py", "python tools/test_gen_courtier_creator.py",
+        "python tools/test_build_release.py",
         "python tools/test_build_vivhite_release.py",
         "python tools/test_build_full_agent_showcase.py",
         "python tools/validate_static.py", "scoring_data.assert_reference_vectors()",

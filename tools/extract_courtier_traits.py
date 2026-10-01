@@ -11,11 +11,11 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
-GAME_VERSION = "1.19.0.6"
+GAME_VERSION = "1.20.0.2"
 DEFAULT_SOURCE = (
     ROOT / "Crusader Kings III" / "game" / "common" / "traits" / "00_traits.txt"
 )
-DEFAULT_OUTPUT = Path(__file__).resolve().with_name("courtier_traits_1_19_0_6.json")
+DEFAULT_OUTPUT = Path(__file__).resolve().with_name("courtier_traits_1_20_0_2.json")
 
 # The shipped source uses the first spelling. _traits.info documents the second.
 GROUP_EQUIVALENCE_KEYS = {"group_equivalence", "group_equivelence"}
@@ -264,6 +264,10 @@ def extract_traits(text: str) -> list[dict[str, object]]:
 
 def source_label(path: Path) -> str:
     resolved = path.resolve()
+    if resolved == DEFAULT_SOURCE.resolve():
+        # A local junction may point outside the checkout. Snapshot identity
+        # uses the logical game path, independent of the installation directory.
+        return "Crusader Kings III/game/common/traits/00_traits.txt"
     try:
         return resolved.relative_to(ROOT).as_posix()
     except ValueError:

@@ -13,7 +13,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "XenoAmess_s_Eternal_Recurrence"
-SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_19_0_6.json")
+SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_20_0_2.json")
+EXPECTED_SOURCE_VERSION = "1.20.0.2"
+EXPECTED_SOURCE_FILE = "Crusader Kings III/game/common/traits/00_traits.txt"
+EXPECTED_SOURCE_SHA256 = "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
+EXPECTED_TRAIT_COUNT = 306
+EXPECTED_CONFLICT_PAIR_COUNT = 95
 HEADER = (
     "# GENERATED FILE - do not edit. Regenerate with "
     "tools/gen_courtier_creator.py"
@@ -24,10 +29,10 @@ EXPECTED_COUNTS = {
     "commander": 17,
     "physical": 38,
     "personality": 36,
-    "other": 108,
+    "other": 110,
 }
-EXPECTED_UNION_COUNT = 224
-EXPECTED_VISIBLE_COUNT = 223
+EXPECTED_UNION_COUNT = 226
+EXPECTED_VISIBLE_COUNT = 225
 OUTPUTS = {
     MOD
     / "common/scripted_effects/xar_generated_courtier_catalog_effects.txt": "effects",
@@ -71,7 +76,9 @@ def load_snapshot(path: Path = SNAPSHOT) -> tuple[dict[str, object], list[dict[s
     require(payload.get("schema_version") == 1, "unsupported courtier trait schema")
     source = payload.get("source")
     require(isinstance(source, dict), "snapshot source metadata is missing")
-    require(source.get("game_version") == "1.19.0.6", "unexpected source game version")
+    require(source.get("game_version") == EXPECTED_SOURCE_VERSION, "unexpected source game version")
+    require(source.get("file") == EXPECTED_SOURCE_FILE, "unexpected source trait file")
+    require(source.get("sha256") == EXPECTED_SOURCE_SHA256, "unexpected source trait SHA256")
     require(
         isinstance(source.get("sha256"), str)
         and re.fullmatch(r"[0-9a-f]{64}", source["sha256"]) is not None,
@@ -81,6 +88,7 @@ def load_snapshot(path: Path = SNAPSHOT) -> tuple[dict[str, object], list[dict[s
     traits = payload.get("traits")
     require(isinstance(traits, list), "snapshot traits must be a list")
     require(payload.get("trait_count") == len(traits), "snapshot trait_count drift")
+    require(len(traits) == EXPECTED_TRAIT_COUNT, "unexpected source trait count")
     seen: set[str] = set()
     for index, trait in enumerate(traits):
         require(isinstance(trait, dict), f"trait at index {index} is not an object")
@@ -387,6 +395,8 @@ def render_all() -> tuple[dict[Path, str], dict[str, int], str, int]:
     source, traits = load_snapshot()
     catalogs, union = build_catalogs(traits)
     conflicts = build_conflicts(traits, union)
+    pairs = conflict_pairs(union, conflicts)
+    require(len(pairs) == EXPECTED_CONFLICT_PAIR_COUNT, "unexpected trait conflict pair count")
     rendered_by_kind = {
         "effects": generated_effects(catalogs, union, conflicts),
         "triggers": generated_triggers(union, conflicts),
@@ -394,7 +404,7 @@ def render_all() -> tuple[dict[Path, str], dict[str, int], str, int]:
     }
     rendered = {path: rendered_by_kind[kind] for path, kind in OUTPUTS.items()}
     counts = {name: len(catalogs[name]) for name in CATALOG_NAMES}
-    return rendered, counts, source["sha256"], len(conflict_pairs(union, conflicts))
+    return rendered, counts, source["sha256"], len(pairs)
 
 
 def encoded_script(content: str) -> bytes:

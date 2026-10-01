@@ -66,10 +66,11 @@ types XARCourtierCreatorTypes {
 						margin = { 7 5 }
 						spacing = 8
 
-						# Preserve the native tooltip and glow, but evaluate them for the commissioned faith.
+						# Evaluate native tooltip and glow in the commissioned Faith and Rite.
 						icon_trait = {
 							blockoverride "faith_context" {
 								datacontext = "[GetPlayer.MakeScope.Var('xar_cc_selected_faith').Faith]"
+								datacontext = "[GetPlayer.MakeScope.Var('xar_cc_selected_rite').Rite]"
 							}
 						}
 
@@ -670,6 +671,12 @@ window = {
 								text = "[Localize('xar.cc.faith')]"
 								default_format = "#T"
 								align = center|nobaseline
+							}
+							text_single = {
+								text = "[GetPlayer.MakeScope.Var('xar_cc_selected_rite').Rite.GetName]"
+								align = center|nobaseline
+								default_format = "#high"
+								scissor = yes
 							}
 
 							scrollbox = {

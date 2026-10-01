@@ -2,6 +2,7 @@
 
 ## 状态
 
+- 2026-10-01：主 mod 已刷新 CK3 1.20.0.2 原版元数据，并补齐 Faith/Rite 创建与原生特质图标上下文；这是兼容候选，尚未取得新版 loader/功能 GREEN，`supported_version` 保持此前已验基线。差异与验收边界见 [1.20.0.2 兼容修复记录](ck3-1.20.0.2-eternal-recurrence-compatibility.md)。白绮独立版仍使用自己的旧版快照，留待独立工作包。
 - 2026-08-20 v2 源码、L0 与 CK3 1.19.0.6 真实 UI 验收 GREEN。交付失败回滚审阅后的权威证据为 `xar_courtier_creator_postreview22_20260820`；它以创建角色同时不同于玩家的文化与信仰为硬断言，取代了只点击 heritage 标题、未真正证明动态文化的早期运行。
 - 实机链覆盖原生决议、取消零副作用、119/120 金门槛、七页目录、数值步进、动态文化/信仰、同家族、关窗重开保留、默认 120 金与验收自定义配置 348 金的两次真实交付，以及 AI 运行期闸门；两次购买均校验创建角色本体，`xar error.log = 0`。
 - 348 金只是验收向量，不是最高价格。
@@ -31,7 +32,7 @@
 1. 窗口仍属于存活、签约的真人玩家。
 2. 年龄在 0–120、六项能力在 0–100，已选特质仍属于生成目录并满足原生年龄、性别和冲突规则。
 3. 成人恰有一个教育特质、儿童没有教育特质；将领不超过 2 项、性格不超过 3 项。
-4. 玩家仍有足够金币，已选文化/信仰仍属于已载入目录，同家族选择仍有有效家族。
+4. 玩家仍有足够金币，已选文化/信仰仍属于已载入目录，已选 Rite 属于同一 Faith，同家族选择仍有有效家族。
 
 确认后先关闭窗口，令排队的双击失效；随后只创建一个低身角色，并用 `employer` 与必要时的 `add_courtier` 尝试交付。只有角色确实成为玩家廷臣后才应用能力、特质、家族与离廷锁，扣除一次 `xar_courtier_creator_cost` 并发送回执；若交付后置条件失败，未配置的临时角色以 `death_vanished` 回滚，不扣金、不写入玩家家族，也不发送成功回执。
 
@@ -41,6 +42,7 @@
 
 - `employer = root`
 - `culture` / `faith` 使用玩家选择的已载入条目
+- `rite` 与特质图标预览使用同一个角色变量：默认沿用玩家的 Rite，选择其他 Faith 时取该 Faith 的 `main_rite`。合法已选 Rite 在关窗重开时保留；旧 v2 配置缺少此字段时按相同规则补齐。当前 Faith 选择器不提供任意分支 Rite 选择。
 - 默认 `dynasty = none`；也可归入玩家当前宗族与家族
 - `random_traits = no`
 - 六项基础能力、年龄和性别由玩家配置
@@ -55,13 +57,14 @@
 
 ## 目录与定价
 
-- 教育 25、将领 17、身体 38、性格 36、其他 108；唯一 trait 并集 224 项，冲突元数据 95 组。
+- CK3 1.20.0.2：教育 25、将领 17、身体 38、性格 36、其他 110；唯一 trait 并集 226 项，冲突元数据仍为 95 组。
+- 原 `scholar` 已由原版改名为 `erudite`，仍为 50 点；新 `lifestyle_scholar` 是独立的 15 点追踪特质，最低 16 岁。`herald` 为 100 点；隐藏的 `cleric` 和调试掠夺特质不进入目录。
 - 年龄可在 0–120 间精确调整；六项基础能力可在 0–100 间用 `-10/-1/+1/+10` 调整。
 - 价格为 50 金塑造费，加年龄调整、生成的原生 trait 价格和六项原生非线性绝对能力价格，再减去默认六项能力均为 6 的 88 金基线；最终四舍五入且不低于 0。
 - 默认男性、30 岁、六项能力 6、`education_martial_3`、低身、玩家文化/信仰，价格 120 金。
 - 验收自定义向量为女性、20 岁、外交/勇武 16、其余能力 6，并选择 `education_intrigue_1`、`logistician`、`military_engineer`、`beauty_bad_1`、`lustful`、`diplomat`、动态文化/信仰及同家族，价格 348 金。
 
-价格只由 `common/script_values/xar_courtier_creator_values.txt` 中的 `xar_courtier_creator_cost` 计算；显示、确认校验和实际扣款引用同一个 script value。trait 目录与价格来自 `tools/courtier_traits_1_19_0_6.json`，由 `tools/gen_courtier_creator.py` 生成。
+价格只由 `common/script_values/xar_courtier_creator_values.txt` 中的 `xar_courtier_creator_cost` 计算；显示、确认校验和实际扣款引用同一个 script value。trait 目录与价格来自 `tools/courtier_traits_1_20_0_2.json`，由 `tools/gen_courtier_creator.py` 生成。历史 `courtier_traits_1_19_0_6.json` 保留，但主生成器拒绝把它作为新版输入。
 
 ## 验收边界
 

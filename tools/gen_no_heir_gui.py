@@ -5,8 +5,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "Crusader Kings III/game/gui/window_succession_event.gui"
 OUTPUT = ROOT / "XenoAmess_s_Eternal_Recurrence/gui/window_succession_event.gui"
-HEADER = "# GENERATED FILE - native 1.19 succession window plus XAR no-heir widget\n"
-NATIVE_SHA256 = "322971347711308a51bcb16e3c34a7bd9eae5e7938243699ec8fe3691d8c7406"
+HEADER = "# GENERATED FILE - native 1.20.0.2 succession window plus XAR no-heir widget\n"
+NATIVE_SHA256 = "80132a0b5bb2c3e8c8f7b676c964b2c2eafec731ca5e25b98092aa437564d438"
 ANCHOR = '\n}\n\n\nwindow = {\n\tname = "succession_select_destiny_window"'
 INJECTION = '\n\txar_no_heir_settlement_widget = {}\n'
 

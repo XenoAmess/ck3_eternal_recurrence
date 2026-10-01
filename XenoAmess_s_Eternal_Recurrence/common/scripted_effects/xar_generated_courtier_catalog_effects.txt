@@ -297,7 +297,7 @@ xar_cc_rebuild_trait_catalogs_effect = {
 			target = scope:xar_cc_catalog_entry
 		}
 	}
-	trait:scholar = { save_scope_as = xar_cc_catalog_entry }
+	trait:erudite = { save_scope_as = xar_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
 			name = xar_cc_catalog_other
@@ -1340,6 +1340,13 @@ xar_cc_rebuild_trait_catalogs_effect = {
 			target = scope:xar_cc_catalog_entry
 		}
 	}
+	trait:herald = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
 	trait:peasant_leader = { save_scope_as = xar_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
@@ -1572,6 +1579,13 @@ xar_cc_rebuild_trait_catalogs_effect = {
 		}
 	}
 	trait:burdened = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_scholar = { save_scope_as = xar_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
 			name = xar_cc_catalog_other

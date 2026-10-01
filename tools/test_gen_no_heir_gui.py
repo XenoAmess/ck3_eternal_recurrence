@@ -29,6 +29,13 @@ class SuccessionProjectionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "digest changed"):
             gen_no_heir_gui.recover_source(projection)
 
+    def test_projection_keeps_native_ecclesiastical_succession_choices(self):
+        source = gen_no_heir_gui.recover_source(self.projection)
+        for button in ("continue_as_organization_button", "go_back_to_dynasty_button"):
+            self.assertEqual(source.count(f'name = "{button}"'), 1)
+        self.assertIn("SUCCESSION_EVENT_RETURN_TO_DYNASTY", source)
+        self.assertIn("ECCLESIASTICAL_RULER_SUCCESSION_DESCRIPTION", source)
+
     def test_local_native_source_matches_when_available(self):
         if not gen_no_heir_gui.SOURCE.is_file():
             self.skipTest("CK3 source is intentionally absent in clean checkouts")

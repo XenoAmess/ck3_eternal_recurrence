@@ -67,6 +67,8 @@ jobs:
         run: python tools/test_cla_check.py
       - name: Test succession GUI projection contract
         run: python tools/test_gen_no_heir_gui.py
+      - name: Test native courtier metadata compatibility
+        run: python tools/test_gen_courtier_creator.py
       - name: Test release manifest verification
         run: python tools/test_build_release.py
       - name: Test Vivhite release tooling

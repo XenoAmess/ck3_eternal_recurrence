@@ -221,6 +221,7 @@ xar_acceptance_courtier_purchase_observer_effect = {
 					is_courtier_of = root
 					culture = root.culture
 					faith = root.faith
+					rite = root.rite
 					NOT = { exists = dynasty }
 					has_trait = education_martial_3
 					diplomacy >= 6
@@ -273,6 +274,7 @@ xar_acceptance_courtier_purchase_observer_effect = {
 					is_courtier_of = root
 					culture = root.var:xar_cc_selected_culture
 					faith = root.var:xar_cc_selected_faith
+					rite = root.var:xar_cc_selected_rite
 					NOT = { culture = root.culture }
 					NOT = { faith = root.faith }
 					house = root.house
