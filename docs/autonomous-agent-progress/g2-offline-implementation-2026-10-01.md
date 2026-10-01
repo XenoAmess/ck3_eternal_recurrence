@@ -276,3 +276,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 读取实际玩家chaplain与full-ID候选，真实valid_position/valid_character/CanReassign独立bool，尚非完整typed action资格。ABI8spans5edges，Od/O2各23checks7wire通过；首C4389夹具RED保留。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-governance\clergy\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:46:46 Native Rite conversion final query
+
+实际currentFaith Rite集合、原生paid最终29A34C0判定与full RiteID就绪；不执行转换。ABI25指令spans/最终vtable，Od/O2各14checks9实际JSON通过。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\rite\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

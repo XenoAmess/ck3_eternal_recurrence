@@ -1,0 +1,339 @@
+{
+  "schema": "xar.ck3_12002.religion_conversion_rite_abi.v1",
+  "status": "GREEN",
+  "evidence_level": "static-confirmed",
+  "executable": "Z:\\ck3_mod_rewrite\\artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\binaries\\ck3.exe",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "anchors": [
+    {
+      "name": "window paid command actor",
+      "rva": "0x151697c",
+      "bytes": "8b057e52fc03",
+      "instructions": [
+        {
+          "rva": "0x151697c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [rip + 0x3fc527e]"
+        }
+      ]
+    },
+    {
+      "name": "window target Rite identity",
+      "rva": "0x1516986",
+      "bytes": "8b81c8000000",
+      "instructions": [
+        {
+          "rva": "0x1516986",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [rcx + 0xc8]"
+        }
+      ]
+    },
+    {
+      "name": "window payment flag",
+      "rva": "0x1516990",
+      "bytes": "c644244801",
+      "instructions": [
+        {
+          "rva": "0x1516990",
+          "mnemonic": "mov",
+          "operands": "byte ptr [rsp + 0x48], 1"
+        }
+      ]
+    },
+    {
+      "name": "target Rite full Faith reference",
+      "rva": "0x29a35a1",
+      "bytes": "8b86b8040000",
+      "instructions": [
+        {
+          "rva": "0x29a35a1",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [rsi + 0x4b8]"
+        }
+      ]
+    },
+    {
+      "name": "current Rite comes from Character+B4",
+      "rva": "0x29a35ac",
+      "bytes": "448b97b4000000",
+      "instructions": [
+        {
+          "rva": "0x29a35ac",
+          "mnemonic": "mov",
+          "operands": "r10d, dword ptr [rdi + 0xb4]"
+        }
+      ]
+    },
+    {
+      "name": "same Faith dispatch comparison",
+      "rva": "0x29a35de",
+      "bytes": "413b80b8040000",
+      "instructions": [
+        {
+          "rva": "0x29a35de",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [r8 + 0x4b8]"
+        }
+      ]
+    },
+    {
+      "name": "same Faith null-reasons Rite gate",
+      "rva": "0x29a3624",
+      "bytes": "e8d7003cff",
+      "instructions": [
+        {
+          "rva": "0x29a3624",
+          "mnemonic": "call",
+          "operands": "0x1d63700"
+        }
+      ]
+    },
+    {
+      "name": "different Faith final rules gate",
+      "rva": "0x29a365e",
+      "bytes": "e87dff3bff",
+      "instructions": [
+        {
+          "rva": "0x29a365e",
+          "mnemonic": "call",
+          "operands": "0x1d635e0"
+        }
+      ]
+    },
+    {
+      "name": "native payment flag branch",
+      "rva": "0x29a36de",
+      "bytes": "41807f2800",
+      "instructions": [
+        {
+          "rva": "0x29a36de",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [r15 + 0x28], 0"
+        }
+      ]
+    },
+    {
+      "name": "native piety cost",
+      "rva": "0x29a36ee",
+      "bytes": "e8ed060000",
+      "instructions": [
+        {
+          "rva": "0x29a36ee",
+          "mnemonic": "call",
+          "operands": "0x29a3de0"
+        }
+      ]
+    },
+    {
+      "name": "whole piety to native fixed point",
+      "rva": "0x29a3741",
+      "bytes": "4869cba0860100",
+      "instructions": [
+        {
+          "rva": "0x29a3741",
+          "mnemonic": "imul",
+          "operands": "rcx, rbx, 0x186a0"
+        }
+      ]
+    },
+    {
+      "name": "final rule and payment result",
+      "rva": "0x29a38a8",
+      "bytes": "4022f7",
+      "instructions": [
+        {
+          "rva": "0x29a38a8",
+          "mnemonic": "and",
+          "operands": "sil, dil"
+        }
+      ]
+    },
+    {
+      "name": "Rite rules target scope type42",
+      "rva": "0x1d637c6",
+      "bytes": "c74424202a000000",
+      "instructions": [
+        {
+          "rva": "0x1d637c6",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsp + 0x20], 0x2a"
+        }
+      ]
+    },
+    {
+      "name": "Rite rules instance field",
+      "rva": "0x1d637ed",
+      "bytes": "488b88f00e0000",
+      "instructions": [
+        {
+          "rva": "0x1d637ed",
+          "mnemonic": "mov",
+          "operands": "rcx, qword ptr [rax + 0xef0]"
+        }
+      ]
+    },
+    {
+      "name": "Rite rules member offset",
+      "rva": "0x1d637f4",
+      "bytes": "4881c110040000",
+      "instructions": [
+        {
+          "rva": "0x1d637f4",
+          "mnemonic": "add",
+          "operands": "rcx, 0x410"
+        }
+      ]
+    },
+    {
+      "name": "Rite rules null-reasons path",
+      "rva": "0x1d6380f",
+      "bytes": "e81ca79c01",
+      "instructions": [
+        {
+          "rva": "0x1d6380f",
+          "mnemonic": "call",
+          "operands": "0x372df30"
+        }
+      ]
+    },
+    {
+      "name": "Faith GetRites native getter",
+      "rva": "0xb801b0",
+      "bytes": "488d4120c3",
+      "instructions": [
+        {
+          "rva": "0xb801b0",
+          "mnemonic": "lea",
+          "operands": "rax, [rcx + 0x20]"
+        },
+        {
+          "rva": "0xb801b4",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "Faith GetRites reflection caller",
+      "rva": "0x244441e",
+      "bytes": "e88dbd73fe",
+      "instructions": [
+        {
+          "rva": "0x244441e",
+          "mnemonic": "call",
+          "operands": "0xb801b0"
+        }
+      ]
+    },
+    {
+      "name": "Rite association count offset",
+      "rva": "0xfbd061",
+      "bytes": "8b700c",
+      "instructions": [
+        {
+          "rva": "0xfbd061",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [rax + 0xc]"
+        }
+      ]
+    },
+    {
+      "name": "Rite association data and stride4",
+      "rva": "0xfbd0a5",
+      "bytes": "498b06488d0cb8",
+      "instructions": [
+        {
+          "rva": "0xfbd0a5",
+          "mnemonic": "mov",
+          "operands": "rax, qword ptr [r14]"
+        },
+        {
+          "rva": "0xfbd0a8",
+          "mnemonic": "lea",
+          "operands": "rcx, [rax + rdi*4]"
+        }
+      ]
+    },
+    {
+      "name": "Rite association identity resolver",
+      "rva": "0xfbd0ac",
+      "bytes": "e80f67f4ff",
+      "instructions": [
+        {
+          "rva": "0xfbd0ac",
+          "mnemonic": "call",
+          "operands": "0xf037c0"
+        }
+      ]
+    },
+    {
+      "name": "Rite association range stride4",
+      "rva": "0xfbd210",
+      "bytes": "498d0c98",
+      "instructions": [
+        {
+          "rva": "0xfbd210",
+          "mnemonic": "lea",
+          "operands": "rcx, [r8 + rbx*4]"
+        }
+      ]
+    },
+    {
+      "name": "Rite full generation comparison",
+      "rva": "0xf037f5",
+      "bytes": "44394008",
+      "instructions": [
+        {
+          "rva": "0xf037f5",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [rax + 8], r8d"
+        }
+      ]
+    },
+    {
+      "name": "native entry target identity",
+      "rva": "0x14c2f5e",
+      "bytes": "418b8058020000",
+      "instructions": [
+        {
+          "rva": "0x14c2f5e",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [r8 + 0x258]"
+        }
+      ]
+    },
+    {
+      "name": "native entry current Rite difference",
+      "rva": "0x14c2f6a",
+      "bytes": "3982b4000000",
+      "instructions": [
+        {
+          "rva": "0x14c2f6a",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [rdx + 0xb4], eax"
+        }
+      ]
+    }
+  ],
+  "anchor_count": 25,
+  "vtable": {
+    "primary_rva": "0x4770340",
+    "secondary_rva": "0x47703d8",
+    "validator_slot_rva": "0x4770370",
+    "validator_rva": "0x29a34c0"
+  },
+  "native_bindings": {
+    "command_size": "0x30",
+    "actor_id_offset": "0x20",
+    "target_rite_id_offset": "0x24",
+    "payment_flag_offset": "0x28",
+    "rite_storage_slot_rva": "0x5d1e2f8",
+    "faith_rites_getter_rva": "0xb801b0",
+    "faith_rites_container_offset": "0x20",
+    "rite_id_stride": 4,
+    "container_data_offset": 0,
+    "container_size_offset": 12
+  },
+  "boundary": "Read-only native validation and association list; no mutation or live evidence"
+}
