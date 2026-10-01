@@ -1,0 +1,145 @@
+{
+  "schema": "xar.ck3.12002.ce1-recovery-python-mailbox-provenance.v1",
+  "actual_complete_command_result": true,
+  "production_handle_named_queue_owner_provider_serializer": true,
+  "fixture_owned_native_memory_and_bindings": true,
+  "synthetic_hello_and_paused_event_context": true,
+  "only_packet_substitution": "request_id correlation",
+  "local_ck3_contacted": false,
+  "exact_build": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "same_day_near_pair": {
+    "pre_revision": 88,
+    "post_revision": 89,
+    "date_raw": 53175816,
+    "played_character_id": 50331652,
+    "pre_event_instance": 73,
+    "post_event_present": false,
+    "frozen_title_ids": [
+      67108866,
+      83886083
+    ],
+    "after_native_list_cleared": true,
+    "native_payload_manually_rewritten": false
+  },
+  "producer_delivery": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-mailbox\\delivery-result.json",
+    "sha256": "8b44efffcc5650ace4d09b76f9ddcb43bc3988b13e34211c8d89ff1d5f971c7d"
+  },
+  "producer_proof": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-mailbox\\attempt-002\\result.json",
+    "sha256": "c906b2907c9c883a6205f72e1186a46cb912e41a0485ef81f3d9a34c1f3f1464"
+  },
+  "producer_source_pins": {
+    "src\\ck3_12002_epidemic_recovery_mailbox.cpp": "27D0045EB7FC6B3558A0A7424226D3C16BE94161B26DE6D6E3726E9B9B1CE245",
+    "src\\ck3_12002_epidemic_recovery_mailbox_test.cpp": "E70CC3F505ADAACF3835625ED03CBDD42E25710701A80331B5326C56DDADC49D",
+    "src\\ck3_12002_epidemic_recovery.cpp": "ACB4C53DA4A117045BEE3D7C838B022EFEEE57D6ACADC0F30FC95B54981FA190",
+    "src\\ck3_12002.cpp": "A5C1411C5C7DB9838477A77209735D3AA47E18A291C9D7EBAF33E14885C23E6E",
+    "src\\ck3_12002_phase_definitions.cpp": "F3CA2432C958E00B109154338BE7E0FCC886B100BCF744B10E90730F79948B5D",
+    "src\\player_epidemic_recovery_v1.cpp": "F6C6949D6685D4C34775540C2DD77397F1E59170AE1B9D13809BA4CC0315EC61",
+    "src\\ck3_12002_query_mailbox.cpp": "56D652F5659CF62BEF58B425886DB75CD77D16C6A6DB6E0DB8E7D17931F7FA7F",
+    "src\\ck3_12002_thread_runtime.cpp": "BC2FB5BC895DE7FFBF768B6931A3FA5D938CC8F22A597AD764824F37863ECF36",
+    "src\\main_thread_query_mailbox_v1.cpp": "FBB79700DCA06DCBB8AA9FB9057681BA12529A5CDF9D068E35E560F2B94502AB",
+    "src\\protocol.cpp": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708"
+  },
+  "wire": [
+    {
+      "name": "empty-list.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-mailbox\\attempt-002\\O2\\wire\\empty-list.json",
+      "sha256": "2A24641FE013DB896526D8FF6B6726A883F03F6050070A6CFA8DD0D9696DB567",
+      "request_id": "epidemic-recovery-empty",
+      "step": "query-player-epidemic-recovery-v1",
+      "status": "available",
+      "query_sequence": 4,
+      "observation_revision": 7,
+      "snapshot_revision": 90,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "requested_title_id": 0,
+      "counties": []
+    },
+    {
+      "name": "list-unavailable.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-mailbox\\attempt-002\\O2\\wire\\list-unavailable.json",
+      "sha256": "AD5A5641AF466D393905D949435C63A1DA73AF73151C7B25958031306DF9462B",
+      "request_id": "epidemic-recovery-unavailable",
+      "step": "query-player-epidemic-recovery-v1",
+      "status": "unavailable",
+      "query_sequence": 5,
+      "observation_revision": 8,
+      "snapshot_revision": 90,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "requested_title_id": 0,
+      "counties": null
+    },
+    {
+      "name": "post89-county-a.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-mailbox\\attempt-002\\O2\\wire\\post89-county-a.json",
+      "sha256": "BD5B65E187EE7C93885EC1C739E2F2CCD5C4E146F8CCA80E1536EE28237156F1",
+      "request_id": "epidemic-recovery-post89-a",
+      "step": "query-player-epidemic-recovery-v1-title-67108866",
+      "status": "available",
+      "query_sequence": 2,
+      "observation_revision": 5,
+      "snapshot_revision": 89,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "requested_title_id": 67108866,
+      "counties": [
+        {
+          "landed_title_id": 67108866,
+          "minor_present": true,
+          "tiny_present": false
+        }
+      ]
+    },
+    {
+      "name": "post89-county-b.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-mailbox\\attempt-002\\O2\\wire\\post89-county-b.json",
+      "sha256": "754A68CB8B37AB75C8C5113145BA1C6002AC855193C7B12E20201018447FF557",
+      "request_id": "epidemic-recovery-post89-b",
+      "step": "query-player-epidemic-recovery-v1-title-83886083",
+      "status": "available",
+      "query_sequence": 3,
+      "observation_revision": 6,
+      "snapshot_revision": 89,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "requested_title_id": 83886083,
+      "counties": [
+        {
+          "landed_title_id": 83886083,
+          "minor_present": true,
+          "tiny_present": true
+        }
+      ]
+    },
+    {
+      "name": "pre88-two-counties.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-mailbox\\attempt-002\\O2\\wire\\pre88-two-counties.json",
+      "sha256": "F79B5451C7BE5847C36B8431ABCFD3F194E88DC599EF42939FAA1B8E0C2EE0E3",
+      "request_id": "epidemic-recovery-pre88",
+      "step": "query-player-epidemic-recovery-v1",
+      "status": "available",
+      "query_sequence": 1,
+      "observation_revision": 4,
+      "snapshot_revision": 88,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "requested_title_id": 0,
+      "counties": [
+        {
+          "landed_title_id": 67108866,
+          "minor_present": false,
+          "tiny_present": true
+        },
+        {
+          "landed_title_id": 83886083,
+          "minor_present": true,
+          "tiny_present": false
+        }
+      ]
+    }
+  ]
+}

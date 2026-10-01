@@ -1,0 +1,77 @@
+{
+  "schema": "xar.ck3_12002.religion_reform.actual_cpp_wire.v1",
+  "created_at": "2026-10-01T09:38:13.671059+00:00",
+  "producer_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\result.json",
+  "producer_result_sha256": "6643893b6b108c70e7a7501438284546c498c5fcea48c95433e9850c82d8bba1",
+  "production_path": "actual worker handler -> application-main mailbox -> composed provider -> serializer",
+  "callbacks": "fixture-process callbacks; no CK3, pipe, GUI or Steam",
+  "python_packet_edits": "none; test request correlation changes only the in-memory request_id",
+  "packets": {
+    "visible-create": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\visible-create.json",
+      "source_sha256": "82ceed70ce39e616fe043d33aeb6779e55eef2fb9085c270e28403662fec7951",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/visible-create.json",
+      "sha256": "82ceed70ce39e616fe043d33aeb6779e55eef2fb9085c270e28403662fec7951"
+    },
+    "visible-denied": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\visible-denied.json",
+      "source_sha256": "7ff16c4ae8c28c2f19aea70110a1bcf28829ac1a6de7ef15ede869ef67bd1a47",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/visible-denied.json",
+      "sha256": "7ff16c4ae8c28c2f19aea70110a1bcf28829ac1a6de7ef15ede869ef67bd1a47"
+    },
+    "hidden-window": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\hidden-window.json",
+      "source_sha256": "f71bb4afb664567c45f50d02a1c0e1090dbe4afd988346984d93af12af97349b",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/hidden-window.json",
+      "sha256": "f71bb4afb664567c45f50d02a1c0e1090dbe4afd988346984d93af12af97349b"
+    },
+    "absent-window": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\absent-window.json",
+      "source_sha256": "7607ae68f491e3ca07270c1c7f8388eb04225a9a7add7c24664a0e956349bca0",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/absent-window.json",
+      "sha256": "7607ae68f491e3ca07270c1c7f8388eb04225a9a7add7c24664a0e956349bca0"
+    },
+    "cost-unavailable": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\cost-unavailable.json",
+      "source_sha256": "573805ec5874d263b9e11ce783f414fa6990be5d1c3ac9353ecfba0e3f87fa9f",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/cost-unavailable.json",
+      "sha256": "573805ec5874d263b9e11ce783f414fa6990be5d1c3ac9353ecfba0e3f87fa9f"
+    },
+    "choices-unavailable": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\choices-unavailable.json",
+      "source_sha256": "f856295f75843fcd441cda3ebf0eb8a1b2b05883f3bed455cf0a3c545274e601",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/choices-unavailable.json",
+      "sha256": "f856295f75843fcd441cda3ebf0eb8a1b2b05883f3bed455cf0a3c545274e601"
+    },
+    "context-unavailable": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\context-unavailable.json",
+      "source_sha256": "5603dfac4d6284469308889f349c0a95af10d02a481eafb1d2efaab65a7d3a75",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/context-unavailable.json",
+      "sha256": "5603dfac4d6284469308889f349c0a95af10d02a481eafb1d2efaab65a7d3a75"
+    },
+    "query-unavailable": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\query-unavailable.json",
+      "source_sha256": "00b0f4eabc5ffe09d82751eca06e3b907e73fad6e04ae98112b115429c0b1988",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/query-unavailable.json",
+      "sha256": "00b0f4eabc5ffe09d82751eca06e3b907e73fad6e04ae98112b115429c0b1988"
+    },
+    "doctrine-hidden-row": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\doctrine-hidden-row.json",
+      "source_sha256": "42bc5754b59a09493243bc5852db1f39ba47dafd186d5014a894f654a943b318",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/doctrine-hidden-row.json",
+      "sha256": "42bc5754b59a09493243bc5852db1f39ba47dafd186d5014a894f654a943b318"
+    },
+    "empty-popup": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\empty-popup.json",
+      "source_sha256": "5268f66d099e52fe72d233e76db5d7aaebb1d8e59a7da6b2086729ffbe863ee9",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/empty-popup.json",
+      "sha256": "5268f66d099e52fe72d233e76db5d7aaebb1d8e59a7da6b2086729ffbe863ee9"
+    },
+    "visible-zero-cost": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-mailbox\\attempt-003\\O2\\wire\\visible-zero-cost.json",
+      "source_sha256": "ec7534cfd6706fdcaa952042d7c40e2909b7b3917f8e2a116dc9d328b6ac4c52",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_reform_context/visible-zero-cost.json",
+      "sha256": "ec7534cfd6706fdcaa952042d7c40e2909b7b3917f8e2a116dc9d328b6ac4c52"
+    }
+  }
+}

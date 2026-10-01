@@ -1,0 +1,154 @@
+{
+  "schema": "xar.g2.sway-completion-execution-python-fixtures.v1",
+  "recorded_at": "2026-10-01T09:43:44.494661+00:00",
+  "source_manifest": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway-completion\\execution-query-delivery-result.json",
+  "source_manifest_sha256": "b368e9e75127945bf91b637882afaa6236a44b6dbe6d92bd6005b818f95119b9",
+  "metadata_correction": {
+    "previous_manifest_sha256": "01af5905c79271fe7ef727bd3ad07048134fbc804726546e5f5e55964b8036e4",
+    "field": "endpoint.body_schema",
+    "previous_value": "xar.ck3.sway_completion_execution.v1",
+    "corrected_value": "xar.ck3.sway-completion-execution.v1",
+    "source_and_wire_bytes_changed": false
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_execution.hpp",
+      "sha256": "520617381633d79d9a5f9ed95d6300244e72defef363dd275f5010e1d7dc4141"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_execution.cpp",
+      "sha256": "e6a0223252265a227161228b698bc296a5562262e21ed9d675f9a24d1ece2897"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_execution_test.cpp",
+      "sha256": "d106374ab78c23efe0eb57cbc998dc94b94f872326cde9fd27c979c0a8b59e6a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_execution_fixture.py",
+      "sha256": "5beeefbd8fcf10b34938aa4634c98aaff04b832214dc314e8a9d8ae833528172"
+    },
+    {
+      "path": "docs/ck3-native-ai/ck3-1.20.0.2-sway-completion-execution.md",
+      "sha256": "e39c86179689d1c3f38ebc56ae0f67fa44599b3de051c12b74d62dae4e15d7ef"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_execution_mailbox_test.cpp",
+      "sha256": "42e4163b7237c28670f18754691042e383718c7bdc90e0ccd67c1acc92df5019"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_execution_mailbox_fixture.py",
+      "sha256": "4bc7efc921e12a9b18c3a83806ad94ba07aecc6dd835b020287b035d7f9dc2e2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_execution_mailbox.hpp",
+      "sha256": "45799f137b108c6f60cfadca51c687e9432f9b2efd94caf59b3003892e994413"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_execution_mailbox.cpp",
+      "sha256": "cc758689e219087c55ddf839471a0b5eba4b5ea47bb89f2fcc7693b2c08aa99d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_execution_handler.cpp",
+      "sha256": "7a05e9854a574f09dafde0d28d4e122ba3c9c189066d61e7c3ad9a5bb9f65005"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_execution_serializer.cpp",
+      "sha256": "435421bbc18d5dea7d4a7b5970087155b70e0e1ee0bfa02ccc5a2bec5373e29f"
+    }
+  ],
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_artifacts": [
+    {
+      "fixture": "hidden-good-command-result.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution-transport\\attempt-0001\\Release\\hidden-good-command-result.json",
+      "sha256": "4432154c6479d0bb50b398fd7d985aa879c152367542149848a385f582ef4c05"
+    },
+    {
+      "fixture": "not-attached-command-result.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution-transport\\attempt-0001\\Release\\not-attached-command-result.json",
+      "sha256": "564854f6e526b18b1aaf8f3e1b4b8fbaa19603ee6f05df2fb46355eb0fba5ff8"
+    },
+    {
+      "fixture": "wrong-generation-command-result.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution-transport\\attempt-0001\\Release\\wrong-generation-command-result.json",
+      "sha256": "e395dc6d9a16ad76e1a9d973fd218f9350adae023e36cc7423dfa662de9300d1"
+    },
+    {
+      "fixture": "bounded-latest-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\bounded-latest-wire.json",
+      "sha256": "bd294b027e6357001cb9fb7341120382aea5c89136afc842ea60c50bf4300383"
+    },
+    {
+      "fixture": "bounded-retention-gap-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\bounded-retention-gap-wire.json",
+      "sha256": "b08b483c5ac5d36f2f3ad8de58f36fb9430dfc032b32e7bec6bc50f72e1fa167"
+    },
+    {
+      "fixture": "detached-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\detached-wire.json",
+      "sha256": "0ccbda22c0f3117319862efac5f692f0efd4533e2759da3764dc8ac283a1f0f0"
+    },
+    {
+      "fixture": "hidden-bad-unresolved-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\hidden-bad-unresolved-wire.json",
+      "sha256": "4b8cecc4be89d47078c0d98610e5e16512a9bce5eaf658fc4d7e0fa9253d7b87"
+    },
+    {
+      "fixture": "hidden-good-resolved-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\hidden-good-resolved-wire.json",
+      "sha256": "f4050de6f24e4f0f88c3ddbc769a18284d01410756ded8798fd8611349d3493e"
+    },
+    {
+      "fixture": "not-attached-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\not-attached-wire.json",
+      "sha256": "0ccbda22c0f3117319862efac5f692f0efd4533e2759da3764dc8ac283a1f0f0"
+    },
+    {
+      "fixture": "sequence-filter-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\sequence-filter-wire.json",
+      "sha256": "5365014853736b33111d39dc043e3e7211c256fede8be4edfb329cfe6607d49f"
+    },
+    {
+      "fixture": "wrong-generation-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-execution\\attempt-0001\\Release\\wrong-generation-wire.json",
+      "sha256": "a4f9b6290da9739a4f55b7035226b5f0528bc1cba2413a3745c46ac138286f9d"
+    }
+  ],
+  "payload_sha256": {
+    "hidden-good-command-result.json": "4432154c6479d0bb50b398fd7d985aa879c152367542149848a385f582ef4c05",
+    "not-attached-command-result.json": "564854f6e526b18b1aaf8f3e1b4b8fbaa19603ee6f05df2fb46355eb0fba5ff8",
+    "wrong-generation-command-result.json": "e395dc6d9a16ad76e1a9d973fd218f9350adae023e36cc7423dfa662de9300d1",
+    "bounded-latest-wire.json": "bd294b027e6357001cb9fb7341120382aea5c89136afc842ea60c50bf4300383",
+    "bounded-retention-gap-wire.json": "b08b483c5ac5d36f2f3ad8de58f36fb9430dfc032b32e7bec6bc50f72e1fa167",
+    "detached-wire.json": "0ccbda22c0f3117319862efac5f692f0efd4533e2759da3764dc8ac283a1f0f0",
+    "hidden-bad-unresolved-wire.json": "4b8cecc4be89d47078c0d98610e5e16512a9bce5eaf658fc4d7e0fa9253d7b87",
+    "hidden-good-resolved-wire.json": "f4050de6f24e4f0f88c3ddbc769a18284d01410756ded8798fd8611349d3493e",
+    "not-attached-wire.json": "0ccbda22c0f3117319862efac5f692f0efd4533e2759da3764dc8ac283a1f0f0",
+    "sequence-filter-wire.json": "5365014853736b33111d39dc043e3e7211c256fede8be4edfb329cfe6607d49f",
+    "wrong-generation-wire.json": "a4f9b6290da9739a4f55b7035226b5f0528bc1cba2413a3745c46ac138286f9d"
+  },
+  "command_result_fixtures": [
+    "hidden-good-command-result.json",
+    "not-attached-command-result.json",
+    "wrong-generation-command-result.json"
+  ],
+  "body_fixtures": [
+    "bounded-latest-wire.json",
+    "bounded-retention-gap-wire.json",
+    "detached-wire.json",
+    "hidden-bad-unresolved-wire.json",
+    "hidden-good-resolved-wire.json",
+    "not-attached-wire.json",
+    "sequence-filter-wire.json",
+    "wrong-generation-wire.json"
+  ],
+  "boundary": {
+    "byte_identical_actual_native_outputs": true,
+    "command_result_envelopes_fabricated": false,
+    "native_tests_rerun": false,
+    "real_ck3_touched": false,
+    "readiness": "research/offline-verified",
+    "material_or_terminal_outcome_claimed": false
+  }
+}
