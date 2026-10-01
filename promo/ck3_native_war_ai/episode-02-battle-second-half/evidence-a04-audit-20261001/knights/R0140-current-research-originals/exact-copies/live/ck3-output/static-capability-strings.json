@@ -1,0 +1,7 @@
+{
+  "game.state.snapshot": true,
+  "game.state.map-ready": true,
+  "game.state.played-character": true,
+  "experimental-combat-phase-event-trace-begin-v1": true,
+  "experimental-combat-phase-event-trace-finish-v1": true
+}

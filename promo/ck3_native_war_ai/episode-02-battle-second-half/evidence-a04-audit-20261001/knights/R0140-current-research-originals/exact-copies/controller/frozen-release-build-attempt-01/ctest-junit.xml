@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Win32-ninja"
+	tests="8"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="DESKTOP-3FEVHD2"
+	time="8"
+	timestamp="2026-10-01T16:43:22"
+	>
+	<testcase name="xar_ck3_ingame_ui_navigation_v1_test" classname="xar_ck3_ingame_ui_navigation_v1_test" time="0.100313" status="run">
+		<properties/>
+		<system-out>offline parser/full-generation/RTTI/admission negative cases PASS; no game calls
+</system-out>
+	</testcase>
+	<testcase name="xar_ck3_native_bridge_scoped_character_variable_monitor_v1" classname="xar_ck3_native_bridge_scoped_character_variable_monitor_v1" time="0.166006" status="run">
+		<properties/>
+		<system-out>{"kind":"OFFLINE_FIXTURE_NOT_NATIVE_GAME_TRUTH","scoped_variable_monitor":{"schema_version":1,"scope":"two_full_character_ids_signature_weapon_and_current_house_pair","monitor_sequence_token":17,"character_ids":[101,201],"begin_date_raw":53146848,"signature_weapon_key_id":16777217,"native_identifier_table_token":502345483888,"native_identifier_epoch":1,"native_identifier_count":3,"failure_flags":0,"detours_uninstalled":true,"truncated":false,"whole_game_mutable_bundle_complete":false,"battle_event_causality_inferred_from_endpoint":false,"final_owner_state_reread_from_cached_pointer":false,"event_producer_definitions_read":false,"event_manager_token":0,"event_definition_count":0,"prearmed_event_definitions":[{"identity_read":false,"invocation":0,"actual_original_execution_observed":false,"identity_kind":"nearest_matched_notification_immediate_ancestor","matched_root_execution_depth":0,"active_effect_group_depth":0,"definition_token":0,"definition_index":0,"definition_id":0,"runtime_stats_ordinal":0,"definition...
+[This part of the test output was removed since it exceeds the threshold of 1024 bytes.]
+</system-out>
+	</testcase>
+	<testcase name="xar_ck3_native_bridge_combat_scoped_transition_chain_v1" classname="xar_ck3_native_bridge_combat_scoped_transition_chain_v1" time="0.591236" status="run">
+		<properties/>
+		<system-out>scoped journal / no-draw effect / queue RAX / death detach / traits / prestige / full-ID / +24 / RIP relocation / six ABI arguments / CMP flags / four-hook rollback PASS
+</system-out>
+	</testcase>
+	<testcase name="xar_ck3_native_bridge_combat_phase_event_trace_ring_v1" classname="xar_ck3_native_bridge_combat_phase_event_trace_ring_v1" time="0.22454" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+	<testcase name="xar_ck3_native_bridge_combat_phase_event_trace_detour_v1" classname="xar_ck3_native_bridge_combat_phase_event_trace_detour_v1" time="0.13051" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+	<testcase name="xar_ck3_native_bridge_combat_phase_event_trace_wire_v1" classname="xar_ck3_native_bridge_combat_phase_event_trace_wire_v1" time="0.589775" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+	<testcase name="xar_ck3_native_bridge_combat_phase_event_trace_managed_v1" classname="xar_ck3_native_bridge_combat_phase_event_trace_managed_v1" time="0.679459" status="run">
+		<properties/>
+		<system-out>combat phase event managed v1 fixture passed
+</system-out>
+	</testcase>
+	<testcase name="xar_ck3_native_bridge_main_thread_query_mailbox_v1" classname="xar_ck3_native_bridge_main_thread_query_mailbox_v1" time="4.32275" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+</testsuite>

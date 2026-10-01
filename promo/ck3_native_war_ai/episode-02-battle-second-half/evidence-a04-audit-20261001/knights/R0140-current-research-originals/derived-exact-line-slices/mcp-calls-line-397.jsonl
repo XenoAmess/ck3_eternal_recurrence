@@ -1,0 +1,1 @@
+{"tool": "ck3_open_character_window_v1", "arguments": {"character_id": 33437, "expected_revision": 5}, "at": "2026-10-01T08:53:31.683271+00:00", "seconds": 467.77792369999224, "is_error": true, "body": null, "content": [{"type": "text", "text": "Error executing tool ck3_open_character_window_v1: native UI binding mismatch: date_raw", "annotations": null, "meta": null}]}

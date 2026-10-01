@@ -1,0 +1,14 @@
+[
+  {
+    "source": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+    "bytes": 15264,
+    "sha256": "55D4077ABC6EA3B76D49E81AB9F736A74962BF262BCE2B1133A7C83394077B4F",
+    "exact_copy": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\before-knight_variable_monitor_projection.py"
+  },
+  {
+    "source": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+    "bytes": 12679,
+    "sha256": "BF45DD141D4B4E7E1C2373E219F026884F2A22EBDCE0CA620D08D204835FCA0E",
+    "exact_copy": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\before-verify_knight_variable_monitor_run.py"
+  }
+]

@@ -1,0 +1,6 @@
+[1/6] Building CXX object CMakeFiles\xar_ck3_ingame_ui_navigation_v1_test.dir\src\protocol.cpp.obj
+[2/6] Building CXX object CMakeFiles\xar_ck3_ingame_ui_navigation_v1_test.dir\tests\ingame_ui_navigation_v1_test.cpp.obj
+[3/6] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\frontend_gui_route_v1.cpp.obj
+[4/6] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ingame_ui_navigation_v1.cpp.obj
+[5/6] Linking CXX executable xar_ck3_ingame_ui_navigation_v1_test.exe
+[6/6] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\bridge.cpp.obj

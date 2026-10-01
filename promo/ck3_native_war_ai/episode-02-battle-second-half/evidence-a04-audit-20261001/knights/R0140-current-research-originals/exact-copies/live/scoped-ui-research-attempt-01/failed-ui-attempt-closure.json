@@ -1,0 +1,15 @@
+{
+  "status": "RED_UI_ADMISSION_NO_DAY_ADVANCE",
+  "failed_action_response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\before-victim-character-open.json",
+    "bytes": 11469,
+    "sha256": "025784CF9E5B2BC3767C70B5080BF2135F2AAFB8B6B72CAF8003876E98A937FE"
+  },
+  "drain_preserved": true,
+  "drain_error": null,
+  "day_advance_count": 0,
+  "owner_finish_submitted_once": true,
+  "actual_process_cleanup": "pending same-owner SDK completion",
+  "video_changed": false,
+  "six_gap_evidence_closed": false
+}

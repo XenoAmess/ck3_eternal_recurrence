@@ -1,0 +1,142 @@
+{
+  "at_utc": "2026-10-01T08:53:30.344906+00:00",
+  "phase": "before",
+  "role": "extra pre-UI checkpoint",
+  "source_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "bytes": 4424,
+    "sha256": "2828542D1B8F40496AC4E4D0036142BDDE3B77CC5E4E724E3DDFFBC53502BC4F"
+  },
+  "source_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 4,
+    "native_revision": 3,
+    "snapshot_id": "native:3",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-5abfe990ef98",
+    "connection_generation": 1,
+    "bridge_pid": 832,
+    "native_hello_session_generation": 0
+  },
+  "snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-source.json",
+      "bytes": 35001,
+      "sha256": "B9C4A6918CCF1CB44278DCFCCE7DC51DC1B396713BA6F5A17F32AAA3081E005D"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "save": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-save.json",
+      "bytes": 104,
+      "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-save.json",
+      "bytes": 13464,
+      "sha256": "80CBE142F7EF48AB9597D9F85A1CE167C5AD175519223F3249DEC9A1C36DE52D"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "save_body": {
+    "step": "save-checkpoint",
+    "accepted": true,
+    "status": "submitted",
+    "submission": {
+      "sequence": 1,
+      "requested_save_name": "xar_checkpoint",
+      "date_raw": 53146848
+    },
+    "backend_id": "native-headless",
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 52881742,
+      "sha256": "150c230021f9d8b0f8ba28dfdafc7fe18fedbc09cb0ce13ae5b301f54fcee8d9",
+      "date_raw": 53146848,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "pure-vanilla-enabled-mods-empty",
+        "environment_sha256": "ca61d05d6d74d24f05bff150a2ff66bdb622b9a1be6acbec1845fc4c23dc9252"
+      },
+      "history_index": 1,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-5abfe990ef98"
+    },
+    "episode_seed": {
+      "format_version": 1,
+      "name": "xar_episode_seed.ck3",
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\save games\\xar_episode_seed.ck3",
+      "size": 52881742,
+      "sha256": "150c230021f9d8b0f8ba28dfdafc7fe18fedbc09cb0ce13ae5b301f54fcee8d9",
+      "date_raw": 53146848,
+      "character_id": 29829,
+      "source_run_id": "native-29829-5abfe990ef98",
+      "source_checkpoint_name": "xar_checkpoint.ck3",
+      "immutable": true
+    },
+    "materialization": {
+      "available": true,
+      "save_dir": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\save games",
+      "mtime_ns": 1790844808934252800
+    }
+  },
+  "immutable": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+    "bytes": 52881742,
+    "sha256": "150C230021F9D8B0F8BA28DFDAFC7FE18FEDBC09CB0CE13AE5B301F54FCEE8D9"
+  },
+  "post_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-post-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-post-source.json",
+      "bytes": 37603,
+      "sha256": "FA78120998799508B6E0BD82129812A20D229D907F92D168C1B1CCD88BEF2F06"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "post_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 5,
+    "native_revision": 4,
+    "snapshot_id": "native:4",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-5abfe990ef98",
+    "connection_generation": 1,
+    "bridge_pid": 832,
+    "native_hello_session_generation": 0
+  },
+  "order_proof": "Actual root stage argv/results before UI actions; independent comparison still required",
+  "ui_window_unchanged_or_rng_unchanged_proven": false
+}

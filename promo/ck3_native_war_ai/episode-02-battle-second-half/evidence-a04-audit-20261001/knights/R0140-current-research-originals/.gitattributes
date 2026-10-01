@@ -1,0 +1,2 @@
+exact-copies/** -text -diff
+derived-exact-line-slices/** -text -diff

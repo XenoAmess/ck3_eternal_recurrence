@@ -1,0 +1,295 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_headless_session",
+  "mode": "native-headless",
+  "pipe": "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_429f0d7ed1824d6982911c0b8512456d",
+  "pid": 832,
+  "started_at": "2026-10-01T08:45:47.636542+00:00",
+  "finished_at": "2026-10-01T09:04:06.952709+00:00",
+  "elapsed_seconds": 1099.316,
+  "exit_reason": "stop",
+  "process_exit_code": null,
+  "shutdown": {
+    "nonce": "6a67589bbc674f08a8bd6c3863fd182e",
+    "ck3_pid": 832,
+    "ck3_creation_date": "20261001164655.964202+480",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 17176,
+    "watchdog_creation_date": "20261001164653.548670+480",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\ck3.json": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\watchdog-6a67589bbc674f08a8bd6c3863fd182e.ready.json": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\ck3.watchdog_error": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "restart_count": 0,
+  "restart_shutdowns": [],
+  "cold_start_checkpoint": null,
+  "frontend_first_warmup": {
+    "enabled": true,
+    "status": "ready",
+    "pipe": "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_429f0d7ed1824d6982911c0b8512456d",
+    "load_save_name": "war_film_checkpoint",
+    "target": {
+      "name": "war_film_checkpoint",
+      "load_save_name": "war_film_checkpoint",
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\save games\\war_film_checkpoint.ck3",
+      "size": 52880496,
+      "sha256": "c1276153435766a875b0984f1a3ad426cb3afcfb6ec33061cee6650538cffd2b"
+    },
+    "marker": "Setting idler 'Frontend'",
+    "timeout_seconds": 900.0,
+    "evidence_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\native-session\\frontend-first-warmup.json",
+    "warmup_bridge": {
+      "mode": "disabled",
+      "pipe": null,
+      "dll_path": null,
+      "injector_path": null,
+      "dll_injection": false,
+      "mcp": false,
+      "same_pipe_as_final": false
+    },
+    "final_bridge": {
+      "mode": "native-headless",
+      "pipe": "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_429f0d7ed1824d6982911c0b8512456d",
+      "dll_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+      "injector_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "dll_injection": true,
+      "load_save_name": "war_film_checkpoint"
+    },
+    "initial_launch": {
+      "continue_last_save": false,
+      "load_save_name": null,
+      "native_bridge_mode": "disabled",
+      "pipe": null,
+      "dll_injection": false
+    },
+    "warmup_pid": 1880,
+    "warmup_started_at": "2026-10-01T08:45:55.451999+00:00",
+    "frontend_marker": {
+      "marker": "Setting idler 'Frontend'",
+      "mode": "log-and-authenticated-window",
+      "fallback": true,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\logs\\debug.log",
+      "seen": true,
+      "polls": 1091,
+      "log_bytes": 57344,
+      "elapsed_seconds": 55.519,
+      "observed_at": "2026-10-01T08:46:50.972434+00:00",
+      "signals": {
+        "idler_marker": false,
+        "history_end": false,
+        "frontend_gui_complete": true,
+        "fallback_ready": true
+      },
+      "window": {
+        "ready": true,
+        "pid": 1880,
+        "expected_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "expected_creation_date": "20261001084553.533471+000",
+        "identity": {
+          "pid": 1880,
+          "parent_pid": 9064,
+          "name": "ck3.exe",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "creation_date": "20261001084553.533471+000",
+          "command_line": ""
+        },
+        "identity_authenticated": true,
+        "handle_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "reason": "authenticated_responsive_frontend",
+        "window": {
+          "hwnd": 1246780,
+          "pid": 1880,
+          "title": "Crusader Kings III",
+          "wm_null_responded": true,
+          "wm_null_last_error": 0,
+          "is_hung_app_window": false,
+          "responsive": true
+        }
+      }
+    },
+    "frontend_seen_at": "2026-10-01T08:46:50.972467+00:00",
+    "warmup_shutdown": {
+      "nonce": "3e7cadc8aaef4a6997deb4f375df93ef",
+      "ck3_pid": 1880,
+      "ck3_creation_date": "20261001084553.533471+000",
+      "ck3_exit_code": 1,
+      "job_active_processes_before_termination": 1,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 15548,
+      "watchdog_creation_date": "20261001084550.137784+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\ck3.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\watchdog-3e7cadc8aaef4a6997deb4f375df93ef.ready.json": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\ck3.watchdog_error": true,
+        "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    },
+    "warmup_bridge_lifecycle_cleared": true,
+    "warmup_bridge_pipe_reuse_authorized": false,
+    "target_before_final_launch": {
+      "name": "war_film_checkpoint",
+      "load_save_name": "war_film_checkpoint",
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\save games\\war_film_checkpoint.ck3",
+      "size": 52880496,
+      "sha256": "c1276153435766a875b0984f1a3ad426cb3afcfb6ec33061cee6650538cffd2b"
+    },
+    "before_final_launch_gate_passed": true,
+    "final_pid": 832,
+    "final_launch_started_at": "2026-10-01T08:47:00.468285+00:00",
+    "final_launch": {
+      "continue_last_save": false,
+      "load_save_name": "war_film_checkpoint",
+      "pipe": "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_429f0d7ed1824d6982911c0b8512456d",
+      "native_bridge_mode": "native-headless",
+      "dll_injection": true
+    }
+  },
+  "startup_slot0_probe": null,
+  "terminal": null,
+  "error": null,
+  "ok": true,
+  "injector_attestation": {
+    "schema": "xar.ck3.native-injector-attempt.v1",
+    "status": "INJECTOR_EXIT_ZERO_TREE_PROVEN",
+    "argv": [
+      "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "832",
+      "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll"
+    ],
+    "parent_pid": 9064,
+    "target_ck3_pid": 832,
+    "pid": 5980,
+    "creation_utc": "2026-10-01T08:46:57.866000+00:00",
+    "creation_source": "CreateProcess pinned handle/GetProcessTimes",
+    "returncode": 0,
+    "stdout_sha256": "E737AC47E0468F00DEC61B3163E0C414F63F14F1737C3A46A4B3724D4FD527EA",
+    "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "stdout_bytes": 81,
+    "stderr_bytes": 0,
+    "injector_root_reaped": true,
+    "complete_process_tree_proven": true,
+    "role_query_authorized": false,
+    "evidence_dir": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\injector-attempts\\6a67589bbc674f08a8bd6c3863fd182e",
+    "argv_asset": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\injector-attempts\\6a67589bbc674f08a8bd6c3863fd182e\\argv.json",
+      "bytes": 299,
+      "sha256": "BFDEDFC198C191276988CA901783AC03FA89C3CD50E227E570109FED90B5B0E5"
+    },
+    "evidence": {
+      "schema": "xar.ck3.injector-evidence.v1",
+      "assets": {
+        "stdout": {
+          "present": true,
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\injector-attempts\\6a67589bbc674f08a8bd6c3863fd182e\\stdout.bin",
+          "bytes": 81,
+          "sha256": "E737AC47E0468F00DEC61B3163E0C414F63F14F1737C3A46A4B3724D4FD527EA"
+        },
+        "stderr": {
+          "present": true,
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\injector-attempts\\6a67589bbc674f08a8bd6c3863fd182e\\stderr.bin",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        "job_report": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\injector-attempts\\6a67589bbc674f08a8bd6c3863fd182e\\job-report.json",
+          "bytes": 1632,
+          "sha256": "2FB6DDD61B823FBA0B067913F76C886F11C851867B9FFB6E4E39CD81B28F7569"
+        },
+        "helper_error": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\injector-attempts\\6a67589bbc674f08a8bd6c3863fd182e\\helper-error.json",
+          "bytes": 20,
+          "sha256": "7CAEEFE05C039F6C30BD0593D321171609C89CB15AC218F9E059154B1C8A035A"
+        }
+      },
+      "index": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\injector-attempts\\6a67589bbc674f08a8bd6c3863fd182e\\evidence-index.json",
+        "bytes": 1422,
+        "sha256": "854D360F9D5B88642471A0EB1C5E947E35C0D86B14066F26A274D3578209A990"
+      }
+    },
+    "pinned_executable": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+    "executable_sha256": "0DB9DEDB4452D1B98586A8DE176195EF47C27ADB7D09415198B09654BE0381E3",
+    "job_limit_flags": 8200,
+    "pre_resume_job_pids": [
+      5980
+    ],
+    "job_active_final": 0,
+    "job_pids_final": [],
+    "resume_previous_count": 1,
+    "stdout_retained_sha256": "E737AC47E0468F00DEC61B3163E0C414F63F14F1737C3A46A4B3724D4FD527EA",
+    "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "stdout_retained_bytes": 81,
+    "stderr_retained_bytes": 0,
+    "contained_job_report": {
+      "schema": "xar.ck3.contained-injector-job.v1",
+      "status": "EXIT",
+      "argv": [
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+        "832",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll"
+      ],
+      "pid": 5980,
+      "creation_utc": "2026-10-01T08:46:57.866000+00:00",
+      "pinned_executable": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "executable_sha256": "0DB9DEDB4452D1B98586A8DE176195EF47C27ADB7D09415198B09654BE0381E3",
+      "job_limit_flags": 8200,
+      "pre_resume_job_pids": [
+        5980
+      ],
+      "job_active_final": 0,
+      "job_pids_final": [],
+      "resume_previous_count": 1,
+      "returncode": 0,
+      "injector_root_reaped": true,
+      "complete_process_tree_proven": true,
+      "stdout_sha256": "E737AC47E0468F00DEC61B3163E0C414F63F14F1737C3A46A4B3724D4FD527EA",
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stdout_bytes": 81,
+      "stderr_bytes": 0,
+      "stdout_retained_sha256": "E737AC47E0468F00DEC61B3163E0C414F63F14F1737C3A46A4B3724D4FD527EA",
+      "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stdout_retained_bytes": 81,
+      "stderr_retained_bytes": 0,
+      "stdout_complete": true,
+      "stderr_complete": true,
+      "output_limit_bytes": 8388608,
+      "stdout_overflow": false,
+      "stdout_reader_error": null,
+      "stderr_overflow": false,
+      "stderr_reader_error": null
+    }
+  }
+}

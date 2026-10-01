@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "rev-parse",
+    "HEAD"
+  ],
+  "cwd": "C:\\w\\e2cap1001b",
+  "stdin": null,
+  "returncode": 0,
+  "stdout": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420\n",
+  "stderr": "",
+  "at_utc": "2026-10-01T08:36:12.923634+00:00"
+}

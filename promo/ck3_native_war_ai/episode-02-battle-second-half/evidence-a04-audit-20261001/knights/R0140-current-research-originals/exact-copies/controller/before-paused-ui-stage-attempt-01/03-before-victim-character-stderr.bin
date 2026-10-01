@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-04-scoped-ui\scoped_ui_research_a05.py", line 449, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-04-scoped-ui\scoped_ui_research_a05.py", line 446, in main
+    {'ui': original_ui, 'hover': knight_hover, 'fit': fit_combat_panel, 'save': save, 'advance': advance, 'monitor-begin': variable_monitor, 'monitor-finish': variable_monitor, 'finish': finish}[args.mode](args, config, bound)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-04-scoped-ui\scoped_ui_research_a05.py", line 150, in original_ui
+    action, ar = transport.call(output, args.label + '-open', name, {**parameters, 'expected_revision': values['revision']}, 120)
+                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\w\e2cap1001b\promo\ck3_native_war_ai\episode-02-battle-second-half\pursuit_live_step.py", line 93, in call
+    raise RuntimeError(f"managed request {name} returned {evidence}")
+RuntimeError: managed request before-victim-character-open returned {'request': {'path': 'C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\before-victim-character-open.json', 'bytes': 140, 'sha256': '79A85DDC3673A13C5FD9363465A9D55FB43B83AF159ACE78B7A83E5AFCCA0979'}, 'response': {'path': 'C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\before-victim-character-open.json', 'bytes': 11469, 'sha256': '025784CF9E5B2BC3767C70B5080BF2135F2AAFB8B6B72CAF8003876E98A937FE'}, 'result': 'RED', 'error': "RuntimeError('MCP call failed: ck3_open_character_window_v1; inspect journal')"}

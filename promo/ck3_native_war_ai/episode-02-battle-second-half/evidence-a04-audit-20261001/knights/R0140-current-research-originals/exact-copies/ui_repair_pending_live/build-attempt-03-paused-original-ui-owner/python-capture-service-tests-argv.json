@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "C:\\w\\e2research1001\\promo\\ck3_native_war_ai\\integration",
+    "-p",
+    "test_capture_hot_service.py"
+  ],
+  "cwd": "C:\\w\\e2research1001",
+  "utc": "2026-10-01T09:22:27.520883+00:00"
+}

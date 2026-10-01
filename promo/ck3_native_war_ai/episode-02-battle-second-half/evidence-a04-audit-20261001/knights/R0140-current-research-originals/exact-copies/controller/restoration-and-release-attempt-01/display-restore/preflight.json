@@ -1,0 +1,53 @@
+{
+  "at_utc": "2026-10-01T09:07:05.489472+00:00",
+  "screen_owner": {
+    "git": {
+      "branch": "codex/war-e2-scoped-ui-capturefix-20261001",
+      "dirty_entries": 0,
+      "head": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420"
+    },
+    "last_sequence": 3403,
+    "next_step": "fresh_Steam_offline_pixels_then_same_process_native_UI_and_scoped_death_chain",
+    "pid": 17496,
+    "repo": "C:\\w\\e2cap1001b",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "frozen_bfec9e22_source_build_and_offline_freshness_preparation",
+    "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a03",
+    "updated_at_utc": "2026-10-01T09:03:55.449361+00:00"
+  },
+  "mode": "restore",
+  "device_name": "\\\\.\\DISPLAY1",
+  "busy_inventory": [],
+  "before_mode": {
+    "PelsWidth": 2560,
+    "PelsHeight": 1440,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "enumerated_target": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "alignment_receipt": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-03-scoped-ui\\display-align-attempt-01\\readback.json",
+    "bytes": 1156,
+    "sha256": "E2D61AE3074CBB5F374F3EEBD42F1B83BC0C75F26F86872D06ECD11DE36D1E96"
+  },
+  "registry_update_requested": false,
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

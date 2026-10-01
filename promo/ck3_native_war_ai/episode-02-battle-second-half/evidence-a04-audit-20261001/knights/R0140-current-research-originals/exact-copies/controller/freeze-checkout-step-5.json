@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "branch",
+    "--show-current"
+  ],
+  "cwd": "C:\\w\\e2cap1001b",
+  "stdin": null,
+  "returncode": 0,
+  "stdout": "codex/war-e2-scoped-ui-capturefix-20261001\n",
+  "stderr": "",
+  "at_utc": "2026-10-01T08:36:12.971254+00:00"
+}

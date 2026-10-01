@@ -1,0 +1,13 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\configure-stdout.bin",
+    "bytes": 716,
+    "sha256": "561430F31AC1C12321331E7C43A98B469FFE11546E12B0B6A11DAA258294BE78"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\configure-stderr.bin",
+    "bytes": 39726,
+    "sha256": "01A1A7BEE7AA6452A868BEA010C09709177E29A13C76C9C39E8F425D482C44F8"
+  }
+}

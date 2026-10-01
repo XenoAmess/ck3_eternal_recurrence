@@ -1,0 +1,21 @@
+Test project C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-04-scoped-ui/frozen-release-build-attempt-01/build
+    Start   1: xar_ck3_ingame_ui_navigation_v1_test
+1/8 Test   #1: xar_ck3_ingame_ui_navigation_v1_test .........................   Passed    0.10 sec
+    Start  37: xar_ck3_native_bridge_scoped_character_variable_monitor_v1
+2/8 Test  #37: xar_ck3_native_bridge_scoped_character_variable_monitor_v1 ...   Passed    0.17 sec
+    Start  38: xar_ck3_native_bridge_combat_scoped_transition_chain_v1
+3/8 Test  #38: xar_ck3_native_bridge_combat_scoped_transition_chain_v1 ......   Passed    0.59 sec
+    Start  39: xar_ck3_native_bridge_combat_phase_event_trace_ring_v1
+4/8 Test  #39: xar_ck3_native_bridge_combat_phase_event_trace_ring_v1 .......   Passed    0.22 sec
+    Start  40: xar_ck3_native_bridge_combat_phase_event_trace_detour_v1
+5/8 Test  #40: xar_ck3_native_bridge_combat_phase_event_trace_detour_v1 .....   Passed    0.13 sec
+    Start  41: xar_ck3_native_bridge_combat_phase_event_trace_wire_v1
+6/8 Test  #41: xar_ck3_native_bridge_combat_phase_event_trace_wire_v1 .......   Passed    0.59 sec
+    Start  42: xar_ck3_native_bridge_combat_phase_event_trace_managed_v1
+7/8 Test  #42: xar_ck3_native_bridge_combat_phase_event_trace_managed_v1 ....   Passed    0.68 sec
+    Start 139: xar_ck3_native_bridge_main_thread_query_mailbox_v1
+8/8 Test #139: xar_ck3_native_bridge_main_thread_query_mailbox_v1 ...........   Passed    4.32 sec
+
+100% tests passed, 0 tests failed out of 8
+
+Total Test time (real) =   8.63 sec

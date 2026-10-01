@@ -1,0 +1,774 @@
+{
+  "schema": "ck3.e2.R0140-actual-research-facts/v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0140",
+  "native_episode_run_id": "native-29829-5abfe990ef98",
+  "source_commit": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420",
+  "source_clean_at_screen_release": {
+    "branch": "codex/war-e2-scoped-ui-capturefix-20261001",
+    "dirty_entries": 0,
+    "head": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420"
+  },
+  "DLL": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bytes": 3551232,
+    "sha256": "405040213C99F1FBC73AC2C9236EDBED7E2DD416289F87431D687FB366D167D3"
+  },
+  "PID": 832,
+  "actor_id": 29829,
+  "victim_id": 33437,
+  "killer_id": 34120,
+  "combat_id": 16777218,
+  "before_date_raw": 53146848,
+  "planned_after_date_raw_not_observed": 53146872,
+  "actual_after_date_raw": 53146848,
+  "actual_day_advance": 0,
+  "unique_UI_attempt": {
+    "source_line": 397,
+    "exact_line_sha256": "B5EA9FA1672CA6D9F9D41AF0758393E0D91A0F6644951105C8997D697773DC7B",
+    "exact_line_bytes": 373,
+    "call": {
+      "tool": "ck3_open_character_window_v1",
+      "arguments": {
+        "character_id": 33437,
+        "expected_revision": 5
+      },
+      "at": "2026-10-01T08:53:31.683271+00:00",
+      "seconds": 467.77792369999224,
+      "is_error": true,
+      "body": null,
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool ck3_open_character_window_v1: native UI binding mismatch: date_raw",
+          "annotations": null,
+          "meta": null
+        }
+      ]
+    }
+  },
+  "actual_pause_date_samples": [
+    {
+      "line": 360,
+      "at": "2026-10-01T08:51:48.707872+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 361,
+      "at": "2026-10-01T08:51:49.726149+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 362,
+      "at": "2026-10-01T08:51:50.735449+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 363,
+      "at": "2026-10-01T08:51:51.757228+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 364,
+      "at": "2026-10-01T08:51:52.778653+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 365,
+      "at": "2026-10-01T08:51:53.782941+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 366,
+      "at": "2026-10-01T08:51:54.790153+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 367,
+      "at": "2026-10-01T08:51:55.800328+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 368,
+      "at": "2026-10-01T08:51:56.813651+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 369,
+      "at": "2026-10-01T08:51:57.823489+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 370,
+      "at": "2026-10-01T08:51:58.830248+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 371,
+      "at": "2026-10-01T08:51:59.840935+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 372,
+      "at": "2026-10-01T08:52:00.849894+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 373,
+      "at": "2026-10-01T08:52:01.860275+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 374,
+      "at": "2026-10-01T08:52:02.869392+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 375,
+      "at": "2026-10-01T08:52:03.891926+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 376,
+      "at": "2026-10-01T08:52:04.901400+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 377,
+      "at": "2026-10-01T08:52:05.911086+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 378,
+      "at": "2026-10-01T08:52:06.918031+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 379,
+      "at": "2026-10-01T08:52:07.926012+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 380,
+      "at": "2026-10-01T08:52:08.938160+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 381,
+      "at": "2026-10-01T08:52:09.949200+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 382,
+      "at": "2026-10-01T08:52:10.959010+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 383,
+      "at": "2026-10-01T08:52:11.968214+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 384,
+      "at": "2026-10-01T08:52:12.977913+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 385,
+      "at": "2026-10-01T08:52:13.986906+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 386,
+      "at": "2026-10-01T08:52:14.998671+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 387,
+      "at": "2026-10-01T08:52:16.019635+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 388,
+      "at": "2026-10-01T08:52:17.029437+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 389,
+      "at": "2026-10-01T08:52:18.035002+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 390,
+      "at": "2026-10-01T08:52:19.052961+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 391,
+      "at": "2026-10-01T08:52:49.793429+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 392,
+      "at": "2026-10-01T08:53:27.048647+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 393,
+      "at": "2026-10-01T08:53:28.149185+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3
+    },
+    {
+      "line": 395,
+      "at": "2026-10-01T08:53:30.096626+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "line": 396,
+      "at": "2026-10-01T08:53:31.414078+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "line": 398,
+      "at": "2026-10-01T08:56:57.440503+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "line": 399,
+      "at": "2026-10-01T08:56:59.548070+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    },
+    {
+      "line": 400,
+      "at": "2026-10-01T09:04:03.742510+00:00",
+      "date_raw": 53146848,
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4
+    }
+  ],
+  "failed_UI_heartbeat_original": {
+    "candidate_id": "application_main_thread_war_entry_v1",
+    "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+    "installed": true,
+    "sdl_poll_event_hook_installed": true,
+    "observed_sdl_poll_event_target": 140696396183344,
+    "stop": false,
+    "failure": 0,
+    "pump_epochs": 23346,
+    "owner_verified_pump_epochs": 23346,
+    "consecutive_verified": 7396,
+    "published_sequence": 2,
+    "completed_sequence": 2,
+    "executor_started_requests": 2,
+    "executor_started_sequence": 2,
+    "executor_started_pump_epoch": 23345,
+    "owner_tid": 13000,
+    "current_tid": 13000,
+    "rng_owner_tid": 0,
+    "tls_global": 1,
+    "tls_context": 2086372011936,
+    "tls_marker": 1,
+    "jomini_state": 2097019929808,
+    "game_state": 2087495769552,
+    "date_raw": 53146848,
+    "paused": true,
+    "stamp_read_success": true,
+    "executed_requests": 2,
+    "executor_submission_enabled": true,
+    "application_main_observed": true,
+    "paused_main_thread_observed": true,
+    "ready": true
+  },
+  "raw_native_UI_command_result_preserved_in_R0140": false,
+  "RNG_owner_diagnosis": {
+    "layer": "ACTUAL_OBSERVED_STAMP_PLUS_EXACT_SOURCE_INFERENCE",
+    "actual_owner_thread_id": 13000,
+    "actual_rng_owner_thread_id": 0,
+    "source_inferred_early_refusal": "owner_fresh_snapshot_admission_failed",
+    "source_inferred_default_UI_date_raw": 0,
+    "not_wire_readback": true,
+    "outer_MCP_actual_error": "native UI binding mismatch: date_raw",
+    "the_guard_was_not_relaxed_in_this_run": true
+  },
+  "monitor_observation": {
+    "research_status": "RED_UI_ADMISSION_NO_DAY_ADVANCE",
+    "day_advanced": false,
+    "original_monitor_records": 4,
+    "old_cross_thread_projection_rejection": "variable monitor: every record same declared window",
+    "zero_writers_and_house_calls": true,
+    "arm_values_are_character_state": false,
+    "killer_initial_native_getter_observed": false,
+    "prearmed_definitions_are_actual_producer_execution": false,
+    "limits": [
+      "Seven source-bound prearmed roots are not seven actually executed notifications.",
+      "No write is published in this observed failed admission window; coverage remains only the two-character signature setter contract.",
+      "33437 native original getter reports read=true/present=false. 34120 has no native getter here, so native initial state is unobserved.",
+      "Single saved endpoint gives initial character/variable state only; no post-UI checkpoint, RNG equality, day transition or full case closure."
+    ]
+  },
+  "monitor_drain_and_uninstall_source": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\failed-ui-monitor-end.json",
+  "SDK_completion": {
+    "schema_version": 1,
+    "server_instance_id": "f8e99552-221f-4dfa-bd75-aa5153755df7",
+    "target_id": "ck3-e2-scoped-ui-20261001-a03",
+    "identity": {
+      "token_user": "1",
+      "desktop": "WinSta0\\Default",
+      "machine": "DESKTOP-3FEVHD2",
+      "process_id": 6520
+    },
+    "identity_matches_profile": true,
+    "process_gates": {
+      "ck3.exe": [],
+      "dowser.exe": [],
+      "ffmpeg.exe": [],
+      "obs64.exe": [],
+      "xar_ck3_bridge_injector.exe": []
+    },
+    "process_gate_errors": {},
+    "jobs": [
+      {
+        "job_id": "70e4078e-1bda-42df-bb72-2e3e20f82252",
+        "request_id": "e2-scoped-ui-20261001-a03-root",
+        "job_name": "scoped-ui-research-capture",
+        "pid": 3632,
+        "state": "exited",
+        "exit_code": 0,
+        "started_unix": 1790844335.4901812,
+        "stdout_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\operator-state-a01\\jobs\\70e4078e-1bda-42df-bb72-2e3e20f82252\\stdout.log",
+        "stderr_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\operator-state-a01\\jobs\\70e4078e-1bda-42df-bb72-2e3e20f82252\\stderr.log",
+        "available_controls": []
+      }
+    ]
+  },
+  "actual_game_cleanup": {
+    "nonce": "6a67589bbc674f08a8bd6c3863fd182e",
+    "ck3_pid": 832,
+    "ck3_creation_date": "20261001164655.964202+480",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 17176,
+    "watchdog_creation_date": "20261001164653.548670+480",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\ck3.json": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\watchdog-6a67589bbc674f08a8bd6c3863fd182e.ready.json": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\ck3.watchdog_error": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "display_restore": {
+    "at_utc": "2026-10-01T09:07:08.671538+00:00",
+    "screen_task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a03",
+    "mode": "restore",
+    "device_name": "\\\\.\\DISPLAY1",
+    "before_mode": {
+      "PelsWidth": 2560,
+      "PelsHeight": 1440,
+      "BitsPerPel": 32,
+      "DisplayFrequency": 60,
+      "DisplayOrientation": 0,
+      "Position_x": 0,
+      "Position_y": 0,
+      "DisplayFlags": 0
+    },
+    "actual_mode": {
+      "PelsWidth": 1024,
+      "PelsHeight": 768,
+      "BitsPerPel": 32,
+      "DisplayFrequency": 60,
+      "DisplayOrientation": 0,
+      "Position_x": 0,
+      "Position_y": 0,
+      "DisplayFlags": 0
+    },
+    "desktop_size": [
+      1024,
+      768
+    ],
+    "original_image_size": [
+      1024,
+      768
+    ],
+    "verified": true,
+    "screenshot": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\restoration-and-release-attempt-01\\display-restore\\original-desktop-after-mode.png",
+      "bytes": 600464,
+      "sha256": "3615E57747C7601D261EA33C73F73BF57416D3FDDA919FA435458850906783BF"
+    },
+    "visual_review": "pending root original image inspection",
+    "registry_update_requested": false,
+    "steam_online_switch": false,
+    "input_mouse_or_keyboard": false
+  },
+  "screen_release": {
+    "returncode": 0,
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 3404,
+      "event_id": "156871760c9b4d21b8e676306c296c14",
+      "timestamp_utc": "2026-10-01T09:07:09.349462+00:00",
+      "kind": "completed",
+      "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a03",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "native_research_capture_stopped_original_display_restored_assets_retained",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\w\\e2cap1001b",
+      "git": {
+        "branch": "codex/war-e2-scoped-ui-capturefix-20261001",
+        "dirty_entries": 0,
+        "head": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420"
+      }
+    }
+  },
+  "six_gaps": [
+    {
+      "key": "nextday_character_ui",
+      "name": "骑士次日角色界面",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "knight_roster_change",
+      "name": "骑士名单变化",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "complete_battle_window",
+      "name": "完整战斗窗",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "knight_selector",
+      "name": "骑士选择器",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "unique_actual_death_execution_path",
+      "name": "本次受害者唯一实际死亡执行路径",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "full_case_13_domain_mutable_chain",
+      "name": "本案13域完整可变状态链",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    }
+  ],
+  "six_gap_evidence_closed": false,
+  "global_mutable_bundle_complete": false,
+  "unique_cause_closed": false,
+  "full_case_13_domain_chain_closed": false,
+  "latest_private_sampling_repair": {
+    "source_commit": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+    "status": "SOURCE_REPAIR_AND_OFFLINE_VALIDATION_ONLY_LIVE_PENDING",
+    "original_commit_receipt": {
+      "source_commit": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+      "source": "C:\\w\\e2research1001",
+      "branch": "codex/war-e2-mechanism-closure-20261001",
+      "no_master_intake": true,
+      "live_pending": true
+    },
+    "original_frozen_checkout_receipt": {
+      "schema": "ck3.e2.clean-private-capture-checkout/v1",
+      "source": "C:\\w\\e2research1001",
+      "source_commit": "fda53e7b3e83053f235be3d5725a6238b89db9f0",
+      "checkout": "C:\\w\\e2cap1001c",
+      "branch": "codex/war-e2-scoped-ui-owner-capture-20261001",
+      "sparse_patterns": [
+        "/ck3_autonomous_player/",
+        "/docs/ck3-native-ai/",
+        "/promo/ck3_native_war_ai/integration/",
+        "/promo/ck3_native_war_ai/episode-02-battle-second-half/*.py",
+        "/tools/*.py",
+        "/tools/requirements*.txt"
+      ],
+      "pins": [
+        {
+          "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+          "bytes": 233042,
+          "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+        },
+        {
+          "path": "C:\\w\\e2cap1001c\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+          "bytes": 122365,
+          "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+        },
+        {
+          "path": "C:\\w\\e2cap1001c\\ck3_autonomous_player\\native_bridge\\research\\ingame_ui_navigation_v1_abi.json",
+          "bytes": 13028,
+          "sha256": "6DDD376FFE2216ABF58BA5DEDAB87AA22E1B20786779588906E96966A6C7A26A"
+        }
+      ],
+      "owner": "/root",
+      "reason": "Keep admitted runtime source immutable while independent verification proceeds",
+      "acceptance": "Exact-build six-gap causal and original UI evidence before any video revision",
+      "deadline": "Retain branch until user explicitly authorizes integration",
+      "master_intake_or_merge": false,
+      "no_game_launch": true,
+      "steps": [
+        {
+          "argv": [
+            "git",
+            "worktree",
+            "add",
+            "--no-checkout",
+            "-b",
+            "codex/war-e2-scoped-ui-owner-capture-20261001",
+            "C:\\w\\e2cap1001c",
+            "fda53e7b3e83053f235be3d5725a6238b89db9f0"
+          ],
+          "cwd": "C:\\w\\e2research1001",
+          "stdin": null,
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "Preparing worktree (new branch 'codex/war-e2-scoped-ui-owner-capture-20261001')\n",
+          "at_utc": "2026-10-01T09:31:08.855597+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "sparse-checkout",
+            "set",
+            "--no-cone",
+            "--stdin"
+          ],
+          "cwd": "C:\\w\\e2cap1001c",
+          "stdin": "/ck3_autonomous_player/\n/docs/ck3-native-ai/\n/promo/ck3_native_war_ai/integration/\n/promo/ck3_native_war_ai/episode-02-battle-second-half/*.py\n/tools/*.py\n/tools/requirements*.txt\n",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "",
+          "at_utc": "2026-10-01T09:31:08.915863+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "read-tree",
+            "-mu",
+            "HEAD"
+          ],
+          "cwd": "C:\\w\\e2cap1001c",
+          "stdin": null,
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "",
+          "at_utc": "2026-10-01T09:31:13.367285+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "HEAD"
+          ],
+          "cwd": "C:\\w\\e2cap1001c",
+          "stdin": null,
+          "returncode": 0,
+          "stdout": "fda53e7b3e83053f235be3d5725a6238b89db9f0\n",
+          "stderr": "",
+          "at_utc": "2026-10-01T09:31:13.411739+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "branch",
+            "--show-current"
+          ],
+          "cwd": "C:\\w\\e2cap1001c",
+          "stdin": null,
+          "returncode": 0,
+          "stdout": "codex/war-e2-scoped-ui-owner-capture-20261001\n",
+          "stderr": "",
+          "at_utc": "2026-10-01T09:31:13.455335+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "status",
+            "--porcelain=v1"
+          ],
+          "cwd": "C:\\w\\e2cap1001c",
+          "stdin": null,
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "",
+          "at_utc": "2026-10-01T09:31:13.670188+00:00"
+        }
+      ]
+    },
+    "not_R0140_source_or_DLL": true,
+    "cannot_relabel_R0140_GREEN": true
+  },
+  "video_revision_started": false,
+  "render_export_upload_signoff_performed_by_archivist": false,
+  "archivist_actual_pixel_review": false,
+  "root_original_pixel_observation_is_source_record_only": true
+}

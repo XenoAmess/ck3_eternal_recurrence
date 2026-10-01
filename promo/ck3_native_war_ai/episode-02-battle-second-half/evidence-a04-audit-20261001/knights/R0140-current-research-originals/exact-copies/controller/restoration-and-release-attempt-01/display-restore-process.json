@@ -1,0 +1,23 @@
+{
+  "at_utc": "2026-10-01T09:07:08.769461+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\display_mode_research.py",
+    "--mode",
+    "restore",
+    "--screen-task-id",
+    "war-e2-six-gap-scoped-ui-screen-20261001-a03",
+    "--expected-sequence",
+    "3403",
+    "--alignment-receipt",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-03-scoped-ui\\display-align-attempt-01\\readback.json",
+    "--output-dir",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\restoration-and-release-attempt-01\\display-restore"
+  ],
+  "returncode": 0,
+  "stdout": "{\"result\": \"DISPLAY_MODE_READBACK_VERIFIED\", \"receipt\": {\"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\restoration-and-release-attempt-01\\\\display-restore\\\\readback.json\", \"bytes\": 1183, \"sha256\": \"79DEEC4AF8D8715B9E7635C2441A3550BBDCED4AD0849FFF6844273A1C78E7C0\"}}\n",
+  "stderr": ""
+}

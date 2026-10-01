@@ -1,0 +1,6 @@
+{
+  "action": "private_phase_trace",
+  "step": "experimental-scoped-character-variable-monitor-finish-v1",
+  "expected_revision": 5,
+  "monitor_sequence_token": 458456270100707056
+}

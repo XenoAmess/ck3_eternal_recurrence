@@ -1,0 +1,12 @@
+{
+  "kind": "ASSISTANT_EXEC_TOOL_OBSERVATION_NOT_NATIVE_RESEARCH_FAILURE",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\verify_monitor_thread_semantics_a01.py"
+  ],
+  "returncode": 1,
+  "error": "ValueError: variable monitor: nonempty arm through final paused",
+  "cause": "Offline test used before-date for a compiled one-day fixture after-date. Actual R0140 same-day and commit fixture checks had passed. Source window/date guards unchanged.",
+  "source_sha256": "2B632939391F537D06B155019F36ADEACAE4E82069F9FE9C116A06E2A469ABC5",
+  "replacement_create_only": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\verify_monitor_thread_semantics_a02.py"
+}
