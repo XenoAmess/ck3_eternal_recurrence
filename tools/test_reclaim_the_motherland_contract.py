@@ -2,7 +2,7 @@
 
 This suite deliberately does not launch CK3.  It parses the small Clausewitz-script
 surface needed by the feature and checks the approved gameplay invariants.  The
-upstream SHA-256 pins are for CK3 1.19.0.6 (Scribe).
+upstream SHA-256 pins are for exact CK3 1.20.0.2 / Steam build 25588574.
 """
 
 from __future__ import annotations
@@ -18,6 +18,8 @@ from pathlib import Path
 from typing import Iterator
 
 import gen_reclaim_vassalization_override as vassalization
+import gen_reclaim_native_overrides as native_overrides
+import reclaim_the_motherland_vanilla_contract as native
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,22 +71,12 @@ VANILLA_DECISION = "situation_dynastic_cycle_claim_mandate_decision"
 RESTORATION_DECISION = "rmtm_claim_restoration_decision"
 MANDATE_PERCENT_VALUE = "claim_mandate_china_county_percentage_value"
 
-VANILLA_DECISION_FILE_SHA256 = (
-    "FFC1CE8BC35DDCAFA29956E4DC4159EB295E10E17FD0881CE5DD558671206651"
-)
-VANILLA_VALUES_FILE_SHA256 = (
-    "D91DCDBF7038FAE3D8D71B9C4156B2B23744DE6F718A34DA26D1656BC48B7706"
-)
-VANILLA_EFFECTS_FILE_SHA256 = (
-    "86574FB7CE246EF6D1B2741B211785D282AD39659E8771E0E5C714ACDC001782"
-)
+VANILLA_DECISION_FILE_SHA256 = native.CONTRACT["files"][native.CONTRACT["paths"]["decision"]]
+VANILLA_VALUES_FILE_SHA256 = native.CONTRACT["files"][native.CONTRACT["paths"]["values"]]
+VANILLA_EFFECTS_FILE_SHA256 = native.CONTRACT["files"][native.CONTRACT["paths"]["effects"]]
 # Parsed body digest of tgp_chaos_shattering_effect in the pinned file.
-VANILLA_CHAOS_EFFECT_BODY_SHA256 = (
-    "98B4ACA0F3E8844D0222C70674F639AF47BF4542A2EC58CCC1F911A84AD6E026"
-)
-VANILLA_MANDATE_DECISION_BODY_SHA256 = (
-    "1D628EBEA1DA3C1217BBFF73CE10CDAAD5E9EACCAAFF0B00DC6FEB23814E819F"
-)
+VANILLA_CHAOS_EFFECT_BODY_SHA256 = native.CONTRACT["definitions"][DISPATCH_EFFECT]["parsed_body_sha256"]
+VANILLA_MANDATE_DECISION_BODY_SHA256 = native.CONTRACT["definitions"][VANILLA_DECISION]["parsed_body_sha256"]
 
 VANILLA_RELATIVE_PATHS = {
     "decision": Path("common/decisions/dlc_decisions/tgp/tgp_dynastic_cycle_decisions.txt"),
@@ -388,8 +380,6 @@ def find_vanilla_game_root() -> Path | None:
     candidates.extend(
         [
             ROOT / "Crusader Kings III/game",
-            Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game"),
-            Path(r"D:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game"),
         ]
     )
     for candidate in candidates:
@@ -403,6 +393,120 @@ def block_statement_index(block: Block, predicate) -> int:
         if predicate(entry):
             return index
     raise AssertionError("required ordered statement was not found")
+
+
+TIERS = {f"tier_{name}": value for value, name in enumerate(("barony", "county", "duchy", "kingdom", "empire", "hegemony"))}
+
+
+def acceptance_scope(path: str, scopes: dict, current: dict):
+    if path in TIERS:
+        return TIERS[path]
+    if path.startswith("scope:"):
+        head, *tail = path[6:].split(".", 1)
+        value = scopes.get(head)
+        return value if not tail or value is None else value.get(tail[0])
+    if path.startswith("var:"):
+        return current.get("variables", {}).get(path[4:])
+    if path == "primary_title":
+        return current.get(path)
+    if path in current:
+        return current[path]
+    try:
+        return float(path)
+    except ValueError:
+        return path
+
+
+def acceptance_trigger(block: Block, scopes: dict, current: dict, mode: str = "AND") -> bool:
+    """Evaluate only the identity/recent-title contract subset; unknown syntax fails."""
+    results = []
+    for entry in block.entries:
+        key, value = entry.key, entry.value
+        if key in {"AND", "OR", "NOT", "NAND"} and isinstance(value, Block):
+            result = acceptance_trigger(value, scopes, current, key)
+        elif key == "tier_difference" and isinstance(value, Block):
+            target = acceptance_scope(scalar_values(value, "target", recursive=False)[0], scopes, current)
+            comparison = direct_entries(value, "value")[0]
+            result = current["highest_held_title_tier"] - target["highest_held_title_tier"] > float(comparison.value)
+        elif isinstance(value, Block):
+            scoped = acceptance_scope(key, scopes, current)
+            if key == "scope:send_tribute":
+                result = scoped is not None and acceptance_trigger(value, scopes, scoped)
+            elif isinstance(scoped, dict):
+                result = acceptance_trigger(value, scopes, scoped)
+            elif scoped is None and key.startswith(("var:", "scope:")):
+                result = False
+            else:
+                raise AssertionError(f"unsupported identity scope {key}")
+        elif key == "exists":
+            result = acceptance_scope(value, scopes, current) is not None
+        elif key == "government_has_flag":
+            result = value in current.get("flags", set())
+        elif key == "rmtm_primary_title_is_restoration_hegemony_trigger":
+            result = current.get("restoration", False) == (value == "yes")
+        elif key == "has_variable":
+            result = value in current.get("variables", {})
+        elif key == "always":
+            result = value == "yes"
+        elif key in {"highest_held_title_tier", "scope:recipient.sub_realm_size", "holder"}:
+            lhs = acceptance_scope(key, scopes, current)
+            rhs = acceptance_scope(value, scopes, current)
+            if entry.operator in {"=", "==", "?="}:
+                result = lhs == rhs
+            elif entry.operator == ">=":
+                result = lhs >= rhs
+            else:
+                raise AssertionError(f"unsupported comparison {entry}")
+        else:
+            raise AssertionError(f"unsupported identity trigger {entry}")
+        results.append(result)
+    if mode == "OR":
+        return any(results)
+    if mode == "NAND":
+        return not all(results)
+    if mode == "NOT":
+        return not any(results)
+    return all(results)
+
+
+def acceptance_value(block: Block, scopes: dict, current: dict, initial: float = 0) -> float:
+    result = initial
+    for entry in block.entries:
+        if entry.key == "limit":
+            continue
+        if entry.key == "if" and isinstance(entry.value, Block):
+            if acceptance_trigger(direct_block(entry.value, "limit"), scopes, current):
+                result = acceptance_value(entry.value, scopes, current, result)
+            continue
+        value = (acceptance_value(entry.value, scopes, current) if isinstance(entry.value, Block)
+                 else acceptance_scope(entry.value, scopes, current))
+        if entry.key == "value":
+            result = value
+        elif entry.key == "add":
+            result += value
+        elif entry.key == "subtract":
+            result -= value
+        elif entry.key == "multiply":
+            result *= value
+        else:
+            raise AssertionError(f"unsupported identity value {entry}")
+    return result
+
+
+def identity_acceptance(block: Block, scopes: dict, *, recent: bool = False) -> float:
+    descriptions = ({"rmtm_offer_vassalization_recently_independent_tt"} if recent else {
+        "offer_vassalization_interaction_aibehavior_hightier_tt",
+        "offer_vassalization_interaction_aibehavior_widetitletier_tt",
+        "offer_vassalization_interaction_aibehavior_hegemony_tt",
+    })
+    total = 0
+    for modifier in descendant_blocks(block, "modifier"):
+        if not set(scalar_values(modifier, "desc", recursive=False)) & descriptions:
+            continue
+        if acceptance_trigger(direct_block(modifier, "trigger"), scopes, scopes["actor"]):
+            addition = direct_entries(modifier, "add")[0].value
+            total += (acceptance_value(addition, scopes, scopes["actor"]) if isinstance(addition, Block) else float(addition))
+    return total
 
 
 class TestReclaimTheMotherlandContract(unittest.TestCase):
@@ -551,6 +655,7 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertTrue(
             has_assignment(access, "government_has_flag", "government_is_celestial")
         )
+        self.assertTrue(has_assignment(access, "government_has_flag", "government_uses_ministry_budget", recursive=False))
         self.assertTrue(has_assignment(access, "has_title", "title:h_china"))
         self.assertIn("NOT = { exists = holder }", trigger_text)
         self.assertIn("exists = global_var:rmtm_ministry_entitlement_title", trigger_text)
@@ -598,17 +703,23 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         data = VASSALIZATION_OVERRIDE.read_bytes()
         self.assertEqual([], vassalization.validate_committed_projection(data))
         text = data.decode("utf-8-sig")
+        modifiers = vassalization.MODIFIERS_OUTPUT.read_text(encoding="utf-8-sig")
         self.assertEqual(
-            text.count("rmtm_primary_title_is_restoration_hegemony_trigger = yes"),
+            modifiers.count("rmtm_primary_title_is_restoration_hegemony_trigger = yes"),
             4,
         )
         self.assertEqual(
-            text.count("rmtm_offer_vassalization_recently_independent_tt"), 1
+            modifiers.count("rmtm_offer_vassalization_recently_independent_tt"), 1
         )
         self.assertEqual(
-            text.count("rmtm_recently_independent_from_restoration_hegemony"), 2
+            modifiers.count("rmtm_recently_independent_from_restoration_hegemony"), 2
         )
-        self.assertIn(f"# Vanilla file SHA-256: {vassalization.SOURCE_SHA256}", text)
+        self.assertIn(vassalization.SOURCE_SHA256, text)
+        self.assertEqual(text.count(vassalization.PRIVATE_GENERAL + " = yes"), 1)
+        self.assertNotIn("rmtm_primary_title_is_restoration_hegemony_trigger", text)
+        private_defs = parse_clausewitz(modifiers)
+        self.assertEqual({entry.key for entry in private_defs.entries}, {vassalization.PRIVATE_GENERAL, vassalization.PRIVATE_DIPLOMACY})
+        self.assertEqual([], native_overrides.validate_committed_projections())
 
     def test_phase_four_recent_independence_duration_and_live_compression(self) -> None:
         release_text, _ = read_script(LOYALTY_VALUES)
@@ -628,43 +739,25 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertNotIn("years = 5", custom_text)
 
     def test_phase_four_twelve_identity_acceptance_vectors(self) -> None:
-        # Only the four identity branches touched by the generated projection are
-        # modeled here. All unrelated vanilla acceptance inputs remain in the
-        # byte-restorable interaction body checked above.
-        tier = {"county": 1, "duchy": 2, "kingdom": 3, "empire": 4}
-
-        def vanilla(recipient: str, celestial: bool, realm_size: int) -> int:
-            difference = 5 - tier[recipient]
-            rank = 20 * difference if celestial and difference > 1 else (10 if difference > 1 else 0)
-            refusal = 0
-            if recipient in {"kingdom", "empire"} and not celestial:
-                refusal = -50 - (50 if realm_size >= 10 else 0) - (100 if realm_size >= 20 else 0)
-                if recipient == "empire":
-                    refusal = int(refusal * 1.5)
-            return refusal + rank + 10
-
-        def phase_four(recipient: str, realm_size: int) -> int:
-            difference = 5 - tier[recipient]
-            rank = 10 if difference > 1 else 0
-            refusal = 0
-            if recipient in {"kingdom", "empire"}:
-                refusal = -50 - (50 if realm_size >= 10 else 0) - (100 if realm_size >= 20 else 0)
-                if recipient == "empire":
-                    refusal = int(refusal * 1.5)
-            return refusal + rank
-
+        # Execute the selected committed ASTs, including the new tier formula.
+        # This bounded model does not claim engine-wide semantic validation.
+        private = direct_block(parse_clausewitz(vassalization.MODIFIERS_OUTPUT.read_text(encoding="utf-8-sig")), vassalization.PRIVATE_DIPLOMACY)
+        game_root = find_vanilla_game_root()
+        if game_root is None:
+            self.skipTest("exact vanilla source unavailable for native comparison vectors")
+        upstream = direct_block(parse_clausewitz(native.definition(vassalization.DIPLOMACY, game_root)), vassalization.DIPLOMACY)
         vectors = (
-            ("kingdom", True, 1, 50, -40),
-            ("kingdom", True, 10, 50, -90),
-            ("kingdom", True, 20, 50, -190),
-            ("duchy", True, 1, 70, 10),
-            ("county", True, 1, 90, 10),
+            ("kingdom", True, 1, 30, -40),
+            ("kingdom", True, 10, 30, -90),
+            ("kingdom", True, 20, 30, -190),
+            ("duchy", True, 1, 50, 10),
+            ("county", True, 1, 70, 10),
             ("empire", True, 1, 10, -75),
             ("kingdom", False, 1, -30, -40),
             ("kingdom", False, 10, -80, -90),
             ("kingdom", False, 20, -180, -190),
-            ("duchy", False, 1, 20, 10),
-            ("county", False, 1, 20, 10),
+            ("duchy", False, 1, 30, 10),
+            ("county", False, 1, 40, 10),
             ("empire", False, 1, -65, -75),
         )
         self.assertEqual(len(vectors), 12)
@@ -672,9 +765,35 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             with self.subTest(
                 recipient=recipient, celestial=celestial, realm_size=realm_size
             ):
-                self.assertEqual(vanilla(recipient, celestial, realm_size), expected_vanilla)
-                self.assertEqual(phase_four(recipient, realm_size), expected_phase_four)
-                self.assertLess(phase_four(recipient, realm_size), vanilla(recipient, celestial, realm_size))
+                actor = {"highest_held_title_tier": 5, "flags": {"government_is_celestial"}, "restoration": True}
+                scopes = {"actor": actor, "recipient": {"highest_held_title_tier": TIERS["tier_" + recipient], "flags": {"government_is_celestial"} if celestial else set(), "sub_realm_size": realm_size}}
+                self.assertEqual(identity_acceptance(upstream, scopes), expected_vanilla)
+                self.assertEqual(identity_acceptance(private, scopes), expected_phase_four)
+                self.assertLess(expected_phase_four, expected_vanilla)
+                actor["restoration"] = False
+                self.assertEqual(identity_acceptance(private, scopes), expected_vanilla,
+                                 "ordinary actors must retain the new native formula")
+
+    def test_phase_four_recent_title_penalty_has_exact_owner_and_marker_guards(self) -> None:
+        private = direct_block(parse_clausewitz(vassalization.MODIFIERS_OUTPUT.read_text(encoding="utf-8-sig")), vassalization.PRIVATE_DIPLOMACY)
+        variable = "rmtm_recently_independent_from_restoration_hegemony"
+        actor = {"id": "new_owner"}
+        old_owner = {"id": "old_owner"}
+        title = {"holder": actor, "variables": {MARKER: True}}
+        recipient = {"primary_title": {"variables": {variable: title}}}
+        scopes = {"actor": actor, "recipient": recipient}
+        self.assertEqual(identity_acceptance(private, scopes, recent=True), -50)
+        for label, memory in (("expired", None), ("other dynasty", {"holder": old_owner, "variables": {MARKER: True}}),
+                              ("unmarked title", {"holder": actor, "variables": {}})):
+            with self.subTest(label=label):
+                recipient["primary_title"]["variables"] = {} if memory is None else {variable: memory}
+                self.assertEqual(identity_acceptance(private, scopes, recent=True), 0)
+        recipient["primary_title"]["variables"] = {variable: title}
+        title["holder"] = old_owner
+        self.assertEqual(identity_acceptance(private, scopes, recent=True), 0)
+        scopes["actor"] = old_owner
+        self.assertEqual(identity_acceptance(private, scopes, recent=True), -50,
+                         "the surviving marked title binds political memory to its current holder")
 
     def test_live_fixture_samples_only_county_or_higher_direct_vassals(self) -> None:
         text = FIXTURE_EFFECTS.read_text(encoding="utf-8-sig")
@@ -790,6 +909,7 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         }
         for name, relative in VANILLA_RELATIVE_PATHS.items():
             self.assertEqual(file_sha256(game_root / relative), expected[name])
+        native.assert_source_files(game_root)
 
         vanilla_effects = parse_clausewitz(
             (game_root / VANILLA_RELATIVE_PATHS["effects"]).read_text(encoding="utf-8-sig")
@@ -954,6 +1074,13 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             and has_key(loop, "destroy_title")
         ]
         self.assertEqual(len(weak_title_pruning_loops), 1)
+        for effect in (custom, vanilla):
+            loops = [loop for loop in descendant_blocks(effect, "every_in_list")
+                     if has_key(loop, "tgp_fire_china_realm_name_event_for_vassals_effect") and has_key(loop, "destroy_title")]
+            self.assertEqual(len(loops), 1)
+            loop = loops[0]
+            self.assertLess(block_statement_index(loop, lambda entry: entry.key == "every_held_title"),
+                            block_statement_index(loop, lambda entry: entry.key == "tgp_fire_china_realm_name_event_for_vassals_effect"))
         pruning_limit = direct_block(weak_title_pruning_loops[0], "limit")
         self.assertTrue(
             has_assignment(

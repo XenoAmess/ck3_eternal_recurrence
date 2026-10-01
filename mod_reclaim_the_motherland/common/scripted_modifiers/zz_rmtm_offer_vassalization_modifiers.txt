@@ -1,0 +1,448 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# CK3 1.20.0.2 / Steam build 25588574 source projection.
+# Vanilla common/scripted_modifiers/00_character_interaction_modifiers.txt SHA-256: E37452CB00C9D17160C2BE1B2D5CDD0547781FCB8362AE5267FD1EF7CE6ED776
+# Vanilla offer_vassalization_interaction_ai_acceptance_general SHA-256: 97DCF855A238D013F971B6ABD273C78B9B77F19F8CD1F4A9A1E6396FAA5020AC
+# Vanilla common/scripted_modifiers/00_character_interaction_modifiers.txt SHA-256: E37452CB00C9D17160C2BE1B2D5CDD0547781FCB8362AE5267FD1EF7CE6ED776
+# Vanilla offer_vassalization_interaction_ai_acceptance_diplomacy SHA-256: 4309ECC7D953DD03EFC6508F72EBE1FC50EC182448AE8D6C34453075F88D5726
+# Private offer path only; Later Dynasties use fixed +10 and lose celestial/hegemony perks; title-bound recent independence is -50.
+
+rmtm_offer_vassalization_interaction_ai_acceptance_general = {
+	# MAIN
+	# Heretic/Infidel modifier.
+	# Tier difference modifier.
+	# Dejure modifier.
+	# Distant/Remote Realm modifier.
+
+	# MINOR
+	# Rivalry modifier.
+	# Same Dynasty modifier.
+	# Cultural/Cultural Group modifiers.
+	# Ageism modifier vs kids.
+	# Ruler Legitimacy modifier.
+	# Claimant modifier.
+	# FP3 Piety Level modifier.
+
+	# OPINION SCALES
+	# Dread
+	# Compare Opinion modifier.
+
+	offer_vassalization_interaction_ai_acceptance_bonus = yes
+	offer_vassalization_interaction_ai_acceptance_religion_and_culture = yes
+	offer_vassalization_interaction_ai_acceptance_relation = yes
+	rmtm_offer_vassalization_interaction_ai_acceptance_diplomacy = yes
+
+	modifier = { #Vassal opinion
+		desc = offer_vassalization_interaction_aibehavior_vassal_opinion_tt
+		trigger = {
+			scope:actor = { number_of_powerful_vassals >= 1 }
+		}
+
+		add = {
+			value = 0
+			scope:actor = {
+				every_powerful_vassal = {
+					if = {
+						limit = {
+							save_temporary_opinion_value_as = {
+								name = vassal_opinion
+								target = scope:actor
+							}
+						}
+						add = scope:vassal_opinion
+					}
+				}
+
+				if = {
+					limit = {
+						number_of_powerful_vassals > 0
+					}
+					divide = number_of_powerful_vassals
+				}
+				else = {
+					divide = 5
+				}
+			}
+
+			divide = 5
+		}
+	}
+
+	modifier = { #Ageism modifier vs kids.
+		desc = offer_vassalization_interaction_aibehavior_child_tt
+		trigger = {
+			scope:actor = {
+				age < 12
+			}
+			scope:recipient = {
+				age > 16
+			}
+		}
+		add = -5
+	}
+
+	# INFLUENCE
+		modifier = {
+			add = 25
+			scope:influence_send_option ?= yes
+			desc = INFLUENCE_INTERACTION_ACCEPTANCE_SEND_OPTION
+		}
+
+		modifier = { #Bankrupt
+			desc = bankrupt_reason
+			trigger = {
+				scope:actor.gold <= -1
+			}
+			add = -100
+		}
+		#HISTORICALLY ADMIN PEOPLES WANT TO BE ADMIN
+		modifier = {
+			add = 30
+			scope:actor = {
+				government_has_mechanic = administrative
+			}
+			scope:recipient = {
+				culture = {
+					culture_is_historically_admin_trigger = yes
+				}
+			}
+
+			desc = "HISTORICAL_ADMIN_REASON"
+		}
+
+		modifier = { # AI-only weights, keep the pope from vassalizing too fast
+			trigger = {
+				exists = faith:catholic.religious_head
+				faith:catholic.religious_head = scope:actor
+				scope:actor = { is_ai = yes }
+			}
+			add = -50
+		}
+
+		modifier = { # A Spiritual Head of Faith of King rank or above will not put their see under a liege
+			desc = HEAD_OF_FAITH_REASON
+			trigger = {
+				scope:recipient = {
+					highest_held_title_tier >= tier_kingdom
+					faith = { has_doctrine_parameter = spiritual_head_of_faith }
+					faith.religious_head ?= this
+				}
+			}
+			add = -500
+		}
+
+		modifier = {
+			trigger = {
+				scope:actor = {
+					has_variable = severed_head_vassalization
+					var:severed_head_vassalization = {
+						this = scope:recipient
+					}
+				}
+			}
+			add = 200
+			desc = COWED_BY_SEVERED_HEAD_MODIFIER
+		}
+
+}
+
+rmtm_offer_vassalization_interaction_ai_acceptance_diplomacy = {
+
+	modifier = { #I am a King! Or Emperor!
+		desc = offer_vassalization_interaction_aibehavior_hightier_tt
+		trigger = {
+			OR = {
+				scope:actor = {
+					rmtm_primary_title_is_restoration_hegemony_trigger = yes
+				}
+				NAND = {
+					scope:actor = {
+						government_has_flag = government_is_celestial
+						highest_held_title_tier >= tier_hegemony
+					}
+					scope:recipient = {
+						government_has_flag = government_is_celestial
+					}
+				}
+			}
+			scope:recipient = { highest_held_title_tier >= tier_kingdom }
+		}
+		add = {
+			value = -50
+			if = {
+				limit = {
+					scope:recipient = {
+						OR = {
+							government_has_flag = government_is_republic
+							government_has_flag = government_is_theocracy
+						}
+					}
+				}
+				add = -50
+			}
+			if = {
+				limit = {
+					scope:recipient.sub_realm_size >= 10
+				}
+				add = -50
+			}
+			if = {
+				limit = {
+					scope:recipient.sub_realm_size >= 20
+				}
+				add = -100
+			}
+			if = {
+				limit = {
+					scope:recipient = { highest_held_title_tier = tier_empire }
+				}
+				multiply = 1.5 # We bump this up for emperors
+			}
+			if = {
+				limit = {
+					# i.e. called from mpo_offer_submission_or_ruin
+					scope:send_tribute ?= { always = yes }
+				}
+				multiply = 2
+			}
+		}
+	}
+
+	modifier = { #We just fought against each other.
+		desc = offer_vassalization_interaction_aibehavior_recent_war_tt
+		trigger = {
+			scope:recipient = {
+				any_truce_holder = {
+					this = scope:actor
+				}
+			}
+			# Ensure the truce wasn't purchased and is indeed from a war
+			scope:actor = {
+				NOT = {
+					has_purchased_truce_with_char = { TARGET = scope:recipient }
+				}
+			}
+			scope:recipient = {
+				NOT = {
+					has_purchased_truce_with_char = { TARGET = scope:actor }
+				}
+			}
+		}
+		add = -50
+	}
+	modifier = { # Recently became independent from this Later Dynasty.
+		desc = rmtm_offer_vassalization_recently_independent_tt
+		trigger = {
+			scope:recipient = {
+				primary_title = {
+					exists = var:rmtm_recently_independent_from_restoration_hegemony
+					var:rmtm_recently_independent_from_restoration_hegemony = {
+						has_variable = rmtm_restoration_hegemony
+						holder = scope:actor
+					}
+				}
+			}
+		}
+		add = -50
+	}
+	modifier = { #I fought an independence war against you.
+		desc = offer_vassalization_interaction_aibehavior_independence_war_tt
+		trigger = {
+			scope:recipient = {
+				exists = var:independence_war_former_liege
+				var:independence_war_former_liege = scope:actor
+			}
+		}
+		add = -200
+	}
+	# Distant Realm
+		modifier = { #Distant Realm — Overseas Connection
+			desc = offer_vassalization_interaction_aibehavior_distantrealm_tt
+			trigger = {
+				scope:actor = {
+					character_is_realm_neighbor = scope:recipient
+					NOT = { #Ibiza should want to be a vassal of Mallorca, etc.
+						character_is_land_realm_neighbor = scope:recipient
+						scope:actor = { is_rightful_liege_of = scope:recipient }
+					}
+				}
+			}
+			add = -100
+		}
+		modifier = { #Distant Realm — No Connection
+			desc = offer_vassalization_interaction_aibehavior_distantrealm_tt
+			trigger = {
+				scope:actor = {
+					NOT = {
+						character_is_realm_neighbor = scope:recipient
+					}
+				}
+				scope:recipient = {
+					# landless ruler count as within realm
+					trigger_if = {
+						limit = { is_landed = no }
+						NOT = { capital_county.holder = { target_is_same_character_or_above = scope:actor } }
+					}
+					capital_province = { squared_distance = { target = scope:actor.capital_province value < 200000 } }
+				}
+			}
+			add = -250
+		}
+		modifier = { #Remote Realm.
+			desc = offer_vassalization_interaction_aibehavior_remoterealm_tt
+			trigger = {
+				scope:actor = {
+					NOT = {
+						character_is_realm_neighbor = scope:recipient
+					}
+				}
+				scope:recipient = {
+					# landless ruler count as within realm
+					trigger_if = {
+						limit = { is_landed = no }
+						NOT = { capital_county.holder = { target_is_same_character_or_above = scope:actor } }
+					}
+					capital_province = { squared_distance = { target = scope:actor.capital_province value >= 200000 } }
+				}
+			}
+			add = -500
+		}
+	modifier = { # Iberian Struggle, less likely for outsiders to vassalize inside
+		add = -35
+		desc = iberian_struggle_reason_reason
+		trigger = {
+			scope:actor = {
+				NOT = {
+					any_character_struggle = { is_struggle_type = iberian_struggle }
+				}
+			}
+			scope:recipient = {
+				any_character_struggle = { is_struggle_type = iberian_struggle }
+			}
+		}
+	}
+	
+	modifier = { #Claimant modifier.
+		desc = offer_vassalization_interaction_aibehavior_claimant_tt
+		trigger = {
+			scope:actor.primary_title = {
+				scope:recipient = {
+					has_claim_on = prev
+				}
+			}
+		}
+		add = -20
+	}
+
+	modifier = { #Wide difference in rank
+		desc = offer_vassalization_interaction_aibehavior_widetitletier_tt
+		trigger = {
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value > 1
+				}
+			}
+		}
+		add = {
+			value = 10
+			if = {
+				limit = {
+					scope:actor = {
+						NOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
+					}
+				}
+				multiply = {
+					value = scope:actor.highest_held_title_tier
+					subtract = scope:recipient.highest_held_title_tier
+					subtract = 1
+				}
+			}
+			if = {
+				limit = {
+					scope:actor = {
+						government_has_flag = government_is_celestial
+						NOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
+					}
+					scope:recipient = {
+						government_has_flag = government_is_celestial
+					}
+				}
+				multiply = 2
+			}
+		}
+	}
+	modifier = { # Is a Hegemon
+		desc = offer_vassalization_interaction_aibehavior_hegemony_tt
+		trigger = {
+			scope:actor = {
+				highest_held_title_tier = tier_hegemony
+				NOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
+			}
+		}
+		add = 10
+	}
+	modifier = { # Allied
+		desc = offer_vassalization_interaction_aibehavior_allied_tt
+		trigger = {
+			scope:recipient = {
+				is_allied_to = scope:actor
+			}
+		}
+		add = 20
+	}
+	modifier = { # Is the Rightful Liege of recipient
+		desc = offer_vassalization_interaction_aibehavior_rightfulliegetitleholder_tt
+		trigger = {
+			scope:actor = {
+				trigger_if = {
+					limit = {
+						government_allows = government_ignores_rightful_liege_penalties
+					}
+					scope:recipient.primary_title = {
+						any_this_title_or_de_jure_above = { holder ?= scope:actor }
+					}
+				}
+				trigger_else = {
+					is_rightful_liege_of = scope:recipient
+				}
+			}
+		}
+		add = 20
+	}
+	modifier = { #Is not the Rightful Liege of recipient
+		desc = offer_vassalization_interaction_aibehavior_not_rightfulliegetitleholder_tt
+		trigger = {
+			NOT = {
+				scope:actor = { is_rightful_liege_of = scope:recipient }
+			}
+			NOT = { scope:send_tribute ?= { always = yes } } # i.e. not in mpo_offer_submission_or_ruin
+		}
+		add = -20
+	}
+	modifier = { # Encircled
+		desc = offer_vassalization_interaction_aibehavior_encircled_tt
+		trigger = {
+			scope:recipient = {
+				NOT = {
+					any_neighboring_top_liege_realm_owner = {
+						this != scope:actor
+					}
+				}
+				NOT = {
+					any_realm_county = {
+						is_coastal_county = yes
+					}
+				}
+			}
+		}
+		add = {
+			value = 20
+			if = {
+				limit = {
+					scope:send_tribute ?= { always = yes } # i.e. not in mpo_offer_submission_or_ruin
+				}
+				add = 30
+			}
+		}
+	}
+}

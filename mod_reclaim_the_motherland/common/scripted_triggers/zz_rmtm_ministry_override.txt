@@ -1,9 +1,10 @@
-﻿# Vanilla trigger source SHA-256: 8294C1D72ECC909428ABFBA27D6F10B127D796D2BEE350D1BB95024F36D60C99
-# Last-loaded extension of the vanilla ministry entitlement. The current Son of
-# Heaven always wins; only while h_china is vacant may the one globally selected
-# Later title continue the Three Departments and Six Ministries.
+﻿# GENERATED FILE. DO NOT EDIT.
+# CK3 1.20.0.2 / Steam build 25588574 source projection.
+# Vanilla common/scripted_triggers/10_tgp_triggers.txt SHA-256: 4BB6F9EDEBE8114F2E6B27C730122453E8F87E42AF0DF4BFCC2FD7727542402C
+# Vanilla tgp_has_access_to_ministry_trigger SHA-256: 1EFA20DB3EAD3DC4A69D4D75605EE5550D56D5F34980F54E3C5C3D3B4846C8DA
+# Native celestial and ministry-budget flags retained; only title access gains the existing unique Later Dynasty branch.
+
 tgp_has_access_to_ministry_trigger = {
-	government_has_flag = government_is_celestial
 	OR = {
 		has_title = title:h_china
 		AND = {
@@ -15,4 +16,6 @@ tgp_has_access_to_ministry_trigger = {
 			}
 		}
 	}
+	government_has_flag = government_is_celestial
+	government_has_flag = government_uses_ministry_budget
 }

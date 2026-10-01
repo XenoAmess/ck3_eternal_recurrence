@@ -1,261 +1,191 @@
 #!/usr/bin/env python3
-"""Generate the narrow RMTM projection of vanilla offer-vassalization logic."""
-
+"""Generate RMTM's private offer-vassalization path from exact CK3 1.20 sources."""
 from __future__ import annotations
 
 import argparse
-import hashlib
 import sys
 from pathlib import Path
 
+import reclaim_the_motherland_vanilla_contract as native
+from reclaim_the_motherland_vanilla_contract import extract_definition, replace_once, sha256_bytes
 
-ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_GAME_SOURCE = Path(
-    r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game\common"
-    r"\character_interactions\00_character_interactions.txt"
-)
-OUTPUT = (
-    ROOT
-    / "mod_reclaim_the_motherland/common/character_interactions"
-    / "zz_rmtm_offer_vassalization.txt"
-)
-SOURCE_SHA256 = "FDB0C52F8A3C0D03C0974D4F0916831B38BE47841C7DF1215FB44BDE0BB05D89"
-VANILLA_INTERACTION_SHA256 = (
-    "66713B5820CEAC2BF14810DE35D61B1B2737503D5720DC4843B0DAB060FE2E6B"
-)
+ROOT = native.ROOT
+DEFAULT_GAME_SOURCE = native.GAME / native.CONTRACT["paths"]["interaction"]
+OUTPUT = ROOT / "mod_reclaim_the_motherland/common/character_interactions/zz_rmtm_offer_vassalization.txt"
+MODIFIERS_OUTPUT = ROOT / "mod_reclaim_the_motherland/common/scripted_modifiers/zz_rmtm_offer_vassalization_modifiers.txt"
 DEFINITION = "offer_vassalization_interaction"
+GENERAL = "offer_vassalization_interaction_ai_acceptance_general"
+DIPLOMACY = "offer_vassalization_interaction_ai_acceptance_diplomacy"
+PRIVATE_GENERAL = "rmtm_" + GENERAL
+PRIVATE_DIPLOMACY = "rmtm_" + DIPLOMACY
+SOURCE_SHA256 = native.CONTRACT["files"][native.CONTRACT["paths"]["interaction"]]
+VANILLA_INTERACTION_SHA256 = native.CONTRACT["definitions"][DEFINITION]["normalized_text_sha256"]
 
 HIGH_TIER_VANILLA = """\
-\t\t\ttrigger = {
-\t\t\t\tNAND = {
-\t\t\t\t\tscope:actor = {
-\t\t\t\t\t\tgovernment_has_flag = government_is_celestial
-\t\t\t\t\t\thighest_held_title_tier >= tier_hegemony
-\t\t\t\t\t}
-\t\t\t\t\tscope:recipient = {
-\t\t\t\t\t\tgovernment_has_flag = government_is_celestial
-\t\t\t\t\t}
+\t\t\tNAND = {
+\t\t\t\tscope:actor = {
+\t\t\t\t\tgovernment_has_flag = government_is_celestial
+\t\t\t\t\thighest_held_title_tier >= tier_hegemony
 \t\t\t\t}
-\t\t\t\tscope:recipient = { highest_held_title_tier >= tier_kingdom }
+\t\t\t\tscope:recipient = {
+\t\t\t\t\tgovernment_has_flag = government_is_celestial
+\t\t\t\t}
 \t\t\t}
 """
 HIGH_TIER_RMTM = """\
-\t\t\ttrigger = {
-\t\t\t\tOR = {
-\t\t\t\t\tscope:actor = {
-\t\t\t\t\t\trmtm_primary_title_is_restoration_hegemony_trigger = yes
-\t\t\t\t\t}
-\t\t\t\t\tNAND = {
-\t\t\t\t\t\tscope:actor = {
-\t\t\t\t\t\t\tgovernment_has_flag = government_is_celestial
-\t\t\t\t\t\t\thighest_held_title_tier >= tier_hegemony
-\t\t\t\t\t\t}
-\t\t\t\t\t\tscope:recipient = {
-\t\t\t\t\t\t\tgovernment_has_flag = government_is_celestial
-\t\t\t\t\t\t}
-\t\t\t\t\t}
+\t\t\tOR = {
+\t\t\t\tscope:actor = {
+\t\t\t\t\trmtm_primary_title_is_restoration_hegemony_trigger = yes
 \t\t\t\t}
-\t\t\t\tscope:recipient = { highest_held_title_tier >= tier_kingdom }
-\t\t\t}
-"""
+""" + "\n".join("\t" + row for row in HIGH_TIER_VANILLA.splitlines()) + "\n\t\t\t}\n"
 
-RECENT_WAR_VANILLA = """\
-\t\t\tadd = -50
-\t\t}
-\t\tmodifier = { #I fought an independence war against you.
-"""
+RECENT_WAR_VANILLA = "\tmodifier = { #I fought an independence war against you.\n"
 RECENT_WAR_RMTM = """\
-\t\t\tadd = -50
-\t\t}
-\t\tmodifier = { # Recently became independent from this Later Dynasty.
-\t\t\tdesc = rmtm_offer_vassalization_recently_independent_tt
-\t\t\ttrigger = {
-\t\t\t\tscope:recipient = {
-\t\t\t\t\tprimary_title = {
-\t\t\t\t\t\texists = var:rmtm_recently_independent_from_restoration_hegemony
-\t\t\t\t\t\tvar:rmtm_recently_independent_from_restoration_hegemony = {
-\t\t\t\t\t\t\thas_variable = rmtm_restoration_hegemony
-\t\t\t\t\t\t\tholder = scope:actor
-\t\t\t\t\t\t}
+\tmodifier = { # Recently became independent from this Later Dynasty.
+\t\tdesc = rmtm_offer_vassalization_recently_independent_tt
+\t\ttrigger = {
+\t\t\tscope:recipient = {
+\t\t\t\tprimary_title = {
+\t\t\t\t\texists = var:rmtm_recently_independent_from_restoration_hegemony
+\t\t\t\t\tvar:rmtm_recently_independent_from_restoration_hegemony = {
+\t\t\t\t\t\thas_variable = rmtm_restoration_hegemony
+\t\t\t\t\t\tholder = scope:actor
 \t\t\t\t\t}
 \t\t\t\t}
 \t\t\t}
-\t\t\tadd = -50
 \t\t}
-\t\tmodifier = { #I fought an independence war against you.
-"""
+\t\tadd = -50
+\t}
+""" + RECENT_WAR_VANILLA
 
 NORMAL_RANK_VANILLA = """\
-\t\t\t\t\tOR = {
-\t\t\t\t\t\tNOT = { government_has_flag = government_is_celestial }
-\t\t\t\t\t\tscope:recipient = {
-\t\t\t\t\t\t\tNOT = { government_has_flag = government_is_celestial }
-\t\t\t\t\t\t}
-\t\t\t\t\t}
+\t\t\tmultiply = {
+\t\t\t\tvalue = scope:actor.highest_held_title_tier
+\t\t\t\tsubtract = scope:recipient.highest_held_title_tier
+\t\t\t\tsubtract = 1
+\t\t\t}
 """
 NORMAL_RANK_RMTM = """\
-\t\t\t\t\tOR = {
-\t\t\t\t\t\tNOT = { government_has_flag = government_is_celestial }
-\t\t\t\t\t\trmtm_primary_title_is_restoration_hegemony_trigger = yes
-\t\t\t\t\t\tscope:recipient = {
-\t\t\t\t\t\t\tNOT = { government_has_flag = government_is_celestial }
-\t\t\t\t\t\t}
+\t\t\tif = {
+\t\t\t\tlimit = {
+\t\t\t\t\tscope:actor = {
+\t\t\t\t\t\tNOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
 \t\t\t\t\t}
-"""
+\t\t\t\t}
+""" + "\n".join("\t" + row for row in NORMAL_RANK_VANILLA.splitlines()) + "\n\t\t\t}\n"
 
 CELESTIAL_RANK_VANILLA = """\
-\t\t\t\tscope:actor = {
-\t\t\t\t\tgovernment_has_flag = government_is_celestial
-\t\t\t\t\ttier_difference = {
+\t\t\t\t\tscope:actor = {
+\t\t\t\t\t\tgovernment_has_flag = government_is_celestial
+\t\t\t\t\t}
+\t\t\t\t\tscope:recipient = {
 """
 CELESTIAL_RANK_RMTM = """\
-\t\t\t\tscope:actor = {
-\t\t\t\t\tgovernment_has_flag = government_is_celestial
-\t\t\t\t\tNOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
-\t\t\t\t\ttier_difference = {
+\t\t\t\t\tscope:actor = {
+\t\t\t\t\t\tgovernment_has_flag = government_is_celestial
+\t\t\t\t\t\tNOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
+\t\t\t\t\t}
+\t\t\t\t\tscope:recipient = {
 """
-
-HEGEMONY_VANILLA = """\
-\t\t\ttrigger = {
-\t\t\t\tscope:actor = { highest_held_title_tier = tier_hegemony }
-\t\t\t}
-"""
+HEGEMONY_VANILLA = "\t\t\tscope:actor = { highest_held_title_tier = tier_hegemony }\n"
 HEGEMONY_RMTM = """\
-\t\t\ttrigger = {
-\t\t\t\tscope:actor = {
-\t\t\t\t\thighest_held_title_tier = tier_hegemony
-\t\t\t\t\tNOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
-\t\t\t\t}
+\t\t\tscope:actor = {
+\t\t\t\thighest_held_title_tier = tier_hegemony
+\t\t\t\tNOT = { rmtm_primary_title_is_restoration_hegemony_trigger = yes }
 \t\t\t}
 """
-
 PROJECTIONS = (
     (HIGH_TIER_VANILLA, HIGH_TIER_RMTM, "high-tier refusal exemption"),
     (RECENT_WAR_VANILLA, RECENT_WAR_RMTM, "five-year independence modifier"),
-    (NORMAL_RANK_VANILLA, NORMAL_RANK_RMTM, "normal rank bonus"),
-    (CELESTIAL_RANK_VANILLA, CELESTIAL_RANK_RMTM, "celestial rank bonus"),
+    (NORMAL_RANK_VANILLA, NORMAL_RANK_RMTM, "fixed Later Dynasty rank bonus"),
+    (CELESTIAL_RANK_VANILLA, CELESTIAL_RANK_RMTM, "celestial rank multiplier"),
     (HEGEMONY_VANILLA, HEGEMONY_RMTM, "generic hegemony bonus"),
 )
 
 
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest().upper()
-
-
-def extract_definition(source: str, name: str = DEFINITION) -> str:
-    source = source.replace("\r\n", "\n").replace("\r", "\n")
-    marker = f"{name} = {{"
-    start = source.find(marker)
-    if start < 0:
-        raise ValueError(f"definition not found: {name}")
-    brace = source.find("{", start)
-    depth = 0
-    quoted = False
-    escaped = False
-    in_comment = False
-    for index in range(brace, len(source)):
-        char = source[index]
-        if in_comment:
-            if char == "\n":
-                in_comment = False
-            continue
-        if escaped:
-            escaped = False
-        elif quoted and char == "\\":
-            escaped = True
-        elif char == '"':
-            quoted = not quoted
-        elif not quoted and char == "#":
-            in_comment = True
-        elif not quoted and char == "{":
-            depth += 1
-        elif not quoted and char == "}":
-            depth -= 1
-            if depth == 0:
-                return source[start : index + 1] + "\n"
-    raise ValueError(f"unterminated definition: {name}")
-
-
-def replace_once(source: str, old: str, new: str, label: str) -> str:
-    count = source.count(old)
-    if count != 1:
-        raise ValueError(f"{label} anchor count is {count}, expected exactly 1")
-    return source.replace(old, new, 1)
-
-
 def project(vanilla_interaction: str) -> str:
-    digest = sha256_bytes(vanilla_interaction.encode("utf-8"))
-    if digest != VANILLA_INTERACTION_SHA256:
-        raise ValueError(
-            f"vanilla interaction body SHA-256 changed: {digest}; "
-            f"expected {VANILLA_INTERACTION_SHA256}"
-        )
-    result = vanilla_interaction
+    native.assert_definition(vanilla_interaction, DEFINITION)
+    return replace_once(vanilla_interaction, f"{GENERAL} = yes", f"{PRIVATE_GENERAL} = yes", "private general call")
+
+
+def project_general(body: str) -> str:
+    native.assert_definition(body, GENERAL)
+    body = replace_once(body, f"{GENERAL} = {{", f"{PRIVATE_GENERAL} = {{", "general definition name")
+    return replace_once(body, f"{DIPLOMACY} = yes", f"{PRIVATE_DIPLOMACY} = yes", "private diplomacy call")
+
+
+def project_diplomacy(body: str) -> str:
+    native.assert_definition(body, DIPLOMACY)
+    body = replace_once(body, f"{DIPLOMACY} = {{", f"{PRIVATE_DIPLOMACY} = {{", "diplomacy definition name")
     for old, new, label in PROJECTIONS:
-        result = replace_once(result, old, new, label)
-    return result
+        body = replace_once(body, old, new, label)
+    return body
+
+
+def generated_payloads(source_path: Path = DEFAULT_GAME_SOURCE) -> dict[Path, bytes]:
+    source_path = Path(source_path)
+    # The seven-file contract also binds delegates, thresholds and government flags.
+    game = source_path.parents[2]
+    native.assert_source_files(game)
+    interaction = project(native.definition(DEFINITION, game))
+    general = project_general(native.definition(GENERAL, game))
+    diplomacy = project_diplomacy(native.definition(DIPLOMACY, game))
+    note = "Private offer path only; Later Dynasties use fixed +10 and lose celestial/hegemony perks; title-bound recent independence is -50."
+    return {
+        OUTPUT: b"\xef\xbb\xbf" + (native.header((DEFINITION,), "Only the general acceptance call is redirected.") + interaction).encode("utf-8"),
+        MODIFIERS_OUTPUT: b"\xef\xbb\xbf" + (native.header((GENERAL, DIPLOMACY), note) + general + "\n" + diplomacy).encode("utf-8"),
+    }
 
 
 def rendered_bytes(source_path: Path = DEFAULT_GAME_SOURCE) -> bytes:
-    raw = Path(source_path).read_bytes()
-    digest = sha256_bytes(raw)
-    if digest != SOURCE_SHA256:
-        raise ValueError(
-            f"vanilla interaction file SHA-256 changed: {digest}; expected {SOURCE_SHA256}"
-        )
-    source = raw.decode("utf-8-sig")
-    body = project(extract_definition(source))
-    header = (
-        "# GENERATED FILE. DO NOT EDIT.\n"
-        f"# Vanilla file SHA-256: {SOURCE_SHA256}\n"
-        f"# Vanilla {DEFINITION} SHA-256: {VANILLA_INTERACTION_SHA256}\n"
-        "# Projection: Later Dynasties lose four h_china identity branches and "
-        "their recent breakaways receive -50 for five years.\n\n"
-    )
-    return b"\xef\xbb\xbf" + (header + body).encode("utf-8")
+    return generated_payloads(source_path)[OUTPUT]
 
 
-def validate_committed_projection(data: bytes) -> list[str]:
-    errors: list[str] = []
-    if not data.startswith(b"\xef\xbb\xbf"):
-        return ["generated interaction override lacks UTF-8 BOM"]
-    value = data.decode("utf-8-sig")
+def validate_committed_projection(data: bytes, modifiers_data: bytes | None = None) -> list[str]:
     try:
-        body = extract_definition(value)
-    except ValueError as error:
+        if not data.startswith(b"\xef\xbb\xbf"):
+            raise ValueError("generated interaction override lacks UTF-8 BOM")
+        body = extract_definition(data.decode("utf-8-sig"), DEFINITION)
+        restored = replace_once(body, f"{PRIVATE_GENERAL} = yes", f"{GENERAL} = yes", "restore general call")
+        native.assert_definition(restored, DEFINITION)
+        if modifiers_data is None:
+            modifiers_data = MODIFIERS_OUTPUT.read_bytes()
+        if not modifiers_data.startswith(b"\xef\xbb\xbf"):
+            raise ValueError("generated modifiers lack UTF-8 BOM")
+        text = modifiers_data.decode("utf-8-sig")
+        general = extract_definition(text, PRIVATE_GENERAL)
+        general = replace_once(general, f"{PRIVATE_GENERAL} = {{", f"{GENERAL} = {{", "restore general name")
+        general = replace_once(general, f"{PRIVATE_DIPLOMACY} = yes", f"{DIPLOMACY} = yes", "restore diplomacy call")
+        native.assert_definition(general, GENERAL)
+        diplomacy = extract_definition(text, PRIVATE_DIPLOMACY)
+        for old, new, label in reversed(PROJECTIONS):
+            diplomacy = replace_once(diplomacy, new, old, "restore " + label)
+        diplomacy = replace_once(diplomacy, f"{PRIVATE_DIPLOMACY} = {{", f"{DIPLOMACY} = {{", "restore diplomacy name")
+        native.assert_definition(diplomacy, DIPLOMACY)
+    except (ValueError, OSError) as error:
         return [str(error)]
-    restored = body
-    for old, new, label in reversed(PROJECTIONS):
-        count = restored.count(new)
-        if count != 1:
-            errors.append(f"generated {label} projection count is {count}, expected 1")
-        else:
-            restored = restored.replace(new, old, 1)
-    digest = sha256_bytes(restored.encode("utf-8"))
-    if digest != VANILLA_INTERACTION_SHA256:
-        errors.append(
-            f"restored vanilla interaction SHA-256 is {digest}, "
-            f"expected {VANILLA_INTERACTION_SHA256}"
-        )
-    return errors
+    return []
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=DEFAULT_GAME_SOURCE)
     parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument("--modifiers-output", type=Path, default=MODIFIERS_OUTPUT)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
-    expected = rendered_bytes(args.source)
-    if args.check:
-        if not args.output.is_file() or args.output.read_bytes() != expected:
-            print(f"stale generated interaction override: {args.output}", file=sys.stderr)
-            return 1
-        print(f"RMTM VASSALIZATION OVERRIDE OK: {args.output}")
-        return 0
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_bytes(expected)
-    print(f"Wrote {args.output}")
+    payloads = generated_payloads(args.source)
+    outputs = {OUTPUT: args.output, MODIFIERS_OUTPUT: args.modifiers_output}
+    for path, expected in payloads.items():
+        target = outputs[path]
+        if args.check:
+            if not target.is_file() or target.read_bytes() != expected:
+                print(f"stale generated RMTM offer projection: {target}", file=sys.stderr)
+                return 1
+        else:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(expected)
+    print("RMTM PRIVATE VASSALIZATION PROJECTIONS OK" if args.check else "Wrote two RMTM private offer projections")
     return 0
 
 

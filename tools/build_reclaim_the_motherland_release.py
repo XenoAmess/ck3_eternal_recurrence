@@ -37,6 +37,7 @@ RUNTIME_FILES = frozenset(
         "common/scripted_effects/rmtm_loyalty_resolution_effects.txt",
         "common/scripted_effects/rmtm_vanilla_compat_effects.txt",
         "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
+        "common/scripted_modifiers/zz_rmtm_offer_vassalization_modifiers.txt",
         "common/scripted_triggers/rmtm_loyalty_triggers.txt",
         "common/scripted_triggers/rmtm_restoration_triggers.txt",
         "common/scripted_triggers/zz_rmtm_ministry_override.txt",

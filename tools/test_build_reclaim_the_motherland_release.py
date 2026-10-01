@@ -36,7 +36,7 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
 
     def test_exact_skeleton_inventory_and_readme_exclusion(self) -> None:
         staging, _, archive, manifest = self.build()
-        self.assertEqual(35, len(release.RUNTIME_FILES))
+        self.assertEqual(36, len(release.RUNTIME_FILES))
         self.assertEqual(
             18,
             sum(path.startswith("localization/") for path in release.RUNTIME_FILES),

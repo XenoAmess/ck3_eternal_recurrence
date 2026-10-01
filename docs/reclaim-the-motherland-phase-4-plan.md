@@ -1,5 +1,7 @@
 # 《重整河山》四期 `0.4.0`：割据期外交附庸平衡计划
 
+> 2026-10-01 新版兼容候选：CK3 `1.20.0.2` / build `25588574` 的源码迁移、L0、36 文件构建与 parser-only 已 GREEN，实机仍为 `RUNTIME_PENDING`。下文 `0.4.0` 发布与 `1.19.0.6` 实机记录是历史事实；本轮变更和证据见[新版兼容专题](reclaim-the-motherland-ck3-1.20-compatibility-2026-10-01.md)。
+
 > 状态：`release-complete；源码树 L1、Workshop、公开 Change Notes、fresh-cache L3 与永久 changelog 全部 GREEN`
 > 制定日期：2026-09-14
 > 当前公开运行时：`0.4.0`

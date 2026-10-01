@@ -27,7 +27,7 @@ LANGUAGES = (
     "simp_chinese",
     "spanish",
 )
-VANILLA_SOURCE_SHA256 = "86574fb7ce246ef6d1b2741b211785d282ad39659e8771e0e5c714acdc001782"
+VANILLA_SOURCE_SHA256 = "e2035c8c0d525064302efecbcc95da21544f159c86d6e9bf937ecc0d00c2277f"
 TITLE_KEYS = (
     "dynn_title_ba", "dynn_title_bao", "dynn_title_bi", "dynn_title_bo",
     "dynn_title_cai", "dynn_title_cao", "dynn_title_chen", "dynn_title_cheng",

@@ -442,7 +442,7 @@ rmtm_chaos_shattering_effect = {
 			destroy_held_ministry_titles_effect = yes
 		}
 
-		# Vanilla 1.19.0.6 Chaos processing resumes here. Final loyalists are also
+		# Vanilla 1.20.0.2 Chaos processing resumes here. Final loyalists are also
 		# excluded from weak kingdom/empire pruning, preserving the exact title
 		# object, display/custom name, and subordinate realm tree they already held.
 		# Retained ministry incumbents are likewise excluded: their landless office
@@ -468,11 +468,11 @@ rmtm_chaos_shattering_effect = {
 					}
 				}
 			}
-			tgp_fire_china_realm_name_event_for_vassals_effect = yes
 			every_held_title = {
 				limit = { tier > tier_duchy }
 				prev = { destroy_title = prev }
 			}
+			tgp_fire_china_realm_name_event_for_vassals_effect = yes
 		}
 		# Weak rulers may have changed primary title during the vanilla pruning pass.
 		# Bind the five-year political memory to the surviving primary title, and

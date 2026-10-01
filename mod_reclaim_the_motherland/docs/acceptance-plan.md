@@ -1,5 +1,7 @@
 # 重整河山 0.4.0 验收方案
 
+> 2026-10-01 新版兼容候选：CK3 `1.20.0.2` / build `25588574` 的源码迁移、L0、36 文件构建与 parser-only 已 GREEN，实机仍为 `RUNTIME_PENDING`。下文 `0.4.0` 发布与 `1.19.0.6` 实机记录是历史事实；本轮变更和证据见[新版兼容专题](../../docs/reclaim-the-motherland-ck3-1.20-compatibility-2026-10-01.md)。
+
 状态：**COMPLETE。运行时、L0、`open_kaishek` parser root scan、源码树 L1、正式发布、公开回读与 fresh-cache L3 全部完成。**
 
 目标游戏：CK3 `1.19.0.6`

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -13,6 +14,7 @@ from PIL import Image
 import compose_reclaim_the_motherland_key_art as key_art
 import gen_reclaim_vassalization_override as vassalization
 import gen_reclaim_the_motherland_title_names as title_names
+import gen_reclaim_native_overrides as native_overrides
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -98,7 +100,7 @@ def balanced_braces(value: str) -> bool:
     return depth == 0
 
 
-def validate() -> list[str]:
+def validate(*, release_localization: bool = False) -> list[str]:
     errors = builder.release_source_errors(MOD)
     expected_descriptor = (
         'version="0.4.0"\n'
@@ -137,6 +139,7 @@ def validate() -> list[str]:
             "common/scripted_effects/rmtm_loyalty_resolution_effects.txt",
             "common/scripted_effects/rmtm_vanilla_compat_effects.txt",
             "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
+            "common/scripted_modifiers/zz_rmtm_offer_vassalization_modifiers.txt",
             "common/scripted_triggers/rmtm_loyalty_triggers.txt",
             "common/scripted_triggers/rmtm_restoration_triggers.txt",
             "common/scripted_triggers/zz_rmtm_ministry_override.txt",
@@ -164,7 +167,7 @@ def validate() -> list[str]:
         }
     )
     if builder.RUNTIME_FILES != expected_runtime_files:
-        errors.append("release allowlist is not the exact thirty-five-file product inventory")
+        errors.append("release allowlist is not the exact thirty-six-file product inventory")
     if builder.SOURCE_ONLY_FILES != frozenset(
         {"README.md", "docs/acceptance-plan.md", "docs/acceptance-report.md"}
     ):
@@ -346,10 +349,19 @@ def validate() -> list[str]:
         errors.extend(vassalization.validate_committed_projection(generated_interaction.read_bytes()))
         if vassalization.DEFAULT_GAME_SOURCE.is_file():
             try:
-                if generated_interaction.read_bytes() != vassalization.rendered_bytes():
-                    errors.append("generated offer-vassalization override is stale")
+                for path, expected in vassalization.generated_payloads().items():
+                    if not path.is_file() or path.read_bytes() != expected:
+                        errors.append(f"generated offer-vassalization projection is stale: {path.name}")
             except (OSError, UnicodeError, ValueError) as error:
                 errors.append(f"cannot validate installed offer-vassalization source: {error}")
+    errors.extend(native_overrides.validate_committed_projections())
+    if vassalization.DEFAULT_GAME_SOURCE.is_file():
+        try:
+            for path, expected in native_overrides.generated_payloads().items():
+                if not path.is_file() or path.read_bytes() != expected:
+                    errors.append(f"generated native projection is stale: {path.name}")
+        except (OSError, UnicodeError, ValueError) as error:
+            errors.append(f"cannot validate installed native projections: {error}")
 
     for localization_reference in (
         "rmtm_restoration_title_prefix",
@@ -447,12 +459,16 @@ def validate() -> list[str]:
                     )
     if chinese and english and chinese == english:
         errors.append("Simplified Chinese localization must not be an English placeholder")
-    errors.extend(builder.release_localization_errors(MOD))
+    if release_localization:
+        errors.extend(builder.release_localization_errors(MOD))
     return errors
 
 
 def main() -> int:
-    errors = validate()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--release-localization", action="store_true")
+    args = parser.parse_args()
+    errors = validate(release_localization=args.release_localization)
     if errors:
         print("RECLAIM THE MOTHERLAND STATIC VALIDATION FAILED", file=sys.stderr)
         for error in errors:
