@@ -252,3 +252,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 真实当前宗教context原生mailbox与complete command_result接通；旧protocol_version缺失的真实SDK RED已修复并保留，Od/O2各41检查6wire通过。新增namedpermit fixture源由中央单次O2收口，不重复旧矩阵。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion\mailbox-delivery.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:42:06 Native state Rite source identity
+
+按实际topliege/primarytitle/stateRite getter读取国教Rite，转换判定复用同一来源，不复制猜测。ABI6func/3regs/23ins/11constants/2stock；Od/O2各14case22checks8wire通过。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-governance\state-rite\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

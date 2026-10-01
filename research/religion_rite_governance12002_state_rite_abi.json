@@ -1,0 +1,337 @@
+{
+  "schema": "ck3_12002_religion_state_rite_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "source_constants": {
+    "kCharacterTopLiegeRva": "0x28bfda0",
+    "kCharacterPrimaryTitleRva": "0x289da30",
+    "kTitleStateRiteRva": "0x2315030",
+    "kCharacterIdentityOffset": "0x18",
+    "kCharacterLandedDataOffset": "0x1c0",
+    "kLandedTitlesOffset": "0x1e0",
+    "kLandedTitlesCountOffset": "0x1ec",
+    "kDeathTitlesOffset": "0x68",
+    "kDeathTitlesCountOffset": "0x74",
+    "kTitleIdentityOffset": "0x10",
+    "kTitleStateRiteIdOffset": "0x308"
+  },
+  "native_spans": [
+    {
+      "name": "Character.GetTopLiege.core",
+      "start_rva": "0x28bfda0",
+      "end_exclusive_rva": "0x28bfe38",
+      "kind": "complete_function",
+      "abi": "Character*(Character*)",
+      "sha256": "21a72806d994871df6f03c8df9b5d236fb472e4fbb45896acdc75adbd45c0620",
+      "bytes": "4c 8b 0d c9 77 3a 03 4c 3b c9 0f 84 84 00 00 00 4c 8b 15 b1 77 3a 03 66 0f 1f 84 00 00 00 00 00 48 8b 81 c0 01 00 00 48 8b d1 48 85 c0 74 1c 48 8b 88 c0 01 00 00 48 8b 49 28 81 79 1c 72 61 68 43 75 4d 83 79 18 ff 74 47 eb 40 48 8b 81 b8 01 00 00 48 85 c0 74 39 4d 85 d2 74 2c 44 8b 80 c8 00 00 00 41 8b c0 25 ff ff ff 00 41 3b 42 2c 73 17 49 8b 4a 20 48 03 c0 48 8b 4c c1 08 48 85 c9 74 06 44 39 41 18 74 03 49 8b c9 48 3b d1 75 90 48 8b c2 c3 49 8b c1 c3"
+    },
+    {
+      "name": "Character.GetTopLiege.thunk",
+      "start_rva": "0x28ce5b0",
+      "end_exclusive_rva": "0x28ce5b5",
+      "kind": "complete_function",
+      "abi": "Character*(Character*)",
+      "sha256": "de7490ea2fa1074424a62114eca42059fc5d9795e2630efa4b6b2449bd526230",
+      "bytes": "e9 eb 17 ff ff"
+    },
+    {
+      "name": "Character.GetPrimaryTitle.core",
+      "start_rva": "0x289da30",
+      "end_exclusive_rva": "0x289daa6",
+      "kind": "complete_function",
+      "abi": "Title*(Character*)",
+      "sha256": "4d2402680f7877e03266ec3758475740dc371464ae16883c04968314c0c1aa77",
+      "bytes": "48 8b 81 c0 01 00 00 48 85 c0 74 14 83 b8 ec 01 00 00 00 74 25 48 8b 80 e0 01 00 00 8b 10 eb 1f 48 8b 81 d0 01 00 00 48 85 c0 74 0e 83 78 74 00 74 08 48 8b 40 68 8b 10 eb 05 ba ff ff ff ff 48 8b 05 82 00 48 03 48 85 c0 74 23 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 10 74 07 48 8b 05 3b 00 48 03 c3"
+    },
+    {
+      "name": "Character.GetPrimaryTitle.thunk",
+      "start_rva": "0x28ce510",
+      "end_exclusive_rva": "0x28ce515",
+      "kind": "complete_function",
+      "abi": "Title*(Character*)",
+      "sha256": "13b055633af7053b63f0e5efde90cfc8d0a5fb0d4ec2f7e80e6472f9ba39ecc9",
+      "bytes": "e9 1b f5 fc ff"
+    },
+    {
+      "name": "Title.GetStateRite.core",
+      "start_rva": "0x2315030",
+      "end_exclusive_rva": "0x2315092",
+      "kind": "complete_function",
+      "abi": "Rite*(Title*)",
+      "sha256": "d55f6553344da92069f8cb5df68204b8f41542e9583c9bd3763d19cab5cf14a4",
+      "bytes": "48 89 54 24 10 48 83 ec 28 48 8d 54 24 38 e8 ed 30 ee fe 4c 8b 0d ae 92 a0 03 4c 8b 05 1f 26 95 03 4d 85 c9 74 2a 8b 44 24 38 8b c8 81 e1 ff ff ff 00 41 3b 49 2c 73 18 8b d1 49 8b 49 20 48 03 d2 48 8b 4c d1 08 48 85 c9 74 05 39 41 08 74 03 49 8b c8 48 85 c9 49 0f 44 c8 48 8b c1 48 83 c4 28 c3"
+    },
+    {
+      "name": "Title.GetStateRite.reference",
+      "start_rva": "0x11f8130",
+      "end_exclusive_rva": "0x11f813c",
+      "kind": "complete_function",
+      "abi": "uint32_t*(Title*,uint32_t* out)",
+      "sha256": "75d90b6fb41e3c5930f994368618d406c3dc8c5f478e1db377121d9ca0c33284",
+      "bytes": "8b 81 08 03 00 00 89 02 48 8b c2 c3"
+    },
+    {
+      "name": "Title.GetStateRite.registration",
+      "start_rva": "0x456972",
+      "end_exclusive_rva": "0x4569f9",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "423ebe3d6024513e1279a16648072e437a4ebcaa894f8c633398d34aadc995a9",
+      "bytes": "f2 0f 10 05 d6 b3 2b 04 f2 0f 11 44 24 78 8b 05 d2 b3 2b 04 89 45 80 40 88 7d 84 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 5d f5 3f 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 35 d9 41 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 41 e6 eb 01 48 8d 4c 24 78 e8 87 32 ec 01"
+    },
+    {
+      "name": "Character.GetPrimaryTitle.registration",
+      "start_rva": "0x557cab",
+      "end_exclusive_rva": "0x557cfe",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "371a199fb32ad62847b80350f5449267414d9e2562cbc667e0ce964013b7ee9d",
+      "bytes": "f2 0f 10 05 35 a1 20 04 f2 0f 11 44 24 30 8b 05 31 a1 20 04 89 44 24 38 0f b7 05 2a a1 20 04 66 89 44 24 3c 0f b6 05 20 a1 20 04 88 44 24 3e c6 44 24 3f 00 49 8d 43 b8 49 89 43 88 4c 8d 0d 32 68 37 02 4c 8d 05 1b 68 37 02 49 8d 53 98 e8 c2 bc 98 00"
+    },
+    {
+      "name": "Character.GetTopLiege.registration",
+      "start_rva": "0x557f92",
+      "end_exclusive_rva": "0x558028",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "263334894456e49ed201a21374960af9a5ea5e7bf65d12d7dec6ba684b6ae9e5",
+      "bytes": "f2 0f 10 05 c6 93 fe 03 f2 0f 11 44 24 78 0f b7 05 c1 93 fe 03 66 89 45 80 0f b6 05 b8 93 fe 03 88 45 82 40 88 7d 83 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 31 df 2f 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 09 c3 31 00 90 48 8d 45 98 48 89 44 24 20 45 33 c9 45 33 c0 48 8d 15 92 65 37 02 48 8d 4c 24 78 e8 78 3a 49 00"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "top_liege_landed_data",
+      "rva": "0x28bfdc0",
+      "bytes": "48 8b 81 c0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "top_liege_landed_scope",
+      "rva": "0x28bfdcf",
+      "bytes": "48 8b 88 c0 01 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x1c0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "top_liege_landed_character_type",
+      "rva": "0x28bfdda",
+      "bytes": "81 79 1c 72 61 68 43",
+      "instruction": "cmp dword ptr [rcx + 0x1c], 0x43686172",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "top_liege_full_character_ref",
+      "rva": "0x28bfde3",
+      "bytes": "83 79 18 ff",
+      "instruction": "cmp dword ptr [rcx + 0x18], -1",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "top_liege_unlanded_data",
+      "rva": "0x28bfdeb",
+      "bytes": "48 8b 81 b8 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "top_liege_unlanded_liege_ref",
+      "rva": "0x28bfdfc",
+      "bytes": "44 8b 80 c8 00 00 00",
+      "instruction": "mov r8d, dword ptr [rax + 0xc8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "top_liege_unlanded_full_generation_match",
+      "rva": "0x28bfe22",
+      "bytes": "44 39 41 18",
+      "instruction": "cmp dword ptr [rcx + 0x18], r8d",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_landed_data",
+      "rva": "0x289da30",
+      "bytes": "48 8b 81 c0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_landed_count",
+      "rva": "0x289da3c",
+      "bytes": "83 b8 ec 01 00 00 00",
+      "instruction": "cmp dword ptr [rax + 0x1ec], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_landed_array",
+      "rva": "0x289da45",
+      "bytes": "48 8b 80 e0 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x1e0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_death_data",
+      "rva": "0x289da50",
+      "bytes": "48 8b 81 d0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1d0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_death_count",
+      "rva": "0x289da5c",
+      "bytes": "83 78 74 00",
+      "instruction": "cmp dword ptr [rax + 0x74], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_death_array",
+      "rva": "0x289da62",
+      "bytes": "48 8b 40 68",
+      "instruction": "mov rax, qword ptr [rax + 0x68]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_no_title_sentinel",
+      "rva": "0x289da6a",
+      "bytes": "ba ff ff ff ff",
+      "instruction": "mov edx, 0xffffffff",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_full_generation_match",
+      "rva": "0x289da99",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "title_state_rite_full_ref_field",
+      "rva": "0x11f8130",
+      "bytes": "8b 81 08 03 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x308]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "title_state_rite_full_ref_call",
+      "rva": "0x231503e",
+      "bytes": "e8 ed 30 ee fe",
+      "instruction": "call 0x11f8130",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x11f8130"
+      ]
+    },
+    {
+      "name": "title_state_rite_storage_slot",
+      "rva": "0x2315043",
+      "bytes": "4c 8b 0d ae 92 a0 03",
+      "instruction": "mov r9, qword ptr [rip + 0x3a092ae]",
+      "rip_targets": [
+        "0x5d1e2f8"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "title_state_rite_native_default_slot",
+      "rva": "0x231504a",
+      "bytes": "4c 8b 05 1f 26 95 03",
+      "instruction": "mov r8, qword ptr [rip + 0x395261f]",
+      "rip_targets": [
+        "0x5c67670"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "title_state_rite_full_generation_match",
+      "rva": "0x231507b",
+      "bytes": "39 41 08",
+      "instruction": "cmp dword ptr [rcx + 8], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "title_state_rite_callback_registration",
+      "rva": "0x4569e8",
+      "bytes": "48 8d 15 41 e6 eb 01",
+      "instruction": "lea rdx, [rip + 0x1ebe641]",
+      "rip_targets": [
+        "0x2315030"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "primary_title_callback_registration",
+      "rva": "0x557ce7",
+      "bytes": "4c 8d 0d 32 68 37 02",
+      "instruction": "lea r9, [rip + 0x2376832]",
+      "rip_targets": [
+        "0x28ce520"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "top_liege_callback_registration",
+      "rva": "0x558017",
+      "bytes": "48 8d 15 92 65 37 02",
+      "instruction": "lea rdx, [rip + 0x2376592]",
+      "rip_targets": [
+        "0x28ce5b0"
+      ],
+      "direct_targets": []
+    }
+  ],
+  "stock": [
+    {
+      "path": "common/scripted_rules/00_rules.txt",
+      "sha256": "c7ba2ae71e4461e88c6d5c86d8fc15fa7ccc73edae1e28fb3b65f0e362c4560f",
+      "windows": [
+        {
+          "first_line": 65,
+          "last_line": 72,
+          "text": "\t# The realm teaches its own State Rite: converting to its faith skips the recency and knowledge gates\n\ttrigger_if = {\n\t\tlimit = {\n\t\t\texists = top_liege.primary_title.state_rite\n\t\t\tscope:new_faith = top_liege.primary_title.state_rite.faith\n\t\t}\n\t\talways = yes\n\t}"
+        },
+        {
+          "first_line": 108,
+          "last_line": 115,
+          "text": "\t# The realm teaches its own State Rite: adopting it skips the recency and knowledge gates\n\ttrigger_if = {\n\t\tlimit = {\n\t\t\texists = top_liege.primary_title.state_rite\n\t\t\tscope:new_rite = top_liege.primary_title.state_rite\n\t\t}\n\t\talways = yes\n\t}"
+        }
+      ]
+    },
+    {
+      "path": "gui/window_government_administration.gui",
+      "sha256": "277e43a8e5fd5d7add5a5d638b3af0acda53d4238b43e72912d7eaf7d71668b4",
+      "windows": [
+        {
+          "first_line": 1086,
+          "last_line": 1090,
+          "text": "\ttype widget_header_state_faith = widget {\n\t\tdatacontext = \"[Title.GetStateRite]\"\n\t\tdatacontext = \"[Rite.GetFaith]\"\n\t\tvisible = \"[GetPlayer.GetGovernment.HasRule( 'state_faith' )]\"\n\t\tsize = { 562 50 }"
+        }
+      ]
+    }
+  ],
+  "reused_context_contract": "research/religion12002_native_abi.json",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "unresolved": [
+    "MCP integration",
+    "paused native artifact",
+    "final conversion gates/cost and native AI choice (outside this readonly package)"
+  ]
+}
