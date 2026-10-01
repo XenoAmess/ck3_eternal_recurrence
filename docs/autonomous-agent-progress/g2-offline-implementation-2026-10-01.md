@@ -364,3 +364,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 8完整函数23指令57enum slots2教区槽位闭合loader/stock来源，最高research，scheduler/selection虚线unknown及明确下一施工入口；不冒动作或完整AI策略。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-rite-governance\ai\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:04:21 Freeze the actual R2 compiler source set
+
+实际GOV增量构建触发CMake CONFIGURE_DEPENDS，把7个其它worker正在写的CE1/Sway源纳入target；编译input清单实证RED已保留，不把它们冒充已冻结候选。仅按实际7源明确排除R2 target，首L/制品不变，受影响runtime/DLL增量重建，旧4集成检查复用；R3以READY接线后纳入。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-integration\precise-source-exclusion-source.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

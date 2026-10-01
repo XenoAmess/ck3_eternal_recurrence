@@ -722,6 +722,10 @@ option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
+# These parallel work packages have no registered caller in this bundle.
+# Their later increments append only the delivered source set explicitly.
+list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
+  "/ck3_12002_(epidemic_recovery|epidemic_treatment_presence|sway_completion(_execution|_handler|_mailbox|_serializer)?)\\.cpp$")
 if(NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1)
   # The owner stopped war work. Retain the independent actual treasury source
   # used by ordinary snapshots; do not compile or register the cash package.
