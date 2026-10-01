@@ -977,3 +977,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 实际官方5e58/d47同一Step21 RED：runner仍strict要求1.19.0.6，而实际descriptor/fixture/staticgate已1.20.0.2。仅两行引用既有CURRENT_GAME_VERSION；唯一实际失败方法使用真实当前CI输入PASS0.440s。旧RED保留，root普通合并保留上游configured selector；新exact官方CI待回执。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-r11-tributary-supported-version-fix\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 2026-10-02 00:30:35 Restore conditional natural stress material profiles
+
+3精确源：生产policy/newtest/topic，唯一1method/6subtestsGREEN复用。仅当前实际native主stress facet可见时附加.1007/.0030压力方向与material change，未知fullfulfillment和条件无效果保留。source static-ready，冻结L11fix未热改，自然实测交接后继续。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m2-natural-live-next\current-stress-profile-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

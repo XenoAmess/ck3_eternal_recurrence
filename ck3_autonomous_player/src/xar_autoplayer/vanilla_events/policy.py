@@ -363,6 +363,50 @@ def _epidemic_5007_stress_effect_profile(
     return profile
 
 
+def _current_selected_stress_observable_profile(
+    knowledge: Mapping[str, object],
+    selected_option: Mapping[str, object],
+    native_index: int,
+    profile: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Observe two reviewed pressure facets only when native materializes them."""
+
+    expected = {
+        ("death_management.1007", 0): ("increase", "non_decreasing"),
+        ("tgp_travel_events.0030", 1): ("decrease", "non_increasing"),
+    }.get((knowledge.get("event_definition_key"), native_index))
+    if knowledge.get("ck3_build") != CURRENT_CK3_BUILD or expected is None or profile is None:
+        return profile
+    indicators = selected_option.get("effect_indicators")
+    rows = indicators.get("rows") if isinstance(indicators, Mapping) else None
+    facets = [row for row in rows if _has_stress_indicator_facet(row, CURRENT_CK3_BUILD)] if isinstance(rows, list) else []
+    if not (
+        isinstance(indicators, Mapping)
+        and indicators.get("status") == "available"
+        and indicators.get("coverage") == "played-character-event-icon-indicators-1.20.0.2-v1"
+        and indicators.get("complete_effect_set") is False
+        and len(facets) == 1
+        and facets[0].get("direction") == expected[0]
+    ):
+        return profile
+    return {
+        **profile,
+        "completeness": "selected-option-stress-facet-only",
+        "complete_effect_set": False,
+        "observable_postcondition": {
+            "metric": "played_character.stress_points",
+            "expected_relation": expected[1],
+            "material_change_required_for_evidence": True,
+        },
+        "observation_binding": {
+            "source": "selected_option_same_frame_native_indicator",
+            "indicator_kind": facets[0]["kind"],
+            "stress_direction": expected[0],
+            "secondary_fulfillment_direction_used": False,
+        },
+    }
+
+
 def _selected_campaign_utility_profile(
     knowledge: Mapping[str, object], native_index: int
 ) -> dict[str, object] | None:
@@ -1464,6 +1508,9 @@ def recommend_registered_vanilla_event_option_v1(
         choice_effect_profile = _selected_choice_effect_profile(
             knowledge, selected_native
         )
+    choice_effect_profile = _current_selected_stress_observable_profile(
+        knowledge, selected, selected_native, choice_effect_profile
+    )
     return respond(
         status="recommended",
         event_key=event_key,
