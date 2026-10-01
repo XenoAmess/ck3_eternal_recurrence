@@ -219,12 +219,24 @@ def validate_scoped_journal(journal: dict | None, checkpoint: dict, victim: int,
                 c['death_date_raw'] == checkpoint['after']['date_raw'] and
                  c['death_reason_key'] == 'death_battle' and c['death_killer_character_id'] == related for c in (after, final))
     artifact_tuple_closed = False
+    artifact_tuple_kind = 'pending'
     if tuple_closed:
         events = [pair[edge] for pair in requests + enqueues + commits for edge in ('enter', 'return')]
-        artifact_fields = ('requested_death_artifact_token', 'requested_death_artifact_id', 'requested_death_artifact_read')
+        artifact_fields = ('requested_death_artifact_token', 'requested_death_artifact_id', 'requested_artifact_id_read')
         if all(all(k in row for k in artifact_fields) for row in events):
             first = tuple(events[0][k] for k in artifact_fields)
-            artifact_tuple_closed = first[2] is True and all(tuple(row[k] for k in artifact_fields) == first for row in events)
+            # DeathArguments reads a full ID only for an original non-null pointer.
+            # The publisher's exact null tuple is therefore (0, -1, false).
+            token, artifact_id, id_read = first
+            typed_tuple = isinstance(token, str) and type(artifact_id) is int and type(id_read) is bool
+            null_tuple = token == 'process-local-0x0' and artifact_id == -1 and id_read is False
+            nonnull_tuple = typed_tuple and re.fullmatch(r'process-local-0x[0-9a-f]+', token) is not None and \
+                int(token.removeprefix('process-local-'), 16) > 0 and 0 <= artifact_id < 0xFFFFFFFF and id_read is True
+            artifact_tuple_closed = typed_tuple and (null_tuple or nonnull_tuple) and all(
+                type(row[artifact_fields[0]]) is str and type(row[artifact_fields[1]]) is int and
+                type(row[artifact_fields[2]]) is bool and tuple(row[k] for k in artifact_fields) == first for row in events)
+            if artifact_tuple_closed:
+                artifact_tuple_kind = 'verified-null' if null_tuple else 'verified-full-id'
     selectors = [pair for (kind, _), pair in pairs.items() if kind == 'selector']
     selected_member_closed = len(selectors) == 1
     selected_index = None
@@ -273,6 +285,7 @@ def validate_scoped_journal(journal: dict | None, checkpoint: dict, victim: int,
     return {'status': 'CAPTURED_TYPED_SEQUENCE_CHECKED', 'checks': checks,
             'death_commit_tuple_closed': tuple_closed,
             'death_artifact_tuple_closed': artifact_tuple_closed,
+            'death_artifact_tuple_kind': artifact_tuple_kind,
             'selector_post_filter_selected_member_closed': selected_member_closed,
             'selected_candidate_index': selected_index,
             'materializer_filter_complete': materializer_filter_complete,

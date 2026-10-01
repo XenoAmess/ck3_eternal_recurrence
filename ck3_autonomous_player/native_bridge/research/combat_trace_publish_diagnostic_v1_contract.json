@@ -1,0 +1,26 @@
+{
+  "schema": "ck3.trace-publish-failure-diagnostic-implementation/v1",
+  "purpose": "Expose the first serialization rejection while retaining the original RED command and native capture flags.",
+  "runtime_origin": "New future frozen source only; R0142 4ad477 runtime is unchanged and cannot retrospectively supply these fields.",
+  "field": "command_result.trace_publish_diagnostic",
+  "validity": "Serialization metadata only. complete_trace_dto_published=false and native_validity_flags_changed=false. No accepted result, retry, extra day or cap change.",
+  "outer_gates": ["session_not_drained", "ring_dto_empty", "before_checkpoint_encoding_failed", "after_checkpoint_encoding_failed", "scoped_dto_empty", "managed_wire_cap"],
+  "sizes": ["ring_serialized_bytes", "scoped_serialized_bytes", "assembled_output_bytes", "managed_cap_bytes"],
+  "scoped_size_read_gate": "scoped_serialization_attempted; zero before attempting is not a measured successful empty scope DTO",
+  "identity": "Original before/after checkpoints: token, combat, thread, date, pump, paused; original session stage, one-day, boundary-date and uninstall booleans.",
+  "raw_flags_counts": ["drain_failure_flags", "drain_record_count", "scoped_failure_flags", "scoped_record_count", "scoped_present"],
+  "nested_scoped_first_failure": "Static gate/field name plus record_index/sequence/invocation/boundary, character_index/side_index/element_index/byte_index, observed/limit/output_bytes. Stable-key byte rejection has observed raw byte and byte_index; limit0 carries no inferred allowed-byte rule.",
+  "unchanged_caps": {"managed": 921600, "scoped": 16777216, "protocol": 1048576},
+  "python_preservation": {
+    "steps": ["experimental-combat-phase-event-trace-begin-v1", "experimental-combat-phase-event-trace-finish-v1"],
+    "directory": "combat-trace-native-results",
+    "schema": "xar.ck3.trace-original-parsed-return/v1",
+    "create_only": true,
+    "before_dispatch": "Require the evidence directory; unavailable destination blocks before endpoint.send.",
+    "before_rejection": "Preserve parser request/frame and pre-submission snapshot before ok=false rejection.",
+    "error_delivery": "_NativeCommandRejectedError retains native_error, carries native_raw_return_receipt, and includes exact path/bytes/SHA in string for consumers that keep only repr(error).",
+    "wire_bytes_preserved": false,
+    "approval": "Always unvalidated. Exact parsed JSON object preservation is not native wire byte preservation or game-state acceptance."
+  },
+  "remaining_limits": ["Legacy ring_dto_empty diagnoses the enclosing fragment failure; its exact inner scalar/row failure is not reconstructed from a missing DTO.", "R0142 exact failed gate and byte counts remain UNKNOWN until original future diagnostics are observed.", "No validity or full mutable bundle gate is widened."]
+}

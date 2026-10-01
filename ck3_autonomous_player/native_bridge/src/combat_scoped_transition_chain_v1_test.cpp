@@ -208,6 +208,41 @@ bool JournalCase() {
   return true;
 }
 
+bool SerializationFailureDiagnostics() {
+  auto chain=std::make_unique<CombatScopedChainV1>();chain->count=1;
+  chain->failure_flags=32;auto &r=chain->records[0];r.sequence=17;r.invocation=9;
+  CombatScopedWireDiagnosticV1 d{};
+  const auto unchanged=SerializeCombatScopedChainV1(*chain);
+  assert(SerializeCombatScopedChainV1(*chain,&d)==unchanged && std::string(d.failure_gate)=="none");
+  const auto expect=[&](const char *field,auto mutate,auto restore){
+    mutate();assert(SerializeCombatScopedChainV1(*chain,&d).empty());
+    assert(std::string(d.field)==field && chain->failure_flags==32);
+    restore();assert(!SerializeCombatScopedChainV1(*chain).empty());
+  };
+  expect("trait_definition_count",[&]{chain->trait_definition_count=8193;},[&]{chain->trait_definition_count=0;});
+  expect("trait_definition.key",[&]{chain->trait_definition_count=1;chain->trait_definitions[0].key.size=128;},[&]{chain->trait_definition_count=0;chain->trait_definitions[0].key.size=0;});
+  expect("trait_definition.key",[&]{chain->trait_definition_count=1;chain->trait_definitions[0].key.size=1;chain->trait_definitions[0].key.bytes[0]=' ';},[&]{chain->trait_definition_count=0;chain->trait_definitions[0].key.size=0;});
+  expect("selector_candidate_count",[&]{r.selector_candidate_count=257;},[&]{r.selector_candidate_count=0;});
+  expect("variable_key",[&]{r.variable_key.size=128;},[&]{r.variable_key.size=0;});
+  expect("variable_list_count",[&]{r.variable_list_count=129;},[&]{r.variable_list_count=0;});
+  expect("character.trait_count",[&]{r.characters[1].trait_count=129;},[&]{r.characters[1].trait_count=0;});
+  expect("character.death_reason_key",[&]{r.characters[0].death_reason_key.size=1;r.characters[0].death_reason_key.bytes[0]='"';},[&]{r.characters[0].death_reason_key.size=0;});
+  expect("character.trait_track_raw_count",[&]{r.characters[0].trait_track_raw_count=257;},[&]{r.characters[0].trait_track_raw_count=0;});
+  expect("character.kill_count",[&]{r.characters[0].kill_count=513;},[&]{r.characters[0].kill_count=0;});
+  expect("battle_event_snapshot_index",[&]{r.battle_event_snapshot_index=8;},[&]{r.battle_event_snapshot_index=-1;});
+  expect("battle_event_snapshot.count",[&]{r.battle_event_snapshot_index=0;chain->battle_event_snapshots[0].count=257;},[&]{r.battle_event_snapshot_index=-1;chain->battle_event_snapshots[0].count=0;});
+  expect("battle_event.key",[&]{r.battle_event_snapshot_index=0;auto &s=chain->battle_event_snapshots[0];s.count=1;s.rows[0].stable_key_size=1;s.rows[0].stable_key[0]='\\';},[&]{r.battle_event_snapshot_index=-1;chain->battle_event_snapshots[0].count=0;});
+  expect("entry_snapshot_index",[&]{r.entry_snapshot_index=16;},[&]{r.entry_snapshot_index=-1;});
+  expect("entry_snapshot.entry_count",[&]{r.entry_snapshot_index=0;chain->entry_snapshots[0].entry_count[1]=2049;},[&]{r.entry_snapshot_index=-1;chain->entry_snapshots[0].entry_count[1]=0;});
+  expect("entry_snapshot.owner_hard_count",[&]{r.entry_snapshot_index=0;auto &s=chain->entry_snapshots[0];s.owner_hard_count[0]=static_cast<std::uint32_t>(s.owner_hard[0].size()+1);},[&]{r.entry_snapshot_index=-1;chain->entry_snapshots[0].owner_hard_count[0]=0;});
+  chain->count=256;chain->entry_snapshots[0].entry_count={200,200};
+  for(auto &row:chain->records)row.entry_snapshot_index=0;
+  assert(SerializeCombatScopedChainV1(*chain,&d).empty() && std::string(d.failure_gate)=="scoped_wire_cap");
+  assert(d.observed>16*1024*1024 && chain->failure_flags==32);
+  std::cout<<"serialization diagnostics: original good bytes unchanged,16 key/count/index failures plus original16MiB cap attributed; flags preserved; offline only\n";
+  return true;
+}
+
 bool GuardCases() {
   auto fixture = std::make_unique<Fixture>(); g_fixture = fixture.get();
   auto chain = std::make_unique<CombatScopedChainV1>();
@@ -440,6 +475,7 @@ int main(int argc, char **argv) {
   assert(JournalCase());
   assert(SelectorAndListCase());
   assert(GuardCases());
+  assert(SerializationFailureDiagnostics());
   assert(RelocationAndRollbackCase());
   if (argc == 2 && std::string(argv[1]) == "--emit-offline-fixture") {
     std::cout << "{\"kind\":\"OFFLINE_FIXTURE_NOT_NATIVE_GAME_TRUTH\",\"scoped_transition_chain\":"

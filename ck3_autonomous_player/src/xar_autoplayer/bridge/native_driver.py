@@ -748,9 +748,14 @@ _WAR_TERMINATION_REVISION_RETRY_ERRORS = frozenset(
 
 
 class _NativeCommandRejectedError(BridgeUnavailableError):
-    def __init__(self, native_error: str) -> None:
+    def __init__(self, native_error: str, *,
+                 native_raw_return_receipt: dict[str, object] | None = None) -> None:
         self.native_error = native_error
-        super().__init__(f"native gameplay step failed: {native_error}")
+        self.native_raw_return_receipt = native_raw_return_receipt
+        message = f"native gameplay step failed: {native_error}"
+        if native_raw_return_receipt is not None:
+            message += "; original parsed return receipt=" + json.dumps(native_raw_return_receipt, sort_keys=True)
+        super().__init__(message)
 
 
 class _NativeCommandResultTimeoutError(BridgeUnavailableError):
@@ -8234,6 +8239,32 @@ class NativeHeadlessGameplayDriver:
             "sha256": hashlib.sha256(encoded).hexdigest(),
             "validation_state": "unvalidated"}
 
+    def _preserve_private_trace_native_frame(
+        self, request: dict[str, object], frame: dict[str, object],
+        snapshot: dict[str, object],
+    ) -> dict[str, object]:
+        """Create-only original parsed BEGIN/FINISH return, including RED.
+
+        The underlying native wire bytes are not retained by this Python parser.
+        A serialized diagnostic never changes the command's rejection status.
+        """
+        folder = self._native_driver_state_path().parent / "combat-trace-native-results"
+        folder.mkdir(parents=True, exist_ok=True)
+        path = folder / f"native-trace-{uuid.uuid4().hex}.json"
+        payload = {"schema": "xar.ck3.trace-original-parsed-return/v1",
+            "validation_state": "unvalidated", "request": request,
+            "original_parsed_command_result": frame,
+            "actual_pre_submission_snapshot": snapshot,
+            "wire_bytes_preserved": False}
+        encoded = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        with path.open("xb") as stream:
+            stream.write(encoded)
+            stream.flush()
+            os.fsync(stream.fileno())
+        return {"path": str(path), "bytes": len(encoded),
+            "sha256": hashlib.sha256(encoded).hexdigest(),
+            "validation_state": "unvalidated", "wire_bytes_preserved": False}
+
     def _execute_primitive_step(
         self,
         step: str,
@@ -8327,6 +8358,13 @@ class NativeHeadlessGameplayDriver:
             # after the original game action has already run.
             (self._native_driver_state_path().parent / "ingame-ui-native-results").mkdir(
                 parents=True, exist_ok=True)
+        private_trace_step = step in {
+            "experimental-combat-phase-event-trace-begin-v1",
+            "experimental-combat-phase-event-trace-finish-v1",
+        }
+        if private_trace_step:
+            (self._native_driver_state_path().parent / "combat-trace-native-results").mkdir(
+                parents=True, exist_ok=True)
         self.endpoint.send(request)
         command_timeout_seconds = (
             self.command_timeout_seconds
@@ -8348,16 +8386,22 @@ class NativeHeadlessGameplayDriver:
             # Persist even unavailable/RED returns. No retry or normalization
             # can erase the native cause of a later binding-validation failure.
             ui_raw_receipt = self._preserve_ingame_ui_native_frame(request, frame, snapshot)
+        trace_raw_receipt = None
+        if private_trace_step:
+            trace_raw_receipt = self._preserve_private_trace_native_frame(request, frame, snapshot)
         if frame.get("ok") is not True:
             native_error = frame.get("error")
             raise _NativeCommandRejectedError(
-                native_error if isinstance(native_error, str) else "unknown error"
+                native_error if isinstance(native_error, str) else "unknown error",
+                native_raw_return_receipt=trace_raw_receipt,
             )
         result = frame.get("result")
         if isinstance(result, dict):
             projected = {**result, "backend_id": "native-headless"}
             if ui_raw_receipt is not None:
                 projected["native_ui_raw_return_receipt"] = ui_raw_receipt
+            if trace_raw_receipt is not None:
+                projected["native_trace_raw_return_receipt"] = trace_raw_receipt
             if not internal_semantic_snapshot:
                 return self._verify_idempotent_map_control_postcondition(
                     step=step,
