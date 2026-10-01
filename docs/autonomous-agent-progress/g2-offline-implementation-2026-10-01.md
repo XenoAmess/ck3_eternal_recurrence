@@ -340,3 +340,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 首paused SDK真实RED已定位：actual native政府44features/core ready成功，但外层command_result漏protocol_version。旧真实raw经NativeProtocolState.ingest确定拒收；cpp仅补1字段，actual caller Od/O2与真实ingest/wait通过，保留首RED和root外部诊断step笔误attempt。需中央受影响DLL重建及root新版实际SDK复验，不改首冻结L。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\government\protocol-fix-commit-paths.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:54:22 Native final conversion terms mailbox
+
+真实聚合target fullRiteID、paid finalGate、dynamic piety quote和currenttarget身份，拥有型readonly mailbox complete packet Od/O2各42checks7场景6actualresponse首轮GREEN。native blocker文案尚不可用明确false，没转换动作；候选集合另包继续接同MCP。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\terms\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
