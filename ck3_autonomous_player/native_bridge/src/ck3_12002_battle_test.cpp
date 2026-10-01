@@ -230,6 +230,16 @@ int main() {
   assert(!BindBattleImage(0x140000000, "old").enabled);
   Fixture f;
   BattleTransitionSnapshot t{};
+  // +0x24 is a tick cache. It cannot make an unpaused native clock paused.
+  Put<std::uint32_t>(f.js, 0x20, 0);
+  Put<std::uint32_t>(f.js, 0x24, 1);
+  assert(ReadBattleTransitionSnapshot(f.b, f.scope, {0x1000003}, t) ==
+         BattleTransitionSnapshotStatus::unavailable);
+  // Adjacent bytes likewise do not change the native pause byte.
+  Put<std::uint32_t>(f.js, 0x20, 0x100);
+  assert(ReadBattleTransitionSnapshot(f.b, f.scope, {0x1000003}, t) ==
+         BattleTransitionSnapshotStatus::unavailable);
+  Put<std::uint32_t>(f.js, 0x20, 1);
   assert(ReadBattleTransitionSnapshot(f.b, f.scope, {0x1000003}, t) ==
          BattleTransitionSnapshotStatus::available);
   assert(t.attacker_public_cunit_ids_in_stored_order ==

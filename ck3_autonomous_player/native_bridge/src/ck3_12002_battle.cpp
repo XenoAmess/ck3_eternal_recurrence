@@ -39,8 +39,7 @@ bool Scope(const BattleBindings &b, const game::Snapshot &s) noexcept {
   return b.enabled && s.paused && s.map_ready && b.game_state_slot &&
          *b.game_state_slot && b.jomini_state_slot && *b.jomini_state_slot &&
          At<std::int32_t>(*b.game_state_slot, 8) == s.date_raw &&
-         (At<std::uint32_t>(*b.jomini_state_slot, 0x20) != 0 ||
-          At<std::uint32_t>(*b.jomini_state_slot, 0x24) != 0);
+         At<std::uint8_t>(*b.jomini_state_slot, 0x20) != 0;
 }
 void *Province(const BattleBindings &b, void *p) noexcept {
   if (!p || !b.resolve_province)

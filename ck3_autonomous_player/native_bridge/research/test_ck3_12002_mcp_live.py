@@ -16,6 +16,50 @@ from run_ck3_12002_mcp_live import PlanClient, resolve, tool_payload
 
 
 class OfflinePlanTests(unittest.TestCase):
+    def test_unpaused_active_event_interrupts_advance_and_keeps_followup_plan(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            args = Namespace(output=Path(temporary) / "report.json", command_timeout=180,
+                             poll_interval=3600)
+            report = {"steps": []}
+            client = PlanClient(None, args, report, lambda: None)
+            event = {"event_instance_id": 14, "enabled_option_count": 2}
+            state = {"paused": True, "speed": 1, "date_raw": 53168784, "active_event": None}
+            calls = []
+            snapshots = []
+
+            async def invoke(name, arguments=None, **kwargs):
+                if name == "ck3_execute_step":
+                    calls.append(arguments["step"])
+                    if arguments["step"] == "resume-map":
+                        state.update(paused=False, date_raw=53169024, active_event=event)
+                    elif arguments["step"] == "pause-map":
+                        state["paused"] = True
+                    return {"status": "executed"}
+                calls.append(name)
+                return event
+
+            async def fresh():
+                snapshots.append(dict(state))
+                return dict(state)
+
+            client.invoke, client.fresh = invoke, fresh
+            asyncio.run(asyncio.wait_for(client.execute([
+                {"id": "advance", "kind": "advance_day", "days": 17, "timeout": 180,
+                 "continue_on_error": True},
+                {"id": "event", "tool": "query-event"},
+            ]), timeout=0.2))
+            self.assertEqual(calls, ["pause-map", "set-speed-1", "resume-map", "pause-map", "query-event"])
+            self.assertTrue(state["paused"])
+            self.assertFalse(snapshots[2]["paused"])
+            self.assertEqual(snapshots[2]["active_event"], event)
+            interrupted, followup = report["steps"]
+            self.assertFalse(interrupted["ok"])
+            self.assertIn("date_raw=53169024", interrupted["error"])
+            self.assertIn("paused=False", interrupted["error"])
+            self.assertIn('"event_instance_id": 14', interrupted["error"])
+            self.assertTrue(followup["ok"])
+            self.assertEqual(followup["result"], event)
+
     def test_nested_hold_finishes_first_control_plan_before_next_file(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -425,11 +425,16 @@ class PlanClient:
         try:
             while time.monotonic() < deadline:
                 current = await self.fresh()
+                if current.get("active_event") is not None:
+                    raise RuntimeError(
+                        "an active event interrupted date advancement: "
+                        f"date_raw={current['date_raw']}, target_date_raw={target}, "
+                        f"paused={current.get('paused')}, "
+                        f"active_event={json.dumps(current['active_event'], ensure_ascii=False, sort_keys=True)}"
+                    )
                 if int(current["date_raw"]) >= target:
                     reached = current
                     break
-                if current.get("paused") is True and current.get("active_event"):
-                    raise RuntimeError("an event paused the game before the requested day")
                 await asyncio.sleep(self.args.poll_interval)
             if reached is None:
                 raise TimeoutError("running map did not reach the requested date")
