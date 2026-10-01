@@ -923,3 +923,9 @@ Root directly launched CK3 PID101408 and restored h98. Official SDK Tenet, AI in
 Full actual details, preserved RED attempts, limitations and next work are in [migration progress](../ck3-1.20.0.2-migration-progress-2026-10-01.md). Five exact owned topic sources, launch preference and daily/weekly text are committed together; no production source or old matrices are changed in this closeout.
 
 R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-nonwar-r9-20261001/state`：driver 399579B、SHA `a9412115299c9adb321cfca432a6c76d46b57cb29cb4310fcfe811028d03e672`，完整history101，latest entry为query-player-faction-alerts-v1；save anchor98及family账本4660B/SHA `efa66451bc784e810e981fd8f7eb482f568364525f930f41ea44a61b0709a9ae`保留。下一轮使用该实际driver，不能使用pre-live prepared ff5e63身份。记录见 `artifacts/g2-offline-2026-10-01/r9-file-only/FINAL-CONTINUATION-RECEIPT.json`，SHA `c77faa3b4db2941248d6436f41643e00e491ebee65c92db4ea58c9199165ead4`。
+
+### 23:43:27 Publish the native Sway opinion query
+
+11中央源；61ON/4OFF、默认OFF，独立named owner、router、实际原生完整wire与双DLL/injector构建均GREEN。新注册与查询只发布现有Sway意见材料；G2计数不变。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r11\central-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

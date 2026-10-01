@@ -757,9 +757,13 @@ option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1
   "Compile the private READY player_religion_draft_resource_costs_private_query_v1 readonly candidate" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1
   "Compile the private READY actual AI controller and schedule readonly inputs" OFF)
+option(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1
+  "Compile the private READY Sway pair opinion material readonly query" OFF)
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
+# R11 owns only explicitly READY outcome production CPPs below.
+list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "/ck3_12002_sway_outcome.*\\.cpp$")
 # READY explicit source lists below own these namespaces.
 # Later religion, Sway completion, and epidemic work stays excluded unless explicitly READY below.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
@@ -973,6 +977,12 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_ai_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_ai_inputs_mailbox.cpp")
 endif()
+# R11 READY readonly Sway opinion material; no event selector or action registration.
+if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_outcome.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_outcome_mailbox.cpp")
+endif()
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
@@ -1047,6 +1057,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
@@ -2064,7 +2075,7 @@ if(BUILD_TESTING)
         NOT XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1) OR
        (fixture_name MATCHES "^ck3_12002_war_cash" AND
         NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1) OR
-       fixture_name MATCHES "^ck3_12002_(sway_completion|epidemic)" OR
+       fixture_name MATCHES "^ck3_12002_(sway_completion|sway_outcome|epidemic)" OR
        fixture_name STREQUAL "ck3_12002_family_obligations_alliance_test" OR
        (fixture_name MATCHES "^ck3_12002_religion" AND
         (NOT XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
@@ -2147,7 +2158,8 @@ if(BUILD_TESTING)
         XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1=1
-        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1=1)
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1=1)
     endif()
     if(MSVC)
       target_compile_options(${router_target} PRIVATE /W4 /WX /permissive- /EHsc)

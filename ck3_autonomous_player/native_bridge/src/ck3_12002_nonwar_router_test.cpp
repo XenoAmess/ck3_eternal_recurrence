@@ -25,6 +25,9 @@ std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
 std::size_t draft_groups_calls = 0;
 constexpr std::string_view draft_groups_step = "query-player-religion-draft-groups-v1";
+std::size_t sway_opinion_calls = 0;
+constexpr std::string_view sway_opinion_step = "query-sway-outcome-opinion-v1-private";
+constexpr std::string_view sway_outcome_event_step = "query-sway-outcome-event-v1-private";
 std::size_t ai_reform_inputs_calls = 0;
 constexpr std::string_view ai_reform_inputs_step = "query-player-religion-ai-reform-inputs-v1";
 std::array<std::size_t, 3> r8_calls{};
@@ -797,6 +800,24 @@ bool HandlePlayerReligionAIReformInputsPrivate12002(const game::GameAdapter &ada
 }
 #endif
 
+// R11 only-opinion route spy uses the existing owning handler and executor.
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
+bool ExecuteSwayOutcomeMailboxV1(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandleSwayOutcomeEventV1(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == kSwayOutcomeOpinionStepV1, "R11 only opinion enters the existing owning handler");
+  ++sway_opinion_calls;
+  serialized = "sway-outcome-opinion-forwarded";
+  return true;
+}
+#endif
+
 } // namespace xar::ck3_12002
 
 // The R7 probe executes only the new path/default-OFF behavior. The prior
@@ -957,8 +978,60 @@ bool HandlePlayerReligionAIReformInputsPrivate12002(const game::GameAdapter &ada
   return 0;
 }
 
+// R11 runs only one new readonly opinion selector; prior mains are not invoked.
+[[maybe_unused]] int RunSwayOpinionRouterIncrement() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  RouterAdapter adapter;
+  ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  game::Snapshot published{};
+  published.date_raw = 53175816;
+  published.played_character_id = 29829;
+  NonwarPrivateState12002 state{};
+  state.faction_query_sequence = 42;
+  NonwarMailboxExecutorsV1 executors{};
+  PopulateNonwarRouterExecutors12002(executors);
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
+  constexpr bool enabled = true;
+  Check(executors.sway_outcome_opinion == &ExecuteSwayOutcomeMailboxV1,
+        "R11 selected exact existing callback registered");
+  Check(sway_opinion_step == kSwayOutcomeOpinionStepV1, "R11 actual canonical constant matches request");
+#else
+  constexpr bool enabled = false;
+  Check(executors.sway_outcome_opinion == nullptr, "R11 default OFF callback absent");
+#endif
+  Check(IsNonwarPrivateStep12002(sway_opinion_step) == enabled, "R11 canonical visibility follows flag");
+  const std::string_view payload = R"json({"expected_revision":921,"actor_character_id":29829,"target_character_id":43699})json";
+  constexpr std::string_view request_id = "R11-sway-material-opinion";
+  expected = {&adapter, &mailbox, &published, &state, 921, sway_opinion_step, payload, request_id};
+  std::string serialized = "stale-output", failure = "stale-failure";
+  Check(HandleNonwarPrivate12002(adapter, mailbox, published, 921, sway_opinion_step,
+      payload, request_id, state, serialized, failure) == enabled, "R11 actual dispatch status follows flag");
+  Check(serialized == (enabled ? "sway-outcome-opinion-forwarded" : ""), "R11 result returned unchanged");
+  Check(failure.empty(), "R11 failure returned unchanged");
+  Check(state.faction_query_sequence == 42, "R11 unrelated persistent sequence unchanged");
+  Check(!IsNonwarPrivateStep12002("query-sway-outcome-opinion-v1-private-unregistered"),
+        "R11 selector requires exact match");
+  Check(sway_opinion_calls == (enabled ? 1u : 0u), "R11 exact owning opinion handler count");
+  Check(!IsNonwarPrivateStep12002(sway_outcome_event_step), "R11 event selector stays unregistered");
+  serialized = "stale-event-output";
+  failure = "stale-event-failure";
+  Check(!HandleNonwarPrivate12002(adapter, mailbox, published, 921, sway_outcome_event_step,
+      payload, "R11-event-unregistered", state, serialized, failure), "R11 event does not dispatch");
+  Check(serialized.empty() && failure.empty(), "R11 rejected event output stays clear");
+  Check(sway_opinion_calls == (enabled ? 1u : 0u), "R11 event invokes no owning handler");
+  std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
+            << ",\"sway_opinion_selectors_forwarded\":" << sway_opinion_calls
+            << ",\"event_selector_registered\":false,\"old_router_matrix_reexecuted\":false"
+            << ",\"native_provider_credit\":false,\"parser_semantic_credit\":false"
+            << ",\"live_verified\":false,\"ck3_touched\":false}\n";
+  return 0;
+}
+
 int main() {
-#if defined(XAR_G2_ROUTER_INCREMENT_AI_REFORM_INPUTS_ONLY)
+#if defined(XAR_G2_ROUTER_INCREMENT_SWAY_OPINION_ONLY)
+  return RunSwayOpinionRouterIncrement();
+#elif defined(XAR_G2_ROUTER_INCREMENT_AI_REFORM_INPUTS_ONLY)
   return RunAIReformInputsRouterIncrement();
 #elif defined(XAR_G2_ROUTER_INCREMENT_THREE_DRAFT_QUERIES_ONLY)
   return RunThreeDraftQueriesRouterIncrement();

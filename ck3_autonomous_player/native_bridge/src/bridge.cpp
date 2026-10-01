@@ -11453,6 +11453,11 @@ void RunConnectedSession(
               revision_parsed = xar::ck3_12002::ParsePlayerReligionAIReformInputsRevision12002(incoming.payload, expected_revision);
             } else
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
+            if (step == xar::ck3_12002::kSwayOutcomeOpinionStepV1) {
+              revision_parsed = xar::bridge::JsonUnsignedField(incoming.payload, "expected_revision", expected_revision) && expected_revision != 0;
+            } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
             if (xar::ck3_12002::IsPlayerReligionDraftGroupsPrivateStep12002(step)) {
               current_revision_allowed = true;
