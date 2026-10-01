@@ -324,3 +324,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 36文件闭合真实现存RiteCreationWindow root与visible草案、finalCreate/Edit资格、真实报价、currentmainRite unreformed及Rite草案模型。各原生来源和生产reader/serializer Od/O2通过，共用window8case4wire；不伪造CreateFaith树，不称完整改革或AI愿望。Choices后续另包，首次DLL不动。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\ready-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:47:41 Central current religion query registration
+
+第二增量11中央文件接入defaultOFF宗教context flag/namedpermit/actual router/worker parser，默认4/候选33实际callbacks及router70/201通过。explicit源列表排除尚未就绪的宗教新前缀，首DLL不动；双DLL最终hash及必要GOV实机修复由中央freeze单独记录。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-integration\central-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

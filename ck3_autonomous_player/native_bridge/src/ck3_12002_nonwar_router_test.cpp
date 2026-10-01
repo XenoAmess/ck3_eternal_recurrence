@@ -6,6 +6,9 @@
 #include "active_scheme_sway_private_transport_v1.hpp"
 #include "active_scheme_sway_formal_private_transport_v1.hpp"
 #include "ck3_12002_activity_feast_router.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12002_religion_mailbox.hpp"
+#endif
 
 #include <array>
 #include <cstdlib>
@@ -18,6 +21,7 @@ std::size_t checks = 0;
 std::size_t gift_calls = 0;
 std::size_t sway_calls = 0;
 std::size_t prisoner_calls = 0;
+std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
 void Check(bool value, const char *message) {
   ++checks;
@@ -196,6 +200,25 @@ bool HandlePlayerPrisonerPrivate12002(const game::GameAdapter &adapter,
   return true;
 }
 #endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+bool IsPlayerReligionPrivateStep12002(std::string_view step) noexcept {
+  return step == kPlayerReligionPrivateStep12002;
+}
+bool ExecutePlayerReligionMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  ++religion_calls;
+  serialized = "religion-forwarded";
+  return true;
+}
+#endif
 } // namespace xar::ck3_12002
 
 int main() {
@@ -210,6 +233,12 @@ int main() {
   state.faction_query_sequence = 42;
   NonwarMailboxExecutorsV1 executors{};
   PopulateNonwarRouterExecutors12002(executors);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  Check(executors.religion == &ExecutePlayerReligionMailbox12002,
+        "religion query callback registered");
+#else
+  Check(executors.religion == nullptr, "default religion callback absent");
+#endif
 #if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
   state.gift.action_may_have_submitted = true;
   state.gift.claimed_idempotency_keys.emplace("prior-gift");
@@ -306,6 +335,11 @@ int main() {
     exercise(sway_steps[index], false, "");
 #endif
   }
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  exercise("query-player-religion-context-v1", true, "religion-forwarded");
+#else
+  exercise("query-player-religion-context-v1", false, "");
+#endif
   exercise("query-unregistered-router-fixture", false, "");
   Check(!IsNonwarPrivateStep12002("query-active-scheme-sway-v1-private-43699"),
         "obsolete Sway query prefix not selected");
@@ -323,10 +357,18 @@ int main() {
 #else
   Check(sway_calls == 0, "default build invokes no Sway domain");
 #endif
+  Check(religion_calls ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion selector obeys the selected build flag");
   std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
             << ",\"gift_selectors_forwarded\":" << gift_calls
             << ",\"sway_selectors_forwarded\":" << sway_calls
             << ",\"prisoner_selectors_forwarded\":" << prisoner_calls
+            << ",\"religion_selectors_forwarded\":" << religion_calls
             << ",\"fallback_calls\":" << fallback_calls
             << ",\"live_verified\":false,\"ck3_touched\":false}\n";
 }

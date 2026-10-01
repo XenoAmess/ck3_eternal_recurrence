@@ -365,6 +365,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_family_obligations12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   // Optional read-only observer runs on every valid TLS main-thread pump,
   // including unpaused pumps. Context remains alive until uninstall succeeds.
@@ -539,6 +540,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_family_obligations12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
   void *snapshot_observer_context = nullptr;

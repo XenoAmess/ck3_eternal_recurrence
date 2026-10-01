@@ -169,6 +169,7 @@ int main() {
   callbacks.family_obligations = &Executor<1200233>;
   callbacks.prewar = &Executor<1200234>;
   callbacks.government = &Executor<1200235>;
+  callbacks.religion = &Executor<1200237>;
   callbacks.prisoner_collection = &Executor<53>;
   callbacks.prisoner_ransom = &Executor<54>;
   RegisterNonwarMailboxExecutorsV1(environment, callbacks);
@@ -324,6 +325,11 @@ int main() {
 #else
   Check(environment.permitted_executor_government12002, callbacks.government, false, 1200235, selected);
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion12002, callbacks.religion, true, 1200237, selected);
+#else
+  Check(environment.permitted_executor_religion12002, callbacks.religion, false, 1200237, selected);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   Check(environment.permitted_executor_triquinquagintary, callbacks.prisoner_collection, true, 53, selected);
 #else
@@ -337,6 +343,6 @@ int main() {
   ExerciseMailbox(environment, selected);
   const auto wrong = BindThreadRuntimeImage(0x100000, "unsupported", typed);
   assert(wrong.build_profile == nullptr);
-  std::cout << "PASS: all31 private slot mappings, " << selected.size()
+  std::cout << "PASS: all32 private slot mappings, " << selected.size()
             << " installed callbacks submit/drain, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
 }

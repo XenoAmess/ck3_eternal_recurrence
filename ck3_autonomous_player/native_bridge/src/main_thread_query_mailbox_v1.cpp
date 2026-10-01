@@ -551,6 +551,7 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_family_obligations12002 == nullptr &&
        environment.permitted_executor_prewar12002 == nullptr &&
        environment.permitted_executor_government12002 == nullptr &&
+       environment.permitted_executor_religion12002 == nullptr &&
        environment.permitted_executor_feast_stage2_confirm12002 == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
@@ -865,6 +866,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_prewar12002;
   mailbox.permitted_executor_government12002 =
       environment.permitted_executor_government12002;
+  mailbox.permitted_executor_religion12002 =
+      environment.permitted_executor_religion12002;
   mailbox.permitted_executor_feast_stage2_confirm12002 =
       environment.permitted_executor_feast_stage2_confirm12002;
   mailbox.snapshot_observer_callback = environment.snapshot_observer_callback;
@@ -1155,7 +1158,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
         mailbox.permitted_executor_warcash12002 != nullptr ||
         mailbox.permitted_executor_family_obligations12002 != nullptr ||
         mailbox.permitted_executor_prewar12002 != nullptr ||
-        mailbox.permitted_executor_government12002 != nullptr ||
+         mailbox.permitted_executor_government12002 != nullptr ||
+         mailbox.permitted_executor_religion12002 != nullptr ||
         mailbox.permitted_executor_feast_stage2_confirm12002 != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
@@ -1233,6 +1237,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_family_obligations12002 &&
        executor != mailbox.permitted_executor_prewar12002 &&
        executor != mailbox.permitted_executor_government12002 &&
+       executor != mailbox.permitted_executor_religion12002 &&
        executor != mailbox.permitted_executor_feast_stage2_confirm12002) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }

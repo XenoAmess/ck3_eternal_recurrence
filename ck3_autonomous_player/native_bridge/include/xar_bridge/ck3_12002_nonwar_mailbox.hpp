@@ -37,6 +37,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 family_obligations = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prewar = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 government = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_collection = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_ransom = nullptr;
 };

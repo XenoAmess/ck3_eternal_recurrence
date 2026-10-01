@@ -717,6 +717,8 @@ option(XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1
   "Compile the owner-deferred 1.20 prewar candidate" OFF)
 option(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1
   "Compile the exact-build paused crown-law action candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
+  "Compile the exact-build paused player religion observation candidate" OFF)
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
@@ -731,10 +733,14 @@ if(NOT XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1)
 endif()
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
   "/ck3_12002_family_obligations_alliance\\.cpp$")
-# Religion was authorized as a separate next source package. Its initial
-# context reader is not part of this already-composed nonwar candidate.
+# Religion is a separate opt-in increment after the frozen 40-option bundle.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
   "/ck3_12002_religion.*\\.cpp$")
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_context.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_mailbox.cpp")
+endif()
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   research/ck3_12002_construction_submit_binding.cpp
@@ -788,6 +794,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1
     XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1
     XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
@@ -1781,7 +1788,10 @@ if(BUILD_TESTING)
        (fixture_name MATCHES "^ck3_12002_war_cash" AND
         NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1) OR
        fixture_name STREQUAL "ck3_12002_family_obligations_alliance_test" OR
-       fixture_name MATCHES "^ck3_12002_religion" OR
+       (fixture_name MATCHES "^ck3_12002_religion" AND
+        (NOT XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
+         NOT fixture_name STREQUAL "ck3_12002_religion_context_test")) OR
+       fixture_name STREQUAL "ck3_12002_religion_mailbox_test" OR
        fixture_name STREQUAL "ck3_12002_nonwar_router_test")
       continue()
     endif()
@@ -1834,13 +1844,38 @@ if(BUILD_TESTING)
         XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1
         XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=1
         XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=1
-        XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1=1)
+        XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1)
     endif()
     if(MSVC)
       target_compile_options(${router_target} PRIVATE /W4 /WX /permissive- /EHsc)
     endif()
     add_test(NAME ${router_target} COMMAND ${router_target})
   endforeach()
+
+  if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/religion-mailbox-wire")
+    add_executable(xar_ck3_12002_religion_mailbox_test
+      src/ck3_12002.cpp
+      src/ck3_12002_religion_context.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_mailbox.cpp
+      src/ck3_12002_religion_mailbox_test.cpp)
+    target_include_directories(xar_ck3_12002_religion_mailbox_test PRIVATE include)
+    target_link_libraries(xar_ck3_12002_religion_mailbox_test PRIVATE
+      xar_bridge_protocol user32)
+    target_compile_definitions(xar_ck3_12002_religion_mailbox_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_ck3_12002_religion_mailbox_test PRIVATE
+        /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_ck3_12002_religion_mailbox_test
+      COMMAND xar_ck3_12002_religion_mailbox_test
+        "${CMAKE_BINARY_DIR}/religion-mailbox-wire")
+  endif()
 
   if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     add_executable(xar_ck3_activity_cost_slot12_passive_v1_test

@@ -11391,8 +11391,18 @@ void RunConnectedSession(
 #endif
           if (status_only && previous_snapshot.has_value())
             current = *previous_snapshot;
-          if (!status_only && (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
-                  incoming.payload, expected_revision) ||
+          bool revision_parsed = status_only;
+          if (!status_only) {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionPrivateStep12002(step))
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionRevision12002(
+                  incoming.payload, expected_revision);
+            else
+#endif
+              revision_parsed = xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision);
+          }
+          if (!status_only && (!revision_parsed ||
               expected_revision == 0 || expected_revision != state_revision ||
               !previous_snapshot.has_value() ||
               !xar::game::ReadSnapshot(game, current) ||

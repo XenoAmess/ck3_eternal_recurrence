@@ -123,6 +123,9 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
   out.government = &bridge::private_observer::ExecuteGovernmentRuntimeAdapterPrivateOperationV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  out.religion = &ExecutePlayerReligionMailbox12002;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   out.family_obligations = &ExecuteFamilyObligationsMailbox12002;
 #endif
@@ -162,6 +165,9 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
   if (IsGovernmentRuntimeAdapterQuery12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionPrivateStep12002(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   if (IsFamilyObligationsPrivateStep12002(step)) return true;
@@ -253,6 +259,11 @@ bool HandleNonwarPrivate12002(
     if (IsGovernmentRuntimeAdapterQuery12002(step))
       return ReadGovernmentRuntimeAdapterOnApplicationMain12002(native, mailbox,
           published, revision, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionPrivateStep12002(step))
+      return HandlePlayerReligionPrivate12002(native, mailbox, published,
+          revision, step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
     if (IsFamilyObligationsPrivateStep12002(step))
