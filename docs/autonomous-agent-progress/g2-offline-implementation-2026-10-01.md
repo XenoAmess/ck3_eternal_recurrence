@@ -959,3 +959,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 11精确源（6shared、4新test、1专题），14必要新case全GREEN：nonwar8/Gov3/CLI2/Sway SDK1，另实际Feast原始8-key wire→旧消费者修复单case GREEN；默认路径不变，显式nonwar mode执行正式Council/LIFE/ECON/FAMILY与currentGov，不调用战争planner。首次误收旧feast测试14RED保留，未扩旧矩阵。静态就绪，root继续R11实际next/cold。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\NONWAR-SERVICE-R11-SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 23:56:47 Record the actual feast planner compatibility fix
+
+1专题记录R10实际Open成功但旧consumer因新版无same_frame键误报RED；生产点状修复与实际原始wire单case已在shared包，无热改L9；后续仍需真实费用/CanStart/Start/生命周期。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\feast-r11-live-envelope-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
