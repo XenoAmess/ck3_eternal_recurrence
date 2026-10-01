@@ -1,0 +1,235 @@
+{
+  "meta": null,
+  "ttl_ms": 0,
+  "cache_scope": "private",
+  "next_cursor": null,
+  "tools": [
+    {
+      "name": "operator_get_capabilities",
+      "title": null,
+      "description": "Read this target's versioned operator/job capabilities.",
+      "input_schema": {
+        "properties": {},
+        "type": "object",
+        "title": "operator_get_capabilitiesArguments"
+      },
+      "execution": null,
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true,
+        "title": "operator_get_capabilitiesDictOutput"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "meta": null
+    },
+    {
+      "name": "operator_get_status",
+      "title": null,
+      "description": "Read token, desktop, process gates, and handed-off job state.",
+      "input_schema": {
+        "properties": {
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "type": "object",
+        "title": "operator_get_statusArguments"
+      },
+      "execution": null,
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true,
+        "title": "operator_get_statusDictOutput"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "meta": null
+    },
+    {
+      "name": "operator_preflight_job",
+      "title": null,
+      "description": "Read identity, input, output, and exclusive-process readiness.",
+      "input_schema": {
+        "properties": {
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          },
+          "job_name": {
+            "title": "Job Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_id",
+          "job_name"
+        ],
+        "type": "object",
+        "title": "operator_preflight_jobArguments"
+      },
+      "execution": null,
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true,
+        "title": "operator_preflight_jobDictOutput"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "meta": null
+    },
+    {
+      "name": "operator_query_steam_workshop_status_v1",
+      "title": null,
+      "description": "Read profile-frozen Steam, CK3 build, and Workshop cache state.",
+      "input_schema": {
+        "properties": {
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "type": "object",
+        "additionalProperties": false,
+        "title": "operator_query_steam_workshop_status_v1Arguments"
+      },
+      "execution": null,
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true,
+        "title": "operator_query_steam_workshop_status_v1DictOutput"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      },
+      "meta": null
+    },
+    {
+      "name": "operator_handoff_job",
+      "title": null,
+      "description": "Start one profile-frozen job; request_id makes retries idempotent.",
+      "input_schema": {
+        "properties": {
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          },
+          "job_name": {
+            "title": "Job Name",
+            "type": "string"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_id",
+          "job_name",
+          "request_id"
+        ],
+        "type": "object",
+        "title": "operator_handoff_jobArguments"
+      },
+      "execution": null,
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true,
+        "title": "operator_handoff_jobDictOutput"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
+      },
+      "meta": null
+    },
+    {
+      "name": "operator_control_job",
+      "title": null,
+      "description": "Send one profile-frozen control to the matching running job.",
+      "input_schema": {
+        "properties": {
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          },
+          "job_name": {
+            "title": "Job Name",
+            "type": "string"
+          },
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "control_name": {
+            "title": "Control Name",
+            "type": "string"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_id",
+          "job_name",
+          "job_id",
+          "control_name",
+          "request_id"
+        ],
+        "type": "object",
+        "title": "operator_control_jobArguments"
+      },
+      "execution": null,
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true,
+        "title": "operator_control_jobDictOutput"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": true
+      },
+      "meta": null
+    }
+  ],
+  "result_type": "complete"
+}

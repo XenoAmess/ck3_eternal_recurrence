@@ -1,0 +1,36 @@
+--- before-34120
++++ after-34120
+@@ -17,17 +17,31 @@
+ 			62 69 71 16 248
+ 		}
+ 		alive_data={
++			variables={
++				data={
++					{
++						flag="signature_weapon"
++						data={
++							type=flag
++							flag="axe"
++						}
++					}
++				}
++			}
+ 			fertility=0.5
+ 			health=4.19766
+ 			piety={
+ 				currency=50
+ 			}
+ 			prestige={
+-				currency=301.0608
+-				accumulated=1001.0608
++				currency=451.0608
++				accumulated=1151.0608
+ 			}
+ 			influence={
+ 				currency=120
++			}
++			kills={
++				33437
+ 			}
+ 			languages={
+ 				language_berber

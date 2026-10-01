@@ -1,0 +1,29 @@
+	33437={
+		first_name="Turgise"
+		birth=1035.1.1
+		nickname_text=""
+		ethnicity="caucasian_brown_hair"
+		dynasty_house=1105
+		skill={
+			4 0 4 6 6 2
+		}
+		trait_xp_amounts={
+			0
+		}
+		mass=14
+		traits={
+			50 76 54 16 236
+		}
+		family_data={
+			child={
+				38574 38963
+			}
+		}
+		dead_data={
+			date=1066.12.30
+			reason="death_battle"
+			killer=34120
+			liege=29829
+			liege_title=2141
+		}
+	}

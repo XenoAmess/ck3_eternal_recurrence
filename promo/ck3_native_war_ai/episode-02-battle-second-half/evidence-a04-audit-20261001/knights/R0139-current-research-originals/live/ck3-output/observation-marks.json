@@ -1,0 +1,16 @@
+[
+  {
+    "kind": "paused-map-start",
+    "at": "2026-10-01T04:18:55.867653+00:00",
+    "seconds": 376.1169654999976,
+    "snapshot_id": "native:3",
+    "revision": 4
+  },
+  {
+    "kind": "paused-map-end",
+    "at": "2026-10-01T04:19:26.600818+00:00",
+    "seconds": 406.85014349999983,
+    "snapshot_id": "native:3",
+    "revision": 4
+  }
+]

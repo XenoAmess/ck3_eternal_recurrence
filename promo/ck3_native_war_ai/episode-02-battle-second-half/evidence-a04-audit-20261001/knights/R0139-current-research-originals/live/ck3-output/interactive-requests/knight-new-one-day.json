@@ -1,0 +1,8 @@
+{
+  "action": "mcp",
+  "tool": "ck3_execute_step",
+  "arguments": {
+    "step": "life-advance",
+    "expected_revision": 5
+  }
+}

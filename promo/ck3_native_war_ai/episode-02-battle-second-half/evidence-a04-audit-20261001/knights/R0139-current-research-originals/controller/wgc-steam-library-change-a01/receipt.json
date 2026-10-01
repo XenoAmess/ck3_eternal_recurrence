@@ -1,0 +1,57 @@
+{
+  "started_at_utc": "2026-10-01T04:11:34.449341+00:00",
+  "at_utc": "2026-10-01T04:11:50.149434+00:00",
+  "hwnd": 197612,
+  "pid": 7068,
+  "process_create_time": 1790777038.7610564,
+  "semantic_navigation": "steam://nav/games/details/1086940",
+  "events": [
+    {
+      "at_utc": "2026-10-01T04:11:38.202945+00:00",
+      "elapsed": 0.4219965000011143,
+      "width": 962,
+      "height": 768,
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\wgc-steam-library-change-a01\\frame-01.png",
+      "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C",
+      "bytes": 792585
+    },
+    {
+      "at_utc": "2026-10-01T04:11:40.222638+00:00",
+      "elapsed": 2.432283300004201,
+      "width": 962,
+      "height": 768,
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\wgc-steam-library-change-a01\\frame-02.png",
+      "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C",
+      "bytes": 792585
+    },
+    {
+      "at_utc": "2026-10-01T04:11:42.228033+00:00",
+      "elapsed": 4.436591400000907,
+      "width": 962,
+      "height": 768,
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\wgc-steam-library-change-a01\\frame-03.png",
+      "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C",
+      "bytes": 792585
+    },
+    {
+      "at_utc": "2026-10-01T04:11:44.237551+00:00",
+      "elapsed": 6.4460240000044,
+      "width": 962,
+      "height": 768,
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\wgc-steam-library-change-a01\\frame-04.png",
+      "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C",
+      "bytes": 792585
+    },
+    {
+      "at_utc": "2026-10-01T04:11:46.238269+00:00",
+      "elapsed": 8.459609600002295,
+      "width": 962,
+      "height": 768,
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\wgc-steam-library-change-a01\\frame-05.png",
+      "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C",
+      "bytes": 792585
+    }
+  ],
+  "mode_changed": false,
+  "offline_visual_observed": null
+}

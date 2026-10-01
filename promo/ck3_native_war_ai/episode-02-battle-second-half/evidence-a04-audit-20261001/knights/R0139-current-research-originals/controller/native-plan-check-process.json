@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\tools\\native_research_plan.py",
+    "check",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\native-research-plan.json",
+    "--for-observation",
+    "--output",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\native-research-plan-check.json"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

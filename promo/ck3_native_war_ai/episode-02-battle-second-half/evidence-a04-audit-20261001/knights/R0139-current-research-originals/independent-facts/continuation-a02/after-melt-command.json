@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "melt",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\research-pair-attempt-02\\d27-immutable.ck3",
+    "--unknown-key",
+    "stringify",
+    "--format",
+    "ck3",
+    "--out",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0139-readonly-verification-attempt-01\\continuation-a02\\after-melted.ck3"
+  ],
+  "raw": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\research-pair-attempt-02\\d27-immutable.ck3",
+    "bytes": 52797832,
+    "sha256": "B825D98A0FAB3E788AB578E26A0FB90761AE4DC75E658DF9E6F633E8EB1BE04C"
+  },
+  "rakaly": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "bytes": 6552576,
+    "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "war-film-ui-saved-gui-block-import/v1",
+  "at": "2026-10-01T04:12:39.188716+00:00",
+  "source_snapshot_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.pdx.txt",
+  "target_settings_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-state\\profile\\pdx_settings.txt",
+  "expected_source_sha256": "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D",
+  "expected_gui_block_sha256": "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593",
+  "requested_scale": "1.0",
+  "native_ui_serialized_scale": "1",
+  "source_snapshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.pdx.txt",
+    "bytes": 6891,
+    "sha256": "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D"
+  },
+  "source_gui_block": {
+    "bytes": 54,
+    "sha256": "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593"
+  },
+  "vanilla_non_gui_template": {
+    "bytes": 375,
+    "sha256": "52BF916EC3F1CD2ACC14618743F26202302F5EBE74ACD993E773F85897449C5B"
+  },
+  "staging_settings": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-state\\profile\\.pdx_settings.ui_import-g4y9f_0h.tmp",
+    "bytes": 429,
+    "sha256": "7AF37E943DA4A962EBE6DBB0E2BC8A9F7E7BBFCC1F7A0F3F43EDD880494359F6"
+  },
+  "prepared_snapshot": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\gui-settings-ui-import-prepared.pdx.txt",
+    "bytes": 429,
+    "sha256": "7AF37E943DA4A962EBE6DBB0E2BC8A9F7E7BBFCC1F7A0F3F43EDD880494359F6"
+  },
+  "prepared_settings": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-state\\profile\\pdx_settings.txt",
+    "bytes": 429,
+    "sha256": "7AF37E943DA4A962EBE6DBB0E2BC8A9F7E7BBFCC1F7A0F3F43EDD880494359F6"
+  },
+  "atomic_exclusive_publish": true,
+  "exact_source_gui_block_preserved": true,
+  "non_gui_bytes_equal_vanilla_template": true,
+  "runtime_scale_proven": false,
+  "visual_geometry_reviewed": false,
+  "recording_authorized_by_this_receipt": false,
+  "status": "GREEN_DISK_ONLY",
+  "staging_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-state\\profile\\.pdx_settings.ui_import-g4y9f_0h.tmp",
+  "staging_unlinked_after_publish": true
+}

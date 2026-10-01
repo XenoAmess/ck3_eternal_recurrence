@@ -1,0 +1,55 @@
+{
+  "at_utc": "2026-10-01T04:26:36.753576+00:00",
+  "arguments": {
+    "target_id": "ck3-six-gap-ui-20261001-a02"
+  },
+  "reply": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_instance_id\": \"b60a1709-a7e4-49ee-bcff-0a88844379a3\",\n  \"target_id\": \"ck3-six-gap-ui-20261001-a02\",\n  \"identity\": {\n    \"token_user\": \"1\",\n    \"desktop\": \"WinSta0\\\\Default\",\n    \"machine\": \"DESKTOP-3FEVHD2\",\n    \"process_id\": 5924\n  },\n  \"identity_matches_profile\": true,\n  \"process_gates\": {\n    \"ck3.exe\": [\n      3852\n    ],\n    \"dowser.exe\": [],\n    \"ffmpeg.exe\": [],\n    \"obs64.exe\": [],\n    \"xar_ck3_bridge_injector.exe\": []\n  },\n  \"process_gate_errors\": {},\n  \"jobs\": [\n    {\n      \"job_id\": \"aa2fd30c-c4d9-453d-8d6b-ff462fd409b1\",\n      \"request_id\": \"six-gap-ui-20261001-a02-root\",\n      \"job_name\": \"six-gap-ui-capture\",\n      \"pid\": 11600,\n      \"state\": \"running\",\n      \"exit_code\": null,\n      \"started_unix\": 1790827953.7415168,\n      \"stdout_path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-02\\\\operator-state-a01\\\\jobs\\\\aa2fd30c-c4d9-453d-8d6b-ff462fd409b1\\\\stdout.log\",\n      \"stderr_path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-02\\\\operator-state-a01\\\\jobs\\\\aa2fd30c-c4d9-453d-8d6b-ff462fd409b1\\\\stderr.log\",\n      \"available_controls\": []\n    }\n  ]\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_instance_id": "b60a1709-a7e4-49ee-bcff-0a88844379a3",
+      "target_id": "ck3-six-gap-ui-20261001-a02",
+      "identity": {
+        "token_user": "1",
+        "desktop": "WinSta0\\Default",
+        "machine": "DESKTOP-3FEVHD2",
+        "process_id": 5924
+      },
+      "identity_matches_profile": true,
+      "process_gates": {
+        "ck3.exe": [
+          3852
+        ],
+        "dowser.exe": [],
+        "ffmpeg.exe": [],
+        "obs64.exe": [],
+        "xar_ck3_bridge_injector.exe": []
+      },
+      "process_gate_errors": {},
+      "jobs": [
+        {
+          "job_id": "aa2fd30c-c4d9-453d-8d6b-ff462fd409b1",
+          "request_id": "six-gap-ui-20261001-a02-root",
+          "job_name": "six-gap-ui-capture",
+          "pid": 11600,
+          "state": "running",
+          "exit_code": null,
+          "started_unix": 1790827953.7415168,
+          "stdout_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\operator-state-a01\\jobs\\aa2fd30c-c4d9-453d-8d6b-ff462fd409b1\\stdout.log",
+          "stderr_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\operator-state-a01\\jobs\\aa2fd30c-c4d9-453d-8d6b-ff462fd409b1\\stderr.log",
+          "available_controls": []
+        }
+      ]
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

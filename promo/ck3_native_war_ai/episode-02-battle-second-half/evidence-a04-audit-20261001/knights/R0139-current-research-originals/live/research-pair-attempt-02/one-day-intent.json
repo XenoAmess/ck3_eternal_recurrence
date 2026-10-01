@@ -1,0 +1,34 @@
+{
+  "at_utc": "2026-10-01T04:25:13.908658+00:00",
+  "source_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 5,
+    "native_revision": 4,
+    "snapshot_id": "native:4",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat"
+  },
+  "token": 6100103,
+  "trace_begin": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\interactive-requests\\knight-new-trace-begin.json",
+      "bytes": 220,
+      "sha256": "5A28C7673FB14CD9D52AB9E55AC6DCFA364FF50608319B697FE526DC919E78C3"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\interactive-requests-responses\\knight-new-trace-begin.json",
+      "bytes": 11587,
+      "sha256": "03EA3B1619AC7464AB7F2E0E11CCA4687E67503DAF0B391FFBCEBDA7384A427D"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "at_most_one_day": true,
+  "recorder_requested": false,
+  "scope": "native saved-state pair; not film advance certification"
+}

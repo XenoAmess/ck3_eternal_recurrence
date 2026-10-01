@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "war-e2-six-gap-screen-20261001-a01",
+    "--expected-sequence",
+    "3372",
+    "--summary",
+    "R0139_research_pair_captured7_zero_flags_cleanup_and_display_restored"
+  ],
+  "returncode": 0,
+  "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"git\": {\n      \"branch\": \"codex/jd11-center-diagnostic-20261001\",\n      \"dirty_entries\": 0,\n      \"head\": \"1901473429deb1297be7d5d4451169082629858b\"\n    },\n    \"last_sequence\": 3373,\n    \"next_step\": \"\",\n    \"pid\": 5272,\n    \"repo\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\reinforcement-attempt-12-R0129-native-center-diagnostic\\\\source\",\n    \"resources\": [],\n    \"schema\": \"codex.task_bus.v1\",\n    \"state\": \"done\",\n    \"summary\": \"R0139_research_pair_captured7_zero_flags_cleanup_and_display_restored\",\n    \"task_id\": \"war-e2-six-gap-screen-20261001-a01\",\n    \"updated_at_utc\": \"2026-10-01T04:30:40.979341+00:00\"\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 3373,\n    \"event_id\": \"4029627e3b934be9bb55d310d4d692b3\",\n    \"timestamp_utc\": \"2026-10-01T04:30:40.980544+00:00\",\n    \"kind\": \"completed\",\n    \"task_id\": \"war-e2-six-gap-screen-20261001-a01\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"done\",\n    \"summary\": \"R0139_research_pair_captured7_zero_flags_cleanup_and_display_restored\",\n    \"next_step\": \"\",\n    \"resources\": [],\n    \"repo\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\reinforcement-attempt-12-R0129-native-center-diagnostic\\\\source\",\n    \"git\": {\n      \"branch\": \"codex/jd11-center-diagnostic-20261001\",\n      \"dirty_entries\": 0,\n      \"head\": \"1901473429deb1297be7d5d4451169082629858b\"\n    }\n  }\n}\n",
+  "stderr": ""
+}

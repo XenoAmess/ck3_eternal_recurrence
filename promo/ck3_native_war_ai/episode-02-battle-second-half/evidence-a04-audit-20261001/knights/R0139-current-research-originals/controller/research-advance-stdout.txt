@@ -1,0 +1,1 @@
+{"result": "AFTER_SAVED_PENDING_STRICT_READER", "values": {"date_raw": 53146872, "paused": true, "actor": 29829, "revision": 8, "native_revision": 7, "snapshot_id": "native:7", "war_ids": [4], "army_id": 18, "army_state": "combat"}, "trace_error": null}

@@ -1,0 +1,20 @@
+{
+  "job": {
+    "available_controls": [],
+    "exit_code": null,
+    "job_id": "aa2fd30c-c4d9-453d-8d6b-ff462fd409b1",
+    "job_name": "six-gap-ui-capture",
+    "pid": 11600,
+    "request_id": "six-gap-ui-20261001-a02-root",
+    "started_unix": 1790827953.7415168,
+    "state": "running",
+    "stderr_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\operator-state-a01\\jobs\\aa2fd30c-c4d9-453d-8d6b-ff462fd409b1\\stderr.log",
+    "stdout_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\operator-state-a01\\jobs\\aa2fd30c-c4d9-453d-8d6b-ff462fd409b1\\stdout.log"
+  },
+  "job_spec_sha256": "CDFA126CE22A1091F598959C16779265FC22099F18EA5DD9CB4F1AED4D7BC0DE",
+  "preflight_evidence_sha256": "1DE3A3688805DF666601E51DC85EBDC0D7592137E4386B689E8F6BA0479B78A5",
+  "profile_sha256": "DB18B88C7B5C1C9F476A5933EC7FA31469C2734B972B7047FE66F8ECBB50C2F7",
+  "schema_version": 1,
+  "server_instance_id": "b60a1709-a7e4-49ee-bcff-0a88844379a3",
+  "target_id": "ck3-six-gap-ui-20261001-a02"
+}
