@@ -1,0 +1,135 @@
+{
+  "schema": "xar.g2.sway-completion-invalidation-reason-python-fixtures.v1",
+  "recorded_at": "2026-10-01T10:57:19.008492+00:00",
+  "source_manifest": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway-completion\\invalidation-query-delivery-result.json",
+  "source_manifest_sha256": "27ea14a8486e9bdf4fc80d40d5bcdde6946905b506d1c123b6aef64162d11182",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_invalidation_reason.hpp",
+      "sha256": "68e431d7bc499fcd4be1a019bc2def9aadd88a56f5eee81a28785ab810dc59b9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_invalidation_reason.cpp",
+      "sha256": "edfb0f50d0df9f298d101296c9e748ca0ab7b944ac9859cc5f1fccb304b16a25"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_invalidation_reason_test.cpp",
+      "sha256": "16735fa45d0bdefe82b7cbacb79bb36f1a9e27158f0af18ffd5771d7ad88581b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_invalidation_reason_fixture.py",
+      "sha256": "a70250f68f8f90ab2d54f08f44ca437678bdd42481db1a1dd50f9fc53cdf14a0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/sway_completion12002_invalidation_reason_abi.json",
+      "sha256": "726273647af5e3d150ba82ffe71578c85f5c1e40b120a2d6f867e31854531f55"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/sway_completion12002_invalidation_reason_tree.mmd",
+      "sha256": "e2b4bf7b6cdb41cbe7b86e0acc4cdfe4b24e555e85ec5ea753b76582c17b5bb6"
+    },
+    {
+      "path": "docs/ck3-native-ai/ck3-1.20.0.2-sway-invalidation-reason.md",
+      "sha256": "0425401d0463ce84a5080b4ae111225366f9504312dd8b352d04ee56e5503cd0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_invalidation_reason_mailbox_test.cpp",
+      "sha256": "1eabd310f4dbe478589a0db55ddc77d3dd661a6a6af76493f98e12499bb2353d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_invalidation_reason_mailbox_fixture.py",
+      "sha256": "79091cfa02ad1a8972fe78dd7623bfdb716c1374073bf09a432935224e39d489"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_invalidation_reason_mailbox.hpp",
+      "sha256": "55e35036619ddf837bb645e2ad7dd984a44c32f7507a0a2839845c290eafa1ab"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_invalidation_reason_mailbox.cpp",
+      "sha256": "2f3cfc03894cf57818ae0b18f8d5397cf479fc25166854f03eda52384659c632"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_invalidation_reason_handler.cpp",
+      "sha256": "c74cf5434d0fda97363b15e32b16a29dc7eaa43bf2319a080ae77cb0a5b35797"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_invalidation_reason_serializer.cpp",
+      "sha256": "3ce8752bde7f37b2efa039b5036aefb2eee938011f2e85ea0e3e06e08b9daa6b"
+    },
+    {
+      "path": "docs/ck3-native-ai/ck3-1.20.0.2-sway-completion-invalidation-query.md",
+      "sha256": "28ec683cf7cd16277830ded6186e3ca3578e4816c951f5e5b997f338618f3e77"
+    }
+  ],
+  "native_source_dependency": {
+    "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\research\\sway_completion12002_invalidation_context_abi.json",
+    "sha256": "83d040cea979de274825ec87330ad4e732ddf7b142a88f7bf5f95ef15be4e458",
+    "proof_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-context\\source-proof.json",
+    "proof_sha256": "23cc35e5fa7b731cee2362daef41e4e01f1a9581e0c00a5508ea77689a657bf7",
+    "verification_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-context\\verification.json",
+    "verification_sha256": "45d49de4695205061b1ee70a5c1bea25ba5732264bf7035252e049e27da5e7a6",
+    "previous_native_matrix_repeated": false
+  },
+  "native_transport_receipt": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-reason-transport\\attempt-0001\\result.json",
+    "sha256": "8adc7da418544f2ebe9c34216d22fc5a48de2f1d2f6dfe46d67768fad74c5e99",
+    "checks_per_mode": 16,
+    "cases_per_mode": 3,
+    "modes": [
+      "/Od /W4 /WX",
+      "/O2 /W4 /WX"
+    ]
+  },
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_artifacts": [
+    {
+      "fixture": "dead-command-result.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-reason-transport\\attempt-0001\\Release\\dead-command-result.json",
+      "sha256": "a1081d269c5215823759de81fdde8e4d0a51f99b1e24c86d35b7ccec0e4b1156"
+    },
+    {
+      "fixture": "range-command-result.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-reason-transport\\attempt-0001\\Release\\range-command-result.json",
+      "sha256": "6f91164567eca32c4fbe24c1289f58f2a4a6dc4e4157518c49733c6799985ff3"
+    },
+    {
+      "fixture": "opaque-command-result.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-reason-transport\\attempt-0001\\Release\\opaque-command-result.json",
+      "sha256": "e2150cae9984955dc9ae8ece422072dc2b926152bdbe4fdd6356374fc31897e5"
+    }
+  ],
+  "payload_sha256": {
+    "dead-command-result.json": "a1081d269c5215823759de81fdde8e4d0a51f99b1e24c86d35b7ccec0e4b1156",
+    "range-command-result.json": "6f91164567eca32c4fbe24c1289f58f2a4a6dc4e4157518c49733c6799985ff3",
+    "opaque-command-result.json": "e2150cae9984955dc9ae8ece422072dc2b926152bdbe4fdd6356374fc31897e5"
+  },
+  "command_result_fixtures": [
+    "dead-command-result.json",
+    "range-command-result.json",
+    "opaque-command-result.json"
+  ],
+  "native_boundary": {
+    "actual_existing_execute_sink_capture_and_copied_recorder": true,
+    "actual_parent_and_child_global_command_domain": true,
+    "actual_native_effective_scope_lookup_overlay_and_fallback": true,
+    "actual_owning_query_envelope_and_full_formatter": true,
+    "fixture_frame_and_attached_observer_input": true,
+    "actual_named_queue_install_admission_wait_reclaim": false,
+    "native_execute_wrapper_installed_in_ck3": false,
+    "ck3_touched": false,
+    "message_enqueue_or_render_observed": false,
+    "native_end_cause_observed": false,
+    "material_or_terminal_postcondition_verified": false
+  },
+  "boundary": {
+    "byte_identical_actual_native_outputs": true,
+    "command_result_envelopes_fabricated": false,
+    "native_tests_rerun": false,
+    "real_ck3_touched": false,
+    "readiness": "research/offline-verified",
+    "selected_notification_source_only": true,
+    "render_history_material_or_universal_end_cause_claimed": false,
+    "future_status_at_notification_fields_inferred": false
+  }
+}

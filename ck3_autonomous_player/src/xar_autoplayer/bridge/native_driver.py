@@ -2933,6 +2933,30 @@ class NativeHeadlessGameplayDriver:
             after_sequence=after_sequence, timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_religion_personal_parameters_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the current player's native personal Tenet parameter observations."""
+        from .player_religion_personal_parameters_private_transport import query_player_religion_personal_parameters_private_v1
+
+        return query_player_religion_personal_parameters_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_active_scheme_sway_completion_invalidation_reason_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+        scheme_instance_id: int, after_sequence: int = 0,
+    ) -> dict[str, object]:
+        """Read retained native Sway invalidation notification inputs."""
+        from .active_scheme_sway_completion_invalidation_reason_private_transport import query_active_scheme_sway_completion_invalidation_reason_private_v1
+
+        return query_active_scheme_sway_completion_invalidation_reason_private_v1(
+            self, expected_revision=expected_revision,
+            target_character_id=target_character_id, scheme_instance_id=scheme_instance_id,
+            after_sequence=after_sequence, timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_family_obligations_private_v1(
         self, *, expected_revision: int, subject_character_id: int,
         candidate_character_id: int, request_matrilineal_option: bool = False,

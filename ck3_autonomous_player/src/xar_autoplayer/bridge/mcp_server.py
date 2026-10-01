@@ -1753,6 +1753,28 @@ def create_server(
                 scheme_instance_id=scheme_instance_id, after_sequence=after_sequence,
             )
 
+    if getattr(driver, "allow_private_player_religion_personal_parameters_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_personal_parameters_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the current player's native personal Tenet parameter observations."""
+            return driver.query_player_religion_personal_parameters_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_active_scheme_sway_completion_invalidation_reason_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_active_scheme_sway_completion_invalidation_reason_private_v1(
+            expected_revision: int, target_character_id: int, scheme_instance_id: int,
+            after_sequence: int = 0,
+        ) -> dict[str, object]:
+            """Read native Sway invalidation notification inputs for the exact instance."""
+            return driver.query_active_scheme_sway_completion_invalidation_reason_private_v1(
+                expected_revision=expected_revision, target_character_id=target_character_id,
+                scheme_instance_id=scheme_instance_id, after_sequence=after_sequence,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3616,6 +3638,14 @@ def parser() -> argparse.ArgumentParser:
         "--private-active-scheme-sway-completion-termination-query", action="store_true",
         help="enable retained native Sway termination observations",
     )
+    result.add_argument(
+        "--private-player-religion-personal-parameters-query", action="store_true",
+        help="enable the current player's native personal Tenet parameter observations",
+    )
+    result.add_argument(
+        "--private-active-scheme-sway-completion-invalidation-reason-query", action="store_true",
+        help="enable retained native Sway invalidation notification observations",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3713,6 +3743,8 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_religion_numeric_special_parameters_query
             or args.private_player_religion_conversion_outcome_query
             or args.private_active_scheme_sway_completion_termination_query
+            or args.private_player_religion_personal_parameters_query
+            or args.private_active_scheme_sway_completion_invalidation_reason_query
             ) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -3809,6 +3841,10 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_player_religion_conversion_outcome_query = True
     if args.private_active_scheme_sway_completion_termination_query:
         driver.allow_private_active_scheme_sway_completion_termination_query = True
+    if args.private_player_religion_personal_parameters_query:
+        driver.allow_private_player_religion_personal_parameters_query = True
+    if args.private_active_scheme_sway_completion_invalidation_reason_query:
+        driver.allow_private_active_scheme_sway_completion_invalidation_reason_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

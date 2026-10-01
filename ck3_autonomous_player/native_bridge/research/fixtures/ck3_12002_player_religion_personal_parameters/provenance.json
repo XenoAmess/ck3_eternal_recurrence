@@ -1,0 +1,105 @@
+{
+  "schema": "ck3-12002-player-religion-personal-parameters-python-fixture-provenance-v1",
+  "readiness": "static-ready",
+  "native_readiness": "static-ready",
+  "python_leaf_status": "GREEN",
+  "shared_registration_status": "registered; default-OFF readonly discovery verified",
+  "official_sdk_status": "GREEN",
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "producer": "Actual C++ played personal-parameter provider, owning-thread submit/drain/wait/reclaim and complete command_result serializer",
+  "fixture_path": "research/religion_doctrine12002_personal_parameters_mailbox_wire_fixtures.json",
+  "fixture_sha256": "67127a018d06c6e76ff606ea77094b4e6e2ed6f22315cc217f213fa87257ed0a",
+  "actual_wire_sha256": {
+    "personal-true-and-known-missing.json": "bc91040b404b214a05059e7a16a51b805593c3b55b05dc5629967059f54919bd",
+    "extension-absent.json": "f464e355377c8200ca7098929d9f141a472d7087a9a37c91d0bbe57c7afd19f9",
+    "empty-owned-tenets.json": "99a56856657f855573a264fa69230bee2fcc33037f0ce98bc55fd61ec20eef38",
+    "database-unavailable.json": "37d8b4bcd36cdfaaf2819d011c022ecfb550d85bb34ca588be3ab273bf76e916",
+    "state-changed.json": "84b1c47574dbeda97769c598d29145aa70604adf617bc4ac3a01d0193d9f9e3d"
+  },
+  "native_delivery": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\personal-parameters\\personal-parameters-mailbox-delivery-result.json",
+    "sha256": "b8c56a07fdd113f768a8843ab54f0229aa640c8b214547de6f821d17364b58c0"
+  },
+  "native_mailbox_receipt": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\personal-parameters\\mailbox\\results\\result.json",
+    "sha256": "8764256287563d127a3cb56671e009f68c7de0b342b3daecf645b2c7f1f5d939",
+    "status": "GREEN",
+    "checks": 30,
+    "compiler": "MSVC /O2 /W4 /WX",
+    "actual_wire_cases": 5,
+    "reused_without_rerun": true
+  },
+  "fixture_executor_permit": "Existing primary fixture permit with owned memory; central owner registers deployed named permit",
+  "native_named_permit": "permitted_executor_religion_personal_parameters12002",
+  "native_adapter_unwrap_boundary": "Bare GameAdapter identity branch only; no WorkerAdapter implementation substituted",
+  "driver_leaf": "query_player_religion_personal_parameters_private_v1(driver, *, expected_revision, timeout_seconds=30.0)",
+  "permission_attr": "allow_private_player_religion_personal_parameters_query",
+  "step": "query-player-religion-personal-parameters-v1",
+  "domain_key": "player_religion_personal_parameters_v1",
+  "backend_id": "ck3-1.20.0.2-native-player-religion-personal-parameters-v1",
+  "sdk_tool_name": "ck3_query_player_religion_personal_parameters_v1",
+  "cli_flag": "--private-player-religion-personal-parameters-query",
+  "default_enabled": false,
+  "read_only": true,
+  "advertised": false,
+  "inner_key": "player_religion_personal_parameters",
+  "inner_schema": "ck3_12002_character_personal_parameters_v1",
+  "source": "character_personal_tenets",
+  "semantics": {
+    "supported_false": "A listed supported key preserves its actual final Boolean false; false entries are not filtered",
+    "unsupported": "A key not listed in an available complete supported registry is unsupported, not known false",
+    "key_count": "Not hardcoded; fixture registry cardinality is not a production contract",
+    "extension_absent": "Available and complete, has_character_extension=false, empty personal Tenet list and actual false for every supported key",
+    "known_empty": "Available and complete, has_character_extension=true, actual owned personal Tenet list empty and actual false for every supported key",
+    "typed_unavailable": "Completeness false with actual reason; reset empty lists/extension=false are not successful absence or known false",
+    "rite_faith_dependency": "None; actual Character personal Tenet parameters are independent of Rite/Faith caches",
+    "capture_epoch": "Actual owning-thread pump epoch, separate from published snapshot_revision",
+    "scope": "Actual played Character only; no actor/target/key selector"
+  },
+  "consumer_path": "Actual full C++ packet -> NativeProtocolState.ingest -> production wait_for_command_result -> real driver method -> official mcp.Client",
+  "only_wire_field_replaced": "request_id",
+  "consumer_source_sha256": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/player_religion_personal_parameters_private_transport.py": "04908869d3ce3237f8fc933a8ffab51976874b9c92a1000f2a5653fda39a9d96",
+    "ck3_autonomous_player/tests/unit/test_ck3_12002_player_religion_personal_parameters_wire.py": "8f8a83680bc9a0994e119bb3db03054019dd590c15fffe8bd035528038da9379",
+    "ck3_autonomous_player/tests/unit/test_ck3_12002_player_religion_personal_parameters_sdk.py": "01efb03c1cd43d56de3955e3a889ca2f0b949ada2d8cc9f64703b0e69f5ecabf"
+  },
+  "python_leaf_receipt": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\python-religion-personal-next\\focused.json",
+    "sha256": "7dcbad6188092a7c0b1e8890f963ab0f22e1c39395d8d7c7c2f2be6bd18eb650",
+    "status": "PASS",
+    "methods": 3,
+    "subtests": 10,
+    "pytest_seconds": 0.23,
+    "process_seconds": 0.617
+  },
+  "official_sdk_receipt": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\python-religion-personal-next\\sdk.json",
+    "sha256": "9c4b400083d654315823889c6a9b415c62c1990a70c62d9f78b0273c98f06995",
+    "status": "PASS",
+    "cases": 1,
+    "actual_full_packets": 5,
+    "pytest_seconds": 1.34,
+    "process_seconds": 1.948,
+    "default_off_discovery_and_cli": true,
+    "explicit_on_readonly_discovery_and_cli": true,
+    "production_protocol_state_ingest": true,
+    "production_command_result_wait": true,
+    "production_driver_method": true,
+    "official_mcp_client": true,
+    "real_pipe_initialized": false
+  },
+  "remaining": [
+    "Root-only same-source candidate/named route evidence, actual paused observation and Git/report updates"
+  ],
+  "report_fields": {
+    "completed": "Personal-parameter Python transport contract and provenance record five actual C++ packets, exact consumer source pins and completed focused/official SDK proofs",
+    "why": "Preserve complete supported registry false values and distinguish extension absence, actual empty ownership and typed source failure",
+    "validation": "Coordinator's new focused 3 methods +10 subtests in 0.23s and single official SDK case/five actual packets in 1.34s GREEN; native O2 30-check queue/full serializer receipt reused; no test rerun by documentation owner",
+    "readiness_change": "Complete Python query research -> static-ready with coordinator focused/shared/SDK evidence; no paused/live evidence",
+    "limitations": "Independent Character personal Tenet Boolean inputs only; no Rite/Faith dependency, Fulfillment merge, final action legality/cost/outcome or religious OODA",
+    "next": "Coordinator freezes the five-file consumer manifest; root owns same-source candidate/named route evidence, paused live/Git/day-week report integration"
+  }
+}
