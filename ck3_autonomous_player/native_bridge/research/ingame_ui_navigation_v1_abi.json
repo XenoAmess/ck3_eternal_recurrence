@@ -66,7 +66,7 @@
       "MouseEnter_code": "0x11",
       "MouseLeave_code": "0x12",
       "native_event_delivery": "0x36CB4A0",
-      "target": "fixed combat_window descendant left_knights or right_knights; visible/enabled; CPdxGuiTextWidget RTTI5020010; widget+D8==resolved GuiContext; current fullCombatID matches request; modal_count0",
+      "target": "fixed combat_window descendant left_knights or right_knights; visible/enabled; CPdxGuiTextWidget RTTI5020010; widget+D8==resolved GuiContext; current fullCombatID matches request; bounded original modal vector: count0 or all effective-hidden; any effective-visible receiver refused",
       "postcondition": "independent query target==context+F0, same current CombatID; pending stock tooltip dwell/pixels must be verified separately"
     }
   },
@@ -239,5 +239,23 @@
     "game_launched": false,
     "human_full_panel_review": false,
     "human_video_signoff": false
+  },
+  "modal_admission_revision_v2": {
+    "trigger": "R0141 actual owner/TLS/GUI binding passed; count-only gate refused navigation. Original parsed unavailable stays RED/no-day.",
+    "evidence_level": "exact original EXE bytes + two later readonly PID6320 memory reads; source/offline validation; new live pending",
+    "original_exact_EXE_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "original_shortcut_manager_rva": "0x36E1C40..0x36E1D35",
+    "effective_hidden_scan_rva": "0x36E1C70..0x36E1CA6",
+    "count_layout": "GUI context signed int32 +0x29C, bounded 0..256; vector data +0x290, pointer stride8; receiver flags +0xD0 bit08 is effective-hidden cache",
+    "policy": "all global open/select/hover/fit actions reject any effective-visible receiver; count0 or fully readable all-hidden receivers allowed; no exception by runtime_name and no native descendant allowance",
+    "failed_read_policy": "header/negative/excessive count/null vector/null or unreadable entries/unreadable flags/header change => unavailable; GUI context/owner equality and all original main-thread paused/fullID/actor guards preserved",
+    "raw_native_diagnostic": "modal_admission object: attempted/header_read/receivers_verified/actual signed count or null/vector address/observed receiver addresses and D0 flags/effective-visible count/reason; existing driver create-only original parsed command_result persists it before validation. No new public MCP parameters or extra gameplay capability.",
+    "MCP_normalized_scope": "Optional raw diagnostic remains in original parsed return; no claim that the current Python normalized UI response publishes it.",
+    "readonly_current_memory_report": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-modal-admission-diagnosis-other-a01/readonly-modal-receivers-a01.json",
+    "readonly_current_memory_SHA256": "FDC019E55D420FB7BBCF54B4F76470EABF086B18981B071C668A0A681EAD283F",
+    "static_anchors_report_SHA256": "4165872C563931C331CDF2537041D9BA705C690A2226A2E32ED5AC005F0B32FE",
+    "temporal_limit": "Later RPM does not reconstruct the failed call execution-time count/vector; the failed native reason had conflated resolver/pointer/read/count branches.",
+    "live_claim": false,
+    "human_approval_created": false
   }
 }
