@@ -168,9 +168,11 @@ def prepare(args: argparse.Namespace) -> dict:
  decision_group_type_cca120:0 "CK3 1.20 creator fixture"
  cca120_prepare_branch:0 "Prepare retained non-default Rite design"
  cca120_prepare_branch_desc:0 "Fixture data only. Then open the production creator and confirm through its GUI."
+ cca120_prepare_branch_tooltip:0 "Prepare an existing non-default Rite design for a real production GUI purchase."
  cca120_prepare_branch_confirm:0 "Prepare"
  cca120_verify_branch:0 "Verify actual non-default Rite delivery"
  cca120_verify_branch_desc:0 "Click only after purchasing through the production creator GUI."
+ cca120_verify_branch_tooltip:0 "Check the actual courtier, Rite and gold after the production GUI purchase."
  cca120_verify_branch_confirm:0 "Verify"
 ''')
     else:
@@ -187,6 +189,7 @@ cca120_observe_actual_death = { effect = { if = { limit = { has_character_flag =
  decision_group_type_cca120:0 "CK3 1.20 persistence fixture"
  cca120_arm_death:0 "Arm actual death with score growth"
  cca120_arm_death_desc:0 "Adds prestige; does not call scoring or death effects. Use the actual engine death path afterward."
+ cca120_arm_death_tooltip:0 "Add the prestige fixture and observe the next actual engine death."
  cca120_arm_death_confirm:0 "Arm"
 ''')
         else:
