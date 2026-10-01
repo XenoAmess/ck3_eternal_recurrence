@@ -282,6 +282,39 @@ int main() {
   assert(re.contact_projection->contact_if_now_selected_combat_id == 0x1000003);
   assert(InitializeBattleTerminalJournalStorageV1(f.b));
   BattleTerminalTransitionSnapshotV1 terminal{};
+  // F21: an active human army has no committed route or AI assignment.
+  // CUnit +0x30 is not the native destination getter's input.
+  Bytes<0x20> unrelated_target{};
+  Put<std::int32_t>(unrelated_target, 0x10, -1);
+  Put(f.unit0, 0x30, unrelated_target.data());
+  Put<std::int32_t>(f.unit0, 0x1C4, -1);
+  assert(ReadBattleTerminalTransitionV1(f.b, f.scope, {0x1000003, 0x1000001, 0},
+                                        terminal) ==
+         BattleTerminalTransitionStatusV1::available);
+  assert(terminal.prior.terminal_kind ==
+         BattleTerminalKindV1::active_not_terminal);
+  assert(terminal.subject.route_province_ids_in_stored_order &&
+         terminal.subject.route_province_ids_in_stored_order->empty());
+  assert(!terminal.subject.move_target_province_id);
+  assert(terminal.subject.active_combat_id == 0x1000003);
+  assert(terminal.subject.blocked_by_active_combat);
+  assert(terminal.subject.ai_membership_status ==
+         BattleTerminalAiMembershipStatusV1::none);
+  assert(terminal.removal.result_relevant_player_count == 0);
+  // The native destination is the last committed path entry, even with an
+  // unrelated non-null +0x30 value.
+  Bytes<0x8> route_info{};
+  Put<std::int32_t>(route_info, 0, 2586);
+  std::array<void *, 1> route_rows{route_info.data()};
+  Fixture::Array(f.unit0, 0x38, route_rows.data(), 1);
+  assert(ReadBattleTerminalTransitionV1(f.b, f.scope, {0x1000003, 0x1000001, 0},
+                                        terminal) ==
+         BattleTerminalTransitionStatusV1::available);
+  assert(terminal.subject.move_target_province_id == 2586);
+  assert(terminal.subject.route_province_ids_in_stored_order ==
+         std::vector<std::int32_t>{2586});
+  Fixture::Array(f.unit0, 0x38, static_cast<void *>(nullptr), 0);
+  Put<std::int32_t>(f.unit0, 0x1C4, 0x1000007);
   Put<std::uint8_t>(f.combat, 0x704, 1);
   assert(ReadBattleTerminalTransitionV1(f.b, f.scope, {0x1000003, 0x1000001, 0},
                                         terminal) ==

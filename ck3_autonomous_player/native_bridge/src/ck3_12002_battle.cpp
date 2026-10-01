@@ -403,12 +403,6 @@ bool Route(const BattleBindings &b, const void *unit,
   if (!current)
     return false;
   out.current_province_id = At<std::int32_t>(current, 0x10);
-  auto *target = At<void *>(unit, 0x30);
-  if (target) {
-    if (!Province(b, target))
-      return false;
-    out.move_target_province_id = At<std::int32_t>(target, 0x10);
-  }
   const void *data{};
   std::int32_t count{};
   if (!Header(unit, 0x38, 0x40, 0x44, data, count, 2048))
@@ -422,6 +416,10 @@ bool Route(const BattleBindings &b, const void *unit,
       return false;
     out.route_province_ids.push_back(id);
   }
+  // Native destination getter 0x24AA820 reads the last committed path entry;
+  // an empty path returns the null Province. +0x30 is contact adjacency state.
+  if (!out.route_province_ids.empty())
+    out.move_target_province_id = out.route_province_ids.back();
   return true;
 }
 bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
@@ -570,8 +568,6 @@ bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
   if (timeline_available)
     route.arrival_date_raws = arrivals;
   bool aligned = assignment.assignment_target_province_id &&
-                 route.move_target_province_id ==
-                     assignment.assignment_target_province_id &&
                  (route.route_province_ids.empty()
                       ? route.current_province_id ==
                             *assignment.assignment_target_province_id
