@@ -49,6 +49,12 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 religion_hostility = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_doctrine_knowledge = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_tenets = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 epidemic_treatment = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 epidemic_recovery = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_conversion_reasons = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 sway_completion_execution = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_reform = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_doctrine_catalogue = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_collection = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_ransom = nullptr;
 };

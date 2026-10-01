@@ -37,6 +37,24 @@
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_religion_mailbox.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12002_epidemic_treatment_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12002_epidemic_recovery_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12002_religion_conversion_reasons_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+#include "xar_bridge/ck3_12002_sway_completion_execution_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_reform12002_query_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_doctrine12002_catalogue_mailbox.hpp"
+#endif
 #include "xar_bridge/game_adapter.hpp"
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
 #include "xar_bridge/ck3_12002_council_transport.hpp"
@@ -69,6 +87,7 @@ struct NonwarPrivateState12002 {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   ActiveSwayState12002 sway{};
+  const SwayExecutionRecorder12002 *sway_execution_recorder = nullptr;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   PrisonerPrivateWorkerState12002 prisoner{};

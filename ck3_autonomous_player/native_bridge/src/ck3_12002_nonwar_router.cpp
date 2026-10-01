@@ -162,6 +162,24 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
   out.religion_tenets = &ExecutePlayerReligionTenetsMailbox12002;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  out.epidemic_treatment = &ExecutePlayerEpidemicTreatmentMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  out.epidemic_recovery = &ExecutePlayerEpidemicRecoveryMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  out.religion_conversion_reasons = &ExecutePlayerReligionConversionReasonsMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  out.sway_completion_execution = &ExecuteSwayCompletionExecutionMailboxV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  out.religion_reform = &ExecutePlayerReligionReformMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  out.religion_doctrine_catalogue = &ExecutePlayerReligionDoctrineCatalogueMailbox12002;
+#endif
   (void)out;
 }
 
@@ -238,6 +256,24 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
   if (IsPlayerReligionTenetsPrivateStep12002(step)) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  if (IsPlayerEpidemicTreatmentPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  if (IsEpidemicRecoveryPrivate12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionConversionReasonsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  if (step == kSwayCompletionExecutionStepV1) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionReformPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDoctrineCataloguePrivateStep12002(step)) return true;
+#endif
   return IsActivityFeastPrivateStep12002(step);
 }
 
@@ -259,6 +295,41 @@ bool HandleNonwarPrivate12002(
   serialized.clear(); failure.clear();
   try {
     const auto &native = NativeAdapter12002(adapter);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+    if (IsPlayerEpidemicTreatmentPrivateStep12002(step))
+      return HandlePlayerEpidemicTreatmentPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+    if (IsEpidemicRecoveryPrivate12002(step))
+      return HandleEpidemicRecoveryPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionConversionReasonsPrivateStep12002(step))
+      return HandlePlayerReligionConversionReasonsPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    if (step == kSwayCompletionExecutionStepV1) {
+      if (state.sway_execution_recorder == nullptr) {
+        failure = "sway_execution_observer_not_installed"; return false;
+      }
+      return HandleSwayCompletionExecutionV1(native, mailbox, *state.sway_execution_recorder,
+          published, revision, step, payload, request_id, serialized, failure);
+    }
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionReformPrivateStep12002(step))
+      return HandlePlayerReligionReformPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionDoctrineCataloguePrivateStep12002(step))
+      return HandlePlayerReligionDoctrineCataloguePrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
     if (IsPlayerRiteGovernancePrivateStep12002(step))
       return HandlePlayerRiteGovernancePrivate12002(native, mailbox, published, revision,

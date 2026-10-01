@@ -735,11 +735,19 @@ option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1
   "Compile the private READY player_religion_doctrine_knowledge_private_query_v1 candidate" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1
   "Compile the private READY player_religion_tenets_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1
+  "Compile the private READY player_epidemic_treatment_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1
+  "Compile the private READY player_epidemic_recovery_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1
+  "Compile the private READY player_religion_reform_context_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1
+  "Compile the private READY player_religion_doctrine_catalogue_private_query_v1 candidate" OFF)
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
 # READY explicit source lists below own these namespaces.
-# Pending Sway execution and all epidemic packages stay excluded.
+# Later religion, Sway completion, and epidemic work stays excluded unless explicitly READY below.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
   "/ck3_12002_(religion.*|sway_completion.*|epidemic.*)\\.cpp$")
 if(NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1)
@@ -762,7 +770,8 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
    XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1 OR
    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1 OR
    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1 OR
-   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_context.cpp")
 endif()
@@ -831,6 +840,52 @@ if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_serializer.cpp")
 endif()
+# R4 READY production sources, including their exact frozen provider dependencies.
+if(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_epidemic_treatment_presence.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_epidemic_treatment_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_epidemic_recovery.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_epidemic_recovery_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/player_epidemic_recovery_v1.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_reasons.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_reasons_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution_handler.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution_serializer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_execution_install.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_rite.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_willingness.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_window.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_costs.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_eligibility.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_choices.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_intrinsic.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_choices.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_selection.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_query_runtime.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_query_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_intrinsic.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_catalogue.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_catalogue_mailbox.cpp")
+endif()
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
@@ -894,6 +949,10 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
@@ -1953,7 +2012,11 @@ if(BUILD_TESTING)
         XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1=1
-        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1)
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1=1)
     endif()
     if(MSVC)
       target_compile_options(${router_target} PRIVATE /W4 /WX /permissive- /EHsc)

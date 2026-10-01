@@ -23,6 +23,21 @@ std::size_t sway_calls = 0;
 std::size_t prisoner_calls = 0;
 std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
+std::array<std::size_t, 6> r4_calls{};
+[[maybe_unused]] const void *expected_sway_execution_recorder = nullptr;
+constexpr std::array<std::string_view, 6> r4_steps{
+    "query-player-epidemic-treatment-presence-v1",
+    "query-player-epidemic-recovery-v1",
+    "query-player-religion-conversion-reasons-v1",
+    "query-sway-completion-execution-v1-private",
+    "query-player-religion-reform-context-v1",
+    "query-player-religion-doctrine-catalogue-v1"};
+constexpr std::string_view recovery_title_step =
+    "query-player-epidemic-recovery-v1-title-50331653";
+constexpr std::array<std::string_view, 6> r4_outputs{
+    "epidemic-treatment-forwarded", "epidemic-recovery-forwarded",
+    "conversion-reasons-forwarded", "sway-execution-forwarded",
+    "reform-context-forwarded", "doctrine-catalogue-forwarded"};
 std::array<std::size_t, 11> readonly_calls{};
 constexpr std::array<std::string_view, 11> readonly_steps{
     "query-player-rite-governance-v1",
@@ -130,6 +145,20 @@ void CheckForwarded(const game::GameAdapter &adapter,
   Check(step == readonly_steps[index], "readonly handler matches its exact selector");
   ++readonly_calls[index];
   serialized = readonly_outputs[index];
+  return true;
+}
+
+[[maybe_unused]] bool R4ReadonlySpy(std::size_t index,
+    const game::GameAdapter &adapter, ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == r4_steps[index] || (index == 1 && step == recovery_title_step),
+        "R4 readonly handler matches its exact canonical selector");
+  ++r4_calls[index];
+  serialized = r4_outputs[index];
   return true;
 }
 
@@ -426,6 +455,107 @@ bool HandleSwayCompletionV1(const game::GameAdapter &adapter,
 }
 #endif
 
+// R4 six readonly domain spies: real domain parsers remain provider-fixture owned.
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+bool IsPlayerEpidemicTreatmentPrivateStep12002(std::string_view step) noexcept {
+  return step == r4_steps[0];
+}
+bool ExecutePlayerEpidemicTreatmentMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerEpidemicTreatmentPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure,
+    const TreatmentPresenceBindings12002 *fixture_bindings) noexcept {
+  Check(fixture_bindings == nullptr, "treatment production dispatch uses default native binding");
+  return R4ReadonlySpy(0, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+bool IsEpidemicRecoveryPrivate12002(std::string_view step) noexcept {
+  return step == r4_steps[1] || step == recovery_title_step;
+}
+bool ExecutePlayerEpidemicRecoveryMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandleEpidemicRecoveryPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return R4ReadonlySpy(1, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+bool IsPlayerReligionConversionReasonsPrivateStep12002(std::string_view step) noexcept {
+  return step == r4_steps[2];
+}
+bool ExecutePlayerReligionConversionReasonsMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionConversionReasonsPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return R4ReadonlySpy(2, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+bool ExecuteSwayCompletionExecutionMailboxV1(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandleSwayCompletionExecutionV1(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const SwayExecutionRecorder12002 &recorder,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  Check(&recorder == expected_sway_execution_recorder,
+        "Sway execution receives the fixture-owned long-lived recorder identity");
+  Check(expected.state->sway_execution_recorder == &recorder,
+        "Sway execution preserves its worker state recorder binding");
+  return R4ReadonlySpy(3, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+bool IsPlayerReligionReformPrivateStep12002(std::string_view step) noexcept {
+  return step == r4_steps[4];
+}
+bool ExecutePlayerReligionReformMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionReformPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return R4ReadonlySpy(4, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+bool IsPlayerReligionDoctrineCataloguePrivateStep12002(std::string_view step) noexcept {
+  return step == r4_steps[5];
+}
+bool ExecutePlayerReligionDoctrineCatalogueMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionDoctrineCataloguePrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return R4ReadonlySpy(5, adapter, mailbox, published, revision, step, payload,
+                       request_id, serialized, failure);
+}
+#endif
+
 } // namespace xar::ck3_12002
 
 int main() {
@@ -475,6 +605,9 @@ int main() {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   state.sway.may_have_submitted = true;
+  SwayExecutionRecorder12002 owned_sway_execution_recorder{};
+  state.sway_execution_recorder = &owned_sway_execution_recorder;
+  expected_sway_execution_recorder = &owned_sway_execution_recorder;
   Check(executors.sway_state == &ExecuteActiveSwayMailbox12002, "Sway query callback registered");
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
   Check(executors.sway_action == &ExecuteActiveSwayMailbox12002, "Sway formal callback registered");
@@ -539,6 +672,36 @@ int main() {
   Check(executors.sway_completion == &ExecuteSwayCompletionMailboxV1, "sway_completion callback registered");
 #else
   Check(executors.sway_completion == nullptr, "disabled sway_completion callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  Check(executors.epidemic_treatment == &ExecutePlayerEpidemicTreatmentMailbox12002, "epidemic_treatment R4 callback registered");
+#else
+  Check(executors.epidemic_treatment == nullptr, "disabled epidemic_treatment R4 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  Check(executors.epidemic_recovery == &ExecutePlayerEpidemicRecoveryMailbox12002, "epidemic_recovery R4 callback registered");
+#else
+  Check(executors.epidemic_recovery == nullptr, "disabled epidemic_recovery R4 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(executors.religion_conversion_reasons == &ExecutePlayerReligionConversionReasonsMailbox12002, "religion_conversion_reasons R4 callback registered");
+#else
+  Check(executors.religion_conversion_reasons == nullptr, "disabled religion_conversion_reasons R4 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  Check(executors.sway_completion_execution == &ExecuteSwayCompletionExecutionMailboxV1, "sway_completion_execution R4 callback registered");
+#else
+  Check(executors.sway_completion_execution == nullptr, "disabled sway_completion_execution R4 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  Check(executors.religion_reform == &ExecutePlayerReligionReformMailbox12002, "religion_reform R4 callback registered");
+#else
+  Check(executors.religion_reform == nullptr, "disabled religion_reform R4 callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  Check(executors.religion_doctrine_catalogue == &ExecutePlayerReligionDoctrineCatalogueMailbox12002, "religion_doctrine_catalogue R4 callback registered");
+#else
+  Check(executors.religion_doctrine_catalogue == nullptr, "disabled religion_doctrine_catalogue R4 callback absent");
 #endif
   Check(executors.council == nullptr && executors.law_action == nullptr &&
         executors.feast_open == nullptr && executors.factions == nullptr &&
@@ -679,6 +842,64 @@ int main() {
 #endif
   Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[10]) + "-unregistered"),
         "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  exercise(r4_steps[0], true, r4_outputs[0], R"json({"expected_revision":916})json");
+#else
+  exercise(r4_steps[0], false, "", R"json({"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r4_steps[0]) + "-unregistered"),
+        "R4 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  exercise(r4_steps[1], true, r4_outputs[1], R"json({"expected_revision":916,"expected_event_instance_id":41})json");
+#else
+  exercise(r4_steps[1], false, "", R"json({"expected_revision":916,"expected_event_instance_id":41})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r4_steps[1]) + "-unregistered"),
+        "R4 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  exercise(r4_steps[2], true, r4_outputs[2], R"json({"target_rite_id":0,"expected_snapshot_revision":916,"expected_revision":916})json");
+#else
+  exercise(r4_steps[2], false, "", R"json({"target_rite_id":0,"expected_snapshot_revision":916,"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r4_steps[2]) + "-unregistered"),
+        "R4 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  exercise(r4_steps[3], true, r4_outputs[3], R"json({"expected_revision":916,"actor_character_id":29829,"target_character_id":43699,"scheme_instance_id":0,"after_sequence":7})json");
+#else
+  exercise(r4_steps[3], false, "", R"json({"expected_revision":916,"actor_character_id":29829,"target_character_id":43699,"scheme_instance_id":0,"after_sequence":7})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r4_steps[3]) + "-unregistered"),
+        "R4 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  exercise(r4_steps[4], true, r4_outputs[4], R"json({"expected_snapshot_revision":916})json");
+#else
+  exercise(r4_steps[4], false, "", R"json({"expected_snapshot_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r4_steps[4]) + "-unregistered"),
+        "R4 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  exercise(r4_steps[5], true, r4_outputs[5], R"json({"expected_revision":916})json");
+#else
+  exercise(r4_steps[5], false, "", R"json({"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(r4_steps[5]) + "-unregistered"),
+        "R4 readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  exercise(recovery_title_step, true, r4_outputs[1], R"json({"expected_revision":916})json");
+#else
+  exercise(recovery_title_step, false, "", R"json({"expected_revision":916})json");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  state.sway_execution_recorder = nullptr;
+  std::string missing_recorder_output = "stale-output", missing_recorder_failure = "stale-failure";
+  Check(!HandleNonwarPrivate12002(adapter, mailbox, published, 916, r4_steps[3],
+      R"json({"expected_revision":916})json", "missing-recorder", state,
+      missing_recorder_output, missing_recorder_failure), "missing Sway recorder cannot invoke execution query");
+  Check(missing_recorder_output.empty() && missing_recorder_failure == "sway_execution_observer_not_installed",
+        "missing Sway recorder returns the actual central failure");
+  Check(r4_calls[3] == 1, "missing recorder invokes no Sway execution handler");
+  state.sway_execution_recorder = &owned_sway_execution_recorder;
+#endif
   exercise("query-unregistered-router-fixture", false, "");
   Check(!IsNonwarPrivateStep12002("query-active-scheme-sway-v1-private-43699"),
         "obsolete Sway query prefix not selected");
@@ -780,6 +1001,50 @@ int main() {
         0,
 #endif
         "sway_completion selector obeys the selected build flag");
+  Check(r4_calls[0] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "epidemic_treatment R4 selector obeys the selected build flag");
+  Check(r4_calls[1] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+        2,
+#else
+        0,
+#endif
+        "epidemic_recovery R4 selector obeys the selected build flag");
+  Check(r4_calls[2] ==
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_conversion_reasons R4 selector obeys the selected build flag");
+  Check(r4_calls[3] ==
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+        1,
+#else
+        0,
+#endif
+        "sway_completion_execution R4 selector obeys the selected build flag");
+  Check(r4_calls[4] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_reform R4 selector obeys the selected build flag");
+  Check(r4_calls[5] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_doctrine_catalogue R4 selector obeys the selected build flag");
+  std::size_t r4_total = 0;
+  for (const auto value : r4_calls) r4_total += value;
   std::size_t readonly_total = 0;
   for (const auto value : readonly_calls) readonly_total += value;
   std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
@@ -788,6 +1053,7 @@ int main() {
             << ",\"prisoner_selectors_forwarded\":" << prisoner_calls
             << ",\"religion_selectors_forwarded\":" << religion_calls
             << ",\"new_readonly_selectors_forwarded\":" << readonly_total
+            << ",\"R4_readonly_selectors_forwarded\":" << r4_total
             << ",\"fallback_calls\":" << fallback_calls
             << ",\"live_verified\":false,\"ck3_touched\":false}\n";
 }

@@ -16,6 +16,9 @@
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+#include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
+#endif
 #include "xar_bridge/ck3_12002_war_entry.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
@@ -364,6 +367,19 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+// The native slots and copied execution records share this pinned DLL lifetime.
+static xar::ck3_12002::SwayExecutionRecorder12002
+    g_sway_completion_execution_recorder12002{};
+static xar::ck3_12002::SwayCompletionExecutionInstall12002
+    g_sway_completion_execution_install12002{};
+struct SwayCompletionExecutionWorkerLifetime12002 {
+  ~SwayCompletionExecutionWorkerLifetime12002() noexcept {
+    (void)xar::ck3_12002::UninstallSwayCompletionExecution12002(
+        g_sway_completion_execution_install12002);
+  }
+};
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
 static xar::bridge::ActivityCostSlot12ObserverV1
     g_activity_cost_slot12_observer_v1{};
@@ -11394,6 +11410,25 @@ void RunConnectedSession(
           bool revision_parsed = status_only;
           bool current_revision_allowed = false;
           if (!status_only) {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionReformPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionReformRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionDoctrineCataloguePrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionDoctrineCatalogueRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionConversionReasonsPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              std::uint32_t target_rite_id = 0;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionConversionReasonsRequest12002(incoming.payload, target_rite_id, expected_revision);
+            } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
             if (xar::ck3_12002::IsPlayerReligionPrivateStep12002(step)) {
               current_revision_allowed = true;
@@ -22888,6 +22923,9 @@ void RunConnectedSession(
 }
 
 DWORD WINAPI WorkerMain(void *) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  SwayCompletionExecutionWorkerLifetime12002 sway_execution_lifetime{};
+#endif
   const auto game = xar::game::SelectCurrentProcessAdapter();
   if (game == nullptr) {
     return 1;
@@ -22929,6 +22967,11 @@ DWORD WINAPI WorkerMain(void *) noexcept {
   }
 #endif
   WorkerState state{};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  if (new_build)
+    state.nonwar_private12002.sway_execution_recorder =
+        &g_sway_completion_execution_recorder12002;
+#endif
   state.zhongguo_scoreboard_provider_session_id = NewProviderSessionId();
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     HANDLE pipe = ConnectToHost();
@@ -23007,6 +23050,14 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     return TRUE;
   }
   if (game->descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64") {
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    if (!xar::ck3_12002::InstallSwayCompletionExecution12002(
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+            game->descriptor().executable_sha256,
+            g_sway_completion_execution_recorder12002,
+            g_sway_completion_execution_install12002))
+      return FALSE;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     const auto cost_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     g_activity_cost_slot12_bindings12002 = xar::ck3_12002::BindCoreImage(

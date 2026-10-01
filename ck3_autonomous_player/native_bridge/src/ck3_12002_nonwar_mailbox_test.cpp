@@ -102,8 +102,18 @@ void ExerciseMailbox(MainThreadQueryInstallEnvironmentV1 environment,
   environment.system_page_size_override = 4096;
   MainThreadQueryMailboxV1 mailbox{};
   assert(InstallMainThreadQueryMailboxV1(mailbox, environment));
-  assert(mailbox.permitted_executor_epidemic_treatment12002 == nullptr);
-  assert(mailbox.permitted_executor_epidemic_recovery12002 == nullptr);
+  assert(mailbox.permitted_executor_epidemic_treatment12002 ==
+         environment.permitted_executor_epidemic_treatment12002);
+  assert(mailbox.permitted_executor_epidemic_recovery12002 ==
+         environment.permitted_executor_epidemic_recovery12002);
+  assert(mailbox.permitted_executor_religion_conversion_reasons12002 ==
+         environment.permitted_executor_religion_conversion_reasons12002);
+  assert(mailbox.permitted_executor_sway_completion_execution12002 ==
+         environment.permitted_executor_sway_completion_execution12002);
+  assert(mailbox.permitted_executor_religion_reform12002 ==
+         environment.permitted_executor_religion_reform12002);
+  assert(mailbox.permitted_executor_religion_doctrine_catalogue12002 ==
+         environment.permitted_executor_religion_doctrine_catalogue12002);
   assert(iat == reinterpret_cast<void *>(&XarMainThreadPeekMessageWHookV1));
   const auto return_rva = environment.build_profile->pump_exact_return_rva;
   for (std::size_t i = 0; i < 3; ++i) {
@@ -185,6 +195,12 @@ int main() {
   callbacks.religion_hostility = &Executor<1200246>;
   callbacks.religion_doctrine_knowledge = &Executor<1200247>;
   callbacks.religion_tenets = &Executor<1200248>;
+  callbacks.epidemic_treatment = &Executor<1200249>;
+  callbacks.epidemic_recovery = &Executor<1200250>;
+  callbacks.religion_conversion_reasons = &Executor<1200251>;
+  callbacks.sway_completion_execution = &Executor<1200252>;
+  callbacks.religion_reform = &Executor<1200253>;
+  callbacks.religion_doctrine_catalogue = &Executor<1200254>;
   RegisterNonwarMailboxExecutorsV1(environment, callbacks);
   assert(environment.build_profile == profile);
   assert(environment.permitted_executor == &Executor<1>);
@@ -408,12 +424,39 @@ int main() {
 #else
   Check(environment.permitted_executor_religion_tenets12002, callbacks.religion_tenets, false, 1200248, selected);
 #endif
-  // CE1 providers are reserved for the next increment; no registration credit.
-  assert(environment.permitted_executor_epidemic_treatment12002 == nullptr);
-  assert(environment.permitted_executor_epidemic_recovery12002 == nullptr);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_epidemic_treatment12002, callbacks.epidemic_treatment, true, 1200249, selected);
+#else
+  Check(environment.permitted_executor_epidemic_treatment12002, callbacks.epidemic_treatment, false, 1200249, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_epidemic_recovery12002, callbacks.epidemic_recovery, true, 1200250, selected);
+#else
+  Check(environment.permitted_executor_epidemic_recovery12002, callbacks.epidemic_recovery, false, 1200250, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_conversion_reasons12002, callbacks.religion_conversion_reasons, true, 1200251, selected);
+#else
+  Check(environment.permitted_executor_religion_conversion_reasons12002, callbacks.religion_conversion_reasons, false, 1200251, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  Check(environment.permitted_executor_sway_completion_execution12002, callbacks.sway_completion_execution, true, 1200252, selected);
+#else
+  Check(environment.permitted_executor_sway_completion_execution12002, callbacks.sway_completion_execution, false, 1200252, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_reform12002, callbacks.religion_reform, true, 1200253, selected);
+#else
+  Check(environment.permitted_executor_religion_reform12002, callbacks.religion_reform, false, 1200253, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_doctrine_catalogue12002, callbacks.religion_doctrine_catalogue, true, 1200254, selected);
+#else
+  Check(environment.permitted_executor_religion_doctrine_catalogue12002, callbacks.religion_doctrine_catalogue, false, 1200254, selected);
+#endif
   ExerciseMailbox(environment, selected);
   const auto wrong = BindThreadRuntimeImage(0x100000, "unsupported", typed);
   assert(wrong.build_profile == nullptr);
-  std::cout << "PASS: all43 private slot mappings, " << selected.size()
+  std::cout << "PASS: all49 private slot mappings, " << selected.size()
             << " installed callbacks submit/drain, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
 }
