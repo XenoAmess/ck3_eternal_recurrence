@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 from collections.abc import Callable
 from pathlib import Path
 import uuid
@@ -2801,6 +2802,38 @@ class GameplayBridgeService:
         native_revision = starting.get("native_revision")
         old_history = starting.get("native_command_history")
         old_diagnostics = starting.get("diagnostics")
+
+        def decline(reason, *, fresh=None, failed_checks=None, tail=None, wait_error=None):
+            fresh_diagnostics = fresh.get("diagnostics") if isinstance(fresh, dict) else None
+            fresh_history = fresh.get("native_command_history") if isinstance(fresh, dict) else None
+            evidence = {
+                "status": "declined", "reason": reason,
+                "failed_checks": failed_checks or [],
+                "old_frame": {key: starting.get(key) for key in (
+                    "snapshot_id", "revision", "native_revision", "date_raw", "paused", "map_ready",
+                )},
+                "fresh_frame": ({key: fresh.get(key) for key in (
+                    "snapshot_id", "revision", "native_revision", "date_raw", "paused", "map_ready",
+                )} if isinstance(fresh, dict) else None),
+                "old_connection": ({key: old_diagnostics.get(key) for key in (
+                    "bridge_pid", "connection_generation",
+                )} if isinstance(old_diagnostics, dict) else None),
+                "fresh_connection": ({key: fresh_diagnostics.get(key) for key in (
+                    "bridge_pid", "connection_generation",
+                )} if isinstance(fresh_diagnostics, dict) else None),
+                "old_history_length": len(old_history) if isinstance(old_history, list) else None,
+                "fresh_history_length": len(fresh_history) if isinstance(fresh_history, list) else None,
+                "history_tail_length": len(tail) if isinstance(tail, list) else None,
+                "history_tail": [{key: row.get(key) for key in (
+                    "index", "command", "ok", "error",
+                )} for row in tail[:3] if isinstance(row, dict)] if isinstance(tail, list) else None,
+                "wait_error": wait_error,
+            }
+            rejection.read_only_query_retry_decline = evidence
+            # The existing formal harness retains traceback notes even when
+            # it serializes only the original exception text and traceback.
+            rejection.add_note("campaign_root_fresh_read_v1 " + json.dumps(evidence, sort_keys=True))
+
         if not (
             isinstance(revision, int)
             and not isinstance(revision, bool)
@@ -2812,14 +2845,17 @@ class GameplayBridgeService:
             and starting.get("paused") is True
             and starting.get("map_ready") is True
         ):
+            decline("starting_frame_missing_retry_inputs")
             return None
         try:
             fresh = self.driver.wait_for_change(
                 revision, timeout_seconds=1.5
             )
-        except BridgeUnavailableError:
+        except BridgeUnavailableError as wait_error:
+            decline("fresh_snapshot_wait_failed", wait_error=f"{type(wait_error).__name__}: {wait_error}")
             return None
         if not isinstance(fresh, dict):
+            decline("fresh_snapshot_not_mapping")
             return None
         played = starting.get("played_character")
         fresh_played = fresh.get("played_character")
@@ -2831,44 +2867,45 @@ class GameplayBridgeService:
             and fresh_history[:len(old_history)] == old_history
             else None
         )
-        if not (
-            isinstance(fresh.get("revision"), int)
+        checks = {
+            "fresh_public_revision": isinstance(fresh.get("revision"), int)
             and not isinstance(fresh.get("revision"), bool)
-            and fresh["revision"] > revision
-            and isinstance(fresh.get("native_revision"), int)
+            and fresh["revision"] > revision,
+            "fresh_native_revision": isinstance(fresh.get("native_revision"), int)
             and not isinstance(fresh.get("native_revision"), bool)
-            and fresh["native_revision"] > native_revision
-            and fresh.get("paused") is True
-            and fresh.get("map_ready") is True
-            and fresh.get("date_raw") == starting.get("date_raw")
-            and fresh.get("episode_run_id") == starting.get("episode_run_id")
-            and fresh.get("episode_character_id") == starting.get("episode_character_id")
-            and isinstance(played, dict)
+            and fresh["native_revision"] > native_revision,
+            "paused_ready": fresh.get("paused") is True and fresh.get("map_ready") is True,
+            "same_date": fresh.get("date_raw") == starting.get("date_raw"),
+            "same_episode": fresh.get("episode_run_id") == starting.get("episode_run_id")
+            and fresh.get("episode_character_id") == starting.get("episode_character_id"),
+            "same_living_actor": isinstance(played, dict)
             and played.get("alive") is True
             and isinstance(fresh_played, dict)
-            and fresh_played == played
-            and fresh.get("one_life_terminal") is False
-            and fresh.get("one_life_terminal_reason") is None
-            and starting.get("active_event") is None
-            and fresh.get("active_event") is None
-            and starting.get("pending_character_interaction") is None
-            and fresh.get("pending_character_interaction") is None
-            and fresh.get("active_wars") == starting.get("active_wars")
-            and fresh.get("player_armies") == starting.get("player_armies")
-            and isinstance(fresh_diagnostics, dict)
+            and fresh_played == played,
+            "nonterminal": fresh.get("one_life_terminal") is False
+            and fresh.get("one_life_terminal_reason") is None,
+            "no_event": starting.get("active_event") is None and fresh.get("active_event") is None,
+            "no_interaction": starting.get("pending_character_interaction") is None
+            and fresh.get("pending_character_interaction") is None,
+            "same_wars": fresh.get("active_wars") == starting.get("active_wars"),
+            "same_armies": fresh.get("player_armies") == starting.get("player_armies"),
+            "same_connection": isinstance(fresh_diagnostics, dict)
             and all(
                 isinstance(old_diagnostics.get(key), int)
                 and old_diagnostics.get(key) == fresh_diagnostics.get(key)
                 for key in ("bridge_pid", "connection_generation")
-            )
-            and isinstance(tail, list)
+            ),
+            "single_failed_root_history": isinstance(tail, list)
             and len(tail) == 1
             and isinstance(tail[0], dict)
             and tail[0].get("command") == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
             and tail[0].get("ok") is False
             and isinstance(tail[0].get("error"), str)
-            and str(rejection) in tail[0]["error"]
-        ):
+            and str(rejection) in tail[0]["error"],
+        }
+        if not all(checks.values()):
+            decline("fresh_frame_checks_failed", fresh=fresh, tail=tail,
+                    failed_checks=[key for key, value in checks.items() if not value])
             return None
         return {
             "rejection": f"{type(rejection).__name__}: {rejection}",

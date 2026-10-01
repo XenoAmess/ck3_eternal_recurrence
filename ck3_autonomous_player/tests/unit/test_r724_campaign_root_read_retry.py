@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 import tempfile
 import threading
+import traceback
 import unittest
 from unittest import mock
 
@@ -21,6 +22,7 @@ from xar_autoplayer.bridge.campaign_root_context_contract import (  # noqa: E402
 )
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
+    NativeProtocolState,
     _NativeCommandRejectedError,
 )
 from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
@@ -256,6 +258,40 @@ class _FamilyRejectedRootDriver(_InternalRejectedSuccessionRootDriver):
         }}
 
 
+class _PublicStepNoFreshRootDriver(_InternalRejectedSuccessionRootDriver):
+    """Use the actual public wrapper, failed-row producer and bounded waiter."""
+
+    execute_step = NativeHeadlessGameplayDriver.execute_step
+    _record_command = NativeHeadlessGameplayDriver._record_command
+    wait_for_change = NativeHeadlessGameplayDriver.wait_for_change
+
+    def __init__(self):
+        super().__init__()
+        self.state = NativeProtocolState("fixture-no-pipe")
+        self.state._connected = True
+        self.state._public_revision = 500
+        self.state._connection_generation = 3
+        self.state._hello = {
+            **self.current["diagnostics"]["hello"],
+            "pid": 4242, "capabilities": ["game.state.snapshot"],
+        }
+        self.state._semantic_snapshot = {
+            key: copy.deepcopy(value) for key, value in self.current.items()
+            if key not in ("native_command_history", "diagnostics")
+        }
+        self.state._semantic_snapshot["revision"] = 30
+        self._persist_driver_state = mock.Mock()
+
+    def capabilities(self):
+        return {**super().capabilities(), "snapshot": True}
+
+    def _execute_step_unrecorded(self, step, *, expected_revision):
+        if step != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP:
+            raise AssertionError("actual-wrapper fixture must not submit an action")
+        self.calls.append((step, expected_revision))
+        raise self.first_error
+
+
 class R724CampaignRootReadRetryTests(unittest.TestCase):
     def _service(self, driver: _RejectedRootDriver) -> GameplayBridgeService:
         service = GameplayBridgeService(driver)
@@ -416,6 +452,30 @@ class R724CampaignRootReadRetryTests(unittest.TestCase):
                 driver._history_snapshot.assert_called_once_with()
                 self.assertIs(driver.current["native_command_history"][1]["ok"], False)
                 self.assertEqual(list(Path(state_dir).iterdir()), [])
+
+    def test_public_root_wrapper_no_new_frame_retains_decline_evidence_in_traceback(self) -> None:
+        driver = _PublicStepNoFreshRootDriver()
+        driver.wait_for_change = mock.Mock(wraps=driver.wait_for_change)
+        with self.assertRaises(_NativeCommandRejectedError) as observed:
+            GameplayBridgeService(driver).plan_nonwar_turn()
+        self.assertIs(observed.exception, driver.first_error)
+        self.assertEqual(driver.calls, [(QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, 500)])
+        driver.wait_for_change.assert_called_once_with(500, timeout_seconds=1.5)
+        self.assertEqual(len(driver.current["native_command_history"]), 2)
+        self.assertIs(driver.current["native_command_history"][1]["ok"], False)
+        evidence = observed.exception.read_only_query_retry_decline
+        self.assertEqual(evidence["reason"], "fresh_frame_checks_failed")
+        self.assertEqual(evidence["failed_checks"],
+                         ["fresh_public_revision", "fresh_native_revision"])
+        self.assertEqual(evidence["old_frame"]["revision"], 500)
+        self.assertEqual(evidence["fresh_frame"]["native_revision"], 30)
+        self.assertEqual(evidence["old_connection"], evidence["fresh_connection"])
+        self.assertEqual(evidence["history_tail_length"], 1)
+        self.assertEqual(evidence["history_tail"][0]["index"], 2)
+        rendered = "".join(traceback.format_exception(observed.exception))
+        self.assertIn("campaign_root_fresh_read_v1", rendered)
+        self.assertIn('"fresh_native_revision"', rendered)
+        self.assertEqual(driver.retained_revisions, [])
 
     def test_drift_or_typed_action_retains_original_rejection(self) -> None:
         for drift in (

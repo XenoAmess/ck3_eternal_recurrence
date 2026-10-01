@@ -1,7 +1,7 @@
 {
   "contract": "council-chancellor-readonly-12003",
   "schema_version": 1,
-  "evidence_level": "static-ready",
+  "evidence_level": "production-live primitive",
   "game_version": "1.20.0.3",
   "steam_build": "25652598",
   "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
@@ -49,21 +49,116 @@
   },
   "skill_enum_evidence": "existing frozen six-skill enrichment enum diplomacy=0, stewardship=2; current getter array and stock Chancellor skill reused together, not a new live observation",
   "actual_source": {
-    "artifact": "artifacts/g2-maintainer-2026-10-02/resume-12003/readonly-c3cd08bc-01",
+    "artifact": "artifacts/g2-maintainer-2026-10-02/resume-12003/cold-v6-sway-chancellor-01",
+    "source_runtime_commit": "dcd61a5b",
     "owner_character_id": 29829,
-    "raw_date": 53170608,
+    "raw_date": 53174952,
+    "snapshot_id": "native:2",
+    "native_revision": 2,
+    "public_revision": 3,
     "position_key": "councillor_chancellor",
     "incumbent_character_id": 34867,
     "task_key": "task_foreign_affairs",
-    "diplomacy": null,
-    "alternate_candidates": null,
-    "native_final_gates": null
+    "diplomacy": 9,
+    "alternate_candidates": [
+      {
+        "character_id": 30784,
+        "native_collection_ordinal": 0,
+        "diplomacy": 9,
+        "final_legal": true,
+        "exclusion_reasons": []
+      },
+      {
+        "character_id": 32440,
+        "native_collection_ordinal": 7,
+        "diplomacy": 4,
+        "final_legal": true,
+        "exclusion_reasons": []
+      },
+      {
+        "character_id": 32716,
+        "native_collection_ordinal": 6,
+        "diplomacy": 8,
+        "final_legal": true,
+        "exclusion_reasons": []
+      },
+      {
+        "character_id": 33433,
+        "native_collection_ordinal": 10,
+        "diplomacy": 4,
+        "final_legal": false,
+        "exclusion_reasons": [
+          "candidate_already_councillor"
+        ]
+      },
+      {
+        "character_id": 33435,
+        "native_collection_ordinal": 4,
+        "diplomacy": 6,
+        "final_legal": false,
+        "exclusion_reasons": [
+          "candidate_already_councillor"
+        ]
+      },
+      {
+        "character_id": 33888,
+        "native_collection_ordinal": 1,
+        "diplomacy": 4,
+        "final_legal": true,
+        "exclusion_reasons": []
+      },
+      {
+        "character_id": 34333,
+        "native_collection_ordinal": 5,
+        "diplomacy": 5,
+        "final_legal": false,
+        "exclusion_reasons": [
+          "candidate_already_councillor"
+        ]
+      },
+      {
+        "character_id": 35637,
+        "native_collection_ordinal": 2,
+        "diplomacy": 3,
+        "final_legal": true,
+        "exclusion_reasons": []
+      },
+      {
+        "character_id": 43706,
+        "native_collection_ordinal": 8,
+        "diplomacy": 4,
+        "final_legal": true,
+        "exclusion_reasons": []
+      },
+      {
+        "character_id": 43712,
+        "native_collection_ordinal": 9,
+        "diplomacy": 5,
+        "final_legal": true,
+        "exclusion_reasons": []
+      },
+      {
+        "character_id": 57582,
+        "native_collection_ordinal": 3,
+        "diplomacy": 0,
+        "final_legal": true,
+        "exclusion_reasons": []
+      }
+    ],
+    "native_final_gates": {
+      "status": "available",
+      "candidate_count": 11,
+      "legal_candidate_count": 8,
+      "source_packet": "024-ck3_query_council_final_gates_private_v1.json"
+    },
+    "best_legal_character_id": 30784,
+    "diplomacy_gain": 0,
+    "inspection_outcome": "NO_CHANGE"
   },
   "unknown_inputs": [
-    "current incumbent diplomacy and complete legal Chancellor alternatives: new paused query required",
-    "native composition utility, political preference, appointment scheduler and task-switch value: unchanged unknown ledger, not consumed by this readonly package"
+    "native composition utility, political/powerful-vassal preference, appointment scheduler and task-switch value: unchanged unknown ledger, not consumed by this readonly package"
   ],
-  "live_calls": 0,
+  "live_calls": 2,
   "actions": 0,
   "g2_credit": 0,
   "stock_inputs": [
@@ -84,6 +179,67 @@
     "native_receipt_sha256": "f28e89da5f564d79f9070f6c3df3883fd9610158dc93122bcea62790209e8b69",
     "python_focused_tests": "23 PASS; new synthetic role/SDK cases plus existing Steward regressions",
     "source_fixture_fix": "only transport_test.cpp changed-date second real idle pump; no additional production fix",
-    "paused_live": false
+    "paused_live": true
+  },
+  "actual_source_before_extension": {
+    "artifact": "artifacts/g2-maintainer-2026-10-02/resume-12003/readonly-c3cd08bc-01",
+    "owner_character_id": 29829,
+    "raw_date": 53170608,
+    "position_key": "councillor_chancellor",
+    "incumbent_character_id": 34867,
+    "task_key": "task_foreign_affairs",
+    "diplomacy": null,
+    "alternate_candidates": null,
+    "native_final_gates": null
+  },
+  "live_owner": "root; this owner analyzed saved original SDK packets only",
+  "this_owner_live_calls": 0,
+  "live_acceptance": {
+    "scope": "single ordinary active Chancellor same paused frame; no other-government, appointment or task-change coverage",
+    "exact_build": {
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+    },
+    "frame": {
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53174952,
+      "paused": true,
+      "map_ready": true,
+      "episode_run_id": "native-29829-3f80e147d033",
+      "player_character_id": 29829,
+      "player_alive": true
+    },
+    "input_packets": {
+      "gates": {
+        "path": "artifacts\\g2-maintainer-2026-10-02\\resume-12003\\cold-v6-sway-chancellor-01\\024-ck3_query_council_final_gates_private_v1.json",
+        "sha256": "09fef70c77eff523076b4c14a2c6a2d177b07d9abcbd032747af2cee37a2c062"
+      },
+      "candidates": {
+        "path": "artifacts\\g2-maintainer-2026-10-02\\resume-12003\\cold-v6-sway-chancellor-01\\022-ck3_query_council_composition_candidates_private_v1.json",
+        "sha256": "06f3599d279dea67a663dbf1864d1cd56b673df96a8105b27742064de2d8bfe8"
+      },
+      "root": {
+        "path": "artifacts\\g2-maintainer-2026-10-02\\resume-12003\\cold-v6-sway-chancellor-01\\020-ck3_query_campaign_root_context_v1.json",
+        "sha256": "ee8342d97f034a46adeadef264f03efe726f1763fd142c6fca3c627ffe09baec"
+      },
+      "snapshot_before": {
+        "path": "artifacts\\g2-maintainer-2026-10-02\\resume-12003\\cold-v6-sway-chancellor-01\\023-ck3_take_snapshot.json",
+        "sha256": "0c6e78107c5aa01710f4adfccbc592044804bb3a026c73f47510eedbf1b36512"
+      },
+      "snapshot_after": {
+        "path": "artifacts\\g2-maintainer-2026-10-02\\resume-12003\\cold-v6-sway-chancellor-01\\025-ck3_take_snapshot.json",
+        "sha256": "d6bfc3a2380763b15ba8f033b9230639867bebe735a39ea49a0b7ea06d8647e1"
+      }
+    },
+    "listing_sha256": "40c76da3ca87f233c7651981787f4a80df3e1a38198b1ef53d6d509eaa3f6f56",
+    "candidate_and_gate_collections_equal": true,
+    "independent_current_holder_matches": true,
+    "snapshot_bracket_matches": true,
+    "outcome": "NO_CHANGE",
+    "council_actions": 0,
+    "game_days_advanced": 0,
+    "g2_credit": 0
   }
 }

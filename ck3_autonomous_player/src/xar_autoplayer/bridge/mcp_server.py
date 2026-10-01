@@ -68,6 +68,12 @@ from .service import GameplayBridgeService
 from .activity_feast_guest_target_private_transport import (
     query_activity_feast_guest_target_private_v1,
 )
+from .activity_feast_guest_route_proof_private_transport import (
+    query_activity_feast_guest_route_proof_private_v1,
+)
+from .activity_feast_guest_rule_provenance_private_transport import (
+    query_activity_feast_guest_rule_provenance_private_v1,
+)
 from .war_entry_contract import normalize_war_entry_target_ids
 
 
@@ -1931,6 +1937,29 @@ def create_server(
             """Read native guest candidate IDs and join or arrival observations."""
             return driver.query_activity_feast_guest_candidate_private_v1(
                 expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_activity_feast_guest_route_proof_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_feast_guest_route_proof_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read selected guests, a pre-invitation candidate and native Start legality."""
+            return query_activity_feast_guest_route_proof_private_v1(
+                driver, expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_activity_feast_guest_rule_provenance_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_feast_guest_rule_provenance_private_v1(
+            expected_revision: int, authored_rule_key: str,
+            candidate_character_id: int,
+        ) -> dict[str, object]:
+            """Read one candidate's membership in a named active Feast invitation rule."""
+            return query_activity_feast_guest_rule_provenance_private_v1(
+                driver, expected_revision=expected_revision,
+                authored_rule_key=authored_rule_key,
+                candidate_character_id=candidate_character_id,
             )
 
     @server.tool()
@@ -3878,6 +3907,8 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_activity_feast_stage5_start_query = True
         driver.allow_private_activity_feast_guest_candidate_query = True
         driver.allow_private_activity_feast_guest_target_query = True
+        driver.allow_private_activity_feast_guest_route_proof_query = True
+        driver.allow_private_activity_feast_guest_rule_provenance_query = True
         driver.allow_private_activity_feast_lifecycle_observation = True
     if args.private_war_cash_queries:
         driver.allow_private_war_cash_query = True

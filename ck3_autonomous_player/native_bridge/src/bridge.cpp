@@ -9640,6 +9640,7 @@ struct TypedQuery12002 {
   xar::ck3_12002::QueryMailboxEnvelope envelope{};
   QueryKind12002 kind = QueryKind12002::war_entry;
   bool typed_result = false;
+  std::optional<bool> executor_enter, executor_typed_result, executor_finish;
   std::uintptr_t image_base = 0;
   xar::game::RouteContactHorizonRequest route_request{};
   xar::game::ActualContactScopeRequest actual_request{};
@@ -9750,12 +9751,15 @@ template <QueryKind12002 Kind>
 bool ExecuteTypedQuery12002(
     void *opaque, const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto *envelope = static_cast<xar::ck3_12002::QueryMailboxEnvelope *>(opaque);
-  if (envelope == nullptr || envelope->typed_context == nullptr ||
-      !xar::ck3_12002::EnterQueryMailbox(
-          *envelope, stamp, &ExecuteTypedQuery12002<Kind>)) {
+  if (envelope == nullptr || envelope->typed_context == nullptr) {
     return false;
   }
   auto &query = *static_cast<TypedQuery12002 *>(envelope->typed_context);
+  query.executor_enter = xar::ck3_12002::EnterQueryMailbox(
+      *envelope, stamp, &ExecuteTypedQuery12002<Kind>);
+  if (!*query.executor_enter) {
+    return false;
+  }
   if (query.kind != Kind) {
     return false;
   }
@@ -9876,7 +9880,9 @@ bool ExecuteTypedQuery12002(
       }
       query.typed_result = true;
     }
-    return xar::ck3_12002::FinishQueryMailbox(*envelope);
+    query.executor_typed_result = query.typed_result;
+    query.executor_finish = xar::ck3_12002::FinishQueryMailbox(*envelope);
+    return *query.executor_finish;
   } catch (...) {
     return false;
   }
@@ -10937,6 +10943,58 @@ bool ParseTypedQuery12002(std::string_view step, std::string_view payload,
                        payload, revision);
 }
 
+std::string TypedQueryFailureFrame12002(
+    std::string_view request_id, std::string_view step, QueryKind12002 kind,
+    xar::ck3_11906::MainThreadQueryWaitResultV1 wait, bool wait_completed,
+    std::optional<bool> frame_stable, std::optional<bool> typed_result,
+    std::optional<bool> final_read, std::optional<bool> final_equal,
+    std::optional<bool> executor_enter, std::optional<bool> executor_typed_result,
+    std::optional<bool> executor_finish) {
+  constexpr std::array<std::string_view, 13> query_names = {
+      "war_entry", "route", "actual_contact", "combat_v3", "battle_control",
+      "battle_transition", "battle_reinforcement", "battle_terminal", "campaign",
+      "loaded_features", "pending_interaction", "event_window", "title_map"};
+  constexpr std::array<std::string_view, 7> wait_names = {
+      "completed", "executor_failed", "infrastructure_failed", "cancelled",
+      "timeout_cancelled_before_execution", "timeout_executor_already_running",
+      "ticket_mismatch"};
+  const auto nullable_boolean = [](std::optional<bool> value) {
+    return !value.has_value() ? "null" : *value ? "true" : "false";
+  };
+  const auto stage = !wait_completed ? "wait"
+      : !*frame_stable ? "frame_stable"
+      : !*typed_result ? "typed_result"
+      : !*final_read ? "final_read" : "final_equal";
+  auto response = CommandResultFrame(
+      request_id, step, false,
+      "application-main typed query failed or its snapshot changed");
+  response.pop_back();
+  response += ",\"typed_query_failure_v1\":{\"stage\":\"";
+  response += stage;
+  response += "\",\"query_type\":\"";
+  response += query_names[static_cast<std::size_t>(kind)];
+  response += "\",\"wait_result\":\"";
+  response += wait_names[static_cast<std::size_t>(wait)];
+  response += "\",\"wait_completed\":";
+  response += wait_completed ? "true" : "false";
+  response += ",\"frame_stable\":";
+  response += nullable_boolean(frame_stable);
+  response += ",\"typed_result\":";
+  response += nullable_boolean(typed_result);
+  response += ",\"final_read\":";
+  response += nullable_boolean(final_read);
+  response += ",\"final_equal\":";
+  response += nullable_boolean(final_equal);
+  response += ",\"executor_enter\":";
+  response += nullable_boolean(executor_enter);
+  response += ",\"executor_typed_result\":";
+  response += nullable_boolean(executor_typed_result);
+  response += ",\"executor_finish\":";
+  response += nullable_boolean(executor_finish);
+  response += "}}";
+  return response;
+}
+
 std::string RunTypedQuery12002(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step, std::string_view payload) {
@@ -11001,9 +11059,16 @@ std::string RunTypedQuery12002(
           g_main_thread_query_mailbox_v1, query.envelope.ticket, 2'000);
     }
     xar::game::Snapshot completed_snapshot{};
-    const bool completed = wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
-        query.envelope.frame_stable && query.typed_result &&
-        xar::game::ReadSnapshot(game, completed_snapshot) && completed_snapshot == snapshot;
+    const bool wait_completed =
+        wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed;
+    std::optional<bool> frame_stable, typed_result, final_read, final_equal;
+    // Preserve the original short-circuit order and snapshot read count.
+    // A skipped condition is unobserved, rather than an observed false result.
+    const bool completed = wait_completed &&
+        frame_stable.emplace(query.envelope.frame_stable) &&
+        typed_result.emplace(query.typed_result) &&
+        final_read.emplace(xar::game::ReadSnapshot(game, completed_snapshot)) &&
+        final_equal.emplace(completed_snapshot == snapshot);
     const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
         g_main_thread_query_mailbox_v1, query.envelope.ticket);
     if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
@@ -11011,8 +11076,10 @@ std::string RunTypedQuery12002(
                                 "application-main typed query result was not reclaimable");
     }
     if (!completed) {
-      return CommandResultFrame(request_id, step, false,
-                                "application-main typed query failed or its snapshot changed");
+      return TypedQueryFailureFrame12002(
+          request_id, step, query.kind, wait, wait_completed,
+          frame_stable, typed_result, final_read, final_equal,
+          query.executor_enter, query.executor_typed_result, query.executor_finish);
     }
     if (query.kind != QueryKind12002::title_map ||
         xar::ck3_12002::IsTitleMapNavigationTerminalV1(query.title_command.status)) break;
@@ -11025,6 +11092,9 @@ std::string RunTypedQuery12002(
     query.envelope.frame_stable = false;
     query.envelope.executor = nullptr;
     query.typed_result = false;
+    query.executor_enter.reset();
+    query.executor_typed_result.reset();
+    query.executor_finish.reset();
     Sleep(1);
   }
   std::string response;

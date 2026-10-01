@@ -167,3 +167,60 @@ intent, multiple rulers/seeds/governments, goal-guided gameplay outcomes and
 later formal turns remain unqualified. Robert stays **3153/36524 durable
 days**, with **0 new days**; M7 remains `in_progress`. The H3937 source scope
 and episode were unchanged by this work.
+
+## October2 next M7 seed file preparation
+
+The next existing seed is Murchad, whose original 1066 bookmark is
+`bookmark_rags_to_riches_petty_king_murchad`. The selected file-only route
+uses the genuine retained PRV008 ordinary pair, separate from Robert:
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/archive-root-review-dcd61a5b-v6-02/ROOT-PACKET.json`
+(SHA-256 `769dd90962c7ef18421255926373d2e71cdecd13f9dea3ad14a8474cadd0b2b0`).
+Its initial runtime is `dcd61a5b7d6b94536cab3b0272e220d8f211b1b9`, with
+native v6 DLL `5aa9a62806c87fbb269550f07838416c75baf94b60e04f411d1cfbb1650e35ae`.
+The file generator accepts a later root-selected explicit freeze and a fresh
+review directory; it does not assign a future source or binary hash. Planned
+state is `Z:/ck3_mod_rewrite_process_assets/g2-m7-murchad-12003-20261002/state`.
+The root sequence is official prepare/verify, byte-preserving file stage,
+official ordinary rebind, paused current-government and goal plan/checkpoint,
+new-game-PID cold comparison, then a bounded 16-turn visible nonwar run. The
+six official CLI recipes passed pure parser validation. An initial draft
+incorrectly added `--xar-enabled` to `native-auto-run`; the parser RED remains
+retained and that command now uses the existing ordinary lifecycle/no-pact
+binding. No runtime handler was called during validation.
+
+The actual archive at `.task-tmp/PRV008-FROZEN-EARLY-PAIR/state` is
+**full1986/saveh1984, raw53327160**, actor31853, episode
+`native-31853-af642d76cb41`. Its complete driver is 12,714,506 bytes, SHA-256
+`64267714ae8302dc867f80939bbe7364c6131480a490f9155374eee0fbaf6d19`;
+the matching opaque checkpoint is 104,105,293 bytes, SHA-256
+`a04a4f98c840917dcb73df64a1364ab37af162f563cbb23115123d89ac665f09`.
+The existing episode seed metadata and opaque episode seed are included in
+the byte-preserving inventory. The old frozen manifest's raw53298576 is not
+this current pair. Official rebind retains the source pipe and replaces only
+its three existing lifecycle environment anchors. The normal cold consumer
+owns save-prefix and physical restore lineage; its actual live history count
+must be recorded rather than asserted to equal the source full1986 archive.
+No hand-written goal, history, episode or path transformation is used. The
+source legal omitted/null goal is initialized by the existing accepted live
+consumer. No target state/profile or save was created by file preparation.
+
+An alternative fresh native bootstrap has a concrete version dependency. In the actual
+v6 cache, `XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1` and
+`XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1` are OFF. The
+existing `frontend_bookmark_model_probe_v1.cpp` retains 1.19 interface/setup
+vtable and RTTI constants plus the final-government getter at lines 15–36.
+The existing `run_frontend_gui_route_v1_live_acceptance.py` pins the 1.19 EXE
+at lines 84–85 and rejects a different EXE at line 5260. The next useful native
+entry is to migrate this existing readonly bookmark/model path to the exact
+1.20.0.3 image, then reuse its typed setter, independent selected-model
+requery, stock StartGame, paused public root and genuine save/driver pair.
+This alternative remains a retained draft and is not a prerequisite for the
+selected genuine archive rebind route; this task changes no frontend source,
+candidate flags or DLL. Current government observation already exists.
+Runtime adapter family must come from the actual current ruler's query, not
+the authored bookmark government or the old PRV008 qualification. The H3937
+hold still binds its existing Robert episode `native-29829-2bc2d599f7f9`,
+distinct from the retained Murchad episode; its code/scope remain unchanged.
+File preparation adds **0 seed days and 0 qualifications**; M7 stays
+`in_progress`, and natural inheritance and broader government coverage remain
+actual gameplay work.
