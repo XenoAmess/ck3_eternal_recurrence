@@ -935,3 +935,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 10域内精确源；existing12002 owner→provider→完整wire GREEN，实际两条packet→生产cache/Driver→官方SDK唯一组合case PASS4.26s。支持独立Sway/blocker意见观测，仍待R11 paused实机基线与自然结果。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-r11-opinion-material-normalized-manifest.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 23:49:44 Consume private council actions through formal turns
+
+4精确源与实际9DTO；两个新生产consumer用例GREEN0.40s，任命一次→pending→独立holder/task回执→冷帧next消费；当前实机最佳内阁15对11，NO_CHANGE，不为验收更换劣质廷臣。共享正式接线与实机后验继续。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m4-council-live-next\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
