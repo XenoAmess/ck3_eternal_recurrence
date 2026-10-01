@@ -1,0 +1,110 @@
+{
+  "schema": "ck3_12002_character_personal_parameters_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "constants": {
+    "kPersonalParameterCollectionGetterRva": "0x28bd090",
+    "kPersonalParameterDatabaseSlotRva": "0x5d1deb8",
+    "kPersonalParameterCharacterExtensionOffset": "0x1c8",
+    "kPersonalParameterOwnedTenetsOffset": "0x88",
+    "kPersonalParameterDefinitionSetOffset": "0x740",
+    "kPersonalParameterSupportedSetOffset": "0xf20"
+  },
+  "complete_native_spans": [
+    {
+      "name": "Character.has_personal_tenet_flag.validate",
+      "start_rva": "0x2b2bc30",
+      "end_exclusive_rva": "0x2b2bd10",
+      "sha256": "1e617ff061900ba1e55797b36a73402fe171a30e43645db04290d44711ffb2da",
+      "bytes": "48 89 5c 24 08 57 48 81 ec 40 02 00 00 48 8b f9 e8 6b 98 ee fd 48 8d 57 40 48 8d 88 20 0f 00 00 e8 2b 22 07 fe 84 c0 0f 85 a0 00 00 00 8b 4f 40 c7 84 24 30 02 00 00 00 00 00 00 e8 90 3c 42 01 48 83 78 18 10 72 03 48 8b 00 4c 8b c8 4c 8d 05 ec c6 c8 01 ba 00 02 00 00 48 8d 4c 24 30 e8 2d 0c d5 fd b9 ff 01 00 00 3b c1 0f 4f c1 48 8d 4c 24 30 89 84 24 30 02 00 00 48 8d 44 24 30 48 89 44 24 20 48 c7 c0 ff ff ff ff 66 0f 1f 44 00 00 48 ff c0 80 3c 01 00 75 f7 89 44 24 28 48 8d 54 24 20 c6 44 24 2c 00 48 8b cf 0f 28 44 24 20 66 0f 7f 44 24 20 e8 66 50 be 00 32 c0 48 8b 9c 24 50 02 00 00 48 81 c4 40 02 00 00 5f c3 48 8b 9c 24 50 02 00 00 b0 01 48 81 c4 40 02 00 00 5f c3"
+    },
+    {
+      "name": "Character.has_personal_tenet_flag.evaluate",
+      "start_rva": "0x2b2bd10",
+      "end_exclusive_rva": "0x2b2bddf",
+      "sha256": "dc887e64808cab7ce1b9216b703b41cffac3e9c60b423fe2dae3f52f7d8a0dd8",
+      "bytes": "40 56 48 83 ec 20 48 8b 02 48 8b f1 66 83 38 04 75 05 8b 50 08 eb 05 ba ff ff ff ff 4c 8b 05 35 b8 13 03 4d 85 c0 74 25 8b c2 25 ff ff ff 00 41 3b 40 2c 73 18 8b c8 49 8b 40 20 48 03 c9 48 8b 4c c8 08 48 85 c9 74 05 39 51 18 74 07 48 8b 0d 0c b8 13 03 48 83 b9 c8 01 00 00 00 75 08 32 c0 48 83 c4 20 5e c3 48 89 5c 24 30 48 89 7c 24 38 e8 0b 13 d9 ff 48 8b 18 48 63 40 0c 48 8d 3c c3 48 3b df 74 2b 66 66 66 0f 1f 84 00 00 00 00 00 48 8b 0b 48 8d 56 40 48 81 c1 40 07 00 00 e8 cd 20 07 fe 84 c0 75 09 48 83 c3 08 48 3b df 75 e0 33 c0 48 3b df 48 8b 7c 24 38 48 0f 44 d8 48 85 db 48 8b 5c 24 30 0f 95 c0 48 83 c4 20 5e c3"
+    },
+    {
+      "name": "Character.actual_owned_personal_tenets",
+      "start_rva": "0x28bd090",
+      "end_exclusive_rva": "0x28bd12a",
+      "sha256": "dfdecaee6b3ae9846af1af7dbfba2e4ba713e3997733956d6b497868ffe82865",
+      "bytes": "48 83 ec 28 48 8b 81 c8 01 00 00 48 85 c0 74 0b 48 05 88 00 00 00 48 83 c4 28 c3 65 48 8b 04 25 58 00 00 00 ba 10 00 00 00 48 8b 08 8b 04 0a 39 05 73 ad 4a 03 7f 0c 48 8d 05 72 ad 4a 03 48 83 c4 28 c3 48 8d 0d 5e ad 4a 03 e8 c5 69 96 01 83 3d 52 ad 4a 03 ff 75 df 33 c0 48 8d 0d af ef aa 01 48 89 05 48 ad 4a 03 48 89 05 49 ad 4a 03 48 8d 05 42 1b c2 02 48 89 05 43 ad 4a 03 e8 32 6e 96 01 48 8d 0d 1f ad 4a 03 e8 26 69 96 01 48 8d 05 1b ad 4a 03 48 83 c4 28 c3"
+    },
+    {
+      "name": "Tenet.parameter_registry.database_slot",
+      "start_rva": "0xa154b0",
+      "end_exclusive_rva": "0xa15507",
+      "sha256": "730076f4d47e36be3e2392ac89ff25caa85c1f1074b7b1440ac4f63aa15f33c0",
+      "bytes": "48 83 ec 38 48 8b 05 fd 89 30 05 48 85 c0 75 42 c7 44 24 28 1e 00 00 00 48 8d 05 39 7b a7 03 48 89 44 24 20 48 8d 54 24 20 c6 44 24 2c 00 41 b9 64 00 00 00 0f 28 44 24 20 45 33 c0 66 0f 7f 44 24 20 41 8d 49 9d e8 65 61 57 03 48 8b 05 b6 89 30 05 48 83 c4 38 c3"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "rva": "0x2b2bc40",
+      "instruction": "call 0xa154b0",
+      "bytes": "e8 6b 98 ee fd"
+    },
+    {
+      "rva": "0x2b2bc49",
+      "instruction": "lea rcx, [rax + 0xf20]",
+      "bytes": "48 8d 88 20 0f 00 00"
+    },
+    {
+      "rva": "0x2b2bc50",
+      "instruction": "call 0xb9de80",
+      "bytes": "e8 2b 22 07 fe"
+    },
+    {
+      "rva": "0x2b2bd64",
+      "instruction": "cmp qword ptr [rcx + 0x1c8], 0",
+      "bytes": "48 83 b9 c8 01 00 00 00"
+    },
+    {
+      "rva": "0x2b2bd80",
+      "instruction": "call 0x28bd090",
+      "bytes": "e8 0b 13 d9 ff"
+    },
+    {
+      "rva": "0x2b2bd88",
+      "instruction": "movsxd rax, dword ptr [rax + 0xc]",
+      "bytes": "48 63 40 0c"
+    },
+    {
+      "rva": "0x2b2bda7",
+      "instruction": "add rcx, 0x740",
+      "bytes": "48 81 c1 40 07 00 00"
+    },
+    {
+      "rva": "0x2b2bdae",
+      "instruction": "call 0xb9de80",
+      "bytes": "e8 cd 20 07 fe"
+    },
+    {
+      "rva": "0x28bd094",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c8]",
+      "bytes": "48 8b 81 c8 01 00 00"
+    },
+    {
+      "rva": "0x28bd0a0",
+      "instruction": "add rax, 0x88",
+      "bytes": "48 05 88 00 00 00"
+    }
+  ],
+  "trigger": {
+    "type_descriptor_rva": "0x5a47a38",
+    "vtable_rva": "0x47beb30",
+    "evaluate_slot": 25
+  },
+  "reused_frozen_abi": [
+    "religion_doctrine12002_tenet_abi.json: B9DE80 token membership and 3F4F900 token CString",
+    "religion_doctrine12002_tenet_rows_abi.json: Tenet CString+18/GDbo stable keys"
+  ],
+  "source_semantics": "Actual Character-owned collection; each supported token calls exact trigger membership on owned Tenet+740 only; extension absence is false; unknown supported registry key is unsupported; no Rite/Fulfillment merge",
+  "live_gap": "Paused production snapshot pending"
+}

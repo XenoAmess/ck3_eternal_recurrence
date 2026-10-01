@@ -634,3 +634,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 15 frozen sources, Personal5/Reason8/shared2. Eight focused tests including two actual ProtocolState to productionDriver to official MCP cases passed; old native and SDK matrices reused. CLI defaultOFF, readonly only. R6 native candidate and paused validation remain root owned. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\PERSONAL-INVALIDATION-R6-SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:08:18 Read native character personal religious parameters
+
+8 frozen sources. Actual Character owned personal Tenets and supported initialized parameter keys, distinct from Rite Doctrine and Fulfillment. 17 provider checks and six actual DTOs passed; no game operation or prior matrix repeated. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\personal-parameters\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
