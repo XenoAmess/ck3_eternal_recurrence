@@ -624,7 +624,7 @@ bool AppendNumber(std::string &output, Value value) {
     return false;
   }
   output.append(buffer.data(), encoded.ptr);
-  return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
+  return output.size() <= kCombatPhaseEventTraceManagedMaximumBytesV1;
 }
 
 bool AppendCheckpoint(std::string &output,
@@ -641,7 +641,7 @@ bool AppendCheckpoint(std::string &output,
   if (!AppendNumber(output, value.combat_id)) return false;
   output += ",\"paused\":";
   output += value.paused ? "true}" : "false}";
-  return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
+  return output.size() <= kCombatPhaseEventTraceManagedMaximumBytesV1;
 }
 
 } // namespace
@@ -1002,7 +1002,7 @@ std::string SerializeCombatPhaseEventTraceManagedResultV1(
   if (diagnostic) {
     *diagnostic={};diagnostic->session_stage=static_cast<std::uint32_t>(session.stage);
     diagnostic->ring_serialized_bytes=session.serialized_drain.size();
-    diagnostic->managed_cap_bytes=kCombatPhaseEventTraceWireMaximumBytesV1;
+    diagnostic->managed_cap_bytes=kCombatPhaseEventTraceManagedMaximumBytesV1;
     diagnostic->drain_failure_flags=session.drain.failure_flags;
     diagnostic->drain_record_count=session.drain.record_count;
     diagnostic->scoped_present=static_cast<bool>(session.scoped_chain);
@@ -1066,9 +1066,9 @@ std::string SerializeCombatPhaseEventTraceManagedResultV1(
   output.push_back('}');
   if (diagnostic) {
     diagnostic->assembled_output_bytes=output.size();
-    if(output.size()>kCombatPhaseEventTraceWireMaximumBytesV1)diagnostic->failure_gate="managed_wire_cap";
+    if(output.size()>kCombatPhaseEventTraceManagedMaximumBytesV1)diagnostic->failure_gate="managed_wire_cap";
   }
-  return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1
+  return output.size() <= kCombatPhaseEventTraceManagedMaximumBytesV1
              ? output
              : std::string{};
 }
