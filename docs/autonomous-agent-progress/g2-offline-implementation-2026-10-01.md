@@ -879,3 +879,9 @@ Nine frozen Python and topic sources. One new official SDK case consumes two nat
 One topic records actual paused29slots94source rows49finalSelectable and doctrineGatesComplete true. Only readonly primitive; source scope is current selected groups, no option/action/OODA/global G2 increment. Hidden-window attempt retained separately. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\fullchoices\root-live-doc-source.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 22:01:48 Record actual ten-slot religious draft base fee quote
+
+One topic records actual paused native base quote ten slots with4500piety and4344.5missing; nine other basefee slots zero from exact CCost initialization. No actual debit, net outcome or action; quote is production-live readonly primitive. Old tests not repeated. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\resource-costs\live-r8-doc-source-only-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
