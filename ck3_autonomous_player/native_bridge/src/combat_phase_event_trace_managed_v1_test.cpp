@@ -726,18 +726,32 @@ bool ManagedSerializationFailureDiagnostics() {
      std::string(d.scoped.field)!="selector_candidate_count" || d.scoped_failure_flags!=32)
     return Fail("nested scoped failure location/flags lost");
   session->scoped_chain->records[0].selector_candidate_count=0;
-  session->scoped_chain->count=20;session->scoped_chain->entry_snapshots[0].entry_count={200,200};
+  session->scoped_chain->count=40;session->scoped_chain->entry_snapshots[0].entry_count={200,200};
   for(auto &row:session->scoped_chain->records)row.entry_snapshot_index=0;
   if(!SerializeCombatPhaseEventTraceManagedResultV1(*session,&d).empty() ||
      std::string(d.failure_gate)!="managed_wire_cap" ||
-     d.scoped_serialized_bytes<=900*1024 || d.scoped_serialized_bytes>16*1024*1024 ||
+      d.scoped_serialized_bytes<=kCombatPhaseEventTraceManagedMaximumBytesV1 || d.scoped_serialized_bytes>16*1024*1024 ||
      d.assembled_output_bytes<=d.managed_cap_bytes || d.scoped_failure_flags!=32)
-    return Fail("actual scoped valid bytes hitting enclosing900KiB cap not attributed");
+     return Fail("actual scoped valid bytes hitting bounded managed cap not attributed");
   const auto small=SerializeCombatPhaseEventTracePublishDiagnosticV1(d);
   if(small.empty() || small.size()>4096 || small.find("\"complete_trace_dto_published\":false")==std::string::npos ||
      small.find("\"failure_gate\":\"managed_wire_cap\"")==std::string::npos)
     return Fail("small failed-return diagnostic serialization mismatch");
-  std::cout<<"managed serialization diagnostics: original DTO bytes/flags retained,stage/ring/nested/scoped-valid enclosing900KiB failure attributed; small diagnostic only; offline\n";
+  bool retained_large=false;
+  for(std::uint32_t count=1;count<40;++count) {
+    session->scoped_chain->count=count;
+    const auto wire=SerializeCombatPhaseEventTraceManagedResultV1(*session,&d);
+    if(wire.size()>=1'217'950 && wire.size()<=kCombatPhaseEventTraceManagedMaximumBytesV1) {
+      retained_large=std::string(d.failure_gate)=="none" && d.scoped_failure_flags==32 &&
+          session->scoped_chain->count.load()==count &&
+          wire.find("\"global_mutable_bundle_complete\":false")!=std::string::npos &&
+          wire.find("\"live_scoped_write_set_verified\":false")!=std::string::npos;
+      std::cout<<"managed structured fixture retained "<<wire.size()<<" bytes, "<<count<<" records, original flags32; offline only\n";
+      break;
+    }
+  }
+  if(!retained_large)return Fail("managed frame did not retain structured >1.218MB records within transport budget");
+  std::cout<<"managed serialization diagnostics: original DTO bytes/flags retained,stage/ring/nested/bounded enclosing cap failure attributed; small diagnostic only; offline\n";
   return true;
 }
 

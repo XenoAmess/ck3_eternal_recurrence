@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <string>
 #include <string_view>
+#include <iostream>
 
 namespace {
 
@@ -93,6 +94,28 @@ bool TestBooleanField() {
          !xar::bridge::JsonBooleanField("{\"apply\":truex}", "apply", value);
 }
 
+bool TestBoundedLargeFrames() {
+  HANDLE input=nullptr,output=nullptr;
+  if (!CreatePipe(&input,&output,nullptr,xar::bridge::kMaximumFrameBytes+4U)) return false;
+  bool okay=true;
+  for (const auto size : {std::size_t(1'217'950),std::size_t(xar::bridge::kMaximumFrameBytes)}) {
+    std::string payload(size,'x');
+    payload.front()='{';payload.back()='}';
+    if (!xar::bridge::WriteFrame(output,payload)) {okay=false;break;}
+    const auto read=xar::bridge::TryReadFrame(input);
+    if (read.status!=xar::bridge::ReadStatus::frame || read.payload!=payload) {okay=false;break;}
+  }
+  const std::string over(xar::bridge::kMaximumFrameBytes+1U,'x');
+  okay=!xar::bridge::WriteFrame(output,over)&&okay;
+  const std::uint32_t invalid=xar::bridge::kMaximumFrameBytes+1U;
+  DWORD written=0;
+  okay=WriteFile(output,&invalid,sizeof(invalid),&written,nullptr)&&written==sizeof(invalid)&&okay;
+  okay=xar::bridge::TryReadFrame(input).status==xar::bridge::ReadStatus::invalid&&okay;
+  CloseHandle(input);CloseHandle(output);
+  if(okay)std::cout<<"native local pipe: 1217950 bytes and exact 2 MiB roundtrip, cap+1 write/read rejected; offline only\n";
+  return okay;
+}
+
 } // namespace
 
 int main() {
@@ -101,7 +124,7 @@ int main() {
                      xar::ck3_11906::kTacticalDailySentinelMaximumArmiesV1) &&
                  TestMaximumSentinelBound() &&
                  TestControlFieldsRemainAt128Bytes() && TestUnsignedField() &&
-                 TestBooleanField()
+                  TestBooleanField() && TestBoundedLargeFrames()
              ? 0
              : 1;
 }

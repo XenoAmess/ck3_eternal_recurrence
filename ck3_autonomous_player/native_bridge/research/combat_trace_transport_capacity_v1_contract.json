@@ -1,0 +1,13 @@
+{
+  "schema": "ck3.trace-transport-capacity-implementation/v1",
+  "reason": "R0143 actual original parsed RED diagnostic measured ring222583 + scoped994849 into assembled1217950, exceeding old managed921600; native flags and exact-day/lifecycle gates were unchanged.",
+  "transport": {"payload_bytes": 2097152, "length_prefix_bytes": 4, "version": 1, "format": "one compact UTF8 JSON document", "native": "protocol.hpp kMaximumFrameBytes", "python": "native_driver.MAXIMUM_FRAME_BYTES"},
+  "managed_fragment": {"bytes": 1966080, "envelope_reserve_bytes": 131072, "derived_from_native_transport_limit": true},
+  "retained_inner_limits": {"ring_bytes": 921600, "scoped_bytes": 16777216},
+  "bounded_behaviour": "Native WriteFrame/TryReadFrame and Python send/read reject payload>2097152. Host/attach/Python named-pipe buffers derive from the same per-language constant. Managed fragment over1966080 remains empty with measured managed_wire_cap RED diagnostic; scoped over16MiB remains RED.",
+  "compatibility": "DLL and daemon must be frozen and built from the same new source. An old1MiB reader cannot receive larger new frames; no backward interoperability is asserted.",
+  "envelope": "ExperimentalCombatPhaseTraceResultFrameV1 fixed JSON metadata plus original request_id/step control fields bounded128B; both native frame-level admission and separate managed reserve remain active.",
+  "unchanged": ["all native record/candidate/container limits", "all generation/date/thread/pause/exact-day predicates", "native capture flags and completion", "global_mutable_bundle_complete=false", "live_scoped_write_set_verified=false", "hooks and cleanup", "trace original parsed return preservation before RED"],
+  "historical_contract": "Prior diagnostic repair contract's unchanged_caps described419cac's pre-capacity-fix source. Its immutable SOURCE_READY copies remain historical. This additive contract supersedes only managed/protocol sizes for the next paired runtime; original diagnostic error semantics and fields remain.",
+  "not_claimed": ["Recovery of R0143 full DTO", "monitor capacity repair", "six-gap case completion", "actual native gameplay from offline fixtures"]
+}

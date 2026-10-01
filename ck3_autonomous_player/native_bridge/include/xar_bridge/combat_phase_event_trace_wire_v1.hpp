@@ -7,9 +7,9 @@
 
 namespace xar::ck3_11906 {
 
-// The enclosing command_result and protocol header also consume frame space.
-// Keep the trace fragment below 900 KiB so it can never make the bridge's
-// frozen 1 MiB frame limit fail only after the managed one-day trace ran.
+// Retain the original 900 KiB bound for the ring fragment. The managed result
+// combines this fragment with a separately bounded scoped journal and uses
+// kCombatPhaseEventTraceManagedMaximumBytesV1 within the paired 2 MiB transport.
 inline constexpr std::size_t kCombatPhaseEventTraceWireMaximumBytesV1 =
     900U * 1024U;
 

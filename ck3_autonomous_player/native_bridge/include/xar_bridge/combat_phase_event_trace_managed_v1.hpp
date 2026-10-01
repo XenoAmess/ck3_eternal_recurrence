@@ -9,12 +9,20 @@
 #include "xar_bridge/combat_advantage_components_observer_v1.hpp"
 #include "xar_bridge/combat_phase_event_trace_wire_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/protocol.hpp"
 
 #include <cstdint>
 #include <string>
 #include <type_traits>
 
 namespace xar::ck3_11906 {
+
+// The combined ring + scoped journal has its own bounded frame budget. Keep
+// the ring's original 900 KiB bound; reserve 128 KiB for command_result framing.
+inline constexpr std::size_t kCombatPhaseEventTraceManagedMaximumBytesV1 =
+    xar::bridge::kMaximumFrameBytes - 128U * 1024U;
+static_assert(kCombatPhaseEventTraceManagedMaximumBytesV1 >
+              kCombatPhaseEventTraceWireMaximumBytesV1);
 
 // The reader, detours and bounded wire DTO are production sources.  The
 // adapter remains unadvertised until bridge.cpp admits this typed pair and a
