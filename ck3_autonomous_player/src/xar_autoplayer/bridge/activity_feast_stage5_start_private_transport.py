@@ -7,6 +7,7 @@ from collections.abc import Mapping
 from typing import cast
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 INPUT_STEP = "query-activity-feast-stage5-start-inputs-v1-private"
@@ -83,12 +84,14 @@ def _hosted(value: object) -> list[dict[str, object]]:
         raise BridgeUnavailableError("private feast hosted identities malformed")
     copied: list[dict[str, object]] = []
     seen: set[int] = set()
+    identity_fields = {"activity_id", "host_character_id", "activity_type_key"}
+    terminal_fields = {
+        "terminal_flags_observed", "native_completed", "native_invalidated",
+    }
     for row in value:
         if (
             not isinstance(row, dict)
-            or set(row) != {
-                "activity_id", "host_character_id", "activity_type_key",
-            }
+            or set(row) not in (identity_fields, identity_fields | terminal_fields)
             or not _positive(row["activity_id"], 2**32 - 1)
             or not _positive(row["host_character_id"], 2**32 - 1)
             or not isinstance(row["activity_type_key"], str)
@@ -97,6 +100,12 @@ def _hosted(value: object) -> list[dict[str, object]]:
             or row["activity_id"] in seen
         ):
             raise BridgeUnavailableError("private feast hosted identity malformed")
+        if terminal_fields <= set(row) and (
+            row["terminal_flags_observed"] is not True
+            or type(row["native_completed"]) is not bool
+            or type(row["native_invalidated"]) is not bool
+        ):
+            raise BridgeUnavailableError("private feast hosted terminal flags malformed")
         seen.add(row["activity_id"])
         copied.append(dict(row))
     return copied
@@ -198,6 +207,7 @@ def _query(driver: object, *, step: str, expected_revision: int,
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = _source_snapshot(driver)
+    provenance = private_native_provenance(before)
     if before["revision"] != expected_revision:
         raise BridgeUnavailableError("private feast Start query revision changed")
     actor_id = cast(int, before["played_character"]["character_id"])
@@ -246,7 +256,7 @@ def _query(driver: object, *, step: str, expected_revision: int,
     if not _same_frame(before, after):
         raise BridgeUnavailableError("private feast Start query crossed paused frame")
     return {
-        **payload, "queried_snapshot_id": before["snapshot_id"],
+        **payload, **provenance, "queried_snapshot_id": before["snapshot_id"],
         "queried_revision": before["revision"],
         "queried_native_revision": before["native_revision"],
         "post_snapshot_id": after["snapshot_id"],
@@ -283,6 +293,7 @@ def submit_activity_feast_stage5_start_private_v1(
                    for key in RESOURCE_KEYS)):
         raise BridgeUnavailableError("private feast Start lacks qualified inputs")
     before = _source_snapshot(driver)
+    provenance = private_native_provenance(before)
     actor_id = cast(int, before["played_character"]["character_id"])
     if any((inputs.get(key) != expected) for key, expected in (
         ("queried_snapshot_id", before["snapshot_id"]),
@@ -339,5 +350,5 @@ def submit_activity_feast_stage5_start_private_v1(
         raise BridgeUnavailableError("private feast Start ACK lacks native pending")
     # A changed snapshot is expected only after the native action.  The caller
     # performs an independent hosted/resource post read before any success.
-    return {"request_id": request_id, "native_status": "submitted_pending",
+    return {**provenance, "request_id": request_id, "native_status": "submitted_pending",
             "ack": dict(action), "source_snapshot_id": before["snapshot_id"]}

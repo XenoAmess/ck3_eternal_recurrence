@@ -8,6 +8,7 @@ from typing import cast
 
 from .activity_feast_stage5_start_private_transport import _same_frame, _source_snapshot
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 QUERY_STEP = "query-activity-feast-guest-rule-v1"
@@ -103,6 +104,7 @@ def _execute(driver: object, *, step: str, authored_rule_key: str,
     if step == ACTIVATE_STEP and policy_approved is not True:
         raise ValueError("private feast guest rule action needs approved policy")
     before = _source_snapshot(driver)
+    provenance = private_native_provenance(before)
     if before["revision"] != expected_revision:
         raise BridgeUnavailableError("private feast guest rule revision changed")
     actor_id = cast(int, before["played_character"]["character_id"])
@@ -148,7 +150,7 @@ def _execute(driver: object, *, step: str, authored_rule_key: str,
     after = driver.take_snapshot()
     if not _same_frame(before, after):
         raise BridgeUnavailableError("private feast guest rule crossed paused frame")
-    return {**payload, "authored_rule_key": authored_rule_key,
+    return {**payload, **provenance, "authored_rule_key": authored_rule_key,
             "queried_snapshot_id": before["snapshot_id"],
             "queried_revision": before["revision"],
             "queried_native_revision": before["native_revision"],

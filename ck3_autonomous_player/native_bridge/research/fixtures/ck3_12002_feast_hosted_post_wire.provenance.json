@@ -1,0 +1,9 @@
+{
+  "schema": "xar.feast.extracted_cpp_serializer_fixture.v1",
+  "input_fixture_is_synthetic": true,
+  "actual_production_cpp_blocks": true,
+  "source_file": "src/activity_feast_stage5_start_private_transport_v1.cpp",
+  "source_sha256": "44566094c8d05efe18f8b95ead29487ee32491f09f6439060bf855efb3e9b2e0",
+  "serializer_block_sha256": "cce4787e0699d48623a30474b43d7bce59b7436a4de8bd1695576752c728eb8e",
+  "local_ck3_contacted": false
+}

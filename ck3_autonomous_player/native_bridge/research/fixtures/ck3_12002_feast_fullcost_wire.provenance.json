@@ -1,0 +1,33 @@
+{
+  "status": "GREEN",
+  "local_ck3_contacted": false,
+  "readiness": "static-ready",
+  "results": [
+    {
+      "mode": "Od",
+      "test": "ck3_12002_activity_feast_costs_test.cpp",
+      "compile_returncode": 0,
+      "run_returncode": 0,
+      "exe_sha256": "e681a45a40da3514dc73bf7b048869ba8a211fe82a144ebeb5d3ec87b5e177d1",
+      "wire_schema": "activity-stage5-feast-full-cost-private-read-v1"
+    },
+    {
+      "mode": "O2",
+      "test": "ck3_12002_activity_feast_costs_test.cpp",
+      "compile_returncode": 0,
+      "run_returncode": 0,
+      "exe_sha256": "b9fef098f097727c91982ebf7a10d35899c89a188e97a3b47a8df0707361baaa",
+      "wire_schema": "activity-stage5-feast-full-cost-private-read-v1"
+    }
+  ],
+  "sources": {
+    "ck3_autonomous_player\\native_bridge\\src\\activity_cost_slot12_passive_v1.cpp": "8a502af9294718d8a8966d1867d9a2f971d2869a08b9be9ba6b0d52960622761",
+    "ck3_autonomous_player\\native_bridge\\src\\activity_planner_diag_v1.cpp": "ed80cdff314c1fef98366e9da9b2f27f8a16581225a0ebf20589e8a39b85d331",
+    "ck3_autonomous_player\\native_bridge\\src\\activity_stage5_gold_cost_v1.cpp": "4b186b4950a7c3059c0bb5669622a21be44a13385927499bbbfa897a3e7bd1a6",
+    "ck3_autonomous_player\\native_bridge\\src\\activity_stage5_feast_full_cost_v1.cpp": "c3b758b6607d5ef7f6b0a337d705d7e6b664067657bca68c42a30ac53f9a4479",
+    "ck3_autonomous_player\\native_bridge\\src\\activity_stage5_canstart_read_v1.cpp": "f6c401450df2ff8089458e01f4bcceb382be6b044a0a8de251d482eff24267a3",
+    "ck3_autonomous_player\\native_bridge\\src\\activity_stage5_canstart_failure_display_v1.cpp": "49ba54336fcba56650f5660d662128a19fc383009df2bbf6a3f31718d85a715b",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_activity_feast_cost_private_transport_v1.cpp": "6cf552fcc3f9d4d22cd173a504a643a196e931e21958f730f37474f3b4adcd7f",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_activity_feast_costs_test.cpp": "b58af9f16655f93b4125ad278abe19face2dd4bc1443b669e0fd0607ae421872"
+  }
+}

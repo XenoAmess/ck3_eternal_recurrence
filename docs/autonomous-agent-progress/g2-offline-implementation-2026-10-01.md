@@ -79,3 +79,9 @@ G2 仍 `3/8`，Robert `3153/36524`，新增游戏日为零。宗教/holy order �
 32个已验证域文件已完成：active/candidate collection实际读取、final CanEnact及完整费用/复制reason、owner-thread query wrapper、typed mutation命令。新版actor context+0x1C0、group+0x40、group database数组+0x50/+0x5C、compiled cost+0xC40已映射；命令复用真实clone/lockedqueue bool，未沿用变化后的旧popup提交签名。Collections8 ABI anchors与12 cases在Od/O2 GREEN；terms24 ABI checks与actualcollection→terms→serializer四MSVC cells GREEN；mutation17 spans/24 unwind/12 edges/8 vtable pointers/2 RTTI和typed命令四MSVC cells GREEN。真实wire SHA `2fca001023f181a7a634af9b5c5f140ce986dbbb6128561044f3f318acc68e9e`，实际Python解析1项PASS；初次terms-wire link harness RED保留。耐久证据 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/law/ready-files.json`、`mutation/result.json`及terms/collections各结果。专题[法律集合](../ck3-native-ai/ck3-1.20.0.2-realm-law-collections.md)、[final terms](../ck3-native-ai/ck3-1.20.0.2-realm-law-final-terms.md)、[typed mutation](../ck3-native-ai/ck3-1.20.0.2-realm-law-enact-mutation.md)。这三个来源/命令primitive仅static-ready，完整LAW8 production resource/successor/sourcebinder与独立receipt仍继续施工；global final合法性early-true不会被伪装成已观测的每项CanHave/CanPass。真实有价值的法律与active/resource/successor后置待live，不强制旧CA1。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:38:00 Feast actual-wire Python transport
+
+Feast17文件首包接入 exact-build provenance、实际原生 terminal flags 和现有 pending Start 路径；真实生产 serializer wire5项与受影响既有36项通过。未把Start/ID/debit当作完成；当前尚未包含随后4个实际counter追加。证据：Z:\ck3_mod_rewrite\.task-tmp\g2src\artifacts\g2-offline-2026-10-01\feast-python\transport-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

@@ -6,6 +6,7 @@ import uuid
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "query-activity-planner-diag-v1-private"
@@ -62,6 +63,7 @@ def query_activity_planner_diag_private_v1(
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = driver.take_snapshot()
+    provenance = private_native_provenance(before)
     actor = before.get("played_character")
     native_revision = before.get("native_revision")
     if (before.get("revision") != expected_revision
@@ -112,6 +114,7 @@ def query_activity_planner_diag_private_v1(
             "private activity planner read crossed the paused actor/date frame")
     return {
         **envelope["activity_planner_diag"],
+        **provenance,
         "queried_snapshot_id": before.get("snapshot_id"),
         "queried_revision": expected_revision,
         "queried_native_revision": native_revision,

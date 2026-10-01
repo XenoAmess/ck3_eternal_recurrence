@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import uuid
 from collections.abc import Mapping
-from typing import Literal, TypedDict, cast
+from typing import Literal, NotRequired, TypedDict, cast
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "query-activity-stage5-gold-cost-v1-private"
@@ -40,6 +41,8 @@ class ActivityStage5GoldPayloadV1(TypedDict):
 
 
 class ActivityStage5GoldReadV1(ActivityStage5GoldPayloadV1):
+    exact_ck3_build: str
+    exe_sha256: NotRequired[str]
     total_cost_state: Literal["unknown"]
     queried_snapshot_id: str
     queried_revision: int
@@ -143,6 +146,7 @@ def query_activity_stage5_gold_private_v1(
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = driver.take_snapshot()
+    provenance = private_native_provenance(before)
     actor = before.get("played_character")
     native_revision = before.get("native_revision")
     date_raw = before.get("date_raw")
@@ -217,6 +221,7 @@ def query_activity_stage5_gold_private_v1(
             "private stage-5 Gold read crossed the paused actor/date frame")
     return cast(ActivityStage5GoldReadV1, {
         **payload,
+        **provenance,
         "total_cost_state": "unknown",
         "queried_snapshot_id": snapshot_id,
         "queried_revision": expected_revision,

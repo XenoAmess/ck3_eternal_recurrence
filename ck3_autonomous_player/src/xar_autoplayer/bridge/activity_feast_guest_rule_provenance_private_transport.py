@@ -12,6 +12,7 @@ from typing import cast
 
 from .activity_feast_stage5_start_private_transport import _same_frame, _source_snapshot
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "query-activity-feast-guest-rule-provenance-v1"
@@ -112,6 +113,7 @@ def query_activity_feast_guest_rule_provenance_private_v1(
     if not _positive(expected_revision) or type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("private feast rule provenance frame or timeout invalid")
     before = _source_snapshot(driver)
+    provenance = private_native_provenance(before)
     if before["revision"] != expected_revision:
         raise BridgeUnavailableError("private feast rule provenance revision changed")
     actor_id = cast(int, before["played_character"]["character_id"])
@@ -159,7 +161,7 @@ def query_activity_feast_guest_rule_provenance_private_v1(
     after = driver.take_snapshot()
     if not _same_frame(before, after):
         raise BridgeUnavailableError("private feast rule provenance crossed paused frame")
-    return {**result, "queried_snapshot_id": before["snapshot_id"],
+    return {**result, **provenance, "queried_snapshot_id": before["snapshot_id"],
             "queried_revision": before["revision"],
             "queried_native_revision": before["native_revision"],
             "post_snapshot_id": after["snapshot_id"]}

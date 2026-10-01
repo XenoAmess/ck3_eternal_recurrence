@@ -9,9 +9,10 @@ from __future__ import annotations
 
 import uuid
 from collections.abc import Mapping
-from typing import TypedDict, cast
+from typing import NotRequired, TypedDict, cast
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "query-activity-stage5-feast-full-cost-v1-private"
@@ -58,6 +59,8 @@ class ActivityStage5FeastFullCostPayloadV1(TypedDict):
 
 
 class ActivityStage5FeastFullCostReadV1(ActivityStage5FeastFullCostPayloadV1):
+    exact_ck3_build: str
+    exe_sha256: NotRequired[str]
     queried_snapshot_id: str
     queried_revision: int
     queried_native_revision: int
@@ -185,6 +188,7 @@ def query_activity_stage5_feast_full_cost_private_v1(
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = driver.take_snapshot()
+    provenance = private_native_provenance(before)
     actor = before.get("played_character")
     native_revision = before.get("native_revision")
     date_raw = before.get("date_raw")
@@ -256,6 +260,7 @@ def query_activity_stage5_feast_full_cost_private_v1(
         raise BridgeUnavailableError("private feast full-cost read crossed the paused actor/date frame")
     return cast(ActivityStage5FeastFullCostReadV1, {
         **payload,
+        **provenance,
         "queried_snapshot_id": snapshot_id,
         "queried_revision": expected_revision,
         "queried_native_revision": native_revision,
