@@ -82,6 +82,9 @@
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
 #include "xar_bridge/religion_reform12002_resource_costs_mailbox.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_reform12002_ai_inputs_mailbox.hpp"
+#endif
 #include "xar_bridge/game_adapter.hpp"
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
 #include "xar_bridge/ck3_12002_council_transport.hpp"

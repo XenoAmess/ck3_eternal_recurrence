@@ -903,3 +903,9 @@ Five owned source/test/fixture/topic files. Actual corrected provider DTO reprod
 One topic records actual R8 root targeting factioncount0,pausedactor29829/raw53169360/submissions0 and initial malformed faction-alert attempt. Production formatter to realSDK reproduces RED then GREEN with exact existing8keys; other law envelope unchanged. Native sharedrouter belongs sole R9central manifest; no gift applied or M4 increase. External runner omits optionalalerts/war query. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\gift-execution-preparation\root-gift-doc-source.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 22:01:51 Integrate religious AI inputs and actual observation fixes
+
+Eleven frozen central files, explicit60ON4OFF and readonly AI named query. Actual native emptyTenet,finite construction quote capacity and faction-alert existing-envelope fixes included in unique jobs64 default/candidate builds. New registration/router/named and necessary three leaf fixes GREEN; previous matrices reused. Actual Git compiler-input freeze and paused qualification follow root commit. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r9\central-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

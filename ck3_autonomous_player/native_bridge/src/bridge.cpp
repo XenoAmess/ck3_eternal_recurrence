@@ -11447,6 +11447,12 @@ void RunConnectedSession(
               revision_parsed = xar::ck3_12002::ParsePlayerReligionDraftResourceCostsRevision12002(incoming.payload, expected_revision);
             } else
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionAIReformInputsPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionAIReformInputsRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
             if (xar::ck3_12002::IsPlayerReligionDraftGroupsPrivateStep12002(step)) {
               current_revision_allowed = true;

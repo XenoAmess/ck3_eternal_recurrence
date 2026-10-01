@@ -54,7 +54,15 @@ namespace {
   AppendString(out, status);
   out += ",\"snapshot_revision\":" + std::to_string(revision);
   if (sequence != 0) out += ",\"query_sequence\":" + std::to_string(sequence);
-  out += ",\"private_build\":true,\"read_only\":true,\"advertised\":false,";
+  if (key == "player_faction_alerts") {
+    bool alert_ready = false;
+    (void)bridge::JsonBooleanField(native, "alert_ready", alert_ready);
+    out += ",\"player_faction_alerts_ready\":";
+    out += alert_ready ? "true" : "false";
+  } else {
+    out += ",\"private_build\":true,\"read_only\":true,\"advertised\":false";
+  }
+  out += ',';
   AppendString(out, key); out += ':'; out += native;
   out += ",\"backend_id\":\"native-headless\"}}";
   return out;
@@ -207,6 +215,9 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
   out.religion_draft_resource_costs = &ExecutePlayerReligionDraftResourceCostsMailbox12002;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+  out.religion_ai_reform_inputs = &ExecutePlayerReligionAIReformInputsMailbox12002;
+#endif
   (void)out;
 }
 
@@ -328,6 +339,9 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
   if (IsPlayerReligionDraftResourceCostsPrivateStep12002(step)) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionAIReformInputsPrivateStep12002(step)) return true;
+#endif
   return IsActivityFeastPrivateStep12002(step);
 }
 
@@ -349,6 +363,12 @@ bool HandleNonwarPrivate12002(
   serialized.clear(); failure.clear();
   try {
     const auto &native = NativeAdapter12002(adapter);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionAIReformInputsPrivateStep12002(step))
+      return HandlePlayerReligionAIReformInputsPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
     if (IsPlayerReligionDraftDoctrineChoicesPrivateStep12002(step))
       return HandlePlayerReligionDraftDoctrineChoicesPrivate12002(native, mailbox, published, revision,

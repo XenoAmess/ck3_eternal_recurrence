@@ -25,6 +25,8 @@ std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
 std::size_t draft_groups_calls = 0;
 constexpr std::string_view draft_groups_step = "query-player-religion-draft-groups-v1";
+std::size_t ai_reform_inputs_calls = 0;
+constexpr std::string_view ai_reform_inputs_step = "query-player-religion-ai-reform-inputs-v1";
 std::array<std::size_t, 3> r8_calls{};
 constexpr std::array<std::string_view, 3> r8_steps{
     "query-player-religion-draft-doctrine-choices-v1",
@@ -774,6 +776,27 @@ bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter 
 }
 #endif
 
+// R9 single readonly spy: real central dispatcher, no provider/parser semantic credit.
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+bool IsPlayerReligionAIReformInputsPrivateStep12002(std::string_view step) noexcept {
+  return step == ai_reform_inputs_step;
+}
+bool ExecutePlayerReligionAIReformInputsMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionAIReformInputsPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == ai_reform_inputs_step, "R9 exact selector reaches the unique owning handler");
+  ++ai_reform_inputs_calls;
+  serialized = "ai-reform-inputs-forwarded";
+  return true;
+}
+#endif
+
 } // namespace xar::ck3_12002
 
 // The R7 probe executes only the new path/default-OFF behavior. The prior
@@ -884,8 +907,60 @@ bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter 
   return 0;
 }
 
+// R9 runs only this new route with canonical and alias payloads. Prior mains stay frozen evidence.
+[[maybe_unused]] int RunAIReformInputsRouterIncrement() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  RouterAdapter adapter;
+  ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  game::Snapshot published{};
+  published.date_raw = 53175816;
+  published.played_character_id = 29829;
+  NonwarPrivateState12002 state{};
+  state.faction_query_sequence = 42;
+  NonwarMailboxExecutorsV1 executors{};
+  PopulateNonwarRouterExecutors12002(executors);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+  constexpr bool enabled = true;
+  Check(executors.religion_ai_reform_inputs == &ExecutePlayerReligionAIReformInputsMailbox12002,
+        "R9 selected exact callback registered");
+#else
+  constexpr bool enabled = false;
+  Check(executors.religion_ai_reform_inputs == nullptr, "R9 default OFF callback absent");
+#endif
+  Check(IsNonwarPrivateStep12002(ai_reform_inputs_step) == enabled, "R9 canonical visibility follows flag");
+  constexpr std::array<std::string_view, 2> payloads{
+      R"json({"expected_snapshot_revision":919})json",
+      R"json({"expected_revision":920})json"};
+  constexpr std::array<std::string_view, 2> request_ids{
+      "R9-ai-reform-inputs-canonical", "R9-ai-reform-inputs-alias"};
+  for (std::size_t i = 0; i != payloads.size(); ++i) {
+    const std::uint64_t revision = 919 + i;
+    expected = {&adapter, &mailbox, &published, &state, revision,
+                ai_reform_inputs_step, payloads[i], request_ids[i]};
+    std::string serialized = "stale-output", failure = "stale-failure";
+    Check(HandleNonwarPrivate12002(adapter, mailbox, published, revision, ai_reform_inputs_step,
+        payloads[i], request_ids[i], state, serialized, failure) == enabled,
+        "R9 actual dispatch status follows flag");
+    Check(serialized == (enabled ? "ai-reform-inputs-forwarded" : ""), "R9 result returned unchanged");
+    Check(failure.empty(), "R9 failure returned unchanged");
+    Check(state.faction_query_sequence == 42, "R9 unrelated persistent sequence unchanged");
+    Check(ai_reform_inputs_calls == (enabled ? i + 1 : 0), "R9 exact owning handler call count");
+  }
+  Check(!IsNonwarPrivateStep12002("query-player-religion-ai-reform-inputs-v1-unregistered"),
+        "R9 selector requires exact match");
+  std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
+            << ",\"ai_reform_inputs_selectors_forwarded\":" << ai_reform_inputs_calls
+            << ",\"payload_cases\":2,\"old_router_matrix_reexecuted\":false"
+            << ",\"native_provider_credit\":false,\"parser_semantic_credit\":false"
+            << ",\"live_verified\":false,\"ck3_touched\":false}\n";
+  return 0;
+}
+
 int main() {
-#if defined(XAR_G2_ROUTER_INCREMENT_THREE_DRAFT_QUERIES_ONLY)
+#if defined(XAR_G2_ROUTER_INCREMENT_AI_REFORM_INPUTS_ONLY)
+  return RunAIReformInputsRouterIncrement();
+#elif defined(XAR_G2_ROUTER_INCREMENT_THREE_DRAFT_QUERIES_ONLY)
   return RunThreeDraftQueriesRouterIncrement();
 #elif defined(XAR_G2_ROUTER_INCREMENT_DRAFT_GROUPS_ONLY)
   return RunDraftGroupsRouterIncrement();

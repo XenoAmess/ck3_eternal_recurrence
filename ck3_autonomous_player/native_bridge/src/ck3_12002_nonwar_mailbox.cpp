@@ -142,6 +142,9 @@ void RegisterNonwarMailboxExecutorsV1(
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
   environment.permitted_executor_religion_draft_resource_costs12002 = executors.religion_draft_resource_costs;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_ai_reform_inputs12002 = executors.religion_ai_reform_inputs;
+#endif
   (void)environment;
   (void)executors;
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)

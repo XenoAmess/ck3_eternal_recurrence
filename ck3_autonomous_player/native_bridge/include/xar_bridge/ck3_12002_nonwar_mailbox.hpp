@@ -64,6 +64,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 religion_draft_doctrine_choices = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_draft_tenet_choices = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_draft_resource_costs = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_ai_reform_inputs = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_collection = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_ransom = nullptr;
 };

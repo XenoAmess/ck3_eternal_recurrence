@@ -132,6 +132,8 @@ void ExerciseMailbox(MainThreadQueryInstallEnvironmentV1 environment,
          environment.permitted_executor_religion_draft_tenet_choices12002);
   assert(mailbox.permitted_executor_religion_draft_resource_costs12002 ==
          environment.permitted_executor_religion_draft_resource_costs12002);
+  assert(mailbox.permitted_executor_religion_ai_reform_inputs12002 ==
+         environment.permitted_executor_religion_ai_reform_inputs12002);
   assert(iat == reinterpret_cast<void *>(&XarMainThreadPeekMessageWHookV1));
   const auto return_rva = environment.build_profile->pump_exact_return_rva;
   for (std::size_t i = 0; i < 3; ++i) {
@@ -228,6 +230,7 @@ int main() {
   callbacks.religion_draft_doctrine_choices = &Executor<1200261>;
   callbacks.religion_draft_tenet_choices = &Executor<1200262>;
   callbacks.religion_draft_resource_costs = &Executor<1200263>;
+  callbacks.religion_ai_reform_inputs = &Executor<1200264>;
   RegisterNonwarMailboxExecutorsV1(environment, callbacks);
   assert(environment.build_profile == profile);
   assert(environment.permitted_executor == &Executor<1>);
@@ -526,22 +529,21 @@ int main() {
 #else
   Check(environment.permitted_executor_religion_draft_resource_costs12002, callbacks.religion_draft_resource_costs, false, 1200263, selected);
 #endif
-  // The frozen R7 baseline carries the prior callback proofs. This delta
-  // retains their registration shape and executes only the three new slots.
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_ai_reform_inputs12002, callbacks.religion_ai_reform_inputs, true, 1200264, selected);
+#else
+  Check(environment.permitted_executor_religion_ai_reform_inputs12002, callbacks.religion_ai_reform_inputs, false, 1200264, selected);
+#endif
+  // The frozen R8 baseline carries the prior callback proofs. This delta
+  // retains their registration shape and executes only the new slot.
   std::vector<Slot> delta;
-  if (environment.permitted_executor_religion_draft_doctrine_choices12002 != nullptr) {
-    delta.push_back({environment.permitted_executor_religion_draft_doctrine_choices12002, 1200261});
-  }
-  if (environment.permitted_executor_religion_draft_tenet_choices12002 != nullptr) {
-    delta.push_back({environment.permitted_executor_religion_draft_tenet_choices12002, 1200262});
-  }
-  if (environment.permitted_executor_religion_draft_resource_costs12002 != nullptr) {
-    delta.push_back({environment.permitted_executor_religion_draft_resource_costs12002, 1200263});
+  if (environment.permitted_executor_religion_ai_reform_inputs12002 != nullptr) {
+    delta.push_back({environment.permitted_executor_religion_ai_reform_inputs12002, 1200264});
   }
   ExerciseMailbox(environment, delta);
   const auto wrong = BindThreadRuntimeImage(0x100000, "unsupported", typed);
   assert(wrong.build_profile == nullptr);
-  std::cout << "PASS: all58 private slot mappings, " << selected.size()
+  std::cout << "PASS: all59 private slot mappings, " << selected.size()
             << " registered callbacks, " << delta.size()
-            << " new callbacks submit/drain, prior R7 callbacks shape-only, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
+            << " new callbacks submit/drain, prior R8 callbacks shape-only, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
 }
