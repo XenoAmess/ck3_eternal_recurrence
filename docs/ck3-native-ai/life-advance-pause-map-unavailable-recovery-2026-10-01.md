@@ -17,3 +17,9 @@ R4 `root-first-heir-next-r4-07` 的生产调用为 `service.execute_step("life-a
 机器合同在 `ck3_autonomous_player/native_bridge/research/fixtures/life_advance_pause_map_unavailable_retry_v1_source_contract.json`。实际故障、冻结方法、外部候选及应用记录保留于主 workspace 的 `artifacts/g2-offline-2026-10-01/pause-map-rejected-retry/`，生产应用与测试结果见 `production-result.json`。`production-application.json` 证明方法以外的共享文件字节保留，L6 未修改。
 
 本次代码 readiness 为 `static-ready`。root 后续使用新 R7 runtime 做正常 `life-advance` 并确认稳定暂停；不人为制造 map 故障，不把 synthetic frame 称为实机。此工作包没有 CK3、pipe、UI 或 Git 操作。
+
+R7 正常实机验证已由 root 完成，本工作包只读取冻结结果，没有重测。`family-live-next/root-normal-life-advance-r7-01/existing-life-advance.json` 记录 `53169336 → 53169360`，`elapsed_days=1`、`requested_horizon_days=1`；只有 `set-speed-1`、`resume-map`、`pause-map` 三个 action，第一次 pause 即 accepted／submitted。独立 `snapshot-after-next.json` 在 native revision `9`、public revision `5` 观察到 `paused=true`、`map_ready=true`、同 actor `29829` 与 episode `native-29829-3f80e147d033`，bridge PID `111364`。
+
+随后 `root-checkpoint-r7-after-normal-advance-01/checkpoint.json` 记录 saved checkpoint：history index `98`、日期 `53169360`、大小 `69,602,355` 字节、SHA `4d7633c0591006c5cffaee9115f18a20e840e2da3a4ad1d3ed15530db2de8569`。这是正常推进后的 durable checkpoint receipt，本次记录没有重新读取 save 文件。
+
+该次运行证明更新后正常的一日推进能够回到真实暂停状态；没有人为制造 map 故障，也没有触发本补丁的拒绝 catch／retry。错误恢复分支仍只有确定性 production-path synthetic fixture 证据，不能写成“实机故障恢复通过”。追加冻结索引与日报／周报字段见主 workspace `artifacts/g2-offline-2026-10-01/pause-map-rejected-retry/r7-normal-live-validation.json`；原候选、失败 attempt 与 production-result 均保留。
