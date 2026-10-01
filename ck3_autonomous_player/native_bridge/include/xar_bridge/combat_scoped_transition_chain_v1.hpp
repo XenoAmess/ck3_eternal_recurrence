@@ -15,6 +15,8 @@ inline constexpr std::size_t kCombatScopedChainMaxRecordsV1 = 256;
 inline constexpr std::size_t kCombatScopedChainMaxTraitsV1 = 128;
 inline constexpr std::size_t kCombatScopedChainMaxEntriesV1 = 2048;
 inline constexpr std::size_t kCombatScopedChainMaxTraitDefinitionsV1 = 8192;
+inline constexpr std::size_t kCombatScopedChainMaxTraitTracksV1 = 256;
+inline constexpr std::size_t kCombatScopedChainMaxEffectChildrenV1 = 256;
 struct CombatScopedStableKeyV1 {
   std::uint32_t size = 0;
   std::array<char, 128> bytes{};
@@ -23,6 +25,9 @@ struct CombatScopedStableKeyV1 {
 struct CombatScopedTraitDefinitionV1 {
   std::int32_t trait_id = -1;
   CombatScopedStableKeyV1 key{};
+  // Exact native getter 260F674 / prefix accumulator 260EB86: definition+294.
+  // This is a signed number of flat XP entries, not a symbolic track ID.
+  std::int32_t track_count = -1;
 };
 
 enum class CombatScopedChainBoundaryV1 : std::uint32_t {
@@ -92,7 +97,7 @@ struct CombatScopedCharacterV1 {
   std::array<std::int32_t, kCombatScopedChainMaxTraitsV1> trait_ids{};
   bool trait_tracks_read = false;
   std::uint32_t trait_track_raw_count = 0;
-  std::array<std::int64_t, 256> trait_track_raw_values{};
+  std::array<std::int64_t, kCombatScopedChainMaxTraitTracksV1> trait_track_raw_values{};
   bool kills_read = false;
   std::uint32_t kill_count = 0;
   std::array<std::int32_t, 512> kill_character_ids{};
@@ -129,6 +134,12 @@ struct CombatScopedBattleEventSnapshotV1 {
   std::array<CombatPhaseEventTraceBattleEventRecordV1,256> rows{};
 };
 
+struct CombatScopedEffectIdentityV1 {
+  std::uintptr_t node = 0;
+  std::uint32_t vtable_rva = 0, hash = 0, original_execute_rva = 0;
+  bool read = false;
+};
+
 struct CombatScopedChainRecordV1 {
   std::uint32_t sequence = 0;
   std::uint32_t invocation = 0;
@@ -144,6 +155,17 @@ struct CombatScopedChainRecordV1 {
   std::uintptr_t node_identity = 0;
   std::uint32_t node_vtable_rva = 0;
   std::uint32_t node_hash = 0;
+  // Only exact whitelisted original layouts are read. Unknown types do not
+  // become empty groups or a null false branch by default.
+  std::uint32_t node_original_execute_rva = 0;
+  bool effect_children_read = false;
+  std::uintptr_t effect_children_data = 0;
+  std::int32_t effect_child_count_raw = -1;
+  std::uint32_t effect_child_identity_count = 0;
+  std::array<CombatScopedEffectIdentityV1,kCombatScopedChainMaxEffectChildrenV1> effect_children{};
+  bool effect_if_optional_read = false;
+  std::uintptr_t effect_if_optional_node = 0;
+  CombatScopedEffectIdentityV1 effect_if_optional_identity{};
   std::uint32_t depth = 0;
   std::uintptr_t caller_return_address = 0;
   std::int64_t casualty_damage_raw = 0;
@@ -303,6 +325,8 @@ struct CombatScopedEffectContextV1 {
   std::uint32_t invocation=0,depth=0,node_hash=0,node_vtable_rva=0;
   std::int32_t combat_id=-1,side_index=-1,event_load_index=-1;
   std::uintptr_t node=0,execution_context=0;
+  friend bool operator==(const CombatScopedEffectContextV1 &,
+                         const CombatScopedEffectContextV1 &)=default;
 };
 // Only the currently executing original 264BCB0 invocation on this thread.
 // No last-death cache, endpoint-derived victim, or asynchronous attribution.

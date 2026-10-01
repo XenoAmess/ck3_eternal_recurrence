@@ -1,0 +1,27 @@
+{
+  "schema": "ck3.private.scoped-loaded-trait-track-count/v1",
+  "build": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "kind": "READONLY_EXACT_LOADED_DEFINITION_COUNT_ADDITION_NOT_GAME_WRITE",
+  "native_source": {
+    "definition_database_slot_rva": "0x570C0F8",
+    "definition_pointer_array_offset": "0x68",
+    "definition_signed_count_offset": "0x74",
+    "definition_id_offset": "0x10",
+    "definition_stable_key_offset": "0x18",
+    "definition_signed_track_count_offset": "0x294",
+    "count_reader_anchor": "260F674 loads signed definition+294; rejects<=0 for requested trait span",
+    "prefix_sum_anchor": "260EA70 loops preceding character trait IDs, resolves original trait definitions, and260EB86 accumulates definition+294",
+    "character_stored_trait_order": "character+F0 int32 array, count+FC; retained verbatim, not sorted by publisher",
+    "character_full_XP_array": "character+138 int64 array, signed count+144; existing complete raw vector retained",
+    "no_new_original_virtual_or_getter_calls": true
+  },
+  "additive_wire_field": "scoped_transition_chain.prearmed_trait_definitions[*].track_count",
+  "field_type": "signed int32",
+  "unread_default": -1,
+  "admission_bounds": [0, 256],
+  "existing_character_raw_XP_capacity": 256,
+  "invalid_count_behavior": "Prearm returns false for negative or above-cap loaded definition counts; serializer rejects malformed direct DTO counts. Existing flags, hooks, raw64 date and guards are unchanged.",
+  "mapping_contract": "For each current character trait in its actual stored order, look up exactly one prearmed full definition ID/key/count. Its XP flat range starts at the sum of counts for all preceding stored traits and has that definition's count. Validate nonnegative bounded counts, complete full raw array length and range. Zero count consumes no entries. Do not name the flat array index as a global track ID.",
+  "closure_limits": "Same-run loaded counts make XP[0] identity mapping independently checkable. Counts and unchanged XP endpoints do not themselves prove absence of all intraday writers; actual effect inventory/causal evidence is still required. Historical runs do not acquire this later field."
+}

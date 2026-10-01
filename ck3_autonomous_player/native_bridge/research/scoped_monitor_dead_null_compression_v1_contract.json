@@ -1,0 +1,48 @@
+{
+  "schema": "ck3.scoped-monitor.dead-null-return-compression/v1",
+  "native_schema_version": 1,
+  "additive_only": true,
+  "capacity": 128,
+  "compression_scope": "exact_dead_null_original_returns_only",
+  "retained": [
+    "first actual original getter return for each scoped character",
+    "nonnull to null and null to nonnull transitions",
+    "different full ID, thread, date, source scope pointer/words or original caller",
+    "different death state, typed value, owner-state or operation-activity epoch",
+    "different current native death-commit tuple/invocation/parent/thread",
+    "different daily effect, original setter node/context or notification producer context",
+    "every actual signature setter enter/return and house predicate enter/return",
+    "arm/final paused boundaries and original failure flags"
+  ],
+  "lock": "SRW exclusive owner observation lock after original getter returns; __finally releases; never held across original native calls; owner/value state and only fully published owner-row indices are protected",
+  "owner_return_compression": {
+    "schema_version": 1,
+    "scope": "exact_dead_null_original_returns_only",
+    "observed": "uint64 number of matched actual original getter calls, including unrecorded unchanged nonnull observations",
+    "retained": "uint64 original_owner_return records published",
+    "coalesced": "uint64 additional equal dead/null original returns aggregated into retained rows",
+    "unchanged_nonnull_unrecorded": "uint64 pre-existing unchanged nonnull suppression, now explicitly counted",
+    "capacity": 128,
+    "writer_calls_coalesced": 0,
+    "aggregate_bounds_are_not_per_call_chronology": true
+  },
+  "record_additive_fields": {
+    "owner_observation_first_call_index": "uint64 zero-based global matched-getter observation index",
+    "owner_observation_last_call_index": "uint64 last exact matched-getter observation index represented by this row",
+    "owner_observation_count": "uint64 actual getter multiplicity; zero on every non-getter record",
+    "owner_state_epoch": "uint64 changes on first owner observation and every owner/value/dead transition",
+    "owner_activity_epoch": "uint64 changes on every actual non-getter monitored boundary"
+  },
+  "source_fields_now_observed_on_getter_rows": [
+    "caller_token", "native_root_scope_token", "native_scope_words",
+    "setter_node_token", "execution_context_token",
+    "current_death_commit_context", "daily_effect_context", "event_producer"
+  ],
+  "limits": [
+    "null original owner is not a read of signature absence",
+    "first/last bounds do not reconstruct omitted individual call ordering across threads",
+    "no final owner value is read from a cached pointer",
+    "failure flags, truncation, stage and original detour admission/cleanup remain unchanged",
+    "no raw historical run is reinterpreted as complete by this source change"
+  ]
+}

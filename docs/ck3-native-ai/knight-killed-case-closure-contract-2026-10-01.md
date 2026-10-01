@@ -10,7 +10,7 @@
 | --- | --- | --- | --- |
 | skills | event 11 的选中敌骑士成长分支，及死亡/出伤时两层属性 | 全部实际节点、选中 random-list 条目与子节点；节点前后同 ID 基础 martial/learning/prowess（直接char+D8/E4/E8）；同 run 存档六项基础属性。实际有效战斗stats由 entries 单独对账。若空条目且写入口库存排除其他成长写，判定本案没有成长属性写 | 将char直接字段称作有效战斗属性；仅存档相等 |
 | trait_set | 同两角色的实际成长/伤势/死亡分支 | 预绑定原版 trait ID/key 表、完整 trait 集在对应操作前后与下一暂停的读数；实际 trait 写节点，或完整空分支/未进入分支及写入口库存 | 仅 ordinal/key 名字、旧 run 特质 |
-| trait_tracks | 同两角色特质经验 | 本case实际始终空且growth空分支时，由完整branch和当次空数组关闭branch-no-write，无需扩无本case对象的平台。有实际条目/写入时，character+138 原始 int64 数组与 +144 count 完整快照，配合同 run 原版存档完整 XP 数组及原版定义的索引映射、实际经验写边界 | 以数组索引猜 track ID；getter 输出 +0C 当 count；只存档净零 |
+| trait_tracks | 同两角色特质经验 | 若本case实际始终空且growth空分支，由完整branch和当次空数组关闭branch-no-write，无需扩无本case对象的平台。有实际条目时（包括值为零的条目），character+138 原始 int64 数组与 +144 count 完整快照必须配合同 run 原版存档完整 XP 数组、原版定义的索引映射，以及实际写边界或完整未写分支库存。`[0]` 是一条零值经验，不能称为空数组 | 以数组索引猜 track ID；getter 输出 +0C 当 count；只存档净零 |
 | death_date_reason_killer_artifact | CCharacterDeathEffect → request/queue/commit → 受害者死亡数据 | 同节点上下文、六参原始 tuple（manager/victim/reason/date/killer/artifact）、队列项及实际相关 commit；reason key 独立原生读取；marker false→true、date/reason/killer/artifact 与存档一致；整个采集窗口其他同受害者 request/commit 也完整保留 | 仅节点进入、finish ACK 或只读回 DEAD |
 | prestige_currency_and_accumulated | 实际 CAddMultiLevelValueTypeEffect，选中敌骑士 | 写入口/节点与原目标，extension+130/+138 raw 前后差值，原版 execute 写锚；存档 currency/accumulated 同 run 校验。+138 的语义由原版写/保存锚证明 | 单凭两个净差值相同便把 experience 命名为 accumulated |
 | regiment_link_and_membership | 实际死亡提交/脱离，受害者与军团 | request/commit/casualty/下一暂停同 ID link、regiment full ID 与反向角色 ID、双方完整骑士名单；原生保存态与角色/名单原图独立核验 | 不同 run 的 039→040 名单变化；历史 UI |
@@ -26,6 +26,6 @@
 
 选择器另需完整 materializer 返回原数组、source/shared filter 原始谓词数量、逐候选实际原 return、短路和 tail-swap 后数组、最终 stored order、真实 RNG counter/salt/draw、index、typed return 与实际 death 的 killer 对账。prefix 旧元素与只过滤新附加范围也须保留。仅最终候选数组不能关闭完整筛选路径。
 
-“唯一死因”指本次受控窗口内该受害者实际死亡提交只有这一条相关执行路径，不宣称游戏只有一种死因。关闭须满足：完整实际 selector → 本节点 death effect → 原 tuple request → 对应 enqueue 或直接 commit → 唯一相关提交 → marker 与脱离 → 后出伤/伤亡 → 下一暂停；窗口内全部同受害者 request/commit、拒绝/无效路径都必须可数，源锚能覆盖本案实际死亡入口。一次独立正确的 DEAD 存档只能关闭生命状态。
+“唯一死因”指本次受控窗口内该受害者实际死亡提交只有这一条相关执行路径，不宣称游戏只有一种死因。关闭须满足：完整实际 selector → 本节点 death effect → 原 tuple request → 对应 enqueue 或直接 commit → 唯一相关提交，并将 marker、脱离、出伤/伤亡与下一暂停按原始 sequence 对账。不得预设 casualty 必须晚于 deferred commit：R0144 实际 casualty 为 seq177–180，相关 deferred commit 为 seq181–182，next_paused 为 seq183。窗口内全部同受害者 request/commit、拒绝/无效路径都必须可数，源锚能覆盖本案实际死亡入口。一次独立正确的 DEAD 存档只能关闭生命状态。
 
 最终六项清单要把 UI 门禁与机制门禁分开：角色 UI、名单 UI、完整战斗窗使用当次原图及原生身份/日期独立对照；选择器、实际死因、13 域链使用上述运行时证据。每项写 `closed` 或 `pending`、确切证据路径/SHA、缺少的具体条件。自动 PASS、全局旗标 false、老素材诚实保留都不直接决定该项状态。视频在六项前置完成前保持暂停。

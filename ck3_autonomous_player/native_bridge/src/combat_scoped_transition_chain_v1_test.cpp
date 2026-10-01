@@ -1,5 +1,6 @@
 #include "xar_bridge/combat_scoped_transition_chain_v1.hpp"
 #include <windows.h>
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstddef>
@@ -40,7 +41,7 @@ struct Fixture {
   std::array<std::array<std::byte, 0x18>, 2> hard_owners{};
   std::array<std::array<std::int32_t, 2>, 2> traits{{{1,2},{1,2}}};
   std::array<std::byte, 0x80> trait_database{};
-  std::array<std::array<std::byte, 0x40>, 2> trait_definitions{};
+  std::array<std::array<std::byte, 0x298>, 2> trait_definitions{};
   std::array<std::uintptr_t, 2> trait_definition_pointers{};
   std::array<std::byte, 0x40> reason{};
   std::array<std::byte, 0xB8> death{};
@@ -106,6 +107,7 @@ struct Fixture {
       trait_definition_pointers[i] = reinterpret_cast<std::uintptr_t>(trait_definitions[i].data());
       Store(trait_definitions[i], 0x10, static_cast<std::int32_t>(i + 1));
       Key(trait_definitions[i].data() + 0x18, i == 0 ? "brave" : "wounded_1");
+      Store(trait_definitions[i], 0x294, std::int32_t{1});
     }
     Store(trait_database, 0x68, reinterpret_cast<std::uintptr_t>(trait_definition_pointers.data()));
     Store(trait_database, 0x74, std::int32_t{2});
@@ -120,6 +122,8 @@ struct Fixture {
 };
 Fixture *g_fixture = nullptr;
 std::string g_offline_fixture_json;
+std::string g_offline_trait_definition_fixture_json;
+std::string g_offline_effect_branch_fixture_json;
 
 std::uintptr_t Queue(void *header, const void *command) {
   std::memcpy(g_fixture->queued_command.data(), command, 0x30);
@@ -222,6 +226,10 @@ bool SerializationFailureDiagnostics() {
   expect("trait_definition_count",[&]{chain->trait_definition_count=8193;},[&]{chain->trait_definition_count=0;});
   expect("trait_definition.key",[&]{chain->trait_definition_count=1;chain->trait_definitions[0].key.size=128;},[&]{chain->trait_definition_count=0;chain->trait_definitions[0].key.size=0;});
   expect("trait_definition.key",[&]{chain->trait_definition_count=1;chain->trait_definitions[0].key.size=1;chain->trait_definitions[0].key.bytes[0]=' ';},[&]{chain->trait_definition_count=0;chain->trait_definitions[0].key.size=0;});
+  const auto track_definition_count=[&](std::int32_t value){chain->trait_definition_count=1;auto &definition=chain->trait_definitions[0];definition.key.size=1;definition.key.bytes[0]='x';definition.track_count=value;};
+  const auto restore_track_definition=[&]{chain->trait_definition_count=0;chain->trait_definitions[0].key.size=0;chain->trait_definitions[0].track_count=-1;};
+  expect("trait_definition.track_count",[&]{track_definition_count(-1);},restore_track_definition);
+  expect("trait_definition.track_count",[&]{track_definition_count(257);},restore_track_definition);
   expect("selector_candidate_count",[&]{r.selector_candidate_count=257;},[&]{r.selector_candidate_count=0;});
   expect("variable_key",[&]{r.variable_key.size=128;},[&]{r.variable_key.size=0;});
   expect("variable_list_count",[&]{r.variable_list_count=129;},[&]{r.variable_list_count=0;});
@@ -240,6 +248,140 @@ bool SerializationFailureDiagnostics() {
   assert(SerializeCombatScopedChainV1(*chain,&d).empty() && std::string(d.failure_gate)=="scoped_wire_cap");
   assert(d.observed>16*1024*1024 && chain->failure_flags==32);
   std::cout<<"serialization diagnostics: original good bytes unchanged,16 key/count/index failures plus original16MiB cap attributed; flags preserved; offline only\n";
+  return true;
+}
+
+bool LoadedTraitTrackDefinitionCases() {
+  auto fixture=std::make_unique<Fixture>();
+  auto chain=std::make_unique<CombatScopedChainV1>();
+  const auto database=reinterpret_cast<std::uintptr_t>(fixture->trait_database.data());
+  // Database source order is deliberately opposite to ID order. Counts travel
+  // with the same actual definition ID/key through the original prearm sort.
+  std::swap(fixture->trait_definition_pointers[0],fixture->trait_definition_pointers[1]);
+  Store(fixture->trait_definitions[0],0x294,std::int32_t{0});
+  Store(fixture->trait_definitions[1],0x294,std::int32_t{2});
+  fixture->traits[1]={2,1};
+  assert(ArmCombatScopedChainV1(*chain,fixture->plan,101,201,11,database));
+  assert(chain->trait_definition_count==2);
+  assert(chain->trait_definitions[0].trait_id==1&&chain->trait_definitions[0].track_count==0);
+  assert(chain->trait_definitions[1].trait_id==2&&chain->trait_definitions[1].track_count==2);
+  const auto &record=chain->records[0];
+  for(std::size_t who=0;who<2;++who){
+    const auto &character=record.characters[who];std::uint32_t prefix=0;
+    assert(character.traits_read&&character.trait_tracks_read);
+    for(std::uint32_t i=0;i<character.trait_count;++i){
+      const auto id=character.trait_ids[i];
+      const auto &definition=chain->trait_definitions[id-1];
+      assert(definition.trait_id==id);
+      const auto n=static_cast<std::uint32_t>(definition.track_count);
+      if(id==2){assert(prefix==0&&n==2);assert(character.trait_track_raw_values[prefix]==1000&&character.trait_track_raw_values[prefix+1]==2500);}
+      prefix+=n;
+    }
+    assert(prefix==character.trait_track_raw_count);
+  }
+  g_offline_trait_definition_fixture_json=SerializeCombatScopedChainV1(*chain);
+  assert(g_offline_trait_definition_fixture_json.find("\"trait_id\":1,\"key\":\"brave\",\"track_count\":0")!=std::string::npos);
+  assert(g_offline_trait_definition_fixture_json.find("\"trait_id\":2,\"key\":\"wounded_1\",\"track_count\":2")!=std::string::npos);
+  CancelCombatScopedChainV1(*chain);
+  // Two nonzero definitions exercise a real nonzero prefix. The same stored
+  // XP vector maps to each character's actual trait order, not database order.
+  Store(fixture->trait_definitions[0],0x294,std::int32_t{1});
+  Store(fixture->trait_definitions[1],0x294,std::int32_t{1});
+  chain=std::make_unique<CombatScopedChainV1>();
+  assert(ArmCombatScopedChainV1(*chain,fixture->plan,101,201,11,database));
+  for(std::size_t who=0;who<2;++who){
+    const auto &character=chain->records[0].characters[who];
+    for(std::uint32_t i=0;i<2;++i){
+      assert(chain->trait_definitions[character.trait_ids[i]-1].track_count==1);
+      assert(character.trait_track_raw_values[i]==(i==0?1000:2500));
+    }
+    assert(character.trait_ids[0]==(who==0?1:2));
+    assert(character.trait_ids[1]==(who==0?2:1));
+  }
+  CancelCombatScopedChainV1(*chain);
+  Store(fixture->trait_definitions[0],0x294,std::int32_t{0});
+  // Signed reads fail closed, including a full 32-bit negative value.
+  for(const auto bad:{std::int32_t{-1},std::int32_t{-2147483647},std::int32_t{257}}){
+    chain=std::make_unique<CombatScopedChainV1>();
+    Store(fixture->trait_definitions[1],0x294,bad);
+    assert(!ArmCombatScopedChainV1(*chain,fixture->plan,101,201,11,database));
+    assert(chain->armed.load()==0);
+    CancelCombatScopedChainV1(*chain);
+  }
+  // Exact existing flat-array bound is still 256; no capacity is enlarged.
+  std::array<std::int64_t,kCombatScopedChainMaxTraitTracksV1> maximum_tracks{};
+  Store(fixture->trait_definitions[1],0x294,std::int32_t{256});
+  for(auto &character:fixture->characters){Store(character,0x138,reinterpret_cast<std::uintptr_t>(maximum_tracks.data()));Store(character,0x144,std::int32_t{256});}
+  chain=std::make_unique<CombatScopedChainV1>();
+  assert(ArmCombatScopedChainV1(*chain,fixture->plan,101,201,11,database));
+  assert(chain->trait_definitions[1].track_count==256&&chain->records[0].characters[0].trait_track_raw_count==256);
+  CancelCombatScopedChainV1(*chain);
+  std::cout<<"loaded trait definition+294 signed counts / sorted definition identity / stored-order zero-prefix multi-track mapping / negative and257 rejection / unchanged256 bound PASS; OFFLINE_NOT_GAME_TRUTH\n";
+  return true;
+}
+
+bool OriginalEffectBranchLayoutCases() {
+  auto fixture=std::make_unique<Fixture>();
+  auto *space=static_cast<std::byte*>(VirtualAlloc(nullptr,0x6000000,MEM_RESERVE,PAGE_NOACCESS));assert(space);
+  for(const auto page:{0x44CF000U,0x4478000U,0x44D1000U})
+    assert(VirtualAlloc(space+page,4096,MEM_COMMIT,PAGE_READWRITE));
+  const auto module=reinterpret_cast<std::uintptr_t>(space);fixture->plan.module_base=module;
+  Store(space+0x44CF030,0xB0,module+0x3380EC0);
+  Store(space+0x4478388,0xB0,module+0x3380EC0);
+  Store(space+0x44D1E18,0xB0,module+0x33884B0);
+  std::array<std::byte,0x260> conditional{},group{},optional{};
+  std::array<std::byte,0x40> unknown{};
+  Store(conditional,0,module+0x44D1E18);Store(conditional,0x38,std::uint32_t{100});
+  Store(group,0,module+0x4478388);Store(group,0x38,std::uint32_t{101});
+  Store(optional,0,module+0x44CF030);Store(optional,0x38,std::uint32_t{102});
+  Store(unknown,0,module+0x44CF0F8);Store(unknown,0x38,std::uint32_t{103});
+  std::array<std::uintptr_t,256> children{};children.fill(reinterpret_cast<std::uintptr_t>(optional.data()));
+  Store(conditional,0x40,reinterpret_cast<std::uintptr_t>(children.data()));Store(conditional,0x4C,std::int32_t{2});
+  Store(conditional,0x258,reinterpret_cast<std::uintptr_t>(optional.data()));
+  auto chain=std::make_unique<CombatScopedChainV1>();
+  const auto database=reinterpret_cast<std::uintptr_t>(fixture->trait_database.data());
+  auto arm=[&]{chain=std::make_unique<CombatScopedChainV1>();assert(ArmCombatScopedChainV1(*chain,fixture->plan,101,201,11,database));};
+  auto pair=[&](void *node){const auto i=EnterCombatScopedEffectV1(node,0,11,1);assert(i!=0);ReturnCombatScopedEffectV1(i,node,0,11,1);};
+  arm();const auto invocation=EnterCombatScopedEffectV1(conditional.data(),0,11,1);assert(invocation!=0);
+  const auto &entry=chain->records[1];
+  assert(entry.effect_children_read&&entry.effect_child_count_raw==2&&entry.effect_child_identity_count==2);
+  assert(entry.node_original_execute_rva==0x33884B0&&entry.effect_children[0].read&&entry.effect_children[0].hash==102);
+  assert(entry.effect_if_optional_read&&entry.effect_if_optional_node==reinterpret_cast<std::uintptr_t>(optional.data()));
+  assert(entry.effect_if_optional_identity.read&&entry.effect_if_optional_identity.original_execute_rva==0x3380EC0);
+  Store(conditional,0x258,std::uintptr_t{0});ReturnCombatScopedEffectV1(invocation,conditional.data(),0,11,1);
+  assert(chain->records[2].effect_if_optional_read&&chain->records[2].effect_if_optional_node==0);
+  assert(!chain->records[2].effect_if_optional_identity.read);
+  pair(group.data());assert(chain->records[3].effect_children_read&&chain->records[3].effect_child_count_raw==0);
+  assert(!chain->records[3].effect_if_optional_read);
+  // Unknown scripted-wrapper type has unreadable uncommitted vtable storage;
+  // neither children nor +258 is attempted or represented as a known null.
+  pair(unknown.data());assert(!chain->records[5].effect_children_read&&!chain->records[5].effect_if_optional_read);
+  assert(chain->failure_flags==0);
+  g_offline_effect_branch_fixture_json=SerializeCombatScopedChainV1(*chain);
+  assert(!g_offline_effect_branch_fixture_json.empty());CancelCombatScopedChainV1(*chain);
+  Store(conditional,0x4C,std::int32_t{256});arm();pair(conditional.data());
+  assert(chain->records[1].effect_children_read&&chain->records[1].effect_child_identity_count==256&&chain->failure_flags==0);
+  CancelCombatScopedChainV1(*chain);
+  for(const auto bad:{std::int32_t{-1},std::int32_t{257}}){
+    Store(conditional,0x4C,bad);arm();pair(conditional.data());
+    assert(!chain->records[1].effect_children_read&&chain->records[1].effect_child_count_raw==bad);
+    assert((chain->failure_flags&(bad<0?scoped_chain_failure_container:scoped_chain_failure_capacity))!=0);
+    CancelCombatScopedChainV1(*chain);
+  }
+  Store(conditional,0x4C,std::int32_t{1});Store(conditional,0x40,std::uintptr_t{0});arm();pair(conditional.data());
+  assert((chain->failure_flags&scoped_chain_failure_container)!=0);CancelCombatScopedChainV1(*chain);
+  Store(conditional,0x40,reinterpret_cast<std::uintptr_t>(children.data()));children[0]=0;arm();pair(conditional.data());
+  assert((chain->failure_flags&scoped_chain_failure_binding)!=0&&!chain->records[1].effect_children_read);CancelCombatScopedChainV1(*chain);
+  children[0]=reinterpret_cast<std::uintptr_t>(optional.data());Store(conditional,0x258,std::uintptr_t{1});arm();pair(conditional.data());
+  assert((chain->failure_flags&scoped_chain_failure_memory)!=0&&!chain->records[1].effect_if_optional_read);CancelCombatScopedChainV1(*chain);
+  Store(conditional,0x258,std::uintptr_t{0});Store(space+0x44D1E18,0xB0,module+0x3380EC0);arm();pair(conditional.data());
+  assert((chain->failure_flags&scoped_chain_failure_binding)!=0&&!chain->records[1].effect_children_read);CancelCombatScopedChainV1(*chain);
+  auto serialized=std::make_unique<CombatScopedChainV1>();serialized->count=1;
+  serialized->records[0].effect_child_identity_count=257;CombatScopedWireDiagnosticV1 diagnostic{};
+  assert(SerializeCombatScopedChainV1(*serialized,&diagnostic).empty());
+  assert(std::string(diagnostic.field)=="effect_child_identity_count");
+  assert(VirtualFree(space,0,MEM_RELEASE));
+  std::cout<<"exact3-type original child vector / CIf+258 pointer identity enter-return / unknown-not-null / 256bound / negative257-null-badidentity-SEH-wrongcallee failures retained PASS; OFFLINE_NOT_GAME_TRUTH\n";
   return true;
 }
 
@@ -476,10 +618,14 @@ int main(int argc, char **argv) {
   assert(SelectorAndListCase());
   assert(GuardCases());
   assert(SerializationFailureDiagnostics());
+  assert(LoadedTraitTrackDefinitionCases());
+  assert(OriginalEffectBranchLayoutCases());
   assert(RelocationAndRollbackCase());
   if (argc == 2 && std::string(argv[1]) == "--emit-offline-fixture") {
     std::cout << "{\"kind\":\"OFFLINE_FIXTURE_NOT_NATIVE_GAME_TRUTH\",\"scoped_transition_chain\":"
-              << g_offline_fixture_json << ",\"selector_list_fixture\":"<<g_offline_selector_fixture_json<<"}\n";
+              << g_offline_fixture_json << ",\"selector_list_fixture\":"<<g_offline_selector_fixture_json
+              << ",\"trait_track_definition_fixture\":"<<g_offline_trait_definition_fixture_json
+              << ",\"effect_branch_layout_fixture\":"<<g_offline_effect_branch_fixture_json<<"}\n";
   } else {
     assert(argc == 1);
     std::cout << "scoped journal / no-draw effect / queue RAX / death detach / traits / prestige / full-ID / +24 / RIP relocation / six ABI arguments / CMP flags / four-hook rollback PASS\n";

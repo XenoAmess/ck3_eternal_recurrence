@@ -178,20 +178,19 @@ void Fail(ScopedCharacterVariableMonitorV1 &session, ScopedVariableMonitorRecord
   session.failure_flags.fetch_or(bit);
   if (row != nullptr) row->failure_flags |= bit;
 }
-ScopedVariableMonitorRecordV1 *Record(ScopedCharacterVariableMonitorV1 &session,
-    ScopedVariableMonitorBoundaryV1 boundary, std::int32_t character = -1,
-    std::uint32_t invocation = 0) noexcept {
-  const auto index = session.count.fetch_add(1);
-  if (index >= session.records.size()) { Fail(session, nullptr, scoped_chain_failure_capacity); return nullptr; }
-  auto &row = session.records[index];
-  row.sequence = index; row.invocation = invocation; row.boundary = boundary;
+void ReadRecordState(ScopedCharacterVariableMonitorV1 &session,
+    ScopedVariableMonitorRecordV1 &row, ScopedVariableMonitorBoundaryV1 boundary,
+    std::int32_t character, std::uint32_t invocation) noexcept {
+  row.invocation = invocation; row.boundary = boundary;
   row.thread_id = GetCurrentThreadId(); row.character_id = character;
   row.key_id = session.signature_key_id;
   if ((boundary==ScopedVariableMonitorBoundaryV1::variable_write_enter ||
-       boundary==ScopedVariableMonitorBoundaryV1::variable_write_return) && character>0)
+       boundary==ScopedVariableMonitorBoundaryV1::variable_write_return ||
+       boundary==ScopedVariableMonitorBoundaryV1::original_owner_return) && character>0)
     (void)ReadCurrentCombatScopedDeathCommitContextV1(row.current_death_commit_context);
   if ((boundary==ScopedVariableMonitorBoundaryV1::variable_write_enter ||
-       boundary==ScopedVariableMonitorBoundaryV1::variable_write_return) &&
+        boundary==ScopedVariableMonitorBoundaryV1::variable_write_return ||
+        boundary==ScopedVariableMonitorBoundaryV1::original_owner_return) &&
       character>0 && g_event_producer.read) {
     if (EventIdentityStable(session,g_event_producer)) {row.event_producer=g_event_producer;
       row.event_producer.active_effect_group_depth=g_event_root_depth;}
@@ -213,7 +212,83 @@ ScopedVariableMonitorRecordV1 *Record(ScopedCharacterVariableMonitorV1 &session,
     row.full_identity_matches = row.observed_character_id == character && object == session.character_objects[i];
     row.victim_dead = Read<std::uintptr_t>(object, 0x1C8) != 0;
   }
+}
+ScopedVariableMonitorRecordV1 *Record(ScopedCharacterVariableMonitorV1 &session,
+    ScopedVariableMonitorBoundaryV1 boundary, std::int32_t character = -1,
+    std::uint32_t invocation = 0) noexcept {
+  if(boundary!=ScopedVariableMonitorBoundaryV1::original_owner_return)
+    session.owner_activity_epoch.fetch_add(1);
+  const auto index = session.count.fetch_add(1);
+  if (index >= session.records.size()) { Fail(session, nullptr, scoped_chain_failure_capacity); return nullptr; }
+  auto &row = session.records[index];
+  row.sequence = index;
+  ReadRecordState(session,row,boundary,character,invocation);
   return &row;
+}
+bool SameDeadNullOwnerReturn(const ScopedVariableMonitorRecordV1 &a,
+                            const ScopedVariableMonitorRecordV1 &b) noexcept {
+  const auto eligible=[](const ScopedVariableMonitorRecordV1 &r) noexcept {
+    return r.boundary==ScopedVariableMonitorBoundaryV1::original_owner_return &&
+        r.failure_flags==0 && r.full_identity_matches && r.victim_dead &&
+        r.owner_from_original_getter && r.owner==0 && r.container==0 && !r.value.read;
+  };
+  return eligible(a)&&eligible(b)&&a.character_id==b.character_id &&
+      a.observed_character_id==b.observed_character_id && a.thread_id==b.thread_id &&
+      a.date_raw==b.date_raw && a.key_id==b.key_id && a.previous_owner==b.previous_owner &&
+      a.value==b.value && a.owner_state_epoch==b.owner_state_epoch &&
+      a.owner_activity_epoch==b.owner_activity_epoch && a.caller==b.caller &&
+      a.native_root_scope==b.native_root_scope && a.native_scope_words==b.native_scope_words &&
+      a.setter_node==b.setter_node && a.execution_context==b.execution_context &&
+      a.daily_effect_context==b.daily_effect_context &&
+      a.current_death_commit_context==b.current_death_commit_context &&
+      a.event_producer==b.event_producer;
+}
+void PublishOwnerReturnLocked(ScopedCharacterVariableMonitorV1 &session,
+    std::size_t character_index, std::uintptr_t scope, std::uintptr_t owner,
+    std::uintptr_t caller) noexcept {
+  const auto call_index=session.owner_getter_observed.fetch_add(1);
+  const auto previous=session.owners[character_index].exchange(owner);
+  if(g_setter_context.node!=0){g_setter_context.original_owner=owner;
+    g_setter_context.character_id=session.character_ids[character_index];}
+  ScopedVariableValueV1 value{};
+  const bool read=owner!=0&&ReadSignature(session,owner+8,value)&&DecodeFlag(session,value);
+  ScopedVariableMonitorRecordV1 candidate{};
+  ReadRecordState(session,candidate,ScopedVariableMonitorBoundaryV1::original_owner_return,
+                  session.character_ids[character_index],0);
+  candidate.owner=owner;candidate.previous_owner=previous;
+  candidate.container=owner!=0?owner+8:0;candidate.owner_from_original_getter=true;
+  candidate.value=value;candidate.caller=caller;candidate.native_root_scope=scope;
+  candidate.native_scope_words={Read<std::uint64_t>(scope),Read<std::uint64_t>(scope,8)};
+  candidate.setter_node=g_setter_context.node;candidate.execution_context=g_setter_context.context;
+  const bool changed=!session.owner_state_seen[character_index] || previous!=owner ||
+      value!=session.last_owner_values[character_index] ||
+      candidate.victim_dead!=session.last_owner_dead[character_index];
+  if(changed)++session.owner_state_epochs[character_index];
+  session.owner_state_seen[character_index]=true;
+  session.last_owner_dead[character_index]=candidate.victim_dead;
+  session.last_owner_values[character_index]=value;
+  candidate.owner_state_epoch=session.owner_state_epochs[character_index];
+  candidate.owner_activity_epoch=session.owner_activity_epoch.load();
+  if(!read&&owner!=0)Fail(session,&candidate,scoped_chain_failure_container);
+  if(!changed&&read&&candidate.failure_flags==0){
+    // Preserve the pre-existing unchanged non-null suppression, now counted honestly.
+    session.owner_nonnull_unchanged_unrecorded.fetch_add(1);return;
+  }
+  for(std::uint32_t i=0;i<session.owner_record_count;++i){
+    auto &kept=session.records[session.owner_record_indices[i]];
+    if(SameDeadNullOwnerReturn(kept,candidate) &&
+       candidate.owner_activity_epoch==session.owner_activity_epoch.load()){
+      kept.owner_observation_last_call_index=call_index;
+      ++kept.owner_observation_count;session.owner_getter_coalesced.fetch_add(1);return;
+    }
+  }
+  const auto index=session.count.fetch_add(1);
+  if(index>=session.records.size()){Fail(session,nullptr,scoped_chain_failure_capacity);return;}
+  candidate.sequence=index;candidate.owner_observation_first_call_index=call_index;
+  candidate.owner_observation_last_call_index=call_index;candidate.owner_observation_count=1;
+  session.records[index]=candidate;
+  session.owner_record_indices[session.owner_record_count++]=index;
+  session.owner_getter_retained.fetch_add(1);
 }
 void NodeProvenance(ScopedCharacterVariableMonitorV1 &session, ScopedVariableMonitorRecordV1 &row,
                     std::uintptr_t caller) noexcept {
@@ -305,7 +380,8 @@ bool StartUnsafe(ScopedCharacterVariableMonitorV1 &session, const Bindings &bind
 }
 } // namespace
 
-extern "C" void *__fastcall ObservedCharacterVariableOwnerV1Impl(const void *scope) noexcept {
+extern "C" void *__fastcall ObservedCharacterVariableOwnerV1Impl(const void *scope,
+    std::uintptr_t caller) noexcept {
   const auto original=g_owner.load();if(original==nullptr)return nullptr;
   auto *const session=g_monitor.load();
   if(session!=nullptr)session->active_callbacks.fetch_add(1);
@@ -318,17 +394,9 @@ extern "C" void *__fastcall ObservedCharacterVariableOwnerV1Impl(const void *sco
       const auto payload=Read<std::int64_t>(object,8);
       if(kind==4 && payload>0 && payload<=std::numeric_limits<std::int32_t>::max()) {
         for(std::size_t i=0;i<2;++i)if(session->character_ids[i]==payload) {
-          const auto owner=reinterpret_cast<std::uintptr_t>(result);
-          const auto previous=session->owners[i].exchange(owner);
-          if(g_setter_context.node!=0){g_setter_context.original_owner=owner;g_setter_context.character_id=static_cast<std::int32_t>(payload);}
-          ScopedVariableValueV1 value{};
-          const bool read=owner!=0&&ReadSignature(*session,owner+8,value)&&DecodeFlag(*session,value);
-          if(previous!=owner || !read || value!=session->last_owner_values[i]) {
-            auto *row=Record(*session,ScopedVariableMonitorBoundaryV1::original_owner_return,static_cast<std::int32_t>(payload));
-            if(row){row->owner=owner;row->previous_owner=previous;row->container=owner!=0?owner+8:0;row->owner_from_original_getter=true;row->value=value;}
-            if(!read && owner!=0)Fail(*session,row,scoped_chain_failure_container);
-          }
-          session->last_owner_values[i]=value;
+          AcquireSRWLockExclusive(&session->owner_observation_lock);
+          __try {PublishOwnerReturnLocked(*session,i,object,reinterpret_cast<std::uintptr_t>(result),caller);}
+          __finally {ReleaseSRWLockExclusive(&session->owner_observation_lock);}
         }
       }
     } __except(EXCEPTION_EXECUTE_HANDLER){Fail(*session,nullptr,scoped_chain_failure_memory);}
@@ -589,7 +657,13 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
      <<",\"native_identifier_count\":"<<session.identifier_count<<",\"failure_flags\":"<<session.failure_flags.load()
      <<",\"detours_uninstalled\":"<<session.detours_uninstalled<<",\"truncated\":"<<(session.count.load()>session.records.size())
      <<",\"whole_game_mutable_bundle_complete\":false,\"battle_event_causality_inferred_from_endpoint\":false,"
-        "\"final_owner_state_reread_from_cached_pointer\":false"
+         "\"final_owner_state_reread_from_cached_pointer\":false"
+      <<",\"owner_return_compression\":{\"schema_version\":1,\"scope\":\"exact_dead_null_original_returns_only\""
+      <<",\"observed\":"<<session.owner_getter_observed.load()
+      <<",\"retained\":"<<session.owner_getter_retained.load()
+      <<",\"coalesced\":"<<session.owner_getter_coalesced.load()
+      <<",\"unchanged_nonnull_unrecorded\":"<<session.owner_nonnull_unchanged_unrecorded.load()
+      <<",\"capacity\":128,\"writer_calls_coalesced\":0,\"aggregate_bounds_are_not_per_call_chronology\":true}"
      <<",\"event_producer_definitions_read\":"<<session.event_producer_definitions_read
      <<",\"event_manager_token\":"<<session.event_manager
      <<",\"event_definition_count\":"<<session.event_definitions_count
@@ -606,7 +680,12 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
        <<",\"full_identity_matches\":"<<r.full_identity_matches<<",\"dead\":"<<r.victim_dead
        <<",\"owner_token\":"<<r.owner<<",\"previous_owner_token\":"<<r.previous_owner<<",\"container_token\":"<<r.container
        <<",\"owner_from_original_getter\":"<<r.owner_from_original_getter<<",\"owner_from_same_setter_invocation\":"<<r.owner_from_same_setter_invocation
-       <<",\"key_id\":"<<r.key_id<<",\"duration\":"<<r.duration<<",\"value\":";
+        <<",\"key_id\":"<<r.key_id<<",\"duration\":"<<r.duration
+        <<",\"owner_observation_first_call_index\":"<<r.owner_observation_first_call_index
+        <<",\"owner_observation_last_call_index\":"<<r.owner_observation_last_call_index
+        <<",\"owner_observation_count\":"<<r.owner_observation_count
+        <<",\"owner_state_epoch\":"<<r.owner_state_epoch
+        <<",\"owner_activity_epoch\":"<<r.owner_activity_epoch<<",\"value\":";
     value(r.value);out<<",\"requested_value_decoding\":";value(r.requested_value_decoding);
     out<<",\"requested_scope_words\":["<<r.requested_value[0]<<','<<r.requested_value[1]<<']'
        <<",\"setter_node_token\":"<<r.setter_node<<",\"setter_node_vtable_rva\":"<<r.setter_node_vtable_rva<<",\"setter_node_hash\":"<<r.setter_node_hash
@@ -634,7 +713,8 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
 
 extern "C" void * __fastcall ObservedCharacterVariableOwnerV1(const void *a) noexcept {
   EnterScopedObserverCallbackV1();
-  __try { return ObservedCharacterVariableOwnerV1Impl(a); }
+  const auto caller=reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  __try { return ObservedCharacterVariableOwnerV1Impl(a,caller); }
   __finally { LeaveScopedObserverCallbackV1(); }
 }
 
