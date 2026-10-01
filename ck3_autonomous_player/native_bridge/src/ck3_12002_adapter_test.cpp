@@ -102,6 +102,7 @@ struct Scene {
   std::array<std::byte, 0x10> pending_slots{}, unit_slots{}, war_slots{}, title_slots{};
   std::array<std::byte, 0x1D8> played{}, spouse{}, enemy{};
   std::array<std::byte, 0x30> family{};
+  std::array<std::byte, 0x300> living_extension{};
   std::array<std::int32_t, 1> spouse_ids{spouse_id};
   std::array<std::byte, 0x5C8> pending{};
   std::array<std::byte, 0x1C0> event{};
@@ -141,6 +142,11 @@ struct Scene {
     Put(character_slots, 0x38, enemy.data());
     Put(played, 0x18, player_id); Put(spouse, 0x18, spouse_id); Put(enemy, 0x18, enemy_id);
     Put(played, 0x1A8, family.data());
+    Put(played, 0x1B0, living_extension.data());
+    Put(living_extension, 0x100, std::int64_t{12345000});
+    Put(living_extension, 0x130, std::int64_t{54321000});
+    Put(living_extension, 0x110, std::int64_t{-375000});
+    Put(living_extension, 0x2F8, std::int32_t{65});
     Put(played, 0x1C8, played_record.data()); // Old death-layout decoy.
     Put(family, 0x10, std::int32_t{-1}); Put(family, 0x14, spouse_id);
     Put(family, 0x20, spouse_ids.data());
@@ -226,6 +232,10 @@ int main() {
   assert(adapter->enabled() && adapter->read_snapshot(snapshot));
   assert(snapshot.map_ready && snapshot.paused && snapshot.date_raw == 53175816 && snapshot.speed == 4);
   assert(snapshot.played_character_id == Scene::player_id && snapshot.played_character_alive);
+  assert(snapshot.played_character_gold.raw == 12345000);
+  assert(snapshot.played_character_prestige.raw == 54321000);
+  assert(snapshot.played_character_piety.raw == -375000);
+  assert(snapshot.played_character_stress_points == 65);
   assert(snapshot.played_character_primary_spouse_id == Scene::spouse_id);
   assert(snapshot.played_character_spouse_ids == std::vector<std::int32_t>{Scene::spouse_id});
   assert(snapshot.has_active_event && snapshot.active_event_instance_id == 99 && snapshot.active_event_option_count == 3);
@@ -302,7 +312,20 @@ int main() {
   if (wrong_image.family.enabled) return 1;
 #endif
 
+  bool has_prisoner_release_query = false;
+  for (const auto capability : adapter->descriptor().capabilities)
+    if (capability == "game.command.query-war-prisoner-release-pairs-v1-N")
+      has_prisoner_release_query = true;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  if (!has_prisoner_release_query) return 1;
+#else
+  if (has_prisoner_release_query) return 1;
+#endif
+
   // Domain failure invalidates the entire read, never a convincing empty war.
+  Put(scene.living_extension, 0x100, std::int64_t{-750000});
+  assert(adapter->read_snapshot(snapshot) && snapshot.played_character_gold.raw == -750000);
+  Put(scene.living_extension, 0x100, std::int64_t{12345000});
   Put(scene.war, 0x27C, std::int32_t{2});
   assert(!adapter->read_snapshot(snapshot) && snapshot.active_wars.empty() && !snapshot.map_ready);
   timeline.date_raw = 99;

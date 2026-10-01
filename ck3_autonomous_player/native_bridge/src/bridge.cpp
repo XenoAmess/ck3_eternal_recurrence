@@ -15,6 +15,7 @@
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
+#include "xar_bridge/ck3_12002_nonwar_router.hpp"
 #include "xar_bridge/ck3_12002_war_entry.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
@@ -367,6 +368,7 @@ static xar::ck3_11906::MainThreadQueryMailboxV1
 static xar::bridge::ActivityCostSlot12ObserverV1
     g_activity_cost_slot12_observer_v1{};
 static xar::ck3_11906::Bindings g_activity_cost_slot12_bindings_v1{};
+static xar::ck3_12002::CoreBindings g_activity_cost_slot12_bindings12002{};
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
 static xar::bridge::ActivityGuestRuleProvenanceObserverV1
     g_activity_guest_rule_provenance_observer_v1{};
@@ -383,6 +385,19 @@ bool ReadActivityCostSlot12MemoryV1(void *, std::uintptr_t address,
 
 bool ReadActivityCostSlot12FrameV1(
     void *, xar::bridge::ActivityCostSlot12FrameV1 &output) noexcept {
+  if (g_activity_cost_slot12_bindings12002.enabled) {
+    xar::ck3_12002::CoreSnapshotPrefix prefix{};
+    if (!xar::ck3_12002::ReadCoreSnapshot(
+            g_activity_cost_slot12_bindings12002, prefix) ||
+        !prefix.map_ready || !prefix.has_played_character)
+      return false;
+    output.date_raw = prefix.clock.date_raw;
+    output.actor_character_id = prefix.played_character_id;
+    output.paused = prefix.clock.paused;
+    output.thread_id = g_main_thread_query_mailbox_v1.owner_thread_id.load(
+        std::memory_order_acquire);
+    return output.thread_id != 0;
+  }
   const auto &bindings = g_activity_cost_slot12_bindings_v1;
   void *game_state = nullptr, *jomini_state = nullptr;
   std::uint8_t paused = 0;
@@ -9889,6 +9904,7 @@ public:
     nonwar.marriage_submit = &ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1;
 #endif
 #endif
+    xar::ck3_12002::PopulateNonwarRouterExecutors12002(nonwar);
     xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment, nonwar);
     environment.snapshot_observer_callback = &xar::ck3_12002::ObserveAdapterSnapshot12002;
     environment.snapshot_observer_context = observer_;
@@ -10385,6 +10401,7 @@ HANDLE ConnectToHost() noexcept {
 }
 
 struct WorkerState {
+  xar::ck3_12002::NonwarPrivateState12002 nonwar_private12002{};
   std::uint64_t connection_generation = 0;
   std::uint64_t sequence = 0;
   std::uint64_t state_revision = 0;
@@ -11214,6 +11231,8 @@ void RunConnectedSession(
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     const ULONGLONG now = GetTickCount64();
     if (now >= next_heartbeat) {
+      if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64")
+        xar::ck3_12002::PollNonwarPrivateState12002(state.nonwar_private12002);
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
       xar::bridge::PollCouncilApplicationMainPrivateTransportV1(
           g_council_application_main_private_transport_v1);
@@ -11361,6 +11380,42 @@ void RunConnectedSession(
                    TypedQueryKind12002(step).has_value()) {
           connected = xar::bridge::WriteFrame(pipe, RunTypedQuery12002(
               game, state, request_id, step, incoming.payload));
+        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+                   xar::ck3_12002::IsNonwarPrivateStep12002(step)) {
+          std::uint64_t expected_revision = 0;
+          xar::game::Snapshot current{};
+          std::string response, failure;
+          bool status_only = false;
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+          status_only = step == xar::bridge::kCouncilPrivateStatusStepV1;
+#endif
+          if (status_only && previous_snapshot.has_value())
+            current = *previous_snapshot;
+          if (!status_only && (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision) ||
+              expected_revision == 0 || expected_revision != state_revision ||
+              !previous_snapshot.has_value() ||
+              !xar::game::ReadSnapshot(game, current) ||
+              current != *previous_snapshot)) {
+            failure = "nonwar private snapshot revision is stale or malformed";
+          } else {
+            xar::bridge::ActivityCostSlot12ObserverV1 *cost = nullptr;
+            xar::bridge::ActivityGuestRuleProvenanceObserverV1 *provenance = nullptr;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+            cost = &g_activity_cost_slot12_observer_v1;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+            provenance = &g_activity_guest_rule_provenance_observer_v1;
+#endif
+#endif
+            xar::ck3_12002::HandleNonwarPrivate12002(
+                game, g_main_thread_query_mailbox_v1, current, state_revision,
+                step, incoming.payload, request_id, state.nonwar_private12002,
+                response, failure, cost, provenance);
+          }
+          if (response.empty()) response = CommandResultFrame(
+              request_id, step, false,
+              failure.empty() ? "nonwar private query unavailable" : failure);
+          connected = xar::bridge::WriteFrame(pipe, response);
         } else if (!game.supports_step(step)
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
                    && step != xar::ck3_11906::
@@ -22873,6 +22928,26 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     return TRUE;
   }
   if (game->descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64") {
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+    const auto cost_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    g_activity_cost_slot12_bindings12002 = xar::ck3_12002::BindCoreImage(
+        cost_base, game->descriptor().executable_sha256);
+    xar::bridge::ActivityCostSlot12EnvironmentV1 cost_environment{};
+    cost_environment.enabled = g_activity_cost_slot12_bindings12002.enabled;
+    cost_environment.primary_thread_suspended = true;
+    cost_environment.executable_sha256 = game->descriptor().executable_sha256;
+    cost_environment.module_base = cost_base;
+    cost_environment.read_memory = &ReadActivityCostSlot12MemoryV1;
+    cost_environment.read_frame = &ReadActivityCostSlot12FrameV1;
+    if (!xar::bridge::InstallActivityCostSlot12PassiveV1(
+            g_activity_cost_slot12_observer_v1, cost_environment))
+      return FALSE;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+    if (!xar::bridge::InstallActivityGuestRuleProvenanceV1(
+            g_activity_guest_rule_provenance_observer_v1, cost_environment))
+      return FALSE;
+#endif
+#endif
     xar::ck3_12002::BattleTerminalJournalInstallEnvironmentV1 environment{};
     environment.exact_build_admitted = true;
     environment.primary_thread_suspended_proven = true;

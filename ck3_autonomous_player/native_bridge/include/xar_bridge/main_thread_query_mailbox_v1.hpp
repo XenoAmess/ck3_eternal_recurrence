@@ -360,6 +360,12 @@ struct MainThreadQueryInstallEnvironmentV1 {
   const MainThreadQueryBuildProfileV1 *build_profile = nullptr;
   // The 1.20 semantic executor is separate from legacy fixed slot 14.
   MainThreadQueryExecutorV1 permitted_executor_semantic12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_factions12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_warcash12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_family_obligations12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   // Optional read-only observer runs on every valid TLS main-thread pump,
   // including unpaused pumps. Context remains alive until uninstall succeeds.
   MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
@@ -528,6 +534,12 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_actor_army_role_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_semantic12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_factions12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_warcash12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_family_obligations12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
   void *snapshot_observer_context = nullptr;
 

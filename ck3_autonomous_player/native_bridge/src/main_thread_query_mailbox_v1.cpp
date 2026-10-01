@@ -545,7 +545,13 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_novemsexagintary == nullptr &&
       environment.permitted_actor_army_role_executor == nullptr &&
       environment.permitted_frontend_executor == nullptr &&
-      environment.permitted_executor_semantic12002 == nullptr) {
+       environment.permitted_executor_semantic12002 == nullptr &&
+       environment.permitted_executor_factions12002 == nullptr &&
+       environment.permitted_executor_warcash12002 == nullptr &&
+       environment.permitted_executor_family_obligations12002 == nullptr &&
+       environment.permitted_executor_prewar12002 == nullptr &&
+       environment.permitted_executor_government12002 == nullptr &&
+       environment.permitted_executor_feast_stage2_confirm12002 == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -849,6 +855,18 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_frontend_executor;
   mailbox.permitted_executor_semantic12002 =
       environment.permitted_executor_semantic12002;
+  mailbox.permitted_executor_factions12002 =
+      environment.permitted_executor_factions12002;
+  mailbox.permitted_executor_warcash12002 =
+      environment.permitted_executor_warcash12002;
+  mailbox.permitted_executor_family_obligations12002 =
+      environment.permitted_executor_family_obligations12002;
+  mailbox.permitted_executor_prewar12002 =
+      environment.permitted_executor_prewar12002;
+  mailbox.permitted_executor_government12002 =
+      environment.permitted_executor_government12002;
+  mailbox.permitted_executor_feast_stage2_confirm12002 =
+      environment.permitted_executor_feast_stage2_confirm12002;
   mailbox.snapshot_observer_callback = environment.snapshot_observer_callback;
   mailbox.snapshot_observer_context = environment.snapshot_observer_context;
   mailbox.executor = nullptr;
@@ -1132,7 +1150,13 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_novemsexagintary != nullptr ||
        mailbox.permitted_actor_army_role_executor != nullptr ||
        mailbox.permitted_frontend_executor != nullptr ||
-       mailbox.permitted_executor_semantic12002 != nullptr) &&
+        mailbox.permitted_executor_semantic12002 != nullptr ||
+        mailbox.permitted_executor_factions12002 != nullptr ||
+        mailbox.permitted_executor_warcash12002 != nullptr ||
+        mailbox.permitted_executor_family_obligations12002 != nullptr ||
+        mailbox.permitted_executor_prewar12002 != nullptr ||
+        mailbox.permitted_executor_government12002 != nullptr ||
+        mailbox.permitted_executor_feast_stage2_confirm12002 != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -1203,7 +1227,13 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_novemsexagintary &&
       executor != mailbox.permitted_actor_army_role_executor &&
       executor != mailbox.permitted_frontend_executor &&
-      executor != mailbox.permitted_executor_semantic12002) {
+       executor != mailbox.permitted_executor_semantic12002 &&
+       executor != mailbox.permitted_executor_factions12002 &&
+       executor != mailbox.permitted_executor_warcash12002 &&
+       executor != mailbox.permitted_executor_family_obligations12002 &&
+       executor != mailbox.permitted_executor_prewar12002 &&
+       executor != mailbox.permitted_executor_government12002 &&
+       executor != mailbox.permitted_executor_feast_stage2_confirm12002) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

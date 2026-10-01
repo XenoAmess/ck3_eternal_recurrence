@@ -21,6 +21,79 @@ void RegisterNonwarMailboxExecutorsV1(
   environment.permitted_executor_novemsexagintary = executors.marriage_submit;
 #endif
 #endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+  environment.permitted_executor_tritrigintary = executors.council_candidates;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+  environment.permitted_executor_unquadragintary = executors.council;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+  environment.permitted_executor_quattuortrigintary = executors.faction_gift;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  environment.permitted_executor_quinquinquagintary = executors.sway_state;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+  environment.permitted_executor_octoquinquagintary = executors.sway_action;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
+  environment.permitted_executor_sexquinquagintary = executors.law_final_terms;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
+  environment.permitted_executor_septentrigintary = executors.law_action;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
+  environment.permitted_executor_septenquinquagintary = executors.feast_open;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
+  environment.permitted_executor_novemquinquagintary = executors.feast_options;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1)
+  environment.permitted_executor_sexagintary = executors.feast_can_start;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1)
+  environment.permitted_executor_unsexagintary = executors.feast_gold;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
+  environment.permitted_executor_duosexagintary = executors.feast_full_costs;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1)
+  environment.permitted_executor_trisexagintary = executors.feast_destination;
+  environment.permitted_executor_feast_stage2_confirm12002 = executors.feast_stage2_confirm;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+  environment.permitted_executor_quattuorsexagintary = executors.feast_start;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
+  environment.permitted_executor_quinsexagintary = executors.feast_guest;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1)
+  environment.permitted_executor_sexsexagintary = executors.feast_guest_rules;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1)
+  environment.permitted_executor_septensexagintary = executors.feast_guest_opinion;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_factions12002 = executors.factions;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1)
+  environment.permitted_executor_warcash12002 = executors.warcash;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_family_obligations12002 = executors.family_obligations;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1)
+  environment.permitted_executor_prewar12002 = executors.prewar;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
+  environment.permitted_executor_government12002 = executors.government;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  environment.permitted_executor_triquinquagintary = executors.prisoner_collection;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  environment.permitted_executor_quattuorquinquagintary = executors.prisoner_ransom;
+#endif
   (void)environment;
   (void)executors;
 }

@@ -210,3 +210,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 更正最新授权scope（宗教允许研究／战争停止），将本轮NEXT从自主lifetime/next改为exact preflight→root监督native-session cold→实际MCP paused读口。真实CLI parser新受影响1案例通过，native-session没有虚构start-paused参数；暂停只能实际snapshot确认并必要时显式pause后再读。不是已launch／已验证binary。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\runner-paused-supervision-argv-plan.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:54:27 Central nonwar runtime dispatcher and current resource snapshot
+
+中央13文件加既有gold getter2文件接入新版本非战争callback、worker permits、拥有型mailbox和实际CMake target；候选40 ON/4 OFF，默认全OFF，冻结warcash/prewar/alliance/religion查询不进入本轮target。实际dispatcher default63/selected186检查通过，注册31callback通过，公共Snapshot实际gold/prestige/piety/stress及负债leaf夹具通过。修正Gift/Sway selector、Council status零revision轮询、Crozier成本与guest provenance installer；不fullread status，不把ACK当结果。gold只复用已完成treasury getter，未继续战争研究。最终双配置DLL/injector64jobs正在收口；source/binary最终pin和paused/live资格另按实际回执。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\central-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

@@ -705,9 +705,36 @@ target_compile_definitions(xar_bridge_injector PUBLIC
 
 # Exact 1.20 readers retain the verified adapter layer while this tree keeps
 # the delivered master nonwar consumers and their fixed private interfaces.
+option(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1
+  "Compile the exact-build 1.20 government observation candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
+  "Compile the exact-build 1.20 full faction observation candidate" OFF)
+option(XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
+  "Compile the completed, owner-deferred 1.20 war-cash candidate" OFF)
+option(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
+  "Compile the exact-build 1.20 family lineage and break-terms candidate" OFF)
+option(XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1
+  "Compile the owner-deferred 1.20 prewar candidate" OFF)
+option(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1
+  "Compile the exact-build paused crown-law action candidate" OFF)
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
+if(NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1)
+  # The owner stopped war work. Retain the independent actual treasury source
+  # used by ordinary snapshots; do not compile or register the cash package.
+  list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
+    "/ck3_12002_war_cash(_serializer|_mailbox|_maintenance|_action_fees)?\\.cpp$")
+endif()
+if(NOT XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1)
+  list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "/ck3_12002_prewar.*\\.cpp$")
+endif()
+list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
+  "/ck3_12002_family_obligations_alliance\\.cpp$")
+# Religion was authorized as a separate next source package. Its initial
+# context reader is not part of this already-composed nonwar candidate.
+list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
+  "/ck3_12002_religion.*\\.cpp$")
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   research/ck3_12002_construction_submit_binding.cpp
@@ -728,7 +755,43 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1
-    XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
+    XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1
+    XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1
+    XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1
+    XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1
+    XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1
+    XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1
+    XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1)
   if(${private_option})
     target_compile_definitions(xar_ck3_12002_runtime PUBLIC ${private_option}=1)
   endif()
@@ -983,7 +1046,8 @@ if(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
 endif()
 if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
-    src/player_prisoner_ransom_private_v1.cpp)
+    src/player_prisoner_ransom_private_v1.cpp
+    src/player_prisoner_ransom_wire_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1=1)
 endif()
@@ -1494,6 +1558,7 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
   if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1)
     target_sources(xar_ck3_bridge PRIVATE
       src/activity_stage2_destination_select_v1.cpp
+      src/activity_stage2_confirm_v1.cpp
       src/activity_stage2_destination_select_private_transport_v1.cpp)
     target_compile_definitions(xar_ck3_bridge PRIVATE
       XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1=1)
@@ -1646,6 +1711,10 @@ endif()
 set_target_properties(xar_ck3_bridge PROPERTIES
   OUTPUT_NAME "xar_ck3_bridge"
 )
+file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/ck3_12002_runtime_sources.txt"
+  CONTENT "$<JOIN:$<TARGET_PROPERTY:xar_ck3_12002_runtime,SOURCES>,\n>\n")
+file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/ck3_bridge_sources.txt"
+  CONTENT "$<JOIN:$<TARGET_PROPERTY:xar_ck3_bridge,SOURCES>,\n>\n")
 
 add_executable(xar_ck3_bridge_host
   src/host.cpp
@@ -1707,6 +1776,15 @@ if(BUILD_TESTING)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_*_test.cpp")
   foreach(fixture IN LISTS XAR_CK3_12002_FIXTURES)
     get_filename_component(fixture_name "${fixture}" NAME_WE)
+    if((fixture_name MATCHES "^ck3_12002_prewar" AND
+        NOT XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1) OR
+       (fixture_name MATCHES "^ck3_12002_war_cash" AND
+        NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1) OR
+       fixture_name STREQUAL "ck3_12002_family_obligations_alliance_test" OR
+       fixture_name MATCHES "^ck3_12002_religion" OR
+       fixture_name STREQUAL "ck3_12002_nonwar_router_test")
+      continue()
+    endif()
     if(fixture_name MATCHES "^ck3_12002_family" AND
        NOT XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
       continue()
@@ -1714,6 +1792,9 @@ if(BUILD_TESTING)
     set(fixture_target "xar_${fixture_name}")
     add_executable(${fixture_target} "${fixture}")
     target_link_libraries(${fixture_target} PRIVATE xar_ck3_12002_runtime)
+    if(fixture_name STREQUAL "ck3_12002_nonwar_mailbox_test")
+      target_link_libraries(${fixture_target} PRIVATE user32)
+    endif()
     if(fixture_name MATCHES "^ck3_12002_family" OR
        (XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1 AND
         fixture_name MATCHES "^ck3_12002_(adapter|semantic_adapter)_test$"))
@@ -1736,6 +1817,29 @@ if(BUILD_TESTING)
     else()
       add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target})
     endif()
+  endforeach()
+
+  # Dispatcher spies cover only the production routing seam; they deliberately
+  # do not link the runtime's actual domain executors or adapter implementation.
+  foreach(router_variant IN ITEMS default selected)
+    set(router_target "xar_ck3_12002_nonwar_router_${router_variant}_test")
+    add_executable(${router_target}
+      src/ck3_12002_nonwar_router.cpp
+      src/ck3_12002_nonwar_router_test.cpp)
+    target_link_libraries(${router_target} PRIVATE xar_bridge_protocol)
+    target_include_directories(${router_target} PRIVATE include src)
+    if(router_variant STREQUAL "selected")
+      target_compile_definitions(${router_target} PRIVATE
+        XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1=1
+        XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1
+        XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=1
+        XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1=1)
+    endif()
+    if(MSVC)
+      target_compile_options(${router_target} PRIVATE /W4 /WX /permissive- /EHsc)
+    endif()
+    add_test(NAME ${router_target} COMMAND ${router_target})
   endforeach()
 
   if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)

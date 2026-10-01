@@ -1,6 +1,8 @@
 ﻿#include "xar_bridge/ck3_12002_adapter.hpp"
 
 #include <windows.h>
+#include "xar_bridge/ck3_12002_war_cash_treasury.hpp"
+#include "xar_bridge/ck3_12002_actor_resources.hpp"
 
 #include <array>
 #include <utility>
@@ -70,6 +72,12 @@ constexpr auto kCapabilities = std::to_array<std::string_view>({
     "game.command.arrange-marriage-N",
     "game.adapter.exact-build",
     "game.adapter.minimized-headless",
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
+    "game.command.query-player-faction-alerts-v1",
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+    "game.command.query-war-prisoner-release-pairs-v1-N",
+#endif
 });
 
 const AdapterDescriptor kDescriptor{
@@ -112,6 +120,27 @@ public:
       return true;
     }
     if (prefix.has_played_character) {
+      std::int64_t treasury_raw = 0;
+      if (!ck3_12002::ReadWarCashTreasury(
+              bindings_.core, prefix.played_character_id, treasury_raw))
+        return false;
+      observed.played_character_gold.raw = treasury_raw;
+      const auto read_resource_memory = +[](void *, std::uintptr_t address,
+                                            void *target, std::size_t size) noexcept {
+        SIZE_T copied = 0;
+        return target != nullptr && address != 0 && size != 0 &&
+            ReadProcessMemory(GetCurrentProcess(),
+                reinterpret_cast<const void *>(address), target, size,
+                &copied) != FALSE && copied == size;
+      };
+      ck3_12002::ActorResourceBalances12002 resources{};
+      const auto actor = reinterpret_cast<std::uintptr_t>(
+          ck3_12002::ResolveCoreCharacter(bindings_.core, prefix.played_character_id));
+      if (!ck3_12002::ReadActorResourceBalances12002(read_resource_memory,
+              nullptr, actor, prefix.played_character_id, resources)) return false;
+      observed.played_character_prestige.raw = resources.prestige_raw;
+      observed.played_character_piety.raw = resources.piety_raw;
+      observed.played_character_stress_points = resources.stress_points;
       PlayedCharacterRelationships12002 relationships{};
       if (!ck3_12002::ReadPlayedCharacterRelationships(
               bindings_.core, prefix.played_character_id, relationships))
