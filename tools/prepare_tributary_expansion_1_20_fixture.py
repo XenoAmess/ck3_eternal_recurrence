@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+from fixture_engine_prepare import BUILD, VERSION, checked_output, digest
 
 START = '''on_game_start_after_lobby = {
     on_actions = { tea120_start }
@@ -55,11 +56,7 @@ tea120.3 = {
 '''
 
 def prepare(repo: Path, output: Path) -> dict:
-    repo, output = repo.resolve(), output.resolve()
-    if output == repo or repo in output.parents:
-        raise ValueError('fixture output must be outside the repository')
-    if output.exists():
-        raise ValueError('use a new output directory for each attempt')
+    repo, output = checked_output(repo, output)
     source = repo / 'tools/fixtures/tributary_expansion_directives_acceptance'
     files = [source / 'descriptor.mod', source / 'common/scripted_effects/tea_effects.txt', *sorted((source / 'localization').rglob('*.yml'))]
     for path in files:
@@ -71,7 +68,8 @@ def prepare(repo: Path, output: Path) -> dict:
         target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(text,encoding='utf-8-sig',newline='\n')
     receipt = {
-        'product':'mod_tributary_expansion_directives', 'game_version':'1.20.0.2',
+        'product':'mod_tributary_expansion_directives', 'game_version':VERSION,
+        'steam_build_id':BUILD, 'exe_sha256':digest(repo / 'Crusader Kings III/binaries/ck3.exe'),
         'source_fixture':str(source), 'prepared_fixture':str(output),
         'runtime_status':'NOT_RUN', 'native_abi_loaded':False,
         'entry':'on_game_start_after_lobby -> tea120_start -> tea120.1/2/3',
