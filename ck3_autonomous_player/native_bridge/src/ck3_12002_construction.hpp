@@ -24,6 +24,9 @@ inline constexpr std::uintptr_t kConstructionBuildingManagerSlotRva=0x5C67540;
 inline constexpr std::uintptr_t kConstructionDefinitionPrimaryVtableRva=0x48B6CC8;
 inline constexpr std::uintptr_t kConstructionFinalLegalityRva=0x2C77D50;
 inline constexpr std::uintptr_t kConstructionCostRva=0x2C247C0;
+// R6 has 23 directly-held slots: the existing 19 valued keys need at most
+// 437 checks/quotes. Keep the 512-check budget and retain its full quote set.
+inline constexpr std::int32_t kConstructionWorldLegalSampleBudgetV1 = 512;
 PlayerHeldConstructionModelResultV1 ReadPlayerHeldConstructionModelSourcesV1(
     std::uintptr_t module_base,bool exact_build_admitted,
     const CampaignRootAccessV1& access,const PlayerHeldConstructionModelRequestV1& request) noexcept;

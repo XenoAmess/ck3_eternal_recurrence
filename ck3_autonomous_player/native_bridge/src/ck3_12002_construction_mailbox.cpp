@@ -68,7 +68,8 @@ bool ExecuteConstructionMailboxV1(void* context,const Stamp& stamp) noexcept {
   access.native_cost_context=&native;
   q.player_world_building_source_executed=true;
   q.player_world_building_sources=ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
-      q.module_base,true,access,{q.expected_revision,-1,512,64});
+      q.module_base,true,access,
+      {q.expected_revision,-1,512,kConstructionWorldLegalSampleBudgetV1});
   if(q.player_world_building_sources.source_available&&Same(*owner,stamp)) {
     if(q.request_private_action) {
       q.private_action_candidate=ck3_11906::SelectPlayerWorldBuildingActionCandidateV1(

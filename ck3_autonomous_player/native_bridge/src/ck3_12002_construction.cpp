@@ -290,7 +290,8 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
   }
   if (campaign.capture_frame == nullptr || campaign.read_memory == nullptr ||
       request.max_native_checks < 0 || request.max_native_checks > 4096 ||
-      request.max_legal_samples < 0 || request.max_legal_samples > 64) {
+      request.max_legal_samples < 0 ||
+      request.max_legal_samples > kConstructionWorldLegalSampleBudgetV1) {
     return Failed(PlayerWorldBuildingFailureV1::paused_frame);
   }
   game::CampaignRootFrameV1 before{};

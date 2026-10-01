@@ -855,3 +855,9 @@ Nine frozen new wrapper, runner and topic sources. One new O2/W4/WX named-only s
 Eleven frozen central sources. Explicit59ON4OFF, three new named readonly executors and six new leaf compilation sources. Targeted new registration and routes plus jobs64 default/candidate DLL and injector builds GREEN. Actual compiler-input Git freeze and paused qualification follow this commit; no new actions or war research. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r8\central-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 21:52:42 Complete finite positive construction cost observations
+
+Seven tested source and topic files. Actual R6 stopped at64quote rows before all19 positive-income keys; capacity/admission now512 with native check budget and policy unchanged. One new production fixture closes437finitechecks/133costs/latequote; remaining registry truncation remains explicit. Corrects public readiness placeholder interpretation. Static-ready, R9 actual pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\construction-decision-r9-candidate\APPLIED-SOURCE-MANIFEST.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
