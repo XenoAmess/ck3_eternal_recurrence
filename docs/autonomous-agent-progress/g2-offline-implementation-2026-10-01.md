@@ -282,3 +282,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 实际currentFaith Rite集合、原生paid最终29A34C0判定与full RiteID就绪；不执行转换。ABI25指令spans/最终vtable，Od/O2各14checks9实际JSON通过。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\rite\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:46:53 Native conversion nonmilitary outcome source tree
+
+9完整原生函数/25语义锚点/2RTTI/14非军事stock windows闭合转换结果源树。Fulfillment非固定delta，首都不会自动免费改，knowledge非直接100%；research/static-confirmed，尚无新结果provider。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\outcome\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

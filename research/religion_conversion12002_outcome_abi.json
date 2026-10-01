@@ -1,0 +1,480 @@
+{
+  "schema": "ck3_12002_religion_conversion_outcome_research_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "research",
+  "native_source_status": "static-confirmed",
+  "local_ck3_touched": false,
+  "conversion_submitted": false,
+  "provider_implemented": false,
+  "live_verified": false,
+  "native_spans": [
+    {
+      "name": "CConvertRiteCommand.secondary_execute",
+      "start_rva": "0x29a4f90",
+      "end_exclusive_rva": "0x29a5017",
+      "kind": "complete_function_body",
+      "abi": "leaf function; Character*, Rite* -> native setter",
+      "bytes": "48 8b 05 d1 25 2c 03 4c 8b c1 48 85 c0 74 27 8b 51 08 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 4c 8b 54 c8 08 4d 85 d2 74 06 41 39 52 18 74 07 4c 8b 15 a3 25 2c 03 48 8b 05 24 93 37 03 48 85 c0 74 29 45 8b 40 0c 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 67 26 2c 03 45 33 c9 45 33 c0 49 8b ca e9 89 b1 f0 ff",
+      "sha256": "9bc3aa600a47bb8fa62e787e9175b36dcb8bf4c2674b59c4b4201691dd03f4d7"
+    },
+    {
+      "name": "CConvertFaithAndRiteCommand.secondary_execute",
+      "start_rva": "0x29a3370",
+      "end_exclusive_rva": "0x29a34b2",
+      "kind": "complete_function_body",
+      "abi": "command secondary subobject; calls shared conversion result wrapper",
+      "bytes": "48 89 5c 24 10 48 89 74 24 18 57 48 83 ec 20 4c 8b 0d 72 af 37 03 48 8d 41 e8 4c 8b 05 df 42 2c 03 48 8b f9 48 89 44 24 30 4d 85 c9 74 28 8b 51 0c 8b c2 25 ff ff ff 00 41 3b 41 2c 73 18 8b c8 49 8b 41 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 03 49 8b c0 4c 8b 1d 98 41 2c 03 8b 80 b8 04 00 00 4c 8b 15 93 41 2c 03 4d 85 db 74 29 8b 5f 08 8b cb 81 e1 ff ff ff 00 41 3b 4b 2c 73 18 8b d1 49 8b 4b 20 48 03 d2 48 8b 4c d1 08 48 85 c9 74 05 39 59 18 74 03 49 8b ca 4d 85 c9 74 30 8b 99 b4 00 00 00 8b cb 81 e1 ff ff ff 00 41 3b 49 2c 73 1c 8b d1 49 8b 49 20 48 03 d2 4c 8b 4c d1 08 4d 85 c9 74 09 41 39 59 08 75 03 4d 8b c1 41 8b 88 b8 04 00 00 3b c1 40 0f 94 c6 33 db 40 80 c6 16 3b c1 0f 94 c3 4d 85 db 74 2e 44 8b 47 08 41 8b c0 25 ff ff ff 00 41 3b 43 2c 73 1c 8b c8 49 8b 43 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 09 44 39 42 18 75 03 4c 8b d2 4c 8d 4c 24 30 44 0f b6 c6 8d 53 34 49 8b ca e8 9e 4b 00 00 48 8b 5c 24 38 48 8b 74 24 40 48 83 c4 20 5f c3",
+      "sha256": "af684c912ce505dd3aa0b8eb616793c42c9cd03670aec142163242f26d67138f"
+    },
+    {
+      "name": "conversion.result_wrapper",
+      "start_rva": "0x29a8040",
+      "end_exclusive_rva": "0x29a85d7",
+      "kind": "complete_function_body",
+      "abi": "Character*, result branch indices, command owner pointer; attribution only",
+      "bytes": "48 89 5c 24 10 48 89 74 24 18 48 89 7c 24 20 55 41 54 41 55 41 56 41 57 48 8d ac 24 b0 fd ff ff 48 81 ec 50 03 00 00 4d 8b f1 45 0f b6 e0 4c 63 fa 48 8b f9 4c 8b 15 7d 62 37 03 8b b1 b4 00 00 00 4d 85 d2 74 25 8b c6 25 ff ff ff 00 41 3b 42 2c 73 18 8b c8 48 03 c9 49 8b 42 20 48 8b 44 c8 08 48 85 c0 74 05 39 70 08 74 07 48 8b 05 be f5 2b 03 8b 98 b8 04 00 00 c7 44 24 58 52 01 00 00 c7 44 24 5c 18 00 00 00 48 8d 05 71 7b dc 01 48 89 44 24 60 48 8d 05 fd da c0 01 48 89 44 24 68 48 8d 54 24 58 e8 56 6d f9 00 45 33 ed 44 89 ad 84 02 00 00 69 c0 b3 85 d6 4a b9 9f ba a6 5e 2b c8 8b d1 c1 ea 08 33 d1 81 c2 a4 1d e3 68 8b c2 c1 e0 08 33 c2 69 c8 e9 c4 56 1b 8b c1 c1 e8 08 33 c1 69 c8 a2 8c d6 92 8b c1 c1 e8 08 33 c1 89 85 80 02 00 00 33 d2 49 8b 0e e8 a1 bc ff ff f7 d8 48 98 48 69 c0 a0 86 01 00 48 8b 97 b0 01 00 00 48 85 d2 74 58 48 81 c2 08 01 00 00 48 8d 8d 80 02 00 00 48 89 4c 24 30 48 89 44 24 28 4c 8d 05 7b 5b f2 ff 48 8b cf e8 83 ee f2 ff 8b 05 7d 3a b3 02 83 f8 ff 74 26 3b 47 18 75 21 48 8b 0d 8c 23 2c 03 48 85 c9 74 15 48 8b 01 45 33 c9 ba fd 35 00 00 45 8d 45 3d ff 90 a0 00 00 00 49 8b 06 48 8b 15 40 61 37 03 48 85 d2 74 2a 44 8b 40 24 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 82 f4 2b 03 45 33 c9 45 33 c0 48 8b cf e8 a4 7f f0 ff 4c 89 6c 24 58 4c 89 6c 24 60 48 8d 05 fb af b3 02 48 89 44 24 68 48 8d 44 24 58 48 89 44 24 20 45 33 c9 45 0f b6 c4 41 8b d7 48 8b cf e8 22 e9 cc ff 48 8d 4c 24 58 e8 28 ed cc ff 48 8b 05 11 0a 2c 03 48 8b 88 a0 00 00 00 48 81 c1 e0 f1 01 00 e8 0e a8 07 00 48 8d 8d e0 00 00 00 e8 02 1d ee fd 90 41 83 ff 32 0f 85 1b 01 00 00 48 8b 15 88 60 37 03 48 85 d2 74 2d 44 8b 87 b4 00 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 08 74 07 48 8b 05 c7 f3 2b 03 8b 80 b8 04 00 00 4c 8b 05 4a 60 37 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 54 d1 08 48 85 d2 74 05 39 42 08 74 07 48 8b 15 f8 5f 37 03 48 8d 4c 24 70 e8 ce 53 8d ff 90 48 8b d0 48 8d 8d e0 00 00 00 e8 3e 2c d9 00 90 48 8d 8d 88 00 00 00 e8 f1 13 ee fd 48 83 7d 70 00 74 28 48 8d 4d 70 e8 61 14 ee fd 48 8b 8d 80 00 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 55 70 ff 50 10 4c 89 6d 70 44 89 6d 78 48 8b 55 88 48 85 d2 74 14 44 89 6d 94 48 8b 4d 98 48 8b 01 41 b8 08 00 00 00 ff 50 10 c7 44 24 40 04 00 00 00 8b 47 18 48 89 44 24 48 4c 8d 44 24 40 8b 15 52 3c 3a 03 48 8d 8d f8 00 00 00 e8 8e 1d d9 00 eb 76 48 8b d7 48 8d 4c 24 70 e8 df f8 16 fe 90 48 8b d0 48 8d 8d e0 00 00 00 e8 9f 2b d9 00 90 48 8d 8d 88 00 00 00 e8 52 13 ee fd 48 83 7d 70 00 74 28 48 8d 4d 70 e8 c2 13 ee fd 48 8b 8d 80 00 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 55 70 ff 50 10 4c 89 6d 70 44 89 6d 78 48 8b 55 88 48 85 d2 74 14 44 89 6d 94 48 8b 4d 98 48 8b 01 41 b8 08 00 00 00 ff 50 10 c7 44 24 40 0d 00 00 00 48 89 5c 24 48 4c 8d 44 24 40 8b 15 86 3a 3a 03 48 8d 8d f8 00 00 00 e8 f2 1c d9 00 c7 44 24 40 2a 00 00 00 8b c6 48 89 44 24 48 4c 8d 44 24 40 8b 15 94 3e 3a 03 48 8d 8d f8 00 00 00 e8 cc 1c d9 00 c7 44 24 40 66 00 00 00 c7 44 24 44 17 00 00 00 48 8d 05 e5 77 dc 01 48 89 44 24 48 48 8d 05 49 79 dc 01 48 89 44 24 50 48 8d 54 24 40 e8 ca 69 f9 00 8b d8 85 c0 79 24 89 44 24 28 48 8d 05 f9 30 f8 01 48 89 44 24 20 4c 8d 0d 2d fa 38 03 33 d2 33 c9 44 8d 42 01 e8 f0 26 5d 01 89 9d f0 00 00 00 e8 55 02 2b fe 48 8b f8 48 8b 48 38 4a 8b 1c f9 48 8d 0d a3 76 d9 01 e8 ae 20 8f ff 4c 8b 0d 87 07 2c 03 49 83 c1 08 48 8d 05 bc 93 c0 ff 48 89 44 24 28 48 8d 05 50 92 c0 ff 48 89 44 24 20 4c 8d 85 e0 00 00 00 48 8b d3 48 8b cf e8 59 47 e2 00 90 48 8d 8d f8 01 00 00 e8 fc 11 ee fd 48 83 bd e0 01 00 00 00 74 34 48 8d 8d e0 01 00 00 e8 66 12 ee fd 48 8b 8d f0 01 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 95 e0 01 00 00 ff 50 10 4c 89 ad e0 01 00 00 44 89 ad e8 01 00 00 48 8b 95 f8 00 00 00 48 85 d2 74 28 44 89 ad 04 01 00 00 48 8b 8d 08 01 00 00 48 8b 01 41 b8 08 00 00 00 ff 50 10 4c 89 ad f8 00 00 00 44 89 ad 00 01 00 00 48 8b 74 24 58 48 85 f6 74 36 8b 5c 24 64 85 db 7e 1a 48 8d 7e 20 0f 1f 40 00 48 8b cf e8 b8 da ea fd ff cb 48 83 c7 40 85 db 7f ee 48 8b 4c 24 68 48 8b 01 41 b8 08 00 00 00 48 8b d6 ff 50 10 4c 8d 9c 24 50 03 00 00 49 8b 5b 38 49 8b 73 40 49 8b 7b 48 49 8b e3 41 5f 41 5e 41 5d 41 5c 5d c3",
+      "sha256": "1fab0cb23886e79833d60175d45f99f6b14e4e331c72e4df4e2fbcb740c891b2"
+    },
+    {
+      "name": "Character.set_rite",
+      "start_rva": "0x28b01a0",
+      "end_exclusive_rva": "0x28b0902",
+      "kind": "complete_function_body",
+      "abi": "void(Character*, Rite*, bool, bool); does not return a conversion receipt",
+      "bytes": "48 89 5c 24 10 44 88 4c 24 20 44 88 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 83 ec 70 4c 8b ea 48 8b f9 80 b9 a5 01 00 00 00 0f 85 13 07 00 00 8b 42 08 39 81 b4 00 00 00 0f 84 04 07 00 00 81 7a 0c 65 74 69 52 0f 85 f7 06 00 00 41 bf ff ff ff ff 41 3b c7 0f 84 e8 06 00 00 8b 82 b8 04 00 00 4c 8b 05 f7 e0 46 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 6c d1 08 48 85 ed 74 05 39 45 08 74 07 48 8b 2d a5 e0 46 03 81 7d 0c 74 69 61 46 0f 85 9c 06 00 00 8b 75 08 89 b4 24 b0 00 00 00 41 3b f7 0f 84 89 06 00 00 c6 85 d8 08 00 00 01 48 8d 8f b4 00 00 00 e8 22 29 1e fe 4c 8b f0 8b 8f b4 00 00 00 4c 8b 05 7a e0 46 03 4d 85 c0 74 25 8b c1 25 ff ff ff 00 41 3b 40 2c 73 18 8b d0 48 03 d2 49 8b 40 20 48 8b 54 d0 08 48 85 d2 74 05 39 4a 08 74 07 48 8b 15 c1 73 3b 03 8b 82 c0 04 00 00 89 44 24 30 8b 5f 18 41 8b 86 b8 04 00 00 89 44 24 20 3b c6 0f 84 12 02 00 00 41 81 7e 0c 65 74 69 52 0f 85 04 02 00 00 45 39 7e 08 0f 84 fa 01 00 00 48 8b b7 d0 01 00 00 4c 8b 1d 03 d8 46 03 4c 8b 15 e4 d7 46 03 48 85 f6 75 68 48 8b cf e8 b7 a7 2f 00 84 c0 75 5c 48 8b 87 c0 01 00 00 48 85 c0 74 13 39 b0 ec 01 00 00 74 0b 48 8b 80 e0 01 00 00 8b 10 eb 03 41 8b d7 4d 85 db 74 25 8b c2 25 ff ff ff 00 41 3b 43 2c 73 18 8b c8 48 03 c9 49 8b 43 20 48 8b 44 c8 08 48 85 c0 74 05 39 50 10 74 03 49 8b c2 83 b8 28 03 00 00 01 0f 85 71 01 00 00 48 c7 44 24 48 00 00 00 00 66 0f 6f 05 76 6a 14 02 f3 0f 7f 44 24 58 c6 44 24 48 00 48 85 f6 74 6c 8b 05 c0 27 eb 01 89 44 24 48 0f b7 05 b9 27 eb 01 66 89 44 24 4c 0f b6 05 af 27 eb 01 88 44 24 4e c6 44 24 4f 00 48 8b 4c 24 48 48 8b 54 24 60 48 83 fa 10 0f 82 20 05 00 00 48 ff c2 48 8b c1 48 81 fa 00 10 00 00 72 19 48 83 c2 27 48 8b 49 f8 48 2b c1 48 83 c0 f8 48 83 f8 1f 0f 87 10 05 00 00 e8 73 3b 97 01 e9 ee 04 00 00 48 8b cf e8 c2 a6 2f 00 84 c0 74 37 b9 20 00 00 00 e8 a4 69 fa fd 48 8b c8 ba 1f 00 00 00 0f 10 05 3d 27 eb 01 0f 11 00 0f b7 05 43 27 eb 01 66 89 41 10 0f b6 05 3a 27 eb 01 88 41 12 c6 41 13 00 eb 81 48 8b 87 c0 01 00 00 48 85 c0 74 13 83 b8 ec 01 00 00 00 74 0a 48 8b 80 e0 01 00 00 44 8b 38 4d 85 db 74 2a 41 8b c7 25 ff ff ff 00 41 3b 43 2c 73 1c 8b c8 48 03 c9 49 8b 43 20 48 8b 54 c8 08 48 85 d2 74 09 44 39 7a 10 75 03 4c 8b d2 41 83 ba 28 03 00 00 01 0f 85 1b ff ff ff b9 20 00 00 00 e8 11 69 fa fd 48 8b c8 ba 1f 00 00 00 0f 10 05 c2 26 eb 01 0f 11 00 f2 0f 10 0d c7 26 eb 01 f2 0f 11 48 10 8b 05 c4 26 eb 01 89 41 18 0f b6 05 be 26 eb 01 88 41 1c c6 41 1d 00 e9 e0 fe ff ff 8b b4 24 b0 00 00 00 8b d3 48 8d 4c 24 38 e8 73 45 fc ff 41 81 7e 0c 65 74 69 52 75 0a 45 39 7e 08 74 04 41 ff 4e 1c 41 ff 45 1c 48 8b d7 48 8d 4c 24 28 e8 ce 11 33 00 41 8b 45 08 89 87 b4 00 00 00 44 8b 64 24 20 44 3b e6 0f 84 03 01 00 00 48 8b 15 cf dd 46 03 48 85 d2 74 2d 45 8b 86 b8 04 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 74 c8 08 48 85 f6 74 06 44 39 46 08 74 07 48 8b 35 76 dd 46 03 81 7e 0c 74 69 61 46 75 09 44 39 7e 08 74 03 ff 4e 1c 44 89 bf b8 00 00 00 81 7d 0c 74 69 61 46 75 11 8b 45 08 41 3b c7 74 09 ff 45 1c 89 87 b8 00 00 00 48 8b cf e8 3b 8e 3d 00 48 83 bf c0 01 00 00 00 74 2f 48 8b 05 9a 86 3b 03 80 b8 c2 00 00 00 03 75 1f 48 8b d7 48 8b ce e8 a6 13 3b 00 8b 54 24 28 41 3b d7 74 0b 45 33 c0 48 8b ce e8 82 25 b9 ff 48 8b 15 1b dd 46 03 48 85 d2 74 2d 45 8b 86 b8 04 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 c2 dc 46 03 48 8b cf e8 aa 32 36 00 8b b4 24 b0 00 00 00 48 8b d7 48 8d 4c 24 28 e8 86 ae 34 00 48 8b 10 48 8b cf e8 2b cb 00 00 49 8b d5 48 8b cf e8 c0 02 00 00 39 5c 24 30 75 17 49 8b d6 48 8d 4c 24 30 e8 ad 35 3b 00 8b 10 49 8b ce e8 a3 7c c4 ff 0f b6 ac 24 c0 00 00 00 40 84 ed 0f 85 05 02 00 00 48 8b cf e8 ca 92 ff ff 40 38 2d 5f 6c 40 03 74 08 48 8b cf e8 09 b4 ff ff 48 8b cf e8 b1 6c 06 00 48 8b cf e8 49 6c 06 00 48 8b 05 a2 85 3b 03 8b 57 18 44 3b e6 0f 84 f0 00 00 00 48 8b b0 a0 00 00 00 48 81 c6 e0 f1 01 00 45 8b 86 b8 04 00 00 4c 8b 0d 92 6e 3b 03 4d 85 c9 74 25 8b c2 25 ff ff ff 00 41 3b 41 2c 73 18 8b c8 48 03 c9 49 8b 41 20 48 8b 5c c8 08 48 85 db 74 05 39 53 18 74 07 48 8b 1d 69 6e 3b 03 4c 8b 0d ea db 46 03 4d 85 c9 74 2e 44 8b 93 b4 00 00 00 41 8b c2 25 ff ff ff 00 41 3b 41 2c 73 19 8b c8 48 03 c9 49 8b 41 20 48 8b 44 c8 08 48 85 c0 74 06 44 39 50 08 74 07 48 8b 05 28 6f 3b 03 44 3b 80 b8 04 00 00 74 1e 48 8b ce e8 97 52 17 00 48 8b d3 48 8b ce e8 0c 31 17 00 48 8b d3 48 8b ce e8 c1 35 17 00 8b b4 24 b0 00 00 00 48 8b 9f c0 01 00 00 48 85 db 0f 84 db 00 00 00 44 3b e6 0f 84 d2 00 00 00 48 8b 15 6a db 46 03 48 85 d2 75 24 4c 8b 0d 3e db 46 03 49 8b c9 e9 80 00 00 00 48 8b 88 a0 00 00 00 48 81 c1 e0 f1 01 00 e8 33 22 17 00 eb b7 45 8b 86 b8 04 00 00 41 8b c0 25 ff ff ff 00 44 8b 5a 2c 4c 8b 15 07 db 46 03 41 3b c3 73 19 8b c8 48 03 c9 48 8b 42 20 4c 8b 4c c8 08 4d 85 c9 74 06 45 39 41 08 74 03 4d 8b ca 45 8b 85 b8 04 00 00 41 8b c0 25 ff ff ff 00 41 3b c3 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 4c c8 08 48 85 c9 74 06 44 39 41 08 74 03 49 8b ca 41 8b 41 08 39 41 08 74 26 e8 c8 80 32 00 44 0f b6 d0 49 8b c9 e8 bc 80 32 00 41 3a c2 74 10 45 84 d2 74 0b 48 c7 83 f0 03 00 00 00 00 00 00 48 8b cf e8 ef a7 36 00 41 81 7e 0c 65 74 69 52 75 18 41 8b 56 08 41 3b d7 74 0f 45 8b 86 b8 04 00 00 48 8b cf e8 bd c5 fe ff 48 8b cf 80 bc 24 c8 00 00 00 00 75 07 e8 2b 33 01 00 eb 05 e8 54 34 01 00 40 84 ed 75 08 48 8b cf e8 47 bd 01 00 48 8d 4c 24 38 e8 3d 42 fc ff 41 83 7d 1c 01 75 2a 49 8b cd e8 7e 75 c4 ff 84 c0 75 1e 48 8b 05 83 83 3b 03 0f b6 88 c2 00 00 00 80 e9 02 80 f9 01 77 08 49 8b cd e8 5c c7 32 00 48 8b 9c 24 b8 00 00 00 48 83 c4 70 41 5f 41 5e 41 5d 41 5c 5f 5e 5d c3 e8 8f 21 98 01 cc",
+      "sha256": "f1799cda402ad3b9c190230a8ebe4b5a7d7555fc0ec95875c6d7204ae88a0529"
+    },
+    {
+      "name": "Character.update_default_spiritual_baseline",
+      "start_rva": "0x28bd170",
+      "end_exclusive_rva": "0x28bd1ea",
+      "kind": "complete_function_body",
+      "abi": "void(Character*, signed fixed value); complete chained unwind body",
+      "bytes": "40 57 48 83 ec 20 4c 8b 81 b0 01 00 00 48 8b f9 4d 85 c0 74 5f 48 8b 05 6c bc 3a 03 48 89 5c 24 30 48 8b 1d 68 bc 3a 03 48 3b d3 7c 0a 48 3b d0 48 8b da 48 0f 4f d8 48 8b 81 c8 01 00 00 48 85 c0 74 25 48 8b cb 49 2b 88 00 03 00 00 74 19 48 8b 90 a0 00 00 00 48 03 d1 48 8b cf e8 af fc ff ff 4c 8b 87 b0 01 00 00 49 89 98 00 03 00 00 48 8b 5c 24 30 48 83 c4 20 5f c3",
+      "sha256": "a3ea137dac601f081b92e483f1e1df43f5a31f6a512647acc6a2e41afb1cc970"
+    },
+    {
+      "name": "Character.set_spiritual_fulfillment",
+      "start_rva": "0x28bce80",
+      "end_exclusive_rva": "0x28bcf16",
+      "kind": "complete_function_body",
+      "abi": "void(Character*, signed fixed value); clamp then extension+0xA0",
+      "bytes": "40 53 48 83 ec 20 48 8b d9 48 8b 89 c8 01 00 00 48 85 c9 74 7b 48 8b 05 64 bf 3a 03 4c 8b 05 55 bf 3a 03 48 3b d0 7c 0a 49 3b d0 48 8b c2 49 0f 4f c0 48 89 81 a0 00 00 00 8b 05 41 ed c1 02 83 f8 ff 74 4c 3b 43 18 75 47 48 8b 0d 50 d6 3a 03 48 85 c9 74 3b 48 8b 01 45 33 c9 45 33 c0 ba 6a 41 00 00 ff 90 a0 00 00 00 48 8b 0d 30 d6 3a 03 48 85 c9 74 1b 48 8b 01 45 33 c9 44 8b 43 18 ba 68 41 00 00 48 83 c4 20 5b 48 ff a0 a0 00 00 00 48 83 c4 20 5b c3",
+      "sha256": "b6e7ad42973ad86130296bf6ed4f4c6d38deb4ba444f25a2eb4556de4d398626"
+    },
+    {
+      "name": "Character.FireRiteChangedOnAction",
+      "start_rva": "0x289ce40",
+      "end_exclusive_rva": "0x289cfc2",
+      "kind": "complete_function_body",
+      "abi": "Character*, old full RiteID, old full FaithID",
+      "bytes": "48 89 5c 24 08 48 89 74 24 10 48 89 7c 24 18 55 48 8d ac 24 40 ff ff ff 48 81 ec c0 01 00 00 41 8b d8 8b fa 48 8b d1 48 8d 4c 24 50 e8 ff ad 27 fe 90 c7 44 24 30 0f 01 00 00 c7 44 24 34 18 00 00 00 48 8d 05 af 4e ec 01 48 89 44 24 38 48 8d 05 5b ae e9 01 48 89 44 24 40 48 8d 54 24 30 e8 9c 1f 0a 01 8b f0 85 c0 79 24 89 44 24 28 48 8d 05 cb e6 08 02 48 89 44 24 20 4c 8d 0d ff af 49 03 33 d2 33 c9 44 8d 42 01 e8 c2 dc 6d 01 89 74 24 60 33 f6 c7 44 24 30 2a 00 00 00 48 89 7c 24 38 4c 8d 44 24 30 8b 15 e0 f3 4a 03 48 8d 4c 24 68 e8 1a d2 e9 00 c7 44 24 30 0d 00 00 00 48 89 5c 24 38 4c 8d 44 24 30 8b 15 8a ef 4a 03 48 8d 4c 24 68 e8 f8 d1 e9 00 e8 e3 b7 3b fe 4c 8b 0d 2c bd 3c 03 49 83 c1 08 48 8b 48 38 48 8d 15 5d 4f d1 ff 48 89 54 24 28 48 8d 15 51 4c d1 ff 48 89 54 24 20 4c 8d 44 24 50 48 8b 91 a8 01 00 00 48 8b c8 e8 f8 fc f2 00 90 48 8d 4d 68 e8 9e c7 fe fd 48 39 75 50 74 22 48 8d 4d 50 e8 0f c8 fe fd 48 8b 4d 60 48 8b 01 44 8d 46 08 48 8b 55 50 ff 50 10 48 89 75 50 89 75 58 48 8b 54 24 68 48 85 d2 74 15 89 74 24 74 48 8b 4c 24 78 48 8b 01 41 b8 08 00 00 00 ff 50 10 4c 8d 9c 24 c0 01 00 00 49 8b 5b 10 49 8b 73 18 49 8b 7b 20 49 8b e3 5d c3",
+      "sha256": "174ffc29e66b2aaa73dfd6b11d0bb01e876833f61d94cf9ede53fafe2c8f89bc"
+    },
+    {
+      "name": "Character.transfer_rite_definition_entries",
+      "start_rva": "0x28b0910",
+      "end_exclusive_rva": "0x28b0a26",
+      "kind": "complete_function_body",
+      "abi": "Character*, Rite*; complete chained body; semantic collection names unresolved here",
+      "bytes": "40 56 41 56 48 83 ec 28 80 b9 a5 01 00 00 00 4c 8b f2 48 8b f1 0f 85 f3 00 00 00 48 83 b9 c8 01 00 00 00 0f 84 e5 00 00 00 81 7a 0c 65 74 69 52 0f 85 d8 00 00 00 83 7a 08 ff 0f 84 ce 00 00 00 48 89 5c 24 48 48 8b 9a 88 07 00 00 48 89 6c 24 50 48 63 aa 94 07 00 00 48 c1 e5 04 48 03 eb 48 89 7c 24 20 48 3b dd 74 61 0f 1f 80 00 00 00 00 80 7b 08 00 74 4b 48 8b 3b 81 7f 38 4f 62 44 47 75 3f 80 be a5 01 00 00 00 75 36 48 83 be c8 01 00 00 00 74 2c 48 8b d7 48 8b ce e8 80 00 00 00 84 c0 75 1d 48 8b 8e c8 01 00 00 48 8d 54 24 40 48 81 c1 c8 00 00 00 48 89 7c 24 40 e8 6f f9 fc fd 48 83 c3 10 48 3b dd 75 a6 49 8b 9e a0 07 00 00 49 63 86 ac 07 00 00 48 8b 6c 24 50 48 8d 3c c3 48 3b df 74 1e 66 66 0f 1f 84 00 00 00 00 00 48 8b 13 48 8b ce e8 c5 02 00 00 48 83 c3 08 48 3b df 75 ec 48 8b 5c 24 48 48 8b 7c 24 20 48 83 c4 28 41 5e 5e c3",
+      "sha256": "b21e92557f83075429e511b5ef4abd278b88a60e257e2c23ffab2096856f09a4"
+    },
+    {
+      "name": "Character.add_known_tenet_entry",
+      "start_rva": "0x28b0cd0",
+      "end_exclusive_rva": "0x28b0e83",
+      "kind": "complete_function_body",
+      "abi": "Character*, Tenet*; deduplicated known collection; complete chained body",
+      "bytes": "40 53 55 48 83 ec 28 80 b9 a5 01 00 00 00 48 8b da 48 8b e9 0f 85 92 01 00 00 48 89 7c 24 58 48 8b b9 c8 01 00 00 48 85 ff 0f 84 78 01 00 00 48 8b 8f e0 00 00 00 4c 8d 44 24 40 48 63 87 ec 00 00 00 48 89 54 24 40 48 89 74 24 48 4c 89 74 24 20 48 8d 14 c1 e8 36 12 16 fe 48 63 97 ec 00 00 00 45 33 f6 48 8b 8f e0 00 00 00 4c 8d 04 d1 49 3b c0 49 0f 44 c6 48 85 c0 75 1d 48 8b 8d c8 01 00 00 48 8d 54 24 40 48 81 c1 e0 00 00 00 48 89 5c 24 40 e8 d8 f5 fc fd 48 8b b3 08 0b 00 00 83 be 8c 01 00 00 01 0f 85 f1 00 00 00 48 8b 8e 40 01 00 00 4c 8d 44 24 40 48 63 86 4c 01 00 00 48 89 5c 24 40 48 8d 14 c1 e8 c3 11 16 fe 48 63 8e 4c 01 00 00 4c 8b c0 48 8b 86 40 01 00 00 48 8d 14 c8 4c 3b c2 75 08 41 b8 ff ff ff ff eb 07 4c 2b c0 49 c1 f8 03 41 8d 40 ff 89 44 24 40 48 8d 5c 24 40 41 8d 40 01 89 44 24 44 0f 1f 44 00 00 48 63 03 85 c0 78 74 3b 86 4c 01 00 00 7d 6c 48 8b bd c8 01 00 00 4c 8d 44 24 50 48 8b c8 48 8b 86 40 01 00 00 48 8b 0c c8 48 63 87 ec 00 00 00 48 89 4c 24 50 48 8b 8f e0 00 00 00 48 8d 14 c1 e8 3b 11 16 fe 48 63 97 ec 00 00 00 48 8b 8f e0 00 00 00 4c 8d 04 d1 49 3b c0 49 0f 44 c6 48 85 c0 75 18 48 8b 8d c8 01 00 00 48 8d 54 24 50 48 81 c1 e0 00 00 00 e8 e5 f4 fc fd 48 83 c3 04 48 8d 44 24 48 48 3b d8 0f 85 73 ff ff ff 48 8b 74 24 48 4c 8b 74 24 20 48 8b 7c 24 58 48 83 c4 28 5d 5b c3",
+      "sha256": "0857f035e408d2ecd0c36b03024627195a5cb1122895b294e1ec5f7773f356c0"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "rite_execute_to_setter",
+      "rva": "0x29a5012",
+      "bytes": "e9 89 b1 f0 ff",
+      "instruction": "jmp 0x28b01a0",
+      "direct_target": "0x28b01a0",
+      "rip_targets": []
+    },
+    {
+      "name": "faith_execute_to_result_wrapper",
+      "rva": "0x29a349d",
+      "bytes": "e8 9e 4b 00 00",
+      "instruction": "call 0x29a8040",
+      "direct_target": "0x29a8040",
+      "rip_targets": []
+    },
+    {
+      "name": "actual_conversion_cost_call",
+      "rva": "0x29a813a",
+      "bytes": "e8 a1 bc ff ff",
+      "instruction": "call 0x29a3de0",
+      "direct_target": "0x29a3de0",
+      "rip_targets": []
+    },
+    {
+      "name": "negative_cost",
+      "rva": "0x29a813f",
+      "bytes": "f7 d8",
+      "instruction": "neg eax",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "cost_fixed_scale",
+      "rva": "0x29a8143",
+      "bytes": "48 69 c0 a0 86 01 00",
+      "instruction": "imul rax, rax, 0x186a0",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "piety_resource_address",
+      "rva": "0x29a8156",
+      "bytes": "48 81 c2 08 01 00 00",
+      "instruction": "add rdx, 0x108",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "faith_result_to_setter",
+      "rva": "0x29a81f7",
+      "bytes": "e8 a4 7f f0 ff",
+      "instruction": "call 0x28b01a0",
+      "direct_target": "0x28b01a0",
+      "rip_targets": []
+    },
+    {
+      "name": "full_rite_identity_write",
+      "rva": "0x28b0516",
+      "bytes": "89 87 b4 00 00 00",
+      "instruction": "mov dword ptr [rdi + 0xb4], eax",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "faith_cache_absent_write",
+      "rva": "0x28b057c",
+      "bytes": "44 89 bf b8 00 00 00",
+      "instruction": "mov dword ptr [rdi + 0xb8], r15d",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "faith_cache_new_identity_write",
+      "rva": "0x28b0597",
+      "bytes": "89 87 b8 00 00 00",
+      "instruction": "mov dword ptr [rdi + 0xb8], eax",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "native_default_fulfillment_call",
+      "rva": "0x28b0635",
+      "bytes": "e8 86 ae 34 00",
+      "instruction": "call 0x2bfb4c0",
+      "direct_target": "0x2bfb4c0",
+      "rip_targets": []
+    },
+    {
+      "name": "native_baseline_update_call",
+      "rva": "0x28b0640",
+      "bytes": "e8 2b cb 00 00",
+      "instruction": "call 0x28bd170",
+      "direct_target": "0x28bd170",
+      "rip_targets": []
+    },
+    {
+      "name": "baseline_difference",
+      "rva": "0x28bd1b6",
+      "bytes": "49 2b 88 00 03 00 00",
+      "instruction": "sub rcx, qword ptr [r8 + 0x300]",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "current_fulfillment_plus_difference",
+      "rva": "0x28bd1c6",
+      "bytes": "48 03 d1",
+      "instruction": "add rdx, rcx",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "current_fulfillment_setter_call",
+      "rva": "0x28bd1cc",
+      "bytes": "e8 af fc ff ff",
+      "instruction": "call 0x28bce80",
+      "direct_target": "0x28bce80",
+      "rip_targets": []
+    },
+    {
+      "name": "baseline_cache_write",
+      "rva": "0x28bd1d8",
+      "bytes": "49 89 98 00 03 00 00",
+      "instruction": "mov qword ptr [r8 + 0x300], rbx",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "current_fulfillment_write",
+      "rva": "0x28bceb2",
+      "bytes": "48 89 81 a0 00 00 00",
+      "instruction": "mov qword ptr [rcx + 0xa0], rax",
+      "direct_target": null,
+      "rip_targets": []
+    },
+    {
+      "name": "rite_definition_transfer_call",
+      "rva": "0x28b064b",
+      "bytes": "e8 c0 02 00 00",
+      "instruction": "call 0x28b0910",
+      "direct_target": "0x28b0910",
+      "rip_targets": []
+    },
+    {
+      "name": "character_definition_entry_insert",
+      "rva": "0x28b09cc",
+      "bytes": "e8 6f f9 fc fd",
+      "instruction": "call 0x880340",
+      "direct_target": "0x880340",
+      "rip_targets": []
+    },
+    {
+      "name": "additional_rite_definition_transfer",
+      "rva": "0x28b0a06",
+      "bytes": "e8 c5 02 00 00",
+      "instruction": "call 0x28b0cd0",
+      "direct_target": "0x28b0cd0",
+      "rip_targets": []
+    },
+    {
+      "name": "known_doctrine_presence_check",
+      "rva": "0x28b09ab",
+      "bytes": "e8 80 00 00 00",
+      "instruction": "call 0x28b0a30",
+      "direct_target": "0x28b0a30",
+      "rip_targets": []
+    },
+    {
+      "name": "known_tenet_entry_insert",
+      "rva": "0x28b0d63",
+      "bytes": "e8 d8 f5 fc fd",
+      "instruction": "call 0x880340",
+      "direct_target": "0x880340",
+      "rip_targets": []
+    },
+    {
+      "name": "known_tenet_related_entry_insert",
+      "rva": "0x28b0e56",
+      "bytes": "e8 e5 f4 fc fd",
+      "instruction": "call 0x880340",
+      "direct_target": "0x880340",
+      "rip_targets": []
+    },
+    {
+      "name": "fire_rite_changed_onaction_call",
+      "rva": "0x28b087e",
+      "bytes": "e8 bd c5 fe ff",
+      "instruction": "call 0x289ce40",
+      "direct_target": "0x289ce40",
+      "rip_targets": []
+    },
+    {
+      "name": "fire_rite_changed_name_anchor",
+      "rva": "0x289ce8e",
+      "bytes": "48 8d 05 5b ae e9 01",
+      "instruction": "lea rax, [rip + 0x1e9ae5b]",
+      "direct_target": null,
+      "rip_targets": [
+        "0x4737cf0"
+      ]
+    }
+  ],
+  "command_rtti_vtables": [
+    {
+      "class": "CConvertRiteCommand",
+      "type_descriptor_rva": "0x5a163a8",
+      "primary_col_rva": "0x4e26418",
+      "primary_vtable_rva": "0x47700e8",
+      "primary_functions": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29a5020",
+        "0x86d5c0",
+        "0x29a7240",
+        "0x29a72c0",
+        "0x8522c0",
+        "0x29a72d0",
+        "0x29a72f0",
+        "0x29a7300",
+        "0x29a7310",
+        "0x29a7320",
+        "0x29a54c0",
+        "0x29a5550"
+      ],
+      "secondary_object_offset": 24,
+      "secondary_col_rva": "0x4e26440",
+      "secondary_vtable_rva": "0x4770180",
+      "secondary_functions": [
+        "0x29677a0",
+        "0x29a4f90",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    },
+    {
+      "class": "CConvertFaithAndRiteCommand",
+      "type_descriptor_rva": "0x5a16768",
+      "primary_col_rva": "0x4e263f0",
+      "primary_vtable_rva": "0x4770340",
+      "primary_functions": [
+        "0x9d1560",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29a34c0",
+        "0x86d5c0",
+        "0x29a7140",
+        "0x29a71d0",
+        "0x8522c0",
+        "0x29a71e0",
+        "0x29a7200",
+        "0x29a7210",
+        "0x29a7220",
+        "0x29a7230",
+        "0x29a38d0",
+        "0x29a39a0"
+      ],
+      "secondary_object_offset": 24,
+      "secondary_col_rva": "0x4e263c8",
+      "secondary_vtable_rva": "0x47703d8",
+      "secondary_functions": [
+        "0x29677a0",
+        "0x29a3370",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    }
+  ],
+  "stock_evidence": [
+    {
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "b446a8935566ebe17cfa3b76888b197c56fc5041629414167bd07a8f9f4a0475",
+      "first_line": 834,
+      "last_line": 994,
+      "text": "# scope:founder is the character instigating the conversion\non_faith_conversion = {\n\tevents = {\n\t\tfaith_conversion.0001\t# Convert capital county\n\t\tfaith_conversion.0003\t# Convert close family\n\t\tfaith_conversion.1002\t# Player-only narrative-notification event\n\t\tfaith_conversion.1101   # Notify vassals of conversion\n\t}\n\n\teffect = {\n\t\tset_variable = {\n\t\t\tname = old_rite\n\t\t\tvalue = scope:old_rite\n\t\t\tdays = 30\n\t\t}\n\t\tpam_on_conversion_effect = yes\n\t\tpam_remove_forbidden_personal_tenet_secret_if_invalid_effect = yes\n\t\tupdate_syncretism_personal_tenet_effect = yes\n\t\t# EP3 - State Faith\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tOR = {\n\t\t\t\t\tgovernment_allows = state_faith\n\t\t\t\t\ttop_liege = { government_allows = state_faith }\n\t\t\t\t}\n\t\t\t}\n\t\t\t# Character uses decision to Adopt State Faith\n\t\t\tif = {\n\t\t\t\tlimit = { has_character_flag = adopted_state_faith }\n\t\t\t\ttop_liege = {\n\t\t\t\t\tif = {\n\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\t\t\t\ttarget = root\n\t\t\t\t\t\t\t\tmodifier = converted_to_state_faith_opinion\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tremove_opinion = {\n\t\t\t\t\t\t\ttarget = root\n\t\t\t\t\t\t\tmodifier = converted_to_state_faith_opinion\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tevery_vassal = {\n\t\t\t\t\t\tcustom = every_governor_of_state_faith\n\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\t\t\t\ttarget = root\n\t\t\t\t\t\t\t\tmodifier = converted_to_state_faith_opinion\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tremove_opinion = {\n\t\t\t\t\t\t\ttarget = root\n\t\t\t\t\t\t\tmodifier = converted_to_state_faith_opinion\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\n\t\t\t# Character is converted to state rite and gains influence\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\trite = top_liege.primary_title.state_rite\n\t\t\t\t\tgovernment_has_flag = government_has_influence\n\t\t\t\t}\n\t\t\t\tchange_influence = minor_influence_gain\n\t\t\t\thidden_effect = {\n\t\t\t\t\ttop_liege.primary_title.state_rite = { save_scope_as = new_rite }\n\t\t\t\t\tcreate_character_memory = { type = adopted_state_faith_memory }\n\t\t\t\t\tscope:new_memory = {\n\t\t\t\t\t\tif = {\n\t\t\t\t\t\t\tlimit = { exists = scope:old_rite }\n\t\t\t\t\t\t\tset_variable = {\n\t\t\t\t\t\t\t\tname = old_rite\n\t\t\t\t\t\t\t\tvalue = scope:old_rite\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t# Savegame and non-English loc compatibility; do not rename or remove\n\t\t\t\t\t\t\tset_variable = {\n\t\t\t\t\t\t\t\tname = old_faith\n\t\t\t\t\t\t\t\tvalue = scope:old_rite.faith\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse = {\n\t\t\t\t\t\t\tset_variable = {\n\t\t\t\t\t\t\t\tname = old_rite\n\t\t\t\t\t\t\t\tvalue = root.rite\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tset_variable = {\n\t\t\t\t\t\t\t\tname = old_faith\n\t\t\t\t\t\t\t\tvalue = root.faith\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tset_variable = {\n\t\t\t\t\t\t\tname = new_rite\n\t\t\t\t\t\t\tvalue = scope:new_rite\n\t\t\t\t\t\t}\n\t\t\t\t\t\tset_variable = {\n\t\t\t\t\t\t\tname = new_faith\n\t\t\t\t\t\t\tvalue = scope:new_rite.faith\n\t\t\t\t\t\t}\n\t\t\t\t\t\tset_variable = {\n\t\t\t\t\t\t\tname = title\n\t\t\t\t\t\t\tvalue = root.top_liege.primary_title\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\t# PAM Acts of Apostles tenet Effects\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:founder\n\t\t\t\tscope:founder.rite = { rite_has_parameter = tenet_acts_of_apostles_legitimacy_from_converts }\n\t\t\t}\n\t\t\tscope:founder = {\n\t\t\t\tsend_interface_message = {\n\t\t\t\t\ttype = event_religious_good\n\t\t\t\t\ttitle = tenet_acts_of_apostles_toast_conversion_title\n\t\t\t\t\tleft_icon = root\n\t\t\t\t\tif = {\n\t\t\t\t\t\tlimit = { exists = root.primary_title }\n\t\t\t\t\t\tadd_legitimacy = {\n\t\t\t\t\t\t\tvalue = minor_legitimacy_gain\n\t\t\t\t\t\t\tmultiply = root.primary_title.tier\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\telse = {\n\t\t\t\t\t\tadd_legitimacy = minor_legitimacy_gain\n\t\t\t\t\t}\n\t\t\t\t\tif = {\n\t\t\t\t\t\tlimit = { is_playable_character = yes }\n\t\t\t\t\t\tchange_spiritual_fulfillment = medium_spiritual_fulfillment_value\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\t# Antipope removal\n\t\tpam_remove_sponsored_antipope_effect = {\n\t\t\tSPONSOR = root\n\t\t\tFAITH = scope:old_faith\n\t\t}\n\t}\n}\n\n# Code on-action: character changes faith or rite. Not called when a character gets a faith on birth, creation, and similar\n# Root is the character\n# scope:old_faith is the faith they used to have\n# scope:old_rite is the rite they used to have (can be equal to current rite)\non_rite_change = {\n\teffect = {\n\t\tpam_on_conversion_effect = yes\n\t\tchristian_clergy_learn_liturgical_language_effect = yes\n\t\tpam_remove_forbidden_personal_tenet_secret_if_invalid_effect = yes\n\t\tcheck_for_equal_doctrine_effect = yes\n\t\tevery_held_title = {\n\t\t\tupdate_dynamic_coa = yes\n\t\t}\n\n\t\tadd_character_flag = changed_rite_flag\n\n\t\t# Conversion memories\n\t\tcreate_conversion_memory_effect = yes"
+    },
+    {
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "b446a8935566ebe17cfa3b76888b197c56fc5041629414167bd07a8f9f4a0475",
+      "first_line": 1114,
+      "last_line": 1158,
+      "text": "\t\t# Achievements\n\t\tif = {\n\t\t\tlimit = { is_ai = no }\n\n\t\t\tif = { # FP2 - Basque In My Glory\n\t\t\t\tlimit = { faith = faith:basque_pagan }\n\t\t\t\tadd_achievement_global_variable_effect = {\n\t\t\t\t\tVARIABLE = fp2_basque_in_my_glory_achievement_unlocked\n\t\t\t\t\tVALUE = yes\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t# Hostage story cycle\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tis_hostage = yes\n\t\t\t\tis_adult = no\n\t\t\t\t# Did they just change to their captor's culture\n\t\t\t\tfaith = warden.faith\n\t\t\t}\n\t\t\tsave_scope_as = hostage\n\t\t\twarden = {\n\t\t\t\ttrigger_event = bp2_yearly.8050\n\t\t\t}\n\t\t}\n\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\thas_variable = japan_1010_discount\n\t\t\t\tvar:japan_1010_discount = faith\n\t\t\t}\n\t\t\tremove_variable = japan_1010_discount\n\t\t}\n\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\thas_character_flag = tgp_japan_1040_discount\n\t\t\t\tfaith.religion = religion:shintoism_religion\n\t\t\t}\n\t\t\tremove_character_flag = tgp_japan_1040_discount\n\t\t}\n\n\t\t#Lose Mandala if you change to a monotheist faith\n\t\tmandala_no_longer_polytheist_effect = yes"
+    },
+    {
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "b446a8935566ebe17cfa3b76888b197c56fc5041629414167bd07a8f9f4a0475",
+      "first_line": 1188,
+      "last_line": 1245,
+      "text": "\t\t# PAM - Catalysts\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\thas_pam_dlc_trigger = yes\n\t\t\t\texists = situation:the_christian_church\n\t\t\t}\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\thighest_held_title_tier >= tier_county\n\t\t\t\t\tscope:old_faith ?= {\n\t\t\t\t\t\treligion = religion:christianity_religion\n\t\t\t\t\t}\n\t\t\t\t\treligion != religion:christianity_religion\n\t\t\t\t\tsituation:the_christian_church ?= {\n\t\t\t\t\t\tsituation_top_has_catalyst = catalyst_the_christian_church_ruler_converted_from_christianity\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tsituation:the_christian_church = {\n\t\t\t\t\ttrigger_situation_catalyst = catalyst_the_christian_church_ruler_converted_from_christianity\n\t\t\t\t}\n\t\t\t}\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\thighest_held_title_tier >= tier_county\n\t\t\t\t\tscope:old_faith ?= {\n\t\t\t\t\t\treligion != religion:christianity_religion\n\t\t\t\t\t}\n\t\t\t\t\treligion = religion:christianity_religion\n\t\t\t\t\tsituation:the_christian_church ?= {\n\t\t\t\t\t\tsituation_top_has_catalyst = catalyst_the_christian_church_ruler_converted_to_christianity\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tsituation:the_christian_church = {\n\t\t\t\t\ttrigger_situation_catalyst = catalyst_the_christian_church_ruler_converted_to_christianity\n\t\t\t\t}\n\t\t\t}\n\t\t\t# Great Schism: kings+ and landed prelates crossing between the schism-pair rites face a confrontation\n\t\t\tpam_schism_rite_conversion_dissent_effect = yes\n\t\t\tpam_offer_great_schism_stance_effect = yes\n\t\t}\n\t\t# Tenet popularity\n\t\tpam_tenet_popularity_on_rite_change_effect = yes\n\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = clerical_elector_title\n\t\t\t\trite = { NOT = { rite_has_parameter = has_clerical_electors } }\n\t\t\t}\n\t\t\tpam_destroy_cardinal_title_effect = { CARDINALATE = clerical_elector_title }\n\t\t}\n\n\t}\n\tevents = {\n\t\tfaith_conversion.0001 # convert capital\n\t\tfaith_conversion.0003 # Convert close family\n\t\tfaith_conversion.0002 # Remove obsolete modifiers\n\t\tfaith_conversion.0004 # Convert Theocracies\n\t\tfaith_conversion.0005 # Update marriage opinions"
+    },
+    {
+      "path": "common/scripted_effects/pam_effects.txt",
+      "sha256": "50b0ebeeab835b98fc2a159baa5806078d706b3f988ecb5a6c1e025c86465161",
+      "first_line": 11516,
+      "last_line": 11524,
+      "text": "pam_on_conversion_effect = {\n\tif = {\n\t\tlimit = { is_ai = no }\n\t\tadd_character_flag = {\n\t\t\tflag = faith_conversion_recently_converted\n\t\t\tyears = pam_ui_conversion_cooldown\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "common/scripted_effects/pam_effects.txt",
+      "sha256": "50b0ebeeab835b98fc2a159baa5806078d706b3f988ecb5a6c1e025c86465161",
+      "first_line": 1381,
+      "last_line": 1388,
+      "text": "pam_tax_nonbelievers_conversion_fulfillment_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\thas_personal_tenet_flag = tax_nonbelievers_fulfillment_from_conversion\n\t\t}\n\t\tchange_spiritual_fulfillment = minor_spiritual_fulfillment_value\n\t}\n}"
+    },
+    {
+      "path": "common/scripted_effects/pam_effects.txt",
+      "sha256": "50b0ebeeab835b98fc2a159baa5806078d706b3f988ecb5a6c1e025c86465161",
+      "first_line": 8469,
+      "last_line": 8512,
+      "text": "pam_tenet_popularity_on_rite_change_effect = {\n\tif = {\n\t\tlimit = { is_landed = yes }\n\t\tfaith = { save_scope_as = tp_new_faith }\n\t\trite = { save_scope_as = tp_new_rite }\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:old_rite\n\t\t\t\tscope:old_rite != scope:tp_new_rite\n\t\t\t}\n\t\t\tscope:old_rite.faith = { save_scope_as = tp_old_faith }\n\t\t\tif = {\n\t\t\t\tlimit = { scope:tp_old_faith = { has_tenet_popularity_trigger = yes } }\n\t\t\t\tscope:old_rite = {\n\t\t\t\t\tevery_rite_tenet = {\n\t\t\t\t\t\tstatus = core\n\t\t\t\t\t\tsave_scope_as = tp_tenet\n\t\t\t\t\t\tscope:tp_old_faith = {\n\t\t\t\t\t\t\tchange_tenet_popularity = {\n\t\t\t\t\t\t\t\ttarget = scope:tp_tenet\n\t\t\t\t\t\t\t\tchange = miniscule_tenet_popularity_loss\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tif = {\n\t\t\tlimit = { scope:tp_new_faith = { has_tenet_popularity_trigger = yes } }\n\t\t\tscope:tp_new_rite = {\n\t\t\t\tevery_rite_tenet = {\n\t\t\t\t\tstatus = core\n\t\t\t\t\tsave_scope_as = tp_tenet\n\t\t\t\t\tscope:tp_new_faith = {\n\t\t\t\t\t\tchange_tenet_popularity = {\n\t\t\t\t\t\t\ttarget = scope:tp_tenet\n\t\t\t\t\t\t\tchange = miniscule_tenet_popularity_gain\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "common/on_action/dlc/pam/pam_on_actions.txt",
+      "sha256": "6149169c1be40bd71bd86bd21bff7afff59b5773dbcfa3b13e6ea840911b7fbf",
+      "first_line": 91,
+      "last_line": 95,
+      "text": "on_faith_conversion = {\n\ton_actions = {\n\t\tpam_tax_nonbelievers_faith_conversion_on_action\n\t}\n}"
+    },
+    {
+      "path": "common/on_action/dlc/pam/pam_on_actions.txt",
+      "sha256": "6149169c1be40bd71bd86bd21bff7afff59b5773dbcfa3b13e6ea840911b7fbf",
+      "first_line": 268,
+      "last_line": 281,
+      "text": "pam_tax_nonbelievers_faith_conversion_on_action = {\n\ttrigger = {\n\t\texists = scope:actor\n\t\troot != scope:actor\n\t\tscope:actor = {\n\t\t\thas_personal_tenet_flag = tax_nonbelievers_fulfillment_from_conversion\n\t\t}\n\t}\n\teffect = {\n\t\tscope:actor = {\n\t\t\tpam_tax_nonbelievers_conversion_fulfillment_effect = yes\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "first_line": 1460,
+      "last_line": 1511,
+      "text": "create_conversion_memory_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\texists = scope:old_rite\n\t\t\tscope:old_rite != rite # A rite that diverged into its own faith keeps its object; nobody converted\n\t\t\tNOT = { has_character_flag = conversion_memory_recently_created }\n\t\t}\n\t\tsave_temporary_scope_as = conversion_memory_owner\n\t\tadd_character_flag = { # The conversion window fires on_rite_change twice for a same-faith switch\n\t\t\tflag = conversion_memory_recently_created\n\t\t\tdays = 2\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:old_faith\n\t\t\t\tscope:old_faith != faith\n\t\t\t}\n\t\t\tcreate_character_memory = { type = converted_faith_memory }\n\t\t\tscope:new_memory = {\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = old_faith\n\t\t\t\t\tvalue = scope:old_faith\n\t\t\t\t}\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = new_faith\n\t\t\t\t\tvalue = scope:conversion_memory_owner.faith\n\t\t\t\t}\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = new_rite\n\t\t\t\t\tvalue = scope:conversion_memory_owner.rite\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\telse = {\n\t\t\tcreate_character_memory = { type = converted_rite_memory }\n\t\t\tscope:new_memory = {\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = old_rite\n\t\t\t\t\tvalue = scope:old_rite\n\t\t\t\t}\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = new_rite\n\t\t\t\t\tvalue = scope:conversion_memory_owner.rite\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tif = {\n\t\t\tlimit = { is_adult = no }\n\t\t\tscope:new_memory = { set_variable = childhood_memory }\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "events/religion_events/faith_conversion_events.txt",
+      "sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0",
+      "first_line": 3,
+      "last_line": 67,
+      "text": "# Fired when you convert to a new faith. Convert capital county.\nfaith_conversion.0001 = {\n\thidden = yes\n\n\ttrigger = {\n\t\tis_landed = yes\n\t\tprimary_title.tier > tier_barony\n\t\texists = capital_county\n\t\texists = scope:old_faith\n\t\tcapital_county.faith = scope:old_faith\n\t}\n\n\timmediate = {\n\t\tcapital_county ?= {\n\t\t\tsave_scope_as = converted_ruler_capital\n\t\t}\n\n\t\t# set_county_rite also sets the parent faith, so a faith change would convert the capital for free\n\t\tif = {\n\t\t\tlimit = { capital_county.faith = root.faith }\n\n\t\t\t# if their capital and ours coincide region holder's rite wins - try to convert adjacent county root owns\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tcapital_county.clerical_region_title ?= {\n\t\t\t\t\t\tholder ?= {\n\t\t\t\t\t\t\tcapital_county = scope:converted_ruler_capital\n\t\t\t\t\t\t\tfaith = root.faith\n\t\t\t\t\t\t\trite != root.rite\n\t\t\t\t\t\t\tNOR = {\n\t\t\t\t\t\t\t\troot.puppet:theological_agent_puppet ?= this\n\t\t\t\t\t\t\t\troot.puppet:external_theological_agent_puppet ?= this\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tcapital_county = {\n\t\t\t\t\trandom_neighboring_county = {\n\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\tholder = root\n\t\t\t\t\t\t\tfaith = root.faith\n\t\t\t\t\t\t\tclerical_region_title ?= {\n\t\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\t\tnot = { exists = holder }\n\t\t\t\t\t\t\t\t\tholder.rite = root.rite\n\t\t\t\t\t\t\t\t\tholder.capital_county != prev\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\tset_county_rite = root.rite\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\telse = {\n\t\t\t\tcapital_county = { set_county_rite = root.rite }\n\t\t\t}\n\t\t}\n\n\t\troot.rite = {\n\t\t\tforce_refresh_head_of_rite = yes\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "events/religion_events/faith_conversion_events.txt",
+      "sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0",
+      "first_line": 199,
+      "last_line": 296,
+      "text": "scripted_trigger faith_conversion_0003_valid_character = {\n\tfaith = scope:old_faith\n\t# If conversion is within the same religion, check the rite is the same\n\ttrigger_if = {\n\t\tlimit = { scope:new_faith.religion = scope:old_faith.religion }\n\t\trite = scope:old_rite\n\t}\n\tis_alive = yes\n\tis_ai = yes\n\t# A relative's conversion must not drag along characters the rest of the conversion systems protect\n\tNOR = {\n\t\thas_character_flag = ai_will_not_convert\n\t\tthis = faith.religious_head\n\t\trite.head_of_rite ?= this\n\t}\n}\n\n# Fired when you convert to a new faith. Convert close family.\nfaith_conversion.0003 = {\n\thidden = yes\n\n\timmediate = {\n\t\tfaith = { save_scope_as = new_faith }\n\t\trite = { save_scope_as = new_rite }\n\t\tevery_spouse = {\n\t\t\tlimit = {\n\t\t\t\tfaith_conversion_0003_valid_character = yes\n\t\t\t\tis_landed = no\n\t\t\t}\n\t\t\tset_character_rite = root.rite\n\t\t}\n\t\tevery_close_family_member = {\n\t\t\tlimit = {\n\t\t\t\tfaith_conversion_0003_valid_character = yes\n\t\t\t\tOR = {\n\t\t\t\t\t# A minor fostered outside the realm keeps their guardian's rite\n\t\t\t\t\tAND = {\n\t\t\t\t\t\tis_child_of = root\n\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\tis_adult = no\n\t\t\t\t\t\t\tis_landed = no\n\t\t\t\t\t\t}\n\t\t\t\t\t\ttrigger_if = {\n\t\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\t\tis_adult = no\n\t\t\t\t\t\t\t\tany_relation = {\n\t\t\t\t\t\t\t\t\ttype = guardian\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tany_relation = {\n\t\t\t\t\t\t\t\ttype = guardian\n\t\t\t\t\t\t\t\tcount = all\n\t\t\t\t\t\t\t\ttarget_is_liege_or_above = root\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\t# Cascade travels down the hierarchy, not up to a parent or sibling\n\t\t\t\t\ttarget_is_liege_or_above = root\n\t\t\t\t}\n\t\t\t}\n\t\t\tset_character_rite = root.rite\n\t\t}\n\t}\n}\n\nfaith_conversion.0004 = {\n\thidden = yes\n\n\ttrigger = {\n\t\tgovernment_has_flag = government_is_theocracy\n\t\tis_landed = yes\n\t\trite = {\n\t\t\trite_has_doctrine = doctrine_theocracy_lay_clergy\n\t\t}\n\t}\n\n\timmediate = {\n\t\tassign_feudal_governments_effect = yes\n\t}\n}\n\n# For softening opinion penalties, e.g., I believed in monogamous faith but was in a polygamous marriage, but now I've been converted to polygamous faith.\nfaith_conversion.0005 = {\n\thidden = yes\n\n\ttrigger = {\n\t\tany_consort = { }\n\t}\n\n\timmediate = {\n\t\tevery_consort = {\n\t\t\tsave_scope_as = this_consort\n\t\t\troot = {\n\t\t\t\tupdate_active_consort_opinion_effect = { PARTNER = scope:this_consort }\n\t\t\t}\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "events/religion_events/faith_conversion_events.txt",
+      "sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0",
+      "first_line": 456,
+      "last_line": 541,
+      "text": "\toption = { \n\t\tname = faith_conversion.1001.a\n\t}\n\n\toption = { \n\t\tname = faith_conversion.1001.b\n\t\t# Gain scope:template priest as a courtier & earmark them for future friendship.\n\t\tadd_courtier = scope:template_priest\n\t\treverse_add_opinion = {\n\t\t\ttarget = scope:template_priest\n\t\t\tmodifier = pious_opinion\n\t\t\topinion = 50\n\t\t}\n\t\tset_relation_potential_friend = scope:template_priest\n\t}\n\n\tafter = {\n\t\thidden_effect = {\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tthis != scope:template_priest.host\n\t\t\t\t}\n\t\t\t\tscope:template_priest = {\t\t\n\t\t\t\t\tdeath = {\n\t\t\t\t\t\tdeath_reason = death_disappearance\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tscope:template_priest ?= {\n\t\t\t\t\thas_character_flag = is_naked\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:template_priest = {\n\t\t\t\tremove_character_flag = is_naked\n\t\t\t}\n\t\t}\n\t\t\n\n\t\tadd_character_flag  = {\n\t\t\tflag = recent_convert\n\t\t\tyears = 20\n\t\t}\n\t}\n}\n\nfaith_conversion.1002 = {\n\thidden = yes\n\n\timmediate = {\n\t\t# If it's desirable to delay this event (e.g., due to decision) a little, do so.\n\t\tif = {\n\t\t\tlimit = { has_character_flag = delay_player_faith_conversion_notification_event }\n\t\t\ttrigger_event = {\n\t\t\t\tid = faith_conversion.1001\n\t\t\t\tdays = 7\n\t\t\t}\n\t\t}\n\t\t# Otherwise, just send it.\n\t\telse = { trigger_event = faith_conversion.1001 }\n\t}\n}\n\nfaith_conversion.1101 = {\n\thidden = yes\n\n\timmediate = {\n\t\tevery_vassal = {\n\t\t\tlimit = {\n\t\t\t\tis_ai = no\n\t\t\t}\n\t\t\tsend_interface_toast = {\n\t\t\t\ttitle = faith_conversion.1101.toast\n\t\t\t\tleft_icon = root\n\n\t\t\t\tshow_as_tooltip = {\n\t\t\t\t\troot = {\n\t\t\t\t\t\tset_character_faith = faith\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "common/script_values/pam_values.txt",
+      "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "first_line": 163,
+      "last_line": 170,
+      "text": "\t}\n}\n\n# years before being able to convert again\npam_ui_conversion_cooldown = 5\npam_same_faith_rite_knowledge_requirement = 0.4\npam_same_religion_rite_knowledge_requirement = 0.5\npam_other_religion_rite_knowledge_requirement = 0.6"
+    },
+    {
+      "path": "common/script_values/pam_values.txt",
+      "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "first_line": 2172,
+      "last_line": 2184,
+      "text": "}\n\n# Values\nminiscule_spiritual_fulfillment_value = 1\nminor_spiritual_fulfillment_value = 3\nmedium_spiritual_fulfillment_value = 5\nmajor_spiritual_fulfillment_value = 10\nmassive_spiritual_fulfillment_value = 20\n\nminiscule_spiritual_fulfillment_loss = { add = miniscule_spiritual_fulfillment_value multiply = -1 }\nminor_spiritual_fulfillment_loss = { add = minor_spiritual_fulfillment_value multiply = -1 }\nmedium_spiritual_fulfillment_loss = { add = medium_spiritual_fulfillment_value multiply = -1 }\nmajor_spiritual_fulfillment_loss = { add = major_spiritual_fulfillment_value multiply = -1 }"
+    }
+  ],
+  "unresolved": [
+    "Rite+0x788 doctrine row status names (retain actual nonzero condition)",
+    "directional hostility breakdown and conversion-only opinion contribution",
+    "native cooldown flag expiry getter (reuse final-gate owner)",
+    "independent county/family after-read provider",
+    "actual delayed event dispatch, selected narrative option and cold persistence"
+  ]
+}
