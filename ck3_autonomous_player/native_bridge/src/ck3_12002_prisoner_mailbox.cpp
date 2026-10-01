@@ -17,6 +17,10 @@ struct CollectionQuery {
   bridge::PlayerPrisonerCollectionSnapshotV1 collection{};
   std::array<PlayerPrisonerRansomQuoteV1, bridge::kPlayerPrisonerMaximumRowsV1> quotes{};
   bool completed = false;
+  bool war_retention = false;
+  std::int32_t war_id = -1;
+  PrisonerWarRetentionBindings war_bindings{};
+  ck3_11906::WarPrisonerReleasePairsObservationV1 war_observation{};
 };
 struct RansomQuery {
   QueryMailboxEnvelope envelope{};
@@ -112,6 +116,16 @@ bool ExecutePlayerPrisonerCollection12002(void *opaque,
   if (!envelope || !envelope->typed_context ||
       !EnterQueryMailbox(*envelope, stamp, &ExecutePlayerPrisonerCollection12002)) return true;
   auto &query = *static_cast<CollectionQuery *>(envelope->typed_context);
+  if (query.war_retention) {
+    query.completed = ReadWarPrisonerReleasePairsV1(query.war_bindings,
+        query.war_id, query.war_observation) ==
+        ck3_11906::ReadWarPrisonerReleasePairsResultV1::available &&
+        query.war_observation.same_frame_stable &&
+        query.war_observation.full_participant_scan &&
+        query.war_observation.primary_and_first_three_successors_scanned;
+    (void)FinishQueryMailbox(*envelope);
+    return true;
+  }
   bridge::PlayerPrisonerCollectionAccessV1 access{};
   access.exact_build_admitted = query.bindings.enabled;
   access.admitted_executable_sha256 = kExecutableSha256;
@@ -157,12 +171,13 @@ bool HandlePlayerPrisonerPrivate12002(const game::GameAdapter &adapter,
     std::string &serialized, std::string &failure) {
   std::uint32_t ordinal = 0;
   const bool is_collection = ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, ordinal);
+  const bool is_war = step.starts_with(kPrisonerWarRetentionStepPrefix12002);
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
   const bool is_submit = step == "submit-player-prisoner-ransom-private-v1";
 #else
   const bool is_submit = false;
 #endif
-  if (!is_collection && !is_submit) return false;
+  if (!is_collection && !is_submit && !is_war) return false;
   serialized.clear(); failure.clear();
   std::uint64_t expected = 0;
   if (!bridge::JsonUnsignedField(payload, "expected_revision", expected) ||
@@ -174,6 +189,26 @@ bool HandlePlayerPrisonerPrivate12002(const game::GameAdapter &adapter,
   }
   const auto module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   const auto bindings = BindPrisonerRansomImage(module, adapter.descriptor().executable_sha256);
+  if (is_war) {
+    const auto war_id = ParsePrisonerWarRetentionStep12002(step);
+    if (!war_id) { failure = "war prisoner release query identity is invalid"; return true; }
+    CollectionQuery query{};
+    PrepareEnvelope(query.envelope, adapter, mailbox, published, revision, &query);
+    query.war_retention = true;
+    query.war_id = *war_id;
+    query.war_bindings = BindPrisonerWarRetentionImage(module,
+        adapter.descriptor().executable_sha256);
+    if (!RunMailbox(mailbox, query.envelope, &ExecutePlayerPrisonerCollection12002, failure)) return true;
+    if (!query.completed) { failure = "war prisoner release source scan is unavailable"; return true; }
+    const auto value = SerializePrisonerWarRetentionV1(query.war_observation);
+    if (value.empty()) { failure = "war prisoner release result serialization unavailable"; return true; }
+    ++state.war_query_sequence;
+    serialized = ResultPrefix(request_id, step) + ",\"status\":\"available\",\"query_sequence\":" +
+        std::to_string(state.war_query_sequence) + ",\"snapshot_revision\":" +
+        std::to_string(revision) + ",\"war_prisoner_release_pairs_v1\":" + value +
+        ",\"read_only\":true,\"backend_id\":\"native-headless\"}}";
+    return true;
+  }
   if (is_collection) {
     CollectionQuery query{};
     PrepareEnvelope(query.envelope, adapter, mailbox, published, revision, &query);

@@ -198,3 +198,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 | sway | `23f336478dc7989e275819f01f4dcb4da77bd60a` | 41 |
 
 当前仍在做最终中央／共享MCP接线与file candidate，随后root唯一实机操作；宗教下一增量独立继续。战争38源冻结，原失败及未验证source边界保留。
+
+### 15:52:28 Ransom required current retention runtime wiring
+
+在已交27文件上最小补齐赎金消费者必需的既有retention来源：slot53 mode／精确step matcher／原DTO／独立querycounter，复用停止战争研究前已闭合provider，未新增战争研究或政策。仅新增生产provider→serializer O2 W4WX3案例（非空／完整空／selector）通过；旧13×2 reader直接复用。完整清单29文件，实际改动单独提交。查询不代表支付／释放；尚无新版实机。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\prisoner\package-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

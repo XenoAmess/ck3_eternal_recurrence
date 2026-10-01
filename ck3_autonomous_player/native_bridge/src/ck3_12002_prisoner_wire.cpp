@@ -1,6 +1,56 @@
 #include "xar_bridge/ck3_12002_prisoner.hpp"
 
 namespace xar::ck3_12002 {
+namespace {
+void AppendPrisonerJsonString(std::string &out, std::string_view value) {
+  out += '"';
+  for (const unsigned char ch : value) {
+    if (ch == '"' || ch == '\\') { out += '\\'; out += static_cast<char>(ch); }
+    else if (ch < 0x20) {
+      constexpr char hex[] = "0123456789abcdef";
+      out += "\\u00"; out += hex[ch >> 4]; out += hex[ch & 15];
+    } else out += static_cast<char>(ch);
+  }
+  out += '"';
+}
+} // namespace
+
+std::string SerializePrisonerWarRetentionV1(
+    const ck3_11906::WarPrisonerReleasePairsObservationV1 &value) {
+  if (!value.same_frame_stable || !value.full_participant_scan ||
+      !value.primary_and_first_three_successors_scanned) return {};
+  std::string result = "{\"war_id\":" + std::to_string(value.war_id) +
+      ",\"date_raw\":" + std::to_string(value.date_raw) +
+      ",\"active_casus_belli_database_index\":" +
+      std::to_string(value.active_casus_belli_database_index) + ",\"active_casus_belli_key\":";
+  AppendPrisonerJsonString(result, value.active_casus_belli_key);
+  result += ",\"primary_attacker_character_id\":" + std::to_string(value.primary_attacker_character_id) +
+      ",\"primary_defender_character_id\":" + std::to_string(value.primary_defender_character_id);
+  const auto ids = [&](std::string_view key, const std::vector<std::int32_t> &rows) {
+    result += ",\"" + std::string(key) + "\":[";
+    for (std::size_t index = 0; index < rows.size(); ++index) {
+      if (index != 0) result += ',';
+      result += std::to_string(rows[index]);
+    }
+    result += ']';
+  };
+  ids("attacker_participant_ids", value.attacker_participant_ids);
+  ids("defender_participant_ids", value.defender_participant_ids);
+  ids("attacker_release_candidate_ids", value.attacker_release_candidate_ids);
+  ids("defender_release_candidate_ids", value.defender_release_candidate_ids);
+  result += ",\"release_pairs\":[";
+  for (std::size_t index = 0; index < value.release_pairs.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &pair = value.release_pairs[index];
+    result += "{\"jailer_character_id\":" + std::to_string(pair.jailer_character_id) +
+        ",\"prisoner_character_id\":" + std::to_string(pair.prisoner_character_id) + ",\"reason\":";
+    AppendPrisonerJsonString(result, pair.reason);
+    result += '}';
+  }
+  result += "],\"full_participant_scan\":true,\"primary_and_first_three_successors_scanned\":true,"
+      "\"same_frame_stable\":true}";
+  return result;
+}
 
 std::string SerializePlayerPrisonerCollectionPrivateV1(
     const bridge::PlayerPrisonerCollectionSnapshotV1 &snapshot,

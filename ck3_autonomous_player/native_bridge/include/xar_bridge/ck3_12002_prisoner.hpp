@@ -59,4 +59,7 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
     const std::array<PlayerPrisonerRansomQuoteV1, bridge::kPlayerPrisonerMaximumRowsV1> &quotes,
     bool quotes_complete);
 
+std::string SerializePrisonerWarRetentionV1(
+    const ck3_11906::WarPrisonerReleasePairsObservationV1 &value);
+
 } // namespace xar::ck3_12002
