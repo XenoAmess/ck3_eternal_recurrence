@@ -17,6 +17,8 @@ namespace {
 // manager getter 0x8D1670, then reads its +0x50/+0x5C definition vector.
 // 0xC8CE80/0x57BFFF8 is the peer CCourtTypeSetting registry (R735).
 constexpr std::uintptr_t kWorldBuildingManagerSlotRva = 0x5C67540;
+// R4 paused observation confirmed this nonzero definition in empty slots.
+constexpr std::uintptr_t kNullBuildingDefinitionSlotRva = 0x5D1E320;
 constexpr std::uintptr_t kBuildingTypePrimaryVtableRva = 0x48B6CC8;
 constexpr std::uintptr_t kExactExeImageSize = 0x61c5000;
 constexpr std::uintptr_t kGameStateSlotRva = 0x5C68C50;
@@ -340,7 +342,10 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
     }
     result.active_constructions.reserve(
         result.directly_held_barony_provinces.size());
-    result.completed_buildings_observed = true;
+    std::uintptr_t null_building_definition = 0;
+    result.completed_buildings_observed =
+        Read(campaign, module_base, kNullBuildingDefinitionSlotRva,
+             null_building_definition);
     for (const auto &holding : result.directly_held_barony_provinces) {
       std::int32_t slot_count = 0;
       std::uintptr_t province = 0;
@@ -367,7 +372,8 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
               result.completed_buildings_observed = false;
               break;
             }
-            if (built_definition == 0) continue;
+            if (built_definition == 0 ||
+                built_definition == null_building_definition) continue;
             const auto built_match = std::find_if(
                 definitions.begin(), definitions.end(),
                 [built_definition](const auto &definition) {

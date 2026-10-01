@@ -149,6 +149,7 @@ Fixture Scene() {
   f.Put(kModule + 0x5D1DAE0, std::uintptr_t{0x510000});
   f.Put(kModule + 0x57BFBA8, std::uintptr_t{0x900000});
   f.Put(kModule + 0x5C67540, std::uintptr_t{0xD00000});
+  f.Put(kModule + 0x5D1E320, std::uintptr_t{0xB20000});
   f.Put(kModule + 0x57BFFF8, std::uintptr_t{0xA00000});
   f.Put(kModule + 0x57BFFD0, std::uintptr_t{0xC00000});
 
