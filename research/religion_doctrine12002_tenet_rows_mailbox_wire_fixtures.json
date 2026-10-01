@@ -1,0 +1,297 @@
+{
+  "schema": "xar.ck3_12002.current-tenets.actual-native-command-result-fixtures.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "producer": "Actual current played Tenet rows runtime, mailbox, provider and complete C++ serializer",
+  "actual_mailbox_receipt_sha256": "e07fc90027cdf39b9c05ff9c4b416204d7053701292cbf88aba72bdb9d0c7852",
+  "cases": {
+    "current-main-personal": {
+      "sha256": "2b9de767353ea5f5919af8b47d2118b134b3b29793f78be33cca76fd56d7435a",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-tenets-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_tenets_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-tenets-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_tenets": {
+            "schema": "ck3_12002_tenet_rows_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": 2197815299,
+            "current_rite": {
+              "rite_id": 0,
+              "core_tenets": [
+                {
+                  "key": "tenet_4",
+                  "current_rite_status": 4
+                }
+              ]
+            },
+            "faith_main_rite": {
+              "rite_id": 2181038082,
+              "core_tenets": [
+                {
+                  "key": "tenet_3",
+                  "current_rite_status": 3
+                }
+              ]
+            },
+            "personal_tenets_complete": true,
+            "personal_tenets": [
+              {
+                "key": "tenet_0",
+                "current_rite_status": 0
+              },
+              {
+                "key": "tenet_4",
+                "current_rite_status": 4
+              }
+            ],
+            "effective_tenet_states": [
+              {
+                "key": "tenet_4",
+                "current_rite_status": 4
+              },
+              {
+                "key": "tenet_3",
+                "current_rite_status": 3
+              },
+              {
+                "key": "tenet_0",
+                "current_rite_status": 0
+              },
+              {
+                "key": "tenet_1",
+                "current_rite_status": 1
+              },
+              {
+                "key": "tenet_2",
+                "current_rite_status": 2
+              }
+            ],
+            "status_values": {
+              "unknown": 0,
+              "known": 1,
+              "prohibited": 2,
+              "permitted": 3,
+              "core": 4
+            }
+          }
+        }
+      }
+    },
+    "known-empty-personal": {
+      "sha256": "922bad31a1b361bc4254c264f4cbbefa6c2e6ef3268423920e73ccdb2dbbbe9f",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-tenets-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_tenets_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-tenets-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_tenets": {
+            "schema": "ck3_12002_tenet_rows_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": 2197815299,
+            "current_rite": {
+              "rite_id": 0,
+              "core_tenets": [
+                {
+                  "key": "tenet_4",
+                  "current_rite_status": 4
+                }
+              ]
+            },
+            "faith_main_rite": {
+              "rite_id": 2181038082,
+              "core_tenets": [
+                {
+                  "key": "tenet_3",
+                  "current_rite_status": 3
+                }
+              ]
+            },
+            "personal_tenets_complete": true,
+            "personal_tenets": [],
+            "effective_tenet_states": [
+              {
+                "key": "tenet_4",
+                "current_rite_status": 4
+              },
+              {
+                "key": "tenet_3",
+                "current_rite_status": 3
+              },
+              {
+                "key": "tenet_0",
+                "current_rite_status": 0
+              },
+              {
+                "key": "tenet_1",
+                "current_rite_status": 1
+              },
+              {
+                "key": "tenet_2",
+                "current_rite_status": 2
+              }
+            ],
+            "status_values": {
+              "unknown": 0,
+              "known": 1,
+              "prohibited": 2,
+              "permitted": 3,
+              "core": 4
+            }
+          }
+        }
+      }
+    },
+    "personal-without-rite": {
+      "sha256": "a1dcfb5cccb529db6fb22610f979464cc3bb0885b56fa205058f5497687ffc06",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-tenets-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_tenets_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-tenets-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_tenets": {
+            "schema": "ck3_12002_tenet_rows_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": null,
+            "current_rite": null,
+            "faith_main_rite": null,
+            "personal_tenets_complete": true,
+            "personal_tenets": [
+              {
+                "key": "tenet_0",
+                "current_rite_status": null
+              },
+              {
+                "key": "tenet_4",
+                "current_rite_status": null
+              }
+            ],
+            "effective_tenet_states": [
+              {
+                "key": "tenet_0",
+                "current_rite_status": null
+              },
+              {
+                "key": "tenet_4",
+                "current_rite_status": null
+              }
+            ],
+            "status_values": {
+              "unknown": 0,
+              "known": 1,
+              "prohibited": 2,
+              "permitted": 3,
+              "core": 4
+            }
+          }
+        }
+      }
+    },
+    "tenet-state-unavailable": {
+      "sha256": "b6d5be2d166234cfa88e10c4f9b4b082c4a0c8b4350c005bfad5f8ffd79d0724",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-tenets-v1",
+          "accepted": true,
+          "status": "unavailable",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_tenets_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-tenets-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_tenets": {
+            "schema": "ck3_12002_tenet_rows_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": false,
+            "unavailable_reason": "tenet_state_unavailable",
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": null,
+            "current_rite": null,
+            "faith_main_rite": null,
+            "personal_tenets_complete": false,
+            "personal_tenets": [],
+            "effective_tenet_states": [],
+            "status_values": {
+              "unknown": 0,
+              "known": 1,
+              "prohibited": 2,
+              "permitted": 3,
+              "core": 4
+            }
+          }
+        }
+      }
+    }
+  }
+}

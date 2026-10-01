@@ -436,3 +436,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 4工具/config/handover文件复用原prepare/stage，新增41ON4OFF context readonly配置及实际CLI parser测试，5tests通过。真实+1day官方save/full82-driver pair原样冻结save4e14c9d/driver89bf040/episode与pipe保留，旧canonicalseed不覆盖。实际完整lifecycle旧环境绑定会阻断新profile恢复，正式rebinder独立修复在途；候选尚未launch。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\r2-file-only\R2-RUNNER-PREP-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:15:55 Native Doctrine knowledge and Tenet readonly mailboxes
+
+基础60保持冻结，仅13新增源把Doctrine knowledge（Od/O2各43checks6fullpack）与Tenet rows（各29checks4fullpack）接实际完整readonly mailbox及portablewires。旧provider不重测，三种test-helper/link/binding初始化harness RED保留；四域共享接线说明精确，不声称完整choices finalgate或paused值。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\READY-KNOWLEDGE-TENETS-MAILBOX.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

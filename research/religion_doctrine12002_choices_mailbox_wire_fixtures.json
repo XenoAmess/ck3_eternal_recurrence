@@ -1,0 +1,264 @@
+{
+  "schema": "xar.ck3_12002.doctrine_knowledge_actual_cpp_wire_fixture.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "producer": "Actual C++ mailbox and command-result serializer",
+  "source_sha256": {
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_religion_context.cpp": "1f9f487f1fba7c74bc75ccf72747acd56dc466cf7073d0b1ca112204cfcd6eb5",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_intrinsic.cpp": "2c79488a5a5e665c7fba6a2dc8db761f9ae7ce5ee298e617778d2ee12c2a8bb1",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_choices.cpp": "3c3b18fbd0209492b9b41d90c4118291f263c593f3dff8f488840d9d319855bc",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1.cpp": "32dc6f894db6c9cd94aa9d8cb56490b412459cb6adae8f3760448ed33ef53b6c",
+    "ck3_autonomous_player\\native_bridge\\src\\protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_choices_mailbox.cpp": "12802a6b7b4b7d77c07a45b7bf4af5e5e86d40f7e28f44e9af1a16e667edc9eb",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_choices_mailbox_test.cpp": "de913680e39ca445bac9ed1a5ac41c349a9f793ee0737cfe576be42aee0d0b9d",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\religion_doctrine12002_choices.hpp": "e4d04cbe482b2ad7c61069c3ab630076f112f66600c54c2ad1eb6592663bc317",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\religion_doctrine12002_choices_mailbox.hpp": "dcc8dbf131e9e28327053bf0c5d7c4aeb5f19f3de98fbafb43fad4132c29018a",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\religion_doctrine12002_intrinsic.hpp": "34dd4e52d731e6c3e24cac956869218efc6512fd431e63d0fcfec729b7703df3",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_religion_context.hpp": "620c7d0508d78035c9c1b189ebf5e12bde0b2ab19cf80a0167d4e068e4f2bc63",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_query_mailbox.hpp": "c3ff170ce4811f9f0a08c6cf1b81aa76e7601272b1b8ca46c37e699e9ac11df5",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp": "4d229a57785152f29655c52fc90997461d9a1644358bbb0659722d70fc3e7d86"
+  },
+  "packets": {
+    "learned-current.json": {
+      "type": "command_result",
+      "protocol_version": 1,
+      "request_id": "doctrine\"knowledge-fixture",
+      "ok": true,
+      "result": {
+        "step": "query-player-religion-doctrine-knowledge-v1",
+        "accepted": true,
+        "status": "observed",
+        "private_build": true,
+        "read_only": true,
+        "advertised": false,
+        "game_version": "1.20.0.2",
+        "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "domain_key": "player_religion_doctrine_knowledge_v1",
+        "backend_id": "ck3-1.20.0.2-native-player-religion-doctrine-knowledge-v1",
+        "snapshot_revision": 709,
+        "date_raw": 53175816,
+        "query_mode": "learned_rows",
+        "player_religion_doctrine_knowledge": {
+          "schema": "ck3_12002_played_doctrine_knowledge_v1",
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "available": true,
+          "unavailable_reason": null,
+          "capture_epoch": 3,
+          "date_raw": 53175816,
+          "played_character_id": 50331652,
+          "rite_id": 2181038082,
+          "knowledge_source": "character_extension",
+          "learned_rows": [
+            {
+              "doctrine_key": "doctrine_a",
+              "group_key": "group_a",
+              "source": "character_extension",
+              "native_knows_doctrine": true
+            },
+            {
+              "doctrine_key": "doc\"信",
+              "group_key": "group_a",
+              "source": "character_extension",
+              "native_knows_doctrine": true
+            }
+          ]
+        }
+      }
+    },
+    "lookup-known.json": {
+      "type": "command_result",
+      "protocol_version": 1,
+      "request_id": "doctrine\"knowledge-fixture",
+      "ok": true,
+      "result": {
+        "step": "query-player-religion-doctrine-knowledge-v1",
+        "accepted": true,
+        "status": "observed",
+        "private_build": true,
+        "read_only": true,
+        "advertised": false,
+        "game_version": "1.20.0.2",
+        "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "domain_key": "player_religion_doctrine_knowledge_v1",
+        "backend_id": "ck3-1.20.0.2-native-player-religion-doctrine-knowledge-v1",
+        "snapshot_revision": 709,
+        "date_raw": 53175816,
+        "query_mode": "by_key",
+        "player_religion_doctrine_knowledge": {
+          "schema": "ck3_12002_played_doctrine_knowledge_lookup_v1",
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "available": true,
+          "unavailable_reason": null,
+          "capture_epoch": 3,
+          "date_raw": 53175816,
+          "played_character_id": 50331652,
+          "requested_doctrine_key": "doctrine_a",
+          "definition_found": true,
+          "definition": {
+            "doctrine_key": "doctrine_a",
+            "group_key": "group_a",
+            "source": "definition_registry"
+          },
+          "native_knows_doctrine": true
+        }
+      }
+    },
+    "lookup-not-known.json": {
+      "type": "command_result",
+      "protocol_version": 1,
+      "request_id": "doctrine\"knowledge-fixture",
+      "ok": true,
+      "result": {
+        "step": "query-player-religion-doctrine-knowledge-v1",
+        "accepted": true,
+        "status": "observed",
+        "private_build": true,
+        "read_only": true,
+        "advertised": false,
+        "game_version": "1.20.0.2",
+        "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "domain_key": "player_religion_doctrine_knowledge_v1",
+        "backend_id": "ck3-1.20.0.2-native-player-religion-doctrine-knowledge-v1",
+        "snapshot_revision": 709,
+        "date_raw": 53175816,
+        "query_mode": "by_key",
+        "player_religion_doctrine_knowledge": {
+          "schema": "ck3_12002_played_doctrine_knowledge_lookup_v1",
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "available": true,
+          "unavailable_reason": null,
+          "capture_epoch": 3,
+          "date_raw": 53175816,
+          "played_character_id": 50331652,
+          "requested_doctrine_key": "doctrine_c",
+          "definition_found": true,
+          "definition": {
+            "doctrine_key": "doctrine_c",
+            "group_key": "group_b",
+            "source": "definition_registry"
+          },
+          "native_knows_doctrine": false
+        }
+      }
+    },
+    "lookup-absent.json": {
+      "type": "command_result",
+      "protocol_version": 1,
+      "request_id": "doctrine\"knowledge-fixture",
+      "ok": true,
+      "result": {
+        "step": "query-player-religion-doctrine-knowledge-v1",
+        "accepted": true,
+        "status": "observed",
+        "private_build": true,
+        "read_only": true,
+        "advertised": false,
+        "game_version": "1.20.0.2",
+        "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "domain_key": "player_religion_doctrine_knowledge_v1",
+        "backend_id": "ck3-1.20.0.2-native-player-religion-doctrine-knowledge-v1",
+        "snapshot_revision": 709,
+        "date_raw": 53175816,
+        "query_mode": "by_key",
+        "player_religion_doctrine_knowledge": {
+          "schema": "ck3_12002_played_doctrine_knowledge_lookup_v1",
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "available": true,
+          "unavailable_reason": null,
+          "capture_epoch": 3,
+          "date_raw": 53175816,
+          "played_character_id": 50331652,
+          "requested_doctrine_key": "not_a_definition",
+          "definition_found": false,
+          "definition": null,
+          "native_knows_doctrine": null
+        }
+      }
+    },
+    "lookup-registry-unavailable.json": {
+      "type": "command_result",
+      "protocol_version": 1,
+      "request_id": "doctrine\"knowledge-fixture",
+      "ok": true,
+      "result": {
+        "step": "query-player-religion-doctrine-knowledge-v1",
+        "accepted": true,
+        "status": "unavailable",
+        "private_build": true,
+        "read_only": true,
+        "advertised": false,
+        "game_version": "1.20.0.2",
+        "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "domain_key": "player_religion_doctrine_knowledge_v1",
+        "backend_id": "ck3-1.20.0.2-native-player-religion-doctrine-knowledge-v1",
+        "snapshot_revision": 709,
+        "date_raw": 53175816,
+        "query_mode": "by_key",
+        "player_religion_doctrine_knowledge": {
+          "schema": "ck3_12002_played_doctrine_knowledge_lookup_v1",
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "available": false,
+          "unavailable_reason": "definition_registry_unavailable",
+          "capture_epoch": 3,
+          "date_raw": 53175816,
+          "played_character_id": 50331652,
+          "requested_doctrine_key": "doctrine_a",
+          "definition_found": false,
+          "definition": null,
+          "native_knows_doctrine": null
+        }
+      }
+    },
+    "learned-empty.json": {
+      "type": "command_result",
+      "protocol_version": 1,
+      "request_id": "doctrine\"knowledge-fixture",
+      "ok": true,
+      "result": {
+        "step": "query-player-religion-doctrine-knowledge-v1",
+        "accepted": true,
+        "status": "observed",
+        "private_build": true,
+        "read_only": true,
+        "advertised": false,
+        "game_version": "1.20.0.2",
+        "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "domain_key": "player_religion_doctrine_knowledge_v1",
+        "backend_id": "ck3-1.20.0.2-native-player-religion-doctrine-knowledge-v1",
+        "snapshot_revision": 709,
+        "date_raw": 53175816,
+        "query_mode": "learned_rows",
+        "player_religion_doctrine_knowledge": {
+          "schema": "ck3_12002_played_doctrine_knowledge_v1",
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "available": true,
+          "unavailable_reason": null,
+          "capture_epoch": 3,
+          "date_raw": 53175816,
+          "played_character_id": 50331652,
+          "rite_id": 2181038082,
+          "knowledge_source": "character_extension",
+          "learned_rows": []
+        }
+      }
+    }
+  },
+  "actual_wire_sha256": {
+    "learned-current.json": "0b61e64a9eb6354c7a9cc529e1f6ce4fe181867ac9c6c954344c6fceafd98c57",
+    "lookup-known.json": "cb1d894899ebe41666a47a772eca5ca4b06e43f9cca71e8488d537f48a1905c2",
+    "lookup-not-known.json": "e3d01387cd687d7af745ba3240c5dc9fc21e378ddf6563d267d69203c398702a",
+    "lookup-absent.json": "79ae1031c800662591af05c720eb789e42b25bacf9c98d58774937974a10bb38",
+    "lookup-registry-unavailable.json": "abb4ecaa9de57db21a85a1273cc5a6392ba1200f61da8c6b6fb4d45e24356573",
+    "learned-empty.json": "9fc6d09deacb0d8c5198322e3eb5e4143245aac206d8e494d5c6088113be7326"
+  }
+}
