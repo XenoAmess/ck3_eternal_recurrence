@@ -1,0 +1,40 @@
+{
+  "schema": "xar.ck3.sway-outcome-opinion-wire-provenance/v1",
+  "exact_game_build": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\m4-intervention-live-next\\outcome-opinion-native\\result.json",
+  "receipt_sha256": "c2d12961442618f23f39495845c630a024f04c613970a30fc3a0dfa0d4397b38",
+  "actual_new_named_owner_executor_provider_full_serializer": true,
+  "visible_event_present": false,
+  "packet_bytes_modified": false,
+  "not_live_game_evidence": true,
+  "source_sha256": {
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_events.cpp": "eb58e7bf7e341e43425e7134f871680ab9531a01e3f5548cb125cb8afcb99859",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_gift_opinion.cpp": "0802c14e2817a29ddee761c2a1ea39e3ddd87816ca634c6dcc867ed03a2ed328",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_event_window_context.cpp": "82a9b2f05f47d47e2bc2c311af94f9380593969e8f76ed8f1b92dd73c5ede111",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_event_window_context_serializer.cpp": "c474cd21d030101bbc04619f213346641bb2ab0fa03314df202cd41654893e4b",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_outcome.cpp": "dbf2ab5fd620c0e45afc7f94b60a56398d184cb8c20c4bb96d90f9e2185646ea",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_outcome_mailbox.cpp": "34f3fac974d2fb4a011e934c33570717e1f80c1ca033d6e00355a47b686ad6a3",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1.cpp": "588d5b2dfd43fb9d4787e8182b4445b66ea121475459eaef489205743e4c02fd",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_outcome_opinion_wire_test.cpp": "407f20eddcbda577d736922e9d8f1f22677d09cc123aa4ce631b089eed0dcfe3",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_sway_outcome.hpp": "7345803a71ebfebab7bdd3e82e411ca213198eb8b4df16865e12da3e1b54ec1a",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_sway_outcome_mailbox.hpp": "4faf9abdaa587142a2515c333ad8d6aba83562b5b9e7668971f5f5d61765fee1",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp": "90e9ae211dce098cc07fe86a28ed4ce6ff7496ad2a0b2d07c418238279216ca5",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_outcome_test.cpp": "bd2cdc10513b555781732c2c95ac3c43c2d704736a2ea399a122ae0201854e46",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_event_window_context_test.cpp": "4b2177388785de04b1f12e9138f1de2dc869fd77d3341904e5ce5b5728b40d90"
+  },
+  "packets": [
+    {
+      "name": "wire-present-zero.json",
+      "origin": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\m4-intervention-live-next\\outcome-opinion-native\\wire-present-zero.json",
+      "sha256": "1cdc0c1dad3c5c014345bfb8c3404fed45c5c3d3ef6282cf6d944101b6a91f79"
+    },
+    {
+      "name": "wire-absent.json",
+      "origin": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\m4-intervention-live-next\\outcome-opinion-native\\wire-absent.json",
+      "sha256": "717fb56dc847eda6bfd907c4f57a3e907d02b772558f3d02e658758c1bdd4d82"
+    }
+  ]
+}

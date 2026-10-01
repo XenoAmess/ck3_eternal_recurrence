@@ -8,6 +8,8 @@ namespace xar::ck3_12002 {
 inline constexpr std::uintptr_t kSwayOutcomeSchemeStorageSlotRva = 0x5D1FC58;
 inline constexpr std::uintptr_t kSwayOutcomeTargetOpinionRva = 0x28BC490;
 inline constexpr std::uint16_t kSwayOutcomeSchemeScopeType = 9;
+inline constexpr std::string_view kSwayOutcomeOpinionStepV1 =
+    "query-sway-outcome-opinion-v1-private";
 
 using SwayOutcomeTargetOpinion = std::int32_t (*)(void *recipient, void *actor);
 
@@ -57,6 +59,11 @@ bool ReadSwayOutcomeOpinionV1(const SwayOutcomeBindings &bindings,
 std::string SerializeSwayOutcomeOpinionV1(const SwayOutcomeOpinionV1 &output,
                                         std::uint64_t snapshot_revision,
                                         std::int32_t date_raw);
+// Same full command-result wire used by the application-main mailbox handler.
+// This readback is independent of the presence of a current outcome event.
+std::string SerializeSwayOutcomeOpinionResponseV1(
+    const SwayOutcomeOpinionV1 &output, std::uint64_t snapshot_revision,
+    std::int32_t date_raw, std::string_view request_id);
 
 // These are exact authored effects for the native option index. They are
 // projections, never measurements of an executed option or total opinion delta.

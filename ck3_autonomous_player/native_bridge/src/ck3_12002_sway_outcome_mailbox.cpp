@@ -103,15 +103,19 @@ bool HandleSwayOutcomeEventV1(
       failure = query.failure.empty() ? "sway_outcome_executor_result_unavailable" : query.failure;
       return false;
     }
-    const auto native = query.opinion_only
-        ? SerializeSwayOutcomeOpinionV1(query.opinion_result, revision, query.envelope.execution_stamp.date_raw)
-        : SerializeSwayOutcomeEventV1(query.result);
-    const bool available = query.opinion_only ? query.opinion_result.available : query.result.available;
+    if (query.opinion_only) {
+      serialized = SerializeSwayOutcomeOpinionResponseV1(
+          query.opinion_result, revision, query.envelope.execution_stamp.date_raw,
+          request_id);
+      return true;
+    }
+    const auto native = SerializeSwayOutcomeEventV1(query.result);
+    const bool available = query.result.available;
     serialized = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" +
         Quoted(request_id) + ",\"ok\":true,\"result\":{\"step\":" + Quoted(step) +
         ",\"accepted\":true,\"status\":" + Quoted(available ? "available" : "unavailable") +
         ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"" +
-        (query.opinion_only ? "sway_outcome_opinion" : "sway_outcome_event") + "\":" +
+        "sway_outcome_event\":" +
         native + ",\"backend_id\":\"native-headless\"}}";
     return true;
   } catch (...) {

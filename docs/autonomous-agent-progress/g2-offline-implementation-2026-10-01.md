@@ -929,3 +929,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 11中央源；61ON/4OFF、默认OFF，独立named owner、router、实际原生完整wire与双DLL/injector构建均GREEN。新注册与查询只发布现有Sway意见材料；G2计数不变。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r11\central-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 23:43:28 Read dedicated Sway opinion material
+
+10域内精确源；existing12002 owner→provider→完整wire GREEN，实际两条packet→生产cache/Driver→官方SDK唯一组合case PASS4.26s。支持独立Sway/blocker意见观测，仍待R11 paused实机基线与自然结果。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-r11-opinion-material-normalized-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

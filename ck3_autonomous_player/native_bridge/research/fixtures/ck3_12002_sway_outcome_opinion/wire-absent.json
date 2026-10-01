@@ -1,0 +1,38 @@
+{
+  "type": "command_result",
+  "protocol_version": 1,
+  "request_id": "fixture-opinion-absent",
+  "ok": true,
+  "result": {
+    "step": "query-sway-outcome-opinion-v1-private",
+    "accepted": true,
+    "status": "available",
+    "private_build": true,
+    "read_only": true,
+    "advertised": false,
+    "sway_outcome_opinion": {
+      "schema": "xar.ck3.sway-outcome-opinion-v1",
+      "build": "1.20.0.2",
+      "available": true,
+      "unavailable_reason": "",
+      "snapshot_revision": 17,
+      "date_raw": 741221,
+      "actor_character_id": 42,
+      "target_character_id": 43,
+      "target_opinion_of_actor": 37,
+      "scheme_sway_opinion": {
+        "observed": true,
+        "present": false,
+        "value": null
+      },
+      "sway_blocker_opinion": {
+        "observed": true,
+        "present": false,
+        "value": null
+      },
+      "instance_terminal_outcome_observed": false,
+      "cancel_outcome_observed": false
+    },
+    "backend_id": "native-headless"
+  }
+}

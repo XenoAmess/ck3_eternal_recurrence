@@ -256,6 +256,20 @@ std::string SerializeSwayOutcomeOpinionV1(const SwayOutcomeOpinionV1 &row,
   return out + ",\"instance_terminal_outcome_observed\":false,\"cancel_outcome_observed\":false}";
 }
 
+std::string SerializeSwayOutcomeOpinionResponseV1(
+    const SwayOutcomeOpinionV1 &row, std::uint64_t revision,
+    std::int32_t date_raw, std::string_view request_id) {
+  return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" +
+      Quote(request_id) + ",\"ok\":true,\"result\":{\"step\":" +
+      Quote(kSwayOutcomeOpinionStepV1) +
+      ",\"accepted\":true,\"status\":" +
+      Quote(row.available ? "available" : "unavailable") +
+      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,"
+      "\"sway_outcome_opinion\":" +
+      SerializeSwayOutcomeOpinionV1(row, revision, date_raw) +
+      ",\"backend_id\":\"native-headless\"}}";
+}
+
 bool ReadSwayOutcomeEventV1(const SwayOutcomeBindings &bindings,
                            const SwayOutcomeRequestV1 &request,
                            SwayOutcomeEventV1 &output) noexcept {

@@ -7,9 +7,6 @@ namespace xar::ck3_12002 {
 
 inline constexpr std::string_view kSwayOutcomeEventStepV1 =
     "query-sway-outcome-event-v1-private";
-inline constexpr std::string_view kSwayOutcomeOpinionStepV1 =
-    "query-sway-outcome-opinion-v1-private";
-
 struct SwayOutcomeMailboxContextV1 {
   QueryMailboxEnvelope envelope{};
   SwayOutcomeBindings bindings{};
