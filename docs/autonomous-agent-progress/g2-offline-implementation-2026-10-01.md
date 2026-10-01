@@ -694,3 +694,9 @@ Five frozen sources. Actual paused23slots with16registry occupants and7exactNull
 Three frozen domain and documentation sources. Actual primary2141 ordered20 successors exceeded old16 internal DTO/parser capacity and blocked actual SDK crown-action source. Tested32 preserves all20 actual IDs. Native production callback before/after and Python actualquery fixture passed, no CA action or policy change. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\law\live-action-plan\crown-source-red\root-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:16:32 Verify named personal religious parameters query
+
+Three frozen sources. Single O2/W4/WX8checks complete namedqueue packet passed with primaryNULL and same fullactor/date/epoch. Four-key registry has actual knowntrue/false. Existing fourteen library sources and old matrices unchanged; root paused remains pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\personal-parameters\named-permit-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
