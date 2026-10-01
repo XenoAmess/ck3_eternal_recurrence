@@ -1,0 +1,388 @@
+{
+  "schema": "xar.ck3_12002.religion_conversion_reasons_abi.v1",
+  "status": "GREEN",
+  "evidence_level": "static-confirmed",
+  "executable": "Z:\\ck3_mod_rewrite\\artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\binaries\\ck3.exe",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "anchor_count": 30,
+  "anchors": [
+    {
+      "name": "Blockers output argument retained",
+      "rva": "0x1516b38",
+      "bytes": "488bda",
+      "instructions": [
+        {
+          "rva": "0x1516b38",
+          "mnemonic": "mov",
+          "operands": "rbx, rdx"
+        }
+      ]
+    },
+    {
+      "name": "Native small string inline/pointer zero",
+      "rva": "0x1516b40",
+      "bytes": "488932",
+      "instructions": [
+        {
+          "rva": "0x1516b40",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdx], rsi"
+        }
+      ]
+    },
+    {
+      "name": "Native string size initially zero",
+      "rva": "0x1516b43",
+      "bytes": "48897210",
+      "instructions": [
+        {
+          "rva": "0x1516b43",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdx + 0x10], rsi"
+        }
+      ]
+    },
+    {
+      "name": "Native string SSO capacity fifteen",
+      "rva": "0x1516b47",
+      "bytes": "48c742180f000000",
+      "instructions": [
+        {
+          "rva": "0x1516b47",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdx + 0x18], 0xf"
+        }
+      ]
+    },
+    {
+      "name": "Native inline text null terminator",
+      "rva": "0x1516b4f",
+      "bytes": "408832",
+      "instructions": [
+        {
+          "rva": "0x1516b4f",
+          "mnemonic": "mov",
+          "operands": "byte ptr [rdx], sil"
+        }
+      ]
+    },
+    {
+      "name": "Blockers command pays piety",
+      "rva": "0x1516b91",
+      "bytes": "40886c2450",
+      "instructions": [
+        {
+          "rva": "0x1516b91",
+          "mnemonic": "mov",
+          "operands": "byte ptr [rsp + 0x50], bpl"
+        }
+      ]
+    },
+    {
+      "name": "Blockers direct paid final validator",
+      "rva": "0x1516b9b",
+      "bytes": "e820c94801",
+      "instructions": [
+        {
+          "rva": "0x1516b9b",
+          "mnemonic": "call",
+          "operands": "0x29a34c0"
+        }
+      ]
+    },
+    {
+      "name": "Blockers reflection local native string",
+      "rva": "0x1516dde",
+      "bytes": "488d542420",
+      "instructions": [
+        {
+          "rva": "0x1516dde",
+          "mnemonic": "lea",
+          "operands": "rdx, [rsp + 0x20]"
+        }
+      ]
+    },
+    {
+      "name": "Blockers reflection invokes formatter core",
+      "rva": "0x1516de3",
+      "bytes": "e838fdffff",
+      "instructions": [
+        {
+          "rva": "0x1516de3",
+          "mnemonic": "call",
+          "operands": "0x1516b20"
+        }
+      ]
+    },
+    {
+      "name": "Blockers reflection publishes a copy",
+      "rva": "0x1516def",
+      "bytes": "e89c2b36ff",
+      "instructions": [
+        {
+          "rva": "0x1516def",
+          "mnemonic": "call",
+          "operands": "0x879990"
+        }
+      ]
+    },
+    {
+      "name": "Blockers reflection points to owned buffer",
+      "rva": "0x1516df5",
+      "bytes": "488d4c2420",
+      "instructions": [
+        {
+          "rva": "0x1516df5",
+          "mnemonic": "lea",
+          "operands": "rcx, [rsp + 0x20]"
+        }
+      ]
+    },
+    {
+      "name": "Blockers reflection native string destructor",
+      "rva": "0x1516dfa",
+      "bytes": "e851f233ff",
+      "instructions": [
+        {
+          "rva": "0x1516dfa",
+          "mnemonic": "call",
+          "operands": "0x856050"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor reads capacity",
+      "rva": "0x856056",
+      "bytes": "488b5118",
+      "instructions": [
+        {
+          "rva": "0x856056",
+          "mnemonic": "mov",
+          "operands": "rdx, qword ptr [rcx + 0x18]"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor heap threshold sixteen",
+      "rva": "0x85605d",
+      "bytes": "4883fa10",
+      "instructions": [
+        {
+          "rva": "0x85605d",
+          "mnemonic": "cmp",
+          "operands": "rdx, 0x10"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor loads native heap pointer",
+      "rva": "0x856063",
+      "bytes": "488b09",
+      "instructions": [
+        {
+          "rva": "0x856063",
+          "mnemonic": "mov",
+          "operands": "rcx, qword ptr [rcx]"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor large-allocation branch",
+      "rva": "0x856069",
+      "bytes": "4881fa00100000",
+      "instructions": [
+        {
+          "rva": "0x856069",
+          "mnemonic": "cmp",
+          "operands": "rdx, 0x1000"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor invokes runtime free",
+      "rva": "0x85608a",
+      "bytes": "e8d5de9c03",
+      "instructions": [
+        {
+          "rva": "0x85608a",
+          "mnemonic": "call",
+          "operands": "0x4223f64"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor resets size",
+      "rva": "0x85608f",
+      "bytes": "48c7431000000000",
+      "instructions": [
+        {
+          "rva": "0x85608f",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbx + 0x10], 0"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor resets inline capacity",
+      "rva": "0x856097",
+      "bytes": "48c743180f000000",
+      "instructions": [
+        {
+          "rva": "0x856097",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbx + 0x18], 0xf"
+        }
+      ]
+    },
+    {
+      "name": "Native destructor resets first character",
+      "rva": "0x85609f",
+      "bytes": "c60300",
+      "instructions": [
+        {
+          "rva": "0x85609f",
+          "mnemonic": "mov",
+          "operands": "byte ptr [rbx], 0"
+        }
+      ]
+    },
+    {
+      "name": "Final validator retains nonnull reason text",
+      "rva": "0x29a34de",
+      "bytes": "4c8bf2",
+      "instructions": [
+        {
+          "rva": "0x29a34de",
+          "mnemonic": "mov",
+          "operands": "r14, rdx"
+        }
+      ]
+    },
+    {
+      "name": "Native formatter intermediate constructor",
+      "rva": "0x29a35fd",
+      "bytes": "e8de30e200",
+      "instructions": [
+        {
+          "rva": "0x29a35fd",
+          "mnemonic": "call",
+          "operands": "0x37c66e0"
+        }
+      ]
+    },
+    {
+      "name": "Native formatter output text argument",
+      "rva": "0x29a36af",
+      "bytes": "4d8bc6",
+      "instructions": [
+        {
+          "rva": "0x29a36af",
+          "mnemonic": "mov",
+          "operands": "r8, r14"
+        }
+      ]
+    },
+    {
+      "name": "Native formatter final reason text emission",
+      "rva": "0x29a36ba",
+      "bytes": "e801a6db00",
+      "instructions": [
+        {
+          "rva": "0x29a36ba",
+          "mnemonic": "call",
+          "operands": "0x375dcc0"
+        }
+      ]
+    },
+    {
+      "name": "Native piety reason string append",
+      "rva": "0x29a4216",
+      "bytes": "e8b51deefd",
+      "instructions": [
+        {
+          "rva": "0x29a4216",
+          "mnemonic": "call",
+          "operands": "0x885fd0"
+        }
+      ]
+    },
+    {
+      "name": "UI newline insertion output buffer",
+      "rva": "0x1516c67",
+      "bytes": "488bcb",
+      "instructions": [
+        {
+          "rva": "0x1516c67",
+          "mnemonic": "mov",
+          "operands": "rcx, rbx"
+        }
+      ]
+    },
+    {
+      "name": "UI newline insertion native method",
+      "rva": "0x1516c6a",
+      "bytes": "e891a39d02",
+      "instructions": [
+        {
+          "rva": "0x1516c6a",
+          "mnemonic": "call",
+          "operands": "0x3ef1000"
+        }
+      ]
+    },
+    {
+      "name": "Native insertion size read",
+      "rva": "0x3ef1015",
+      "bytes": "4c8b4110",
+      "instructions": [
+        {
+          "rva": "0x3ef1015",
+          "mnemonic": "mov",
+          "operands": "r8, qword ptr [rcx + 0x10]"
+        }
+      ]
+    },
+    {
+      "name": "Native insertion position bounds",
+      "rva": "0x3ef101c",
+      "bytes": "4c3bc2",
+      "instructions": [
+        {
+          "rva": "0x3ef101c",
+          "mnemonic": "cmp",
+          "operands": "r8, rdx"
+        }
+      ]
+    },
+    {
+      "name": "Native insertion capacity read",
+      "rva": "0x3ef1025",
+      "bytes": "4c8b4918",
+      "instructions": [
+        {
+          "rva": "0x3ef1025",
+          "mnemonic": "mov",
+          "operands": "r9, qword ptr [rcx + 0x18]"
+        }
+      ]
+    }
+  ],
+  "native_string": {
+    "size": "0x20",
+    "inline_storage_size": 16,
+    "size_offset": "0x10",
+    "capacity_offset": "0x18",
+    "initial_capacity": 15,
+    "constructor": "1516B20 inline initialization",
+    "native_destructor_rva": "0x856050"
+  },
+  "formatter": {
+    "reflection_rva": "0x1516dd0",
+    "core_rva": "0x1516b20",
+    "native_validator_rva": "0x29a34c0",
+    "reason_argument": "non-null owned native string",
+    "payment_flag": 1,
+    "newline_literal_rva": "0x448d028"
+  },
+  "boundary": "Read-only text formatter source; no GUI construction, submission or live proof"
+}

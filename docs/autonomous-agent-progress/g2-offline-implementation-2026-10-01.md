@@ -484,3 +484,9 @@ Sway 当前原生 CanContinue 返回值已补齐 mode1/linked1 ABI 与 serialize
 18中央源冻结R3 49ON4OFF，仅actualready33CPP。11真实readonly callbacks/namedpermissions/typedparser；default158/selected388路由及43mappings/4default44candidate registration GREEN，双DLL/injector构建GREEN，10新增namedfixtures由owner单次验收。实际DLL最终manifest等待所有编译input提交，未触CK；R4 Reform/CE1/reasons/execution另增量。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-integration-next\central-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:50:01 Native paid conversion blocker text reader
+
+6源读取相同paid validator nonnull native engine-string，复制后游戏856050 destructor正确释放。ABI30lifetime spans及Od/O2各13checks7actualJSON首轮GREEN；knownempty不是unavailable，nonempty不是拒绝。旧terms blocker_available=false不改；新readonly fullmailbox/MCP另外接线。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\reasons\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
