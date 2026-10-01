@@ -379,13 +379,15 @@ void AppendCountyExposure(std::string &output,
   output.push_back('}');
 }
 
-void AppendProvenance(std::string &output) {
+void AppendProvenance(std::string &output, std::string_view game_version,
+                      std::string_view executable_sha256,
+                      std::string_view backend_id) {
   output += "{\"game_version\":";
-  AppendJsonString(output, kPlayerFactionAlertsV1GameVersion);
+  AppendJsonString(output, game_version);
   output += ",\"executable_sha256\":";
-  AppendJsonString(output, kPlayerFactionAlertsV1ExecutableSha256);
+  AppendJsonString(output, executable_sha256);
   output += ",\"backend_id\":";
-  AppendJsonString(output, kPlayerFactionAlertsV1BackendId);
+  AppendJsonString(output, backend_id);
   output.push_back('}');
 }
 
@@ -393,6 +395,14 @@ void AppendProvenance(std::string &output) {
 
 std::string SerializePlayerFactionAlertsV1(
     const game::PlayerFactionAlertsV1 &value) {
+  return SerializePlayerFactionAlertsWithProvenanceV1(
+      value, kPlayerFactionAlertsV1GameVersion,
+      kPlayerFactionAlertsV1ExecutableSha256, kPlayerFactionAlertsV1BackendId);
+}
+
+std::string SerializePlayerFactionAlertsWithProvenanceV1(
+    const game::PlayerFactionAlertsV1 &value, std::string_view game_version,
+    std::string_view executable_sha256, std::string_view backend_id) {
   const bool available =
       value.status == game::PlayerFactionAlertsStatusV1::available;
   if ((available && !ValidAvailable(value)) ||
@@ -465,7 +475,7 @@ std::string SerializePlayerFactionAlertsV1(
   if (available) output += "null";
   else AppendJsonString(output, WireUnavailableReason(value.unavailable_reason));
   output += ",\"provenance\":";
-  AppendProvenance(output);
+  AppendProvenance(output, game_version, executable_sha256, backend_id);
   output.push_back('}');
   return output;
 }

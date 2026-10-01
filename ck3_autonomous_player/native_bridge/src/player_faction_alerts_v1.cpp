@@ -228,6 +228,30 @@ void MaterializeCountOnly(std::int32_t player_character_id,
 
 } // namespace
 
+game::ReadPlayerFactionAlertsResultV1 ProjectPlayerFactionAlertsSourceSampleV1(
+    const PlayerFactionAlertsSourceSampleV1 &sample,
+    const game::PlayerFactionAlertsFrameV1 &frame,
+    game::PlayerFactionAlertsV1 &output) noexcept {
+  output = {};
+  output.snapshot_revision = frame.snapshot_revision;
+  output.date_raw = frame.date_raw;
+  try {
+    const auto failure = ValidateSample(sample, frame.played_character_id);
+    if (failure != Failure::none) {
+      output.unavailable_reason = failure;
+      return Result::unavailable;
+    }
+    MaterializeFull(sample, frame, output);
+    return Result::available;
+  } catch (...) {
+    output = {};
+    output.snapshot_revision = frame.snapshot_revision;
+    output.date_raw = frame.date_raw;
+    output.unavailable_reason = Failure::reader_exception;
+    return Result::unavailable;
+  }
+}
+
 PlayerFactionAlertsNativeEnvironmentV1
 BindPlayerFactionAlertsNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept {

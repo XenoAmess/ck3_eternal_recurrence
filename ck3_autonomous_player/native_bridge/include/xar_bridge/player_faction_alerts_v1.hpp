@@ -267,4 +267,17 @@ std::string_view PlayerFactionAlertsFailureReasonKeyV1(
 std::string SerializePlayerFactionAlertsV1(
     const game::PlayerFactionAlertsV1 &snapshot);
 
+// Shared semantic projection: executable-specific providers supply owned
+// source identities and native final values, without going through fixture
+// admission or the legacy count-only production reader.
+game::ReadPlayerFactionAlertsResultV1 ProjectPlayerFactionAlertsSourceSampleV1(
+    const PlayerFactionAlertsSourceSampleV1 &sample,
+    const game::PlayerFactionAlertsFrameV1 &frame,
+    game::PlayerFactionAlertsV1 &output) noexcept;
+
+std::string SerializePlayerFactionAlertsWithProvenanceV1(
+    const game::PlayerFactionAlertsV1 &snapshot,
+    std::string_view game_version, std::string_view executable_sha256,
+    std::string_view backend_id);
+
 } // namespace xar::ck3_11906

@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "contract": "ck3-1.20.0.2-faction-final-metrics",
+  "build": {
+    "product_version": "1.20.0.2",
+    "steam_build_id": "25588574",
+    "file_size": 101039736,
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "architecture": "msvc-x64"
+  },
+  "readiness": "static-ready; provider application-main paused verification pending",
+  "live_verified": false,
+  "read_only": true,
+  "caller_contract": "resolve CFaction and complete generation-bound identity before calls; use existing paused application-main observer",
+  "function_abi": {
+    "power": {
+      "rva": "0x2601EF0",
+      "signature": "int64_t* __fastcall(void* faction, int64_t* output)",
+      "unit": "percent_points",
+      "scale": 100000,
+      "semantics": "stock final power ratio multiplied by 100, clamped to [0,1000] percent; nonpositive denominator gives 1000 percent"
+    },
+    "power_threshold": {
+      "rva": "0x26021A0",
+      "signature": "int64_t* __fastcall(void* faction, int64_t* output)",
+      "unit": "percent_points",
+      "scale": 100000,
+      "definition_value_offset": "0xDB0",
+      "semantics": "native final scripted power_threshold evaluator scoped to complete faction identity; not constant 80"
+    },
+    "discontent": {
+      "field_offset": "0x28",
+      "storage_type": "signed int64_t CFixedPoint Q100000",
+      "unit": "discontent_points",
+      "scale": 100000,
+      "semantics": "current native cache read also used by stock scalar getter 0x2601C20; 100 points is raw 10000000"
+    },
+    "discontent_per_month": {
+      "rva": "0x2601B50",
+      "signature": "int64_t* __fastcall(void* faction, int64_t* output)",
+      "unit": "discontent_points_per_month",
+      "scale": 100000,
+      "definition_value_offset": "0xC70",
+      "semantics": "native final scripted discontent_progress evaluator scoped to complete faction identity; negative and zero are legitimate"
+    },
+    "months_until_max_discontent": {
+      "rva": "0x2601C60",
+      "signature": "int32_t __fastcall(void* faction)",
+      "unit": "months",
+      "semantics": "stock rounds positive remaining-points/growth up; returns 0 when already at threshold OR growth is nonpositive; zero does not prove imminent demands"
+    },
+    "dangerous_by_stock_rule": {
+      "rva": "0x1D65BF0",
+      "signature": "bool __fastcall(void* ignored_rcx, void* faction_rdx)",
+      "stock_callback_rva": "0x2605B20",
+      "call_arguments": "(faction, faction), matching callback duplicate RCX into RDX",
+      "scope_type": "0x19",
+      "semantics": "native final is_dangerous_faction scripted rule evaluates complete faction ID; no local guessed danger threshold"
+    }
+  },
+  "faction_item_comparison_getters": {
+    "GetPower": {
+      "callback_rva": "0x14B0E40",
+      "leaf_rva": "0x14AAD50",
+      "signature": "int64_t* __fastcall(void* faction_item, int64_t* output)",
+      "scale": 100000,
+      "unit": "strength_ratio",
+      "semantics": "different units from stock percent-point power; 1.0 is raw100000; denominator<=0 returns raw1000000"
+    },
+    "GetDiscontent": {
+      "callback_rva": "0x14B0DC0",
+      "leaf_rva": "0x14ABCD0",
+      "signature": "int64_t* __fastcall(void* faction_item, int64_t* output)",
+      "scale": 100000,
+      "unit": "discontent_divided_by_100",
+      "semantics": "UI normalized value; raw current native discontent is divided by100, loses low two raw digits"
+    },
+    "GetPowerThreshold": {
+      "requested_name_is_not_registered": true,
+      "actual_ui_name": "GetPowerThresholdPosition",
+      "actual_callback_rva": "0x14B0710",
+      "actual_leaf_rva": "0x14AA970",
+      "semantics": "GUI position vector, unsuitable as financial/planner threshold; use native final 0x26021A0"
+    },
+    "GetDiscontentPerMonth": {
+      "requested_name_is_not_registered": true,
+      "actual_native_final_rva": "0x2601B50",
+      "semantic_evidence": "FactionItem.IsDiscontentIncreasing/Decreasing and months callbacks call this CFaction receiver"
+    },
+    "GetMonthsUntilMaxDiscontent": {
+      "callback_rva": "0x14B12C0",
+      "native_rva": "0x2601C60"
+    }
+  },
+  "layout": {
+    "item_full_faction_id": "0x0",
+    "faction_full_id": "0x10",
+    "faction_definition": "0x20",
+    "current_discontent": "0x28",
+    "current_power_percent_points": "0x30",
+    "current_power_threshold_percent_points": "0x38",
+    "staged_discontent": "0x98",
+    "staged_power": "0xA0",
+    "staged_threshold": "0xA8",
+    "faction_storage_slot_rva": "0x5D1DE90",
+    "faction_fallback_slot_rva": "0x5D1DE10",
+    "discontent_threshold_define_slot_rva": "0x5C68D60"
+  },
+  "native_stock_rule": {
+    "name": "is_dangerous_faction",
+    "source": "common/scripted_rules/00_rules.txt:354",
+    "trigger_source": "common/scripted_triggers/00_scripted_triggers.txt:206",
+    "branches": [
+      "leader exists and is human",
+      "peasant_faction and native months_until_max_discontent <=12",
+      "not peasant_faction and native discontent_per_month >0"
+    ],
+    "alert_at_war_exclusion": "common/important_actions/00_realm_actions.txt:359 excludes exists=faction_war separately; danger result itself does not exclude war",
+    "religion_scope": "none; faction type keys are opaque identities; no faith/doctrine/tenet/fervor research"
+  },
+  "power_dependencies": {
+    "target_minus_member_strength": "0x2601DA0",
+    "member_strength_including_counties": "0x26020B0",
+    "county_member_strength": "0x26000B0",
+    "county_member_semantics": "character-member vector alone is not power; county members contribute through native helper"
+  },
+  "code_spans": [
+    {
+      "name": "faction_item_power_ratio",
+      "start_rva": "0x14AAD50",
+      "size": "0x16D",
+      "sha256": "E1AAE5BE6B63241BBA06F3D34DCE4BA104B745C9990F1317B8D445C6790BB7E9"
+    },
+    {
+      "name": "faction_item_discontent_ratio",
+      "start_rva": "0x14ABCD0",
+      "size": "0x146",
+      "sha256": "329C09AFB5459D5DE016D51B397DB7804E6791FFCFCC2281B791106E81FF513C"
+    },
+    {
+      "name": "faction_power_percent_points",
+      "start_rva": "0x2601EF0",
+      "size": "0x1BB",
+      "sha256": "46FD1CEB9E0616518F61E3A6793C751C43547AFB3ACF16E654341BBA144C2155"
+    },
+    {
+      "name": "faction_power_threshold_percent_points",
+      "start_rva": "0x26021A0",
+      "size": "0xCC",
+      "sha256": "C39FBECD8926A58B02ABCC1CA0D73BF08BC5A998A4ABEBB652DA6F4CE09A3259"
+    },
+    {
+      "name": "faction_discontent_progress_per_month",
+      "start_rva": "0x2601B50",
+      "size": "0xCC",
+      "sha256": "FC7F4500595D7B6E1DC7E017851A4FCC0D74570F18FED61C87D62CDB18046D34"
+    },
+    {
+      "name": "faction_months_until_max_discontent",
+      "start_rva": "0x2601C60",
+      "size": "0x13C",
+      "sha256": "EC597AB7260B0E357F4CC1C0754DE6B4B271EDBC3CB6B553623BDF61BE221D40"
+    },
+    {
+      "name": "faction_stock_is_dangerous",
+      "start_rva": "0x1D65BF0",
+      "size": "0x208",
+      "sha256": "E603403A5444E2132AF051368ECBC19054A65323E0BA9B8093F97F653241217B"
+    },
+    {
+      "name": "faction_stock_is_dangerous_reflection",
+      "start_rva": "0x2605B20",
+      "size": "0x3B",
+      "sha256": "0955A802C7E188450FCF7C9DDFFDCD223B484762E32A6AA443607820F107A047"
+    },
+    {
+      "name": "faction_target_minus_member_strength",
+      "start_rva": "0x2601DA0",
+      "size": "0x150",
+      "sha256": "3975705393F45486E7A8E436D38587354DCD209D9B5189B89A0F6CEA57BDDCEB"
+    },
+    {
+      "name": "faction_member_strength_including_counties",
+      "start_rva": "0x26020B0",
+      "size": "0xE8",
+      "sha256": "8137E2B91B76B5F37EDCD4E1E520B8C5A021532C9F14F43FC01699CB2A40A2E0"
+    },
+    {
+      "name": "faction_county_member_strength",
+      "start_rva": "0x26000B0",
+      "size": "0x160",
+      "sha256": "1BFD14641E5CEAB4A74B6ADE7BA689B6A6CE6161FE9380C83CCC6A5C481481C0"
+    },
+    {
+      "name": "faction_stock_has_enough_power_reflection",
+      "start_rva": "0x14B1240",
+      "size": "0x71",
+      "sha256": "CEDC815DD356C2AB3D18E6F752252EBF0BC31C657236F087E17BA6A6DCF18506"
+    },
+    {
+      "name": "faction_stock_is_discontent_at_max_reflection",
+      "start_rva": "0x14B11C0",
+      "size": "0x74",
+      "sha256": "39B4166747E575E32431384A23111A535C4B2F32D2C2438B2E78E5B54F19DC6E"
+    },
+    {
+      "name": "faction_monthly_stage_values",
+      "start_rva": "0x2602D20",
+      "size": "0x229",
+      "sha256": "AE181DB3169AB4FAFFD6C55421C97713318AA3511ECF60C428E45EE3250E0D0E"
+    },
+    {
+      "name": "faction_monthly_publish_values",
+      "start_rva": "0x2602F50",
+      "size": "0x30F",
+      "sha256": "530AA55A3F6806870D258297561C0029BD9A924FEC03BEFC0F9368373083CF94"
+    },
+    {
+      "name": "faction_stock_rule_context",
+      "start_rva": "0x1D65660",
+      "size": "0x57",
+      "sha256": "D8BD6B8C3562E88D10EAD6CB01F71683191877C0FBD0B5F3B39A17CF959D552F"
+    },
+    {
+      "name": "faction_item_discontent_registration",
+      "start_rva": "0x21DC00",
+      "size": "0xCF",
+      "sha256": "B790FB61C9223A0902C0994D8A6C4AC28DDE197E230BBE17792219BE68A82CC7"
+    },
+    {
+      "name": "faction_item_power_registration",
+      "start_rva": "0x21DDC0",
+      "size": "0xBA",
+      "sha256": "7DBAFE6D712113A46D9921806E240EEA05F975E89F327C6D78D46A5EFB8E0E0E"
+    },
+    {
+      "name": "faction_months_registration",
+      "start_rva": "0x21ED20",
+      "size": "0xFC",
+      "sha256": "E0D23CF5242CF85E802BCEEF2625AB089083126321D5B760D5A889D88B5DC943"
+    },
+    {
+      "name": "faction_stock_danger_registration",
+      "start_rva": "0x515860",
+      "size": "0xD1",
+      "sha256": "E42C333FE38BA261FDE523B91977E3086268B55D4A2B397F91F6B46B2DCC0B17"
+    },
+    {
+      "name": "faction_discontent_scalar",
+      "start_rva": "0x2601C20",
+      "size": "0x12",
+      "sha256": "FCA2BEC9B71502BF4291BAA92E37A169240BE8A124C3E018A7A46D1913ABBAEF"
+    },
+    {
+      "name": "faction_cached_power_scalar",
+      "start_rva": "0x2601C40",
+      "size": "0x12",
+      "sha256": "BFFBFD5620F7824616DE38D939E5EA7C122E2FCAB0E906F0F36D5A7D26B7EBAF"
+    }
+  ],
+  "instruction_checks": [
+    {
+      "name": "discontent_field",
+      "rva": "0x14ABD11",
+      "bytes": "4C 8B 48 28",
+      "instruction": "mov r9, qword ptr [rax + 0x28]"
+    },
+    {
+      "name": "power_field",
+      "rva": "0x2601C43",
+      "bytes": "F3 48 0F 2A 41 30",
+      "instruction": "cvtsi2ss xmm0, qword ptr [rcx + 0x30]"
+    },
+    {
+      "name": "threshold_cache_compare",
+      "rva": "0x14B1292",
+      "bytes": "48 39 41 30",
+      "instruction": "cmp qword ptr [rcx + 0x30], rax"
+    },
+    {
+      "name": "threshold_definition_offset",
+      "rva": "0x26021D5",
+      "bytes": "48 81 C1 B0 0D 00 00",
+      "instruction": "add rcx, 0xdb0"
+    },
+    {
+      "name": "threshold_scope_identity",
+      "rva": "0x26021C8",
+      "bytes": "48 63 43 10",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x10]"
+    },
+    {
+      "name": "growth_definition_offset",
+      "rva": "0x2601B85",
+      "bytes": "48 81 C1 70 0C 00 00",
+      "instruction": "add rcx, 0xc70"
+    },
+    {
+      "name": "growth_scope_identity",
+      "rva": "0x2601B78",
+      "bytes": "48 63 43 10",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x10]"
+    },
+    {
+      "name": "months_zero_when_already_max",
+      "rva": "0x2601C7B",
+      "bytes": "48 3B D9",
+      "instruction": "cmp rbx, rcx"
+    },
+    {
+      "name": "months_zero_when_growth_nonpositive",
+      "rva": "0x2601C89",
+      "bytes": "4D 85 C0",
+      "instruction": "test r8, r8"
+    },
+    {
+      "name": "power_percent_multiplier",
+      "rva": "0x2602026",
+      "bytes": "48 6B C1 64",
+      "instruction": "imul rax, rcx, 0x64"
+    },
+    {
+      "name": "power_percent_clamp",
+      "rva": "0x2602089",
+      "bytes": "B9 00 E1 F5 05",
+      "instruction": "mov ecx, 0x5f5e100"
+    },
+    {
+      "name": "danger_scope_type",
+      "rva": "0x1D65CA3",
+      "bytes": "B8 19 00 00 00",
+      "instruction": "mov eax, 0x19"
+    },
+    {
+      "name": "danger_scope_identity",
+      "rva": "0x1D65CAD",
+      "bytes": "48 63 43 10",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x10]"
+    },
+    {
+      "name": "danger_rules_container",
+      "rva": "0x1D65CB6",
+      "bytes": "48 8B 8F F0 0E 00 00",
+      "instruction": "mov rcx, qword ptr [rdi + 0xef0]"
+    },
+    {
+      "name": "danger_rule_offset",
+      "rva": "0x1D65CBD",
+      "bytes": "48 81 C1 60 0B 00 00",
+      "instruction": "add rcx, 0xb60"
+    },
+    {
+      "name": "threshold_staged_store",
+      "rva": "0x2602D66",
+      "bytes": "48 89 8B A8 00 00 00",
+      "instruction": "mov qword ptr [rbx + 0xa8], rcx"
+    },
+    {
+      "name": "threshold_current_publish",
+      "rva": "0x2602F9E",
+      "bytes": "48 89 41 38",
+      "instruction": "mov qword ptr [rcx + 0x38], rax"
+    },
+    {
+      "name": "power_current_publish",
+      "rva": "0x2602F93",
+      "bytes": "48 89 41 30",
+      "instruction": "mov qword ptr [rcx + 0x30], rax"
+    }
+  ],
+  "stock_files": [
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8E430D77EB6E8767030F34B1C53D5DAE84277FB354BD73CC42F93DC500BE8982"
+    },
+    {
+      "path": "common/scripted_rules/00_rules.txt",
+      "sha256": "C7BA2AE71E4461E88C6D5C86D8FC15FA7CCC73EDAE1E28FB3B65F0E362C4560F"
+    },
+    {
+      "path": "common/scripted_triggers/00_scripted_triggers.txt",
+      "sha256": "A0D06291C9B29DBEB29E855B8D9552F30B967238046EBBCE45D997F730C41B5A"
+    },
+    {
+      "path": "common/important_actions/00_realm_actions.txt",
+      "sha256": "658943902D58FCC1E2F63E053F6F523C646F195B977531BF13D53F7A2BAC55E4"
+    },
+    {
+      "path": "common/factions/00_factions.txt",
+      "sha256": "C604B3FCF3FE315516483A9DA45FE8C0E38DB2031DC683BA6EDD569C120B377B"
+    },
+    {
+      "path": "common/factions/00_peasant_faction_new.txt",
+      "sha256": "ABCFD7119D00285660818E7E26AED230C78ACE863F714A746A1EE99EA9672AA4"
+    }
+  ],
+  "artifact_root": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\factions\\metrics",
+  "method": "read-only PE sections, exact string registration/callback chains, unwind chain aggregation, Capstone disassembly and frozen stock scripts; no game process/query/pipe/input"
+}

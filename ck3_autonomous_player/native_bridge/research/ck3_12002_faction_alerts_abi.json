@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "contract": "ck3-1.20.0.2-player-faction-alerts-v1",
+  "status": "static-ready-production-source-fixtures-passed-paused-live-pending",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "native_provider": {
+    "header": "include/xar_bridge/ck3_12002_faction_alerts.hpp",
+    "source": "src/ck3_12002_faction_alerts.cpp",
+    "binder": "BindPlayerFactionAlertsNativeEnvironmentV1",
+    "reader": "ReadPlayerFactionAlertsV1",
+    "independent_entity_reader": "ReadFactionEntityV1",
+    "entity_terminals": ["available", "known_absent", "unavailable"],
+    "semantic_projection": "ck3_11906::ProjectPlayerFactionAlertsSourceSampleV1",
+    "serializer": "ck3_12002::SerializePlayerFactionAlertsV1",
+    "mailbox_executor": "ExecutePlayerFactionAlertsMailbox12002",
+    "application_main_entry": "ReadPlayerFactionAlertsOnApplicationMain12002"
+  },
+  "proofs": [
+    "ck3_12002_faction_layout_abi.json",
+    "ck3_12002_faction_metrics_abi.json",
+    "ck3_12002_faction_county_exposure_abi.json"
+  ],
+  "final_native_callbacks": {
+    "power_percent_points_q100000": "0x2601EF0",
+    "power_threshold_percent_points_q100000": "0x26021A0",
+    "discontent_points_q100000": "CFaction+0x28 signed int64",
+    "discontent_per_month_points_q100000": "0x2601B50",
+    "months_until_max_discontent": "0x2601C60",
+    "stock_dangerous_scripted_rule": "0x1D65BF0",
+    "faction_at_war": "0x2603AB0",
+    "leader_is_human_by_full_character_id": "0x2BAA710",
+    "title_province": "0x230F900"
+  },
+  "source_semantics": {
+    "targeting_ids": "CCharacter+0x1C0 -> land state+0x120 data/+0x12C signed count",
+    "character_members": "CFaction+0x48 data/+0x54 count; stride0x20, CharacterID+8, owner FactionID+0x0C",
+    "county_members": "CFaction+0x60 data/+0x6C count; stride0x18, TitleID+8, owner CFaction pointer+0x10",
+    "canonical_leader": "CFaction+0x44; absent or unresolved full identity is nullable, not an invented leader",
+    "faction_type_key": "CFaction+0x20 definition -> std::string key+0x18; opaque key only",
+    "subrealm_counties": "CLandedTitlesBuilder<0> source: held full TitleIDs land+0x1E0/count+0x1EC, direct vassal full ContractIDs land+0x218/count+0x224 recursively; contract identity+8/vassal Character pointer+0x20; county tier2, title de-jure childcount+0x11C>0",
+    "county_joined_factions": "TitleProvince -> Province tag+0x85C=0x50726F76 -> CountyData pointer+0x848 -> full FactionIDs+0x3B0/count+0x3BC",
+    "county_exposure": "one stable first matching joined faction per county, stock existential: populist_faction AND final power>final threshold AND target!=player",
+    "identity": "every retained full-generation character/faction/title/war/contract identity resolves its exact component storage and round-trips",
+    "entity_receipt": "independent full-generation storage lookup; disappearance from player targeting vector does not imply dissolved",
+    "publication": "two complete owned samples followed by unchanged paused application-main frame; no borrowed game pointers are serialized"
+  },
+  "units": {
+    "scale": 100000,
+    "power": "percentage points: 110% = raw11000000",
+    "power_threshold": "percentage points: 80% = raw8000000",
+    "discontent": "native discontent points: 25 = raw2500000",
+    "discontent_per_month": "native discontent points per month",
+    "legacy_gui_conversion": "FactionItem.GetPower and GetDiscontent expose normalized ratios 100 times smaller; do not combine them with native threshold/progress",
+    "months_zero": "publish native final integer literally; zero can mean discontent already full or nonpositive growth, and does not claim exact ultimatum timing"
+  },
+  "fixtures": {
+    "source": "src/ck3_12002_faction_alerts_test.cpp",
+    "cases": 7,
+    "optimization_modes": ["/Od", "/O2"],
+    "compiler_checks": ["/std:c++20", "/W4", "/WX"],
+    "actual_wire_artifact": "artifacts/g2-offline-2026-10-01/factions/fixture.json",
+    "receipt": "artifacts/g2-offline-2026-10-01/factions/production-source-fixture-receipt.json",
+    "legacy_and_mailbox_receipt": "artifacts/g2-offline-2026-10-01/factions/mailbox-legacy-receipt.json",
+    "coverage": [
+      "actual provider memory path and all final native callback signatures",
+      "character-member and leaderless county-only threats",
+      "exact stock recursive vassal contract and county joined-faction source",
+      "non-ancestor target county exposure",
+      "legal known-empty complete alert",
+      "independent receipt entity remains after targeting vector removal",
+      "full-generation recycled faction becomes known-absent",
+      "strict county power threshold equality is excluded",
+      "negative native discontent growth is watch",
+      "native human leader and at-war handoff",
+      "changed native metrics/frame and migrated county owner layout",
+      "new provenance from the existing semantic serializer"
+    ]
+  },
+  "scope": {
+    "read_only": true,
+    "religion_keys_opaque_only": true,
+    "legacy_11906_preserved": true,
+    "live_artifact_exists": false,
+    "local_ck3_contacted": false,
+    "g2_m4_completed": false
+  },
+  "live_boundary": "controlled 1.20.0.2 paused application-main sample validates final values and current native rows; gift submit/independent outcome remains a separate live action package"
+}

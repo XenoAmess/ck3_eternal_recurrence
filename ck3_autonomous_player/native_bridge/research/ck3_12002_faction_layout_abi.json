@@ -1,0 +1,740 @@
+{
+  "schema": "ck3-12002-faction-layout-abi-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "image_base": "0x140000000",
+  "readiness": "static-ready",
+  "live_evidence": null,
+  "scope": "Frozen executable and vanilla script structural reverse engineering; no CK3 process, pipe, UI, injection, launch, restart, or runtime query.",
+  "storage": {
+    "index_mask": "0x00FFFFFF",
+    "slots_offset": "0x20",
+    "capacity_offset": "0x2C",
+    "slot_stride": "0x10",
+    "slot_object_offset": "0x08",
+    "generation_round_trip_required": true,
+    "faction": {
+      "storage_slot_rva": "0x5D1DE90",
+      "fallback_slot_rva": "0x5D1DE10",
+      "identity_offset": "0x10",
+      "kind_offset": "0x14",
+      "kind": "0x46616374"
+    },
+    "character": {
+      "storage_slot_rva": "0x5C67568",
+      "fallback_slot_rva": "0x5C67570",
+      "identity_offset": "0x18",
+      "kind_offset": "0x1C",
+      "kind": "0x43686172",
+      "death_marker_offset": "0x1D0"
+    },
+    "title": {
+      "storage_slot_rva": "0x5D1DAF8",
+      "fallback_slot_rva": "0x5D1DAE0",
+      "identity_offset": "0x10"
+    },
+    "war": {
+      "storage_slot_rva": "0x5D1DE58",
+      "fallback_slot_rva": "0x5D1DE40",
+      "identity_offset": "0x08",
+      "kind_offset": "0x0C",
+      "kind": "0x5761725F"
+    }
+  },
+  "faction": {
+    "primary_vtable_rva": "0x4743520",
+    "secondary_vtable_rva": "0x4743510",
+    "secondary_offset": "0x08",
+    "identity_offset": "0x10",
+    "definition_pointer_offset": "0x20",
+    "target_character_id_offset": "0x40",
+    "nullable_leader_character_id_offset": "0x44",
+    "war_id_offset": "0x8C",
+    "special_portrait_character_id_offset": "0x90",
+    "null_id": "0xFFFFFFFF"
+  },
+  "faction_type": {
+    "primary_vtable_rva": "0x48B7310",
+    "key_hash_offset": "0x14",
+    "key_string_offset": "0x18",
+    "key_string_data_offset": "0x18",
+    "key_string_size_offset": "0x28",
+    "key_string_capacity_offset": "0x30",
+    "inline_capacity_threshold": 16,
+    "kind_offset": "0x38",
+    "kind": "0x4744624F",
+    "semantics": "Opaque native identifier; same constructor input key is hashed and copied. Inline data if capacity<16, heap pointer otherwise. No faith/doctrine expansion."
+  },
+  "member_arrays": {
+    "data_offset": "0x00",
+    "capacity_offset": "0x08",
+    "signed_count_offset": "0x0C",
+    "ownership": "Borrowed embedded CPdxArray; synchronously copy typed rows before returning an owned snapshot.",
+    "character": {
+      "faction_array_offset": "0x48",
+      "faction_count_offset": "0x54",
+      "stride": "0x20",
+      "row_vtable_rva": "0x4743450",
+      "member_character_id_offset": "0x08",
+      "owner_faction_id_offset": "0x0C",
+      "owner_encoding": "uint32 full FactionID",
+      "container_vtable_rva": "0x4562150"
+    },
+    "county": {
+      "faction_array_offset": "0x60",
+      "faction_count_offset": "0x6C",
+      "stride": "0x18",
+      "row_vtable_rva": "0x47434D8",
+      "member_title_id_offset": "0x08",
+      "flag_offset": "0x0C",
+      "owner_faction_pointer_offset": "0x10",
+      "owner_encoding": "CFaction* pointer; must match resolved owner, never reinterpret flag as FactionID",
+      "container_vtable_rva": "0x4562180"
+    }
+  },
+  "targeting": {
+    "builder_rva": "0x1C38A70",
+    "builder_signature": "void __fastcall(const CTargetingFactionBuilder* RCX, PdxArray<Scope>* RDX, const CCharacter* R8)",
+    "character_land_state_offset": "0x1C0",
+    "land_targeting_faction_id_array_offset": "0x120",
+    "data_offset": "0x00",
+    "signed_count_offset": "0x0C",
+    "element_stride": 4,
+    "element_encoding": "uint32 full FactionID",
+    "unlanded_fallback_vector_rva": "0x545AD08",
+    "type_filter": "Builder filter-kind byte+0x0C==2 selects explicit type pointer; valid GDbO type filters CFaction+0x20, default opaque fallback emits all IDs.",
+    "semantics": "Native any_targeting_faction source; no GUI refresh or guessed faction count needed."
+  },
+  "county_joined": {
+    "builder_rva": "0x1C38D30",
+    "builder_signature": "void __fastcall(PdxArray<Scope>* RCX, const CLandedTitle* RDX)",
+    "title_definition_offset": "0x48",
+    "definition_tier_offset": "0x64",
+    "maximum_supported_tier": 2,
+    "title_province_rva": "0x230F900",
+    "province_kind_offset": "0x85C",
+    "province_kind": "0x50726F76",
+    "province_county_data_pointer_offset": "0x848",
+    "county_data_fallback_slot_rva": "0x5D21900",
+    "county_data_kind_offset": "0x3E0",
+    "county_data_kind": "0x436F4461",
+    "joined_faction_id_data_offset": "0x3B0",
+    "joined_faction_id_signed_count_offset": "0x3BC",
+    "element_stride": 4,
+    "semantics": "Authoritative title_joined_faction list, independent of ancestor targeting vectors. Original stock county exposure has no IsAtWar filter.",
+    "subrealm_source_manifest": "ck3_12002_faction_county_exposure_abi.json"
+  },
+  "at_war": {
+    "receiver_rva": "0x2603AB0",
+    "signature": "bool __fastcall(const CFaction* RCX)",
+    "callback_rva": "0x2605960",
+    "receiver_call_rva": "0x2605972",
+    "result": "Resolve CFaction+0x8C full WarID; true exactly when resolved/fallback War has War_ kind and identity !=0xFFFFFFFF. Kind and identity checks are inlined in 1.20.0.2; do not port the old virtual IsAlive leaf."
+  },
+  "leader_is_human": {
+    "receiver_rva": "0x2BAA710",
+    "signature": "bool __fastcall(uint32_t full_character_id ECX)",
+    "is_ai_trigger_receiver_rva": "0x2B79CD0",
+    "is_ai_trigger_vtable_rva": "0x4802700",
+    "is_ai_trigger_eval_slot": "0xD8",
+    "global_game_slot_rva": "0x5C68C50",
+    "game_data_pointer_offset": "0xA0",
+    "human_character_ids_data_offset": "0x22358",
+    "human_character_ids_signed_count_offset": "0x22364",
+    "element_stride": 4,
+    "semantics": "Full CharacterID membership in native human-played character vector. CIsAITrigger first resolves and checks live Character, then calls this receiver and negates the result; callers must pass ID, not pointer."
+  },
+  "script_sources": [
+    {
+      "path": "game/common/important_actions/00_realm_actions.txt",
+      "sha256": "658943902d58fcc1e2f63e053f6f523c646f195b977531bf13d53f7a2bac55e4",
+      "line_start": 351,
+      "line_end": 408,
+      "excerpt": "action_dangerous_faction_targeting_me = {\n\ttype = alert\n\n\tcheck_create_action = {\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tany_targeting_faction = {\n\t\t\t\t\tis_dangerous_faction_trigger = yes\n\t\t\t\t\tNOT = { exists = faction_war }\n\t\t\t\t}\n\t\t\t}\n\t\t\ttry_create_important_action = {\n\t\t\t\timportant_action_type = action_dangerous_faction_targeting_me\n\t\t\t\tactor = root\n\t\t\t}\n\t\t}\n\t}\n\n\teffect = {\n\t\topen_view = {\n\t\t\tview = factions_window\n\t\t}\n\t}\n}\n\naction_county_in_dangerous_populist_faction = {\n\tcombine_into_one = yes\n\tis_dangerous = yes\n\tpriority = 2000\n\n\tcheck_create_action = {\n\t\t# As a vassal, one of your counties is in a populist faction targeting your liege, and that faction is strong enough to gain discontent/push demands.\n\t\tevery_sub_realm_title = {\n\t\t\tlimit = {\n\t\t\t\ttier = tier_county\n\t\t\t\tany_title_joined_faction = {\n\t\t\t\t\tfaction_is_type = populist_faction\n\t\t\t\t\tfaction_power > faction_power_threshold\n\t\t\t\t\tfaction_target = { this != root}\n\t\t\t\t}\n\t\t\t}\n\n\t\t\ttry_create_important_action = {\n\t\t\t\timportant_action_type = action_county_in_dangerous_populist_faction\n\t\t\t\tactor = root\n\t\t\t\tlanded_title = this\n\t\t\t}\n\t\t}\n\t}\n\n\teffect = {\n\t\tscope:landed_title.title_province = {\n\t\t\topen_view_data = {\n\t\t\t\tview = holding_view\n\t\t\t}\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "game/common/scripted_triggers/00_scripted_triggers.txt",
+      "sha256": "a0d06291c9b29dbeb29e855b8d9552f30b967238046ebbce45d997f730c41b5a",
+      "line_start": 206,
+      "line_end": 221,
+      "excerpt": "is_dangerous_faction_trigger = {\n\tOR = {\n\t\tAND = {\n\t\t\tfaction_leader ?= { is_ai = no } # For now human factions are always dangerous\n\t\t}\n\n\t\tAND = {\n\t\t\tfaction_is_type = peasant_faction\n\t\t\tmonths_until_max_discontent <= 12\n\t\t}\n\t\tAND = {\n\t\t\tNOT = { faction_is_type = peasant_faction }\n\t\t\tdiscontent_per_month > 0\n\t\t}\n\t}\n}"
+    }
+  ],
+  "rtti": [
+    {
+      "name": "CFaction",
+      "type_descriptor_rva": "0x59E4368",
+      "literal_rva": "0x59E4378",
+      "col_rva": "0x4DE7878",
+      "subobject_offset": 0,
+      "vtable_rva": "0x4743520"
+    },
+    {
+      "name": "CFactionCharacterMember",
+      "type_descriptor_rva": "0x59E43F0",
+      "literal_rva": "0x59E4400",
+      "col_rva": "0x4DE7850",
+      "subobject_offset": 0,
+      "vtable_rva": "0x4743450"
+    },
+    {
+      "name": "CFactionCountyMember",
+      "type_descriptor_rva": "0x59E43C0",
+      "literal_rva": "0x59E43D0",
+      "col_rva": "0x4DE78C8",
+      "subobject_offset": 0,
+      "vtable_rva": "0x47434D8"
+    },
+    {
+      "name": "CFactionType",
+      "type_descriptor_rva": "0x55C5808",
+      "literal_rva": "0x55C5818",
+      "col_rva": "0x4F781E8",
+      "subobject_offset": 0,
+      "vtable_rva": "0x48B7310"
+    },
+    {
+      "name": "CFactionTargetLink",
+      "type_descriptor_rva": "0x585FFD0",
+      "literal_rva": "0x585FFE0",
+      "col_rva": "0x4C49B20",
+      "subobject_offset": 0,
+      "vtable_rva": "0x45F54B0"
+    },
+    {
+      "name": "CFactionLeaderLink",
+      "type_descriptor_rva": "0x5860000",
+      "literal_rva": "0x5860010",
+      "col_rva": "0x4C49B70",
+      "subobject_offset": 0,
+      "vtable_rva": "0x45F5528"
+    },
+    {
+      "name": "CIsAITrigger",
+      "type_descriptor_rva": "0x5A60FF0",
+      "literal_rva": "0x5A61000",
+      "col_rva": "0x4EA0890",
+      "subobject_offset": 0,
+      "vtable_rva": "0x4802700"
+    }
+  ],
+  "rip_relative_globals": [
+    {
+      "instruction_rva": "0x14B075C",
+      "bytes": "488b052dd78604",
+      "disassembly": "mov rax, qword ptr [rip + 0x486d72d]",
+      "target_rva": "0x5D1DE90"
+    },
+    {
+      "instruction_rva": "0x14B078D",
+      "bytes": "488b057cd68604",
+      "disassembly": "mov rax, qword ptr [rip + 0x486d67c]",
+      "target_rva": "0x5D1DE10"
+    },
+    {
+      "instruction_rva": "0x1194C40",
+      "bytes": "488b05b18eb804",
+      "disassembly": "mov rax, qword ptr [rip + 0x4b88eb1]",
+      "target_rva": "0x5D1DAF8"
+    },
+    {
+      "instruction_rva": "0x1194C72",
+      "bytes": "488b05678eb804",
+      "disassembly": "mov rax, qword ptr [rip + 0x4b88e67]",
+      "target_rva": "0x5D1DAE0"
+    },
+    {
+      "instruction_rva": "0x1C3D68D",
+      "bytes": "488b0564040e04",
+      "disassembly": "mov rax, qword ptr [rip + 0x40e0464]",
+      "target_rva": "0x5D1DAF8"
+    },
+    {
+      "instruction_rva": "0x1C3D6BE",
+      "bytes": "488b151b040e04",
+      "disassembly": "mov rdx, qword ptr [rip + 0x40e041b]",
+      "target_rva": "0x5D1DAE0"
+    },
+    {
+      "instruction_rva": "0x2B79CE7",
+      "bytes": "488b057ad80e03",
+      "disassembly": "mov rax, qword ptr [rip + 0x30ed87a]",
+      "target_rva": "0x5C67568"
+    },
+    {
+      "instruction_rva": "0x2B79D16",
+      "bytes": "488b0553d80e03",
+      "disassembly": "mov rax, qword ptr [rip + 0x30ed853]",
+      "target_rva": "0x5C67570"
+    },
+    {
+      "instruction_rva": "0x2603AB0",
+      "bytes": "488b05a1a37103",
+      "disassembly": "mov rax, qword ptr [rip + 0x371a3a1]",
+      "target_rva": "0x5D1DE58"
+    },
+    {
+      "instruction_rva": "0x2603AE5",
+      "bytes": "488b0554a37103",
+      "disassembly": "mov rax, qword ptr [rip + 0x371a354]",
+      "target_rva": "0x5D1DE40"
+    },
+    {
+      "instruction_rva": "0x2BAA716",
+      "bytes": "488b0533e50b03",
+      "disassembly": "mov rax, qword ptr [rip + 0x30be533]",
+      "target_rva": "0x5C68C50"
+    },
+    {
+      "instruction_rva": "0x1C38A90",
+      "bytes": "488d0571228203",
+      "disassembly": "lea rax, [rip + 0x3822271]",
+      "target_rva": "0x545AD08"
+    },
+    {
+      "instruction_rva": "0x1C38E1A",
+      "bytes": "488b05df8a0e04",
+      "disassembly": "mov rax, qword ptr [rip + 0x40e8adf]",
+      "target_rva": "0x5D21900"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "faction_ctor",
+      "rva": "0x2600860",
+      "size": 292,
+      "bytes": "40534883ec20c74110ffffffff488d05e42c140248894108488bd9c7411474636146c74118ffffffff803df1f6e20200741a488b05b7836603488b88a00000004883c118e8873a4a0089431833c9488d056b2c1402488903488d05512c140248894308488b0506fa710348894320488d05c356ee0248894358488d05c056ee024889437048894b2848894b3048894b3848c74340ffffffff48894b4848894b5048894b6048894b68c743781e000000488b05522668034889437c488b054726680348898384000000488bc348c7838c000000ffffffffc78394000000ffffffff48898b9800000048898ba000000048898ba800000048898bb0000000c783b8000000f8779c02c783bc000000ffffffff66898bc000000066898bc80000004883c4205bc3",
+      "sha256": "771758917ffd1df86ffd6dcc3f4337fc7c421df36814a9f9bdc6a694caf20d4c",
+      "purpose": "CFaction identity sentinel, Fact kind tag, two vtables, type pointer, member arrays and target/leader/war sentinels"
+    },
+    {
+      "name": "faction_item_get_faction_registration",
+      "rva": "0x21C4F0",
+      "size": 344,
+      "bytes": "40555357488d6c24b94881ecc0000000488d45b74889456733ff48897dbf48897db748897dc748c745cf0f00000048897dd748897ddf488d1deb1c2c0548895de7488d45b74889456748c745070f00000048c745ff0a000000f20f1005374b3204f20f1145ef0fb705334b3204668945f740887df9488d450f4889456f488d55b7488d4d0fe88699630090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe8607d650090488d450f48894424204533c0488d155cd7d200488d4defe8538d29019048397dd77422488d4dd7e8b3a06300488b4de7488b01448d4708488b55d7ff501048897dd7897ddf488d4db7e8519a630090488b55074883fa10722d48ffc2488b4def488bc14881fa0010000072154883c227488b49f8482bc14883c0f84883f81f7710e82d7900044881c4c00000005f5b5dc3e849640104cc",
+      "sha256": "bea14b35d448e7bbd47e1b83ad968fd6980613e3a94532de009ba452e6b62a54",
+      "purpose": "FactionItem.GetFaction registration binds exact full-generation resolver"
+    },
+    {
+      "name": "faction_item_get_faction",
+      "rva": "0xF49D20",
+      "size": 57,
+      "bytes": "488b056941dd044885c074258b118bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950107407488b05b840dd04c3",
+      "sha256": "e60a5045dc7404f53bdb18d742d918f334edc8b74f8b2493ec590dbb811981b6",
+      "purpose": "Row full FactionID -> component slot -> full-generation round trip or canonical fallback"
+    },
+    {
+      "name": "faction_target_link",
+      "rva": "0x1B9ACE0",
+      "size": 94,
+      "bytes": "498b00668338197506448b4008eb0641b8ffffffff488b05943118044885c07425418bc881e1ffffff003b482c7317488b40204803c9488b44c8084885c07406443940107407488b05e33018048b404048894208488bc2c70204000000c3",
+      "sha256": "b717e4d49f359b6dba91d6b967590377f00173c6a36178a91fb44ed6c827cd7f",
+      "purpose": "Native faction_target script link; Faction scope 0x19 to Character scope 4 using CFaction+0x40"
+    },
+    {
+      "name": "faction_leader_link",
+      "rva": "0x1B9AD80",
+      "size": 94,
+      "bytes": "498b00668338197506448b4008eb0641b8ffffffff488b05f43018044885c07425418bc881e1ffffff003b482c7317488b40204803c9488b44c8084885c07406443940107407488b05433018048b404448894208488bc2c70204000000c3",
+      "sha256": "92ac7f870b06506da5452292859aa99de9f1a0e60f18e25c611ad056478e550e",
+      "purpose": "Native faction_leader script link; nullable canonical CFaction+0x44 leader"
+    },
+    {
+      "name": "faction_war_link",
+      "rva": "0x1B9ADE0",
+      "size": 97,
+      "bytes": "498b00668338197506448b4008eb0641b8ffffffff488b05943018044885c07425418bc881e1ffffff003b482c7317488b40204803c9488b44c8084885c07406443940107407488b05e32f18048b808c00000048894208488bc2c70210000000c3",
+      "sha256": "b7bda12baa41218f4c56ea4cedaa8cea87aded59f5b898944bc1da839c5c107a",
+      "purpose": "Native faction_war link reads CFaction+0x8C"
+    },
+    {
+      "name": "faction_leader_native",
+      "rva": "0x2601B10",
+      "size": 58,
+      "bytes": "488b05515a66034885c074268b51448bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950187407488b05275a6603c3",
+      "sha256": "c3f015c18a5c950645fec405d0545e6db2ee738621f4d90564df29ac7a5fd0f7",
+      "purpose": "Canonical CharacterID+0x44 -> exact generation Character resolver"
+    },
+    {
+      "name": "character_members_registration",
+      "rva": "0x21CCB0",
+      "size": 389,
+      "bytes": "40555357488d6c24b94881ecd0000000488d45b74889456733ff48897dbf48897db748897dc748c745cf0f00000048897dd748897ddf488d1d2b152c0548895de7488d45b74889456f48897def660f6f05eba07d04f30f7f45ff40887def8d4f20e89aa06300660f6f0512a17d04f30f7f45ff0f10053e3f34040f11000fb70d443f3404668948100fb60d3b3f340488481240887813488945ef488d450f48894567488d55b7488d4d0fe8a191630090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe87b75650090488d450f488944243048897c24204533c94533c0488d159f392901488d4defe8869829019048397dd77422488d4dd7e8c6986300488b4de7488b01448d4708488b55d7ff501048897dd7897ddf488d4db7e86492630090488b55074883fa10722d48ffc2488b4def488bc14881fa0010000072154883c227488b49f8482bc14883c0f84883f81f7710e8407100044881c4d00000005f5b5dc3e85c5c0104cc",
+      "sha256": "a0d2757d598c76c30d32df9be3d7199c0e4c5408726d6c5d864af395e413bb74",
+      "purpose": "FactionItem.GetCharacterMembers typed registration"
+    },
+    {
+      "name": "county_members_registration",
+      "rva": "0x21CE40",
+      "size": 368,
+      "bytes": "40555357488d6c24b94881ecd0000000488d45b74889456733ff48897dbf48897db748897dc748c745cf0f00000048897dd748897ddf488d1d9b132c0548895de7488d45b74889456f48897def660f6f055b9f7d04f30f7f45ff40887def8d4f20e80a9f6300660f6f05529f7d04f30f7f45ff0f1005663e34040f110040887810488945ef488d450f48894567488d55b7488d4d0fe82690630090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe80074650090488d450f488944243048897c24204533c94533c0488d15b4382901488d4defe80b9729019048397dd77422488d4dd7e84b976300488b4de7488b01448d4708488b55d7ff501048897dd7897ddf488d4db7e8e990630090488b55074883fa10722d48ffc2488b4def488bc14881fa0010000072154883c227488b49f8482bc14883c0f84883f81f7710e8c56f00044881c4d00000005f5b5dc3e8e15a0104cc",
+      "sha256": "7a998cda1a4054db2191d78843740aa6f51b3403b4bf18ae6b92f914c319b4d8",
+      "purpose": "FactionItem.GetCountyMembers typed registration"
+    },
+    {
+      "name": "character_members_callback",
+      "rva": "0x14B0750",
+      "size": 139,
+      "bytes": "4883ec584c8bc24885c97478488b052dd786044885c074258b118bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950107407488b057cd686044883c048c7442428ffffffff4889442420488d542430488d053f48f802c644242c010f10442420498bc848894424300f11442438e863a552ffb0014883c458c332c04883c458c3",
+      "sha256": "74de9842ab62d11d569ad7d123e720e44972867d1baf369a16d5bf8b63d216f8",
+      "purpose": "Full faction resolve, borrow embedded CFaction+0x48 array"
+    },
+    {
+      "name": "county_members_callback",
+      "rva": "0x14B07E0",
+      "size": 139,
+      "bytes": "4883ec584c8bc24885c97478488b059dd686044885c074258b118bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950107407488b05ecd586044883c060c7442428ffffffff4889442420488d542430488d05b747f802c644242c010f10442420498bc848894424300f11442438e8d3a452ffb0014883c458c332c04883c458c3",
+      "sha256": "ab6316299e443539640f9ec9c00cc46395b9a75838271addbb94eb74ea92fdf4",
+      "purpose": "Full faction resolve, borrow embedded CFaction+0x60 array"
+    },
+    {
+      "name": "character_member_get_member",
+      "rva": "0xDA74A0",
+      "size": 58,
+      "bytes": "488b05c100ec044885c074268b51088bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950187407488b059700ec04c3",
+      "sha256": "e0da85282dc187d3348474f814aabc36ae0c75999c24b7f2cfcde6b3eaebdbbb",
+      "purpose": "Member row+8 CharacterID full-generation resolver"
+    },
+    {
+      "name": "county_member_get_member",
+      "rva": "0x1194C40",
+      "size": 58,
+      "bytes": "488b05b18eb8044885c074268b51088bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950107407488b05678eb804c3",
+      "sha256": "1201797b4e61d4b1bbceaab18272fc247463ee0c14f1f5a526586a13040707e4",
+      "purpose": "Member row+8 TitleID full-generation resolver"
+    },
+    {
+      "name": "character_member_add_owner",
+      "rva": "0x2603E66",
+      "size": 26,
+      "bytes": "48634c245848c1e10548030b418b471089410c418b4518894108",
+      "sha256": "2a9e7f93484c4451d221ec4cff672565bf42a942e8e336531bbb42c6c265e143",
+      "purpose": "Index stride 0x20; owner full FactionID row+0xC, member full CharacterID row+8"
+    },
+    {
+      "name": "character_member_reserve_copy",
+      "rva": "0x2605210",
+      "size": 169,
+      "bytes": "48895c2408574883ec20488bd98bfa3b51080f8e86000000488b49108bd748c1e20541b808000000488b01ff5008448b430c4c8bd04585c07e56488b0b488d500c4883c10c4c8d0df4e113020f1f40004c894af4488d52208b41fc488d49208942dc41ffc88b41e08942e00fb641e48842e4488b41e8488942e84585c07fd1448b430c0f1f4000660f1f840000000000448bcf498bd2488bcbe8222228fe488b5c24304883c4205fc3",
+      "sha256": "35bc5585a13cfcf8b2c1596f93d5a9a91eee70c3412401061c070c218c848d7e",
+      "purpose": "Character member rows preserve vtable+memberID+ownerID and stride 0x20"
+    },
+    {
+      "name": "county_member_add",
+      "rva": "0x26049F0",
+      "size": 514,
+      "bytes": "48895c240848896c241856574154415641574881ec60020000488bea488bf1488b4248837864020f85b9010000488bcae8cb64d0ff84c07573488d542430488bcde8ea90d0ff90c78424500200000000000048837818107203488b004c8bc84c8d057ae71302ba00020000488d4c2450e85b7e27feb9ff0100003bc10f4fc189842450020000488d05d33072034889442420488d4c2450e8d45f970190488d4c2430e8b91525fee93a0100004863566c488d0c52488b46608b5d10448b4668413bd00f85bc000000448d620166410f6ec00f5bc0f30f590534193f02f30f2cc0458bfc443be0440f4cf8488b4e70488b014c8b48084b8d147f48c1e20341b80800000041ffd14c8bf048634e6c488d14494c8d1dd0e913024c891cd0895cd008c644d00c00488974d010448b566c4585d27e3d488b4e60488d500c4883c10c904c895af48b41fc8942fc0fb6018802488b410448894204488d521841ffca488d49184585d27fd9660f1f840000000000458bcf458bc4498bd6488d4e60e88e8f7bfeeb1c4c8d1d5de913024c891cc8895cc808c644c80c00488974c810ff466c488bcde868add0ff81b85c080000766f7250751b488b884808000081b9e003000061446f4375088b5610e841efecff488d942498020000488bcee821d3ffff488b0848894e304c8d9c2460020000498b5b30498b6b40498be3415f415e415c5f5ec3",
+      "sha256": "227e49c7ea8533dea62af5746ebfbf68621f3ff3d7914ed2ff3fc23c10217f53",
+      "purpose": "County member stride 0x18, TitleID+8, flag+0xC, CFaction* owner+0x10; CountyData kind and join mutation"
+    },
+    {
+      "name": "character_member_slice",
+      "rva": "0x14BF580",
+      "size": 103,
+      "bytes": "48895c2408574883ec30488b01488bfa498bd04963d9ff50208b542460c644242c008b480c4c8b002bcb81faffffff7f488bc3488b5c24400f44d148c1e0054903c0895424284889442420488d05fe59f7020f10442420488907488bc70f1147084883c4305fc3",
+      "sha256": "ae01b7fcb21c6815319d798030187ecaf3125fe4eb56c0202cdea178801aeecc",
+      "purpose": "Character CPdxArray signed count+0xC and row stride 0x20"
+    },
+    {
+      "name": "county_member_slice",
+      "rva": "0x14BF190",
+      "size": 101,
+      "bytes": "48895c2408574883ec30488b01488bfa498bd04963d9ff50208b542460c644242c008b480c4c8b002bcb81faffffff7f0f44d1488d0c5b488b5c2440498d04c84889442420488d05ec5df702895424280f10442420488907488bc70f1147084883c4305fc3",
+      "sha256": "3231953dc32da6646a70b835ba1ac25d1d6cb4bbd73025fb3c8b60cb7429af8b",
+      "purpose": "County CPdxArray signed count+0xC and row stride 0x18"
+    },
+    {
+      "name": "is_at_war_registration",
+      "rva": "0x514810",
+      "size": 362,
+      "bytes": "40555357488d6c24b94881ecd0000000488d45b74889456733ff48897dbf48897db748897dc748c745cf0f00000048897dd748897ddf488d1dcb99fc0448895de7488d45b74889456748897def48c745070f00000048c745ff070000008b0595e822048945ef0fb7058fe82204668945f30fb60586e822048845f540887df6488d450f4889456f488d55b7488d4d0fe85c16340090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe836fa350090488d450f488944243048897c24204533c94533c0488d156a100f02488d4defe8c1600f029048397dd77422488d4dd7e8811d3400488b4de7488b01448d4708488b55d7ff501048897dd7897ddf488d4db7e81f17340090488b55074883fa10722d48ffc2488b4def488bc14881fa0010000072154883c227488b49f8482bc14883c0f84883f81f7710e8fbf5d0034881c4d00000005f5b5dc3e817e1d103cc",
+      "sha256": "7e6dfa642e390a7a9ab3f8bd49c810dab2c282d53ad1628457881b2514777bf1",
+      "purpose": "Faction.IsAtWar registration -> callback0x2605960"
+    },
+    {
+      "name": "is_at_war_callback",
+      "rva": "0x2605960",
+      "size": 56,
+      "bytes": "4c89442418534883ec20488bda4885c9741ee839e1ffff488d54244088442440488bcbe8684127feb0014883c4205bc332c04883c4205bc3",
+      "sha256": "ecd745b95d02fe21cd6d27ed4c3aa5d827c79e9191de864b0d8e15b67aab04cd",
+      "purpose": "GUI callback calls exact bool receiver"
+    },
+    {
+      "name": "is_at_war_final",
+      "rva": "0x2603AB0",
+      "size": 81,
+      "bytes": "488b05a1a371034885c074298b918c0000008bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950087407488b0554a3710381780c5f7261577509837808ff7403b001c332c0c3",
+      "sha256": "7012d6b3ed53583e33837835dc40d7bfd591f7ed8bba900f26b1806ad22ae81a",
+      "purpose": "CFaction* RCX -> full WarID resolver; inline War_ kind and non-null identity final bool"
+    },
+    {
+      "name": "faction_type_ctor_key",
+      "rva": "0x309E190",
+      "size": 256,
+      "bytes": "48895c241048896c2418488974242048894c240857415641574883ec300f29742420448bd24c8bf94585c9740d488d05c45f7e0148894108eb04488b4108410f2830488d0dd7854e0149890f48634004488d0d91854e014a894c3808498b4708486348048d51c0428954390445895710660f6fc6660f73d80866410f7ec066480f7ef2e82800ee0041894714498d4f18660f6fc6660f73d808660f7ec04c63c033ed4889294889691048c741180f00000040882966480f7ef2e8627b7bfd41c747384f624447488d05b3908101498907498b470848634804488d05699081014a89443908498b4708486348048d9178f1ffff4289543904498d4f40e8e05e6c00",
+      "sha256": "85c155d320004b4565e5cf6144d10baf452ea087a7b10a298d6e3b23e9377eec",
+      "purpose": "Same constructor key input hashes into+0x14 and copies std::string+0x18, sets GDbO tag+0x38"
+    },
+    {
+      "name": "faction_type_key_read",
+      "rva": "0x309F927",
+      "size": 18,
+      "bytes": "4883793010488d41187203488b0048894424",
+      "sha256": "22d6f5e7a44f5f17e3205ad9c70a97923d7d6132276fabe0280ad3391d84db93",
+      "purpose": "FactionType log loads std::string+0x18 inline/heap from capacity+0x30"
+    },
+    {
+      "name": "faction_type_key_error_format",
+      "rva": "0x309F98A",
+      "size": 31,
+      "bytes": "488d15c7788101488d0d9078810148894c2420488bc8458d415be877c3a1fd",
+      "sha256": "94e84783549fc8caa2b91cb129db3e5a25bdd87f4f4c993cb3a614a967fbc538",
+      "purpose": "Exact type key read passed to faction_type.cpp diagnostic"
+    },
+    {
+      "name": "human_character_id_native",
+      "rva": "0x2BAA710",
+      "size": 91,
+      "bytes": "40534883ec20488b0533e50b034c8d442430894c2430488b98a0000000488b8b5823020048638364230200488d1481e8ec5ccdfd488b8b58230200486393642302004c8d049133c9493bc0480f44c14885c00f95c04883c4205bc3",
+      "sha256": "b3a725070cb36de80ece42ee6be694881e8e5de502fbfe92414bffb35de0a02a",
+      "purpose": "bool(uint32 CharacterID ECX), search exact fullID in GameData human vector"
+    },
+    {
+      "name": "is_ai_trigger_evaluate",
+      "rva": "0x2B79CD0",
+      "size": 125,
+      "bytes": "4883ec28488b026683380475058b5008eb05baffffffff488b057ad80e034885c074238bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950187407488b0553d80e0381781c72616843751e8b481883f9ff74164883b8d001000000750ce8d309030034014883c428c332c034014883c428c3",
+      "sha256": "558f48055df728492dd4b31d0c6f6b7b7be7c7c5453c1cd283f4b76b33bcebf5",
+      "purpose": "CIsAITrigger Character scope+identity/kind/alive checks then calls human ID predicate and negates result"
+    },
+    {
+      "name": "targeting_faction_scope_builder",
+      "rva": "0x1C38A70",
+      "size": 458,
+      "bytes": "40535741544883ec50498b80c0010000488bda4885c07408480520010000eb07488d057122820380790c0248896c2470488b2d29780e047503488b29488b384863400c4c8d2487493bfc0f846c0100004c8b05c9530e044c89ac24800000000f29742430f30f103524d9db0248897424784c897424484c897c24400f1f440000817d384f6244478b07753c4d85c074268bc881e1ffffff00413b482c73188bd1498b48204803d2488b4cd1084885c974053941107407488b0de3520e04483969200f85cc0000008b4b0848894424284863430cc7442420190000003bc10f859b000000448d7801660f6ec1488b4b10458bf70f5bc041b808000000f30f59c6f30f2cc0443bf8440f4cf0488b01418bd648c1e204ff500848634b0c488bf00f104424204803c90f1104c8448b430c4585c07e24488b0b488bd00f1f80000000000f100141ffc8488d5210488d49100f1142f04585c07fe9488b4b1041b808000000488b13488b01ff50104c8b05af520e0448893344897b0c44897308eb150f10442420488bc8488b034803c90f1104c8ff430c4883c704493bfc0f85e0feffff0f287424304c8b7c24404c8b7424484c8bac2480000000488b742478488b6c24704883c450415c5f5bc3",
+      "sha256": "a30e8c4e4f0bce7560a00ae68cad201891110d55db2fb7f8bac3071ad4a280aa",
+      "purpose": "Character landstate+0x1C0 -> full FactionID vector+0x120, signed count+0xC, stride4; optional native type filter"
+    },
+    {
+      "name": "targeting_faction_builder_scope_wrapper",
+      "rva": "0x1C3D5D0",
+      "size": 144,
+      "bytes": "48895c24084889742410574883ec20498b00498bd8488bf2488bf9668338047506448b4808eb0641b9ffffffff488b05649f02044885c07425418bc981e1ffffff003b482c7317488b40204803c94c8b44c8084d85c074064539481874074c8b053b9f0204488d8f88030000e82fb4ffff4c8bc3488bd6488bcf488b5c2430488b7424384883c4205fe9f229b401cccc",
+      "sha256": "d3b4d9a3219df8203ed9c72b6958ad8f8f61694f785ab3a14c88c45046546f4b",
+      "purpose": "Full Character scope resolve before targeting faction builder"
+    },
+    {
+      "name": "title_joined_faction_scope_builder",
+      "rva": "0x1C38D30",
+      "size": 605,
+      "bytes": "4053554881ec88020000488b4248488bd9837864020f8eab000000803d8a4d0e04000f852b02000033edc6442444010f57c066896c24454c8d05dafc9a0240886c2447ba00020000896c2440488d4c245048896c2448f30f7f44243089ac2450020000e8283bc4feb9ff0100003bc10f4fc1488d4c245089842450020000488d442450488944242048c7c0ffffffff9048ffc040382c0175f789442428488d54243040886c242c488d4c24200f28442420660f7f442420e80477ad014881c4880200005d5bc34889bc24a8020000488bca4c89a424b0020000e8f26a6d0081b85c080000766f72507409488b05df8a0e04eb07488b8048080000488bb8b0030000486380bc0300004c8d2487493bfc0f842e0100004889b424a00200008b730c4c89ac24800200000f29b42460020000f30f103598d5db024c89b424780200004c89bc24700200000f1f8400000000008b0748894424288b4308c7442420190000003bf00f858c000000488b4b10ffc6660f6ec0448bfe0f5bc041b808000000f30f59c6f30f2cc03bf0440f4cf8488b01418bd748c1e204ff500848634b0c4c8bf00f104424204803c90f1104c8448b430c4585c07e20488b0b488bd00f1f000f100141ffc8488d5210488d49100f1142f04585c07fe9488b4b1041b808000000488b13488b01ff50104c893389730c44897b08eb18488b030f104424204863ce4803c90f1104c8ff430c8b730c4883c704493bfc0f8535ffffff0f28b424600200004c8bbc24700200004c8bb424780200004c8bac2480020000488bb424a0020000488bbc24a80200004c8ba424b00200004881c4880200005d5bc3",
+      "sha256": "dc9b0ad662b26cb320204c3abc07a2b2ff31cb03508f0cdca8c9e8ef9934c770",
+      "purpose": "Title province -> Province+0x848 CountyData -> joined FactionID data+0x3B0,count+0x3BC,stride4"
+    },
+    {
+      "name": "title_joined_faction_scope_wrapper",
+      "rva": "0x1C3D660",
+      "size": 138,
+      "bytes": "48895c24084889742410574883ec20498b00498bd8488bfa488bf1668338057506448b4808eb0641b9ffffffff488b0564040e044885c07425418bc981e1ffffff003b482c7317488b40204803c9488b54c8084885d2740644394a107407488b151b040e04488bcfe863b6ffff4c8bc3488bd7488bce488b5c2430488b7424384883c4205fe96629b401",
+      "sha256": "0e11ef240aca15e02ca65f8db20f62e843dca78455fc9077c50518726cc8f1de",
+      "purpose": "Full-generation Title scope resolver calls joined faction builder"
+    },
+    {
+      "name": "county_joined_faction_add",
+      "rva": "0x24D3B00",
+      "size": 105,
+      "bytes": "895424104883ec28486381bc030000448bc24c8b89b00300004c8bd085c07e25498bc24899482bc248d1f84c2bd0453b04814b8d14914c8bd0490f42d14c8bca4885c07fdb4c2b89b00300004c8d44243849c1f9024881c1b0030000418bd1e85c06d5fe4883c428c3",
+      "sha256": "5683d3142d4d1bcdae8e67a5943db8d8a2390afe0d7e27d39596387e4d933b29",
+      "purpose": "Full FactionID ordered insert source into CountyData embedded vector+0x3B0"
+    },
+    {
+      "name": "CFaction_rtti_literal",
+      "rva": "0x59E4378",
+      "size": 15,
+      "bytes": "2e3f41564346616374696f6e404000",
+      "sha256": "59eaeac6281146b9b428ff45954d0f0654a4df64058a4c65e64dca66e0b8dda0",
+      "purpose": "MSVC exact RTTI type name"
+    },
+    {
+      "name": "CFaction_col",
+      "rva": "0x4DE7878",
+      "size": 24,
+      "bytes": "01000000000000000000000068439e05c877de047878de04",
+      "sha256": "ba72670e4c42caec8615bf60dec93861bd93c6fcc2cf71673a6ea4df05fe85f2",
+      "purpose": "MSVC complete object locator exact type/offset"
+    },
+    {
+      "name": "CFaction_vtable_col",
+      "rva": "0x4743518",
+      "size": 16,
+      "bytes": "7878de44010000009009604201000000",
+      "sha256": "f661bc6667d22ea70a5f7552db41a30dd64059b208317593a4d8135cb06c31db",
+      "purpose": "Vtable COL pointer and first native function"
+    },
+    {
+      "name": "CFactionCharacterMember_rtti_literal",
+      "rva": "0x59E4400",
+      "size": 30,
+      "bytes": "2e3f41564346616374696f6e4368617261637465724d656d626572404000",
+      "sha256": "fec8bcc1dd26f9e442327d789bf96ac99949b2a021a19564cbcdfb89a8c49a71",
+      "purpose": "MSVC exact RTTI type name"
+    },
+    {
+      "name": "CFactionCharacterMember_col",
+      "rva": "0x4DE7850",
+      "size": 24,
+      "bytes": "010000000000000000000000f0439e051078de045078de04",
+      "sha256": "86a247797fe3f053141c25529c249d190b310b9b7dd41a5b5d71cea17fd57863",
+      "purpose": "MSVC complete object locator exact type/offset"
+    },
+    {
+      "name": "CFactionCharacterMember_vtable_col",
+      "rva": "0x4743448",
+      "size": 16,
+      "bytes": "5078de4401000000e085884001000000",
+      "sha256": "b0cb4013abe20717501d5d7897dca6d81265467f92974024e206999d079503bc",
+      "purpose": "Vtable COL pointer and first native function"
+    },
+    {
+      "name": "CFactionCountyMember_rtti_literal",
+      "rva": "0x59E43D0",
+      "size": 27,
+      "bytes": "2e3f41564346616374696f6e436f756e74794d656d626572404000",
+      "sha256": "a41694a30f1c2217d370eb990d86eca3b5617d9480340d7296dc1d7ac7c51372",
+      "purpose": "MSVC exact RTTI type name"
+    },
+    {
+      "name": "CFactionCountyMember_col",
+      "rva": "0x4DE78C8",
+      "size": 24,
+      "bytes": "010000000000000000000000c0439e05f877de04c878de04",
+      "sha256": "e199def5b8f848d5ab820ffb3734543a106420835dbc7fdb3a2cf5dc8584ba20",
+      "purpose": "MSVC complete object locator exact type/offset"
+    },
+    {
+      "name": "CFactionCountyMember_vtable_col",
+      "rva": "0x47434D0",
+      "size": 16,
+      "bytes": "c878de4401000000d03ba04001000000",
+      "sha256": "9d65046c3db0f3f4783909b731198153a1a39aa3a7743e199aabc4b5b97070fa",
+      "purpose": "Vtable COL pointer and first native function"
+    },
+    {
+      "name": "CFactionType_rtti_literal",
+      "rva": "0x55C5818",
+      "size": 19,
+      "bytes": "2e3f41564346616374696f6e54797065404000",
+      "sha256": "229b0e0c676b15dd41995efb80497e39192b2ec2d4a67a1e2c491c0ff7f56013",
+      "purpose": "MSVC exact RTTI type name"
+    },
+    {
+      "name": "CFactionType_col",
+      "rva": "0x4F781E8",
+      "size": 24,
+      "bytes": "01000000000000000000000008585c05f0ddee04e881f704",
+      "sha256": "eb5f5caa430c89654ff6f0b0791c04cc2251b4808f0c6727775b30e3fc344954",
+      "purpose": "MSVC complete object locator exact type/offset"
+    },
+    {
+      "name": "CFactionType_vtable_col",
+      "rva": "0x48B7308",
+      "size": 16,
+      "bytes": "e881f7440100000010f9094301000000",
+      "sha256": "04bf8e4b32cd39602e95a6bd2d4908352bd4b49a5afe9f513ff730583214c9c4",
+      "purpose": "Vtable COL pointer and first native function"
+    },
+    {
+      "name": "CFactionTargetLink_rtti_literal",
+      "rva": "0x585FFE0",
+      "size": 25,
+      "bytes": "2e3f41564346616374696f6e5461726765744c696e6b404000",
+      "sha256": "e67150e1cc1f281834252dd453a1229293932af7250931dad9832e74d8bcd79f",
+      "purpose": "MSVC exact RTTI type name"
+    },
+    {
+      "name": "CFactionTargetLink_col",
+      "rva": "0x4C49B20",
+      "size": 24,
+      "bytes": "010000000000000000000000d0ff8505009dc404209bc404",
+      "sha256": "407ae65dae3da070761ef4bf19bc628f236aa96df15ab14ee18a416897d3faff",
+      "purpose": "MSVC complete object locator exact type/offset"
+    },
+    {
+      "name": "CFactionTargetLink_vtable_col",
+      "rva": "0x45F54A8",
+      "size": 16,
+      "bytes": "209bc4440100000060f4a04001000000",
+      "sha256": "7265794b191704be0b74534b72daabf6fff54e39239ac12adc9bb04494256b32",
+      "purpose": "Vtable COL pointer and first native function"
+    },
+    {
+      "name": "CFactionLeaderLink_rtti_literal",
+      "rva": "0x5860010",
+      "size": 25,
+      "bytes": "2e3f41564346616374696f6e4c65616465724c696e6b404000",
+      "sha256": "63fa801670fa3c500bcb55d54f0522a28967f20e4fb90ac7c5214e2865072e73",
+      "purpose": "MSVC exact RTTI type name"
+    },
+    {
+      "name": "CFactionLeaderLink_col",
+      "rva": "0x4C49B70",
+      "size": 24,
+      "bytes": "01000000000000000000000000008605189dc404709bc404",
+      "sha256": "39a70c7f5d4808e7c03d4d3037056cfdfb2a0c5f396d69b7e078ceb437d0b576",
+      "purpose": "MSVC complete object locator exact type/offset"
+    },
+    {
+      "name": "CFactionLeaderLink_vtable_col",
+      "rva": "0x45F5520",
+      "size": 16,
+      "bytes": "709bc4440100000060f4a04001000000",
+      "sha256": "b03ca648493603598f68579212d2e1dbe1bb316b9e89c9cc87c4b13d1252b7c8",
+      "purpose": "Vtable COL pointer and first native function"
+    },
+    {
+      "name": "CIsAITrigger_rtti_literal",
+      "rva": "0x5A61000",
+      "size": 19,
+      "bytes": "2e3f4156434973414954726967676572404000",
+      "sha256": "cb86e975e47c027a1c823c5ccfafc964ea7389946373f912af617373d15ed43a",
+      "purpose": "MSVC exact RTTI type name"
+    },
+    {
+      "name": "CIsAITrigger_col",
+      "rva": "0x4EA0890",
+      "size": 24,
+      "bytes": "010000000000000000000000f00fa6054807ea049008ea04",
+      "sha256": "72ecd2642045e15f324a98f22522f19d77751ef9b01b77d82d9aa375cedea776",
+      "purpose": "MSVC complete object locator exact type/offset"
+    },
+    {
+      "name": "CIsAITrigger_vtable_col",
+      "rva": "0x48026F8",
+      "size": 16,
+      "bytes": "9008ea4401000000e0e9724301000000",
+      "sha256": "238fac46651758e874b0b04cee3fdcba16c79494b45e6220fbaf605872461c01",
+      "purpose": "Vtable COL pointer and first native function"
+    },
+    {
+      "name": "is_ai_trigger_eval_slot",
+      "rva": "0x48027D8",
+      "size": 8,
+      "bytes": "d09cb74201000000",
+      "sha256": "ed556c066ac2761ff5c838db843e35b59f568a6c229f4c34f8e644ad4cb68324",
+      "purpose": "CIsAITrigger vtable evaluation slot+0xD8"
+    }
+  ],
+  "integration_requirements": [
+    "Keep exact generation identities; index alone is not a public identity.",
+    "Canonical nullable leader is CFaction+0x44; portrait special character+0x90 is a different field.",
+    "Known empty character rows and legal empty leader do not imply empty county threat.",
+    "Direct targeting danger and subrealm county exposure are separate stock branches; county branch checks joined type, power and target!=root without requiring not-at-war.",
+    "Full members and count readiness require a complete typed span copy; unavailable reads are not zero rows.",
+    "Use current campaign/nonwar realm holder and exact subrealm title walker evidence; do not assume joined faction target is an ancestor."
+  ],
+  "remaining": [
+    "Integrate typed spans and native receiver ABIs into the 1.20 provider.",
+    "Paused exact-build runtime parity for targeting IDs, member rows, leaderless county exposure, human leader, and native IsAtWar remains unperformed. No production-live claim."
+  ]
+}

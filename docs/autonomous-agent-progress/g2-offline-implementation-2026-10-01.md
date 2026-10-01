@@ -85,3 +85,9 @@ G2 仍 `3/8`，Robert `3153/36524`，新增游戏日为零。宗教/holy order �
 Feast17文件首包接入 exact-build provenance、实际原生 terminal flags 和现有 pending Start 路径；真实生产 serializer wire5项与受影响既有36项通过。未把Start/ID/debit当作完成；当前尚未包含随后4个实际counter追加。证据：Z:\ck3_mod_rewrite\.task-tmp\g2src\artifacts\g2-offline-2026-10-01\feast-python\transport-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:38:28 Faction actual native source and mailbox
+
+实际完整FactionID、原生power/threshold/discontent/danger、county-only威胁与held-title/vassal-contract递归已迁移；县列表stride18、owner指针及UI比例已按新EXE闭合。Od/O2各7案例及旧reader/serializer测试通过；ABI布局53锚点、metrics22跨度、county10锚点。harness LNK2019首次失败已保留。静态就绪；paused值、SDK实机一致性与gift结果仍待实际验收。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\factions\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

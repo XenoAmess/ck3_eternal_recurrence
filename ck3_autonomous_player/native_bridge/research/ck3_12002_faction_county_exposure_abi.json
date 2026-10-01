@@ -1,0 +1,150 @@
+{
+  "schema": "ck3-12002-faction-county-exposure-abi-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "static-ready",
+  "live_evidence": null,
+  "scope": "Exact stock player county populist exposure source; readonly disk reverse engineering only",
+  "title_joined_factions": {
+    "builder_rva": "0x1C38D30",
+    "builder_tail_rva": "0x1C38DF6",
+    "title_scope_tag": 5,
+    "faction_scope_tag": 25,
+    "landed_title_storage_slot_rva": "0x5D1DAF8",
+    "landed_title_fallback_slot_rva": "0x5D1DAE0",
+    "landed_title_identity_offset": "0x10",
+    "title_template_offset": "0x48",
+    "template_tier_offset": "0x64",
+    "title_province_rva": "0x230F900",
+    "province_tag_offset": "0x85C",
+    "province_tag_value": "0x50726F76",
+    "province_county_component_offset": "0x848",
+    "county_joined_faction_id_data_offset": "0x3B0",
+    "county_joined_faction_id_capacity_offset": "0x3B8",
+    "county_joined_faction_id_count_offset": "0x3BC",
+    "faction_id_stride": 4,
+    "semantics": "Joined IDs come from the county component, without an ancestor-target filter. This is the stock title_joined_faction list source, not an inverse inference from targeting factions.",
+    "capacity_evidence": "Data +0x3B0 and count +0x3BC directly read by stock builder; capacity +0x3B8 follows the same proven Pdx vector layout and is not consumed by this builder."
+  },
+  "subrealm_titles": {
+    "registration_rva": "0x3712A0",
+    "description_rva": "0x464FE70",
+    "template": "CLandedTitlesBuilder<0>",
+    "native_walk_rva": "0x1CEDE10",
+    "character_land_state_offset": "0x1C0",
+    "land_held_title_id_data_offset": "0x1E0",
+    "land_held_title_id_count_offset": "0x1EC",
+    "skip_landless_title_rva": "0x230D850",
+    "county_landless_semantics": "For template tier 2, native predicate returns title+0x11C == 0; non-landless county has at least one title child at title+0x110/count+0x11C.",
+    "land_vassal_contract_id_data_offset": "0x218",
+    "land_vassal_contract_id_count_offset": "0x224",
+    "vassal_contract_storage_slot_rva": "0x5D1EB88",
+    "vassal_contract_fallback_slot_rva": "0x5D1EB40",
+    "vassal_contract_identity_offset": "0x08",
+    "vassal_contract_character_pointer_offset": "0x20",
+    "storage_slot_array_offset": "0x20",
+    "storage_capacity_offset": "0x2C",
+    "storage_slot_stride": "0x10",
+    "storage_slot_object_offset": "0x08",
+    "full_generation_identity_required": true,
+    "semantics": "The stock walker enumerates held land-bearing titles and recursively follows generation-checked direct vassal-contract owners; exposure filters county tier afterward.",
+    "unsupported_claim": "No proof is asserted that a joined faction target must be an ancestor of the county holder."
+  },
+  "stock_exposure_predicate": [
+    "every_sub_realm_title",
+    "county tier",
+    "any_title_joined_faction",
+    "opaque faction type == populist_faction",
+    "native faction_power > faction_power_threshold",
+    "native faction_target != root actor"
+  ],
+  "implementation_guidance": [
+    "Read actual county joined FactionID spans. Resolve each full ID through the current Faction component store and use existing final power/threshold readers.",
+    "Use the native subrealm held-title/vassal-contract recursion, or a separately documented equivalent county membership source; do not limit faction targets to the actor ancestor chain.",
+    "Multiple joined factions for one county are legal rows; deduplicate exact county/faction pairs only.",
+    "Known empty county joined vectors are available empty; failed reads are unavailable, not zero exposure.",
+    "Do not traverse general faith/culture doctrine systems; the stock faction type remains an opaque key."
+  ],
+  "anchors": [
+    {
+      "name": "joined_list_registration",
+      "rva": "0x36f100",
+      "size": 85,
+      "bytes": "4883ec48488d0595f72a04c74424283a00000048894424204c8d442420488d05bcf72a04c644242c00488d5424304889442430c744243814000000c644243c00e8dbb58c01488d0d9466fd034883c448e9ef4deb03",
+      "sha256": "b4a899156b6f31cd6bcc1def66135938a43faf5f2dfceab3d7c7b60060af9304",
+      "purpose": "title_joined_faction script list registration"
+    },
+    {
+      "name": "joined_list_any_wrapper",
+      "rva": "0x1c3bd10",
+      "size": 41,
+      "bytes": "44884424184883ec38488d41104c8bc248894424284c894c24204c8d4c2450e8dc3300004883c438c3",
+      "sha256": "b52d7694e4ca5ab31da45258b18fe9e208a1634b66a1ba6e0c08889981cdabac",
+      "purpose": "CAnyInScriptedListTrigger<CTitleJoinedFactionBuilder> bool evaluator wrapper"
+    },
+    {
+      "name": "joined_list_scope_resolution",
+      "rva": "0x1c3d660",
+      "size": 138,
+      "bytes": "48895c24084889742410574883ec20498b00498bd8488bfa488bf1668338057506448b4808eb0641b9ffffffff488b0564040e044885c07425418bc981e1ffffff003b482c7317488b40204803c9488b54c8084885d2740644394a107407488b151b040e04488bcfe863b6ffff4c8bc3488bd7488bce488b5c2430488b7424384883c4205fe96629b401",
+      "sha256": "0e11ef240aca15e02ca65f8db20f62e843dca78455fc9077c50518726cc8f1de",
+      "purpose": "Title scope tag 5/full TitleID resolve before builder"
+    },
+    {
+      "name": "joined_list_builder_tier_gate",
+      "rva": "0x1c38d30",
+      "size": 27,
+      "bytes": "4053554881ec88020000488b4248488bd9837864020f8eab000000",
+      "sha256": "c009cf62352150c5a09b974f7a1177f4da36327f137e037a983f9025957e5e59",
+      "purpose": "Reject tier above county; county/barony accepted"
+    },
+    {
+      "name": "joined_list_builder_county_source",
+      "rva": "0x1c38df6",
+      "size": 74,
+      "bytes": "4889bc24a8020000488bca4c89a424b0020000e8f26a6d0081b85c080000766f72507409488b05df8a0e04eb07488b8048080000488bb8b0030000486380bc0300004c8d2487493bfc0f",
+      "sha256": "fc48e1c574d7dbc3e5218e34ebe1efaf0b87cfa2c0ec3ad26c667011375d6abe",
+      "purpose": "Title province -> Province tag -> County component -> joined FactionID vector"
+    },
+    {
+      "name": "joined_list_scope_emit",
+      "rva": "0x1c38e80",
+      "size": 18,
+      "bytes": "8b0748894424288b4308c744242019000000",
+      "sha256": "6101040e9041a3864b5148f34dbbac3df424e035e9ccdc495943696951e7a43a",
+      "purpose": "Full FactionID copied into tag 0x19 script scope"
+    },
+    {
+      "name": "subrealm_registration",
+      "rva": "0x3712a0",
+      "size": 85,
+      "bytes": "4883ec48488d05c5eb2d04c74424287a00000048894424204c8d442420488d0544ef2d04c644242c00488d5424304889442430c74424380f000000c644243c00e8bbc39501488d0d845ffd034883c448e94f2ceb03",
+      "sha256": "6e0afac3bde368ee333800b9db06142b34203c6b1d4fb498704c847837b12a9e",
+      "purpose": "sub_realm_title script list registration"
+    },
+    {
+      "name": "subrealm_title_reader",
+      "rva": "0x1cede10",
+      "size": 205,
+      "bytes": "4053555741564883ec384c8b82c00100004c8bf24c897c2430488be94d85c074164183b8ec010000007427498b80e0010000448b18eb21488b82d00100004885c0740f837874007409488b4068448b18eb0641bbffffffff4c8b1589fc02044c8b0d6afc02044d85d27427418bc325ffffff00413b422c73198bc8498b42204803c9488b44c8084885c07406443958107403498bc1488b4048448b78644d85c074094981c0e0010000eb074c8d05c6bd7603498b184963400c488d3c83483bdf0f849e00000048897424604c89",
+      "sha256": "1334b6595b0e5b025c721347f5fdc830767fb19ce6a5cf6ac6ab63d4be483162",
+      "purpose": "Character land/held title IDs, primary title tier"
+    },
+    {
+      "name": "subrealm_title_landless_filter",
+      "rva": "0x1cedf17",
+      "size": 56,
+      "bytes": "498b4148498bc98b7064e82af9610084c07525418b4110488d542420488bcd4889442428c744242005000000e8e822b9fe4c8b15a9fb0204",
+      "sha256": "459b0e823f412ff08a35498b91a050a6eb07ea22792a0131b07d264a6b812716",
+      "purpose": "Native 0x230D850 predicate excludes non-land-bearing held titles"
+    },
+    {
+      "name": "subrealm_vassal_contract_reader",
+      "rva": "0x1cedf82",
+      "size": 128,
+      "bytes": "498b86c00100004885c07408480518020000eb07488d053bb77603488b184863400c488d3c83483bdf74540f1f00488b15d10b03044885d27429448b03418bc025ffffff003b422c73198bc8488b42204803c9488b54c8084885d27406443942087407488b15540b0304488b5220488bcde818feffff4883c304483bdf75af48",
+      "sha256": "29d57c759c9a2f43b8759786fd7600225e0d1f741f659d1ee581d76e34efa3b7",
+      "purpose": "Direct vassal-contract IDs, generation-checked contract, owner Character*, recursive walker"
+    }
+  ]
+}
