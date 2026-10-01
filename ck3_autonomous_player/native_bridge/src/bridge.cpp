@@ -10589,8 +10589,6 @@ struct WorkerState {
           s.join_width_detour.installed.load() != 0 ||
           std::any_of(s.scoped_detours.hooks.begin(), s.scoped_detours.hooks.end(),
                       [](const auto &h) { return h.installed; }) ||
-          std::any_of(s.damage_consumer_detours.sites.begin(), s.damage_consumer_detours.sites.end(),
-                      [](const auto &h) { return h.installed; }) ||
           std::any_of(s.advantage_component_detours.sites.begin(), s.advantage_component_detours.sites.end(),
                       [](const auto &h) { return h.installed; });
       RetainScopedObserverParentUntilProcessExitV1(experimental_combat_phase_trace, resident);
