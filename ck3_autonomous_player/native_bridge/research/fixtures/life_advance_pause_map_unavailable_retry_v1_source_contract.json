@@ -1,0 +1,48 @@
+{
+  "schema": "xar.ck3.life-advance-pause-recovery-source-contract/v1",
+  "build": {
+    "product_version": "1.20.0.2",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "readiness": "static-ready",
+  "real_failure": "family-live-next/root-first-heir-next-r4-07/result.json",
+  "failure": "First cleanup pause-map was natively rejected before the existing retry path; running timeline escaped the composite.",
+  "retry_native_error": "CK3 map state is unavailable",
+  "change_scope": {
+    "class": "NativeHeadlessGameplayDriver",
+    "method": "_pause_life_advance",
+    "first_request_exact_rejection_only": true,
+    "existing_deadline_owner_and_two_attempt_bound_retained": true,
+    "waits_for_semantic_paused_postcondition": true,
+    "public_revision_behavior_unchanged": true
+  },
+  "application": {
+    "shared_source": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+    "shared_source_before_sha256": "70157ccd5f5a1a3f97aacfc766ae543a7708732e6d70829304350d5358ddc365",
+    "shared_source_after_sha256": "3083df9c93a90356667e24827fb6677bbba0b39e18d771750c96ffa01ab65ade",
+    "shared_method_start_line": 19762,
+    "old_method_sha256": "14cbfc368d6a56fb62cfc0209b058a070c589f64f7d8779b1cdf626a2a115dcc",
+    "frozen_method_byte_identical_before": true,
+    "candidate_body_sha256": "186a42aa29ed064efb31d5c596a408a39726a6cd989ab068487d72cf967bc650",
+    "installed_method_sha256": "5dc691b57649cd5306adbfb5104ccd210e316690216519a473f22fc999b087c6",
+    "all_non_method_bytes_preserved": true,
+    "l6_source_unchanged": true
+  },
+  "source_sha256": {
+    "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py": "3083df9c93a90356667e24827fb6677bbba0b39e18d771750c96ffa01ab65ade",
+    "ck3_autonomous_player\\tests\\unit\\test_life_advance_pause_map_unavailable_retry.py": "69dafb537790b762b6d786e85732696417adfea28afba4df1a74eb8cd5167bf1",
+    "docs\\ck3-native-ai\\life-advance-pause-map-unavailable-recovery-2026-10-01.md": "8c2f7597ca062b6334e27a397f94c6fa7217853cc9c6b2c7783b009c21165dff"
+  },
+  "test": {
+    "file": "ck3_autonomous_player\\tests\\unit\\test_life_advance_pause_map_unavailable_retry.py",
+    "production_path": "execute_step('life-advance') -> _execute_life_advance -> _execute_primitive_step -> _pause_life_advance",
+    "transport_and_frames": "synthetic; no local artifacts or native processes",
+    "error_text": "actual native rejection literal",
+    "case_count": 4,
+    "status": "GREEN",
+    "duration_seconds": 0.106,
+    "old_matrix_rerun": false
+  },
+  "live_verified_for_this_patch": false,
+  "remaining_live": "Root normal R7 life-advance observes stable paused completion; do not force a map-read fault."
+}

@@ -19782,19 +19782,34 @@ class NativeHeadlessGameplayDriver:
         # speed-five map publishes frames, so only this composite-owned pause
         # bypasses that redundant pre-submit comparison.  Direct primitives
         # and every other action keep their existing revision contract.
-        result = self._execute_primitive_step(
-            "pause-map",
-            expected_revision=None,
-            timeout_seconds=remaining,
-            internal_semantic_snapshot=True,
-        )
+        pause_rejected = False
+        try:
+            result = self._execute_primitive_step(
+                "pause-map",
+                expected_revision=None,
+                timeout_seconds=remaining,
+                internal_semantic_snapshot=True,
+            )
+        except _NativeCommandRejectedError as error:
+            if error.native_error != "CK3 map state is unavailable":
+                raise
+            # A rejected request did not enqueue a pause. Refresh the map and
+            # use this composite's existing one retry under the same deadline.
+            pause_rejected = True
+            result = {
+                "step": "pause-map",
+                "accepted": False,
+                "status": "rejected",
+                "error": error.native_error,
+            }
         actions.append({"step": "pause-map", "result": result})
         pause_attempt_count = 1
         pause_ack_statuses = [_timeline_ack_status(result)]
         remaining = max(0.0, deadline - time.monotonic())
         current = self._wait_for_life_advance_snapshot(
             self.take_internal_semantic_snapshot(),
-            lambda candidate: candidate.get("paused") is True,
+            lambda candidate: candidate.get("paused") is True
+            or (pause_rejected and candidate.get("map_ready") is True),
             timeout_seconds=min(
                 remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS
             ),

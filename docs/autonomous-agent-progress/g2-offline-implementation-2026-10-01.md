@@ -753,3 +753,9 @@ New single O2 actual named callback case seven checks passed; default generic ca
 Eleven central sources, explicit56ON4OFF and only model/mailbox two new compilation inputs. Actual dualDLL/injector jobs64 GREEN; focused defaultOFF/candidate newroute and registration passed, prior R6 matrices reused. Actual Git compiler-input freeze and paused R7 qualification follow root commit. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r7\central-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:14:46 Recover cleanup pause after actual map-state rejection
+
+Actual R4 cleanup pause rejected and escaped before the existing retry, leaving the map running. Four focused complete production-path tests verify the minimal exact-error catch and existing two-attempt bound, with success only after a paused frame. Other native errors stay unchanged; static-ready reliability fix pending ordinary R7 live timing. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\pause-map-rejected-retry\root-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
