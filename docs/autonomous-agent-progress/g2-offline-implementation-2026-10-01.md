@@ -861,3 +861,9 @@ Eleven frozen central sources. Explicit59ON4OFF, three new named readonly execut
 Seven tested source and topic files. Actual R6 stopped at64quote rows before all19 positive-income keys; capacity/admission now512 with native check budget and policy unchanged. One new production fixture closes437finitechecks/133costs/latequote; remaining registry truncation remains explicit. Corrects public readiness placeholder interpretation. Static-ready, R9 actual pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\construction-decision-r9-candidate\APPLIED-SOURCE-MANIFEST.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 21:52:43 Read actual religious AI controllers and scheduling inputs
+
+Twelve frozen native research and topic sources combine current actor lookup, actual controller table and scheduler inputs. One actual owning query case12checks/two whole packets passes; prior schedule and context fixtures reused. No AI construction, action, score or reform-date prediction. Native named registration and actual paused follow. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\ai-inputs-native-source-only12.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

@@ -1,0 +1,411 @@
+{
+  "schema": "ck3_12002_religion_reform_ai_context_v1",
+  "exact_executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "reused_schedule_map_sha256": "c44a4fe9c1fc3bdd2614999c4c587244801774b7a87a23bd562c1d6ec2fb36c9",
+  "reused_schedule_anchors": [
+    {
+      "name": "AI_state_constructor",
+      "rva": "0x2adc641",
+      "bytes": "e8 1a 1c f5 fe",
+      "instruction": "call 0x1a2e260",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1a2e260"
+      ]
+    },
+    {
+      "name": "AI_holder",
+      "rva": "0x1a305ac",
+      "bytes": "48 8b 45 18",
+      "instruction": "mov rax, qword ptr [rbp + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_AI_special",
+      "rva": "0x1a32d98",
+      "bytes": "c6 47 2e 01",
+      "instruction": "mov byte ptr [rdi + 0x2e], 1",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "AI_manager_secondary_vtable",
+      "rva": "0x1a2e297",
+      "bytes": "48 8d 05 5a e3 b7 02",
+      "instruction": "lea rax, [rip + 0x2b7e35a]",
+      "rip_targets": [
+        "0x45ac5f8"
+      ],
+      "direct_targets": []
+    }
+  ],
+  "native_spans": [
+    {
+      "name": "player_AI.readonly_getter",
+      "start_rva": "0x28ca250",
+      "end_exclusive_rva": "0x28ca2d3",
+      "kind": "complete_function",
+      "bytes": "8b 41 18 83 f8 ff 74 4f 48 8b 0d f1 e9 39 03 48 8b 91 a0 00 00 00 48 8b 8a 40 23 02 00 48 63 92 4c 23 02 00 4c 8d 04 d1 49 3b c8 74 17 0f 1f 00 48 8b 11 39 82 b0 00 00 00 74 09 48 83 c1 08 49 3b c8 75 ec 33 c0 49 3b c8 48 0f 44 c8 48 85 c9 74 05 48 8b 01 eb 07 48 8b 05 5a ed 45 03 81 b8 dc 00 00 00 6e 49 6c 50 75 11 83 b8 d8 00 00 00 ff 74 08 48 8b 80 e8 02 00 00 c3 48 8b 05 3e 77 45 03 c3",
+      "sha256": "0201d5f5fb35a3c1643be8ecb6ac194d977f8dd2ac47d46798216f321535aed3"
+    },
+    {
+      "name": "normal_AI.readonly_bool",
+      "start_rva": "0x28ac130",
+      "end_exclusive_rva": "0x28ac14f",
+      "kind": "complete_function",
+      "bytes": "48 8b 81 b0 01 00 00 48 85 c0 75 01 c3 48 8b 80 78 02 00 00 81 78 28 74 53 49 41 0f 94 c0 c3",
+      "sha256": "81fb4c4f89a0ec5f33d5bf397d98a3d7171e2ee81e0c85cdb0661e8be006be61"
+    },
+    {
+      "name": "player_AI.readonly_bool",
+      "start_rva": "0x28ac150",
+      "end_exclusive_rva": "0x28ac168",
+      "kind": "complete_function",
+      "bytes": "48 83 ec 28 e8 f7 e0 01 00 81 78 28 74 53 49 41 0f 94 c0 48 83 c4 28 c3",
+      "sha256": "fc11a6f1c8f090cff6951834084950f44917a023f738db924dbfddf9ff397bbf"
+    },
+    {
+      "name": "normal_AI.creator_evidence_only",
+      "start_rva": "0x1a2fa70",
+      "end_exclusive_rva": "0x1a2fb01",
+      "kind": "complete_function",
+      "bytes": "48 89 5c 24 08 57 48 83 ec 20 48 8b f9 48 8b da 8b 4a 18 e8 88 ac 17 01 84 c0 75 6a 48 8b cb e8 bc a7 e9 00 81 78 28 74 53 49 41 74 59 48 8b 83 b0 01 00 00 48 85 c0 75 09 48 8b 05 60 1f 2f 04 eb 07 48 8b 80 78 02 00 00 48 8b 4f 20 48 3b 41 08 74 09 81 78 28 74 53 49 41 74 1b 48 8b d3 e8 bc c0 09 00 48 8b 8b b0 01 00 00 48 85 c9 74 07 48 89 81 78 02 00 00 48 83 78 20 00 75 08 48 8b d0 e8 2a c4 09 00 48 8b 5c 24 30 48 83 c4 20 5f c3",
+      "sha256": "c6a593b165736bedcdae18db2da0dd6617c2cd8dd908eebb90d79d995cab64d6"
+    },
+    {
+      "name": "actual_AI.constructor_and_holder_append_evidence_only",
+      "start_rva": "0x1acbb90",
+      "end_exclusive_rva": "0x1acbd22",
+      "kind": "complete_function",
+      "bytes": "48 83 ec 48 48 89 5c 24 58 48 8b da 48 89 6c 24 60 48 89 74 24 40 48 89 7c 24 38 48 8b f9 b9 30 00 00 00 4c 89 64 24 30 4c 89 74 24 28 e8 f2 7f 75 02 48 8b f0 48 89 44 24 50 45 33 e4 48 8d 05 1c e9 ad 02 48 89 06 b8 fe 00 00 00 80 66 16 f0 66 89 46 14 4c 89 66 08 44 89 66 10 48 89 5e 18 4c 89 66 20 c7 46 28 74 53 49 41 c7 46 2c 01 00 00 00 48 63 47 1c 8b 4f 18 3b c1 0f 85 c4 00 00 00 8d 68 01 66 0f 6e c1 48 8b 4f 20 45 8d 44 24 08 0f 5b c0 4c 89 7c 24 20 44 8b fd f3 0f 59 05 cc a7 f2 02 f3 0f 2c c0 3b e8 44 0f 4c f8 48 8b 01 41 8b d7 48 c1 e2 03 ff 50 08 48 63 4f 1c 4c 8b f0 48 89 34 c8 8b 5f 1c 85 db 7e 52 48 8b 4f 10 48 8b d0 0f 1f 40 00 0f 1f 84 00 00 00 00 00 48 8b 01 48 8d 52 08 4c 89 21 48 8d 49 08 ff cb 48 89 42 f8 85 db 7f e8 8b 5f 1c 85 db 7e 20 48 8b 77 10 48 8b 0e 48 85 c9 74 0a 48 8b 01 ba 01 00 00 00 ff 10 ff cb 48 83 c6 08 85 db 7f e4 48 8b 4f 20 41 b8 08 00 00 00 48 8b 57 10 48 8b 01 ff 50 10 44 89 7f 18 4c 8b 7c 24 20 4c 89 77 10 89 6f 1c eb 15 48 8b c8 48 8b 47 10 48 89 34 c8 ff 47 1c 8b 6f 1c 4c 8b 77 10 80 3d 92 42 96 03 00 4c 8b 64 24 30 48 8b 7c 24 38 48 8b 74 24 40 48 8b 5c 24 58 48 63 c5 48 8b 6c 24 60 49 8b 44 c6 f8 4c 8b 74 24 28 75 04 c6 40 2c 00 48 83 c4 48 c3",
+      "sha256": "1daeff22ca3707d5cd51f8d4eea6e6f509129f7fee28de1c0176edfd25c9b739"
+    },
+    {
+      "name": "holder.default_and_actual_array_initialize",
+      "start_rva": "0x1acb5e5",
+      "end_exclusive_rva": "0x1acb638",
+      "kind": "slice",
+      "bytes": "48 8d 0d 04 ef ad 02 48 89 08 45 33 ed 4c 89 68 08 44 89 68 10 b9 fe 00 00 00 66 89 48 14 80 60 16 f0 4c 89 68 18 4c 89 68 20 c7 40 28 74 53 49 41 c7 40 2c 01 00 00 00 49 89 44 24 08 4d 89 6c 24 10 4d 89 6c 24 18 48 8d 05 bd 7f a1 03 49 89 44 24 20",
+      "sha256": "6965c9e7dee2bba1b578aef45576ba11ec153de4caebb7d62cc9b97afb38c6b4"
+    },
+    {
+      "name": "normal_AI.field_read_and_default_check",
+      "start_rva": "0x1a2edac",
+      "end_exclusive_rva": "0x1a2edf6",
+      "kind": "slice",
+      "bytes": "48 8b ce e8 9c b4 e9 00 81 78 28 74 53 49 41 74 54 48 8b 96 b0 01 00 00 48 8b 0d 45 2c 2f 04 48 85 d2 74 07 48 8b 8a 78 02 00 00 48 8b 45 18 48 3b 48 08 74 30 81 79 28 74 53 49 41 75 13 48 8b d1 48 8d 4d f8 e8 6a 09 00 00",
+      "sha256": "825e0abc289f6055ac139e48b284eb0577911583198c8896c3661b0e3c0d8013"
+    },
+    {
+      "name": "normal_AI.restore_holder_default",
+      "start_rva": "0x1a2edfd",
+      "end_exclusive_rva": "0x1a2ee11",
+      "kind": "slice",
+      "bytes": "48 85 d2 74 0f 48 8b 45 18 48 8b 48 08 48 89 8a 78 02 00 00",
+      "sha256": "c7048fabcda1322293a98467e8bed9e400501a3847f13403c151cde2f44bfade"
+    },
+    {
+      "name": "holder.retirement_terminal_only",
+      "start_rva": "0x1a2fa49",
+      "end_exclusive_rva": "0x1a2fa63",
+      "kind": "slice",
+      "bytes": "49 8b 4e 20 49 8b d7 48 8b 5c 24 58 48 83 c4 20 41 5f 41 5e 5f e9 cd c2 09 00",
+      "sha256": "2515d9f18f5ef0645f54d7890f319f8aa23ffd24bf06072cc2658ef3a9d25356"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "player_getter_actor_full_id",
+      "rva": "0x28ca250",
+      "bytes": "8b 41 18",
+      "instruction": "mov eax, dword ptr [rcx + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_game_state_root",
+      "rva": "0x28ca258",
+      "bytes": "48 8b 0d f1 e9 39 03",
+      "instruction": "mov rcx, qword ptr [rip + 0x339e9f1]",
+      "rip_targets": [
+        "0x5c68c50"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_state_data",
+      "rva": "0x28ca25f",
+      "bytes": "48 8b 91 a0 00 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0xa0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_instance_array",
+      "rva": "0x28ca266",
+      "bytes": "48 8b 8a 40 23 02 00",
+      "instruction": "mov rcx, qword ptr [rdx + 0x22340]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_instance_count",
+      "rva": "0x28ca26d",
+      "bytes": "48 63 92 4c 23 02 00",
+      "instruction": "movsxd rdx, dword ptr [rdx + 0x2234c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_full_id_compare",
+      "rva": "0x28ca283",
+      "bytes": "39 82 b0 00 00 00",
+      "instruction": "cmp dword ptr [rdx + 0xb0], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_instance_tag",
+      "rva": "0x28ca2ae",
+      "bytes": "81 b8 dc 00 00 00 6e 49 6c 50",
+      "instruction": "cmp dword ptr [rax + 0xdc], 0x506c496e",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_instance_ID",
+      "rva": "0x28ca2ba",
+      "bytes": "83 b8 d8 00 00 00 ff",
+      "instruction": "cmp dword ptr [rax + 0xd8], -1",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_existing_special_AI",
+      "rva": "0x28ca2c3",
+      "bytes": "48 8b 80 e8 02 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x2e8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "player_getter_default_AI",
+      "rva": "0x28ca2cb",
+      "bytes": "48 8b 05 3e 77 45 03",
+      "instruction": "mov rax, qword ptr [rip + 0x345773e]",
+      "rip_targets": [
+        "0x5d21a10"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "normal_creator_living_data",
+      "rva": "0x1a2fa9d",
+      "bytes": "48 8b 83 b0 01 00 00",
+      "instruction": "mov rax, qword ptr [rbx + 0x1b0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "normal_existing_AI_pointer",
+      "rva": "0x1a2fab2",
+      "bytes": "48 8b 80 78 02 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x278]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "normal_creator_holder",
+      "rva": "0x1a2fab9",
+      "bytes": "48 8b 4f 20",
+      "instruction": "mov rcx, qword ptr [rdi + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "normal_creator_default_AI_compare",
+      "rva": "0x1a2fabd",
+      "bytes": "48 3b 41 08",
+      "instruction": "cmp rax, qword ptr [rcx + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "normal_creator_AI_tag",
+      "rva": "0x1a2fac3",
+      "bytes": "81 78 28 74 53 49 41",
+      "instruction": "cmp dword ptr [rax + 0x28], 0x41495374",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "normal_creator_mutating_constructor",
+      "rva": "0x1a2facf",
+      "bytes": "e8 bc c0 09 00",
+      "instruction": "call 0x1acbb90",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1acbb90"
+      ]
+    },
+    {
+      "name": "normal_AI_field_write",
+      "rva": "0x1a2fae0",
+      "bytes": "48 89 81 78 02 00 00",
+      "instruction": "mov qword ptr [rcx + 0x278], rax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "new_AI_actor_write_source",
+      "rva": "0x1acbbec",
+      "bytes": "48 89 5e 18",
+      "instruction": "mov qword ptr [rsi + 0x18], rbx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "new_AI_tag_write_source",
+      "rva": "0x1acbbf4",
+      "bytes": "c7 46 28 74 53 49 41",
+      "instruction": "mov dword ptr [rsi + 0x28], 0x41495374",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "actual_holder_array_count",
+      "rva": "0x1acbc02",
+      "bytes": "48 63 47 1c",
+      "instruction": "movsxd rax, dword ptr [rdi + 0x1c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "actual_holder_array_capacity",
+      "rva": "0x1acbc06",
+      "bytes": "8b 4f 18",
+      "instruction": "mov ecx, dword ptr [rdi + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "actual_holder_append_pointer",
+      "rva": "0x1acbcdc",
+      "bytes": "48 89 34 c8",
+      "instruction": "mov qword ptr [rax + rcx*8], rsi",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "actual_holder_increment_count",
+      "rva": "0x1acbce0",
+      "bytes": "ff 47 1c",
+      "instruction": "inc dword ptr [rdi + 0x1c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "holder_default_AI_initialize",
+      "rva": "0x1acb61d",
+      "bytes": "49 89 44 24 08",
+      "instruction": "mov qword ptr [r12 + 8], rax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "holder_array_initialize",
+      "rva": "0x1acb622",
+      "bytes": "4d 89 6c 24 10",
+      "instruction": "mov qword ptr [r12 + 0x10], r13",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "holder_capacity_count_initialize",
+      "rva": "0x1acb627",
+      "bytes": "4d 89 6c 24 18",
+      "instruction": "mov qword ptr [r12 + 0x18], r13",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "retire_normal_AI_call",
+      "rva": "0x1a2edf1",
+      "bytes": "e8 6a 09 00 00",
+      "instruction": "call 0x1a2f760",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1a2f760"
+      ]
+    },
+    {
+      "name": "normal_AI_restore_default",
+      "rva": "0x1a2ee0a",
+      "bytes": "48 89 8a 78 02 00 00",
+      "instruction": "mov qword ptr [rdx + 0x278], rcx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "retire_holder_pointer",
+      "rva": "0x1a2fa49",
+      "bytes": "49 8b 4e 20",
+      "instruction": "mov rcx, qword ptr [r14 + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "retire_holder_call",
+      "rva": "0x1a2fa5e",
+      "bytes": "e9 cd c2 09 00",
+      "instruction": "jmp 0x1acbd30",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1acbd30"
+      ]
+    }
+  ],
+  "readonly_native_entrypoints": [
+    {
+      "name": "player_AI.readonly_getter",
+      "native_object_stores": [],
+      "calls": [],
+      "stack_stores": []
+    },
+    {
+      "name": "normal_AI.readonly_bool",
+      "native_object_stores": [],
+      "calls": [],
+      "stack_stores": []
+    },
+    {
+      "name": "player_AI.readonly_bool",
+      "native_object_stores": [],
+      "calls": [
+        "0x28ca250"
+      ],
+      "stack_stores": []
+    }
+  ],
+  "source_bindings": {
+    "kAIContextStateDataOffset": "0xa0",
+    "kAIContextManagerOffset": "0x2d48",
+    "kAIContextHolderOffset": "0x20",
+    "kAIContextDefaultOffset": "0x8",
+    "kAIContextArrayOffset": "0x10",
+    "kAIContextCountOffset": "0x1c",
+    "kAIContextActorOffset": "0x18",
+    "kAIContextTypeOffset": "0x28",
+    "kAIContextActiveOffset": "0x2c",
+    "kAIContextSpecialOffset": "0x2e"
+  },
+  "public_pointer_source": "actual holder array membership + same resolved actor pointer + full actor identity; default +8 excluded",
+  "unresolved": [
+    "full general AI lifetime eligibility on later days",
+    "owned paused query integration and actual live table observation"
+  ]
+}
