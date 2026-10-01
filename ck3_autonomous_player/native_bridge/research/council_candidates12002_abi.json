@@ -1,0 +1,443 @@
+{
+  "contract": "council-candidates-12002",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "evidence_level": "static-ready",
+  "application_main_only": true,
+  "paused_only": true,
+  "source_constants": {
+    "kCouncilCandidatesProducerRva12002": "0x2C47EC0",
+    "kCouncilCandidatesAllocatorVtableRva12002": "0x452D0A8",
+    "kCouncilCandidatesFallbackAllocatorRva12002": "0x54DEDE0",
+    "kCouncilCandidatesInitializeRva12002": "0x98B8C0",
+    "kCouncilCandidatesReleaseRva12002": "0x855830",
+    "kCouncilCandidatesCharacterFallbackSlotRva12002": "0x5C67570",
+    "kCouncilCandidatesTaskStorageSlotRva12002": "0x5D1DEA0",
+    "kCouncilCandidatesTaskFallbackSlotRva12002": "0x5D1DDF8",
+    "kCouncilCandidatesAllocatorSize12002": "0x210",
+    "kCouncilCandidatesAllocatorFallbackOffset12002": "0x208",
+    "kCouncilCandidatesCharacterStewardshipOffset12002": "0xE0",
+    "kCouncilCandidatesTaskIncumbentOffset12002": "0x40"
+  },
+  "globals": {
+    "character_storage": "0x5C67568",
+    "character_fallback": "0x5C67570",
+    "active_task_storage": "0x5D1DEA0",
+    "active_task_fallback": "0x5D1DDF8"
+  },
+  "functions": {
+    "gui_refresh": "0x115BF70",
+    "candidate_producer": "0x2C47EC0",
+    "valid_position": "0x31BCED0",
+    "valid_character": "0x31BCF90",
+    "court_candidate_gui_mode_filter": "0x2BAC200",
+    "position_reassignment_block_filter": "0x31BDDC0",
+    "effective_skill": "0x28B16B0",
+    "allocator_initialize": "0x98B8C0",
+    "allocator_release": "0x855830",
+    "allocator_allocate": "0x855870",
+    "allocator_fallback": "0x896550"
+  },
+  "layout": {
+    "character_full_id": "0x18",
+    "character_land_extension": "0x1C0",
+    "land_active_task_ids": "0x230",
+    "land_active_task_count": "0x23C",
+    "active_task_id": "0x10",
+    "active_task_type": "0x18",
+    "task_type_position_type": "0x40",
+    "active_task_owner": "0x44",
+    "active_task_incumbent": "0x40",
+    "position_stable_key": "0x18",
+    "character_stewardship": "0xE0",
+    "skill_array": "0xD8",
+    "stewardship_enum": 2,
+    "component_slots": "0x20",
+    "component_capacity": "0x2C",
+    "component_slot_stride": "0x10",
+    "component_slot_object": "0x08",
+    "id_index_mask": "0x00FFFFFF"
+  },
+  "producer_signature": "void Microsoft-x64 (RCX owner CCharacter*, RDX ActiveCouncilTask*, R8B GUI eligibility=true, R9 vector*)",
+  "producer_source_tree": {
+    "court_candidates": "owner+0x1C0 -> +0xA8 full CharacterIDs; exclude owner/incumbent; require employer context owner; exact valid_position(owner), valid_character(candidate), position discriminator, reassignment-block filter and GUI-mode candidate filter before append",
+    "vassal_candidates": "owner+0x1C0 -> +0x218 full vassal component IDs -> vassal+0x20 CCharacter; exclude owner/incumbent; resolve candidate liege/employer context to owner; exact valid_position(owner), valid_character(candidate), discriminator and reassignment-block filter before append",
+    "native_ai_composition_utility": "unknown; not published or used by this provider",
+    "commit_legality": "candidate provider accepted means candidate-set legality only; actual typed assignment additionally checks current councillor, guest, pending and occupied-seat final gates"
+  },
+  "temporary_vector": {
+    "size": "0x18",
+    "data": "0x00",
+    "capacity": "0x08",
+    "count": "0x0C",
+    "allocator": "0x10",
+    "row_stride": 8,
+    "maximum_published_rows": 64,
+    "maximum_admitted_native_capacity": 65536
+  },
+  "allocator": {
+    "size": "0x210",
+    "vtable": "0x452D0A8",
+    "inline_bytes": "0x08",
+    "inline_capacity": 64,
+    "fallback_pointer_offset": "0x208",
+    "fallback_object": "0x54DEDE0",
+    "allocate_vtable_offset": "0x08",
+    "release_vtable_offset": "0x10",
+    "initialize_vtable_offset": "0x20",
+    "fallback_getter_vtable_offset": "0x38",
+    "release_rule": "allocator+8 data is a no-op; heap data delegates via fallback getter to fallback allocator release+0x10; element_size=8; release after every producer attempt including error/oversized/duplicate/stale-generation result"
+  },
+  "vtable_prefix": {
+    "rva": "0x452D0A8",
+    "entries": [
+      "0x899910",
+      "0x855870",
+      "0x855830",
+      "0x855810",
+      "0x98b8c0",
+      "0x98b8c0",
+      "0x896550",
+      "0x896550"
+    ]
+  },
+  "spans": [
+    {
+      "name": "potential_councillor_list_refresh",
+      "start": "0x115bf70",
+      "end": "0x115c29e",
+      "sha256": "9A0165D981DD004ADE0B9430699CC0CC3A9325671CC3663F0C12FD9DC2943270"
+    },
+    {
+      "name": "candidate_producer",
+      "start": "0x2c47ec0",
+      "end": "0x2c4835c",
+      "sha256": "3FB391FD82FD7FFF85A303697A51EB2BAD6532E30DDA9B9075EE83A9CF49E9B1"
+    },
+    {
+      "name": "allocator_initialize",
+      "start": "0x98b8c0",
+      "end": "0x98b8cf",
+      "sha256": "18FDA0CA73D46F674A4278204F8F8A78D06621393FCC793F5ED706C7F95A2C46"
+    },
+    {
+      "name": "allocator_release",
+      "start": "0x855830",
+      "end": "0x85586a",
+      "sha256": "713F21ED3585FDF7D226EBEF14CDD488CBE394D4A489FDC3227BEA74F126A604"
+    },
+    {
+      "name": "allocator_allocate",
+      "start": "0x855870",
+      "end": "0x8558a3",
+      "sha256": "16C83611F7E940D953DF2FB9E36763FAF3A29A02F206C05718D4D7E5AB66DDD2"
+    },
+    {
+      "name": "allocator_fallback",
+      "start": "0x896550",
+      "end": "0x896558",
+      "sha256": "4E03387DA9DFF9A179536811B04328F4EB2426581D13F4CD0D99585BBC78D397"
+    },
+    {
+      "name": "effective_skill",
+      "start": "0x28b16b0",
+      "end": "0x28b170d",
+      "sha256": "B3C592A0D177A07D0BC5D04DD4A94558A539F6F543B73FAF5A748954F0AB42DA"
+    },
+    {
+      "name": "valid_position",
+      "start": "0x31bced0",
+      "end": "0x31bcf8c",
+      "sha256": "E67928C9766B1707B92F82AEAA556967A9D5CEB2CE0A95E5400CDA2123F7EF52"
+    },
+    {
+      "name": "valid_character",
+      "start": "0x31bcf90",
+      "end": "0x31bd04c",
+      "sha256": "96A59C457528D7E26141F5EC44C3962947649F7713BA1C40D1A58A292913C614"
+    },
+    {
+      "name": "active_task_ids",
+      "start": "0x2916ce0",
+      "end": "0x2916e19",
+      "sha256": "584EF4EA9528093DE80BF07BE6DB4EA12AB126E5282331C972C1A8D694AC4112"
+    }
+  ],
+  "instructions": [
+    {
+      "rva": "0x115bfb8",
+      "bytes": "488D05E9103D03",
+      "mnemonic": "lea",
+      "operand": "rax, [rip + 0x33d10e9]"
+    },
+    {
+      "rva": "0x115bfc3",
+      "bytes": "488D05162E3804",
+      "mnemonic": "lea",
+      "operand": "rax, [rip + 0x4382e16]"
+    },
+    {
+      "rva": "0x115bffd",
+      "bytes": "FF5020",
+      "mnemonic": "call",
+      "operand": "qword ptr [rax + 0x20]"
+    },
+    {
+      "rva": "0x115c084",
+      "bytes": "41B001",
+      "mnemonic": "mov",
+      "operand": "r8b, 1"
+    },
+    {
+      "rva": "0x115c08a",
+      "bytes": "E831BEAE01",
+      "mnemonic": "call",
+      "operand": "0x2c47ec0"
+    },
+    {
+      "rva": "0x115c093",
+      "bytes": "4863458C",
+      "mnemonic": "movsxd",
+      "operand": "rax, dword ptr [rbp - 0x74]"
+    },
+    {
+      "rva": "0x115c0ad",
+      "bytes": "8B5018",
+      "mnemonic": "mov",
+      "operand": "edx, dword ptr [rax + 0x18]"
+    },
+    {
+      "rva": "0x115c279",
+      "bytes": "41B808000000",
+      "mnemonic": "mov",
+      "operand": "r8d, 8"
+    },
+    {
+      "rva": "0x115c27f",
+      "bytes": "FF5010",
+      "mnemonic": "call",
+      "operand": "qword ptr [rax + 0x10]"
+    },
+    {
+      "rva": "0x2c47ef1",
+      "bytes": "4C8B7840",
+      "mnemonic": "mov",
+      "operand": "r15, qword ptr [rax + 0x40]"
+    },
+    {
+      "rva": "0x2c47f15",
+      "bytes": "8B5240",
+      "mnemonic": "mov",
+      "operand": "edx, dword ptr [rdx + 0x40]"
+    },
+    {
+      "rva": "0x2c47f5b",
+      "bytes": "498B85C0010000",
+      "mnemonic": "mov",
+      "operand": "rax, qword ptr [r13 + 0x1c0]"
+    },
+    {
+      "rva": "0x2c47f67",
+      "bytes": "4805A8000000",
+      "mnemonic": "add",
+      "operand": "rax, 0xa8"
+    },
+    {
+      "rva": "0x2c48005",
+      "bytes": "E8C64E5700",
+      "mnemonic": "call",
+      "operand": "0x31bced0"
+    },
+    {
+      "rva": "0x2c48018",
+      "bytes": "E8734F5700",
+      "mnemonic": "call",
+      "operand": "0x31bcf90"
+    },
+    {
+      "rva": "0x2c48063",
+      "bytes": "E89841F6FF",
+      "mnemonic": "call",
+      "operand": "0x2bac200"
+    },
+    {
+      "rva": "0x2c4809d",
+      "bytes": "498B4E10",
+      "mnemonic": "mov",
+      "operand": "rcx, qword ptr [r14 + 0x10]"
+    },
+    {
+      "rva": "0x2c480b1",
+      "bytes": "FF5008",
+      "mnemonic": "call",
+      "operand": "qword ptr [rax + 8]"
+    },
+    {
+      "rva": "0x2c480ce",
+      "bytes": "498B16",
+      "mnemonic": "mov",
+      "operand": "rdx, qword ptr [r14]"
+    },
+    {
+      "rva": "0x2c480e9",
+      "bytes": "FF5010",
+      "mnemonic": "call",
+      "operand": "qword ptr [rax + 0x10]"
+    },
+    {
+      "rva": "0x2c48136",
+      "bytes": "480518020000",
+      "mnemonic": "add",
+      "operand": "rax, 0x218"
+    },
+    {
+      "rva": "0x2c48189",
+      "bytes": "488B6CC808",
+      "mnemonic": "mov",
+      "operand": "rbp, qword ptr [rax + rcx*8 + 8]"
+    },
+    {
+      "rva": "0x2c4819f",
+      "bytes": "488B6D20",
+      "mnemonic": "mov",
+      "operand": "rbp, qword ptr [rbp + 0x20]"
+    },
+    {
+      "rva": "0x2c48247",
+      "bytes": "E8844C5700",
+      "mnemonic": "call",
+      "operand": "0x31bced0"
+    },
+    {
+      "rva": "0x2c4825a",
+      "bytes": "E8314D5700",
+      "mnemonic": "call",
+      "operand": "0x31bcf90"
+    },
+    {
+      "rva": "0x2c4828d",
+      "bytes": "E82E5B5700",
+      "mnemonic": "call",
+      "operand": "0x31bddc0"
+    },
+    {
+      "rva": "0x98b8c0",
+      "bytes": "488D4108",
+      "mnemonic": "lea",
+      "operand": "rax, [rcx + 8]"
+    },
+    {
+      "rva": "0x98b8c7",
+      "bytes": "41C70040000000",
+      "mnemonic": "mov",
+      "operand": "dword ptr [r8], 0x40"
+    },
+    {
+      "rva": "0x85583a",
+      "bytes": "488D4108",
+      "mnemonic": "lea",
+      "operand": "rax, [rcx + 8]"
+    },
+    {
+      "rva": "0x855844",
+      "bytes": "483BD0",
+      "mnemonic": "cmp",
+      "operand": "rdx, rax"
+    },
+    {
+      "rva": "0x85584c",
+      "bytes": "FF5038",
+      "mnemonic": "call",
+      "operand": "qword ptr [rax + 0x38]"
+    },
+    {
+      "rva": "0x85585b",
+      "bytes": "41FF5110",
+      "mnemonic": "call",
+      "operand": "qword ptr [r9 + 0x10]"
+    },
+    {
+      "rva": "0x896550",
+      "bytes": "488B8108020000",
+      "mnemonic": "mov",
+      "operand": "rax, qword ptr [rcx + 0x208]"
+    },
+    {
+      "rva": "0x28b16f8",
+      "bytes": "8B8499D8000000",
+      "mnemonic": "mov",
+      "operand": "eax, dword ptr [rcx + rbx*4 + 0xd8]"
+    },
+    {
+      "rva": "0x2916ce6",
+      "bytes": "4C8B91C0010000",
+      "mnemonic": "mov",
+      "operand": "r10, qword ptr [rcx + 0x1c0]"
+    },
+    {
+      "rva": "0x2916d0f",
+      "bytes": "498B8230020000",
+      "mnemonic": "mov",
+      "operand": "rax, qword ptr [r10 + 0x230]"
+    },
+    {
+      "rva": "0x2916d16",
+      "bytes": "49638A3C020000",
+      "mnemonic": "movsxd",
+      "operand": "rcx, dword ptr [r10 + 0x23c]"
+    },
+    {
+      "rva": "0x2916d97",
+      "bytes": "4C396240",
+      "mnemonic": "cmp",
+      "operand": "qword ptr [rdx + 0x40], r12"
+    },
+    {
+      "rva": "0x2916da2",
+      "bytes": "458B5140",
+      "mnemonic": "mov",
+      "operand": "r10d, dword ptr [r9 + 0x40]"
+    }
+  ],
+  "global_loads": [
+    {
+      "instruction_rva": "0x115c001",
+      "target_rva": "0x5d1dea0"
+    },
+    {
+      "instruction_rva": "0x115c03a",
+      "target_rva": "0x5d1ddf8"
+    },
+    {
+      "instruction_rva": "0x115c041",
+      "target_rva": "0x5c67568"
+    },
+    {
+      "instruction_rva": "0x115c079",
+      "target_rva": "0x5c67570"
+    },
+    {
+      "instruction_rva": "0x2916d2f",
+      "target_rva": "0x5d1dea0"
+    },
+    {
+      "instruction_rva": "0x2916d47",
+      "target_rva": "0x5d1ddf8"
+    }
+  ],
+  "stock_inputs": [
+    {
+      "path": "common/council_positions/00_council_positions.txt",
+      "sha256": "31FA258DFBF35A07E9EE08D1D1DFDCD26712D3974CD65EC74255C284E4DF0A2A"
+    },
+    {
+      "path": "common/scripted_triggers/00_councillor_triggers.txt",
+      "sha256": "350A5E375D73E38CDD659FC3221FE8395AD6650B3FD244E03EE2342AFC9A8F88"
+    },
+    {
+      "path": "gui/window_council.gui",
+      "sha256": "19A3A611974314AD5648C2821AC15A6068DB8509176DCC1FAB8C44188373E60D"
+    }
+  ],
+  "live_acceptance": "pending; executable-file and fixture-memory only; no CK3 session used"
+}

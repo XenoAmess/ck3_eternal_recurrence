@@ -785,9 +785,10 @@ bool CouncilApplicationMainActionRuntimeReadyV1(
       state.action_runtime_ready;
 }
 
-std::string SerializeCouncilApplicationMainResultEnvelopeV1(
+std::string SerializeCouncilApplicationMainResultEnvelopeWithCandidatesV1(
     const CouncilApplicationMainContextV1 &context,
-    std::string_view protocol_request_id) {
+    std::string_view protocol_request_id,
+    std::string_view serialized_candidates) {
   if (protocol_request_id.empty() || context.ticket.sequence == 0 ||
       context.operation == Operation::none) {
     return {};
@@ -835,11 +836,10 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
           : context.query_result.public_revision;
   output += ",\"snapshot_revision\":" + std::to_string(revision);
   if (context.operation == Operation::query_candidates) {
-    const auto payload =
-        ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(
-            context.query_result);
+    const auto payload = serialized_candidates;
     if (payload.empty()) return {};
-    output += ",\"council_composition_candidates\":" + payload;
+    output += ",\"council_composition_candidates\":";
+    output += payload;
   } else if (context.operation == Operation::query_final_gates) {
     output += ",\"private\":true,\"advertised\":false,";
     output += "\"native_helper_invocations_delta\":0,";
@@ -857,9 +857,7 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
         std::to_string(available ? context.final_gate_row_count : 0);
     output += ",\"rows\":[";
     if (available) {
-      const auto payload =
-          ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(
-              context.query_result);
+      const auto payload = serialized_candidates;
       if (payload.empty()) return {};
       for (std::uint32_t index = 0; index < context.final_gate_row_count;
            ++index) {
@@ -884,7 +882,8 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
         output += row.incumbent_can_be_fired ? "true" : "false";
         output += '}';
       }
-      output += "],\"council_composition_candidates\":" + payload;
+      output += "],\"council_composition_candidates\":";
+      output += payload;
     } else {
       output += ']';
     }
@@ -898,6 +897,15 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
   }
   output += ",\"backend_id\":\"native-headless\"}}";
   return output;
+}
+
+std::string SerializeCouncilApplicationMainResultEnvelopeV1(
+    const CouncilApplicationMainContextV1 &context,
+    std::string_view protocol_request_id) {
+  const auto payload = ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(
+      context.query_result);
+  return SerializeCouncilApplicationMainResultEnvelopeWithCandidatesV1(
+      context, protocol_request_id, payload);
 }
 
 std::string_view CouncilApplicationMainFailureNameV1(Failure failure) noexcept {

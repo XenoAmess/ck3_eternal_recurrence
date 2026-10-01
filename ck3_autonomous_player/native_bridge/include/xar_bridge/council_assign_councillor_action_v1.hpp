@@ -250,6 +250,15 @@ game::CouncilAssignCouncillorAckStatusV1 ExecuteCouncilAssignCouncillorActionV1(
     const game::CouncilAssignCouncillorActionRequestV1 &request,
     game::CouncilAssignCouncillorActionAckV1 &ack) noexcept;
 
+// Version-independent transaction; exact native binders supply their own
+// frozen SHA. The old entry point above retains its 1.19 admission.
+game::CouncilAssignCouncillorAckStatusV1 ExecuteCouncilAssignCouncillorActionForBuildV1(
+    const CouncilAssignCouncillorNativeEnvironmentV1 &environment,
+    const CouncilAssignCouncillorActionAccessV1 &access,
+    const game::CouncilAssignCouncillorActionRequestV1 &request,
+    game::CouncilAssignCouncillorActionAckV1 &ack,
+    std::string_view expected_executable_sha256) noexcept;
+
 game::CouncilAssignCouncillorReceiptStatusV1
 VerifyCouncilAssignCouncillorActionReceiptV1(
     const game::CouncilAssignCouncillorActionAckV1 &ack,

@@ -207,18 +207,19 @@ bool PrepareCouncilAssignCouncillorActionRequestV1(
   return true;
 }
 
-AckStatus ExecuteCouncilAssignCouncillorActionV1(
+AckStatus ExecuteCouncilAssignCouncillorActionForBuildV1(
     const CouncilAssignCouncillorNativeEnvironmentV1 &environment,
     const CouncilAssignCouncillorActionAccessV1 &access,
     const game::CouncilAssignCouncillorActionRequestV1 &request,
-    game::CouncilAssignCouncillorActionAckV1 &ack) noexcept {
+    game::CouncilAssignCouncillorActionAckV1 &ack,
+    std::string_view expected_executable_sha256) noexcept {
   try {
     if (!ValidRequest(request)) {
       return Reject(request, Failure::request_contract_invalid, {}, ack);
     }
     if (!environment.exact_build_admitted ||
         environment.admitted_executable_sha256 !=
-            kCouncilAssignCouncillorExecutableSha256V1) {
+            expected_executable_sha256 || expected_executable_sha256.empty()) {
       return Reject(request, Failure::exact_build_mismatch, {}, ack);
     }
     if (!environment.private_candidate_admitted) {
@@ -302,6 +303,15 @@ AckStatus ExecuteCouncilAssignCouncillorActionV1(
     return Reject(request, Failure::native_helper_not_invoked,
                   "action_executor_exception", ack);
   }
+}
+
+AckStatus ExecuteCouncilAssignCouncillorActionV1(
+    const CouncilAssignCouncillorNativeEnvironmentV1 &environment,
+    const CouncilAssignCouncillorActionAccessV1 &access,
+    const game::CouncilAssignCouncillorActionRequestV1 &request,
+    game::CouncilAssignCouncillorActionAckV1 &ack) noexcept {
+  return ExecuteCouncilAssignCouncillorActionForBuildV1(environment, access,
+      request, ack, kCouncilAssignCouncillorExecutableSha256V1);
 }
 
 ReceiptStatus VerifyCouncilAssignCouncillorActionReceiptV1(

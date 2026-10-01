@@ -1,0 +1,149 @@
+{
+  "schema": "xar.ck3.council-assignment12002-abi/v1",
+  "build": {
+    "version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736
+  },
+  "coverage": "standard landed councillor_steward; vacant assignment and occupied replacement; excludes swap and guest recruitment",
+  "sources": [
+    {
+      "path": "gui/window_council.gui",
+      "size": 63403,
+      "sha256": "19A3A611974314AD5648C2821AC15A6068DB8509176DCC1FAB8C44188373E60D"
+    },
+    {
+      "path": "common/council_positions/00_council_positions.txt",
+      "size": 88435,
+      "sha256": "31FA258DFBF35A07E9EE08D1D1DFDCD26712D3974CD65EC74255C284E4DF0A2A"
+    }
+  ],
+  "spans": [
+    {
+      "name": "set_position",
+      "rva": "0x115b250",
+      "end_rva": "0x115b508",
+      "size": 696,
+      "sha256": "A798F3AB585490C0F1702F693A11E2B15A8BA7A8B3C59CA232FE352BD4E8B4E1",
+      "runtime_function": [
+        18199120,
+        18199816,
+        85415676
+      ]
+    },
+    {
+      "name": "send_council_interaction",
+      "rva": "0x115aaa0",
+      "end_rva": "0x115ac3c",
+      "size": 412,
+      "sha256": "2F3657FAC31A6991037CACBF16156917CB89FDAD577491DAD87D7ECC3FAA1071",
+      "runtime_function": [
+        18197152,
+        18197564,
+        85415424
+      ]
+    },
+    {
+      "name": "replacement_confirm",
+      "rva": "0x1160660",
+      "end_rva": "0x1160838",
+      "size": 472,
+      "sha256": "F1806FD7EEC21DD2FECBA705AD34EF6CA2CDA5238AE2557FFB9630DB3EAE1117",
+      "runtime_function": [
+        18220640,
+        18221112,
+        85417120
+      ]
+    },
+    {
+      "name": "command_can_execute",
+      "rva": "0x29682a0",
+      "end_rva": "0x29682a9",
+      "size": 9,
+      "sha256": "D0AFB6DAACB032E81B6DE33ABCD46C160414DA155AF5C4038E63265E42768009",
+      "runtime_function": null
+    },
+    {
+      "name": "complete_can_send",
+      "rva": "0x307c040",
+      "end_rva": "0x307c1b0",
+      "size": 368,
+      "sha256": "FF9344C7FA4860880EB1EB32F4B58AC51619303852C8749A0FAC931552F0AE57",
+      "runtime_function": [
+        50839616,
+        50839984,
+        86862664
+      ]
+    },
+    {
+      "name": "native_command_wrapper",
+      "rva": "0x9e16b0",
+      "end_rva": "0x9e1728",
+      "size": 120,
+      "sha256": "5048D599B10A65E292FC7C179CF2516943FEC8CBB30D29D73BEEA4844C828C18",
+      "runtime_function": [
+        10360496,
+        10360616,
+        85060396
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "name": "vacant_to_helper",
+      "rva": "0x115b3b9",
+      "bytes": "e8e2f6ffff",
+      "target_rva": "0x115aaa0"
+    },
+    {
+      "name": "confirmed_replacement_to_helper",
+      "rva": "0x1160712",
+      "bytes": "e889a3ffff",
+      "target_rva": "0x115aaa0"
+    },
+    {
+      "name": "helper_to_command_wrapper",
+      "rva": "0x115abb2",
+      "bytes": "e8f96a88ff",
+      "target_rva": "0x9e16b0"
+    },
+    {
+      "name": "can_execute_to_can_send",
+      "rva": "0x29682a4",
+      "bytes": "e9973d7100",
+      "target_rva": "0x307c040"
+    },
+    {
+      "name": "helper_to_context",
+      "rva": "0x115aaeb",
+      "bytes": "e8a0c1f101",
+      "target_rva": "0x3076c90"
+    },
+    {
+      "name": "helper_to_refresh",
+      "rva": "0x115ab02",
+      "bytes": "e859dff101",
+      "target_rva": "0x3078a60"
+    },
+    {
+      "name": "helper_to_finalize",
+      "rva": "0x115ab0c",
+      "bytes": "e87fe1f101",
+      "target_rva": "0x3078c90"
+    }
+  ],
+  "vtable_edges": [
+    {
+      "rva": "0x448BD10",
+      "target_rva": "0x29682A0"
+    }
+  ],
+  "findings": [
+    "set_position submits candidate CharacterID in ECX and active-task full ID in EDX",
+    "helper115AAA0 reads current played CharacterID then constructs/refreshes/finalizes native interaction context; payload+8 receives active task ID",
+    "CSendCharacterInteractionCommand primary+30 reaches complete CanSend through29682A0; command final validation remains native",
+    "native helper returns void and9E16B0 does not propagate reliable acceptance; ACK is verification_pending",
+    "replacement confirmation carries incumbent+130/candidate+134; CanConfirm resolves active-task from incumbent unlanded state+F0; gates manifest is authoritative for that receiver",
+    "receipt requires independent later paused incumbent projection"
+  ]
+}

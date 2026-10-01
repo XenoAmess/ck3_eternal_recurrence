@@ -199,6 +199,13 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
     const CouncilApplicationMainContextV1 &context,
     std::string_view protocol_request_id);
 
+// The native version provider serializes the candidate DTO provenance; ACK,
+// receipt and final-gate envelope semantics are shared unchanged.
+std::string SerializeCouncilApplicationMainResultEnvelopeWithCandidatesV1(
+    const CouncilApplicationMainContextV1 &context,
+    std::string_view protocol_request_id,
+    std::string_view serialized_candidates);
+
 std::string_view CouncilApplicationMainFailureNameV1(
     CouncilApplicationMainFailureV1 failure) noexcept;
 

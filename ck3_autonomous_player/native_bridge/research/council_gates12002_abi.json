@@ -1,0 +1,307 @@
+{
+  "contract": "council_gates12002_abi",
+  "schema_version": 1,
+  "status": "offline-exact-build-static-ready",
+  "scope": "councillor_steward four native final gates; no submit",
+  "build": {
+    "game_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000"
+  },
+  "bindings": {
+    "played_character_id": "0x54DBC00",
+    "is_councillor": "0x2917560",
+    "is_guest": "0x1A8F780",
+    "pending_manager_setup": "0x115CA80",
+    "has_pending_interaction": "0x2A307B0",
+    "can_confirm": "0x11604A0"
+  },
+  "layouts": {
+    "pending_window_size": "0x5E8",
+    "pending_manager_offset": "0x5D8",
+    "pending_cleanup_zero_offset": "0x5E0",
+    "manager_owner_id_offset": "0x8",
+    "game_data_pending_array": "0xCF88",
+    "game_data_pending_count": "0xCF94",
+    "confirmation_size": "0x140",
+    "confirmation_incumbent_character_id": "0x130",
+    "confirmation_candidate_character_id": "0x134",
+    "confirmation_view_not_read": "0x138"
+  },
+  "code_spans": [
+    {
+      "name": "councillor_registration",
+      "start_rva": "0x56ade0",
+      "end_rva": "0x56af42",
+      "sha256": "A4528CAEADABA769B96EAAD290C5E98671CD502065C45697AB23A98BDD8F5C4A"
+    },
+    {
+      "name": "councillor_handler",
+      "start_rva": "0x2918890",
+      "end_rva": "0x29188c8",
+      "sha256": "8DE944929FE4BB428363BC8EE285EDF4985E3D80AFE7D559C81638B628738614"
+    },
+    {
+      "name": "councillor_leaf",
+      "start_rva": "0x2917560",
+      "end_rva": "0x29175c0",
+      "sha256": "7D877CB04162860F2A8F38F36B96EC45F2CC9D31664E92CC485692E5D6453866"
+    },
+    {
+      "name": "guest_registration",
+      "start_rva": "0x558a20",
+      "end_rva": "0x558b8d",
+      "sha256": "B4B8E2BD41F265CC8D453A97DDCA7A30406B160F486DDA06858CF4D3539FDB2A"
+    },
+    {
+      "name": "guest_handler",
+      "start_rva": "0x28cecc0",
+      "end_rva": "0x28cecf8",
+      "sha256": "A3228DC2D417B692B1D5B288D564D3AD71238DDEFA5D2EFE7B0E274D96622AB7"
+    },
+    {
+      "name": "guest_leaf",
+      "start_rva": "0x1a8f780",
+      "end_rva": "0x1a8f794",
+      "sha256": "49752A4A374EFA241D751FDBC80EDB4D43C40C9069FEED6511D32B6396CF1B61"
+    },
+    {
+      "name": "guest_role_enum",
+      "start_rva": "0x28c1690",
+      "end_rva": "0x28c1732",
+      "sha256": "A3824F7550626B140769BC7FF06C52D34F6EA29D213280D07C98397E01BFEAF5"
+    },
+    {
+      "name": "pending_registration",
+      "start_rva": "0x15c450",
+      "end_rva": "0x15c5db",
+      "sha256": "45A3E1D8C3321F9CB48224033A64F7BCBFD332A8F918518A45925B5D181AF040"
+    },
+    {
+      "name": "pending_handler",
+      "start_rva": "0x11612c0",
+      "end_rva": "0x1161365",
+      "sha256": "A8B079B7F6D0436B0B35A8431FF330626B2C013220B2738EE67E89F04C32A74C"
+    },
+    {
+      "name": "pending_window_getter",
+      "start_rva": "0x115d0e0",
+      "end_rva": "0x115d0f7",
+      "sha256": "75E38CFD15C5EBE8FFFDA85B0F4F9B9B7D4C0101C4FE20B5BA34460E27D321D3"
+    },
+    {
+      "name": "pending_manager_setup",
+      "start_rva": "0x115ca80",
+      "end_rva": "0x115caed",
+      "sha256": "45807FCD7A23A9B1979FC67AB04F2C84633423AB9B66BD06CF6EAE5397869CFD"
+    },
+    {
+      "name": "pending_candidate_predicate",
+      "start_rva": "0x2a307b0",
+      "end_rva": "0x2a3083c",
+      "sha256": "BF72271BBE1F6B0171CBDAC9956A84B6B2F690B160F58402EBBF15A9461BA13C"
+    },
+    {
+      "name": "confirmation_constructor_fields",
+      "start_rva": "0x115f8e2",
+      "end_rva": "0x115f917",
+      "sha256": "71D07A85471A6FC383B5AFF450A8D392D7BE1831BA7F91D789E537D74F3D0AF0"
+    },
+    {
+      "name": "occupied_assignment_payload",
+      "start_rva": "0x115b367",
+      "end_rva": "0x115b390",
+      "sha256": "FD14202A212D260B2B5395D89EF393E13E3CD3539DCCCB72CA47EAE47B323559"
+    },
+    {
+      "name": "confirmation_can_confirm",
+      "start_rva": "0x11604a0",
+      "end_rva": "0x116065d",
+      "sha256": "D5D17A0DB06CF9B2DD46B7E1A913CB018FD0E7321176E53D44BE61002A62CC19"
+    }
+  ],
+  "relative_edges": [
+    {
+      "name": "councillor_registration_handler",
+      "instruction_rva": "0x56aeb7",
+      "size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x2918890"
+    },
+    {
+      "name": "councillor_handler_leaf",
+      "instruction_rva": "0x29188a2",
+      "size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x2917560"
+    },
+    {
+      "name": "guest_registration_handler",
+      "instruction_rva": "0x558b03",
+      "size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x28cecc0"
+    },
+    {
+      "name": "guest_handler_leaf",
+      "instruction_rva": "0x28cecd2",
+      "size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x1a8f780"
+    },
+    {
+      "name": "guest_leaf_role",
+      "instruction_rva": "0x1a8f784",
+      "size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28c1690"
+    },
+    {
+      "name": "pending_registration_handler",
+      "instruction_rva": "0x15c550",
+      "size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x11612c0"
+    },
+    {
+      "name": "pending_handler_getter",
+      "instruction_rva": "0x1161334",
+      "size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x115d0e0"
+    },
+    {
+      "name": "pending_getter_predicate",
+      "instruction_rva": "0x115d0f2",
+      "size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x2a307b0"
+    },
+    {
+      "name": "confirmation_councillor",
+      "instruction_rva": "0x116051f",
+      "size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x2917560"
+    },
+    {
+      "name": "confirmation_fireability",
+      "instruction_rva": "0x11605ad",
+      "size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x2c477e0"
+    },
+    {
+      "name": "pending_setup_game_state",
+      "instruction_rva": "0x115ca80",
+      "size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x5c68c50"
+    },
+    {
+      "name": "pending_setup_played_id",
+      "instruction_rva": "0x115caa8",
+      "size": 6,
+      "displacement_offset": 2,
+      "target_rva": "0x54dbc00"
+    },
+    {
+      "name": "confirmation_character_storage",
+      "instruction_rva": "0x11605ba",
+      "size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x5c67568"
+    }
+  ],
+  "vtable_slots": [
+    {
+      "name": "can_confirm",
+      "slot_rva": "0x452D4A8",
+      "target_rva": "0x11604A0"
+    }
+  ],
+  "literal_checks": [
+    {
+      "name": "IsCouncillor",
+      "rva": "0x47657E0",
+      "value": "IsCouncillor"
+    },
+    {
+      "name": "IsGuest",
+      "rva": "0x4761E48",
+      "value": "IsGuest"
+    },
+    {
+      "name": "HasPendingInteraction",
+      "rva": "0x452B1C0",
+      "value": "HasPendingInteraction"
+    },
+    {
+      "name": "confirmation_rtti",
+      "rva": "0x5742350",
+      "value": ".?AVCFireFromCouncilConfirmation@@"
+    }
+  ],
+  "instruction_checks": [
+    {
+      "name": "constructor_incumbent",
+      "rva": "0x115f902",
+      "bytes": "41 89 9F 30 01 00 00"
+    },
+    {
+      "name": "constructor_candidate",
+      "rva": "0x115f909",
+      "bytes": "41 89 BF 34 01 00 00"
+    },
+    {
+      "name": "can_confirm_candidate_character_lookup",
+      "rva": "0x11605c6",
+      "bytes": "44 8B 85 34 01 00 00"
+    },
+    {
+      "name": "setup_array",
+      "rva": "0x115ca91",
+      "bytes": "49 8B 90 88 CF 00 00"
+    },
+    {
+      "name": "setup_count",
+      "rva": "0x115ca98",
+      "bytes": "49 63 80 94 CF 00 00"
+    },
+    {
+      "name": "setup_manager_output",
+      "rva": "0x115cad9",
+      "bytes": "49 89 81 D8 05 00 00"
+    },
+    {
+      "name": "setup_cleanup_zero",
+      "rva": "0x115cad2",
+      "bytes": "49 8B 89 E0 05 00 00"
+    },
+    {
+      "name": "candidate_pending_match",
+      "rva": "0x2a3081a",
+      "bytes": "41 39 90 F4 02 00 00"
+    },
+    {
+      "name": "occupied_candidate_payload",
+      "rva": "0x115b382",
+      "bytes": "45 8B 46 08"
+    }
+  ],
+  "live_verified": false,
+  "stock_sources": [
+    {
+      "path_from_game_root": "common/council_positions/00_council_positions.txt",
+      "size": 88435,
+      "sha256": "31FA258DFBF35A07E9EE08D1D1DFDCD26712D3974CD65EC74255C284E4DF0A2A"
+    },
+    {
+      "path_from_game_root": "common/scripted_triggers/00_councillor_triggers.txt",
+      "size": 39155,
+      "sha256": "350A5E375D73E38CDD659FC3221FE8395AD6650B3FD244E03EE2342AFC9A8F88"
+    }
+  ]
+}

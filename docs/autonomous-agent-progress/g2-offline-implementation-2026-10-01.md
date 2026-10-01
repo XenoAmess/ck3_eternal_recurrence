@@ -133,3 +133,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 新候选纯文件工具使用最终40 ON/4 OFF：旧council slot33、warcash/prewar/plannerdiag OFF，新版候选走slot41，LAW enact保留。真实stdio parser验证七项nonwar只读permit，typed action开关不加入只读计划，lifetime无假参数。接口3项测试通过；待中央最终source/binary pins后实际准备全新Z目录和完整匹配save/driver，不把canonical rogue存档称ordinary资格。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:40:39 Council actual candidates gates and typed assignment runtime
+
+28个native/research/docs文件迁移实际新候选生产、full-ID角色/task解析、四最终gates及拥有型任命helper，slot41五步private transport复用原语义交易与serializer。Od/O2候选各35、gates各25、实际源链各18，32份真实Cpp wire与后续独立receipt通过。保留首stack overflow和缺route宏/链接harness尝试。paused候选/自然negative/任命postcondition/next/cold仍待验证；没有G2 credit。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\council\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
