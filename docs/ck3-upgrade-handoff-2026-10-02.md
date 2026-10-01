@@ -75,7 +75,7 @@
 
 ## 已准备好的恢复入口（本轮均不执行）
 
-外置根简称 `B = C:/workspace/ck3-upgrade-20261001`，Python 为本仓库 `tools/.venv/Scripts/python.exe`，版本 3.14.7，命令使用 `-X utf8`。依赖已经安装；切换 checkout/worktree 后必须显式复核解释器与依赖，不能静默回落裸 Python。本项目禁止 PowerShell。
+外置根简称 `B = C:/workspace/ck3-upgrade-20261001`，Python 为本仓库 `tools/.venv/Scripts/python.exe`，版本 3.14.7，命令使用 `-X utf8`。依赖已经安装；切换 checkout/worktree 后必须显式复核解释器与依赖，不能静默回落裸 Python。本项目的 Windows 自动化仅使用 Python。
 
 ### 主/白绮七 cell
 
