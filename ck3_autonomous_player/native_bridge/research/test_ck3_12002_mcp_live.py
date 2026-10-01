@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import asyncio
 from argparse import Namespace
+from contextlib import nullcontext
+import hashlib
+import importlib
+import io
 import json
 import os
 from pathlib import Path
@@ -11,11 +15,67 @@ import tempfile
 import threading
 import time
 import unittest
+from unittest import mock
 
-from run_ck3_12002_mcp_live import PlanClient, resolve, tool_payload
+from run_ck3_12002_mcp_live import PlanClient, clean_imports, fixture_session, resolve, tool_payload
 
 
 class OfflinePlanTests(unittest.TestCase):
+    def test_fixture_session_consumes_next_episode_queue_and_relaunches(self):
+        clean_imports(Path(__file__).resolve().parents[2] / "src")
+        session_module = importlib.import_module("xar_autoplayer.native_session")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            spec = Namespace(state_dir=root / "state", profile_dir=root / "state/profile",
+                             game_exe=root / "ck3.exe")
+            config = Namespace(mode="native-headless", pipe_name=r"\\.\pipe\fixture-session-test")
+            args = Namespace(timeout=1, hold_seconds=0, cold_start_checkpoint=False)
+            seed = spec.profile_dir / "save games/xar_episode_seed.ck3"
+            seed.parent.mkdir(parents=True)
+            seed.write_bytes(b"immutable fixture seed")
+            digest = hashlib.sha256(seed.read_bytes()).hexdigest()
+            bridge = spec.state_dir / "native-session/bridge"
+            inbox = bridge / "inbox"
+            inbox.mkdir(parents=True)
+            (inbox / "01-next.json").write_text(json.dumps({
+                "protocol_version": 1, "request_id": "01-next", "command": "start-next-episode",
+                "pipe": config.pipe_name, "seed_name": seed.name, "seed_size": seed.stat().st_size,
+                "seed_sha256": digest, "seed_date_raw": 53168784,
+                "seed_character_id": 29829, "source_run_id": "fixture-death-complete",
+            }), encoding="utf-8")
+            (inbox / "02-stop.json").write_text(json.dumps({
+                "protocol_version": 1, "request_id": "02-stop", "command": "stop",
+            }), encoding="utf-8")
+            first = Namespace(process=mock.Mock(pid=4545))
+            second = Namespace(process=mock.Mock(pid=4646))
+            first.process.poll.return_value = second.process.poll.return_value = None
+            stream = io.StringIO()
+            with mock.patch.object(session_module, "launch", side_effect=(first, second)) as launch, \
+                    mock.patch.object(session_module, "stop_tracked", return_value={"ok": True}) as stop, \
+                    mock.patch.object(session_module, "_process_windows_minimized", return_value=False), \
+                    mock.patch.object(session_module, "validate_native_bridge_launch_config", return_value=config), \
+                    mock.patch.object(session_module, "ensure_state_path_safe"), \
+                    mock.patch.object(session_module, "exclusive_launch_lock", return_value=nullcontext()), \
+                    mock.patch.object(session_module, "exclusive_state_lock", return_value=nullcontext()):
+                report = fixture_session(spec, config, args, threading.Event(), output_stream=stream)
+                self.assertIs(session_module.launch, launch)
+            self.assertEqual(launch.call_args_list, [
+                mock.call(spec, native_bridge=config, continue_last_save=True, verify_prepared_profile=False),
+                mock.call(spec, native_bridge=config, load_save_name="xar_episode_seed", verify_prepared_profile=False),
+            ])
+            self.assertEqual(stop.call_args_list, [
+                mock.call(first, require_running=False), mock.call(second, require_running=False),
+            ])
+            response = json.loads((bridge / "outbox/01-next.json").read_text(encoding="utf-8"))
+            self.assertTrue(response["ok"])
+            self.assertEqual(response["result"]["lifecycle_intent"], "new_episode")
+            self.assertEqual(response["result"]["episode_seed"]["sha256"], digest)
+            self.assertEqual(report["restart_count"], 1)
+            self.assertEqual(report["exit_reason"], "stop")
+            self.assertTrue(report["ok"])
+            self.assertTrue(report["fixture_profile"])
+            self.assertIn('"type": "native_session_episode_started"', stream.getvalue())
+
     def test_unpaused_active_event_interrupts_advance_and_keeps_followup_plan(self):
         with tempfile.TemporaryDirectory() as temporary:
             args = Namespace(output=Path(temporary) / "report.json", command_timeout=180,

@@ -299,50 +299,38 @@ def file_sha(path: Path) -> str:
 
 
 def fixture_session(spec: object, config: object, args: argparse.Namespace,
-                    stop: threading.Event) -> dict[str, object]:
-    """Use the existing tracked launch ownership for an explicit external fixture."""
-    from xar_autoplayer.environment import ensure_state_path_safe
-    from xar_autoplayer.locking import exclusive_launch_lock, exclusive_state_lock
-    from xar_autoplayer.native_session import validate_cold_start_checkpoint_for_pipe
-    from xar_autoplayer.runtime import launch, stop_tracked
-    ensure_state_path_safe(spec.state_dir)
-    initial = validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name) if args.cold_start_checkpoint else None
-    handle = None
-    report: dict[str, object] = {"kind": "ck3_migration_explicit_fixture_session",
-        "started_at": now(), "fixture_profile": True, "cold_start_checkpoint": initial,
-        "shutdown": None, "error": None, "pid": None}
-    with exclusive_launch_lock(spec.game_exe), exclusive_state_lock(spec.state_dir, "migration-fixture"):
-        try:
-            handle = launch(spec, native_bridge=config, verify_prepared_profile=False,
-                            continue_last_save=initial is None,
-                            load_save_name=initial["load_save_name"] if initial else None)
-            report["pid"] = int(handle.process.pid)
-            deadline = time.monotonic() + args.timeout + args.hold_seconds + 120
-            while True:
-                exit_code = handle.process.poll()
-                if exit_code is not None:
-                    report["exit_reason"] = "process_exit"
-                    report["process_exit_code"] = exit_code
-                    if exit_code != 0:
-                        raise RuntimeError(f"fixture CK3 exited with code {exit_code}")
-                    break
-                if stop.is_set():
-                    report["exit_reason"] = "stop"
-                    break
-                if time.monotonic() >= deadline:
-                    raise TimeoutError("fixture owned session deadline expired")
-                time.sleep(0.05)
-        except BaseException as error:
-            report["error"] = f"{type(error).__name__}: {error}"
-        finally:
-            if handle is not None:
-                try:
-                    report["shutdown"] = stop_tracked(handle, require_running=False)
-                except BaseException as error:
-                    report["error"] = report["error"] or f"{type(error).__name__}: {error}"
-    report["finished_at"] = now()
-    report["ok"] = (report["error"] is None and isinstance(report["shutdown"], dict)
-                    and report["shutdown"].get("ok") is True)
+                    stop: threading.Event, *, output_stream: object = None) -> dict[str, object]:
+    """Run the full session queue with one fixture-only first-launch override."""
+    import importlib
+    from types import FunctionType
+
+    session_module = importlib.import_module("xar_autoplayer.native_session")
+    original_launch = session_module.launch
+    first_launch = True
+
+    def fixture_launch(*launch_args: object, **launch_kwargs: object) -> object:
+        nonlocal first_launch
+        if first_launch:
+            launch_kwargs["verify_prepared_profile"] = False
+            first_launch = False
+        return original_launch(*launch_args, **launch_kwargs)
+
+    # Rebind the existing public entry and its queue loop locally.  Production
+    # module globals remain untouched while this owned fixture thread runs.
+    session_globals = dict(vars(session_module))
+    session_globals["launch"] = fixture_launch
+    for name in ("_native_session_locked", "native_session"):
+        original = getattr(session_module, name)
+        bound = FunctionType(original.__code__, session_globals, original.__name__,
+                             original.__defaults__, original.__closure__)
+        bound.__kwdefaults__ = original.__kwdefaults__
+        session_globals[name] = bound
+    report = session_globals["native_session"](
+        spec, native_bridge=config, timeout_seconds=args.timeout + args.hold_seconds + 120,
+        cold_start_checkpoint=args.cold_start_checkpoint, stop_event=stop,
+        input_stream=None, output_stream=output_stream,
+    )
+    report["fixture_profile"] = True
     return report
 
 
@@ -634,7 +622,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
             try:
                 with args.output.with_suffix(".session.log").open("w", encoding="utf-8") as stream:
                     if args.fixture_profile:
-                        session_state["report"] = fixture_session(spec, config, args, stop)
+                        session_state["report"] = fixture_session(spec, config, args, stop, output_stream=stream)
                         stream.write(json.dumps(session_state["report"], ensure_ascii=False) + "\n")
                     else:
                         session_state["report"] = native_session(
