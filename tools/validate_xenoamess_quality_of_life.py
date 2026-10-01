@@ -12,6 +12,8 @@ from PIL import Image
 
 import build_xenoamess_quality_of_life_release as release
 import gen_xqol_phase2
+import gen_xqol_appointments
+import xqol_vanilla_contract
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -66,6 +68,9 @@ def balanced_braces(text: str) -> bool:
 
 
 def check_appointment_overrides(errors: list[str]) -> None:
+    for relative, expected in gen_xqol_appointments.generated_payloads().items():
+        if (MOD / relative).read_bytes() != expected:
+            errors.append(f"generated appointment projection drift: {relative}")
     total_blocks = 0
     for filename, expected_blocks in APPOINTMENT_FILES.items():
         mod_path = MOD / APPOINTMENT_DIR / filename
@@ -155,7 +160,16 @@ def check_scripts(errors: list[str]) -> None:
         MOD / "gui/event_window_widgets/xqol_conversion_threshold_slider.gui"
     )
     triggers = read_utf8(MOD / "common/scripted_triggers/xqol_triggers.txt")
-    effects = read_utf8(MOD / "common/scripted_effects/xqol_effects.txt")
+    effect_files = (
+        "xqol_effects.txt",
+        "xqol_conversion_effects.txt",
+        "xqol_prison_payment_effects.txt",
+    )
+    effects = "\n".join(read_utf8(MOD / "common/scripted_effects" / name) for name in effect_files)
+    for name in effect_files:
+        count = len(re.findall(r"(?m)^xqol_\w+\s*=\s*\{", read_utf8(MOD / "common/scripted_effects" / name)))
+        if not 1 <= count <= 10:
+            errors.append(f"scripted effect purpose group must contain 1-10 definitions: {name}: {count}")
     on_actions = read_utf8(MOD / "common/on_action/xqol_on_actions.txt")
     decision_group = read_utf8(MOD / "common/decision_group_types/xqol_decision_group_types.txt")
     if "gui_tags = { big_button }" not in decision_group:
@@ -208,10 +222,17 @@ def check_scripts(errors: list[str]) -> None:
     ):
         if triggers.count(f"has_government = {government}") != 1:
             errors.append(f"supported-player trigger mismatch: {government}")
+        vanilla_government = xqol_vanilla_contract.native_definition(
+            "common/governments/00_government_types.txt", government
+        )
+        if "mechanic_type = administrative" not in vanilla_government:
+            errors.append(f"supported government no longer uses the administrative mechanic: {government}")
+    if "government_allows = administrative" in triggers:
+        errors.append("removed administrative allow-list entry must not gate vassal transfers")
     for token in (
         "is_ai = no",
         "top_liege = this",
-        "government_allows = administrative",
+        "government_has_mechanic = administrative",
         "xqol_no_vassal_transfer_guard",
         "ai_should_not_transfer",
     ):
@@ -237,6 +258,31 @@ def check_scripts(errors: list[str]) -> None:
     release_interactions = read_utf8(
         MOD / "common/character_interactions/xqol_generated_release_interactions.txt"
     )
+    if release_interactions.count("celestial_hierarchy_acceptance_modifier = {") != 9:
+        errors.append("all nine hidden interactions must mirror native celestial acceptance")
+    if release_interactions.count("religion_demand_conversion_christian_situation_modifier = yes") != 2:
+        errors.append("both conversion interactions must include the native Christian situation modifier")
+    if release_interactions.count("rite.head_of_rite ?= this") != 7:
+        errors.append("all seven release combinations must include the native head-of-rite penalty")
+    if release_interactions.count("add = -1500") != 4:
+        errors.append("all four conversion release combinations must respect ai_will_not_convert")
+    for token in (
+        "save_scope_as = puppet_or_actor",
+        "conversion_tenet_acts_of_the_apostles_effect = yes",
+        "conversion_tenet_mendicant_preachers_effect = yes",
+        "scope:actor.rite = { rite_has_tenet = tenet_communal_possessions }",
+    ):
+        if token not in effects:
+            errors.append(f"CK3 1.20 conversion consequence contract missing: {token}")
+    if effects.count("scope:actor = { save_scope_as = puppet_or_actor }") != 4:
+        errors.append("conversion accept/decline and release must bind direct-human puppet_or_actor scope")
+    if triggers.count("normal_ransom_cost_value") != 2 or re.search(r"(?<![\w])ransom_cost_value", triggers):
+        errors.append("full gold ransom gate must use the native normal_ransom_cost_value")
+    conversion_validity = xqol_vanilla_contract.block(triggers, "xqol_release_conversion_valid_trigger")
+    if "NOT = { has_character_flag = ai_will_not_convert }" not in conversion_validity:
+        errors.append("release conversion validity must reject the native steadfast conversion flag")
+    if "has_doctrine = tenet_communal_possessions" in effects:
+        errors.append("communal-possessions reward must use the native rite tenet")
     for interaction in (
         "xqol_mass_conversion_courtier_interaction",
         "xqol_mass_conversion_ruler_interaction",
@@ -395,6 +441,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
     errors = release.release_source_errors(MOD)
+    native_errors = xqol_vanilla_contract.source_errors(GAME)
+    if native_errors:
+        for error in native_errors:
+            print(error, file=sys.stderr)
+        return 1
     runtime_text = [
         MOD / relative
         for relative in release.RUNTIME_FILES

@@ -12,7 +12,7 @@
 xqol_should_guard_vassal_transfer_trigger = {
 	exists = liege
 	liege = {
-		government_allows = administrative
+		government_has_mechanic = administrative
 		exists = top_liege
 		top_liege = {
 			xqol_supported_player_trigger = yes
@@ -171,6 +171,7 @@ xqol_release_recruit_valid_trigger = {
 
 xqol_release_conversion_valid_trigger = {
 	faith != scope:actor.faith
+	NOT = { has_character_flag = ai_will_not_convert }
 	trigger_if = {
 		limit = { is_playable_character = yes }
 		is_vassal_or_below_of = scope:actor
@@ -227,8 +228,8 @@ xqol_ransom_payer_can_pay_full_trigger = {
 				is_ruler = no
 				exists = liege
 			}
-			liege = { gold >= scope:recipient.ransom_cost_value }
+			liege = { gold >= scope:recipient.normal_ransom_cost_value }
 		}
-		trigger_else = { gold >= ransom_cost_value }
+		trigger_else = { gold >= normal_ransom_cost_value }
 	}
 }

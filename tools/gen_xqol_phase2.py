@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from xqol_vanilla_contract import native_conversion_acceptance, require_sources
+
 
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "mod_xenoamess_quality_of_life"
@@ -32,15 +34,29 @@ TERMS = (
 def render_release_acceptance(*, hook: bool, recruit: bool, conversion: bool) -> str:
     blocks = [
         "\tbase = 100",
+        "\tcelestial_hierarchy_acceptance_modifier = {",
+        "\t\tACTOR = scope:puppet_or_actor",
+        "\t\tRECIPIENT = scope:recipient",
+        "\t}",
         "\tmodifier = {",
         "\t\tadd = -20",
         "\t\tscope:recipient = { has_trait = ambitious }",
         "\t\tdesc = RECIPIENT_IS_AMBITIOUS",
         "\t}",
+        "\tmodifier = {",
+        "\t\tadd = -120",
+        "\t\tscope:recipient = { rite.head_of_rite ?= this }",
+        "\t\tdesc = RECIPIENT_IS_HEAD_OF_RITE_REASON",
+        "\t}",
     ]
     if conversion:
         blocks.extend(
             (
+                "\tmodifier = {",
+                "\t\tadd = -1500",
+                "\t\tscope:recipient = { has_character_flag = ai_will_not_convert }",
+                "\t\tdesc = ASK_FOR_CONVERSION_RECIPIENT_WILL_NOT_ACCEPT",
+                "\t}",
                 "\tmodifier = {",
                 "\t\tadd = -20",
                 "\t\tscope:recipient = { ai_zeal <= 20 }",
@@ -134,6 +150,7 @@ def render_release_interaction(name: str, hook: bool, recruit: bool, conversion:
 \t}}
 
 \ton_accept = {{
+\t\tscope:actor = {{ save_scope_as = puppet_or_actor }}
 \t\txqol_release_prisoner_terms_effect = {{
 \t\t\tHOOK = {'yes' if hook else 'no'}
 \t\t\tRECRUIT = {'yes' if recruit else 'no'}
@@ -184,12 +201,7 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
 \t}}
 
 \tai_accept = {{
-\t\tbase = 0
-\t\tmodifier = {{
-\t\t\tadd = 50
-\t\t\tdesc = EDUCATE_CHILD_ACTOR_IS_MY_LIEGE
-\t\t}}
-\t\treligion_demand_conversion_default_modifier = yes
+{native_conversion_acceptance(kind)}
 \t}}
 
 \ton_accept = {{
@@ -342,6 +354,7 @@ vbox = {{
 
 
 def generated_payloads() -> dict[str, str]:
+    require_sources()
     return {
         "common/character_interactions/xqol_generated_release_interactions.txt": render_release_interactions(),
         "common/scripted_effects/xqol_generated_conversion_dispatch.txt": render_conversion_dispatch(),

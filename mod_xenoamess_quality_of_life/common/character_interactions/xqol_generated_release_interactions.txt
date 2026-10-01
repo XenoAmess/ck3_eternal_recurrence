@@ -27,11 +27,16 @@ xqol_mass_conversion_courtier_interaction = {
 
 	ai_accept = {
 		base = 0
+		celestial_hierarchy_acceptance_modifier = {
+			ACTOR = scope:actor
+			RECIPIENT = scope:recipient
+		}
 		modifier = {
 			add = 50
 			desc = EDUCATE_CHILD_ACTOR_IS_MY_LIEGE
 		}
 		religion_demand_conversion_default_modifier = yes
+		religion_demand_conversion_christian_situation_modifier = yes
 	}
 
 	on_accept = {
@@ -71,11 +76,16 @@ xqol_mass_conversion_ruler_interaction = {
 
 	ai_accept = {
 		base = 0
+		celestial_hierarchy_acceptance_modifier = {
+			ACTOR = scope:puppet_or_actor
+			RECIPIENT = scope:recipient
+		}
 		modifier = {
 			add = 50
 			desc = EDUCATE_CHILD_ACTOR_IS_MY_LIEGE
 		}
 		religion_demand_conversion_default_modifier = yes
+		religion_demand_conversion_christian_situation_modifier = yes
 	}
 
 	on_accept = {
@@ -117,10 +127,24 @@ xqol_release_hook_recruit_conversion_interaction = {
 
 	ai_accept = {
 	base = 100
+	celestial_hierarchy_acceptance_modifier = {
+		ACTOR = scope:puppet_or_actor
+		RECIPIENT = scope:recipient
+	}
 	modifier = {
 		add = -20
 		scope:recipient = { has_trait = ambitious }
 		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -120
+		scope:recipient = { rite.head_of_rite ?= this }
+		desc = RECIPIENT_IS_HEAD_OF_RITE_REASON
+	}
+	modifier = {
+		add = -1500
+		scope:recipient = { has_character_flag = ai_will_not_convert }
+		desc = ASK_FOR_CONVERSION_RECIPIENT_WILL_NOT_ACCEPT
 	}
 	modifier = {
 		add = -20
@@ -168,6 +192,7 @@ xqol_release_hook_recruit_conversion_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = { save_scope_as = puppet_or_actor }
 		xqol_release_prisoner_terms_effect = {
 			HOOK = yes
 			RECRUIT = yes
@@ -204,10 +229,19 @@ xqol_release_hook_recruit_interaction = {
 
 	ai_accept = {
 	base = 100
+	celestial_hierarchy_acceptance_modifier = {
+		ACTOR = scope:puppet_or_actor
+		RECIPIENT = scope:recipient
+	}
 	modifier = {
 		add = -20
 		scope:recipient = { has_trait = ambitious }
 		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -120
+		scope:recipient = { rite.head_of_rite ?= this }
+		desc = RECIPIENT_IS_HEAD_OF_RITE_REASON
 	}
 	modifier = {
 		add = {
@@ -231,6 +265,7 @@ xqol_release_hook_recruit_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = { save_scope_as = puppet_or_actor }
 		xqol_release_prisoner_terms_effect = {
 			HOOK = yes
 			RECRUIT = yes
@@ -267,10 +302,24 @@ xqol_release_hook_conversion_interaction = {
 
 	ai_accept = {
 	base = 100
+	celestial_hierarchy_acceptance_modifier = {
+		ACTOR = scope:puppet_or_actor
+		RECIPIENT = scope:recipient
+	}
 	modifier = {
 		add = -20
 		scope:recipient = { has_trait = ambitious }
 		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -120
+		scope:recipient = { rite.head_of_rite ?= this }
+		desc = RECIPIENT_IS_HEAD_OF_RITE_REASON
+	}
+	modifier = {
+		add = -1500
+		scope:recipient = { has_character_flag = ai_will_not_convert }
+		desc = ASK_FOR_CONVERSION_RECIPIENT_WILL_NOT_ACCEPT
 	}
 	modifier = {
 		add = -20
@@ -309,6 +358,7 @@ xqol_release_hook_conversion_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = { save_scope_as = puppet_or_actor }
 		xqol_release_prisoner_terms_effect = {
 			HOOK = yes
 			RECRUIT = no
@@ -345,10 +395,24 @@ xqol_release_recruit_conversion_interaction = {
 
 	ai_accept = {
 	base = 100
+	celestial_hierarchy_acceptance_modifier = {
+		ACTOR = scope:puppet_or_actor
+		RECIPIENT = scope:recipient
+	}
 	modifier = {
 		add = -20
 		scope:recipient = { has_trait = ambitious }
 		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -120
+		scope:recipient = { rite.head_of_rite ?= this }
+		desc = RECIPIENT_IS_HEAD_OF_RITE_REASON
+	}
+	modifier = {
+		add = -1500
+		scope:recipient = { has_character_flag = ai_will_not_convert }
+		desc = ASK_FOR_CONVERSION_RECIPIENT_WILL_NOT_ACCEPT
 	}
 	modifier = {
 		add = -20
@@ -386,6 +450,7 @@ xqol_release_recruit_conversion_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = { save_scope_as = puppet_or_actor }
 		xqol_release_prisoner_terms_effect = {
 			HOOK = no
 			RECRUIT = yes
@@ -420,10 +485,19 @@ xqol_release_hook_interaction = {
 
 	ai_accept = {
 	base = 100
+	celestial_hierarchy_acceptance_modifier = {
+		ACTOR = scope:puppet_or_actor
+		RECIPIENT = scope:recipient
+	}
 	modifier = {
 		add = -20
 		scope:recipient = { has_trait = ambitious }
 		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -120
+		scope:recipient = { rite.head_of_rite ?= this }
+		desc = RECIPIENT_IS_HEAD_OF_RITE_REASON
 	}
 	modifier = {
 		add = {
@@ -438,6 +512,7 @@ xqol_release_hook_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = { save_scope_as = puppet_or_actor }
 		xqol_release_prisoner_terms_effect = {
 			HOOK = yes
 			RECRUIT = no
@@ -472,10 +547,19 @@ xqol_release_recruit_interaction = {
 
 	ai_accept = {
 	base = 100
+	celestial_hierarchy_acceptance_modifier = {
+		ACTOR = scope:puppet_or_actor
+		RECIPIENT = scope:recipient
+	}
 	modifier = {
 		add = -20
 		scope:recipient = { has_trait = ambitious }
 		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -120
+		scope:recipient = { rite.head_of_rite ?= this }
+		desc = RECIPIENT_IS_HEAD_OF_RITE_REASON
 	}
 	modifier = {
 		add = -10
@@ -489,6 +573,7 @@ xqol_release_recruit_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = { save_scope_as = puppet_or_actor }
 		xqol_release_prisoner_terms_effect = {
 			HOOK = no
 			RECRUIT = yes
@@ -523,10 +608,24 @@ xqol_release_conversion_interaction = {
 
 	ai_accept = {
 	base = 100
+	celestial_hierarchy_acceptance_modifier = {
+		ACTOR = scope:puppet_or_actor
+		RECIPIENT = scope:recipient
+	}
 	modifier = {
 		add = -20
 		scope:recipient = { has_trait = ambitious }
 		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -120
+		scope:recipient = { rite.head_of_rite ?= this }
+		desc = RECIPIENT_IS_HEAD_OF_RITE_REASON
+	}
+	modifier = {
+		add = -1500
+		scope:recipient = { has_character_flag = ai_will_not_convert }
+		desc = ASK_FOR_CONVERSION_RECIPIENT_WILL_NOT_ACCEPT
 	}
 	modifier = {
 		add = -20
@@ -555,6 +654,7 @@ xqol_release_conversion_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = { save_scope_as = puppet_or_actor }
 		xqol_release_prisoner_terms_effect = {
 			HOOK = no
 			RECRUIT = no

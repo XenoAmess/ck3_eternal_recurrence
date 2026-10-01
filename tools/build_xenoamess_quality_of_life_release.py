@@ -31,6 +31,8 @@ RUNTIME_FILES = frozenset(
         "common/character_interactions/xqol_generated_release_interactions.txt",
         "common/on_action/xqol_on_actions.txt",
         "common/scripted_effects/xqol_effects.txt",
+        "common/scripted_effects/xqol_conversion_effects.txt",
+        "common/scripted_effects/xqol_prison_payment_effects.txt",
         "common/scripted_effects/xqol_generated_conversion_dispatch.txt",
         "common/scripted_guis/xqol_generated_conversion_threshold_guis.txt",
         "common/scripted_triggers/xqol_triggers.txt",

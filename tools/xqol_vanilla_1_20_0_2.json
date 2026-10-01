@@ -1,0 +1,26 @@
+{
+  "game_version": "1.20.0.2",
+  "steam_build_id": "25588574",
+  "exe_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "source": "Installed Steam CK3 exact build, frozen after old/new semantic review on 2026-10-01; no runtime compatibility claim.",
+  "files": {
+    "common/succession_appointment/admin_governor.txt": "39d287c7d7a1071274e461bc97a1a84d7a4aeba7b15c82f9d64acf79be509d3d",
+    "common/succession_appointment/meritocratic_governor.txt": "35dc79fd631979589861f71aa86a4378188d753e3bdb78af5b67858a7ef17ff7",
+    "common/succession_appointment/celestial_governor.txt": "c0e63231ed61bd84dfd2b5d4278c8923a3210cdd86473604d602e10ca10780b2",
+    "common/character_interactions/00_vassal_interactions.txt": "b0f81cf740b6dbf42952d9a08703ba75e23d6918dd44f4d8e9999f11695b3a20",
+    "common/character_interactions/00_alliance.txt": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4",
+    "common/character_interactions/00_religious_interactions.txt": "63afe4538725929fb20bc20cbbbbc86705dba55a384755949431419265db0ac6",
+    "common/character_interactions/00_prison_interactions.txt": "1bb43b3c2061212af8d41b11314ff4e569af2a3506319f820d05877a7762abc5",
+    "common/character_interactions/00_perk_interactions.txt": "da103fd27abf644fde3609375e9d7b441a44e12a723cb3f63b38128a322e02ea",
+    "common/on_action/war_on_actions.txt": "70cd2a388d849251665a237d6b05b52514d9142d2f7ba404186a523595a2cf9e",
+    "common/scripted_effects/00_interaction_effects.txt": "4247f484295988b50098a43869d4c4056b7e0855bf8d5fa6ec0755cb996d7e82",
+    "common/scripted_effects/00_religious_interaction_effects.txt": "9ecc22104b057e3425673917acbefaa320833226dd02b9a6c3dca7475b5b0928",
+    "common/scripted_effects/00_prison_effects.txt": "ea8bb72426246692bf1f310ae7eb83715ae1b7314d046e3660df66443d486030",
+    "common/scripted_effects/pam_effects.txt": "50b0ebeeab835b98fc2a159baa5806078d706b3f988ecb5a6c1e025c86465161",
+    "common/scripted_triggers/00_religious_triggers.txt": "7dd3803989dffba22fdbf46cee084f68f29ddb9a32f90893726f6e5d311dd6f8",
+    "common/scripted_modifiers/00_religion_scripted_modifiers.txt": "0d3fbd5d6740212f9acd318aa400560f2572f81f4562c3984c9d158e382fbc71",
+    "common/script_values/pam_values.txt": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+    "common/script_values/07_appointment_values.txt": "04e1eb472d255fbf26e4fcf910a9220f43517907bb3bdf1f61bbe4cbf1ca78ec",
+    "common/governments/00_government_types.txt": "f7f07123192eebf4053f917d8458639126ab42e2a7efa9176f43495a6275c86b"
+  }
+}
