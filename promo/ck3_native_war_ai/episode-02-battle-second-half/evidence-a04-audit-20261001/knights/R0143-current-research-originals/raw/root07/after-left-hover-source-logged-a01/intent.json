@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-10-01T13:05:22.797228+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\capture_desktop_hover_source_a02.py",
+    "--label",
+    "after-left-hover-source"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\capture_desktop_hover_source_a02.py",
+    "bytes": 2799,
+    "sha256": "92F82E661D1BD0B58E7B2AD625DE73B39B637E823B512A75195266ECB0D6EB35"
+  }
+}

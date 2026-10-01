@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_endpoints_a01.py"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-input-inspection-a01.stdout.bin",
+    "bytes": 647,
+    "sha256": "F0A0FEFAEA93209B35FEADC36324FEB8FB6229435DEA3221A33BF95520705E23"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-input-inspection-a01.stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "intent": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-input-inspection-a01-intent.json",
+    "bytes": 520,
+    "sha256": "5A2A367ECBE1609ABB21F680D7156376CCB1AED4917193256B3232B3EC3BBF2C"
+  }
+}

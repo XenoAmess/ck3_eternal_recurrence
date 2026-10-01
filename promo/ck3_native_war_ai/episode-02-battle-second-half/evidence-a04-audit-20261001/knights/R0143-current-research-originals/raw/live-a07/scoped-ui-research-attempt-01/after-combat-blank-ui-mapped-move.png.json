@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 2491964,
+    "foreground_hwnd": 2491964,
+    "foreground_pid": 17420,
+    "foreground_thread_id": 8264,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 2491964,
+    "foreground_hwnd": 2491964,
+    "foreground_pid": 17420,
+    "foreground_thread_id": 8264,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    100.0,
+    550.0
+  ],
+  "pointer_after": [
+    200,
+    1100
+  ],
+  "pointer_before": [
+    1436,
+    1380
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1280,
+    720
+  ],
+  "receipt_image_size": [
+    2560,
+    1440
+  ],
+  "receipt_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-blank-ui-mapped-move.png",
+  "receipt_sha256": "9C324DB59A16061DDDFF23088CC11F099ECBCE2529F47AC969761B055A00CCC1",
+  "reviewed_bounds": [
+    90.0,
+    540.0,
+    20,
+    20
+  ],
+  "screen_point": [
+    200,
+    1100
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-blank-ui-mapped-move.png.json",
+  "source_image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-right-knights-fallback-desktop-original.png",
+    "sha256": "D4492D3F8C2BB95C19CAB8EF2585A4124E6613B43D9D49804813E3976375009C"
+  },
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "pointer-move-readback-matched"
+}

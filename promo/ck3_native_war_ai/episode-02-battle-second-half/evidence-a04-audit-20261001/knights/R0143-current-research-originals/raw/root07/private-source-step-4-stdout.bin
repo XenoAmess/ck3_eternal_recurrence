@@ -1,0 +1,5 @@
+[codex/war-e2-mechanism-closure-20261001 419cac1a9] Preserve native scoped trace failures and correct exact artifact tuple projection
+ 12 files changed, 606 insertions(+), 40 deletions(-)
+ create mode 100644 ck3_autonomous_player/native_bridge/research/combat_trace_publish_diagnostic_v1_contract.json
+ create mode 100644 ck3_autonomous_player/native_bridge/research/verify_knight_death_artifact_wire_projection_offline.py
+ create mode 100644 ck3_autonomous_player/tests/unit/test_trace_publish_failure_preservation.py

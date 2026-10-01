@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-01T12:25:20.041973+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\derive_daily_window_controller_a09.py"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\derive_daily_window_controller_a09.py",
+    "bytes": 5084,
+    "sha256": "F5DA93505F2DB9FE3F188F751E4DA279FA55BFB3089A86EED5AD62112E82FCB6"
+  }
+}

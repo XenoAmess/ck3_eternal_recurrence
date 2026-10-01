@@ -1,0 +1,88 @@
+{
+  "original_controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\scoped_ui_research_a08.py",
+    "bytes": 34603,
+    "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+  },
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\scoped_ui_research_a09.py",
+    "bytes": 35122,
+    "sha256": "E51DC8EE492815EDB79A31FB1C84B70D8826D8FC1B3EEA3EC70582D7955D0F36"
+  },
+  "derived_helpers": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\advance_and_drain_immediately_a12.py",
+        "bytes": 8231,
+        "sha256": "DCC09900E7EACAC4C50DE4D1470CEC8C88B1A069A91A3C69CEFC0F0C4CDCF697"
+      },
+      "derived": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\advance_and_drain_immediately_a13.py",
+        "bytes": 8231,
+        "sha256": "653F7CF79F22ED3B43FE20274F3911114D88B576DF307DD846F9BBA98BC22BED"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_required_core_ui_a12.py",
+        "bytes": 3685,
+        "sha256": "9CDB009C2120C4397A4B5629E03AF757FDA094EB419C7680429EAA5267504ACC"
+      },
+      "derived": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_required_core_ui_a13.py",
+        "bytes": 3685,
+        "sha256": "CFC326F983075003377B91710B2568A0B14F585A47477748629023A104F6D666"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a07.py",
+        "bytes": 5242,
+        "sha256": "184F9F15227BBEB5AE9520A5D7299E4ACC1DA72AF52CD2055C732720DCC6B09D"
+      },
+      "derived": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a08.py",
+        "bytes": 5242,
+        "sha256": "45C842A5A8052008112164E65481418C11DDC3DC4C93B4725B372D22621069B6"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\capture_desktop_hover_source_a01.py",
+        "bytes": 2574,
+        "sha256": "DBB87C7078D8D371B517060D8CA8A4903DCFDAB0A8B27809DA166800190BA91C"
+      },
+      "derived": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\capture_desktop_hover_source_a02.py",
+        "bytes": 2799,
+        "sha256": "92F82E661D1BD0B58E7B2AD625DE73B39B637E823B512A75195266ECB0D6EB35"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_logged_mode_a01.py",
+        "bytes": 2004,
+        "sha256": "E2B66238F8ACE2315BCCE705D948F6DF3E94102B5E7E2A299B9B30F40D313A75"
+      },
+      "derived": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_logged_mode_a02.py",
+        "bytes": 2028,
+        "sha256": "566B9D72C2B6AFB66B88D236483D07981FC82D5E97C1F91EE32C6B4E43D8595C"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_runtime_binding_and_plan_a09.py",
+        "bytes": 11860,
+        "sha256": "0303FA5B3F846DDAD5AA7CA89801C8BD5DB0366F0E23959C9B8DACD2A3FCA3C6"
+      },
+      "derived": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_runtime_binding_and_plan_a10.py",
+        "bytes": 11939,
+        "sha256": "31D61BD531BEE6B98093F320D8965B132DCF180C2AD93E4B5637646DB1E56FA2"
+      }
+    }
+  ],
+  "change": "Move only presentation/save lifecycle guard outside the actual daily observer. All original native identity, owner, revision, date, pixel capture and geometry checks remain unchanged. Unused old advance/monitor CLI modes are refused. No R0142 artifact changed.",
+  "current_runtime_binding_not_yet_created": true
+}

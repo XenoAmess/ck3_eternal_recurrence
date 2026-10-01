@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\summarize_R0143_saved_facts_a01.py"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-saved-facts-a01.stdout.bin",
+    "bytes": 3216,
+    "sha256": "2F58A32BB81C8E9E3A3CDDBE11AFE164DABD622196CBA35EAB7E7D5F33679644"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-saved-facts-a01.stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "intent": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-saved-facts-a01-intent.json",
+    "bytes": 528,
+    "sha256": "4BA243B979A4BB066CFF7A12BDCD1F283BAD4EE72E58D388C566AD772DF282D8"
+  }
+}

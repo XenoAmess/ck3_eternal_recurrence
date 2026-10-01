@@ -1,0 +1,27 @@
+{
+  "at_utc": "2026-10-01T12:41:47.644318+00:00",
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\advance_and_drain_immediately_a13.py",
+    "bytes": 8231,
+    "sha256": "653F7CF79F22ED3B43FE20274F3911114D88B576DF307DD846F9BBA98BC22BED"
+  },
+  "actual_saved_pair": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+    "bytes": 4472,
+    "sha256": "B6931A90F2B73C4A531D58EEE396E69A5464184AC425FBAC1D3945907C13CCF0"
+  },
+  "actual_checkpoint_sequence": 2,
+  "parameters": {
+    "action": "private_phase_trace",
+    "step": "experimental-combat-phase-event-trace-begin-v1",
+    "expected_revision": 6,
+    "combat_id": 16777218,
+    "managed_daily_sequence_token": 458459624966711775,
+    "checkpoint_sequence": 2,
+    "capture_runtime_scoped_chain": true,
+    "scoped_character_id": 33437,
+    "scoped_related_character_id": 34120,
+    "scoped_event_load_index": 11
+  },
+  "game_day_not_yet_submitted": true
+}

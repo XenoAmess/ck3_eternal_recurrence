@@ -1,0 +1,21 @@
+{
+  "at_utc": "2026-10-01T12:31:49.723946+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_runtime_binding_and_plan_a10.py",
+    "--candidate-manifest",
+    "C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-07-trace-diagnostic/frozen-release-build-attempt-01/candidate-manifest.json",
+    "--launch-plan",
+    "C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-07-trace-diagnostic/new-capture-launch-plan.json",
+    "--live-root",
+    "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-trace-live-20261001-a07"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_runtime_binding_and_plan_a10.py",
+    "bytes": 11939,
+    "sha256": "31D61BD531BEE6B98093F320D8965B132DCF180C2AD93E4B5637646DB1E56FA2"
+  }
+}

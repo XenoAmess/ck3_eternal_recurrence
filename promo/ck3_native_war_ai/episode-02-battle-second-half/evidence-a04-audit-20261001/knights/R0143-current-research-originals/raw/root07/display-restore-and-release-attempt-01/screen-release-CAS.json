@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-10-01T13:13:48.578779+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "--expected-sequence",
+    "3489",
+    "--summary",
+    "native_research_capture_stopped_original_display_restored_assets_retained"
+  ],
+  "returncode": 0,
+  "stdout": "{\r\n  \"schema\": \"codex.task_bus.v1\",\r\n  \"ok\": true,\r\n  \"task\": {\r\n    \"git\": {\r\n      \"branch\": \"codex/war-e2-trace-diagnostic-capture-20261001\",\r\n      \"dirty_entries\": 0,\r\n      \"head\": \"419cac1a956c7be356d886256c7bc689cda5327d\"\r\n    },\r\n    \"last_sequence\": 3490,\r\n    \"next_step\": \"\",\r\n    \"pid\": 11524,\r\n    \"repo\": \"C:\\\\w\\\\e2cap1001e\",\r\n    \"resources\": [],\r\n    \"schema\": \"codex.task_bus.v1\",\r\n    \"state\": \"done\",\r\n    \"summary\": \"native_research_capture_stopped_original_display_restored_assets_retained\",\r\n    \"task_id\": \"war-e2-six-gap-trace-diagnostic-screen-20261001-a06\",\r\n    \"updated_at_utc\": \"2026-10-01T13:13:48.509358+00:00\"\r\n  },\r\n  \"event\": {\r\n    \"schema\": \"codex.task_bus.v1\",\r\n    \"sequence\": 3490,\r\n    \"event_id\": \"e22d5ab3c82e429490dd9cd8bd315cd2\",\r\n    \"timestamp_utc\": \"2026-10-01T13:13:48.510688+00:00\",\r\n    \"kind\": \"completed\",\r\n    \"task_id\": \"war-e2-six-gap-trace-diagnostic-screen-20261001-a06\",\r\n    \"to\": [\r\n      \"*\"\r\n    ],\r\n    \"state\": \"done\",\r\n    \"summary\": \"native_research_capture_stopped_original_display_restored_assets_retained\",\r\n    \"next_step\": \"\",\r\n    \"resources\": [],\r\n    \"repo\": \"C:\\\\w\\\\e2cap1001e\",\r\n    \"git\": {\r\n      \"branch\": \"codex/war-e2-trace-diagnostic-capture-20261001\",\r\n      \"dirty_entries\": 0,\r\n      \"head\": \"419cac1a956c7be356d886256c7bc689cda5327d\"\r\n    }\r\n  }\r\n}\r\n",
+  "stderr": ""
+}

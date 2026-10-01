@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-07-trace-diagnostic\finish_already_submitted_day_a14.py", line 42, in <module>
+    monitor(False, ev, er)
+    ~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-07-trace-diagnostic\advance_and_drain_immediately_a13.py", line 50, in monitor
+    m.require(valid and all(row.get('failure_flags') == 0 for row in payload['records']), 'Original monitor RED; exact return retained')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-07-trace-diagnostic\scoped_ui_research_a09.py", line 20, in require
+    raise RuntimeError(message)
+RuntimeError: Original monitor RED; exact return retained

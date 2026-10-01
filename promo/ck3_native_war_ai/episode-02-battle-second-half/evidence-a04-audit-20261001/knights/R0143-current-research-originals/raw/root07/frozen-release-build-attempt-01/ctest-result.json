@@ -1,0 +1,14 @@
+{
+  "returncode": 0,
+  "at_utc": "2026-10-01T12:15:00.585937+00:00",
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\ctest-stdout.bin",
+    "bytes": 1549,
+    "sha256": "5984B98DB1375BF2E76B38A85C5435A29E547E4341A902BE56ADDC5BF66E4F68"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\ctest-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

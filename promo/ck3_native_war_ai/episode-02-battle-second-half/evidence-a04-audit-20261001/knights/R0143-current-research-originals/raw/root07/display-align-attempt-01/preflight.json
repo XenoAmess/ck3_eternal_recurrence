@@ -1,0 +1,49 @@
+{
+  "at_utc": "2026-10-01T12:16:33.998772+00:00",
+  "screen_owner": {
+    "git": {
+      "branch": "codex/war-e2-trace-diagnostic-capture-20261001",
+      "dirty_entries": 0,
+      "head": "419cac1a956c7be356d886256c7bc689cda5327d"
+    },
+    "last_sequence": 3463,
+    "next_step": "new_single_day_trace_monitor_before_and_after_day_outside_UI",
+    "pid": 17904,
+    "repo": "C:\\w\\e2cap1001e",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "R0142_stopped_UI3closed_trace3pending_new419cac_build_ready_fresh_offline_capture",
+    "task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "updated_at_utc": "2026-10-01T12:16:32.980330+00:00"
+  },
+  "mode": "align",
+  "device_name": "\\\\.\\DISPLAY1",
+  "busy_inventory": [],
+  "before_mode": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "enumerated_target": {
+    "PelsWidth": 2560,
+    "PelsHeight": 1440,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "alignment_receipt": null,
+  "registry_update_requested": false,
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

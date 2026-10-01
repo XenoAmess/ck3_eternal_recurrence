@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-01T12:22:11.289238+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_new_capture_sdk.py"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_new_capture_sdk.py",
+    "bytes": 4278,
+    "sha256": "892617AE3827664FE5305BC1CC2B7B3A8207DC3B18A419FB0D4E79B5180E4689"
+  }
+}

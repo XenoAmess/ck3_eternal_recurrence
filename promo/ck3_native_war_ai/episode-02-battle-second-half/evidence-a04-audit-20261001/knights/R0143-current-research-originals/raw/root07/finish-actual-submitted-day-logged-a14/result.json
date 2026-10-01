@@ -1,0 +1,13 @@
+{
+  "returncode": 1,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\finish-actual-submitted-day-logged-a14\\stdout.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\finish-actual-submitted-day-logged-a14\\stderr.bin",
+    "bytes": 884,
+    "sha256": "98356C19B0BE8B556A474F13FFD06527449D78BA49C933C7B014483026B4F3B2"
+  }
+}

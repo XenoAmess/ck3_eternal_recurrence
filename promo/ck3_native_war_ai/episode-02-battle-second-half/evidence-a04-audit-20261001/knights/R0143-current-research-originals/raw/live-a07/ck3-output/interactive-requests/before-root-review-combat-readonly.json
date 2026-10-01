@@ -1,0 +1,8 @@
+{
+  "action": "mcp",
+  "tool": "ck3_query_ingame_ui_window_v1",
+  "arguments": {
+    "window_kind": "combat",
+    "expected_revision": 6
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "assets": {
+    "helper_error": {
+      "bytes": 20,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\injector-attempts\\4a6c55ff3adb4d8ead8e42e7af6c0baf\\helper-error.json",
+      "sha256": "7CAEEFE05C039F6C30BD0593D321171609C89CB15AC218F9E059154B1C8A035A"
+    },
+    "job_report": {
+      "bytes": 1655,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\injector-attempts\\4a6c55ff3adb4d8ead8e42e7af6c0baf\\job-report.json",
+      "sha256": "6CAF08279B7BDC2CE50A3DD0B78FF3F69C0262619ED6CD74699BCE9284178B15"
+    },
+    "stderr": {
+      "bytes": 0,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\injector-attempts\\4a6c55ff3adb4d8ead8e42e7af6c0baf\\stderr.bin",
+      "present": true,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "stdout": {
+      "bytes": 83,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\injector-attempts\\4a6c55ff3adb4d8ead8e42e7af6c0baf\\stdout.bin",
+      "present": true,
+      "sha256": "8DE97EB4D061FC6D6424F7AE481741C297BB4881099AAEB8027A7A59C2E5919C"
+    }
+  },
+  "schema": "xar.ck3.injector-evidence.v1"
+}

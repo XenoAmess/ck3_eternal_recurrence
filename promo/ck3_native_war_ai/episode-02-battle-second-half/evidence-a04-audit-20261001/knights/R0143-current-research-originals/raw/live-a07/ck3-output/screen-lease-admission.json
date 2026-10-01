@@ -1,0 +1,14 @@
+{
+  "schema": "xar.promo.screen-lease-cas/v1",
+  "task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+  "expected_sequence": 3463,
+  "sequence": 3464,
+  "event_id": "5f0d5bb517b5465da1b415adbdfe8f84",
+  "updated_at_utc": "2026-10-01T12:22:22.856496+00:00",
+  "repo": "C:\\w\\e2cap1001e",
+  "checkout_head": "419cac1a956c7be356d886256c7bc689cda5327d",
+  "source_cli": "C:\\w\\e2cap1001e\\tools\\codex_task_bus.py",
+  "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+  "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+  "screen_resource": "ck3-screen:acquired"
+}

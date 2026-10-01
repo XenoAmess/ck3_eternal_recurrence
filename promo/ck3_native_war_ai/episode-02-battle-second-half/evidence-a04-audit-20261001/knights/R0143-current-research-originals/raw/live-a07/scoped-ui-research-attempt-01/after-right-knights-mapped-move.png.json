@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 2491964,
+    "foreground_hwnd": 2491964,
+    "foreground_pid": 17420,
+    "foreground_thread_id": 8264,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 2491964,
+    "foreground_hwnd": 2491964,
+    "foreground_pid": 17420,
+    "foreground_thread_id": 8264,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    718.0,
+    690.0
+  ],
+  "pointer_after": [
+    1436,
+    1380
+  ],
+  "pointer_before": [
+    1126,
+    1380
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1280,
+    720
+  ],
+  "receipt_image_size": [
+    2560,
+    1440
+  ],
+  "receipt_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-right-knights-mapped-move.png",
+  "receipt_sha256": "53CC3EA6D0B258D6F4D8365082DFD76778FA644DF8A911D21809E7FABFABB2C5",
+  "reviewed_bounds": [
+    692.0,
+    682.0,
+    65,
+    18
+  ],
+  "screen_point": [
+    1436,
+    1380
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-right-knights-mapped-move.png.json",
+  "source_image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-left-knights-fallback-desktop-original.png",
+    "sha256": "A94162910AD5AC89BA179028923C9E1309BB1FC9D05A71A3A6736F3B919F4A74"
+  },
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "pointer-move-readback-matched"
+}

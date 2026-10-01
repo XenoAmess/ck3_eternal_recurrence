@@ -1,0 +1,10 @@
+start 01-before-pre-ui-checkpoint
+complete 01-before-pre-ui-checkpoint exit=0
+start 02-before-victim-character
+complete 02-before-victim-character exit=0
+start 03-before-killer-character
+complete 03-before-killer-character exit=0
+start 04-before-combat
+complete 04-before-combat exit=0
+start 05-before-combat-fit
+complete 05-before-combat-fit exit=0

@@ -1,0 +1,47 @@
+	34120={
+		first_name="Amr"
+		birth=1039.1.1
+		nickname_text=""
+		ethnicity="arab"
+		culture=20
+		faith=67
+		dynasty_house=1053
+		skill={
+			7 5 4 6 8 7
+		}
+		trait_xp_amounts={
+			0
+		}
+		dna="S/NL86adpp00vzS/AZABkAB8AHwBigGKAYABgAGEAYQBiwGLAH0AfQB3AHcBfwF/AHoAegGlAaUAeAB4AF0AXQGVAZUBlgGWAB8AHwB/AH8BhQGFAHEAcQGFAYUBiwGLAYwBjAB5AHkAegB6AYEBgQBzAHMAbwBvAeEB4QGtAa0BngGeAHEAcQBnAGcBAAEAAA4ADgAlACUAHgAeAHIAcgFaAVoAIQAhATwBPAAtAC0BHwEfAAIAAgEYARgAAAAAADMAMwAdAB0ANgA2ABwAHAApACkApACkARIBEgADAAMBPgE+AFkAWQEAAQABDAEMADQANABzAHMBVAFUAG0AbQAlACUBDQENAQMBAwExATEAUgBSAT0BPQEZARkBIgEiAeIB4gEcARwBIgEiAE8ATwFlAWUBAgECAQABAAEOAQ4AiQCJAEcARwBoAGgAKQApAAUABQBcAFwAAgACApsCmwAeAB4CAAIAANYA1gF2AXYCeQJ5CQAJAAV0BXQAQgBCCvoK+gHhAeEBwwHDArICsgHcAdwAPQA9AAAAAAFQAVA="
+		mass=-2
+		traits={
+			62 69 71 16 248
+		}
+		alive_data={
+			fertility=0.5
+			health=4.19766
+			piety={
+				currency=50
+			}
+			prestige={
+				currency=301.0608
+				accumulated=1001.0608
+			}
+			influence={
+				currency=120
+			}
+			languages={
+				language_berber
+			}
+			activity_data={ }
+			location={
+				location=2633
+			}
+		}
+		court_data={
+			employer=32725
+			regiment=115
+			knight=yes
+			join_court_date=1066.9.15
+		}
+	}

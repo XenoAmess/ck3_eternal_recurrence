@@ -1,0 +1,25 @@
+{
+  "source_commit": "419cac1a956c7be356d886256c7bc689cda5327d",
+  "source": "C:\\w\\e2research1001",
+  "frozen_source": "C:\\w\\e2cap1001e",
+  "source_branch": "codex/war-e2-mechanism-closure-20261001",
+  "runtime_branch": "codex/war-e2-trace-diagnostic-capture-20261001",
+  "source_files": [
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_phase_event_trace_managed_v1.hpp",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_scoped_transition_chain_v1.hpp",
+    "ck3_autonomous_player/native_bridge/research/combat_trace_publish_diagnostic_v1_contract.json",
+    "ck3_autonomous_player/native_bridge/research/verify_knight_death_artifact_wire_projection_offline.py",
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_managed_v1.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_managed_v1_test.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_scoped_transition_chain_v1_test.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_scoped_transition_chain_v1_wire.cpp",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "ck3_autonomous_player/src/xar_autoplayer/simulation/knight_causal_save_projection.py",
+    "ck3_autonomous_player/tests/unit/test_trace_publish_failure_preservation.py"
+  ],
+  "clean_source_and_runtime": true,
+  "no_master_intake": true,
+  "video_changed": false,
+  "live_pending": true
+}

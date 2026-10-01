@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "codex/war-e2-trace-diagnostic-capture-20261001",
+      "dirty_entries": 0,
+      "head": "419cac1a956c7be356d886256c7bc689cda5327d"
+    },
+    "last_sequence": 3490,
+    "next_step": "",
+    "pid": 11524,
+    "repo": "C:\\w\\e2cap1001e",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "native_research_capture_stopped_original_display_restored_assets_retained",
+    "task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "updated_at_utc": "2026-10-01T13:13:48.509358+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 3490,
+    "event_id": "e22d5ab3c82e429490dd9cd8bd315cd2",
+    "timestamp_utc": "2026-10-01T13:13:48.510688+00:00",
+    "kind": "completed",
+    "task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "native_research_capture_stopped_original_display_restored_assets_retained",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\w\\e2cap1001e",
+    "git": {
+      "branch": "codex/war-e2-trace-diagnostic-capture-20261001",
+      "dirty_entries": 0,
+      "head": "419cac1a956c7be356d886256c7bc689cda5327d"
+    }
+  }
+}

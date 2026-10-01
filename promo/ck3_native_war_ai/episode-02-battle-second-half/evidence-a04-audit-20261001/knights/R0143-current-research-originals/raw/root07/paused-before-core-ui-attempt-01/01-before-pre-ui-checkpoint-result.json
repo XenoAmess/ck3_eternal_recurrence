@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a08.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+    "--phase",
+    "before",
+    "--label",
+    "before-pre-ui-checkpoint"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\paused-before-core-ui-attempt-01\\01-before-pre-ui-checkpoint-stdout.bin",
+    "bytes": 369,
+    "sha256": "DC928892A0FC0F552BD27A72EC92A560EEE7F257C25C5895B3075FCA537963A9"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\paused-before-core-ui-attempt-01\\01-before-pre-ui-checkpoint-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

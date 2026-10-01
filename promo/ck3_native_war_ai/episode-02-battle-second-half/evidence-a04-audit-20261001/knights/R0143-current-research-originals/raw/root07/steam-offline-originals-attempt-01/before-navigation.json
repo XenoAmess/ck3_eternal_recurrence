@@ -1,0 +1,39 @@
+{
+  "label": "before-navigation",
+  "frames": [
+    {
+      "at_utc": "2026-10-01T12:16:38.648431+00:00",
+      "elapsed": 0.3518250000051921,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\before-navigation-01.png",
+        "bytes": 792585,
+        "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T12:16:40.739836+00:00",
+      "elapsed": 2.4309341000043787,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\before-navigation-02.png",
+        "bytes": 792585,
+        "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T12:16:42.238373+00:00",
+      "elapsed": 3.933896900009131,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\before-navigation-03.png",
+        "bytes": 792585,
+        "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+      }
+    }
+  ],
+  "errors": []
+}

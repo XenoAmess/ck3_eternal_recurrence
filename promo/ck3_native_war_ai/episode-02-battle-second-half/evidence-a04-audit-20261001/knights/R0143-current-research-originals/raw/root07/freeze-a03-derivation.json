@@ -1,0 +1,7 @@
+{
+  "source": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\freeze_reviewed_diagnostic_source_a02.py",
+  "source_sha256": "dc06475efccc31be8648ab8da480cd40c772e82ad083a9a223b67ea25021a547",
+  "derived": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\freeze_reviewed_diagnostic_source_a03.py",
+  "derived_sha256": "0919702515da8844b1c32f92b8914f3dc55392ae9c72b6bda025c374847851f1",
+  "fix": "Select READY current source fields explicitly. Historical unchanged-anchor pins from the older pure receipt remain historical, not current pins. Prior attempt failed before Git mutations."
+}

@@ -1,0 +1,1352 @@
+{
+  "kind": "R0143_FOUR_ORIGINAL_SAVED_ENDPOINTS_ONLY",
+  "status": "PASS_ORIGINAL_FOUR_SAVE_BINDINGS_AND_ENDPOINT_PROJECTIONS_ONLY",
+  "checks": [
+    {
+      "name": "Runtime explicitly419cac, R0143, current live only",
+      "pass": true
+    },
+    {
+      "name": "runtime parser checkout equals explicit capture source",
+      "pass": true
+    },
+    {
+      "name": "Pinned actual Rakaly executable",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint exactsourcebinding",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint immutable current-slotpath",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint original save nativeaccepted/saved",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint actual raw saved receiptSHA/date/actor/session",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint pausedsourceactualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint source Army18combat actualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint native save request revision",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint snapshot/save processconnection",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint preUI post-save date/identity paused stable",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint real decoderexit0",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint saved fullCombat16777218",
+      "pass": true
+    },
+    {
+      "name": "before exactsourcebinding",
+      "pass": true
+    },
+    {
+      "name": "before immutable current-slotpath",
+      "pass": true
+    },
+    {
+      "name": "before original save nativeaccepted/saved",
+      "pass": true
+    },
+    {
+      "name": "before actual raw saved receiptSHA/date/actor/session",
+      "pass": true
+    },
+    {
+      "name": "before pausedsourceactualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "before source Army18combat actualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "before native save request revision",
+      "pass": true
+    },
+    {
+      "name": "before snapshot/save processconnection",
+      "pass": true
+    },
+    {
+      "name": "before real decoderexit0",
+      "pass": true
+    },
+    {
+      "name": "before saved fullCombat16777218",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint exactsourcebinding",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint immutable current-slotpath",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint original save nativeaccepted/saved",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint actual raw saved receiptSHA/date/actor/session",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint pausedsourceactualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint source Army18combat actualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint native save request revision",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint snapshot/save processconnection",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint preUI post-save date/identity paused stable",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint real decoderexit0",
+      "pass": true
+    },
+    {
+      "name": "after-pre-ui-checkpoint saved fullCombat16777218",
+      "pass": true
+    },
+    {
+      "name": "after exactsourcebinding",
+      "pass": true
+    },
+    {
+      "name": "after immutable current-slotpath",
+      "pass": true
+    },
+    {
+      "name": "after original save nativeaccepted/saved",
+      "pass": true
+    },
+    {
+      "name": "after actual raw saved receiptSHA/date/actor/session",
+      "pass": true
+    },
+    {
+      "name": "after pausedsourceactualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "after source Army18combat actualsnapshot",
+      "pass": true
+    },
+    {
+      "name": "after native save request revision",
+      "pass": true
+    },
+    {
+      "name": "after snapshot/save processconnection",
+      "pass": true
+    },
+    {
+      "name": "after real decoderexit0",
+      "pass": true
+    },
+    {
+      "name": "after saved fullCombat16777218",
+      "pass": true
+    },
+    {
+      "name": "all4 originals exactsameprocess",
+      "pass": true
+    },
+    {
+      "name": "one original native daydelta24",
+      "pass": true
+    },
+    {
+      "name": "before_UI_saved_endpoints savedcombatpaths stable",
+      "pass": true
+    },
+    {
+      "name": "single_day_saved_endpoints savedcombatpaths stable",
+      "pass": true
+    },
+    {
+      "name": "after_UI_saved_endpoints savedcombatpaths stable",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-saved-pair.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-post-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-save-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-save-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-save-save-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-save-save-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-saved-pair.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-immutable.ck3",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-pre-ui-checkpoint-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-pre-ui-checkpoint-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-post-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-save-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-save-save.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-save-save-source.json",
+      "pass": true
+    },
+    {
+      "name": "original stable C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-save-save-source.json",
+      "pass": true
+    }
+  ],
+  "runtime_trace_available": false,
+  "monitor_complete": false,
+  "global_bundle_complete": false,
+  "case_13_domain_complete": false,
+  "sole_death_cause_proven": false,
+  "configuration": {
+    "original": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+      "bytes": 5728,
+      "sha256": "70D440BBDEBFA5131CC08B7A21CA2796A372C575E26F622111E226728EF4872C"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\current-run-bindings.json",
+      "bytes": 5728,
+      "sha256": "70D440BBDEBFA5131CC08B7A21CA2796A372C575E26F622111E226728EF4872C"
+    }
+  },
+  "configuration_pins": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\native-start-readback.json",
+      "bytes": 31341,
+      "sha256": "B4CFB3381683246641B1F5D4E742F7F829F82BB0C64DA08D8B248178018A074E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\candidate-manifest.json",
+      "bytes": 2920,
+      "sha256": "732C213DDF6D151936565C4DAB8AA2F346498F1131A948D8B56DADC11362FDA7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\new-capture-launch-plan.json",
+      "bytes": 3441,
+      "sha256": "A22FCFD9B703649B903DF46DCBF9317BC007BF70F22B6BD5A744B3A8C7055D85"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\scoped_ui_research_a09.py",
+      "bytes": 35122,
+      "sha256": "E51DC8EE492815EDB79A31FB1C84B70D8826D8FC1B3EEA3EC70582D7955D0F36"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\advance_and_drain_immediately_a13.py",
+      "bytes": 8231,
+      "sha256": "653F7CF79F22ED3B43FE20274F3911114D88B576DF307DD846F9BBA98BC22BED"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_required_core_ui_a13.py",
+      "bytes": 3685,
+      "sha256": "CFC326F983075003377B91710B2568A0B14F585A47477748629023A104F6D666"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a08.py",
+      "bytes": 5242,
+      "sha256": "45C842A5A8052008112164E65481418C11DDC3DC4C93B4725B372D22621069B6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\capture_desktop_hover_source_a02.py",
+      "bytes": 2799,
+      "sha256": "92F82E661D1BD0B58E7B2AD625DE73B39B637E823B512A75195266ECB0D6EB35"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_logged_mode_a02.py",
+      "bytes": 2028,
+      "sha256": "566B9D72C2B6AFB66B88D236483D07981FC82D5E97C1F91EE32C6B4E43D8595C"
+    },
+    {
+      "path": "C:\\w\\e2cap1001e\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+      "bytes": 122365,
+      "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+    },
+    {
+      "path": "C:\\w\\e2cap1001e\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    {
+      "path": "C:\\w\\e2cap1001e\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+      "bytes": 3566080,
+      "sha256": "0F752E3F50B778BE140CCE08589AFB88C9C08073D7EFDFFAD82C31330A51C42D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "F6F701B71975ACB4BAC7591848900C1DF109CB7933E53282034D6AD8ED78A5F3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\preflight.json",
+      "bytes": 21133,
+      "sha256": "A7C1687B94DA256C4C10B12B7FBD18F76619D519AFAFF3A18873416CB377ABDC"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\live-run-identity.json",
+      "bytes": 553,
+      "sha256": "FE7E321DD9B8787458ED6450F2DD703C30297841920301AE30AB07BAF8972158"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+      "bytes": 52880496,
+      "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+    }
+  ],
+  "runtime_source_head": "419cac1a956c7be356d886256c7bc689cda5327d",
+  "runtime_dll": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bytes": 3566080,
+    "sha256": "0F752E3F50B778BE140CCE08589AFB88C9C08073D7EFDFFAD82C31330A51C42D"
+  },
+  "parser_sources": [
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001e\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_causal_save_projection.py",
+        "bytes": 17048,
+        "sha256": "54E2F7A75585613C8C8F14153495522FD3AD611C1E6C281560916A1676955057"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\knight_causal_save_projection.py",
+        "bytes": 17048,
+        "sha256": "54E2F7A75585613C8C8F14153495522FD3AD611C1E6C281560916A1676955057"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001e\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_selector_replay.py",
+        "bytes": 9299,
+        "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\knight_selector_replay.py",
+        "bytes": 9299,
+        "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+      }
+    }
+  ],
+  "rng_reader_source": {
+    "original": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\saved_rng_endpoint_inventory_a01.py",
+      "bytes": 6567,
+      "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\saved_rng_endpoint_inventory_a01.py",
+      "bytes": 6567,
+      "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+    }
+  },
+  "rakaly": {
+    "original": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    }
+  },
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "probe": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8=0",
+        "-B",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\verified-python.stdout.bin",
+        "bytes": 15,
+        "sha256": "9FC9968E3AE8D82284D7426A87E1426E07246027C7706B0803A1C8D9C60C7A4D"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\verified-python.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    }
+  },
+  "exact_original_copies": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-saved-pair.json",
+        "bytes": 5917,
+        "sha256": "3F659482D2546EBBF1452EC42CD76A6154DBC68CC42E4FB352400798494E137F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-saved-pair.json",
+        "bytes": 5917,
+        "sha256": "3F659482D2546EBBF1452EC42CD76A6154DBC68CC42E4FB352400798494E137F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+        "bytes": 52881742,
+        "sha256": "77CE8E8E7E955C578C0A7440CA0D17883547782B0BB000A078E918CCDAB12962"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-immutable.ck3",
+        "bytes": 52881742,
+        "sha256": "77CE8E8E7E955C578C0A7440CA0D17883547782B0BB000A078E918CCDAB12962"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-save.json",
+        "bytes": 13479,
+        "sha256": "C1C31E5140C1FB2584E06A5FCB73F89FF45B984124DBFD4C44D986552C646E5F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-save-response.json",
+        "bytes": 13479,
+        "sha256": "C1C31E5140C1FB2584E06A5FCB73F89FF45B984124DBFD4C44D986552C646E5F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-save.json",
+        "bytes": 104,
+        "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-save-request.json",
+        "bytes": 104,
+        "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-source.json",
+        "bytes": 35010,
+        "sha256": "F00607CEF4F9619F5835EFCE95D4144A65E254CA9F0F9E7A6B04B9FCBFFF2C7B"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-snapshot-response.json",
+        "bytes": 35010,
+        "sha256": "F00607CEF4F9619F5835EFCE95D4144A65E254CA9F0F9E7A6B04B9FCBFFF2C7B"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-source.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-snapshot-request.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-post-source.json",
+        "bytes": 37621,
+        "sha256": "3DEF8109A2ED7DF96E6998A662D7D7A8533223C780C80EA7475A5778F9480527"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-post-snapshot-response.json",
+        "bytes": 37621,
+        "sha256": "3DEF8109A2ED7DF96E6998A662D7D7A8533223C780C80EA7475A5778F9480527"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+        "bytes": 4472,
+        "sha256": "B6931A90F2B73C4A531D58EEE396E69A5464184AC425FBAC1D3945907C13CCF0"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-saved-pair.json",
+        "bytes": 4472,
+        "sha256": "B6931A90F2B73C4A531D58EEE396E69A5464184AC425FBAC1D3945907C13CCF0"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+        "bytes": 52888510,
+        "sha256": "CE4BD247DA3EFD593DAA4FD3271159EDBD167C18BF787C0B488185AA4E8A716A"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-immutable.ck3",
+        "bytes": 52888510,
+        "sha256": "CE4BD247DA3EFD593DAA4FD3271159EDBD167C18BF787C0B488185AA4E8A716A"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-save-save.json",
+        "bytes": 13475,
+        "sha256": "AFB9B551E84343E3E39B8D1B244526B45A8C6F812CBEE81896B4AAA09702CD28"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-save-response.json",
+        "bytes": 13475,
+        "sha256": "AFB9B551E84343E3E39B8D1B244526B45A8C6F812CBEE81896B4AAA09702CD28"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-save-save.json",
+        "bytes": 104,
+        "sha256": "C8EC32F0123C15F56ACC08952EA57EF99FFF14E83463F9CEFB2C0E7AB7E0E87C"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-save-request.json",
+        "bytes": 104,
+        "sha256": "C8EC32F0123C15F56ACC08952EA57EF99FFF14E83463F9CEFB2C0E7AB7E0E87C"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-save-save-source.json",
+        "bytes": 1871605,
+        "sha256": "8335D21291A16095AB81A76CC4CE885063B77CD057AE6501E38A0534A90C29E9"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-snapshot-response.json",
+        "bytes": 1871605,
+        "sha256": "8335D21291A16095AB81A76CC4CE885063B77CD057AE6501E38A0534A90C29E9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-save-save-source.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-snapshot-request.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-saved-pair.json",
+        "bytes": 5914,
+        "sha256": "A2828050757E31773B27E98DF00F49D0CDCEB2EB1F0C89B974F6D2B591D27518"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-saved-pair.json",
+        "bytes": 5914,
+        "sha256": "A2828050757E31773B27E98DF00F49D0CDCEB2EB1F0C89B974F6D2B591D27518"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-immutable.ck3",
+        "bytes": 52804586,
+        "sha256": "B2F4508C45C470D2829C86CC3B8C39F13BB3863AFD4CF51CFEF0BE45F98B0FE5"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-immutable.ck3",
+        "bytes": 52804586,
+        "sha256": "B2F4508C45C470D2829C86CC3B8C39F13BB3863AFD4CF51CFEF0BE45F98B0FE5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-save.json",
+        "bytes": 13712,
+        "sha256": "9A797F4E96ABD0B547F7088B7889EA26C5E38D10C3E167F8D0194366B86F7BA4"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-save-response.json",
+        "bytes": 13712,
+        "sha256": "9A797F4E96ABD0B547F7088B7889EA26C5E38D10C3E167F8D0194366B86F7BA4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-pre-ui-checkpoint-save.json",
+        "bytes": 104,
+        "sha256": "64BC1654B8B70622C08270A7F6341EC1E04FC5E36480E2E4C2618CC2714D012E"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-save-request.json",
+        "bytes": 104,
+        "sha256": "64BC1654B8B70622C08270A7F6341EC1E04FC5E36480E2E4C2618CC2714D012E"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-source.json",
+        "bytes": 2000166,
+        "sha256": "AC73D7EBF38C5DB1B09FF5D0B84DD3FDFD55A7AA06DCAD43AEF6F238F4A3A839"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-snapshot-response.json",
+        "bytes": 2000166,
+        "sha256": "AC73D7EBF38C5DB1B09FF5D0B84DD3FDFD55A7AA06DCAD43AEF6F238F4A3A839"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-pre-ui-checkpoint-source.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-snapshot-request.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-post-source.json",
+        "bytes": 2002648,
+        "sha256": "A97A9A4080A2F201F50F32661B6DC4358C187EDD4CA9C017F46F2430D531C2FB"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-post-snapshot-response.json",
+        "bytes": 2002648,
+        "sha256": "A97A9A4080A2F201F50F32661B6DC4358C187EDD4CA9C017F46F2430D531C2FB"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+        "bytes": 4467,
+        "sha256": "A2D2CB502BBF64832ECC45D98379041968DA8BC65743C3B5905CDD5CD8973851"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-saved-pair.json",
+        "bytes": 4467,
+        "sha256": "A2D2CB502BBF64832ECC45D98379041968DA8BC65743C3B5905CDD5CD8973851"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+        "bytes": 52804586,
+        "sha256": "969CEA497389F3B51DE5890941F40638F9DD041AEF647D6773FCCB8F74EED103"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-immutable.ck3",
+        "bytes": 52804586,
+        "sha256": "969CEA497389F3B51DE5890941F40638F9DD041AEF647D6773FCCB8F74EED103"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-save-save.json",
+        "bytes": 13700,
+        "sha256": "8840F670F927B7828199F9A3CC8DD0F3849FB1FD3A4F001DE1CF7ABB27F40C21"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-save-response.json",
+        "bytes": 13700,
+        "sha256": "8840F670F927B7828199F9A3CC8DD0F3849FB1FD3A4F001DE1CF7ABB27F40C21"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-save-save.json",
+        "bytes": 105,
+        "sha256": "795B6371AA27723E5EEBBD8AD4883AE1E9B50F2A38EF3D99D85D642ADCB78D51"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-save-request.json",
+        "bytes": 105,
+        "sha256": "795B6371AA27723E5EEBBD8AD4883AE1E9B50F2A38EF3D99D85D642ADCB78D51"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-save-save-source.json",
+        "bytes": 3849584,
+        "sha256": "064DFE946488CDE387D454A8FD70C868AFF7C9DA5FCC16A9EBDF0D54B58A25F2"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-snapshot-response.json",
+        "bytes": 3849584,
+        "sha256": "064DFE946488CDE387D454A8FD70C868AFF7C9DA5FCC16A9EBDF0D54B58A25F2"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-save-save-source.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-snapshot-request.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      }
+    }
+  ],
+  "saved_states": [
+    {
+      "label": "before-pre-ui-checkpoint",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-full-selected-saved-projection.json",
+        "bytes": 2657483,
+        "sha256": "6A7B76FC6EFDABEE9F062F226B49CAB34C67B2643F70D10CF2DBF16B9D6B07A6"
+      },
+      "immutable": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+        "bytes": 52881742,
+        "sha256": "77CE8E8E7E955C578C0A7440CA0D17883547782B0BB000A078E918CCDAB12962"
+      },
+      "source_values": {
+        "date_raw": 53146848,
+        "paused": true,
+        "actor": 29829,
+        "revision": 4,
+        "native_revision": 3,
+        "snapshot_id": "native:3",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-a5224cf6dfcc",
+        "connection_generation": 1,
+        "bridge_pid": 17420,
+        "native_hello_session_generation": 0
+      },
+      "character_endpoint_summary": [
+        {
+          "character_id": 33437,
+          "status": "ALIVE",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "300.3456",
+          "prestige_accumulated": "1000.3456",
+          "regiment_id": 65,
+          "house_id": 1105,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "301.0608",
+          "prestige_accumulated": "1001.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null
+        }
+      ]
+    },
+    {
+      "label": "before",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-full-selected-saved-projection.json",
+        "bytes": 2658505,
+        "sha256": "3492AE826C73E657303DAA9396F0AE7427B3D55393FD0EE00D734BA372129BA2"
+      },
+      "immutable": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+        "bytes": 52888510,
+        "sha256": "CE4BD247DA3EFD593DAA4FD3271159EDBD167C18BF787C0B488185AA4E8A716A"
+      },
+      "source_values": {
+        "date_raw": 53146848,
+        "paused": true,
+        "actor": 29829,
+        "revision": 5,
+        "native_revision": 4,
+        "snapshot_id": "native:4",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-a5224cf6dfcc",
+        "connection_generation": 1,
+        "bridge_pid": 17420,
+        "native_hello_session_generation": 0
+      },
+      "character_endpoint_summary": [
+        {
+          "character_id": 33437,
+          "status": "ALIVE",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "300.3456",
+          "prestige_accumulated": "1000.3456",
+          "regiment_id": 65,
+          "house_id": 1105,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "301.0608",
+          "prestige_accumulated": "1001.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null
+        }
+      ]
+    },
+    {
+      "label": "after-pre-ui-checkpoint",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-full-selected-saved-projection.json",
+        "bytes": 2627980,
+        "sha256": "2BFCD0AFC5CCB00378C3C44BB0D4548013C1BBB1D17F20611C770F21E3EFD055"
+      },
+      "immutable": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-immutable.ck3",
+        "bytes": 52804586,
+        "sha256": "B2F4508C45C470D2829C86CC3B8C39F13BB3863AFD4CF51CFEF0BE45F98B0FE5"
+      },
+      "source_values": {
+        "date_raw": 53146872,
+        "paused": true,
+        "actor": 29829,
+        "revision": 9,
+        "native_revision": 8,
+        "snapshot_id": "native:8",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-a5224cf6dfcc",
+        "connection_generation": 1,
+        "bridge_pid": 17420,
+        "native_hello_session_generation": 0
+      },
+      "character_endpoint_summary": [
+        {
+          "character_id": 33437,
+          "status": "DEAD",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": null,
+          "prestige_accumulated": null,
+          "regiment_id": null,
+          "house_id": 1105,
+          "death_date": "1066.12.30",
+          "death_reason": "\"death_battle\"",
+          "death_killer_id": 34120
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "451.0608",
+          "prestige_accumulated": "1151.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null
+        }
+      ]
+    },
+    {
+      "label": "after",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-full-selected-saved-projection.json",
+        "bytes": 2627747,
+        "sha256": "CF95409C93A19193775B89DCF3840F7163286FCA6EDFF6C08D01185F549C7D92"
+      },
+      "immutable": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+        "bytes": 52804586,
+        "sha256": "969CEA497389F3B51DE5890941F40638F9DD041AEF647D6773FCCB8F74EED103"
+      },
+      "source_values": {
+        "date_raw": 53146872,
+        "paused": true,
+        "actor": 29829,
+        "revision": 10,
+        "native_revision": 9,
+        "snapshot_id": "native:9",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-a5224cf6dfcc",
+        "connection_generation": 1,
+        "bridge_pid": 17420,
+        "native_hello_session_generation": 0
+      },
+      "character_endpoint_summary": [
+        {
+          "character_id": 33437,
+          "status": "DEAD",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": null,
+          "prestige_accumulated": null,
+          "regiment_id": null,
+          "house_id": 1105,
+          "death_date": "1066.12.30",
+          "death_reason": "\"death_battle\"",
+          "death_killer_id": 34120
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "451.0608",
+          "prestige_accumulated": "1151.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null
+        }
+      ]
+    }
+  ],
+  "three_intervals": [
+    {
+      "interval": "before_UI_saved_endpoints",
+      "receipt": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before_UI_saved_endpoints-complete-endpoint-deltas.json",
+        "bytes": 3033,
+        "sha256": "E3710E6AF6BBE5DE19528C724956A60B069B2F2E830AF9A1F8AB99E1FF47D84C"
+      },
+      "summary": {
+        "character_delta_counts": [
+          1,
+          1
+        ],
+        "case_combat_delta_counts": [
+          0,
+          0
+        ],
+        "RNG": {
+          "random_seed": {
+            "before": 2705320081,
+            "after": 2705320081,
+            "equal": true,
+            "uint32_delta_modulo": 0
+          },
+          "random_count": {
+            "before": 420865,
+            "after": 420865,
+            "equal": true,
+            "uint32_delta_modulo": 0
+          }
+        }
+      }
+    },
+    {
+      "interval": "single_day_saved_endpoints",
+      "receipt": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\single_day_saved_endpoints-complete-endpoint-deltas.json",
+        "bytes": 54246,
+        "sha256": "6CD5670473D9681175543F259B9DC39291AE29BD722CA847F822EE607F0833F2"
+      },
+      "summary": {
+        "character_delta_counts": [
+          21,
+          6
+        ],
+        "case_combat_delta_counts": [
+          51,
+          130
+        ],
+        "RNG": {
+          "random_seed": {
+            "before": 2705320081,
+            "after": 2705320081,
+            "equal": true,
+            "uint32_delta_modulo": 0
+          },
+          "random_count": {
+            "before": 420865,
+            "after": 421813,
+            "equal": false,
+            "uint32_delta_modulo": 948
+          }
+        }
+      }
+    },
+    {
+      "interval": "after_UI_saved_endpoints",
+      "receipt": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after_UI_saved_endpoints-complete-endpoint-deltas.json",
+        "bytes": 1566,
+        "sha256": "31685C1530B5170AF5F17905719EA658273CB5610944C6D18982D03F8DBBC460"
+      },
+      "summary": {
+        "character_delta_counts": [
+          0,
+          0
+        ],
+        "case_combat_delta_counts": [
+          0,
+          0
+        ],
+        "RNG": {
+          "random_seed": {
+            "before": 2705320081,
+            "after": 2705320081,
+            "equal": true,
+            "uint32_delta_modulo": 0
+          },
+          "random_count": {
+            "before": 421813,
+            "after": 421813,
+            "equal": true,
+            "uint32_delta_modulo": 0
+          }
+        }
+      }
+    }
+  ],
+  "monitor_schema_inspection": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\monitor-original-schema-inspection.json",
+    "bytes": 19576,
+    "sha256": "2E088C4B68FC7150DC8783AD7FD3C40F4FD72AB39C440E3E785AB957CEF7D707"
+  },
+  "daily_finish_original": {
+    "original": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\one-day-finished.json",
+      "bytes": 14983,
+      "sha256": "C107DCA01C871EEEFDAA061D843ABBA556F7E11D236D36830C7F66B25720B1C4"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\one-day-finished.json",
+      "bytes": 14983,
+      "sha256": "C107DCA01C871EEEFDAA061D843ABBA556F7E11D236D36830C7F66B25720B1C4"
+    }
+  },
+  "daily_finish_fields": {
+    "trace_finish_body": null,
+    "trace_error": {
+      "type": "ValueError",
+      "message": "private request returned RED: {'request': {'path': 'C:\\\\Users\\\\1\\\\AppData\\\\Local\\\\ck3-capture-preparation\\\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\\\ck3-output\\\\interactive-requests\\\\scoped-a12-chain-finish-once.json', 'bytes': 204, 'sha256': '5D6B1379F9AEF4BAAC12AA507AA3F408468FFF06C04FA857D5FCD6E11D5AC608'}, 'response': {'path': 'C:\\\\Users\\\\1\\\\AppData\\\\Local\\\\ck3-capture-preparation\\\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\\\ck3-output\\\\interactive-requests-responses\\\\scoped-a12-chain-finish-once.json', 'bytes': 12229, 'sha256': 'E0667182AAC15DCEEF3E0AE5D2EC6C92F8A4B4C67938CC4043173F2D31580B7B'}, 'result': 'RED', 'error': '_NativeCommandRejectedError(\\'native gameplay step failed: experimental trace managed DTO unavailable; original parsed return receipt={\"bytes\": 1990791, \"path\": \"C:\\\\\\\\\\\\\\\\Users\\\\\\\\\\\\\\\\1\\\\\\\\\\\\\\\\AppData\\\\\\\\\\\\\\\\Local\\\\\\\\\\\\\\\\ck3-capture-preparation\\\\\\\\\\\\\\\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\\\\\\\\\\\\\\\ck3-state\\\\\\\\\\\\\\\\native-session\\\\\\\\\\\\\\\\combat-trace-native-results\\\\\\\\\\\\\\\\native-trace-4ead0bf732864939be657b267125ebbd.json\", \"sha256\": \"4df0bdcb5d9c8cee718795072a8a958630514da3584743d8487ee19461b5e27d\", \"validation_state\": \"unvalidated\", \"wire_bytes_preserved\": false}\\')'}"
+    }
+  },
+  "partial_monitor_original": {
+    "original": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\variable-monitor-finish-once.json",
+      "bytes": 711132,
+      "sha256": "3DC5612A918A9D5F018B68D9BA9EC5685A978A58FD572118075ED7E7C47DFCDE"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\variable-monitor-finish-once.json",
+      "bytes": 711132,
+      "sha256": "3DC5612A918A9D5F018B68D9BA9EC5685A978A58FD572118075ED7E7C47DFCDE"
+    }
+  },
+  "limits": [
+    "These are actual R0143 saved endpoints, not full intraday causal coverage.",
+    "Daily managed trace export cap failure; DTO unavailable. No previous-run trace, selector or causal success verifier used.",
+    "Independent monitor nativefailed/flags8/truncated128; no full monitor/weapon-producer closure.",
+    "Equal endpoint fields do not exclude transient writes or RNG advancement/restoration.",
+    "Saved trait ordinals require original lookup mapping; base6skills differ from nativeeffective battleentries.",
+    "No UI approval, fullpanel or video completion is inferred."
+  ]
+}

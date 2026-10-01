@@ -1,0 +1,44 @@
+{
+  "at_utc": "2026-10-01T13:13:47.768017+00:00",
+  "screen_task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+  "mode": "restore",
+  "device_name": "\\\\.\\DISPLAY1",
+  "before_mode": {
+    "PelsWidth": 2560,
+    "PelsHeight": 1440,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "actual_mode": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "desktop_size": [
+    1024,
+    768
+  ],
+  "original_image_size": [
+    1024,
+    768
+  ],
+  "verified": true,
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\display-restore-and-release-attempt-01\\display-restore\\original-desktop-after-mode.png",
+    "bytes": 598883,
+    "sha256": "837B1EE675B2B583FCCA51176CA4E34C7B9343CA396598D195B26AF152702593"
+  },
+  "visual_review": "pending root original image inspection",
+  "registry_update_requested": false,
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

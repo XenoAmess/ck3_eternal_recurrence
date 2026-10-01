@@ -1,0 +1,39 @@
+{
+  "label": "bg3-library",
+  "frames": [
+    {
+      "at_utc": "2026-10-01T12:16:51.548481+00:00",
+      "elapsed": 0.27655999999842606,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-01.png",
+        "bytes": 796178,
+        "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T12:16:52.553819+00:00",
+      "elapsed": 1.2802644999901531,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-02.png",
+        "bytes": 796178,
+        "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T12:16:53.572694+00:00",
+      "elapsed": 2.287962999995216,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+        "bytes": 796178,
+        "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+      }
+    }
+  ],
+  "errors": []
+}

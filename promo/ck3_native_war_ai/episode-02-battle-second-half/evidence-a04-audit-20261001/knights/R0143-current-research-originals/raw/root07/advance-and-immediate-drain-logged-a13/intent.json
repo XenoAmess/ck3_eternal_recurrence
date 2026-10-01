@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-01T12:41:45.526580+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\advance_and_drain_immediately_a13.py"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\advance_and_drain_immediately_a13.py",
+    "bytes": 8231,
+    "sha256": "653F7CF79F22ED3B43FE20274F3911114D88B576DF307DD846F9BBA98BC22BED"
+  }
+}

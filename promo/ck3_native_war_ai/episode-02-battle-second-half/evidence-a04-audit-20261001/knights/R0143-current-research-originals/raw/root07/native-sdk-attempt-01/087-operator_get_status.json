@@ -1,0 +1,55 @@
+{
+  "at_utc": "2026-10-01T12:43:05.115896+00:00",
+  "arguments": {
+    "target_id": "ck3-e2-scoped-ui-20261001-a03"
+  },
+  "reply": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_instance_id\": \"fe618af4-06c5-440e-8a57-46dd29af24aa\",\n  \"target_id\": \"ck3-e2-scoped-ui-20261001-a03\",\n  \"identity\": {\n    \"token_user\": \"1\",\n    \"desktop\": \"WinSta0\\\\Default\",\n    \"machine\": \"DESKTOP-3FEVHD2\",\n    \"process_id\": 4344\n  },\n  \"identity_matches_profile\": true,\n  \"process_gates\": {\n    \"ck3.exe\": [\n      17420\n    ],\n    \"dowser.exe\": [],\n    \"ffmpeg.exe\": [],\n    \"obs64.exe\": [],\n    \"xar_ck3_bridge_injector.exe\": []\n  },\n  \"process_gate_errors\": {},\n  \"jobs\": [\n    {\n      \"job_id\": \"3cc87b2a-b1b4-42f0-8d76-d6d7293fa876\",\n      \"request_id\": \"e2-scoped-ui-20261001-a03-root\",\n      \"job_name\": \"scoped-ui-research-capture\",\n      \"pid\": 8512,\n      \"state\": \"running\",\n      \"exit_code\": null,\n      \"started_unix\": 1790857335.932345,\n      \"stdout_path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-07-trace-diagnostic\\\\operator-state-a01\\\\jobs\\\\3cc87b2a-b1b4-42f0-8d76-d6d7293fa876\\\\stdout.log\",\n      \"stderr_path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-07-trace-diagnostic\\\\operator-state-a01\\\\jobs\\\\3cc87b2a-b1b4-42f0-8d76-d6d7293fa876\\\\stderr.log\",\n      \"available_controls\": []\n    }\n  ]\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_instance_id": "fe618af4-06c5-440e-8a57-46dd29af24aa",
+      "target_id": "ck3-e2-scoped-ui-20261001-a03",
+      "identity": {
+        "token_user": "1",
+        "desktop": "WinSta0\\Default",
+        "machine": "DESKTOP-3FEVHD2",
+        "process_id": 4344
+      },
+      "identity_matches_profile": true,
+      "process_gates": {
+        "ck3.exe": [
+          17420
+        ],
+        "dowser.exe": [],
+        "ffmpeg.exe": [],
+        "obs64.exe": [],
+        "xar_ck3_bridge_injector.exe": []
+      },
+      "process_gate_errors": {},
+      "jobs": [
+        {
+          "job_id": "3cc87b2a-b1b4-42f0-8d76-d6d7293fa876",
+          "request_id": "e2-scoped-ui-20261001-a03-root",
+          "job_name": "scoped-ui-research-capture",
+          "pid": 8512,
+          "state": "running",
+          "exit_code": null,
+          "started_unix": 1790857335.932345,
+          "stdout_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\operator-state-a01\\jobs\\3cc87b2a-b1b4-42f0-8d76-d6d7293fa876\\stdout.log",
+          "stderr_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\operator-state-a01\\jobs\\3cc87b2a-b1b4-42f0-8d76-d6d7293fa876\\stderr.log",
+          "available_controls": []
+        }
+      ]
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

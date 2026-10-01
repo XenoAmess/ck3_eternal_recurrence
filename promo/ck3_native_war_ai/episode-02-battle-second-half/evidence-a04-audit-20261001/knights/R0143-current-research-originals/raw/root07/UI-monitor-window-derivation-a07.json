@@ -1,0 +1,33 @@
+{
+  "original_checkpoint": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a06.py",
+    "bytes": 5029,
+    "sha256": "ED1E49026FB55DAE58D4669CB3C37B8ABEFFC46060DF49EC14E43A1E4DFCCD12"
+  },
+  "derived_checkpoint": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a07.py",
+    "bytes": 5242,
+    "sha256": "184F9F15227BBEB5AE9520A5D7299E4ACC1DA72AF52CD2055C732720DCC6B09D"
+  },
+  "original_stage": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_required_core_ui_a11.py",
+    "bytes": 3685,
+    "sha256": "E5AFE6588C50F4CC93B22A40A6ACDE1992D99D29A19C28B45D913785C819BC43"
+  },
+  "derived_stage": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_required_core_ui_a12.py",
+    "bytes": 3685,
+    "sha256": "9CDB009C2120C4397A4B5629E03AF757FDA094EB419C7680429EAA5267504ACC"
+  },
+  "original_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_runtime_binding_and_plan_a08.py",
+    "bytes": 11728,
+    "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+  },
+  "derived_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_runtime_binding_and_plan_a09.py",
+    "bytes": 11860,
+    "sha256": "0303FA5B3F846DDAD5AA7CA89801C8BD5DB0366F0E23959C9B8DACD2A3FCA3C6"
+  },
+  "scope": "Keep all native source/session/date/hash checks. Place UI/save windows outside the monitor one-day observation. No previous run modified."
+}

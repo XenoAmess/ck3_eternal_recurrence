@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-10-01T12:20:23.806252+00:00",
+  "reviewer": "/root",
+  "current_offline_ui_observed": true,
+  "original_pixels_actually_reviewed": true,
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+    "bytes": 796178,
+    "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+  },
+  "reviewed_images": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\ck3-library-03.png",
+      "bytes": 803102,
+      "sha256": "870694332DFB64F8EEFCC1721FEF2D8045C75A3873C8F885692D8DC94E2C74B1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+      "bytes": 796178,
+      "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+    }
+  ],
+  "source_capture": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\receipt.json",
+    "bytes": 5050,
+    "sha256": "B31021FCB0A52F9802BCAE8B6CDB74BF7B2A1B822C2D3CAB13EEB2CBF7739CCD"
+  },
+  "owner": {
+    "hwnd": 197612,
+    "pid": 7068,
+    "process_create_time": 1790777038.7610564
+  },
+  "screen_task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+  "freshness_basis": "Root directly viewed both newly captured full Steam962x768 CK3 and BG3 originals. The same HWND changes selected game, page art and installed/start state; both originals visibly show Steam currently offline and footer offline mode.",
+  "same_window_semantic_change_actually_reviewed": true,
+  "steam_mode_changed": false,
+  "movie_signoff": false
+}

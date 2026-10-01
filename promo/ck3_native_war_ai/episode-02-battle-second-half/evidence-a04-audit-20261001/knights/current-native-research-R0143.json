@@ -1,0 +1,182 @@
+{
+  "schema": "ck3.R0143.current-native-research/v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0143",
+  "native_session": {
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "connection_generation": 1,
+    "bridge_pid": 17420,
+    "native_hello_session_generation": 0
+  },
+  "source_commit": "419cac1a956c7be356d886256c7bc689cda5327d",
+  "source_checkout": "C:\\w\\e2cap1001e",
+  "private_video_branch_archive_predecessor": "ac995ba16a296f24ef5a5057a29335d4a3577cd5",
+  "actor_id": 29829,
+  "war_id": 4,
+  "army_id": 18,
+  "combat_id": 16777218,
+  "victim_id": 33437,
+  "related_id": 34120,
+  "before_date_raw": 53146848,
+  "after_date_raw": 53146872,
+  "actual_days_advanced": 1,
+  "immutable_main_saved_endpoints": {
+    "before": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+      "bytes": 52888510,
+      "sha256": "CE4BD247DA3EFD593DAA4FD3271159EDBD167C18BF787C0B488185AA4E8A716A"
+    },
+    "after": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+      "bytes": 52804586,
+      "sha256": "969CEA497389F3B51DE5890941F40638F9DD041AEF647D6773FCCB8F74EED103"
+    }
+  },
+  "six_gaps": [
+    {
+      "key": "nextday_character_ui",
+      "status": "closed",
+      "scope": "Same-run victim33437 and related34120 original character windows, paused12/29->12/30; victim displayed prowess4->2 and alive->dead; related alive/prowess7->7/prestige301->451. No deathcause/weapon attribution implied."
+    },
+    {
+      "key": "knight_roster_change_ui",
+      "status": "closed",
+      "scope": "Current combat16777218 original left full visible list11->10 removes victim33437 semantic name; right19->19 retains related34120. Native GetKnightsBreakdown ONCLICK full IDs plus original pixels; these are UI counts, not ordered active native14->13 roster proof."
+    },
+    {
+      "key": "complete_battle_window_ui",
+      "status": "closed",
+      "scope": "Before fitted original and after unobscured original show outer borders, commanders, central stats and all lower composition rows inside2560x1440; stable native geometry/tree binding supports pixels. Both before and after battle panel have no overlapping tooltip."
+    },
+    {
+      "key": "knight_selector",
+      "status": "pending",
+      "gap": "Same-run complete actual selector prefix/range/shared/source/TLS path not exported; daily FINISH RED."
+    },
+    {
+      "key": "unique_actual_death_execution_path",
+      "status": "pending",
+      "gap": "Endpoint death/UI removal alone cannot prove unique death execution or all rival-path exclusions; daily export RED and monitor native overflow."
+    },
+    {
+      "key": "full_13_domain_mutable_state_chain",
+      "status": "pending",
+      "gap": "flags8/truncatedtrue monitor FINISH cannot support complete chain; strict mechanism verifier NOT_RUN."
+    }
+  ],
+  "UI_original_list_counts": {
+    "left_before": 11,
+    "left_after": 10,
+    "right_before": 19,
+    "right_after": 19,
+    "native_UI_markup_full_character_ids_bound": true,
+    "not_native_full_ordered_roster_trace_proof": true
+  },
+  "native_daily_trace": {
+    "status": "RED_MANAGED_WIRE_CAP",
+    "failure_gate": "managed_wire_cap",
+    "actual_assembled_output_bytes": 1217950,
+    "actual_managed_cap_bytes": 921600,
+    "drain_record_count": 7,
+    "drain_failure_flags": 0,
+    "scoped_record_count": 184,
+    "scoped_failure_flags": 0,
+    "detours_uninstalled": true,
+    "full_DTO_exported": false,
+    "fragment_flags_zero_do_not_imply_complete_causal_chain": true,
+    "original_parsed_native_diagnostic": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\native-session\\combat-trace-native-results\\native-trace-4ead0bf732864939be657b267125ebbd.json",
+      "bytes": 1990791,
+      "sha256": "4DF0BDCB5D9C8CEE718795072A8A958630514DA3584743D8487EE19461B5E27D"
+    },
+    "wire_bytes_preserved": false
+  },
+  "consumer_actual_failure": {
+    "wrong_checked_field": "requested_days",
+    "actual_original_field": "requested_horizon_days",
+    "actual_requested_horizon_days": 1,
+    "day_already_advanced_before_consumer_rejected": true,
+    "finish_continuation_performed": true,
+    "extra_day_or_FINISH_retry": false,
+    "native_monitor_overflow_remains_actual": true
+  },
+  "native_monitor": {
+    "accepted": false,
+    "failure_flags": 8,
+    "truncated": true,
+    "detours_uninstalled": true,
+    "strict_complete_mechanism_verifier": "NOT_RUN",
+    "complete13domain_proven": false
+  },
+  "native_hover": "NOT_CALLED_THIS_RUN; unchanged source-bound R0142 derived-textbox RTTI limitation, no fabricated R0143 hover error",
+  "active_combat_tooltip_pixels": "Actual R0143 individually mapped move/fresh paused desktop PNGs; eligible military roster never substitutes",
+  "authoritative_current_saved_endpoint_diagnosis": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-actual-endpoint-semantic-facts-a01.json",
+    "bytes": 174152,
+    "sha256": "27C5FE5B7EB968B9958C6DAFF506F9AF7FEE13652050C0BB2D57F871C4553586"
+  },
+  "peer_final_receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-final-readonly-endpoint-receipt-a01.json",
+    "bytes": 80188,
+    "sha256": "BB9A6F8033223C7942CDE54CED66159B7649797B6EDC9AC1C44EDA7ED14EFDA7"
+  },
+  "peer_ready_seal": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-readonly-endpoint-ready-seal-a01.json",
+    "bytes": 48883,
+    "sha256": "2CCEA637941571FB4F6375748708FFBEC32436A5979746821E2F30B5F38C32D7"
+  },
+  "saved_endpoint_layer_limit": "Only independent actual endpoints and preUI/UI checkpoint deltas; do not infer missing selector/unique death/13-domain execution from save or display alone.",
+  "SDK_lifecycle": {
+    "actual_jobs_exit0": true,
+    "actual_game_cleanup_proven": true,
+    "CK3_process_gates_empty": true,
+    "mechanism_RED_not_upgraded": true
+  },
+  "desktop": {
+    "restored_mode": [
+      1024,
+      768
+    ],
+    "Steam_offline_original_review": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\display-restoration-root-review-a01.json",
+      "bytes": 973,
+      "sha256": "B4BCD1AE3CB5A9B8F15271C5028BCE634AF94239DED5BA623998383103C4A168"
+    },
+    "screen_state": "done",
+    "resources": [],
+    "CAS_sequence": 3490
+  },
+  "global_mutable_bundle_complete": false,
+  "video_modified": false,
+  "human_movie_signoff": false,
+  "render_export_upload": false,
+  "Git_commit_performed_by_archiver": false,
+  "master_intake_merge_rebase_push": false,
+  "UI_independent_review": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-permanent-archive-other-a01\\independent-UI-endpoint-review-a02.json",
+    "bytes": 101500,
+    "sha256": "1D1C61E5D096296C2E064D3D4BB21E67141F5386917C2406FFE3566F6725E653"
+  },
+  "actual_stop_summary": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\actual-stopped-run-summary-a01.json",
+    "bytes": 5270,
+    "sha256": "E6F3C59D5D5DF03C411D7E7773EFDD00398F4C30329E70AB2CAABE8CE63B8E25"
+  },
+  "assets_index": {
+    "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\R0143-current-research-originals\\assets-index.json",
+    "bytes": 7202814,
+    "sha256": "9DA0BB1358ABF682B53AC45AD12388B3500140FD9512A824301011A51344586A"
+  },
+  "copy_verification": {
+    "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\R0143-current-research-originals\\copy-verification.json",
+    "bytes": 2859271,
+    "sha256": "1927C07F64D6A66291A61511C8FA324DA7264A535CD4D754AA85C0FCAE520BEB"
+  },
+  "archive_totals": {
+    "original_asset_entries": 6626,
+    "exact_copies": 3820,
+    "external_only_entries": 2806,
+    "indexed_original_bytes": 2076573306,
+    "exact_copied_bytes": 153732648
+  },
+  "later_source_repairs": "Future-run preparation only, no later build/DLL or run relabels R0143 results."
+}

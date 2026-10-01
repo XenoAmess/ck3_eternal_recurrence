@@ -1,0 +1,140 @@
+{
+  "at_utc": "2026-10-01T11:57:50.339042+00:00",
+  "copies": [
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+        "bytes": 34603,
+        "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\scoped_ui_research_a08.py",
+        "bytes": 34603,
+        "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\build_frozen_research_a03.py",
+        "bytes": 7646,
+        "sha256": "C585D7641B04F2ECE82F12FB04B4C152BE6A8DC8210049C790522AC9E23CE9E8"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\build_frozen_research_a03.py",
+        "bytes": 7646,
+        "sha256": "C585D7641B04F2ECE82F12FB04B4C152BE6A8DC8210049C790522AC9E23CE9E8"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\prepare_new_capture.py",
+        "bytes": 11297,
+        "sha256": "F45FDD164BEEB522C4BE209173639286D05C95CE914F1A639BE70D6F442F7DFC"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_new_capture.py",
+        "bytes": 11297,
+        "sha256": "F45FDD164BEEB522C4BE209173639286D05C95CE914F1A639BE70D6F442F7DFC"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_new_capture_sdk.py",
+        "bytes": 4278,
+        "sha256": "892617AE3827664FE5305BC1CC2B7B3A8207DC3B18A419FB0D4E79B5180E4689"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_new_capture_sdk.py",
+        "bytes": 4278,
+        "sha256": "892617AE3827664FE5305BC1CC2B7B3A8207DC3B18A419FB0D4E79B5180E4689"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display_mode_research.py",
+        "bytes": 6891,
+        "sha256": "A5648AEE0C7A497E283C5EE650D3F27B54303E21023955A3C02D1F1B58E920F8"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\display_mode_research.py",
+        "bytes": 6891,
+        "sha256": "A5648AEE0C7A497E283C5EE650D3F27B54303E21023955A3C02D1F1B58E920F8"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\restore_and_release_screen.py",
+        "bytes": 4077,
+        "sha256": "F4407C81874F519E10989AD7F141C1F4A9E2DF78E0E7405CBEA712C843606D32"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\restore_and_release_screen.py",
+        "bytes": 4077,
+        "sha256": "F4407C81874F519E10989AD7F141C1F4A9E2DF78E0E7405CBEA712C843606D32"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\prepare_runtime_binding_and_plan_a08.py",
+        "bytes": 11728,
+        "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_runtime_binding_and_plan_a08.py",
+        "bytes": 11728,
+        "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preserve_paused_ui_checkpoint_a06.py",
+        "bytes": 5029,
+        "sha256": "ED1E49026FB55DAE58D4669CB3C37B8ABEFFC46060DF49EC14E43A1E4DFCCD12"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a06.py",
+        "bytes": 5029,
+        "sha256": "ED1E49026FB55DAE58D4669CB3C37B8ABEFFC46060DF49EC14E43A1E4DFCCD12"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\capture_desktop_hover_source_a01.py",
+        "bytes": 2574,
+        "sha256": "DBB87C7078D8D371B517060D8CA8A4903DCFDAB0A8B27809DA166800190BA91C"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\capture_desktop_hover_source_a01.py",
+        "bytes": 2574,
+        "sha256": "DBB87C7078D8D371B517060D8CA8A4903DCFDAB0A8B27809DA166800190BA91C"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_logged_mode_a01.py",
+        "bytes": 2004,
+        "sha256": "E2B66238F8ACE2315BCCE705D948F6DF3E94102B5E7E2A299B9B30F40D313A75"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_logged_mode_a01.py",
+        "bytes": 2004,
+        "sha256": "E2B66238F8ACE2315BCCE705D948F6DF3E94102B5E7E2A299B9B30F40D313A75"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\inspect_current_capture_a01.py",
+        "bytes": 2351,
+        "sha256": "1C3D3A5F9B95E4F6F59DB937D3BF8DD9C2B4DE2B77E47DF75A6DC885C9A1364D"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\inspect_current_capture_a01.py",
+        "bytes": 2351,
+        "sha256": "1C3D3A5F9B95E4F6F59DB937D3BF8DD9C2B4DE2B77E47DF75A6DC885C9A1364D"
+      }
+    }
+  ],
+  "prior_run_never_reinterpreted": true,
+  "new_run_not_started": true,
+  "new_monitor_window": "After all beforeUI/saves/review and immediately before original daily trace; finish immediately after daily trace and before any afterUI"
+}

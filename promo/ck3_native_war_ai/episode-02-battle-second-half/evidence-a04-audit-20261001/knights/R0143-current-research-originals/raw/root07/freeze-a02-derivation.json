@@ -1,0 +1,7 @@
+{
+  "source": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\freeze_reviewed_diagnostic_source_a01.py",
+  "source_sha256": "57344a9da0424a5329ba85f12170e0ccf1f57c518eb2603474d1938777ddd1bd",
+  "derived": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\freeze_reviewed_diagnostic_source_a02.py",
+  "derived_sha256": "dc06475efccc31be8648ab8da480cd40c772e82ad083a9a223b67ea25021a547",
+  "fix": "Keep leading porcelain status spaces. First attempt stopped before any Git mutation; source scope unchanged."
+}

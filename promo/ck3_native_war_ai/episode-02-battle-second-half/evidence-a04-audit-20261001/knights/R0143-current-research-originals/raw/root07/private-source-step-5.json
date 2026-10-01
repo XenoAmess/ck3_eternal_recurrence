@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "git",
+    "worktree",
+    "add",
+    "-b",
+    "codex/war-e2-trace-diagnostic-capture-20261001",
+    "C:\\w\\e2cap1001e",
+    "HEAD"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\private-source-step-5-stdout.bin",
+    "bytes": 107,
+    "sha256": "1567E6448C926F78533E1FBF9A6EC316383C77390184EDA96C56847A2354E3D5"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\private-source-step-5-stderr.bin",
+    "bytes": 2530,
+    "sha256": "C7ED1E8A4EE31601BC1B3A5947E122184111409F0C36ACD42986152B3AD91B56"
+  }
+}
