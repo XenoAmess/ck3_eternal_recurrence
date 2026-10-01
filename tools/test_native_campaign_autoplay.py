@@ -29,6 +29,8 @@ class FakeClient:
         self.context_options = []
         self.progress = True
         self.pending = None
+        self.pending_mail = None
+        self.mail_expires_after_running_reads = None
         self.late_action = None
         self.red_reason = None
         self.guard_error = False
@@ -58,10 +60,12 @@ class FakeClient:
                 self.revision += 1
             if self.unknown_pause and self.running_reads > 1:
                 self.paused = True
+            if self.mail_expires_after_running_reads is not None and self.running_reads >= self.mail_expires_after_running_reads:
+                self.pending_mail = None
         return {"revision": self.revision, "native_revision": self.revision, "date_raw": self.raw,
                 "paused": self.paused, "speed": self.speed, "map_ready": True,
                 "episode_projection": "native_campaign", "active_event": copy.deepcopy(self.event),
-                "pending_character_interaction": None,
+                "pending_character_interaction": copy.deepcopy(self.pending_mail),
                 "played_character": {"character_id": 12, "alive": not (self.dead_player and self.running_reads > 1)},
                 "diagnostics": {"bridge_pid": 51 if self.identity_change and self.save_count else 50,
                     "connection_generation": 1, "hello": {"expected_ck3_version": "1.20.0.2", "expected_ck3_sha256": "b"*64}}}
@@ -200,6 +204,81 @@ class CampaignTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["status"], "await_root")
         self.assertEqual(result["reason"], "native_clock_no_progress")
         self.assertEqual(sum(name == SIMULATION and args.get("action") == "resume" for name,args in self.client.calls), 1)
+
+    async def test_running_mail_advances_then_disappears_without_interaction_command(self):
+        self.client.paused = False
+        self.client.pending_mail = {"instance_id": 17}
+        self.client.mail_expires_after_running_reads = 3
+        result = await run(self.client, self.config(target_date="1900.1.5"))
+        self.assertEqual(result["status"], "completed")
+        observations = self.receipts("pending-mail-observation")
+        self.assertTrue(any(row["present"] and row["native_clock_advanced"] and not row["paused"] for row in observations))
+        self.assertTrue(any(not row["present"] and row["previously_present"] for row in observations))
+        self.assertTrue(any(row["present"] and row["paused"] and row["policy_action_readback"] for row in observations))
+        self.assertTrue(all(name in TOOLS for name, _ in self.client.calls))
+        self.assertFalse(any(name == SELECT_EVENT for name, _ in self.client.calls))
+        self.assertGreater(self.client.save_count, 1)
+
+    async def test_pending_mail_with_unexpected_pause_stops_without_new_input(self):
+        self.client.pending_mail = {"instance_id": 17}
+        result = await run(self.client, self.config())
+        self.assertEqual(result["status"], "await_root")
+        self.assertEqual(result["reason"], "pending_mail_with_unexpected_pause")
+        self.assertTrue(all(name in {INSPECT, SNAPSHOT} for name, _ in self.client.calls))
+
+    async def test_pending_mail_on_later_unexpected_pause_stops(self):
+        self.client.unknown_pause = True
+        original = self.client.frame
+        def frame():
+            value = original()
+            if self.client.running_reads >= 2:
+                value["pending_character_interaction"] = {"instance_id": 17}
+            return value
+        self.client.frame = frame
+        result = await run(self.client, self.config())
+        self.assertEqual(result["status"], "await_root")
+        self.assertEqual(result["reason"], "pending_mail_with_unexpected_pause")
+        self.assertEqual(sum(name == SIMULATION and args.get("action") == "resume" for name, args in self.client.calls), 1)
+        self.assertEqual(self.client.save_count, 1)
+
+    async def test_pending_mail_does_not_block_confirmed_scripted_event_or_save(self):
+        self.client.pending_mail = {"instance_id": 17}
+        self.client.mail_expires_after_running_reads = 3
+        self.client.event = {"instance_id": 7}
+        self.client.context_options = [option(2)]
+        result = await run(self.client, self.config(target_date="1900.1.5"))
+        self.assertEqual(result["status"], "completed")
+        choices = [args for name, args in self.client.calls if name == SELECT_EVENT]
+        self.assertEqual(choices, [{"option_number": 3, "event_instance_id": 7, "expected_revision": 1}])
+        self.assertGreater(self.client.save_count, 1)
+        self.assertTrue(any(row["present"] and row["paused"] for row in self.receipts("pending-mail-observation")))
+
+    async def test_pending_mail_without_clock_progress_remains_bounded(self):
+        self.client.paused = False
+        self.client.progress = False
+        self.client.pending_mail = {"instance_id": 17}
+        result = await run(self.client, self.config())
+        self.assertEqual(result["status"], "await_root")
+        self.assertEqual(result["reason"], "native_clock_no_progress")
+        self.assertFalse(any(row["native_clock_advanced"] for row in self.receipts("pending-mail-observation")))
+        self.assertEqual(sum(name == SIMULATION and args.get("action") == "resume" for name, args in self.client.calls), 1)
+
+    async def test_pending_mail_does_not_hide_explicit_blocking_state(self):
+        for key in ("blocking_modal", "unknown_modal", "game_over"):
+            with self.subTest(key=key):
+                client = FakeClient(self.saves)
+                client.paused = False
+                client.pending_mail = {"instance_id": 17}
+                original = client.frame
+                def frame():
+                    value = original()
+                    value[key] = True
+                    return value
+                client.frame = frame
+                result = await run(client, self.config(evidence_directory=self.root/key))
+                self.assertEqual(result["status"], "await_root")
+                self.assertEqual(result["reason"], "non_event_modal_requires_root")
+                self.assertTrue(all(name in {INSPECT, SNAPSHOT} for name, _ in client.calls))
 
     async def test_unknown_pause_and_player_terminal_require_root(self):
         self.client.unknown_pause = True

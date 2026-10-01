@@ -53,10 +53,22 @@ instance disappeared while the campaign remained paused, then observes/query
 any next event independently.
 
 Natural changes to the engine's living current player are recorded without a
-one-life projection or an inferred heir identity. A dead/unavailable player,
-pending non-event interaction, observed unknown modal, unexpected pause, event
-chain bound, or no native-clock progress returns `await_root`. There is no modal
-dismissal, player switching or repeated resume shortcut in this policy.
+one-life projection or an inferred heir identity. `pending_character_interaction`
+is a pending mail observation; its presence alone does not prove a blocking UI.
+While the campaign runs, the policy lets the engine advance and the mail expire
+naturally. Indexed `pending-mail-observation` receipts record its presence,
+absence, raw-clock progress and paused state. Absence is not reported as an
+accepted, refused or otherwise resolved interaction. The policy sends no
+interaction command and retains the existing no-progress timeout.
+
+A pending mail alongside a confirmed scripted event does not prevent that
+event's typed query/selection. Pending mail also does not invalidate paused
+readback after the policy's own pause, event, save or simulation command. An
+unexplained paused snapshot with mail and no scripted event returns `await_root`
+before another command. Explicit blocking/unknown modal or game-over fields,
+any unexpected pause, a dead/unavailable player, event chain bound, or no native
+clock progress still stop the policy. There is no modal dismissal, player
+switching or repeated resume shortcut.
 
 ## Save date and completion
 
@@ -91,6 +103,20 @@ These offline tests verify policy/transport and artifact contracts. They do not
 claim any campaign length, CK3 behavior or live run passed. Live acceptance must
 bind the caller's frozen source/build/profile and original baseline receipts to
 the returned original MCP receipts and archived checkpoint bytes.
+
+The 2026-10-02 pending-mail repair passed 21 tests, including running mail with
+date progress and observed disappearance, mail at initial/later unexplained
+pause, mail alongside a scripted event and periodic saves, mail without clock
+progress, and explicit blocking state with mail. The trigger was R8 policy01's
+`non_event_modal_requires_root` stop while native snapshots remained unpaused
+and advancing. Later snapshots observed the mail disappear without interaction
+input; the campaign continued to an archived body date `3853.7.9` (899 elapsed
+days), then to 1,196 elapsed days under the root operator. These are bounded
+reported milestones, not proof of the hundred-year target. The repair changes
+only caller policy: the running DLL, frozen service and sole live client stay
+unchanged. `open_kaishek` prevalidation is not applicable to this Python
+transport/observation policy; the regression fixtures exercise its real async
+client interface rather than CK3 script semantics.
 
 The initial package passed all 15 tests. A separate read-only check of the R8
 native checkpoint and its first-year milestone archive read all 41,961,544 bytes

@@ -191,6 +191,7 @@ class CampaignPolicy:
         self.binding = None
         self.native_binding = None
         self.last_raw = config.baseline_date_raw
+        self.pending_mail_present = False
         self.last_player = None
         self.last_saved_date = parse_date(config.start_date)
         self.last_save_proof = None
@@ -229,7 +230,7 @@ class CampaignPolicy:
             raise CampaignStop("mcp_profile_identity_changed", rejected=True)
         return body
 
-    async def snapshot(self) -> dict[str, Any]:
+    async def snapshot(self, *, policy_action_readback: bool = False) -> dict[str, Any]:
         receipt = await self.call(SNAPSHOT, {})
         if receipt.get("status") != "native_snapshot_verified":
             raise CampaignStop("native_snapshot_guard_failed", rejected=True)
@@ -241,6 +242,7 @@ class CampaignPolicy:
             raise CampaignStop("native_campaign_snapshot_invalid", rejected=True)
         if frame["date_raw"] < self.last_raw:
             raise CampaignStop("native_clock_moved_backwards", rejected=True)
+        previous_raw = self.last_raw
         self.last_raw = frame["date_raw"]
         diagnostics = frame.get("diagnostics", {})
         hello = diagnostics.get("hello", {})
@@ -258,8 +260,20 @@ class CampaignPolicy:
         if self.last_player is not None and self.last_player != player["character_id"]:
             self.record("native-player-change", {"before": self.last_player, "after": player["character_id"], "date_raw": frame["date_raw"], "meaning": "engine current player changed; no one-life identity or heir inference"})
         self.last_player = player["character_id"]
-        if frame.get("pending_character_interaction") is not None or any(frame.get(key) for key in ("blocking_modal", "unknown_modal", "game_over")):
+        if any(frame.get(key) for key in ("blocking_modal", "unknown_modal", "game_over")):
             raise CampaignStop("non_event_modal_requires_root")
+        pending_mail = frame.get("pending_character_interaction") is not None
+        if pending_mail or self.pending_mail_present:
+            self.record("pending-mail-observation", {
+                "present": pending_mail, "previously_present": self.pending_mail_present,
+                "date_raw": frame["date_raw"], "previous_date_raw": previous_raw,
+                "native_clock_advanced": frame["date_raw"] > previous_raw,
+                "paused": frame["paused"], "policy_action_readback": policy_action_readback,
+                "meaning": "native pending mail presence only; no interaction result inferred",
+            })
+        self.pending_mail_present = pending_mail
+        if pending_mail and frame["paused"] and frame.get("active_event") is None and not policy_action_readback:
+            raise CampaignStop("pending_mail_with_unexpected_pause")
         return frame
 
     async def action(self, tool: str, arguments: dict[str, Any], predicate) -> dict[str, Any]:
@@ -272,7 +286,7 @@ class CampaignPolicy:
             raise CampaignStop("native_action_rejected_or_guard_failed", rejected=True)
         deadline = time.monotonic() + self.config.postcondition_timeout_seconds
         while True:
-            frame = await self.snapshot()
+            frame = await self.snapshot(policy_action_readback=True)
             if await predicate(frame, receipt):
                 self.record("action-confirmed", {"tool": tool, "original_status": status, "recovered_late_postcondition": late, "revision": frame["revision"], "date_raw": frame["date_raw"]})
                 return frame
