@@ -1,0 +1,56 @@
+{
+  "interval": "after_UI_saved_endpoints",
+  "before": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-full-selected-saved-projection.json",
+    "bytes": 2627980,
+    "sha256": "2BFCD0AFC5CCB00378C3C44BB0D4548013C1BBB1D17F20611C770F21E3EFD055"
+  },
+  "after": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-full-selected-saved-projection.json",
+    "bytes": 2627747,
+    "sha256": "CF95409C93A19193775B89DCF3840F7163286FCA6EDFF6C08D01185F549C7D92"
+  },
+  "full_character_deltas": [
+    {
+      "character_id": 33437,
+      "full_scalar_leaf_deltas": []
+    },
+    {
+      "character_id": 34120,
+      "full_scalar_leaf_deltas": []
+    }
+  ],
+  "full_case_combat_deltas": [
+    {
+      "path": "/combat_results[0]/16777218[0]",
+      "all_scalar_leaf_deltas": []
+    },
+    {
+      "path": "/combats[0]/16777218[0]",
+      "all_scalar_leaf_deltas": []
+    }
+  ],
+  "full_house_DB_deltas": [],
+  "saved_top_level_RNG_comparison": {
+    "random_seed": {
+      "before": 2705320081,
+      "after": 2705320081,
+      "equal": true,
+      "uint32_delta_modulo": 0
+    },
+    "random_count": {
+      "before": 421813,
+      "after": 421813,
+      "equal": true,
+      "uint32_delta_modulo": 0
+    }
+  },
+  "all_engine_or_context_RNG_unchanged": "UNKNOWN",
+  "time_resolution": "endpoint only",
+  "accolade_section_deltas": [
+    {
+      "name": "accolades",
+      "all_scalar_leaf_deltas": []
+    }
+  ]
+}

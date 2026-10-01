@@ -1,0 +1,82 @@
+{
+  "at_utc": "2026-10-01T12:07:08.956480+00:00",
+  "predecessor": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "source_inputs": [
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\combat_scoped_transition_chain_v1.hpp",
+      "bytes": 15563,
+      "sha256": "4DF6606EAE47D4975B06716C66781603A45A1F4431F9A49C4D93AADB204368BB"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\combat_scoped_transition_chain_v1_wire.cpp",
+      "bytes": 22228,
+      "sha256": "777BDE9CA662973E3D76FBB65026F44198E1E2125B77E086C4575DE3CE862C04"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\combat_phase_event_trace_managed_v1.hpp",
+      "bytes": 8917,
+      "sha256": "509A52EF1B25281E26788A716BB22CEBB39BE2AA17F4642AC6E7BC5C66F38D42"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\combat_phase_event_trace_managed_v1.cpp",
+      "bytes": 52396,
+      "sha256": "559ED9A8B49B6803167B7DD1B4024016EAFA30AB180337FBBEF03A09EAE7660F"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\combat_scoped_transition_chain_v1_test.cpp",
+      "bytes": 31859,
+      "sha256": "A31D42712940A1972645A3B47C7C4DAB56EE37D28E3672B2303B5D1F65D647F5"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\combat_phase_event_trace_managed_v1_test.cpp",
+      "bytes": 42732,
+      "sha256": "8B54B9260AC3C80FE0F3B96C5FA69FC1E411CC3E143442F8C3A5827A07936438"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1093003,
+      "sha256": "E6F47630BD27DCCF050E77676A516A38FD623705E33AF815B25DD24500A6C204"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1185368,
+      "sha256": "0ABAC2C6A8DEAE57CFE552AE21EAE521BAD31781FD9329A3181EF8FBD05423B1"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\tests\\unit\\test_trace_publish_failure_preservation.py",
+      "bytes": 6046,
+      "sha256": "8468DC74622B9E28C10C058F75366859F5F47A4E2B0F4B3F5D26229683B4DEF3"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\combat_trace_publish_diagnostic_v1_contract.json",
+      "bytes": 2856,
+      "sha256": "8FBB8F3B2D10F9659C9F358DFF197A3EAD156B93C2DBE93529C56C9FCA8ABA4B"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_causal_save_projection.py",
+      "bytes": 17048,
+      "sha256": "54E2F7A75585613C8C8F14153495522FD3AD611C1E6C281560916A1676955057"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_death_artifact_wire_projection_offline.py",
+      "bytes": 8806,
+      "sha256": "249698B922829042F448FB79314BF777C502C4B32200818598C51D603536D01A"
+    }
+  ],
+  "ready_receipts": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-trace-publish-diagnostic-repair-attempt-01\\source-freeze-a01\\source-ready-and-test-receipt-a01.json",
+      "bytes": 13813,
+      "sha256": "CB565DF800F661F47C4D7510091DD7E68F95E5E0B54F99E4CD9F6F4A6DB7FC32"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-death-artifact-wire-repair-attempt-01\\source-freeze-a01\\source-ready-and-test-receipt-a01.json",
+      "bytes": 12994,
+      "sha256": "43CEFBD381A874FE38A3F48D344080E7A206B7008BDB2D84E1D3F74640A34315"
+    }
+  ],
+  "root_review": "Reviewed additive diagnostic gates, original RED parsed return retention, native caps/flags unchanged and artifact field exact original null/non-null projection. Actual focused tests already passed; full Release link pending.",
+  "master_intake": false,
+  "video_changed": false,
+  "live_pending": true
+}

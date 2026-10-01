@@ -1,0 +1,107 @@
+{
+  "at_utc": "2026-10-01T13:15:11.966741+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0143",
+  "frozen_source_head": "419cac1a956c7be356d886256c7bc689cda5327d",
+  "frozen_checkout": "C:/w/e2cap1001e",
+  "independent_private_branch": true,
+  "before_date_raw": 53146848,
+  "after_date_raw": 53146872,
+  "actual_days_advanced": 1,
+  "victim_id": 33437,
+  "related_id": 34120,
+  "combat_id": 16777218,
+  "before_review": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+    "bytes": 102218,
+    "sha256": "AD5E5185B7D32ABDAC5D4F7AB7A0CE8840A966D4F434E2FAB7B0D5C95432A9A3"
+  },
+  "after_review": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+    "bytes": 103092,
+    "sha256": "82D8560D0B770F8B98C963FDBA51F97B42F211C85CA53900BFBDB46EEF0F4972"
+  },
+  "before_pair": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+    "bytes": 4472,
+    "sha256": "B6931A90F2B73C4A531D58EEE396E69A5464184AC425FBAC1D3945907C13CCF0"
+  },
+  "after_pair": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+    "bytes": 4467,
+    "sha256": "A2D2CB502BBF64832ECC45D98379041968DA8BC65743C3B5905CDD5CD8973851"
+  },
+  "one_day_truthful_trace_RED": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\one-day-finished.json",
+    "bytes": 14983,
+    "sha256": "C107DCA01C871EEEFDAA061D843ABBA556F7E11D236D36830C7F66B25720B1C4"
+  },
+  "daily_trace_export_succeeded": false,
+  "actual_trace_failure_gate": "managed_wire_cap",
+  "actual_assembled_output_bytes": 1217950,
+  "actual_managed_cap_bytes": 921600,
+  "actual_native_diagnostic": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\native-session\\combat-trace-native-results\\native-trace-4ead0bf732864939be657b267125ebbd.json",
+    "bytes": 1990791,
+    "sha256": "4DF0BDCB5D9C8CEE718795072A8A958630514DA3584743D8487EE19461B5E27D"
+  },
+  "native_diagnostic_flags_zero_do_not_replace_full_trace": true,
+  "monitor_original_response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\variable-monitor-finish-once.json",
+    "bytes": 711132,
+    "sha256": "3DC5612A918A9D5F018B68D9BA9EC5685A978A58FD572118075ED7E7C47DFCDE"
+  },
+  "monitor_accepted": false,
+  "monitor_failure_flags": 8,
+  "monitor_truncated": true,
+  "monitor_detours_uninstalled": true,
+  "actual_sdk_completion": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\native-sdk-attempt-01\\completion.json",
+    "bytes": 1174,
+    "sha256": "C6F0D2281957CA6866FE9BA456BA5BB98F536AD0784CE5B5825501AA8E005A14"
+  },
+  "blocked_processes": [],
+  "display_root_review": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\display-restoration-root-review-a01.json",
+    "bytes": 973,
+    "sha256": "B4BCD1AE3CB5A9B8F15271C5028BCE634AF94239DED5BA623998383103C4A168"
+  },
+  "screen_release_receipt": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\display-restore-and-release-attempt-01\\screen-release-CAS.json",
+    "bytes": 2138,
+    "sha256": "20010A546C58711F5943A9C7B8AD109D505C409E5AFF066FCE1B4146D3E6D527"
+  },
+  "screen_final_state": {
+    "git": {
+      "branch": "codex/war-e2-trace-diagnostic-capture-20261001",
+      "dirty_entries": 0,
+      "head": "419cac1a956c7be356d886256c7bc689cda5327d"
+    },
+    "last_sequence": 3490,
+    "next_step": "",
+    "pid": 11524,
+    "repo": "C:\\w\\e2cap1001e",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "native_research_capture_stopped_original_display_restored_assets_retained",
+    "task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "updated_at_utc": "2026-10-01T13:13:48.509358+00:00"
+  },
+  "business_progress_result": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\business-status-result-a01.json",
+    "bytes": 1240,
+    "sha256": "59A81D8F1FFBCE8985FFDDDADCE27123A7B0D8CC5CB761DB73F9EB941300F59A"
+  },
+  "UI_endpoint_evidence": "actual_original_pairs_and_unobscured_full_battle_panel_pending_independent_contract_review",
+  "pending_mechanisms": [
+    "full_selector_actual_trace",
+    "unique_death_for_controlled_window",
+    "complete13domain_variable_causal_chain"
+  ],
+  "global_mutable_bundle_complete": false,
+  "movie_modified": false,
+  "human_movie_signoff": false,
+  "master_intake_or_integration": false,
+  "process_assets_permanently_preserved": true,
+  "root07_and_live_stop_writing_after_this_summary": true
+}

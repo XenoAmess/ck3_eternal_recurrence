@@ -1,0 +1,13 @@
+{
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\after-right-pointer-logged-a01\\stdout.bin",
+    "bytes": 1772,
+    "sha256": "A6B416ECF9B3BC685572F8163CFC497495C7A03C82BF2D8EB5B77C1DA2F036DD"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\after-right-pointer-logged-a01\\stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

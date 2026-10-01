@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-10-01T12:49:54.688692+00:00",
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\finish_already_submitted_day_a14.py",
+    "bytes": 4433,
+    "sha256": "E3D798A4E87D2BEBC30956A6DBC8A5888C977C72D01C6BF57F7BB4256018B05C"
+  },
+  "original_day_response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\scoped-a12-one-day.json",
+    "bytes": 20133,
+    "sha256": "B9D23C8143B33F0ACD59B5CAA20274FDB21FFC302DD53E166334016A6CE64BD9"
+  },
+  "cause": "Caller checked requested_days; original composite return actually uses requested_horizon_days. Actual date/elapsed/postcondition independently verified.",
+  "no_life_advance_in_this_consumer": true,
+  "post_day_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\scoped-a14-post-day-snapshot-only.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\scoped-a14-post-day-snapshot-only.json",
+      "bytes": 2000167,
+      "sha256": "5C6794C16C7F7AAFBFD7DDAC4E942D2857ADF39834FAA4A00E8367555695FB42"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "post_day_values": {
+    "date_raw": 53146872,
+    "paused": true,
+    "actor": 29829,
+    "revision": 9,
+    "native_revision": 8,
+    "snapshot_id": "native:8",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "connection_generation": 1,
+    "bridge_pid": 17420,
+    "native_hello_session_generation": 0
+  }
+}

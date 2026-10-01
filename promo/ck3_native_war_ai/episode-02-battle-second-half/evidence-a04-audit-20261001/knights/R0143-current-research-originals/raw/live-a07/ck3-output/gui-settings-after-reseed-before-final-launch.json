@@ -1,0 +1,28 @@
+{
+  "schema": "war-film-gui-scale-disk-gate/v2",
+  "observed_at": "2026-10-01T12:23:33.150591+00:00",
+  "phase": "after-reseed-before-final-launch",
+  "requested_scale": "1.0",
+  "requested_scale_ratio": "1",
+  "settings_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\profile\\pdx_settings.txt",
+  "settings": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\profile\\pdx_settings.txt",
+    "bytes": 6859,
+    "sha256": "9942D7B22484078E8B4C48CCEF9297B13F1CEA60FFABFCA27D88C33CA6C7E07C",
+    "mtime_ns": 1790857389123701900
+  },
+  "observed_scale": "1",
+  "observed_scale_serialized": "1",
+  "observed_scale_token": "value=\"1\"",
+  "observed_scale_ratio": "1",
+  "native_ui_one_opt_in": true,
+  "ratio_equivalent_to_request": true,
+  "admission": "explicit_native_ui_one",
+  "disk_gate_passed": true,
+  "runtime_scale_proven": false,
+  "visual_geometry_reviewed": false,
+  "recording_authorized_by_this_gate": false,
+  "native_a04_gui_block_required": true,
+  "native_a04_gui_block_sha256": "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593",
+  "native_a04_gui_block_passed": true
+}

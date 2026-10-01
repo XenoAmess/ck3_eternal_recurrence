@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-01T12:32:11.101770+00:00",
+  "phase": "before",
+  "bindings": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+    "bytes": 5728,
+    "sha256": "70D440BBDEBFA5131CC08B7A21CA2796A372C575E26F622111E226728EF4872C"
+  },
+  "purpose": "UI-window comparison with main post-UI phase save",
+  "role": "extra pre-UI checkpoint",
+  "day_advance_requested": false
+}

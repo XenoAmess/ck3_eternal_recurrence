@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\preserve_paused_ui_checkpoint_a08.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+    "--phase",
+    "after",
+    "--label",
+    "after-pre-ui-checkpoint"
+  ]
+}

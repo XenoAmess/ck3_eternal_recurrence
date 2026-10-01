@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-10-01T12:16:32.150681+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "register",
+    "--task",
+    "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "--repo",
+    "C:\\w\\e2cap1001e",
+    "--resource",
+    "ck3-screen:acquired",
+    "--summary",
+    "R0142_stopped_UI3closed_trace3pending_new419cac_build_ready_fresh_offline_capture",
+    "--next-step",
+    "new_single_day_trace_monitor_before_and_after_day_outside_UI"
+  ]
+}

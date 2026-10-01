@@ -1,0 +1,75 @@
+{
+  "day_original": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\scoped-a12-one-day.json",
+    "bytes": 20133,
+    "sha256": "B9D23C8143B33F0ACD59B5CAA20274FDB21FFC302DD53E166334016A6CE64BD9"
+  },
+  "day_result": "CALL_COMPLETED",
+  "day_top_keys": [
+    "step",
+    "backend_id",
+    "source",
+    "starting_date",
+    "ending_date",
+    "starting_date_raw",
+    "ending_date_raw",
+    "elapsed_days",
+    "requested_horizon_days",
+    "timeline_speed",
+    "timeline_policy",
+    "progress_status",
+    "war_progress_before",
+    "war_progress_after",
+    "ordinary_events",
+    "event_resolution",
+    "actions",
+    "paused",
+    "active_event",
+    "final_screen",
+    "snapshot_id",
+    "revision"
+  ],
+  "actual_scalar_fields": {
+    "step": "life-advance",
+    "backend_id": "native-headless",
+    "source": "native-composite",
+    "starting_date_raw": 53146848,
+    "ending_date_raw": 53146872,
+    "elapsed_days": 1,
+    "requested_horizon_days": 1,
+    "timeline_speed": 1,
+    "timeline_policy": "player_tactical",
+    "progress_status": "postcondition",
+    "event_resolution": "none",
+    "paused": true,
+    "active_event": null,
+    "final_screen": "map_hud",
+    "snapshot_id": "native:8",
+    "revision": 9
+  },
+  "current_snapshot_receipt": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\a13-actual-post-day-readonly.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\a13-actual-post-day-readonly.json",
+      "bytes": 2000162,
+      "sha256": "B2DBE0E83BE2CEE8CC332B8BB61D86A3E023415D026E2819D22E94E50C53904B"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "current_fields": {
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "date_raw": 53146872,
+    "paused": true,
+    "revision": 9,
+    "native_revision": 8,
+    "snapshot_id": "native:8",
+    "actor": 29829
+  },
+  "no_day_retry": true,
+  "no_UI_action": true
+}

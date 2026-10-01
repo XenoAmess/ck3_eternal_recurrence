@@ -1,0 +1,46 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "schema": "codex.task_bus.v1",
+    "task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "state": "running",
+    "summary": "R0142_stopped_UI3closed_trace3pending_new419cac_build_ready_fresh_offline_capture",
+    "next_step": "new_single_day_trace_monitor_before_and_after_day_outside_UI",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "updated_at_utc": "2026-10-01T12:22:27.730461+00:00",
+    "pid": 9312,
+    "repo": "C:\\w\\e2cap1001e",
+    "git": {
+      "head": "419cac1a956c7be356d886256c7bc689cda5327d",
+      "branch": "codex/war-e2-trace-diagnostic-capture-20261001",
+      "dirty_entries": 0
+    },
+    "last_sequence": 3466
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 3466,
+    "event_id": "58261beebe234a0ca986748a9983378a",
+    "timestamp_utc": "2026-10-01T12:22:27.731699+00:00",
+    "kind": "heartbeat",
+    "task_id": "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "to": [
+      "*"
+    ],
+    "state": "running",
+    "summary": "R0142_stopped_UI3closed_trace3pending_new419cac_build_ready_fresh_offline_capture",
+    "next_step": "new_single_day_trace_monitor_before_and_after_day_outside_UI",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "repo": "C:\\w\\e2cap1001e",
+    "git": {
+      "head": "419cac1a956c7be356d886256c7bc689cda5327d",
+      "branch": "codex/war-e2-trace-diagnostic-capture-20261001",
+      "dirty_entries": 0
+    }
+  }
+}

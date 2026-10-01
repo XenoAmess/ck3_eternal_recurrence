@@ -1,0 +1,310 @@
+{
+  "kind": "D26_CASE_CLOSURE_PREPARATION_NOT_LIVE",
+  "runtime_source_head": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "evaluator_source_binding": "Exact bytes in source receipt, separate from runtime head. Any later evaluator repair must use a new receipt.",
+  "run_id": null,
+  "actual_new_run_observed": false,
+  "global_bundle_complete": false,
+  "full_mutable_transition_bundle_complete": false,
+  "case_13_domain_complete": false,
+  "six_gap_statuses": [
+    {
+      "gap": "character_original_UI",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "gap": "ordered_knight_roster_original_UI",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "gap": "full_original_combat_window",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "gap": "complete_original_selector_filter",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "gap": "actual_case_death_cause",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "gap": "case_13_domain_mutable_chain",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "domains": [
+    {
+      "domain": "skills",
+      "status": "pending",
+      "resolution_to_establish": "branch-no-write or operation-before-after",
+      "required_actual_evidence": [
+        "Every actual growth invocation and selected random-list entry/children; complete no-RNG scoped effect tree.",
+        "Direct char+D8/E4/E8 are BASE martial/learning/prowess only. Compare six saved base skills in all four immutable saves.",
+        "A selected60 empty branch is insufficient by itself: growth106-147 may still change court/liege variables/flags/lists.",
+        "If30 or10 selected, identify original writer target/request and actual before/return; no endpoint-only upgrade."
+      ],
+      "actual_wire_or_projection": [
+        "effect_enter/return.characters[*].martial/learning/prowess",
+        "managed_trace.trace.runtime_random_list_weights",
+        "saved_states[*].projection.characters[*].base_skills"
+      ],
+      "existing_verifier_limit": "Existing causal verifier projects6 saved skills and typed effect pairs; it does not perform script inventory/branch-to-writer reconciliation.",
+      "evidence": []
+    },
+    {
+      "domain": "trait_set",
+      "status": "pending",
+      "resolution_to_establish": "branch-no-write or operation-before-after",
+      "required_actual_evidence": [
+        "Prearmed trait ID/key table unique/source-bound; every native trait list read=true and full IDs mapped to original saved ordinals.",
+        "Complete selected growth/trauma/death branch + all actual trait writer inventory. Non-executed10 blademaster branch may support no-write, not only unchanged endpoints.",
+        "Check final death conversion and all four saved trait sets independently."
+      ],
+      "actual_wire_or_projection": [
+        "prearmed_trait_definitions",
+        "records[*].characters[*].traits_read/trait_ids"
+      ],
+      "existing_verifier_limit": "Existing validation does not enforce all trait reads/table mappings or a complete branch-no-write inventory.",
+      "evidence": []
+    },
+    {
+      "domain": "trait_tracks",
+      "status": "pending",
+      "resolution_to_establish": "branch-no-write or operation-before-after",
+      "required_actual_evidence": [
+        "Every native track read=true and complete char+138/+144 raw vector; actual empty case + growth empty + no relevant writer node can close no-write.",
+        "If any nonempty vector/writer occurs, require original trait definition index mapping, complete saved XP arrays, actual writer before/after.",
+        "Getter output count is+8, not+C; char+138 differs from prestige extension+138."
+      ],
+      "actual_wire_or_projection": [
+        "characters[*].trait_tracks_read/trait_track_raw_values"
+      ],
+      "existing_verifier_limit": "Existing verifier preserves raw journal but does not reconcile all raw XP arrays/branches to saved full XP arrays.",
+      "evidence": []
+    },
+    {
+      "domain": "death_date_reason_killer_artifact",
+      "status": "pending",
+      "resolution_to_establish": "actual-write and operation-before-after",
+      "required_actual_evidence": [
+        "Unique case request->enqueue OR direct commit; all rejected/related victim requests/commits counted in full observed window.",
+        "Same actual death node/context/parent and six-arg tuple; requested reason/current full victim+killer/date/artifact independent reads.",
+        "Native actual-null is token0+id-1+requested_artifact_id_read=false; distinguish null proof from missing field/read failure.",
+        "Commit enter markerfalse to return/final markertrue; final reason/date/killer/artifact match original save."
+      ],
+      "actual_wire_or_projection": [
+        "death_request/death_enqueue/death_commit enter/return",
+        "requested_artifact_id_read (actual publisher field)",
+        "characters[*].death_details_read/death_artifact_id"
+      ],
+      "existing_verifier_limit": "Old evaluator reads nonexistent requested_death_artifact_read; root authorized a separate pure evaluator correction. Runtime publisher/source is unchanged.",
+      "evidence": []
+    },
+    {
+      "domain": "prestige_currency_and_accumulated",
+      "status": "pending",
+      "resolution_to_establish": "operation-before-after",
+      "required_actual_evidence": [
+        "Actual CAddMultiLevelValueTypeEffect0x446C7B0 target and original execution context, complete invocation enter/return.",
+        "Both native raw ext130 currency and ext138 accumulated, all intervening writes counted; Q fixed-point scaling independent.",
+        "Exact writer2EF88C0->2629180->2620930 and save key26987F0/2B65 currency/2B66 accumulated; debt-repayment semantics retained.",
+        "All four saves independently reconcile two fields. Do not assume every case must reproduce+150."
+      ],
+      "actual_wire_or_projection": [
+        "characters[*].prestige_read/prestige_currency_raw/prestige_experience_raw"
+      ],
+      "existing_verifier_limit": "Existing verifier includes full saved prestige blocks but no per-operation semantic balance check; experience_raw is original accumulated by static save-key proof.",
+      "evidence": []
+    },
+    {
+      "domain": "regiment_link_and_membership",
+      "status": "pending",
+      "resolution_to_establish": "operation-before-after",
+      "required_actual_evidence": [
+        "Same full regiment/character IDs and reverse reference through request/commit/casualty/next pause.",
+        "Original ordered complete side knight vectors before/after, retired65 absence and current_character=-1 legitimate state without weakened generation.",
+        "Independent same-date original character and roster pixels, no native numeric ID assertion fabricated in UI."
+      ],
+      "actual_wire_or_projection": [
+        "characters[*].regiment_link_token/current_regiment_id/current_regiment_identity_matches/current_regiment_back_reference_matches",
+        "scoped_regiment_in_side",
+        "trace.records[*].sides[*].knights"
+      ],
+      "existing_verifier_limit": "Tuple verifier is not a full ordered roster/link/UI comparison.",
+      "evidence": []
+    },
+    {
+      "domain": "entry_current_soft_stats_and_owner_hard",
+      "status": "pending",
+      "resolution_to_establish": "operation-before-after",
+      "required_actual_evidence": [
+        "Seven original boundaries and each actual casualty before/return complete entries/current/soft/effective damage+toughness/owner-hard.",
+        "Actual same army/regiment full IDs; outgoing damage and casualty sequence/accounting, no cached history replacing after.",
+        "Separate saved complete battle state comparison; full stock combat window pixels independently required for UI gap."
+      ],
+      "actual_wire_or_projection": [
+        "records[*].combat_entries_read/sides",
+        "casualty_enter/return",
+        "trace.records[*].sides"
+      ],
+      "existing_verifier_limit": "Existing causal verifier checks7 captureflags0 but not the entire damage/casualty/entry accounting chain.",
+      "evidence": []
+    },
+    {
+      "domain": "battle_event_ledger",
+      "status": "pending",
+      "resolution_to_establish": "operation-before-after",
+      "required_actual_evidence": [
+        "Actual CBattleEventEffect0x444F498 enter/return same root/context and battle target, complete read=true ledger arrays.",
+        "Ordered exact prefix plus new row: key/type/left/right/side/target_right; array ordinal is ledger position.",
+        "Count every actual ledger writer in scoped tree and reconcile original same-run combat_results save."
+      ],
+      "actual_wire_or_projection": [
+        "effect_enter/return.battle_events_read/battle_event_snapshot_index/battle_events"
+      ],
+      "existing_verifier_limit": "Existing verifier preserves but does not semantically compare ledger before/return. Ledger position is serialized row order, not an invented numeric field.",
+      "evidence": []
+    },
+    {
+      "domain": "slain_side_knights",
+      "status": "pending",
+      "resolution_to_establish": "actual-write and operation-before-after",
+      "required_actual_evidence": [
+        "Actual list_write enter/return node0x44D3760 and original passed owner proven by original getter return + typed combatSide/fullCombat/aux.",
+        "Actual key ID/name and full victim typed16 words with requested_character_full_identity_matches; requested duration and elapsed offset.",
+        "Complete values + parallel expiry equal counts, stable owner, before/after change follows native33DD720 sorting/dedup semantics.",
+        "Same-run original side list item type/identity/duration matches, no hardcoded assumed1."
+      ],
+      "actual_wire_or_projection": [
+        "list_write_enter/return.variable_owner_from_original_getter/variable_owner_scope_words",
+        "variable_key/requested_scope_words/requested_expiry/variable_list_values"
+      ],
+      "existing_verifier_limit": "Existing typed tuple validation does not validate list owner/key/full victim/parallel expiry transformation.",
+      "evidence": []
+    },
+    {
+      "domain": "killer_kills",
+      "status": "pending",
+      "resolution_to_establish": "operation-before-after",
+      "required_actual_evidence": [
+        "Actual unique death commit tuple supplies original victim/killer; complete kills vector read before/return/final.",
+        "Exact2609210->209F7F0 original victim fullID sorted insertion inventory; preserve all historical IDs without requiring them alive.",
+        "Compare new sorted vector and same-run saved killer kills. This is commit-local before/after, not a separately hooked209F7F0 CPU-store log."
+      ],
+      "actual_wire_or_projection": [
+        "death_commit_enter/return.characters[*].kills_read/kill_character_ids"
+      ],
+      "existing_verifier_limit": "Existing verifier retains vector but does not check original sorted insertion target and saved vector reconciliation.",
+      "evidence": []
+    },
+    {
+      "domain": "signature_weapon",
+      "status": "pending",
+      "resolution_to_establish": "actual-write and operation-before-after",
+      "required_actual_evidence": [
+        "Independent monitor begins before all preUI/save and finishes after all postUI/save, token independent from daily token.",
+        "Original two-char owner observations and actual setter enter/return, full ID/generation/key/context/thread pair; independently decoded rawflag low24 epoch/index/name.",
+        "Nearest matched notification immediate ancestor stable key/definition/root/invocation actual execution; foreign registered root clears TLS.",
+        "Same current commit + activation commit context must match exact actual33437 death commit tuple/token/thread/invocation, not finaldead/axe inference.",
+        "Outside/async commit or missing initial34120 getter remains pending; GUI getter thread may differ from daily lifecycle."
+      ],
+      "actual_wire_or_projection": [
+        "scoped_variable_monitor.records",
+        "event_producer",
+        "current_death_commit_context",
+        "event_producer.activation_death_commit_context"
+      ],
+      "existing_verifier_limit": "Monitor verifier handles real operation pairs/endpoint; separate commit-correlation verifier is required to bind producer to victim. GUI/save write counts need four checkpoint phase ordering.",
+      "evidence": []
+    },
+    {
+      "domain": "house_relation",
+      "status": "pending",
+      "resolution_to_establish": "branch-no-write or operation-before-after",
+      "required_actual_evidence": [
+        "Actual original2DF7030 type stablekey+18/two full house IDs/caller/AL return, no re-evaluation.",
+        "False AL plus complete no-create/write branch and same-run exact target pair/related database endpoints may close no-write.",
+        "The failed subcondition stays UNKNOWN unless independently observed. True AL requires actual create/steps target/value/beforeafter."
+      ],
+      "actual_wire_or_projection": [
+        "monitor.original_house_predicate_pairs",
+        "saved complete house_relations database"
+      ],
+      "existing_verifier_limit": "Monitor validates original guard pair; does not by itself reconcile entire relation DB/create writer branch.",
+      "evidence": []
+    },
+    {
+      "domain": "accolade_feedback_branch",
+      "status": "pending",
+      "resolution_to_establish": "branch-no-write or operation-before-after",
+      "required_actual_evidence": [
+        "Killer is_acclaimed branch1259-1267 and victim branch1341-1348 separately mapped to actual complete effect subtree; absence in filtered RNG draws is insufficient.",
+        "Also all relevant invoked delegates and Mongol/liege variables1349+; do not equate no glory child with no other liege write.",
+        "Relevant accolade full IDs/glory/rank/owner/liege variable complete same-run saved blocks; top-level absent is UNKNOWN, not empty.",
+        "If no writer children under actual matching branch + inventory excludes alternative writer, close branch-no-write; entered branches need target/value/beforeafter."
+      ],
+      "actual_wire_or_projection": [
+        "trace.records[*].accolades",
+        "scoped records actual effect subtree",
+        "saved objects accolade_top_level_names/related liege full character blocks"
+      ],
+      "existing_verifier_limit": "Existing verifier finds top-level accolade blocks but not necessarily related liege blocks or branch-to-writer inventory.",
+      "evidence": []
+    }
+  ],
+  "four_original_save_slots": [
+    "before-pre-ui-checkpoint-saved-pair.json",
+    "before-saved-pair.json",
+    "after-pre-ui-checkpoint-saved-pair.json",
+    "after-saved-pair.json"
+  ],
+  "required_current_raw": [
+    "Exact original one-day-finished.json and original trace wrapper.body, request and driver connection.",
+    "All four pair wrappers, original saved responses/requests and exact immutable .ck3 bytes. Two beforedates equal, two afterdates equal, delta24.",
+    "Exact independent monitor begin/finish wrappers+original private responses+fresh snapshot, PID/pipe/connection/hello, distinct monitor token.",
+    "Before/after stage results, original UI query/getter/fit/hover requests and raw pixels+manual region evidence; never autoapproval.",
+    "Exact run configuration/DLL/EXE/source/inputsave/checkpoint and capturepreflight/cleanup originals."
+  ],
+  "phase_order": [
+    "monitor-begin",
+    "before-preUI-save",
+    "all before UI/getter/hover original observations",
+    "before-postUI-save",
+    "daily BEGIN",
+    "one and only +24",
+    "snapshot-only +24",
+    "one current-revision FINISH",
+    "after-preUI-save",
+    "all after UI/getter/hover original observations",
+    "after-postUI-save",
+    "monitor-finish",
+    "owned cleanup"
+  ],
+  "audit_steps": [
+    "Run existing causal verifier on before/after-postUI pairs+exact day-finished and trace; all input provenance gates remain strict.",
+    "Independently decode other2 saves with same hash-pinned Rakaly and complete characters/combat/house/accolade/related liege blocks; bind save receipts and revision requests.",
+    "Calculate3 separate intervals beforeUI->beforepostUI, beforepostUI->afterpreUI, afterpreUI->afterpostUI. Report all scalar deltas and RNG fields; no unchanged cache assumption.",
+    "Run original monitor verifier, then signature commit correlation verifier. Keep GUI getters legal on their own original thread; lifecycle/daily and actual write pair threading strict.",
+    "Apply every13 semantic row and exact original writer inventory to full actual raw scoped record sequence; machine PASS alone never closes row.",
+    "For UI gaps explicitly bind current pixels/date/owner/full panel/roster and actual native context; rawnumeric IDs are native only unless visible.",
+    "Write6 independent closed/pending judgments with original path/SHA and exact missing condition. global_bundlefalse staysfalse regardless localcase completion."
+  ],
+  "stock_writer_inventory": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\D26-13-domain-semantic-preparation-reinforcement-a01\\stock-case-writer-inventory.json",
+    "bytes": 4076,
+    "sha256": "2AE7184E42C8F7DBEE7398FF8DC70191C5BC2AEAC5BF5EE346D81EF474B30A66"
+  },
+  "applicability": {
+    "open_kaishek": "Existing exact-stock parser/static finitefixture preparation may be reused only as source parsing; no native selector/death/phase runtime/fullUI or full case mutable closure supported. No new public CLI or causal replay invented."
+  },
+  "new_game_launch": false,
+  "screen_or_git_mutation": false,
+  "video_change": false
+}

@@ -1,0 +1,42 @@
+{
+  "at_utc": "2026-10-01T12:40:00.733500+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\w\\desktop_pointer_20260930\\tools\\desktop_coordinate_map.py",
+    "--source-image",
+    "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-trace-live-20261001-a07/scoped-ui-research-attempt-01/before-right-knights-fallback-desktop-original.png",
+    "--preview-left",
+    "0",
+    "--preview-top",
+    "0",
+    "--preview-width",
+    "1280",
+    "--preview-height",
+    "720",
+    "--observed-x",
+    "100",
+    "--observed-y",
+    "550",
+    "--reviewed-left",
+    "90",
+    "--reviewed-top",
+    "540",
+    "--reviewed-width",
+    "20",
+    "--reviewed-height",
+    "20",
+    "--expected-foreground-hwnd",
+    "2491964",
+    "--move",
+    "--receipt",
+    "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-trace-live-20261001-a07/scoped-ui-research-attempt-01/before-combat-blank-ui-mapped-move.png"
+  ],
+  "script": {
+    "path": "C:\\w\\desktop_pointer_20260930\\tools\\desktop_coordinate_map.py",
+    "bytes": 14469,
+    "sha256": "B66D25560475D9DAF26827FA4E129D6244E80B9DEA0597D905937ACDE4901043"
+  }
+}

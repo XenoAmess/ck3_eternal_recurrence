@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "git",
+    "add",
+    "--",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_phase_event_trace_managed_v1.hpp",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_scoped_transition_chain_v1.hpp",
+    "ck3_autonomous_player/native_bridge/research/combat_trace_publish_diagnostic_v1_contract.json",
+    "ck3_autonomous_player/native_bridge/research/verify_knight_death_artifact_wire_projection_offline.py",
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_managed_v1.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_managed_v1_test.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_scoped_transition_chain_v1_test.cpp",
+    "ck3_autonomous_player/native_bridge/src/combat_scoped_transition_chain_v1_wire.cpp",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "ck3_autonomous_player/src/xar_autoplayer/simulation/knight_causal_save_projection.py",
+    "ck3_autonomous_player/tests/unit/test_trace_publish_failure_preservation.py"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\private-source-step-2-stdout.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\private-source-step-2-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

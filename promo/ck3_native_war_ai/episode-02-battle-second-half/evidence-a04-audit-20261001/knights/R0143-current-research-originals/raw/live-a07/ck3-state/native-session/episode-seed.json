@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "name": "xar_episode_seed.ck3",
+  "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\profile\\save games\\xar_episode_seed.ck3",
+  "size": 52881742,
+  "sha256": "77ce8e8e7e955c578c0a7440ca0d17883547782b0bb000a078e918ccdab12962",
+  "date_raw": 53146848,
+  "character_id": 29829,
+  "source_run_id": "native-29829-a5224cf6dfcc",
+  "source_checkpoint_name": "xar_checkpoint.ck3",
+  "immutable": true
+}

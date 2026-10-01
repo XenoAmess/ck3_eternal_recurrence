@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-10-01T12:40:02.752379+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\scoped_ui_research_a09.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+    "--mode",
+    "save",
+    "--label",
+    "before-save",
+    "--phase",
+    "before"
+  ],
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\scoped_ui_research_a09.py",
+    "bytes": 35122,
+    "sha256": "E51DC8EE492815EDB79A31FB1C84B70D8826D8FC1B3EEA3EC70582D7955D0F36"
+  },
+  "binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+    "bytes": 5728,
+    "sha256": "70D440BBDEBFA5131CC08B7A21CA2796A372C575E26F622111E226728EF4872C"
+  }
+}

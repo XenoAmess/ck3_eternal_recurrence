@@ -1,0 +1,77 @@
+{
+  "at_utc": "2026-10-01T13:08:20.308399+00:00",
+  "current_paused_source": {
+    "date_raw": 53146872,
+    "paused": true,
+    "actor": 29829,
+    "revision": 10,
+    "native_revision": 9,
+    "snapshot_id": "native:9",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "connection_generation": 1,
+    "bridge_pid": 17420,
+    "native_hello_session_generation": 0
+  },
+  "snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-right-knights-fallback-desktop-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-right-knights-fallback-desktop-source.json",
+      "bytes": 3849605,
+      "sha256": "FB082385673FB0786417C9FD7C1D4E55A8F456939C79F9D1D00CACC66DA70989"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "post_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-right-knights-fallback-desktop-post.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-right-knights-fallback-desktop-post.json",
+      "bytes": 3849603,
+      "sha256": "62AE3EC4C3CD91A65694864A23C6FEC52D93E93814A404A8709618219BE233E8"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "foreground_hwnd": 2491964,
+  "foreground_pid": 17420,
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "original_image_size": [
+    2560,
+    1440
+  ],
+  "original": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-right-knights-fallback-desktop-original.png",
+    "bytes": 5080556,
+    "sha256": "D4492D3F8C2BB95C19CAB8EF2585A4124E6613B43D9D49804813E3976375009C"
+  },
+  "review_preview": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-right-knights-fallback-review-preview.png",
+    "bytes": 1398744,
+    "sha256": "ACC2CD7F32FFCAF242C645B781545CF34338BEE76841724D3AF9AFF35DE61FB6"
+  },
+  "preview_image_content_rect": {
+    "left": 0,
+    "top": 0,
+    "width": 1280,
+    "height": 720
+  },
+  "preview_purpose": "Measured readonly inspection aid; original remains the capture evidence and coordinate source",
+  "input_mouse_keyboard": false,
+  "original_pixels_actually_reviewed": false
+}

@@ -1,0 +1,73 @@
+{
+  "at_utc": "2026-10-01T12:41:48.174477+00:00",
+  "source_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 6,
+    "native_revision": 5,
+    "snapshot_id": "native:5",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "connection_generation": 1,
+    "bridge_pid": 17420,
+    "native_hello_session_generation": 0
+  },
+  "source_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\scoped-a12-day-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\scoped-a12-day-source.json",
+      "bytes": 1989487,
+      "sha256": "5C0E2099E6DADCB0E40FBCD563166706F6686EFC1365DDFB555E4409308ABF06"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "token": 458459624966711775,
+  "trace_begin": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\scoped-a12-chain-begin.json",
+      "bytes": 376,
+      "sha256": "60FC9333E7ECEFCA7E20F8FE00E18E8C4FC9CBED658072AC5109BA56C1D33E6A"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\scoped-a12-chain-begin.json",
+      "bytes": 12171,
+      "sha256": "4A8D3ECB3754EDE591A61F9EA59FE1459C3AC4D41C11BBFB549E5D705DD91C43"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "trace_begin_body": {
+    "step": "experimental-combat-phase-event-trace-begin-v1",
+    "accepted": true,
+    "private_build": true,
+    "production_trace_ready": false,
+    "status": "armed",
+    "managed_daily_sequence_token": 458459624966711775,
+    "combat_id": 16777218,
+    "backend_id": "native-headless",
+    "native_trace_raw_return_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\native-session\\combat-trace-native-results\\native-trace-9de5b9c3e28146e0a5f15be4d10598e8.json",
+      "bytes": 1979163,
+      "sha256": "6bf7836f8421e7ea98d367756084a5e977807df1834d6be94777b24e57568ace",
+      "validation_state": "unvalidated",
+      "wire_bytes_preserved": false
+    }
+  },
+  "actual_checkpoint_sequence": 2,
+  "advance_consumer": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\advance_and_drain_immediately_a13.py",
+    "bytes": 8231,
+    "sha256": "653F7CF79F22ED3B43FE20274F3911114D88B576DF307DD846F9BBA98BC22BED"
+  },
+  "at_most_one_day": true
+}

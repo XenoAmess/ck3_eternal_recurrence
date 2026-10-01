@@ -1,0 +1,7 @@
+{
+  "original": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_logged_python_a01.py",
+  "source_sha256": "8b05650e304398a1410e71e0e187d24c10f028d53219a0843cc0ec7ddb948c16",
+  "derived": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_logged_python_a02.py",
+  "derived_sha256": "bebb4780e5856ada4eee3e5970249d50d9937e7d24fdfa0f254ff218f51eadcb",
+  "fix": "Remove explicit -- separator before forwarding named script arguments. Prior argparse failures happened before any binding or game request."
+}

@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_UI_review_refs_a01.py"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-refs-a01.stdout.bin",
+    "bytes": 6585,
+    "sha256": "44BA88041D7DF8B5F4948258FE79772B638EF9BAF908C82086284CC9014EBAF5"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-refs-a01.stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "intent": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-refs-a01-intent.json",
+    "bytes": 529,
+    "sha256": "4F2E09D0E0AAE25699E608D31E01DD52142CF294C6F0DF59637C89298D95C2FC"
+  }
+}

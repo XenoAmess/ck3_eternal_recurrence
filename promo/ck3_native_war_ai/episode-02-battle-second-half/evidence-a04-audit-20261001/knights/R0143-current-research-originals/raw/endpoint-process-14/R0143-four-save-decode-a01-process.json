@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\decode_R0143_four_endpoints_a01.py"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-decode-a01.stdout.bin",
+    "bytes": 545,
+    "sha256": "D46E7005D5D7134C7A855628B4C76C62E364E5A59B895C303C0048616478A730"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-decode-a01.stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "intent": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-decode-a01-intent.json",
+    "bytes": 529,
+    "sha256": "E63595152F90B0D033BF6A3F0730E4300B97146BAFAC30FEF7302AA3B75A6B96"
+  }
+}

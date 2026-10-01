@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-01T12:07:08.537789+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\freeze_reviewed_diagnostic_source_a03.py"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\freeze_reviewed_diagnostic_source_a03.py",
+    "bytes": 5368,
+    "sha256": "0919702515DA8844B1C32F92B8914F3DC55392AE9C72B6BDA025C374847851F1"
+  }
+}

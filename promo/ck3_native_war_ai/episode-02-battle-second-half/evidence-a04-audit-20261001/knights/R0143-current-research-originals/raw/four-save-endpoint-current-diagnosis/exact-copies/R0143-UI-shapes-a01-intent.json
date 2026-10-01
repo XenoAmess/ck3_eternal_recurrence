@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_UI_binding_shapes_a01.py"
+  ],
+  "reader": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_UI_binding_shapes_a01.py",
+    "bytes": 760,
+    "sha256": "D25C222F8315729A8D8E7D91ACD0F964B238C3B0013905B6DED9CE2A24FBFBED"
+  },
+  "utc": "2026-10-01T13:20:54.766727+00:00",
+  "no_game_source_git_screen": true
+}

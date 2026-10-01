@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\prepare_new_capture.py",
+    "--candidate-manifest",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\candidate-manifest.json",
+    "--offline-receipt",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-root-review-a03.json",
+    "--screen-task-id",
+    "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "--live-root",
+    "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-trace-live-20261001-a07",
+    "--static-root",
+    "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-05-d26-six-gap-trace-preflight-20261001-a07"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-01T12:20:23.646369+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\write_offline_review_and_preflight_a03.py"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\write_offline_review_and_preflight_a03.py",
+    "bytes": 2993,
+    "sha256": "57F7C9C6D8F3E696A3E5BE49AE7B31BCC7DB9767EF36DADE3AFF8F198C8573A6"
+  }
+}

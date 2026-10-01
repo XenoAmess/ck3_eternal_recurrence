@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "melt",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+    "--unknown-key",
+    "stringify",
+    "--format",
+    "ck3",
+    "--out",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melted.ck3"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melt.stdout.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melt.stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

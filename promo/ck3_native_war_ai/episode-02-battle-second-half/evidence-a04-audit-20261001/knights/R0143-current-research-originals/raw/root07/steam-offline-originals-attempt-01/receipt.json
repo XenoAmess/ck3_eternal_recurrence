@@ -1,0 +1,132 @@
+{
+  "at_utc": "2026-10-01T12:16:53.625720+00:00",
+  "owner": {
+    "hwnd": 197612,
+    "pid": 7068,
+    "process_create_time": 1790777038.7610564
+  },
+  "events": [
+    {
+      "label": "before-navigation",
+      "frames": [
+        {
+          "at_utc": "2026-10-01T12:16:38.648431+00:00",
+          "elapsed": 0.3518250000051921,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\before-navigation-01.png",
+            "bytes": 792585,
+            "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+          }
+        },
+        {
+          "at_utc": "2026-10-01T12:16:40.739836+00:00",
+          "elapsed": 2.4309341000043787,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\before-navigation-02.png",
+            "bytes": 792585,
+            "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+          }
+        },
+        {
+          "at_utc": "2026-10-01T12:16:42.238373+00:00",
+          "elapsed": 3.933896900009131,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\before-navigation-03.png",
+            "bytes": 792585,
+            "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "ck3-library",
+      "frames": [
+        {
+          "at_utc": "2026-10-01T12:16:46.078589+00:00",
+          "elapsed": 0.2762804999947548,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\ck3-library-01.png",
+            "bytes": 803102,
+            "sha256": "870694332DFB64F8EEFCC1721FEF2D8045C75A3873C8F885692D8DC94E2C74B1"
+          }
+        },
+        {
+          "at_utc": "2026-10-01T12:16:47.099155+00:00",
+          "elapsed": 1.2835313999967184,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\ck3-library-02.png",
+            "bytes": 803102,
+            "sha256": "870694332DFB64F8EEFCC1721FEF2D8045C75A3873C8F885692D8DC94E2C74B1"
+          }
+        },
+        {
+          "at_utc": "2026-10-01T12:16:48.113511+00:00",
+          "elapsed": 2.3104766000033123,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\ck3-library-03.png",
+            "bytes": 803102,
+            "sha256": "870694332DFB64F8EEFCC1721FEF2D8045C75A3873C8F885692D8DC94E2C74B1"
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "bg3-library",
+      "frames": [
+        {
+          "at_utc": "2026-10-01T12:16:51.548481+00:00",
+          "elapsed": 0.27655999999842606,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-01.png",
+            "bytes": 796178,
+            "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+          }
+        },
+        {
+          "at_utc": "2026-10-01T12:16:52.553819+00:00",
+          "elapsed": 1.2802644999901531,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-02.png",
+            "bytes": 796178,
+            "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+          }
+        },
+        {
+          "at_utc": "2026-10-01T12:16:53.572694+00:00",
+          "elapsed": 2.287962999995216,
+          "width": 962,
+          "height": 768,
+          "image": {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+            "bytes": 796178,
+            "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+          }
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "distinct_original_image_hashes": 3,
+  "offline_visual_observed": null,
+  "same_window_semantic_change_actually_reviewed": false,
+  "steam_mode_changed": false,
+  "required_next_step": "Root visually inspect original CK3/BG3 pixels and write a separate exact-image-bound offline receipt"
+}

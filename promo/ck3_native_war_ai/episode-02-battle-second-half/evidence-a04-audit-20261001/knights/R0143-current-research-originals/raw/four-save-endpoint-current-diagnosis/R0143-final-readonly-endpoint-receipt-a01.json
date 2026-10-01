@@ -1,0 +1,1508 @@
+{
+  "kind": "ACTUAL_R0143_FOUR_IMMUTABLE_SAVE_ENDPOINT_ONLY_RECEIPT",
+  "facts": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-actual-endpoint-semantic-facts-a01.json",
+    "bytes": 174152,
+    "sha256": "27C5FE5B7EB968B9958C6DAFF506F9AF7FEE13652050C0BB2D57F871C4553586"
+  },
+  "verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-four-save-endpoint-verification.json",
+    "bytes": 54927,
+    "sha256": "EED819CB0CB228E4491CAF2A3A11A0C30939B2BCFD43A1ECBA8158B299A69752"
+  },
+  "runtime_source_commit": "419cac1a956c7be356d886256c7bc689cda5327d",
+  "runtime_native_binding": {
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "connection_generation": 1,
+    "bridge_pid": 17420,
+    "native_hello_session_generation": 0
+  },
+  "actual_four_save_decodes": "All four real Rakaly0.8.19 melt exit0; original checkpoint/native body/SHA/date/revision/PID separately verified",
+  "no_previous_run_raw_or_trace_used": true,
+  "exact_source_process_and_UI_copies": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-victim-character-original-ui-binding.json",
+        "bytes": 390267,
+        "sha256": "C9C3069DC0E45A7C5038780B1087E3C4383E9ED80544F2A2224446C1E1FC6E76"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-victim-character-original-ui-binding.json",
+        "bytes": 390267,
+        "sha256": "C9C3069DC0E45A7C5038780B1087E3C4383E9ED80544F2A2224446C1E1FC6E76"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-victim-character-window.png",
+        "bytes": 6135354,
+        "sha256": "ECA52F282F6CF2DF3E343C6384F21D932082457E6141AE0B33C029C0CF90090C"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-victim-character-window.png",
+        "bytes": 6135354,
+        "sha256": "ECA52F282F6CF2DF3E343C6384F21D932082457E6141AE0B33C029C0CF90090C"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-killer-character-original-ui-binding.json",
+        "bytes": 390195,
+        "sha256": "AA2E65FF113E8391AC6B39260A8406D46633335FBE1D256C74FC11DE0D0A4AD6"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-killer-character-original-ui-binding.json",
+        "bytes": 390195,
+        "sha256": "AA2E65FF113E8391AC6B39260A8406D46633335FBE1D256C74FC11DE0D0A4AD6"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-killer-character-window.png",
+        "bytes": 6076370,
+        "sha256": "DB31590FBD8E46DD77FB95A1F26264FED187BA8EF7C32B5B36206B72EB0534BE"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-killer-character-window.png",
+        "bytes": 6076370,
+        "sha256": "DB31590FBD8E46DD77FB95A1F26264FED187BA8EF7C32B5B36206B72EB0534BE"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-original-ui-binding.json",
+        "bytes": 275957,
+        "sha256": "BAECAC5816B8926BDAD38D7FCA913FD132CE365A5C973CEBBAEAE03DDE19660F"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-original-ui-binding.json",
+        "bytes": 275957,
+        "sha256": "BAECAC5816B8926BDAD38D7FCA913FD132CE365A5C973CEBBAEAE03DDE19660F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-window.png",
+        "bytes": 6203348,
+        "sha256": "C18F87C8E237E1E12449CA38694816D2991201C4205B84DFB361E6EB67DCAD0F"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-window.png",
+        "bytes": 6203348,
+        "sha256": "C18F87C8E237E1E12449CA38694816D2991201C4205B84DFB361E6EB67DCAD0F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-fit-full-combat-panel-binding.json",
+        "bytes": 603425,
+        "sha256": "32B620E6D1FE6820D3E2AF2DD303CC6EB45CF71F6D5FA87950DE690E0953824A"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-fit-full-combat-panel-binding.json",
+        "bytes": 603425,
+        "sha256": "32B620E6D1FE6820D3E2AF2DD303CC6EB45CF71F6D5FA87950DE690E0953824A"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-fit-window.png",
+        "bytes": 6204128,
+        "sha256": "972EA811FD5463C9B44048EEC090A77392D797F4239FB32857A3FB941D4C2EA0"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-fit-window.png",
+        "bytes": 6204128,
+        "sha256": "972EA811FD5463C9B44048EEC090A77392D797F4239FB32857A3FB941D4C2EA0"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-left-knights-fallback-desktop-original.png",
+        "bytes": 5056193,
+        "sha256": "2DC7FDDB8B7ABAC94A4067FC0C9B7404EE95024554E6E714AF2D9561072F9920"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-left-knights-fallback-desktop-original.png",
+        "bytes": 5056193,
+        "sha256": "2DC7FDDB8B7ABAC94A4067FC0C9B7404EE95024554E6E714AF2D9561072F9920"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-right-knights-fallback-desktop-original.png",
+        "bytes": 5073038,
+        "sha256": "F48AF9036DEDCAC519BDD60BD151FFE52A30F119E862F82AE96E3F2B80266B52"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-right-knights-fallback-desktop-original.png",
+        "bytes": 5073038,
+        "sha256": "F48AF9036DEDCAC519BDD60BD151FFE52A30F119E862F82AE96E3F2B80266B52"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+        "bytes": 102218,
+        "sha256": "AD5E5185B7D32ABDAC5D4F7AB7A0CE8840A966D4F434E2FAB7B0D5C95432A9A3"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-ui-root-review.json",
+        "bytes": 102218,
+        "sha256": "AD5E5185B7D32ABDAC5D4F7AB7A0CE8840A966D4F434E2FAB7B0D5C95432A9A3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-victim-character-original-ui-binding.json",
+        "bytes": 390221,
+        "sha256": "54F6953E933A0160E98CE2A230C20B6A557503407559C2A92743CCCE70FACB54"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-victim-character-original-ui-binding.json",
+        "bytes": 390221,
+        "sha256": "54F6953E933A0160E98CE2A230C20B6A557503407559C2A92743CCCE70FACB54"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-victim-character-window.png",
+        "bytes": 6167798,
+        "sha256": "68E8678CB4D513353794FA24BF9234019FE374017F27F2B2B8A775D3B84926B1"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-victim-character-window.png",
+        "bytes": 6167798,
+        "sha256": "68E8678CB4D513353794FA24BF9234019FE374017F27F2B2B8A775D3B84926B1"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-killer-character-original-ui-binding.json",
+        "bytes": 390211,
+        "sha256": "BA3C1AE59B3C64CB758ABF9682B3FEFBA8600E602FBFF6FF358188FC8C90E057"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-killer-character-original-ui-binding.json",
+        "bytes": 390211,
+        "sha256": "BA3C1AE59B3C64CB758ABF9682B3FEFBA8600E602FBFF6FF358188FC8C90E057"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-killer-character-window.png",
+        "bytes": 6206465,
+        "sha256": "C1918BBF1DD572A78E26F818C53394EFA025A15078FAD9E0279A3005E97D6B0C"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-killer-character-window.png",
+        "bytes": 6206465,
+        "sha256": "C1918BBF1DD572A78E26F818C53394EFA025A15078FAD9E0279A3005E97D6B0C"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-original-ui-binding.json",
+        "bytes": 287233,
+        "sha256": "FBA4EC1CA61EA00ABF17EEC200499FD05092A6E8FABA0CDD5985160B441FC672"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-original-ui-binding.json",
+        "bytes": 287233,
+        "sha256": "FBA4EC1CA61EA00ABF17EEC200499FD05092A6E8FABA0CDD5985160B441FC672"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-window.png",
+        "bytes": 6183794,
+        "sha256": "DE57FFD24065896D76D2389B2F03BF6730C46905E13E2F3C1F173D9B3139FAD3"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-window.png",
+        "bytes": 6183794,
+        "sha256": "DE57FFD24065896D76D2389B2F03BF6730C46905E13E2F3C1F173D9B3139FAD3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-fit-full-combat-panel-binding.json",
+        "bytes": 602278,
+        "sha256": "30C9D2B2303591107852A67D8204E640AC581E48622892518D98B3EC8AF084C8"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-fit-full-combat-panel-binding.json",
+        "bytes": 602278,
+        "sha256": "30C9D2B2303591107852A67D8204E640AC581E48622892518D98B3EC8AF084C8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-fit-window.png",
+        "bytes": 6227197,
+        "sha256": "5480EE4720EBB04AEDBB58F34029A7E1B3A140DB52F77144C86B723BD2423342"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-fit-window.png",
+        "bytes": 6227197,
+        "sha256": "5480EE4720EBB04AEDBB58F34029A7E1B3A140DB52F77144C86B723BD2423342"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-left-knights-fallback-desktop-original.png",
+        "bytes": 5064788,
+        "sha256": "A94162910AD5AC89BA179028923C9E1309BB1FC9D05A71A3A6736F3B919F4A74"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-left-knights-fallback-desktop-original.png",
+        "bytes": 5064788,
+        "sha256": "A94162910AD5AC89BA179028923C9E1309BB1FC9D05A71A3A6736F3B919F4A74"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-right-knights-fallback-desktop-original.png",
+        "bytes": 5080556,
+        "sha256": "D4492D3F8C2BB95C19CAB8EF2585A4124E6613B43D9D49804813E3976375009C"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-right-knights-fallback-desktop-original.png",
+        "bytes": 5080556,
+        "sha256": "D4492D3F8C2BB95C19CAB8EF2585A4124E6613B43D9D49804813E3976375009C"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-all-visible-desktop-original.png",
+        "bytes": 5100576,
+        "sha256": "9253AFE7175473B9FA461F0B63655966B17CF94EEBEA7C7CA43D061C8A2EEA86"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-all-visible-desktop-original.png",
+        "bytes": 5100576,
+        "sha256": "9253AFE7175473B9FA461F0B63655966B17CF94EEBEA7C7CA43D061C8A2EEA86"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+        "bytes": 103092,
+        "sha256": "82D8560D0B770F8B98C963FDBA51F97B42F211C85CA53900BFBDB46EEF0F4972"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-ui-root-review.json",
+        "bytes": 103092,
+        "sha256": "82D8560D0B770F8B98C963FDBA51F97B42F211C85CA53900BFBDB46EEF0F4972"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\D26-13-domain-semantic-preparation-reinforcement-a01\\case-closure-checklist.json",
+        "bytes": 17736,
+        "sha256": "A6ECF10C128E980635F1D44D36C3B6C8AB8F296DE8E66B95071B4DB67D1305F2"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\sourcebound-13-domain-requirements-prep-only.json",
+        "bytes": 17736,
+        "sha256": "A6ECF10C128E980635F1D44D36C3B6C8AB8F296DE8E66B95071B4DB67D1305F2"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\prepare_R0143_endpoint_audit_a01.py",
+        "bytes": 3632,
+        "sha256": "CDC58EA1C5E2DF835FEE7A05C776D00E9733E495165CB1E0C9C6C3F14E864C92"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\prepare_R0143_endpoint_audit_a01.py",
+        "bytes": 3632,
+        "sha256": "CDC58EA1C5E2DF835FEE7A05C776D00E9733E495165CB1E0C9C6C3F14E864C92"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\run_R0143_audit_logged_a01.py",
+        "bytes": 1172,
+        "sha256": "636A22C417EED853D92C7BAF2A7BB05A16C5E4EF3B4270D745BBFA43F2C3A8F8"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\run_R0143_audit_logged_a01.py",
+        "bytes": 1172,
+        "sha256": "636A22C417EED853D92C7BAF2A7BB05A16C5E4EF3B4270D745BBFA43F2C3A8F8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_endpoints_a01.py",
+        "bytes": 2696,
+        "sha256": "120AB50153324CA0951B47A193A6A059AF205A635884B1D7A2AD14994BE49986"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\inspect_R0143_endpoints_a01.py",
+        "bytes": 2696,
+        "sha256": "120AB50153324CA0951B47A193A6A059AF205A635884B1D7A2AD14994BE49986"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_UI_binding_shapes_a01.py",
+        "bytes": 760,
+        "sha256": "D25C222F8315729A8D8E7D91ACD0F964B238C3B0013905B6DED9CE2A24FBFBED"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\inspect_R0143_UI_binding_shapes_a01.py",
+        "bytes": 760,
+        "sha256": "D25C222F8315729A8D8E7D91ACD0F964B238C3B0013905B6DED9CE2A24FBFBED"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_UI_review_refs_a01.py",
+        "bytes": 992,
+        "sha256": "1B0EED241DBAE51E95617655E9AACB7DADFF310658AF643125B9F685D1EBDAEC"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\inspect_R0143_UI_review_refs_a01.py",
+        "bytes": 992,
+        "sha256": "1B0EED241DBAE51E95617655E9AACB7DADFF310658AF643125B9F685D1EBDAEC"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\decode_R0143_four_endpoints_a01.py",
+        "bytes": 14260,
+        "sha256": "DC5E46C1CD3B694F5C2104C332839A8E2888DA4F2EF7F470C2AD1F7B8553570E"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\decode_R0143_four_endpoints_a01.py",
+        "bytes": 14260,
+        "sha256": "DC5E46C1CD3B694F5C2104C332839A8E2888DA4F2EF7F470C2AD1F7B8553570E"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\summarize_R0143_saved_facts_a01.py",
+        "bytes": 7875,
+        "sha256": "B95090EF70C3D18398E08BC7E49EF163D92B9755031962BC72A4E4B66FFE10FE"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\summarize_R0143_saved_facts_a01.py",
+        "bytes": 7875,
+        "sha256": "B95090EF70C3D18398E08BC7E49EF163D92B9755031962BC72A4E4B66FFE10FE"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\finalize_R0143_endpoint_audit_a01.py",
+        "bytes": 11482,
+        "sha256": "7FAD2DD4258ECC7F7B4967B158C79A254760B87C782CEC8341F3BA5A26FA5505"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\finalize_R0143_endpoint_audit_a01.py",
+        "bytes": 11482,
+        "sha256": "7FAD2DD4258ECC7F7B4967B158C79A254760B87C782CEC8341F3BA5A26FA5505"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-endpoint-audit-reader-derivation-a01.json",
+        "bytes": 2150,
+        "sha256": "F4BA89C71A3AA58DA3E78A6B3EB44D031AA9F4184AD4D92835819B81A0423168"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-endpoint-audit-reader-derivation-a01.json",
+        "bytes": 2150,
+        "sha256": "F4BA89C71A3AA58DA3E78A6B3EB44D031AA9F4184AD4D92835819B81A0423168"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-reader-prepare-a01-intent.json",
+        "bytes": 530,
+        "sha256": "57538B849F75D42DF4426547AB9A1266E1A2BA1B77AD5118DE15D2F5E8DE5936"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01-intent.json",
+        "bytes": 530,
+        "sha256": "57538B849F75D42DF4426547AB9A1266E1A2BA1B77AD5118DE15D2F5E8DE5936"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-reader-prepare-a01-process.json",
+        "bytes": 905,
+        "sha256": "191BD3794E1E1E1CFA0DFEE43B579DFAA8D1DF565EEE4BE49A69E77276A30C0A"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01-process.json",
+        "bytes": 905,
+        "sha256": "191BD3794E1E1E1CFA0DFEE43B579DFAA8D1DF565EEE4BE49A69E77276A30C0A"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-reader-prepare-a01.stdout.bin",
+        "bytes": 1772,
+        "sha256": "99155B8450BCF85E02C8792D14ADD964B4708CBDB76844424623064DAE5A7B17"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01.stdout.bin",
+        "bytes": 1772,
+        "sha256": "99155B8450BCF85E02C8792D14ADD964B4708CBDB76844424623064DAE5A7B17"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-reader-prepare-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-input-inspection-a01-intent.json",
+        "bytes": 520,
+        "sha256": "5A2A367ECBE1609ABB21F680D7156376CCB1AED4917193256B3232B3EC3BBF2C"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01-intent.json",
+        "bytes": 520,
+        "sha256": "5A2A367ECBE1609ABB21F680D7156376CCB1AED4917193256B3232B3EC3BBF2C"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-input-inspection-a01-process.json",
+        "bytes": 905,
+        "sha256": "476597AB98C4E6E160B9DA3F55A0B6CEE9743CBAB9EB85C6A2C61B00CD8AD53B"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01-process.json",
+        "bytes": 905,
+        "sha256": "476597AB98C4E6E160B9DA3F55A0B6CEE9743CBAB9EB85C6A2C61B00CD8AD53B"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-input-inspection-a01.stdout.bin",
+        "bytes": 647,
+        "sha256": "F0A0FEFAEA93209B35FEADC36324FEB8FB6229435DEA3221A33BF95520705E23"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01.stdout.bin",
+        "bytes": 647,
+        "sha256": "F0A0FEFAEA93209B35FEADC36324FEB8FB6229435DEA3221A33BF95520705E23"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-input-inspection-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-decode-a01-intent.json",
+        "bytes": 529,
+        "sha256": "E63595152F90B0D033BF6A3F0730E4300B97146BAFAC30FEF7302AA3B75A6B96"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01-intent.json",
+        "bytes": 529,
+        "sha256": "E63595152F90B0D033BF6A3F0730E4300B97146BAFAC30FEF7302AA3B75A6B96"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-decode-a01-process.json",
+        "bytes": 909,
+        "sha256": "38504ACBD20AEE21340880A58F4C01C2F1A6472368C7FED082D071D6220067DE"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01-process.json",
+        "bytes": 909,
+        "sha256": "38504ACBD20AEE21340880A58F4C01C2F1A6472368C7FED082D071D6220067DE"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-decode-a01.stdout.bin",
+        "bytes": 545,
+        "sha256": "D46E7005D5D7134C7A855628B4C76C62E364E5A59B895C303C0048616478A730"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01.stdout.bin",
+        "bytes": 545,
+        "sha256": "D46E7005D5D7134C7A855628B4C76C62E364E5A59B895C303C0048616478A730"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-decode-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-shapes-a01-intent.json",
+        "bytes": 535,
+        "sha256": "64302D213D5B5946D59BEE6593551E2811101BCF174D3647842ECD2320807AAB"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01-intent.json",
+        "bytes": 535,
+        "sha256": "64302D213D5B5946D59BEE6593551E2811101BCF174D3647842ECD2320807AAB"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-shapes-a01-process.json",
+        "bytes": 894,
+        "sha256": "59E686ADE1A743E739872876724DB424CD750DB550580FEAE19ADDDCA605BD35"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01-process.json",
+        "bytes": 894,
+        "sha256": "59E686ADE1A743E739872876724DB424CD750DB550580FEAE19ADDDCA605BD35"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-shapes-a01.stdout.bin",
+        "bytes": 25693,
+        "sha256": "34467B213A186412D802CBC957B3C14259C86BE37DFB3E46C01E27ECFC24AF5A"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01.stdout.bin",
+        "bytes": 25693,
+        "sha256": "34467B213A186412D802CBC957B3C14259C86BE37DFB3E46C01E27ECFC24AF5A"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-shapes-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-refs-a01-intent.json",
+        "bytes": 529,
+        "sha256": "4F2E09D0E0AAE25699E608D31E01DD52142CF294C6F0DF59637C89298D95C2FC"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01-intent.json",
+        "bytes": 529,
+        "sha256": "4F2E09D0E0AAE25699E608D31E01DD52142CF294C6F0DF59637C89298D95C2FC"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-refs-a01-process.json",
+        "bytes": 884,
+        "sha256": "5762DF9221A1A2AD627D5E2A2431E343CE3D17375D1C85988E08C63E201927F9"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01-process.json",
+        "bytes": 884,
+        "sha256": "5762DF9221A1A2AD627D5E2A2431E343CE3D17375D1C85988E08C63E201927F9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-refs-a01.stdout.bin",
+        "bytes": 6585,
+        "sha256": "44BA88041D7DF8B5F4948258FE79772B638EF9BAF908C82086284CC9014EBAF5"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01.stdout.bin",
+        "bytes": 6585,
+        "sha256": "44BA88041D7DF8B5F4948258FE79772B638EF9BAF908C82086284CC9014EBAF5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-UI-refs-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-saved-facts-a01-intent.json",
+        "bytes": 528,
+        "sha256": "4BA243B979A4BB066CFF7A12BDCD1F283BAD4EE72E58D388C566AD772DF282D8"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01-intent.json",
+        "bytes": 528,
+        "sha256": "4BA243B979A4BB066CFF7A12BDCD1F283BAD4EE72E58D388C566AD772DF282D8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-saved-facts-a01-process.json",
+        "bytes": 895,
+        "sha256": "007BBCC0B7B976AFE0D679A57A6F87BD604974CD3EBB9B94F75AFD887E4A6616"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01-process.json",
+        "bytes": 895,
+        "sha256": "007BBCC0B7B976AFE0D679A57A6F87BD604974CD3EBB9B94F75AFD887E4A6616"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-saved-facts-a01.stdout.bin",
+        "bytes": 3216,
+        "sha256": "2F58A32BB81C8E9E3A3CDDBE11AFE164DABD622196CBA35EAB7E7D5F33679644"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01.stdout.bin",
+        "bytes": 3216,
+        "sha256": "2F58A32BB81C8E9E3A3CDDBE11AFE164DABD622196CBA35EAB7E7D5F33679644"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-saved-facts-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    }
+  ],
+  "four_original_saves": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52881742,
+      "sha256": "77CE8E8E7E955C578C0A7440CA0D17883547782B0BB000A078E918CCDAB12962"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+      "bytes": 52888510,
+      "sha256": "CE4BD247DA3EFD593DAA4FD3271159EDBD167C18BF787C0B488185AA4E8A716A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52804586,
+      "sha256": "B2F4508C45C470D2829C86CC3B8C39F13BB3863AFD4CF51CFEF0BE45F98B0FE5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+      "bytes": 52804586,
+      "sha256": "969CEA497389F3B51DE5890941F40638F9DD041AEF647D6773FCCB8F74EED103"
+    }
+  ],
+  "asset_index": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-accolades-exact.txt",
+      "bytes": 131327,
+      "sha256": "FA56960F645542CD151F9306F3E1E1768EBC38B85CEDDDC9E17946317CA487FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-character-33437-exact.txt",
+      "bytes": 960,
+      "sha256": "BCFFC16A0E51B301210C63D7C5587BADDF4C09474EE2A5875304AF4280DB2A3E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-character-34120-exact.txt",
+      "bytes": 1346,
+      "sha256": "49A743BD4D882E1AD283C70EF97F5CA5A20984BD98F52307A1CC87990B4880AC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-combats-exact.txt",
+      "bytes": 42980,
+      "sha256": "D2FAAD539B02B0ED8AB9294BBD2AC28FB90E9D564D5C36DFDBA7EF61412B01C8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-decoder-binding.json",
+      "bytes": 1096,
+      "sha256": "AD4F6C60170FCB5821DC6A693870B1A1925D299A7AED176999C39043EF89F58C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-full-selected-saved-projection.json",
+      "bytes": 2627747,
+      "sha256": "CF95409C93A19193775B89DCF3840F7163286FCA6EDFF6C08D01185F549C7D92"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-house_relations-exact.txt",
+      "bytes": 291860,
+      "sha256": "689D84D2290B7BDA44E08DAE9E76A0D0297589F923D0279C7374F76F8B47ADA8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-melt-argv.json",
+      "bytes": 581,
+      "sha256": "31995E73533A3B59D11821EBB5FD5662F942BA35F7F569D6F8D39B59C00F49AB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-melt-process.json",
+      "bytes": 1062,
+      "sha256": "EDE22108AEE3D804D5B3A34A2B5358713DB2359BD7FAB6688466801B54DA0EB6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-melted.ck3",
+      "bytes": 81666854,
+      "sha256": "4A61D9BD4A8CE48A72496C309DD99A58E0D24F4EF530028F8033FB4C4DD4A6B3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-accolades-exact.txt",
+      "bytes": 131327,
+      "sha256": "FA56960F645542CD151F9306F3E1E1768EBC38B85CEDDDC9E17946317CA487FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-character-33437-exact.txt",
+      "bytes": 960,
+      "sha256": "BCFFC16A0E51B301210C63D7C5587BADDF4C09474EE2A5875304AF4280DB2A3E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-character-34120-exact.txt",
+      "bytes": 1346,
+      "sha256": "49A743BD4D882E1AD283C70EF97F5CA5A20984BD98F52307A1CC87990B4880AC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-combats-exact.txt",
+      "bytes": 42980,
+      "sha256": "D2FAAD539B02B0ED8AB9294BBD2AC28FB90E9D564D5C36DFDBA7EF61412B01C8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-decoder-binding.json",
+      "bytes": 1150,
+      "sha256": "55ACA8B72B081CE91CF1779F432CEEC04470618EFA40D6AF4B0B1966DEE4C389"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-full-selected-saved-projection.json",
+      "bytes": 2627980,
+      "sha256": "2BFCD0AFC5CCB00378C3C44BB0D4548013C1BBB1D17F20611C770F21E3EFD055"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-house_relations-exact.txt",
+      "bytes": 291860,
+      "sha256": "689D84D2290B7BDA44E08DAE9E76A0D0297589F923D0279C7374F76F8B47ADA8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt-argv.json",
+      "bytes": 617,
+      "sha256": "087DA65748D29C59E5832AC5AACA4C8C7971CCFA5EC6EA563367632C4E745B27"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt-process.json",
+      "bytes": 1134,
+      "sha256": "D8B0C12FB90F4A923069EEAE93072EB02FCF0CE4C2DFF78C94E7E70FAA848B6C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-melted.ck3",
+      "bytes": 81666854,
+      "sha256": "3946219B14C758AD5DC7F2B43314663C31FD5E0CC9DB950C9F85A0C428D83E7E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-RNG-inventory.json",
+      "bytes": 962074,
+      "sha256": "E5D62846DE51516DACA967AEA95C8AE747CF6702157D2A53046D6E2322671172"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-RNG-inventory.json",
+      "bytes": 962056,
+      "sha256": "70646D19A2849A215071BA62E7493B1C3B855640C6008B862DFBC68B887F2812"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after_UI_saved_endpoints-complete-endpoint-deltas.json",
+      "bytes": 1566,
+      "sha256": "31685C1530B5170AF5F17905719EA658273CB5610944C6D18982D03F8DBBC460"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-accolades-exact.txt",
+      "bytes": 131317,
+      "sha256": "C4C855E1BFB913960B98F468ADB28EB2FCCA354BC873EE5CCD5BE0CFC231239C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-character-33437-exact.txt",
+      "bytes": 1280,
+      "sha256": "1A6DD52436481E61C4768F5D8F1B7B7F3E249A6C473C0981E4A420FF796DD1F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-character-34120-exact.txt",
+      "bytes": 1183,
+      "sha256": "690D03CD47BD988F98275AA21A5F8A03967610AFD6F1A6798F6C69A06C69676A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-combats-exact.txt",
+      "bytes": 48494,
+      "sha256": "9FA1346EF7424EA79B926A720B5DCC7F41C1BED689D9DA1153E306C0EE5AD0EF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-decoder-binding.json",
+      "bytes": 1099,
+      "sha256": "E4496575411279637881ECA3A2D80B105C25B28B3B6DD4B11D8A3CDB0F7B05F3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-full-selected-saved-projection.json",
+      "bytes": 2658505,
+      "sha256": "3492AE826C73E657303DAA9396F0AE7427B3D55393FD0EE00D734BA372129BA2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-house_relations-exact.txt",
+      "bytes": 290561,
+      "sha256": "ADCB3DA162D8563164F1D20C652B0D6EF24BF11FEECAE610E84D93875404A8F7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melt-argv.json",
+      "bytes": 583,
+      "sha256": "04225D3E0956CDD2E454B89ED1BDB8C1399B2E06186FA7A328CA4C7C55472E72"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melt-process.json",
+      "bytes": 1066,
+      "sha256": "F3354CA2B631071AC6BFC1C84C60911DA4D7D69FFBC1E657939DE830B6A4699D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-melted.ck3",
+      "bytes": 81794016,
+      "sha256": "A50443A8A7B42DE670C8B3241FF2185FED280FDA06C909E41851888B71CB26F7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-accolades-exact.txt",
+      "bytes": 131317,
+      "sha256": "C4C855E1BFB913960B98F468ADB28EB2FCCA354BC873EE5CCD5BE0CFC231239C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-character-33437-exact.txt",
+      "bytes": 715,
+      "sha256": "A212E176344DA71BE7AE221DE619EFE54482214C7F0F55E21B5694FE703794CB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-character-34120-exact.txt",
+      "bytes": 618,
+      "sha256": "6B9F7DC5E410FA5A1A4F29F01E98B137D5254DFDFD871F78FFBF02E85D38D301"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-combats-exact.txt",
+      "bytes": 48494,
+      "sha256": "9FA1346EF7424EA79B926A720B5DCC7F41C1BED689D9DA1153E306C0EE5AD0EF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-decoder-binding.json",
+      "bytes": 1153,
+      "sha256": "34F151670E2167E65BA7235840D74FF2023537A87FFBC18F94605EE7C4480E7B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-full-selected-saved-projection.json",
+      "bytes": 2657483,
+      "sha256": "6A7B76FC6EFDABEE9F062F226B49CAB34C67B2643F70D10CF2DBF16B9D6B07A6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-house_relations-exact.txt",
+      "bytes": 290561,
+      "sha256": "ADCB3DA162D8563164F1D20C652B0D6EF24BF11FEECAE610E84D93875404A8F7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt-argv.json",
+      "bytes": 619,
+      "sha256": "83B5B2C274F33F7964F92A4741BBC0D82D33A92945384B7AC32675A46276354E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt-process.json",
+      "bytes": 1138,
+      "sha256": "56CFDB262265EE07080D0DDE00212B7FB14C4A61F203549382A19C9B5060A400"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-melted.ck3",
+      "bytes": 81787236,
+      "sha256": "C0EC85557C8DBBD1883E0B0D2366ECBAD00905D404956153230F33129D9BE2AB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-RNG-inventory.json",
+      "bytes": 967434,
+      "sha256": "71164DD103AF0362EA07A81DDFB45B6C7E494825B9769BE9A6F4B07CFD7D5512"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-RNG-inventory.json",
+      "bytes": 967416,
+      "sha256": "2E750914D36672956AC62A5004F77F1CB853B67E1E8A2E6DAA9BB60FA9EFA8F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before_UI_saved_endpoints-complete-endpoint-deltas.json",
+      "bytes": 3033,
+      "sha256": "E3710E6AF6BBE5DE19528C724956A60B069B2F2E830AF9A1F8AB99E1FF47D84C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\four-pair-input-shapes.json",
+      "bytes": 118696,
+      "sha256": "0CF7921CA32410134C0DDAF1BF03AEC0C4111E1E44C9166605793882ABA57817"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\monitor-original-schema-inspection.json",
+      "bytes": 19576,
+      "sha256": "2E088C4B68FC7150DC8783AD7FD3C40F4FD72AB39C440E3E785AB957CEF7D707"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-actual-endpoint-semantic-facts-a01.json",
+      "bytes": 174152,
+      "sha256": "27C5FE5B7EB968B9958C6DAFF506F9AF7FEE13652050C0BB2D57F871C4553586"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-actual-endpoint-semantic-facts.json",
+      "bytes": 118407,
+      "sha256": "C053BCDBA8525F05953A5815D4CC9BFEE7C450B606A275E92D67CBC621150BEA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-four-save-endpoint-verification.json",
+      "bytes": 54927,
+      "sha256": "EED819CB0CB228E4491CAF2A3A11A0C30939B2BCFD43A1ECBA8158B299A69752"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\single_day_saved_endpoints-complete-endpoint-deltas.json",
+      "bytes": 54246,
+      "sha256": "6CD5670473D9681175543F259B9DC39291AE29BD722CA847F822EE607F0833F2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\verified-python-argv.json",
+      "bytes": 195,
+      "sha256": "028A1ACE04158CF9661BCFEC3287C29980C89F2B02144756B6E8D9DBC743D4EA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\verified-python-process.json",
+      "bytes": 687,
+      "sha256": "F5FA9037D2292B3690432420AC830E0A56C3443124E74AB9215043E75C979C78"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\verified-python.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\verified-python.stdout.bin",
+      "bytes": 15,
+      "sha256": "9FC9968E3AE8D82284D7426A87E1426E07246027C7706B0803A1C8D9C60C7A4D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-all-visible-desktop-original.png",
+      "bytes": 5100576,
+      "sha256": "9253AFE7175473B9FA461F0B63655966B17CF94EEBEA7C7CA43D061C8A2EEA86"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-fit-full-combat-panel-binding.json",
+      "bytes": 602278,
+      "sha256": "30C9D2B2303591107852A67D8204E640AC581E48622892518D98B3EC8AF084C8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-fit-window.png",
+      "bytes": 6227197,
+      "sha256": "5480EE4720EBB04AEDBB58F34029A7E1B3A140DB52F77144C86B723BD2423342"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-original-ui-binding.json",
+      "bytes": 287233,
+      "sha256": "FBA4EC1CA61EA00ABF17EEC200499FD05092A6E8FABA0CDD5985160B441FC672"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-combat-window.png",
+      "bytes": 6183794,
+      "sha256": "DE57FFD24065896D76D2389B2F03BF6730C46905E13E2F3C1F173D9B3139FAD3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-immutable.ck3",
+      "bytes": 52804586,
+      "sha256": "969CEA497389F3B51DE5890941F40638F9DD041AEF647D6773FCCB8F74EED103"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-killer-character-original-ui-binding.json",
+      "bytes": 390211,
+      "sha256": "BA3C1AE59B3C64CB758ABF9682B3FEFBA8600E602FBFF6FF358188FC8C90E057"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-killer-character-window.png",
+      "bytes": 6206465,
+      "sha256": "C1918BBF1DD572A78E26F818C53394EFA025A15078FAD9E0279A3005E97D6B0C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-left-knights-fallback-desktop-original.png",
+      "bytes": 5064788,
+      "sha256": "A94162910AD5AC89BA179028923C9E1309BB1FC9D05A71A3A6736F3B919F4A74"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52804586,
+      "sha256": "B2F4508C45C470D2829C86CC3B8C39F13BB3863AFD4CF51CFEF0BE45F98B0FE5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-post-snapshot-response.json",
+      "bytes": 2002648,
+      "sha256": "A97A9A4080A2F201F50F32661B6DC4358C187EDD4CA9C017F46F2430D531C2FB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-save-request.json",
+      "bytes": 104,
+      "sha256": "64BC1654B8B70622C08270A7F6341EC1E04FC5E36480E2E4C2618CC2714D012E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-save-response.json",
+      "bytes": 13712,
+      "sha256": "9A797F4E96ABD0B547F7088B7889EA26C5E38D10C3E167F8D0194366B86F7BA4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-saved-pair.json",
+      "bytes": 5914,
+      "sha256": "A2828050757E31773B27E98DF00F49D0CDCEB2EB1F0C89B974F6D2B591D27518"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-snapshot-response.json",
+      "bytes": 2000166,
+      "sha256": "AC73D7EBF38C5DB1B09FF5D0B84DD3FDFD55A7AA06DCAD43AEF6F238F4A3A839"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-right-knights-fallback-desktop-original.png",
+      "bytes": 5080556,
+      "sha256": "D4492D3F8C2BB95C19CAB8EF2585A4124E6613B43D9D49804813E3976375009C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-save-request.json",
+      "bytes": 105,
+      "sha256": "795B6371AA27723E5EEBBD8AD4883AE1E9B50F2A38EF3D99D85D642ADCB78D51"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-save-response.json",
+      "bytes": 13700,
+      "sha256": "8840F670F927B7828199F9A3CC8DD0F3849FB1FD3A4F001DE1CF7ABB27F40C21"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-saved-pair.json",
+      "bytes": 4467,
+      "sha256": "A2D2CB502BBF64832ECC45D98379041968DA8BC65743C3B5905CDD5CD8973851"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-snapshot-response.json",
+      "bytes": 3849584,
+      "sha256": "064DFE946488CDE387D454A8FD70C868AFF7C9DA5FCC16A9EBDF0D54B58A25F2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-ui-root-review.json",
+      "bytes": 103092,
+      "sha256": "82D8560D0B770F8B98C963FDBA51F97B42F211C85CA53900BFBDB46EEF0F4972"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-victim-character-original-ui-binding.json",
+      "bytes": 390221,
+      "sha256": "54F6953E933A0160E98CE2A230C20B6A557503407559C2A92743CCCE70FACB54"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\after-victim-character-window.png",
+      "bytes": 6167798,
+      "sha256": "68E8678CB4D513353794FA24BF9234019FE374017F27F2B2B8A775D3B84926B1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-fit-full-combat-panel-binding.json",
+      "bytes": 603425,
+      "sha256": "32B620E6D1FE6820D3E2AF2DD303CC6EB45CF71F6D5FA87950DE690E0953824A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-fit-window.png",
+      "bytes": 6204128,
+      "sha256": "972EA811FD5463C9B44048EEC090A77392D797F4239FB32857A3FB941D4C2EA0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-original-ui-binding.json",
+      "bytes": 275957,
+      "sha256": "BAECAC5816B8926BDAD38D7FCA913FD132CE365A5C973CEBBAEAE03DDE19660F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-combat-window.png",
+      "bytes": 6203348,
+      "sha256": "C18F87C8E237E1E12449CA38694816D2991201C4205B84DFB361E6EB67DCAD0F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-immutable.ck3",
+      "bytes": 52888510,
+      "sha256": "CE4BD247DA3EFD593DAA4FD3271159EDBD167C18BF787C0B488185AA4E8A716A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-killer-character-original-ui-binding.json",
+      "bytes": 390195,
+      "sha256": "AA2E65FF113E8391AC6B39260A8406D46633335FBE1D256C74FC11DE0D0A4AD6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-killer-character-window.png",
+      "bytes": 6076370,
+      "sha256": "DB31590FBD8E46DD77FB95A1F26264FED187BA8EF7C32B5B36206B72EB0534BE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-left-knights-fallback-desktop-original.png",
+      "bytes": 5056193,
+      "sha256": "2DC7FDDB8B7ABAC94A4067FC0C9B7404EE95024554E6E714AF2D9561072F9920"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52881742,
+      "sha256": "77CE8E8E7E955C578C0A7440CA0D17883547782B0BB000A078E918CCDAB12962"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-post-snapshot-response.json",
+      "bytes": 37621,
+      "sha256": "3DEF8109A2ED7DF96E6998A662D7D7A8533223C780C80EA7475A5778F9480527"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-save-request.json",
+      "bytes": 104,
+      "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-save-response.json",
+      "bytes": 13479,
+      "sha256": "C1C31E5140C1FB2584E06A5FCB73F89FF45B984124DBFD4C44D986552C646E5F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-saved-pair.json",
+      "bytes": 5917,
+      "sha256": "3F659482D2546EBBF1452EC42CD76A6154DBC68CC42E4FB352400798494E137F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-snapshot-response.json",
+      "bytes": 35010,
+      "sha256": "F00607CEF4F9619F5835EFCE95D4144A65E254CA9F0F9E7A6B04B9FCBFFF2C7B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-right-knights-fallback-desktop-original.png",
+      "bytes": 5073038,
+      "sha256": "F48AF9036DEDCAC519BDD60BD151FFE52A30F119E862F82AE96E3F2B80266B52"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-save-request.json",
+      "bytes": 104,
+      "sha256": "C8EC32F0123C15F56ACC08952EA57EF99FFF14E83463F9CEFB2C0E7AB7E0E87C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-save-response.json",
+      "bytes": 13475,
+      "sha256": "AFB9B551E84343E3E39B8D1B244526B45A8C6F812CBEE81896B4AAA09702CD28"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-saved-pair.json",
+      "bytes": 4472,
+      "sha256": "B6931A90F2B73C4A531D58EEE396E69A5464184AC425FBAC1D3945907C13CCF0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-snapshot-response.json",
+      "bytes": 1871605,
+      "sha256": "8335D21291A16095AB81A76CC4CE885063B77CD057AE6501E38A0534A90C29E9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-ui-root-review.json",
+      "bytes": 102218,
+      "sha256": "AD5E5185B7D32ABDAC5D4F7AB7A0CE8840A966D4F434E2FAB7B0D5C95432A9A3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-victim-character-original-ui-binding.json",
+      "bytes": 390267,
+      "sha256": "C9C3069DC0E45A7C5038780B1087E3C4383E9ED80544F2A2224446C1E1FC6E76"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\before-victim-character-window.png",
+      "bytes": 6135354,
+      "sha256": "ECA52F282F6CF2DF3E343C6384F21D932082457E6141AE0B33C029C0CF90090C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\current-run-bindings.json",
+      "bytes": 5728,
+      "sha256": "70D440BBDEBFA5131CC08B7A21CA2796A372C575E26F622111E226728EF4872C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\decode_R0143_four_endpoints_a01.py",
+      "bytes": 14260,
+      "sha256": "DC5E46C1CD3B694F5C2104C332839A8E2888DA4F2EF7F470C2AD1F7B8553570E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\finalize_R0143_endpoint_audit_a01.py",
+      "bytes": 11482,
+      "sha256": "7FAD2DD4258ECC7F7B4967B158C79A254760B87C782CEC8341F3BA5A26FA5505"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\inspect_R0143_endpoints_a01.py",
+      "bytes": 2696,
+      "sha256": "120AB50153324CA0951B47A193A6A059AF205A635884B1D7A2AD14994BE49986"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\inspect_R0143_UI_binding_shapes_a01.py",
+      "bytes": 760,
+      "sha256": "D25C222F8315729A8D8E7D91ACD0F964B238C3B0013905B6DED9CE2A24FBFBED"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\inspect_R0143_UI_review_refs_a01.py",
+      "bytes": 992,
+      "sha256": "1B0EED241DBAE51E95617655E9AACB7DADFF310658AF643125B9F685D1EBDAEC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\knight_causal_save_projection.py",
+      "bytes": 17048,
+      "sha256": "54E2F7A75585613C8C8F14153495522FD3AD611C1E6C281560916A1676955057"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\knight_selector_replay.py",
+      "bytes": 9299,
+      "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\one-day-finished.json",
+      "bytes": 14983,
+      "sha256": "C107DCA01C871EEEFDAA061D843ABBA556F7E11D236D36830C7F66B25720B1C4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\prepare_R0143_endpoint_audit_a01.py",
+      "bytes": 3632,
+      "sha256": "CDC58EA1C5E2DF835FEE7A05C776D00E9733E495165CB1E0C9C6C3F14E864C92"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-endpoint-audit-reader-derivation-a01.json",
+      "bytes": 2150,
+      "sha256": "F4BA89C71A3AA58DA3E78A6B3EB44D031AA9F4184AD4D92835819B81A0423168"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01-intent.json",
+      "bytes": 529,
+      "sha256": "E63595152F90B0D033BF6A3F0730E4300B97146BAFAC30FEF7302AA3B75A6B96"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01-process.json",
+      "bytes": 909,
+      "sha256": "38504ACBD20AEE21340880A58F4C01C2F1A6472368C7FED082D071D6220067DE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-four-save-decode-a01.stdout.bin",
+      "bytes": 545,
+      "sha256": "D46E7005D5D7134C7A855628B4C76C62E364E5A59B895C303C0048616478A730"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01-intent.json",
+      "bytes": 520,
+      "sha256": "5A2A367ECBE1609ABB21F680D7156376CCB1AED4917193256B3232B3EC3BBF2C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01-process.json",
+      "bytes": 905,
+      "sha256": "476597AB98C4E6E160B9DA3F55A0B6CEE9743CBAB9EB85C6A2C61B00CD8AD53B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-input-inspection-a01.stdout.bin",
+      "bytes": 647,
+      "sha256": "F0A0FEFAEA93209B35FEADC36324FEB8FB6229435DEA3221A33BF95520705E23"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01-intent.json",
+      "bytes": 530,
+      "sha256": "57538B849F75D42DF4426547AB9A1266E1A2BA1B77AD5118DE15D2F5E8DE5936"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01-process.json",
+      "bytes": 905,
+      "sha256": "191BD3794E1E1E1CFA0DFEE43B579DFAA8D1DF565EEE4BE49A69E77276A30C0A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-reader-prepare-a01.stdout.bin",
+      "bytes": 1772,
+      "sha256": "99155B8450BCF85E02C8792D14ADD964B4708CBDB76844424623064DAE5A7B17"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01-intent.json",
+      "bytes": 528,
+      "sha256": "4BA243B979A4BB066CFF7A12BDCD1F283BAD4EE72E58D388C566AD772DF282D8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01-process.json",
+      "bytes": 895,
+      "sha256": "007BBCC0B7B976AFE0D679A57A6F87BD604974CD3EBB9B94F75AFD887E4A6616"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-saved-facts-a01.stdout.bin",
+      "bytes": 3216,
+      "sha256": "2F58A32BB81C8E9E3A3CDDBE11AFE164DABD622196CBA35EAB7E7D5F33679644"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01-intent.json",
+      "bytes": 529,
+      "sha256": "4F2E09D0E0AAE25699E608D31E01DD52142CF294C6F0DF59637C89298D95C2FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01-process.json",
+      "bytes": 884,
+      "sha256": "5762DF9221A1A2AD627D5E2A2431E343CE3D17375D1C85988E08C63E201927F9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-refs-a01.stdout.bin",
+      "bytes": 6585,
+      "sha256": "44BA88041D7DF8B5F4948258FE79772B638EF9BAF908C82086284CC9014EBAF5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01-intent.json",
+      "bytes": 535,
+      "sha256": "64302D213D5B5946D59BEE6593551E2811101BCF174D3647842ECD2320807AAB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01-process.json",
+      "bytes": 894,
+      "sha256": "59E686ADE1A743E739872876724DB424CD750DB550580FEAE19ADDDCA605BD35"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\R0143-UI-shapes-a01.stdout.bin",
+      "bytes": 25693,
+      "sha256": "34467B213A186412D802CBC957B3C14259C86BE37DFB3E46C01E27ECFC24AF5A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\run_R0143_audit_logged_a01.py",
+      "bytes": 1172,
+      "sha256": "636A22C417EED853D92C7BAF2A7BB05A16C5E4EF3B4270D745BBFA43F2C3A8F8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\saved_rng_endpoint_inventory_a01.py",
+      "bytes": 6567,
+      "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\sourcebound-13-domain-requirements-prep-only.json",
+      "bytes": 17736,
+      "sha256": "A6ECF10C128E980635F1D44D36C3B6C8AB8F296DE8E66B95071B4DB67D1305F2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\summarize_R0143_saved_facts_a01.py",
+      "bytes": 7875,
+      "sha256": "B95090EF70C3D18398E08BC7E49EF163D92B9755031962BC72A4E4B66FFE10FE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\variable-monitor-finish-once.json",
+      "bytes": 711132,
+      "sha256": "3DC5612A918A9D5F018B68D9BA9EC5685A978A58FD572118075ED7E7C47DFCDE"
+    }
+  ],
+  "global_bundle_complete": false,
+  "case_13_domain_complete": false,
+  "selector_closed": false,
+  "case_actual_death_cause_closed": false,
+  "strict_causal_or_monitor_verifier": "NOT_RUN",
+  "no_source_Git_CK3_screen_video_action": true
+}

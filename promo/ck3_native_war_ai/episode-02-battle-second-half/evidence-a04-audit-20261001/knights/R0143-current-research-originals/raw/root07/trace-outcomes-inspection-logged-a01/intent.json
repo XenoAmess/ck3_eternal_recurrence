@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-01T12:52:27.129689+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\read_actual_trace_outcomes_a01.py"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\read_actual_trace_outcomes_a01.py",
+    "bytes": 1779,
+    "sha256": "BD6BCCF2EE9BB19FE4B43EA624B1B64DF169FFB1946477475583288526AB2FC1"
+  }
+}

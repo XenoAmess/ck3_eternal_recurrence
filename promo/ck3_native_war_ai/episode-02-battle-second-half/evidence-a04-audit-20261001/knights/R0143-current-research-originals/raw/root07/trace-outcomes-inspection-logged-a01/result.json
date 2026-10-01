@@ -1,0 +1,13 @@
+{
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\trace-outcomes-inspection-logged-a01\\stdout.bin",
+    "bytes": 18631,
+    "sha256": "894B7B7F682FDAA0E70A37515AEE11D32501E4A20CBAF0EE0F8177FD20F1C417"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\trace-outcomes-inspection-logged-a01\\stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

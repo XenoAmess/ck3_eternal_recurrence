@@ -1,0 +1,13 @@
+{
+  "at_utc": "2026-10-01T12:16:37.439985+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\capture_current_steam_offline.py",
+    "--screen-task-id",
+    "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "--source",
+    "C:\\w\\e2cap1001e",
+    "--output-dir",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\steam-offline-originals-attempt-01"
+  ]
+}

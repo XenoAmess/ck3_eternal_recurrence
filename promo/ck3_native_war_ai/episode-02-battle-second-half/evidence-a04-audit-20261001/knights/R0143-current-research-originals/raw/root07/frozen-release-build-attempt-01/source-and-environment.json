@@ -1,0 +1,64 @@
+{
+  "source_commit": "419cac1a956c7be356d886256c7bc689cda5327d",
+  "source": "C:\\w\\e2cap1001e",
+  "source_fingerprint_sha256": "7B5AE4187A7E1EB6151DF8DD11317A4B5345B23E9E7BE87097CCB32656CA180E",
+  "python": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "bytes": 255200,
+    "sha256": "9B7BFFC26240463C965A2A2A5FADA1D8E741C21C25CD2E977728C339B82D9977"
+  },
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "compiler": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+    "bytes": 893328,
+    "sha256": "E6D57100C82AE0310C18B16ABFE52BC0DF8FBB272CA6C5FB287D485807CFCE91"
+  },
+  "cmake": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "bytes": 14392928,
+    "sha256": "87FAFBE6507D4B23C38CCAF72A1859219D070ACB57EF0160332DF10945D2DFAC"
+  },
+  "ninja": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "bytes": 3776568,
+    "sha256": "9546466F0FECA6D62D7D4EA9B7FBC381F8E302CB7F02F4CE327A39D8577BB293"
+  },
+  "targets_input": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\reviewed-native-targets-a02.json",
+    "bytes": 1633,
+    "sha256": "D40FDC0A4C887FCB097D348CE3C4E2F8D171CCFC3237366DA25B4A8A28E1FF7C"
+  },
+  "targets": {
+    "scope": "Changed native observers, native UI fixture, and their existing ring/mailbox/managed regressions",
+    "build_targets": [
+      "xar_ck3_ingame_ui_navigation_v1_test",
+      "xar_ck3_combat_scoped_transition_chain_v1_test",
+      "xar_ck3_scoped_character_variable_monitor_v1_test",
+      "xar_ck3_combat_phase_event_trace_ring_v1_test",
+      "xar_ck3_combat_phase_event_trace_detour_v1_test",
+      "xar_ck3_combat_phase_event_trace_wire_v1_test",
+      "xar_ck3_combat_phase_event_trace_managed_v1_test",
+      "xar_ck3_main_thread_query_mailbox_v1_test"
+    ],
+    "expected_ctest_names": [
+      "xar_ck3_ingame_ui_navigation_v1_test",
+      "xar_ck3_native_bridge_combat_scoped_transition_chain_v1",
+      "xar_ck3_native_bridge_scoped_character_variable_monitor_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_ring_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_detour_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_wire_v1",
+      "xar_ck3_native_bridge_combat_phase_event_trace_managed_v1",
+      "xar_ck3_native_bridge_main_thread_query_mailbox_v1"
+    ],
+    "ctest_regex": "^(xar_ck3_ingame_ui_navigation_v1_test|xar_ck3_native_bridge_combat_scoped_transition_chain_v1|xar_ck3_native_bridge_scoped_character_variable_monitor_v1|xar_ck3_native_bridge_combat_phase_event_trace_ring_v1|xar_ck3_native_bridge_combat_phase_event_trace_detour_v1|xar_ck3_native_bridge_combat_phase_event_trace_wire_v1|xar_ck3_native_bridge_combat_phase_event_trace_managed_v1|xar_ck3_native_bridge_main_thread_query_mailbox_v1)$",
+    "note": "Reviewed intent only; actual compilation and exact eight non-skipped results remain pending"
+  },
+  "no_game_launched": true,
+  "no_master_intake": true,
+  "configuration": "Release",
+  "process_environment_overrides": {
+    "PYTHONUTF8": "0",
+    "PYTHONIOENCODING": "utf-8",
+    "VSLANG": "1033"
+  }
+}

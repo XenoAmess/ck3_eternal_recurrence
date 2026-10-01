@@ -1,0 +1,65 @@
+{
+  "at_utc": "2026-10-01T13:04:46.354722+00:00",
+  "bindings": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+    "bytes": 5728,
+    "sha256": "70D440BBDEBFA5131CC08B7A21CA2796A372C575E26F622111E226728EF4872C"
+  },
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\scoped_ui_research_a09.py",
+    "bytes": 35122,
+    "sha256": "E51DC8EE492815EDB79A31FB1C84B70D8826D8FC1B3EEA3EC70582D7955D0F36"
+  },
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\run_required_core_ui_a13.py",
+    "bytes": 3685,
+    "sha256": "CFC326F983075003377B91710B2568A0B14F585A47477748629023A104F6D666"
+  },
+  "operations": [
+    [
+      "pre-ui-checkpoint",
+      []
+    ],
+    [
+      "victim-character",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "victim"
+      ]
+    ],
+    [
+      "killer-character",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "killer"
+      ]
+    ],
+    [
+      "combat",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "combat"
+      ]
+    ],
+    [
+      "combat-fit",
+      [
+        "--mode",
+        "fit"
+      ]
+    ]
+  ],
+  "game_days_advanced": 0,
+  "UI_outside_daily_monitor": true,
+  "knight_scope": "Active combat tooltips, not unrelated eligible military list"
+}

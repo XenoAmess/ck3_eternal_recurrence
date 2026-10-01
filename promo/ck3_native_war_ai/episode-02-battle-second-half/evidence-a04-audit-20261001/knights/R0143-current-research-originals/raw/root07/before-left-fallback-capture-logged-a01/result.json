@@ -1,0 +1,13 @@
+{
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\before-left-fallback-capture-logged-a01\\stdout.bin",
+    "bytes": 1020,
+    "sha256": "D6D5D045E967990090193196C4C9626DB56D2CCC37F45136BCE41D71AD243AFE"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\before-left-fallback-capture-logged-a01\\stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

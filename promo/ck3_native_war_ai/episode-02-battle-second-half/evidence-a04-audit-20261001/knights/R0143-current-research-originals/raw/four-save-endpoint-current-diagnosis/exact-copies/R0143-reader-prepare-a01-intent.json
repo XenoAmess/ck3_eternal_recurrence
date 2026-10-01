@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\prepare_R0143_endpoint_audit_a01.py"
+  ],
+  "reader": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\prepare_R0143_endpoint_audit_a01.py",
+    "bytes": 3632,
+    "sha256": "CDC58EA1C5E2DF835FEE7A05C776D00E9733E495165CB1E0C9C6C3F14E864C92"
+  },
+  "utc": "2026-10-01T13:19:07.726189+00:00",
+  "no_game_source_git_screen": true
+}

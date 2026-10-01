@@ -1,0 +1,4765 @@
+{
+  "kind": "ACTUAL_R0143_FOUR_SAVE_ENDPOINT_SEMANTIC_FACTS_A01",
+  "four_save_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\R0143-four-save-endpoint-verification.json",
+    "bytes": 54927,
+    "sha256": "EED819CB0CB228E4491CAF2A3A11A0C30939B2BCFD43A1ECBA8158B299A69752"
+  },
+  "saved_state_rows": [
+    {
+      "label": "before-pre-ui-checkpoint",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-full-selected-saved-projection.json",
+        "bytes": 2657483,
+        "sha256": "6A7B76FC6EFDABEE9F062F226B49CAB34C67B2643F70D10CF2DBF16B9D6B07A6"
+      },
+      "date_raw": 53146848,
+      "characters": [
+        {
+          "character_id": 33437,
+          "status": "ALIVE",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "300.3456",
+          "prestige_accumulated": "1000.3456",
+          "regiment_id": 65,
+          "house_id": 1105,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null,
+          "saved_kills": null,
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": null,
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": false,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-character-33437-exact.txt",
+            "bytes": 715,
+            "sha256": "A212E176344DA71BE7AE221DE619EFE54482214C7F0F55E21B5694FE703794CB"
+          }
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "301.0608",
+          "prestige_accumulated": "1001.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null,
+          "saved_kills": null,
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": null,
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": false,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-pre-ui-checkpoint-character-34120-exact.txt",
+            "bytes": 618,
+            "sha256": "6B9F7DC5E410FA5A1A4F29F01E98B137D5254DFDFD871F78FFBF02E85D38D301"
+          }
+        }
+      ],
+      "saved_combat_endpoint": [
+        {
+          "path": "/combat_results[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "47032",
+                "47031",
+                "47029",
+                "34484",
+                "44476",
+                "33884",
+                "36303",
+                "34117",
+                "34120",
+                "54140",
+                "54144",
+                "54145",
+                "54141",
+                "30517",
+                "36673",
+                "35124",
+                "34470",
+                "53853",
+                "53854"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            },
+            "defender": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "33435",
+                "36077",
+                "32716",
+                "32440",
+                "34333",
+                "34867",
+                "43706",
+                "43712",
+                "33437",
+                "35637",
+                "30784"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            }
+          },
+          "saved_width": null,
+          "saved_base_width": null
+        },
+        {
+          "path": "/combats[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": [
+                "16777221",
+                "16777231",
+                "27",
+                "22",
+                "28"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "87",
+                "90",
+                "91",
+                "92",
+                "104",
+                "105",
+                "106",
+                "110",
+                "111",
+                "112",
+                "113",
+                "114",
+                "115",
+                "217",
+                "219",
+                "220",
+                "221",
+                "222",
+                "176",
+                "177",
+                "179",
+                "180",
+                "181",
+                "182",
+                "223",
+                "225",
+                "226"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": null,
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "31549"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "281586"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "33.26833"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32725"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "722747"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "127.47743"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34320"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "364604"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "55.26338"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32231"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "1032532"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "104.68221"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34474"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "108968"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "9.10985"
+                  }
+                ]
+              ]
+            },
+            "defender": {
+              "saved_army_order": [
+                "18"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "51",
+                "52",
+                "53",
+                "57",
+                "58",
+                "59",
+                "60",
+                "61",
+                "62",
+                "63",
+                "64",
+                "65",
+                "66",
+                "67"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": null,
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "29829"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "980970"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "462.92847"
+                  }
+                ]
+              ]
+            }
+          },
+          "saved_width": "2199",
+          "saved_base_width": "2444"
+        }
+      ],
+      "saved_RNG_top_level": {
+        "random_seed": {
+          "line": 1274,
+          "raw_value": "2705320081",
+          "uint32": 2705320081
+        },
+        "random_count": {
+          "line": 1275,
+          "raw_value": "420865",
+          "uint32": 420865
+        },
+        "speed": {
+          "line": 1276,
+          "raw_value": "0"
+        },
+        "date": {
+          "line": 1277,
+          "raw_value": "1066.12.29"
+        }
+      }
+    },
+    {
+      "label": "before",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-full-selected-saved-projection.json",
+        "bytes": 2658505,
+        "sha256": "3492AE826C73E657303DAA9396F0AE7427B3D55393FD0EE00D734BA372129BA2"
+      },
+      "date_raw": 53146848,
+      "characters": [
+        {
+          "character_id": 33437,
+          "status": "ALIVE",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "300.3456",
+          "prestige_accumulated": "1000.3456",
+          "regiment_id": 65,
+          "house_id": 1105,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null,
+          "saved_kills": null,
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": null,
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": false,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-character-33437-exact.txt",
+            "bytes": 1280,
+            "sha256": "1A6DD52436481E61C4768F5D8F1B7B7F3E249A6C473C0981E4A420FF796DD1F1"
+          }
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "301.0608",
+          "prestige_accumulated": "1001.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null,
+          "saved_kills": null,
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": null,
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": false,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before-character-34120-exact.txt",
+            "bytes": 1183,
+            "sha256": "690D03CD47BD988F98275AA21A5F8A03967610AFD6F1A6798F6C69A06C69676A"
+          }
+        }
+      ],
+      "saved_combat_endpoint": [
+        {
+          "path": "/combat_results[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "47032",
+                "47031",
+                "47029",
+                "34484",
+                "44476",
+                "33884",
+                "36303",
+                "34117",
+                "34120",
+                "54140",
+                "54144",
+                "54145",
+                "54141",
+                "30517",
+                "36673",
+                "35124",
+                "34470",
+                "53853",
+                "53854"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            },
+            "defender": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "33435",
+                "36077",
+                "32716",
+                "32440",
+                "34333",
+                "34867",
+                "43706",
+                "43712",
+                "33437",
+                "35637",
+                "30784"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            }
+          },
+          "saved_width": null,
+          "saved_base_width": null
+        },
+        {
+          "path": "/combats[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": [
+                "16777221",
+                "16777231",
+                "27",
+                "22",
+                "28"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "87",
+                "90",
+                "91",
+                "92",
+                "104",
+                "105",
+                "106",
+                "110",
+                "111",
+                "112",
+                "113",
+                "114",
+                "115",
+                "217",
+                "219",
+                "220",
+                "221",
+                "222",
+                "176",
+                "177",
+                "179",
+                "180",
+                "181",
+                "182",
+                "223",
+                "225",
+                "226"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": null,
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "31549"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "281586"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "33.26833"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32725"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "722747"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "127.47743"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34320"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "364604"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "55.26338"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32231"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "1032532"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "104.68221"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34474"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "108968"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "9.10985"
+                  }
+                ]
+              ]
+            },
+            "defender": {
+              "saved_army_order": [
+                "18"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "51",
+                "52",
+                "53",
+                "57",
+                "58",
+                "59",
+                "60",
+                "61",
+                "62",
+                "63",
+                "64",
+                "65",
+                "66",
+                "67"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": null,
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "29829"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "980970"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "462.92847"
+                  }
+                ]
+              ]
+            }
+          },
+          "saved_width": "2199",
+          "saved_base_width": "2444"
+        }
+      ],
+      "saved_RNG_top_level": {
+        "random_seed": {
+          "line": 1274,
+          "raw_value": "2705320081",
+          "uint32": 2705320081
+        },
+        "random_count": {
+          "line": 1275,
+          "raw_value": "420865",
+          "uint32": 420865
+        },
+        "speed": {
+          "line": 1276,
+          "raw_value": "0"
+        },
+        "date": {
+          "line": 1277,
+          "raw_value": "1066.12.29"
+        }
+      }
+    },
+    {
+      "label": "after-pre-ui-checkpoint",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-full-selected-saved-projection.json",
+        "bytes": 2627980,
+        "sha256": "2BFCD0AFC5CCB00378C3C44BB0D4548013C1BBB1D17F20611C770F21E3EFD055"
+      },
+      "date_raw": 53146872,
+      "characters": [
+        {
+          "character_id": 33437,
+          "status": "DEAD",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": null,
+          "prestige_accumulated": null,
+          "regiment_id": null,
+          "house_id": 1105,
+          "death_date": "1066.12.30",
+          "death_reason": "\"death_battle\"",
+          "death_killer_id": 34120,
+          "saved_kills": null,
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": [
+            {
+              "key": "date",
+              "value": "1066.12.30"
+            },
+            {
+              "key": "reason",
+              "value": "\"death_battle\""
+            },
+            {
+              "key": "killer",
+              "value": "34120"
+            },
+            {
+              "key": "liege",
+              "value": "29829"
+            },
+            {
+              "key": "liege_title",
+              "value": "2141"
+            }
+          ],
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": true,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-character-33437-exact.txt",
+            "bytes": 960,
+            "sha256": "BCFFC16A0E51B301210C63D7C5587BADDF4C09474EE2A5875304AF4280DB2A3E"
+          }
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "451.0608",
+          "prestige_accumulated": "1151.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null,
+          "saved_kills": [
+            "33437"
+          ],
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": null,
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": false,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [
+            {
+              "path": "/alive_data#12/variables#0/data#0/None#0",
+              "complete_entry": [
+                {
+                  "key": "flag",
+                  "value": "\"signature_weapon\""
+                },
+                {
+                  "key": "data",
+                  "value": [
+                    {
+                      "key": "type",
+                      "value": "flag"
+                    },
+                    {
+                      "key": "flag",
+                      "value": "\"axe\""
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-pre-ui-checkpoint-character-34120-exact.txt",
+            "bytes": 1346,
+            "sha256": "49A743BD4D882E1AD283C70EF97F5CA5A20984BD98F52307A1CC87990B4880AC"
+          }
+        }
+      ],
+      "saved_combat_endpoint": [
+        {
+          "path": "/combat_results[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "47032",
+                "47031",
+                "47029",
+                "34484",
+                "44476",
+                "33884",
+                "36303",
+                "34117",
+                "34120",
+                "54140",
+                "54144",
+                "54145",
+                "54141",
+                "30517",
+                "36673",
+                "35124",
+                "34470",
+                "53853",
+                "53854"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            },
+            "defender": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "33435",
+                "36077",
+                "32716",
+                "32440",
+                "34333",
+                "34867",
+                "43706",
+                "43712",
+                "33437",
+                "35637",
+                "30784"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            }
+          },
+          "saved_width": null,
+          "saved_base_width": null
+        },
+        {
+          "path": "/combats[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": [
+                "16777221",
+                "16777231",
+                "27",
+                "22",
+                "28"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "87",
+                "90",
+                "91",
+                "92",
+                "104",
+                "105",
+                "106",
+                "110",
+                "111",
+                "112",
+                "113",
+                "114",
+                "115",
+                "217",
+                "219",
+                "220",
+                "221",
+                "222",
+                "176",
+                "177",
+                "179",
+                "180",
+                "181",
+                "182",
+                "223",
+                "225",
+                "226"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": null,
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "31549"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "294317"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "33.39427"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32725"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "755221"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "127.95878"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34320"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "380966"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "55.47"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32231"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "1105800"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "106.14902"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34474"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "136205"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "9.82319"
+                  }
+                ]
+              ]
+            },
+            "defender": {
+              "saved_army_order": [
+                "18"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "51",
+                "52",
+                "53",
+                "57",
+                "58",
+                "59",
+                "60",
+                "61",
+                "62",
+                "63",
+                "64",
+                "66",
+                "67"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": [
+                {
+                  "key": "list",
+                  "value": [
+                    {
+                      "key": null,
+                      "value": [
+                        {
+                          "key": "name",
+                          "value": "\"slain_side_knights\""
+                        },
+                        {
+                          "key": "item",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "char"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "33437"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "duration",
+                          "value": [
+                            {
+                              "key": null,
+                              "value": "1"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "29829"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "1019653"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "463.67764"
+                  }
+                ]
+              ]
+            }
+          },
+          "saved_width": "2199",
+          "saved_base_width": "2444"
+        }
+      ],
+      "saved_RNG_top_level": {
+        "random_seed": {
+          "line": 1274,
+          "raw_value": "2705320081",
+          "uint32": 2705320081
+        },
+        "random_count": {
+          "line": 1275,
+          "raw_value": "421813",
+          "uint32": 421813
+        },
+        "speed": {
+          "line": 1276,
+          "raw_value": "0"
+        },
+        "date": {
+          "line": 1277,
+          "raw_value": "1066.12.30"
+        }
+      }
+    },
+    {
+      "label": "after",
+      "projection": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-full-selected-saved-projection.json",
+        "bytes": 2627747,
+        "sha256": "CF95409C93A19193775B89DCF3840F7163286FCA6EDFF6C08D01185F549C7D92"
+      },
+      "date_raw": 53146872,
+      "characters": [
+        {
+          "character_id": 33437,
+          "status": "DEAD",
+          "base_skills": [
+            4,
+            0,
+            4,
+            6,
+            6,
+            2
+          ],
+          "trait_indices": [
+            50,
+            76,
+            54,
+            16,
+            236
+          ],
+          "trait_keys": [
+            "temperate",
+            "callous",
+            "diligent",
+            "education_martial_2",
+            "logistician"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": null,
+          "prestige_accumulated": null,
+          "regiment_id": null,
+          "house_id": 1105,
+          "death_date": "1066.12.30",
+          "death_reason": "\"death_battle\"",
+          "death_killer_id": 34120,
+          "saved_kills": null,
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": [
+            {
+              "key": "date",
+              "value": "1066.12.30"
+            },
+            {
+              "key": "reason",
+              "value": "\"death_battle\""
+            },
+            {
+              "key": "killer",
+              "value": "34120"
+            },
+            {
+              "key": "liege",
+              "value": "29829"
+            },
+            {
+              "key": "liege_title",
+              "value": "2141"
+            }
+          ],
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": true,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-character-33437-exact.txt",
+            "bytes": 960,
+            "sha256": "BCFFC16A0E51B301210C63D7C5587BADDF4C09474EE2A5875304AF4280DB2A3E"
+          }
+        },
+        {
+          "character_id": 34120,
+          "status": "ALIVE",
+          "base_skills": [
+            7,
+            5,
+            4,
+            6,
+            8,
+            7
+          ],
+          "trait_indices": [
+            62,
+            69,
+            71,
+            16,
+            248
+          ],
+          "trait_keys": [
+            "honest",
+            "arbitrary",
+            "cynical",
+            "education_martial_2",
+            "rough_terrain_expert"
+          ],
+          "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+          "prestige_currency": "451.0608",
+          "prestige_accumulated": "1151.0608",
+          "regiment_id": 115,
+          "house_id": 1053,
+          "death_date": null,
+          "death_reason": null,
+          "death_killer_id": null,
+          "saved_kills": [
+            "33437"
+          ],
+          "saved_trait_xp_amounts": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ],
+          "complete_saved_death_data": null,
+          "saved_death_artifact_field": null,
+          "saved_death_artifact_missing_not_actual_native_null": false,
+          "trait_XP_original_field_candidates": [
+            {
+              "key": "trait_xp_amounts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "0"
+                }
+              ]
+            }
+          ],
+          "signature_weapon_entries": [
+            {
+              "path": "/alive_data#12/variables#0/data#0/None#0",
+              "complete_entry": [
+                {
+                  "key": "flag",
+                  "value": "\"signature_weapon\""
+                },
+                {
+                  "key": "data",
+                  "value": [
+                    {
+                      "key": "type",
+                      "value": "flag"
+                    },
+                    {
+                      "key": "flag",
+                      "value": "\"axe\""
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "complete_selected_character_extract": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after-character-34120-exact.txt",
+            "bytes": 1346,
+            "sha256": "49A743BD4D882E1AD283C70EF97F5CA5A20984BD98F52307A1CC87990B4880AC"
+          }
+        }
+      ],
+      "saved_combat_endpoint": [
+        {
+          "path": "/combat_results[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "47032",
+                "47031",
+                "47029",
+                "34484",
+                "44476",
+                "33884",
+                "36303",
+                "34117",
+                "34120",
+                "54140",
+                "54144",
+                "54145",
+                "54141",
+                "30517",
+                "36673",
+                "35124",
+                "34470",
+                "53853",
+                "53854"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            },
+            "defender": {
+              "saved_army_order": null,
+              "saved_men_at_arms_regiment_order": null,
+              "saved_knight_stats_character_order": [
+                "33435",
+                "36077",
+                "32716",
+                "32440",
+                "34333",
+                "34867",
+                "43706",
+                "43712",
+                "33437",
+                "35637",
+                "30784"
+              ],
+              "complete_variables": null,
+              "complete_character_casualty_rows": []
+            }
+          },
+          "saved_width": null,
+          "saved_base_width": null
+        },
+        {
+          "path": "/combats[0]/16777218[0]",
+          "sides": {
+            "attacker": {
+              "saved_army_order": [
+                "16777221",
+                "16777231",
+                "27",
+                "22",
+                "28"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "87",
+                "90",
+                "91",
+                "92",
+                "104",
+                "105",
+                "106",
+                "110",
+                "111",
+                "112",
+                "113",
+                "114",
+                "115",
+                "217",
+                "219",
+                "220",
+                "221",
+                "222",
+                "176",
+                "177",
+                "179",
+                "180",
+                "181",
+                "182",
+                "223",
+                "225",
+                "226"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": null,
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "31549"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "294317"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "33.39427"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32725"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "755221"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "127.95878"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34320"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "380966"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "55.47"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "32231"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "1105800"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "106.14902"
+                  }
+                ],
+                [
+                  {
+                    "key": "character",
+                    "value": "34474"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "136205"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "9.82319"
+                  }
+                ]
+              ]
+            },
+            "defender": {
+              "saved_army_order": [
+                "18"
+              ],
+              "saved_men_at_arms_regiment_order": [
+                "51",
+                "52",
+                "53",
+                "57",
+                "58",
+                "59",
+                "60",
+                "61",
+                "62",
+                "63",
+                "64",
+                "66",
+                "67"
+              ],
+              "saved_knight_stats_character_order": null,
+              "complete_variables": [
+                {
+                  "key": "list",
+                  "value": [
+                    {
+                      "key": null,
+                      "value": [
+                        {
+                          "key": "name",
+                          "value": "\"slain_side_knights\""
+                        },
+                        {
+                          "key": "item",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "char"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "33437"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "duration",
+                          "value": [
+                            {
+                              "key": null,
+                              "value": "1"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "complete_character_casualty_rows": [
+                [
+                  {
+                    "key": "character",
+                    "value": "29829"
+                  },
+                  {
+                    "key": "contribution",
+                    "value": "1019653"
+                  },
+                  {
+                    "key": "casualties",
+                    "value": "463.67764"
+                  }
+                ]
+              ]
+            }
+          },
+          "saved_width": "2199",
+          "saved_base_width": "2444"
+        }
+      ],
+      "saved_RNG_top_level": {
+        "random_seed": {
+          "line": 1274,
+          "raw_value": "2705320081",
+          "uint32": 2705320081
+        },
+        "random_count": {
+          "line": 1275,
+          "raw_value": "421813",
+          "uint32": 421813
+        },
+        "speed": {
+          "line": 1276,
+          "raw_value": "0"
+        },
+        "date": {
+          "line": 1277,
+          "raw_value": "1066.12.30"
+        }
+      }
+    }
+  ],
+  "three_window_endpoints": [
+    {
+      "interval": "before_UI_saved_endpoints",
+      "full_endpoint_original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\before_UI_saved_endpoints-complete-endpoint-deltas.json",
+        "bytes": 3033,
+        "sha256": "E3710E6AF6BBE5DE19528C724956A60B069B2F2E830AF9A1F8AB99E1FF47D84C"
+      },
+      "saved_RNG": {
+        "random_seed": {
+          "before": 2705320081,
+          "after": 2705320081,
+          "equal": true,
+          "uint32_delta_modulo": 0
+        },
+        "random_count": {
+          "before": 420865,
+          "after": 420865,
+          "equal": true,
+          "uint32_delta_modulo": 0
+        }
+      },
+      "full_two_character_leaf_deltas": [
+        {
+          "character_id": 33437,
+          "full_scalar_leaf_deltas": [
+            {
+              "path": "/dna[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "\"v8u/yzpCOkK/jr+OAG8AbwGMAYwAcwBzAH0AfQGEAYQBgwGDAHUAdQB+AH4BgQGBAG0AbQGcAZwAWQBZAH8AfwGBAYEAZwBnAEAAQAGCAYIBkAGQAGYAZgB1AHUBjAGMAZgBmAGhAaEBigGKAH4AfgGLAYsBiwGLAYsBiwGfAZ8AFQAVAGYAZgBoAGgBGwEbASQBJAAYABgAbwBvABkAGQAlACUAGQAZABYAFgFVAVUBdgF2AQcBBwEtAS0BGgEaAUMBQwFAAUABfwF/AAQABAByAHIAJgAmAB0AHQAHAAcBKQEpAAAAAAENAQ0AAAAAAAQABAFDAUMBGQEZACIAIgAQABAASgBKABMAEwFpAWkBCQEJAwQDBAEdAR0BJAEkABcAFwEYARgBMQExAAsACwEDAQMBwQHBARMBEwFgAWAA6QDpA9QD1AETARMAmgCaAAgACABBAEEDJwMnAEsASwAmACYCAAIAA7gDuAGIAYgDfwN/AQABAAdaB1oCLwIvApUClQKyArIAqACoAGkAaQGbAZsA5QDlAAAAAAFgAWA=\""
+            }
+          ]
+        },
+        {
+          "character_id": 34120,
+          "full_scalar_leaf_deltas": [
+            {
+              "path": "/dna[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "\"S/NL86adpp00vzS/AZABkAB8AHwBigGKAYABgAGEAYQBiwGLAH0AfQB3AHcBfwF/AHoAegGlAaUAeAB4AF0AXQGVAZUBlgGWAB8AHwB/AH8BhQGFAHEAcQGFAYUBiwGLAYwBjAB5AHkAegB6AYEBgQBzAHMAbwBvAeEB4QGtAa0BngGeAHEAcQBnAGcBAAEAAA4ADgAlACUAHgAeAHIAcgFaAVoAIQAhATwBPAAtAC0BHwEfAAIAAgEYARgAAAAAADMAMwAdAB0ANgA2ABwAHAApACkApACkARIBEgADAAMBPgE+AFkAWQEAAQABDAEMADQANABzAHMBVAFUAG0AbQAlACUBDQENAQMBAwExATEAUgBSAT0BPQEZARkBIgEiAeIB4gEcARwBIgEiAE8ATwFlAWUBAgECAQABAAEOAQ4AiQCJAEcARwBoAGgAKQApAAUABQBcAFwAAgACApsCmwAeAB4CAAIAANYA1gF2AXYCeQJ5CQAJAAV0BXQAQgBCCvoK+gHhAeEBwwHDArICsgHcAdwAPQA9AAAAAAFQAVA=\""
+            }
+          ]
+        }
+      ],
+      "battle_ledger_slain_knight_entry_deltas": [
+        {
+          "path": "/combat_results[0]/16777218[0]",
+          "selected_leaf_deltas": []
+        },
+        {
+          "path": "/combats[0]/16777218[0]",
+          "selected_leaf_deltas": []
+        }
+      ],
+      "house_DB_change_count": 0,
+      "all_accolade_saved_deltas": [
+        {
+          "name": "accolades",
+          "all_scalar_leaf_deltas": []
+        }
+      ]
+    },
+    {
+      "interval": "single_day_saved_endpoints",
+      "full_endpoint_original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\single_day_saved_endpoints-complete-endpoint-deltas.json",
+        "bytes": 54246,
+        "sha256": "6CD5670473D9681175543F259B9DC39291AE29BD722CA847F822EE607F0833F2"
+      },
+      "saved_RNG": {
+        "random_seed": {
+          "before": 2705320081,
+          "after": 2705320081,
+          "equal": true,
+          "uint32_delta_modulo": 0
+        },
+        "random_count": {
+          "before": 420865,
+          "after": 421813,
+          "equal": false,
+          "uint32_delta_modulo": 948
+        }
+      },
+      "full_two_character_leaf_deltas": [
+        {
+          "character_id": 33437,
+          "full_scalar_leaf_deltas": [
+            {
+              "path": "/alive_data[0]/activity_data[0]/{}",
+              "before_present": true,
+              "before": null,
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/fertility[0]",
+              "before_present": true,
+              "before": "0.5",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/health[0]",
+              "before_present": true,
+              "before": "4.26192",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/influence[0]/currency[0]",
+              "before_present": true,
+              "before": "120",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/languages[0]/#array[0]",
+              "before_present": true,
+              "before": "language_french",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/location[0]/location[0]",
+              "before_present": true,
+              "before": "2633",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/piety[0]/accumulated[0]",
+              "before_present": true,
+              "before": "1007.6",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/piety[0]/currency[0]",
+              "before_present": true,
+              "before": "207.6",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/prestige[0]/accumulated[0]",
+              "before_present": true,
+              "before": "1000.3456",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/alive_data[0]/prestige[0]/currency[0]",
+              "before_present": true,
+              "before": "300.3456",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/court_data[0]/employer[0]",
+              "before_present": true,
+              "before": "29829",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/court_data[0]/join_court_date[0]",
+              "before_present": true,
+              "before": "1066.9.15",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/court_data[0]/knight[0]",
+              "before_present": true,
+              "before": "yes",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/court_data[0]/regiment[0]",
+              "before_present": true,
+              "before": "65",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/culture[0]",
+              "before_present": true,
+              "before": "73",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/dead_data[0]/date[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "1066.12.30"
+            },
+            {
+              "path": "/dead_data[0]/killer[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "34120"
+            },
+            {
+              "path": "/dead_data[0]/liege[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "29829"
+            },
+            {
+              "path": "/dead_data[0]/liege_title[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "2141"
+            },
+            {
+              "path": "/dead_data[0]/reason[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "\"death_battle\""
+            },
+            {
+              "path": "/faith[0]",
+              "before_present": true,
+              "before": "23",
+              "after_present": false,
+              "after": null
+            }
+          ]
+        },
+        {
+          "character_id": 34120,
+          "full_scalar_leaf_deltas": [
+            {
+              "path": "/alive_data[0]/kills[0]/#array[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "33437"
+            },
+            {
+              "path": "/alive_data[0]/prestige[0]/accumulated[0]",
+              "before_present": true,
+              "before": "1001.0608",
+              "after_present": true,
+              "after": "1151.0608"
+            },
+            {
+              "path": "/alive_data[0]/prestige[0]/currency[0]",
+              "before_present": true,
+              "before": "301.0608",
+              "after_present": true,
+              "after": "451.0608"
+            },
+            {
+              "path": "/alive_data[0]/variables[0]/data[0]/#array[0]/data[0]/flag[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "\"axe\""
+            },
+            {
+              "path": "/alive_data[0]/variables[0]/data[0]/#array[0]/data[0]/type[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "flag"
+            },
+            {
+              "path": "/alive_data[0]/variables[0]/data[0]/#array[0]/flag[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "\"signature_weapon\""
+            }
+          ]
+        }
+      ],
+      "battle_ledger_slain_knight_entry_deltas": [
+        {
+          "path": "/combat_results[0]/16777218[0]",
+          "selected_leaf_deltas": [
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[0]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "416.16251",
+              "after_present": true,
+              "after": "416.96382"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[0]/main_losses[0]",
+              "before_present": true,
+              "before": "18.09007",
+              "after_present": true,
+              "after": "18.27073"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[10]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "4.46463",
+              "after_present": true,
+              "after": "4.47741"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[11]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "5.98693",
+              "after_present": true,
+              "after": "6.00503"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[12]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "5.19768",
+              "after_present": true,
+              "after": "5.21304"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[13]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "5.19768",
+              "after_present": true,
+              "after": "5.21304"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[14]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "10.2949",
+              "after_present": true,
+              "after": "10.32794"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[15]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "4.98262",
+              "after_present": true,
+              "after": "4.99724"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[16]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "3.65653",
+              "after_present": true,
+              "after": "3.66658"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[17]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "2.33361",
+              "after_present": true,
+              "after": "2.33917"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[19]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "18.10742",
+              "after_present": true,
+              "after": "18.16768"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[1]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "522.8196",
+              "after_present": true,
+              "after": "522.50346"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[1]/main_losses[0]",
+              "before_present": true,
+              "before": "276.73734",
+              "after_present": true,
+              "after": "279.40812"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[20]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "8.29977",
+              "after_present": true,
+              "after": "8.32578"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[21]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "4.09692",
+              "after_present": true,
+              "after": "4.10835"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[22]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "1.29707",
+              "after_present": true,
+              "after": "1.29887"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[23]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "10.32829",
+              "after_present": true,
+              "after": "10.36132"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[24]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "3.43069",
+              "after_present": true,
+              "after": "3.43972"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[2]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "7.56617",
+              "after_present": true,
+              "after": "7.58972"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[3]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "6.77655",
+              "after_present": true,
+              "after": "6.79735"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[4]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "1.29476",
+              "after_present": true,
+              "after": "1.29687"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[5]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "77.76654",
+              "after_present": true,
+              "after": "77.82383"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[5]/main_losses[0]",
+              "before_present": true,
+              "before": "26.49847",
+              "after_present": true,
+              "after": "26.60561"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[7]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "22.30201",
+              "after_present": true,
+              "after": "23.51217"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[7]/main_losses[0]",
+              "before_present": true,
+              "before": "8.15372",
+              "after_present": true,
+              "after": "8.18723"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[8]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "8.356",
+              "after_present": true,
+              "after": "8.38228"
+            },
+            {
+              "path": "/attacker[0]/regiment_stats[0]/#array[9]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "6.77655",
+              "after_present": true,
+              "after": "6.79735"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[10]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "16.05493",
+              "after_present": true,
+              "after": "6.76695"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[10]/main_kills[0]",
+              "before_present": true,
+              "before": "18.89171",
+              "after_present": true,
+              "after": "19.08016"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[11]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "4.67864",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[12]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "2.51237",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[13]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "0.89313",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[14]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "0.06262",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[1]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "0.61702",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[2]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "0.06462",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[4]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "32.62856",
+              "after_present": true,
+              "after": "22.15878"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[4]/main_kills[0]",
+              "before_present": true,
+              "before": "30.76617",
+              "after_present": true,
+              "after": "31.3835"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[5]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "32.62856",
+              "after_present": true,
+              "after": "22.15878"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[5]/main_kills[0]",
+              "before_present": true,
+              "before": "30.76617",
+              "after_present": true,
+              "after": "31.3835"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[6]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "29.21727",
+              "after_present": true,
+              "after": "18.79987"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[6]/main_kills[0]",
+              "before_present": true,
+              "before": "28.38386",
+              "after_present": true,
+              "after": "28.90761"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[7]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "25.84215",
+              "after_present": true,
+              "after": "15.55243"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[7]/main_kills[0]",
+              "before_present": true,
+              "before": "26.00391",
+              "after_present": true,
+              "after": "26.43716"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[8]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "22.5151",
+              "after_present": true,
+              "after": "12.44304"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[8]/main_kills[0]",
+              "before_present": true,
+              "before": "23.62789",
+              "after_present": true,
+              "after": "23.97449"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[9]/damage_last_tick[0]",
+              "before_present": true,
+              "before": "19.24744",
+              "after_present": true,
+              "after": "9.50082"
+            },
+            {
+              "path": "/defender[0]/regiment_stats[0]/#array[9]/main_kills[0]",
+              "before_present": true,
+              "before": "21.2569",
+              "after_present": true,
+              "after": "21.52149"
+            }
+          ]
+        },
+        {
+          "path": "/combats[0]/16777218[0]",
+          "selected_leaf_deltas": [
+            {
+              "path": "/attacker[0]/character[0]/casualties[0]",
+              "before_present": true,
+              "before": "33.26833",
+              "after_present": true,
+              "after": "33.39427"
+            },
+            {
+              "path": "/attacker[0]/character[1]/casualties[0]",
+              "before_present": true,
+              "before": "127.47743",
+              "after_present": true,
+              "after": "127.95878"
+            },
+            {
+              "path": "/attacker[0]/character[2]/casualties[0]",
+              "before_present": true,
+              "before": "55.26338",
+              "after_present": true,
+              "after": "55.47"
+            },
+            {
+              "path": "/attacker[0]/character[3]/casualties[0]",
+              "before_present": true,
+              "before": "104.68221",
+              "after_present": true,
+              "after": "106.14902"
+            },
+            {
+              "path": "/attacker[0]/character[4]/casualties[0]",
+              "before_present": true,
+              "before": "9.10985",
+              "after_present": true,
+              "after": "9.82319"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[0]/current[0]",
+              "before_present": true,
+              "before": "133.72727",
+              "after_present": true,
+              "after": "133.41435"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[0]/soft_casualties[0]",
+              "before_present": true,
+              "before": "58.41193",
+              "after_present": true,
+              "after": "58.62629"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[10]/current[0]",
+              "before_present": true,
+              "before": "664.58352",
+              "after_present": true,
+              "after": "663.0284"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[10]/soft_casualties[0]",
+              "before_present": true,
+              "before": "76.32036",
+              "after_present": true,
+              "after": "77.38562"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[11]/current[0]",
+              "before_present": true,
+              "before": "344.28171",
+              "after_present": true,
+              "after": "343.4761"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[11]/soft_casualties[0]",
+              "before_present": true,
+              "before": "39.53711",
+              "after_present": true,
+              "after": "40.08896"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[12]/current[0]",
+              "before_present": true,
+              "before": "74.50877",
+              "after_present": true,
+              "after": "74.33442"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[12]/soft_casualties[0]",
+              "before_present": true,
+              "before": "8.55659",
+              "after_present": true,
+              "after": "8.67602"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[13]/current[0]",
+              "before_present": true,
+              "before": "22.26703",
+              "after_present": true,
+              "after": "22.21493"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[13]/soft_casualties[0]",
+              "before_present": true,
+              "before": "2.55715",
+              "after_present": true,
+              "after": "2.59284"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[14]/current[0]",
+              "before_present": true,
+              "before": "49.67254",
+              "after_present": true,
+              "after": "49.55631"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[14]/soft_casualties[0]",
+              "before_present": true,
+              "before": "5.70438",
+              "after_present": true,
+              "after": "5.784"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[15]/current[0]",
+              "before_present": true,
+              "before": "48.81613",
+              "after_present": true,
+              "after": "48.70191"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[15]/soft_casualties[0]",
+              "before_present": true,
+              "before": "5.60604",
+              "after_present": true,
+              "after": "5.68429"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[16]/current[0]",
+              "before_present": true,
+              "before": "412.6616",
+              "after_present": true,
+              "after": "411.69598"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[16]/soft_casualties[0]",
+              "before_present": true,
+              "before": "8.45183",
+              "after_present": true,
+              "after": "9.11328"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[17]/current[0]",
+              "before_present": true,
+              "before": "515.58425",
+              "after_present": true,
+              "after": "514.37779"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[17]/soft_casualties[0]",
+              "before_present": true,
+              "before": "10.55981",
+              "after_present": true,
+              "after": "11.38624"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[1]/current[0]",
+              "before_present": true,
+              "before": "4.8851",
+              "after_present": true,
+              "after": "4.87367"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[1]/soft_casualties[0]",
+              "before_present": true,
+              "before": "2.13382",
+              "after_present": true,
+              "after": "2.14165"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[2]/current[0]",
+              "before_present": true,
+              "before": "208.22373",
+              "after_present": true,
+              "after": "207.73649"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[2]/soft_casualties[0]",
+              "before_present": true,
+              "before": "90.95184",
+              "after_present": true,
+              "after": "91.2856"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[3]/current[0]",
+              "before_present": true,
+              "before": "4.27449",
+              "after_present": true,
+              "after": "4.26449"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[3]/soft_casualties[0]",
+              "before_present": true,
+              "before": "1.86708",
+              "after_present": true,
+              "after": "1.87393"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[4]/current[0]",
+              "before_present": true,
+              "before": "214.94061",
+              "after_present": true,
+              "after": "214.43765"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[4]/soft_casualties[0]",
+              "before_present": true,
+              "before": "93.8858",
+              "after_present": true,
+              "after": "94.23033"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[5]/current[0]",
+              "before_present": true,
+              "before": "4.27449",
+              "after_present": true,
+              "after": "4.26449"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[5]/soft_casualties[0]",
+              "before_present": true,
+              "before": "1.86708",
+              "after_present": true,
+              "after": "1.87393"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[6]/current[0]",
+              "before_present": true,
+              "before": "4.8851",
+              "after_present": true,
+              "after": "4.87367"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[6]/soft_casualties[0]",
+              "before_present": true,
+              "before": "2.13382",
+              "after_present": true,
+              "after": "2.14165"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[7]/current[0]",
+              "before_present": true,
+              "before": "25.03578",
+              "after_present": true,
+              "after": "24.9772"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[7]/soft_casualties[0]",
+              "before_present": true,
+              "before": "10.93561",
+              "after_present": true,
+              "after": "10.97574"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[8]/current[0]",
+              "before_present": true,
+              "before": "248.52505",
+              "after_present": true,
+              "after": "247.94351"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[8]/soft_casualties[0]",
+              "before_present": true,
+              "before": "108.55546",
+              "after_present": true,
+              "after": "108.95382"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[9]/current[0]",
+              "before_present": true,
+              "before": "642.31656",
+              "after_present": true,
+              "after": "640.81354"
+            },
+            {
+              "path": "/attacker[0]/levies[0]/#array[9]/soft_casualties[0]",
+              "before_present": true,
+              "before": "73.76322",
+              "after_present": true,
+              "after": "74.79279"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[0]/current[0]",
+              "before_present": true,
+              "before": "83.04509",
+              "after_present": true,
+              "after": "82.97082"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[0]/soft_casualties[0]",
+              "before_present": true,
+              "before": "11.61421",
+              "after_present": true,
+              "after": "11.66509"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[10]/current[0]",
+              "before_present": true,
+              "before": "0.94645",
+              "after_present": true,
+              "after": "0.9462"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[10]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.03678",
+              "after_present": true,
+              "after": "0.03696"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[11]/current[0]",
+              "before_present": true,
+              "before": "0.939",
+              "after_present": true,
+              "after": "0.93872"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[11]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.04189",
+              "after_present": true,
+              "after": "0.04209"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[12]/current[0]",
+              "before_present": true,
+              "before": "0.939",
+              "after_present": true,
+              "after": "0.93872"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[12]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.04189",
+              "after_present": true,
+              "after": "0.04209"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[13]/current[0]",
+              "before_present": true,
+              "before": "83.33596",
+              "after_present": true,
+              "after": "83.26283"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[13]/soft_casualties[0]",
+              "before_present": true,
+              "before": "11.41497",
+              "after_present": true,
+              "after": "11.46507"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[14]/current[0]",
+              "before_present": true,
+              "before": "0.96787",
+              "after_present": true,
+              "after": "0.96772"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[14]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.02212",
+              "after_present": true,
+              "after": "0.02223"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[15]/current[0]",
+              "before_present": true,
+              "before": "0.93662",
+              "after_present": true,
+              "after": "0.93633"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[15]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.04352",
+              "after_present": true,
+              "after": "0.04372"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[16]/current[0]",
+              "before_present": true,
+              "before": "0.91629",
+              "after_present": true,
+              "after": "0.91591"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[16]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.05743",
+              "after_present": true,
+              "after": "0.0577"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[17]/current[0]",
+              "before_present": true,
+              "before": "0.87685",
+              "after_present": true,
+              "after": "0.8763"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[17]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.08448",
+              "after_present": true,
+              "after": "0.08486"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[18]/current[0]",
+              "before_present": true,
+              "before": "377.34757",
+              "after_present": true,
+              "after": "377.01328"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[18]/soft_casualties[0]",
+              "before_present": true,
+              "before": "15.51698",
+              "after_present": true,
+              "after": "15.74597"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[1]/current[0]",
+              "before_present": true,
+              "before": "0.95697",
+              "after_present": true,
+              "after": "0.95677"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[1]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.02957",
+              "after_present": true,
+              "after": "0.02971"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[20]/current[0]",
+              "before_present": true,
+              "before": "0.994",
+              "after_present": true,
+              "after": "0.99391"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[20]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.00418",
+              "after_present": true,
+              "after": "0.00425"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[21]/current[0]",
+              "before_present": true,
+              "before": "0.98697",
+              "after_present": true,
+              "after": "0.98678"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[21]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.009",
+              "after_present": true,
+              "after": "0.00914"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[22]/current[0]",
+              "before_present": true,
+              "before": "0.97404",
+              "after_present": true,
+              "after": "0.97365"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[22]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.01786",
+              "after_present": true,
+              "after": "0.01813"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[23]/current[0]",
+              "before_present": true,
+              "before": "0.92384",
+              "after_present": true,
+              "after": "0.92273"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[23]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.05224",
+              "after_present": true,
+              "after": "0.05301"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[24]/current[0]",
+              "before_present": true,
+              "before": "98.84162",
+              "after_present": true,
+              "after": "98.74973"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[24]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.79353",
+              "after_present": true,
+              "after": "0.85648"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[25]/current[0]",
+              "before_present": true,
+              "before": "0.99797",
+              "after_present": true,
+              "after": "0.99781"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[25]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.00143",
+              "after_present": true,
+              "after": "0.00154"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[26]/current[0]",
+              "before_present": true,
+              "before": "0.99391",
+              "after_present": true,
+              "after": "0.99343"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[26]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.0042",
+              "after_present": true,
+              "after": "0.00453"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[2]/current[0]",
+              "before_present": true,
+              "before": "0.95229",
+              "after_present": true,
+              "after": "0.95207"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[2]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.03278",
+              "after_present": true,
+              "after": "0.03294"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[3]/current[0]",
+              "before_present": true,
+              "before": "0.8176",
+              "after_present": true,
+              "after": "0.81673"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[3]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.12504",
+              "after_present": true,
+              "after": "0.12564"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[4]/current[0]",
+              "before_present": true,
+              "before": "215.87748",
+              "after_present": true,
+              "after": "215.53735"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[4]/soft_casualties[0]",
+              "before_present": true,
+              "before": "57.62405",
+              "after_present": true,
+              "after": "57.85704"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[6]/current[0]",
+              "before_present": true,
+              "before": "74.11478",
+              "after_present": true,
+              "after": "74.00837"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[6]/soft_casualties[0]",
+              "before_present": true,
+              "before": "17.7315",
+              "after_present": true,
+              "after": "17.8044"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[7]/current[0]",
+              "before_present": true,
+              "before": "0.96082",
+              "after_present": true,
+              "after": "0.96064"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[7]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.02695",
+              "after_present": true,
+              "after": "0.02708"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[8]/current[0]",
+              "before_present": true,
+              "before": "0.95229",
+              "after_present": true,
+              "after": "0.95207"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[8]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.03278",
+              "after_present": true,
+              "after": "0.03294"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[9]/current[0]",
+              "before_present": true,
+              "before": "0.94091",
+              "after_present": true,
+              "after": "0.94058"
+            },
+            {
+              "path": "/attacker[0]/men_at_arms[0]/#array[9]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.04057",
+              "after_present": true,
+              "after": "0.0408"
+            },
+            {
+              "path": "/defender[0]/character[0]/casualties[0]",
+              "before_present": true,
+              "before": "462.92847",
+              "after_present": true,
+              "after": "463.67764"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[11]/regiment[0]",
+              "before_present": true,
+              "before": "65",
+              "after_present": true,
+              "after": "66"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[11]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.64012",
+              "after_present": true,
+              "after": "0.6401"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[12]/regiment[0]",
+              "before_present": true,
+              "before": "66",
+              "after_present": true,
+              "after": "67"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[12]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.6401",
+              "after_present": true,
+              "after": "0.64009"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[13]/current[0]",
+              "before_present": true,
+              "before": "0",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[13]/regiment[0]",
+              "before_present": true,
+              "before": "67",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[13]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.64009",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[3]/current[0]",
+              "before_present": true,
+              "before": "0.37685",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[3]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.39893",
+              "after_present": true,
+              "after": "0.64012"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[4]/current[0]",
+              "before_present": true,
+              "before": "0.37685",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[4]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.39893",
+              "after_present": true,
+              "after": "0.64012"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[5]/current[0]",
+              "before_present": true,
+              "before": "0.34432",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[5]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.41973",
+              "after_present": true,
+              "after": "0.6401"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[6]/current[0]",
+              "before_present": true,
+              "before": "0.30858",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[6]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.44262",
+              "after_present": true,
+              "after": "0.64012"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[7]/current[0]",
+              "before_present": true,
+              "before": "0.26933",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[7]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.46774",
+              "after_present": true,
+              "after": "0.64012"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[8]/current[0]",
+              "before_present": true,
+              "before": "0.22621",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[8]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.49533",
+              "after_present": true,
+              "after": "0.64011"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[9]/current[0]",
+              "before_present": true,
+              "before": "0.17902",
+              "after_present": true,
+              "after": "0"
+            },
+            {
+              "path": "/defender[0]/men_at_arms[0]/#array[9]/soft_casualties[0]",
+              "before_present": true,
+              "before": "0.52555",
+              "after_present": true,
+              "after": "0.64013"
+            },
+            {
+              "path": "/defender[0]/variables[0]/list[0]/#array[0]/duration[0]/#array[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "1"
+            },
+            {
+              "path": "/defender[0]/variables[0]/list[0]/#array[0]/item[0]/identity[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "33437"
+            },
+            {
+              "path": "/defender[0]/variables[0]/list[0]/#array[0]/item[0]/type[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "char"
+            },
+            {
+              "path": "/defender[0]/variables[0]/list[0]/#array[0]/name[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "\"slain_side_knights\""
+            }
+          ]
+        }
+      ],
+      "house_DB_change_count": 24,
+      "all_accolade_saved_deltas": [
+        {
+          "name": "accolades",
+          "all_scalar_leaf_deltas": [
+            {
+              "path": "/database[0]/146[0]/glory[0]",
+              "before_present": true,
+              "before": "110",
+              "after_present": true,
+              "after": "135"
+            },
+            {
+              "path": "/database[0]/146[0]/variables[0]/data[0]/#array[0]/data[0]/identity[0]",
+              "before_present": true,
+              "before": "1000000",
+              "after_present": true,
+              "after": "3500000"
+            },
+            {
+              "path": "/database[0]/323[0]/acclaimed[0]",
+              "before_present": true,
+              "before": "44623",
+              "after_present": true,
+              "after": "50683"
+            },
+            {
+              "path": "/database[0]/323[0]/glory[0]",
+              "before_present": true,
+              "before": "125",
+              "after_present": true,
+              "after": "50"
+            },
+            {
+              "path": "/database[0]/323[0]/history[0]/#array[0]/acclaimed[0]",
+              "before_present": true,
+              "before": "44623",
+              "after_present": true,
+              "after": "50683"
+            },
+            {
+              "path": "/database[0]/323[0]/history[0]/#array[0]/date[0]",
+              "before_present": true,
+              "before": "1066.10.28",
+              "after_present": true,
+              "after": "1066.12.30"
+            },
+            {
+              "path": "/database[0]/323[0]/history[0]/#array[1]/acclaimed[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "44623"
+            },
+            {
+              "path": "/database[0]/323[0]/history[0]/#array[1]/date[0]",
+              "before_present": false,
+              "before": null,
+              "after_present": true,
+              "after": "1066.10.28"
+            },
+            {
+              "path": "/database[0]/323[0]/successor[0]",
+              "before_present": true,
+              "before": "50683",
+              "after_present": false,
+              "after": null
+            },
+            {
+              "path": "/database[0]/323[0]/variables[0]/data[0]/#array[0]/data[0]/identity[0]",
+              "before_present": true,
+              "before": "2500000",
+              "after_present": false,
+              "after": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "interval": "after_UI_saved_endpoints",
+      "full_endpoint_original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-four-save-endpoint-audit-reinforcement-a01\\after_UI_saved_endpoints-complete-endpoint-deltas.json",
+        "bytes": 1566,
+        "sha256": "31685C1530B5170AF5F17905719EA658273CB5610944C6D18982D03F8DBBC460"
+      },
+      "saved_RNG": {
+        "random_seed": {
+          "before": 2705320081,
+          "after": 2705320081,
+          "equal": true,
+          "uint32_delta_modulo": 0
+        },
+        "random_count": {
+          "before": 421813,
+          "after": 421813,
+          "equal": true,
+          "uint32_delta_modulo": 0
+        }
+      },
+      "full_two_character_leaf_deltas": [
+        {
+          "character_id": 33437,
+          "full_scalar_leaf_deltas": []
+        },
+        {
+          "character_id": 34120,
+          "full_scalar_leaf_deltas": []
+        }
+      ],
+      "battle_ledger_slain_knight_entry_deltas": [
+        {
+          "path": "/combat_results[0]/16777218[0]",
+          "selected_leaf_deltas": []
+        },
+        {
+          "path": "/combats[0]/16777218[0]",
+          "selected_leaf_deltas": []
+        }
+      ],
+      "house_DB_change_count": 0,
+      "all_accolade_saved_deltas": [
+        {
+          "name": "accolades",
+          "all_scalar_leaf_deltas": []
+        }
+      ]
+    }
+  ],
+  "actual_UI_knight_getter_outputs": [
+    {
+      "label": "before",
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-root-review-combat-readonly.json",
+        "bytes": 107068,
+        "sha256": "F588423239B7651F207DB91E98B0F1705743A821371C2344C997A55BCCFD8C9B"
+      },
+      "date_raw": 53146848,
+      "native_revision": 5,
+      "GUI_original_thread": 8264,
+      "scope": "original_native_UI_GetLeft/RightKnightBreakdown_output_not_pixels_or_full_regiment_roster",
+      "UI_roster_full_ids_flag": false,
+      "left": {
+        "native_UI_count": 11,
+        "original_ONCLICK_CharacterID_order": [
+          33435,
+          36077,
+          32716,
+          32440,
+          34333,
+          34867,
+          43706,
+          43712,
+          33437,
+          35637,
+          30784
+        ],
+        "original_markup": "\u0015ONCLICK:CHARACTER,33435 \u0015TOOLTIP:CHARACTER,33435 \u0015L \u0015high 伯爵\u0015!\u0015high 罗贝尔\u0015!\u0015!\u0015!\u0015!：14\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36077 \u0015TOOLTIP:CHARACTER,36077 \u0015L \u0015high 君士坦丁\u0015!·\u0015high 德· 欧特维尔\u0015!\u0015!\u0015!\u0015!：14\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,32716 \u0015TOOLTIP:CHARACTER,32716 \u0015L \u0015high 伯爵\u0015!\u0015high 罗杰\u0015!\u0015!\u0015!\u0015!：13\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,32440 \u0015TOOLTIP:CHARACTER,32440 \u0015L \u0015high 伯爵\u0015!\u0015high 若弗鲁瓦\u0015!\u0015!\u0015!\u0015!：12\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34333 \u0015TOOLTIP:CHARACTER,34333 \u0015L \u0015high 伯爵\u0015!\u0015high 若弗鲁瓦\u0015!\u0015!\u0015!\u0015!：11\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34867 \u0015TOOLTIP:CHARACTER,34867 \u0015L \u0015high 伯爵\u0015!\u0015high 阿伯拉尔\u0015!\u0015!\u0015!\u0015!：10\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,43706 \u0015TOOLTIP:CHARACTER,43706 \u0015L \u0015high 市长\u0015!\u0015high 居伊\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,43712 \u0015TOOLTIP:CHARACTER,43712 \u0015L \u0015high 市长\u0015!\u0015high 亨利\u0015!\u0015!\u0015!\u0015!：5\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,33437 \u0015TOOLTIP:CHARACTER,33437 \u0015L \u0015high 图尔吉塞\u0015!·\u0015high 德· 圣塞韦里诺\u0015!\u0015!\u0015!\u0015!：4\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,35637 \u0015TOOLTIP:CHARACTER,35637 \u0015L \u0015high 塞洛\u0015!·\u0015high 德· 欧特维尔\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,30784 \u0015TOOLTIP:CHARACTER,30784 \u0015L \u0015high 罗贝尔\u0015!·\u0015high 德· 莫尔坦\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!"
+      },
+      "right": {
+        "native_UI_count": 19,
+        "original_ONCLICK_CharacterID_order": [
+          47032,
+          47031,
+          47029,
+          34484,
+          44476,
+          33884,
+          36303,
+          34117,
+          34120,
+          54140,
+          54144,
+          54145,
+          54141,
+          30517,
+          36673,
+          35124,
+          34470,
+          53853,
+          53854
+        ],
+        "original_markup": "\u0015ONCLICK:CHARACTER,47032 \u0015TOOLTIP:CHARACTER,47032 \u0015L \u0015high 穆罕默德\u0015!\u0015!\u0015!\u0015!：10\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,47031 \u0015TOOLTIP:CHARACTER,47031 \u0015L \u0015high 阿西姆\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,47029 \u0015TOOLTIP:CHARACTER,47029 \u0015L \u0015high 阿塔纳西\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34484 \u0015TOOLTIP:CHARACTER,34484 \u0015L \u0015high 瓦利\u0015!\u0015high 阿卜杜勒‑哈克\u0015!\u0015!\u0015!\u0015!：11\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,44476 \u0015TOOLTIP:CHARACTER,44476 \u0015L \u0015high 纳伊卜\u0015!\u0015high 加尼姆\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,33884 \u0015TOOLTIP:CHARACTER,33884 \u0015L \u0015high 阿卜杜拉\u0015!·\u0015high 齐里\u0015!\u0015!\u0015!\u0015!：6\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36303 \u0015TOOLTIP:CHARACTER,36303 \u0015L \u0015high 阿尤布\u0015!·\u0015high 齐里\u0015!\u0015!\u0015!\u0015!：8\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34117 \u0015TOOLTIP:CHARACTER,34117 \u0015L \u0015high 沙姆斯丁\u0015!\u0015!\u0015!\u0015!：7\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34120 \u0015TOOLTIP:CHARACTER,34120 \u0015L \u0015high 阿姆鲁\u0015!·\u0015high 阿尤布\u0015!\u0015!\u0015!\u0015!：7\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54140 \u0015TOOLTIP:CHARACTER,54140 \u0015L \u0015high 米凯尔\u0015!\u0015!\u0015!\u0015!：8\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54144 \u0015TOOLTIP:CHARACTER,54144 \u0015L \u0015high 阿什拉夫\u0015!\u0015!\u0015!\u0015!：4\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54145 \u0015TOOLTIP:CHARACTER,54145 \u0015L \u0015high 达拉特\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54141 \u0015TOOLTIP:CHARACTER,54141 \u0015L \u0015high 阿比亚努斯\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,30517 \u0015TOOLTIP:CHARACTER,30517 \u0015L \u0015high 瓦利\u0015!\u0015high 阿卜杜拉\u0015!\u0015!\u0015!\u0015!：13\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36673 \u0015TOOLTIP:CHARACTER,36673 \u0015L \u0015high 谢赫\u0015!\u0015high 卡米尔\u0015!\u0015!\u0015!\u0015!：6\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,35124 \u0015TOOLTIP:CHARACTER,35124 \u0015L \u0015high 谢赫\u0015!\u0015high 巴迪斯\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34470 \u0015TOOLTIP:CHARACTER,34470 \u0015L \u0015high 谢赫\u0015!\u0015high 拉克姆希\u0015!\u0015!\u0015!\u0015!：1\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,53853 \u0015TOOLTIP:CHARACTER,53853 \u0015L \u0015high 希德尔\u0015!\u0015!\u0015!\u0015!：12\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,53854 \u0015TOOLTIP:CHARACTER,53854 \u0015L \u0015high 阿兹鲁尔\u0015!\u0015!\u0015!\u0015!：4\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!"
+      }
+    },
+    {
+      "label": "after",
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-root-review-combat-readonly.json",
+        "bytes": 107064,
+        "sha256": "8AEE1DF419937312966DA2A9689AF40C5F08931087DABFFB3FFFB53B65B4FE31"
+      },
+      "date_raw": 53146872,
+      "native_revision": 10,
+      "GUI_original_thread": 8264,
+      "scope": "original_native_UI_GetLeft/RightKnightBreakdown_output_not_pixels_or_full_regiment_roster",
+      "UI_roster_full_ids_flag": false,
+      "left": {
+        "native_UI_count": 10,
+        "original_ONCLICK_CharacterID_order": [
+          33435,
+          36077,
+          32716,
+          32440,
+          34333,
+          34867,
+          43706,
+          43712,
+          35637,
+          30784
+        ],
+        "original_markup": "\u0015ONCLICK:CHARACTER,33435 \u0015TOOLTIP:CHARACTER,33435 \u0015L \u0015high 伯爵\u0015!\u0015high 罗贝尔\u0015!\u0015!\u0015!\u0015!：14\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36077 \u0015TOOLTIP:CHARACTER,36077 \u0015L \u0015high 君士坦丁\u0015!·\u0015high 德· 欧特维尔\u0015!\u0015!\u0015!\u0015!：14\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,32716 \u0015TOOLTIP:CHARACTER,32716 \u0015L \u0015high 伯爵\u0015!\u0015high 罗杰\u0015!\u0015!\u0015!\u0015!：13\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,32440 \u0015TOOLTIP:CHARACTER,32440 \u0015L \u0015high 伯爵\u0015!\u0015high 若弗鲁瓦\u0015!\u0015!\u0015!\u0015!：12\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34333 \u0015TOOLTIP:CHARACTER,34333 \u0015L \u0015high 伯爵\u0015!\u0015high 若弗鲁瓦\u0015!\u0015!\u0015!\u0015!：11\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34867 \u0015TOOLTIP:CHARACTER,34867 \u0015L \u0015high 伯爵\u0015!\u0015high 阿伯拉尔\u0015!\u0015!\u0015!\u0015!：10\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,43706 \u0015TOOLTIP:CHARACTER,43706 \u0015L \u0015high 市长\u0015!\u0015high 居伊\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,43712 \u0015TOOLTIP:CHARACTER,43712 \u0015L \u0015high 市长\u0015!\u0015high 亨利\u0015!\u0015!\u0015!\u0015!：5\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,35637 \u0015TOOLTIP:CHARACTER,35637 \u0015L \u0015high 塞洛\u0015!·\u0015high 德· 欧特维尔\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,30784 \u0015TOOLTIP:CHARACTER,30784 \u0015L \u0015high 罗贝尔\u0015!·\u0015high 德· 莫尔坦\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!"
+      },
+      "right": {
+        "native_UI_count": 19,
+        "original_ONCLICK_CharacterID_order": [
+          47032,
+          47031,
+          47029,
+          34484,
+          44476,
+          33884,
+          36303,
+          34117,
+          34120,
+          54140,
+          54144,
+          54145,
+          54141,
+          30517,
+          36673,
+          35124,
+          34470,
+          53853,
+          53854
+        ],
+        "original_markup": "\u0015ONCLICK:CHARACTER,47032 \u0015TOOLTIP:CHARACTER,47032 \u0015L \u0015high 穆罕默德\u0015!\u0015!\u0015!\u0015!：10\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,47031 \u0015TOOLTIP:CHARACTER,47031 \u0015L \u0015high 阿西姆\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,47029 \u0015TOOLTIP:CHARACTER,47029 \u0015L \u0015high 阿塔纳西\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34484 \u0015TOOLTIP:CHARACTER,34484 \u0015L \u0015high 瓦利\u0015!\u0015high 阿卜杜勒‑哈克\u0015!\u0015!\u0015!\u0015!：11\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,44476 \u0015TOOLTIP:CHARACTER,44476 \u0015L \u0015high 纳伊卜\u0015!\u0015high 加尼姆\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,33884 \u0015TOOLTIP:CHARACTER,33884 \u0015L \u0015high 阿卜杜拉\u0015!·\u0015high 齐里\u0015!\u0015!\u0015!\u0015!：6\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36303 \u0015TOOLTIP:CHARACTER,36303 \u0015L \u0015high 阿尤布\u0015!·\u0015high 齐里\u0015!\u0015!\u0015!\u0015!：8\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34117 \u0015TOOLTIP:CHARACTER,34117 \u0015L \u0015high 沙姆斯丁\u0015!\u0015!\u0015!\u0015!：7\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34120 \u0015TOOLTIP:CHARACTER,34120 \u0015L \u0015high 阿姆鲁\u0015!·\u0015high 阿尤布\u0015!\u0015!\u0015!\u0015!：7\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54140 \u0015TOOLTIP:CHARACTER,54140 \u0015L \u0015high 米凯尔\u0015!\u0015!\u0015!\u0015!：8\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54144 \u0015TOOLTIP:CHARACTER,54144 \u0015L \u0015high 阿什拉夫\u0015!\u0015!\u0015!\u0015!：4\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54145 \u0015TOOLTIP:CHARACTER,54145 \u0015L \u0015high 达拉特\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54141 \u0015TOOLTIP:CHARACTER,54141 \u0015L \u0015high 阿比亚努斯\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,30517 \u0015TOOLTIP:CHARACTER,30517 \u0015L \u0015high 瓦利\u0015!\u0015high 阿卜杜拉\u0015!\u0015!\u0015!\u0015!：13\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36673 \u0015TOOLTIP:CHARACTER,36673 \u0015L \u0015high 谢赫\u0015!\u0015high 卡米尔\u0015!\u0015!\u0015!\u0015!：6\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,35124 \u0015TOOLTIP:CHARACTER,35124 \u0015L \u0015high 谢赫\u0015!\u0015high 巴迪斯\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34470 \u0015TOOLTIP:CHARACTER,34470 \u0015L \u0015high 谢赫\u0015!\u0015high 拉克姆希\u0015!\u0015!\u0015!\u0015!：1\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,53853 \u0015TOOLTIP:CHARACTER,53853 \u0015L \u0015high 希德尔\u0015!\u0015!\u0015!\u0015!：12\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,53854 \u0015TOOLTIP:CHARACTER,53854 \u0015L \u0015high 阿兹鲁尔\u0015!\u0015!\u0015!\u0015!：4\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!"
+      }
+    }
+  ],
+  "source_notice": "Runtime419cac1a956c7be356d886256c7bc689cda5327d and actual DLL0F752E3F50B778BE140CCE08589AFB88C9C08073D7EFDFFAD82C31330A51C42D; parser bytes are copied from that immutable source; later writable evaluator not used.",
+  "death_tuple_resolution": "Saved death date/reason/killer/artifact endpoint only; native request/queue/commit tuple unavailable.",
+  "native_monitor_status": "failed/acceptedfalse/flags8/truncated128; partial house/getter rows retained, no complete monitor inference.",
+  "case_13_domain_complete": false,
+  "global_bundle_complete": false,
+  "selector_closed": false,
+  "case_actual_death_cause_closed": false,
+  "six_gap_verdict": "This endpoint report does not replace separate current original-pixel UI reviews. Mechanism3 remain pending.",
+  "all_engine_RNG_unchanged": "UNKNOWN",
+  "semantic_limits": [
+    "No original scoped operation-before/after tree is available for branch-no-write or per-operation accounting.",
+    "No native source numericID bound by cached history; saved combat order and native UI markup order are separately reported.",
+    "Original native UI markup is freshgetter output, not a pixel approval or fullregiment roster proof.",
+    "Equal saved endpoint fields do not prove unchanged intraday state."
+  ],
+  "net_character_domain_checks": [
+    {
+      "interval": "before_UI",
+      "saved_only_comparisons": [
+        {
+          "character_id": 33437,
+          "base6skills_equal": true,
+          "traitkeys_equal": true,
+          "saved_trait_xp_amounts_equal": true,
+          "signature_variable_entries_equal": true,
+          "saved_kills_before": null,
+          "saved_kills_after": null
+        },
+        {
+          "character_id": 34120,
+          "base6skills_equal": true,
+          "traitkeys_equal": true,
+          "saved_trait_xp_amounts_equal": true,
+          "signature_variable_entries_equal": true,
+          "saved_kills_before": null,
+          "saved_kills_after": null
+        }
+      ]
+    },
+    {
+      "interval": "one_day",
+      "saved_only_comparisons": [
+        {
+          "character_id": 33437,
+          "base6skills_equal": true,
+          "traitkeys_equal": true,
+          "saved_trait_xp_amounts_equal": true,
+          "signature_variable_entries_equal": true,
+          "saved_kills_before": null,
+          "saved_kills_after": null
+        },
+        {
+          "character_id": 34120,
+          "base6skills_equal": true,
+          "traitkeys_equal": true,
+          "saved_trait_xp_amounts_equal": true,
+          "signature_variable_entries_equal": false,
+          "saved_kills_before": null,
+          "saved_kills_after": [
+            "33437"
+          ]
+        }
+      ]
+    },
+    {
+      "interval": "after_UI",
+      "saved_only_comparisons": [
+        {
+          "character_id": 33437,
+          "base6skills_equal": true,
+          "traitkeys_equal": true,
+          "saved_trait_xp_amounts_equal": true,
+          "signature_variable_entries_equal": true,
+          "saved_kills_before": null,
+          "saved_kills_after": null
+        },
+        {
+          "character_id": 34120,
+          "base6skills_equal": true,
+          "traitkeys_equal": true,
+          "saved_trait_xp_amounts_equal": true,
+          "signature_variable_entries_equal": true,
+          "saved_kills_before": [
+            "33437"
+          ],
+          "saved_kills_after": [
+            "33437"
+          ]
+        }
+      ]
+    }
+  ],
+  "saved_active_defender_regiment_endpoints": [
+    {
+      "label": "before-pre-ui-checkpoint",
+      "defender_army_order": [
+        "18"
+      ],
+      "defender_men_at_arms_regiment_order": [
+        "51",
+        "52",
+        "53",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "65",
+        "66",
+        "67"
+      ],
+      "defender_regiment_row_count": 14,
+      "saved_endpoints_only": true
+    },
+    {
+      "label": "before",
+      "defender_army_order": [
+        "18"
+      ],
+      "defender_men_at_arms_regiment_order": [
+        "51",
+        "52",
+        "53",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "65",
+        "66",
+        "67"
+      ],
+      "defender_regiment_row_count": 14,
+      "saved_endpoints_only": true
+    },
+    {
+      "label": "after-pre-ui-checkpoint",
+      "defender_army_order": [
+        "18"
+      ],
+      "defender_men_at_arms_regiment_order": [
+        "51",
+        "52",
+        "53",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "66",
+        "67"
+      ],
+      "defender_regiment_row_count": 13,
+      "saved_endpoints_only": true
+    },
+    {
+      "label": "after",
+      "defender_army_order": [
+        "18"
+      ],
+      "defender_men_at_arms_regiment_order": [
+        "51",
+        "52",
+        "53",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "66",
+        "67"
+      ],
+      "defender_regiment_row_count": 13,
+      "saved_endpoints_only": true
+    }
+  ],
+  "original_UI_getter_set_difference": {
+    "left": {
+      "before_order": [
+        33435,
+        36077,
+        32716,
+        32440,
+        34333,
+        34867,
+        43706,
+        43712,
+        33437,
+        35637,
+        30784
+      ],
+      "after_order": [
+        33435,
+        36077,
+        32716,
+        32440,
+        34333,
+        34867,
+        43706,
+        43712,
+        35637,
+        30784
+      ],
+      "removed": [
+        33437
+      ],
+      "added": []
+    },
+    "right": {
+      "before_order": [
+        47032,
+        47031,
+        47029,
+        34484,
+        44476,
+        33884,
+        36303,
+        34117,
+        34120,
+        54140,
+        54144,
+        54145,
+        54141,
+        30517,
+        36673,
+        35124,
+        34470,
+        53853,
+        53854
+      ],
+      "after_order": [
+        47032,
+        47031,
+        47029,
+        34484,
+        44476,
+        33884,
+        36303,
+        34117,
+        34120,
+        54140,
+        54144,
+        54145,
+        54141,
+        30517,
+        36673,
+        35124,
+        34470,
+        53853,
+        53854
+      ],
+      "removed": [],
+      "added": []
+    }
+  },
+  "actual_original_pixel_and_snapshot_bindings": [
+    {
+      "phase": "before",
+      "subject_id": 33437,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-victim-character-original-ui-binding.json",
+        "bytes": 390267,
+        "sha256": "C9C3069DC0E45A7C5038780B1087E3C4383E9ED80544F2A2224446C1E1FC6E76"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-victim-character-window.png",
+        "bytes": 6135354,
+        "sha256": "ECA52F282F6CF2DF3E343C6384F21D932082457E6141AE0B33C029C0CF90090C"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146848,
+      "paused": true,
+      "query_revision": 5,
+      "post_pixels_revision": 5,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "before",
+      "subject_id": 34120,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-killer-character-original-ui-binding.json",
+        "bytes": 390195,
+        "sha256": "AA2E65FF113E8391AC6B39260A8406D46633335FBE1D256C74FC11DE0D0A4AD6"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-killer-character-window.png",
+        "bytes": 6076370,
+        "sha256": "DB31590FBD8E46DD77FB95A1F26264FED187BA8EF7C32B5B36206B72EB0534BE"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146848,
+      "paused": true,
+      "query_revision": 5,
+      "post_pixels_revision": 5,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "before",
+      "subject_id": 16777218,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-original-ui-binding.json",
+        "bytes": 275957,
+        "sha256": "BAECAC5816B8926BDAD38D7FCA913FD132CE365A5C973CEBBAEAE03DDE19660F"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-window.png",
+        "bytes": 6203348,
+        "sha256": "C18F87C8E237E1E12449CA38694816D2991201C4205B84DFB361E6EB67DCAD0F"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146848,
+      "paused": true,
+      "query_revision": 5,
+      "post_pixels_revision": 5,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "before",
+      "subject_id": 16777218,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-fit-full-combat-panel-binding.json",
+        "bytes": 603425,
+        "sha256": "32B620E6D1FE6820D3E2AF2DD303CC6EB45CF71F6D5FA87950DE690E0953824A"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-fit-window.png",
+        "bytes": 6204128,
+        "sha256": "972EA811FD5463C9B44048EEC090A77392D797F4239FB32857A3FB941D4C2EA0"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146848,
+      "paused": true,
+      "query_revision": 5,
+      "post_pixels_revision": 5,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "before",
+      "original_root_review": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+        "bytes": 102218,
+        "sha256": "AD5E5185B7D32ABDAC5D4F7AB7A0CE8840A966D4F434E2FAB7B0D5C95432A9A3"
+      },
+      "reviewed_images": [
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-victim-character-window.png",
+          "bytes": 6135354,
+          "sha256": "ECA52F282F6CF2DF3E343C6384F21D932082457E6141AE0B33C029C0CF90090C"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-killer-character-window.png",
+          "bytes": 6076370,
+          "sha256": "DB31590FBD8E46DD77FB95A1F26264FED187BA8EF7C32B5B36206B72EB0534BE"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-combat-fit-window.png",
+          "bytes": 6204128,
+          "sha256": "972EA811FD5463C9B44048EEC090A77392D797F4239FB32857A3FB941D4C2EA0"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-left-knights-fallback-desktop-original.png",
+          "bytes": 5056193,
+          "sha256": "2DC7FDDB8B7ABAC94A4067FC0C9B7404EE95024554E6E714AF2D9561072F9920"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-right-knights-fallback-desktop-original.png",
+          "bytes": 5073038,
+          "sha256": "F48AF9036DEDCAC519BDD60BD151FFE52A30F119E862F82AE96E3F2B80266B52"
+        }
+      ],
+      "original_root_actual_pixel_review_flag": true,
+      "observations": [
+        "Victim33437 original page shows alive, age31 and displayed prowess4.",
+        "Related34120 original page shows alive, age27, displayed prowess7 and prestige301.",
+        "Full fitted original combat frame shows both commanders, center readings and complete bottom rows11/19 without an overlapping tooltip.",
+        "Original left tooltip shows all11 rows including victim at prowess4; original right tooltip shows all19 rows including related at prowess7.",
+        "All originals are paused1066-12-29; each role frame and desktop tooltip has current native before/post snapshot receipts.",
+        "Tooltip fallback uses measured1280x720 previews, original2560x1440 desktop sources and mapped moves with originalPNG/JSON receipts, foreground2491964/PID17420.",
+        "Native hover guard implementation is unchanged from the source-bound R0142 RTTI rejection diagnosis. No native hover rejection is fabricated for R0143.",
+        "The mouse was moved to an inspected blank character-pane region before monitor BEGIN; no day has yet been submitted."
+      ],
+      "movie_signoff": false,
+      "this_report_does_not_create_new_UI_approval": true
+    },
+    {
+      "phase": "after",
+      "subject_id": 33437,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-victim-character-original-ui-binding.json",
+        "bytes": 390221,
+        "sha256": "54F6953E933A0160E98CE2A230C20B6A557503407559C2A92743CCCE70FACB54"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-victim-character-window.png",
+        "bytes": 6167798,
+        "sha256": "68E8678CB4D513353794FA24BF9234019FE374017F27F2B2B8A775D3B84926B1"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146872,
+      "paused": true,
+      "query_revision": 10,
+      "post_pixels_revision": 10,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "after",
+      "subject_id": 34120,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-killer-character-original-ui-binding.json",
+        "bytes": 390211,
+        "sha256": "BA3C1AE59B3C64CB758ABF9682B3FEFBA8600E602FBFF6FF358188FC8C90E057"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-killer-character-window.png",
+        "bytes": 6206465,
+        "sha256": "C1918BBF1DD572A78E26F818C53394EFA025A15078FAD9E0279A3005E97D6B0C"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146872,
+      "paused": true,
+      "query_revision": 10,
+      "post_pixels_revision": 10,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "after",
+      "subject_id": 16777218,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-original-ui-binding.json",
+        "bytes": 287233,
+        "sha256": "FBA4EC1CA61EA00ABF17EEC200499FD05092A6E8FABA0CDD5985160B441FC672"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-window.png",
+        "bytes": 6183794,
+        "sha256": "DE57FFD24065896D76D2389B2F03BF6730C46905E13E2F3C1F173D9B3139FAD3"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146872,
+      "paused": true,
+      "query_revision": 10,
+      "post_pixels_revision": 10,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "after",
+      "subject_id": 16777218,
+      "binding": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-fit-full-combat-panel-binding.json",
+        "bytes": 602278,
+        "sha256": "30C9D2B2303591107852A67D8204E640AC581E48622892518D98B3EC8AF084C8"
+      },
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-fit-window.png",
+        "bytes": 6227197,
+        "sha256": "5480EE4720EBB04AEDBB58F34029A7E1B3A140DB52F77144C86B723BD2423342"
+      },
+      "PID": 17420,
+      "HWND": 2491964,
+      "kind": "original WGC HWND frame",
+      "date_raw": 53146872,
+      "paused": true,
+      "query_revision": 10,
+      "post_pixels_revision": 10,
+      "GUI_actual_thread": 8264,
+      "GUI_context": 1820812256736,
+      "GUI_owner": 1820812256736,
+      "samepaused_afterpixels_binding_verified": true,
+      "visual_approval_by_this_auditor": false,
+      "fullpanel_visual_claim_inferred": false
+    },
+    {
+      "phase": "after",
+      "original_root_review": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+        "bytes": 103092,
+        "sha256": "82D8560D0B770F8B98C963FDBA51F97B42F211C85CA53900BFBDB46EEF0F4972"
+      },
+      "reviewed_images": [
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-victim-character-window.png",
+          "bytes": 6167798,
+          "sha256": "68E8678CB4D513353794FA24BF9234019FE374017F27F2B2B8A775D3B84926B1"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-killer-character-window.png",
+          "bytes": 6206465,
+          "sha256": "C1918BBF1DD572A78E26F818C53394EFA025A15078FAD9E0279A3005E97D6B0C"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-fit-window.png",
+          "bytes": 6227197,
+          "sha256": "5480EE4720EBB04AEDBB58F34029A7E1B3A140DB52F77144C86B723BD2423342"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-left-knights-fallback-desktop-original.png",
+          "bytes": 5064788,
+          "sha256": "A94162910AD5AC89BA179028923C9E1309BB1FC9D05A71A3A6736F3B919F4A74"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-right-knights-fallback-desktop-original.png",
+          "bytes": 5080556,
+          "sha256": "D4492D3F8C2BB95C19CAB8EF2585A4124E6613B43D9D49804813E3976375009C"
+        },
+        {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-all-visible-desktop-original.png",
+          "bytes": 5100576,
+          "sha256": "9253AFE7175473B9FA461F0B63655966B17CF94EEBEA7C7CA43D061C8A2EEA86"
+        }
+      ],
+      "original_root_actual_pixel_review_flag": true,
+      "observations": [
+        "Victim33437 original page shows skull/death marker, age31, displayed prowess2; before original showed alive/prowess4.",
+        "Related34120 original page remains alive, age27, displayed prowess7 and prestige451; before original showed prestige301.",
+        "Full fitted and final blank-pointer original combat frames show both commanders, center readings and complete bottom rows10/19 without overlapping tooltip.",
+        "Left tooltip contains all10 rows, with victim removed; right tooltip contains all19 rows including related at displayed prowess7.",
+        "All after originals show paused1066-12-30 and have same-run source snapshots; no additional day submitted.",
+        "Mapped hover fallback used individually measured1280x720 preview rectangles, original2560x1440 desktop sources, actual foreground2491964/PID17420 and PNG/JSON move receipts.",
+        "The native hover guard is unchanged. No R0143 native hover error has been invented.",
+        "Actual trace FINISH failed managed_wire_cap: assembled1217950 bytes exceeds921600 cap; valid native fragment flags do not substitute the missing full exported DTO.",
+        "Actual variable monitor is uninstalled but has failure_flags8/truncated; its partial records cannot prove complete state coverage."
+      ],
+      "movie_signoff": false,
+      "this_report_does_not_create_new_UI_approval": true
+    }
+  ],
+  "actual_monitor_partial_only": {
+    "monitor_original": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\variable-monitor-finish-once.json",
+      "bytes": 711132,
+      "sha256": "3DC5612A918A9D5F018B68D9BA9EC5685A978A58FD572118075ED7E7C47DFCDE"
+    },
+    "result": "CALL_COMPLETED",
+    "accepted": false,
+    "status": "failed",
+    "schema": 1,
+    "failure_flags": 8,
+    "truncated": true,
+    "detours_uninstalled": true,
+    "record_count": 128,
+    "boundary_counts": {
+      "arm": 1,
+      "original_owner_return": 125,
+      "house_predicate_enter": 1,
+      "house_predicate_return": 1
+    },
+    "thread_counts": {
+      "8264": 58,
+      "16420": 1,
+      "17820": 2,
+      "8428": 36,
+      "13568": 2,
+      "2480": 13,
+      "6008": 14,
+      "10072": 2
+    },
+    "date_counts": {
+      "53146848": 3,
+      "53146872": 125
+    },
+    "character_counts": {
+      "-1": 3,
+      "34120": 1,
+      "33437": 124
+    },
+    "first": {
+      "sequence": 0,
+      "invocation": 0,
+      "boundary": "arm",
+      "failure_flags": 0,
+      "thread_id": 8264,
+      "date_raw": 53146848,
+      "character_id": -1,
+      "observed_character_id": -1,
+      "full_identity_matches": false,
+      "dead": false,
+      "owner_token": 0,
+      "previous_owner_token": 0,
+      "container_token": 0,
+      "owner_from_original_getter": false,
+      "owner_from_same_setter_invocation": false,
+      "key_id": 9203,
+      "duration": 0,
+      "value": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_value_decoding": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_scope_words": [
+        0,
+        0
+      ],
+      "setter_node_token": 0,
+      "setter_node_vtable_rva": 0,
+      "setter_node_hash": 0,
+      "execution_context_token": 0,
+      "native_root_scope_token": 0,
+      "native_scope_words": [
+        0,
+        0
+      ],
+      "caller_token": 0,
+      "native_stack_rvas": [],
+      "house_ids": [
+        -1,
+        -1
+      ],
+      "relation_type_token": 0,
+      "relation_type_id": -1,
+      "relation_type_key": "",
+      "event_producer": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "current_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      },
+      "original_boolean_read": false,
+      "original_boolean": false,
+      "original_return_bits": 0,
+      "daily_effect_context": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      }
+    },
+    "last": {
+      "sequence": 127,
+      "invocation": 0,
+      "boundary": "original_owner_return",
+      "failure_flags": 0,
+      "thread_id": 2480,
+      "date_raw": 53146872,
+      "character_id": 33437,
+      "observed_character_id": 33437,
+      "full_identity_matches": true,
+      "dead": true,
+      "owner_token": 0,
+      "previous_owner_token": 0,
+      "container_token": 0,
+      "owner_from_original_getter": true,
+      "owner_from_same_setter_invocation": false,
+      "key_id": 9203,
+      "duration": 0,
+      "value": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_value_decoding": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_scope_words": [
+        0,
+        0
+      ],
+      "setter_node_token": 0,
+      "setter_node_vtable_rva": 0,
+      "setter_node_hash": 0,
+      "execution_context_token": 0,
+      "native_root_scope_token": 0,
+      "native_scope_words": [
+        0,
+        0
+      ],
+      "caller_token": 0,
+      "native_stack_rvas": [],
+      "house_ids": [
+        -1,
+        -1
+      ],
+      "relation_type_token": 0,
+      "relation_type_id": -1,
+      "relation_type_key": "",
+      "event_producer": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "current_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      },
+      "original_boolean_read": false,
+      "original_boolean": false,
+      "original_return_bits": 0,
+      "daily_effect_context": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      }
+    },
+    "partial_actual_write_records": [],
+    "partial_house_records": [
+      {
+        "sequence": 3,
+        "invocation": 1,
+        "boundary": "house_predicate_enter",
+        "failure_flags": 0,
+        "thread_id": 17820,
+        "date_raw": 53146872,
+        "character_id": -1,
+        "observed_character_id": -1,
+        "full_identity_matches": false,
+        "dead": false,
+        "owner_token": 0,
+        "previous_owner_token": 0,
+        "container_token": 0,
+        "owner_from_original_getter": false,
+        "owner_from_same_setter_invocation": false,
+        "key_id": 9203,
+        "duration": 0,
+        "value": {
+          "read": false,
+          "present": false,
+          "expiration_raw": -1,
+          "scope_word0": 0,
+          "scope_word1": 0,
+          "flag_name_read": false,
+          "flag_index": 0,
+          "flag_identifier_epoch": 0,
+          "flag_identifier_count": 0,
+          "flag_name": ""
+        },
+        "requested_value_decoding": {
+          "read": false,
+          "present": false,
+          "expiration_raw": -1,
+          "scope_word0": 0,
+          "scope_word1": 0,
+          "flag_name_read": false,
+          "flag_index": 0,
+          "flag_identifier_epoch": 0,
+          "flag_identifier_count": 0,
+          "flag_name": ""
+        },
+        "requested_scope_words": [
+          0,
+          0
+        ],
+        "setter_node_token": 0,
+        "setter_node_vtable_rva": 0,
+        "setter_node_hash": 0,
+        "execution_context_token": 0,
+        "native_root_scope_token": 0,
+        "native_scope_words": [
+          0,
+          0
+        ],
+        "caller_token": 140696381701883,
+        "native_stack_rvas": [],
+        "house_ids": [
+          1105,
+          1053
+        ],
+        "relation_type_token": 1820230918880,
+        "relation_type_id": 0,
+        "relation_type_key": "default_house_relation",
+        "event_producer": {
+          "identity_read": false,
+          "invocation": 0,
+          "actual_original_execution_observed": false,
+          "identity_kind": "nearest_matched_notification_immediate_ancestor",
+          "matched_root_execution_depth": 0,
+          "active_effect_group_depth": 0,
+          "definition_token": 0,
+          "definition_index": 0,
+          "definition_id": 0,
+          "runtime_stats_ordinal": 0,
+          "definition_key": "",
+          "compiled_immediate_root_token": 0,
+          "definition_vtable_rva": 0,
+          "root_vtable_rva": 0,
+          "root_hash": 0,
+          "original_execute_rva": 0,
+          "children_data_token": 0,
+          "children_capacity": 0,
+          "children_count": 0,
+          "execution_context_token": 0,
+          "root_scope_token": 0,
+          "root_scope_words": [
+            0,
+            0
+          ],
+          "activation_death_commit_context": {
+            "read": false,
+            "context_kind": "currently_executing_original_264BCB0_same_thread",
+            "managed_daily_sequence_token": 0,
+            "invocation": 0,
+            "parent_invocation": 0,
+            "thread_id": 0,
+            "native_date_raw": 0,
+            "combat_id": -1,
+            "victim_id": -1,
+            "killer_id": -1,
+            "victim_full_identity_matches": false,
+            "killer_full_identity_matches": false,
+            "manager_token": 0,
+            "victim_token": 0,
+            "killer_token": 0,
+            "reason_token": 0,
+            "date_argument_token": 0,
+            "requested_death_date_raw": 0,
+            "reason_key_read": false,
+            "reason_key": "",
+            "artifact_token": 0,
+            "artifact_actual_null": false,
+            "artifact_id_read": false,
+            "artifact_id": -1
+          }
+        },
+        "current_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        },
+        "original_boolean_read": false,
+        "original_boolean": false,
+        "original_return_bits": 0,
+        "daily_effect_context": {
+          "read": true,
+          "managed_daily_sequence_token": 458459624966711775,
+          "invocation": 78,
+          "node_token": 1829239120528,
+          "node_vtable_rva": 71784176,
+          "node_hash": 3087433523,
+          "execution_context_token": 701262310896,
+          "depth": 8,
+          "combat_id": 16777218,
+          "side_index": 1,
+          "event_load_index": 11
+        }
+      },
+      {
+        "sequence": 4,
+        "invocation": 1,
+        "boundary": "house_predicate_return",
+        "failure_flags": 0,
+        "thread_id": 17820,
+        "date_raw": 53146872,
+        "character_id": -1,
+        "observed_character_id": -1,
+        "full_identity_matches": false,
+        "dead": false,
+        "owner_token": 0,
+        "previous_owner_token": 0,
+        "container_token": 0,
+        "owner_from_original_getter": false,
+        "owner_from_same_setter_invocation": false,
+        "key_id": 9203,
+        "duration": 0,
+        "value": {
+          "read": false,
+          "present": false,
+          "expiration_raw": -1,
+          "scope_word0": 0,
+          "scope_word1": 0,
+          "flag_name_read": false,
+          "flag_index": 0,
+          "flag_identifier_epoch": 0,
+          "flag_identifier_count": 0,
+          "flag_name": ""
+        },
+        "requested_value_decoding": {
+          "read": false,
+          "present": false,
+          "expiration_raw": -1,
+          "scope_word0": 0,
+          "scope_word1": 0,
+          "flag_name_read": false,
+          "flag_index": 0,
+          "flag_identifier_epoch": 0,
+          "flag_identifier_count": 0,
+          "flag_name": ""
+        },
+        "requested_scope_words": [
+          0,
+          0
+        ],
+        "setter_node_token": 0,
+        "setter_node_vtable_rva": 0,
+        "setter_node_hash": 0,
+        "execution_context_token": 0,
+        "native_root_scope_token": 0,
+        "native_scope_words": [
+          0,
+          0
+        ],
+        "caller_token": 140696381701883,
+        "native_stack_rvas": [],
+        "house_ids": [
+          1105,
+          1053
+        ],
+        "relation_type_token": 1820230918880,
+        "relation_type_id": 0,
+        "relation_type_key": "default_house_relation",
+        "event_producer": {
+          "identity_read": false,
+          "invocation": 0,
+          "actual_original_execution_observed": false,
+          "identity_kind": "nearest_matched_notification_immediate_ancestor",
+          "matched_root_execution_depth": 0,
+          "active_effect_group_depth": 0,
+          "definition_token": 0,
+          "definition_index": 0,
+          "definition_id": 0,
+          "runtime_stats_ordinal": 0,
+          "definition_key": "",
+          "compiled_immediate_root_token": 0,
+          "definition_vtable_rva": 0,
+          "root_vtable_rva": 0,
+          "root_hash": 0,
+          "original_execute_rva": 0,
+          "children_data_token": 0,
+          "children_capacity": 0,
+          "children_count": 0,
+          "execution_context_token": 0,
+          "root_scope_token": 0,
+          "root_scope_words": [
+            0,
+            0
+          ],
+          "activation_death_commit_context": {
+            "read": false,
+            "context_kind": "currently_executing_original_264BCB0_same_thread",
+            "managed_daily_sequence_token": 0,
+            "invocation": 0,
+            "parent_invocation": 0,
+            "thread_id": 0,
+            "native_date_raw": 0,
+            "combat_id": -1,
+            "victim_id": -1,
+            "killer_id": -1,
+            "victim_full_identity_matches": false,
+            "killer_full_identity_matches": false,
+            "manager_token": 0,
+            "victim_token": 0,
+            "killer_token": 0,
+            "reason_token": 0,
+            "date_argument_token": 0,
+            "requested_death_date_raw": 0,
+            "reason_key_read": false,
+            "reason_key": "",
+            "artifact_token": 0,
+            "artifact_actual_null": false,
+            "artifact_id_read": false,
+            "artifact_id": -1
+          }
+        },
+        "current_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        },
+        "original_boolean_read": true,
+        "original_boolean": false,
+        "original_return_bits": 0,
+        "daily_effect_context": {
+          "read": true,
+          "managed_daily_sequence_token": 458459624966711775,
+          "invocation": 78,
+          "node_token": 1829239120528,
+          "node_vtable_rva": 71784176,
+          "node_hash": 3087433523,
+          "execution_context_token": 701262310896,
+          "depth": 8,
+          "combat_id": 16777218,
+          "side_index": 1,
+          "event_load_index": 11
+        }
+      }
+    ],
+    "strict_monitor_verifier_applicable": false,
+    "reason": "Original accepted=false/statusfailed/flags8/truncatedtrue; no complete-monitor inference."
+  },
+  "actual_daily_finish_publication_missing": {
+    "original": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\one-day-finished.json",
+      "bytes": 14983,
+      "sha256": "C107DCA01C871EEEFDAA061D843ABBA556F7E11D236D36830C7F66B25720B1C4"
+    },
+    "trace_error": {
+      "type": "ValueError",
+      "message": "private request returned RED: {'request': {'path': 'C:\\\\Users\\\\1\\\\AppData\\\\Local\\\\ck3-capture-preparation\\\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\\\ck3-output\\\\interactive-requests\\\\scoped-a12-chain-finish-once.json', 'bytes': 204, 'sha256': '5D6B1379F9AEF4BAAC12AA507AA3F408468FFF06C04FA857D5FCD6E11D5AC608'}, 'response': {'path': 'C:\\\\Users\\\\1\\\\AppData\\\\Local\\\\ck3-capture-preparation\\\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\\\ck3-output\\\\interactive-requests-responses\\\\scoped-a12-chain-finish-once.json', 'bytes': 12229, 'sha256': 'E0667182AAC15DCEEF3E0AE5D2EC6C92F8A4B4C67938CC4043173F2D31580B7B'}, 'result': 'RED', 'error': '_NativeCommandRejectedError(\\'native gameplay step failed: experimental trace managed DTO unavailable; original parsed return receipt={\"bytes\": 1990791, \"path\": \"C:\\\\\\\\\\\\\\\\Users\\\\\\\\\\\\\\\\1\\\\\\\\\\\\\\\\AppData\\\\\\\\\\\\\\\\Local\\\\\\\\\\\\\\\\ck3-capture-preparation\\\\\\\\\\\\\\\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\\\\\\\\\\\\\\\ck3-state\\\\\\\\\\\\\\\\native-session\\\\\\\\\\\\\\\\combat-trace-native-results\\\\\\\\\\\\\\\\native-trace-4ead0bf732864939be657b267125ebbd.json\", \"sha256\": \"4df0bdcb5d9c8cee718795072a8a958630514da3584743d8487ee19461b5e27d\", \"validation_state\": \"unvalidated\", \"wire_bytes_preserved\": false}\\')'}"
+    },
+    "trace_body": null,
+    "strict_causal_or_selector_verifier": "NOT_RUN",
+    "day_postcondition_verified": true
+  },
+  "13_domain_case_verdicts": [
+    {
+      "domain": "skills",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Every actual growth invocation and selected random-list entry/children; complete no-RNG scoped effect tree.",
+        "Direct char+D8/E4/E8 are BASE martial/learning/prowess only. Compare six saved base skills in all four immutable saves.",
+        "A selected60 empty branch is insufficient by itself: growth106-147 may still change court/liege variables/flags/lists.",
+        "If30 or10 selected, identify original writer target/request and actual before/return; no endpoint-only upgrade."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "trait_set",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Prearmed trait ID/key table unique/source-bound; every native trait list read=true and full IDs mapped to original saved ordinals.",
+        "Complete selected growth/trauma/death branch + all actual trait writer inventory. Non-executed10 blademaster branch may support no-write, not only unchanged endpoints.",
+        "Check final death conversion and all four saved trait sets independently."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "trait_tracks",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Every native track read=true and complete char+138/+144 raw vector; actual empty case + growth empty + no relevant writer node can close no-write.",
+        "If any nonempty vector/writer occurs, require original trait definition index mapping, complete saved XP arrays, actual writer before/after.",
+        "Getter output count is+8, not+C; char+138 differs from prestige extension+138."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "death_date_reason_killer_artifact",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Unique case request->enqueue OR direct commit; all rejected/related victim requests/commits counted in full observed window.",
+        "Same actual death node/context/parent and six-arg tuple; requested reason/current full victim+killer/date/artifact independent reads.",
+        "Native actual-null is token0+id-1+requested_artifact_id_read=false; distinguish null proof from missing field/read failure.",
+        "Commit enter markerfalse to return/final markertrue; final reason/date/killer/artifact match original save."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "prestige_currency_and_accumulated",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Actual CAddMultiLevelValueTypeEffect0x446C7B0 target and original execution context, complete invocation enter/return.",
+        "Both native raw ext130 currency and ext138 accumulated, all intervening writes counted; Q fixed-point scaling independent.",
+        "Exact writer2EF88C0->2629180->2620930 and save key26987F0/2B65 currency/2B66 accumulated; debt-repayment semantics retained.",
+        "All four saves independently reconcile two fields. Do not assume every case must reproduce+150."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "regiment_link_and_membership",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Same full regiment/character IDs and reverse reference through request/commit/casualty/next pause.",
+        "Original ordered complete side knight vectors before/after, retired65 absence and current_character=-1 legitimate state without weakened generation.",
+        "Independent same-date original character and roster pixels, no native numeric ID assertion fabricated in UI."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "entry_current_soft_stats_and_owner_hard",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Seven original boundaries and each actual casualty before/return complete entries/current/soft/effective damage+toughness/owner-hard.",
+        "Actual same army/regiment full IDs; outgoing damage and casualty sequence/accounting, no cached history replacing after.",
+        "Separate saved complete battle state comparison; full stock combat window pixels independently required for UI gap."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "battle_event_ledger",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Actual CBattleEventEffect0x444F498 enter/return same root/context and battle target, complete read=true ledger arrays.",
+        "Ordered exact prefix plus new row: key/type/left/right/side/target_right; array ordinal is ledger position.",
+        "Count every actual ledger writer in scoped tree and reconcile original same-run combat_results save."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "slain_side_knights",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Actual list_write enter/return node0x44D3760 and original passed owner proven by original getter return + typed combatSide/fullCombat/aux.",
+        "Actual key ID/name and full victim typed16 words with requested_character_full_identity_matches; requested duration and elapsed offset.",
+        "Complete values + parallel expiry equal counts, stable owner, before/after change follows native33DD720 sorting/dedup semantics.",
+        "Same-run original side list item type/identity/duration matches, no hardcoded assumed1."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "killer_kills",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Actual unique death commit tuple supplies original victim/killer; complete kills vector read before/return/final.",
+        "Exact2609210->209F7F0 original victim fullID sorted insertion inventory; preserve all historical IDs without requiring them alive.",
+        "Compare new sorted vector and same-run saved killer kills. This is commit-local before/after, not a separately hooked209F7F0 CPU-store log."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "signature_weapon",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Independent monitor begins before all preUI/save and finishes after all postUI/save, token independent from daily token.",
+        "Original two-char owner observations and actual setter enter/return, full ID/generation/key/context/thread pair; independently decoded rawflag low24 epoch/index/name.",
+        "Nearest matched notification immediate ancestor stable key/definition/root/invocation actual execution; foreign registered root clears TLS.",
+        "Same current commit + activation commit context must match exact actual33437 death commit tuple/token/thread/invocation, not finaldead/axe inference.",
+        "Outside/async commit or missing initial34120 getter remains pending; GUI getter thread may differ from daily lifecycle."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "house_relation",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Actual original2DF7030 type stablekey+18/two full house IDs/caller/AL return, no re-evaluation.",
+        "False AL plus complete no-create/write branch and same-run exact target pair/related database endpoints may close no-write.",
+        "The failed subcondition stays UNKNOWN unless independently observed. True AL requires actual create/steps target/value/beforeafter."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    },
+    {
+      "domain": "accolade_feedback_branch",
+      "status": "pending",
+      "available_resolution": "actual R0143 saved endpoints + partial failed monitor only",
+      "remaining": [
+        "Killer is_acclaimed branch1259-1267 and victim branch1341-1348 separately mapped to actual complete effect subtree; absence in filtered RNG draws is insufficient.",
+        "Also all relevant invoked delegates and Mongol/liege variables1349+; do not equate no glory child with no other liege write.",
+        "Relevant accolade full IDs/glory/rank/owner/liege variable complete same-run saved blocks; top-level absent is UNKNOWN, not empty.",
+        "If no writer children under actual matching branch + inventory excludes alternative writer, close branch-no-write; entered branches need target/value/beforeafter."
+      ],
+      "reason": "Daily native managed trace export failed; operation/branch writer evidence not published. Equal endpoints are not branch-no-write evidence."
+    }
+  ],
+  "no_prior_run_values_loaded": true
+}

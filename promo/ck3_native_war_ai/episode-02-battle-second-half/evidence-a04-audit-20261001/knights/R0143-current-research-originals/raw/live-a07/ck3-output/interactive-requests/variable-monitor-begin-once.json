@@ -1,0 +1,8 @@
+{
+  "action": "private_phase_trace",
+  "step": "experimental-scoped-character-variable-monitor-begin-v1",
+  "expected_revision": 6,
+  "monitor_sequence_token": 458459624966719710,
+  "scoped_character_id": 33437,
+  "scoped_related_character_id": 34120
+}

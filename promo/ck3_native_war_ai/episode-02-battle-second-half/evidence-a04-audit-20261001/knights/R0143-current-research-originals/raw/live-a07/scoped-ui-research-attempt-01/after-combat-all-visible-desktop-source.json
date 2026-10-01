@@ -1,0 +1,77 @@
+{
+  "at_utc": "2026-10-01T13:09:15.111087+00:00",
+  "current_paused_source": {
+    "date_raw": 53146872,
+    "paused": true,
+    "actor": 29829,
+    "revision": 10,
+    "native_revision": 9,
+    "snapshot_id": "native:9",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "connection_generation": 1,
+    "bridge_pid": 17420,
+    "native_hello_session_generation": 0
+  },
+  "snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-combat-all-visible-desktop-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-combat-all-visible-desktop-source.json",
+      "bytes": 3849601,
+      "sha256": "AEBE52CE51F22E785942EF8F3DD29E1BC7FA6D112D53E12E6AC32E360BC6A5EA"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "post_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\after-combat-all-visible-desktop-post.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\after-combat-all-visible-desktop-post.json",
+      "bytes": 3849599,
+      "sha256": "C3780F0432966E2D71F8FAEEECD618142F7859B66FF636779FAA56B12B06F8D7"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "foreground_hwnd": 2491964,
+  "foreground_pid": 17420,
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "original_image_size": [
+    2560,
+    1440
+  ],
+  "original": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-all-visible-desktop-original.png",
+    "bytes": 5100576,
+    "sha256": "9253AFE7175473B9FA461F0B63655966B17CF94EEBEA7C7CA43D061C8A2EEA86"
+  },
+  "review_preview": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\after-combat-all-visible-review-preview.png",
+    "bytes": 1394695,
+    "sha256": "74AB86753B428E776A58E6CA05F8CA0B0367AA6C325BE143D684C87F7E280C26"
+  },
+  "preview_image_content_rect": {
+    "left": 0,
+    "top": 0,
+    "width": 1280,
+    "height": 720
+  },
+  "preview_purpose": "Measured readonly inspection aid; original remains the capture evidence and coordinate source",
+  "input_mouse_keyboard": false,
+  "original_pixels_actually_reviewed": false
+}

@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\w\\e2cap1001e\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "D:\\workspace\\.codex-task-bus",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "heartbeat",
+    "--task",
+    "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "--expected-sequence",
+    "3487",
+    "--repo",
+    "C:\\w\\e2cap1001e"
+  ],
+  "source_cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE"
+}

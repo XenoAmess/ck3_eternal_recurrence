@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-01T12:14:26.237008+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\derive_ui_checkpoint_outside_monitor_a07.py"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\derive_ui_checkpoint_outside_monitor_a07.py",
+    "bytes": 2545,
+    "sha256": "CD27BDB7A68BCAC3CB80CF6EEA804E899C49E74E9206B38A7154D5FFF41EE255"
+  }
+}

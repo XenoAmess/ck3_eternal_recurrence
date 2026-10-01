@@ -1,0 +1,48 @@
+{
+  "readers": [
+    {
+      "base_reader": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0142_endpoints_a01.py",
+        "bytes": 2693,
+        "sha256": "633A7895FF1A3AD7968AE5803EAD211F3F3E2FB6651989117BD65D7818CC5919"
+      },
+      "new_reader": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\inspect_R0143_endpoints_a01.py",
+        "bytes": 2696,
+        "sha256": "120AB50153324CA0951B47A193A6A059AF205A635884B1D7A2AD14994BE49986"
+      },
+      "runtime_inputs": "R0143 only; no R0142 raw or endpoint value loaded",
+      "mutations": "paths/source pins, correct saved flag matcher/trait key, exact four raw save preservation"
+    },
+    {
+      "base_reader": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\decode_R0142_four_endpoints_a03.py",
+        "bytes": 14050,
+        "sha256": "1FDEDAAD79AAA97BF2F482D53EFB58E39D7C6C06E1FA7D72DDA8CC26494CE219"
+      },
+      "new_reader": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\decode_R0143_four_endpoints_a01.py",
+        "bytes": 14260,
+        "sha256": "DC5E46C1CD3B694F5C2104C332839A8E2888DA4F2EF7F470C2AD1F7B8553570E"
+      },
+      "runtime_inputs": "R0143 only; no R0142 raw or endpoint value loaded",
+      "mutations": "paths/source pins, correct saved flag matcher/trait key, exact four raw save preservation"
+    },
+    {
+      "base_reader": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\summarize_R0142_saved_facts_a04.py",
+        "bytes": 7533,
+        "sha256": "E14BE956F95001BD3ECDC52B818673714B421C5DFBD9C4BE306099EB01B9A194"
+      },
+      "new_reader": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\summarize_R0143_saved_facts_a01.py",
+        "bytes": 7875,
+        "sha256": "B95090EF70C3D18398E08BC7E49EF163D92B9755031962BC72A4E4B66FFE10FE"
+      },
+      "runtime_inputs": "R0143 only; no R0142 raw or endpoint value loaded",
+      "mutations": "paths/source pins, correct saved flag matcher/trait key, exact four raw save preservation"
+    }
+  ],
+  "compile_only": "PASS",
+  "no_launch_no_source_change": true
+}

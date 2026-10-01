@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\prepare_R0143_endpoint_audit_a01.py"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-reader-prepare-a01.stdout.bin",
+    "bytes": 1772,
+    "sha256": "99155B8450BCF85E02C8792D14ADD964B4708CBDB76844424623064DAE5A7B17"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-reader-prepare-a01.stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "intent": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0143-reader-prepare-a01-intent.json",
+    "bytes": 530,
+    "sha256": "57538B849F75D42DF4426547AB9A1266E1A2BA1B77AD5118DE15D2F5E8DE5936"
+  }
+}

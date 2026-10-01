@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\decode_R0143_four_endpoints_a01.py"
+  ],
+  "reader": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\decode_R0143_four_endpoints_a01.py",
+    "bytes": 14260,
+    "sha256": "DC5E46C1CD3B694F5C2104C332839A8E2888DA4F2EF7F470C2AD1F7B8553570E"
+  },
+  "utc": "2026-10-01T13:19:32.346178+00:00",
+  "no_game_source_git_screen": true
+}

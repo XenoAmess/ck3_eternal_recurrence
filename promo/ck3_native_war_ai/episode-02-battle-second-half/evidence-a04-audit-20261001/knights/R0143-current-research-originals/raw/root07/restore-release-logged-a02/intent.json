@@ -1,0 +1,25 @@
+{
+  "at_utc": "2026-10-01T13:13:42.912383+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\restore_and_release_screen_a02.py",
+    "--screen-task-id",
+    "war-e2-six-gap-trace-diagnostic-screen-20261001-a06",
+    "--source",
+    "C:\\w\\e2cap1001e",
+    "--alignment-receipt",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\display-align-attempt-01\\readback.json",
+    "--sdk-completion",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\native-sdk-attempt-01\\completion.json",
+    "--output-dir",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\display-restore-and-release-attempt-01"
+  ],
+  "script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\restore_and_release_screen_a02.py",
+    "bytes": 4445,
+    "sha256": "D7CA72B8E629B368BA8801D7E97CC690F4D3E9F06F125FFFB5CEEB605B9E96AF"
+  }
+}

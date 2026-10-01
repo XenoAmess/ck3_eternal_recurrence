@@ -1,0 +1,52 @@
+	33437={
+		first_name="Turgise"
+		birth=1035.1.1
+		nickname_text=""
+		ethnicity="caucasian_brown_hair"
+		culture=73
+		faith=23
+		dynasty_house=1105
+		skill={
+			4 0 4 6 6 2
+		}
+		trait_xp_amounts={
+			0
+		}
+		mass=14
+		traits={
+			50 76 54 16 236
+		}
+		family_data={
+			child={
+				38574 38963
+			}
+		}
+		alive_data={
+			fertility=0.5
+			health=4.26192
+			piety={
+				currency=207.6
+				accumulated=1007.6
+			}
+			prestige={
+				currency=300.3456
+				accumulated=1000.3456
+			}
+			influence={
+				currency=120
+			}
+			languages={
+				language_french
+			}
+			activity_data={ }
+			location={
+				location=2633
+			}
+		}
+		court_data={
+			employer=29829
+			regiment=65
+			knight=yes
+			join_court_date=1066.9.15
+		}
+	}

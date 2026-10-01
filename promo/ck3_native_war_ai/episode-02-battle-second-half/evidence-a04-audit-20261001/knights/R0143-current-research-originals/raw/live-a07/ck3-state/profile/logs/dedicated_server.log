@@ -1,0 +1,6 @@
+[20:28:15][I][jominiapplication.cpp:257]: Changing game speed to: 0
+
+[20:41:48][I][jominiapplication.cpp:257]: Pause Toggled! Paused: false, PlayerID: 0
+
+[20:41:51][I][jominiapplication.cpp:257]: Pause Toggled! Paused: true, PlayerID: 1
+

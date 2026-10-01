@@ -1,0 +1,107 @@
+{
+  "phase": "before",
+  "source_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 5,
+    "native_revision": 4,
+    "snapshot_id": "native:4",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a5224cf6dfcc",
+    "connection_generation": 1,
+    "bridge_pid": 17420,
+    "native_hello_session_generation": 0
+  },
+  "snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-save-save-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-save-save-source.json",
+      "bytes": 1871605,
+      "sha256": "8335D21291A16095AB81A76CC4CE885063B77CD057AE6501E38A0534A90C29E9"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "save": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests\\before-save-save.json",
+      "bytes": 104,
+      "sha256": "C8EC32F0123C15F56ACC08952EA57EF99FFF14E83463F9CEFB2C0E7AB7E0E87C"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-output\\interactive-requests-responses\\before-save-save.json",
+      "bytes": 13475,
+      "sha256": "AFB9B551E84343E3E39B8D1B244526B45A8C6F812CBEE81896B4AAA09702CD28"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "save_body": {
+    "step": "save-checkpoint",
+    "accepted": true,
+    "status": "submitted",
+    "submission": {
+      "sequence": 2,
+      "requested_save_name": "xar_checkpoint",
+      "date_raw": 53146848
+    },
+    "backend_id": "native-headless",
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 52888510,
+      "sha256": "ce4bd247da3efd593daa4fd3271159edbd167c18bf787c0b488185aa4e8a716a",
+      "date_raw": 53146848,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "pure-vanilla-enabled-mods-empty",
+        "environment_sha256": "11d89e8054134103edf0545c3db39047415bf792f03d42cfe5adede60b3ba483"
+      },
+      "history_index": 16,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-a5224cf6dfcc"
+    },
+    "episode_seed": {
+      "format_version": 1,
+      "name": "xar_episode_seed.ck3",
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\profile\\save games\\xar_episode_seed.ck3",
+      "size": 52881742,
+      "sha256": "77ce8e8e7e955c578c0a7440ca0d17883547782b0bb000a078e918ccdab12962",
+      "date_raw": 53146848,
+      "character_id": 29829,
+      "source_run_id": "native-29829-a5224cf6dfcc",
+      "source_checkpoint_name": "xar_checkpoint.ck3",
+      "immutable": true
+    },
+    "materialization": {
+      "available": true,
+      "save_dir": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\ck3-state\\profile\\save games",
+      "mtime_ns": 1790858404689570400
+    }
+  },
+  "immutable": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-trace-live-20261001-a07\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+    "bytes": 52888510,
+    "sha256": "CE4BD247DA3EFD593DAA4FD3271159EDBD167C18BF787C0B488185AA4E8A716A"
+  },
+  "source_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\current-run-bindings.json",
+    "bytes": 5728,
+    "sha256": "70D440BBDEBFA5131CC08B7A21CA2796A372C575E26F622111E226728EF4872C"
+  }
+}

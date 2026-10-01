@@ -1,0 +1,14 @@
+{
+  "dll_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+  "dll_sha256": "0F752E3F50B778BE140CCE08589AFB88C9C08073D7EFDFFAD82C31330A51C42D",
+  "cmake_cache_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-07-trace-diagnostic\\frozen-release-build-attempt-01\\build\\CMakeCache.txt",
+  "private_trace_option_on": true,
+  "required_strings": {
+    "experimental-combat-phase-event-trace-begin-v1": true,
+    "experimental-combat-phase-event-trace-finish-v1": true,
+    "capture_runtime_counter_output": true,
+    "capture_runtime_advantage_components": true,
+    "native_cache_0x2308d50_original_calls": true
+  },
+  "ready": true
+}
