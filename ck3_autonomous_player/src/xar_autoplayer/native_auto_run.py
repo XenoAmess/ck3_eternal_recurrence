@@ -6539,14 +6539,20 @@ def _open_private_activity_feast_planner_once(
         "step", "accepted", "status", "private_build", "read_only",
         "advertised", "activity_feast_planner_open", "backend_id",
     }
+    exact_build_envelope = False
+    if isinstance(envelope, dict) and set(envelope) == envelope_keys:
+        from .bridge.nonwar_private_build import private_native_provenance
+
+        exact_build_envelope = (
+            private_native_provenance(after).get("exe_sha256")
+            == "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+        )
     envelope_shape = bool(
         isinstance(envelope, dict)
         and (
             (set(envelope) == envelope_keys | {"same_frame"}
              and envelope.get("same_frame") is True)
-            or (before.get("executable_sha256")
-                == "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
-                and set(envelope) == envelope_keys)
+            or exact_build_envelope
         )
     )
     accepted = bool(

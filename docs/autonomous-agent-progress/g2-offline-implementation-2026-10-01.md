@@ -965,3 +965,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 1专题记录R10实际Open成功但旧consumer因新版无same_frame键误报RED；生产点状修复与实际原始wire单case已在shared包，无热改L9；后续仍需真实费用/CanStart/Start/生命周期。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\feast-r11-live-envelope-manifest.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 2026-10-02 00:03:32 Correct the feast fix against unchanged actual hello fields
+
+3精确delta源，原v1实际sourceframe executableSHA为null、fixture误补字段已保留并撤回对应实机就绪判断；现在复用private_native_provenance(after)读取原始hello.expected_ck3_sha256/ck3_build_match。原始before/after/command_result零改写的唯一新case GREEN。其余shared与14case不变不重跑；root使用新冻结runtime，不热改旧L11。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-r11-real-hello-normalized.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
