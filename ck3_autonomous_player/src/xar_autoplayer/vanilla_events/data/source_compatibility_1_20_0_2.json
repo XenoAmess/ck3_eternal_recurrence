@@ -9,7 +9,7 @@
   },
   "ck3_build": "1.20.0.2",
   "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
-  "dataset_sha256": "B261172AD03B306251A6ED5B03F905EFF951FEC89FAD36C67E616C6C4EF40857",
+  "dataset_sha256": "CC285AFD964FFE36489822CF43C997ED6F1037BB8731DF14E1A9DB4ADFABB126",
   "epidemic_events_0110_narrow_dependency_review": {
     "blocks": {
       "add_legitimacy_effect": {
@@ -44343,7 +44343,7 @@
     },
     "epidemic_events.1100": {
       "analysis_updates": {
-        "source_migration_boundary": "All authored options also invoke pam_epidemic_arrival_spiritual_fulfillment_loss_effect. Its general religion semantics and numerical fulfillment outcome remain owner-deferred."
+        "source_migration_boundary": "All authored options invoke pam_epidemic_arrival_spiritual_fulfillment_loss_effect. Its direct script requests -20 for apocalyptic intensity, -10 for major, and -5 otherwise. The effect requires a playable character without the Rite parameter no_epidemic_fulfillment_loss_active or personal-tenet flag no_epidemic_fulfillment_loss_personal_active. The same addition on all options does not change the existing bounded native0 continuation; actual engine clamp and same-frame fulfillment material delta remain unobserved."
       },
       "body_compared": true,
       "caller_candidate_files": [
@@ -44656,7 +44656,9 @@
       "policy_reuse_eligible_by_body": false,
       "source_file_sha256": {
         "common/defines/00_defines.txt": "8E430D77EB6E8767030F34B1C53D5DAE84277FB354BD73CC42F93DC500BE8982",
+        "common/script_values/pam_values.txt": "458D1BD882E8854005E3158339FCA343177CFF13EAC7F83CB5877A8A37171965",
         "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+        "common/scripted_effects/pam_effects.txt": "50B0EBEEAB835B98FC2A159BAA5806078D706B3F988ECB5A6C1E025C86465161",
         "events/dlc/ce1/epidemic_events.txt": "A1CF48ABA07E121618F1190D5B8CF590D985FCA5A32DFF16D28F9A826FF0B950"
       },
       "status": "changed",
@@ -45205,8 +45207,8 @@
     },
     "epidemic_events.5007": {
       "analysis_updates": {
-        "selected_option_semantics": "Selected native2 epidemic_events.5007.c retains reverse_add_opinion annoyed_opinion=-20 toward scope:accuser and conditional potential_friend toward scope:herbalist. Its stress_and_fulfillment_impact inputs are impatient/callous/sadistic minor gain and patient/compassionate miniscule loss. Current native same-frame stress indicator may support the stress facet only. Fulfillment and the total multi-effect utility are unobserved; religious caller predicates are opaque and owner-deferred.",
-        "source_migration_boundary": "Eligibility uses opaque rite crime/virtue predicates. Current native-enabled bounded option continuation is retained; religion caller semantics are owner-deferred."
+        "selected_option_semantics": "Selected native2 epidemic_events.5007.c retains reverse_add_opinion annoyed_opinion=-20 toward scope:accuser and conditional potential_friend toward scope:herbalist. Its stress_and_fulfillment_impact inputs are impatient/callous/sadistic minor gain and patient/compassionate miniscule loss. Current native same-frame stress indicator may support the stress facet only. Fulfillment and the total multi-effect utility are unobserved; the trigger's Rite crime/virtue predicate only establishes an eligible accuser exists; the immediate random accuser selection does not repeat that predicate.",
+        "source_migration_boundary": "The trigger uses Rite crime/virtue predicates when checking for an eligible accuser. The immediate random selection does not repeat the Rite filter, so the saved accuser is not inferred to satisfy it. Current native-enabled bounded option continuation is retained; native stress or combined-indicator primary direction supports only the stress material facet. Fulfillment, opinion, relationship and total utility remain unobserved."
       },
       "body_compared": true,
       "caller_candidate_files": [
@@ -97116,7 +97118,7 @@
         "option_semantics": {
           "0": "major stress gain base +80; a fifty-percent random roll can add minor prestige and remove one bad trait or add learning; current source uses stress_and_fulfillment_impact with the same authored arguments, plus opaque native fulfillment handling",
           "1": "medium stress loss base -30, but arrogant can reverse its direction; one existing councillor can gain two skill points; player guarantees minor prestige loss -75 and medium dread loss -20; current source uses stress_and_fulfillment_impact with the same authored arguments, plus opaque native fulfillment handling",
-          "2": "major stress loss base -80; fifty-percent random roll lowers one noncapital county's control by twenty; current source uses stress_and_fulfillment_impact with the same authored arguments, plus opaque native fulfillment handling"
+          "2": "major stress loss base -65; fifty-percent random roll lowers one noncapital county's control by twenty; current source uses stress_and_fulfillment_impact with the same authored arguments, plus opaque native fulfillment handling"
         },
         "selected_choice_effect_profile": {
           "additional_domains_unobserved": [
@@ -110392,7 +110394,7 @@
   "old_source_index_dataset_sha256": "740BF6D4873642CDA5F29762C145D4D862E7CAFD8C9B02B71C948241D386A251",
   "old_source_index_file_sha256": "B19E26A37B6252C17452A2F362FED4B99B91994748B435C26B890CC975D5E36B",
   "policy_reuse_boundary": "An unchanged reviewed body is eligible for static compatibility reuse only. Native runtime semantics, saved-scope projection, dependency graph and production OODA are not accepted by this comparison.",
-  "review_ledger_file_sha256": "5DB6C115047BFEA99710A88001056E788658483EC28C3334D97C3312734FFADB",
+  "review_ledger_file_sha256": "9ED7029565A5654B7953971BC89423D96476069C5F9F6C000C0A35667AFBA9EA",
   "schema": "xar.ck3.nonwar-event-source-compatibility",
   "schema_version": 1,
   "token_comparison": "ordered tokens; whitespace/comments ignored; quoted text and escaping retained"

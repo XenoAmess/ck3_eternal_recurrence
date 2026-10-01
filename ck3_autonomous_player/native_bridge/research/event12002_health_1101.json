@@ -1,0 +1,641 @@
+{
+  "comparison": "ordered tokens; comments/whitespace ignored, strings and order preserved",
+  "consumer": {
+    "disease_flag_value": "opaque; no inferred identity from unavailable payload",
+    "implementation_paths": [
+      "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_manager_a.py",
+      "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/policy.py",
+      "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/migration_1_20_0_2.py"
+    ],
+    "new_source_requires_additional_consumer_input": false,
+    "played_character_required": true,
+    "reuse": "existing health.1101 exact saved-scope contract and direct variant consumer",
+    "root_equals_played_character": true,
+    "runtime_binding": [
+      "current played character",
+      "same-frame instance/date/native revision",
+      "typed root/saved scopes",
+      "current shown/enabled option projection",
+      "active event snapshot option count"
+    ],
+    "scope_variants": [
+      {
+        "names": [
+          "physician",
+          "sick_character",
+          "disease_type"
+        ],
+        "physician_differs_from_played_character": true,
+        "types": {
+          "disease_type": "flag",
+          "physician": "character",
+          "sick_character": "character"
+        }
+      },
+      {
+        "names": [
+          "sick_character",
+          "disease_type"
+        ],
+        "physician_required": false,
+        "types": {
+          "disease_type": "flag",
+          "sick_character": "character"
+        }
+      }
+    ],
+    "selected_authored_option_number": 1,
+    "sick_character_equals_played_character": true,
+    "snapshot_option_count": 1,
+    "sole_shown_enabled_native_option": 0
+  },
+  "current_build": {
+    "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "steam_build_id": 25588574,
+    "version": "1.20.0.2"
+  },
+  "current_readiness": "static-ready",
+  "dataset_sha256": "B4543F461675AE2DBAD6D00C79C799247C6694C02F95929030D1A7676F551BBA",
+  "direct_blocks": {
+    "death_chance_dying_health": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [],
+      "key": "death_chance_dying_health",
+      "new_definition": {
+        "block_sha256": "1627B4160E9299B6ED823707BBF19A84CBBF8DC4D39A7A62C2E7E0B533C9071B",
+        "end_line": 1543,
+        "file_sha256": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF",
+        "line": 1543,
+        "ordered_token_sha256": "9973391CD8EFAB259EDD81DE7F2CF875BB21CEF75A127571EE5FFE3F59E8979C",
+        "relative_path": "common/script_values/00_basic_values.txt",
+        "token_count": 3
+      },
+      "old_definition": {
+        "block_sha256": "1627B4160E9299B6ED823707BBF19A84CBBF8DC4D39A7A62C2E7E0B533C9071B",
+        "end_line": 1455,
+        "file_sha256": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096",
+        "line": 1455,
+        "ordered_token_sha256": "9973391CD8EFAB259EDD81DE7F2CF875BB21CEF75A127571EE5FFE3F59E8979C",
+        "relative_path": "common/script_values/00_basic_values.txt",
+        "token_count": 3
+      },
+      "token_differences": []
+    },
+    "has_treatable_disease_trigger": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "OR",
+          "ordinal": 0,
+          "token_differences": []
+        }
+      ],
+      "key": "has_treatable_disease_trigger",
+      "new_definition": {
+        "block_sha256": "3DB2346E7A14FDF88D136702E7C38F44A6F31C9E5BE38D86930635224C223006",
+        "end_line": 590,
+        "file_sha256": "2846F0591E692814A907BB111C161BB8124798AF5A972BD2D3344DE69799C883",
+        "line": 574,
+        "ordered_token_sha256": "52C95088086EFB491C9A7BD4F3E911ACD39F50A2205284A1E7C212700A28E155",
+        "relative_path": "common/scripted_triggers/20_health_triggers.txt",
+        "token_count": 47
+      },
+      "old_definition": {
+        "block_sha256": "3DB2346E7A14FDF88D136702E7C38F44A6F31C9E5BE38D86930635224C223006",
+        "end_line": 590,
+        "file_sha256": "7A40670167D8073B34F73AAA53387FC05DB4543D5BF1C10C5296967A4DE8F8F8",
+        "line": 574,
+        "ordered_token_sha256": "52C95088086EFB491C9A7BD4F3E911ACD39F50A2205284A1E7C212700A28E155",
+        "relative_path": "common/scripted_triggers/20_health_triggers.txt",
+        "token_count": 47
+      },
+      "token_differences": []
+    },
+    "ill_recovery_max": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [],
+      "key": "ill_recovery_max",
+      "new_definition": {
+        "block_sha256": "ECCD8D9420076085812D26B89A89FB189641BB88E7CC9AEFEE146FEB727EB9CC",
+        "end_line": 26,
+        "file_sha256": "787D22ED5A482E2ABAF5BD6F7A4A2EF257F77FC3B0636104108A62020FB7E90A",
+        "line": 26,
+        "ordered_token_sha256": "CE57946A1053C9F2F502E3571389BD1C7142943AC56B43A4B854FA1D830D643C",
+        "relative_path": "common/script_values/10_health_values.txt",
+        "token_count": 3
+      },
+      "old_definition": {
+        "block_sha256": "ECCD8D9420076085812D26B89A89FB189641BB88E7CC9AEFEE146FEB727EB9CC",
+        "end_line": 26,
+        "file_sha256": "D356748F633BD6BD6BCD66166CB5DE7CCF69F0EF0A34E2A0DB9D16E78A048D75",
+        "line": 26,
+        "ordered_token_sha256": "CE57946A1053C9F2F502E3571389BD1C7142943AC56B43A4B854FA1D830D643C",
+        "relative_path": "common/script_values/10_health_values.txt",
+        "token_count": 3
+      },
+      "token_differences": []
+    },
+    "ill_recovery_min": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [],
+      "key": "ill_recovery_min",
+      "new_definition": {
+        "block_sha256": "38A8A2259AEA12316F5D244FB6A9E7FECD848B59899EE2E68A10F16CF864829B",
+        "end_line": 25,
+        "file_sha256": "787D22ED5A482E2ABAF5BD6F7A4A2EF257F77FC3B0636104108A62020FB7E90A",
+        "line": 25,
+        "ordered_token_sha256": "236961D48C22B3BBE88B6B2868682F9D69F3E084AD3BBD23E929AD49D590FCE5",
+        "relative_path": "common/script_values/10_health_values.txt",
+        "token_count": 3
+      },
+      "old_definition": {
+        "block_sha256": "38A8A2259AEA12316F5D244FB6A9E7FECD848B59899EE2E68A10F16CF864829B",
+        "end_line": 25,
+        "file_sha256": "D356748F633BD6BD6BCD66166CB5DE7CCF69F0EF0A34E2A0DB9D16E78A048D75",
+        "line": 25,
+        "ordered_token_sha256": "236961D48C22B3BBE88B6B2868682F9D69F3E084AD3BBD23E929AD49D590FCE5",
+        "relative_path": "common/script_values/10_health_values.txt",
+        "token_count": 3
+      },
+      "token_differences": []
+    },
+    "inform_about_relative_recovery_trigger": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "OR",
+          "ordinal": 0,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "is_ruler",
+          "ordinal": 0,
+          "token_differences": []
+        }
+      ],
+      "key": "inform_about_relative_recovery_trigger",
+      "new_definition": {
+        "block_sha256": "9A819F700F218F5EE43E038A1088B63187CEF71C54D6725B1B351D39BC9CD682",
+        "end_line": 832,
+        "file_sha256": "2846F0591E692814A907BB111C161BB8124798AF5A972BD2D3344DE69799C883",
+        "line": 813,
+        "ordered_token_sha256": "CADBADECE06E8EEFA4D8DF680B625C62EE13E691A680145731969202E9D4B7DF",
+        "relative_path": "common/scripted_triggers/20_health_triggers.txt",
+        "token_count": 52
+      },
+      "old_definition": {
+        "block_sha256": "9A819F700F218F5EE43E038A1088B63187CEF71C54D6725B1B351D39BC9CD682",
+        "end_line": 828,
+        "file_sha256": "7A40670167D8073B34F73AAA53387FC05DB4543D5BF1C10C5296967A4DE8F8F8",
+        "line": 809,
+        "ordered_token_sha256": "CADBADECE06E8EEFA4D8DF680B625C62EE13E691A680145731969202E9D4B7DF",
+        "relative_path": "common/scripted_triggers/20_health_triggers.txt",
+        "token_count": 52
+      },
+      "token_differences": []
+    },
+    "minimum_recovery_time": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [],
+      "key": "minimum_recovery_time",
+      "new_definition": {
+        "block_sha256": "4916D065944C49A767BB29D07F9769AA29006140DFC8E62DC660DD6EF86A1E8C",
+        "end_line": 23,
+        "file_sha256": "787D22ED5A482E2ABAF5BD6F7A4A2EF257F77FC3B0636104108A62020FB7E90A",
+        "line": 23,
+        "ordered_token_sha256": "98566213C00B7FBC0CC8B0243ADF90520077D833C22C562F9FFE5DD20E82F625",
+        "relative_path": "common/script_values/10_health_values.txt",
+        "token_count": 3
+      },
+      "old_definition": {
+        "block_sha256": "4916D065944C49A767BB29D07F9769AA29006140DFC8E62DC660DD6EF86A1E8C",
+        "end_line": 23,
+        "file_sha256": "D356748F633BD6BD6BCD66166CB5DE7CCF69F0EF0A34E2A0DB9D16E78A048D75",
+        "line": 23,
+        "ordered_token_sha256": "98566213C00B7FBC0CC8B0243ADF90520077D833C22C562F9FFE5DD20E82F625",
+        "relative_path": "common/script_values/10_health_values.txt",
+        "token_count": 3
+      },
+      "token_differences": []
+    },
+    "recover_from_disease_effect": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "hidden_effect",
+          "ordinal": 0,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "if",
+          "ordinal": 0,
+          "token_differences": []
+        }
+      ],
+      "key": "recover_from_disease_effect",
+      "new_definition": {
+        "block_sha256": "643D59D6F52B5DA3F8031BF035FAE16C5293BD42948F78D523DC8FBC1FC4FD0F",
+        "end_line": 912,
+        "file_sha256": "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB",
+        "line": 719,
+        "ordered_token_sha256": "96B54A545C22F955349447DC003E8A95A46F3A472BCB688F61F3A913337E4F9A",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "token_count": 467
+      },
+      "old_definition": {
+        "block_sha256": "643D59D6F52B5DA3F8031BF035FAE16C5293BD42948F78D523DC8FBC1FC4FD0F",
+        "end_line": 887,
+        "file_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+        "line": 694,
+        "ordered_token_sha256": "96B54A545C22F955349447DC003E8A95A46F3A472BCB688F61F3A913337E4F9A",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "token_count": 467
+      },
+      "token_differences": []
+    },
+    "recover_from_disease_notify_effect": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 0,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 1,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 2,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 3,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 4,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 5,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 6,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "else_if",
+          "ordinal": 7,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "if",
+          "ordinal": 0,
+          "token_differences": []
+        },
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "save_scope_value_as",
+          "ordinal": 0,
+          "token_differences": []
+        }
+      ],
+      "key": "recover_from_disease_notify_effect",
+      "new_definition": {
+        "block_sha256": "109FCF1C0F994C95FBC400EB6C6A376E309BC9787EFCEB10BF8EBFF7C1F23A0A",
+        "end_line": 959,
+        "file_sha256": "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB",
+        "line": 917,
+        "ordered_token_sha256": "0248A049B17072D924B3AA3BAE2D8036121BA31968F620C6C503DEA2902A0B87",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "token_count": 230
+      },
+      "old_definition": {
+        "block_sha256": "109FCF1C0F994C95FBC400EB6C6A376E309BC9787EFCEB10BF8EBFF7C1F23A0A",
+        "end_line": 934,
+        "file_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+        "line": 892,
+        "ordered_token_sha256": "0248A049B17072D924B3AA3BAE2D8036121BA31968F620C6C503DEA2902A0B87",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "token_count": 230
+      },
+      "token_differences": []
+    },
+    "remove_disease_treatment_effect": {
+      "classification": "unchanged-ordered-tokens",
+      "fields": [
+        {
+          "classification": "unchanged-ordered-tokens",
+          "field": "hidden_effect",
+          "ordinal": 0,
+          "token_differences": []
+        }
+      ],
+      "key": "remove_disease_treatment_effect",
+      "new_definition": {
+        "block_sha256": "CACD05C233ACC9989A916291FB56335F25CCC4892D0A222D61476B74B562D602",
+        "end_line": 3709,
+        "file_sha256": "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB",
+        "line": 3694,
+        "ordered_token_sha256": "D9E5070417181C9324C91FE95D8C494100561E133869D8B22CE993D6E6582725",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "token_count": 37
+      },
+      "old_definition": {
+        "block_sha256": "CACD05C233ACC9989A916291FB56335F25CCC4892D0A222D61476B74B562D602",
+        "end_line": 3595,
+        "file_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+        "line": 3580,
+        "ordered_token_sha256": "D9E5070417181C9324C91FE95D8C494100561E133869D8B22CE993D6E6582725",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "token_count": 37
+      },
+      "token_differences": []
+    }
+  },
+  "event": {
+    "classification": "unchanged-ordered-tokens",
+    "fields": [
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "desc",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "immediate",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "left_portrait",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "option",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "override_background",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "override_background",
+        "ordinal": 1,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "theme",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "title",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "trigger",
+        "ordinal": 0,
+        "token_differences": []
+      },
+      {
+        "classification": "unchanged-ordered-tokens",
+        "field": "type",
+        "ordinal": 0,
+        "token_differences": []
+      }
+    ],
+    "key": "health.1101",
+    "new_definition": {
+      "block_sha256": "14C0762A1ED697A0C8BB96D22E04BB3D5442E3E0A6CCF1F78182563FE9E17169",
+      "end_line": 4281,
+      "file_sha256": "74073E049A416C744B36A2A996FA467610705E38D53C836B050F1AC6F66E1212",
+      "line": 4248,
+      "ordered_token_sha256": "215BB71C1E8C6CFDE801BA839ABE943651358F5DC0AD8D2C36B118BAFA720019",
+      "relative_path": "events/health_events.txt",
+      "token_count": 89
+    },
+    "old_definition": {
+      "block_sha256": "14C0762A1ED697A0C8BB96D22E04BB3D5442E3E0A6CCF1F78182563FE9E17169",
+      "end_line": 4283,
+      "file_sha256": "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB",
+      "line": 4250,
+      "ordered_token_sha256": "215BB71C1E8C6CFDE801BA839ABE943651358F5DC0AD8D2C36B118BAFA720019",
+      "relative_path": "events/health_events.txt",
+      "token_count": 89
+    },
+    "token_differences": []
+  },
+  "event_definition_key": "health.1101",
+  "existing_compatibility_file_sha256": "075D18610715E4B18B0CFE6353656ADB366A7B01E57F630A37FD635E78F2A564",
+  "full_transitive_dependency_graph_proven": false,
+  "historical_evidence": {
+    "R0085": {
+      "artifact_sha256": "500EACF9BCDC43375EE2EDF27D0AF61E436EDBDB5DCE5652B5DC3825CEBFC14D",
+      "build": "1.19.0.6",
+      "failure": "registered_contract_requires_extended_consumer",
+      "qualification": "natural paused RED",
+      "selection_attempted": false
+    },
+    "R0086": {
+      "build": "1.19.0.6",
+      "independent_ill_trait_readback": false,
+      "manifest_sha256": "B4044ABAB75ACB8540B441C6BDB503BB8A65E1BD8A36DDF578DEA2EC2D2BB677",
+      "postcondition": "instance17 absent on independent next paused frame, next formal turn consumed absence without replay",
+      "qualification": "production event-modal continuity"
+    }
+  },
+  "ill_schedules": {
+    "contract_disease_effect": {
+      "classification": "unchanged-ordered-tokens",
+      "new": {
+        "enclosing_effect": "contract_disease_effect",
+        "end_line": 309,
+        "file_sha256": "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB",
+        "line": 303,
+        "ordered_token_sha256": "9C607FE121EBCADC2F13F63A9319F595732ABFD7C0856E5CE47668E85CBAA88D",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "tokens": [
+          "if",
+          "=",
+          "{",
+          "limit",
+          "=",
+          "{",
+          "scope:disease_type",
+          "=",
+          "flag:ill",
+          "}",
+          "trigger_event",
+          "=",
+          "{",
+          "id",
+          "=",
+          "health.1101",
+          "days",
+          "=",
+          "{",
+          "ill_recovery_min",
+          "ill_recovery_max",
+          "}",
+          "}",
+          "}"
+        ]
+      },
+      "old": {
+        "enclosing_effect": "contract_disease_effect",
+        "end_line": 284,
+        "file_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+        "line": 278,
+        "ordered_token_sha256": "9C607FE121EBCADC2F13F63A9319F595732ABFD7C0856E5CE47668E85CBAA88D",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "tokens": [
+          "if",
+          "=",
+          "{",
+          "limit",
+          "=",
+          "{",
+          "scope:disease_type",
+          "=",
+          "flag:ill",
+          "}",
+          "trigger_event",
+          "=",
+          "{",
+          "id",
+          "=",
+          "health.1101",
+          "days",
+          "=",
+          "{",
+          "ill_recovery_min",
+          "ill_recovery_max",
+          "}",
+          "}",
+          "}"
+        ]
+      },
+      "token_differences": []
+    },
+    "recover_from_disease_notify_effect": {
+      "classification": "unchanged-ordered-tokens",
+      "new": {
+        "enclosing_effect": "recover_from_disease_notify_effect",
+        "end_line": 926,
+        "file_sha256": "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB",
+        "line": 923,
+        "ordered_token_sha256": "1E8BE501E62146AB350C7CE77FCA6758F3B7E39E0EF1B70C4990C42C6E8F4EEC",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "tokens": [
+          "if",
+          "=",
+          "{",
+          "limit",
+          "=",
+          "{",
+          "scope:disease_type",
+          "=",
+          "flag:ill",
+          "}",
+          "trigger_event",
+          "=",
+          "{",
+          "id",
+          "=",
+          "health.1101",
+          "days",
+          "=",
+          "{",
+          "5",
+          "15",
+          "}",
+          "}",
+          "}"
+        ]
+      },
+      "old": {
+        "enclosing_effect": "recover_from_disease_notify_effect",
+        "end_line": 901,
+        "file_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+        "line": 898,
+        "ordered_token_sha256": "1E8BE501E62146AB350C7CE77FCA6758F3B7E39E0EF1B70C4990C42C6E8F4EEC",
+        "relative_path": "common/scripted_effects/20_health_effects.txt",
+        "tokens": [
+          "if",
+          "=",
+          "{",
+          "limit",
+          "=",
+          "{",
+          "scope:disease_type",
+          "=",
+          "flag:ill",
+          "}",
+          "trigger_event",
+          "=",
+          "{",
+          "id",
+          "=",
+          "health.1101",
+          "days",
+          "=",
+          "{",
+          "5",
+          "15",
+          "}",
+          "}",
+          "}"
+        ]
+      },
+      "token_differences": []
+    }
+  },
+  "live_acceptance_performed": false,
+  "old_build": {
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "version": "1.19.0.6"
+  },
+  "remaining": [
+    "Current-build natural health.1101 exact projection and one typed acknowledgement, independent instance absence and next formal turn.",
+    "No independent ill-trait or health gain claim; removal is immediate before option selection.",
+    "Historical actual caller unresolved; no dedicated natural-event waiting worker."
+  ],
+  "reviewed_narrow_dependencies_unchanged": true,
+  "schema": "xar.ck3.event12002.health1101.source-proof.v1",
+  "scope": "event body, direct recovery/cleanup/notify effects, ill schedule conditions/delays, direct cleanup/notification eligibility and recovery values"
+}

@@ -17,6 +17,17 @@ from .source_index import query_vanilla_event_source_v1
 from .builds import CURRENT_CK3_BUILD, SUPPORTED_CK3_EXE_SHA256, event_context_build
 
 
+def _has_stress_indicator_facet(row: object, build: str) -> bool:
+    """The 1.20 combined indicator keeps stress in its primary direction."""
+    return isinstance(row, Mapping) and (
+        row.get("kind") == "stress"
+        or (
+            build == CURRENT_CK3_BUILD
+            and row.get("kind") == "stress_and_fulfillment"
+        )
+    )
+
+
 def _policy_source_hashes(analysis: object) -> object:
     """Keep legacy literal checks tied to a reviewed migrated event body."""
     if not isinstance(analysis, Mapping):
@@ -295,7 +306,7 @@ def _epidemic_5007_stress_effect_profile(
         if isinstance(indicators, Mapping) else None
     )
     if knowledge.get("ck3_build") == CURRENT_CK3_BUILD and isinstance(rows, list):
-        rows = [row for row in rows if isinstance(row, Mapping) and row.get("kind") == "stress"]
+        rows = [row for row in rows if _has_stress_indicator_facet(row, CURRENT_CK3_BUILD)]
     if not (
         native_index == 2
         and isinstance(source_hashes, Mapping)
@@ -313,7 +324,7 @@ def _epidemic_5007_stress_effect_profile(
     stress = rows[0]
     if not (
         isinstance(stress, Mapping)
-        and stress.get("kind") == "stress"
+        and _has_stress_indicator_facet(stress, knowledge["ck3_build"])
         and stress.get("direction") == "increase"
         and stress.get("magnitude") == {"status": "unavailable"}
         and stress.get("affected_by_trait") is True
@@ -1370,7 +1381,7 @@ def recommend_registered_vanilla_event_option_v1(
         )
         rows = indicators.get("rows") if isinstance(indicators, Mapping) else None
         if build == CURRENT_CK3_BUILD and isinstance(rows, list):
-            rows = [row for row in rows if isinstance(row, Mapping) and row.get("kind") == "stress"]
+            rows = [row for row in rows if _has_stress_indicator_facet(row, build)]
         stress = rows[0] if isinstance(rows, list) and len(rows) == 1 else None
         checks["r0100_exact_source"] = bool(
             isinstance(source_hashes, Mapping)
@@ -1386,7 +1397,7 @@ def recommend_registered_vanilla_event_option_v1(
             == f"played-character-event-icon-indicators-{build}-v1"
             and indicators.get("complete_effect_set") is False
             and isinstance(stress, Mapping)
-            and stress.get("kind") == "stress"
+            and _has_stress_indicator_facet(stress, build)
             and stress.get("direction") == "decrease"
             and stress.get("magnitude") == {"status": "unavailable"}
             and stress.get("affected_by_trait") is True

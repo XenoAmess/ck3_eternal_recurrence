@@ -1,0 +1,87 @@
+{
+  "ck3_build": "1.20.0.2 Crozier / Steam25588574",
+  "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "existing_consumer_input_contract": {
+    "additional_religion_inputs_required_for_bounded_continuation": false,
+    "materialized_option_variants": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "saved_scope_names_and_types": {
+      "epidemic": "epidemic",
+      "infected_county": "landed_title",
+      "province": "province"
+    },
+    "selected_native_index_unique_shown_enabled": 0,
+    "single_exact_event_window": true,
+    "snapshot_authored_option_count": 3
+  },
+  "fulfillment_material_readback_dependencies": [
+    "same played character and outbreak intensity",
+    "is_playable_character native result",
+    "current Rite no_epidemic_fulfillment_loss_active parameter result",
+    "no_epidemic_fulfillment_loss_personal_active personal-tenet result",
+    "before/after spiritual_fulfillment_raw with raw_scale=100000"
+  ],
+  "live_acceptance_performed": false,
+  "new_common_effect": {
+    "actual_engine_clamp_and_material_result_proven": false,
+    "all_options_share_effect": true,
+    "apocalyptic_delta": -20,
+    "existing_native_0_contract_reusable": true,
+    "gate": "Playable character; neither Rite parameter nor personal-tenet exemption active.",
+    "major_delta": -10,
+    "other_delta": -5
+  },
+  "new_event": {
+    "block_sha256": "3D5BBB365D18114FE2116A0F6392A25D9D539D23918F58CCBCE705E355A99D17",
+    "end_line": 4474,
+    "file_sha256": "A1CF48ABA07E121618F1190D5B8CF590D985FCA5A32DFF16D28F9A826FF0B950",
+    "line": 4181,
+    "ordered_token_sha256": "BEB8B2E3763BC99C42D43255F25491228B153D5FF8A88FACA051A1F2AC2DA44C",
+    "relative_path": "events/dlc/ce1/epidemic_events.txt",
+    "token_count": 701
+  },
+  "old_event": {
+    "block_sha256": "599AAF2C358A4A3450F65FD7516ABCE349C0DE6377BF1C34EECFBA17C51B7679",
+    "end_line": 3914,
+    "file_sha256": "FEF2972BD4F778818CD3A414C337D036F5132C1598FEBAB0E2623E0252DB7A1E",
+    "line": 3624,
+    "ordered_token_sha256": "EA364F7617FCD8E577A60EC3BFF74A35A829BFE62BCA9722D5DCAD77B13CB3DF",
+    "relative_path": "events/dlc/ce1/epidemic_events.txt",
+    "token_count": 692
+  },
+  "policy_registry_or_abi_changes_needed": false,
+  "proof_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\epidemic1100\\source-proof.json",
+  "proof_sha256": "8B268D8AB8BD59320D6F51BA0C9E06DE315889F6F110CCEA9DC2FA307230791C",
+  "readiness": "static-ready source contract; new-build paused/action/material pending",
+  "recommended_native_option_index": 0,
+  "schema": "xar.event12002.epidemic-events-1100.source-contract.v1",
+  "shared_description_update_needed": "Remove obsolete owner-deferred label and disclose common fulfillment cost; parent owns shared files.",
+  "source_file_sha256": {
+    "common/defines/00_defines.txt": "8E430D77EB6E8767030F34B1C53D5DAE84277FB354BD73CC42F93DC500BE8982",
+    "common/script_values/pam_values.txt": "458D1BD882E8854005E3158339FCA343177CFF13EAC7F83CB5877A8A37171965",
+    "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+    "common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt": "B639D4E390CE033C6D92F6706C9B41EE30E142E8FB1925AB97A1B448EDBF5689",
+    "common/scripted_effects/07_dlc_ep3_scripted_effects.txt": "210FBB62DED6E6E48EFBD144CF60E01B66B7711BF79914BA70D8A6B5D841C7E6",
+    "common/scripted_effects/pam_effects.txt": "50B0EBEEAB835B98FC2A159BAA5806078D706B3F988ECB5A6C1E025C86465161",
+    "events/dlc/ce1/epidemic_events.txt": "A1CF48ABA07E121618F1190D5B8CF590D985FCA5A32DFF16D28F9A826FF0B950"
+  },
+  "unchanged_direct_dependency_keys": [
+    "add_plague_county_modifiers",
+    "epidemic_outbreak_legitimacy_effect",
+    "increase_governance_effect",
+    "notify_holders_and_above"
+  ],
+  "verification": {
+    "passed_checks": 15,
+    "result": "GREEN",
+    "total_checks": 15
+  }
+}

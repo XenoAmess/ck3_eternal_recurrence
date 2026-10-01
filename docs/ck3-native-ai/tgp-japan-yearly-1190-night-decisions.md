@@ -8,7 +8,7 @@ CK3 `1.19.0.6`，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B
 
 - authored1/native0：`major_stress_impact_gain` 基数 +80；50% 随机获得少量威望并按优先级移除坏特质或加 5 学识。原版 AI 基数 100，受 rationality 修正。
 - authored2/native1：`medium_stress_impact_loss` 基数 −30，但 arrogant 可以转成小幅增压；随机一名存在的五类阁臣获得对应技能 +2；玩家保证损失 `minor_prestige_loss`（−75 威望）和 `medium_dread_loss`（−20 威慑）。原版 AI 基数 100，受 boldness 修正。
-- authored3/native2：`major_stress_impact_loss` 基数 −80；50% 随机非首都伯爵领降低 `medium_county_control_loss`（−20 控制）。原版 AI 基数 100，受 honor 修正。
+- authored3/native2：`major_stress_impact_loss` 基数 −65；50% 随机非首都伯爵领降低 `medium_county_control_loss`（−20 控制）。原版 AI 基数 100，受 honor 修正。
 
 数值来源：`game/common/script_values/00_stress_values.txt:25-34` SHA-256 `104A7EF94EE9DA1092F23AEB2FD9DC971B08C695415F3B7EBFB628F381D26395`、`00_basic_values.txt:727,1001,1012-1015` SHA-256 `9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096`、`00_county_control_values.txt:7` SHA-256 `A1D06C795CBBE22E06889AD90012DDF0EC476BFFDE63BD5D163E9C3451255E65`。原生 AI 精确运行期权重和所有随机结果未在 R0100 读取；不能据此宣称我方策略等价于原版 AI。
 

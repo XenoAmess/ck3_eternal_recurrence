@@ -165,7 +165,7 @@ VANILLA_TGP_JAPAN_YEARLY_ANALYSIS: Final[
                 "loss -20"
             ),
             2: (
-                "major stress loss base -80; fifty-percent random roll "
+                "major stress loss base -65; fifty-percent random roll "
                 "lowers one noncapital county's control by twenty"
             ),
         },
