@@ -4,8 +4,8 @@ tags={
 	"Balance"
 	"Decisions"
 	"Events"
-	"1.19 'Scribe'"
+	"1.20 'Crozier'"
 }
 name="天朝制允许经商&贪腐框架（XenoAmess维护版）"
 picture="thumbnail.png"
-supported_version="1.19.0.6"
+supported_version="1.20.0.2"

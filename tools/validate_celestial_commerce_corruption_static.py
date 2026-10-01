@@ -162,11 +162,11 @@ def validate() -> list[str]:
         '\t"Balance"\n'
         '\t"Decisions"\n'
         '\t"Events"\n'
-        '\t"1.19 \'Scribe\'"\n'
+        '\t"1.20 \'Crozier\'"\n'
         '}\n'
         'name="天朝制允许经商&贪腐框架（XenoAmess维护版）"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.19.0.6"\n'
+        'supported_version="1.20.0.2"\n'
     )
     if read_text("descriptor.mod").replace("\r\n", "\n") != expected_descriptor:
         errors.append("descriptor.mod fields or ordering differ from the release contract")
