@@ -2,6 +2,14 @@
 
 真实开始记录时间：2026-10-01T14:33:47+08:00。用户明确要求继续并提高并行，且不得占用 CK3。基线为 `9e37d3df4227578fb754d71278810c9492ca948b`，施工树 `Z:/ck3_mod_rewrite/.task-tmp/g2src`；旧 migration 与范围核对树保持冻结。本页承接[八项施工图](g2-offline-work-map-2026-10-01.md)，记录实际施工与交付，不将计划当作完成。
 
+## 15:22:18 用户调整后的当前范围
+
+用户已明确允许本机CK3实机，并解除宗教研究暂缓，同时要求停止战争相关研究。WAR-CASH/PREWAR所有子线程已停止；已验证历史和失败artifact保留，不继续future cash、参战、集结或供给来源研究。尚未验证的prewar mailbox/supply草稿从当前candidate排除，不能沿用早期两步fixture的GREEN或其错误static-ready标签。Family已完成alliance历史冻结；当前新family query只消费子代House与退婚terms。
+
+宗教当前新线程沿1.20原版数据与exact原生链研究Rite/Faith/Religion及最终判定，不开展战争分支。非战争council/faction/gift/Sway/law/Feast/prisoner/GOV与目标记忆继续集成。实际游戏由root串行操作，其它源码线程仍只做文件/fixture，首次新snapshot与材料结果以前不升级live。早期全程禁止CK3及宗教暂缓的段落是当时边界，当前以本段新用户指令为准。
+
+15:12:37实际inventory显示本机无CK3，Steam在15:20:26已完成原生窗口可逆位移与新像素证明，并经人工图像审阅明确显示“Steam当前处于离线模式”和“上线”按钮；未点击上线。首轮环境missing psutil为environment RED，已在同一项目解释器补齐必要live依赖，未修改产品代码。初次fresh-frame输出目录未创建为harness错误，随后同一入口完成。准确输入/哈希在 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/live-preflight/`。
+
 ## 当前施工
 
 | 工作包 | 实际范围 | 初始状态 | 实机边界 |
@@ -9,10 +17,10 @@
 | M4 council | 新版候选、四类最终 gate、typed 任命与独立读取 | 正在实现 | paused 候选/门互证、任命后置及 next/cold |
 | M4 faction | 完整身份、成员、原生 power/discontent/danger | 正在实现 | 真实派系同帧查询 |
 | M4 gift | 原生最终发送、费用、好感预览、typed 操作 | 正在实现，依赖 faction | 合法接收者及 gold/opinion 后置 |
-| M5 war cash | 原生维护/费用来源、实际 producer | 正在实现 | 实际战争资源同帧互证 |
-| M5 multiwar | 共享军队与全 WarID 的资源聚合，复用预留 | 正在实现，依赖现金来源 | 实际资源争用与联合选择 |
+| M5 war cash | 原生维护/费用来源、实际 producer | 用户要求停研；完成部分冻结 | 实际战争资源同帧互证 |
+| M5 multiwar | 共享军队与全 WarID 的资源聚合，复用预留 | 用户要求停研；完成部分冻结 | 实际资源争用与联合选择 |
 | M5 family obligation | 婚配最终家系、解除婚约成本、联盟战争义务 | 正在实现 | 新版合法关系与具体义务互证 |
-| M5 prewar | 真实绑定参与者、原生集结与未来路线输入 | 正在实现 | 合格战前场景；未闭合输入保留明确账本 |
+| M5 prewar | 真实绑定参与者、原生集结与未来路线输入 | 用户要求停研；完成部分冻结 | 合格战前场景；未闭合输入保留明确账本 |
 | M6 Sway | 活跃实例、好感、最终发送、typed start、终止语义 | 正在实现 | 实例/提交/完成收益与 next/cold |
 | M6 law | active/candidate/final terms、费用、已有 LAW8 源操作 | 正在实现 | 有价值的合法法律后置与资源变化 |
 | M6 prisoner | 既有囚犯列表、赎金 final terms、typed 操作与独立结果迁移 | 正在实现，14:35追加 | 真实合法赎金、人物与国库后置 |
