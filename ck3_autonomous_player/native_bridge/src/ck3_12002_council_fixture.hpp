@@ -22,6 +22,7 @@ struct CouncilCandidatesFixture12002 {
   static constexpr std::int32_t kOwner = 0x01000001;
   static constexpr std::int32_t kIncumbent = 0x01000002;
   static constexpr std::int32_t kChancellorIncumbent = 0x01000003;
+  static constexpr std::int32_t kSpymasterIncumbent = 0x01000004;
   static constexpr std::int32_t kCandidate = 0x01000010;
   static constexpr std::int32_t kTask = 0x01000001;
   static constexpr std::size_t kCharacters = 24;
@@ -30,6 +31,7 @@ struct CouncilCandidatesFixture12002 {
   Blob<0x300> owner_extension{};
   Blob<0x60> position{}, task_type{};
   Blob<0x60> chancellor_position{}, chancellor_task_type{};
+  Blob<0x60> spymaster_position{}, spymaster_task_type{};
   std::array<Blob<0x80>, 4> tasks{};
   Blob<0x30> character_storage{}, task_storage{};
   std::array<Slot, 128> character_slots{}, task_slots{};
@@ -52,6 +54,7 @@ struct CouncilCandidatesFixture12002 {
   std::size_t expected_task_index = 0;
   static constexpr char kPosition[] = "councillor_steward";
   static constexpr char kChancellorPosition[] = "councillor_chancellor";
+  static constexpr char kSpymasterPosition[] = "councillor_spymaster";
 
   CouncilCandidatesFixture12002() noexcept {
     for (std::size_t i = 0; i < characters.size(); ++i) {
@@ -130,6 +133,26 @@ struct CouncilCandidatesFixture12002 {
     expected_task_index = 1;
   }
 
+  void EnableSpymaster() noexcept {
+    EnableChancellor();
+    const char *key = kSpymasterPosition;
+    spymaster_position.Put(0x18, key);
+    spymaster_position.Put(0x28, std::size_t{sizeof(kSpymasterPosition) - 1});
+    spymaster_position.Put(0x30, std::size_t{31});
+    spymaster_task_type.Put(0x40, spymaster_position.Data());
+    tasks[2].Put(0x18, spymaster_task_type.Data());
+    tasks[2].Put(0x40, kSpymasterIncumbent);
+    task_ids[2] = kTask + 2;
+    owner_extension.Put(0x23C, std::int32_t{3});
+    characters[3].Put(0xD8, std::int32_t{9});
+    characters[3].Put(0xE0, std::int32_t{15});
+    characters[3].Put(0xE4, std::int32_t{17});
+    characters[15].Put(0xE4, std::int32_t{23});
+    characters[16].Put(0xE4, std::int32_t{13});
+    request.position_key = kSpymasterPosition;
+    expected_task_index = 2;
+  }
+
   static bool MainThread(void *context) noexcept {
     return static_cast<CouncilCandidatesFixture12002 *>(context)->main_thread;
   }
@@ -162,6 +185,8 @@ struct CouncilCandidatesFixture12002 {
         Span(&f.task_type, sizeof(f.task_type), address, size) ||
         Span(&f.chancellor_position, sizeof(f.chancellor_position), address, size) ||
         Span(&f.chancellor_task_type, sizeof(f.chancellor_task_type), address, size) ||
+        Span(&f.spymaster_position, sizeof(f.spymaster_position), address, size) ||
+        Span(&f.spymaster_task_type, sizeof(f.spymaster_task_type), address, size) ||
         Span(f.tasks.data(), sizeof(f.tasks), address, size) ||
         Span(&f.character_storage, sizeof(f.character_storage), address, size) ||
         Span(&f.task_storage, sizeof(f.task_storage), address, size) ||
@@ -175,6 +200,7 @@ struct CouncilCandidatesFixture12002 {
         Span(&f.task_fallback, sizeof(void *), address, size) ||
         Span(kPosition, sizeof(kPosition), address, size) ||
         Span(kChancellorPosition, sizeof(kChancellorPosition), address, size) ||
+        Span(kSpymasterPosition, sizeof(kSpymasterPosition), address, size) ||
         Span(f.allocator_address, f.allocator_size, address, size);
     if (!valid || output == nullptr) return false;
     std::memcpy(output, address, size);
@@ -213,7 +239,8 @@ struct CouncilCandidatesFixture12002 {
       CouncilCandidatesNativeVectorV1 &vector) noexcept {
     auto &f = *static_cast<CouncilCandidatesFixture12002 *>(context);
     ++f.release_calls;
-    if (f.drift_incumbent_after_release) f.tasks[0].Put(0x40, std::int32_t{-1});
+    if (f.drift_incumbent_after_release)
+      f.tasks[f.expected_task_index].Put(0x40, std::int32_t{-1});
     const bool matched = vector.allocator == f.allocator_address &&
         (vector.data_address == reinterpret_cast<std::uintptr_t>(f.allocator_address) + 8 ||
          vector.data_address == reinterpret_cast<std::uintptr_t>(f.rows.data()));

@@ -1,0 +1,296 @@
+{
+  "contract": "council-spymaster-readonly-12003",
+  "schema_version": 1,
+  "evidence_level": "static-ready",
+  "game_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "source_base_commit": "dcd61a5b7d6b94536cab3b0272e220d8f211b1b9",
+  "scope": "readonly ordinary Spymaster candidates, intrigue and native final legality; no appointment, task change or policy",
+  "reuse_manifest": "ck3_1_20_0_3_abi_reuse.json",
+  "reused_inputs": [
+    "council_candidates12002_abi.json",
+    "council_gates12002_abi.json",
+    "ck3_1_20_0_2_phase_character.json",
+    "council_composition_candidates_enrichment_v1_abi.json"
+  ],
+  "position_key": "councillor_spymaster",
+  "main_skill_key": "intrigue",
+  "skill_enum": 3,
+  "effective_skill_array_offset": "0xD8",
+  "effective_skill_offset": "0xE4",
+  "skill_binding_status": "direct exact 1.20.0.3 named enum registration plus indexed effective getter",
+  "native_functions": {
+    "candidate_producer": "0x2C47EC0",
+    "valid_position": "0x31BCED0",
+    "valid_character": "0x31BCF90",
+    "is_councillor": "0x2917560",
+    "is_guest": "0x1A8F780",
+    "pending_manager_setup": "0x115CA80",
+    "has_pending_interaction": "0x2A307B0",
+    "can_confirm": "0x11604A0"
+  },
+  "actual_source_anchor": {
+    "artifact": "artifacts/g2-maintainer-2026-10-02/resume-12003/cold-v6-sway-chancellor-01",
+    "owner_character_id": 29829,
+    "raw_date": 53174952,
+    "position_key": "councillor_spymaster",
+    "incumbent_character_id": 34333,
+    "task_key": "task_disrupt_schemes",
+    "intrigue": null,
+    "alternate_candidates": null,
+    "native_final_gates": null
+  },
+  "unknown_inputs": [
+    "current Spymaster incumbent intrigue and complete native-final-legal alternatives: fresh paused query required",
+    "native composition utility, political preference, appointment scheduling and task-switch value: not consumed by this readonly package"
+  ],
+  "live_calls": 0,
+  "actions": 0,
+  "g2_credit": 0,
+  "open_kaishek_prevalidation": {
+    "status": "not-applicable",
+    "reason": "The new observation uses the compiled native candidate producer, predicates, Character skill memory and private transport, outside script finite-runtime coverage. Focused production native/Python fixtures cover the deterministic offline subset."
+  },
+  "direct_pe_evidence": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m4-council\\spymaster-readonly\\SPY-PE-EVIDENCE.json",
+    "sha256": "b3883fffbae14489a5a9f64da5f93afd60a9e3a6fb2759d884b2efa581bca1c0",
+    "canonical_intrigue_literal": {
+      "rva": "0x44EE7D8",
+      "file_offset": 72275416,
+      "bytes_hex": "696E74726967756500",
+      "value": "intrigue"
+    },
+    "spans": [
+      {
+        "name": "intrigue_enum_registration",
+        "start_rva": "0xda98e0",
+        "end_rva_exclusive": "0xda98f7",
+        "size": 23,
+        "bytes_hex": "C64538034C8D4538488D15E94E7403498BCEE8C91E0100",
+        "sha256": "B171D90E6D1125A535C42F02BA63827DE7FCEE41B5EED973F4411D16C7BCF1DC",
+        "meaning": "Stores enum byte 3, loads canonical intrigue name at RVA 0x44EE7D8, and inserts that named enum via 0xDBB7C0."
+      },
+      {
+        "name": "effective_skill_getter",
+        "start_rva": "0x28b16b0",
+        "end_rva_exclusive": "0x28b170d",
+        "size": 93,
+        "bytes_hex": "48895C2408574883EC304863DA488BF94883FB06723233D2488D05E901BF014C8D0D16D53A03488944242033C9448D4201E8AA946C018B849FD8000000488B5C24404883C4305FC38B8499D8000000488B5C24404883C4305FC3CCCCCC",
+        "sha256": "B3C592A0D177A07D0BC5D04DD4A94558A539F6F543B73FAF5A748954F0AB42DA",
+        "meaning": "Generic indexed effective skill getter bounds index below 6 and returns character[index*4 + 0xD8]. Intrigue enum 3 therefore selects +0xE4."
+      },
+      {
+        "name": "council_same_skill_comparison_calls",
+        "start_rva": "0x115c4bf",
+        "end_rva_exclusive": "0x115c4d2",
+        "size": 19,
+        "bytes_hex": "8BD6E8EA5175018BD6488BCF8BD8E8DE517501",
+        "sha256": "366DD296C1255119AABBA01F1CDBB4AFC890D43A9A95C3AE0ED0B75741A5E22D",
+        "meaning": "Council comparator invokes the same effective skill getter for both characters using the same selected skill enum in ESI."
+      },
+      {
+        "name": "generic_candidate_producer",
+        "start_rva": "0x2c47ec0",
+        "end_rva_exclusive": "0x2c4835c",
+        "size": 1180,
+        "sha256": "3FB391FD82FD7FFF85A303697A51EB2BAD6532E30DDA9B9075EE83A9CF49E9B1",
+        "meaning": "Already reviewed native producer is parameterized by active task; task+0x18 -> task type+0x40 resolves actual role and invokes native role validity."
+      },
+      {
+        "name": "generic_valid_position",
+        "start_rva": "0x31bced0",
+        "end_rva_exclusive": "0x31bcf8c",
+        "size": 188,
+        "sha256": "E67928C9766B1707B92F82AEAA556967A9D5CEB2CE0A95E5400CDA2123F7EF52",
+        "meaning": "Already reviewed native position predicate takes the role pointer; Spy stock conditions remain native results."
+      },
+      {
+        "name": "generic_valid_character",
+        "start_rva": "0x31bcf90",
+        "end_rva_exclusive": "0x31bd04c",
+        "size": 188,
+        "sha256": "96A59C457528D7E26141F5EC44C3962947649F7713BA1C40D1A58A292913C614",
+        "meaning": "Already reviewed native character predicate takes the role pointer; Spy eligibility differs from Steward and is not reimplemented."
+      }
+    ],
+    "excluded_locator": "GetIntrigueSkill literal registration B4890 and callbacks DB9930/DB9940 expose a CharacterListFilter Skill object; these are not claimed to be the CCharacter effective getter. Evidence closes via canonical intrigue enum registration plus the exact effective getter."
+  },
+  "stock_inputs": [
+    {
+      "path_from_game_root": "common/council_positions/00_council_positions.txt",
+      "sha256": "31FA258DFBF35A07E9EE08D1D1DFDCD26712D3974CD65EC74255C284E4DF0A2A",
+      "line_ranges": [
+        {
+          "start": 417,
+          "end_inclusive": 418,
+          "lines": [
+            {
+              "line": 417,
+              "text": "councillor_spymaster = {"
+            },
+            {
+              "line": 418,
+              "text": "\tskill = intrigue"
+            }
+          ]
+        },
+        {
+          "start": 481,
+          "end_inclusive": 483,
+          "lines": [
+            {
+              "line": 481,
+              "text": "\tvalid_position = {"
+            },
+            {
+              "line": 482,
+              "text": "\t\tNOT = { government_has_flag = government_is_landless_adventurer }"
+            },
+            {
+              "line": 483,
+              "text": "\t}"
+            }
+          ]
+        },
+        {
+          "start": 519,
+          "end_inclusive": 531,
+          "lines": [
+            {
+              "line": 519,
+              "text": "\tvalid_character = {"
+            },
+            {
+              "line": 520,
+              "text": "\t\texists = root.liege_or_court_owner"
+            },
+            {
+              "line": 521,
+              "text": "\t\ttrigger_if = { # If the liege has a ministry, we check a separate minister trigger"
+            },
+            {
+              "line": 522,
+              "text": "\t\t\tlimit = {"
+            },
+            {
+              "line": 523,
+              "text": "\t\t\t\troot.liege_or_court_owner = { tgp_has_access_to_ministry_trigger = yes }"
+            },
+            {
+              "line": 524,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 525,
+              "text": "\t\t\ttgp_can_be_a_minister_trigger = { COURT_OWNER = root.liege_or_court_owner }"
+            },
+            {
+              "line": 526,
+              "text": "\t\t}"
+            },
+            {
+              "line": 527,
+              "text": "\t\ttrigger_else = {"
+            },
+            {
+              "line": 528,
+              "text": "\t\t\tcan_be_spymaster_trigger = { COURT_OWNER = root.liege_or_court_owner }"
+            },
+            {
+              "line": 529,
+              "text": "\t\t}"
+            },
+            {
+              "line": 530,
+              "text": "\t\ttgp_is_ceremonial_liege_trigger = no"
+            },
+            {
+              "line": 531,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path_from_game_root": "common/scripted_triggers/00_councillor_triggers.txt",
+      "sha256": "350A5E375D73E38CDD659FC3221FE8395AD6650B3FD244E03EE2342AFC9A8F88",
+      "line_ranges": [
+        {
+          "start": 115,
+          "end_inclusive": 128,
+          "lines": [
+            {
+              "line": 115,
+              "text": "can_be_spymaster_trigger = {"
+            },
+            {
+              "line": 116,
+              "text": "\tcan_be_councillor_basics_trigger = yes"
+            },
+            {
+              "line": 117,
+              "text": "\tNAND = {"
+            },
+            {
+              "line": 118,
+              "text": "\t\thas_council_position = councillor_court_chaplain"
+            },
+            {
+              "line": 119,
+              "text": "\t\trite = { rite_has_parameter = clerical_appointment_fixed }"
+            },
+            {
+              "line": 120,
+              "text": "\t}"
+            },
+            {
+              "line": 121,
+              "text": "\tNOR = {"
+            },
+            {
+              "line": 122,
+              "text": "\t\thas_council_position = councillor_spouse"
+            },
+            {
+              "line": 123,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 124,
+              "text": "\t\t\tthis = liege.diarch"
+            },
+            {
+              "line": 125,
+              "text": "\t\t\tliege = { has_diarchy_active_parameter = diarchy_is_vizierate }"
+            },
+            {
+              "line": 126,
+              "text": "\t\t}"
+            },
+            {
+              "line": 127,
+              "text": "\t}"
+            },
+            {
+              "line": 128,
+              "text": "\texists = $COURT_OWNER$ #so we can have the argument but get no errors"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "static_validation": {
+    "native_focused_tests": "5 GREEN with fresh isolated production objects and the new profile header",
+    "native_receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m4-council\\spymaster-readonly\\spymaster-focused-attempt-04\\FOCUSED-RESULT.json",
+    "native_receipt_sha256": "d297912890e34a39fb405902ed71e741b7d485686dd42b5611860c15829af315",
+    "python_focused_tests": "22 PASS; real native wire plus readonly contract/private SDK/default-role/action-boundary coverage",
+    "python_receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m4-council\\spymaster-readonly\\python-focused-receipt.json",
+    "python_receipt_sha256": "5989eef17702643efe7371e6a3f7637d80382183765d0f78a245123d7d92e7ab",
+    "fixture_current_build_identity": "actual current descriptor and production RenderCrozierBuildIdentity; no JSON label rewrite",
+    "paused_live": false,
+    "failed_attempt_boundary": "Retained harness attempts: incorrect pure-projector Ninja target before compile/test; two missing real family implementation link dependencies for the current adapter; missing external WriteWire output directory. Corrections change no source/flags/CMake; final transport-only rerun reuses four passing tests."
+  }
+}

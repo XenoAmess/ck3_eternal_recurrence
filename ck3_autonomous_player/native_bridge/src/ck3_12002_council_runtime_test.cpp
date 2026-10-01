@@ -103,6 +103,8 @@ struct SourceChainFixture {
     std::memcpy(&candidate, bytes + 0x134, sizeof(candidate));
     const auto expected_incumbent = active->context.query_request.position_key ==
         kCouncilCandidatesChancellorPosition12002 ? SourceFixture::kChancellorIncumbent :
+        active->context.query_request.position_key == kCouncilCandidatesSpymasterPosition12002 ?
+        SourceFixture::kSpymasterIncumbent :
         SourceFixture::kIncumbent;
     Require(incumbent == expected_incumbent, "native incumbent payload");
     Require((candidate == SourceFixture::kCandidate ||
@@ -291,6 +293,43 @@ int main(int argc, char **argv) {
         f.context.wire.failure_reason == "final_gate_frame_changed" &&
         f.context.wire.final_gate_row_count == 0 && f.helper_calls == 0,
         "Chancellor gate query independently recaptures the requested role frame"); ++checks;
+  }
+  for (bool vacant : {false, true}) {
+    auto owned = std::make_unique<SourceChainFixture>();
+    auto &f = *owned;
+    f.source.EnableSpymaster();
+    if (vacant) f.source.tasks[2].Put(0x40, std::int32_t{-1});
+    f.context.query_request = f.source.request;
+    f.Execute(Operation::query_final_gates);
+    const auto &result = f.context.wire.query_result;
+    Require(f.context.wire.completion == Completion::query_available && result.readiness.ready &&
+        std::string_view(result.position_key.data()) == SourceFixture::kSpymasterPosition &&
+        std::string_view(result.candidates[0].main_skill.key.data()) == "intrigue" &&
+        result.candidates[0].main_skill.value == 23 && result.candidates[1].main_skill.value == 13 &&
+        result.incumbent_character_id == (vacant ? -1 : SourceFixture::kSpymasterIncumbent) &&
+        (vacant || result.incumbent_main_skill.value == 17) &&
+        f.source.producer_inputs_valid && f.context.wire.final_gate_row_count == 2 &&
+        f.native_gate_calls == 6 && f.confirm_calls == (vacant ? 0U : 2U) &&
+        f.context.wire.final_gate_rows[0].available &&
+        f.context.wire.final_gate_rows[0].fireability_evaluated == !vacant &&
+        f.helper_calls == 0, "Spymaster native final gates use its own incumbent and intrigue"); ++checks;
+    WriteWire(directory, vacant ? "spymaster-vacant-gates.json" : "spymaster-gates.json", f);
+    game::CouncilAssignCouncillorActionRequestV1 request{};
+    Require(!ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(result,
+        SourceFixture::kCandidate, "spymaster-not-an-action", request) &&
+        f.helper_calls == 0 && !f.state.has_pending_ack,
+        "Spymaster readonly observation does not enable typed Steward assignment"); ++checks;
+  }
+  {
+    auto owned = std::make_unique<SourceChainFixture>();
+    auto &f = *owned;
+    f.source.EnableSpymaster(); f.context.query_request = f.source.request;
+    f.drift_during_gate = true;
+    f.Execute(Operation::query_final_gates);
+    Require(f.context.wire.completion == Completion::query_unavailable &&
+        f.context.wire.failure_reason == "final_gate_frame_changed" &&
+        f.context.wire.final_gate_row_count == 0 && f.helper_calls == 0,
+        "Spymaster gate query recaptures its requested role after native final predicates"); ++checks;
   }
   std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
       << ",\"isolated_gate_rejections\":4,\"routes\":2,\"source_chain\":\"candidate_reader-native_gates-semantic_action-new_submit_adapter-independent_receipt-actual_serializer\",\"live_verified\":false}\n";

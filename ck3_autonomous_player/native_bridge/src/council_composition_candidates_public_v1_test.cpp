@@ -182,6 +182,34 @@ void TestChancellorProfileProjectionAndWire() {
       Failure::schema_invariant_failed);
 }
 
+void TestSpymasterProfileProjectionAndWire() {
+  auto private_result = PrivateResult();
+  auto enrichment = Enrichment();
+  SetFixed(private_result.position_key, "councillor_spymaster");
+  SetFixed(enrichment.position_key, "councillor_spymaster");
+  enrichment.incumbent_character_id = 34'333;
+  enrichment.incumbent_main_skill = 17;
+  enrichment.candidates[0].main_skill = 23;
+  enrichment.candidates[1].main_skill = 13;
+  game::CouncilCompositionCandidatesPublicV1 output{};
+  assert(ck3_11906::ProjectCouncilCompositionCandidatesPublicV1(
+      private_result, enrichment, output, "councillor_spymaster", "intrigue") ==
+      Result::available);
+  assert(output.readiness.ready && !output.vacant && output.candidate_collection_complete);
+  assert(output.incumbent_character_id == 34'333 && output.incumbent_main_skill.value == 17);
+  assert(output.candidates[0].character_id == 30'784 &&
+      output.candidates[0].native_collection_ordinal == 4 && output.candidates[0].main_skill.value == 23);
+  assert(output.candidates[1].character_id == 57'582 && output.candidates[1].main_skill.value == 13);
+  const auto wire = ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(
+      output, "councillor_spymaster", "intrigue");
+  assert(wire.find("\"position_key\":\"councillor_spymaster\"") != std::string::npos);
+  assert(wire.find("\"incumbent_main_skill\":{\"key\":\"intrigue\",\"value\":17}") != std::string::npos);
+  assert(wire.find("\"main_skill\":{\"key\":\"intrigue\",\"value\":23}") != std::string::npos);
+  assert(ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(output).empty());
+  ExpectUnavailable(Project(private_result, enrichment, Result::unavailable),
+      Failure::schema_invariant_failed);
+}
+
 void TestPrivateFailureIsPreserved() {
   auto private_result = PrivateResult();
   private_result.status =
@@ -266,6 +294,7 @@ int main() {
   TestVacancyProjectionAndWire();
   TestReplacementProjection();
   TestChancellorProfileProjectionAndWire();
+  TestSpymasterProfileProjectionAndWire();
   TestPrivateFailureIsPreserved();
   TestEnrichmentAndBindingFailures();
   TestPrivateSchemaInvariantFailure();

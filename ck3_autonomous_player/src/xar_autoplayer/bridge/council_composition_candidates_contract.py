@@ -4,8 +4,9 @@ The native producer owns CK3 legality and skill enrichment. Python validates
 the stable Council19 payload and keeps the planner bound to its exact paused
 frame. Native 1.19.0.6 and 1.20.0.2 adapters publish this same DTO; the separate
 Council22 action verifies appointment through a later incumbent receipt.
-The private read path can explicitly opt in to Chancellor diplomacy; public
-requests and formal Steward consumers retain their existing default coverage.
+The private read path can explicitly opt in to Chancellor diplomacy or
+Spymaster intrigue; public requests and formal Steward consumers retain their
+existing default coverage.
 """
 
 from __future__ import annotations
@@ -27,9 +28,12 @@ STEWARD_POSITION_KEY: Final = "councillor_steward"
 STEWARD_MAIN_SKILL_KEY: Final = "stewardship"
 CHANCELLOR_POSITION_KEY: Final = "councillor_chancellor"
 CHANCELLOR_MAIN_SKILL_KEY: Final = "diplomacy"
+SPYMASTER_POSITION_KEY: Final = "councillor_spymaster"
+SPYMASTER_MAIN_SKILL_KEY: Final = "intrigue"
 _POSITION_MAIN_SKILL_KEYS: Final = {
     STEWARD_POSITION_KEY: STEWARD_MAIN_SKILL_KEY,
     CHANCELLOR_POSITION_KEY: CHANCELLOR_MAIN_SKILL_KEY,
+    SPYMASTER_POSITION_KEY: SPYMASTER_MAIN_SKILL_KEY,
 }
 
 _ROOT_FIELDS: Final = {
@@ -114,16 +118,17 @@ def build_council_composition_candidates_request_v1(
     owner_character_id: object,
     position_key: object = STEWARD_POSITION_KEY,
     allow_chancellor_read_only: bool = False,
+    allow_spymaster_read_only: bool = False,
 ) -> dict[str, object]:
     """Build the exact request fields accepted by the Council19 producer."""
 
     if position_key != STEWARD_POSITION_KEY and not (
-        allow_chancellor_read_only is True
-        and position_key == CHANCELLOR_POSITION_KEY
+        (allow_chancellor_read_only is True and position_key == CHANCELLOR_POSITION_KEY)
+        or (allow_spymaster_read_only is True and position_key == SPYMASTER_POSITION_KEY)
     ):
         raise ValueError(
             "position_key must be councillor_steward or explicitly opted-in "
-            "readonly councillor_chancellor"
+            "readonly councillor_chancellor or councillor_spymaster"
         )
     return {
         "expected_snapshot_id": _expected_snapshot_id(expected_snapshot_id),
@@ -172,6 +177,7 @@ def normalize_council_composition_candidates_v1(
         owner_character_id=expected_owner_character_id,
         position_key=expected_position_key,
         allow_chancellor_read_only=True,
+        allow_spymaster_read_only=True,
     )
     main_skill_key = _POSITION_MAIN_SKILL_KEYS[request["position_key"]]
     if not isinstance(value, dict) or set(value) != _ROOT_FIELDS:

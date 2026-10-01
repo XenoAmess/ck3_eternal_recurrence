@@ -134,6 +134,60 @@ int main() {
         f.producer_inputs_valid, "default Steward profile remains distinct with both tasks");
   }
   {
+    Fixture f; f.EnableSpymaster();
+    game::CouncilCompositionCandidatesPublicV1 output{};
+    CouncilCandidatesFrameV1 frame{};
+    ok &= Check(CaptureCouncilCandidatesFrame12002(f.environment, f.access, frame,
+        f.request.position_key) && frame.active_task_id == Fixture::kTask + 2 &&
+        frame.active_task == reinterpret_cast<std::uintptr_t>(f.tasks[2].Data()),
+        "Spymaster selects its own task with three occupied Council seats");
+    ok &= Check(ReadCouncilCandidates12002(f.environment, f.access, f.request, output) == Result::available &&
+        output.readiness.ready && std::string_view(output.position_key.data()) == Fixture::kSpymasterPosition &&
+        output.incumbent_character_id == Fixture::kSpymasterIncumbent &&
+        std::string_view(output.incumbent_main_skill.key.data()) == "intrigue" &&
+        output.incumbent_main_skill.value == 17 && output.candidates[0].main_skill.value == 23 &&
+        output.candidates[1].main_skill.value == 13 &&
+        std::string_view(output.candidates[0].main_skill.key.data()) == "intrigue" &&
+        output.candidates[0].native_collection_ordinal == 1 &&
+        output.candidates[1].native_collection_ordinal == 0 &&
+        f.producer_inputs_valid && f.capture_calls == 3 && f.release_calls == 1,
+        "Spymaster candidate and incumbent effective intrigue read E4 rather than D8 or E0");
+    const auto wire = SerializeCouncilCandidates12002(output);
+    ok &= Check(!wire.empty() && wire.find("councillor_spymaster") != std::string::npos &&
+        wire.find("\"key\":\"intrigue\"") != std::string::npos &&
+        ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(output).empty(),
+        "Spymaster production codec retains strict legacy default");
+    f.request.position_key = kCouncilCandidatesStewardPosition12002;
+    f.expected_task_index = 0;
+    ok &= Check(ReadCouncilCandidates12002(f.environment, f.access, f.request, output) == Result::available &&
+        output.incumbent_character_id == Fixture::kIncumbent &&
+        output.incumbent_main_skill.value == 9 && output.candidates[0].main_skill.value == 22 &&
+        std::string_view(output.position_key.data()) == Fixture::kPosition && f.producer_inputs_valid,
+        "three-role collection preserves default Steward task and skill");
+  }
+  {
+    Fixture f; f.request.position_key = kCouncilCandidatesSpymasterPosition12002;
+    ok &= Rejected(f, Failure::active_steward_task_unavailable, 0, 0,
+        "missing Spymaster task cannot reuse another Council seat");
+  }
+  {
+    Fixture f; f.EnableSpymaster(); f.unreadable_candidate_skill = true;
+    game::CouncilCompositionCandidatesPublicV1 output{};
+    ok &= Check(ReadCouncilCandidates12002(f.environment, f.access, f.request, output) == Result::unavailable &&
+        output.unavailable_reason == game::CouncilCompositionCandidatesPublicFailureV1::candidate_main_skill_unready &&
+        !output.readiness.ready && f.producer_calls == 1 && f.release_calls == 1,
+        "missing Spymaster intrigue cannot fall back to readable diplomacy or stewardship");
+  }
+  {
+    Fixture f; f.EnableSpymaster(); f.drift_incumbent_after_release = true;
+    game::CouncilCompositionCandidatesPublicV1 output{};
+    ok &= Check(ReadCouncilCandidates12002(f.environment, f.access, f.request, output) == Result::unavailable &&
+        output.candidate_count == 0 &&
+        output.unavailable_reason == game::CouncilCompositionCandidatesPublicFailureV1::same_frame_binding_mismatch &&
+        f.producer_inputs_valid && f.release_calls == 1,
+        "post-release frame recaptures the Spymaster incumbent independently");
+  }
+  {
     Fixture f; f.request.position_key = "councillor_marshal";
     ok &= Rejected(f, Failure::position_outside_coverage, 0, 0, "undelegated role is outside query coverage");
   }

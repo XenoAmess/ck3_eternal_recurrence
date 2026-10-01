@@ -1,5 +1,9 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-02：1.20.0.3 Spymaster 只读候选输入
+
+[Spymaster exact-build 输入账本与原生树](ck3-1.20.0.3-spymaster-candidates.md)用当前 EXE 的命名技能枚举注册与有效技能 getter 证明 intrigue 3 / Character+E4，复用现有两项 private Council queries 的职位参数。默认总管、任命动作与正式策略保持原状；当前现任与真实合法候选的密谋能力仍须新 paused 观测，政治权重与原生 AI 评分维持 unknown。实现与 focused 验收状态回链该专题，零新增任命或 G2 M4 credit。
+
 ## 2026-10-02：1.20.0.3 Chancellor 只读候选输入
 
 [Chancellor exact-build 输入账本与原生树](ck3-1.20.0.3-chancellor-candidates.md)复用现有参数化 Council producer／final gates，并闭合当前 EXE 的外交技能槽。当前总管33433(15)优于最佳合法替代32716(11)，继续保持 `NO_CHANGE`；掌玺大臣34867 的外交能力与合法候选仍待新 paused 查询。此包只补同一 MCP 的只读输入，不改任命或正式策略，初始为 research、零新增 live／G2 credit。

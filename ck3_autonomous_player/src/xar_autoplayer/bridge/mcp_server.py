@@ -1494,7 +1494,7 @@ def create_server(
             expected_revision: int,
             position_key: str = "councillor_steward",
         ) -> dict[str, object]:
-            """Read native Steward or Chancellor candidates through the private mailbox."""
+            """Read native Steward, Chancellor or Spymaster candidates through the private mailbox."""
             return driver.query_council_composition_candidates_private_v1(
                 expected_revision=expected_revision, position_key=position_key,
             )

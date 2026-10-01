@@ -239,6 +239,7 @@ def query_council_private_v1(
         public_revision=native_revision, native_revision=native_revision,
         date_raw=before.get("date_raw"), owner_character_id=player_id,
         position_key=position_key, allow_chancellor_read_only=True,
+        allow_spymaster_read_only=True,
     )
     result = _read_operation(
         driver, query_step, {

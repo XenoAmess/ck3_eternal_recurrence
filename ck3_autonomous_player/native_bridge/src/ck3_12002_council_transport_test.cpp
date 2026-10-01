@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12002_council_transport.hpp"
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/council_application_main_private_transport_v1.hpp"
 #include "ck3_12002_council_fixture.hpp"
@@ -11,6 +12,7 @@
 #include <fstream>
 #include <iostream>
 #include <span>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -129,6 +131,8 @@ bool ActionCanConfirm(void* confirmation) {
   std::memcpy(&candidate, bytes + kCouncilGatesConfirmationCandidateOffset12002, sizeof(candidate));
   const auto expected_incumbent = provider_transport->context.query_request.position_key ==
       kCouncilCandidatesChancellorPosition12002 ? ProviderFixture::kChancellorIncumbent :
+      provider_transport->context.query_request.position_key == kCouncilCandidatesSpymasterPosition12002 ?
+      ProviderFixture::kSpymasterIncumbent :
       ProviderFixture::kIncumbent;
   assert(incumbent == expected_incumbent &&
       (candidate == ProviderFixture::kCandidate || candidate == ProviderFixture::kCandidate + 1));
@@ -598,6 +602,73 @@ void CheckSourceFrame(const std::filesystem::path& wire_directory) {
       transport.context.wire.final_gate_rows[0].fireability_evaluated &&
       action.helper_calls == 1 && current_adapter.full_snapshot_reads == 0);
   WriteWire(wire_directory, "chancellor_status_gates.json", serialized);
+
+  // The current descriptor selects the reviewed ABI binder. The actual .3
+  // production identity renderer emits the final wire, as it does in bridge.
+  provider.EnableSpymaster();
+  assert(current_adapter.descriptor().game_version == "1.20.0.3" &&
+      current_adapter.descriptor().executable_sha256 == ck3_12003::kExecutableSha256 &&
+      game::ReviewedCrozierAbiSha256(current_adapter.descriptor()) == kExecutableSha256);
+  std::string spymaster_payload = "{\"expected_revision\":14,\"position_key\":\"councillor_spymaster\"}";
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilPrivateQueryStepV1, spymaster_payload,
+      "spymaster-query-14", transport, serialized, failure));
+  spymaster_payload.clear();
+  assert(transport.query_position_key == ProviderFixture::kSpymasterPosition &&
+      transport.context.query_request.position_key == transport.query_position_key);
+  assert(ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+      bridge::kCouncilPrivateStatusStepV1, "{}", "spymaster-query-result",
+      transport, serialized, failure));
+  assert(transport.context.wire.query_result.readiness.ready && provider.producer_inputs_valid &&
+      transport.context.wire.query_result.incumbent_character_id == ProviderFixture::kSpymasterIncumbent &&
+      transport.context.wire.query_result.incumbent_main_skill.value == 17 &&
+      transport.context.wire.query_result.candidates[0].main_skill.value == 23 &&
+      transport.context.wire.query_result.candidates[1].main_skill.value == 13 &&
+      transport.context.wire.query_result.candidate_count == 2 &&
+      transport.context.wire.query_result.candidate_collection_complete);
+  serialized = game::RenderCrozierBuildIdentity(std::move(serialized), current_adapter.descriptor());
+  assert(serialized.find("\"game_version\":\"1.20.0.3\"") != std::string::npos &&
+      serialized.find(ck3_12003::kExecutableSha256) != std::string::npos &&
+      serialized.find(kExecutableSha256) == std::string::npos &&
+      serialized.find("councillor_spymaster") != std::string::npos &&
+      serialized.find("\"key\":\"intrigue\"") != std::string::npos);
+  WriteWire(wire_directory, "spymaster_status_available.json", serialized);
+
+  const auto before_spymaster_assignment = mailbox.next_sequence.load();
+  assert(!HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilPrivateAssignStepV1, current_assign_payload, "spymaster-not-an-action",
+      transport, serialized, failure));
+  assert(failure == "private_candidate_frame_changed" && action.helper_calls == 1 &&
+      !transport.shared.has_pending_ack && mailbox.next_sequence.load() == before_spymaster_assignment);
+  const auto confirms_before_spymaster_gates = action.confirm_calls;
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilFinalGatesPrivateStepV1,
+      "{\"expected_revision\":14,\"position_key\":\"councillor_spymaster\"}",
+      "spymaster-gates-14", transport, serialized, failure));
+  assert(ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+      bridge::kCouncilPrivateStatusStepV1, "{}", "spymaster-gates-result",
+      transport, serialized, failure));
+  assert(transport.context.wire.completion == bridge::CouncilApplicationMainCompletionV1::query_available &&
+      transport.context.wire.query_result.incumbent_character_id == ProviderFixture::kSpymasterIncumbent &&
+      transport.context.wire.query_result.incumbent_main_skill.value == 17 &&
+      transport.context.wire.final_gate_row_count == 2 &&
+      transport.context.wire.final_gate_rows[0].available &&
+      transport.context.wire.final_gate_rows[0].fireability_evaluated &&
+      transport.context.wire.final_gate_rows[1].available &&
+      transport.context.wire.final_gate_rows[1].fireability_evaluated &&
+      action.confirm_calls == confirms_before_spymaster_gates + 2 &&
+      action.helper_calls == 1 && current_adapter.full_snapshot_reads == 0);
+  serialized = game::RenderCrozierBuildIdentity(std::move(serialized), current_adapter.descriptor());
+  assert(serialized.find("\"game_version\":\"1.20.0.3\"") != std::string::npos &&
+      serialized.find(ck3_12003::kExecutableSha256) != std::string::npos &&
+      serialized.find(kExecutableSha256) == std::string::npos &&
+      serialized.find("councillor_spymaster") != std::string::npos &&
+      serialized.find("\"key\":\"intrigue\"") != std::string::npos);
+  WriteWire(wire_directory, "spymaster_status_gates.json", serialized);
   const auto before_unknown_role = mailbox.next_sequence.load();
   assert(!HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
       bridge::kCouncilPrivateQueryStepV1,
