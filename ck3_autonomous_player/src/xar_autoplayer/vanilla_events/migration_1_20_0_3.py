@@ -45,6 +45,10 @@ def migrate_event_knowledge(
     }
     updated["source_sha256"] = sources
     updated["definition_lines"] = f"{definition['line']}-{definition['end_line']}"
+    # Patch reviews can publish a current profile after the earlier migration
+    # deliberately retained its historical form under legacy_*.
+    if isinstance(row.get("analysis_updates"), dict):
+        updated.update(deepcopy(row["analysis_updates"]))
     replacements = {digest: sources[path] for path, digest in prior_sources.items() if path in sources}
     for key in ("selected_choice_effect_profile", "selected_choice_campaign_utility_profile"):
         if key in updated and key in row.get("reviewed_profile_keys", []):

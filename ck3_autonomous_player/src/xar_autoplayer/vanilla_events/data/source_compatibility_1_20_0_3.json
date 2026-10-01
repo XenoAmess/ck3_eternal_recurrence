@@ -1,6 +1,7 @@
 {
   "audit": {
     "changed_registered_dependency_pin_count": 1,
+    "current_bounded_campaign_utility_review_count": 3,
     "current_bounded_continuation_source_compatible_count": 192,
     "current_contract_adaptation_pending_count": 0,
     "excluded-owner-boundary": 3,
@@ -11,7 +12,7 @@
   "baseline_compatibility_file_sha256": "4BCE1FBDD96913C9A385978A291BA63BAE64734B1BCCC2DDCA949B972968859E",
   "ck3_build": "1.20.0.3",
   "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
-  "dataset_sha256": "AF8045D3B01281567C739D60C4F93E7CA97E0BFACBF0F7D3F5FDEE9138659FED",
+  "dataset_sha256": "0E272AC1B46E8799BAB35A9383CBE7F24D224724BAA134EB77F9E5FE4F8108E9",
   "events": {
     "adultery.0002": {
       "analysis_updates": {
@@ -1873,6 +1874,64 @@
     },
     "death_management.1007": {
       "analysis_updates": {
+        "selected_choice_campaign_utility_profile": {
+          "alternatives": [],
+          "calibration_status": "not_calibrated",
+          "comparison_kind": "sole_legal_route",
+          "complete_effect_set": false,
+          "cross_event_numeric_score": null,
+          "decision_scope": "bounded_timeline_continuation",
+          "objective_id": "acknowledge_unavoidable_heir_death_event",
+          "rank_count": 1,
+          "schema": "xar.ck3.vanilla-event-campaign-utility",
+          "schema_version": 1,
+          "selected_native_option_index": 0,
+          "selected_rank": 1,
+          "selected_utility": {
+            "material_direction": "conditional_stress_cost_or_no_change",
+            "outcome_variance": "bounded",
+            "persistent_state_risk": "none_authored",
+            "timeline_value": "required_to_continue"
+          },
+          "source_review": {
+            "authored_alternatives_review": {
+              "alternatives_reviewed": [
+                0
+              ],
+              "reason": "The current event has only native0. It authors minor_stress_impact_gain via stress_and_fulfillment_impact only without consolamentum_grief_immunity; the common after is tooltip-only. The existing sole-legal-route timeline objective remains valid for the registered no-killer scope shape. Stress cost is conditional, not an unconditional forecast; the current native increase facet and independent nonzero delta are required for material evidence.",
+              "selected_native_option_index": 0,
+              "unobserved_effect_domains": [
+                "grief_immunity_condition",
+                "spiritual_fulfillment",
+                "runtime_stress_magnitude"
+              ]
+            },
+            "boundary": "Source-reviewed ordinal objective only; conditional stress material and actual production-loop evidence remain separate.",
+            "ck3_build": "1.20.0.3",
+            "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+            "definition": {
+              "block_bytes": 2204,
+              "block_sha256": "07F1CBA4368D9EB9988040B6B437179C22E0D73D0CF85C389508EA89E677923F",
+              "end_line": 2139,
+              "event_key": "death_management.1007",
+              "file_sha256": "DFDAB7AB6757C73980B82F5E3A6F23184160688B844558FCE85D8EE5B9EF4C59",
+              "line": 2026,
+              "relative_path": "events/death_events/death_management_events.txt"
+            },
+            "legacy_profile_promoted_without_review": false,
+            "live_acceptance_performed": false,
+            "readiness": "static-ready"
+          },
+          "source_sha256": {
+            "common/script_values/00_stress_values.txt": "821A0B77244FC5EE2D87D339CB24DBEF00787B83D44EC2DF9215FC1A93AEC2D4",
+            "events/death_events/death_management_events.txt": "DFDAB7AB6757C73980B82F5E3A6F23184160688B844558FCE85D8EE5B9EF4C59"
+          },
+          "unobserved_effect_domains": [
+            "grief_immunity_condition",
+            "spiritual_fulfillment",
+            "runtime_stress_magnitude"
+          ]
+        },
         "selected_choice_effect_profile": {
           "additional_domains_unobserved": [
             {
@@ -1945,6 +2004,36 @@
           "relative_path": "events/death_events/death_management_events.txt"
         }
       ],
+      "campaign_utility_review": {
+        "alternatives_reviewed": [
+          0
+        ],
+        "classification": "current-authored-alternatives-bounded-utility-reviewed",
+        "definition": {
+          "block_bytes": 2204,
+          "block_sha256": "07F1CBA4368D9EB9988040B6B437179C22E0D73D0CF85C389508EA89E677923F",
+          "end_line": 2139,
+          "event_key": "death_management.1007",
+          "file_sha256": "DFDAB7AB6757C73980B82F5E3A6F23184160688B844558FCE85D8EE5B9EF4C59",
+          "line": 2026,
+          "relative_path": "events/death_events/death_management_events.txt"
+        },
+        "live_acceptance_performed": false,
+        "policy_contract_compatible": true,
+        "previous_build_source_bytes_unchanged": true,
+        "reason": "The current event has only native0. It authors minor_stress_impact_gain via stress_and_fulfillment_impact only without consolamentum_grief_immunity; the common after is tooltip-only. The existing sole-legal-route timeline objective remains valid for the registered no-killer scope shape. Stress cost is conditional, not an unconditional forecast; the current native increase facet and independent nonzero delta are required for material evidence.",
+        "selected_native_option_index": 0,
+        "source_file_sha256": {
+          "common/script_values/00_stress_values.txt": "821A0B77244FC5EE2D87D339CB24DBEF00787B83D44EC2DF9215FC1A93AEC2D4",
+          "events/death_events/death_management_events.txt": "DFDAB7AB6757C73980B82F5E3A6F23184160688B844558FCE85D8EE5B9EF4C59"
+        },
+        "status": "static-ready",
+        "unobserved_effect_domains": [
+          "grief_immunity_condition",
+          "spiritual_fulfillment",
+          "runtime_stress_magnitude"
+        ]
+      },
       "classification": "unchanged-source-file-bytes",
       "inherited_review": {
         "boundary": "The reviewed .2 bounded contract remains the baseline; byte equality accepts authored source reuse only.",
@@ -1976,6 +2065,7 @@
       "policy_contract_compatible": true,
       "policy_reuse_eligible_by_body": true,
       "reviewed_profile_keys": [
+        "selected_choice_campaign_utility_profile",
         "selected_choice_effect_profile"
       ],
       "source_file_sha256": {
@@ -12537,6 +12627,72 @@
           "0": "delays the current travel plan by five days and runs a medium learning duel whose success can grant lifestyle or traveler XP, the traveler trait and trait-dependent stress changes; current source uses stress_and_fulfillment_impact with the same authored arguments, plus opaque native fulfillment handling",
           "1": "applies only the authored medium stress reduction; current source uses stress_and_fulfillment_impact with the same authored arguments, plus opaque native fulfillment handling"
         },
+        "selected_choice_campaign_utility_profile": {
+          "alternatives": [
+            {
+              "native_option_index": 0,
+              "rank": 2,
+              "reason": "Adds five days of travel delay and a learning duel with XP/traveler-state and conditional stress/fulfillment branches."
+            }
+          ],
+          "calibration_status": "not_calibrated",
+          "comparison_kind": "source_reviewed_ordinal",
+          "complete_effect_set": false,
+          "cross_event_numeric_score": null,
+          "decision_scope": "bounded_timeline_continuation",
+          "objective_id": "reduce_stress_without_delaying_travel",
+          "rank_count": 2,
+          "schema": "xar.ck3.vanilla-event-campaign-utility",
+          "schema_version": 1,
+          "selected_native_option_index": 1,
+          "selected_rank": 1,
+          "selected_utility": {
+            "material_direction": "conditional_stress_benefit",
+            "outcome_variance": "bounded",
+            "persistent_state_risk": "none_authored",
+            "time_cost": "none_authored"
+          },
+          "source_review": {
+            "authored_alternatives_review": {
+              "alternatives_reviewed": [
+                0,
+                1
+              ],
+              "reason": "Current native0 delays the current travel plan by five days and runs a learning duel with XP/traveler-state and conditional stress/fulfillment branches. Current native1 authors medium_stress_impact_loss through stress_and_fulfillment_impact with no authored delay. The existing travel-continuation objective retains native1; stress benefit remains conditional on the selected same-frame native decrease facet and a later nonzero independent delta. Fulfillment and total utility remain unobserved.",
+              "selected_native_option_index": 1,
+              "unobserved_effect_domains": [
+                "spiritual_fulfillment",
+                "runtime_stress_magnitude",
+                "cross_domain_total_utility"
+              ]
+            },
+            "boundary": "Source-reviewed ordinal objective only; conditional stress material and actual production-loop evidence remain separate.",
+            "ck3_build": "1.20.0.3",
+            "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+            "definition": {
+              "block_bytes": 4530,
+              "block_sha256": "8C1A9A8688C145506BA2D54DECC8082561A835365435C64FF5DA03CCAD7F290E",
+              "end_line": 496,
+              "event_key": "tgp_travel_events.0030",
+              "file_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24",
+              "line": 311,
+              "relative_path": "events/travel_events/tgp_travel_events.txt"
+            },
+            "legacy_profile_promoted_without_review": false,
+            "live_acceptance_performed": false,
+            "readiness": "static-ready"
+          },
+          "source_sha256": {
+            "common/on_action/travel_on_actions.txt": "CD40F30A9280EA9BA656B59005201550F3991AFD646FD686D7474657B1B1FF70",
+            "common/script_values/00_stress_values.txt": "821A0B77244FC5EE2D87D339CB24DBEF00787B83D44EC2DF9215FC1A93AEC2D4",
+            "events/travel_events/tgp_travel_events.txt": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24"
+          },
+          "unobserved_effect_domains": [
+            "spiritual_fulfillment",
+            "runtime_stress_magnitude",
+            "cross_domain_total_utility"
+          ]
+        },
         "selected_choice_effect_profile": {
           "additional_domains_unobserved": [
             {
@@ -12594,6 +12750,38 @@
           "relative_path": "common/on_action/travel_on_actions.txt"
         }
       ],
+      "campaign_utility_review": {
+        "alternatives_reviewed": [
+          0,
+          1
+        ],
+        "classification": "current-authored-alternatives-bounded-utility-reviewed",
+        "definition": {
+          "block_bytes": 4530,
+          "block_sha256": "8C1A9A8688C145506BA2D54DECC8082561A835365435C64FF5DA03CCAD7F290E",
+          "end_line": 496,
+          "event_key": "tgp_travel_events.0030",
+          "file_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24",
+          "line": 311,
+          "relative_path": "events/travel_events/tgp_travel_events.txt"
+        },
+        "live_acceptance_performed": false,
+        "policy_contract_compatible": true,
+        "previous_build_source_bytes_unchanged": true,
+        "reason": "Current native0 delays the current travel plan by five days and runs a learning duel with XP/traveler-state and conditional stress/fulfillment branches. Current native1 authors medium_stress_impact_loss through stress_and_fulfillment_impact with no authored delay. The existing travel-continuation objective retains native1; stress benefit remains conditional on the selected same-frame native decrease facet and a later nonzero independent delta. Fulfillment and total utility remain unobserved.",
+        "selected_native_option_index": 1,
+        "source_file_sha256": {
+          "common/on_action/travel_on_actions.txt": "CD40F30A9280EA9BA656B59005201550F3991AFD646FD686D7474657B1B1FF70",
+          "common/script_values/00_stress_values.txt": "821A0B77244FC5EE2D87D339CB24DBEF00787B83D44EC2DF9215FC1A93AEC2D4",
+          "events/travel_events/tgp_travel_events.txt": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24"
+        },
+        "status": "static-ready",
+        "unobserved_effect_domains": [
+          "spiritual_fulfillment",
+          "runtime_stress_magnitude",
+          "cross_domain_total_utility"
+        ]
+      },
       "classification": "unchanged-source-file-bytes",
       "inherited_review": {
         "boundary": "The reviewed .2 bounded contract remains the baseline; byte equality accepts authored source reuse only.",
@@ -12625,6 +12813,7 @@
       "policy_contract_compatible": true,
       "policy_reuse_eligible_by_body": true,
       "reviewed_profile_keys": [
+        "selected_choice_campaign_utility_profile",
         "selected_choice_effect_profile"
       ],
       "source_file_sha256": {
@@ -12691,6 +12880,73 @@
     },
     "trait_specific.8001": {
       "analysis_updates": {
+        "selected_choice_campaign_utility_profile": {
+          "alternatives": [
+            {
+              "native_option_index": 0,
+              "rank": 2,
+              "reason": "runs a stochastic learning duel whose outcomes include a permanent trait, a ten-year modifier or no scripted benefit"
+            }
+          ],
+          "calibration_status": "not_calibrated",
+          "comparison_kind": "source_reviewed_ordinal",
+          "complete_effect_set": false,
+          "cross_event_numeric_score": null,
+          "decision_scope": "bounded_timeline_continuation",
+          "objective_id": "increase_liquid_reserve_without_random_persistence",
+          "rank_count": 2,
+          "schema": "xar.ck3.vanilla-event-campaign-utility",
+          "schema_version": 1,
+          "selected_native_option_index": 1,
+          "selected_rank": 1,
+          "selected_utility": {
+            "material_direction": "benefit",
+            "outcome_variance": "bounded_positive",
+            "persistent_state_risk": "none_authored",
+            "resource_cost": "none_authored"
+          },
+          "source_review": {
+            "authored_alternatives_review": {
+              "alternatives_reviewed": [
+                0,
+                1
+              ],
+              "reason": "Current native1 adds minor_gold_value to root. Current native0 runs the learning duel with permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit. The existing liquid-reserve objective and native1 ranking remain valid within that bounded objective; runtime gold magnitude and overall semantic optimality are not asserted.",
+              "selected_native_option_index": 1,
+              "unobserved_effect_domains": [
+                "runtime_gold_magnitude",
+                "cross_domain_total_utility"
+              ]
+            },
+            "boundary": "Source-reviewed ordinal objective only; conditional stress material and actual production-loop evidence remain separate.",
+            "ck3_build": "1.20.0.3",
+            "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+            "definition": {
+              "block_bytes": 1620,
+              "block_sha256": "BFCA78A33C2A91322D762BCB5DB6FEA4B9E66050F771F4617D9E3B6743B00E5F",
+              "end_line": 1238,
+              "event_key": "trait_specific.8001",
+              "file_sha256": "76A50F2B779E085419279801B1396A1C67C8785831E8859FCEC6D0F088853C3A",
+              "line": 1160,
+              "relative_path": "events/trait_specific_events/trait_specific_events.txt"
+            },
+            "legacy_profile_promoted_without_review": false,
+            "live_acceptance_performed": false,
+            "readiness": "static-ready"
+          },
+          "source_sha256": {
+            "common/modifiers/00_event_modifiers.txt": "546ADC3AF9413031228928C0621829791F843D7E93450C9EEC2C5E2CEC18187E",
+            "common/on_action/yearly_on_actions.txt": "14C97F3845138D74A2C2552C5DD3C95DE1DA035014A5CDF31C92540AAE3390FE",
+            "common/script_values/00_basic_values.txt": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF",
+            "common/script_values/01_dynamic_values.txt": "023165E7D27D106A34F34D7726D938EFA8D5DCE25650EA3256E0B5EA3F73CC2A",
+            "common/traits/00_traits.txt": "93AD0316B733AA474D34841BD92FB3FC9336C111E9F06E7910178E74482185AA",
+            "events/trait_specific_events/trait_specific_events.txt": "76A50F2B779E085419279801B1396A1C67C8785831E8859FCEC6D0F088853C3A"
+          },
+          "unobserved_effect_domains": [
+            "runtime_gold_magnitude",
+            "cross_domain_total_utility"
+          ]
+        },
         "selected_choice_effect_profile": {
           "additional_domains_unobserved": [],
           "common_after_effects": [],
@@ -12749,6 +13005,40 @@
           "relative_path": "common/on_action/yearly_on_actions.txt"
         }
       ],
+      "campaign_utility_review": {
+        "alternatives_reviewed": [
+          0,
+          1
+        ],
+        "classification": "current-authored-alternatives-bounded-utility-reviewed",
+        "definition": {
+          "block_bytes": 1620,
+          "block_sha256": "BFCA78A33C2A91322D762BCB5DB6FEA4B9E66050F771F4617D9E3B6743B00E5F",
+          "end_line": 1238,
+          "event_key": "trait_specific.8001",
+          "file_sha256": "76A50F2B779E085419279801B1396A1C67C8785831E8859FCEC6D0F088853C3A",
+          "line": 1160,
+          "relative_path": "events/trait_specific_events/trait_specific_events.txt"
+        },
+        "live_acceptance_performed": false,
+        "policy_contract_compatible": true,
+        "previous_build_source_bytes_unchanged": true,
+        "reason": "Current native1 adds minor_gold_value to root. Current native0 runs the learning duel with permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit. The existing liquid-reserve objective and native1 ranking remain valid within that bounded objective; runtime gold magnitude and overall semantic optimality are not asserted.",
+        "selected_native_option_index": 1,
+        "source_file_sha256": {
+          "common/modifiers/00_event_modifiers.txt": "546ADC3AF9413031228928C0621829791F843D7E93450C9EEC2C5E2CEC18187E",
+          "common/on_action/yearly_on_actions.txt": "14C97F3845138D74A2C2552C5DD3C95DE1DA035014A5CDF31C92540AAE3390FE",
+          "common/script_values/00_basic_values.txt": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF",
+          "common/script_values/01_dynamic_values.txt": "023165E7D27D106A34F34D7726D938EFA8D5DCE25650EA3256E0B5EA3F73CC2A",
+          "common/traits/00_traits.txt": "93AD0316B733AA474D34841BD92FB3FC9336C111E9F06E7910178E74482185AA",
+          "events/trait_specific_events/trait_specific_events.txt": "76A50F2B779E085419279801B1396A1C67C8785831E8859FCEC6D0F088853C3A"
+        },
+        "status": "static-ready",
+        "unobserved_effect_domains": [
+          "runtime_gold_magnitude",
+          "cross_domain_total_utility"
+        ]
+      },
       "classification": "unchanged-source-file-bytes",
       "inherited_review": {
         "boundary": "The reviewed .2 bounded contract remains the baseline; byte equality accepts authored source reuse only.",
@@ -12780,6 +13070,7 @@
       "policy_contract_compatible": true,
       "policy_reuse_eligible_by_body": true,
       "reviewed_profile_keys": [
+        "selected_choice_campaign_utility_profile",
         "selected_choice_effect_profile"
       ],
       "source_file_sha256": {
@@ -13708,7 +13999,7 @@
   "old_source_index_dataset_sha256": "BF4ADC6FEE5742B1E57F0768E2BE120113E9176D4A8FABAA3BF30EB42FB22DF8",
   "old_source_index_file_sha256": "3BAB1109B00B45548373A4993C7D959131821EB5BCB883E29EEB63828A45F923",
   "policy_reuse_boundary": "Byte-identical registered definitions/caller candidate files and the reviewed direct effect permit static source reuse only. Legacy live exemplars remain legacy; actual .3 runtime is separately accepted by the migration owner.",
-  "review_ledger_file_sha256": "D9EC15F43A9D3EB48AD218F5F9BDB16B3550371E1BF1478E790A8467ADD284BE",
+  "review_ledger_file_sha256": "6508984676F440DF16F9D73F9F03BB670F34D8C2396D8C3B62AA8444322ECDE0",
   "schema": "xar.ck3.nonwar-event-source-compatibility",
   "schema_version": 1,
   "token_comparison": "Registered event definition files are byte-identical to .2; no new ordered-token equality is inferred for changed unrelated scripts."
