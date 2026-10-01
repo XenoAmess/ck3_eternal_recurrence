@@ -1,0 +1,137 @@
+{
+  "result": "READY_NOT_LAUNCHED",
+  "freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\variant-freeze.json",
+    "bytes": 7727,
+    "sha256": "5D257560AEE21C7BF43B9A6CA35F397E4EE29ABA26E1D10F3186E0438A7A1E04"
+  },
+  "runtime_entry": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\bootstrap_profile.py",
+    "bytes": 6538,
+    "sha256": "CC24B0B28C7902FAC8E0E86DD05DD93B257183BD75A9BE1EBE8FBFBD3DF0B821"
+  },
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\ui-controller-config.frozen-semantic-focus-watched-a01.json",
+    "bytes": 14654,
+    "sha256": "F5A016358307A85A7223DC03E2F440C1E6D6AC3E36D165712D3133B8ED428BC7"
+  },
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\consumer\\paused_join_pair.py",
+    "bytes": 62322,
+    "sha256": "5C8C5914FD292C4FD53577B5515F1A785E67467B48497CC07CE9A9717C3EAA41"
+  },
+  "consumer_byte_equality": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\consumer-byte-equality-a01.json",
+    "bytes": 3805,
+    "sha256": "A01F6F37026FB945FA5D754C72C2D2F6E961E885878E5DE90EAE5CCC3BEFDA54"
+  },
+  "runtime_bindings": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\runtime-input-bindings.json",
+    "bytes": 2420,
+    "sha256": "7D80F8B4FE35F2C90F1E759E431353E4DD2F38679E7CA2F4BCB020C8570D81CE"
+  },
+  "entry_probes": [
+    {
+      "label": "runtime-bindings",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\runtime-bindings-stdout.bin",
+        "bytes": 837,
+        "sha256": "B8590232F17B20E5BB2583C29367CA65DAFB31C92FA48003EC53B7CE50BCBC4F"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\runtime-bindings-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "prepare-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\prepare-help-stdout.bin",
+        "bytes": 1005,
+        "sha256": "963715951B904D4CF3890B6619E19EE6C1FF74CA0D6E423FD6D1091EB02F2A42"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\prepare-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "sdk-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\sdk-help-stdout.bin",
+        "bytes": 566,
+        "sha256": "3DA5A2E18A8DDB9991242603BB28182A6FE56676A46E8D6534C02E976C3E17BE"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\sdk-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "bootstrap-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\bootstrap-help-stdout.bin",
+        "bytes": 751,
+        "sha256": "8A95325B409437315FD0649076498C21F534ADB15756A8F6B08CA80316DDAB53"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\entry-probes-a01\\bootstrap-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    }
+  ],
+  "same_consumer_logic_and_budgets_as_attempt30": true,
+  "previous_offline_and_independent_checks": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\review-wait-offline-verification-a02.json",
+      "bytes": 6778,
+      "sha256": "360733A455566E4E674B17A419CC3B6FD5269C6C1D37D0394BA3C531EB7D79F4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-independent-review-other-a01\\independent-review.json",
+      "bytes": 13622,
+      "sha256": "B3EAAF17D9941C3B816803C5F4B7F193E0A215B52677B82425931F80663ACD23"
+    }
+  ],
+  "same_23_checks_not_reexecuted": true,
+  "manual_review_seconds": 600,
+  "native_query_seconds": 90,
+  "mapper_seconds": 30,
+  "setup_seconds": 180,
+  "capture_service_seconds": 1200,
+  "root_focus_request_ttl_seconds": 60,
+  "root_owned_watcher": "root handles one fresh owned PID/creation/unique visible HWND request inside exclusive screen claim; invokes unchanged frozen semantic focus helper; no UI approval or mouse/day input",
+  "native_source_or_DLL_changed": false,
+  "maximum_native_days": 1,
+  "day_retries": 0,
+  "finish_retries": 0,
+  "trace_failed_and_after_pixels_separate": true,
+  "actual_new_scoped_pair_width_evidence": "NOT_RUN",
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "numeric_UI_actor_army_identity_claimed": false,
+  "old_attempt30_and_R0136_modified": false,
+  "R0136_remains_RED_zero_day_zero_sample_before_focus": true,
+  "new_screen_game_bus_steam_todesk_inputs_by_subagent": false,
+  "profile_preparation": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-34-semantic-focus-watched-profile",
+  "sdk_evidence_dir": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk",
+  "live_root": "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01",
+  "sdk_invocation_must_use_entry_reentry_py_sdk": true
+}

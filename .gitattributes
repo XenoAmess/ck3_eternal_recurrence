@@ -59,3 +59,9 @@ promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-2026100
 # Preserve exact R0135 originals and the unexercised trace-finish-first consumer.
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0135-review-timeout-originals/*.json -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/trace-finish-consumer-a01/** -text whitespace=cr-at-eol
+
+# Preserve exact R0136/R0137 attempts and reusable consumer/focus artifacts.
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0136-focus-failure-originals/** -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/review-wait-consumer-a01/** -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0137-root-review-field-rejected-originals/** -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/semantic-focus-watcher-a01/** -text whitespace=cr-at-eol

@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 25954428,
+    "foreground_hwnd": 25954428,
+    "foreground_pid": 11572,
+    "foreground_thread_id": 4908,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 25954428,
+    "foreground_hwnd": 25954428,
+    "foreground_pid": 11572,
+    "foreground_thread_id": 4908,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    640.0,
+    350.0
+  ],
+  "pointer_after": [
+    1280,
+    700
+  ],
+  "pointer_before": [
+    1280,
+    1178
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1280,
+    720
+  ],
+  "receipt_image_size": [
+    2560,
+    1440
+  ],
+  "receipt_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png",
+  "receipt_sha256": "5F902F96F1A31A9387D42589F8F97A29731C39BCA38BDCCF82407508EE312967",
+  "reviewed_bounds": [
+    550.0,
+    300.0,
+    200,
+    100
+  ],
+  "screen_point": [
+    1280,
+    700
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png.json",
+  "source_image": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+    "sha256": "EAD4BBA1CCD3296E291D4620C7AA6C8E95B17751FC54BA17D439B028083C6279"
+  },
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "pointer-move-readback-matched"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review/v1",
+  "stage": "00-pre-center-pointer",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "reviewer": "Codex /root (direct original PNG inspection)",
+  "observed_at": "2026-10-01T02:39:12.205488+00:00",
+  "root_actually_viewed": true,
+  "approved_for_current_action": true,
+  "expected_ck3_pid": 11572,
+  "expected_foreground_hwnd": 25954428,
+  "frames": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+      "bytes": 5257114,
+      "sha256": "EAD4BBA1CCD3296E291D4620C7AA6C8E95B17751FC54BA17D439B028083C6279"
+    }
+  ],
+  "current_ui_region_reviewed": true,
+  "pointer_safe_for_native_center": true,
+  "observed_point": {
+    "x": 640,
+    "y": 350
+  },
+  "preview_content_rect": {
+    "left": 0,
+    "top": 0,
+    "width": 1280,
+    "height": 720
+  },
+  "reviewed_safe_region": {
+    "left": 550,
+    "top": 300,
+    "width": 200,
+    "height": 100
+  },
+  "root_visible_evidence": {
+    "original_binding": "EAD4BBA1CCD3296E291D4620C7AA6C8E95B17751FC54BA17D439B028083C6279 original2560x1440; hash-bound full-preview PNG1280x720 D46F3EA0 and raw1:1 calendar crop directly viewed.",
+    "actual": "Paused1066.12.14 map; selected640,350 in actual1280x720 preview lies in clear map interior. Current CK3 HWND25954428 PID11572; actual raw screenshot and desktop2560x1440 separately verified.",
+    "action": "Formal mapper converts each axis from explicitly measured preview geometry; one move with receipt and actual readback before fresh center. No assumed scaling or direct input coordinates."
+  }
+}

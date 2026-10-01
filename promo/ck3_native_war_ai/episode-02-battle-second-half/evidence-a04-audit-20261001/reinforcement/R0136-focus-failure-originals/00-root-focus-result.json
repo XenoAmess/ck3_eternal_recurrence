@@ -1,0 +1,21 @@
+{
+  "schema": "xar.jd11.a15.root-window-focus-result/v1",
+  "status": "RED",
+  "observed_at": "2026-10-01T02:16:35.296749+00:00",
+  "machine_readback_only": true,
+  "target_hwnd": 12256540,
+  "before": null,
+  "after": null,
+  "screenshots": {},
+  "evidence_frames": {},
+  "focus_requested": false,
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "request": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-32-review-wait-separated-sdk\\paused-pair-controller\\00-root-focus-request.json",
+    "bytes": 8334,
+    "sha256": "1E0E43AC095D7202C8E2EDA3B0725A906D7B4D01377914311C1FDAE079093D0C"
+  },
+  "expected_ck3_pid": 17956,
+  "error": "ValueError('STOP_REQUEST_STALE_OR_FUTURE')",
+  "finished_at": "2026-10-01T02:16:35.298273+00:00"
+}

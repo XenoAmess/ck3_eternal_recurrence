@@ -1,0 +1,510 @@
+{
+  "schema": "xar.jd11.scoped-top-width.controller-result/v1",
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "actor_army_numeric_UI_identity_claimed": false,
+  "independent_open_gap": "whole lower composition panel remains unverified",
+  "started_at": "2026-10-01T02:31:22.239923+00:00",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "maximum_native_days": 1,
+  "recorder_requested": false,
+  "date_advance_requested": false,
+  "human_video_1x_review": false,
+  "screen_claimed_by_controller": false,
+  "samples_completed": 0,
+  "ui_frame_backend": "desktop-gdi",
+  "locale_environment_overrides": {
+    "PYTHONUTF8": "0",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "binding": {
+    "track": "e2-06-d11",
+    "spec": {
+      "save": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "receipt": "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5",
+      "dll": "ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23",
+      "injector": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F",
+      "date": 53146488,
+      "control": true
+    },
+    "preflight": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\preflight.json",
+      "bytes": 24448,
+      "sha256": "43A7A5CFD684113A16B7EE48F3F0CE3A9DE8FE51A70CC1826F10E1948D073B71"
+    },
+    "loaded": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\native-start-readback.json",
+      "bytes": 31316,
+      "sha256": "BD408C2FF26C749B02BCBA67673DF53BD8D8978C1B294F2C7208031777329959"
+    },
+    "command": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\command.json",
+      "bytes": 2811,
+      "sha256": "BDB9256A31A640CA7592C551342675EF7AB96237C242149364A55D59D482B3A9"
+    },
+    "admission": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\seal\\admission-lock.json",
+      "bytes": 7870,
+      "sha256": "35932B391F25BC98C01FC2B7B2EB9465F8D9925CF042962A0EE98AB2F04796E9"
+    },
+    "helper": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    "request_primitive": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    }
+  },
+  "read_only_layout_review_budget_seconds": 600,
+  "manual_root_review_wait_seconds": 600,
+  "native_query_budget_seconds": 90,
+  "mapper_operation_budget_seconds": 30,
+  "review_wait_is_independent_of_native_operation_budget": true,
+  "actual_viewport_binding": [
+    2560,
+    1440
+  ],
+  "focus": {
+    "request": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-root-focus-request.json",
+      "bytes": 8332,
+      "sha256": "8AD496158DEAC6C1627CDE8A1139C6B0B9D8D6BBDD1D53CA353ACD2F42DE04C2"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-root-focus-result.json",
+      "bytes": 17193,
+      "sha256": "62E948BC05AC505EF98AC958F816AE43AA21E439EA68D4604C40017D8954AEC0"
+    },
+    "current_readback": {
+      "observed_at": "2026-10-01T02:37:26.815074+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 25954428,
+        "foreground_pid": 11572,
+        "foreground_thread_id": 4908,
+        "focus_hwnd": 25954428,
+        "gui_thread_info": {
+          "succeeded": true,
+          "last_error": 0,
+          "thread_id": 4908,
+          "flags": 0,
+          "active_hwnd": 25954428,
+          "focus_hwnd": 25954428,
+          "capture_hwnd": 0,
+          "menu_owner_hwnd": 0,
+          "move_size_hwnd": 0,
+          "caret_hwnd": 0,
+          "caret_rect": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "focus_hwnd": 25954428,
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 11572,
+      "expected_process": {
+        "pid": 11572,
+        "create_time": 1790821962.1102655,
+        "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+      },
+      "windows": [
+        {
+          "hwnd": 17565886,
+          "pid": 11572,
+          "thread_id": 4908,
+          "title": "MSCTFIME UI",
+          "visible": false,
+          "minimized": false,
+          "window_rect": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "client_rect": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "hwnd": 18221198,
+          "pid": 11572,
+          "thread_id": 4908,
+          "title": "Default IME",
+          "visible": false,
+          "minimized": false,
+          "window_rect": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "client_rect": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "hwnd": 25954428,
+          "pid": 11572,
+          "thread_id": 4908,
+          "title": "Crusader Kings III",
+          "visible": true,
+          "minimized": false,
+          "window_rect": [
+            0,
+            0,
+            2560,
+            1440
+          ],
+          "client_rect": [
+            0,
+            0,
+            2560,
+            1440
+          ]
+        }
+      ]
+    },
+    "actual_focus_readback": {
+      "observed_at": "2026-10-01T02:37:26.600981+00:00",
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "pointer": [
+        1280,
+        1178
+      ],
+      "focus": {
+        "foreground_hwnd": 25954428,
+        "foreground_pid": 11572,
+        "foreground_thread_id": 4908,
+        "focus_hwnd": 25954428,
+        "gui_thread_info": {
+          "succeeded": true,
+          "last_error": 0,
+          "thread_id": 4908,
+          "flags": 0,
+          "active_hwnd": 25954428,
+          "focus_hwnd": 25954428,
+          "capture_hwnd": 0,
+          "menu_owner_hwnd": 0,
+          "move_size_hwnd": 0,
+          "caret_hwnd": 0,
+          "caret_rect": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "focus_hwnd": 25954428,
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "expected_ck3_pid": 11572,
+      "expected_process": {
+        "pid": 11572,
+        "create_time": 1790821962.1102655,
+        "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+      },
+      "windows": [
+        {
+          "hwnd": 17565886,
+          "pid": 11572,
+          "thread_id": 4908,
+          "title": "MSCTFIME UI",
+          "visible": false,
+          "minimized": false,
+          "window_rect": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "client_rect": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "hwnd": 18221198,
+          "pid": 11572,
+          "thread_id": 4908,
+          "title": "Default IME",
+          "visible": false,
+          "minimized": false,
+          "window_rect": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "client_rect": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "hwnd": 25954428,
+          "pid": 11572,
+          "thread_id": 4908,
+          "title": "Crusader Kings III",
+          "visible": true,
+          "minimized": false,
+          "window_rect": [
+            0,
+            0,
+            2560,
+            1440
+          ],
+          "client_rect": [
+            0,
+            0,
+            2560,
+            1440
+          ]
+        }
+      ]
+    }
+  },
+  "pre_center_pointer": {
+    "actual_focus": {
+      "foreground_hwnd": 25954428,
+      "foreground_pid": 11572,
+      "foreground_thread_id": 4908,
+      "focus_hwnd": 25954428,
+      "title": "Crusader Kings III"
+    },
+    "actual_desktop_size": [
+      2560,
+      1440
+    ],
+    "actual_pointer": [
+      1280,
+      700
+    ],
+    "mapper_receipt_status": "pointer-move-readback-matched",
+    "no_click_or_keyboard_requested": true,
+    "edge_pan_cause_proven": false,
+    "source_frame": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+      "bytes": 5257114,
+      "sha256": "EAD4BBA1CCD3296E291D4620C7AA6C8E95B17751FC54BA17D439B028083C6279"
+    },
+    "safe_frame": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer-safe.png",
+      "bytes": 5232039,
+      "sha256": "45E9413DD5C6FCABA3EB5A4A04E5CBE31BE87DE3594B1C2B84E2E46328E35D1C"
+    },
+    "mapper_receipt": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png.json",
+      "bytes": 2108,
+      "sha256": "FDF6DC1F9A284571AB7A876A9299EEFAABB6AF65F931625BC7E2E367FCD2A223"
+    },
+    "root_review": {
+      "schema": "xar.jd11.a15.root-ui-review/v1",
+      "stage": "00-pre-center-pointer",
+      "source_head": "1901473429deb1297be7d5d4451169082629858b",
+      "reviewer": "Codex /root (direct original PNG inspection)",
+      "observed_at": "2026-10-01T02:39:12.205488+00:00",
+      "root_actually_viewed": true,
+      "approved_for_current_action": true,
+      "expected_ck3_pid": 11572,
+      "expected_foreground_hwnd": 25954428,
+      "frames": [
+        {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+          "bytes": 5257114,
+          "sha256": "EAD4BBA1CCD3296E291D4620C7AA6C8E95B17751FC54BA17D439B028083C6279"
+        }
+      ],
+      "current_ui_region_reviewed": true,
+      "pointer_safe_for_native_center": true,
+      "observed_point": {
+        "x": 640,
+        "y": 350
+      },
+      "preview_content_rect": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "reviewed_safe_region": {
+        "left": 550,
+        "top": 300,
+        "width": 200,
+        "height": 100
+      },
+      "root_visible_evidence": {
+        "original_binding": "EAD4BBA1CCD3296E291D4620C7AA6C8E95B17751FC54BA17D439B028083C6279 original2560x1440; hash-bound full-preview PNG1280x720 D46F3EA0 and raw1:1 calendar crop directly viewed.",
+        "actual": "Paused1066.12.14 map; selected640,350 in actual1280x720 preview lies in clear map interior. Current CK3 HWND25954428 PID11572; actual raw screenshot and desktop2560x1440 separately verified.",
+        "action": "Formal mapper converts each axis from explicitly measured preview geometry; one move with receipt and actual readback before fresh center. No assumed scaling or direct input coordinates."
+      }
+    }
+  },
+  "post_pointer_native_binding": {
+    "snapshot": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-290373962405-post-pointer-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-290373962405-post-pointer-snapshot.json",
+        "bytes": 249329,
+        "sha256": "CD11C430BBF22C767E17572836A0AAF2B6857FB04979F7A35273770BFB28CCD9"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "control": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-290373962405-post-pointer-control.json",
+        "bytes": 148,
+        "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-290373962405-post-pointer-control.json",
+        "bytes": 111524,
+        "sha256": "60614F1E7308BDCA9EEF81ADBE671F4BF3E79AE164C00E3E7C05D9DBB6FC9B95"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "values": {
+      "date_raw": 53146488,
+      "paused": true,
+      "actor": 29829,
+      "revision": 4,
+      "native_revision": 3,
+      "snapshot_id": "native:3",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat"
+    },
+    "control_values": {
+      "accepted": true,
+      "status": "available",
+      "root_native_revision": 3,
+      "snapshot_native_revision": 3,
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "queried_snapshot_id": "native:3",
+      "source_revision": 4,
+      "source_native_revision": 3,
+      "source_snapshot_id": "native:3",
+      "source_date_raw": 53146488,
+      "source_paused": true,
+      "observed_date_raw": 53146488,
+      "subject_army_id": 18,
+      "native_army_id": 18,
+      "owner_character_id": 29829,
+      "combat_id": 16777218,
+      "combat_province_id": 2633,
+      "battle_control_ready": true
+    },
+    "pre_dispatch_pointer_readback": {
+      "actual_focus": {
+        "foreground_hwnd": 25954428,
+        "foreground_pid": 11572,
+        "foreground_thread_id": 4908,
+        "focus_hwnd": 25954428,
+        "title": "Crusader Kings III"
+      },
+      "actual_desktop_size": [
+        2560,
+        1440
+      ],
+      "actual_pointer": [
+        1280,
+        700
+      ],
+      "mapper_receipt_status": "pointer-move-readback-matched",
+      "no_click_or_keyboard_requested": true,
+      "edge_pan_cause_proven": false,
+      "observed_at": "2026-10-01T02:39:17.115946+00:00"
+    }
+  },
+  "native_center": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-290373962405-center.json",
+      "bytes": 148,
+      "sha256": "8E8AC94876DBF674B3376689FFE55A5F7835B966113C3998AFFE39EBA3A6BB72"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-290373962405-center.json",
+      "bytes": 12925,
+      "sha256": "78203EA3130F19A2FB0D82A69BF2F9FE6E40B688DD7D51F49EB76587156C4639"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "error": "ValueError('current original safe region to clear battle tooltip not reviewed')",
+  "finish": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-c8993fcb5cf24cb28766f25c9a01602e.json",
+      "bytes": 25,
+      "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\999-root-a15-stop-c8993fcb5cf24cb28766f25c9a01602e.json",
+      "bytes": 11337,
+      "sha256": "E6316C56F18501229FE1CF145FB7346A0D9F577960299E51B2BD7AEC3A177BC9"
+    },
+    "channel": "interactive-requests"
+  },
+  "capture_report": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\capture-report.json",
+    "bytes": 9234,
+    "sha256": "8306C61FAAC5888A19ED55A8B6768D1220EB11BA604BD3D3604FFB3E83576488"
+  },
+  "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0137",
+  "cleanup_inventory": {
+    "tasklist_returncode": 0,
+    "tasklist_pids": [],
+    "wmi_pids": [],
+    "native_pids": [],
+    "inventory_backend": "tasklist+toolhelp32",
+    "processes": []
+  },
+  "cleanup_inventory_empty": true,
+  "result": "RED_PRESERVED_CLEANUP_REPORTED"
+}

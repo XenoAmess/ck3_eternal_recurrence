@@ -1,0 +1,143 @@
+{
+  "result": "READY_NOT_LAUNCHED",
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\variant-freeze.json",
+    "bytes": 6691,
+    "sha256": "64DF92153E3C410E05EC51C2B5544659BBB99BAFA13C8C4CAA75306C761376AF"
+  },
+  "contract": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\scoped-review-contract-a01.json",
+    "bytes": 3099,
+    "sha256": "9934E7DA095FA043CD476E0B0AFCA085FF108D1BE90C6A899C3A9958D9CF1550"
+  },
+  "runtime_entry": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\bootstrap_profile.py",
+    "bytes": 6536,
+    "sha256": "05D972F12B96AE04F91CBCE4D38D72328E5523B8CB0FF81FEC0593DB3E3CEB2D"
+  },
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\consumer\\paused_join_pair.py",
+    "bytes": 62322,
+    "sha256": "5C8C5914FD292C4FD53577B5515F1A785E67467B48497CC07CE9A9717C3EAA41"
+  },
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\ui-controller-config.frozen-review-wait-separated-a01.json",
+    "bytes": 14652,
+    "sha256": "59F5B8344F7F4796CD2E2F9F64CF31578FA84E094A04DBC9B7EB6A4CCA0A3836"
+  },
+  "runtime_bindings": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\runtime-input-bindings.json",
+    "bytes": 2674,
+    "sha256": "908E6F4939F8D518556FB6EE8F2D54BF99FC457F1006653F96E5EB22A7BD238B"
+  },
+  "targeted_offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\review-wait-offline-verification-a02.json",
+    "bytes": 6778,
+    "sha256": "360733A455566E4E674B17A419CC3B6FD5269C6C1D37D0394BA3C531EB7D79F4"
+  },
+  "entry_probes": [
+    {
+      "label": "runtime-bindings",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\runtime-bindings-stdout.bin",
+        "bytes": 833,
+        "sha256": "628F832CB6D1BA79F0058300B4FE92F1632A306E74FFC4FE8B450E9CE7DFE370"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\runtime-bindings-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "prepare-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\prepare-help-stdout.bin",
+        "bytes": 1005,
+        "sha256": "963715951B904D4CF3890B6619E19EE6C1FF74CA0D6E423FD6D1091EB02F2A42"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\prepare-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "sdk-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\sdk-help-stdout.bin",
+        "bytes": 566,
+        "sha256": "3DA5A2E18A8DDB9991242603BB28182A6FE56676A46E8D6534C02E976C3E17BE"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\sdk-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "bootstrap-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\bootstrap-help-stdout.bin",
+        "bytes": 751,
+        "sha256": "8A95325B409437315FD0649076498C21F534ADB15756A8F6B08CA80316DDAB53"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\entry-probes-a01\\bootstrap-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    }
+  ],
+  "required_actual_original_viewport": [
+    2560,
+    1440
+  ],
+  "manual_root_review_wait_seconds_per_stage": 600,
+  "waiting_is_approval": false,
+  "native_query_budget_seconds": 90,
+  "mapper_operation_budget_seconds": 30,
+  "manual_wait_native_operation_budget_shared": false,
+  "legacy_helper_timeout_text_preserved_with_actual600_context": true,
+  "post_review_revalidation": [
+    "after hover review before mapper: fresh paused snapshot/control with same actor/date/army/revision",
+    "after visible review: fresh paused snapshot/control and exact unchanged native width",
+    "original snapshot after pixels with same_paused_frame remains"
+  ],
+  "scope_admission": "unchanged scoped title/date/pause/topcounts/visible coats/real relative-strength width; required regions unobscured",
+  "numeric_actor_army_identity": "native snapshot/control only",
+  "full_battle_panel": false,
+  "full_panel_lower_composition_gap_open": true,
+  "whole_G2_complete": false,
+  "real_width_native_match_and_after_pixels_same_paused_snapshot_required": true,
+  "post_day_order_unchanged": [
+    "strict +24 paused snapshot only",
+    "single finish with actual current revision",
+    "after sample fresh snapshot/control and UI; trace completeness remains independent"
+  ],
+  "trace_failed_and_after_pixels_separate": true,
+  "finish_retries": 0,
+  "day_retries": 0,
+  "exception_cleanup_reporting_tail_AST_unchanged": true,
+  "maximum_native_days": 1,
+  "original_capture_service_scope_seconds": 1200,
+  "aggregate_service_budget_not_increased": true,
+  "new_day_game_screen_bus_steam_todesk_inputs_by_subagent": false,
+  "actual_scoped_supplement_or_live_width": "NOT_RUN",
+  "old_attempts_modified": false,
+  "R0135_remains_RED_zero_day_zero_sample_trace_path_NOT_RUN": true
+}

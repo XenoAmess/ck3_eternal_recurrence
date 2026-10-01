@@ -1,0 +1,41 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review/v1",
+  "stage": "02-post-open-pointer",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "reviewer": "Codex /root (direct original PNG inspection)",
+  "observed_at": "2026-10-01T02:48:22.584117+00:00",
+  "root_actually_viewed": true,
+  "approved_for_current_action": true,
+  "expected_ck3_pid": 11572,
+  "expected_foreground_hwnd": 25954428,
+  "frames": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\02-post-open-pointer.png",
+      "bytes": 4907564,
+      "sha256": "E8C4F670896503612831DF635D32FC282BC4BCE0FAF23E5F3DDF40075958CEA1"
+    }
+  ],
+  "current_ui_region_reviewed": true,
+  "pointer_safe_for_width_tooltip": true,
+  "observed_point": {
+    "x": 640,
+    "y": 589
+  },
+  "preview_content_rect": {
+    "left": 0,
+    "top": 0,
+    "width": 1280,
+    "height": 720
+  },
+  "reviewed_safe_region": {
+    "left": 600,
+    "top": 583,
+    "width": 100,
+    "height": 13
+  },
+  "root_visible_evidence": {
+    "original_binding": "Original E8C4F670896503612831DF635D32FC282BC4BCE0FAF23E5F3DDF40075958CEA1 2560x1440; bound preview AC743E0A 1280x720 and original 1:1 panel crop directly viewed.",
+    "actual": "Battle panel title 墨西拿之战, top counts893 and1603, coats checkered and green tower. Preview point640,589 is inside original relative-soldiers progress bar; lower panel clipped.",
+    "action": "One formal mapper move with independent-axis conversion from explicitly measured preview rectangle. No keyboard or day advancement authorized by this pointer review."
+  }
+}

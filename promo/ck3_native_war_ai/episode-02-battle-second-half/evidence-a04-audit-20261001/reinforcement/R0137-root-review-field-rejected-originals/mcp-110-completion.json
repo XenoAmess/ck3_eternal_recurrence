@@ -1,0 +1,41 @@
+{
+  "status": {
+    "schema_version": 1,
+    "server_instance_id": "c1234ded-b57b-47a2-b163-10c99b688133",
+    "target_id": "ck3-local-screen-identity-20260930",
+    "identity": {
+      "token_user": "1",
+      "desktop": "WinSta0\\Default",
+      "machine": "DESKTOP-3FEVHD2",
+      "process_id": 11200
+    },
+    "identity_matches_profile": true,
+    "process_gates": {
+      "bridge_injector.exe": [],
+      "ck3.exe": [],
+      "dll_injector.exe": [],
+      "dowser.exe": [],
+      "ffmpeg.exe": [],
+      "obs64.exe": [],
+      "xar_ck3_bridge_injector.exe": []
+    },
+    "process_gate_errors": {},
+    "jobs": [
+      {
+        "job_id": "2dca5800-3377-4014-bb90-e6d5a800bcce",
+        "request_id": "jd11-semantic-focus-watched-20261001-a01",
+        "job_name": "episode02-jd11-paused-pair",
+        "pid": 12524,
+        "state": "exited",
+        "exit_code": 0,
+        "started_unix": 1790821882.2265887,
+        "stdout_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-34-semantic-focus-watched-profile\\operator-state\\jobs\\2dca5800-3377-4014-bb90-e6d5a800bcce\\stdout.log",
+        "stderr_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-34-semantic-focus-watched-profile\\operator-state\\jobs\\2dca5800-3377-4014-bb90-e6d5a800bcce\\stderr.log",
+        "available_controls": []
+      }
+    ]
+  },
+  "controller_exit_code": 2,
+  "human_video_1x_review": false,
+  "recorder_requested": false
+}

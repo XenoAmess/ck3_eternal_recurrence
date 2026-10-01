@@ -1,0 +1,71 @@
+{
+  "mapper_receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\02-battle-open-receipt.png.json",
+    "bytes": 3571,
+    "sha256": "7996D61C36D127F9C37EB0985C391144F823893A12FD91C89C97A49B208CFA52"
+  },
+  "receipt_image": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\02-battle-open-receipt.png",
+    "bytes": 4976278,
+    "sha256": "9279EBD17EE881786AC182E4010EAA16095526F70977BDBEB6DF319C1F73B54C"
+  },
+  "source_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\01-centered.png",
+    "bytes": 4904205,
+    "sha256": "92339A5FB6EB6987E34EF231BAFD62AD7FB1074B3F3E9B95A1AA157AB7C4C8DD"
+  },
+  "before": {
+    "observed_at": "2026-10-01T02:41:02.217514+00:00",
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "pointer": [
+      1280,
+      700
+    ],
+    "focus": {
+      "foreground_hwnd": 25954428,
+      "foreground_pid": 11572,
+      "foreground_thread_id": 4908,
+      "focus_hwnd": 25954428,
+      "title": "Crusader Kings III"
+    },
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "expected_ck3_pid": 11572
+  },
+  "after": {
+    "observed_at": "2026-10-01T02:41:03.853337+00:00",
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "pointer": [
+      1206,
+      642
+    ],
+    "focus": {
+      "foreground_hwnd": 25954428,
+      "foreground_pid": 11572,
+      "foreground_thread_id": 4908,
+      "focus_hwnd": 25954428,
+      "title": "Crusader Kings III"
+    },
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "expected_ck3_pid": 11572
+  },
+  "exit_code": 0,
+  "action": "click"
+}
