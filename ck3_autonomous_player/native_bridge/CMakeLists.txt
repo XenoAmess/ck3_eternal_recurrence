@@ -743,13 +743,15 @@ option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1
   "Compile the private READY player_religion_reform_context_private_query_v1 candidate" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1
   "Compile the private READY player_religion_doctrine_catalogue_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1
+  "Compile the private READY player religion numeric special parameters candidate" OFF)
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
 # READY explicit source lists below own these namespaces.
 # Later religion, Sway completion, and epidemic work stays excluded unless explicitly READY below.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
-  "/ck3_12002_(religion.*|sway_completion.*|epidemic.*)\\.cpp$")
+  "/ck3_12002_(religion.*|sway_completion.*|epidemic.*|personal.*)\\.cpp$")
 if(NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1)
   # The owner stopped war work. Retain the independent actual treasury source
   # used by ordinary snapshots; do not compile or register the cash package.
@@ -771,7 +773,8 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1 OR
    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1 OR
    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1 OR
-   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_context.cpp")
 endif()
@@ -886,6 +889,27 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_catalogue.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_catalogue_mailbox.cpp")
 endif()
+# R5 READY queries; Sway termination's installer is in its main source.
+if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/conversion_outcome12002_actor.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/conversion_outcome12002_state.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/conversion_outcome12002_query.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/conversion_outcome12002_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_numeric.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_numeric_final.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_numeric_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_termination.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_termination_handler.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_termination_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_termination_serializer.cpp")
+endif()
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
@@ -953,6 +977,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
@@ -2016,7 +2041,8 @@ if(BUILD_TESTING)
         XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1=1
-        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1=1)
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1=1)
     endif()
     if(MSVC)
       target_compile_options(${router_target} PRIVATE /W4 /WX /permissive- /EHsc)

@@ -373,8 +373,14 @@ static xar::ck3_12002::SwayExecutionRecorder12002
     g_sway_completion_execution_recorder12002{};
 static xar::ck3_12002::SwayCompletionExecutionInstall12002
     g_sway_completion_execution_install12002{};
+static xar::ck3_12002::SwayTerminationRecorder12002
+    g_sway_completion_termination_recorder12002{};
+static xar::ck3_12002::SwayTerminationInstall12002
+    g_sway_completion_termination_install12002{};
 struct SwayCompletionExecutionWorkerLifetime12002 {
   ~SwayCompletionExecutionWorkerLifetime12002() noexcept {
+    (void)xar::ck3_12002::UninstallSwayCompletionTermination12002(
+        g_sway_completion_termination_install12002);
     (void)xar::ck3_12002::UninstallSwayCompletionExecution12002(
         g_sway_completion_execution_install12002);
   }
@@ -11410,6 +11416,19 @@ void RunConnectedSession(
           bool revision_parsed = status_only;
           bool current_revision_allowed = false;
           if (!status_only) {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionNumericSpecialParametersPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionNumericSpecialParametersRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionConversionOutcomePrivateStep12002(step)) {
+              current_revision_allowed = true;
+              std::uint32_t target_rite_id = 0;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionConversionOutcomeRequest12002(incoming.payload, target_rite_id, expected_revision);
+            } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
             if (xar::ck3_12002::IsPlayerReligionReformPrivateStep12002(step)) {
               current_revision_allowed = true;
@@ -22971,6 +22990,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
   if (new_build)
     state.nonwar_private12002.sway_execution_recorder =
         &g_sway_completion_execution_recorder12002;
+  if (new_build)
+    state.nonwar_private12002.sway_termination_recorder =
+        &g_sway_completion_termination_recorder12002;
 #endif
   state.zhongguo_scoreboard_provider_session_id = NewProviderSessionId();
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
@@ -23056,6 +23078,12 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             game->descriptor().executable_sha256,
             g_sway_completion_execution_recorder12002,
             g_sway_completion_execution_install12002))
+      return FALSE;
+    if (!xar::ck3_12002::InstallSwayCompletionTermination12002(
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+            game->descriptor().executable_sha256,
+            g_sway_completion_termination_recorder12002,
+            g_sway_completion_termination_install12002))
       return FALSE;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)

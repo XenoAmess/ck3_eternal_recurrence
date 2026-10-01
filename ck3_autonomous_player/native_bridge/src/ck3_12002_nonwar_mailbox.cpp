@@ -115,6 +115,15 @@ void RegisterNonwarMailboxExecutorsV1(
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
   environment.permitted_executor_religion_doctrine_catalogue12002 = executors.religion_doctrine_catalogue;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_conversion_outcome12002 = executors.religion_conversion_outcome;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_numeric_special_parameters12002 = executors.religion_numeric_special_parameters;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  environment.permitted_executor_sway_completion_termination12002 = executors.sway_completion_termination;
+#endif
   (void)environment;
   (void)executors;
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)

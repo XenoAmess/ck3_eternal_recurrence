@@ -552,6 +552,9 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_prewar12002 == nullptr &&
        environment.permitted_executor_government12002 == nullptr &&
        environment.permitted_executor_religion12002 == nullptr &&
+       environment.permitted_executor_religion_conversion_outcome12002 == nullptr &&
+       environment.permitted_executor_religion_numeric_special_parameters12002 == nullptr &&
+       environment.permitted_executor_sway_completion_termination12002 == nullptr &&
        environment.permitted_executor_religion_conversion_reasons12002 == nullptr &&
        environment.permitted_executor_sway_completion_execution12002 == nullptr &&
        environment.permitted_executor_religion_reform12002 == nullptr &&
@@ -885,6 +888,12 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_government12002;
   mailbox.permitted_executor_religion12002 =
       environment.permitted_executor_religion12002;
+  mailbox.permitted_executor_religion_conversion_outcome12002 =
+      environment.permitted_executor_religion_conversion_outcome12002;
+  mailbox.permitted_executor_religion_numeric_special_parameters12002 =
+      environment.permitted_executor_religion_numeric_special_parameters12002;
+  mailbox.permitted_executor_sway_completion_termination12002 =
+      environment.permitted_executor_sway_completion_termination12002;
   mailbox.permitted_executor_religion_conversion_reasons12002 =
       environment.permitted_executor_religion_conversion_reasons12002;
   mailbox.permitted_executor_sway_completion_execution12002 =
@@ -1211,6 +1220,9 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
         mailbox.permitted_executor_prewar12002 != nullptr ||
          mailbox.permitted_executor_government12002 != nullptr ||
          mailbox.permitted_executor_religion12002 != nullptr ||
+         mailbox.permitted_executor_religion_conversion_outcome12002 != nullptr ||
+         mailbox.permitted_executor_religion_numeric_special_parameters12002 != nullptr ||
+         mailbox.permitted_executor_sway_completion_termination12002 != nullptr ||
          mailbox.permitted_executor_religion_conversion_reasons12002 != nullptr ||
          mailbox.permitted_executor_sway_completion_execution12002 != nullptr ||
          mailbox.permitted_executor_religion_reform12002 != nullptr ||
@@ -1306,6 +1318,9 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_prewar12002 &&
        executor != mailbox.permitted_executor_government12002 &&
        executor != mailbox.permitted_executor_religion12002 &&
+      executor != mailbox.permitted_executor_religion_conversion_outcome12002 &&
+      executor != mailbox.permitted_executor_religion_numeric_special_parameters12002 &&
+      executor != mailbox.permitted_executor_sway_completion_termination12002 &&
       executor != mailbox.permitted_executor_religion_conversion_reasons12002 &&
       executor != mailbox.permitted_executor_sway_completion_execution12002 &&
       executor != mailbox.permitted_executor_religion_reform12002 &&

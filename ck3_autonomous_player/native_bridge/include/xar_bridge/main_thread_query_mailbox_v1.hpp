@@ -366,6 +366,9 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion_outcome12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_numeric_special_parameters12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_sway_completion_termination12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_conversion_reasons12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_completion_execution12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_reform12002 = nullptr;
@@ -558,6 +561,9 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion_outcome12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_numeric_special_parameters12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_sway_completion_termination12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_conversion_reasons12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_completion_execution12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_reform12002 = nullptr;
