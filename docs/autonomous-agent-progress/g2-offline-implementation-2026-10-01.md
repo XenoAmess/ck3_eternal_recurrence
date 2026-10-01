@@ -688,3 +688,9 @@ Five source files, two installer leaves applied exact previously tested bytes, t
 Five frozen sources. Actual paused23slots with16registry occupants and7exactNull show production first failure is nonzero nativeNull singleton. Minimal reader now accepts zero and exact singleton as empty and retains real occupants. One necessary production fixture passed, unknown pointer still unavailable. Old farm slot1 occupied597; no construction action yet. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\construction-live-next\exact-null-fix-delivery.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:16:32 Preserve actual twenty successors in realm law observation
+
+Three frozen domain and documentation sources. Actual primary2141 ordered20 successors exceeded old16 internal DTO/parser capacity and blocked actual SDK crown-action source. Tested32 preserves all20 actual IDs. Native production callback before/after and Python actualquery fixture passed, no CA action or policy change. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\law\live-action-plan\crown-source-red\root-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

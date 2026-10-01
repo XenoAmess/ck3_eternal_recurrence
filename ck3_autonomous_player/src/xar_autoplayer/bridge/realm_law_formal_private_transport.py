@@ -102,7 +102,7 @@ def _valid_titles(value: object) -> bool:
         if (not isinstance(title, dict) or not _positive(title.get("title_id"))
                 or type(title.get("primary")) is not bool
                 or not isinstance(title.get("successor_character_ids"), list)
-                or len(title["successor_character_ids"]) > 16
+                or len(title["successor_character_ids"]) > 32
                 or any(not _positive(successor) for successor in title["successor_character_ids"])):
             return False
     return True

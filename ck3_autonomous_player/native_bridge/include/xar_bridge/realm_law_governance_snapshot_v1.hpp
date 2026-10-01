@@ -22,7 +22,7 @@ inline constexpr std::size_t kRealmLawGovernanceMaximumGroupsV1 = 12;
 inline constexpr std::size_t kRealmLawGovernanceMaximumCandidatesV1 = 24;
 inline constexpr std::size_t kRealmLawGovernanceMaximumCostsV1 = 6;
 inline constexpr std::size_t kRealmLawGovernanceMaximumHeldTitlesV1 = 32;
-inline constexpr std::size_t kRealmLawGovernanceMaximumSuccessorsV1 = 16;
+inline constexpr std::size_t kRealmLawGovernanceMaximumSuccessorsV1 = 32;
 inline constexpr std::int64_t kRealmLawGovernanceFixedPointOneV1 = 100'000;
 
 enum class RealmLawGovernanceSnapshotV1Status : std::uint8_t {
