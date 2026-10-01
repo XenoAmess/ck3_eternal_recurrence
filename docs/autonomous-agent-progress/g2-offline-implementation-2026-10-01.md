@@ -825,3 +825,9 @@ Twenty frozen Python and documentation sources. Three new official SDK cases con
 One owned reliability topic records actual one-day raw53169336 to53169360 with independent paused native9/public5, first pause accepted, and saved h98. No retry or injected fault occurred; exact error recovery remains deterministic production fixture evidence only. Existing tests not repeated. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\pause-map-rejected-retry\r7-normal-live-doc-source.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:59:57 Record actual draft groups and current cache boundary
+
+One owned topic records actual paused DraftGroups with29selectedslots and sourceRite152, plus current Doctrine cache3 and Tenet cache0. Current cache completeness does not establish all-group choice eligibility. No candidate selection, creation, reform or OODA; actual resources unchanged. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\group-preview-live-r7\doc-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
