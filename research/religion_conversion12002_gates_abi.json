@@ -1,0 +1,309 @@
+{
+  "schema": "ck3_12002_religion_conversion_gates_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "provider_constants": {
+    "kRiteStorageSlotRva": "0x5d1e2f8",
+    "kRiteKnowledgeRva": "0x2bdbde0",
+    "kExistingAtomLookupRva": "0x3f8a3a0",
+    "kAtomPoolRva": "0x5dc1390",
+    "kCharacterFlagCollectionRva": "0x1d67200",
+    "kCharacterScriptDataOffset": "0x1b0",
+    "kCharacterDummyOffset": "0x1a5",
+    "kFlagRowsOffset": "0x10",
+    "kFlagCountOffset": "0x1c",
+    "kFlagRowStride": "0x20",
+    "kFlagKeyOffset": "0x8"
+  },
+  "native_spans": [
+    {
+      "name": "knows_rite_level.registration",
+      "start_rva": "0x57e440",
+      "end_exclusive_rva": "0x57e4d8",
+      "abi": "registration_factory",
+      "sha256": "833fe0151d621088416c3f46fdcb9e109da7796e390553fa3b25e022df06dcd3",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 30 48 8b 0d 97 09 74 05 48 8d 05 38 58 20 04 48 89 44 24 20 c7 44 24 28 10 00 00 00 c6 44 24 2c 00 48 85 c9 75 08 e8 8c 13 9d 03 48 8b c8 0f 28 44 24 20 48 8d 54 24 20 66 0f 7f 44 24 20 e8 14 0e 9d 03 8b f8 e8 8d d3 1a 03 48 8b 1d 1e c0 6e 05 b9 18 00 00 00 e8 10 57 ca 03 48 8d 0d 05 55 20 04 48 89 44 24 40 4c 8b c0 8b d7 48 89 48 08 48 8d 0d 68 7d 20 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 58 d8 1a 03"
+    },
+    {
+      "name": "RiteKnowledgeValueTrigger.value",
+      "start_rva": "0x2aea480",
+      "end_exclusive_rva": "0x2aea5bd",
+      "abi": "int64_t*(Trigger*,out,scope)",
+      "sha256": "e6a26e16f7485a004c9473994dbb964189ce3f3ba168aad3718f6598e6b66a6d",
+      "bytes": "48 89 6c 24 10 48 89 74 24 18 57 48 81 ec 40 02 00 00 49 8b 00 49 8b f0 48 8b fa 48 8b e9 66 83 38 04 75 05 8b 50 08 eb 05 ba ff ff ff ff 4c 8b 05 b3 d0 17 03 48 89 9c 24 50 02 00 00 4d 85 c0 74 25 8b c2 25 ff ff ff 00 41 3b 40 2c 73 18 8b c8 49 8b 40 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 05 39 53 18 74 07 48 8b 1d 82 d0 17 03 4c 8d 45 10 48 8b d6 48 8d 8d 38 01 00 00 e8 8f 02 22 ff 81 78 0c 65 74 69 52 75 16 83 78 08 ff 74 10 4c 8b c0 48 8b d3 48 8b cf e8 c2 18 0f 00 eb 7d 33 db 38 5e 20 75 73 4c 8d 0d b2 93 c9 01 89 9c 24 30 02 00 00 4c 8d 05 3c 90 9b 01 ba 00 02 00 00 48 8d 4c 24 30 e8 75 23 d9 fd b9 ff 01 00 00 3b c1 0f 4f c1 48 8d 4c 24 30 89 84 24 30 02 00 00 48 8d 44 24 30 48 89 44 24 20 48 c7 c0 ff ff ff ff 48 ff c0 38 1c 01 75 f8 89 44 24 28 48 8d 54 24 20 88 5c 24 2c 48 8b cd 0f 28 44 24 20 66 0f 7f 44 24 20 e8 b6 67 c2 00 48 89 1f 48 8b 9c 24 50 02 00 00 4c 8d 9c 24 40 02 00 00 49 8b 6b 18 48 8b c7 49 8b 73 20 49 8b e3 5f c3"
+    },
+    {
+      "name": "Character.GetRiteKnowledge",
+      "start_rva": "0x2bdbde0",
+      "end_exclusive_rva": "0x2bdc39a",
+      "abi": "int64_t*(out,Character*,Rite*)",
+      "sha256": "1f57643f9c9fd9e14db31049115a7039e8e23dda22d73a453acac2bbdcf5b048",
+      "bytes": "4c 89 44 24 18 48 89 54 24 10 48 89 4c 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8d ac 24 e8 ef ff ff b8 18 11 00 00 e8 c3 89 64 01 48 2b e0 0f 29 b4 24 00 11 00 00 4d 8b e8 48 8b f2 45 33 e4 45 8b fc 45 8b f4 49 8b c8 e8 11 c0 91 ff 88 85 78 10 00 00 4d 8b 8d 70 07 00 00 4d 63 95 7c 07 00 00 4b 8d 1c d1 4c 3b cb 74 2e 49 8b f9 90 49 8b 11 44 38 a2 80 00 00 00 74 12 41 ff c7 48 8b ce e8 c9 4b cd ff 84 c0 74 03 41 ff c6 4c 8d 4f 08 49 8b f9 4c 3b cb 75 d6 4c 89 64 24 40 4c 89 64 24 48 48 8d 44 24 58 48 89 44 24 50 48 8d 05 23 2a 8f 01 48 89 44 24 58 48 8d 05 c7 23 90 02 48 89 45 e0 48 8b 05 1c 2a 8f 01 33 d2 44 8d 42 04 48 8d 4c 24 58 ff d0 4c 89 64 24 40 4c 89 64 24 48 48 8b 44 24 58 4c 8d 44 24 48 48 8d 54 24 40 48 8d 4c 24 58 ff 50 20 90 0f b6 95 78 10 00 00 84 d2 75 74 41 8b 9d ac 07 00 00 3b 5c 24 48 7e 67 48 8b 4c 24 50 48 8b 01 8b d3 48 c1 e2 02 41 b8 04 00 00 00 ff 50 08 48 8b f0 48 63 7c 24 4c 85 ff 7e 18 4c 8b c7 49 c1 e0 02 48 8b 54 24 40 48 8b c8 e8 56 a9 64 01 8b 7c 24 4c 48 8b 4c 24 50 48 8b 01 41 b8 04 00 00 00 48 8b 54 24 40 ff 50 10 48 89 74 24 40 89 7c 24 4c 89 5c 24 48 0f b6 95 78 10 00 00 eb 09 48 8b 74 24 40 8b 7c 24 4c 49 8b 85 a0 07 00 00 49 63 8d ac 07 00 00 48 8d 1c c8 48 3b c3 0f 84 13 01 00 00 4c 8b e0 48 89 44 24 38 f3 0f 10 35 72 a4 e1 01 66 90 4c 8b 28 84 d2 0f 85 a6 00 00 00 45 8b 65 10 8b 44 24 48 3b f8 75 7f ff c7 66 0f 6e c0 0f 5b c0 f3 0f 59 c6 f3 0f 2c c0 8b d7 3b f8 0f 4c d0 89 54 24 30 48 8b 4c 24 50 48 8b 01 48 c1 e2 02 41 b8 04 00 00 00 ff 50 08 48 8b f0 48 63 44 24 4c 44 89 24 86 48 63 44 24 4c 85 c0 7e 14 4c 8b c0 49 c1 e0 02 48 8b 54 24 40 48 8b ce e8 7f a8 64 01 48 8b 4c 24 50 48 8b 01 41 b8 04 00 00 00 48 8b 54 24 40 ff 50 10 48 89 74 24 40 8b 44 24 30 89 44 24 48 eb 12 48 63 c7 44 89 24 86 8b 7c 24 4c ff c7 48 8b 74 24 40 4c 8b 64 24 38 89 7c 24 4c 41 80 bd a0 00 00 00 00 74 22 41 ff c7 49 8b d5 48 8b 8d 68 10 00 00 e8 a3 4b cd ff 8b 7c 24 4c 48 8b 74 24 40 84 c0 74 03 41 ff c6 49 8d 44 24 08 4c 8b e0 48 89 44 24 38 48 3b c3 0f b6 95 78 10 00 00 0f 85 06 ff ff ff 4c 8b ad 70 10 00 00 80 bd 78 10 00 00 00 0f 85 bb 01 00 00 41 8b 85 b8 04 00 00 4c 8b 05 54 22 14 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 4c d1 08 48 85 c9 74 05 39 41 08 74 07 48 8b 0d 02 22 14 03 8b 81 98 00 00 00 4c 8b 05 0d 22 14 03 4d 85 c0 74 27 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 19 8b d1 48 03 d2 49 8b 48 20 4c 8b 6c d1 08 4d 85 ed 74 06 41 39 45 08 74 07 4c 8b 2d 52 b5 08 03 48 63 c7 48 8d 3c 86 48 8b df 48 2b de 48 c1 fb 02 48 83 fb 20 7f 0d 48 8b d7 48 8b ce e8 30 7c 18 fe eb 4f 48 8b c3 48 99 48 2b c2 48 d1 f8 48 8b d3 48 2b d0 48 8d 4d f0 e8 d4 7c 18 fe 90 c6 44 24 28 00 48 8b 45 f8 48 89 44 24 20 4c 8b 4d f0 4c 8b c3 48 8b d7 48 8b ce e8 63 7d 18 fe 90 48 81 7d f8 00 04 00 00 76 09 48 8b 4d f0 e8 bf 03 51 01 49 8b 9d a0 07 00 00 49 63 85 ac 07 00 00 48 8d 3c c3 48 8b 74 24 40 48 3b df 0f 84 a8 00 00 00 0f 1f 40 00 66 66 66 0f 1f 84 00 00 00 00 00 4c 8b 1b 45 8b 53 10 48 63 44 24 4c 4c 8d 24 86 4c 8b c6 4d 8b cc 4c 2b ce 49 c1 f9 02 4d 85 c9 7e 2b 0f 1f 40 00 66 66 0f 1f 84 00 00 00 00 00 49 8b d1 48 d1 ea 4c 2b ca 4b 8d 0c 88 4c 8b ca 45 39 14 90 4c 0f 4c c1 48 85 d2 75 e3 4d 3b c4 74 12 45 3b 10 7c 0d 4c 2b c6 49 c1 f8 02 41 83 f8 ff 75 28 41 80 bb a0 00 00 00 00 74 1e 41 ff c7 49 8b d3 48 8b 8d 68 10 00 00 e8 c0 49 cd ff 48 8b 74 24 40 84 c0 74 03 41 ff c6 48 83 c3 08 48 3b df 0f 85 67 ff ff ff 45 85 ff 7f 1a 48 8b 9d 60 10 00 00 33 c0 48 89 03 48 85 f6 0f 84 08 01 00 00 e9 eb 00 00 00 49 63 c6 4c 69 d0 a0 86 01 00 49 63 c7 4c 69 c8 a0 86 01 00 4d 85 c9 75 0a b8 ff ff ff ff e9 b7 00 00 00 48 b8 a3 8d 23 d6 e2 53 00 00 49 03 c2 48 b9 46 1b 47 ac c5 a7 00 00 48 3b c1 77 11 49 69 c2 a0 86 01 00 48 99 49 f7 f9 e9 8a 00 00 00 49 8b c1 48 99 48 33 c2 48 2b c2 48 b9 00 e4 0b 54 02 00 00 00 48 3b c1 48 b8 09 e1 d1 c6 11 6b f1 29 7c 1e 49 f7 e9 4c 8b c2 49 c1 f8 0e 49 8b c8 48 c1 e9 3f 4c 03 c1 49 8b c2 48 99 49 f7 f8 eb 48 49 f7 ea 48 c1 fa 0e 48 8b c2 48 c1 e8 3f 48 03 d0 48 69 c2 a0 86 01 00 4c 2b d0 48 99 49 f7 f9 4c 69 c0 a0 86 01 00 48 69 c2 a0 86 01 00 48 99 49 f7 f9 48 8b c8 49 69 c2 a0 86 01 00 48 99 49 f7 f9 48 03 c1 49 03 c0 48 8b 9d 60 10 00 00 48 89 03 48 85 f6 74 1a 33 c0 48 8b 4c 24 50 89 44 24 4c 48 8b 01 41 b8 04 00 00 00 48 8b d6 ff 50 10 48 8b c3 0f 28 b4 24 00 11 00 00 48 81 c4 18 11 00 00 41 5f 41 5e 41 5d 41 5c 5f 5e 5b 5d c3"
+    },
+    {
+      "name": "Rite.IsMainRite",
+      "start_rva": "0x24f7e40",
+      "end_exclusive_rva": "0x24f7ea2",
+      "abi": "bool(Rite*)",
+      "sha256": "510bf2756b617c6a672224ca073c73ce9a138d2ed4cb6cc9f598cfd6bc08dc2b",
+      "bytes": "48 8b 05 b9 64 82 03 4c 8b c9 48 85 c0 74 2c 44 8b 81 b8 04 00 00 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 5e 64 82 03 81 7a 0c 74 69 61 46 75 14 83 7a 08 ff 74 0e 41 8b 41 08 39 82 98 00 00 00 0f 94 c0 c3 32 c0 c3"
+    },
+    {
+      "name": "Character.KnowsDoctrine",
+      "start_rva": "0x28b0a30",
+      "end_exclusive_rva": "0x28b0af2",
+      "abi": "bool(Character*,Doctrine*)",
+      "sha256": "f8b55035acaf7ceec41d7930a328ae6bb06b5d596a249cbe71d61adadb3d64bf",
+      "bytes": "48 89 54 24 10 48 83 ec 28 80 b9 a5 01 00 00 00 4c 8b c2 74 07 32 c0 48 83 c4 28 c3 48 8b 81 c8 01 00 00 48 85 c0 0f 85 80 00 00 00 48 8b 05 95 d8 46 03 48 85 c0 74 29 8b 91 b4 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 d8 6b 3b 03 48 8b 88 88 07 00 00 48 63 90 94 07 00 00 48 c1 e2 04 48 03 d1 48 3b ca 74 0e 4c 39 01 74 09 48 83 c1 10 48 3b ca 75 f2 33 c0 48 3b ca 48 0f 44 c8 48 85 c9 74 04 0f b6 41 08 84 c0 0f 95 c0 48 83 c4 28 c3 48 8d 88 c8 00 00 00 48 8d 54 24 38 e8 d3 11 16 fe 48 83 c4 28 c3"
+    },
+    {
+      "name": "Character.KnowsTenet",
+      "start_rva": "0x28b0c00",
+      "end_exclusive_rva": "0x28b0ccd",
+      "abi": "bool(Character*,Tenet*)",
+      "sha256": "873cb45c3df4696da0672c58623e5c23346f522cd0bced505aa787e433e88acd",
+      "bytes": "48 89 54 24 10 53 48 83 ec 20 48 8b 99 c8 01 00 00 4c 8b ca 48 85 db 74 2c 48 8b 8b e0 00 00 00 4c 8d 44 24 38 48 63 83 ec 00 00 00 48 8d 14 c1 e8 2b 13 16 fe 48 63 93 ec 00 00 00 48 8b 8b e0 00 00 00 eb 6f 48 8b 15 ac d6 46 03 48 85 d2 74 2d 44 8b 81 b4 00 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 43 08 74 07 48 8b 1d eb 69 3b 03 48 8b 8b a0 07 00 00 4c 8d 44 24 30 48 63 83 ac 07 00 00 4c 89 4c 24 30 48 8d 14 c1 e8 ba 12 16 fe 48 63 93 ac 07 00 00 48 8b 8b a0 07 00 00 4c 8d 04 d1 33 c9 49 3b c0 48 0f 44 c1 48 85 c0 0f 95 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "has_character_flag.registration",
+      "start_rva": "0x5abf50",
+      "end_exclusive_rva": "0x5abfe8",
+      "abi": "registration_factory",
+      "sha256": "d14dc7f55403788110475cd85024ab56f109771e9510ab18f1dc1ffeb26d8694",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 30 48 8b 0d 87 2e 71 05 48 8d 05 f0 21 25 04 48 89 44 24 20 c7 44 24 28 12 00 00 00 c6 44 24 2c 00 48 85 c9 75 08 e8 7c 38 9a 03 48 8b c8 0f 28 44 24 20 48 8d 54 24 20 66 0f 7f 44 24 20 e8 04 33 9a 03 8b f8 e8 7d f8 17 03 48 8b 1d 0e e5 6b 05 b9 18 00 00 00 e8 00 7c c7 03 48 8d 0d 75 21 25 04 48 89 44 24 40 4c 8b c0 8b d7 48 89 48 08 48 8d 0d 80 73 25 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 48 fd 17 03"
+    },
+    {
+      "name": "CharacterFlagTrigger.parse",
+      "start_rva": "0x2b7a440",
+      "end_exclusive_rva": "0x2b7a4d8",
+      "abi": "parser; insertion API not called by provider",
+      "sha256": "c2764910e1048dfd92dac2af305555d9c75c8b4bf8c02a44c5bd68496744151c",
+      "bytes": "40 53 48 83 ec 30 83 7a 14 00 48 8b d9 75 75 48 8d 15 5e 4a 8b 01 48 89 54 24 20 48 c7 c0 ff ff ff ff 48 ff c0 80 3c 02 00 75 f7 89 44 24 28 48 85 d2 0f 94 44 24 2c e8 84 03 41 01 4c 8d 44 24 20 48 8b c8 48 8d 54 24 40 e8 22 00 41 01 8b 44 24 40 89 43 40 48 8b 0d 34 00 0f 03 48 85 c9 75 0c e8 0a 91 be 00 48 8b 0d 23 00 0f 03 8b 53 40 48 81 c1 d8 00 00 00 e8 f4 d7 be 00 b0 01 48 83 c4 30 5b c3 48 8b 52 08 48 89 54 24 20 48 85 d2 75 89 89 54 24 28 eb 97"
+    },
+    {
+      "name": "CharacterFlagTrigger.evaluate",
+      "start_rva": "0x2b7a630",
+      "end_exclusive_rva": "0x2b7a748",
+      "abi": "bool(Trigger*,scope)",
+      "sha256": "3b10fa02c4bc737ad3e9af8ed535890bb085c1311171c9192fa8e288bab79fc0",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 20 48 8b 02 48 8b f9 66 83 38 04 75 05 8b 50 08 eb 05 ba ff ff ff ff 4c 8b 05 11 cf 0e 03 4d 85 c0 74 25 8b c2 25 ff ff ff 00 41 3b 40 2c 73 18 8b c8 49 8b 40 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 05 39 53 18 74 07 48 8b 1d e8 ce 0e 03 81 7b 1c 72 61 68 43 0f 85 a6 00 00 00 83 7b 18 ff 0f 84 9c 00 00 00 48 83 bb d0 01 00 00 00 0f 85 8e 00 00 00 80 bb a5 01 00 00 00 0f 85 81 00 00 00 48 8b 8b b0 01 00 00 48 85 c9 74 75 e8 35 cb 1e ff 48 85 c0 74 6b 48 89 74 24 30 33 f6 40 38 b3 a5 01 00 00 75 16 48 8b 8b b0 01 00 00 48 85 c9 74 0a e8 0f cb 1e ff 48 8b c8 eb 03 48 8b ce 48 8b 51 10 4c 63 41 1c 8b 47 40 49 c1 e0 05 4c 03 c2 49 3b d0 74 11 39 42 08 74 09 48 83 c2 20 49 3b d0 75 f2 49 3b d0 48 0f 44 d6 48 8b 74 24 30 48 85 d2 0f 95 c0 48 8b 5c 24 38 48 83 c4 20 5f c3 48 8b 5c 24 38 32 c0 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "CharacterFlagCollection.resolve",
+      "start_rva": "0x1d67200",
+      "end_exclusive_rva": "0x1d6734b",
+      "abi": "FlagSet*(indexedScriptData*)",
+      "sha256": "1232554a2d674bd56769b636020485251b486a53b3e234bde756fc9d325ba949",
+      "bytes": "48 83 ec 38 48 8b 05 45 1a f0 03 48 8b 90 a0 00 00 00 48 63 01 83 f8 ff 75 48 48 8d 05 17 52 a1 02 48 89 44 24 20 4c 8d 0d 36 29 fc 03 33 d2 33 c9 44 8d 42 01 e8 56 39 21 02 ba 10 00 00 00 65 48 8b 04 25 58 00 00 00 48 8b 08 8b 04 0a 39 05 2c 1a 00 04 7f 1c 48 8b 05 53 1a 00 04 48 83 c4 38 c3 48 8b c8 48 8b 42 68 48 8b 04 c8 48 83 c4 38 c3 48 8d 0d 07 1a 00 04 e8 26 c8 4b 02 83 3d fb 19 00 04 ff 75 cf ba 50 00 00 00 48 8d 0d f5 19 00 04 e8 a8 b9 22 02 48 8b 05 f9 19 00 04 48 89 05 0a 1a 00 04 33 d2 48 89 50 28 89 50 4c 48 8d 0d 32 5f 72 02 48 89 08 48 8d 0d 98 5f 72 02 48 89 48 08 48 89 50 10 48 89 50 18 48 8d 0d a5 6f 77 03 48 89 48 20 89 50 28 48 89 50 30 48 89 50 38 48 8d 0d 87 6f 77 03 48 89 48 40 c7 40 48 ff ff ff ff 66 89 50 4c 88 50 4e c7 05 a3 19 00 04 01 00 00 00 89 54 24 40 4c 8d 4c 24 40 44 8d 42 02 48 8b 15 6f 19 00 04 48 8b 0d 70 19 00 04 ff 15 42 33 67 02 48 8d 0d 03 79 60 02 e8 12 cc 4b 02 90 48 8d 0d 46 19 00 04 e8 05 c7 4b 02 48 8b 05 6a 19 00 04 48 83 c4 38 c3"
+    },
+    {
+      "name": "StringAtom.existing_lookup",
+      "start_rva": "0x3f8a3a0",
+      "end_exclusive_rva": "0x3f8a4b0",
+      "abi": "uint32_t*(pool,out,StringView*); complete chained body",
+      "sha256": "e4e63b08e43af05d973bf2ac33005812386e94b308573240b1194a4f89204f92",
+      "bytes": "40 53 41 56 48 83 ec 28 41 0f 10 08 48 89 6c 24 40 4c 8b f2 48 89 74 24 48 49 8b f0 48 89 7c 24 50 66 0f 6f c1 66 0f 73 d8 08 66 48 0f 7e ca 66 41 0f 7e c0 4c 89 64 24 58 4c 89 7c 24 20 4c 8b f9 e8 5a 3e ff ff 4d 63 67 1c 40 b7 01 49 8b cc 48 98 48 23 c8 48 8d 1c 49 48 c1 e3 04 49 03 5f 10 40 38 7b 04 72 4f 0f b6 6e 0c 0f 1f 44 00 00 48 83 7b 20 10 48 8d 53 08 72 03 48 8b 12 40 84 ed 75 0e 48 8b 0e e8 a5 2e fe ff 84 c0 75 3f eb 18 48 63 46 08 3b 43 18 75 0f 48 8b 0e 4c 8b c0 e8 8b cc 29 00 85 c0 74 25 48 83 c3 30 40 fe c7 40 3a 7b 04 76 ba 41 0f b6 47 20 ff c0 41 03 c4 48 98 48 8d 1c 40 48 c1 e3 04 49 03 5f 10 80 7b 04 ff 4c 8b 7c 24 20 4c 8b 64 24 58 48 8b 7c 24 50 48 8b 74 24 48 48 8b 6c 24 40 74 11 8b 43 28 41 89 06 49 8b c6 48 83 c4 28 41 5e 5b c3 41 c7 06 ff ff ff ff 49 8b c6 48 83 c4 28 41 5e 5b c3"
+    },
+    {
+      "name": "StringAtom.pool_accessor",
+      "start_rva": "0x3f8a800",
+      "end_exclusive_rva": "0x3f8a8d3",
+      "abi": "pool address; provider binds existing inline object",
+      "sha256": "42c8a8858ef064392de48a3143957f333cf31a6d3e7bb725d68f6d0ebc221a41",
+      "bytes": "48 83 ec 28 65 48 8b 04 25 58 00 00 00 ba 10 00 00 00 48 8b 08 8b 04 0a 39 05 6a 6b e3 01 7f 0c 48 8d 05 69 6b e3 01 48 83 c4 28 c3 48 8d 0d 55 6b e3 01 e8 6c 92 29 00 83 3d 49 6b e3 01 ff 75 df b8 01 00 00 00 f0 0f c0 05 12 6b e3 01 88 05 3c 6b e3 01 e8 37 e0 df fe f3 0f 10 05 df ba a6 00 48 8d 0d 98 d3 44 00 33 d2 48 89 05 2f 6b e3 01 48 8d 05 30 e6 55 01 f3 0f 11 05 34 6b e3 01 48 89 05 31 6b e3 01 48 8d 05 8a 39 55 01 48 89 05 3b 6b e3 01 48 89 15 0c 6b e3 01 88 15 0e 6b e3 01 48 89 15 17 6b e3 01 48 89 15 18 6b e3 01 89 15 22 6b e3 01 e8 89 96 29 00 48 8d 0d c6 6a e3 01 e8 7d 91 29 00 48 8d 05 c2 6a e3 01 48 83 c4 28 c3"
+    },
+    {
+      "name": "Character.GetRite",
+      "start_rva": "0x28d2f90",
+      "end_exclusive_rva": "0x28d2fcd",
+      "abi": "Rite*(Character*); storage lookup with full generation",
+      "sha256": "a070e31f68f01cc5795c8c49b50414a1168f35aacac1fbd8c1c4219017b99c2b",
+      "bytes": "48 8b 05 61 b3 44 03 48 85 c0 74 29 8b 91 b4 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 a4 46 39 03 c3"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "knowledge_core_call",
+      "rva": "0x2aea519",
+      "bytes": "e8 c2 18 0f 00",
+      "instruction": "call 0x2bdbde0"
+    },
+    {
+      "name": "knowledge_main_rite_test",
+      "rva": "0x2bdbe2a",
+      "bytes": "e8 11 c0 91 ff",
+      "instruction": "call 0x24f7e40"
+    },
+    {
+      "name": "target_doctrine_rows",
+      "rva": "0x2bdbe35",
+      "bytes": "4d 8b 8d 70 07 00 00",
+      "instruction": "mov r9, qword ptr [r13 + 0x770]"
+    },
+    {
+      "name": "target_doctrine_count",
+      "rva": "0x2bdbe3c",
+      "bytes": "4d 63 95 7c 07 00 00",
+      "instruction": "movsxd r10, dword ptr [r13 + 0x77c]"
+    },
+    {
+      "name": "doctrine_eligible_flag",
+      "rva": "0x2bdbe53",
+      "bytes": "44 38 a2 80 00 00 00",
+      "instruction": "cmp byte ptr [rdx + 0x80], r12b"
+    },
+    {
+      "name": "doctrine_known_call",
+      "rva": "0x2bdbe62",
+      "bytes": "e8 c9 4b cd ff",
+      "instruction": "call 0x28b0a30"
+    },
+    {
+      "name": "target_tenet_rows",
+      "rva": "0x2bdbf63",
+      "bytes": "49 8b 85 a0 07 00 00",
+      "instruction": "mov rax, qword ptr [r13 + 0x7a0]"
+    },
+    {
+      "name": "target_tenet_count",
+      "rva": "0x2bdbf6a",
+      "bytes": "49 63 8d ac 07 00 00",
+      "instruction": "movsxd rcx, dword ptr [r13 + 0x7ac]"
+    },
+    {
+      "name": "tenet_eligible_flag",
+      "rva": "0x2bdc041",
+      "bytes": "41 80 bd a0 00 00 00 00",
+      "instruction": "cmp byte ptr [r13 + 0xa0], 0"
+    },
+    {
+      "name": "tenet_known_call",
+      "rva": "0x2bdc058",
+      "bytes": "e8 a3 4b cd ff",
+      "instruction": "call 0x28b0c00"
+    },
+    {
+      "name": "branch_parent_main_rite",
+      "rva": "0x2bdc0de",
+      "bytes": "8b 81 98 00 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x98]"
+    },
+    {
+      "name": "main_tenet_rows",
+      "rva": "0x2bdc191",
+      "bytes": "49 8b 9d a0 07 00 00",
+      "instruction": "mov rbx, qword ptr [r13 + 0x7a0]"
+    },
+    {
+      "name": "main_tenet_known_call",
+      "rva": "0x2bdc23b",
+      "bytes": "e8 c0 49 cd ff",
+      "instruction": "call 0x28b0c00"
+    },
+    {
+      "name": "zero_eligible_is_zero",
+      "rva": "0x2bdc267",
+      "bytes": "48 89 03",
+      "instruction": "mov qword ptr [rbx], rax"
+    },
+    {
+      "name": "knowledge_numerator_scale",
+      "rva": "0x2bdc27b",
+      "bytes": "4c 69 d0 a0 86 01 00",
+      "instruction": "imul r10, rax, 0x186a0"
+    },
+    {
+      "name": "knowledge_denominator_scale",
+      "rva": "0x2bdc285",
+      "bytes": "4c 69 c8 a0 86 01 00",
+      "instruction": "imul r9, rax, 0x186a0"
+    },
+    {
+      "name": "native_flag_dummy_check",
+      "rva": "0x2b7a6ad",
+      "bytes": "80 bb a5 01 00 00 00",
+      "instruction": "cmp byte ptr [rbx + 0x1a5], 0"
+    },
+    {
+      "name": "native_flag_script_data",
+      "rva": "0x2b7a6ba",
+      "bytes": "48 8b 8b b0 01 00 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0x1b0]"
+    },
+    {
+      "name": "native_flag_collection_call",
+      "rva": "0x2b7a6c6",
+      "bytes": "e8 35 cb 1e ff",
+      "instruction": "call 0x1d67200"
+    },
+    {
+      "name": "flag_rows",
+      "rva": "0x2b7a6f9",
+      "bytes": "48 8b 51 10",
+      "instruction": "mov rdx, qword ptr [rcx + 0x10]"
+    },
+    {
+      "name": "flag_count",
+      "rva": "0x2b7a6fd",
+      "bytes": "4c 63 41 1c",
+      "instruction": "movsxd r8, dword ptr [rcx + 0x1c]"
+    },
+    {
+      "name": "flag_row_key_compare",
+      "rva": "0x2b7a710",
+      "bytes": "39 42 08",
+      "instruction": "cmp dword ptr [rdx + 8], eax"
+    },
+    {
+      "name": "flag_row_stride",
+      "rva": "0x2b7a715",
+      "bytes": "48 83 c2 20",
+      "instruction": "add rdx, 0x20"
+    },
+    {
+      "name": "indexed_flag_set",
+      "rva": "0x1d67265",
+      "bytes": "48 8b 42 68",
+      "instruction": "mov rax, qword ptr [rdx + 0x68]"
+    },
+    {
+      "name": "atom_pool_address",
+      "rva": "0x3f8a820",
+      "bytes": "48 8d 05 69 6b e3 01",
+      "instruction": "lea rax, [rip + 0x1e36b69]"
+    },
+    {
+      "name": "existing_key_out",
+      "rva": "0x3f8a490",
+      "bytes": "41 89 06",
+      "instruction": "mov dword ptr [r14], eax"
+    },
+    {
+      "name": "absent_key_out",
+      "rva": "0x3f8a49e",
+      "bytes": "41 c7 06 ff ff ff ff",
+      "instruction": "mov dword ptr [r14], 0xffffffff"
+    },
+    {
+      "name": "rite_storage_slot",
+      "rva": "0x28d2f90",
+      "bytes": "48 8b 05 61 b3 44 03",
+      "instruction": "mov rax, qword ptr [rip + 0x344b361]"
+    },
+    {
+      "name": "rite_generation_compare",
+      "rva": "0x28d2fc0",
+      "bytes": "39 50 08",
+      "instruction": "cmp dword ptr [rax + 8], edx"
+    }
+  ],
+  "state_rite_dependency": "religion_rite_governance12002_state_rite; existing exact ABI reused",
+  "unresolved": [
+    "live paused knowledge/flag samples",
+    "native AI reevaluation scheduler",
+    "final conversion legality/cost supplied by other dedicated components"
+  ]
+}
