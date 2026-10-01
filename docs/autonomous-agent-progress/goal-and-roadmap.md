@@ -1,5 +1,26 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 2026-10-02 00:22:30：G2 当前施工入口与实际证据
+
+G2 固定为 **3/8**（M0/M1/M3 complete），Robert 为 **3153/36524** 持久日。M2/M4/M5/M6/M7 均已 `in_progress`；M5–M7 的旧 `not_started` 和“typed state absent”不再代表当前施工状态。[机器索引](g2-requirements-v1.json)保留八项原始玩家可见验收合同及历史 RED，仅更新状态、证据和下一施工入口。用户已允许实机与宗教研究，战争研究停止；本节覆盖下方历史队列安排。
+
+R10 的独立 1.20 rogue episode（actor29829）已自然推进 **31 个持久游戏日**，raw53169360→53170104；最新实际配对为完整 history139／h139，save SHA-256 `9c6a20497dad75d39c9829bafada38f8f44013fc8aaefca6d35c11e1d0df8095`，driver SHA-256 `cc470b9a6de70e705f3a55bebaca66e495eecc0e8d72c3bae4b9de4c27c6df9e`。它不增加 Robert、百年或双种子资格。当前接续以[实际 R10 配对回执](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/root-r10-final-continuation.json)为准，不退回旧 h98/pre-live driver。首批推进尾部摘要路径错误是保留的 harness RED；真实推进与保存成功，未为补摘要重复运行那30日。
+
+| 里程碑 | 已有结果与当前边界 | 下一项实际交付 |
+| --- | --- | --- |
+| M2 自然事件 | 既有 registry、typed 选项与 stress 比较器可复用；新版 .1007/.0030 的 production material metadata 为 null，窄修复待接入；本轮未新关闭三事件矩阵 | 恢复既有 observable material 输入，自然遇到并验证三个事件（其中两个多选），继续 formal next turn |
+| M4 和平治理 | R9 有限19个正收入 key 报价覆盖完成，65 costs／23可预算空槽；新 Council 正式消费者为 static-ready；实测 incumbent33433 skill15，高于可替换最高11，因此 NO_CHANGE；Sway 是在做的直接封臣干预 | 完成同一两年窗口的建设、有效内阁任命与真实干预；先观察专属 Sway material，保留更好人选，不为验收换差人 |
+| M5 家庭／外交／完整战争 | R4 固定五候选质量选择、一次婚约、独立双向关系及 R6 新 PID 零重发冷恢复形成窄 `production-live loop`；双方8岁，无联盟，未成年完婚 | 沿原合同验证选择路径与长期家庭／外交价值及 formal 消费，不把婚约直接称为整个 M5 完成；战争研究继续停止 |
+| M6 谋略／制度／活动 | CA1 已一次执行、独立 enacted/material、精确22300000 prestige扣款、完整10头衔继承集合及次日h139保存；Sway42/350、CanContinue=true但无终态；Feast实际Open，旧消费者 envelope RED 的窄修复 static-ready | 修复当前 cold 查询，独立复核 CA1 且零重发；完成 Sway、囚犯／制度动作，以及 fresh CanStart/cost/Start 到结束的活动生命周期 |
+| M7 identity／长期矩阵 | feudal/core_landed／44feature 实测；ordinary current-government 与 nonwar goal hooks static-ready；Robert原始full4028/h4025配对已文件准备，但未本轮实际恢复 | 实际恢复普通 campaign 与同一高层 intent，跨 checkpoint／自然继承；随后扩真实 rulers／seeds／governments |
+
+婚约细节与原失败见[迁移进度](../ck3-1.20.0.2-migration-progress-2026-10-01.md)及[婚约 cold 报告](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/family-live-next/actual-betrothal-cold-report-r6.json)。CA1 的实际收益是撤销／收回权利和 CA2 前序，不是当前 partition 改善；首个 receipt unavailable 后只做同 ID 的独立读取恢复，未第二次提交，见[实际法律结果](../ck3-native-ai/ck3-1.20.0.2-ca1-production-outcome-2026-10-01.md)。总好感-18不能归因于 Sway 收益，专属 modifier 正在新 MCP 口实测。
+
+R11 现有 **--nonwar-only** 正式 Council/LIFE/ECON/FAMILY 与 fresh government 消费、Sway 专属意见口及 Feast 实际 envelope 修复已通过必要的新 fixture，见[施工账本](g2-offline-implementation-2026-10-01.md)与[正式服务说明](../ck3-native-ai/ck3-1.20.0.2-nonwar-service-mode.md)。新 PID97312已恢复到 actor29829/raw53170104；首次 Law source／Sway专属意见／Sway completion **三口实际查询 RED** 保留于[首个 R11 attempt](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/targeted-sdk-r11/r11-cold-law-and-sway-material-20261001T160813Z/result.json)。恢复 snapshot identity 不等于这三口已 qualified，也不闭合 CA1 cold。root 正继续实际修复与推进，文档／CI 收口不构成 G2 停点。
+
+宗教目前按各原生专题继续施工：Rite/Faith/Religion、doctrine/tenet、AI inputs 的 actual paused/read-only 结果已有记录，通用动作和完整宗教 OODA 仍按真实结果计。下方“宗教暂缓”和继续战争施工的段落属于其标注日期的历史；暂停研究的授权现已由用户明确解除，战争研究的停止指令仍有效。
+
+
 ## 2026-10-01 15:49:34：非战争 G2 源码交付与实机准备
 
 项目所有者最新指令已允许本机 CK3 实机，恢复宗教研究，并停止战争相关研究。本节覆盖下方历史截点中的“禁止占用游戏／宗教暂缓／继续战争施工”安排；历史 artifact 与失败保留，不重新解释其资格。

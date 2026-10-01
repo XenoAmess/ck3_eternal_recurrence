@@ -983,3 +983,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 3精确源：生产policy/newtest/topic，唯一1method/6subtestsGREEN复用。仅当前实际native主stress facet可见时附加.1007/.0030压力方向与material change，未知fullfulfillment和条件无效果保留。source static-ready，冻结L11fix未热改，自然实测交接后继续。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m2-natural-live-next\current-stress-profile-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 2026-10-02 00:30:36 Refresh G2 progress and concrete remaining work
+
+两权威索引更新：G2保持3/8、Robert3153/36524，M5/M6/M7标in_progress，原visible_outcome和历史RED原样保留。G2 validator一次GREEN3/8/NW0/4。索引00:22:30的首R11 RED快照保持，后续实际queryGREEN/技能回执/h165归当前handoff，不把原记录覆盖。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\g2-status-sync-oct2\source-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
