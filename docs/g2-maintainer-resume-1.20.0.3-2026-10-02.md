@@ -2,6 +2,22 @@
 
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
+## 04:47–04:49 真实补录：131 日与 v4 当前实机结果
+
+以下为 2026-10-02 04:47（Asia/Shanghai）的新增结果；下方 04:08 记录保留为当时基线。第二批 `formal-run-c3cd08bc-02` 完成 60 真实日，累计恢复 90 日，保存同日 raw53172768/full395/h395；对应 `checkpoint-after-90d-01` 的 save SHA256 为 `31ca980834ffc99a03b402aaf24708eed158b393e74c61cdf3bb31893977932c`。没有自然 stock 事件或旧动作重发。
+
+最小法律 signed-resource 修复与 Feast 选项标识修复已合入并普通推送 `19a0e94510e8a41e0a7ee83e709a9dd914c5dc30`。后者修正实际 stage1 将选项读成 `cisalpine_opinion` 的原生标识表入口；原 `attempt02` 与独立 requery RED 保留。v4 增量构建 GREEN，61 ON/4 OFF 保持，DLL SHA256 `94872a6793f4a928c36961966db4be0e7c921e62e255d792eb0b7472d3eeb386`。正式 runtime 绑定 933 个源输入，只有 CMake 的 CRLF 投影差异；`root-reprepare-19a0e945-v4-01` 与 preflight GREEN，prepare 保持原 h395 配对。准确源码的 [Official Runner CI run36922047164](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36922047164) 于 04:34:50 SUCCESS。
+
+新 PID69040 的 `cold-law-sway-v4-01` 实际 GREEN：法律完整来源读取接受真实虔诚 raw−103800000，CA1 与 full10 原条款不变，未再次立法；同一 Sway 到 154/355、总好感−24，两 modifier 缺席、recorder ring 空，没有终态或实际收益。Feast `attempt03` 正确读出 `feast_type_generic` 并完成 Confirm；三处原生合法地点中选择 2619，到 planning stage5，独立 full cost 为 100 金币且 CanStart=true。所选非主办客人数为 0、`native_guest_route_qualified=false`，正式 assessment 保持 hold；未 Start、未扣费、未获得 Feast 生命周期信用。只读 `activity_invite_rule_vassals` 返回 `rule_unavailable`，没有 activate，当前具体入口诊断继续。
+
+`formal-run-v4-03` 已推进 14 真实日，到 raw53173104；第 15 次 campaign-root 查询实际 RED，整批 exit1，原失败保留，不将该批记为 GREEN。成功日数已另存 `checkpoint-v4-14d-01`：full427/h427、paused、同 actor29829；save71,999,234B/SHA256 `00beb5b798784a99e42d6ae765a461a91f515a92a016cc1d1e2938870fcc859f`，driver4,232,765B/SHA256 `e3891d6a33bcd25cdae033c7ebf4be221bd391dd774b2229454419bd0bbe6e5e`。同 PID 独立 fresh 只读 `m6-feast/attempt03/live/readonly-20261001T204003Z` 的 campaign-root 已 GREEN，actor/date 一致、action calls=0；该证据不改变原批次 RED，不重复推进已保存的 14 日。
+
+04:49 接收并读取最新结果：`formal-run-v4-04` 又推进 27 真实日，到 raw53173752；第 28 次同类 campaign-root 查询 RED、整批 exit1，原失败同样保留。`checkpoint-v4-27d-02` 独立保存最新 full487/h487、paused、同 actor29829：save72,561,257B/SHA256 `1a4c34a83a70c84370ce321476677f5537574337977228cd16e478352708c9aa`，driver5,015,066B/SHA256 `625dbe5587114052b38b6c62d1360e171917cf2b0fb54dfb9a8b0b96b445f3cf`。现有单次 fresh 只读 retry seam 的实际源诊断指出，它要求 `starting.native_command_history` 为 list，但 internal snapshot 没有该字段，首次失败会直接 return None；该既有恢复入口的最小修复在途，尚未声称修复后 live。当前 PID69040 paused，root 待该源修复后 reload；不重发动作、不重复已保存日数。
+
+`current-peace-v4-01` 实际只读确认 war234/战争分数−27 的白和平合法性为 false，无 exit/action/M4 信用，当前一战一军的建设 hold 仍有真实依据。当前恢复实际日数为 30+60+14+27=131，独立 rogue 原52+131=183；Robert3153/36524 与 G2 3/8 不变，M2/M4/M5/M6/M7 均未新增完整信用，不报总体百分比。readiness 新增新版 signed 法律来源与正确 Feast stage1→stage5 的 `production-live primitive`；Sway 终态、Feast 合格客人和生命周期、自然 M2 材料仍待真实结果。下一步并行诊断当前 Feast 客人规则入口、修复实证 query 恢复入口、消费已保存的真实各域材料及维护报告，root 继续串行实机；M7 原 H3937 日期 hold 仍保留。
+
+本段证据均位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/`：`formal-run-c3cd08bc-02/result.json`、`checkpoint-after-90d-01/checkpoint.json`、`native-build-law-feast-v4/REPORT-FIELDS.json`、`runtime-freeze-19a0e945-v4.json`、`root-reprepare-19a0e945-v4-01/result.json`、`preflight-19a0e945-v4-01/result.json`、`cold-law-sway-v4-01/result.json`、`m6-feast/attempt03/stage1-live-proof.json`、`m6-feast/attempt03/rule-unavailable-proof.json`、`m6-feast/attempt03/live/typed-phases/phase-005-stage5-result.json`、`formal-run-v4-03/result.json`、`checkpoint-v4-14d-01/checkpoint.json`、`formal-run-v4-04/result.json`、`checkpoint-v4-27d-02/result.json`、`current-peace-v4-01/result.json`、`official-ci-19a0e945/terminal-status.json` 及上述 fresh 只读包。
+
 ## 当前真实接续
 
 输入是用户暂停的完整 full193/h193，actor29829、episode `native-29829-3f80e147d033`、raw53170608；原状态及原婚约账本保留。新状态目录 `Z:/ck3_mod_rewrite_process_assets/g2-12003-nonwar-resume-20261002/state`，专用 pipe `xar_ck3_bridge_g2_12003_resume`。通过既有官方 prepare/rebind/preflight，首次新版实际 PID69132 恢复成功。同日 checkpoint h197 后，fresh typed 确认自然 `xar.0004` instance15。

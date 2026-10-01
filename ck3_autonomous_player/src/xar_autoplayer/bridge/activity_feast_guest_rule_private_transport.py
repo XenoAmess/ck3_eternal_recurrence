@@ -36,12 +36,13 @@ def _key(value: object) -> bool:
 
 def _parse(payload: object, *, step: str, envelope_status: str,
            native_revision: int, date_raw: int, actor_id: int) -> dict[str, object]:
+    required_keys = {
+        "schema", "snapshot_revision", "date_raw", "actor_character_id",
+        "activity_key", "planning_stage", "status", "invoked", "active",
+        "native_key_hash", *_COUNT_KEYS,
+    }
     if (not isinstance(payload, dict)
-            or set(payload) != {
-                "schema", "snapshot_revision", "date_raw", "actor_character_id",
-                "activity_key", "planning_stage", "status", "invoked", "active",
-                "native_key_hash", *_COUNT_KEYS,
-            }
+            or set(payload) not in (required_keys, required_keys | {"unavailable_reason"})
             or payload["schema"] != SCHEMA
             or payload["snapshot_revision"] != native_revision
             or type(payload["snapshot_revision"]) is not int
@@ -55,6 +56,12 @@ def _parse(payload: object, *, step: str, envelope_status: str,
             or type(payload["invoked"]) is not bool):
         raise BridgeUnavailableError("private feast guest rule payload malformed")
     status = payload["status"]
+    unavailable_reason = payload.get("unavailable_reason")
+    if (unavailable_reason is not None
+            and (type(unavailable_reason) is not str
+                 or not 0 < len(unavailable_reason) <= 96
+                 or status != "rule_unavailable")):
+        raise BridgeUnavailableError("private feast guest rule unavailable reason malformed")
     expected = {
         (QUERY_STEP, "observed_inactive"): "available",
         (QUERY_STEP, "observed_active"): "already_active",

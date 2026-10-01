@@ -34,6 +34,8 @@ struct ActivityFeastGuestRuleResultV1 {
   std::int32_t filtered_character_count = 0;
   bool active = false;
   bool invoked = false;
+  // A static producer reason for rule_unavailable; empty for other statuses.
+  std::string_view unavailable_reason{};
 };
 
 using ActivityFeastGuestRuleCaptureV1 = bool (*)(

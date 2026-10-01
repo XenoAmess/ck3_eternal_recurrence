@@ -6,6 +6,7 @@ import copy
 import json
 from pathlib import Path
 import sys
+import threading
 import unittest
 from unittest import mock
 
@@ -18,6 +19,7 @@ from xar_autoplayer.bridge.campaign_root_context_contract import (  # noqa: E402
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
 )
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
+    NativeHeadlessGameplayDriver,
     _NativeCommandRejectedError,
 )
 from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
@@ -75,7 +77,7 @@ class _RejectedRootDriver:
         if len(self.calls) == 1:
             self.current["native_command_history"].append(
                 {
-                    "index": 1,
+                    "index": len(self.current["native_command_history"]) + 1,
                     "command": step,
                     "ok": False,
                     "error": f"_NativeCommandRejectedError: {self.first_error}",
@@ -184,6 +186,32 @@ class _RejectedSuccessionRootDriver(_RejectedRootDriver):
         raise AssertionError("the living R11 actor must not reconcile a successor")
 
 
+class _InternalRejectedSuccessionRootDriver(_RejectedSuccessionRootDriver):
+    """Use the production internal snapshot/history seams over frozen material."""
+
+    take_internal_semantic_snapshot = NativeHeadlessGameplayDriver.take_internal_semantic_snapshot
+    _with_internal_planning_view = NativeHeadlessGameplayDriver._with_internal_planning_view
+
+    def __init__(self, **options):
+        super().__init__(**options)
+        self._history_lock = threading.RLock()
+        self._command_history = self.current["native_command_history"]
+        self._command_history.append({"index": 1, "command": "pause-map", "ok": True})
+        self._rollback_war_failures = []
+        self.state = mock.Mock()
+        self.state.semantic_snapshot.side_effect = lambda: {
+            key: copy.deepcopy(value)
+            for key, value in self.current.items()
+            if key != "native_command_history"
+        }
+        self._transport_error = mock.Mock(return_value=None)
+        self._with_one_life_episode = lambda frame: frame
+        self._observe_arrange_marriage_outcome = mock.Mock()
+        self._history_snapshot = mock.Mock(
+            side_effect=lambda: NativeHeadlessGameplayDriver._history_snapshot(self)
+        )
+
+
 class R724CampaignRootReadRetryTests(unittest.TestCase):
     def _service(self, driver: _RejectedRootDriver) -> GameplayBridgeService:
         service = GameplayBridgeService(driver)
@@ -255,6 +283,46 @@ class R724CampaignRootReadRetryTests(unittest.TestCase):
         self.assertEqual(driver.wait_count, 1)
         self.assertEqual(driver.retained_revisions, [])
         self.assertIn(_R11_REJECTION, observed.exception.read_only_query_retry["second_error"])
+
+    def test_internal_nonwar_preparation_restores_retry_from_real_history(self) -> None:
+        for options in ({}, {"drift": "date"}, {"second_reject": True}):
+            with self.subTest(options=options):
+                driver = _InternalRejectedSuccessionRootDriver(**options)
+                self.assertNotIn(
+                    "native_command_history", driver.take_internal_semantic_snapshot()
+                )
+                service = GameplayBridgeService(driver)
+                if options:
+                    with self.assertRaises(_NativeCommandRejectedError) as observed:
+                        service.plan_nonwar_turn()
+                    self.assertIs(observed.exception, driver.first_error)
+                    self.assertEqual(driver.retained_revisions, [])
+                    self.assertEqual(len(driver.calls), 1 if "drift" in options else 2)
+                    if "second_reject" in options:
+                        self.assertIn(
+                            _R11_REJECTION,
+                            observed.exception.read_only_query_retry["second_error"],
+                        )
+                else:
+                    planned = service.plan_nonwar_turn()
+                    self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+                    self.assertEqual(driver.calls, [
+                        (QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, 500),
+                        (QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, 501),
+                    ])
+                    self.assertEqual(driver.retained_revisions, [501])
+                    retry = planned["plan"]["read_only_query_retry"]
+                    self.assertEqual(retry["failed_history_index"], 2)
+                    self.assertEqual(retry["fresh_native_revision"], 31)
+                    service.plan_nonwar_turn()
+                    self.assertEqual(len(driver.calls), 2)
+                driver._history_snapshot.assert_called_once_with()
+                self.assertEqual(driver.wait_count, 1)
+                self.assertEqual(
+                    driver.current["native_command_history"][0],
+                    {"index": 1, "command": "pause-map", "ok": True},
+                )
+                self.assertIs(driver.current["native_command_history"][1]["ok"], False)
 
     def test_r11_nonwar_preparation_changed_date_does_not_retry_or_retain(self) -> None:
         driver = _RejectedSuccessionRootDriver(drift="date")

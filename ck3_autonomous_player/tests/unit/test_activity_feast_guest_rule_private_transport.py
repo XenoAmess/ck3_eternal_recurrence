@@ -72,6 +72,32 @@ class Driver:
 
 
 class GuestRuleTransportTest(unittest.TestCase):
+    def test_new_native_unavailable_reason_and_legacy_payload_compatibility(self) -> None:
+        for reason in ("database_not_initialized", "lookup_returned_null",
+                       "ordered_definition_not_found"):
+            with self.subTest(reason=reason):
+                native = payload("rule_unavailable")
+                native["unavailable_reason"] = reason
+                result = query_activity_feast_guest_rule_private_v1(
+                    Driver(native), authored_rule_key="activity_invite_rule_vassals",
+                    expected_revision=5)
+                self.assertEqual(result["unavailable_reason"], reason)
+                self.assertIsNone(result["active"])
+                self.assertIsNone(result["native_key_hash"])
+        native = payload()
+        native["unavailable_reason"] = None
+        result = query_activity_feast_guest_rule_private_v1(
+            Driver(native), authored_rule_key="activity_invite_rule_vassals",
+            expected_revision=5)
+        self.assertEqual(result["status"], "observed_inactive")
+        self.assertIsNone(result["unavailable_reason"])
+        bad = payload("rule_unavailable")
+        bad["unavailable_reason"] = 3
+        with self.assertRaisesRegex(BridgeUnavailableError, "unavailable reason malformed"):
+            query_activity_feast_guest_rule_private_v1(
+                Driver(bad), authored_rule_key="activity_invite_rule_vassals",
+                expected_revision=5)
+
     def test_query_is_bound_and_keeps_inactive_distinct_from_unknown(self) -> None:
         driver = Driver(payload())
         result = query_activity_feast_guest_rule_private_v1(

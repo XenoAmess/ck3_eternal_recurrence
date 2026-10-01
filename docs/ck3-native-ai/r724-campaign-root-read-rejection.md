@@ -108,3 +108,59 @@ subprocess.run([
     "-p", "test_r724_campaign_root_read_retry.py", "-v",
 ], cwd=repo, check=True)
 ```
+
+## 1.20.0.3 v4 internal preparation history gap, 2026-10-02
+
+The preserved `resume-12003/formal-run-v4-03` reached 14 real days, raw
+`53173104`, before turn 15 rejected `step-72-91f49d54ba78`,
+`query-campaign-root-context-v1`, native `expected_revision=52`, with
+`application-main typed query failed or its snapshot changed`. There is
+one rejected root request and no fresh-read request after it. This attempt
+used source `19a0e94510e8a41e0a7ee83e709a9dd914c5dc30`, the combined law/Feast
+v4 DLL, CK3 `1.20.0.3`, EXE SHA-256
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+All paths in this section are relative to
+`Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02`.
+
+The subsequent `resume-12003/checkpoint-v4-14d-01` before-frame has native
+revision `53`; the same-PID independent read at
+`resume-12003/m6-feast/attempt03/live/readonly-20261001T204003Z` starts at
+native revision `55` and returns an available campaign-root DTO. These
+three frames retain raw date `53173104`, living actor `29829`, episode,
+paused/map-ready state, active-war rows, player-army rows and player
+gold/prestige/piety. No source/DLL change or restart occurred between them.
+The checkpoint retains all 14 days at full/history row `427`. The failed
+batch remains RED; this independent read does not identify which of the
+five grouped native callback/envelope/final-snapshot checks rejected the
+original query, and does not prove the fresh frame would have arrived
+within the existing `1.5`-second wait. The native branch remains unknown.
+
+The Python gap is directly established by the production source:
+`plan_nonwar_turn` reads `take_internal_semantic_snapshot`, which omits
+`native_command_history`. The existing retry helper requires that history
+list before it waits, so preparation returned the original rejection
+without entering its fresh-read seam. The earlier Council fixture aliased
+its internal read to a public snapshot containing history and missed this
+producer difference.
+
+The minimal service correction records the real history length through
+the existing locked internal planning view before the root query. Only
+after the observed root rejection does it copy the real pre-query history
+prefix and pass it to the unchanged retry helper. Normal successful
+preparation still avoids copying the transcript. The original paused
+frame, new native/public revision, unchanged actor/date/war/army, same
+PID/connection and single-failed-read history-tail checks remain intact.
+A second query rejection retains the first error and its retry evidence;
+no action or time advance is resent.
+
+The focused existing unit module now also binds the actual
+`NativeHeadlessGameplayDriver.take_internal_semantic_snapshot`, internal planning
+view and history-copy implementations over the frozen 1.20 Council DTO
+and explicit synthetic revision bindings. Its added internal-entry case
+covers a nonempty prior history, successful fresh binding, changed-date
+RED and second-rejection RED. All nine tests in the focused module passed
+in `0.022` seconds. This is an offline production-path fixture,
+not a live recovery claim. The actively running `formal-run-v4-04` retains
+its frozen v4 source and is isolated from this source change. The failure
+packet, snapshot comparison, test result and source pins are recorded in
+`resume-12003/campaign-root-v4-03-diagnosis/`.

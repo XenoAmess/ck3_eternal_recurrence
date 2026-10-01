@@ -615,6 +615,19 @@ class GameplayBridgeService:
             for key, value in current_binding.items()
         ):
             root_query_retry = None
+            query_history_index = None
+            history_view = getattr(self.driver, "_with_internal_planning_view", None)
+            history_snapshot = getattr(self.driver, "_history_snapshot", None)
+            if (
+                not isinstance(snapshot.get("native_command_history"), list)
+                and callable(history_view)
+                and callable(history_snapshot)
+            ):
+                # Internal semantic frames omit transcript evidence. Keep only
+                # its position here; copy the real prefix on a rejected read.
+                query_history_index = history_view(
+                    snapshot, lambda _frame, history: {"index": len(history)}
+                )["index"]
             try:
                 turn_bundle = self.query_turn_bundle_v1(
                     expected_revision=revision
@@ -625,8 +638,14 @@ class GameplayBridgeService:
                     "application-main typed query failed or its snapshot changed",
                 }:
                     raise
+                retry_snapshot = snapshot
+                if query_history_index is not None:
+                    retry_snapshot = {
+                        **snapshot,
+                        "native_command_history": history_snapshot()[:query_history_index],
+                    }
                 root_query_retry = self._retry_rejected_campaign_root_read(
-                    snapshot, {"revision": revision}, error
+                    retry_snapshot, {"revision": revision}, error
                 )
                 if root_query_retry is None:
                     raise

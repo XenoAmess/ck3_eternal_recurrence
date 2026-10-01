@@ -311,6 +311,7 @@ struct Binding {
   std::uintptr_t definition = 0;
   std::uint32_t hash = 0;
   std::int32_t ordered_count = 0;
+  std::string_view unavailable_reason{};
 };
 
 ActivityFeastGuestRuleStatusV1 Bind(
@@ -361,19 +362,47 @@ ActivityFeastGuestRuleStatusV1 Bind(
   }
   std::uintptr_t database = 0, database_vtable = 0, sub_vtable = 0;
   std::uintptr_t missing = 0;
-  if (!ReadAt(source, source.module_base, RuleRva(source, kDatabaseSlotRva), database) ||
-      database == 0 || !ReadAt(source, database, 0, database_vtable) ||
-      !ReadAt(source, database, 0x38, sub_vtable) ||
-      !ReadAt(source, source.module_base, RuleRva(source, kMissingRuleSlotRva), missing) ||
-      database_vtable != source.module_base + RuleRva(source, kDatabaseVtableRva) ||
-      sub_vtable != source.module_base + RuleRva(source, kDatabaseSubVtableRva) || missing == 0)
+  if (!ReadAt(source, source.module_base, RuleRva(source, kDatabaseSlotRva), database)) {
+    binding.unavailable_reason = "database_slot_read_failed";
     return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  if (database == 0) {
+    binding.unavailable_reason = "database_not_initialized";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  if (!ReadAt(source, database, 0, database_vtable)) {
+    binding.unavailable_reason = "database_main_vtable_read_failed";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  if (!ReadAt(source, database, 0x38, sub_vtable)) {
+    binding.unavailable_reason = "database_secondary_vtable_read_failed";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  if (!ReadAt(source, source.module_base, RuleRva(source, kMissingRuleSlotRva), missing)) {
+    binding.unavailable_reason = "missing_definition_slot_read_failed";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  if (database_vtable != source.module_base + RuleRva(source, kDatabaseVtableRva)) {
+    binding.unavailable_reason = "database_main_vtable_mismatch";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  if (sub_vtable != source.module_base + RuleRva(source, kDatabaseSubVtableRva)) {
+    binding.unavailable_reason = "database_secondary_vtable_mismatch";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  if (missing == 0) {
+    binding.unavailable_reason = "missing_definition_not_initialized";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
   const auto hash = env.hash_key != nullptr ? env.hash_key : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeHash12002 : &NativeHash);
   const auto lookup = env.lookup_rule != nullptr ? env.lookup_rule : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeLookup12002 : &NativeLookup);
   binding.hash = hash(env.context, source.module_base, key);
   binding.definition = lookup(env.context, source.module_base, binding.hash);
-  if (binding.definition == 0 || binding.definition == missing)
+  if (binding.definition == 0 || binding.definition == missing) {
+    binding.unavailable_reason = binding.definition == 0
+        ? "lookup_returned_null" : "lookup_returned_missing";
     return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
   std::uintptr_t rows = 0;
   if (!ReadAt(source, binding.capture.activity_type, RuleTypeOffset(source, 0xD20), rows) ||
       !ReadAt(source, binding.capture.activity_type, RuleTypeOffset(source, 0xD2C),
@@ -392,8 +421,11 @@ ActivityFeastGuestRuleStatusV1 Bind(
       return ActivityFeastGuestRuleStatusV1::ambiguous_rule;
     binding.row = row;
   }
-  return binding.row != 0 ? ActivityFeastGuestRuleStatusV1::observed_inactive
-                          : ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  if (binding.row == 0) {
+    binding.unavailable_reason = "ordered_definition_not_found";
+    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
+  }
+  return ActivityFeastGuestRuleStatusV1::observed_inactive;
 }
 
 ActivityFeastGuestRuleStatusV1 Observe(
@@ -475,10 +507,12 @@ ActivityFeastGuestRuleResultV1 Run(
   }
   if (!AuthoredKey(key)) {
     result.status = ActivityFeastGuestRuleStatusV1::rule_unavailable;
+    result.unavailable_reason = "authored_key_invalid";
     return result;
   }
   Binding binding{};
   result.status = Bind(env, expected, key, activate, binding);
+  result.unavailable_reason = binding.unavailable_reason;
   if (result.status != ActivityFeastGuestRuleStatusV1::observed_inactive)
     return result;
   result.native_key_hash = binding.hash;

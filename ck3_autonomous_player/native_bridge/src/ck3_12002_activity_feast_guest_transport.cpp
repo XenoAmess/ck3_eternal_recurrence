@@ -773,8 +773,13 @@ std::string SerializeActivityFeastGuestRulePrivateV1(
              std::to_string(query.expected_snapshot.played_character_id) +
              ",\"activity_key\":\"activity_feast\",\"planning_stage\":5,";
   payload += "\"status\":\"" +
-             std::string(bridge::ActivityFeastGuestRuleStatusKeyV1(rule.status)) +
-             "\",\"invoked\":" + (rule.invoked ? "true" : "false") +
+              std::string(bridge::ActivityFeastGuestRuleStatusKeyV1(rule.status)) +
+              "\",\"unavailable_reason\":" +
+              (rule.status == bridge::ActivityFeastGuestRuleStatusV1::rule_unavailable &&
+                       !rule.unavailable_reason.empty()
+                   ? "\"" + std::string(rule.unavailable_reason) + "\""
+                   : "null") +
+              ",\"invoked\":" + (rule.invoked ? "true" : "false") +
              ",\"active\":" +
              (observed ? (rule.active ? "true" : "false") : "null") +
              ",\"native_key_hash\":" +

@@ -1,5 +1,6 @@
 #include "xar_bridge/activity_feast_guest_rule_toggle_v1.hpp"
 #include "xar_bridge/ck3_12002_feast_planner.hpp"
+#include "ck3_12002_activity_feast_guest_transport.hpp"
 #include <iostream>
 
 #include <array>
@@ -30,6 +31,7 @@ struct Fixture {
   bool host_view_key_matches = true;
   bool toggle_changes_vector = true;
   int toggles = 0;
+  std::uintptr_t lookup_result = definition;
   ActivityFeastGuestRuleEnvironmentV1 environment{};
 
   template <typename T> void Put(std::uintptr_t address, const T &value) {
@@ -96,9 +98,9 @@ struct Fixture {
   static std::uint32_t Hash(void *, std::uintptr_t, std::string_view) noexcept {
     return 0x1234;
   }
-  static std::uintptr_t Lookup(void *, std::uintptr_t,
+  static std::uintptr_t Lookup(void *opaque, std::uintptr_t,
                                std::uint32_t hash) noexcept {
-    return hash == 0x1234 ? definition : 0;
+    return hash == 0x1234 ? static_cast<Fixture *>(opaque)->lookup_result : 0;
   }
   static bool Active(void *opaque, std::uintptr_t, std::uintptr_t,
                      std::uintptr_t, bool &output) noexcept {
@@ -166,10 +168,44 @@ struct Fixture {
   }
 };
 
+void CheckUnavailableWire(Fixture &fixture, std::string_view expected_reason) {
+  const auto result = ReadActivityFeastGuestRuleV1(
+      fixture.environment, fixture.frame, "activity_invite_rule_vassals");
+  assert(result.status == ActivityFeastGuestRuleStatusV1::rule_unavailable);
+  assert(result.unavailable_reason == expected_reason);
+  assert(!result.invoked && fixture.toggles == 0);
+  xar::ck3_12002::ActivityFeastGuestRulePrivateQueryV1 query{};
+  query.completed = true;
+  query.expected_revision = fixture.frame.revision;
+  query.expected_snapshot.date_raw = static_cast<std::int32_t>(fixture.frame.date_raw);
+  query.expected_snapshot.played_character_id = fixture.frame.actor_character_id;
+  query.rule = result;
+  const auto wire = xar::ck3_12002::SerializeActivityFeastGuestRulePrivateV1(query);
+  assert(wire.find("\"unavailable_reason\":\"" + std::string(expected_reason) +
+                   "\"") != std::string::npos);
+  assert(wire.find("\"active\":null") != std::string::npos);
+  assert(wire.find("\"native_key_hash\":null") != std::string::npos);
+}
+
 } // namespace
 
 int main() {
   constexpr std::string_view key = "activity_invite_rule_vassals";
+  {
+    Fixture f;
+    f.Put(Fixture::base + 0x5D33EE8, std::uintptr_t{0});
+    CheckUnavailableWire(f, "database_not_initialized");
+  }
+  {
+    Fixture f;
+    f.lookup_result = 0;
+    CheckUnavailableWire(f, "lookup_returned_null");
+  }
+  {
+    Fixture f;
+    f.Put(Fixture::rows, std::uintptr_t{0x200090000ULL});
+    CheckUnavailableWire(f, "ordered_definition_not_found");
+  }
   {
     Fixture f;
     f.host_view_key_known = false;
@@ -185,6 +221,12 @@ int main() {
     const auto read = ReadActivityFeastGuestRuleV1(f.environment, f.frame, key);
     assert(read.status == ActivityFeastGuestRuleStatusV1::observed_inactive);
     assert(read.native_key_hash == 0x1234 && read.ordered_rule_count == 1);
+    assert(read.unavailable_reason.empty());
+    xar::ck3_12002::ActivityFeastGuestRulePrivateQueryV1 query{};
+    query.completed = true;
+    query.rule = read;
+    assert(xar::ck3_12002::SerializeActivityFeastGuestRulePrivateV1(query).find(
+        "\"unavailable_reason\":null") != std::string::npos);
     assert(f.toggles == 0);
     const auto denied = ActivateActivityFeastGuestRuleV1(
         f.environment, f.frame, key, false);
