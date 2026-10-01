@@ -448,3 +448,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 5源真实native execution input复制128条bounded记录、full Scheme/character IDs与序列查询serializer，Od/O2各196checks8barewire通过。原生入口尚未安装明确library static-ready，不能冒hidden live history；新的完整query与observer安装下一必要增量。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-execution\package-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:16:08 Native Sway cancellation and terminal state source contract
+
+6源取消/终止原生ABI合同闭合170指令检查；native状态invalidated同时由手动取消及其它终止产生，不能当作具体cause。原current终止query不改；hidden消息observer与更细cause独立继续，不冒生产终态loop。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-cancel\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

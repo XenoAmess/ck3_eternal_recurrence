@@ -1,0 +1,1008 @@
+{
+  "schema": "xar.ck3.sway.completion-cancel.source-abi.v1",
+  "status": "static-ready ABI; live fixture owned by lifecycle provider",
+  "version": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "exe_size": 101039736,
+  "image_base": "0x140000000",
+  "read_only_file_research": true,
+  "live_verified": false,
+  "spans": [
+    {
+      "name": "scheme_constructor",
+      "first": "0x2a48f40",
+      "last": "0x2a491aa",
+      "boundary": ".pdata",
+      "sha256": "fec0e34c912134cd2ebffd9b310b7d7081b553bb25e386cf914d4235a42c9437",
+      "anchors": [
+        {
+          "rva": "0x2a48f95",
+          "bytes": "33f6",
+          "asm": "xor esi, esi"
+        },
+        {
+          "rva": "0x2a48fca",
+          "bytes": "897728",
+          "asm": "mov dword ptr [rdi + 0x28], esi"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\state-proof.json"
+    },
+    {
+      "name": "status_serializer",
+      "first": "0x2a491f0",
+      "last": "0x2a49b44",
+      "boundary": ".pdata",
+      "sha256": "7b4da1899c6a3178162dae1045bd351d69a998b60f5ae0be680c185404af0628",
+      "anchors": [
+        {
+          "rva": "0x2a492ed",
+          "bytes": "48634728",
+          "asm": "movsxd rax, dword ptr [rdi + 0x28]"
+        },
+        {
+          "rva": "0x2a492f8",
+          "bytes": "befc040000",
+          "asm": "mov esi, 0x4fc"
+        },
+        {
+          "rva": "0x2a492fd",
+          "bytes": "83f802",
+          "asm": "cmp eax, 2"
+        },
+        {
+          "rva": "0x2a49304",
+          "bytes": "418bac8628957704",
+          "asm": "mov ebp, dword ptr [r14 + rax*4 + 0x4779528]"
+        },
+        {
+          "rva": "0x2a49314",
+          "bytes": "bad0000000",
+          "asm": "mov edx, 0xd0"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\state-proof.json"
+    },
+    {
+      "name": "status_deserializer",
+      "first": "0x2a49b50",
+      "last": "0x2a4a16a",
+      "boundary": ".pdata",
+      "sha256": "d0a0830f7d0920c207b60afc6914d65c83f409486f2cbcfd4595a6235a063a53",
+      "anchors": [
+        {
+          "rva": "0x2a49bd0",
+          "bytes": "488d3d59f9d201",
+          "asm": "lea rdi, [rip + 0x1d2f959]"
+        },
+        {
+          "rva": "0x2a49bd7",
+          "bytes": "488d354af9d201",
+          "asm": "lea rsi, [rip + 0x1d2f94a]"
+        },
+        {
+          "rva": "0x2a49c04",
+          "bytes": "894328",
+          "asm": "mov dword ptr [rbx + 0x28], eax"
+        },
+        {
+          "rva": "0x2a49c12",
+          "bytes": "b802000000",
+          "asm": "mov eax, 2"
+        },
+        {
+          "rva": "0x2a49c17",
+          "bytes": "894328",
+          "asm": "mov dword ptr [rbx + 0x28], eax"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\state-proof.json"
+    },
+    {
+      "name": "scheme_terminate",
+      "first": "0x2a4ae10",
+      "last": "0x2a4b17b",
+      "boundary": ".pdata",
+      "sha256": "be4de23e8f2354c03f636fe9218bb6af1f973a56b637a563e1e210a78d9359c8",
+      "anchors": [
+        {
+          "rva": "0x2a4ae31",
+          "bytes": "0fb6fa",
+          "asm": "movzx edi, dl"
+        },
+        {
+          "rva": "0x2a4ae37",
+          "bytes": "83792801",
+          "asm": "cmp dword ptr [rcx + 0x28], 1"
+        },
+        {
+          "rva": "0x2a4ae41",
+          "bytes": "c7412801000000",
+          "asm": "mov dword ptr [rcx + 0x28], 1"
+        },
+        {
+          "rva": "0x2a4ae48",
+          "bytes": "84d2",
+          "asm": "test dl, dl"
+        },
+        {
+          "rva": "0x2a4aec3",
+          "bytes": "e838690000",
+          "asm": "call 0x2a51800"
+        },
+        {
+          "rva": "0x2a4aecc",
+          "bytes": "4881c188050000",
+          "asm": "add rcx, 0x588"
+        },
+        {
+          "rva": "0x2a4aed8",
+          "bytes": "e8a3a8d100",
+          "asm": "call 0x3765780"
+        },
+        {
+          "rva": "0x2a4b158",
+          "bytes": "c7462cffffffff",
+          "asm": "mov dword ptr [rsi + 0x2c], 0xffffffff"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\termination.json"
+    },
+    {
+      "name": "manager_end_scheme",
+      "first": "0x2a48680",
+      "last": "0x2a488b5",
+      "boundary": ".pdata",
+      "sha256": "77fd9b73d222658f46a0758a8f5dfe746c57f4ed42106c9e83ab65fdcff49d96",
+      "anchors": [
+        {
+          "rva": "0x2a48890",
+          "bytes": "400fb6d6",
+          "asm": "movzx edx, sil"
+        },
+        {
+          "rva": "0x2a48897",
+          "bytes": "e874250000",
+          "asm": "call 0x2a4ae10"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\remove.json"
+    },
+    {
+      "name": "cancel_confirmation_gate",
+      "first": "0x13d53f0",
+      "last": "0x13d5441",
+      "boundary": "reviewed leaf ending at RET or tail JMP",
+      "sha256": "853b58e70b331ae9f49d38e2dd6b4d3586e315aac8d6a338441a92bab547e099",
+      "anchors": [
+        {
+          "rva": "0x13d53fc",
+          "bytes": "8b9130010000",
+          "asm": "mov edx, dword ptr [rcx + 0x130]"
+        },
+        {
+          "rva": "0x13d5420",
+          "bytes": "395010",
+          "asm": "cmp dword ptr [rax + 0x10], edx"
+        },
+        {
+          "rva": "0x13d542c",
+          "bytes": "8178146d686353",
+          "asm": "cmp dword ptr [rax + 0x14], 0x5363686d"
+        },
+        {
+          "rva": "0x13d5435",
+          "bytes": "837810ff",
+          "asm": "cmp dword ptr [rax + 0x10], -1"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\confirmation.json"
+    },
+    {
+      "name": "cancel_confirmation_commit",
+      "first": "0x13d5450",
+      "last": "0x13d55a5",
+      "boundary": ".pdata",
+      "sha256": "3c7e737179192055a4116f6e6d24e5c91a9e4ec47e0f43f208ec23375ca3fc02",
+      "anchors": [
+        {
+          "rva": "0x13d54c2",
+          "bytes": "488d0567983903",
+          "asm": "lea rax, [rip + 0x3399867]"
+        },
+        {
+          "rva": "0x13d54ce",
+          "bytes": "488d059b963903",
+          "asm": "lea rax, [rip + 0x339969b]"
+        },
+        {
+          "rva": "0x13d54e4",
+          "bytes": "488b0585983903",
+          "asm": "mov rax, qword ptr [rip + 0x3399885]"
+        },
+        {
+          "rva": "0x13d5528",
+          "bytes": "e8c3b14102",
+          "asm": "call 0x37f06f0"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\confirmation.json"
+    },
+    {
+      "name": "end_command_execute",
+      "first": "0x299c340",
+      "last": "0x299c384",
+      "boundary": "reviewed leaf ending at RET or tail JMP",
+      "sha256": "c2b0272aa984f4b13c263cbf568d45127aa43afa2b94ed181560b88ae5a85245",
+      "anchors": [
+        {
+          "rva": "0x299c34c",
+          "bytes": "448b4108",
+          "asm": "mov r8d, dword ptr [rcx + 8]"
+        },
+        {
+          "rva": "0x299c36f",
+          "bytes": "44394210",
+          "asm": "cmp dword ptr [rdx + 0x10], r8d"
+        },
+        {
+          "rva": "0x299c37c",
+          "bytes": "41b001",
+          "asm": "mov r8b, 1"
+        },
+        {
+          "rva": "0x299c37f",
+          "bytes": "e9fcc20a00",
+          "asm": "jmp 0x2a48680"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\execute.json"
+    },
+    {
+      "name": "end_command_validate",
+      "first": "0x299c390",
+      "last": "0x299c3de",
+      "boundary": "reviewed leaf ending at RET or tail JMP",
+      "sha256": "db437ac40c73373f23a9d1b7b31774f4f9921c759a952240ac1b8c8b41492adb",
+      "anchors": [
+        {
+          "rva": "0x299c39c",
+          "bytes": "8b5120",
+          "asm": "mov edx, dword ptr [rcx + 0x20]"
+        },
+        {
+          "rva": "0x299c3bd",
+          "bytes": "395010",
+          "asm": "cmp dword ptr [rax + 0x10], edx"
+        },
+        {
+          "rva": "0x299c3c9",
+          "bytes": "8178146d686353",
+          "asm": "cmp dword ptr [rax + 0x14], 0x5363686d"
+        },
+        {
+          "rva": "0x299c3d2",
+          "bytes": "837810ff",
+          "asm": "cmp dword ptr [rax + 0x10], -1"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\execute.json"
+    },
+    {
+      "name": "end_effect_false",
+      "first": "0x2d11b50",
+      "last": "0x2d11ba5",
+      "boundary": "reviewed leaf ending at RET or tail JMP",
+      "sha256": "dbd3af19534b4326ccd6dc1604db5c762c6cccc26875ad237e8f66e9998a6219",
+      "anchors": [
+        {
+          "rva": "0x2d11b53",
+          "bytes": "66833809",
+          "asm": "cmp word ptr [rax], 9"
+        },
+        {
+          "rva": "0x2d11b59",
+          "bytes": "448b4008",
+          "asm": "mov r8d, dword ptr [rax + 8]"
+        },
+        {
+          "rva": "0x2d11b90",
+          "bytes": "44394210",
+          "asm": "cmp dword ptr [rdx + 0x10], r8d"
+        },
+        {
+          "rva": "0x2d11b9d",
+          "bytes": "4533c0",
+          "asm": "xor r8d, r8d"
+        },
+        {
+          "rva": "0x2d11ba0",
+          "bytes": "e9db6ad3ff",
+          "asm": "jmp 0x2a48680"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\script-end.json"
+    },
+    {
+      "name": "end_effect_true",
+      "first": "0x2d11af0",
+      "last": "0x2d11b45",
+      "boundary": "reviewed leaf ending at RET or tail JMP",
+      "sha256": "fa7139cbccbe56caa9708a46f3ddc2323cd19c2aa3423d3cb83678179a088624",
+      "anchors": [
+        {
+          "rva": "0x2d11b3d",
+          "bytes": "41b001",
+          "asm": "mov r8b, 1"
+        },
+        {
+          "rva": "0x2d11b40",
+          "bytes": "e93b6bd3ff",
+          "asm": "jmp 0x2a48680"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\script-end.json"
+    },
+    {
+      "name": "end_scheme_registration",
+      "first": "0x5cebd0",
+      "last": "0x5cec74",
+      "boundary": ".pdata",
+      "sha256": "f4851a9c2117e66bc9e04f3b602af5cb7898928a1049a1b80c4ea112791cc54b",
+      "anchors": [
+        {
+          "rva": "0x5cebe1",
+          "bytes": "488d0520e51304",
+          "asm": "lea rax, [rip + 0x413e520]"
+        },
+        {
+          "rva": "0x5cec55",
+          "bytes": "488d0d24352804",
+          "asm": "lea rcx, [rip + 0x4283524]"
+        },
+        {
+          "rva": "0x5cec5c",
+          "bytes": "488908",
+          "asm": "mov qword ptr [rax], rcx"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\reflection.json"
+    },
+    {
+      "name": "end_effect_false_builder",
+      "first": "0x2d10d90",
+      "last": "0x2d10df6",
+      "boundary": ".pdata",
+      "sha256": "d151410b7d6c069e1bb7c971b42f7b81db359886169d3a1f73dcfc89bf7ea3aa",
+      "anchors": [
+        {
+          "rva": "0x2d10dd4",
+          "bytes": "488d05d513b401",
+          "asm": "lea rax, [rip + 0x1b413d5]"
+        },
+        {
+          "rva": "0x2d10ddb",
+          "bytes": "488903",
+          "asm": "mov qword ptr [rbx], rax"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\effect-entry-builder.json"
+    },
+    {
+      "name": "scheme_type_parser",
+      "first": "0x30cfef0",
+      "last": "0x30d0df8",
+      "boundary": ".pdata",
+      "sha256": "9a702b486a75123c4dccbb92892cd9b446272d750207b0bcd5a7755f70ab69f7",
+      "anchors": [
+        {
+          "rva": "0x30d03ad",
+          "bytes": "4181e8892a0000",
+          "asm": "sub r8d, 0x2a89"
+        },
+        {
+          "rva": "0x30d03ba",
+          "bytes": "4183e80f",
+          "asm": "sub r8d, 0xf"
+        },
+        {
+          "rva": "0x30d0473",
+          "bytes": "b9982a0000",
+          "asm": "mov ecx, 0x2a98"
+        },
+        {
+          "rva": "0x30d04a1",
+          "bytes": "488d8f28fbffff",
+          "asm": "lea rcx, [rdi - 0x4d8]"
+        },
+        {
+          "rva": "0x30d04a8",
+          "bytes": "41b809000000",
+          "asm": "mov r8d, 9"
+        },
+        {
+          "rva": "0x30d04b4",
+          "bytes": "ff5008",
+          "asm": "call qword ptr [rax + 8]"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\type-parser.json"
+    },
+    {
+      "name": "scheme_type_parser_adjustor",
+      "first": "0x2eeea30",
+      "last": "0x2eeea3c",
+      "boundary": "reviewed leaf ending at RET or tail JMP",
+      "sha256": "dd9271751f729f76119b1befb0472b770ca5abe688c177d93f54f6c8fe531fb0",
+      "anchors": [
+        {
+          "rva": "0x2eeea37",
+          "bytes": "e9b4141e00",
+          "asm": "jmp 0x30cfef0"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\scheme-parser-base.json"
+    },
+    {
+      "name": "scheme_context_builder",
+      "first": "0x2a51800",
+      "last": "0x2a518b1",
+      "boundary": ".pdata",
+      "sha256": "a305a63c5e97af204ef963ca442258506c624d687cef3295ee12d1a4f4cd65d4",
+      "anchors": [
+        {
+          "rva": "0x2a5181c",
+          "bytes": "b909000000",
+          "asm": "mov ecx, 9"
+        },
+        {
+          "rva": "0x2a5182b",
+          "bytes": "8b4710",
+          "asm": "mov eax, dword ptr [rdi + 0x10]"
+        },
+        {
+          "rva": "0x2a5182e",
+          "bytes": "48894208",
+          "asm": "mov qword ptr [rdx + 8], rax"
+        },
+        {
+          "rva": "0x2a51849",
+          "bytes": "8b472c",
+          "asm": "mov eax, dword ptr [rdi + 0x2c]"
+        },
+        {
+          "rva": "0x2a51891",
+          "bytes": "488d4f30",
+          "asm": "lea rcx, [rdi + 0x30]"
+        },
+        {
+          "rva": "0x2a518ac",
+          "bytes": "e9cf100000",
+          "asm": "jmp 0x2a52980"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\conditions-context.json"
+    },
+    {
+      "name": "current_final_validity",
+      "first": "0x2a4ffa0",
+      "last": "0x2a50109",
+      "boundary": ".pdata",
+      "sha256": "2d0ead87f51f04fd5ab949de718350a076e7bbc0f7e1c2213397bae67d0e05ac",
+      "anchors": [
+        {
+          "rva": "0x2a4ffb7",
+          "bytes": "8bea",
+          "asm": "mov ebp, edx"
+        },
+        {
+          "rva": "0x2a4ffbc",
+          "bytes": "83792801",
+          "asm": "cmp dword ptr [rcx + 0x28], 1"
+        },
+        {
+          "rva": "0x2a50026",
+          "bytes": "488d4f30",
+          "asm": "lea rcx, [rdi + 0x30]"
+        },
+        {
+          "rva": "0x2a5002a",
+          "bytes": "e8f1270000",
+          "asm": "call 0x2a52820"
+        },
+        {
+          "rva": "0x2a5006e",
+          "bytes": "4183f801",
+          "asm": "cmp r8d, 1"
+        },
+        {
+          "rva": "0x2a50074",
+          "bytes": "488d4f3c",
+          "asm": "lea rcx, [rdi + 0x3c]"
+        },
+        {
+          "rva": "0x2a50096",
+          "bytes": "e875e2c2ff",
+          "asm": "call 0x267e310"
+        },
+        {
+          "rva": "0x2a5009f",
+          "bytes": "83fd01",
+          "asm": "cmp ebp, 1"
+        },
+        {
+          "rva": "0x2a500be",
+          "bytes": "e88d216800",
+          "asm": "call 0x30d2250"
+        },
+        {
+          "rva": "0x2a500c7",
+          "bytes": "4881c110010000",
+          "asm": "add rcx, 0x110"
+        },
+        {
+          "rva": "0x2a500d3",
+          "bytes": "e858decd00",
+          "asm": "call 0x372df30"
+        },
+        {
+          "rva": "0x2a500ea",
+          "bytes": "b001",
+          "asm": "mov al, 1"
+        },
+        {
+          "rva": "0x2a500ee",
+          "bytes": "32c0",
+          "asm": "xor al, al"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\script-end.json"
+    },
+    {
+      "name": "manager_preupdate",
+      "first": "0x2a46fa0",
+      "last": "0x2a47788",
+      "boundary": ".pdata",
+      "sha256": "492aac05a21715371be1d89cb40ef8f41103901f7ae6c91d111d4b5035cf617d",
+      "anchors": [
+        {
+          "rva": "0x2a472f3",
+          "bytes": "ba01000000",
+          "asm": "mov edx, 1"
+        },
+        {
+          "rva": "0x2a472f8",
+          "bytes": "448bc2",
+          "asm": "mov r8d, edx"
+        },
+        {
+          "rva": "0x2a472fe",
+          "bytes": "e89d8c0000",
+          "asm": "call 0x2a4ffa0"
+        },
+        {
+          "rva": "0x2a47305",
+          "bytes": "751c",
+          "asm": "jne 0x2a47323"
+        },
+        {
+          "rva": "0x2a47307",
+          "bytes": "488d8f58250000",
+          "asm": "lea rcx, [rdi + 0x2558]"
+        },
+        {
+          "rva": "0x2a4730e",
+          "bytes": "8b5610",
+          "asm": "mov edx, dword ptr [rsi + 0x10]"
+        },
+        {
+          "rva": "0x2a4731e",
+          "bytes": "e8edb90bfe",
+          "asm": "call 0xb02d10"
+        },
+        {
+          "rva": "0x2a476a3",
+          "bytes": "ba01000000",
+          "asm": "mov edx, 1"
+        },
+        {
+          "rva": "0x2a476ae",
+          "bytes": "e8ed880000",
+          "asm": "call 0x2a4ffa0"
+        },
+        {
+          "rva": "0x2a476c0",
+          "bytes": "488d8f58250000",
+          "asm": "lea rcx, [rdi + 0x2558]"
+        },
+        {
+          "rva": "0x2a476ce",
+          "bytes": "e83db60bfe",
+          "asm": "call 0xb02d10"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\preupdate.json"
+    },
+    {
+      "name": "manager_update",
+      "first": "0x2a47790",
+      "last": "0x2a47c62",
+      "boundary": ".pdata",
+      "sha256": "dec88f3ac15a0c9d71351932bcd4ed1ffbc0f94388953374721880058c63a615",
+      "anchors": [
+        {
+          "rva": "0x2a477ba",
+          "bytes": "488b9958250000",
+          "asm": "mov rbx, qword ptr [rcx + 0x2558]"
+        },
+        {
+          "rva": "0x2a477c1",
+          "bytes": "48638164250000",
+          "asm": "movsxd rax, dword ptr [rcx + 0x2564]"
+        },
+        {
+          "rva": "0x2a47808",
+          "bytes": "394210",
+          "asm": "cmp dword ptr [rdx + 0x10], eax"
+        },
+        {
+          "rva": "0x2a4781f",
+          "bytes": "488d4ef8",
+          "asm": "lea rcx, [rsi - 8]"
+        },
+        {
+          "rva": "0x2a47823",
+          "bytes": "e808130000",
+          "asm": "call 0x2a48b30"
+        },
+        {
+          "rva": "0x2a47842",
+          "bytes": "4489a664250000",
+          "asm": "mov dword ptr [rsi + 0x2564], r12d"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\purge-update.json"
+    },
+    {
+      "name": "purge_first",
+      "first": "0x2a48b30",
+      "last": "0x2a48cc6",
+      "boundary": ".pdata",
+      "sha256": "c4bdb563aa4123a026c5f0cd498c037f9825ff34fbd0642d8728130e702bfbfc",
+      "anchors": [
+        {
+          "rva": "0x2a48c96",
+          "bytes": "b201",
+          "asm": "mov dl, 1"
+        },
+        {
+          "rva": "0x2a48c9b",
+          "bytes": "e870210000",
+          "asm": "call 0x2a4ae10"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\ended-field.json"
+    },
+    {
+      "name": "purge_continuation",
+      "first": "0x2a48cc6",
+      "last": "0x2a48d85",
+      "boundary": ".pdata",
+      "sha256": "510c55f23135f862062969352fb21e7dc25d2086af18ced35ebfbcaa79b9a5f1",
+      "anchors": [
+        {
+          "rva": "0x2a48cee",
+          "bytes": "ff4f3c",
+          "asm": "dec dword ptr [rdi + 0x3c]"
+        },
+        {
+          "rva": "0x2a48cfd",
+          "bytes": "ff10",
+          "asm": "call qword ptr [rax]"
+        },
+        {
+          "rva": "0x2a48d05",
+          "bytes": "41b858030000",
+          "asm": "mov r8d, 0x358"
+        },
+        {
+          "rva": "0x2a48d14",
+          "bytes": "e817e27d01",
+          "asm": "call 0x4226f30"
+        },
+        {
+          "rva": "0x2a48d19",
+          "bytes": "41895e10",
+          "asm": "mov dword ptr [r14 + 0x10], ebx"
+        },
+        {
+          "rva": "0x2a48d21",
+          "bytes": "4ac744f80800000000",
+          "asm": "mov qword ptr [rax + r15*8 + 8], 0"
+        }
+      ],
+      "exploration_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-cancel\\state-proof.json"
+    }
+  ],
+  "tables": [
+    {
+      "name": "status_enum_tokens",
+      "rva": "0x4779528",
+      "size": 8,
+      "bytes": "1f2d00008d2f0000",
+      "sha256": "f301a63e8cf886e7a6e5b9ae6766a434c4360d883e5292f624340dad9fa34e30"
+    },
+    {
+      "name": "cancel_confirmation_primary",
+      "rva": "0x45551c0",
+      "size": 88,
+      "bytes": "50a50341010000000064c44001000000b0c69d4001000000c023854001000000b05a854001000000c022854001000000c022854001000000f0533d4101000000a05a85400100000050543d4101000000b0553d4101000000",
+      "sha256": "0efbb0ca3877bcccafd3e546ee9839f9df5d8e230e787d8f4f78520299011547"
+    },
+    {
+      "name": "end_command_primary",
+      "rva": "0x476ed30",
+      "size": 72,
+      "bytes": "20bf864001000000d0e2f74301000000c0b37e430100000050e3f74301000000d0b57e4301000000c02285400100000090c3994201000000c0d5864001000000c0c9994201000000",
+      "sha256": "b867f177e31a7ba3f5d3462e155943dd25939b5d2b349433e7dbc3cec8ca242f"
+    },
+    {
+      "name": "end_command_secondary",
+      "rva": "0x476eb70",
+      "size": 16,
+      "bytes": "a07796420100000040c3994201000000",
+      "sha256": "240e1826868dddc236499f6f3c1f7208e65918de69a6ea321b58c3f0974f2742"
+    },
+    {
+      "name": "end_effect_false_primary",
+      "rva": "0x48521b0",
+      "size": 200,
+      "bytes": "9042a04001000000c03aa04001000000c0467643010000002046764301000000a05a85400100000050d6b941010000003066a04001000000b05a854001000000c022854001000000a05a854001000000d05a764301000000b05c764301000000f05d764301000000c06576430100000020667643010000000066a0400100000000efcf4201000000c022854001000000c023854001000000c023854001000000c023854001000000c023854001000000f07bd64201000000307cd64201000000501bd14201000000",
+      "sha256": "211c781d57573c42df68a48c0ba02f063554debca7e397cc1de6e34798ccf93c"
+    },
+    {
+      "name": "end_effect_true_primary",
+      "rva": "0x4852b68",
+      "size": 200,
+      "bytes": "9042a04001000000c03aa04001000000c0467643010000002046764301000000a05a85400100000050d6b941010000003066a04001000000b05a854001000000c022854001000000a05a854001000000d05a764301000000b05c764301000000f05d764301000000c06576430100000020667643010000000066a0400100000000efcf4201000000c022854001000000c023854001000000c023854001000000c023854001000000c023854001000000f07bd64201000000307cd64201000000f01ad14201000000",
+      "sha256": "f45a840e61a515897a52314e4c58a2465942ac51c70d5759a5c8c4571001deee"
+    },
+    {
+      "name": "end_effect_false_entry",
+      "rva": "0x4852180",
+      "size": 24,
+      "bytes": "d03ba04001000000900dd14201000000f082ec4401000000",
+      "sha256": "e54703665709e28d751cc84b96f83f85d613b493b53f2b16025db893a1cb7476"
+    }
+  ],
+  "tokens": [
+    {
+      "token": "0xd0",
+      "registry_rva": "0x46e5360",
+      "literal_rva": "0x45608bc",
+      "key": "status"
+    },
+    {
+      "token": "0x2d1f",
+      "registry_rva": "0x46ecb20",
+      "literal_rva": "0x46c44a8",
+      "key": "continue"
+    },
+    {
+      "token": "0x2f8d",
+      "registry_rva": "0x46ee8a0",
+      "literal_rva": "0x46c72a0",
+      "key": "invalidated"
+    },
+    {
+      "token": "0x4fc",
+      "registry_rva": "0x46e2810",
+      "literal_rva": "0x449eaf0",
+      "key": "invalid"
+    },
+    {
+      "token": "0x2a98",
+      "registry_rva": "0x46eb6d0",
+      "literal_rva": "0x470d988",
+      "key": "on_invalidated"
+    }
+  ],
+  "vtable_bindings": [
+    {
+      "table_rva": "0x45551c0",
+      "slot": 7,
+      "function_rva": "0x13d53f0"
+    },
+    {
+      "table_rva": "0x45551c0",
+      "slot": 9,
+      "function_rva": "0x13d5450"
+    },
+    {
+      "table_rva": "0x476ed30",
+      "slot": 6,
+      "function_rva": "0x299c390"
+    },
+    {
+      "table_rva": "0x476eb70",
+      "slot": 1,
+      "function_rva": "0x299c340"
+    },
+    {
+      "table_rva": "0x48521b0",
+      "slot": 24,
+      "function_rva": "0x2d11b50"
+    },
+    {
+      "table_rva": "0x4852b68",
+      "slot": 24,
+      "function_rva": "0x2d11af0"
+    },
+    {
+      "table_rva": "0x4852180",
+      "slot": 1,
+      "function_rva": "0x2d10d90"
+    }
+  ],
+  "rtti_bindings": [
+    {
+      "descriptor_rva": "0x5788ad8",
+      "col_rva": "0x4b55980",
+      "vtable_rva": "0x45551c0",
+      "secondary_offset": 0,
+      "name": ".?AVCCancelSchemeConfirmation@@"
+    },
+    {
+      "descriptor_rva": "0x5a14ce0",
+      "col_rva": "0x4e23790",
+      "vtable_rva": "0x476ed30",
+      "secondary_offset": 0,
+      "name": ".?AVCEndSchemeCommand@@"
+    },
+    {
+      "descriptor_rva": "0x5a14ce0",
+      "col_rva": "0x4e237e0",
+      "vtable_rva": "0x476eb70",
+      "secondary_offset": 24,
+      "name": ".?AVCEndSchemeCommand@@"
+    },
+    {
+      "descriptor_rva": "0x5a795a0",
+      "col_rva": "0x4ec8660",
+      "vtable_rva": "0x48521b0",
+      "secondary_offset": 0,
+      "name": ".?AV?$CEndSchemeEffect@$0A@@@"
+    },
+    {
+      "descriptor_rva": "0x5a795d0",
+      "col_rva": "0x4ec8688",
+      "vtable_rva": "0x4852b68",
+      "secondary_offset": 0,
+      "name": ".?AV?$CEndSchemeEffect@$00@@"
+    },
+    {
+      "descriptor_rva": "0x55d0f40",
+      "col_rva": "0x4f79260",
+      "vtable_rva": "0x48b9ee8",
+      "secondary_offset": 2656,
+      "name": ".?AVCSchemeType@@"
+    },
+    {
+      "descriptor_rva": "0x5a78d20",
+      "col_rva": "0x4ec82c8",
+      "vtable_rva": "0x4852180",
+      "secondary_offset": 0,
+      "name": ".?AV?$CEffectEntry@V?$CEndSchemeEffect@$0A@@@@@"
+    }
+  ],
+  "literals": [
+    {
+      "rva": "0x470d108",
+      "key": "end_scheme"
+    }
+  ],
+  "contract": {
+    "instance": {
+      "reused_contract": "docs/ck3-native-ai/ck3-1.20.0.2-sway-state.md",
+      "full_scheme_id_offset": "0x10",
+      "marker_offset": "0x14",
+      "type_pointer_offset": "0x20",
+      "status_offset": "0x28",
+      "status_type": "int32_t",
+      "owner_character_full_id_offset": "0x2c",
+      "target_kind_offset": "0x30",
+      "character_target_kind": 0,
+      "target_character_full_id_offset": "0x34",
+      "scheme_object_size": "0x358"
+    },
+    "status": {
+      "0": {
+        "native_key": "continue",
+        "termination_observed": false
+      },
+      "1": {
+        "native_key": "invalidated",
+        "termination_observed": true,
+        "terminal_cause": "unknown from this field"
+      },
+      "2": {
+        "native_key": "invalid",
+        "termination_observed": null,
+        "meaning": "native unmatched-deserialization sentinel"
+      }
+    },
+    "termination": {
+      "rva": "0x2a4ae10",
+      "signature": "void __fastcall(CActiveScheme* scheme, bool fire_on_invalidated)",
+      "registers": {
+        "rcx": "scheme",
+        "dl": "fire_on_invalidated"
+      },
+      "common_store": "status = 1",
+      "owner_after": "0xffffffff",
+      "scheme_id_and_target_before_purge": "retained; exact ID/type/target join required",
+      "fire_true": [
+        "manual CEndSchemeCommand",
+        "CEndSchemeEffect<true>",
+        "purge of newly invalid current instance"
+      ],
+      "fire_false": [
+        "stock end_scheme via CEndSchemeEffect<false>"
+      ],
+      "cause_persisted_in_instance": false
+    },
+    "current_final_validity": {
+      "rva": "0x2a4ffa0",
+      "signature": "bool __fastcall(const CActiveScheme* scheme, int32_t mode, int32_t validate_linked_activity)",
+      "registers": {
+        "rcx": "resolved exact scheme",
+        "edx": 1,
+        "r8d": 1,
+        "return": "AL boolean"
+      },
+      "mode": "1 evaluates SchemeType+0x110 compiled valid trigger after native state/owner/target checks; other modes bypass the compiled valid trigger",
+      "validate_linked_activity": "1 additionally validates the linked Scheme+0x3c activity",
+      "reason_out_parameter": false,
+      "read_only": "native evaluation constructs/destroys local trigger context; no command queue, termination or purge call",
+      "production_use": "main-thread paused snapshot, exact full SchemeID and type/target join; current final result only, not historical reason",
+      "unknown_gate": "owner character extension+0x1b0 nested+0x288 is tested; semantic name unclosed"
+    },
+    "callback": {
+      "type_field": "0x588",
+      "key": "on_invalidated",
+      "scheme_scope_kind": 9,
+      "context_builder_rva": "0x2a51800",
+      "compiled_effect_execute_rva": "0x3765780",
+      "raw_scope": "native typed payload holds full SchemeID at +8 before owner is cleared",
+      "durable_notification_storage": "not established by this package; message/history source researched separately"
+    },
+    "retention": {
+      "preupdate_rva": "0x2a46fa0",
+      "update_rva": "0x2a47790",
+      "purge_rva": "0x2a48b30",
+      "queue_pointer_offset_relative_to_update_receiver": "0x2558",
+      "queue_count_offset_relative_to_update_receiver": "0x2564",
+      "queue_element": "uint32_t full SchemeID",
+      "flow": "preupdate native final validity(mode1,activity1) false -> enqueue ID -> update resolves exact ID -> purge",
+      "lifetime": "from common termination store until this instance is enqueued and purged; no fixed time guarantee",
+      "destroy": "deleting destructor, zero 0x358 bytes, mark invalid ID, clear slot object pointer",
+      "archive_copy_on_purge_path": false,
+      "serialized_status": true,
+      "cold_snapshot_retention_proven": false
+    },
+    "claims": {
+      "available": [
+        "current native continue/invalidated status",
+        "current native final validity result",
+        "transient exact joined terminated instance"
+      ],
+      "not_available_from_this_source": [
+        "durable cancelled receipt",
+        "completed-versus-cancelled cause",
+        "historical cause from current validity false",
+        "purged instance outcome from missing row",
+        "whole Sway complete OODA"
+      ]
+    }
+  }
+}

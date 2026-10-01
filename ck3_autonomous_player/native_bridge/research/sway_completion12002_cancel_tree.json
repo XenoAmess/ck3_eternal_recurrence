@@ -1,0 +1,66 @@
+{
+  "schema": "xar.ck3.sway.completion-cancel.native-tree.v1",
+  "version": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready ABI",
+  "live_verified": false,
+  "abi": "sway_completion12002_cancel_abi.json",
+  "mermaid": "sway_completion12002_cancel_tree.mmd",
+  "current_observation": {
+    "join": ["full generation SchemeID", "exact sway SchemeType", "character target full ID"],
+    "missing": "missing current row; historical outcome unknown",
+    "status_offset": "0x28",
+    "status_width": "signed int32",
+    "cases": {
+      "0": "native continue; evaluate current final validity when requested",
+      "1": "native invalidated; native instance terminated observed; specific cause unknown",
+      "2": "native invalid sentinel; no terminal outcome claim"
+    },
+    "owner": "observed owner may be 0xffffffff after termination; prior/request actor is a separate evidence join"
+  },
+  "current_final_validity": {
+    "rva": "0x2a4ffa0",
+    "arguments": {"rcx": "exact joined CActiveScheme*", "edx": 1, "r8d": 1},
+    "result": "AL bool, current.can_continue",
+    "ordered_gates": [
+      {"condition": "status == 1", "result": false, "proof": "0x2a4ffbc"},
+      {"condition": "owner exists and alive", "failure_result": false, "proof": "0x2a4ffd2..0x2a50020"},
+      {"condition": "target exists and character target alive", "failure_result": false, "proof": "0x2a50026..0x2a5004e"},
+      {"condition": "owner extension+0x1b0 nested+0x288 clear", "failure_result": false, "proof": "0x2a50054..0x2a50068", "semantic_field_name": "unknown"},
+      {"condition": "linked activity valid when present and activity argument == 1", "failure_result": false, "proof": "0x2a5006e..0x2a5009d"},
+      {"condition": "mode == 1", "result": "evaluate SchemeType+0x110 compiled valid trigger", "proof": "0x2a5009f..0x2a500e5"}
+    ],
+    "other_mode": "native base-valid true after preceding gates; production contract uses mode1",
+    "historical_reason": "unknown; false is not historical cause"
+  },
+  "termination_inputs": [
+    {"source": "manual cancel confirmation", "command": "CEndSchemeCommand", "execute_rva": "0x299c340", "fire_on_invalidated": true},
+    {"source": "stock end_scheme", "effect": "CEndSchemeEffect<false>", "execute_rva": "0x2d11b50", "fire_on_invalidated": false},
+    {"source": "true end effect", "effect": "CEndSchemeEffect<true>", "execute_rva": "0x2d11af0", "fire_on_invalidated": true}
+  ],
+  "termination": {
+    "manager_end_rva": "0x2a48680",
+    "common_termination_rva": "0x2a4ae10",
+    "idempotent_gate": "status == 1 returns without repeating callback",
+    "common_result": "status = 1",
+    "conditional_callback": "fire_on_invalidated true -> SchemeType+0x588 compiled on_invalidated",
+    "callback_context": "Scheme scope kind9 with raw full SchemeID, actor and target before owner clearing",
+    "owner_after": "0xffffffff",
+    "durable_cause_in_instance": false
+  },
+  "retention": {
+    "preupdate": "0x2a46fa0 evaluates current final validity(mode1,activity1)",
+    "false": "append uint32 full SchemeID to receiver+0x2558/count+0x2564",
+    "update": "0x2a47790 resolves exact full SchemeID",
+    "purge": "0x2a48b30 -> destructor -> zero0x358 -> invalidateID -> clear slot pointer",
+    "window": "termination store until queued and purged; no fixed duration guaranteed",
+    "archive_copy_in_purge": false,
+    "cold_retention": "unknown"
+  },
+  "unclosed": [
+    "specific cancelled/completed/invalidated cause requires another joined native source",
+    "durable notification/history SchemeID storage is researched separately",
+    "semantic name of native owner extension gate",
+    "paused fixture for provider current status and final validity"
+  ]
+}

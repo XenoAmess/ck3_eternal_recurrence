@@ -1,0 +1,30 @@
+flowchart TD
+  J[Resolve full SchemeID and exact Sway type/target] --> E{Native instance exists?}
+  E -->|No| U[Missing current row: historical cause unknown]
+  E -->|Yes| S{int32 status at Scheme+0x28}
+  S -->|0: continue| V[Native final validity 0x2A4FFA0: mode=1, activity=1]
+  S -->|1: invalidated| T[Native instance terminated observed]
+  S -->|2: invalid sentinel| U
+  V --> O{Owner/target exist and are alive?}
+  O -->|No| F[Current can_continue=false]
+  O -->|Yes| G{Owner extension+0x1B0 nested+0x288 clear?}
+  G -. semantic field name unknown .-> X[Unclosed field label; native check retained]
+  G -->|No| F
+  G -->|Yes| A{Linked activity valid when present?}
+  A -->|No| F
+  A -->|Yes| C[Evaluate SchemeType+0x110 compiled valid trigger]
+  C --> B[Current can_continue=native bool]
+  N[Stock end_scheme: CEndSchemeEffect false] --> W[Manager end 0x2A48680]
+  K[Manual cancel: CEndSchemeCommand true] --> W
+  W --> Z[Termination 0x2A4AE10: common status=1]
+  Z --> I{fire_on_invalidated?}
+  I -->|Yes| H[Execute SchemeType+0x588 on_invalidated with saved Scheme/owner/target]
+  I -->|No| R[Clear owner to 0xFFFFFFFF]
+  H --> R
+  R --> T
+  T --> Q[PreUpdate sees final validity false and queues full SchemeID]
+  F --> Q
+  Q --> P[Update resolves exact queued ID and purges instance]
+  P --> U
+  H -. durable joined message/history source researched separately .-> D[Historical termination cause]
+  T -. shared status cannot distinguish cause .-> D
