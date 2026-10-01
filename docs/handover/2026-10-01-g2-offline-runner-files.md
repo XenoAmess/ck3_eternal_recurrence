@@ -37,10 +37,12 @@ python -B -X utf8 tools/prepare_g2_12002_candidate_files.py --integration-manife
 
 新增 [test_prepare_g2_12002_candidate_files.py](../../tools/test_prepare_g2_12002_candidate_files.py) 验证新 manifest/binary 输入消费、默认不 prepare、显式 mode 的 file core → pair 顺序、不同普通 state、后续跳过已完成 prepare，以及 query argv 直接通过真实 MCP CLI parser。使用明确 fake bundle/metadata 和 mocked profile/pair，全部临时文件在 Z；不重复已完成的生产 pair fixture，不冒充真实 profile 结果。
 
-当前新消费器测试 **3/3 PASS**：`python -B -X utf8 tools/test_prepare_g2_12002_candidate_files.py`。后来追加 gift query 时仅重跑实际受影响的 MCP parser 用例，**1/1 PASS**，其余两项直接复用。既有 runner、profile core、pair copier 的上轮测试与真实 receipt 直接引用，没有重复执行。
+当前新消费器前三项测试 **3/3 PASS**：`python -B -X utf8 tools/test_prepare_g2_12002_candidate_files.py`。后来追加 gift query 时仅重跑实际受影响的 MCP parser 用例，**1/1 PASS**，其余两项直接复用。新增 supervised cold session 的真实 CLI 用例也单独 **1/1 PASS**，没有重新运行未变的旧用例。既有 runner、profile core、pair copier 的上轮测试与真实 receipt 直接引用，没有重复执行。
 
 源码输入与中央新 binary freeze 尚未提供时，不执行真实 candidate prepare。最终冻结后立即在后台创建全新 `Z:/ck3_mod_rewrite_process_assets/g2-12002-canonical-independent-20261001/state`，输出至 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/runner-files`。真实执行与 SHA 将追加于本节，原旧 receipt 保留。
 
-后续最小实机工作为：official exact zero-process preflight、新 PID cold restore/readiness、新域代表性 paused queries、必要 action 的独立 receipt/下一 turn/checkpoint，然后才推进完整 lifetime/next。`NEXT-LIVE-PHASES.json` 不执行命令；已准备 profile 时移除 prepare 阶段，next 仍须 verified terminal settlement，max-turns incomplete 不能自动触发 next。普通 G2 另以合法普通 seed 和 durable lineage 记账。
+后续最小实机工作为：official exact zero-process preflight、新 PID cold restore/readiness、新域代表性 paused queries、必要 action 的独立 receipt/下一 turn/checkpoint。**只有 root 操作游戏**；本轮 `NEXT-LIVE-PHASES.json` 只计划 run ID allocation 和 `native-session --cold-start-checkpoint` 受管监督，不执行带自动策略循环的 rogue lifetime/native-auto-run。原始 lifetime argv 仍只存在于通用 runner 计划，不能作为本轮默认下一步。普通 G2 另以合法普通 seed 和 durable lineage 记账。
 
-`open_kaishek` 为 not-applicable：本包是 manifest/argv/filesystem composition，无 CK3 script、IR 或 replay 语义。宗教与 holy order 暂缓边界保持原样。
+`PAUSED-MCP-SUPERVISION-PLAN.json` 保存真实 CLI 的 session argv 与观察顺序。`native-session` 没有 `--start-paused` 参数，也不自行选择 gameplay action；监督启动后由 root 使用 MCP `ck3_take_snapshot` 验证实际 paused/readiness。若正在运行，可按当前 revision 显式 `ck3_execute_step(step="pause-map")`，然后重新 snapshot 验证；暂停 ACK 不替代状态。随后只读八个非战域，并对确有必要的动作显式选择 typed action。命令没有在后台执行。
+
+`open_kaishek` 为 not-applicable：本包是 manifest/argv/filesystem composition，无 CK3 script、IR 或 replay 语义。**用户已授权宗教研究，并停止战争研究**；本轮 candidate 没有宗教查询，原因是尚未接线，不能据此继续声称宗教域被用户暂缓或已经完成。

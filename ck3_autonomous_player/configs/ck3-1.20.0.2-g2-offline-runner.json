@@ -4,6 +4,7 @@
   "game_executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
   "bridge_mode": "native-headless",
   "display_mode": "fullscreen",
+  "supervised_session_timeout_seconds": 3600,
   "ordinary": {
     "xar_enabled": "xar_off",
     "succession_lifecycle": "ordinary_campaign_succession",
@@ -91,6 +92,7 @@
     "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1",
     "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1"
   ],
-  "religion_policy": "owner-deferred except existing narrow holy-war and marriage native final results",
+  "religion_policy": "religion research authorized; this candidate has no religion query because it is not yet wired",
+  "war_policy": "war research stopped; war cash and prewar disabled; current live plan uses supervised nonwar MCP instead of autonomous lifetime",
   "candidate_scope": "Private native flags are build inputs; actual formal consumer permits remain off until live outcomes qualify them. Canonical legacy rogue pair is independent of Robert ordinary lineage."
 }

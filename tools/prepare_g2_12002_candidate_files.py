@@ -76,6 +76,17 @@ def runner_args(args: argparse.Namespace, bundle: dict[str, Any], lane: str,
     return offline.parser().parse_args(argv)
 
 
+def paused_supervision_argv(args: argparse.Namespace, bundle: dict[str, Any],
+                            config: dict[str, Any]) -> list[str]:
+    identity = offline.read_object(args.canonical_seed_root / "SEED-IDENTITY.json")
+    return [str(args.python.absolute()), "-B", str(REPO / "ck3_autonomous_player/agent.py"),
+            "--state-dir", str(args.state_dir.absolute()), "--game-dir", str(args.game_dir.absolute()),
+            "--bridge-mode", "native-headless", "--bridge-pipe", identity["pipe"],
+            "--bridge-dll", bundle["dll"]["path"], "--bridge-injector", bundle["injector"]["path"],
+            "native-session", "--cold-start-checkpoint", "--xar-enabled", "xar_on",
+            "--timeout", str(config["supervised_session_timeout_seconds"])]
+
+
 def prepare(args: argparse.Namespace) -> dict[str, Any]:
     inputs = load_build_inputs(args)
     output = args.output_dir.resolve()
@@ -121,15 +132,24 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         ])
         pair = staging.stage(pair_args)
         environment = offline.read_object(args.state_dir / "profile/xar-autoplayer-environment.json")
-    next_commands = plans["rogue"]["commands"]
+    next_commands = [row for row in plans["rogue"]["commands"]
+                     if row["id"] in {"official-prepare-and-pair", "exact-lifetime-preflight"}]
     if args.prepare_profile_files:
         next_commands = [row for row in next_commands if row["id"] != "official-prepare-and-pair"]
+    allocate = next(row for row in plans["rogue"]["commands"] if row["id"] == "allocate-full-lifetime")
+    next_commands += [{**allocate, "id": "allocate-supervised-nonwar-run"}, {
+        "id": "root-supervised-cold-native-session", "occupies_ck3": True, "executed": False,
+        "root_only_live_execution": True,
+        "argv": paused_supervision_argv(args, inputs["builds"]["selected_private"], inputs["config"]),
+    }]
     write_json(output / "NEXT-LIVE-PHASES.json", {
         "schema": "xar.ck3.g2-candidate-next-live-phases/v1", "executed": False,
         "profile_and_pair_files_prepared": args.prepare_profile_files,
         "commands": next_commands,
         "next_episode_requires_verified_terminal_settlement": True,
         "ordinary_lane_is_plan_only": True,
+        "autonomous_lifetime_not_in_current_execution_plan": True,
+        "root_only_live_execution": True,
     })
     identity = offline.read_object(args.canonical_seed_root / "SEED-IDENTITY.json")
     write_json(output / "MCP-READONLY-NEXT-PLAN.json", {
@@ -142,6 +162,25 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
                  "--environment-manifest", str(args.state_dir.absolute() / "profile/xar-autoplayer-environment.json"),
                  "--succession-lifecycle", "rogue_one_life", *inputs["config"]["private_mcp_read_queries"]],
         "scope": "MCP stdio query permits only; these flags are not lifetime/native-auto-run arguments",
+    })
+    write_json(output / "PAUSED-MCP-SUPERVISION-PLAN.json", {
+        "schema": "xar.ck3.g2-paused-nonwar-supervision/v1", "executed": False,
+        "root_only_live_execution": True,
+        "session_argv": next_commands[-1]["argv"],
+        "native_session_has_no_autonomous_policy_loop": True,
+        "cli_has_no_start_paused_option": True,
+        "paused_readiness_requires_actual_snapshot": True,
+        "mcp_query_plan": str(output / "MCP-READONLY-NEXT-PLAN.json"),
+        "initial_observation": {"tool": "ck3_take_snapshot", "arguments": {}},
+        "if_running": {"tool": "ck3_execute_step", "arguments": {"step": "pause-map"},
+                       "expected_revision_source": "actual current snapshot revision"},
+        "pause_postcondition": "Take a fresh snapshot and verify paused/readiness; pause ACK does not prove it.",
+        "order": ["root owner and fresh Steam-offline evidence plus official zero-process preflight",
+                  "allocate and attach the actual supervised run ID", "new PID cold native-session",
+                  "MCP current snapshot and verified paused frame", "representative nonwar queries",
+                  "necessary explicitly selected typed actions and independent outcome/checkpoint"],
+        "war_or_religion_private_permits_added": False,
+        "religion_research_authorized_but_not_yet_wired": True,
     })
     file_hashes = {str(path): offline.digest(path) for path in output.rglob("*.json")}
     if args.prepare_profile_files:
@@ -181,7 +220,7 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         "original_P_Robert_current_userdir_or_previous_profiles_written": False,
         "remaining_live": ["official exact zero-process preflight", "new PID cold restore/readiness",
                            "representative paused new-domain queries and actual typed outcome/next-turn/checkpoint",
-                           "full lifetime/next; ordinary G2 only from actual durable lineage"],
+                           "G2 lifetime/ordinary lineage remains unqualified and outside this supervised nonwar pass"],
         "file_hashes": file_hashes,
     }
     write_json(output / "FINAL-G2-FILE-PROFILE-PAIR-RECEIPT.json", receipt)

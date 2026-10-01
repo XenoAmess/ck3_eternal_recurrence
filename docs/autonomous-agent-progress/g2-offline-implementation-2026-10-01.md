@@ -204,3 +204,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 在已交27文件上最小补齐赎金消费者必需的既有retention来源：slot53 mode／精确step matcher／原DTO／独立querycounter，复用停止战争研究前已闭合provider，未新增战争研究或政策。仅新增生产provider→serializer O2 W4WX3案例（非空／完整空／selector）通过；旧13×2 reader直接复用。完整清单29文件，实际改动单独提交。查询不代表支付／释放；尚无新版实机。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\prisoner\package-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:52:34 Nonwar candidate supervised cold-session plan
+
+更正最新授权scope（宗教允许研究／战争停止），将本轮NEXT从自主lifetime/next改为exact preflight→root监督native-session cold→实际MCP paused读口。真实CLI parser新受影响1案例通过，native-session没有虚构start-paused参数；暂停只能实际snapshot确认并必要时显式pause后再读。不是已launch／已验证binary。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\runner-paused-supervision-argv-plan.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

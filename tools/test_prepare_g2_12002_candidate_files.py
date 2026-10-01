@@ -10,6 +10,7 @@ from unittest import mock
 import prepare_g2_12002_candidate_files as candidate
 import stage_nonwar_12002_pair_files as staging
 from xar_autoplayer.bridge.mcp_server import parser as mcp_parser
+from xar_autoplayer.cli import parser as agent_parser
 
 
 class CandidateFileTests(unittest.TestCase):
@@ -133,6 +134,20 @@ class CandidateFileTests(unittest.TestCase):
         self.assertTrue(parsed.private_activity_feast_queries)
         self.assertTrue(parsed.private_family_obligations_query)
         self.assertFalse(query["formal_action_permits_enabled"])
+
+    def test_supervised_cold_session_uses_real_cli_without_autonomous_lifetime(self) -> None:
+        candidate.prepare(self.args)
+        session = candidate.offline.read_object(self.args.output_dir / "PAUSED-MCP-SUPERVISION-PLAN.json")
+        parsed = agent_parser().parse_args(session["session_argv"][3:])
+        self.assertEqual(parsed.command, "native-session")
+        self.assertTrue(parsed.cold_start_checkpoint)
+        self.assertEqual(parsed.xar_enabled, "xar_on")
+        self.assertEqual(parsed.timeout, 3600)
+        phases = candidate.offline.read_object(self.args.output_dir / "NEXT-LIVE-PHASES.json")
+        ids = [row["id"] for row in phases["commands"]]
+        self.assertIn("root-supervised-cold-native-session", ids)
+        self.assertNotIn("full-lifetime", ids)
+        self.assertNotIn("next-episode-after-settlement", ids)
 
 
 if __name__ == "__main__":
