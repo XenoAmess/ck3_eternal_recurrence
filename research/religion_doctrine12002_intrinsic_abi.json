@@ -1,0 +1,352 @@
+{
+  "schema": "ck3_12002_faith_main_rite_doctrine_native_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "source_constants": {
+    "kMainRiteDoctrineArrayOffset": "0x7a0",
+    "kMainRiteDoctrineCountOffset": "0x7ac",
+    "kDoctrineStableKeyOffset": "0x18",
+    "kDoctrineGroupPointerOffset": "0xb08",
+    "kDoctrineGroupStableKeyOffset": "0x18",
+    "kDoctrineDatabaseGetterRva": "0x8fc740",
+    "kDoctrineDatabasePointerRva": "0x5c67198",
+    "kDoctrineDatabaseArrayOffset": "0x50",
+    "kDoctrineDatabaseCountOffset": "0x5c"
+  },
+  "complete_functions_and_slices": [
+    {
+      "name": "Faith.HasDoctrine.wrapper",
+      "begin_rva": "0x2443a40",
+      "end_exclusive_rva": "0x2443ae5",
+      "kind": "complete_function",
+      "sha256": "4814ae7752b7dd4260aed170bee04db02e98eb4a0c8c9154346c51a43583e67c",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 20 57 48 83 ec 20 41 8b 40 08 49 8b f8 48 8b ea 48 8b f1 4c 8d 14 80 49 8b 00 4c 8b 08 4b 8d 1c d1 e8 5c e8 90 fe 48 39 03 75 55 8b 47 08 48 8d 14 80 48 8b 07 48 8b 08 48 8b 1c d1 48 8d 3c d1 e8 3d e8 90 fe 48 3b d8 74 04 33 c0 eb 0d 48 8b 03 48 8d 57 08 48 8b cb ff 50 28 48 85 f6 74 20 48 8b 10 48 8b ce e8 67 61 ff ff 48 8d 54 24 40 88 44 24 40 48 8b cd e8 26 60 43 fe b0 01 eb 02 32 c0 48 8b 5c 24 30 48 8b 6c 24 38 48 8b 74 24 48 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "Faith.HasDoctrine.core",
+      "begin_rva": "0x2439c20",
+      "end_exclusive_rva": "0x2439caf",
+      "kind": "complete_function",
+      "sha256": "5e9bb955151948386108f45e9e2c6470bb234f81b203a9737e9da960c0e3c225",
+      "bytes": "40 53 48 83 ec 20 4c 8b 05 cb 46 8e 03 4c 8b ca 4d 85 c0 74 2b 8b 91 98 00 00 00 8b c2 25 ff ff ff 00 41 3b 40 2c 73 18 8b c8 49 8b 40 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 05 39 53 08 74 07 48 8b 1d 09 da 82 03 48 8b 8b a0 07 00 00 4c 8d 44 24 38 48 63 83 ac 07 00 00 4c 89 4c 24 38 48 8d 14 c1 e8 d8 82 5d fe 48 8b 8b a0 07 00 00 48 63 93 ac 07 00 00 4c 8d 04 d1 33 c9 49 3b c0 48 0f 44 c1 48 85 c0 0f 95 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "Faith.current_main_rite_container",
+      "begin_rva": "0x243ea30",
+      "end_exclusive_rva": "0x243ea85",
+      "kind": "complete_function",
+      "sha256": "1683d726aa0d380ab12cb39ec5b4c72046787a5d2ed34845ba4c9485f5161eda",
+      "bytes": "48 8b 05 c1 f8 8d 03 48 85 c0 75 0e 48 8b 05 2d 8c 82 03 48 05 50 07 00 00 c3 44 8b 81 98 00 00 00 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 f3 8b 82 03 48 8d 82 50 07 00 00 c3"
+    },
+    {
+      "name": "Faith.UI.GetDoctrines",
+      "begin_rva": "0xc59360",
+      "end_exclusive_rva": "0xc593f1",
+      "kind": "complete_function",
+      "sha256": "0bb766ed9e041fe4ac88d3791d2a9b2a6d27aa47c5360964b786ecbda2e747b6",
+      "bytes": "48 83 ec 58 4c 8b c2 48 85 c9 74 7e 48 8b 05 85 4f 0c 05 48 85 c0 74 29 8b 91 98 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 c8 e2 00 05 48 05 a0 07 00 00 c7 44 24 28 ff ff ff ff 48 89 44 24 20 48 8d 54 24 30 48 8d 05 59 85 7d 03 c6 44 24 2c 01 0f 10 44 24 20 49 8b c8 48 89 44 24 30 0f 11 44 24 38 e8 4d 19 d8 ff b0 01 48 83 c4 58 c3 32 c0 48 83 c4 58 c3"
+    },
+    {
+      "name": "Rite.initialize_effective_doctrines",
+      "begin_rva": "0x24fa130",
+      "end_exclusive_rva": "0x24fa716",
+      "kind": "complete_function",
+      "sha256": "2ada9a673b6d38851373efdbcce6464a054f88f40fadf38348531075b78adb84",
+      "bytes": "48 8b c4 48 89 50 10 48 89 48 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8d a8 c8 fd ff ff 48 81 ec f8 02 00 00 0f 29 70 a8 4d 8b e8 4c 8b d2 4c 8b c1 4c 8b 0d 8f 39 82 03 4d 85 c9 74 2b 8b 92 00 03 00 00 8b c2 25 ff ff ff 00 41 3b 41 2c 73 18 8b c8 48 03 c9 49 8b 41 20 48 8b 44 c8 08 48 85 c0 74 05 39 50 10 74 07 48 8b 05 40 39 82 03 8b 80 28 01 00 00 4d 8d a0 a0 07 00 00 4c 89 a5 50 02 00 00 49 81 c0 58 07 00 00 89 44 24 20 4d 8b cc 41 8b 52 08 48 8d 4d 70 e8 31 dc 6d 00 90 33 db 48 89 5c 24 50 48 89 5c 24 58 48 8d 44 24 68 48 89 44 24 60 48 8d 05 8b e1 23 02 48 89 44 24 68 48 8d 05 3f bb fe 02 48 89 45 f0 48 8b 05 84 e1 23 02 33 d2 44 8d 43 08 48 8d 4c 24 68 ff d0 48 89 5c 24 50 48 89 5c 24 58 48 8b 44 24 68 4c 8d 44 24 58 48 8d 54 24 50 48 8d 4c 24 68 ff 50 20 90 49 8b 1c 24 49 63 44 24 0c 48 8d 3c c3 48 3b df 0f 84 e0 00 00 00 f3 0f 10 35 af c1 4f 02 8b 74 24 58 66 66 66 0f 1f 84 00 00 00 00 00 4c 8b 3b 8b 44 24 5c 3b c6 0f 85 89 00 00 00 44 8d 60 01 66 0f 6e c6 0f 5b c0 f3 0f 59 c6 f3 0f 2c c0 41 8b f4 44 3b e0 0f 4c f0 48 8b 4c 24 60 48 8b 01 8b d6 48 c1 e2 03 41 b8 08 00 00 00 ff 50 08 4c 8b f0 48 63 54 24 5c 49 8b 8f 08 0b 00 00 48 89 0c d0 48 63 44 24 5c 85 c0 7e 14 4c 8b c0 49 c1 e0 03 48 8b 54 24 50 49 8b ce e8 ae c5 d2 01 48 8b 4c 24 60 48 8b 01 41 b8 08 00 00 00 48 8b 54 24 50 ff 50 10 4c 89 74 24 50 44 89 64 24 5c 89 74 24 58 eb 1d 48 63 54 24 5c 49 8b 8f 08 0b 00 00 48 8b 44 24 50 48 89 0c d0 ff 44 24 5c 8b 74 24 58 48 83 c3 08 48 3b df 0f 85 3e ff ff ff 4c 8b a5 50 02 00 00 49 8b 5d 00 49 63 45 0c 48 8d 3c c3 48 3b df 0f 84 a4 02 00 00 ba 10 00 00 00 65 48 8b 04 25 58 00 00 00 48 8b 08 48 89 4c 24 40 4c 8d 1d 65 d9 23 02 0f 1f 44 00 00 4c 8b 2b 48 63 44 24 5c 48 8b 74 24 50 4c 8d 34 c6 4d 8b bd 08 0b 00 00 8b 04 0a 39 05 bb 5a 76 03 0f 8f 5e 03 00 00 eb 07 4c 8d 1d 30 d9 23 02 48 8b 05 a9 5a 76 03 48 c1 e8 20 3d e8 4e 00 00 72 15 4c 89 7c 24 20 4d 8b ce 4c 8b c6 e8 5e 65 a9 01 48 8b f0 eb 77 49 8b ce 48 2b ce 48 c1 f9 03 66 49 0f 6e d7 66 0f 6c d2 48 d1 e9 48 c1 e1 04 48 03 ce 48 3b f1 74 3e 0f 1f 80 00 00 00 00 f3 0f 6f 06 66 0f 6f ca 66 0f 76 c8 66 0f 70 c1 b1 66 0f db c1 66 0f 72 e0 1f 66 0f 70 c0 f5 66 0f 50 c0 48 63 d0 85 c0 0f 85 ea 00 00 00 48 83 c6 10 48 3b f1 75 c9 49 3b f6 74 12 0f 1f 40 00 4c 39 3e 74 09 48 83 c6 08 49 3b f6 75 f2 48 63 4c 24 5c 48 8b 44 24 50 48 8d 14 c8 48 3b f2 41 be 00 00 00 00 49 0f 44 f6 48 85 f6 0f 85 72 01 00 00 c6 45 00 01 4c 89 5d 08 48 8d 05 df 3d fe 02 48 89 45 10 0f 10 35 d4 3d fe 02 0f 11 75 18 0f 10 45 00 0f 11 05 c5 3d fe 02 c6 45 28 01 49 8d 8d b8 01 00 00 48 8d 55 70 e8 a1 3a 23 01 84 c0 74 7a 49 8d 8d e8 00 00 00 48 8d 55 70 e8 8d 3a 23 01 84 c0 74 66 4c 89 ad 58 02 00 00 49 8b 0c 24 49 63 44 24 0c 48 8d 14 c1 4c 8d 85 58 02 00 00 e8 99 7a 51 fe 49 63 54 24 0c 49 8b 0c 24 4c 8d 04 d1 49 3b c0 49 0f 44 c6 48 85 c0 0f 85 d9 00 00 00 48 8d 95 58 02 00 00 49 8b cc e8 4d 5e 38 fe e9 c5 00 00 00 48 0f bc c2 89 85 50 02 00 00 48 98 48 8d 34 c6 e9 21 ff ff ff 41 80 bd a0 00 00 00 00 0f 84 a2 00 00 00 48 8d 55 50 48 8b 8d 40 02 00 00 e8 45 ce ff ff 48 8b f0 48 8d 55 30 48 8b 8d 48 02 00 00 e8 02 35 f4 ff 4c 8b f0 4d 8d 7d 18 8b 0d 01 16 77 03 90 81 f9 a0 86 01 00 7d 52 b9 0a 00 01 00 e8 32 54 a6 01 48 85 c0 74 43 48 89 74 24 38 4c 89 74 24 30 4c 89 7c 24 28 48 8d 0d 97 d7 23 02 48 89 4c 24 20 41 b9 01 00 00 00 41 b8 1a 05 00 00 48 8d 15 1f d8 23 02 48 8b c8 e8 17 97 5b ff b8 01 00 00 00 f0 0f c1 05 a6 15 77 03 48 8d 4d 30 e8 a1 ba 35 fe 90 48 8d 4d 50 e8 97 ba 35 fe 0f 10 75 18 0f 11 35 7c 3c fe 02 48 83 c3 08 48 3b df 48 8b 4c 24 40 ba 10 00 00 00 4c 8d 1d e4 d6 23 02 0f 85 7e fd ff ff 48 8b 9d 40 02 00 00 48 8d 8b 50 07 00 00 e8 8b 6b 09 00 48 8b 05 54 e6 76 03 80 b8 c2 00 00 00 03 75 0e 45 33 c0 b2 01 48 8b cb e8 de c4 ff ff 90 48 8b 54 24 50 33 f6 48 85 d2 74 1c 89 74 24 5c 48 8b 4c 24 60 48 8b 01 44 8d 46 08 ff 50 10 48 89 74 24 50 89 74 24 58 48 8d 8d 88 01 00 00 e8 b9 f0 38 fe 48 8b 9d 70 01 00 00 48 85 db 74 51 8b bd 7c 01 00 00 85 ff 7e 1e 0f 1f 00 48 8b 03 33 d2 48 8b cb ff 10 ff cf 48 83 c3 48 85 ff 7f ec 48 8b 9d 70 01 00 00 89 b5 7c 01 00 00 48 8b 8d 80 01 00 00 48 8b 01 41 b8 08 00 00 00 48 8b d3 ff 50 10 48 89 b5 70 01 00 00 89 b5 78 01 00 00 48 8b 95 88 00 00 00 48 85 d2 74 19 89 b5 94 00 00 00 48 8b 8d 98 00 00 00 48 8b 01 41 b8 08 00 00 00 ff 50 10 0f 28 b4 24 e0 02 00 00 48 81 c4 f8 02 00 00 41 5f 41 5e 41 5d 41 5c 5f 5e 5b 5d c3 48 8d 0d 50 57 76 03 e8 b3 93 d2 01 83 3d 44 57 76 03 ff 0f 85 8b fc ff ff e8 5d 8d 38 fe 48 8d 0d 32 57 76 03 e8 35 93 d2 01 90 e9 74 fc ff ff cc"
+    },
+    {
+      "name": "DoctrineGroup.postload",
+      "begin_rva": "0x31e0fa0",
+      "end_exclusive_rva": "0x31e12bb",
+      "kind": "complete_function",
+      "sha256": "19d978439e9a9794f1620eaa0cf9d3c4711f0858011fc29d59b51db164f34a2e",
+      "bytes": "48 89 5c 24 18 48 89 74 24 20 55 57 41 54 41 56 41 57 48 8d ac 24 30 f0 ff ff b8 d0 10 00 00 e8 0c 38 04 01 48 2b e0 48 8b f1 33 ff 89 bd 00 10 00 00 4c 8d 71 18 49 8b d6 48 8d 4d 80 e8 1e 4f 67 fd 41 bf 01 00 00 00 44 89 bd 00 10 00 00 44 8d 47 05 48 8d 15 b6 22 5a 01 48 8d 4d 80 e8 cd 4f 6a fd 41 8b 4e 10 49 8b c6 49 83 7e 18 10 72 03 49 8b 06 48 89 44 24 40 89 4c 24 48 c6 44 24 4c 00 e8 f9 8a d9 00 0f 28 44 24 40 66 0f 7f 45 a0 48 8d 55 a0 48 8b c8 e8 b3 8d d9 00 48 89 44 24 60 48 89 7c 24 68 89 7c 24 70 44 88 7c 24 74 48 c7 c0 ff ff ff ff 89 44 24 78 89 7c 24 7c 48 8d 4d 80 48 83 7d 98 10 48 0f 43 4d 80 48 89 4c 24 30 48 85 c9 75 09 89 7c 24 38 eb 10 0f 1f 00 48 ff c0 80 3c 01 00 75 f7 89 44 24 38 48 85 c9 0f 94 44 24 3c 4c 8d 44 24 60 48 8d 54 24 30 48 8d 8e 20 01 00 00 e8 25 44 54 00 41 bc 58 01 00 00 80 7e 4c 00 75 6f 65 48 8b 04 25 58 00 00 00 48 8b 08 41 80 3c 0c 00 0f 85 93 00 00 00 8b 05 74 aa a8 02 90 3d a0 86 01 00 0f 8d 81 00 00 00 b9 00 00 01 00 e8 a6 e8 d7 00 48 85 c0 74 72 4c 89 74 24 28 48 8d 0d 25 ad 6e 01 48 89 4c 24 20 41 b9 04 00 00 00 45 8d 41 34 48 8d 15 6f ad 6e 01 48 8b c8 e8 b7 f6 69 fd 41 8b c7 f0 0f c1 05 24 aa a8 02 eb 3b 48 8d 05 3b ad 6e 01 48 89 44 24 50 c7 44 24 58 16 00 00 00 c6 44 24 5c 00 e8 ec d8 c0 ff 0f 28 44 24 50 66 0f 7f 45 b0 4c 8d 4d b0 4d 8b c6 48 8b d0 48 8d 4e 40 e8 9f 06 00 00 e8 da b5 71 fd 48 8b 58 50 48 63 40 5c 48 8d 3c c3 48 3b df 74 38 66 0f 1f 84 00 00 00 00 00 48 8b 03 48 39 b0 08 0b 00 00 75 1a 48 8d 8e 40 01 00 00 48 89 85 08 10 00 00 48 8d 95 08 10 00 00 e8 9a f1 69 fd 48 83 c3 08 48 3b df 75 d1 83 be 4c 01 00 00 00 75 63 65 48 8b 04 25 58 00 00 00 48 8b 10 41 80 3c 14 00 75 50 8b 05 77 a9 a8 02 90 3d a0 86 01 00 7d 42 b9 00 00 01 00 e8 ad e7 d7 00 48 85 c0 74 33 4c 89 74 24 28 48 8d 0d ec ac 6e 01 48 89 4c 24 20 41 b9 04 00 00 00 45 8d 41 48 48 8d 15 76 ac 6e 01 48 8b c8 e8 be f5 69 fd f0 44 0f c1 3d 2d a9 a8 02 48 63 9e 4c 01 00 00 48 8b be 40 01 00 00 48 8d 34 df 48 83 fb 20 7f 0d 48 8b d6 48 8b cf e8 92 1d 00 00 eb 56 48 8b c3 48 99 48 2b c2 48 d1 f8 48 8b d3 48 2b d0 48 8d 4d c0 e8 16 6b a3 fd 90 0f b6 85 00 10 00 00 88 44 24 28 48 8b 45 c8 48 89 44 24 20 4c 8b 4d c0 4c 8b c3 48 8b d6 48 8b cf e8 4f 1e 00 00 90 48 81 7d c8 00 02 00 00 76 0a 48 8b 4d c0 e8 bb b2 f0 00 90 48 8d 4d 80 e8 b1 4d 67 fd 4c 8d 9c 24 d0 10 00 00 49 8b 5b 40 49 8b 73 48 49 8b e3 41 5f 41 5e 41 5c 5f 5d c3"
+    },
+    {
+      "name": "DoctrineDatabase.getter",
+      "begin_rva": "0x8fc740",
+      "end_exclusive_rva": "0x8fc797",
+      "kind": "complete_function",
+      "sha256": "974e1f10157d0cc9cfc570992607deec67e7d15832f1b4849420b518471be5f8",
+      "bytes": "48 83 ec 38 48 8b 05 4d aa 36 05 48 85 c0 75 42 c7 44 24 28 1e 00 00 00 48 8d 05 a9 08 b9 03 48 89 44 24 20 48 8d 54 24 20 c6 44 24 2c 00 41 b9 64 00 00 00 0f 28 44 24 20 45 33 c0 66 0f 7f 44 24 20 41 8d 49 9d e8 d5 ee 68 03 48 8b 05 06 aa 36 05 48 83 c4 38 c3"
+    },
+    {
+      "name": "Faith.HasDoctrine.registration",
+      "begin_rva": "0x4d4620",
+      "end_exclusive_rva": "0x4d4718",
+      "kind": "registration_or_caller_slice",
+      "sha256": "443c0f72ff4c174913476b8bbad3cb2634f549948e21562713b04d1dd8818dc4",
+      "bytes": "40 55 53 57 48 8d 6c 24 b9 48 81 ec d0 00 00 00 48 8d 45 b7 48 89 45 67 33 ff 48 89 7d bf 48 89 7d b7 48 89 7d c7 48 c7 45 cf 0f 00 00 00 48 89 7d d7 48 89 7d df 48 8d 1d bb 9b 00 05 48 89 5d e7 48 8d 45 b7 48 89 45 67 48 c7 45 07 0f 00 00 00 48 c7 45 ff 0b 00 00 00 f2 0f 10 05 b7 b4 25 04 f2 0f 11 45 ef 0f b7 05 b3 b4 25 04 66 89 45 f7 0f b6 05 aa b4 25 04 88 45 f9 40 88 7d fa 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 4c 18 38 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 26 fc 39 00 90 48 8d 45 0f 48 89 44 24 30 c7 44 24 28 01 00 00 00 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 32 f3 f6 01 48 8d 4d ef e8 b9 ba 5f 00 90"
+    },
+    {
+      "name": "Faith.UI.GetDoctrines.registration",
+      "begin_rva": "0x71279",
+      "end_exclusive_rva": "0x71314",
+      "kind": "registration_or_caller_slice",
+      "sha256": "7378bb7151893a7a03d6b426acc3dd97c54d146ae240f0ff5f502a023875acde",
+      "bytes": "48 c7 45 07 0f 00 00 00 48 c7 45 ff 0c 00 00 00 f2 0f 10 05 1f 91 46 04 f2 0f 11 45 ef 8b 05 1c 91 46 04 89 45 f7 40 88 7d fb 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 48 4c 7e 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 22 30 80 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 56 80 be 00 48 8d 4d ef e8 5d f8 a5 00 90"
+    },
+    {
+      "name": "Rite.inherited_main_rite_source.caller",
+      "begin_rva": "0x24f816f",
+      "end_exclusive_rva": "0x24f818a",
+      "kind": "registration_or_caller_slice",
+      "sha256": "e250185b1322e385008330164a6a0237ad594a7d6b53abbf25299265b3bd31bc",
+      "bytes": "84 c0 74 17 48 8b ce e8 b5 68 f4 ff 48 8b d6 49 8b ce 4c 8d 40 50 e8 a6 1f 00 00"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "faith_has_doctrine_callback",
+      "rva": "0x4d4707",
+      "bytes": "48 8d 15 32 f3 f6 01",
+      "instruction": "lea rdx, [rip + 0x1f6f332]",
+      "rip_targets": [
+        "0x2443a40"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_has_doctrine_core_call",
+      "rva": "0x2443ab4",
+      "bytes": "e8 67 61 ff ff",
+      "instruction": "call 0x2439c20",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2439c20"
+      ]
+    },
+    {
+      "name": "faith_main_rite_full_id",
+      "rva": "0x2439c35",
+      "bytes": "8b 91 98 00 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x98]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_main_rite_generation_check",
+      "rva": "0x2439c5b",
+      "bytes": "39 53 08",
+      "instruction": "cmp dword ptr [rbx + 8], edx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "main_rite_doctrine_array",
+      "rva": "0x2439c67",
+      "bytes": "48 8b 8b a0 07 00 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0x7a0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "main_rite_doctrine_count",
+      "rva": "0x2439c73",
+      "bytes": "48 63 83 ac 07 00 00",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x7ac]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "main_rite_doctrine_stride8",
+      "rva": "0x2439c7f",
+      "bytes": "48 8d 14 c1",
+      "instruction": "lea rdx, [rcx + rax*8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "ui_doctrine_callback",
+      "rva": "0x71303",
+      "bytes": "48 8d 15 56 80 be 00",
+      "instruction": "lea rdx, [rip + 0xbe8056]",
+      "rip_targets": [
+        "0xc59360"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "ui_main_rite_doctrine_array_address",
+      "rva": "0xc593a8",
+      "bytes": "48 05 a0 07 00 00",
+      "instruction": "add rax, 0x7a0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_main_rite_container_address",
+      "rva": "0x243ea7d",
+      "bytes": "48 8d 82 50 07 00 00",
+      "instruction": "lea rax, [rdx + 0x750]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "inherited_container_getter",
+      "rva": "0x24f8176",
+      "bytes": "e8 b5 68 f4 ff",
+      "instruction": "call 0x243ea30",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x243ea30"
+      ]
+    },
+    {
+      "name": "inherited_doctrine_array",
+      "rva": "0x24f8181",
+      "bytes": "4c 8d 40 50",
+      "instruction": "lea r8, [rax + 0x50]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "native_initializer_call",
+      "rva": "0x24f8185",
+      "bytes": "e8 a6 1f 00 00",
+      "instruction": "call 0x24fa130",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x24fa130"
+      ]
+    },
+    {
+      "name": "definition_group_pointer_first",
+      "rva": "0x24fa2aa",
+      "bytes": "49 8b 8f 08 0b 00 00",
+      "instruction": "mov rcx, qword ptr [r15 + 0xb08]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "definition_group_pointer_second",
+      "rva": "0x24fa371",
+      "bytes": "4d 8b bd 08 0b 00 00",
+      "instruction": "mov r15, qword ptr [r13 + 0xb08]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "definition_stable_key",
+      "rva": "0x24fa541",
+      "bytes": "4d 8d 7d 18",
+      "instruction": "lea r15, [r13 + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "group_stable_key_address",
+      "rva": "0x31e0fd2",
+      "bytes": "4c 8d 71 18",
+      "instruction": "lea r14, [rcx + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "group_stable_key_length",
+      "rva": "0x31e1003",
+      "bytes": "41 8b 4e 10",
+      "instruction": "mov ecx, dword ptr [r14 + 0x10]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "group_stable_key_capacity",
+      "rva": "0x31e100a",
+      "bytes": "49 83 7e 18 10",
+      "instruction": "cmp qword ptr [r14 + 0x18], 0x10",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "group_key_log_argument",
+      "rva": "0x31e11e8",
+      "bytes": "4c 89 74 24 28",
+      "instruction": "mov qword ptr [rsp + 0x28], r14",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "group_native_definition_lookup",
+      "rva": "0x31e1183",
+      "bytes": "48 39 b0 08 0b 00 00",
+      "instruction": "cmp qword ptr [rax + 0xb08], rsi",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "definition_database_getter_call",
+      "rva": "0x31e1161",
+      "bytes": "e8 da b5 71 fd",
+      "instruction": "call 0x8fc740",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x8fc740"
+      ]
+    },
+    {
+      "name": "definition_database_array",
+      "rva": "0x31e1166",
+      "bytes": "48 8b 58 50",
+      "instruction": "mov rbx, qword ptr [rax + 0x50]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "definition_database_count",
+      "rva": "0x31e116a",
+      "bytes": "48 63 40 5c",
+      "instruction": "movsxd rax, dword ptr [rax + 0x5c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "definition_database_pointer",
+      "rva": "0x8fc744",
+      "bytes": "48 8b 05 4d aa 36 05",
+      "instruction": "mov rax, qword ptr [rip + 0x536aa4d]",
+      "rip_targets": [
+        "0x5c67198"
+      ],
+      "direct_targets": []
+    }
+  ],
+  "exact_rtti": [
+    {
+      "name": ".?AUSDoctrineType@@",
+      "type_descriptor_rva": "0x55c1960"
+    },
+    {
+      "name": ".?AUSDoctrineGroupType@@",
+      "type_descriptor_rva": "0x55da1e0"
+    },
+    {
+      "name": ".?AVCDoctrineTypeDatabase@@",
+      "type_descriptor_rva": "0x55d1d90"
+    }
+  ],
+  "stock_seed_source": {
+    "relative_path": "common/religion/faith_types/_faith_types.info",
+    "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+    "lines": [
+      [
+        35,
+        43
+      ],
+      [
+        60,
+        64
+      ]
+    ]
+  },
+  "current_output_source": "faith_main_rite",
+  "unresolved": [
+    "independent current Faith intrinsic runtime collection not established",
+    "per-row historic origin is not derivable from current effective collection",
+    "paused live validation remains with root"
+  ]
+}

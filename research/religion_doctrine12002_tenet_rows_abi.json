@@ -1,0 +1,231 @@
+{
+  "schema": "ck3_12002_tenet_rows_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "provider_constants": {
+    "kNativeTenetStateRva": "0x24f88a0",
+    "kRiteCoreTenetsOffset": "0x758",
+    "kRiteTenetStatesOffset": "0x788",
+    "kCharacterExtensionOffset": "0x1c8",
+    "kPersonalTenetsOffset": "0x88",
+    "kTenetDefinitionKeyOffset": "0x18"
+  },
+  "complete_native_spans": [
+    {
+      "name": "Rite.GetTenets.collection",
+      "start_rva": "0x1cf98a0",
+      "end_exclusive_rva": "0x1cf98a8",
+      "sha256": "b556ea18ba13705d560ab63bb63ec943db70e27c1775ca023f01de9a7a307740",
+      "bytes": "48 8d 81 58 07 00 00 c3"
+    },
+    {
+      "name": "Rite.GetTenetStatus",
+      "start_rva": "0x24f88a0",
+      "end_exclusive_rva": "0x24f89ed",
+      "sha256": "c5840c68d7497ecac891691284234f3e574156c020daf975f2ed47e9fb328305",
+      "bytes": "48 89 5c 24 08 57 48 83 ec 20 81 7a 38 4f 62 44 47 48 8b fa 48 8b d9 0f 85 d1 00 00 00 0f 1f 00 81 7b 0c 65 74 69 52 0f 85 c1 00 00 00 83 7b 08 ff 0f 84 b7 00 00 00 48 8b cb e8 61 f5 ff ff 84 c0 0f 85 c1 00 00 00 48 8d 8b 58 07 00 00 48 89 7c 24 38 48 8d 54 24 38 e8 c3 93 51 fe 84 c0 0f 85 96 00 00 00 48 8b 05 f4 59 82 03 48 85 c0 74 29 8b 93 b8 04 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 9f 59 82 03 48 8b 15 b0 59 82 03 48 85 d2 74 2d 44 8b 80 98 00 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 43 08 74 07 48 8b 1d ef ec 76 03 81 7f 38 4f 62 44 47 0f 84 32 ff ff ff 32 c0 48 8b 5c 24 30 48 83 c4 20 5f c3 b0 04 48 8b 5c 24 30 48 83 c4 20 5f c3 48 8b 8b 88 07 00 00 48 63 93 94 07 00 00 48 c1 e2 04 48 03 d1 48 3b ca 74 0e 48 39 39 74 09 48 83 c1 10 48 3b ca 75 f2 33 c0 48 3b ca 48 0f 44 c8 48 85 c9 74 b2 0f b6 41 08 48 8b 5c 24 30 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "Rite.is_parent_faith_main_rite",
+      "start_rva": "0x24f7e40",
+      "end_exclusive_rva": "0x24f7ea2",
+      "sha256": "510bf2756b617c6a672224ca073c73ce9a138d2ed4cb6cc9f598cfd6bc08dc2b",
+      "bytes": "48 8b 05 b9 64 82 03 4c 8b c9 48 85 c0 74 2c 44 8b 81 b8 04 00 00 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 5e 64 82 03 81 7a 0c 74 69 61 46 75 14 83 7a 08 ff 74 0e 41 8b 41 08 39 82 98 00 00 00 0f 94 c0 c3 32 c0 c3"
+    },
+    {
+      "name": "Character.has_personal_tenet.evaluate",
+      "start_rva": "0x2b2ba60",
+      "end_exclusive_rva": "0x2b2baf3",
+      "sha256": "f67ee5037d9a1688a3717136f306441f49fffd0a69a41e3d560b5abab57ba338",
+      "bytes": "40 53 48 83 ec 20 48 8b 02 4c 8b c9 66 83 38 04 75 06 44 8b 40 08 eb 06 41 b8 ff ff ff ff 48 8b 05 e3 ba 13 03 48 85 c0 74 25 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 43 18 74 07 48 8b 1d ba ba 13 03 4d 8d 41 10 49 8d 49 40 e8 0d ff fb ff 48 8b 8b c8 01 00 00 48 85 c9 74 1c 48 81 c1 88 00 00 00 48 89 44 24 30 48 8d 54 24 30 e8 db 61 ee fd 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "actual_definition_pointer_collection_membership",
+      "start_rva": "0xa11cc0",
+      "end_exclusive_rva": "0xa11e06",
+      "sha256": "6655a8b05388961edb8c9da78d0f8d470283818df10db1928ba5edd467c88f31",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 18 48 89 7c 24 20 41 56 48 83 ec 30 65 48 8b 04 25 58 00 00 00 4c 8b f1 48 63 79 0c 48 8b 19 48 8b 2a 48 8b 10 b9 10 00 00 00 48 8d 34 fb 8b 04 11 39 05 37 e1 24 05 0f 8f cc 00 00 00 48 8b 05 2e e1 24 05 48 c1 e8 20 3d e8 4e 00 00 72 15 4c 8b ce 48 89 6c 24 20 4c 8b c3 e8 e3 eb 57 03 48 8b d8 eb 64 48 d1 ef 66 48 0f 6e d5 48 c1 e7 04 48 03 fb 66 0f 6c d2 48 3b df 74 39 66 0f 1f 44 00 00 f3 0f 6f 03 66 0f 6f ca 66 0f 76 c8 66 0f 70 c1 b1 66 0f db c1 66 0f 72 e0 1f 66 0f 70 c0 f5 66 0f 50 c0 48 63 c8 85 c0 75 51 48 83 c3 10 48 3b df 75 cd 48 3b de 74 0e 48 39 2b 74 09 48 83 c3 08 48 3b de 75 f2 49 63 46 0c 49 8b 0e 48 8b 6c 24 48 48 8b 74 24 50 48 8b 7c 24 58 48 8d 14 c1 33 c0 48 3b da 48 0f 44 d8 48 85 db 48 8b 5c 24 40 0f 95 c0 48 83 c4 30 41 5e c3 48 0f bc c1 48 98 48 8d 1c c3 eb bf 48 8d 0d 5e e0 24 05 e8 c1 1c 81 03 83 3d 52 e0 24 05 ff 0f 85 1b ff ff ff e8 6b 16 e7 ff 48 8d 0d 40 e0 24 05 e8 43 1c 81 03 e9 05 ff ff ff"
+    },
+    {
+      "name": "TenetDoctrineContainer.save.actual_tenet_key",
+      "start_rva": "0x2590c80",
+      "end_exclusive_rva": "0x2590ef3",
+      "sha256": "89afdccd4539f40bae7da1ccdd8ef1c0986265a0f5433de051a72db0d1bb7822",
+      "bytes": "48 89 5c 24 10 48 89 6c 24 20 56 57 41 54 41 56 41 57 48 83 ec 60 48 8b da 4c 8b f9 c6 44 24 30 00 44 8b 49 44 4c 8b 41 38 48 8b ca e8 1f 23 00 00 49 8b 77 08 49 63 47 14 4c 8d 34 c6 41 bc 0f 00 00 00 49 3b f6 0f 84 fe 00 00 00 0f 1f 40 00 48 8b 3e 48 85 ff 0f 84 e1 00 00 00 81 7f 38 4f 62 44 47 0f 85 d4 00 00 00 48 83 c7 18 8b 6f 10 48 83 7f 18 10 72 03 48 8b 3f 48 89 7c 24 40 89 6c 24 48 c6 44 24 4c 00 48 8b cb e8 90 7e 9f 01 ba 55 3e 00 00 48 8b cb e8 c3 81 9f 01 ba 01 00 00 00 48 8b cb e8 b6 81 9f 01 48 8b 4b 08 80 7b 14 00 74 5c 66 44 89 a4 24 a0 00 00 00 48 8b 01 41 b8 02 00 00 00 48 8d 94 24 a0 00 00 00 ff 50 50 66 89 ac 24 90 00 00 00 48 8b 4b 08 48 8b 01 41 b8 02 00 00 00 48 8d 94 24 90 00 00 00 ff 50 50 0f b7 94 24 90 00 00 00 66 85 d2 74 32 48 8b 4b 08 48 8b 01 44 8b c2 48 8b d7 ff 50 50 eb 20 48 8b 01 0f 28 44 24 40 66 0f 7f 44 24 50 48 8d 54 24 50 ff 50 38 66 66 0f 1f 84 00 00 00 00 00 ba 10 00 00 00 48 8b cb e8 23 81 9f 01 48 83 c6 08 49 3b f6 0f 85 06 ff ff ff 49 8b 77 50 49 63 47 5c 4c 8d 34 c6 49 3b f6 0f 84 fb 00 00 00 90 48 8b 3e 48 85 ff 0f 84 e1 00 00 00 81 7f 38 4f 62 44 47 0f 85 d4 00 00 00 48 83 c7 18 8b 6f 10 48 83 7f 18 10 72 03 48 8b 3f 48 89 7c 24 40 89 6c 24 48 c6 44 24 4c 00 48 8b cb e8 80 7d 9f 01 ba fb 2f 00 00 48 8b cb e8 b3 80 9f 01 ba 01 00 00 00 48 8b cb e8 a6 80 9f 01 48 8b 4b 08 80 7b 14 00 74 5c 66 44 89 a4 24 a0 00 00 00 48 8b 01 41 b8 02 00 00 00 48 8d 94 24 a0 00 00 00 ff 50 50 66 89 ac 24 90 00 00 00 48 8b 4b 08 48 8b 01 41 b8 02 00 00 00 48 8d 94 24 90 00 00 00 ff 50 50 0f b7 94 24 90 00 00 00 66 85 d2 74 32 48 8b 4b 08 48 8b 01 44 8b c2 48 8b d7 ff 50 50 eb 20 0f 28 44 24 40 66 0f 7f 44 24 50 48 8b 01 48 8d 54 24 50 ff 50 38 66 66 0f 1f 84 00 00 00 00 00 ba 10 00 00 00 48 8b cb e8 13 80 9f 01 48 83 c6 08 49 3b f6 0f 85 06 ff ff ff 4c 8d 5c 24 60 49 8b 5b 38 49 8b 6b 48 49 8b e3 41 5f 41 5e 41 5c 5f 5e c3"
+    },
+    {
+      "name": "TenetDoctrineContainer.rebuild.actual_core_pointer_rows",
+      "start_rva": "0x2591180",
+      "end_exclusive_rva": "0x2591694",
+      "sha256": "8294eda279d74251b9e6c3863e05ab10915825139ade96a186a714327704eafe",
+      "bytes": "48 89 5c 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8d 6c 24 c0 48 81 ec 40 01 00 00 0f 29 b4 24 30 01 00 00 48 8b f1 48 8d 95 80 00 00 00 48 83 c1 08 e8 d9 3b fa fe 48 8d 4e 20 48 8d 95 88 00 00 00 e8 c9 3b fa fe 4c 8d 7e 50 48 8d 95 90 00 00 00 49 8b cf e8 b6 3b fa fe 45 33 e4 44 89 66 74 44 89 a6 dc 01 00 00 44 89 a6 f4 01 00 00 48 8b 8e 08 02 00 00 8b 86 10 02 00 00 85 c0 7e 20 48 83 c1 04 44 38 21 74 0f 44 88 21 ff 8e 10 02 00 00 8b 86 10 02 00 00 48 83 c1 38 85 c0 7f e4 48 8d 9e 00 02 00 00 48 8b 4b 20 48 8b 01 48 8b 53 08 ff 50 18 84 c0 0f 85 a8 00 00 00 8b 4b 10 85 c9 75 37 e8 e7 90 f6 fe 48 8b f8 48 8b 53 08 48 3b d0 0f 84 8c 00 00 00 48 8b 4b 20 4c 8b 01 4d 8b 48 10 41 b8 08 00 00 00 41 ff d1 48 89 7b 08 44 89 63 14 44 88 63 18 eb 6a f3 0f 10 0d f1 50 46 02 0f 28 c1 f3 0f 5e 43 1c f3 0f 11 85 80 00 00 00 48 8d 15 96 3e ea 01 48 8d 85 80 00 00 00 0f 2f 05 20 52 46 02 48 0f 46 c2 66 0f 6e c1 0f 5b c0 f3 0f 59 00 f3 0f 58 c1 f3 0f 2c c8 33 d2 e8 9a ce 2d fe 8b c8 44 8b 43 14 41 ff c0 ba 01 00 00 00 d3 e2 41 3b d0 7d 0a 8b d0 48 8b cb e8 bb d5 f6 fe 33 d2 41 b8 00 01 00 00 48 8d 4c 24 30 e8 39 5c c9 01 48 8d 4c 24 30 e8 af 14 f6 fe 90 48 8b d0 48 8d 8e 80 00 00 00 e8 ff 3b f6 fe 90 48 8d 4c 24 30 e8 64 1a f6 fe 48 8b 5e 08 48 63 46 14 48 8d 3c c3 48 3b df 0f 84 9d 00 00 00 48 8d 46 68 4c 8b 33 4d 8d be d8 0b 00 00 4d 8d a6 58 08 00 00 49 8d 96 28 07 00 00 48 8b c8 e8 8b 34 ae 00 41 83 7c 24 0c 00 74 1a 4c 89 a5 80 00 00 00 48 8d 8e d0 01 00 00 48 8d 95 80 00 00 00 e8 c9 ef 2e fe 41 83 7f 0c 00 74 1a 4c 89 bd 80 00 00 00 48 8d 8e e8 01 00 00 48 8d 95 80 00 00 00 e8 a8 ef 2e fe 49 8d 96 40 12 00 00 48 8d 8e 80 00 00 00 e8 45 f5 cf 00 41 b0 04 49 8b d6 48 8b ce e8 a7 06 00 00 48 83 c3 08 48 3b df 48 8d 46 68 0f 85 6b ff ff ff 4c 8d 7e 50 49 8b 3f 49 63 47 0c 4c 8d 24 c7 49 3b fc 0f 84 8a 00 00 00 48 8d 46 68 48 8b 1f 4c 8d b3 50 05 00 00 4c 8d bb 90 03 00 00 48 8d 93 88 02 00 00 48 8b c8 e8 da 33 ae 00 41 83 7f 0c 00 74 1a 4c 89 bd 80 00 00 00 48 8d 8e d0 01 00 00 48 8d 95 80 00 00 00 e8 19 ef 2e fe 41 83 7e 0c 00 74 1a 4c 89 b5 80 00 00 00 48 8d 8e e8 01 00 00 48 8d 95 80 00 00 00 e8 f8 ee 2e fe 48 8d 93 f8 09 00 00 48 8d 8e 80 00 00 00 e8 95 f4 cf 00 48 83 c7 08 49 3b fc 48 8d 46 68 0f 85 7a ff ff ff 48 8d 96 28 02 00 00 41 b0 01 48 8b ce e8 22 02 00 00 4c 8b 3d c3 60 6d 03 4c 89 bd 90 00 00 00 4d 85 ff 75 47 48 8d 05 70 bb ef 01 48 89 44 24 20 c7 44 24 28 1e 00 00 00 44 88 7c 24 2c 0f 28 44 24 20 66 0f 7f 44 24 20 45 8d 4f 64 45 33 c0 48 8d 54 24 20 41 8d 4f 01 e8 96 a1 9f 01 4c 8b 3d 77 60 6d 03 4c 89 bd 90 00 00 00 48 8b 9e 48 01 00 00 4c 63 b6 54 01 00 00 49 c1 e6 05 4c 03 f3 49 3b de 0f 84 74 01 00 00 f3 0f 10 35 02 4f 46 02 66 90 8b 7b 10 4c 8b c3 48 83 7b 18 10 72 03 4c 8b 03 33 c0 89 85 80 00 00 00 89 85 88 00 00 00 44 8b cf 48 8d 95 88 00 00 00 48 8d 8d 80 00 00 00 e8 cc cb 9e 01 8b 8d 80 00 00 00 44 8b c9 8b 95 88 00 00 00 44 8b c2 41 83 e0 03 74 1f b9 04 00 00 00 41 2b c8 c1 e1 03 d3 ea 69 c2 51 2d 9e cc c1 c0 0f 69 c8 93 35 87 1b 41 33 c9 33 cf 8b c1 c1 e8 10 33 c1 69 c8 6b ca eb 85 8b c1 c1 e8 0d 33 c1 69 c8 35 ae b2 c2 8b d1 c1 ea 10 33 d1 49 8b cf e8 1a fb cd ff 4c 8b f8 48 63 8e 94 01 00 00 8b 86 90 01 00 00 3b c8 0f 85 97 00 00 00 44 8d 69 01 66 0f 6e c0 0f 5b c0 f3 0f 59 c6 f3 0f 2c c8 45 8b e5 44 3b e9 44 0f 4c e1 48 8b 8e 98 01 00 00 48 8b 01 41 8b d4 48 c1 e2 03 41 b8 08 00 00 00 ff 50 08 48 8b f8 48 63 8e 94 01 00 00 4c 89 3c c8 48 63 86 94 01 00 00 85 c0 7e 16 4c 8b c0 49 c1 e0 03 48 8b 96 88 01 00 00 48 8b cf e8 6c 52 c9 01 48 8b 8e 98 01 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 96 88 01 00 00 ff 50 10 48 89 be 88 01 00 00 44 89 ae 94 01 00 00 44 89 a6 90 01 00 00 eb 11 48 8b 86 88 01 00 00 4c 89 3c c8 ff 86 94 01 00 00 48 83 c3 20 49 3b de 4c 8b bd 90 00 00 00 0f 85 96 fe ff ff 48 8b ce 48 8b 9c 24 98 01 00 00 0f 28 b4 24 30 01 00 00 48 81 c4 40 01 00 00 41 5f 41 5e 41 5d 41 5c 5f 5e 5d e9 1c 0d 00 00"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "rva": "0x1cf98a0",
+      "bytes": "48 8d 81 58 07 00 00",
+      "instruction": "lea rax, [rcx + 0x758]"
+    },
+    {
+      "rva": "0x24f88aa",
+      "bytes": "81 7a 38 4f 62 44 47",
+      "instruction": "cmp dword ptr [rdx + 0x38], 0x4744624f"
+    },
+    {
+      "rva": "0x24f88da",
+      "bytes": "e8 61 f5 ff ff",
+      "instruction": "call 0x24f7e40"
+    },
+    {
+      "rva": "0x24f88e7",
+      "bytes": "48 8d 8b 58 07 00 00",
+      "instruction": "lea rcx, [rbx + 0x758]"
+    },
+    {
+      "rva": "0x24f88f8",
+      "bytes": "e8 c3 93 51 fe",
+      "instruction": "call 0xa11cc0"
+    },
+    {
+      "rva": "0x24f899b",
+      "bytes": "b0 04",
+      "instruction": "mov al, 4"
+    },
+    {
+      "rva": "0x24f89a8",
+      "bytes": "48 8b 8b 88 07 00 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0x788]"
+    },
+    {
+      "rva": "0x24f89af",
+      "bytes": "48 63 93 94 07 00 00",
+      "instruction": "movsxd rdx, dword ptr [rbx + 0x794]"
+    },
+    {
+      "rva": "0x24f89b6",
+      "bytes": "48 c1 e2 04",
+      "instruction": "shl rdx, 4"
+    },
+    {
+      "rva": "0x24f89c2",
+      "bytes": "48 39 39",
+      "instruction": "cmp qword ptr [rcx], rdi"
+    },
+    {
+      "rva": "0x24f89c7",
+      "bytes": "48 83 c1 10",
+      "instruction": "add rcx, 0x10"
+    },
+    {
+      "rva": "0x24f89de",
+      "bytes": "0f b6 41 08",
+      "instruction": "movzx eax, byte ptr [rcx + 8]"
+    },
+    {
+      "rva": "0x24f7e91",
+      "bytes": "41 8b 41 08",
+      "instruction": "mov eax, dword ptr [r9 + 8]"
+    },
+    {
+      "rva": "0x24f7e95",
+      "bytes": "39 82 98 00 00 00",
+      "instruction": "cmp dword ptr [rdx + 0x98], eax"
+    },
+    {
+      "rva": "0x2b2bac3",
+      "bytes": "48 8b 8b c8 01 00 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0x1c8]"
+    },
+    {
+      "rva": "0x2b2bacf",
+      "bytes": "48 81 c1 88 00 00 00",
+      "instruction": "add rcx, 0x88"
+    },
+    {
+      "rva": "0x2b2bae0",
+      "bytes": "e8 db 61 ee fd",
+      "instruction": "call 0xa11cc0"
+    },
+    {
+      "rva": "0xa11ce6",
+      "bytes": "48 63 79 0c",
+      "instruction": "movsxd rdi, dword ptr [rcx + 0xc]"
+    },
+    {
+      "rva": "0xa11cea",
+      "bytes": "48 8b 19",
+      "instruction": "mov rbx, qword ptr [rcx]"
+    },
+    {
+      "rva": "0xa11cf8",
+      "bytes": "48 8d 34 fb",
+      "instruction": "lea rsi, [rbx + rdi*8]"
+    },
+    {
+      "rva": "0x2590cdc",
+      "bytes": "81 7f 38 4f 62 44 47",
+      "instruction": "cmp dword ptr [rdi + 0x38], 0x4744624f"
+    },
+    {
+      "rva": "0x2590ce9",
+      "bytes": "48 83 c7 18",
+      "instruction": "add rdi, 0x18"
+    },
+    {
+      "rva": "0x2590cf0",
+      "bytes": "48 83 7f 18 10",
+      "instruction": "cmp qword ptr [rdi + 0x18], 0x10"
+    },
+    {
+      "rva": "0x259131c",
+      "bytes": "48 8b 5e 08",
+      "instruction": "mov rbx, qword ptr [rsi + 8]"
+    },
+    {
+      "rva": "0x2591320",
+      "bytes": "48 63 46 14",
+      "instruction": "movsxd rax, dword ptr [rsi + 0x14]"
+    },
+    {
+      "rva": "0x2591324",
+      "bytes": "48 8d 3c c3",
+      "instruction": "lea rdi, [rbx + rax*8]"
+    }
+  ],
+  "class_rtti": [
+    {
+      "class": "CHasPersonalTenetTrigger",
+      "type_descriptor_rva": "0x5a47b70"
+    },
+    {
+      "class": "CTenetDoctrineContainer",
+      "type_descriptor_rva": "0x57a5b10"
+    },
+    {
+      "class": "CTenetTypeDatabase",
+      "type_descriptor_rva": "0x55d1d60"
+    },
+    {
+      "class": "CDoctrineTypeDatabase",
+      "type_descriptor_rva": "0x55d1d90"
+    }
+  ],
+  "trigger_vtables": [
+    {
+      "name": "Character.has_personal_tenet",
+      "vtable_rva": "0x47bc810",
+      "slot": 25,
+      "evaluate_rva": "0x2b2ba60"
+    }
+  ],
+  "known": "Actual Core/personal Tenet definition keys and current Rite native five-state values",
+  "unresolved": [
+    "Tenet choice/final gates and desired scoring",
+    "Actual gameplay mutation outcomes"
+  ]
+}

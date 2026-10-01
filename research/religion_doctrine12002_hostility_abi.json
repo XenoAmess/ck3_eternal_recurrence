@@ -1,0 +1,420 @@
+{
+  "schema": "ck3_12002_nonwar_hostility_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "war_research": false,
+  "source_constants": {
+    "kHostilityRiteStorageSlotRva": "0x5d1e2f8",
+    "kHostilityRiteFinalRva": "0x2591ce0",
+    "kHostilityFaithFinalRva": "0x243e950",
+    "kHostilityRiteComponentOffset": "0x750",
+    "kHostilityRiteTypeTag": "0x52697465"
+  },
+  "enum_levels": {
+    "righteous": 0,
+    "astray": 1,
+    "hostile": 2,
+    "evil": 3
+  },
+  "native_invalid_sentinel": 4,
+  "faith_offset_used": false,
+  "native_spans": [
+    {
+      "name": "Rite.final_hostility",
+      "start_rva": "0x2591ce0",
+      "end_exclusive_rva": "0x2591f71",
+      "kind": "complete_function_including_chained_spans",
+      "abi": "uint8_t(source_component, source_Rite, target_Rite)",
+      "sha256": "cce5c47990f7d242d09a410a12a3baaef46873d50eda6c59dce8c7508b9cf695",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 18 56 57 41 56 48 83 ec 20 4c 8b 15 07 c6 78 03 49 8b f0 4c 8b f2 48 8b e9 40 b7 04 4d 85 d2 75 0c 4c 8b 0d cf c5 78 03 4d 8b d1 eb 67 8b 92 b8 04 00 00 8b c2 45 8b 5a 2c 25 ff ff ff 00 4c 8b 05 b2 c5 78 03 41 3b c3 73 19 8b c8 49 8b 42 20 48 03 c9 4c 8b 4c c8 08 4d 85 c9 74 06 41 39 51 08 74 03 4d 8b c8 8b 96 b8 04 00 00 8b c2 25 ff ff ff 00 41 3b c3 73 19 8b c8 49 8b 42 20 48 03 c9 4c 8b 54 c8 08 4d 85 d2 74 06 41 39 52 08 74 03 4d 8b d0 4c 8b 05 74 bd 78 03 48 8b 15 55 bd 78 03 4d 85 c0 74 2e 45 8b 99 00 03 00 00 41 8b c3 25 ff ff ff 00 41 3b 40 2c 73 19 8b c8 49 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 58 10 74 03 48 8b c2 83 b8 28 01 00 00 ff 74 7e 4d 85 c0 74 2e 45 8b 99 00 03 00 00 41 8b c3 25 ff ff ff 00 41 3b 40 2c 73 19 8b c8 49 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 58 10 74 03 48 8b c2 8b 98 28 01 00 00 4d 85 c0 74 31 45 8b 9a 00 03 00 00 41 8b c3 25 ff ff ff 00 41 3b 40 2c 73 1c 8b c8 49 8b 40 20 48 03 c9 4c 8b 44 c8 08 4d 85 c0 74 09 45 39 58 10 75 03 49 8b d0 3b 9a 28 01 00 00 75 04 b1 01 eb 02 32 c9 41 8b 42 08 41 39 41 08 0f 84 b6 00 00 00 0f b6 85 08 01 00 00 40 3a c7 74 07 84 c9 74 03 0f b6 f8 45 8b 99 8c 00 00 00 45 8b 8a 8c 00 00 00 45 3b d9 75 07 b2 01 e9 8b 00 00 00 4c 8b 05 fc bf 78 03 4d 85 c0 75 0c 48 8b 15 68 bf 78 03 48 8b c2 eb 5b 41 8b 58 2c 41 8b c3 4c 8b 15 55 bf 78 03 25 ff ff ff 00 3b c3 73 19 8b c8 49 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 5a 08 74 03 49 8b d2 41 8b c1 25 ff ff ff 00 3b c3 73 19 8b c8 49 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 48 08 74 03 49 8b c2 48 8b 80 d0 01 00 00 48 39 82 d0 01 00 00 0f 95 c2 80 c2 02 eb 02 32 d2 4c 8d 86 50 07 00 00 48 8b cd e8 61 00 00 00 4c 8b c6 48 8d 4c 24 48 49 8b d6 0f b6 d8 e8 fe d9 64 00 48 8b 0d 47 6e 6d 03 48 39 4c 24 48 7f 06 84 db 74 02 fe cb 40 80 ff 04 75 05 0f b6 c3 eb 0d 40 3a fb 0f b6 c3 40 0f b6 cf 0f 42 c1 48 8b 5c 24 40 48 8b 6c 24 50 48 83 c4 20 41 5e 5f 5e c3"
+    },
+    {
+      "name": "Rite.component_overrides.chained",
+      "start_rva": "0x2591f80",
+      "end_exclusive_rva": "0x259218b",
+      "kind": "complete_function_including_chained_spans",
+      "abi": "uint8_t(source_component, relation_byte, target_component)",
+      "sha256": "6ef8dff7289b046ee402274739b825da5374d9fd3f88b579080da68cef1b77de",
+      "bytes": "48 89 5c 24 10 48 89 6c 24 18 48 89 74 24 20 57 41 54 41 57 0f b6 f2 49 8b e8 4c 8b f9 84 d2 0f 84 cf 01 00 00 4c 8b 89 e8 00 00 00 40 32 ff 32 db 49 8b c1 41 38 19 75 0f 0f 1f 80 00 00 00 00 48 83 c0 0c 38 18 74 f8 0f b6 91 f8 00 00 00 45 33 e4 8b 89 f4 00 00 00 ff c1 03 d1 48 63 ca 48 8d 14 49 49 8d 0c 91 48 3b c1 0f 84 c0 00 00 00 49 63 50 14 4c 89 74 24 20 4d 8b 70 08 4d 8d 1c d6 44 8b 50 04 49 8b d6 4d 3b f3 74 18 0f 1f 00 4c 8b 02 45 39 90 58 07 00 00 74 09 48 83 c2 08 49 3b d3 75 eb 49 3b d3 49 0f 44 d4 48 85 d2 75 32 4c 8b 45 50 48 63 55 5c 4d 8d 0c d0 4d 3b c1 74 18 49 8b 10 44 39 92 a0 02 00 00 74 09 49 83 c0 08 4d 3b c1 75 eb 4d 3b c1 4d 0f 44 c4 4d 85 c0 74 22 44 0f b6 48 08 40 84 ff 74 11 41 3a d9 44 0f b6 c3 45 0f 42 c1 41 0f b6 d8 eb 04 41 0f b6 d9 40 b7 01 48 83 c0 0c 44 38 20 74 f7 48 3b c1 0f 85 6a ff ff ff 4c 8b 74 24 20 40 84 ff 74 0f 0f b6 c3 e9 cd 00 00 00 0f 1f 80 00 00 00 00 4d 63 87 cc 00 00 00 8b c6 4d 8b 8f c0 00 00 00 35 c5 9d 1c 81 69 c8 93 01 00 01 48 63 d1 49 23 d0 49 8d 04 51 48 03 c2 b2 01 48 8b c8 44 0f b6 10 44 3a d2 72 10 40 3a 71 01 74 22 48 83 c1 03 fe c2 3a 11 76 f0 41 0f b6 8f d0 00 00 00 41 03 c8 48 63 c9 48 ff c1 49 8d 14 49 48 03 ca 80 39 ff 74 61 b1 01 44 3a d1 72 16 66 0f 1f 44 00 00 40 3a 70 01 74 44 48 83 c0 03 fe c1 3a 08 76 f0 41 0f b6 97 d0 00 00 00 41 8d 40 01 03 c2 48 98 49 8d 0c 41 48 03 c1 0f b6 ca 41 03 c8 48 63 d1 48 ff c2 49 8d 0c 51 48 03 d1 48 8d 48 02 48 3b c2 49 0f 44 cc 0f b6 01 eb 0c 41 0f b6 97 d0 00 00 00 eb d3 32 c0 48 8b 5c 24 28 48 8b 6c 24 30 48 8b 74 24 38 41 5f 41 5c 5f c3"
+    },
+    {
+      "name": "Faith.final_hostility",
+      "start_rva": "0x243e950",
+      "end_exclusive_rva": "0x243ea23",
+      "kind": "complete_function_including_chained_spans",
+      "abi": "uint8_t(source_Faith,target_Faith,bool_offset)",
+      "sha256": "854da4835758a062f3a63ecaaf53517fb03f3758afd1fb9a09b68844ba3ac52b",
+      "bytes": "40 57 48 83 ec 20 4c 8b 0d 9b f9 8d 03 41 0f b6 f8 4c 8b d2 4d 85 c9 75 0c 48 8b 15 00 8d 82 03 4c 8b c2 eb 69 44 8b 81 98 00 00 00 41 8b c0 4c 8b 1d ea 8c 82 03 25 ff ff ff 00 41 3b 41 2c 73 19 8b c8 49 8b 41 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 03 49 8b d3 45 8b 92 98 00 00 00 41 8b c2 25 ff ff ff 00 41 3b 41 2c 73 19 8b c8 49 8b 41 20 48 03 c9 4c 8b 44 c8 08 4d 85 c0 74 06 45 39 50 08 74 03 4d 8b c3 41 81 78 0c 65 74 69 52 75 33 41 83 78 08 ff 74 2c 81 7a 0c 65 74 69 52 75 23 83 7a 08 ff 74 1d 48 8d 8a 50 07 00 00 e8 d6 32 15 00 40 84 ff 74 0e 3c 03 74 0a fe c0 48 83 c4 20 5f c3 b0 04 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "Faith.GetHostilityLevelTowards.reflection",
+      "start_rva": "0x2443580",
+      "end_exclusive_rva": "0x24435bb",
+      "kind": "complete_function_including_chained_spans",
+      "abi": "reflection wrapper",
+      "sha256": "9849783afec2ebf84dc9ac4b8ac9a89d4750fe5fe4b8206a0918a5be1db85eaf",
+      "bytes": "48 83 ec 48 c7 44 24 38 00 00 00 00 48 8d 05 bd b3 ff ff 48 89 44 24 30 4d 8b c8 0f 28 44 24 30 4c 8b c2 48 8b d1 66 0f 7f 44 24 30 48 8d 4c 24 30 e8 6a 2c 00 00 48 83 c4 48 c3"
+    },
+    {
+      "name": "Rite.actual_divergence",
+      "start_rva": "0x2bdf930",
+      "end_exclusive_rva": "0x2bdfb9a",
+      "kind": "complete_function_including_chained_spans",
+      "abi": "int64_t*(int64_t*out,source_Rite,target_Rite)",
+      "sha256": "bcc4c2260aa4c75344581fa1644ec7251d952d31cc8c0be31edea934614ee2b3",
+      "bytes": "48 89 5c 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8b ec 48 83 ec 70 4d 8b e8 48 8b fa 4c 8b e1 44 8b 82 b8 04 00 00 45 3b 85 b8 04 00 00 75 70 48 8b 15 99 e9 13 03 48 85 d2 74 26 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 08 74 07 48 8b 05 47 e9 13 03 8b 88 98 00 00 00 3b 4f 08 75 13 45 33 c0 49 8b d5 49 8b cc e8 ee 01 00 00 e9 c8 01 00 00 41 3b 4d 08 75 13 45 33 c0 48 8b d7 49 8b cc e8 d5 01 00 00 e9 af 01 00 00 4d 8d 85 a0 07 00 00 48 8d 97 a0 07 00 00 45 33 c9 48 8d 4d 58 e8 e6 16 00 00 48 8d 97 88 07 00 00 45 33 c9 4d 8d 85 58 07 00 00 48 8d 4d 48 e8 2c 13 00 00 48 63 9f 64 07 00 00 48 8b bf 58 07 00 00 33 f6 48 89 75 c0 48 89 75 c8 48 8d 45 d8 48 89 45 d0 48 8d 05 dd 41 b8 01 48 89 45 d8 48 8d 05 12 f2 8f 02 48 89 45 f8 48 8b 05 d7 41 b8 01 33 d2 44 8d 46 08 48 8d 4d d8 ff d0 48 89 75 c0 48 89 75 c8 48 8b 45 d8 4c 8d 45 c8 48 8d 55 c0 48 8d 4d d8 ff 50 20 4c 8d 0c df 4c 8b c7 8b 55 cc 48 8d 4d c0 e8 f5 e5 de fd 90 8b de 8b 45 cc 85 c0 7e 38 8b fe 66 0f 1f 84 00 00 00 00 00 48 8b 45 c0 48 8b 0c 07 48 89 4d 50 48 8d 55 50 49 8d 8d 58 07 00 00 e8 14 22 e3 fd 84 c0 8b 45 cc 75 0a ff c3 48 83 c7 08 3b d8 7c d3 4c 63 f3 ff c3 3b d8 7d 5c 48 63 cb 4a 8d 34 f5 00 00 00 00 48 8d 3c cd 00 00 00 00 0f 1f 80 00 00 00 00 48 8b 45 c0 48 8b 0c 38 48 89 4d 50 48 8d 55 50 49 8d 8d 58 07 00 00 e8 c4 21 e3 fd 84 c0 75 13 48 8b 4d c0 48 8b 04 39 48 89 04 31 41 ff c6 48 83 c6 08 ff c3 48 83 c7 08 8b 45 cc 3b d8 7c c0 33 f6 8b c8 41 2b ce 85 c9 7e 05 2b c1 89 45 cc 85 c0 74 20 49 8d 95 88 07 00 00 45 33 c9 4c 8d 45 c0 48 8d 4d 50 e8 e5 11 00 00 48 8b 4d 48 48 03 08 eb 04 48 8b 4d 48 48 8b 55 58 48 03 d1 49 89 14 24 48 8b 55 c0 48 85 d2 74 13 89 75 cc 48 8b 4d d0 48 8b 01 41 b8 08 00 00 00 ff 50 10 49 8b c4 48 8b 9c 24 b0 00 00 00 48 83 c4 70 41 5f 41 5e 41 5d 41 5c 5f 5e 5d c3"
+    },
+    {
+      "name": "CRiteHostilityLevelTrigger.value_virtual",
+      "start_rva": "0x2aeaa50",
+      "end_exclusive_rva": "0x2aeaba8",
+      "kind": "complete_function_including_chained_spans",
+      "abi": "script scoped Rite -> target Rite",
+      "sha256": "a91769e417cae7eee836949079a87ece6f649026276b53ff289dc6fa1eedad1b",
+      "bytes": "48 89 74 24 10 57 48 81 ec 40 02 00 00 48 8b 02 48 8b fa 48 8b f1 66 83 38 2a 75 06 44 8b 40 08 eb 06 41 b8 ff ff ff ff 48 8b 15 79 38 23 03 48 89 9c 24 50 02 00 00 48 85 d2 74 26 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 43 08 74 07 48 8b 1d b7 cb 17 03 4c 8d 46 10 48 8b d7 48 8d 8e 30 01 00 00 e8 c4 fc 21 ff 81 78 0c 65 74 69 52 75 39 83 78 08 ff 74 33 81 7b 0c 65 74 69 52 75 20 83 7b 08 ff 74 1a 48 8d 8b 50 07 00 00 4c 8b c0 48 8b d3 e8 e4 71 aa ff 0f b6 c0 e9 8b 00 00 00 b0 04 0f b6 c0 e9 81 00 00 00 80 7f 20 00 75 79 4c 8d 0d e5 8d c9 01 c7 84 24 30 02 00 00 00 00 00 00 4c 8d 05 4b 8a 9b 01 ba 00 02 00 00 48 8d 4c 24 30 e8 84 1d d9 fd b9 ff 01 00 00 3b c1 0f 4f c1 48 8d 4c 24 30 89 84 24 30 02 00 00 48 8d 44 24 30 48 89 44 24 20 48 c7 c0 ff ff ff ff 48 ff c0 80 3c 01 00 75 f7 89 44 24 28 48 8d 54 24 20 c6 44 24 2c 00 48 8b ce 0f 28 44 24 20 66 0f 7f 44 24 20 e8 c3 61 c2 00 33 c0 48 8b 9c 24 50 02 00 00 48 8b b4 24 58 02 00 00 48 81 c4 40 02 00 00 5f c3"
+    },
+    {
+      "name": "CFaithHostilityLevelTrigger.value_virtual",
+      "start_rva": "0x2b28090",
+      "end_exclusive_rva": "0x2b281cb",
+      "kind": "complete_function_including_chained_spans",
+      "abi": "script scoped Faith -> target Faith; offset=false",
+      "sha256": "0af430d0f59fea32f61ae2c14d74f494ba331b94e32a229bc96c47d3a54d9bd5",
+      "bytes": "48 89 74 24 10 57 48 81 ec 40 02 00 00 48 8b 02 48 8b fa 48 8b f1 66 83 38 0d 75 06 44 8b 40 08 eb 06 41 b8 ff ff ff ff 48 8b 15 41 62 1f 03 48 89 9c 24 50 02 00 00 48 85 d2 74 26 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 43 08 74 07 48 8b 1d e7 61 1f 03 4c 8d 46 10 48 8b d7 48 8d 8e 30 01 00 00 e8 14 27 1e ff 81 78 0c 74 69 61 46 75 1c 83 78 08 ff 74 16 45 33 c0 48 8b d0 48 8b cb e8 27 68 91 ff 0f b6 c0 e9 81 00 00 00 80 7f 20 00 75 79 4c 8d 0d a2 b7 c5 01 c7 84 24 30 02 00 00 00 00 00 00 4c 8d 05 28 b4 97 01 ba 00 02 00 00 48 8d 4c 24 30 e8 61 47 d5 fd b9 ff 01 00 00 3b c1 0f 4f c1 48 8d 4c 24 30 89 84 24 30 02 00 00 48 8d 44 24 30 48 89 44 24 20 48 c7 c0 ff ff ff ff 48 ff c0 80 3c 01 00 75 f7 89 44 24 28 48 8d 54 24 20 c6 44 24 2c 00 48 8b ce 0f 28 44 24 20 66 0f 7f 44 24 20 e8 a0 8b be 00 33 c0 48 8b 9c 24 50 02 00 00 48 8b b4 24 58 02 00 00 48 81 c4 40 02 00 00 5f c3"
+    },
+    {
+      "name": "Faith.GetHostilityLevelTowards.registration",
+      "start_rva": "0x4d3513",
+      "end_exclusive_rva": "0x4d35a2",
+      "kind": "labelled_slice",
+      "abi": null,
+      "sha256": "bc0e67d8e29afa934310aaf0d7f48ca354b32af1c22abd0afde732cbfe18e420",
+      "bytes": "0f 10 05 2e c6 25 04 0f 11 00 f2 0f 10 0d 33 c6 25 04 f2 0f 11 48 10 40 88 78 18 48 89 45 ef 48 8d 45 0f 48 89 45 67 48 8d 55 b7 48 8d 4d 0f e8 b9 29 38 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 93 0d 3a 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 e7 ff f6 01 48 8d 4d ef e8 de 46 f7 01"
+    },
+    {
+      "name": "Faith.reflection_abi_call_and_byte_return",
+      "start_rva": "0x2446303",
+      "end_exclusive_rva": "0x2446348",
+      "kind": "labelled_slice",
+      "abi": null,
+      "sha256": "c1aa202b53bd817436ff7b7a9319509ae715df0955a1936b70b873878c54a589",
+      "bytes": "41 0f 28 0f 44 0f b6 c5 66 0f 6f c1 66 0f 73 d8 08 66 0f 7e c0 48 63 c8 66 48 0f 7e c8 49 03 ce ff d0 0f b6 e8 e8 63 af 00 00 48 8b 0f 48 3b c8 75 15 48 8b 11 4c 8b 42 30 48 8d 57 08 41 ff d0 40 88 28 b0 01"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "Rite.full_generation_storage_slot",
+      "rva": "0x243e956",
+      "bytes": "4c 8b 0d 9b f9 8d 03",
+      "instruction": "mov r9, qword ptr [rip + 0x38df99b]",
+      "rip_targets": [
+        "0x5d1e2f8"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.source_main_Rite_ref",
+      "rva": "0x243e975",
+      "bytes": "44 8b 81 98 00 00 00",
+      "instruction": "mov r8d, dword ptr [rcx + 0x98]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.target_main_Rite_ref",
+      "rva": "0x243e9ad",
+      "bytes": "45 8b 92 98 00 00 00",
+      "instruction": "mov r10d, dword ptr [r10 + 0x98]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.source_Rite_type",
+      "rva": "0x243e9ef",
+      "bytes": "81 7a 0c 65 74 69 52",
+      "instruction": "cmp dword ptr [rdx + 0xc], 0x52697465",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.owning_Rite_component",
+      "rva": "0x243e9fe",
+      "bytes": "48 8d 8a 50 07 00 00",
+      "instruction": "lea rcx, [rdx + 0x750]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.final_Rite_call",
+      "rva": "0x243ea05",
+      "bytes": "e8 d6 32 15 00",
+      "instruction": "call 0x2591ce0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2591ce0"
+      ]
+    },
+    {
+      "name": "Faith.offset_enabled",
+      "rva": "0x243ea0a",
+      "bytes": "40 84 ff",
+      "instruction": "test dil, dil",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.offset_evil_bound",
+      "rva": "0x243ea0f",
+      "bytes": "3c 03",
+      "instruction": "cmp al, 3",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.offset_increment",
+      "rva": "0x243ea13",
+      "bytes": "fe c0",
+      "instruction": "inc al",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.invalid_sentinel",
+      "rva": "0x243ea1b",
+      "bytes": "b0 04",
+      "instruction": "mov al, 4",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.source_Faith_full_ref",
+      "rva": "0x2591d16",
+      "bytes": "8b 92 b8 04 00 00",
+      "instruction": "mov edx, dword ptr [rdx + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.target_Faith_full_ref",
+      "rva": "0x2591d4f",
+      "bytes": "8b 96 b8 04 00 00",
+      "instruction": "mov edx, dword ptr [rsi + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.same_Faith_relation",
+      "rva": "0x2591e4e",
+      "bytes": "41 39 41 08",
+      "instruction": "cmp dword ptr [r9 + 8], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.same_Religion_relation",
+      "rva": "0x2591e79",
+      "bytes": "45 3b d9",
+      "instruction": "cmp r11d, r9d",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.religion_family_relation",
+      "rva": "0x2591eff",
+      "bytes": "48 39 82 d0 01 00 00",
+      "instruction": "cmp qword ptr [rdx + 0x1d0], rax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.component_override_call",
+      "rva": "0x2591f1a",
+      "bytes": "e8 61 00 00 00",
+      "instruction": "call 0x2591f80",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2591f80"
+      ]
+    },
+    {
+      "name": "Rite.actual_divergence_call",
+      "rva": "0x2591f2d",
+      "bytes": "e8 fe d9 64 00",
+      "instruction": "call 0x2bdf930",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bdf930"
+      ]
+    },
+    {
+      "name": "Rite.divergence_define",
+      "rva": "0x2591f32",
+      "bytes": "48 8b 0d 47 6e 6d 03",
+      "instruction": "mov rcx, qword ptr [rip + 0x36d6e47]",
+      "rip_targets": [
+        "0x5c68d80"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.divergence_compare",
+      "rva": "0x2591f39",
+      "bytes": "48 39 4c 24 48",
+      "instruction": "cmp qword ptr [rsp + 0x48], rcx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.divergence_strict_greater_branch",
+      "rva": "0x2591f3e",
+      "bytes": "7f 06",
+      "instruction": "jg 0x2591f46",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.divergence_nonzero_decrement",
+      "rva": "0x2591f44",
+      "bytes": "fe cb",
+      "instruction": "dec bl",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.same_head_override_minimum",
+      "rva": "0x2591f5b",
+      "bytes": "0f 42 c1",
+      "instruction": "cmovb eax, ecx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Rite.script_value_call",
+      "rva": "0x2aeaaf7",
+      "bytes": "e8 e4 71 aa ff",
+      "instruction": "call 0x2591ce0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2591ce0"
+      ]
+    },
+    {
+      "name": "Faith.script_value_offset_false",
+      "rva": "0x2b2811b",
+      "bytes": "45 33 c0",
+      "instruction": "xor r8d, r8d",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.script_value_call",
+      "rva": "0x2b28124",
+      "bytes": "e8 27 68 91 ff",
+      "instruction": "call 0x243e950",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x243e950"
+      ]
+    },
+    {
+      "name": "Faith.registration_callback",
+      "rva": "0x4d3592",
+      "bytes": "48 8d 15 e7 ff f6 01",
+      "instruction": "lea rdx, [rip + 0x1f6ffe7]",
+      "rip_targets": [
+        "0x2443580"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.wrapper_core_pointer",
+      "rva": "0x244358c",
+      "bytes": "48 8d 05 bd b3 ff ff",
+      "instruction": "lea rax, [rip - 0x4c43]",
+      "rip_targets": [
+        "0x243e950"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.reflection_bool_input",
+      "rva": "0x2446307",
+      "bytes": "44 0f b6 c5",
+      "instruction": "movzx r8d, bpl",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "Faith.reflection_byte_output",
+      "rva": "0x2446325",
+      "bytes": "0f b6 e8",
+      "instruction": "movzx ebp, al",
+      "rip_targets": [],
+      "direct_targets": []
+    }
+  ],
+  "script_trigger_rtti": [
+    {
+      "class": "CRiteHostilityLevelTrigger",
+      "type_descriptor_rva": "0x5a356e0",
+      "col_rva": "0x4e4b530",
+      "vtable_rva": "0x4784678",
+      "value_virtual_offset": "0x100",
+      "value_virtual_rva": "0x2aeaa50"
+    },
+    {
+      "class": "CFaithHostilityLevelTrigger",
+      "type_descriptor_rva": "0x5a49d38",
+      "col_rva": "0x4e72d70",
+      "vtable_rva": "0x47be370",
+      "value_virtual_offset": "0x100",
+      "value_virtual_rva": "0x2b28090"
+    }
+  ],
+  "stock_evidence": [
+    {
+      "path": "common/religion/doctrine_types/_doctrine_types.info",
+      "sha256": "7a8f6f8e78f88f7c83de3c43239a5da2709777e9d56fed4ae031e98b76af2ffc",
+      "start_line": 170,
+      "end_line": 194,
+      "window": "\t\t# hostility override map depending on the relation between the other faith and this one.\n\t\t# See the \"hostility\" section for more info\n\t\t#\n\t\thostility_levels = {\n\n\t\t\t# same_religion: How hostile is this faith towards other faiths of the same religion?\n\t\t\tsame_religion = astray\n\n\t\t\t# How hostile is this faith towards other faiths of the same religion family, but not same religion?\n\t\t\tsame_family = hostile\n\n\t\t\t# How hostile is this faith towards faiths from different religion families?\n\t\t\tunrelated = evil\n\t\t}\n\n\t\t# hostility override map depending on whether the target faith has the given doctrine\n\t\t#\n\t\thostility_level_override = {\n\t\t\tdoctrine_key = astray\n\t\t}\n\n\t\t# How hostile is this faith towards faith who they share Head of Faith with? Takes precedence over other hostility overrides.\n\t\t# has no default\n\t\t#\n\t\tsame_hof_hostility_override = righteous"
+    },
+    {
+      "path": "common/religion/doctrine_types/_doctrine_types.info",
+      "sha256": "7a8f6f8e78f88f7c83de3c43239a5da2709777e9d56fed4ae031e98b76af2ffc",
+      "start_line": 260,
+      "end_line": 275,
+      "window": "# All rites have a hostility level towards one another. What each level means is entirely scriptable.\n# The levels are, in increasing order of hostility:\n#\t* righteous (0)\n#\t* astray\t(1)\n#\t* hostile\t(2)\n#\t* evil\t\t(3)\n#\n# A rite always has a 'righteous' hostility level towards itself.\n# If no override is defined the target rite will be considered to be righteous\n#\n# The opinion effect of hostility is defined by the define HOSTILITY_OPINION_EFFECTS.\n# The multiplier applied to tolerance_advantage_mod is defined by the define HOSTILITY_COMBAT_MOD_MULT.\n# The name of each hostility level is defined by the define HOSTILITY_LEVEL_NAMES\n#\n# Hostility level can be accessed in script. E.G., faith_hostility_level = { target = scope:some_faith value >= 1 } or rite_hostility_level = { target = scope:some_rite value >= 1 }.\n# You can also compare to see which faith you're most hostile to. E.G., faith_hostility_level_comparison = { scope:some_faith > scope:some_other_faith }"
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "start_line": 834,
+      "end_line": 834,
+      "window": "\tRITE_DIVERGENCE_HOSTILITY_THRESHOLD = 1 # Divergence below that will lower faith hostility by 1 level"
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "start_line": 870,
+      "end_line": 875,
+      "window": "\tHOSTILITY_LEVEL_NAMES = {\t# Localization for each hostility level. See _doctrine_types.info for more info\n\t\t\"FAITH_HOSTILITY_RIGHTEOUS\"\n\t\t\"FAITH_HOSTILITY_ASTRAY\"\n\t\t\"FAITH_HOSTILITY_HOSTILE\"\n\t\t\"FAITH_HOSTILITY_EVIL\"\n\t}"
+    },
+    {
+      "path": "common/scripted_modifiers/00_marriage_scripted_modifiers.txt",
+      "sha256": "329c570ae4fdd9cd8e898ffd32ea9b30c689446eb7874b0ce2cdf12fe842d630",
+      "start_line": 1127,
+      "end_line": 1265,
+      "window": "marriage_ai_accept_faith_hostility_modifier = {\n\t#########\n\t# FAITH #\n\t#########\n\tmodifier = { # A recipient will be reluctant (to differing degrees) to agree to marriages sent from an puppet_or_actor of a different faith\n\t\t#Same faith is always fully accepted, so we can skip the hostility level check below\n\t\tscope:recipient.faith != scope:puppet_or_actor.faith\n\t\t# Nomads care little of Faith within the Steppe, and Tributaries are willing to marry them, too.\n\t\ttrigger_if = {\n\t\t\tlimit = {\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\tgovernment_has_flag = government_is_in_steppe\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:recipient = {\n\t\t\t\tNOR = {\n\t\t\t\t\tgovernment_has_flag = government_is_in_steppe\n\t\t\t\t\tis_tributary_of = scope:puppet_or_actor\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\ttrigger_if = {\n\t\t\tlimit = {\n\t\t\t\tscope:recipient = {\n\t\t\t\t\tgovernment_has_flag = government_is_in_steppe\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\tNOR = {\n\t\t\t\t\tgovernment_has_flag = government_is_in_steppe\n\t\t\t\t\tis_tributary_of = scope:recipient\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tscope:recipient.rite = {\n\t\t\trite_hostility_level = {\n\t\t\t\ttarget = scope:puppet_or_actor.rite\n\t\t\t\tvalue > faith_fully_accepted_level\n\t\t\t}\n\t\t}\n\t\tadd = {\n\t\t\tvalue = -10\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tNOR = {\n\t\t\t\t\t\t# Exempt certain struggle phases.\n\t\t\t\t\t\tis_struggle_parameter_active_interfaith_marriages_available_between_involved_characters_trigger = yes\n\t\t\t\t\t\t# Exempt Conciliation struggle resolution\n\t\t\t\t\t\tAND = {\n\t\t\t\t\t\t\thas_global_variable = fp2_struggle_conciliation_ending\n\t\t\t\t\t\t\tfp2_struggle_conciliation_special_cultural_rules_trigger = { C1 = scope:recipient C2 = scope:puppet_or_actor }\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tif = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tscope:recipient.rite = {\n\t\t\t\t\t\t\trite_hostility_level = {\n\t\t\t\t\t\t\t\ttarget = scope:puppet_or_actor.rite\n\t\t\t\t\t\t\t\tvalue > faith_astray_level\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tsubtract = 15\n\t\t\t\t}\n\t\t\t\tif = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tscope:recipient.rite = {\n\t\t\t\t\t\t\trite_hostility_level = {\n\t\t\t\t\t\t\t\ttarget = scope:puppet_or_actor.rite\n\t\t\t\t\t\t\t\tvalue >= faith_hostility_prevents_marriage_level\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tsubtract = 975\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tdesc = MARRY_DIFFERENT_FAITH_REASON\n\t}\n\t#Divergence\n\tfirst_valid = {\n\t\tmodifier = {\n\t\t\tadd = -50\n\t\t\tscope:recipient.faith = scope:puppet_or_actor.faith\n\t\t\tscope:puppet_or_actor.rite != scope:recipient.rite\n\t\t\tscope:recipient.rite = {\n\t\t\t\t\"divergence(scope:puppet_or_actor.rite)\" >= monumental_rite_divergence_value\n\t\t\t}\n\t\t\tdesc = marriage_monumental_divergence_reason\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -30\n\t\t\tscope:recipient.faith = scope:puppet_or_actor.faith\n\t\t\tscope:puppet_or_actor.rite != scope:recipient.rite\n\t\t\tscope:recipient.rite = {\n\t\t\t\t\"divergence(scope:puppet_or_actor.rite)\" >= massive_rite_divergence_value\n\t\t\t}\n\t\t\tdesc = marriage_massive_divergence_reason\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -20\n\t\t\tscope:recipient.faith = scope:puppet_or_actor.faith\n\t\t\tscope:puppet_or_actor.rite != scope:recipient.rite\n\t\t\tscope:recipient.rite = {\n\t\t\t\t\"divergence(scope:puppet_or_actor.rite)\" >= major_rite_divergence_value\n\t\t\t}\n\t\t\tdesc = marriage_major_divergence_reason\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -10\n\t\t\tscope:recipient.faith = scope:puppet_or_actor.faith\n\t\t\tscope:puppet_or_actor.rite != scope:recipient.rite\n\t\t\tscope:recipient.rite = {\n\t\t\t\t\"divergence(scope:puppet_or_actor.rite)\" >= medium_rite_divergence_value\n\t\t\t}\n\t\t\tdesc = marriage_medium_divergence_reason\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -5\n\t\t\tscope:recipient.faith = scope:puppet_or_actor.faith\n\t\t\tscope:puppet_or_actor.rite != scope:recipient.rite\n\t\t\tscope:recipient.rite = {\n\t\t\t\t\"divergence(scope:puppet_or_actor.rite)\" >= minor_rite_divergence_value\n\t\t\t}\n\t\t\tdesc = marriage_minor_divergence_reason\n\t\t}\n\t}\n}\n\nmarriage_ai_accept_fertility_modifier = {\n\tmodifier = { # A debuff for no fertility to same-sex marriage\n\t\tadd = -200\n\t\tdesc = SAME_SEX_MARRIAGE_FERTILITY_REASON\n\n\t\tscope:secondary_recipient = {\n\t\t\tallowed_to_marry_same_sex_trigger = yes"
+    }
+  ],
+  "unresolved": [
+    "paused live values",
+    "central mailbox/MCP query",
+    "detailed reason enumeration for a final native level; final getter already resolves effective overrides"
+  ]
+}

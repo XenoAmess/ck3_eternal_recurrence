@@ -1,0 +1,529 @@
+{
+  "schema": "xar.ck3_12002.doctrine_choice_knowledge_abi.v1",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "native_functions": [
+    {
+      "name": "DoctrineCategoryWindow.GetDoctrineItems.reflection",
+      "rva": "0x14fa960",
+      "end_exclusive_rva": "0x14fa9b3",
+      "unwind_rva": "0x51234fc",
+      "abi": "bool*(collection-wrapper): category-window+0x20, model construction unresolved",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "835cc1cef4b2efc0ba6d87fafe213d2a03840f657dc1a4257f6e27512f31f60d",
+      "bytes": "48 83 ec 58 4c 8b c2 48 85 c9 74 40 48 8d 41 20 c7 44 24 28 ff ff ff ff 48 89 44 24 20 48 8d 54 24 30 48 8d 05 9f a7 f3 02 c6 44 24 2c 01 0f 10 44 24 20 49 8b c8 48 89 44 24 30 0f 11 44 24 38 e8 8b 03 4e ff b0 01 48 83 c4 58 c3 32 c0 48 83 c4 58 c3"
+    },
+    {
+      "name": "DoctrineItem.ShouldDisplay.reflection",
+      "rva": "0xee4cc0",
+      "end_exclusive_rva": "0xee4d6d",
+      "unwind_rva": "0x511ea20",
+      "abi": "reflection; resolves TopScope; definition+0x1B8",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "62b33ff94cc19a2f93c756144345c90e485ef99bc44c057e627fe65bb3ad2b26",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 20 57 48 83 ec 20 41 8b 40 08 49 8b f8 48 8b ea 48 8b f1 4c 8d 14 80 49 8b 00 4c 8b 08 4b 8d 1c d1 e8 9c 04 02 00 48 39 03 75 5d 8b 47 08 48 8d 14 80 48 8b 07 48 8b 08 48 8b 1c d1 48 8d 3c d1 e8 7d 04 02 00 48 3b d8 74 04 33 c0 eb 0d 48 8b 03 48 8d 57 08 48 8b cb ff 50 28 48 85 f6 74 28 48 8b 4e 28 48 8b 10 48 81 c1 b8 01 00 00 e8 ef 91 84 02 48 8d 54 24 40 88 44 24 40 48 8b cd e8 9e 4d 99 ff b0 01 eb 02 32 c0 48 8b 5c 24 30 48 8b 6c 24 38 48 8b 74 24 48 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "DoctrineItem.CanPick.reflection",
+      "rva": "0xee4e60",
+      "end_exclusive_rva": "0xee4f2d",
+      "unwind_rva": "0x511ea20",
+      "abi": "reflection; resolves TopScope; definition+0x1B8 and +0xE8",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "f9410d4aada2ea81e05ada3b6dcc7505c1285293e233f26abd7c2b16e4e7bb14",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 20 57 48 83 ec 20 41 8b 40 08 49 8b f0 48 8b ea 48 8b f9 4c 8d 14 80 49 8b 00 4c 8b 08 4b 8d 1c d1 e8 fc 02 02 00 48 39 03 75 7d 8b 46 08 48 8d 14 80 48 8b 06 48 8b 08 48 8b 1c d1 48 8d 34 d1 e8 dd 02 02 00 48 3b d8 74 04 33 c0 eb 0d 48 8b 03 48 8d 56 08 48 8b cb ff 50 28 48 85 ff 74 48 48 8b 7f 28 48 8b 18 48 8b d3 48 8d 8f b8 01 00 00 e8 4c 90 84 02 84 c0 74 17 48 8d 8f e8 00 00 00 48 8b d3 e8 39 90 84 02 84 c0 74 04 b0 01 eb 02 32 c0 48 8d 54 24 40 88 44 24 40 48 8b cd e8 de 4b 99 ff b0 01 eb 02 32 c0 48 8b 5c 24 30 48 8b 6c 24 38 48 8b 74 24 48 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "TenetItem.ShouldDisplay.reflection",
+      "rva": "0xee46f0",
+      "end_exclusive_rva": "0xee479d",
+      "unwind_rva": "0x511ea20",
+      "abi": "reflection; resolves TopScope; definition+0x658",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "4be12bcc9a2f24dff4a5c597ee8c6b30287c3e34ce8131796ec895c89f48c421",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 20 57 48 83 ec 20 41 8b 40 08 49 8b f8 48 8b ea 48 8b f1 4c 8d 14 80 49 8b 00 4c 8b 08 4b 8d 1c d1 e8 6c 0a 02 00 48 39 03 75 5d 8b 47 08 48 8d 14 80 48 8b 07 48 8b 08 48 8b 1c d1 48 8d 3c d1 e8 4d 0a 02 00 48 3b d8 74 04 33 c0 eb 0d 48 8b 03 48 8d 57 08 48 8b cb ff 50 28 48 85 f6 74 28 48 8b 4e 28 48 8b 10 48 81 c1 58 06 00 00 e8 bf 97 84 02 48 8d 54 24 40 88 44 24 40 48 8b cd e8 6e 53 99 ff b0 01 eb 02 32 c0 48 8b 5c 24 30 48 8b 6c 24 38 48 8b 74 24 48 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "TenetItem.CanPick.reflection",
+      "rva": "0xee47a0",
+      "end_exclusive_rva": "0xee4808",
+      "unwind_rva": "0x511d984",
+      "abi": "reflection; resolves Character and TopScope",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "308cd5d73381c7d5ca94ba9db159a541c7e0cb0194551caedcb06e02c5e97d01",
+      "bytes": "48 89 5c 24 10 48 89 6c 24 20 56 57 41 57 48 83 ec 20 41 8b 40 08 49 8b f8 ff c0 4c 8b fa 48 8b e9 4c 8d 14 80 49 8b 00 4c 8b 08 4b 8d 1c d1 e8 bc 09 02 00 48 39 03 8b 47 08 40 0f 94 c6 48 8d 14 80 48 8b 07 48 8b 08 48 8d 1c d1 e8 6f 64 af ff 48 39 03 0f 85 aa 00 00 00 40 84 f6 0f 84 a1 00 00 00 8b 47 08 ff c0"
+    },
+    {
+      "name": "TenetItem.CanPick.core",
+      "rva": "0xee0ad0",
+      "end_exclusive_rva": "0xee0b87",
+      "unwind_rva": "0x510c88c",
+      "abi": "bool(TenetItem*,Character*,CScriptTopScope*)",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "4372fc881ac0439410dfb3e7db2837fd5f6e884d47a79a13b03783907536bbb0",
+      "bytes": "48 89 5c 24 10 48 89 6c 24 18 48 89 74 24 20 57 48 83 ec 20 0f b6 59 24 49 8b f8 48 8b ea 48 8b f1 80 fb 05 74 7a 48 8b ca e8 62 00 9d 01 48 8d 56 28 48 8b c8 e8 b6 11 b3 ff 84 c0 75 2a e8 2d c2 a1 ff 48 8b 88 f0 0e 00 00 48 89 4c 24 30 48 8b cd e8 39 88 a3 01 48 8d 54 24 30 48 8b c8 e8 8c 11 b3 ff 84 c0 74 02 b0 01 84 db 75 04 84 c0 74 2e 48 8b 5e 28 48 8b d7 48 8d 8b 58 06 00 00 e8 db d3 84 02 84 c0 74 17 48 8d 8b b8 04 00 00 48 8b d7 e8 c8 d3 84 02 84 c0 74 04 b0 01 eb 02 32 c0 48 8b 5c 24 38 48 8b 6c 24 40 48 8b 74 24 48 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "knows_doctrine.registration",
+      "rva": "0x592aa0",
+      "end_exclusive_rva": "0x592b38",
+      "unwind_rva": "0x511fa28",
+      "abi": "trigger name registration and factory vtable",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "42cbb0553e074fdb22fd0d936c8d14a60bfc8dd493bcddb662f1a81a9be26f4d",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 30 48 8b 0d 37 c3 72 05 48 8d 05 58 65 22 04 48 89 44 24 20 c7 44 24 28 0e 00 00 00 c6 44 24 2c 00 48 85 c9 75 08 e8 2c cd 9b 03 48 8b c8 0f 28 44 24 20 48 8d 54 24 20 66 0f 7f 44 24 20 e8 b4 c7 9b 03 8b f8 e8 2d 8d 19 03 48 8b 1d be 79 6d 05 b9 18 00 00 00 e8 b0 10 c9 03 48 8d 0d 15 58 22 04 48 89 44 24 40 4c 8b c0 8b d7 48 89 48 08 48 8d 0d b8 93 22 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 f8 91 19 03"
+    },
+    {
+      "name": "knows_doctrine.factory",
+      "rva": "0x2b30020",
+      "end_exclusive_rva": "0x2b30069",
+      "unwind_rva": "0x5109cc0",
+      "abi": "actual trigger factory; vtable0x47BCAB0",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "e30c82fdb589fbb9aee2836566bef104bbdc533484a4a4689e953b23232d8aa0",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 20 48 8b f9 b9 f0 00 00 00 e8 7d 3b 6f 01 48 8b c8 48 89 44 24 30 48 8b d8 e8 19 ce fb ff 48 8d 05 62 ca c8 01 48 89 03 48 8b c3 8b 4f 10 89 4b 08 c6 43 0c 00 48 8b 5c 24 38 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "knows_doctrine.trigger.evaluate",
+      "rva": "0x2b2c130",
+      "end_exclusive_rva": "0x2b2c1aa",
+      "unwind_rva": "0x51094f0",
+      "abi": "character-scope full-generation resolution and native bool tail-call",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "06aa3fc9ec85883009b496c21bab45de14b16f88564872908320033c21fc71a6",
+      "bytes": "40 53 48 83 ec 20 48 8b 02 4c 8b ca 4c 8b d1 66 83 38 04 75 06 44 8b 40 08 eb 06 41 b8 ff ff ff ff 48 8b 15 10 b4 13 03 48 85 d2 74 26 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 43 18 74 07 48 8b 1d e6 b3 13 03 4d 8d 42 10 49 8b d1 49 8d 4a 40 e8 b6 f7 fb ff 48 8b d0 48 8b cb 48 83 c4 20 5b e9 56 4a d8 ff"
+    },
+    {
+      "name": "Character.KnowsDoctrine.core",
+      "rva": "0x28b0c00",
+      "end_exclusive_rva": "0x28b0ccd",
+      "unwind_rva": "0x511d3ec",
+      "abi": "bool(Character*,DoctrineDefinition*)",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "873cb45c3df4696da0672c58623e5c23346f522cd0bced505aa787e433e88acd",
+      "bytes": "48 89 54 24 10 53 48 83 ec 20 48 8b 99 c8 01 00 00 4c 8b ca 48 85 db 74 2c 48 8b 8b e0 00 00 00 4c 8d 44 24 38 48 63 83 ec 00 00 00 48 8d 14 c1 e8 2b 13 16 fe 48 63 93 ec 00 00 00 48 8b 8b e0 00 00 00 eb 6f 48 8b 15 ac d6 46 03 48 85 d2 74 2d 44 8b 81 b4 00 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 43 08 74 07 48 8b 1d eb 69 3b 03 48 8b 8b a0 07 00 00 4c 8d 44 24 30 48 63 83 ac 07 00 00 4c 89 4c 24 30 48 8d 14 c1 e8 ba 12 16 fe 48 63 93 ac 07 00 00 48 8b 8b a0 07 00 00 4c 8d 04 d1 33 c9 49 3b c0 48 0f 44 c1 48 85 c0 0f 95 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "Character.TenetCanPick.extra_collection",
+      "rva": "0x28b0b60",
+      "end_exclusive_rva": "0x28b0bfa",
+      "unwind_rva": "0x5109524",
+      "abi": "collection*(Character*); extension+0xC8, not doctrine knowledge E0",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "f6c2d780e225d7c83205a8420f0f9911c578658ef2993ca9a3513dd483744bbf",
+      "bytes": "48 83 ec 28 48 8b 81 c8 01 00 00 48 85 c0 74 0b 48 05 c8 00 00 00 48 83 c4 28 c3 65 48 8b 04 25 58 00 00 00 ba 10 00 00 00 48 8b 08 8b 04 0a 39 05 63 72 4b 03 7f 0c 48 8d 05 62 72 4b 03 48 83 c4 28 c3 48 8d 0d 4e 72 4b 03 e8 f5 2e 97 01 83 3d 42 72 4b 03 ff 75 df 33 c0 48 8d 0d 7f b5 ab 01 48 89 05 38 72 4b 03 48 89 05 39 72 4b 03 48 8d 05 72 e0 c2 02 48 89 05 33 72 4b 03 e8 62 33 97 01 48 8d 0d 0f 72 4b 03 e8 56 2e 97 01 48 8d 05 0b 72 4b 03 48 83 c4 28 c3"
+    },
+    {
+      "name": "Faith.IsUnreformed.reflection",
+      "rva": "0x2444600",
+      "end_exclusive_rva": "0x2444635",
+      "unwind_rva": "0x510cddc",
+      "abi": "reflection calls native main-Rite boolean",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "35b46755cc0a9308df188a8b2391e38e6bbdb45668ccaaca1908887b30fd76f8",
+      "bytes": "4c 89 44 24 18 48 83 ec 28 4c 8b ca 48 85 c9 74 1d e8 4a 43 79 00 48 8d 54 24 40 88 44 24 40 49 8b c9 e8 c9 54 43 fe b0 01 48 83 c4 28 c3 32 c0 48 83 c4 28 c3"
+    },
+    {
+      "name": "Faith.IsUnreformed.core",
+      "rva": "0x2bd8960",
+      "end_exclusive_rva": "0x2bd89b6",
+      "unwind_rva": null,
+      "abi": "bool(Faith*); resolves full main RiteID, reads Rite+0x8B0",
+      "boundary_source": "reviewed_leaf",
+      "sha256": "2ade2b49e932715d3b62cd923567d319db5da0ba744d80be984ea9f49ef25f93",
+      "bytes": "48 8b 05 91 59 14 03 48 85 c0 75 0f 48 8b 05 fd ec 08 03 0f b6 80 b0 08 00 00 c3 44 8b 81 98 00 00 00 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 c2 ec 08 03 0f b6 82 b0 08 00 00 c3"
+    },
+    {
+      "name": "CDoctrineTypeDB.getter",
+      "rva": "0x8fc740",
+      "end_exclusive_rva": "0x8fc797",
+      "unwind_rva": "0x51094f8",
+      "abi": "database*(); global0x5C67198; may initialize when absent; provider does not call",
+      "boundary_source": "PE_exception_directory",
+      "sha256": "974e1f10157d0cc9cfc570992607deec67e7d15832f1b4849420b518471be5f8",
+      "bytes": "48 83 ec 38 48 8b 05 4d aa 36 05 48 85 c0 75 42 c7 44 24 28 1e 00 00 00 48 8d 05 a9 08 b9 03 48 89 44 24 20 48 8d 54 24 20 c6 44 24 2c 00 41 b9 64 00 00 00 0f 28 44 24 20 45 33 c0 66 0f 7f 44 24 20 41 8d 49 9d e8 d5 ee 68 03 48 8b 05 06 aa 36 05 48 83 c4 38 c3"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "category_model_address",
+      "rva": "0x14fa96c",
+      "bytes": "48 8d 41 20",
+      "instruction": "lea rax, [rcx + 0x20]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "category_items_registration_callback",
+      "rva": "0x228bcf",
+      "bytes": "4c 8d 0d 8a 1d 2d 01",
+      "instruction": "lea r9, [rip + 0x12d1d8a]",
+      "rip_targets": [
+        "0x14fa960"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "doctrine_shown_registration_callback",
+      "rva": "0xd7887",
+      "bytes": "4c 8d 05 32 d4 e0 00",
+      "instruction": "lea r8, [rip + 0xe0d432]",
+      "rip_targets": [
+        "0xee4cc0"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "doctrine_pick_registration_callback",
+      "rva": "0xd7ac8",
+      "bytes": "4c 8d 05 91 d3 e0 00",
+      "instruction": "lea r8, [rip + 0xe0d391]",
+      "rip_targets": [
+        "0xee4e60"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "doctrine_shown_definition_pointer",
+      "rva": "0xee4d2e",
+      "bytes": "48 8b 4e 28",
+      "instruction": "mov rcx, qword ptr [rsi + 0x28]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "doctrine_shown_trigger_address",
+      "rva": "0xee4d35",
+      "bytes": "48 81 c1 b8 01 00 00",
+      "instruction": "add rcx, 0x1b8",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "doctrine_shown_trigger_eval",
+      "rva": "0xee4d3c",
+      "bytes": "e8 ef 91 84 02",
+      "instruction": "call 0x372df30",
+      "rip_targets": [],
+      "call_targets": [
+        "0x372df30"
+      ]
+    },
+    {
+      "name": "doctrine_pick_definition_pointer",
+      "rva": "0xee4ece",
+      "bytes": "48 8b 7f 28",
+      "instruction": "mov rdi, qword ptr [rdi + 0x28]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "doctrine_pick_shown_trigger",
+      "rva": "0xee4ed8",
+      "bytes": "48 8d 8f b8 01 00 00",
+      "instruction": "lea rcx, [rdi + 0x1b8]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "doctrine_pick_selectable_trigger",
+      "rva": "0xee4ee8",
+      "bytes": "48 8d 8f e8 00 00 00",
+      "instruction": "lea rcx, [rdi + 0xe8]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_should_display_definition_pointer",
+      "rva": "0xee475e",
+      "bytes": "48 8b 4e 28",
+      "instruction": "mov rcx, qword ptr [rsi + 0x28]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_should_display_trigger_address",
+      "rva": "0xee4765",
+      "bytes": "48 81 c1 58 06 00 00",
+      "instruction": "add rcx, 0x658",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_should_display_trigger_eval",
+      "rva": "0xee476c",
+      "bytes": "e8 bf 97 84 02",
+      "instruction": "call 0x372df30",
+      "rip_targets": [],
+      "call_targets": [
+        "0x372df30"
+      ]
+    },
+    {
+      "name": "tenet_can_pick_core_call",
+      "rva": "0xee487c",
+      "bytes": "e8 4f c2 ff ff",
+      "instruction": "call 0xee0ad0",
+      "rip_targets": [],
+      "call_targets": [
+        "0xee0ad0"
+      ]
+    },
+    {
+      "name": "tenet_can_pick_mode_byte",
+      "rva": "0xee0ae4",
+      "bytes": "0f b6 59 24",
+      "instruction": "movzx ebx, byte ptr [rcx + 0x24]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_can_pick_mode5",
+      "rva": "0xee0af1",
+      "bytes": "80 fb 05",
+      "instruction": "cmp bl, 5",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_can_pick_extra_collection",
+      "rva": "0xee0af9",
+      "bytes": "e8 62 00 9d 01",
+      "instruction": "call 0x28b0b60",
+      "rip_targets": [],
+      "call_targets": [
+        "0x28b0b60"
+      ]
+    },
+    {
+      "name": "tenet_can_pick_mode0",
+      "rva": "0xee0b3a",
+      "bytes": "84 db",
+      "instruction": "test bl, bl",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_can_pick_definition_pointer",
+      "rva": "0xee0b42",
+      "bytes": "48 8b 5e 28",
+      "instruction": "mov rbx, qword ptr [rsi + 0x28]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_can_pick_shown_trigger",
+      "rva": "0xee0b49",
+      "bytes": "48 8d 8b 58 06 00 00",
+      "instruction": "lea rcx, [rbx + 0x658]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "tenet_can_pick_selectable_trigger",
+      "rva": "0xee0b59",
+      "bytes": "48 8d 8b b8 04 00 00",
+      "instruction": "lea rcx, [rbx + 0x4b8]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knows_doctrine_name",
+      "rva": "0x592ab1",
+      "bytes": "48 8d 05 58 65 22 04",
+      "instruction": "lea rax, [rip + 0x4226558]",
+      "rip_targets": [
+        "0x47b9010"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "knows_doctrine_factory_vtable",
+      "rva": "0x592b19",
+      "bytes": "48 8d 0d b8 93 22 04",
+      "instruction": "lea rcx, [rip + 0x42293b8]",
+      "rip_targets": [
+        "0x47bbed8"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "knows_doctrine_instance_vtable",
+      "rva": "0x2b30047",
+      "bytes": "48 8d 05 62 ca c8 01",
+      "instruction": "lea rax, [rip + 0x1c8ca62]",
+      "rip_targets": [
+        "0x47bcab0"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_trigger_character_generation",
+      "rva": "0x2b2c17d",
+      "bytes": "44 39 43 18",
+      "instruction": "cmp dword ptr [rbx + 0x18], r8d",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_bool_tail_call",
+      "rva": "0x2b2c1a5",
+      "bytes": "e9 56 4a d8 ff",
+      "instruction": "jmp 0x28b0c00",
+      "rip_targets": [],
+      "call_targets": [
+        "0x28b0c00"
+      ]
+    },
+    {
+      "name": "knowledge_character_extension",
+      "rva": "0x28b0c0a",
+      "bytes": "48 8b 99 c8 01 00 00",
+      "instruction": "mov rbx, qword ptr [rcx + 0x1c8]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_extension_array",
+      "rva": "0x28b0c19",
+      "bytes": "48 8b 8b e0 00 00 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0xe0]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_extension_count",
+      "rva": "0x28b0c25",
+      "bytes": "48 63 83 ec 00 00 00",
+      "instruction": "movsxd rax, dword ptr [rbx + 0xec]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_default_actor_rite_ref",
+      "rva": "0x28b0c51",
+      "bytes": "44 8b 81 b4 00 00 00",
+      "instruction": "mov r8d, dword ptr [rcx + 0xb4]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_default_rite_generation",
+      "rva": "0x28b0c78",
+      "bytes": "44 39 43 08",
+      "instruction": "cmp dword ptr [rbx + 8], r8d",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_default_rite_array",
+      "rva": "0x28b0c85",
+      "bytes": "48 8b 8b a0 07 00 00",
+      "instruction": "mov rcx, qword ptr [rbx + 0x7a0]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_default_rite_count",
+      "rva": "0x28b0c91",
+      "bytes": "48 63 83 ac 07 00 00",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x7ac]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "knowledge_boolean_return",
+      "rva": "0x28b0cc4",
+      "bytes": "0f 95 c0",
+      "instruction": "setne al",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "other_can_pick_collection",
+      "rva": "0x28b0b70",
+      "bytes": "48 05 c8 00 00 00",
+      "instruction": "add rax, 0xc8",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "unreformed_core_call",
+      "rva": "0x2444611",
+      "bytes": "e8 4a 43 79 00",
+      "instruction": "call 0x2bd8960",
+      "rip_targets": [],
+      "call_targets": [
+        "0x2bd8960"
+      ]
+    },
+    {
+      "name": "unreformed_main_rite_ref",
+      "rva": "0x2bd897b",
+      "bytes": "44 8b 81 98 00 00 00",
+      "instruction": "mov r8d, dword ptr [rcx + 0x98]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "unreformed_actual_rite_value",
+      "rva": "0x2bd89ae",
+      "bytes": "0f b6 82 b0 08 00 00",
+      "instruction": "movzx eax, byte ptr [rdx + 0x8b0]",
+      "rip_targets": [],
+      "call_targets": []
+    }
+  ],
+  "trigger_evaluator_slot": {
+    "vtable_rva": "0x47bcab0",
+    "slot_offset": "0xc8",
+    "target_rva": "0x2b2c130"
+  },
+  "provider_constants": {
+    "kCharacterKnowsDoctrineRva": "0x28b0c00",
+    "kCharacterKnowledgeExtensionOffset": "0x1c8",
+    "kLearnedDoctrineArrayOffset": "0xe0",
+    "kLearnedDoctrineCountOffset": "0xec",
+    "kDefinitionRegistryArrayOffset": "0x50",
+    "kDefinitionRegistryCountOffset": "0x5c",
+    "kDoctrineDatabasePointerRva": "0x5c67198"
+  },
+  "stock_windows": [
+    {
+      "path": "gui/window_rite_creation.gui",
+      "file_sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "first_line": 1236,
+      "last_line": 1293,
+      "text": "\ttype vbox_doctrine_picker_item = vbox {\n\t\tlayoutpolicy_horizontal = expanding\n\n\t\tbutton_standard_hover = {\n\t\t\tname = \"faith_list_item\"\n\t\t\tdatacontext = \"[DoctrineItem.GetDoctrine]\"\n\t\t\tdatacontext = \"[DoctrineType.GetGroup.GetCategory]\"\n\t\t\tdatacontext = \"[DoctrineItem.GetFaith]\"\n\t\t\tdatacontext = \"[DoctrineItem.GetRite]\"\n\t\t\tdatacontext = \"[GetVariableSystem]\"\n\t\t\tvisible = \"[DoctrineItem.ShouldDisplay( TopScope.Self )]\"\n\t\t\tsize = { 430 80 }\n\n\t\t\tlayoutpolicy_horizontal = expanding\n\n\t\t\tenabled = \"[And( DoctrineItem.CanPick( TopScope.Self ), GetScriptedGui( 'pam_know_doctrine' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'doctrine', DoctrineType.MakeScope ).End ) )]\"\n\n\t\t\tonclick = \"[RiteCreationWindow.SelectDoctrine( DoctrineItem.Self )]\"\n\t\t\tonclick = \"[VariableSystem.Clear( 'faith_creation_right_view' )]\"\n\t\t\tdown = \"[RiteCreationWindow.HasDoctrineSelected( DoctrineType.Self )]\"\n\n\t\t\ttooltipwidget = {\n\t\t\t\tusing = doctrine_type_tooltip\n\n\t\t\t\tblockoverride \"extra_data\" {\n\t\t\t\t\thbox = {\n\t\t\t\t\t\tlayoutpolicy_horizontal = expanding\n\t\t\t\t\t\tmargin ={ 5 10 }\n\n\t\t\t\t\t\ttext_single = {\n\t\t\t\t\t\t\ttext = \"RITE_CREATION_DOCTRINE_DIVERGENCE_TT\"\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\texpand = {}\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tblockoverride \"extra_data_after_description\"\n\t\t\t\t{\n\t\t\t\t\tvbox = {\n\t\t\t\t\t\tlayoutpolicy_horizontal = expanding\n\t\t\t\t\t\tmargin_top = 5\n\n\t\t\t\t\t\tcooltip_paragraph = {\n\t\t\t\t\t\t\ttext = \"[GetScriptedGui( 'pam_know_doctrine' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'doctrine', DoctrineType.MakeScope ).End )]\"\n\t\t\t\t\t\t}\n\t\t\t\t\t\tcooltip_paragraph = {\n\t\t\t\t\t\t\ttext = \"[RiteCreationWindow.GetDoctrineBlockersAndCost( DoctrineType.Self )]\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tblockoverride \"input_info_text\"\n\t\t\t\t{\n\t\t\t\t\tvisible = \"[And( DoctrineItem.CanPick( TopScope.Self ), GetScriptedGui( 'pam_know_doctrine' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'doctrine', DoctrineType.MakeScope ).End ) )]\"\n\n\t\t\t\t\ttext = \"RITE_CREATION_VIEW_DOCTRINE_CLICK_TO_SELECT\"\n\t\t\t\t\ttooltip = \"[RiteCreationWindow.GetDoctrineCostTooltip( DoctrineType.Self )]\""
+    },
+    {
+      "path": "gui/window_rite_creation.gui",
+      "file_sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "first_line": 1407,
+      "last_line": 1418,
+      "text": "\t\t\t{\n\t\t\t\tvbox = {\n\t\t\t\t\tdatacontext = \"[RiteCreationWindow.GetDoctrineCategoryWindow]\"\n\t\t\t\t\tdatacontext = \"[RiteCreationWindow.GetFaithScope]\"\n\n\t\t\t\t\tlayoutpolicy_horizontal = expanding\n\n\t\t\t\t\tdatamodel = \"[DoctrineCategoryWindow.GetDoctrineItems]\"\n\t\t\t\t\titem = {\n\t\t\t\t\t\tvbox_doctrine_picker_item = {}\n\t\t\t\t\t}\n\t\t\t\t}"
+    },
+    {
+      "path": "gui/window_rite_creation.gui",
+      "file_sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "first_line": 590,
+      "last_line": 640,
+      "text": "\n\t\t\t\t\tspacer = { size = { 0 10 } }\n\n\t\t\t\t\tbutton_primary = {\n\t\t\t\t\t\tname = \"edit_faith\"\n\t\t\t\t\t\tvisible = \"[And( RiteCreationWindow.IsEditing, Not( GetPlayer.GetFaith.IsUnreformed ) )]\"\n\t\t\t\t\t\tsize = { 400 60 }\n\n\t\t\t\t\t\tenabled = \"[And( RiteCreationWindow.CanEditRite, Not( IsObserver ) )]\"\n\t\t\t\t\t\tonclick = \"[RiteCreationWindow.EditRite]\"\n\t\t\t\t\t\ttooltip = \"RITE_CREATION_VIEW_EDIT_TT\"\n\n\t\t\t\t\t\ttext = \"RITE_CREATION_VIEW_EDIT\"\n\t\t\t\t\t\tusing = Font_Size_Medium\n\t\t\t\t\t}\n\n\t\t\t\t\tbutton_primary = {\n\t\t\t\t\t\tname = \"create_faith\"\n\t\t\t\t\t\tvisible = \"[And( RiteCreationWindow.IsCreating, Not( GetPlayer.GetFaith.IsUnreformed ) )]\"\n\t\t\t\t\t\tsize = { 400 60 }\n\n\t\t\t\t\t\tenabled = \"[And( RiteCreationWindow.CanCreateRite, Not( IsObserver ) )]\"\n\t\t\t\t\t\tonclick = \"[RiteCreationWindow.CreateRite]\"\n\t\t\t\t\t\ttooltip = \"RITE_CREATION_VIEW_CREATE_TT\"\n\n\t\t\t\t\t\ttext = \"RITE_CREATION_VIEW_CREATE\"\n\t\t\t\t\t\tusing = Font_Size_Medium\n\t\t\t\t\t}\n\n\t\t\t\t\tbutton_primary = {\n\t\t\t\t\t\tname = \"reform_faith\"\n\t\t\t\t\t\tvisible = \"[GetPlayer.GetFaith.IsUnreformed]\"\n\t\t\t\t\t\tsize = { 400 60 }\n\n\t\t\t\t\t\tenabled = \"[And( RiteCreationWindow.CanCreateRite, Not( IsObserver ) )]\"\n\t\t\t\t\t\tonclick = \"[RiteCreationWindow.CreateRite]\"\n\t\t\t\t\t\ttooltip = \"RITE_REFORM_BUTTON_TOOLTIP\"\n\n\t\t\t\t\t\ttext = \"RITE_CREATION_REFORM\"\n\t\t\t\t\t\tusing = Font_Size_Big\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\t## Name selection\n\t\t\t\tvbox = {\n\t\t\t\t\tname = \"name_selection\"\n\t\t\t\t\tvisible = \"[VariableSystem.HasValue( 'faith_creation_right_view', 'name_selection' )]\"\n\t\t\t\t\tmargin = { 0 15 }\n\t\t\t\t\tspacing = 20\n\n\t\t\t\t\tstate = {"
+    },
+    {
+      "path": "common/scripted_guis/pam_scripted_guis.txt",
+      "file_sha256": "675c90f1b3496543456542f32d465535e5966dbbe92cd2157892a5a93b11fff2",
+      "first_line": 82,
+      "last_line": 92,
+      "text": "pam_know_doctrine = {\n\tscope = character\n\tsaved_scopes = { doctrine }\n\n\tis_valid = {\n\t\tOR = {\n\t\t\tknows_doctrine = scope:doctrine\n\t\t\thas_perk = prophet_perk\n\t\t}\n\t}\n}"
+    }
+  ],
+  "provider_implemented": true,
+  "full_choices_ready": false,
+  "live_verified": false,
+  "unresolved": [
+    "full creation/reform model construction and mode semantics",
+    "CScriptTopScope construction",
+    "Prophet perk component of GUI knowledge gate",
+    "final creation/reform cost and submission legality"
+  ]
+}

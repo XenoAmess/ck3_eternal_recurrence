@@ -1,0 +1,230 @@
+{
+  "schema": "ck3_12002_rite_boolean_parameters_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "provider_constants": {
+    "kBooleanParameterMembershipRva": "0xb9de80",
+    "kParameterTokenKeyRva": "0x3f4f900",
+    "kRiteBooleanParameterOffset": "0x7b8",
+    "kArrayDataOffset": "0x0",
+    "kArrayCountOffset": "0xc"
+  },
+  "complete_native_spans": [
+    {
+      "name": "Faith.has_doctrine_parameter.evaluate",
+      "start_rva": "0x2b29170",
+      "end_exclusive_rva": "0x2b2921e",
+      "sha256": "3142c7117203def1e6b3915c88a4c7ac2d5f1f419eace2ec8a8d9b0ca18b7cfb",
+      "bytes": "48 83 ec 28 48 8b 02 4c 8b c9 66 83 38 0d 75 05 8b 50 08 eb 05 ba ff ff ff ff 48 8b 05 6f 51 1f 03 48 85 c0 74 23 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 20 51 1f 03 48 8b 15 31 51 1f 03 48 85 d2 74 2d 44 8b 80 98 00 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 4c c8 08 48 85 c9 74 06 44 39 41 08 74 07 48 8b 0d 70 e4 13 03 41 8b 41 40 48 8d 54 24 30 48 81 c1 b8 07 00 00 89 44 24 30 e8 67 4c 07 fe 48 83 c4 28 c3"
+    },
+    {
+      "name": "Rite.rite_has_parameter.evaluate",
+      "start_rva": "0x2ae9f70",
+      "end_exclusive_rva": "0x2ae9fde",
+      "sha256": "fec75674e776f9e724576be5579b40b129efc92e0e15d191531214b6895ddcbc",
+      "bytes": "48 83 ec 28 48 8b 02 4c 8b c1 66 83 38 2a 75 05 8b 50 08 eb 05 ba ff ff ff ff 48 8b 05 67 43 23 03 48 85 c0 74 23 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 4c c8 08 48 85 c9 74 05 39 51 08 74 07 48 8b 0d b0 d6 17 03 41 8b 40 40 48 8d 54 24 30 48 81 c1 b8 07 00 00 89 44 24 30 e8 a7 3e 0b fe 48 83 c4 28 c3"
+    },
+    {
+      "name": "sorted_boolean_token_membership.complete_chained_body",
+      "start_rva": "0xb9de80",
+      "end_exclusive_rva": "0xb9df06",
+      "sha256": "8818494d1faa31fde99a5ce904ce39298a460bb3dba9fc9edb0cd63dbc13ef64",
+      "bytes": "48 83 ec 08 4c 8b 11 4c 8b da 4c 63 49 0c 4d 8b c2 48 89 3c 24 49 8b c2 4b 8d 3c 8a 4d 85 c9 7e 34 48 89 5c 24 10 8b 1a 0f 1f 84 00 00 00 00 00 49 8b d1 48 d1 ea 4c 2b ca 41 39 1c 90 4b 8d 0c 88 4c 8b ca 4c 0f 4c c1 49 8b c0 48 85 d2 75 e0 48 8b 5c 24 10 48 3b c7 48 8b 3c 24 74 19 8b 08 41 39 0b 7c 12 49 2b c2 48 c1 f8 02 83 f8 ff 0f 95 c0 48 83 c4 08 c3 b8 ff ff ff ff 3b c0 0f 95 c0 48 83 c4 08 c3"
+    },
+    {
+      "name": "token_to_actual_CString",
+      "start_rva": "0x3f4f900",
+      "end_exclusive_rva": "0x3f4fa24",
+      "sha256": "0826ba5cdc3cae6fb673d399cc98e9b5400b00dd548aea12fe683430a9e7d2ae",
+      "bytes": "48 83 ec 28 4c 63 c9 48 8b 05 da f4 d6 01 ba 02 00 00 00 f0 0f c1 10 41 b8 fe ff ff ff f6 c2 01 74 27 41 8b c8 f0 0f c1 08 0f 1f 80 00 00 00 00 8b 08 f6 c1 01 74 04 f3 90 eb f5 b9 02 00 00 00 f0 0f c1 08 f6 c1 01 75 d9 45 85 c9 78 20 44 3b 48 54 7f 1a 48 8b 48 48 4e 8b 0c c9 f0 44 0f c1 00 4d 85 c9 74 0d 49 8b c1 48 83 c4 28 c3 f0 44 0f c1 00 ba 10 00 00 00 65 48 8b 04 25 58 00 00 00 48 8b 08 8b 04 0a 39 05 97 17 e7 01 7f 0c 48 8d 05 92 17 e7 01 48 83 c4 28 c3 48 8d 0d 82 17 e7 01 e8 fd 40 2d 00 83 3d 76 17 e7 01 ff 75 df 48 c7 05 6d 17 e7 01 00 00 00 00 48 c7 05 7a 17 e7 01 0f 00 00 00 48 c7 05 67 17 e7 01 07 00 00 00 8b 05 a1 ca 7d 00 89 05 4b 17 e7 01 0f b7 05 98 ca 7d 00 66 89 05 41 17 e7 01 0f b6 05 8c ca 7d 00 88 05 36 17 e7 01 c6 05 30 17 e7 01 00 48 8d 0d 8a 7b 48 00 e8 39 45 2d 00 90 48 8d 0d 11 17 e7 01 e8 2c 40 2d 00 48 8d 05 09 17 e7 01 48 83 c4 28 c3"
+    },
+    {
+      "name": "TenetDoctrineContainer.rebuild",
+      "start_rva": "0x2591180",
+      "end_exclusive_rva": "0x2591694",
+      "sha256": "8294eda279d74251b9e6c3863e05ab10915825139ade96a186a714327704eafe",
+      "bytes": "48 89 5c 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8d 6c 24 c0 48 81 ec 40 01 00 00 0f 29 b4 24 30 01 00 00 48 8b f1 48 8d 95 80 00 00 00 48 83 c1 08 e8 d9 3b fa fe 48 8d 4e 20 48 8d 95 88 00 00 00 e8 c9 3b fa fe 4c 8d 7e 50 48 8d 95 90 00 00 00 49 8b cf e8 b6 3b fa fe 45 33 e4 44 89 66 74 44 89 a6 dc 01 00 00 44 89 a6 f4 01 00 00 48 8b 8e 08 02 00 00 8b 86 10 02 00 00 85 c0 7e 20 48 83 c1 04 44 38 21 74 0f 44 88 21 ff 8e 10 02 00 00 8b 86 10 02 00 00 48 83 c1 38 85 c0 7f e4 48 8d 9e 00 02 00 00 48 8b 4b 20 48 8b 01 48 8b 53 08 ff 50 18 84 c0 0f 85 a8 00 00 00 8b 4b 10 85 c9 75 37 e8 e7 90 f6 fe 48 8b f8 48 8b 53 08 48 3b d0 0f 84 8c 00 00 00 48 8b 4b 20 4c 8b 01 4d 8b 48 10 41 b8 08 00 00 00 41 ff d1 48 89 7b 08 44 89 63 14 44 88 63 18 eb 6a f3 0f 10 0d f1 50 46 02 0f 28 c1 f3 0f 5e 43 1c f3 0f 11 85 80 00 00 00 48 8d 15 96 3e ea 01 48 8d 85 80 00 00 00 0f 2f 05 20 52 46 02 48 0f 46 c2 66 0f 6e c1 0f 5b c0 f3 0f 59 00 f3 0f 58 c1 f3 0f 2c c8 33 d2 e8 9a ce 2d fe 8b c8 44 8b 43 14 41 ff c0 ba 01 00 00 00 d3 e2 41 3b d0 7d 0a 8b d0 48 8b cb e8 bb d5 f6 fe 33 d2 41 b8 00 01 00 00 48 8d 4c 24 30 e8 39 5c c9 01 48 8d 4c 24 30 e8 af 14 f6 fe 90 48 8b d0 48 8d 8e 80 00 00 00 e8 ff 3b f6 fe 90 48 8d 4c 24 30 e8 64 1a f6 fe 48 8b 5e 08 48 63 46 14 48 8d 3c c3 48 3b df 0f 84 9d 00 00 00 48 8d 46 68 4c 8b 33 4d 8d be d8 0b 00 00 4d 8d a6 58 08 00 00 49 8d 96 28 07 00 00 48 8b c8 e8 8b 34 ae 00 41 83 7c 24 0c 00 74 1a 4c 89 a5 80 00 00 00 48 8d 8e d0 01 00 00 48 8d 95 80 00 00 00 e8 c9 ef 2e fe 41 83 7f 0c 00 74 1a 4c 89 bd 80 00 00 00 48 8d 8e e8 01 00 00 48 8d 95 80 00 00 00 e8 a8 ef 2e fe 49 8d 96 40 12 00 00 48 8d 8e 80 00 00 00 e8 45 f5 cf 00 41 b0 04 49 8b d6 48 8b ce e8 a7 06 00 00 48 83 c3 08 48 3b df 48 8d 46 68 0f 85 6b ff ff ff 4c 8d 7e 50 49 8b 3f 49 63 47 0c 4c 8d 24 c7 49 3b fc 0f 84 8a 00 00 00 48 8d 46 68 48 8b 1f 4c 8d b3 50 05 00 00 4c 8d bb 90 03 00 00 48 8d 93 88 02 00 00 48 8b c8 e8 da 33 ae 00 41 83 7f 0c 00 74 1a 4c 89 bd 80 00 00 00 48 8d 8e d0 01 00 00 48 8d 95 80 00 00 00 e8 19 ef 2e fe 41 83 7e 0c 00 74 1a 4c 89 b5 80 00 00 00 48 8d 8e e8 01 00 00 48 8d 95 80 00 00 00 e8 f8 ee 2e fe 48 8d 93 f8 09 00 00 48 8d 8e 80 00 00 00 e8 95 f4 cf 00 48 83 c7 08 49 3b fc 48 8d 46 68 0f 85 7a ff ff ff 48 8d 96 28 02 00 00 41 b0 01 48 8b ce e8 22 02 00 00 4c 8b 3d c3 60 6d 03 4c 89 bd 90 00 00 00 4d 85 ff 75 47 48 8d 05 70 bb ef 01 48 89 44 24 20 c7 44 24 28 1e 00 00 00 44 88 7c 24 2c 0f 28 44 24 20 66 0f 7f 44 24 20 45 8d 4f 64 45 33 c0 48 8d 54 24 20 41 8d 4f 01 e8 96 a1 9f 01 4c 8b 3d 77 60 6d 03 4c 89 bd 90 00 00 00 48 8b 9e 48 01 00 00 4c 63 b6 54 01 00 00 49 c1 e6 05 4c 03 f3 49 3b de 0f 84 74 01 00 00 f3 0f 10 35 02 4f 46 02 66 90 8b 7b 10 4c 8b c3 48 83 7b 18 10 72 03 4c 8b 03 33 c0 89 85 80 00 00 00 89 85 88 00 00 00 44 8b cf 48 8d 95 88 00 00 00 48 8d 8d 80 00 00 00 e8 cc cb 9e 01 8b 8d 80 00 00 00 44 8b c9 8b 95 88 00 00 00 44 8b c2 41 83 e0 03 74 1f b9 04 00 00 00 41 2b c8 c1 e1 03 d3 ea 69 c2 51 2d 9e cc c1 c0 0f 69 c8 93 35 87 1b 41 33 c9 33 cf 8b c1 c1 e8 10 33 c1 69 c8 6b ca eb 85 8b c1 c1 e8 0d 33 c1 69 c8 35 ae b2 c2 8b d1 c1 ea 10 33 d1 49 8b cf e8 1a fb cd ff 4c 8b f8 48 63 8e 94 01 00 00 8b 86 90 01 00 00 3b c8 0f 85 97 00 00 00 44 8d 69 01 66 0f 6e c0 0f 5b c0 f3 0f 59 c6 f3 0f 2c c8 45 8b e5 44 3b e9 44 0f 4c e1 48 8b 8e 98 01 00 00 48 8b 01 41 8b d4 48 c1 e2 03 41 b8 08 00 00 00 ff 50 08 48 8b f8 48 63 8e 94 01 00 00 4c 89 3c c8 48 63 86 94 01 00 00 85 c0 7e 16 4c 8b c0 49 c1 e0 03 48 8b 96 88 01 00 00 48 8b cf e8 6c 52 c9 01 48 8b 8e 98 01 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 96 88 01 00 00 ff 50 10 48 89 be 88 01 00 00 44 89 ae 94 01 00 00 44 89 a6 90 01 00 00 eb 11 48 8b 86 88 01 00 00 4c 89 3c c8 ff 86 94 01 00 00 48 83 c3 20 49 3b de 4c 8b bd 90 00 00 00 0f 85 96 fe ff ff 48 8b ce 48 8b 9c 24 98 01 00 00 0f 28 b4 24 30 01 00 00 48 81 c4 40 01 00 00 41 5f 41 5e 41 5d 41 5c 5f 5e 5d e9 1c 0d 00 00"
+    },
+    {
+      "name": "TokenParameter.bool_typed_access",
+      "start_rva": "0x22c80f0",
+      "end_exclusive_rva": "0x22c8194",
+      "sha256": "ba5079cb78b8d9817df7cb984234d72eeeac0873fcdfc1474e2ee809a6e21cd7",
+      "bytes": "48 83 ec 38 83 79 04 00 0f 84 8d 00 00 00 8b 09 e8 fb 77 c8 01 48 83 78 18 10 72 03 48 8b 00 48 89 44 24 40 65 48 8b 04 25 58 00 00 00 ba 58 01 00 00 48 8b 08 80 3c 0a 00 75 59 8b 05 17 3a 9a 03 90 3d a0 86 01 00 7d 4b b9 00 00 01 00 e8 4d 78 c9 01 48 85 c0 74 3c 48 8d 4c 24 40 41 b9 04 00 00 00 48 89 4c 24 28 48 8d 15 79 bd 3f 02 48 8d 0d 32 bd 3f 02 48 89 4c 24 20 48 8b c8 45 8d 41 0f e8 a9 3b 7f fe b8 01 00 00 00 f0 0f c1 05 c4 39 9a 03 32 c0 48 83 c4 38 c3 0f b6 41 08 48 83 c4 38 c3"
+    },
+    {
+      "name": "TokenParameter.number_typed_access",
+      "start_rva": "0x22c81a0",
+      "end_exclusive_rva": "0x22c8259",
+      "sha256": "e43838a749a6e0a13c7c98ad58c8b45166b7f1cdc9dc94a8b20d166ad7f547d4",
+      "bytes": "40 53 48 83 ec 30 83 79 04 01 48 8b da 0f 84 96 00 00 00 8b 09 e8 46 77 c8 01 48 83 78 18 10 72 03 48 8b 00 48 89 44 24 40 65 48 8b 04 25 58 00 00 00 ba 58 01 00 00 48 8b 08 80 3c 0a 00 75 59 8b 05 62 39 9a 03 90 3d a0 86 01 00 7d 4b b9 00 00 01 00 e8 98 77 c9 01 48 85 c0 74 3c 48 8d 4c 24 40 41 b9 04 00 00 00 48 89 4c 24 28 48 8d 15 c4 bc 3f 02 48 8d 0d 15 bd 3f 02 48 89 4c 24 20 48 8b c8 45 8d 41 1b e8 f4 3a 7f fe b8 01 00 00 00 f0 0f c1 05 0f 39 9a 03 48 c7 03 00 00 00 00 48 8b c3 48 83 c4 30 5b c3 48 8b 41 08 48 89 02 48 8b c3 48 83 c4 30 5b c3"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "rva": "0x2b291cc",
+      "bytes": "44 8b 80 98 00 00 00",
+      "instruction": "mov r8d, dword ptr [rax + 0x98]"
+    },
+    {
+      "rva": "0x2b29209",
+      "bytes": "48 81 c1 b8 07 00 00",
+      "instruction": "add rcx, 0x7b8"
+    },
+    {
+      "rva": "0x2b29214",
+      "bytes": "e8 67 4c 07 fe",
+      "instruction": "call 0xb9de80"
+    },
+    {
+      "rva": "0x2ae9fc9",
+      "bytes": "48 81 c1 b8 07 00 00",
+      "instruction": "add rcx, 0x7b8"
+    },
+    {
+      "rva": "0x2ae9fd4",
+      "bytes": "e8 a7 3e 0b fe",
+      "instruction": "call 0xb9de80"
+    },
+    {
+      "rva": "0xb9de84",
+      "bytes": "4c 8b 11",
+      "instruction": "mov r10, qword ptr [rcx]"
+    },
+    {
+      "rva": "0xb9de8a",
+      "bytes": "4c 63 49 0c",
+      "instruction": "movsxd r9, dword ptr [rcx + 0xc]"
+    },
+    {
+      "rva": "0xb9dea6",
+      "bytes": "8b 1a",
+      "instruction": "mov ebx, dword ptr [rdx]"
+    },
+    {
+      "rva": "0xb9deb9",
+      "bytes": "41 39 1c 90",
+      "instruction": "cmp dword ptr [r8 + rdx*4], ebx"
+    },
+    {
+      "rva": "0xb9dee8",
+      "bytes": "48 c1 f8 02",
+      "instruction": "sar rax, 2"
+    },
+    {
+      "rva": "0x3f4f94e",
+      "bytes": "44 3b 48 54",
+      "instruction": "cmp r9d, dword ptr [rax + 0x54]"
+    },
+    {
+      "rva": "0x3f4f954",
+      "bytes": "48 8b 48 48",
+      "instruction": "mov rcx, qword ptr [rax + 0x48]"
+    },
+    {
+      "rva": "0x3f4f958",
+      "bytes": "4e 8b 0c c9",
+      "instruction": "mov r9, qword ptr [rcx + r9*8]"
+    },
+    {
+      "rva": "0x25911dd",
+      "bytes": "44 89 66 74",
+      "instruction": "mov dword ptr [rsi + 0x74], r12d"
+    },
+    {
+      "rva": "0x2591331",
+      "bytes": "48 8d 46 68",
+      "instruction": "lea rax, [rsi + 0x68]"
+    },
+    {
+      "rva": "0x2591346",
+      "bytes": "49 8d 96 28 07 00 00",
+      "instruction": "lea rdx, [r14 + 0x728]"
+    },
+    {
+      "rva": "0x2591350",
+      "bytes": "e8 8b 34 ae 00",
+      "instruction": "call 0x30747e0"
+    },
+    {
+      "rva": "0x25913d1",
+      "bytes": "49 63 47 0c",
+      "instruction": "movsxd rax, dword ptr [r15 + 0xc]"
+    },
+    {
+      "rva": "0x25913f7",
+      "bytes": "48 8d 93 88 02 00 00",
+      "instruction": "lea rdx, [rbx + 0x288]"
+    },
+    {
+      "rva": "0x2591401",
+      "bytes": "e8 da 33 ae 00",
+      "instruction": "call 0x30747e0"
+    },
+    {
+      "rva": "0x22c80f4",
+      "bytes": "83 79 04 00",
+      "instruction": "cmp dword ptr [rcx + 4], 0"
+    },
+    {
+      "rva": "0x22c818b",
+      "bytes": "0f b6 41 08",
+      "instruction": "movzx eax, byte ptr [rcx + 8]"
+    },
+    {
+      "rva": "0x22c81a6",
+      "bytes": "83 79 04 01",
+      "instruction": "cmp dword ptr [rcx + 4], 1"
+    },
+    {
+      "rva": "0x22c8249",
+      "bytes": "48 8b 41 08",
+      "instruction": "mov rax, qword ptr [rcx + 8]"
+    }
+  ],
+  "class_rtti": [
+    {
+      "class": "CHasDoctrineParameterTrigger",
+      "type_descriptor_rva": "0x5a49908"
+    },
+    {
+      "class": "CRiteHasParameterTrigger",
+      "type_descriptor_rva": "0x5a35b30"
+    },
+    {
+      "class": "CTenetDoctrineContainer",
+      "type_descriptor_rva": "0x57a5b10"
+    },
+    {
+      "class": "CTenetTypeDatabase",
+      "type_descriptor_rva": "0x55d1d60"
+    },
+    {
+      "class": "CDoctrineTypeDatabase",
+      "type_descriptor_rva": "0x55d1d90"
+    }
+  ],
+  "trigger_vtables": [
+    {
+      "name": "Faith.has_doctrine_parameter",
+      "vtable_rva": "0x47ba968",
+      "slot": 25,
+      "evaluate_rva": "0x2b29170"
+    },
+    {
+      "name": "Rite.rite_has_parameter",
+      "vtable_rva": "0x4785288",
+      "slot": 25,
+      "evaluate_rva": "0x2ae9f70"
+    }
+  ],
+  "known": "Faith parameter scope reads main Rite; actor Rite source kept separately",
+  "unresolved": [
+    "numeric effective parameter merge/evaluation",
+    "Core/personal Tenet row production reader"
+  ]
+}
