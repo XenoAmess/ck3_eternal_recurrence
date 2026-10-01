@@ -799,3 +799,9 @@ flowchart TD
   clean R0032 pair are still required before any terminal action or GEN-034-D
   closure is claimed. No public MCP wire, native ABI, or `open_kaishek` shape
   changed (`NO-CODE-CHANGE`). G2 remains `1/8`; GEN-034 remains `3/4`.
+
+## 2026-10-01 13:57:06：G2 其它原生施工入口
+
+按冻结`0acff9b3`，新版nonwar集成不是旧native能力的全量移植。完整议会候选／任命、派系rows与gift、war cash、Sway／realm law／Feast、GOV source binding仍有实际旧版或未闭合输入；普通campaign高层目标也未接继承消费。[G2八项后台施工图](../autonomous-agent-progress/g2-offline-work-map-2026-10-01.md)给出对应现存原生专题、生产源码、最小离线交付和必须实机的后置。
+
+新包先沿该专题冻结1.20原生树／EXE／ABI再接同一MCP；不可仅改版本或重写已有DTO／consumer。本次仅读现有Git源，未做新增原生验证或CK3操作，原已交付static-ready与旧live边界保持。

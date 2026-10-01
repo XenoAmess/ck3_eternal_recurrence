@@ -1,5 +1,11 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-10-01 13:57:06：后台缺口仍存在的范围更正
+
+13:00收口仅覆盖当批已迁模块，不能扩成G2全体“没有后台可做”。冻结`0acff9b3`的实际源证据确认：议会候选／四gate／assign仍旧ABI，派系生产reader仍count-only，war cash仍无runtime producer且multi-war未聚合，Sway／law／Feast仍需1.20原生迁移，普通campaign高层目标未接checkpoint／继承、GOV旧44-key profile不同于新版44-key。见[逐项施工图](g2-offline-work-map-2026-10-01.md)。
+
+这些是源码缺口，可先离线推进到static-ready；不是新增live证据或解除owner/date hold。已经迁完LIFE／建设／FAMILY／campaign状态／event合同和JOINT两个bug保持既有证据。G2、Robert和长期资格分母不改，本次仅核对及计划，没有新provider完成声明。
+
 ## 2026-10-01 13:00：非战争后台 blocker 的最终闭合与实机剩余
 
 本节追加 11:56 之后的实际结果，历史 pending/RED 原文保留。provider source `adb19c92` 已冻结；当前生产合同修复 source `6878392841ed93328159a839999e0c9df44185ee` 的 [exact 官方 CI #36817339144](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36817339144) **SUCCESS**。adb 的 Vivhite frozen localization CRLF/LF 字节身份 RED 经最小修复闭合，JSON 内容未改，不抹去原失败。完整 native/profile/pair pins 与实际回执见[原生索引](../ck3-native-ai/README.md)及[runner 接手](../handover/2026-10-01-nonwar-12002-offline-runner.md)。
