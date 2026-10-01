@@ -1,0 +1,67 @@
+{
+  "schema": "xar.jd11.a15.original-ui-frame/v1",
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-29-trace-finish-first-sdk\\paused-pair-controller\\before-panel.png",
+    "bytes": 4772252,
+    "sha256": "68A53FF2BB4A16A920D027B5F5CE41B53499E0D876C09CA6AD3B45A40A214F5D"
+  },
+  "captured_at": "2026-10-01T01:42:28.313918+00:00",
+  "image_size": [
+    2560,
+    1440
+  ],
+  "before": {
+    "observed_at": "2026-10-01T01:42:27.542966+00:00",
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "pointer": [
+      1280,
+      1178
+    ],
+    "focus": {
+      "foreground_hwnd": 24905858,
+      "foreground_pid": 18060,
+      "foreground_thread_id": 12660,
+      "focus_hwnd": 24905858,
+      "title": "Crusader Kings III"
+    },
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "expected_ck3_pid": 18060
+  },
+  "after": {
+    "observed_at": "2026-10-01T01:42:28.283404+00:00",
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "pointer": [
+      1280,
+      1178
+    ],
+    "focus": {
+      "foreground_hwnd": 24905858,
+      "foreground_pid": 18060,
+      "foreground_thread_id": 12660,
+      "focus_hwnd": 24905858,
+      "title": "Crusader Kings III"
+    },
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "expected_ck3_pid": 18060
+  },
+  "current_run_only": true,
+  "foreground_required_for_input": true
+}

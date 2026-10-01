@@ -1,0 +1,62 @@
+[
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\paused_join_pair.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\consumer\\paused_join_pair.py",
+    "bytes": 59070,
+    "sha256": "D1AE62A3258CE99AAA187B935EC679EF0D727A151AEE2AC584AC7E14783C20F3"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\run_paused_join_sdk.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\consumer\\run_paused_join_sdk.py",
+    "bytes": 7042,
+    "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry_reentry.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\bootstrap_profile.py",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\bootstrap_profile.py",
+    "bytes": 6530,
+    "sha256": "5A79EF05563372E754C0649BA6C7B140675F0FC340CD46C323DB6D653F56316B"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\variant-freeze.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\variant-freeze.json",
+    "bytes": 6694,
+    "sha256": "4674FD1C25F81C9A713500C738038AF3DE1B041C5A141D6BCA0052FE1947CBED"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\ready-report-a01.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\ready-report-a01.json",
+    "bytes": 6677,
+    "sha256": "5BB15DEECB1D6AD977DDD7EC5D3071DE7B10BB8CD901FBD8C326B335A00289BE"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\R0134-precise-diagnosis-a01.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\R0134-precise-diagnosis-a01.json",
+    "bytes": 5455,
+    "sha256": "8E775D492D7785F5170BCE2B6A88398947B1E445C0D1F8C7E85F958BB13C1A27"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\R0134-diagnosis-a01.md",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\R0134-diagnosis-a01.md",
+    "bytes": 1613,
+    "sha256": "8204478751E2C7769CF598999D8E1E0E847A28CE4796334655ED2EDF7DDD282C"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-independent-review-other-a01\\independent-review.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\independent-review.json",
+    "bytes": 25499,
+    "sha256": "E50C2A3D71B433016F31EF3D9E1847130C263105C1D7A89E61EB4A5CAFDE4A6B"
+  },
+  {
+    "source": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-R0135-readonly-validation-attempt-01\\R0135-readonly-failure-facts-a01.json",
+    "copy": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\reinforcement\\trace-finish-consumer-a01\\R0135-readonly-failure-facts-a01.json",
+    "bytes": 3638,
+    "sha256": "F83E28C47227CEB13E85AFB03CB070EC986D421FC4B5FB699D110C6632EDF4A1"
+  }
+]

@@ -1,0 +1,121 @@
+{
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "source_checkout": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\ui-controller-config.frozen-trace-finish-first-a01.json",
+    "bytes": 14351,
+    "sha256": "DCAB11C4B54C9A5F061381C903DF519DAFDBEB0DB127C027F900AE1F85FB33F3"
+  },
+  "consumer_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\hwnd_wgc_frame.py",
+      "bytes": 9830,
+      "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\native_locale_probe.py",
+      "bytes": 1428,
+      "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\paused_join_pair.py",
+      "bytes": 59070,
+      "sha256": "D1AE62A3258CE99AAA187B935EC679EF0D727A151AEE2AC584AC7E14783C20F3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\README.md",
+      "bytes": 9444,
+      "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\run_paused_join_sdk.py",
+      "bytes": 7042,
+      "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\verify_offline_entry.py",
+      "bytes": 19267,
+      "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+    }
+  ],
+  "helper_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+      "bytes": 29587,
+      "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+      "bytes": 13247,
+      "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+      "bytes": 21461,
+      "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\ui-controller-config.frozen-center-diag-a01.json",
+      "bytes": 10178,
+      "sha256": "04EBDB33D779442075B1F7018078F25648B38459C99B17AEAB48F786CF8757E4"
+    }
+  ],
+  "no_launch_runner": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\run_no_launch_candidate.py",
+    "bytes": 12725,
+    "sha256": "F37D228B3005F74A6C6B313F950FB1AA65BED47A246A24798AAAEB089E5E2263"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\bootstrap_profile.py",
+    "bytes": 6530,
+    "sha256": "5A79EF05563372E754C0649BA6C7B140675F0FC340CD46C323DB6D653F56316B"
+  },
+  "runtime_entry": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  "runtime_bindings": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\runtime-input-bindings.json",
+    "bytes": 2657,
+    "sha256": "91DB26AC7EAC3295CAB7687DE8A30FAA6DC0EDB2C14D0DEFF3D47C8D2398D643"
+  },
+  "layout_consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\paused_join_pair.py",
+    "bytes": 59070,
+    "sha256": "D1AE62A3258CE99AAA187B935EC679EF0D727A151AEE2AC584AC7E14783C20F3"
+  },
+  "scope_contract": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\scoped-review-contract-a01.json",
+    "bytes": 2461,
+    "sha256": "FA8E90AB85F262ACEAD640548F3E4CA3BBE5EB399B1E2462298959DF2837FD74"
+  },
+  "native_candidate_manifest": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+    "bytes": 7243,
+    "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+  },
+  "native_pair": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+    "bytes": 851,
+    "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+  },
+  "targeted_order_offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\finish-first-offline-verification-a01.json",
+    "bytes": 9469,
+    "sha256": "37758B013D02736DA428CB3BAF0B88AA1B712A311E53CF62CD6E3205BE531027"
+  },
+  "historical_scope_predecessor": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\variant-freeze.json",
+    "bytes": 6262,
+    "sha256": "C38AEC1C5358761B87672DCFE7FCD1989B12EEC5500BA8168293EE35D16387C9"
+  },
+  "source_DLL_or_stock_GUI_changed": false,
+  "change_scope": "strict snapshot-only pre-finish probe; original after sample control/pixels, date action and cleanup unchanged",
+  "run_controller_AST_except_probe_after_exactly_unchanged": true,
+  "actual_new_scoped_pair_width_evidence": "NOT_OBSERVED",
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "numeric_UI_actor_army_identity_claimed": false,
+  "new_native_game_screen_inputs_by_freezer": false
+}
