@@ -1,0 +1,408 @@
+{
+  "boundary": "Synthetic current contexts and snapshot numbers. No real after-state or command receipt is supplied.",
+  "cases": [
+    {
+      "bundle": {
+        "ck3_build": "1.20.0.2",
+        "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "context": {
+          "current_event_instance_id": 23,
+          "date_raw": 53367864,
+          "event_definition_key": "epidemic_events.0110",
+          "options": [
+            {
+              "cancel": false,
+              "enabled": true,
+              "fallback": false,
+              "native_option_index": 1,
+              "rendered_index": 0,
+              "shown": true
+            },
+            {
+              "cancel": false,
+              "enabled": true,
+              "fallback": false,
+              "native_option_index": 2,
+              "rendered_index": 1,
+              "shown": true
+            }
+          ],
+          "provenance": {
+            "backend_id": "ck3-1.20.0.2-native-event-window-v1"
+          },
+          "root_scope": {
+            "raw_type_index": 4,
+            "status": "available",
+            "type_key": "character",
+            "typed_identity": {
+              "character_id": 36403,
+              "kind": "character",
+              "status": "available"
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "epidemic",
+              "scope": {
+                "status": "available",
+                "type_key": "epidemic",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "new_preferred_capital",
+              "scope": {
+                "status": "available",
+                "type_key": "landed_title",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            }
+          ],
+          "schema": "current-event-window-context-v1",
+          "schema_version": 1,
+          "snapshot_revision": 11,
+          "status": "available",
+          "window_match_count": 1
+        },
+        "played_character_id": 36403,
+        "snapshot": {
+          "active_event": {
+            "instance_id": 23,
+            "option_count": 3
+          },
+          "date_raw": 53367864,
+          "native_revision": 11,
+          "played_character": {
+            "character_id": 36403,
+            "stress_points": 42
+          },
+          "revision": 11,
+          "snapshot_id": "synthetic:12002:23"
+        },
+        "snapshot_option_count": 3
+      },
+      "case_id": "0110-optional-capital",
+      "expected_material_reason": "material_postcondition_not_supported",
+      "expected_native_option_index": 2
+    },
+    {
+      "bundle": {
+        "ck3_build": "1.20.0.2",
+        "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "context": {
+          "current_event_instance_id": 23,
+          "date_raw": 53367864,
+          "event_definition_key": "birth.1003",
+          "options": [
+            {
+              "cancel": false,
+              "enabled": true,
+              "fallback": false,
+              "native_option_index": 0,
+              "rendered_index": 0,
+              "shown": true
+            },
+            {
+              "cancel": false,
+              "enabled": true,
+              "fallback": false,
+              "native_option_index": 1,
+              "rendered_index": 1,
+              "shown": true
+            }
+          ],
+          "provenance": {
+            "backend_id": "ck3-1.20.0.2-native-event-window-v1"
+          },
+          "root_scope": {
+            "raw_type_index": 4,
+            "status": "available",
+            "type_key": "character",
+            "typed_identity": {
+              "character_id": 36403,
+              "kind": "character",
+              "status": "available"
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "child",
+              "scope": {
+                "raw_type_index": 4,
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                  "character_id": 42000,
+                  "kind": "character",
+                  "status": "available"
+                }
+              }
+            },
+            {
+              "name": "child_2",
+              "scope": {
+                "raw_type_index": 4,
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                  "character_id": 42001,
+                  "kind": "character",
+                  "status": "available"
+                }
+              }
+            },
+            {
+              "name": "father",
+              "scope": {
+                "raw_type_index": 4,
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                  "character_id": 36403,
+                  "kind": "character",
+                  "status": "available"
+                }
+              }
+            },
+            {
+              "name": "real_father",
+              "scope": {
+                "raw_type_index": 4,
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                  "character_id": 36403,
+                  "kind": "character",
+                  "status": "available"
+                }
+              }
+            },
+            {
+              "name": "mother",
+              "scope": {
+                "raw_type_index": 4,
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                  "character_id": 41000,
+                  "kind": "character",
+                  "status": "available"
+                }
+              }
+            },
+            {
+              "name": "is_bastard",
+              "scope": {
+                "status": "available",
+                "type_key": "boolean",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "is_child_of_concubine",
+              "scope": {
+                "status": "available",
+                "type_key": "boolean",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "matrilineal",
+              "scope": {
+                "status": "available",
+                "type_key": "boolean",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            }
+          ],
+          "schema": "current-event-window-context-v1",
+          "schema_version": 1,
+          "snapshot_revision": 11,
+          "status": "available",
+          "window_match_count": 1
+        },
+        "played_character_id": 36403,
+        "snapshot": {
+          "active_event": {
+            "instance_id": 23,
+            "option_count": 2
+          },
+          "date_raw": 53367864,
+          "native_revision": 11,
+          "played_character": {
+            "character_id": 36403,
+            "stress_points": 42
+          },
+          "revision": 11,
+          "snapshot_id": "synthetic:12002:23"
+        },
+        "snapshot_option_count": 2
+      },
+      "case_id": "birth-twin-suppressed-bastardy",
+      "expected_material_reason": "material_postcondition_not_supported",
+      "expected_native_option_index": 0
+    },
+    {
+      "bundle": {
+        "ck3_build": "1.20.0.2",
+        "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+        "context": {
+          "current_event_instance_id": 23,
+          "date_raw": 53367864,
+          "event_definition_key": "culture_notification.1111",
+          "options": [
+            {
+              "cancel": false,
+              "enabled": true,
+              "fallback": false,
+              "native_option_index": 1,
+              "rendered_index": 0,
+              "shown": true
+            }
+          ],
+          "provenance": {
+            "backend_id": "ck3-1.20.0.2-native-event-window-v1"
+          },
+          "root_scope": {
+            "raw_type_index": 4,
+            "status": "available",
+            "type_key": "character",
+            "typed_identity": {
+              "character_id": 36403,
+              "kind": "character",
+              "status": "available"
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "founder",
+              "scope": {
+                "raw_type_index": 4,
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                  "character_id": 41000,
+                  "kind": "character",
+                  "status": "available"
+                }
+              }
+            },
+            {
+              "name": "parent_culture_1",
+              "scope": {
+                "status": "available",
+                "type_key": "culture",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "new_culture",
+              "scope": {
+                "status": "available",
+                "type_key": "culture",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "parent_1",
+              "scope": {
+                "status": "available",
+                "type_key": "culture",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "ethos",
+              "scope": {
+                "status": "available",
+                "type_key": "flag",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "new_tradition",
+              "scope": {
+                "raw_type_index": 45,
+                "status": "available",
+                "type_key": "culture_tradition",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            },
+            {
+              "name": "lost_tradition",
+              "scope": {
+                "raw_type_index": 45,
+                "status": "available",
+                "type_key": "culture_tradition",
+                "typed_identity": {
+                  "kind": "opaque",
+                  "status": "unavailable"
+                }
+              }
+            }
+          ],
+          "schema": "current-event-window-context-v1",
+          "schema_version": 1,
+          "snapshot_revision": 11,
+          "status": "available",
+          "window_match_count": 1
+        },
+        "played_character_id": 36403,
+        "snapshot": {
+          "active_event": {
+            "instance_id": 23,
+            "option_count": 2
+          },
+          "date_raw": 53367864,
+          "native_revision": 11,
+          "played_character": {
+            "character_id": 36403,
+            "stress_points": 42
+          },
+          "revision": 11,
+          "snapshot_id": "synthetic:12002:23"
+        },
+        "snapshot_option_count": 2
+      },
+      "case_id": "culture-both-traditions-opaque",
+      "expected_material_reason": "material_postcondition_not_supported",
+      "expected_native_option_index": 1
+    }
+  ],
+  "ck3_build": "1.20.0.2",
+  "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "evidence_kind": "deterministic-source-derived-projection",
+  "new_live_evidence": false,
+  "schema": "xar.ck3.nonwar-event-migration-offline-fixtures",
+  "schema_version": 1
+}

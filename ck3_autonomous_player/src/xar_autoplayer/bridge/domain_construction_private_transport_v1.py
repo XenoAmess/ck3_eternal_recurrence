@@ -18,6 +18,8 @@ from ..environment import sha256_file, write_json_atomic
 from ..runtime import _process_identity
 from .driver import BridgeUnavailableError, StepPostconditionError
 from .construction_economic_value_v1 import authored_monthly_income_hundredths
+from .nonwar_private_build import private_native_build_identity, private_native_provenance
+from .version_identity import CK3_11906
 
 
 QUERY_NATIVE = "g2_player_construction_view_probe_v1"
@@ -110,7 +112,9 @@ def _send(driver: object, step: str, revision: int, request_id: str) -> dict[str
     return dict(frame["result"])
 
 
-def _candidate(world: Mapping[str, object]) -> dict[str, object] | None:
+def _candidate(
+    world: Mapping[str, object], *, exact_ck3_build: str = "1.19.0.6",
+) -> dict[str, object] | None:
     gold = world.get("player_gold_raw")
     active = world.get("active_constructions")
     samples = world.get("legal_samples")
@@ -132,7 +136,8 @@ def _candidate(world: Mapping[str, object]) -> dict[str, object] | None:
                 and (row["barony_title_id"], row["province_id"]) in idle
                 and costs[0] < gold and gold - costs[0] >= RESERVE_RAW):
             continue
-        income = authored_monthly_income_hundredths(row.get("building_key"))
+        income = authored_monthly_income_hundredths(
+            row.get("building_key"), exact_ck3_build=exact_ck3_build)
         if income is None or income <= 0:
             continue
         choices.append((-income, costs[0], *(row[k] for k in TUPLE_KEYS),
@@ -155,6 +160,9 @@ def query_construction_private(driver: object, *, expected_revision: int,
                         material_receipt=material_receipt,
                         wartime_observation=wartime_observation)
     revision = starting["native_revision"]
+    build = private_native_build_identity(starting)
+    provenance = ({} if build == CK3_11906
+                  else private_native_provenance(starting))
     request_id = f"construction-read-{uuid.uuid4().hex}"
     result = _send(driver, QUERY_NATIVE, revision, request_id)
     probe = result.get("private_probe")
@@ -188,7 +196,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
             and ending.get("snapshot_id") == starting["snapshot_id"]
             and ending.get("revision") == starting["revision"]
             and ending.get("episode_run_id") == starting["episode_run_id"]):
-        return {"status": "source_red", "native_result": result,
+        return {**provenance, "status": "source_red", "native_result": result,
                 "native_query_request_id": request_id,
                 "source_frame": {"snapshot_id": starting["snapshot_id"],
                                  "revision": starting["revision"],
@@ -203,7 +211,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
         # A submitted building can remove every legal new candidate.  Its
         # independent active-construction row is material evidence even when
         # this frame has no new cost sample; never use this mode to submit.
-        return {"status": "material_source", "world": dict(world),
+        return {**provenance, "status": "material_source", "world": dict(world),
                 "native_query_request_id": request_id,
                 "proof_epoch": probe["proof_epoch"],
                 "source_frame": {"snapshot_id": starting["snapshot_id"],
@@ -212,10 +220,10 @@ def query_construction_private(driver: object, *, expected_revision: int,
                                  "date_raw": starting["date_raw"],
                                  "episode_run_id": starting["episode_run_id"],
                                  "actor_character_id": starting["played_character"]["character_id"]}}
-    selected = _candidate(world)
+    selected = _candidate(world, exact_ck3_build=build.game_version)
     if selected is None:
         covered = world.get("positive_income_coverage_complete") is True
-        return {"status": ("no_legal_budgeted_building" if covered
+        return {**provenance, "status": ("no_legal_budgeted_building" if covered
                            else "evidence_insufficient"),
                 **({} if covered else {
                     "reason": "positive_income_candidate_coverage_incomplete"}),
@@ -227,7 +235,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
             "date_raw": starting["date_raw"],
             "episode_run_id": starting["episode_run_id"],
             "actor_character_id": starting["played_character"]["character_id"]}}
-    return {"status": "selected", "candidate": selected, "world": dict(world),
+    return {**provenance, "status": "selected", "candidate": selected, "world": dict(world),
             "native_query_request_id": request_id,
             "proof_epoch": probe["proof_epoch"],
             "source_frame": {"snapshot_id": starting["snapshot_id"],

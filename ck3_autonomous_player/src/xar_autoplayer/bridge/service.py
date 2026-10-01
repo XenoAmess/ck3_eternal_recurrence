@@ -7,6 +7,8 @@ from collections.abc import Callable
 from pathlib import Path
 import uuid
 
+from .version_identity import require_exact_native_build
+
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
@@ -89,6 +91,7 @@ from .battle_reinforcement_assignment_contract import (
     query_battle_reinforcement_assignment_v1_step,
 )
 from .campaign_root_context_contract import (
+    is_baseline_campaign_root_context_12002,
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
@@ -270,8 +273,6 @@ from .zhongguo_scoreboard_action_contract import (
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
-    TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256,
-    TITLE_MAP_NAVIGATION_V1_GAME_VERSION,
     normalize_title_map_navigation_v1_binding,
     normalize_title_map_navigation_v1_result,
     validate_landed_title_key,
@@ -3749,6 +3750,10 @@ class GameplayBridgeService:
             "unavailable_reason",
             "provenance",
         }
+        if isinstance(result, dict) and is_baseline_campaign_root_context_12002(
+            result.get("campaign_root_context")
+        ):
+            mirror_keys &= set(result["campaign_root_context"])
         required_result_keys = {
             "step",
             "accepted",
@@ -8702,15 +8707,14 @@ class GameplayBridgeService:
             if isinstance(hello, dict)
             else None
         )
-        if (
-            observed_version != TITLE_MAP_NAVIGATION_V1_GAME_VERSION
-            or not isinstance(observed_sha256, str)
-            or observed_sha256.upper()
-            != TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256
-        ):
+        try:
+            source_build = require_exact_native_build(
+                observed_version, observed_sha256
+            )
+        except ValueError as error:
             raise BridgeUnavailableError(
                 "title-map navigation build mirror disagrees with bridge hello"
-            )
+            ) from error
         result = typed_command(key, expected_revision=expected_revision)
         try:
             normalized = normalize_title_map_navigation_v1_result(
@@ -8722,6 +8726,15 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 f"title-map navigation result is malformed: {error}"
             ) from error
+        result_source = normalized["source"]
+        if (
+            result_source["game_version"] != source_build.game_version
+            or result_source["executable_sha256"]
+            != source_build.executable_sha256
+        ):
+            raise BridgeUnavailableError(
+                "title-map navigation build mirror disagrees with bridge hello"
+            )
         current = self.snapshot()
         try:
             current_binding = _title_map_navigation_binding(current)

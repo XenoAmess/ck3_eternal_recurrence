@@ -11,6 +11,11 @@ from __future__ import annotations
 import uuid
 
 from .driver import BridgeUnavailableError
+from .nonwar_private_build import (
+    private_native_build_identity, private_native_provenance,
+    private_native_readback_matches,
+)
+from .version_identity import CK3_11906
 
 
 STEP = "query-first-heir-candidate-alliance-projection-v1-private"
@@ -59,6 +64,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
         raise BridgeUnavailableError("requested candidate was not uniquely final-legal")
 
     before = driver.take_snapshot()
+    if (private_native_build_identity(before) != CK3_11906
+            and not private_native_readback_matches(before, legality)):
+        raise BridgeUnavailableError("marriage projection belongs to another native build")
     played = before.get("played_character")
     played_id = played.get("character_id") if isinstance(played, dict) else None
     if (
@@ -309,7 +317,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
         raise BridgeUnavailableError("marriage projection frame changed before consumption")
     return {
         "schema": SCHEMA, "schema_version": 1,
-        "exact_ck3_build": "1.19.0.6", "read_only": True,
+        **private_native_provenance(before), "read_only": True,
         "advertised": False, "status": result["status"],
         "native_revision": legality["native_revision"],
         "legality_query_sequence": legality["query_sequence"],

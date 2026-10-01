@@ -8,6 +8,7 @@ from typing import Mapping
 
 from .environment import write_json_atomic
 from .bridge.declaration_contract import is_native_declaration_step
+from .bridge.nonwar_private_build import private_native_readback_matches
 from .bridge.domain_construction_private_transport_v1 import _identity as bridge_process_identity
 from .bridge.observed_heir_marriage_private_action_v1 import (
     ALLIANCE_RESULT_STEP, RESULT_STEP, SCHEMA, SUBMIT_STEP,
@@ -710,7 +711,7 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
             or diagnostic.get("legality_query_sequence") != legality.get("query_sequence")
             or diagnostic.get("date_raw") != snapshot.get("date_raw")
             or diagnostic.get("episode_run_id") != snapshot.get("episode_run_id")
-            or legality.get("exact_ck3_build") != "1.19.0.6"
+            or not private_native_readback_matches(snapshot, legality)
             or diagnostic.get("exact_ck3_build") != legality.get("exact_ck3_build")
             or diagnostic.get("source_projection_schema") !=
                 CANDIDATE_PROJECTION_SCHEMA

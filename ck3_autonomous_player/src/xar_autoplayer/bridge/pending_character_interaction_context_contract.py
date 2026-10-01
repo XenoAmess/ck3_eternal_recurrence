@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Final
 
+from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
+
 
 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY: Final = (
     "game.command.query-pending-character-interaction-context-v1"
@@ -192,6 +194,28 @@ _PROVENANCE_VALUES: Final = {
     "war_white_peace_special_vtable_rva": "0x428EF88",
     "war_defeat_special_vtable_rva": "0x428EF18",
 }
+_PROVENANCE_BY_BUILD: Final = {
+    CK3_11906.game_version: _PROVENANCE_VALUES,
+    CK3_12002.game_version: {
+        "backend_id": CK3_12002.backend_id("pending-character-interaction-context-v1"),
+        "pending_storage_slot_rva": "0x5D1EC80",
+        "character_storage_slot_rva": "0x5C67568",
+        "expiration_days_rva": "0x5C68CFC",
+        "local_routing_predicate_rva": "0x136D1B0",
+        "reply_validator_rva": "0x2968490",
+        "auto_accept_trigger_evaluator_rva": "0x372DF30",
+        "cost_evaluator_rva": "0x310CEE0",
+        "common_war_relation_rva": "0x28BC270",
+        "target_type_registry_getter_rva": "0x3795A80",
+        "target_type_registry_rva": "0x54F2AF0",
+        "script_identifier_name_rva": "0x3F4F900",
+        "reply_primary_vtable_rva": "0x448BC18",
+        "reply_secondary_vtable_rva": "0x448BBE8",
+        "war_victory_special_vtable_rva": "0x46C3AA0",
+        "war_white_peace_special_vtable_rva": "0x46C3B10",
+        "war_defeat_special_vtable_rva": "0x46C3B80",
+    },
+}
 _SPECIAL_WAR_UNAVAILABLE_REASONS: Final = {
     "special_war_binding_not_applicable",
     "special_interaction_subtype_opaque",
@@ -348,23 +372,21 @@ def _reason(value: object, name: str) -> str:
 
 def _normalize_build(value: object) -> dict[str, str]:
     build = _exact_object(value, _BUILD_FIELDS, "build")
-    if build != {
-        "version": PENDING_CHARACTER_INTERACTION_CONTEXT_V1_GAME_VERSION,
-        "exe_sha256": (
-            PENDING_CHARACTER_INTERACTION_CONTEXT_V1_EXECUTABLE_SHA256
-        ),
-    }:
-        raise ValueError("build does not match the frozen exact build")
-    return dict(build)
+    try:
+        identity = require_exact_native_build(build.get("version"), build.get("exe_sha256"))
+    except ValueError as error:
+        raise ValueError("build does not match the frozen exact build") from error
+    return {"version": identity.game_version, "exe_sha256": identity.executable_sha256}
 
 
-def _normalize_provenance(value: object) -> dict[str, str]:
+def _normalize_provenance(value: object, *, game_version: str) -> dict[str, str]:
     provenance = _exact_object(
         value, set(_PROVENANCE_VALUES), "provenance"
     )
-    if provenance != _PROVENANCE_VALUES:
+    expected = _PROVENANCE_BY_BUILD[game_version]
+    if provenance != expected:
         raise ValueError("provenance does not match the frozen exact build")
-    return dict(_PROVENANCE_VALUES)
+    return dict(expected)
 
 
 def _normalize_legality(
@@ -1086,7 +1108,9 @@ def normalize_pending_character_interaction_context_v1(
     if pending_id != expected_id:
         raise ValueError("pending interaction full-generation identity changed")
     build = _normalize_build(frame.get("build"))
-    provenance = _normalize_provenance(frame.get("provenance"))
+    provenance = _normalize_provenance(
+        frame.get("provenance"), game_version=build["version"],
+    )
 
     available = status == "available"
     reason_value = frame.get("reason")

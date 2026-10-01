@@ -14,6 +14,8 @@ import json
 import math
 from typing import Final
 
+from .builds import CURRENT_CK3_BUILD, SUPPORTED_CK3_EXE_SHA256
+
 
 EXACT_CK3_BUILD: Final = "1.19.0.6"
 EXACT_CK3_EXE_SHA256: Final = (
@@ -281,7 +283,7 @@ def _knowledge_response(
         ),
         "ck3_build": ck3_build if isinstance(ck3_build, str) else None,
         "ck3_exe_sha256": (
-            EXACT_CK3_EXE_SHA256 if ck3_build == EXACT_CK3_BUILD else None
+            SUPPORTED_CK3_EXE_SHA256.get(ck3_build) if isinstance(ck3_build, str) else None
         ),
         "contract": (
             _clone_json(contract, path="knowledge.contract")
@@ -307,7 +309,7 @@ def query_vanilla_event_knowledge_v1(
     ck3_build: str = EXACT_CK3_BUILD,
 ) -> dict[str, JsonValue]:
     """Return a JSON-safe, detached knowledge record or typed unavailable row."""
-    if not isinstance(ck3_build, str) or ck3_build != EXACT_CK3_BUILD:
+    if not isinstance(ck3_build, str) or ck3_build not in SUPPORTED_CK3_EXE_SHA256:
         return _knowledge_response(
             status="unavailable",
             event_definition_key=event_definition_key,
@@ -337,6 +339,24 @@ def query_vanilla_event_knowledge_v1(
             analysis=None,
             observations=None,
             unavailable_reason="event_definition_key_not_registered",
+        )
+    if ck3_build == CURRENT_CK3_BUILD:
+        from .migration_1_20_0_2 import migrate_event_knowledge
+
+        migrated = migrate_event_knowledge(
+            event_definition_key,
+            contract=contract,
+            analysis=_analysis_by_event_key.get(event_definition_key),
+            observations=_observations_by_event_key.get(event_definition_key),
+        )
+        return _knowledge_response(
+            status=migrated["status"],
+            event_definition_key=event_definition_key,
+            ck3_build=ck3_build,
+            contract=migrated.get("contract"),
+            analysis=migrated.get("analysis"),
+            observations=migrated.get("observations"),
+            unavailable_reason=migrated.get("unavailable_reason"),
         )
     return _knowledge_response(
         status="available",

@@ -39,6 +39,7 @@ from .application_main_pump_readiness import (
     wait_for_verified_pump,
 )
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
+from .version_identity import require_exact_native_build
 from .event_contract import (
     choose_event_option_number,
     event_option_step,
@@ -143,6 +144,7 @@ from .battle_reinforcement_assignment_contract import (
     query_battle_reinforcement_assignment_v1_step,
 )
 from .campaign_root_context_contract import (
+    is_baseline_campaign_root_context_12002,
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
@@ -330,8 +332,6 @@ from .zhongguo_scoreboard_action_contract import (
 from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
-    TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256,
-    TITLE_MAP_NAVIGATION_V1_GAME_VERSION,
     TITLE_MAP_NAVIGATION_V1_REJECTION_CODES,
     normalize_native_title_map_navigation_v1_result,
     normalize_title_map_navigation_v1_binding,
@@ -5996,15 +5996,14 @@ class NativeHeadlessGameplayDriver:
             if isinstance(hello, dict)
             else None
         )
-        if (
-            observed_version != TITLE_MAP_NAVIGATION_V1_GAME_VERSION
-            or not isinstance(observed_sha256, str)
-            or observed_sha256.upper()
-            != TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256
-        ):
+        try:
+            source_build = require_exact_native_build(
+                observed_version, observed_sha256
+            )
+        except ValueError as error:
             raise BridgeUnavailableError(
                 "native title-map navigation requires the frozen exact build"
-            )
+            ) from error
         try:
             raw = self._execute_primitive_step(
                 CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
@@ -6035,6 +6034,15 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native title-map navigation returned malformed data: {error}"
             ) from error
+        result_source = normalized_native["source"]
+        if (
+            result_source["game_version"] != source_build.game_version
+            or result_source["executable_sha256"]
+            != source_build.executable_sha256
+        ):
+            raise BridgeUnavailableError(
+                "native title-map navigation build mirror disagrees with bridge hello"
+            )
         ending = self.take_snapshot()
         try:
             ending_binding = _title_map_navigation_binding_from_snapshot(
@@ -12080,6 +12088,8 @@ class NativeHeadlessGameplayDriver:
             "unavailable_reason",
             "provenance",
         )
+        if is_baseline_campaign_root_context_12002(normalized):
+            mirror_keys = tuple(key for key in mirror_keys if key in normalized)
         response = {
             **result,
             "status": normalized["status"],
@@ -16246,9 +16256,21 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native war-termination query lacks query_sequence"
                 )
+            diagnostics = starting.get("diagnostics")
+            hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+            source_build = None
+            if isinstance(hello, dict):
+                try:
+                    source_build = require_exact_native_build(
+                        hello.get("expected_ck3_version", hello.get("game_version")),
+                        hello.get("expected_ck3_sha256", hello.get("executable_sha256")),
+                    )
+                except ValueError:
+                    pass
             options = normalize_war_termination_options(
                 result.get("war_termination_options"),
                 expected_war_id=war_id,
+                source_build=source_build,
             )
             identity_diff = _termination_options_war_identity_diff(
                 options, war

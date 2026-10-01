@@ -1,0 +1,35 @@
+{
+  "schema": "xar.ck3.nonwar-private-python-native-fixtures.v1",
+  "qualification": "actual native producer output from isolated offline fixture memory/callbacks; not CK3 live or paused evidence",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "local_ck3_operations": [],
+  "fixtures": [
+    {
+      "file": "ck3_12002_current_betrothal_negative.json",
+      "sha256": "56493306dd67953ea07d897002d49316143873b917a77a6d027c22c0c1f8c741",
+      "producer": "ReadCurrentFirstHeirBetrothalActionabilityV1 + CurrentFirstHeirBetrothalActionabilityJsonV1",
+      "provider_at_dump_sha256": "24286739f78931b68a68833ba7916fc3ba78b73765974b44a746d62ded519b83",
+      "test_at_dump_sha256": "82f83302a3bcb327cbf16005f29a174a722392d6173580ba5db539cbf0c7e481"
+    },
+    {
+      "file": "ck3_12002_construction_query_only.json",
+      "sha256": "f8c0b3add5d01c8ee153384690d88910eaa3ab7dca8d78824e2cbd4821870482",
+      "producer": "SerializeConstructionMailboxV1 + SerializePlayerConstructionViewProbeV1 + RenderQueryBuildIdentity",
+      "optimization_modes": [
+        "/Od",
+        "/O2"
+      ],
+      "producer_source": "src/ck3_12002_construction_mailbox.cpp",
+      "dto_serializer_source": "src/player_construction_view_probe_v1_mailbox.cpp",
+      "producer_source_sha256": "b1cc771ed83001af081aa62f1b7c281fc195d358c83ebaf95374f4ed00116e9a",
+      "dto_serializer_source_sha256": "495eb0e274347cd71568dd5dfa6cd0187a593ae0a5d5253fa9af4630ce91b3d0"
+    },
+    {
+      "file": "ck3_12002_lifestyle_state_zero_points.json",
+      "sha256": "a0bbeef670e4092692c20fb93ada51061bc283250e5f9da00cd2a7adcdd24a16",
+      "producer": "1.20.0.2 NativeReader from owned native-layout memory + existing lifestyle serializer",
+      "delivery": "Z:\\ck3_mod_rewrite\\artifacts\\nonwar-1.20.0.2\\2026-10-01\\lifestyle\\life-native-fixtures-delivery\\result.json"
+    }
+  ]
+}

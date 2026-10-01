@@ -6,6 +6,7 @@ import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .marriage_matchmaking_private_transport import _require_same_paused_frame
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "query-player-child-marriage-subject-v1-private"
@@ -76,7 +77,7 @@ def query_player_child_marriage_subject_private_v1(
         raise BridgeUnavailableError("player-child marriage response identity changed")
     base = {
         "schema": SCHEMA, "schema_version": 1,
-        "exact_ck3_build": "1.19.0.6", "read_only": True,
+        **private_native_provenance(before), "read_only": True,
         "advertised": False, "native_revision": expected_native_revision,
         "played_character_id": played_id,
         "subject_character_id": subject_character_id,

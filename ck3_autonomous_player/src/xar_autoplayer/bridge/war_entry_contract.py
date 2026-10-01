@@ -7,6 +7,8 @@ this module must never synthesize strategic power from snapshot soldier totals.
 
 from __future__ import annotations
 
+from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
+
 from .event_window_context_contract import (
     normalize_current_event_window_context_v1,
 )
@@ -54,6 +56,17 @@ _PROVENANCE = {
     # Actor base power is authoritative State16+0x00 from 0x18784D0.
     "power_leaf": "CCharacter+0x1B8->+0x308",
     "fixed_point_scale": FIXED_POINT_SCALE,
+}
+_PROVENANCE_BY_BUILD = {
+    CK3_11906.game_version: _PROVENANCE,
+    CK3_12002.game_version: {
+        "game_version": CK3_12002.game_version,
+        "executable_sha256": CK3_12002.executable_sha256,
+        "assessment_rva": "0x1A23240",
+        "network_collector_rva": "0x1A24010",
+        "power_leaf": "CCharacter+0x1C0->+0x308",
+        "fixed_point_scale": FIXED_POINT_SCALE,
+    },
 }
 _ASSESSMENT_KEYS = {
     "target_character_id",
@@ -403,7 +416,17 @@ def normalize_war_entry_assessments(
     ]
     if value.get("readiness") != _READINESS:
         raise ValueError("native war-entry assessment readiness is incomplete")
-    if value.get("provenance") != _PROVENANCE:
+    provenance = value.get("provenance")
+    if not isinstance(provenance, dict):
+        raise ValueError("native war-entry assessment provenance drifted")
+    try:
+        build = require_exact_native_build(
+            provenance.get("game_version"), provenance.get("executable_sha256")
+        )
+    except ValueError as error:
+        raise ValueError("native war-entry assessment provenance drifted") from error
+    expected_provenance = _PROVENANCE_BY_BUILD[build.game_version]
+    if provenance != expected_provenance:
         raise ValueError("native war-entry assessment provenance drifted")
     return {
         "schema_version": 1,
@@ -414,7 +437,7 @@ def normalize_war_entry_assessments(
         "requested_target_character_ids": requested,
         "assessments": rows,
         "readiness": dict(_READINESS),
-        "provenance": dict(_PROVENANCE),
+        "provenance": dict(expected_provenance),
     }
 
 

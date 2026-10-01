@@ -8,6 +8,9 @@ from .current_first_heir_relationship_private_transport import (
 from .driver import BridgeUnavailableError
 from .marriage_matchmaking_private_transport import _require_same_paused_frame
 from .observed_heir_marriage_private_action_v1 import SCHEMA, _command, _paused
+from .nonwar_private_build import (
+    private_native_provenance, private_native_readback_matches,
+)
 
 
 SUBMIT_STEP = "submit-current-first-heir-betrothal-fulfillment-v1-private"
@@ -24,7 +27,7 @@ def submit_current_first_heir_betrothal_private_v1(
     heir = relationship.get("heir_character_id")
     partner = relationship.get("betrothed_character_id")
     if (relationship.get("schema") != RELATION_SCHEMA
-            or relationship.get("exact_ck3_build") != "1.19.0.6"
+            or not private_native_readback_matches(before, relationship)
             or relationship.get("status") != "available"
             or relationship.get("read_only") is not True
             or relationship.get("advertised") is not False
@@ -66,4 +69,4 @@ def submit_current_first_heir_betrothal_private_v1(
             or result.get("recipient_character_id") != recipient):
         raise BridgeUnavailableError("betrothal fulfillment ACK changed its fixed pair")
     return {"schema": SCHEMA, "schema_version": 1,
-            "exact_ck3_build": "1.19.0.6", "advertised": False, **result}
+            **private_native_provenance(before), "advertised": False, **result}

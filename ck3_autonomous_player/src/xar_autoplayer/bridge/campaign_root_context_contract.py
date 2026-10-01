@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Final
 
+from .version_identity import CK3_11906, CK3_12002, require_exact_native_backend
+
 
 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY: Final = (
     "game.command.query-campaign-root-context-v1"
@@ -175,6 +177,49 @@ _PROVENANCE_VALUES: Final = {
     "government_rva": "0x26165B0",
     "province_holder_character_id_rva": "0x220C3F0",
     "selected_game_rule_service_slot_rva": "0x5754B48",
+}
+_BASELINE_12002_FIELDS: Final = {
+    "schema_version", "status", "snapshot_revision", "date_raw",
+    "local_player_id", "player_character_id", "player_character_alive",
+    "primary_title", "capital_province_id", "immediate_liege_character_id",
+    "top_liege_character_id", "independent", "government",
+    "selected_game_rule_tokens", "native_selected_game_rule_token_count",
+    "readiness", "unavailable_reason", "provenance",
+}
+_BASELINE_12002_READINESS: Final = {
+    "player_identity_ready", "primary_title_ready", "capital_ready",
+    "lieges_ready", "government_ready", "selected_game_rule_tokens_ready",
+    "same_frame_ready", "ready",
+}
+_BASELINE_12002_PROVENANCE: Final = {
+    "game_version": CK3_12002.game_version,
+    "executable_sha256": CK3_12002.executable_sha256,
+    "backend_id": CK3_12002.backend_id("campaign-root-context-v1"),
+    "primary_title_rva": "0x289DA30",
+    "capital_province_rva": "0x28B1CD0",
+    "immediate_liege_rva": "0x28BFC70",
+    "top_liege_rva": "0x28BFDA0",
+    "government_rva": "0x28C2E10",
+    "selected_game_rule_service_slot_rva": "0x5CB3D78",
+}
+_PROVENANCE_BY_BUILD: Final = {
+    CK3_11906.game_version: _PROVENANCE_VALUES,
+    CK3_12002.game_version: {
+        **_BASELINE_12002_PROVENANCE,
+        "monthly_gold_income_rva": "0x2BCA960",
+        "character_health_rva": "0x28C6500",
+        "domain_size_rva": "0x28B7200",
+        "domain_limit_rva": "0x28B71D0",
+        "has_targeting_faction_trigger_rva": "0x2B250D0",
+        "council_position_lookup_rva": "0x2684F00",
+        "council_active_task_ids_enumerator_rva": "0x2916CE0",
+        "council_active_task_storage_slot_rva": "0x5D1DEA0",
+        "council_value_progress_current_rva": "0x31AB520",
+        "council_value_progress_maximum_rva": "0x31AB840",
+        "held_title_ids_offset": "0x1E0",
+        "title_province_rva": "0x230F900",
+        "province_holder_character_id_rva": "0x247D030",
+    },
 }
 _UNAVAILABLE_REASONS: Final = {
     "unsupported_build",
@@ -716,15 +761,125 @@ def _normalize_council(
 
 def _normalize_provenance(value: object) -> dict[str, str]:
     provenance = _exact_object(value, _PROVENANCE_FIELDS, "provenance")
+    build = require_exact_native_backend(
+        provenance.get("game_version"), provenance.get("executable_sha256"),
+        provenance.get("backend_id"), suffix="campaign-root-context-v1",
+    )
+    expected_provenance = _PROVENANCE_BY_BUILD[build.game_version]
     if any(
         provenance.get(key) != expected
-        for key, expected in _PROVENANCE_VALUES.items()
+        for key, expected in expected_provenance.items()
     ):
         raise ValueError("provenance does not match the frozen exact build")
     return {
         key: str(provenance[key])
-        for key in _PROVENANCE_VALUES
+        for key in expected_provenance
     }
+
+
+def is_baseline_campaign_root_context_12002(value: object) -> bool:
+    """Select the narrower delivered wire; normalization still checks its build."""
+    return isinstance(value, dict) and set(value) == _BASELINE_12002_FIELDS
+
+
+def _normalize_baseline_12002(
+    frame: dict[str, object],
+    *,
+    expected_date_raw: int,
+    expected_snapshot_revision: int,
+) -> dict[str, object]:
+    """Read the delivered 1.20 baseline without fabricating richer fields."""
+    provenance = _exact_object(
+        frame.get("provenance"), set(_BASELINE_12002_PROVENANCE), "provenance"
+    )
+    build = require_exact_native_backend(
+        provenance.get("game_version"), provenance.get("executable_sha256"),
+        provenance.get("backend_id"), suffix="campaign-root-context-v1",
+    )
+    if build != CK3_12002 or provenance != _BASELINE_12002_PROVENANCE:
+        raise ValueError("baseline campaign provenance does not match 1.20")
+    if frame.get("schema_version") != 1:
+        raise ValueError("campaign_root_context.schema_version must be 1")
+    status = frame.get("status")
+    if status not in {"available", "unavailable"}:
+        raise ValueError("campaign_root_context.status is invalid")
+    revision = _int(
+        frame.get("snapshot_revision"), "snapshot_revision", minimum=1,
+        maximum=2**64 - 1,
+    )
+    date_raw = _int(
+        frame.get("date_raw"), "date_raw", minimum=-(2**31), maximum=2**31 - 1,
+    )
+    if revision != _int(
+        expected_snapshot_revision, "expected_snapshot_revision", minimum=1,
+        maximum=2**64 - 1,
+    ) or date_raw != _int(
+        expected_date_raw, "expected_date_raw", minimum=-(2**31),
+        maximum=2**31 - 1,
+    ):
+        raise ValueError("campaign root snapshot/date binding changed")
+    available = status == "available"
+    readiness = _exact_object(
+        frame.get("readiness"), _BASELINE_12002_READINESS, "readiness"
+    )
+    if any(
+        _bool(flag, f"readiness.{key}") is not available
+        for key, flag in readiness.items()
+    ):
+        raise ValueError("baseline campaign readiness disagrees with status")
+    tokens = _lexical_key_vector(
+        frame.get("selected_game_rule_tokens"), "selected_game_rule_tokens"
+    )
+    count = _int(
+        frame.get("native_selected_game_rule_token_count"),
+        "native_selected_game_rule_token_count", minimum=0, maximum=2**31 - 1,
+    )
+    if count != len(tokens):
+        raise ValueError("selected token count does not match the full vector")
+    if not available:
+        null_fields = _BASELINE_12002_FIELDS - {
+            "schema_version", "status", "snapshot_revision", "date_raw",
+            "selected_game_rule_tokens", "native_selected_game_rule_token_count",
+            "readiness", "unavailable_reason", "provenance",
+        }
+        if frame.get("unavailable_reason") not in _UNAVAILABLE_REASONS or any(
+            frame.get(key) is not None for key in null_fields
+        ) or tokens or count:
+            raise ValueError("unavailable baseline campaign invented root state")
+        return dict(frame)
+    if frame.get("unavailable_reason") is not None:
+        raise ValueError("available campaign root has unavailable_reason")
+    _int(frame.get("local_player_id"), "local_player_id", minimum=0, maximum=2**31 - 1)
+    player = _positive_int32(frame.get("player_character_id"), "player_character_id")
+    _bool(frame.get("player_character_alive"), "player_character_alive")
+    primary = frame.get("primary_title")
+    if primary is not None:
+        primary = _exact_object(primary, _PRIMARY_TITLE_FIELDS, "primary_title")
+        _positive_int32(primary.get("title_id"), "primary_title.title_id")
+        tier = _int(primary.get("tier_raw"), "primary_title.tier_raw", minimum=1, maximum=6)
+        if primary.get("tier_key") != _TIER_KEYS[tier]:
+            raise ValueError("primary_title tier pair is invalid")
+    _optional_positive_int32(frame.get("capital_province_id"), "capital_province_id")
+    immediate = _optional_positive_int32(
+        frame.get("immediate_liege_character_id"), "immediate_liege_character_id"
+    )
+    top = _positive_int32(frame.get("top_liege_character_id"), "top_liege_character_id")
+    independent = _bool(frame.get("independent"), "independent")
+    if independent is not (immediate is None) or immediate == player or (
+        independent and top != player
+    ) or (not independent and top == player):
+        raise ValueError("baseline campaign liege identities disagree")
+    government = frame.get("government")
+    if government is not None:
+        government = _exact_object(government, _GOVERNMENT_FIELDS, "government")
+        _stable_key(government.get("key"), "government.key")
+        flags = _lexical_key_vector(government.get("flags"), "government.flags")
+        if _int(
+            government.get("native_flag_count"), "government.native_flag_count",
+            minimum=0, maximum=2**31 - 1,
+        ) != len(flags):
+            raise ValueError("government flag count does not match the full span")
+    return dict(frame)
 
 
 def normalize_campaign_root_context_v1(
@@ -734,6 +889,13 @@ def normalize_campaign_root_context_v1(
     expected_snapshot_revision: int,
 ) -> dict[str, object]:
     """Normalize one atomic campaign root frame without inventing absences."""
+
+    if is_baseline_campaign_root_context_12002(value):
+        return _normalize_baseline_12002(
+            value,
+            expected_date_raw=expected_date_raw,
+            expected_snapshot_revision=expected_snapshot_revision,
+        )
 
     expected_date_raw = _int(
         expected_date_raw,

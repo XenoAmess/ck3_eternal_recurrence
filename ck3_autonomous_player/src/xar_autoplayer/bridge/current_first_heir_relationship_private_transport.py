@@ -1,4 +1,4 @@
-"""Unadvertised current first-heir relationship read for CK3 1.19.0.6.
+"""Unadvertised current first-heir relationship read for the selected native build.
 
 This query binds the heir through the public campaign-root observation. It
 does not enumerate final-legal candidates, accept an arbitrary CharacterID,
@@ -11,6 +11,7 @@ import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .marriage_matchmaking_private_transport import _require_same_paused_frame
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "query-current-first-heir-relationship-v1-private"
@@ -191,7 +192,7 @@ def query_current_first_heir_relationship_private_v1(
     )
     base = {
         "schema": SCHEMA, "schema_version": 1,
-        "exact_ck3_build": "1.19.0.6", "read_only": True,
+        **private_native_provenance(before), "read_only": True,
         "advertised": False, "native_revision": expected_native_revision,
         "root_query_sequence": root["query_sequence"],
         "heir_character_id": heir_id,

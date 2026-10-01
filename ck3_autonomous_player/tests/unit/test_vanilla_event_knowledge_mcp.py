@@ -4,6 +4,7 @@ import importlib.util
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -18,6 +19,7 @@ from xar_autoplayer.bridge.mcp_server import (  # noqa: E402
     create_server,
 )
 from xar_autoplayer.vanilla_events import (  # noqa: E402
+    CURRENT_CK3_BUILD,
     ck3_list_vanilla_event_knowledge_v1,
     list_vanilla_event_evidence_v1,
     portable_event_keys_v1,
@@ -28,7 +30,7 @@ from xar_autoplayer.vanilla_events import (  # noqa: E402
 
 
 EVENT_DEFINITION_KEY = "prison_notification.2002"
-CK3_BUILD = "1.19.0.6"
+CK3_BUILD = CURRENT_CK3_BUILD
 
 
 class _OfflineDriver:
@@ -77,15 +79,18 @@ class VanillaEventKnowledgeHelperTests(unittest.TestCase):
         self.assertEqual(
             _ck3_query_vanilla_event_knowledge_v1(
                 EVENT_DEFINITION_KEY,
-                ck3_build=CK3_BUILD,
+                ck3_build="1.19.0.6",
             ),
-            expected,
+            query_vanilla_event_knowledge_v1(
+                EVENT_DEFINITION_KEY, ck3_build="1.19.0.6",
+            ),
         )
 
     def test_discovery_evidence_and_source_helpers_are_offline(self) -> None:
         expected_knowledge = ck3_list_vanilla_event_knowledge_v1(
+            build=CK3_BUILD,
             limit=2,
-            portable_event_keys=portable_event_keys_v1(),
+            portable_event_keys=frozenset(),
         )
         knowledge = _ck3_list_vanilla_event_knowledge_v1(limit=2)
         evidence = _ck3_list_vanilla_event_evidence_v1(limit=1)
@@ -104,8 +109,27 @@ class VanillaEventKnowledgeHelperTests(unittest.TestCase):
             _ck3_query_vanilla_event_source_provenance_v1(
                 EVENT_DEFINITION_KEY,
             ),
-            query_vanilla_event_source_provenance_v1(EVENT_DEFINITION_KEY),
+            query_vanilla_event_source_provenance_v1(EVENT_DEFINITION_KEY, CK3_BUILD),
         )
+
+    def test_discovery_uses_portable_keys_only_for_their_historical_build(self) -> None:
+        with patch(
+            "xar_autoplayer.bridge.mcp_server.portable_event_keys_v1",
+            wraps=portable_event_keys_v1,
+        ) as portable:
+            current = _ck3_list_vanilla_event_knowledge_v1(limit=1)
+            portable.assert_not_called()
+            historical = _ck3_list_vanilla_event_knowledge_v1(
+                ck3_build="1.19.0.6", limit=1,
+            )
+            portable.assert_called_once_with()
+        self.assertEqual(current, ck3_list_vanilla_event_knowledge_v1(
+            build=CK3_BUILD, limit=1, portable_event_keys=frozenset(),
+        ))
+        self.assertEqual(historical, ck3_list_vanilla_event_knowledge_v1(
+            build="1.19.0.6", limit=1,
+            portable_event_keys=portable_event_keys_v1(),
+        ))
 
 
 @unittest.skipIf(

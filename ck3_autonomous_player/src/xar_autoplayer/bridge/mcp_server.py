@@ -34,6 +34,8 @@ from xar_autoplayer.coat_of_arms_resources import (
     read_coat_of_arms_resource_asset_v1,
 )
 from xar_autoplayer.vanilla_events import (
+    CURRENT_CK3_BUILD,
+    EXACT_CK3_BUILD,
     ck3_list_vanilla_event_knowledge_v1 as list_vanilla_event_knowledge_v1,
     list_vanilla_event_evidence_v1,
     portable_event_keys_v1,
@@ -81,7 +83,7 @@ def _default_state_dir() -> Path:
 
 def _ck3_query_vanilla_event_knowledge_v1(
     event_definition_key: str,
-    ck3_build: str = "1.19.0.6",
+    ck3_build: str = CURRENT_CK3_BUILD,
 ) -> dict[str, object]:
     """Query frozen vanilla-event knowledge without a running CK3 process."""
     return query_vanilla_event_knowledge_v1(
@@ -91,7 +93,7 @@ def _ck3_query_vanilla_event_knowledge_v1(
 
 
 def _ck3_list_vanilla_event_knowledge_v1(
-    ck3_build: str = "1.19.0.6",
+    ck3_build: str = CURRENT_CK3_BUILD,
     query: str | None = None,
     namespace: str | None = None,
     evidence_class: str = "any",
@@ -100,10 +102,12 @@ def _ck3_list_vanilla_event_knowledge_v1(
     limit: int = 50,
 ) -> dict[str, object]:
     """Discover frozen event records with stable keyset pagination."""
-    try:
-        portable_keys = portable_event_keys_v1()
-    except EvidenceBundleError:
-        portable_keys = frozenset()
+    portable_keys = frozenset()
+    if ck3_build == EXACT_CK3_BUILD:
+        try:
+            portable_keys = portable_event_keys_v1()
+        except EvidenceBundleError:
+            pass
     return list_vanilla_event_knowledge_v1(
         build=ck3_build,
         query=query,
@@ -150,7 +154,7 @@ def _ck3_read_vanilla_event_evidence_v1(
 
 def _ck3_query_vanilla_event_source_provenance_v1(
     key: str,
-    build: str = "1.19.0.6",
+    build: str = CURRENT_CK3_BUILD,
 ) -> dict[str, object]:
     """Read generated source provenance and unproven lexical caller hits."""
     return query_vanilla_event_source_provenance_v1(key, build)
@@ -2520,7 +2524,7 @@ def create_server(
     @server.tool()
     def ck3_query_vanilla_event_knowledge_v1(
         event_definition_key: str,
-        ck3_build: str = "1.19.0.6",
+        ck3_build: str = CURRENT_CK3_BUILD,
     ) -> dict[str, object]:
         """Read frozen source-reviewed event semantics without launching CK3."""
         return _ck3_query_vanilla_event_knowledge_v1(
@@ -2530,7 +2534,7 @@ def create_server(
 
     @server.tool()
     def ck3_list_vanilla_event_knowledge_v1(
-        ck3_build: str = "1.19.0.6",
+        ck3_build: str = CURRENT_CK3_BUILD,
         query: str | None = None,
         namespace: str | None = None,
         evidence_class: str = "any",
@@ -2584,7 +2588,7 @@ def create_server(
     @server.tool()
     def ck3_query_vanilla_event_source_provenance_v1(
         key: str,
-        build: str = "1.19.0.6",
+        build: str = CURRENT_CK3_BUILD,
     ) -> dict[str, object]:
         """Read definition provenance and lexical, unproven caller candidates."""
         return _ck3_query_vanilla_event_source_provenance_v1(key, build)

@@ -34,6 +34,9 @@ from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
     SOURCE_INDEX_SCHEMA_VERSION,
     compute_source_index_dataset_sha256,
 )
+from xar_autoplayer.vanilla_events.builds import (  # noqa: E402
+    CURRENT_CK3_BUILD, NONWAR_MIGRATION_DEFERRED_EVENT_KEYS, SUPPORTED_CK3_EXE_SHA256,
+)
 
 
 DEFAULT_OUTPUT: Final = (
@@ -94,7 +97,9 @@ def _default_game_dir() -> Path:
     return candidates[0].resolve() if candidates else REPOSITORY_ROOT.resolve()
 
 
-def validate_exact_game_dir(game_dir: Path) -> tuple[Path, Path]:
+def validate_exact_game_dir(
+    game_dir: Path, *, build: str = EXACT_CK3_BUILD
+) -> tuple[Path, Path]:
     """Return normalized install/data roots after proving the exact EXE."""
     install_dir = game_dir.resolve()
     executable = install_dir / "binaries" / "ck3.exe"
@@ -102,11 +107,14 @@ def validate_exact_game_dir(game_dir: Path) -> tuple[Path, Path]:
         raise SourceIndexGenerationError(
             f"missing frozen CK3 executable: {executable}"
         )
+    expected_sha256 = SUPPORTED_CK3_EXE_SHA256.get(build)
+    if expected_sha256 is None:
+        raise SourceIndexGenerationError(f"unsupported CK3 build: {build}")
     observed_sha256 = _sha256_bytes(executable.read_bytes())
-    if observed_sha256 != EXACT_CK3_EXE_SHA256:
+    if observed_sha256 != expected_sha256:
         raise SourceIndexGenerationError(
             "unexpected ck3.exe SHA-256: "
-            f"expected {EXACT_CK3_EXE_SHA256}, observed {observed_sha256}"
+            f"expected {expected_sha256}, observed {observed_sha256}"
         )
     game_data_dir = install_dir / "game"
     for required in (game_data_dir / "events", game_data_dir / "common"):
@@ -154,14 +162,19 @@ def build_source_index(
     game_dir: Path,
     *,
     event_keys: Iterable[str] | None = None,
+    build: str = EXACT_CK3_BUILD,
 ) -> dict[str, object]:
     """Scan one frozen CK3 install and return a deterministic JSON document."""
-    _, game_data_dir = validate_exact_game_dir(game_dir)
+    _, game_data_dir = validate_exact_game_dir(game_dir, build=build)
+    default_keys = (
+        set(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS) - NONWAR_MIGRATION_DEFERRED_EVENT_KEYS
+        if build == CURRENT_CK3_BUILD else DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
+    )
     keys = tuple(
         sorted(
             event_keys
             if event_keys is not None
-            else DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
+            else default_keys
         )
     )
     if not keys or any(not isinstance(key, str) or not key for key in keys):
@@ -298,8 +311,8 @@ def build_source_index(
     document: dict[str, object] = {
         "schema": SOURCE_INDEX_SCHEMA,
         "schema_version": SOURCE_INDEX_SCHEMA_VERSION,
-        "ck3_build": EXACT_CK3_BUILD,
-        "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+        "ck3_build": build,
+        "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256[build],
         "scan_policy": {
             "definition_roots": ["events"],
             "caller_candidate_roots": ["events", "common"],
@@ -369,6 +382,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="CK3 installation root containing binaries/ck3.exe and game/",
     )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--build", choices=tuple(SUPPORTED_CK3_EXE_SHA256), default=EXACT_CK3_BUILD)
     parser.add_argument(
         "--check",
         action="store_true",
@@ -380,7 +394,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     try:
-        document = build_source_index(args.game_dir)
+        document = build_source_index(args.game_dir, build=args.build)
         payload = render_source_index(document)
         write_or_check(args.output, payload, check=args.check)
     except (OSError, UnicodeError, SourceIndexGenerationError) as exc:

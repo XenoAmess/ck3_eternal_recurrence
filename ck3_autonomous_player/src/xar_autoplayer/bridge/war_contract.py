@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from .version_identity import (
+    CK3_11906, CK3_12002, NativeBuildIdentity, require_exact_native_build,
+)
+
 from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (
     normalize_raiktor_war_bound_regiment,
 )
@@ -3444,18 +3448,34 @@ def _normalize_war_termination_terms_provenance(
     *,
     supported_slice: str,
 ) -> dict[str, str]:
+    if not isinstance(value, dict):
+        raise ValueError("native war_termination_terms provenance is malformed")
+    try:
+        build = require_exact_native_build(
+            value.get("game_version"), value.get("executable_sha256"),
+        )
+    except ValueError as error:
+        raise ValueError("native war_termination_terms provenance is malformed") from error
     common = {
-        "game_version": _TERMINATION_TERMS_GAME_VERSION,
-        "executable_sha256": _TERMINATION_TERMS_EXECUTABLE_SHA256,
-        "native_reader": _TERMINATION_TERMS_NATIVE_READER,
+        "game_version": build.game_version,
+        "executable_sha256": build.executable_sha256,
+        "native_reader": (
+            "CWar+0x270/+0x290;0x2B9ECD0"
+            if build == CK3_12002 else _TERMINATION_TERMS_NATIVE_READER
+        ),
         "present_claim_lifecycle": _TERMINATION_TERMS_CLAIM_LIFECYCLE,
     }
     if supported_slice == _TERMINATION_TERMS_CLAIM_SLICE:
         expected = {
             **common,
-            "claim_script_sha256": _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256,
+            "claim_script_sha256": (
+                "887BF0197401CB17CB4588978ADD556AB6B429BF55CB482E3E5F2D0E8351CFD4"
+                if build == CK3_12002 else _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256
+            ),
         }
     elif supported_slice == _TERMINATION_TERMS_RAIKTOR_SLICE:
+        if build != CK3_11906:
+            raise ValueError("native event-war terms are not closed for this build")
         expected = {
             **common,
             "event_war_script_sha256": (
@@ -3557,6 +3577,7 @@ def normalize_war_termination_options(
     value: object,
     *,
     expected_war_id: int | None = None,
+    source_build: NativeBuildIdentity | None = None,
 ) -> dict[str, object]:
     """Normalize one atomic native war-termination query.
 
@@ -3695,16 +3716,19 @@ def normalize_war_termination_options(
             raw_options.get("surrender"),
             name="surrender",
             expected_outcome=surrender_outcome,
+            legacy_recipient_unavailable=source_build == CK3_12002,
         ),
         "white_peace": _normalize_war_termination_option(
             raw_options.get("white_peace"),
             name="white_peace",
             expected_outcome="white_peace",
+            legacy_recipient_unavailable=source_build == CK3_12002,
         ),
         "victory": _normalize_war_termination_option(
             raw_options.get("victory"),
             name="victory",
             expected_outcome=victory_outcome,
+            legacy_recipient_unavailable=source_build == CK3_12002,
         ),
     }
     if not is_primary and any(
@@ -3794,7 +3818,19 @@ def _normalize_war_termination_option(
     *,
     name: str,
     expected_outcome: str,
+    legacy_recipient_unavailable: bool = False,
 ) -> dict[str, object]:
+    if (
+        legacy_recipient_unavailable and isinstance(value, dict)
+        and "recipient_response" not in value
+    ):
+        value = {
+            **value,
+            "recipient_response": {
+                "status": "unavailable", "decision_status_raw": None,
+                "would_accept_now": None,
+            },
+        }
     if not isinstance(value, dict) or set(value) != {
         "outcome",
         "hostage_variant",

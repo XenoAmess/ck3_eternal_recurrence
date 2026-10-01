@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_player_construction_view_probe_v1",
+  "advertised": false,
+  "status": "unavailable",
+  "failure": "none",
+  "view_present": false,
+  "candidate_capacity": 0,
+  "cached_candidate_count": 0,
+  "snapshot_revision": 3,
+  "date_raw": 53168784,
+  "proof_epoch": 91,
+  "holding_view_visibility": {
+    "widget_key": "holding_view",
+    "status": "unavailable",
+    "effective_visible": null
+  },
+  "player_model_sources": {
+    "schema_version": 1,
+    "advertised": false,
+    "status": "unavailable",
+    "failure": "none",
+    "snapshot_revision": null,
+    "date_raw": null,
+    "player_character_id": null,
+    "view_model_binding_verified": null,
+    "directly_held_barony_provinces": [],
+    "definition_source_count": null,
+    "legal_construction_evaluated": false
+  },
+  "player_world_building_sources": {
+    "schema_version": 1,
+    "advertised": false,
+    "read_only": true,
+    "status": "source_available",
+    "failure": "none",
+    "definition_identity_diagnostic": {
+      "registry_count": null,
+      "failed_index": null,
+      "stage": "none",
+      "observed_vtable_rva": null,
+      "observed_building_type_id": null
+    },
+    "snapshot_revision": 3,
+    "date_raw": 53168784,
+    "player_character_id": 29829,
+    "definition_source_count": 47,
+    "final_legality_checks": 94,
+    "native_final_legality_evaluated": true,
+    "native_cost_evaluated": true,
+    "native_cost_checks": 1,
+    "player_gold_raw": 50035659,
+    "player_gold_scale": 100000,
+    "checks_truncated": false,
+    "positive_income_coverage_complete": true,
+    "cost_ready": false,
+    "construction_action_ready": false,
+    "directly_held_barony_provinces": [
+      {
+        "barony_title_id": 2103,
+        "province_id": 2635
+      }
+    ],
+    "active_constructions": [
+      {
+        "barony_title_id": 2103,
+        "province_id": 2635,
+        "active": false,
+        "building_type_id": null,
+        "slot_index": null,
+        "initiator_character_id": null,
+        "native_remaining_work_raw": null,
+        "native_progress_divisor_raw": null,
+        "native_province_monthly_income_observed": false,
+        "native_province_monthly_income_raw": null
+      }
+    ],
+    "completed_buildings_observed": true,
+    "completed_buildings": [],
+    "legal_samples": [
+      {
+        "barony_title_id": 2103,
+        "province_id": 2635,
+        "building_type_id": 24,
+        "building_key": "farm_estates_01",
+        "slot_index": 1,
+        "native_cost_observed": true,
+        "cost_raw_slots": [
+          15000000,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cost_raw_native": [
+          15000000,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "executor_invocations": 0,
+  "game_version": "1.20.0.2",
+  "source_binding": "direct-world-building-manager",
+  "gui_cache_sampled": false
+}

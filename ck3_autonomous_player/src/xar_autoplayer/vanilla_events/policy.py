@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 import re
 from typing import Final
+from functools import partial
 
 from .registry import (
     EXACT_CK3_BUILD,
@@ -13,6 +14,26 @@ from .registry import (
     query_vanilla_event_knowledge_v1,
 )
 from .source_index import query_vanilla_event_source_v1
+from .builds import CURRENT_CK3_BUILD, SUPPORTED_CK3_EXE_SHA256, event_context_build
+
+
+def _policy_source_hashes(analysis: object) -> object:
+    """Keep legacy literal checks tied to a reviewed migrated event body."""
+    if not isinstance(analysis, Mapping):
+        return None
+    migration = analysis.get("migration_1_20_0_2")
+    if isinstance(migration, Mapping) and migration.get("policy_contract_compatible") is True:
+        return migration.get("legacy_source_sha256")
+    return analysis.get("source_sha256")
+
+
+def _current_contract_update(analysis: object, field: str) -> bool:
+    if not isinstance(analysis, Mapping):
+        return False
+    migration = analysis.get("migration_1_20_0_2")
+    row = migration.get("definition_review") if isinstance(migration, Mapping) else None
+    updates = row.get("timeline_contract_updates") if isinstance(row, Mapping) else None
+    return isinstance(updates, Mapping) and field in updates
 
 
 VANILLA_EVENT_REGISTRY_CHOICE_SCHEMA: Final = (
@@ -124,8 +145,8 @@ def _source_reviewed_effectless_notice(
     after = _sequence(review.get("after_effects"))
     if not (
         review.get("schema") == "xar.ck3.source-reviewed-effectless-notice/v1"
-        and knowledge.get("ck3_build") == EXACT_CK3_BUILD
-        and knowledge.get("ck3_exe_sha256") == EXACT_CK3_EXE_SHA256
+        and knowledge.get("ck3_build") in SUPPORTED_CK3_EXE_SHA256
+        and knowledge.get("ck3_exe_sha256") == SUPPORTED_CK3_EXE_SHA256.get(knowledge.get("ck3_build"))
         and isinstance(path, str)
         and path.startswith("events/")
         and isinstance(digest, str)
@@ -141,7 +162,7 @@ def _source_reviewed_effectless_notice(
         and after == ({"kind": "custom_tooltip", "gameplay_effect": False},)
     ):
         return None
-    source = query_vanilla_event_source_v1(event_key)
+    source = query_vanilla_event_source_v1(event_key, build=knowledge["ck3_build"])
     indexed = source.get("source")
     definition = (
         indexed.get("definition")
@@ -150,7 +171,7 @@ def _source_reviewed_effectless_notice(
     )
     if not (
         source.get("status") == "available"
-        and source.get("ck3_exe_sha256") == EXACT_CK3_EXE_SHA256
+        and source.get("ck3_exe_sha256") == knowledge.get("ck3_exe_sha256")
         and isinstance(definition, Mapping)
         and definition.get("relative_path") == path
         and definition.get("file_sha256") == digest
@@ -262,15 +283,19 @@ def _epidemic_5007_stress_effect_profile(
     """Bind only the source-backed R0092 positive stress indicator branch."""
 
     analysis = knowledge.get("analysis")
-    source_hashes = (
-        analysis.get("source_sha256")
-        if isinstance(analysis, Mapping) else None
-    )
+    if knowledge.get("ck3_build") == CURRENT_CK3_BUILD:
+        migration = analysis.get("migration_1_20_0_2") if isinstance(analysis, Mapping) else None
+        review = migration.get("definition_review") if isinstance(migration, Mapping) else None
+        if not isinstance(review, Mapping) or "dynamic_stress_indicator_profile" not in review.get("reviewed_profile_keys", ()):
+            return None
+    source_hashes = _policy_source_hashes(analysis)
     indicators = selected_option.get("effect_indicators")
     rows = (
         indicators.get("rows")
         if isinstance(indicators, Mapping) else None
     )
+    if knowledge.get("ck3_build") == CURRENT_CK3_BUILD and isinstance(rows, list):
+        rows = [row for row in rows if isinstance(row, Mapping) and row.get("kind") == "stress"]
     if not (
         native_index == 2
         and isinstance(source_hashes, Mapping)
@@ -279,7 +304,7 @@ def _epidemic_5007_stress_effect_profile(
         and isinstance(indicators, Mapping)
         and indicators.get("status") == "available"
         and indicators.get("coverage")
-        == "played-character-event-icon-indicators-1.19.0.6-v1"
+        == f"played-character-event-icon-indicators-{knowledge['ck3_build']}-v1"
         and indicators.get("complete_effect_set") is False
         and isinstance(rows, list)
         and len(rows) == 1
@@ -295,7 +320,7 @@ def _epidemic_5007_stress_effect_profile(
         and isinstance(stress.get("critical"), bool)
     ):
         return None
-    return {
+    profile = {
         "schema": _CHOICE_EFFECT_PROFILE_SCHEMA,
         "schema_version": _CHOICE_EFFECT_PROFILE_SCHEMA_VERSION,
         "selected_native_option_index": 2,
@@ -316,6 +341,15 @@ def _epidemic_5007_stress_effect_profile(
         },
         "source_anchors": ["events/dlc/ce1/epidemic_events.txt:6928-6962"],
     }
+    if knowledge.get("ck3_build") == CURRENT_CK3_BUILD:
+        profile["completeness"] = "selected-option-stress-facet-only"
+        profile["selected_option_effects"][0]["source"] = "stress_and_fulfillment_impact"
+        profile["unobserved_effect_domains"] = ["spiritual_fulfillment", "opinion", "relationship"]
+        profile["complete_effect_set"] = False
+        profile["source_anchors"] = [
+            f"events/dlc/ce1/epidemic_events.txt:{analysis['definition_lines']}"
+        ]
+    return profile
 
 
 def _selected_campaign_utility_profile(
@@ -362,6 +396,7 @@ def _response(
     option_variant_index: int | None = None,
     choice_effect_profile: Mapping[str, object] | None = None,
     campaign_utility_profile: Mapping[str, object] | None = None,
+    ck3_build: str = EXACT_CK3_BUILD,
 ) -> dict[str, object]:
     checked = dict(checks or {})
     return {
@@ -370,8 +405,8 @@ def _response(
         "status": status,
         "policy": VANILLA_EVENT_REGISTRY_CHOICE_POLICY,
         "source": "shared_vanilla_event_registry",
-        "ck3_build": EXACT_CK3_BUILD,
-        "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+        "ck3_build": ck3_build,
+        "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256.get(ck3_build),
         "event_definition_key": (
             event_key if isinstance(event_key, str) else None
         ),
@@ -462,8 +497,19 @@ def _scope_projection_checks(
             scope = named_scopes.get(name)
             checks[f"scope:{name}:type"] = bool(
                 isinstance(scope, Mapping)
-                and scope.get("status") == "available"
-                and scope.get("type_key") == expected_type
+                and (
+                    (
+                        scope.get("status") == "available"
+                        and scope.get("type_key") == expected_type
+                    )
+                    or (
+                        expected_type == "character-or-unavailable"
+                        and (
+                            scope.get("status") == "unavailable"
+                            or (scope.get("status") == "available" and scope.get("type_key") == "character")
+                        )
+                    )
+                )
             )
     unique_excludes = contract.get("unique_character_scope_excludes")
     if isinstance(unique_excludes, Mapping):
@@ -544,7 +590,7 @@ def _source_bound_witch_scope_projection(
 ) -> tuple[dict[str, object], bool] | None:
     """Materialize only the four source-authored .4001 saved-scope shapes."""
 
-    hashes = analysis.get("source_sha256") if isinstance(analysis, Mapping) else None
+    hashes = _policy_source_hashes(analysis)
     scopes = context.get("saved_scopes")
     if not (
         isinstance(hashes, Mapping)
@@ -620,7 +666,7 @@ def _source_bound_nickname_notice_projection(
 ) -> dict[str, object] | None:
     """Bind the source-generated nickname flag in the one-option notice."""
 
-    hashes = analysis.get("source_sha256") if isinstance(analysis, Mapping) else None
+    hashes = _policy_source_hashes(analysis)
     expected_aliases = {
         "possible_conqueror": played_character_id,
         "nickname_root_scope": played_character_id,
@@ -1026,15 +1072,18 @@ def recommend_registered_vanilla_event_option_v1(
     *,
     played_character_id: object,
     snapshot_option_count: object,
+    ck3_build: str | None = None,
 ) -> dict[str, object]:
     """Return one direct registry choice or a typed non-action result."""
 
+    build = ck3_build if ck3_build is not None else event_context_build(dict(event_context))
+    respond = partial(_response, ck3_build=build)
     event_key = event_context.get("event_definition_key")
     knowledge = query_vanilla_event_knowledge_v1(
-        event_key if isinstance(event_key, str) else ""
+        event_key if isinstance(event_key, str) else "", build
     )
     if knowledge.get("status") != "available":
-        return _response(
+        return respond(
             status="not_registered",
             event_key=event_key,
             reason=str(knowledge.get("unavailable_reason")),
@@ -1049,7 +1098,7 @@ def recommend_registered_vanilla_event_option_v1(
         or character_id <= 0
         or option_count is None
     ):
-        return _response(
+        return respond(
             status="blocked",
             event_key=event_key,
             reason="played_character_or_contract_projection_unavailable",
@@ -1068,7 +1117,7 @@ def recommend_registered_vanilla_event_option_v1(
         else None
     )
     if notice_review_present and notice_review is None:
-        return _response(
+        return respond(
             status="blocked",
             event_key=event_key,
             reason="registered_effectless_notice_source_review_invalid",
@@ -1076,7 +1125,8 @@ def recommend_registered_vanilla_event_option_v1(
         )
     option_variant_index = None
     if (
-        (event_key in _DIRECT_OPTION_VARIANT_EVENT_KEYS or notice_review is not None)
+        (event_key in _DIRECT_OPTION_VARIANT_EVENT_KEYS or notice_review is not None
+         or _current_contract_update(analysis, "option_variants"))
         and _active(contract.get("option_variants"))
     ):
         resolved, option_variant_index, variant_error = (
@@ -1097,7 +1147,7 @@ def recommend_registered_vanilla_event_option_v1(
             )
         )
         if resolved is None:
-            return _response(
+            return respond(
                 status="blocked",
                 event_key=event_key,
                 reason=variant_error,
@@ -1105,21 +1155,27 @@ def recommend_registered_vanilla_event_option_v1(
             )
         contract = resolved
     if (
-        event_key in _DIRECT_SCOPE_VARIANT_EVENT_KEYS
+        (event_key in _DIRECT_SCOPE_VARIANT_EVENT_KEYS or _current_contract_update(analysis, "scope_variants"))
         and _active(contract.get("scope_variants"))
     ):
         resolved_scope, _scope_variant_index, scope_variant_error = (
             _resolve_scope_variant_contract(event_context, contract)
         )
         if resolved_scope is None:
-            return _response(
+            return respond(
                 status="blocked",
                 event_key=event_key,
                 reason=scope_variant_error,
                 checks={"scope_variant_projection": False},
             )
         contract = resolved_scope
-    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS or notice_review is not None:
+    current_relational_contract = (
+        build == CURRENT_CK3_BUILD and isinstance(analysis, Mapping)
+        and any(_current_contract_update(analysis, field) for field in (
+            "scope_variants", "character_scopes", "character_scope_matches_any", "character_scope_differs_from",
+        ))
+    )
+    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS or notice_review is not None or current_relational_contract:
         contract = _with_relational_character_scope_types(contract)
     allowed_extended_fields: set[str] = set()
     witch_boolean_scope_names_match: bool | None = None
@@ -1128,7 +1184,7 @@ def recommend_registered_vanilla_event_option_v1(
             event_context, contract, analysis, character_id
         )
         if witch_projection is None:
-            return _response(
+            return respond(
                 status="blocked",
                 event_key=event_key,
                 reason="registered_witch_exact_source_or_contract_drift",
@@ -1148,7 +1204,7 @@ def recommend_registered_vanilla_event_option_v1(
             event_context, contract, analysis, character_id
         )
         if nickname_projection is None:
-            return _response(
+            return respond(
                 status="blocked",
                 event_key=event_key,
                 reason="registered_nickname_exact_source_or_contract_drift",
@@ -1169,10 +1225,7 @@ def recommend_registered_vanilla_event_option_v1(
         # block finds a qualifying old plague county. R375 and R0099 saw the
         # epidemic-only form; keep every actual scope and option check strict.
         analysis = knowledge.get("analysis")
-        source_hashes = (
-            analysis.get("source_sha256")
-            if isinstance(analysis, Mapping) else None
-        )
+        source_hashes = _policy_source_hashes(analysis)
         optional_types = contract.get("optional_scope_types")
         base_types = contract.get("scope_types")
         raw_scopes = event_context.get("saved_scopes")
@@ -1202,9 +1255,9 @@ def recommend_registered_vanilla_event_option_v1(
                 },
             }
             allowed_extended_fields.add("optional_scope_types")
-    if event_key in _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS:
+    if event_key in _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS or current_relational_contract:
         allowed_extended_fields.add("unique_character_scope_excludes")
-    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS:
+    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS or current_relational_contract:
         allowed_extended_fields.update(
             {
                 "character_scopes",
@@ -1234,7 +1287,7 @@ def recommend_registered_vanilla_event_option_v1(
         if field not in allowed_extended_fields and _active(contract.get(field))
     )
     if unsupported:
-        return _response(
+        return respond(
             status="blocked",
             event_key=event_key,
             reason="registered_contract_requires_extended_consumer",
@@ -1259,10 +1312,7 @@ def recommend_registered_vanilla_event_option_v1(
         # unrelated names into the popup; only the four source-authored roles
         # decide the acknowledgement, while all raw rows remain well formed.
         analysis = knowledge.get("analysis")
-        source_hashes = (
-            analysis.get("source_sha256")
-            if isinstance(analysis, Mapping) else None
-        )
+        source_hashes = _policy_source_hashes(analysis)
         checks["r0109_exact_prison_notification_source"] = bool(
             isinstance(source_hashes, Mapping)
             and source_hashes.get(
@@ -1313,15 +1363,14 @@ def recommend_registered_vanilla_event_option_v1(
         )
     if event_key == "tgp_japan_yearly_events.1190":
         analysis = knowledge.get("analysis")
-        source_hashes = (
-            analysis.get("source_sha256")
-            if isinstance(analysis, Mapping) else None
-        )
+        source_hashes = _policy_source_hashes(analysis)
         indicators = (
             selected.get("effect_indicators")
             if isinstance(selected, Mapping) else None
         )
         rows = indicators.get("rows") if isinstance(indicators, Mapping) else None
+        if build == CURRENT_CK3_BUILD and isinstance(rows, list):
+            rows = [row for row in rows if isinstance(row, Mapping) and row.get("kind") == "stress"]
         stress = rows[0] if isinstance(rows, list) and len(rows) == 1 else None
         checks["r0100_exact_source"] = bool(
             isinstance(source_hashes, Mapping)
@@ -1334,7 +1383,7 @@ def recommend_registered_vanilla_event_option_v1(
             isinstance(indicators, Mapping)
             and indicators.get("status") == "available"
             and indicators.get("coverage")
-            == "played-character-event-icon-indicators-1.19.0.6-v1"
+            == f"played-character-event-icon-indicators-{build}-v1"
             and indicators.get("complete_effect_set") is False
             and isinstance(stress, Mapping)
             and stress.get("kind") == "stress"
@@ -1345,11 +1394,7 @@ def recommend_registered_vanilla_event_option_v1(
         )
     if event_key == "stress_threshold_special.1001":
         analysis = knowledge.get("analysis")
-        source_hashes = (
-            analysis.get("source_sha256")
-            if isinstance(analysis, Mapping)
-            else None
-        )
+        source_hashes = _policy_source_hashes(analysis)
         event_instance_id = _integer(
             event_context.get("current_event_instance_id")
         )
@@ -1361,8 +1406,13 @@ def recommend_registered_vanilla_event_option_v1(
                 "events/stress_events/stress_threshold_special_events.txt"
             )
             == "768CBA7DB6270BB2FE25D9EEE37D2F24483EE309A2496DD9A539673EF094F709"
-            and event_context.get("calculated_event_id") == 3_121_001
-            and event_context.get("runtime_stats_ordinal") == 4_333
+            and (
+                build == CURRENT_CK3_BUILD
+                or (
+                    event_context.get("calculated_event_id") == 3_121_001
+                    and event_context.get("runtime_stats_ordinal") == 4_333
+                )
+            )
         )
         checks["r0065_single_paused_event_frame"] = bool(
             event_instance_id is not None
@@ -1378,7 +1428,7 @@ def recommend_registered_vanilla_event_option_v1(
             == (0, 4, 7)
         )
     if not all(checks.values()) or selected is None:
-        return _response(
+        return respond(
             status="blocked",
             event_key=event_key,
             reason="registered_contract_projection_drift",
@@ -1403,7 +1453,7 @@ def recommend_registered_vanilla_event_option_v1(
         choice_effect_profile = _selected_choice_effect_profile(
             knowledge, selected_native
         )
-    return _response(
+    return respond(
         status="recommended",
         event_key=event_key,
         reason=None,

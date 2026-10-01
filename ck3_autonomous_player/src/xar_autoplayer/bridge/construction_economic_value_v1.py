@@ -1,4 +1,4 @@
-"""Narrow 1.19.0.6 authored province monthly-income values for new buildings.
+"""Narrow exact-build authored province monthly-income values for new buildings.
 
 The key is copied from the native legal CBuildingType in the current paused
 frame. These are script values, not observed character tax or promised ROI.
@@ -6,6 +6,11 @@ Sources: game/common/buildings/00_standard_economy_buildings.txt SHA-256
 355445C46F70B9015A5E2BE68EE9DDC1F4E3EEB8BE368D34A37FD8A8CC0F7153;
 game/common/script_values/00_building_values.txt SHA-256
 F436F7D9D5AC5506B38D715F0CE02C4F4257EEF3ADDF56597C18A526A6F66825.
+For 1.20.0.2, research/ck3_12002_construction_authored_income.json verifies
+the same 19 keys and values against standard-economy SHA-256
+33A6253E89ACD0DA1C0242BD441987817DC5386325694F92BBE635F657FBD0E8
+and the unchanged building-values file. Effective costs always come from
+the current native result, never the authored base-cost value.
 """
 
 from __future__ import annotations
@@ -26,7 +31,10 @@ _AUTHOR_MONTHLY_INCOME_HUNDREDTHS = {
 }
 
 
-def authored_monthly_income_hundredths(building_key: object) -> int | None:
-    if not isinstance(building_key, str):
+def authored_monthly_income_hundredths(
+    building_key: object, *, exact_ck3_build: str = "1.19.0.6",
+) -> int | None:
+    if (not isinstance(building_key, str)
+            or exact_ck3_build not in {"1.19.0.6", "1.20.0.2"}):
         return None
     return _AUTHOR_MONTHLY_INCOME_HUNDREDTHS.get(building_key)

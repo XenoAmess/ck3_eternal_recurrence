@@ -21,6 +21,7 @@ PACKAGE_ROOT = REPOSITORY_ROOT / "ck3_autonomous_player" / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
 
 from xar_autoplayer.vanilla_events import outcome, policy, registry  # noqa: E402
+from xar_autoplayer.vanilla_events.builds import SUPPORTED_CK3_EXE_SHA256, event_context_build  # noqa: E402
 
 
 class ReplayInputError(ValueError):
@@ -60,9 +61,13 @@ def _check_build(bundle: dict[str, object], context: dict[str, object]) -> dict:
     if isinstance(provenance, dict):
         sources.append(("context.provenance", provenance))
     declarations: dict[str, list[str]] = {}
+    build = bundle.get("ck3_build", event_context_build(context))
+    if not isinstance(build, str) or build not in SUPPORTED_CK3_EXE_SHA256:
+        raise ReplayInputError("unsupported frozen production build")
+    exe_sha256 = SUPPORTED_CK3_EXE_SHA256[build]
     for field, expected in (
-        ("ck3_build", registry.EXACT_CK3_BUILD),
-        ("ck3_exe_sha256", registry.EXACT_CK3_EXE_SHA256),
+        ("ck3_build", build),
+        ("ck3_exe_sha256", exe_sha256),
     ):
         declared_by = []
         for name, value in sources:
@@ -78,8 +83,8 @@ def _check_build(bundle: dict[str, object], context: dict[str, object]) -> dict:
             raise ReplayInputError(f"missing explicit {field} in input or context")
         declarations[field] = declared_by
     return {
-        "ck3_build": registry.EXACT_CK3_BUILD,
-        "ck3_exe_sha256": registry.EXACT_CK3_EXE_SHA256,
+        "ck3_build": build,
+        "ck3_exe_sha256": exe_sha256,
         "declarations": declarations,
         "verification": "input_declaration_matches_registry; executable_not_read",
     }
@@ -123,18 +128,28 @@ def _snapshot_issue(bundle: dict, context: dict) -> dict | None:
     return None
 
 
-def _production_fingerprint() -> dict[str, object]:
+def _production_fingerprint(build: str = registry.EXACT_CK3_BUILD) -> dict[str, object]:
     """Bind the policy, outcome, registry and their checked-in Python records."""
     package = Path(policy.__file__).resolve().parent
     files = {
         path.relative_to(package).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted(package.rglob("*.py"))
     }
+    from xar_autoplayer.vanilla_events.source_index import SOURCE_INDEX_RESOURCE_BY_BUILD
+
+    data_paths = [SOURCE_INDEX_RESOURCE_BY_BUILD[build]]
+    if build == "1.20.0.2":
+        data_paths.append("data/source_compatibility_1_20_0_2.json")
+    data_hashes = {
+        path: hashlib.sha256((package / path).read_bytes()).hexdigest()
+        for path in data_paths
+    }
     encoded = json.dumps(files, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return {
         "package": "xar_autoplayer.vanilla_events",
         "python_sources_sha256": hashlib.sha256(encoded).hexdigest(),
         "files_sha256": files,
+        "frozen_data_sha256": data_hashes,
         "policy": policy.VANILLA_EVENT_REGISTRY_CHOICE_POLICY,
     }
 
@@ -157,6 +172,7 @@ def replay_bytes(data: bytes) -> dict[str, object]:
         context,
         played_character_id=bundle["played_character_id"],
         snapshot_option_count=bundle["snapshot_option_count"],
+        ck3_build=build["ck3_build"],
     )
     material_plan = snapshot_issue or _not_evaluated("policy_did_not_recommend")
     material_evaluation = _not_evaluated("material_plan_not_ready")
@@ -198,7 +214,7 @@ def replay_bytes(data: bytes) -> dict[str, object]:
         "receipt_boundary": "supplied receipt replay only; authenticity and new game effects are not established",
         "input": {"sha256": hashlib.sha256(data).hexdigest(), "size_bytes": len(data)},
         "build": build,
-        "production": _production_fingerprint(),
+        "production": _production_fingerprint(build["ck3_build"]),
         "policy": decision,
         "material_plan": material_plan,
         "material_evaluation": material_evaluation,

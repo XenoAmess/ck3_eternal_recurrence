@@ -15,6 +15,9 @@ from .bridge.current_first_heir_relationship_private_transport import (
 from .bridge.declaration_contract import is_native_declaration_step
 from .bridge.domain_construction_private_transport_v1 import _identity
 from .bridge.observed_heir_marriage_private_action_v1 import RESULT_STEP, SCHEMA
+from .bridge.nonwar_private_build import (
+    private_native_provenance, private_native_readback_matches,
+)
 from .family_marriage_formal_consumer import (
     _write, query_family_marriage_result_private, read_family_marriage_ledger,
 )
@@ -51,7 +54,7 @@ def evaluate_current_betrothal_fulfillment(
     reasons: list[str] = []
     if (actor is None
             or relationship.get("schema") != RELATION_SCHEMA
-            or relationship.get("exact_ck3_build") != "1.19.0.6"
+            or not private_native_readback_matches(snapshot, relationship)
             or relationship.get("native_revision") != snapshot.get("native_revision")
             or relationship.get("read_only") is not True
             or relationship.get("advertised") is not False):
@@ -216,7 +219,7 @@ def submit_current_first_heir_betrothal_fulfillment_private(
         raise ValueError("this fulfillment pair already has a consumed reply")
     pid, creation = _identity(driver)
     pending = {
-        "schema": SCHEMA, "schema_version": 1, "exact_ck3_build": "1.19.0.6",
+        "schema": SCHEMA, "schema_version": 1, **private_native_provenance(snapshot),
         "step": SUBMIT_STEP, "status": "receipt_pending", "material_result": False,
         "advertised": False, "fulfill_existing_betrothal": True,
         "pre_native_revision": snapshot["native_revision"],

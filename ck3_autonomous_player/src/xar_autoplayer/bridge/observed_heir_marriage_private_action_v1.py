@@ -5,6 +5,9 @@ from __future__ import annotations
 import uuid
 
 from .driver import BridgeUnavailableError
+from .nonwar_private_build import (
+    private_native_provenance, private_native_readback_matches,
+)
 
 
 SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
@@ -72,7 +75,7 @@ def submit_observed_first_heir_marriage_private_v1(
     if (
         legality.get("schema") !=
             "xar.ck3.observed-first-heir-marriage-legality.v1"
-        or legality.get("exact_ck3_build") != "1.19.0.6"
+        or not private_native_readback_matches(snapshot, legality)
         or legality.get("status") != "available"
         or legality.get("read_only") is not True
         or legality.get("advertised") is not False
@@ -119,7 +122,7 @@ def submit_observed_first_heir_marriage_private_v1(
     ):
         raise BridgeUnavailableError("heir marriage ACK cannot prove an outcome")
     return {"schema": SCHEMA, "schema_version": 1,
-            "exact_ck3_build": "1.19.0.6", "advertised": False,
+            **private_native_provenance(snapshot), "advertised": False,
             **result}
 
 
@@ -160,7 +163,7 @@ def query_observed_first_heir_marriage_result_private_v1(
     ):
         raise BridgeUnavailableError("heir marriage material readback disagrees with receipt")
     return {"schema": SCHEMA, "schema_version": 1,
-            "exact_ck3_build": "1.19.0.6", "advertised": False,
+            **private_native_provenance(snapshot), "advertised": False,
             **result}
 
 
@@ -242,7 +245,7 @@ def query_observed_first_heir_marriage_cold_result_private_v1(
     ):
         raise BridgeUnavailableError("cold heir marriage pair readback malformed")
     return {"schema": SCHEMA, "schema_version": 1,
-            "exact_ck3_build": "1.19.0.6", "advertised": False,
+            **private_native_provenance(before), "advertised": False,
             "cold_absent_relation_unresolved": status == "pending", **result}
 
 
@@ -299,5 +302,5 @@ def query_observed_first_heir_marriage_alliance_result_private_v1(
             or _paused(driver)["native_revision"] != before["native_revision"]):
         raise BridgeUnavailableError("alliance result disagrees with material pair or frame")
     return {"schema": "xar.ck3.first-heir-marriage-alliance-result.v1",
-            "schema_version": 1, "exact_ck3_build": "1.19.0.6",
+            "schema_version": 1, **private_native_provenance(before),
             **result}

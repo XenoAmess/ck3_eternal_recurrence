@@ -6,6 +6,9 @@ import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .marriage_matchmaking_private_transport import _require_same_paused_frame
+from .nonwar_private_build import (
+    private_native_provenance, private_native_readback_matches,
+)
 
 
 STEP = "query-player-child-marriage-value-v1-private"
@@ -50,7 +53,7 @@ def query_player_child_marriage_value_private_v1(
         or legality.get("player_child_verified") is not True
         or legality.get("read_only") is not True
         or legality.get("advertised") is not False
-        or legality.get("exact_ck3_build") != "1.19.0.6"
+        or not private_native_readback_matches(before, legality)
         or legality.get("played_character_id") != played_id
         or legality.get("native_revision") != before.get("native_revision")
         or type(legality.get("query_sequence")) is not int
@@ -170,7 +173,7 @@ def query_player_child_marriage_value_private_v1(
         ):
             raise BridgeUnavailableError("child marriage value native fields malformed")
     return {
-        "schema": SCHEMA, "exact_ck3_build": "1.19.0.6",
+        "schema": SCHEMA, **private_native_provenance(before),
         "read_only": True, "advertised": False,
         "native_revision": before["native_revision"],
         "legality_query_sequence": legality["query_sequence"],

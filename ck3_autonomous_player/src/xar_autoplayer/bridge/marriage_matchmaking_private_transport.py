@@ -12,6 +12,7 @@ import uuid
 
 from .marriage_matchmaking_contract import normalize_ranked_marriage_observation
 from .driver import BridgeUnavailableError
+from .nonwar_private_build import private_native_provenance
 
 
 PRIVATE_RANKED_MARRIAGE_STEP_V1 = "query-ranked-marriage-candidates-v1-private"
@@ -57,7 +58,8 @@ def query_observed_first_heir_marriage_legality_v1(
     return {
         "schema": OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_SCHEMA_V1,
         "schema_version": 1,
-        "exact_ck3_build": "1.19.0.6",
+        **{key: result[key] for key in ("exact_ck3_build", "exe_sha256")
+           if key in result},
         "read_only": True,
         "advertised": False,
         "status": result["status"],
@@ -167,7 +169,8 @@ def _query_observed_heir_marriage_transport_v1(
             raise BridgeUnavailableError(
                 "observed-heir marriage unavailable reason absent"
             )
-        return {"status": "unavailable", "unavailable_reason": reason,
+        return {**private_native_provenance(before),
+                "status": "unavailable", "unavailable_reason": reason,
                 "observed_first_heir_character_id": heir_id,
                 "root_query_sequence": root.get("query_sequence"),
                 "public_campaign_root": root,
@@ -256,7 +259,8 @@ def _query_observed_heir_marriage_transport_v1(
         raise BridgeUnavailableError(
             "observed-heir marriage native storage enumeration incomplete"
         )
-    return {"status": "available", "query_sequence": result["query_sequence"],
+    return {**private_native_provenance(before),
+            "status": "available", "query_sequence": result["query_sequence"],
             "observed_first_heir_character_id": heir_id,
             "root_query_sequence": root.get("query_sequence"),
             "public_campaign_root": root,

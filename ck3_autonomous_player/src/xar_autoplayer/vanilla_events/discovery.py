@@ -13,6 +13,7 @@ import json
 from typing import Final
 
 from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256, JsonValue
+from .builds import CURRENT_CK3_BUILD, SUPPORTED_CK3_EXE_SHA256
 
 
 VANILLA_EVENT_KNOWLEDGE_INDEX_SCHEMA: Final = (
@@ -170,7 +171,7 @@ def _response(
         "schema_version": VANILLA_EVENT_KNOWLEDGE_INDEX_SCHEMA_VERSION,
         "status": status,
         "ck3_build": build if isinstance(build, str) else None,
-        "ck3_exe_sha256": EXACT_CK3_EXE_SHA256 if build == EXACT_CK3_BUILD else None,
+        "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256.get(build) if isinstance(build, str) else None,
         "query": query,
         "namespace": namespace,
         "evidence_class": (
@@ -235,7 +236,7 @@ def ck3_list_vanilla_event_knowledge_v1(
 
     invalid_parameter: str | None = None
     unavailable_reason: str | None = None
-    if not isinstance(build, str) or build != EXACT_CK3_BUILD:
+    if not isinstance(build, str) or build not in SUPPORTED_CK3_EXE_SHA256:
         unavailable_reason = "unsupported_ck3_build"
         invalid_parameter = "build"
     elif query is not None and not isinstance(query, str):
@@ -286,6 +287,10 @@ def ck3_list_vanilla_event_knowledge_v1(
 
     if contracts is None or analysis is None or observations is None:
         default_contracts, default_analysis, default_observations = _default_catalogs()
+        if build == CURRENT_CK3_BUILD:
+            from .migration_1_20_0_2 import current_migrated_catalogs
+
+            default_contracts, default_analysis, default_observations = current_migrated_catalogs()
         contracts = default_contracts if contracts is None else contracts
         analysis = default_analysis if analysis is None else analysis
         observations = default_observations if observations is None else observations

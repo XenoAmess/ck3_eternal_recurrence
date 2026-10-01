@@ -6,6 +6,7 @@ import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .marriage_matchmaking_private_transport import _require_same_paused_frame
+from .nonwar_private_build import private_native_provenance
 
 
 SUBMIT_STEP = "submit-player-child-matrilineal-marriage-v1-private"
@@ -129,7 +130,7 @@ def submit_player_child_matrilineal_private_v1(
             or result.get("matrilineal_option_selected") is not selected_option):
         raise BridgeUnavailableError("child proposal ACK identity changed; state unknown")
     return {"schema": DEFAULT_SCHEMA if default_route else SCHEMA, "schema_version": 1,
-            "exact_ck3_build": "1.19.0.6", "advertised": False, **result}
+            **private_native_provenance(before), "advertised": False, **result}
 
 
 def query_player_child_matrilineal_result_private_v1(
@@ -201,7 +202,7 @@ def query_player_child_matrilineal_result_private_v1(
             or result.get("matrilineal_option_selected") is not selected_option):
         raise BridgeUnavailableError("child proposal result identity changed")
     return {"schema": schema, "schema_version": 1,
-            "exact_ck3_build": "1.19.0.6", "advertised": False,
+            **private_native_provenance(before), "advertised": False,
             "cold_absent_relation_unresolved": cold and result["status"] == "pending",
             **result}
 
@@ -264,4 +265,4 @@ def query_player_child_matrilineal_alliance_private_v1(
     return {"schema": ("xar.ck3.player-child-default-alliance-result.v1"
                        if default_route else
                        "xar.ck3.player-child-matrilineal-alliance-result.v1"),
-            "schema_version": 1, "exact_ck3_build": "1.19.0.6", **result}
+            "schema_version": 1, **private_native_provenance(before), **result}

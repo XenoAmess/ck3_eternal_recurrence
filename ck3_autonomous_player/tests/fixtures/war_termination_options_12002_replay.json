@@ -1,0 +1,100 @@
+{
+  "schema": "war-termination-options-12002-static-replay-fixture-v1",
+  "evidence_kind": "offline replay of historical native wire; no new live acceptance",
+  "build": {
+    "version": "1.20.0.2",
+    "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "source": {
+    "path": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-08/mcp.native-wire.jsonl",
+    "sha256": "c025e05d099c393f8e48421180d9a76b04d91161f139641a7d382d16fb93cfdc",
+    "line": 135,
+    "request_id": "step-11-d53e2e05e773",
+    "step": "query-war-termination-options-16777290",
+    "command_ok": true,
+    "command_status": "available",
+    "adapter_id": "ck3-1.20.0.2-msvc-x64",
+    "adapter_status": "ready"
+  },
+  "war_termination_options": {
+    "war_id": 16777290,
+    "player_side": "attacker",
+    "player_is_primary_war_leader": true,
+    "player_relative_war_score": 0,
+    "war_duration_days": 59,
+    "absolute_war_scores_observable": true,
+    "attacker_war_score": 0,
+    "defender_war_score": 0,
+    "war_score_breakdown": {
+      "imprisonment": 0,
+      "battles": 0,
+      "occupation": 0,
+      "ticking": 0
+    },
+    "active_casus_belli_present": true,
+    "active_casus_belli_identity": {
+      "database_index": 11,
+      "canonical_key": "claim_cb"
+    },
+    "cb_allows_white_peace": true,
+    "options": {
+      "surrender": {
+        "outcome": "attacker_defeat",
+        "hostage_variant": "none",
+        "context_constructed": true,
+        "native_validator_passed": true,
+        "available": true,
+        "terms_observable": false,
+        "terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "ai_acceptance_observable": true,
+        "ai_acceptance": {
+          "raw": 90100000,
+          "scale": 100000
+        },
+        "auto_accept_observable": true,
+        "auto_accept": true
+      },
+      "white_peace": {
+        "outcome": "white_peace",
+        "hostage_variant": "none",
+        "context_constructed": true,
+        "native_validator_passed": false,
+        "available": false,
+        "terms_observable": false,
+        "terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "ai_acceptance_observable": true,
+        "ai_acceptance": {
+          "raw": -3000000,
+          "scale": 100000
+        },
+        "auto_accept_observable": true,
+        "auto_accept": false
+      },
+      "victory": {
+        "outcome": "attacker_victory",
+        "hostage_variant": "none",
+        "context_constructed": true,
+        "native_validator_passed": false,
+        "available": false,
+        "terms_observable": false,
+        "terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "ai_acceptance_observable": true,
+        "ai_acceptance": {
+          "raw": -9900000,
+          "scale": 100000
+        },
+        "auto_accept_observable": true,
+        "auto_accept": false
+      }
+    }
+  }
+}

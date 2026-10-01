@@ -11,12 +11,17 @@ import re
 from typing import Final, Mapping
 
 from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
+from .builds import SUPPORTED_CK3_EXE_SHA256
 
 
 SOURCE_INDEX_SCHEMA: Final = "xar.ck3.vanilla-event-source-index"
 SOURCE_INDEX_SCHEMA_VERSION: Final = 1
 SOURCE_PROVENANCE_SCHEMA: Final = "xar.ck3.vanilla-event-source-provenance"
 SOURCE_INDEX_RESOURCE: Final = "data/source_index_1_19_0_6.json"
+SOURCE_INDEX_RESOURCE_BY_BUILD: Final = {
+    EXACT_CK3_BUILD: SOURCE_INDEX_RESOURCE,
+    "1.20.0.2": "data/source_index_1_20_0_2.json",
+}
 _SHA256_PATTERN: Final = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -101,9 +106,10 @@ def validate_vanilla_event_source_index(
         raise VanillaEventSourceIndexError(
             "source_index.schema_version is unsupported"
         )
-    if root.get("ck3_build") != EXACT_CK3_BUILD:
+    build = root.get("ck3_build")
+    if not isinstance(build, str) or build not in SUPPORTED_CK3_EXE_SHA256:
         raise VanillaEventSourceIndexError("source_index.ck3_build is unsupported")
-    if root.get("ck3_exe_sha256") != EXACT_CK3_EXE_SHA256:
+    if root.get("ck3_exe_sha256") != SUPPORTED_CK3_EXE_SHA256[build]:
         raise VanillaEventSourceIndexError(
             "source_index.ck3_exe_sha256 is unsupported"
         )
@@ -215,10 +221,13 @@ def validate_vanilla_event_source_index(
 
 def load_vanilla_event_source_index(
     path: str | Path | None = None,
+    *, build: str = EXACT_CK3_BUILD,
 ) -> dict[str, object]:
     """Load a local override or the package's frozen exact-build dataset."""
     if path is None:
-        resource = resources.files(__package__).joinpath(SOURCE_INDEX_RESOURCE)
+        if build not in SOURCE_INDEX_RESOURCE_BY_BUILD:
+            raise VanillaEventSourceIndexError(f"unsupported CK3 build: {build}")
+        resource = resources.files(__package__).joinpath(SOURCE_INDEX_RESOURCE_BY_BUILD[build])
         payload = resource.read_bytes()
     else:
         payload = Path(path).read_bytes()
@@ -235,10 +244,11 @@ def query_vanilla_event_source_v1(
     event_definition_key: str,
     *,
     source_index: Mapping[str, object] | None = None,
+    build: str = EXACT_CK3_BUILD,
 ) -> dict[str, object]:
     """Return one detached source row without claiming a proven call edge."""
     document = (
-        load_vanilla_event_source_index()
+        load_vanilla_event_source_index(build=build)
         if source_index is None
         else validate_vanilla_event_source_index(source_index)
     )
@@ -249,8 +259,8 @@ def query_vanilla_event_source_v1(
         "schema_version": SOURCE_INDEX_SCHEMA_VERSION,
         "status": "available" if event is not None else "unavailable",
         "event_definition_key": event_definition_key,
-        "ck3_build": EXACT_CK3_BUILD,
-        "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+        "ck3_build": document["ck3_build"],
+        "ck3_exe_sha256": document["ck3_exe_sha256"],
         "dataset_sha256": document["dataset_sha256"],
         "source": deepcopy(event) if event is not None else None,
         "unavailable_reason": (
@@ -268,7 +278,7 @@ def query_vanilla_event_source_provenance_v1(
     """Return portable provenance without promoting lexical hits to call edges."""
     invalid_parameter: str | None = None
     unavailable_reason: str | None = None
-    if not isinstance(build, str) or build != EXACT_CK3_BUILD:
+    if not isinstance(build, str) or build not in SUPPORTED_CK3_EXE_SHA256:
         invalid_parameter = "build"
         unavailable_reason = "unsupported_ck3_build"
     elif not isinstance(key, str) or not key.strip():
@@ -282,7 +292,7 @@ def query_vanilla_event_source_provenance_v1(
             "key": key if isinstance(key, str) else None,
             "build": build if isinstance(build, str) else None,
             "ck3_exe_sha256": (
-                EXACT_CK3_EXE_SHA256 if build == EXACT_CK3_BUILD else None
+                SUPPORTED_CK3_EXE_SHA256.get(build) if isinstance(build, str) else None
             ),
             "dataset_sha256": None,
             "namespace": None,
@@ -298,10 +308,12 @@ def query_vanilla_event_source_provenance_v1(
     assert isinstance(key, str)
     try:
         document = (
-            load_vanilla_event_source_index()
+            load_vanilla_event_source_index(build=build)
             if source_index is None
             else validate_vanilla_event_source_index(source_index)
         )
+        if document["ck3_build"] != build:
+            raise VanillaEventSourceIndexError("source index does not match requested build")
     except (OSError, VanillaEventSourceIndexError):
         return {
             "schema": SOURCE_PROVENANCE_SCHEMA,
@@ -309,7 +321,7 @@ def query_vanilla_event_source_provenance_v1(
             "status": "unavailable",
             "key": key,
             "build": build,
-            "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+            "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256[build],
             "dataset_sha256": None,
             "namespace": None,
             "definition": None,
@@ -332,7 +344,7 @@ def query_vanilla_event_source_provenance_v1(
         "status": "available" if event is not None else "unavailable",
         "key": key,
         "build": build,
-        "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+        "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256[build],
         "dataset_sha256": document["dataset_sha256"],
         "namespace": event["namespace"] if event is not None else None,
         "definition": (

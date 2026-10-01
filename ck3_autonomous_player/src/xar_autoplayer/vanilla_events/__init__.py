@@ -2,6 +2,8 @@
 
 from typing import Final
 
+from .builds import CURRENT_CK3_BUILD, CURRENT_CK3_EXE_SHA256
+
 from .registry import (
     EXACT_CK3_BUILD,
     EXACT_CK3_EXE_SHA256,
@@ -330,6 +332,8 @@ __all__ = [
     "DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS",
     "EXACT_CK3_BUILD",
     "EXACT_CK3_EXE_SHA256",
+    "CURRENT_CK3_BUILD",
+    "CURRENT_CK3_EXE_SHA256",
     "VANILLA_EVENT_TIMELINE_CONTRACTS",
     "build_vanilla_event_registry",
     "ck3_list_vanilla_event_knowledge_v1",

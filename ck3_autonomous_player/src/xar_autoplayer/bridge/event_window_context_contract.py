@@ -5,6 +5,8 @@ from __future__ import annotations
 import copy
 from typing import Any
 
+from .version_identity import CK3_11906, CK3_12002
+
 
 QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY = (
     "game.command.query-current-event-window-context-v1"
@@ -72,6 +74,24 @@ _PROVENANCE_FIELDS = {
     "manager_offset",
     "backend_id",
 }
+_EVENT_PROVENANCE_BY_BACKEND = {
+    CK3_11906.backend_id("event-window-v1"): {
+        "root": "module+0x570F7B8->+0x10",
+        "idler_vtable_rva": "0x40B1D30",
+        "manager_offset": "+0x28",
+        "backend_id": CK3_11906.backend_id("event-window-v1"),
+    },
+    CK3_12002.backend_id("event-window-v1"): {
+        "root": "module+0x5C6A520->+0x10",
+        "idler_vtable_rva": "0x44BC408",
+        "manager_offset": "+0x28",
+        "backend_id": CK3_12002.backend_id("event-window-v1"),
+    },
+}
+_EVENT_BUILD_BY_BACKEND = {
+    build.backend_id("event-window-v1"): build
+    for build in (CK3_11906, CK3_12002)
+}
 
 
 def _exact_object(value: Any, fields: set[str], label: str) -> dict[str, Any]:
@@ -105,7 +125,7 @@ def _stable_key(value: Any, label: str) -> str:
     return key
 
 
-def _effect_indicator(value: Any, label: str) -> None:
+def _effect_indicator(value: Any, label: str, *, game_version: str) -> None:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be an object")
     kind = value.get("kind")
@@ -131,26 +151,35 @@ def _effect_indicator(value: Any, label: str) -> None:
         else:
             raise ValueError(f"{label}.trait status is invalid")
         return
-    if kind == "stress":
+    if kind in {"stress", "fulfillment", "stress_and_fulfillment"}:
+        if kind != "stress" and game_version != CK3_12002.game_version:
+            raise ValueError(f"{label}.kind does not belong to this exact build")
+        fields = {
+            "kind", "direction", "magnitude", "affected_by_trait", "critical",
+        }
+        if kind == "stress_and_fulfillment":
+            fields.add("secondary_direction")
         row = _exact_object(
             value,
-            {
-                "kind",
-                "direction",
-                "magnitude",
-                "affected_by_trait",
-                "critical",
-            },
+            fields,
             label,
         )
         if row["direction"] not in {"increase", "decrease"}:
             raise ValueError(f"{label}.direction is invalid")
+        if kind == "stress_and_fulfillment" and row["secondary_direction"] not in {
+            "increase", "decrease",
+        }:
+            raise ValueError(f"{label}.secondary_direction is invalid")
         if row["magnitude"] != {"status": "unavailable"}:
             raise ValueError(f"{label}.magnitude must remain unavailable")
         if not isinstance(row["affected_by_trait"], bool) or not isinstance(
             row["critical"], bool
         ):
             raise ValueError(f"{label} stress flags must be booleans")
+        if kind == "fulfillment" and (
+            row["affected_by_trait"] is not False or row["critical"] is not False
+        ):
+            raise ValueError(f"{label} fulfillment row has unsupported stress flags")
         return
     if kind == "death":
         row = _exact_object(
@@ -201,7 +230,11 @@ def _effect_indicator(value: Any, label: str) -> None:
         raw_kind = _int(
             row["raw_kind"], f"{label}.raw_kind", -(2**31), 2**31 - 1
         )
-        if raw_kind in {0, 1, 2, 3}:
+        known_kinds = (
+            {0, 1, 2, 3, 4, 5} if game_version == CK3_12002.game_version
+            else {0, 1, 2, 3}
+        )
+        if raw_kind in known_kinds:
             raise ValueError(f"{label}.raw_kind aliases a known kind")
         return
     raise ValueError(f"{label}.kind is invalid")
@@ -323,14 +356,13 @@ def normalize_current_event_window_context_v1(
     )
     for key in _PROVENANCE_FIELDS:
         _string(provenance[key], f"event provenance.{key}", nonempty=True)
-    if (
-        provenance["root"] != "module+0x570F7B8->+0x10"
-        or provenance["idler_vtable_rva"] != "0x40B1D30"
-        or provenance["manager_offset"] != "+0x28"
-        or provenance["backend_id"]
-        != "ck3-1.19.0.6-native-event-window-v1"
-    ):
+    expected_provenance = _EVENT_PROVENANCE_BY_BACKEND.get(provenance["backend_id"])
+    if expected_provenance is None or provenance != expected_provenance:
         raise ValueError("event provenance exact-build locator drifted")
+    event_build = _EVENT_BUILD_BY_BACKEND[provenance["backend_id"]]
+    indicator_coverage = (
+        f"played-character-event-icon-indicators-{event_build.game_version}-v1"
+    )
 
     if frame["status"] == "unavailable":
         _string(
@@ -455,7 +487,7 @@ def normalize_current_event_window_context_v1(
         )
         if (
             indicators["status"] != "available"
-            or indicators["coverage"] != _EFFECT_INDICATOR_COVERAGE
+            or indicators["coverage"] != indicator_coverage
             or indicators["complete_effect_set"] is not False
             or not isinstance(indicators["rows"], list)
             or len(indicators["rows"]) > 128
@@ -465,6 +497,7 @@ def normalize_current_event_window_context_v1(
             _effect_indicator(
                 indicator,
                 f"event option effect indicator {row_index}",
+                game_version=event_build.game_version,
             )
         effect = _exact_object(
             option["effect_preview"],
