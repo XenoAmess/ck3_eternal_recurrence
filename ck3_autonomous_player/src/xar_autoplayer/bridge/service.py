@@ -614,14 +614,52 @@ class GameplayBridgeService:
             binding.get(key) != value
             for key, value in current_binding.items()
         ):
-            turn_bundle = self.query_turn_bundle_v1(
-                expected_revision=revision
-            )
+            root_query_retry = None
+            try:
+                turn_bundle = self.query_turn_bundle_v1(
+                    expected_revision=revision
+                )
+            except BridgeUnavailableError as error:
+                if getattr(error, "native_error", None) not in {
+                    "campaign-root snapshot changed or is not ready",
+                    "application-main typed query failed or its snapshot changed",
+                }:
+                    raise
+                root_query_retry = self._retry_rejected_campaign_root_read(
+                    snapshot, {"revision": revision}, error
+                )
+                if root_query_retry is None:
+                    raise
+                revision = int(root_query_retry["fresh_snapshot"]["revision"])
+                try:
+                    turn_bundle = self.query_turn_bundle_v1(
+                        expected_revision=revision
+                    )
+                except BridgeUnavailableError as retry_error:
+                    error.read_only_query_retry = {
+                        key: value
+                        for key, value in root_query_retry.items()
+                        if key not in ("fresh_snapshot", "starting_snapshot")
+                    }
+                    error.read_only_query_retry["second_error"] = (
+                        f"{type(retry_error).__name__}: {retry_error}"
+                    )
+                    raise error from retry_error
             retain(turn_bundle, expected_revision=revision)
             refreshed = getattr(
                 self.driver, "take_internal_semantic_snapshot", None
             )
-            return refreshed() if callable(refreshed) else self.snapshot()
+            prepared = refreshed() if callable(refreshed) else self.snapshot()
+            if root_query_retry is not None:
+                prepared = {
+                    **prepared,
+                    "read_only_query_retry": {
+                        key: value
+                        for key, value in root_query_retry.items()
+                        if key not in ("fresh_snapshot", "starting_snapshot")
+                    },
+                }
+            return prepared
         return snapshot
 
     def _ordinary_government_context_v1(self, snapshot: dict[str, object]) -> dict[str, object]:
@@ -688,6 +726,10 @@ class GameplayBridgeService:
         planned = (planning_view(snapshot, seed) if callable(planning_view)
                    else seed(snapshot, snapshot.get("native_command_history", [])))
         history = planned.pop("_nonwar_history")
+        if isinstance(snapshot.get("read_only_query_retry"), dict):
+            planned["plan"]["read_only_query_retry"] = copy.deepcopy(
+                snapshot["read_only_query_retry"]
+            )
         planned["plan"]["campaign_government_context_used"] = self._ordinary_government_context_v1(snapshot)
         if planned["plan"].get("selected_step") != "life-advance":
             return planned
@@ -2628,7 +2670,10 @@ class GameplayBridgeService:
                 not isinstance(error, BridgeUnavailableError)
                 or selected_step != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
                 or getattr(error, "native_error", None)
-                != "campaign-root snapshot changed or is not ready"
+                not in {
+                    "campaign-root snapshot changed or is not ready",
+                    "application-main typed query failed or its snapshot changed",
+                }
                 or not isinstance(root_query_start, dict)
             ):
                 raise
