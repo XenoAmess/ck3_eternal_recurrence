@@ -1,0 +1,484 @@
+{
+  "schema_version": 1,
+  "contract": "private-player-prisoner-ransom-1.20.0.2",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "exact_build": {
+    "product_version": "1.20.0.2",
+    "executable_size": 101039736,
+    "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+    "image_base": "0x140000000"
+  },
+  "source_constants": {
+    "kPrisonerGetInteractionDatabaseRva": "0x89DA60",
+    "kPrisonerHashStableKeyRva": "0x3F7E240",
+    "kPrisonerLookupInteractionRva": "0xA055E0",
+    "kPrisonerGetScriptIdentifierTableRva": "0x3F8A800",
+    "kPrisonerLookupScriptIdentifierIdRva": "0x3F8A680",
+    "kPrisonerEvaluateAnswerRva": "0x307BC80",
+    "kPrisonerClearOptionsRva": "0x3078700",
+    "kPrisonerSelectOptionRva": "0x30787E0"
+  },
+  "native_spans": [
+    {
+      "name": "get_interaction_database",
+      "rva": "0x89da60",
+      "size": 87,
+      "sha256": "0be97404b7c26775afc31fffda0c689d487465ccd5287010077da20bf5384bb2"
+    },
+    {
+      "name": "hash_stable_key",
+      "rva": "0x3f7e240",
+      "size": 135,
+      "sha256": "e42410bf40cbe818fed8b771988e102ae129bce08cd7f975eb7a1eb2e5cd70dd"
+    },
+    {
+      "name": "lookup_interaction",
+      "rva": "0xa055e0",
+      "size": 314,
+      "sha256": "5e890424254c7428bafffbbed1d325721c10cde3582376e82c221e2441ad5565"
+    },
+    {
+      "name": "get_script_identifier_table",
+      "rva": "0x3f8a800",
+      "size": 64,
+      "sha256": "4768350c8a9417aef3258f9cdc27d3e129f5598a26bdb3d7ceb71ad835331c02"
+    },
+    {
+      "name": "lookup_script_identifier",
+      "rva": "0x3f8a680",
+      "size": 64,
+      "sha256": "d330755fb2ecaa0f463284d722520547f5b0a37ba8f6c665acec977538b20871"
+    },
+    {
+      "name": "evaluate_answer",
+      "rva": "0x307bc80",
+      "size": 64,
+      "sha256": "41beb8df97701de6758b5d09c420edec4ec8856951006073a284a9d4964fa2cb"
+    },
+    {
+      "name": "clear_owned_options",
+      "rva": "0x3078700",
+      "size": 87,
+      "sha256": "6bad15f2cf33e92cb1e652e2e21ee53fe1271ab7650d29df021b4396150826ae"
+    },
+    {
+      "name": "select_authored_option",
+      "rva": "0x30787e0",
+      "size": 72,
+      "sha256": "90deea802ebf7e31b623687c0b1d4815dc7a16a3bf1e0d983aba154f1ed4a9b3"
+    },
+    {
+      "name": "default_option_picker",
+      "rva": "0x3078650",
+      "size": 163,
+      "sha256": "d8a3b8bab88a7bfa021fb25d02d3e7ecf6368e4d40e10806ae96ace7918ec1bb"
+    },
+    {
+      "name": "option_shown_valid",
+      "rva": "0x30789c0",
+      "size": 147,
+      "sha256": "7c32398ffdf04ebd2b104e781bd6e073e71c8090e2a308a4595d5b9dfc558ec1"
+    },
+    {
+      "name": "all_role_constructor",
+      "rva": "0x3076e50",
+      "size": 326,
+      "sha256": "2927151f607002c844e9dc17053518a98161c2cdd2a8384c4940fb9c7bdfa3c6"
+    },
+    {
+      "name": "context_validator",
+      "rva": "0x307c040",
+      "size": 64,
+      "sha256": "e03724641a2c4d5b2f4bb9c0df8e0797940282955361f93cf2a8ba9c1345be40"
+    },
+    {
+      "name": "typed_send_validator",
+      "rva": "0x29682a0",
+      "size": 9,
+      "sha256": "d0afb6daacb032e81b6de33abcd46c160414da155af5c4038e63265e42768009"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "database_lookup_getter",
+      "rva": "0x2b744cd",
+      "bytes": "E8 8E 95 D2 FD",
+      "instruction": "call 0x89da60",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x89da60"
+      ]
+    },
+    {
+      "name": "database_lookup_hash",
+      "rva": "0x2b744e7",
+      "bytes": "E8 54 9D 40 01",
+      "instruction": "call 0x3f7e240",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3f7e240"
+      ]
+    },
+    {
+      "name": "database_lookup_resolution",
+      "rva": "0x2b744f1",
+      "bytes": "E8 EA 10 E9 FD",
+      "instruction": "call 0xa055e0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0xa055e0"
+      ]
+    },
+    {
+      "name": "independent_lookup_getter",
+      "rva": "0x2d69b9d",
+      "bytes": "E8 BE 3E B3 FD",
+      "instruction": "call 0x89da60",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x89da60"
+      ]
+    },
+    {
+      "name": "independent_lookup_hash",
+      "rva": "0x2d69bb7",
+      "bytes": "E8 84 46 21 01",
+      "instruction": "call 0x3f7e240",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3f7e240"
+      ]
+    },
+    {
+      "name": "independent_lookup_resolution",
+      "rva": "0x2d69bc1",
+      "bytes": "E8 1A BA C9 FD",
+      "instruction": "call 0xa055e0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0xa055e0"
+      ]
+    },
+    {
+      "name": "constructor_actor_id",
+      "rva": "0x3076e8d",
+      "bytes": "89 BE D8 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2d8], edi",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "constructor_recipient_id",
+      "rva": "0x3076e93",
+      "bytes": "89 9E DC 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2dc], ebx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "constructor_secondary_actor_id",
+      "rva": "0x3076e9d",
+      "bytes": "89 86 E0 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2e0], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "constructor_prisoner_id",
+      "rva": "0x3076ea7",
+      "bytes": "89 86 E4 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2e4], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "constructor_intermediary_id",
+      "rva": "0x3076eb1",
+      "bytes": "89 86 E8 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2e8], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "constructor_options_storage",
+      "rva": "0x3076ecc",
+      "bytes": "48 8D 8E 00 03 00 00",
+      "instruction": "lea rcx, [rsi + 0x300]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "constructor_default_picker",
+      "rva": "0x3076f66",
+      "bytes": "E8 E5 16 00 00",
+      "instruction": "call 0x3078650",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3078650"
+      ]
+    },
+    {
+      "name": "default_picker_clears",
+      "rva": "0x3078659",
+      "bytes": "E8 A2 00 00 00",
+      "instruction": "call 0x3078700",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3078700"
+      ]
+    },
+    {
+      "name": "default_picker_definition_count",
+      "rva": "0x3078680",
+      "bytes": "8B B0 64 22 00 00",
+      "instruction": "mov esi, dword ptr [rax + 0x2264]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "default_picker_option_valid",
+      "rva": "0x3078695",
+      "bytes": "E8 26 03 00 00",
+      "instruction": "call 0x30789c0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x30789c0"
+      ]
+    },
+    {
+      "name": "clear_options_definition_count",
+      "rva": "0x3078715",
+      "bytes": "8B B8 64 22 00 00",
+      "instruction": "mov edi, dword ptr [rax + 0x2264]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "clear_options_context_count",
+      "rva": "0x307871b",
+      "bytes": "3B B9 0C 03 00 00",
+      "instruction": "cmp edi, dword ptr [rcx + 0x30c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "clear_options_context_data",
+      "rva": "0x3078739",
+      "bytes": "48 8B 8E 00 03 00 00",
+      "instruction": "mov rcx, qword ptr [rsi + 0x300]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "clear_options_write_count",
+      "rva": "0x3078731",
+      "bytes": "89 BE 0C 03 00 00",
+      "instruction": "mov dword ptr [rsi + 0x30c], edi",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "select_option_exclusive_flag",
+      "rva": "0x30787f3",
+      "bytes": "80 B8 1E 27 00 00 00",
+      "instruction": "cmp byte ptr [rax + 0x271e], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "select_option_clear",
+      "rva": "0x30787fc",
+      "bytes": "E8 FF FE FF FF",
+      "instruction": "call 0x3078700",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3078700"
+      ]
+    },
+    {
+      "name": "select_option_data",
+      "rva": "0x3078801",
+      "bytes": "48 8B 83 00 03 00 00",
+      "instruction": "mov rax, qword ptr [rbx + 0x300]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "select_option_write_byte",
+      "rva": "0x307880d",
+      "bytes": "C6 04 07 01",
+      "instruction": "mov byte ptr [rdi + rax], 1",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "select_option_refresh",
+      "rva": "0x3078811",
+      "bytes": "E8 4A 02 00 00",
+      "instruction": "call 0x3078a60",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3078a60"
+      ]
+    },
+    {
+      "name": "select_option_finalize",
+      "rva": "0x3078823",
+      "bytes": "E9 68 04 00 00",
+      "instruction": "jmp 0x3078c90",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3078c90"
+      ]
+    },
+    {
+      "name": "flag_index_stride",
+      "rva": "0x30788a0",
+      "bytes": "49 69 C8 30 07 00 00",
+      "instruction": "imul rcx, r8, 0x730",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "flag_index_rows",
+      "rva": "0x30788a7",
+      "bytes": "49 03 89 58 22 00 00",
+      "instruction": "add rcx, qword ptr [r9 + 0x2258]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "flag_index_flag_id",
+      "rva": "0x30788b5",
+      "bytes": "39 91 68 03 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x368], edx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "option_valid_count",
+      "rva": "0x30789e1",
+      "bytes": "3B 98 64 22 00 00",
+      "instruction": "cmp ebx, dword ptr [rax + 0x2264]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "option_valid_stride",
+      "rva": "0x30789ec",
+      "bytes": "4C 69 C3 30 07 00 00",
+      "instruction": "imul r8, rbx, 0x730",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "option_valid_rows",
+      "rva": "0x30789f3",
+      "bytes": "48 8B 88 58 22 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x2258]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "typed_send_primary",
+      "rva": "0x2968197",
+      "bytes": "48 8D 05 42 3B B2 01",
+      "instruction": "lea rax, [rip + 0x1b23b42]",
+      "rip_targets": [
+        "0x448bce0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "typed_send_secondary",
+      "rva": "0x29681a1",
+      "bytes": "48 8D 05 08 3B B2 01",
+      "instruction": "lea rax, [rip + 0x1b23b08]",
+      "rip_targets": [
+        "0x448bcb0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "typed_send_clone_context",
+      "rva": "0x29681b0",
+      "bytes": "E8 CB E9 70 00",
+      "instruction": "call 0x3076b80",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3076b80"
+      ]
+    },
+    {
+      "name": "typed_send_validator_context",
+      "rva": "0x29682a0",
+      "bytes": "48 83 C1 20",
+      "instruction": "add rcx, 0x20",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "typed_send_validator_final_gate",
+      "rva": "0x29682a4",
+      "bytes": "E9 97 3D 71 00",
+      "instruction": "jmp 0x307c040",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x307c040"
+      ]
+    }
+  ],
+  "stock_sources": [
+    {
+      "path": "game/common/character_interactions/00_prison_interactions.txt",
+      "sha256": "1bb43b3c2061212af8d41b11314ff4e569af2a3506319f820d05877a7762abc5",
+      "lines": "1886-2559 ransom_interaction; 1893-1905 redirect; 2122-2143 ordinary gold/current_gold; 2211-2228 current_herd; 2550-2558 invalid fallback"
+    },
+    {
+      "path": "game/common/scripted_effects/00_prison_effects.txt",
+      "sha256": "ea8bb72426246692bf1f310ae7eb83715ae1b7314d046e3660df66443d486030",
+      "lines": "2-225 ransom_interaction_effect; 162-175 normal_ransom_cost_value and acceptance-time saved current gold"
+    },
+    {
+      "path": "game/common/script_values/00_interaction_values.txt",
+      "sha256": "52a7cf8ef212c835bfc5bc5ce049af2e33d7586eb9d477343e8eedacf58ebd66",
+      "lines": "168-185 conditional aggregate ransom_cost_value; 187-241 normal_ransom_cost_value"
+    }
+  ],
+  "stock_option_order": [
+    "extortionate_gold",
+    "extortionate_current_gold",
+    "gold",
+    "current_gold",
+    "favor",
+    "influence_send_option",
+    "herd_send_option",
+    "current_herd",
+    "invalid"
+  ],
+  "ransom_cost_key": "normal_ransom_cost_value",
+  "source_layout": {
+    "context_size": "0x338",
+    "context_option_data": "0x300",
+    "context_option_count": "0x30C",
+    "definition_option_data": "0x2258",
+    "definition_option_count": "0x2264",
+    "definition_option_row_stride": "0x730",
+    "option_flag_id": "0x368",
+    "exclusive_options_flag": "0x271E"
+  },
+  "reused_contracts": [
+    "ck3_1_20_0_2_context.json",
+    "ck3_12002_family_query_abi.json",
+    "ck3_12002_gift_context_abi.json",
+    "ck3_12002_gift_opinion_abi.json"
+  ],
+  "limits": [
+    "Current gold is an acceptance-time saved amount; a paused query publishes a quote only.",
+    "Native Can Send/answer and command enqueue do not prove accepted payment or released custody.",
+    "Extortionate/herd/favor/influence variants are observed in the authored mask but are not submitted by the gold-only consumer.",
+    "Natural paused quote, command, transfer/custody, next-turn and cold-restore qualification remain pending."
+  ]
+}

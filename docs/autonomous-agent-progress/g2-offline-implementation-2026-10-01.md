@@ -97,3 +97,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 实际on_accept gift_value费用、玩家付款钱包、final CanSend、原生opinion/modifier、拥有型queue与独立full-generation faction结果已迁移；不是generic on_send零成本。Od/O2 opinion各151断言，slot34四步router各22检查及实际8份wire通过。保留首次harness失败；ACK仅代表提交。自然eligible收礼人、实际扣款/修正及cold结果仍待实机。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\gift\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:38:55 Prisoner collection and actual ransom query/action sources
+
+迁移原生囚犯集合、final赎金terms、拥有型SubmitCommandCopy与独立custody；9种原版选项含current_herd、normal_ransom_cost_value。复用停止战争研究前已完成且赎金必需的release-pair判断，不开展新的战争工作。Od/O2 collection各8案例、ransom各463断言、既有retention各13案例、实际Cpp wire各3份通过。slot53/54不变，纯serializer拆分便于真实wire验收。付款/custody/live/cold仍待验证。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\prisoner\package-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

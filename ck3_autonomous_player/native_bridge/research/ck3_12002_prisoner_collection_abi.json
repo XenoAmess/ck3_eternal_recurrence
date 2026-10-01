@@ -1,0 +1,473 @@
+{
+  "schema_version": 1,
+  "contract": "ck3-1.20.0.2-player-prisoner-collection-abi",
+  "readiness": "static-ready",
+  "process_access": false,
+  "live_verified": false,
+  "exact_build": {
+    "product_version": "1.20.0.2",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "executable_size": 101039736,
+    "image_base": "0x140000000"
+  },
+  "string_checks": [
+    {
+      "rva": "0x45186a0",
+      "value": "GetPrisoners"
+    },
+    {
+      "rva": "0x4761828",
+      "value": "GetImprisonedBy"
+    },
+    {
+      "rva": "0x449ebe8",
+      "value": "dread"
+    }
+  ],
+  "function_spans": [
+    {
+      "name": "character_prisoners_registration",
+      "start_rva": "0x562560",
+      "end_rva_exclusive": "0x5626b8",
+      "sha256": "8F377FA861694650AB4479661DF8B07BA85570363DCE293C14082D1E5CFD6F40"
+    },
+    {
+      "name": "character_prisoners_wrapper",
+      "start_rva": "0x28d0c20",
+      "end_rva_exclusive": "0x28d0c78",
+      "sha256": "4C63410AF62D01ECAD15A90CFB31A973C39C2BB741CB65374B883DDEEBEBA929"
+    },
+    {
+      "name": "character_prisoners_getter",
+      "start_rva": "0x28c1800",
+      "end_rva_exclusive": "0x28c1818",
+      "sha256": "FABFFF264B46573CB5B722DBF7A40B4C23110DD21A385FE224246B0CAB23B849"
+    },
+    {
+      "name": "prisoners_native_identity_search",
+      "start_rva": "0x28c1861",
+      "end_rva_exclusive": "0x28c18b4",
+      "sha256": "E448BD668BE740B22943208D2FFB1BCB8281C00671FF565B451B0232303F2715"
+    },
+    {
+      "name": "jailer_getter",
+      "start_rva": "0x289e830",
+      "end_rva_exclusive": "0x289e888",
+      "sha256": "895D4FC45828DB6A28310F5C7A5B4BC9C68A1E9BD08A726FC77B012BAF77185D"
+    },
+    {
+      "name": "dread_factory_jump",
+      "start_rva": "0x2b650b0",
+      "end_rva_exclusive": "0x2b650b5",
+      "sha256": "46A5A6B6A5C0134DA3F9B709D13C36BAFDD79F343B34AD84EE681F0726D610E7"
+    },
+    {
+      "name": "dread_trigger_value_getter",
+      "start_rva": "0x2b641f0",
+      "end_rva_exclusive": "0x2b64262",
+      "sha256": "2A95079B735335BED094F043ADE438A2AED395D1434AD859D6B064015896EA3C"
+    },
+    {
+      "name": "inline_child_relation",
+      "start_rva": "0x2b6eef4",
+      "end_rva_exclusive": "0x2b6ef17",
+      "sha256": "514ED55D988BF25F28E9DFED558A5DE8EEDD3C187F869E9A77AFACEEE3726D65"
+    },
+    {
+      "name": "primary_title",
+      "start_rva": "0x289da30",
+      "end_rva_exclusive": "0x289daa6",
+      "sha256": "4D2402680F7877E03266EC3758475740DC371464AE16883C04968314C0C1AA77"
+    },
+    {
+      "name": "title_template_tier_consumer",
+      "start_rva": "0x230f900",
+      "end_rva_exclusive": "0x230f908",
+      "sha256": "571270B23E75285376C1246FB3D885B842D984FA8352DB77A7D7287A3905F4FD"
+    }
+  ],
+  "instruction_checks": [
+    {
+      "name": "prisoners_name_copy",
+      "rva": "0x5625b9",
+      "bytes": "F2 0F 10 05 DF 60 FB 03",
+      "instruction": "movsd xmm0, qword ptr [rip + 0x3fb60df]"
+    },
+    {
+      "name": "prisoners_callback",
+      "rva": "0x562633",
+      "bytes": "48 8D 15 E6 E5 36 02",
+      "instruction": "lea rdx, [rip + 0x236e5e6]"
+    },
+    {
+      "name": "prisoners_wrapper_call",
+      "rva": "0x28d0c2e",
+      "bytes": "E8 CD 0B FF FF",
+      "instruction": "call 0x28c1800"
+    },
+    {
+      "name": "character_land_state",
+      "rva": "0x28c1800",
+      "bytes": "48 8B 81 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]"
+    },
+    {
+      "name": "prisoners_collection",
+      "rva": "0x28c180c",
+      "bytes": "48 05 D8 00 00 00",
+      "instruction": "add rax, 0xd8"
+    },
+    {
+      "name": "collection_fallback",
+      "rva": "0x28c1813",
+      "bytes": "E9 88 14 E3 FE",
+      "instruction": "jmp 0x16f2ca0"
+    },
+    {
+      "name": "collection_full_id",
+      "rva": "0x28c1861",
+      "bytes": "8B 4E 18",
+      "instruction": "mov ecx, dword ptr [rsi + 0x18]"
+    },
+    {
+      "name": "collection_data",
+      "rva": "0x28c186b",
+      "bytes": "48 8B 0B",
+      "instruction": "mov rcx, qword ptr [rbx]"
+    },
+    {
+      "name": "collection_count",
+      "rva": "0x28c186e",
+      "bytes": "48 63 53 0C",
+      "instruction": "movsxd rdx, dword ptr [rbx + 0xc]"
+    },
+    {
+      "name": "collection_stride",
+      "rva": "0x28c1872",
+      "bytes": "48 8D 14 91",
+      "instruction": "lea rdx, [rcx + rdx*4]"
+    },
+    {
+      "name": "jailer_name_copy",
+      "rva": "0x569462",
+      "bytes": "F2 0F 10 05 BE 83 1F 04",
+      "instruction": "movsd xmm0, qword ptr [rip + 0x41f83be]"
+    },
+    {
+      "name": "jailer_callback",
+      "rva": "0x5694f0",
+      "bytes": "48 8D 15 49 9D 36 02",
+      "instruction": "lea rdx, [rip + 0x2369d49]"
+    },
+    {
+      "name": "jailer_getter_jump",
+      "rva": "0x28d3240",
+      "bytes": "E9 EB B5 FC FF",
+      "instruction": "jmp 0x289e830"
+    },
+    {
+      "name": "character_extension",
+      "rva": "0x289e830",
+      "bytes": "48 8B 81 B0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b0]"
+    },
+    {
+      "name": "prison_relation",
+      "rva": "0x289e83c",
+      "bytes": "48 8B 80 88 02 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x288]"
+    },
+    {
+      "name": "jailer_full_id",
+      "rva": "0x289e848",
+      "bytes": "8B 10",
+      "instruction": "mov edx, dword ptr [rax]"
+    },
+    {
+      "name": "character_storage",
+      "rva": "0x289e851",
+      "bytes": "48 8B 05 10 8D 3C 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33c8d10]"
+    },
+    {
+      "name": "storage_capacity",
+      "rva": "0x289e865",
+      "bytes": "3B 48 2C",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]"
+    },
+    {
+      "name": "storage_slots",
+      "rva": "0x289e86a",
+      "bytes": "48 8B 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]"
+    },
+    {
+      "name": "storage_stride",
+      "rva": "0x289e86e",
+      "bytes": "48 03 C9",
+      "instruction": "add rcx, rcx"
+    },
+    {
+      "name": "storage_object",
+      "rva": "0x289e871",
+      "bytes": "48 8B 44 C8 08",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]"
+    },
+    {
+      "name": "character_generation",
+      "rva": "0x289e87b",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx"
+    },
+    {
+      "name": "character_fallback",
+      "rva": "0x289e880",
+      "bytes": "48 8B 05 E9 8C 3C 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33c8ce9]"
+    },
+    {
+      "name": "dread_trigger_name",
+      "rva": "0x5a50e1",
+      "bytes": "48 8D 05 00 9B EF 03",
+      "instruction": "lea rax, [rip + 0x3ef9b00]"
+    },
+    {
+      "name": "dread_factory_vtable",
+      "rva": "0x5a5149",
+      "bytes": "48 8D 0D 30 BE 24 04",
+      "instruction": "lea rcx, [rip + 0x424be30]"
+    },
+    {
+      "name": "dread_factory_jump",
+      "rva": "0x2b650b0",
+      "bytes": "E9 AB 24 00 00",
+      "instruction": "jmp 0x2b67560"
+    },
+    {
+      "name": "dread_predicate_vtable",
+      "rva": "0x2b675a1",
+      "bytes": "48 8D 05 B8 97 C8 01",
+      "instruction": "lea rax, [rip + 0x1c897b8]"
+    },
+    {
+      "name": "dread_land_state",
+      "rva": "0x2b6423d",
+      "bytes": "48 8B 80 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x1c0]"
+    },
+    {
+      "name": "dread_value",
+      "rva": "0x2b64249",
+      "bytes": "48 8B 80 50 03 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x350]"
+    },
+    {
+      "name": "child_family",
+      "rva": "0x2b6eefc",
+      "bytes": "48 8B 83 A8 01 00 00",
+      "instruction": "mov rax, qword ptr [rbx + 0x1a8]"
+    },
+    {
+      "name": "child_parent2",
+      "rva": "0x2b6ef08",
+      "bytes": "39 48 04",
+      "instruction": "cmp dword ptr [rax + 4], ecx"
+    },
+    {
+      "name": "child_parent1",
+      "rva": "0x2b6ef0d",
+      "bytes": "39 08",
+      "instruction": "cmp dword ptr [rax], ecx"
+    },
+    {
+      "name": "primary_title_land_state",
+      "rva": "0x289da30",
+      "bytes": "48 8B 81 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]"
+    },
+    {
+      "name": "primary_title_callback",
+      "rva": "0x289da45",
+      "bytes": "48 8B 80 E0 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x1e0]"
+    },
+    {
+      "name": "title_template",
+      "rva": "0x230f900",
+      "bytes": "48 8B 41 48",
+      "instruction": "mov rax, qword ptr [rcx + 0x48]"
+    },
+    {
+      "name": "title_tier",
+      "rva": "0x230f904",
+      "bytes": "83 78 64 02",
+      "instruction": "cmp dword ptr [rax + 0x64], 2"
+    }
+  ],
+  "relative_edges": [
+    {
+      "source_rva": "0x5625b9",
+      "displacement_offset": 4,
+      "instruction_size": 8,
+      "target_rva": "0x45186a0"
+    },
+    {
+      "source_rva": "0x562633",
+      "displacement_offset": 3,
+      "instruction_size": 7,
+      "target_rva": "0x28d0c20"
+    },
+    {
+      "source_rva": "0x28d0c2e",
+      "displacement_offset": 1,
+      "instruction_size": 5,
+      "target_rva": "0x28c1800"
+    },
+    {
+      "source_rva": "0x28c1813",
+      "displacement_offset": 1,
+      "instruction_size": 5,
+      "target_rva": "0x16f2ca0"
+    },
+    {
+      "source_rva": "0x569462",
+      "displacement_offset": 4,
+      "instruction_size": 8,
+      "target_rva": "0x4761828"
+    },
+    {
+      "source_rva": "0x5694f0",
+      "displacement_offset": 3,
+      "instruction_size": 7,
+      "target_rva": "0x28d3240"
+    },
+    {
+      "source_rva": "0x28d3240",
+      "displacement_offset": 1,
+      "instruction_size": 5,
+      "target_rva": "0x289e830"
+    },
+    {
+      "source_rva": "0x289e851",
+      "displacement_offset": 3,
+      "instruction_size": 7,
+      "target_rva": "0x5c67568"
+    },
+    {
+      "source_rva": "0x289e880",
+      "displacement_offset": 3,
+      "instruction_size": 7,
+      "target_rva": "0x5c67570"
+    },
+    {
+      "source_rva": "0x5a50e1",
+      "displacement_offset": 3,
+      "instruction_size": 7,
+      "target_rva": "0x449ebe8"
+    },
+    {
+      "source_rva": "0x5a5149",
+      "displacement_offset": 3,
+      "instruction_size": 7,
+      "target_rva": "0x47f0f80"
+    },
+    {
+      "source_rva": "0x2b650b0",
+      "displacement_offset": 1,
+      "instruction_size": 5,
+      "target_rva": "0x2b67560"
+    },
+    {
+      "source_rva": "0x2b675a1",
+      "displacement_offset": 3,
+      "instruction_size": 7,
+      "target_rva": "0x47f0d60"
+    }
+  ],
+  "vtable_edges": [
+    {
+      "slot_rva": "0x47F0F88",
+      "target_rva": "0x2B650B0",
+      "role": "dread_factory_plus_8"
+    },
+    {
+      "slot_rva": "0x47F0E60",
+      "target_rva": "0x2B641F0",
+      "role": "dread_trigger_final_value_plus_0x100"
+    }
+  ],
+  "layouts": {
+    "character_identity": "0x18",
+    "character_land_state": "0x1C0",
+    "land_prisoners": "0xD8",
+    "collection_data": "0x0",
+    "collection_count": "0xC",
+    "collection_stride": "0x4",
+    "character_extension": "0x1B0",
+    "extension_prison_relation": "0x288",
+    "prison_relation_jailer_full_id": "0x0",
+    "land_dread": "0x350",
+    "character_storage_slot_rva": "0x5C67568",
+    "character_fallback_slot_rva": "0x5C67570",
+    "storage_slots": "0x20",
+    "storage_capacity": "0x2C",
+    "storage_slot_stride": "0x10",
+    "storage_object": "0x8",
+    "character_family": "0x1A8",
+    "family_parent1": "0x0",
+    "family_parent2": "0x4",
+    "character_house_id": "0x158",
+    "house_dynasty_id": "0x2C",
+    "lineage_identity": "0x10",
+    "house_storage_slot_rva": "0x5D1DAF0",
+    "house_fallback_slot_rva": "0x5D1DAE8",
+    "dynasty_storage_slot_rva": "0x5D1DE78",
+    "dynasty_fallback_slot_rva": "0x5D1DE28",
+    "title_storage_slot_rva": "0x5D1DAF8",
+    "title_fallback_slot_rva": "0x5D1DAE0",
+    "title_identity": "0x10",
+    "title_template": "0x48",
+    "title_tier": "0x64",
+    "primary_title_getter_rva": "0x289DA30"
+  },
+  "reused_evidence": [
+    {
+      "path": "ck3_12002_family_subject_abi.json",
+      "sha256": "f4af7b400ac5474c6f7176a3a38bd884c8766346b73f127ff03544dcfbdc9f92",
+      "fields": [
+        "character_house_id",
+        "house_dynasty_id",
+        "lineage_identity",
+        "house_storage_slot_rva",
+        "house_fallback_slot_rva",
+        "dynasty_storage_slot_rva",
+        "dynasty_fallback_slot_rva",
+        "character_family",
+        "family_parent1",
+        "family_parent2"
+      ]
+    },
+    {
+      "path": "ck3_1_20_0_2_nonwar_realm.json",
+      "fields": [
+        "title_template",
+        "title_tier",
+        "title_identity",
+        "title_storage_slot_rva",
+        "title_fallback_slot_rva"
+      ]
+    }
+  ],
+  "semantics": {
+    "collection": "Engine-owned borrowed LandState+0xD8 vector of generation-bearing uint32 CharacterIDs. Copy the values within the paused application-main transaction and resolve/round-trip the full IDs.",
+    "jailer": "Character+0x1B0 extension -> +0x288 PrisonRelation -> +0 full jailerID, then native storage full-ID generation match.",
+    "child": "1.20.0.2 is_child_of trigger inlines Character+0x1A8 FamilyData -> full parent IDs at +0/+4. Use the source-verified read-only mirror; the old callable 0x26085E0 is not admitted.",
+    "dread": "Dread trigger final value method 0x2B641F0 -> Character+0x1C0 LandState -> signed 64-bit CFixedPoint+0x350. Null LandState returns native zero.",
+    "title": "Reuse typed primary-title getter0x289DA30, generation-bearing TitleID+0x10, template+0x48 and tier+0x64."
+  },
+  "remaining_live": [
+    "Read a real paused complete played-actor prisoner collection including positive custody round-trip.",
+    "Verify same-frame dread, house/dynasty and child relation controls.",
+    "Any ransom/release outcome or complete M6 prison loop remains separate live work."
+  ]
+}

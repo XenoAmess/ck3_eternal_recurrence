@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736
+  },
+  "readiness": "static-ready",
+  "live_verified": false,
+  "read_only": true,
+  "native_helpers": {
+    "primary_title": "0x289DA30",
+    "imprisoned_by": "0x289E830"
+  },
+  "source_constants": {
+    "include/xar_bridge/ck3_12002_prisoner_war_retention.hpp": {
+      "kWarRetentionPrimaryTitleRva": "0x289DA30",
+      "kWarRetentionImprisonedByRva": "0x289E830",
+      "kWarRetentionCharacterExtensionOffset": "0x1B0",
+      "kWarRetentionCustodyRelationOffset": "0x288",
+      "kWarRetentionJailerIdOffset": "0x00",
+      "kWarRetentionSuccessorDataOffset": "0x150",
+      "kWarRetentionSuccessorCapacityOffset": "0x158",
+      "kWarRetentionSuccessorCountOffset": "0x15C"
+    }
+  },
+  "instruction_checks": [
+    {
+      "name": "world.manager_gamedata_offset",
+      "rva": "0x2addf33",
+      "bytes": "49 8D 9F E0 EB 02 00",
+      "instruction": "lea rbx, [r15 + 0x2ebe0]"
+    },
+    {
+      "name": "world.manager_storage_ctor",
+      "rva": "0x2addf64",
+      "bytes": "48 8D 4B 20",
+      "instruction": "lea rcx, [rbx + 0x20]"
+    },
+    {
+      "name": "world.war_cb_pointer",
+      "rva": "0x27fec8d",
+      "bytes": "48 89 83 00 01 00 00",
+      "instruction": "mov qword ptr [rbx + 0x100], rax"
+    },
+    {
+      "name": "world.participant_array_pointer",
+      "rva": "0x2494b7a",
+      "bytes": "48 8B 79 08",
+      "instruction": "mov rdi, qword ptr [rcx + 8]"
+    },
+    {
+      "name": "world.participant_array_count",
+      "rva": "0x2494b85",
+      "bytes": "48 63 41 14",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x14]"
+    },
+    {
+      "name": "world.participant_character_id",
+      "rva": "0x2494b50",
+      "bytes": "39 51 08",
+      "instruction": "cmp dword ptr [rcx + 8], edx"
+    },
+    {
+      "name": "world.participant_array_capacity_and_count_initialization",
+      "rva": "0x27fec05",
+      "bytes": "48 89 7B 30",
+      "instruction": "mov qword ptr [rbx + 0x30], rdi"
+    },
+    {
+      "name": "world.war_ended_single_byte",
+      "rva": "0x249a88b",
+      "bytes": "80 B9 58 03 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x358], 0"
+    },
+    {
+      "name": "world.war_primary_attacker_read",
+      "rva": "0x249ae04",
+      "bytes": "8B 99 88 02 00 00",
+      "instruction": "mov ebx, dword ptr [rcx + 0x288]"
+    },
+    {
+      "name": "world.war_primary_defender_read",
+      "rva": "0x249ae0d",
+      "bytes": "8B B9 8C 02 00 00",
+      "instruction": "mov edi, dword ptr [rcx + 0x28c]"
+    },
+    {
+      "name": "world.attackers_side",
+      "rva": "0x249ae5b",
+      "bytes": "48 8D 4E 20",
+      "instruction": "lea rcx, [rsi + 0x20]"
+    },
+    {
+      "name": "world.defenders_side",
+      "rva": "0x249ae31",
+      "bytes": "48 8D 8E 80 00 00 00",
+      "instruction": "lea rcx, [rsi + 0x80]"
+    },
+    {
+      "name": "realm.title_successor_count",
+      "rva": "0x12435f3",
+      "bytes": "41 83 BE 5C 01 00 00 00",
+      "instruction": "cmp dword ptr [r14 + 0x15c], 0"
+    },
+    {
+      "name": "realm.title_first_successor_data",
+      "rva": "0x1243604",
+      "bytes": "49 8B 86 50 01 00 00",
+      "instruction": "mov rax, qword ptr [r14 + 0x150]"
+    },
+    {
+      "name": "realm.title_first_successor_value",
+      "rva": "0x124360b",
+      "bytes": "8B 10",
+      "instruction": "mov edx, dword ptr [rax]"
+    },
+    {
+      "name": "realm.title_successor_destructor_capacity",
+      "rva": "0x2308bf9",
+      "bytes": "89 B3 58 01 00 00",
+      "instruction": "mov dword ptr [rbx + 0x158], esi"
+    },
+    {
+      "name": "realm.character_generation",
+      "rva": "0x28ee7d0",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx"
+    },
+    {
+      "name": "extension",
+      "rva": "0x289e830",
+      "bytes": "48 8b 81 b0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b0]"
+    },
+    {
+      "name": "custody",
+      "rva": "0x289e83c",
+      "bytes": "48 8b 80 88 02 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x288]"
+    },
+    {
+      "name": "jailer_id",
+      "rva": "0x289e848",
+      "bytes": "8b 10",
+      "instruction": "mov edx, dword ptr [rax]"
+    },
+    {
+      "name": "jailer_generation",
+      "rva": "0x289e87b",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx"
+    },
+    {
+      "name": "primary_title_land",
+      "rva": "0x289da30",
+      "bytes": "48 8b 81 c0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]"
+    },
+    {
+      "name": "primary_title_count",
+      "rva": "0x289da3c",
+      "bytes": "83 b8 ec 01 00 00 00",
+      "instruction": "cmp dword ptr [rax + 0x1ec], 0"
+    },
+    {
+      "name": "primary_title_data",
+      "rva": "0x289da45",
+      "bytes": "48 8b 80 e0 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x1e0]"
+    },
+    {
+      "name": "primary_title_id",
+      "rva": "0x289da4c",
+      "bytes": "8b 10",
+      "instruction": "mov edx, dword ptr [rax]"
+    },
+    {
+      "name": "primary_title_storage",
+      "rva": "0x289da6f",
+      "bytes": "48 8b 05 82 00 48 03",
+      "instruction": "mov rax, qword ptr [rip + 0x3480082]"
+    },
+    {
+      "name": "primary_title_generation",
+      "rva": "0x289da99",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx"
+    }
+  ],
+  "stock_script": {
+    "path": "game/common/scripted_effects/00_war_effects.txt",
+    "sha256": "F811D12CCB11F3AAE2F61B234E930E20880BE9B7C065BB9F4557400BD711722B",
+    "start_line": 1650,
+    "end_line": 1699,
+    "required_fragments": [
+      "release_prisoners_of_war_effect = {",
+      "every_war_defender = {",
+      "every_war_attacker = {",
+      "value <= 3",
+      "release_from_prison = yes"
+    ]
+  },
+  "dependencies": [
+    "ck3_1_20_0_2_world.json",
+    "ck3_1_20_0_2_nonwar_realm.json",
+    "ck3_1_20_0_2_campaign.json",
+    "ck3_1_20_0_2_claim_terms.json"
+  ],
+  "semantics": {
+    "query": "query-war-prisoner-release-pairs-v1-<WarID>",
+    "wire_dto": "ck3_11906::WarPrisonerReleasePairsObservationV1 (version-neutral historical DTO)",
+    "scope": "generic release_prisoners_of_war_effect input graph only",
+    "candidate_sets": "each primary plus first three primary-title successors, native order",
+    "pairs": "candidate custody jailer must resolve by full CharacterID and be in opposite complete participant set",
+    "empty": "only after both complete scans and paused same-frame double sample",
+    "fp3": "opaque CB identity retained; consumer handles fp3_free_house_member_cb separately; no effect execution",
+    "loaded_effect_preview": false,
+    "commands_submitted": false,
+    "religion_queries": false
+  }
+}

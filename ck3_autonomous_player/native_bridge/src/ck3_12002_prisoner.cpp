@@ -1,4 +1,6 @@
-#include "xar_bridge/player_prisoner_ransom_private_v1.hpp"
+#include "xar_bridge/ck3_12002_prisoner.hpp"
+#include "xar_bridge/ck3_12002_gift_opinion.hpp"
+#include "xar_bridge/ck3_12002_prisoner_abi.hpp"
 
 #include <array>
 #include <cstring>
@@ -12,47 +14,32 @@
 #include <windows.h>
 #endif
 
-namespace xar::ck3_11906 {
+namespace xar::ck3_12002 {
 namespace {
 
 constexpr std::string_view kRansom = "ransom_interaction";
-constexpr std::string_view kRansomCost = "ransom_cost_value";
+constexpr std::string_view kRansomCost = "normal_ransom_cost_value";
 constexpr std::uint32_t kSlotMask = 0x00FFFFFFU;
 constexpr std::size_t kContextSize = 0x338;
 // The final authored option is the stock mass-action-only `invalid` fallback.
 // It must be observed in the mask but is never a ransom quote candidate.
-constexpr std::size_t kOptionCount = 8;
+constexpr std::size_t kOptionCount = 9;
 constexpr std::size_t kOptionDataOffset = 0x300;
 constexpr std::size_t kOptionCountOffset = 0x30C;
-constexpr std::size_t kDefinitionOptionCountOffset = 0x2554;
-constexpr std::size_t kDefinitionOptionRowsOffset = 0x2548;
-constexpr std::size_t kDefinitionOptionRowStride = 0x7D0;
-constexpr std::size_t kDefinitionOptionFlagOffset = 0x3A8;
+constexpr std::size_t kDefinitionOptionCountOffset = 0x2264;
+constexpr std::size_t kDefinitionOptionRowsOffset = 0x2258;
+constexpr std::size_t kDefinitionOptionRowStride = 0x730;
+constexpr std::size_t kDefinitionOptionFlagOffset = 0x368;
 constexpr std::size_t kCharacterIdOffset = 0x18;
-constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
+constexpr std::size_t kCharacterExtensionOffset = 0x1B0;
 constexpr std::size_t kGoldOffset = 0x100;
-constexpr std::uintptr_t kCharacterStorageRva = 0x570C130;
-constexpr std::uintptr_t kCharacterFallbackRva = 0x570C138;
-constexpr std::uintptr_t kNamedDatabaseGetterRva = 0x999AF0;
-constexpr std::uintptr_t kNamedLookupRva = 0x9999B0;
-constexpr std::uintptr_t kNamedVtableRva = 0x44C9EA0;
-constexpr std::uintptr_t kNamedSecondaryVtableRva = 0x44C9F10;
-constexpr std::uintptr_t kCloneScopeRva = 0x3358E00;
-constexpr std::uintptr_t kSupport118ConstructorRva = 0x3354330;
-constexpr std::uintptr_t kSupport2A8ConstructorRva = 0x3354280;
-constexpr std::uintptr_t kEvaluateNamedFixedRva = 0x3369820;
-constexpr std::uintptr_t kEvaluationFlagRva = 0x570C3F4;
-constexpr std::uintptr_t kDestroyScopeTailRva = 0x81E900;
-constexpr std::uintptr_t kDestroyRows48Rva = 0x81E980;
-constexpr std::uintptr_t kDestroySupport2A8RowsRva = 0x969BA0;
-constexpr std::uintptr_t kClearLocalOptionsRva = 0x2C405F0;
-constexpr std::uintptr_t kSelectLocalOptionRva = 0x2C406D0;
-constexpr std::uint16_t kCharacterScopeKind = 4;
+constexpr std::uintptr_t kCharacterStorageRva = 0x5C67568;
+constexpr std::uintptr_t kCharacterFallbackRva = 0x5C67570;
 constexpr std::int64_t kFixedScale = 100000;
 constexpr std::array<std::string_view, kOptionCount> kOptionFlags{
     "extortionate_gold", "extortionate_current_gold", "gold",
     "current_gold", "favor", "influence_send_option",
-    "herd_send_option", "invalid"};
+    "herd_send_option", "current_herd", "invalid"};
 
 struct NativeStringView {
   const char *data = nullptr;
@@ -61,18 +48,6 @@ struct NativeStringView {
   std::array<std::byte, 3> padding{};
 };
 static_assert(sizeof(NativeStringView) == 0x10);
-
-using GetDatabase = void *(*)();
-using LookupNamed = const void *(*)(void *, std::uint32_t);
-using CloneScope = void *(*)(void *, const void *);
-using ConstructContainer = void *(*)(void *);
-using EvaluateNamed = std::int64_t *(*)(const void *, std::int64_t *, void *,
-                                        void *, const void *);
-using DestroyPart = void (*)(void *);
-using Deallocate = void (*)(void *, void *, std::size_t);
-using DefinitionIsValid = bool (*)(const void *);
-using LocalOptionStep = void (*)(void *);
-using SelectLocalOption = void (*)(void *, std::int32_t);
 
 template <typename T>
 bool Read(const void *base, std::size_t offset, T &out) noexcept {
@@ -152,159 +127,27 @@ bool DefinitionKey(const void *definition, std::int32_t hash,
          actual_key == expected;
 }
 
-bool ValidNamedDefinition(std::uintptr_t module, const void *definition,
-                          std::int32_t hash) noexcept {
-  std::uintptr_t vtable = 0;
-  std::uintptr_t secondary_vtable = 0;
-  std::uintptr_t validity = 0;
-  return DefinitionKey(definition, hash, kRansomCost) &&
-         Read(definition, 0, vtable) &&
-         vtable == module + kNamedVtableRva &&
-         Read(definition, 0x88, secondary_vtable) &&
-         secondary_vtable == module + kNamedSecondaryVtableRva &&
-         Read(reinterpret_cast<const void *>(vtable), 0, validity) &&
-         validity != 0 &&
-         reinterpret_cast<DefinitionIsValid>(validity)(definition);
+bool ReadNamedRansomCost(std::uintptr_t module,
+    const PrisonerRansomBindings &bindings, const void *scope,
+    std::int32_t jailer, std::int32_t payer, std::int32_t prisoner,
+    std::int64_t &raw) noexcept {
+  return bindings.read_named_cost != nullptr &&
+      bindings.read_named_cost(bindings.named_cost_context, module, scope,
+          jailer, payer, prisoner, raw) && raw > 0;
 }
 
-bool DeallocateRows(std::uintptr_t module, void *owner,
-                    std::size_t data_offset, std::size_t capacity_offset,
-                    std::size_t count_offset, std::size_t allocator_offset,
-                    std::uintptr_t destroy_rva) noexcept {
-  void *data = nullptr;
-  std::int32_t count = 0;
-  if (!Read(owner, data_offset, data) || !Read(owner, count_offset, count) ||
-      count < 0 || count > 1'048'576 || (count != 0 && data == nullptr))
-    return false;
-  if (data == nullptr) return count == 0;
-  if (destroy_rva != 0)
-    reinterpret_cast<DestroyPart>(module + destroy_rva)(
-        static_cast<std::byte *>(owner) + data_offset);
-  void *allocator = nullptr;
-  void *vtable = nullptr;
-  std::uintptr_t deallocate = 0;
-  if (!Read(owner, allocator_offset, allocator) || allocator == nullptr ||
-      !Read(allocator, 0, vtable) || vtable == nullptr ||
-      !Read(vtable, 0x10, deallocate) || deallocate == 0)
-    return false;
-  const std::int32_t zero = 0;
-  void *const null_data = nullptr;
-  std::memcpy(static_cast<std::byte *>(owner) + data_offset, &null_data,
-              sizeof(null_data));
-  std::memcpy(static_cast<std::byte *>(owner) + capacity_offset, &zero,
-              sizeof(zero));
-  std::memcpy(static_cast<std::byte *>(owner) + count_offset, &zero,
-              sizeof(zero));
-  reinterpret_cast<Deallocate>(deallocate)(allocator, data, 8);
-  return true;
-}
-
-bool DestroyValueState(std::uintptr_t module, void *scope, void *support118,
-                       void *support2a8) noexcept {
-  const bool a = DeallocateRows(module, support2a8, 0, 8, 0x0C, 0x10,
-                                kDestroySupport2A8RowsRva);
-  const bool b = DeallocateRows(module, support118, 0, 8, 0x0C, 0x10, 0);
-  reinterpret_cast<DestroyPart>(module + kDestroyScopeTailRva)(
-      static_cast<std::byte *>(scope) + 0x118);
-  const bool c = DeallocateRows(module, scope, 0x100, 0x108, 0x10C, 0x110,
-                                kDestroyRows48Rva);
-  const bool d = DeallocateRows(module, scope, 0x18, 0x20, 0x24, 0x28, 0);
-  return a && b && c && d;
-}
-
-template <std::size_t N>
-void *Aligned(std::array<std::byte, N> &storage) noexcept {
-  return reinterpret_cast<void *>(
-      (reinterpret_cast<std::uintptr_t>(storage.data()) + 15U) &
-      ~std::uintptr_t{15U});
-}
-
-bool ReadNamedRansomCost(std::uintptr_t module, const Bindings &bindings,
-                         const void *interaction_scope,
-                         std::int32_t prisoner_id,
-                         std::int64_t &raw) noexcept {
-  raw = 0;
-  if (interaction_scope == nullptr || bindings.hash_stable_key == nullptr)
-    return false;
-  void *database = reinterpret_cast<GetDatabase>(module +
-                                                 kNamedDatabaseGetterRva)();
-  if (database == nullptr) return false;
-  const auto hash = static_cast<std::uint32_t>(bindings.hash_stable_key(
-      nullptr, kRansomCost.data(),
-      static_cast<std::uint32_t>(kRansomCost.size())));
-  const void *definition = reinterpret_cast<LookupNamed>(
-      module + kNamedLookupRva)(database, hash);
-  if (definition == nullptr ||
-      !ValidNamedDefinition(module, definition,
-                            static_cast<std::int32_t>(hash)))
-    return false;
-
-  std::array<std::byte, 0x168 + 15> scope_storage{};
-  std::array<std::byte, 0x118 + 15> support118_storage{};
-  std::array<std::byte, 0x2A8 + 15> support2a8_storage{};
-  std::array<std::byte, 0x28 + 15> internal_storage{};
-  void *const scope = Aligned(scope_storage);
-  void *const support118 = Aligned(support118_storage);
-  void *const support2a8 = Aligned(support2a8_storage);
-  void *const internal = Aligned(internal_storage);
-  if (reinterpret_cast<CloneScope>(module + kCloneScopeRva)(
-          scope, interaction_scope) != scope)
-    return false;
-  const std::uint64_t prisoner_payload =
-      static_cast<std::uint32_t>(prisoner_id);
-  std::memcpy(static_cast<std::byte *>(scope), &kCharacterScopeKind,
-              sizeof(kCharacterScopeKind));
-  std::memcpy(static_cast<std::byte *>(scope) + 8, &prisoner_payload,
-              sizeof(prisoner_payload));
-  reinterpret_cast<ConstructContainer>(module + kSupport118ConstructorRva)(
-      support118);
-  reinterpret_cast<ConstructContainer>(module + kSupport2A8ConstructorRva)(
-      support2a8);
-  std::memset(internal, 0, 0x28);
-  std::memcpy(static_cast<std::byte *>(internal), &scope, sizeof(scope));
-  std::memcpy(static_cast<std::byte *>(internal) + 0x10, &scope,
-              sizeof(scope));
-  std::memcpy(static_cast<std::byte *>(internal) + 0x18, &support118,
-              sizeof(support118));
-  std::uint8_t evaluation_flag = 0;
-  bool evaluated = Read(reinterpret_cast<const void *>(
-                            module + kEvaluationFlagRva),
-                        0, evaluation_flag);
-  std::memcpy(static_cast<std::byte *>(internal) + 0x20,
-              &evaluation_flag, sizeof(evaluation_flag));
-  alignas(16) std::array<std::byte, 0x28> descriptor{};
-  const char *const key = kRansomCost.data();
-  const auto key_size = static_cast<std::uint32_t>(kRansomCost.size());
-  const std::int32_t unknown_id = -1;
-  const std::uint8_t source_valid = 1;
-  std::memcpy(descriptor.data(), &key, sizeof(key));
-  std::memcpy(descriptor.data() + 8, &key_size, sizeof(key_size));
-  std::memcpy(descriptor.data() + 0x10, &unknown_id, sizeof(unknown_id));
-  std::memcpy(descriptor.data() + 0x24, &source_valid,
-              sizeof(source_valid));
-  std::int64_t first = 0;
-  std::int64_t second = 0;
-  auto *const eval = reinterpret_cast<EvaluateNamed>(module +
-                                                     kEvaluateNamedFixedRva);
-  if (evaluated)
-    evaluated = eval(definition, &first, internal, nullptr,
-                     descriptor.data()) == &first &&
-                eval(definition, &second, internal, nullptr,
-                     descriptor.data()) == &second &&
-                first == second && first > 0;
-  const bool destroyed =
-      DestroyValueState(module, scope, support118, support2a8);
-  void *database_after = reinterpret_cast<GetDatabase>(
-      module + kNamedDatabaseGetterRva)();
-  const void *definition_after = database_after == nullptr
-                                     ? nullptr
-                                     : reinterpret_cast<LookupNamed>(
-                                           module + kNamedLookupRva)(
-                                           database_after, hash);
-  if (!evaluated || !destroyed || database_after != database ||
-      definition_after != definition)
-    return false;
-  raw = first;
+bool ReadSnapshot(const PrisonerRansomBindings &bindings,
+    game::Snapshot &out) noexcept {
+  CoreSnapshotPrefix core{};
+  if (!ReadCoreSnapshot(bindings.context.core, core)) return false;
+  out = {};
+  out.date_raw = core.clock.date_raw;
+  out.paused = core.clock.paused;
+  out.speed = core.clock.speed;
+  out.map_ready = core.map_ready;
+  out.has_played_character = core.has_played_character;
+  out.played_character_id = core.played_character_id;
+  out.played_character_alive = core.played_character_alive;
   return true;
 }
 
@@ -339,7 +182,7 @@ bool ContextRolesMatch(const void *context, const void *definition,
          observed_prisoner == prisoner_id;
 }
 
-bool LoadedOptionFlagsMatch(const Bindings &bindings,
+bool LoadedOptionFlagsMatch(const PrisonerRansomBindings &bindings,
                             const void *definition) noexcept {
   if (bindings.get_script_identifier_table == nullptr ||
       bindings.lookup_script_identifier_id == nullptr)
@@ -450,7 +293,7 @@ OptionMaskState ReadOptionMaskState(
 } // namespace
 
 PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
-    const Bindings &bindings, std::uintptr_t module,
+    const PrisonerRansomBindings &bindings, std::uintptr_t module,
     std::int32_t jailer_id, std::int32_t prisoner_id) noexcept {
   PlayerPrisonerRansomQuoteV1 result{};
   if (!bindings.enabled || module == 0 || jailer_id <= 0 ||
@@ -463,7 +306,8 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
       bindings.validate_character_interaction_context == nullptr ||
       bindings.read_character_interaction_answer_score == nullptr ||
       bindings.evaluate_character_interaction_answer == nullptr ||
-      bindings.destroy_character_interaction_context == nullptr)
+      bindings.destroy_character_interaction_context == nullptr ||
+      bindings.clear_local_options == nullptr || bindings.select_local_option == nullptr)
     return result;
   game::Snapshot before{};
   if (!ReadSnapshot(bindings, before) || !before.paused ||
@@ -503,13 +347,14 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
   std::int32_t secondary_actor = -1;
   std::int32_t secondary_recipient = -1;
   std::int32_t intermediary = -1;
+  std::int32_t added_role = -1;
   bindings.redirect_character_interaction_roles(
       definition, &actor, &payer_id, &secondary_actor,
-      &secondary_recipient, &intermediary);
+      &secondary_recipient, &intermediary, &added_role);
   void *const payer = ResolveCharacter(module, payer_id);
   if (actor != jailer_id || payer_id == jailer_id ||
       secondary_recipient != prisoner_id || payer == nullptr ||
-      secondary_actor != -1 || intermediary != -1) {
+      secondary_actor != -1 || intermediary != -1 || added_role != -1) {
     result.failure = PlayerPrisonerRansomQuoteFailureV1::role_unavailable;
     return result;
   }
@@ -526,9 +371,8 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     }
     // Both routines operate on this stack-owned context only. No command is
     // allocated or submitted; the stock setter re-runs scope and option gates.
-    reinterpret_cast<LocalOptionStep>(module + kClearLocalOptionsRva)(context);
-    reinterpret_cast<SelectLocalOption>(module + kSelectLocalOptionRva)(
-        context, option);
+    bindings.clear_local_options(context);
+    bindings.select_local_option(context, option);
     const bool roles_ok = ContextRolesMatch(
         context, definition, jailer_id, payer_id, prisoner_id);
     auto mask_failure = PlayerPrisonerRansomQuoteFailureV1::none;
@@ -582,7 +426,7 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
                         ? ReadNamedRansomCost(
                               module, bindings,
                               static_cast<const std::byte *>(context) + 8,
-                              prisoner_id, amount_raw)
+                              jailer_id, payer_id, prisoner_id, amount_raw)
                         : ReadCurrentGold(payer, amount_raw);
     }
     bindings.destroy_character_interaction_context(context);
@@ -636,9 +480,8 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
       result.failure = PlayerPrisonerRansomQuoteFailureV1::binding_unavailable;
       return result;
     }
-    reinterpret_cast<LocalOptionStep>(module + kClearLocalOptionsRva)(context);
-    reinterpret_cast<SelectLocalOption>(module + kSelectLocalOptionRva)(
-        context, option);
+    bindings.clear_local_options(context);
+    bindings.select_local_option(context, option);
     const bool roles_ok = ContextRolesMatch(
         context, definition, jailer_id, payer_id, prisoner_id);
     auto mask_failure = PlayerPrisonerRansomQuoteFailureV1::none;
@@ -695,7 +538,7 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
 }
 
 PlayerPrisonerRansomSubmitV1 SubmitPlayerPrisonerRansomPrivateV1(
-    const Bindings &bindings, std::uintptr_t module,
+    const PrisonerRansomBindings &bindings, std::uintptr_t module,
     const PlayerPrisonerRansomQuoteV1 &observed,
     std::uint64_t expected_native_revision,
     std::int64_t expected_date_raw) noexcept {
@@ -708,12 +551,14 @@ PlayerPrisonerRansomSubmitV1 SubmitPlayerPrisonerRansomPrivateV1(
        observed.selected_option != "current_gold") ||
       !observed.would_accept_now || observed.recipient_answer_status_raw > 1 ||
       expected_native_revision == 0 || expected_date_raw <= 0 ||
-      bindings.command_manager == nullptr || bindings.submit_command == nullptr ||
+      !bindings.context.commands.enabled ||
+      bindings.context.commands.command_manager == nullptr ||
+      bindings.context.commands.queue_owned_command == nullptr ||
       bindings.construct_send_character_interaction_command == nullptr ||
       bindings.send_character_interaction_primary_vtable !=
-          module + 0x40829F8 ||
+          module + kMarriageSendInteractionPrimaryVtableRva ||
       bindings.send_character_interaction_secondary_vtable !=
-          module + 0x40829C8)
+          module + kMarriageSendInteractionSecondaryVtableRva)
     return Result::unavailable;
 
   game::Snapshot before{};
@@ -759,9 +604,8 @@ PlayerPrisonerRansomSubmitV1 SubmitPlayerPrisonerRansomPrivateV1(
           observed.payer_character_id, -1, observed.prisoner_character_id,
           -1, nullptr) != context)
     return Result::command_unavailable;
-  reinterpret_cast<LocalOptionStep>(module + kClearLocalOptionsRva)(context);
-  reinterpret_cast<SelectLocalOption>(module + kSelectLocalOptionRva)(
-      context, option);
+  bindings.clear_local_options(context);
+  bindings.select_local_option(context, option);
   const auto context_ok = [&](const void *value) noexcept {
     auto failure = PlayerPrisonerRansomQuoteFailureV1::none;
     std::optional<std::int32_t> definition_count;
@@ -810,12 +654,54 @@ PlayerPrisonerRansomSubmitV1 SubmitPlayerPrisonerRansomPrivateV1(
     bindings.destroy_character_interaction_context(context);
     return Result::command_unavailable;
   }
-  const bool submitted = bindings.submit_command(
-      bindings.command_manager, command, 0x0E);
+  const bool submitted = SubmitCommandCopy(
+      bindings.context.commands, command, 0x0E) == CommandSubmitResult::submitted;
   destroy_copy_if_owned();
   bindings.destroy_character_interaction_context(context);
   return submitted ? Result::submitted_verification_pending
                    : Result::command_unavailable;
 }
 
-} // namespace xar::ck3_11906
+namespace {
+bool ReadProductionNamedCost(void *, std::uintptr_t module, const void *scope,
+    std::int32_t jailer, std::int32_t payer, std::int32_t prisoner,
+    std::int64_t &raw) noexcept {
+  const auto hash = reinterpret_cast<ck3_11906::HashStableKey>(
+      module + kPrisonerHashStableKeyRva)(nullptr, kRansomCost.data(),
+          static_cast<std::uint32_t>(kRansomCost.size()));
+  return ReadNamedInteractionFixedExact12002(module, scope,
+      static_cast<std::uint32_t>(prisoner), static_cast<std::uint32_t>(jailer),
+      static_cast<std::uint32_t>(payer), kRansomCost,
+      static_cast<std::uint32_t>(hash), raw);
+}
+} // namespace
+
+PrisonerRansomBindings BindPrisonerRansomImage(std::uintptr_t module,
+    std::string_view sha) noexcept {
+  PrisonerRansomBindings bindings{};
+  if (module == 0 || sha != kExecutableSha256) return bindings;
+  bindings.context = BindContextImage(module, sha);
+  if (!bindings.context.enabled) return bindings;
+  bindings.get_character_interaction_database = reinterpret_cast<
+      ck3_11906::GetCharacterInteractionDatabase>(module + kPrisonerGetInteractionDatabaseRva);
+  bindings.hash_stable_key = reinterpret_cast<ck3_11906::HashStableKey>(module + kPrisonerHashStableKeyRva);
+  bindings.lookup_character_interaction = reinterpret_cast<ck3_11906::LookupCharacterInteraction>(module + kPrisonerLookupInteractionRva);
+  bindings.redirect_character_interaction_roles = bindings.context.redirect_roles;
+  bindings.construct_character_interaction_context_all_roles = bindings.context.construct_all_roles;
+  bindings.validate_character_interaction_context = bindings.context.validate;
+  bindings.read_character_interaction_answer_score = bindings.context.recipient_answer_score;
+  bindings.evaluate_character_interaction_answer = reinterpret_cast<ck3_11906::EvaluateCharacterInteractionAnswer>(module + kPrisonerEvaluateAnswerRva);
+  bindings.destroy_character_interaction_context = bindings.context.destroy;
+  bindings.get_script_identifier_table = reinterpret_cast<ck3_11906::GetScriptIdentifierTable>(module + kPrisonerGetScriptIdentifierTableRva);
+  bindings.lookup_script_identifier_id = reinterpret_cast<ck3_11906::LookupScriptIdentifierId>(module + kPrisonerLookupScriptIdentifierIdRva);
+  bindings.construct_send_character_interaction_command = bindings.context.construct_send_command;
+  bindings.send_character_interaction_primary_vtable = bindings.context.send_primary_vtable;
+  bindings.send_character_interaction_secondary_vtable = bindings.context.send_secondary_vtable;
+  bindings.clear_local_options = reinterpret_cast<void (*)(void *)>(module + kPrisonerClearOptionsRva);
+  bindings.select_local_option = reinterpret_cast<void (*)(void *, std::int32_t)>(module + kPrisonerSelectOptionRva);
+  bindings.read_named_cost = &ReadProductionNamedCost;
+  bindings.enabled = true;
+  return bindings;
+}
+
+} // namespace xar::ck3_12002
