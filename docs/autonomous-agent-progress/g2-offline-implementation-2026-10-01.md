@@ -454,3 +454,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 6源取消/终止原生ABI合同闭合170指令检查；native状态invalidated同时由手动取消及其它终止产生，不能当作具体cause。原current终止query不改；hidden消息observer与更细cause独立继续，不冒生产终态loop。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-cancel\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:21:52 Migrate checkpoint environment binding through the formal API
+
+实际完整h82旧配对在matching新profilebytes下复现生产preflight因旧environmentSHA拒绝；正式新leaf API迁移后同生产路径GREEN。2必要unit tests通过。JSON递归diff只有三处环境SHA，save/sourcepair/82history/episode/lifecycle/campaigngoal保留。profile/process inventory为明确matching fixture，不冒实际R2准备或实机；root新L2/实际profile调用同API后冷恢复。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\lifecycle-environment-rebind\result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
