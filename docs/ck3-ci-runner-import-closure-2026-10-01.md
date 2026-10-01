@@ -26,3 +26,14 @@ bootstrap 单测只替换外部游戏规则声明的读取结果，实际运行�
 为 `100da4e787cbb5280074a9dde5ff08f61fc0325ccc8cb919d0880974bbffb40d`。
 
 本包验证通过后提交推送；新的官方 run 必须另行记录，不能用本机单测结果代替正式 runner 终态。
+
+## 官方结果追加（15:34）
+
+精确 `f2f07e6c80c4295b63f11cc0688ae7db645303a2` 的
+[Official Runner CI 36829854100](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36829854100)
+已 completed/failure；本包修复的 TED release-tooling 步骤实际 success。首个失败已前进到 361
+generators/acceptance suite，仍为升级前的 52 failures/1 error。后续因失败停止的步骤保持未运行。
+
+API/jobs/失败原始日志在 `audits/github-ci-command-guards-r3/`，失败日志 SHA-256
+`cf10ff9815074bd3186f76688e6a8b03261c4d0772b79d196958b9fbc22596cb`。
+这证明修复有效并如实显示旧 RED，不证明全部 CI 已通过。
