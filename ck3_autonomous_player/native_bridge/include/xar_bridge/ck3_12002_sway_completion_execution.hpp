@@ -44,10 +44,17 @@ struct SwayExecutionScopeToken12002 {
 static_assert(sizeof(SwayExecutionScopeToken12002) == 0x10);
 static_assert(offsetof(SwayExecutionScopeToken12002, payload) == 0x08);
 
+using SwayExecutionNativeLookup12002 = SwayExecutionScopeToken12002 *(*)(
+    const void *environment, SwayExecutionScopeToken12002 *out, std::int32_t identifier);
+
 struct SwayExecutionBindings12002 {
   bool enabled = false;
   std::uintptr_t image_base = 0;
   CoreBindings core;
+  SwayExecutionNativeLookup12002 lookup = nullptr;
+  const std::int32_t *scheme_identifier = nullptr;
+  const std::int32_t *owner_identifier = nullptr;
+  const std::int32_t *target_identifier = nullptr;
   SwayExecutionGlobalCommandKeyGetter12002 get_global_command_key = nullptr;
   EventGetRegistry get_script_identifier_table = nullptr;
   EventResolveIdentifierName resolve_script_identifier_name = nullptr;

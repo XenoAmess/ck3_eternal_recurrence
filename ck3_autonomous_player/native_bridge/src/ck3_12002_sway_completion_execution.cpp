@@ -39,6 +39,12 @@ bool GlobalCommandKey(SwayExecutionGlobalCommandKeyGetter12002 getter,
   __try { output = getter(identifier); return output != nullptr; }
   __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
 }
+bool Lookup(SwayExecutionNativeLookup12002 getter, const void *environment,
+    std::int32_t identifier, SwayExecutionScopeToken12002 &output) noexcept {
+  if (getter == nullptr || environment == nullptr || identifier < 0) return false;
+  __try { return getter(environment, &output, identifier) == &output; }
+  __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+}
 // All canonical identifiers in this source contract fit inside this buffer.
 // Compare original scalar keys, never the localized message renderer output.
 struct CopiedKey {
@@ -142,33 +148,54 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
   if (!Core(b.core, before) || !before.map_ready || !before.has_played_character ||
       !before.played_character_alive)
     return Unavailable(out, "sway_execution_played_actor_unavailable");
-  std::uintptr_t root{}, environment{}, data{};
-  std::int32_t capacity{}, count{};
+  std::uintptr_t root{}, environment{};
   if (!Read(context, root) || root == 0 || !Read(root, out.root) ||
-      !Read(context + 0x18, environment) || environment == 0 ||
-      !Read(environment, data) || !Read(environment + 0x08, capacity) ||
-      !Read(environment + 0x0C, count) || count < 0 || capacity < count ||
-      (count > 0 && data == 0))
+      !Read(context + 0x18, environment) || environment == 0)
     return Unavailable(out, "sway_execution_exact_context_unavailable");
   if (out.root.type != 4 || static_cast<std::uint32_t>(out.root.payload) !=
       static_cast<std::uint32_t>(before.played_character_id))
     return SwayExecutionCaptureResult12002::ignored;
   bool owner_found = false, target_found = false, scheme_found = false;
-  for (std::int32_t i = 0; i < count; ++i) {
-    const auto row = data + static_cast<std::size_t>(i) * 0x20;
-    std::int32_t identifier{};
-    CopiedKey name;
-    if (!Read(row, identifier) || !Name(b, table, identifier, name))
-      return Unavailable(out, "sway_execution_scope_identifier_unavailable");
-    SwayExecutionScopeToken12002 *token = nullptr;
-    bool *found = nullptr;
-    if (name.Is("owner")) { token = &out.owner; found = &owner_found; }
-    else if (name.Is("target")) { token = &out.target; found = &target_found; }
-    else if (name.Is("scheme")) { token = &out.scheme; found = &scheme_found; }
-    if (token != nullptr) {
-      if (*found || !Read(row + 0x08, *token))
-        return Unavailable(out, "sway_execution_named_scope_not_unique");
-      *found = true;
+  if (b.lookup != nullptr) {
+    std::int32_t scheme_identifier{}, owner_identifier{}, target_identifier{};
+    if (!Read(reinterpret_cast<std::uintptr_t>(b.scheme_identifier), scheme_identifier) ||
+        !Read(reinterpret_cast<std::uintptr_t>(b.owner_identifier), owner_identifier) ||
+        !Read(reinterpret_cast<std::uintptr_t>(b.target_identifier), target_identifier) ||
+        !Lookup(b.lookup, reinterpret_cast<const void *>(environment), scheme_identifier, out.scheme) ||
+        !Lookup(b.lookup, reinterpret_cast<const void *>(environment), owner_identifier, out.owner) ||
+        !Lookup(b.lookup, reinterpret_cast<const void *>(environment), target_identifier, out.target))
+      return Unavailable(out, "sway_execution_native_scope_lookup_unavailable");
+    scheme_found = out.scheme.type != 0;
+    owner_found = out.owner.type != 0;
+    target_found = out.target.type != 0;
+  } else {
+    // Legacy hand-bound Env32 fixture inputs. Production BindImage always
+    // supplies the native overlay getter and identifier globals.
+    if (b.scheme_identifier != nullptr || b.owner_identifier != nullptr ||
+        b.target_identifier != nullptr)
+      return Unavailable(out, "sway_execution_native_scope_lookup_unavailable");
+    std::uintptr_t data{};
+    std::int32_t capacity{}, count{};
+    if (!Read(environment, data) || !Read(environment + 0x08, capacity) ||
+        !Read(environment + 0x0C, count) || count < 0 || capacity < count ||
+        (count > 0 && data == 0))
+      return Unavailable(out, "sway_execution_exact_context_unavailable");
+    for (std::int32_t i = 0; i < count; ++i) {
+      const auto row = data + static_cast<std::size_t>(i) * 0x20;
+      std::int32_t identifier{};
+      CopiedKey name;
+      if (!Read(row, identifier) || !Name(b, table, identifier, name))
+        return Unavailable(out, "sway_execution_scope_identifier_unavailable");
+      SwayExecutionScopeToken12002 *token = nullptr;
+      bool *found = nullptr;
+      if (name.Is("owner")) { token = &out.owner; found = &owner_found; }
+      else if (name.Is("target")) { token = &out.target; found = &target_found; }
+      else if (name.Is("scheme")) { token = &out.scheme; found = &scheme_found; }
+      if (token != nullptr) {
+        if (*found || !Read(row + 0x08, *token))
+          return Unavailable(out, "sway_execution_named_scope_not_unique");
+        *found = true;
+      }
     }
   }
   if (!owner_found || !target_found || !scheme_found ||
@@ -195,6 +222,10 @@ SwayExecutionBindings12002 BindSwayExecutionImage12002(
   b.core = BindCoreImage(base, sha);
   if (!b.core.enabled) return b;
   b.enabled = true; b.image_base = base;
+  b.lookup = reinterpret_cast<SwayExecutionNativeLookup12002>(base + 0x373B540);
+  b.scheme_identifier = reinterpret_cast<const std::int32_t *>(base + 0x5D4BD60);
+  b.owner_identifier = reinterpret_cast<const std::int32_t *>(base + 0x5D4BD5C);
+  b.target_identifier = reinterpret_cast<const std::int32_t *>(base + 0x5D4BD58);
   b.get_global_command_key = reinterpret_cast<SwayExecutionGlobalCommandKeyGetter12002>(
       base + kSwayExecutionGlobalCommandKeyGetterRva12002);
   b.get_script_identifier_table = reinterpret_cast<EventGetRegistry>(

@@ -598,3 +598,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 20新源actor6/state7/query7冻结。真实signedbalances/currentRite/Faith/Religion/Fulfillment、knowledge和三个实际flagcounter/expiry；原生expiry是counter不能伪称calendar。Od/O2 actor各15/state各25/wholequery各48checks，6完整protocol包。Identitytargetreached只证明身份相等；差值与动作因果须root前后采样，不把quote/ACK/固定gain当结果。R5注册+SDK+paused待施工。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion-outcome\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:53:53 Fix inherited Sway event scope observation
+
+5 frozen sources. Exact EventData+210 dispatch executes with empty Env32 and inherited Script24; native373B540 lookup resolves the three real scope identifiers. One necessary actual capture and complete wire case passed 7 checks each Od/O2. R4 immutable and no game contact; R5 paused validation remains. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-scope-overlay\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
