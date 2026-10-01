@@ -1,0 +1,132 @@
+{
+  "result": "READY_NOT_LAUNCHED",
+  "freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\variant-freeze.json",
+    "bytes": 6432,
+    "sha256": "5853CB71534AE534AE81E76EB67EC9A428637F1EB36021B83BF55C9F4CA42A63"
+  },
+  "runtime_entry": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\bootstrap_profile.py",
+    "bytes": 6520,
+    "sha256": "93C97134887C0CE31596904A605DC9F014132F9EE48219AF3653BC171A19DCF6"
+  },
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+    "bytes": 54571,
+    "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+  },
+  "runtime_bindings": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\runtime-input-bindings.json",
+    "bytes": 2547,
+    "sha256": "D7B3C307F5733B4FDBA3D056170420C705AFAAE0E646A2A807E256808CDAE2A4"
+  },
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+    "bytes": 13157,
+    "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+  },
+  "targeted_offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\layout-variant-offline-verification-a01.json",
+    "bytes": 3429,
+    "sha256": "28E8BF63CFF0A3DF2F8AF54144476F46A1B3140409B1EAF1421FD5F132DBB3A2"
+  },
+  "entry_probes": [
+    {
+      "label": "runtime-bindings",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\runtime-bindings-stdout.bin",
+        "bytes": 801,
+        "sha256": "EF67E5D30FAC5983A6A380B2EBEB3CB37026D02245D50B28BBAD7D2DBCB3CDBC"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\runtime-bindings-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "prepare-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\prepare-help-stdout.bin",
+        "bytes": 1005,
+        "sha256": "963715951B904D4CF3890B6619E19EE6C1FF74CA0D6E423FD6D1091EB02F2A42"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\prepare-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "sdk-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\sdk-help-stdout.bin",
+        "bytes": 566,
+        "sha256": "3DA5A2E18A8DDB9991242603BB28182A6FE56676A46E8D6534C02E976C3E17BE"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\sdk-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "bootstrap-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\bootstrap-help-stdout.bin",
+        "bytes": 751,
+        "sha256": "8A95325B409437315FD0649076498C21F534ADB15756A8F6B08CA80316DDAB53"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry-probes-a01\\bootstrap-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    }
+  ],
+  "root_executed_display_test_switch_readback_fresh_Steam_offline_review_required": true,
+  "required_actual_original_viewport": [
+    2560,
+    1440
+  ],
+  "readonly_UI_layout_budget_seconds": 600,
+  "required_root_review_stages": [
+    "00-pre-center-pointer",
+    "02-battle-panel",
+    "02-post-open-pointer",
+    "03-final-layout"
+  ],
+  "new_stage_contract": {
+    "stage": "02-post-open-pointer",
+    "pointer_safe_to_clear_battle_tooltip": true,
+    "root_visible_evidence": "nonempty JSON dict",
+    "point_preview_rect_safe_region": "THIS_NEW_ORIGINAL_IMAGE_ONLY",
+    "action": "formal-mapper move only with receipt and actual focus/size/pointer readback",
+    "move_ACK_claims_tooltip_absent": false,
+    "stock_overlay_free_full_panel_verified_from_03_04_original_images": "PENDING"
+  },
+  "maximum_native_days": 1,
+  "original_capture_service_scope_seconds": 1200,
+  "recording_requested": false,
+  "native_Dll_or_guard_changes": false,
+  "actual_full_stock_panel_fit": "NOT_OBSERVED",
+  "source_GUI_and_old_frozen_inputs_modified": false,
+  "open_kaishek_preverification": {
+    "applicable": false,
+    "reason": "Messina stock battle panel, no Kaifeng or workshop framing"
+  },
+  "display_game_steam_todesk_bus_input_by_subagent": false
+}

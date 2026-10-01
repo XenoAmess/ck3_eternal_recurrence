@@ -1,0 +1,78 @@
+{
+  "actual_focus": {
+    "foreground_hwnd": 2558060,
+    "foreground_pid": 17844,
+    "foreground_thread_id": 14348,
+    "focus_hwnd": 2558060,
+    "title": "Crusader Kings III"
+  },
+  "actual_desktop_size": [
+    2560,
+    1440
+  ],
+  "actual_pointer": [
+    1280,
+    700
+  ],
+  "mapper_receipt_status": "pointer-move-readback-matched",
+  "no_click_or_keyboard_requested": true,
+  "edge_pan_cause_proven": false,
+  "source_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+    "bytes": 5253772,
+    "sha256": "053957F9A3F44EBBC27416F81F6E33494A53C17516E73341D714F784FF100CFB"
+  },
+  "safe_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\00-pre-center-pointer-safe.png",
+    "bytes": 5268692,
+    "sha256": "F6D61644F55395772E55DEEB34882BB1ECE611A2EFEF2E68ECE03E3D2CE998CD"
+  },
+  "mapper_receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png.json",
+    "bytes": 2081,
+    "sha256": "E31C47EDE828AE7D0CEFFE5A694AE40C5D8EBAB14F769AAE2AA9C91A3802BB57"
+  },
+  "root_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "00-pre-center-pointer",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T00:29:22.402303+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 17844,
+    "expected_foreground_hwnd": 2558060,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+        "bytes": 5253772,
+        "sha256": "053957F9A3F44EBBC27416F81F6E33494A53C17516E73341D714F784FF100CFB"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "pointer_safe_for_native_center": true,
+    "observed_point": {
+      "x": 1280,
+      "y": 700
+    },
+    "preview_content_rect": {
+      "left": 0,
+      "top": 0,
+      "width": 2560,
+      "height": 1440
+    },
+    "reviewed_safe_region": {
+      "left": 1100,
+      "top": 600,
+      "width": 400,
+      "height": 200
+    },
+    "root_visible_evidence": {
+      "current_original_png": "Direct original 053957F9A3F44EBBC27416F81F6E33494A53C17516E73341D714F784FF100CFB PNG inspection.",
+      "actual_geometry": "Actual full image content rectangle left0 top0 width2560 height1440, matching current desktop readback; no assumed preview multiplier.",
+      "actual_scene": "Paused Italian terrain map with battle1603/893 near Messina. Selected1280,700 is map interior away from edges and UI controls. Existing province tooltip lies lower/right; Steam notification at bottom-right is not in selected safe region.",
+      "actual_focus": "Current foreground/focused CK3 HWND2558060 PID17844 from actual request and focus readback.",
+      "authorized_current_action": "One formal mapper pointer move only, followed by actual readback and refreshed paused snapshot before single center."
+    }
+  }
+}

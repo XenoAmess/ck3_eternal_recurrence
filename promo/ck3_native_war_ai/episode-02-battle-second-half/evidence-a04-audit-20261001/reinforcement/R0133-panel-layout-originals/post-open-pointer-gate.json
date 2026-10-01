@@ -1,0 +1,79 @@
+{
+  "actual_focus": {
+    "foreground_hwnd": 2558060,
+    "foreground_pid": 17844,
+    "foreground_thread_id": 14348,
+    "focus_hwnd": 2558060,
+    "title": "Crusader Kings III"
+  },
+  "actual_desktop_size": [
+    2560,
+    1440
+  ],
+  "actual_pointer": [
+    1800,
+    700
+  ],
+  "mapper_receipt_status": "pointer-move-readback-matched",
+  "no_click_or_keyboard_requested": true,
+  "edge_pan_cause_proven": false,
+  "source_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\02-post-open-pointer.png",
+    "bytes": 4957211,
+    "sha256": "5E20FF1AB1CFD6E15C9A320B6FC84CA5630546894D294856EA55A0FD0877C5B9"
+  },
+  "pointer_after_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\02-post-open-pointer-safe.png",
+    "bytes": 5046445,
+    "sha256": "A4E740B1710343901607F1A8C7C3D8B1822F94FBD244DF3AC4BA2EEE87119C42"
+  },
+  "mapper_receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\02-post-open-pointer-receipt.png.json",
+    "bytes": 2078,
+    "sha256": "F00FF36B92D45771F75F007C5F481A95B4AA1CEDD81907ED75104381883D4D33"
+  },
+  "root_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "02-post-open-pointer",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T00:32:21.637215+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 17844,
+    "expected_foreground_hwnd": 2558060,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\02-post-open-pointer.png",
+        "bytes": 4957211,
+        "sha256": "5E20FF1AB1CFD6E15C9A320B6FC84CA5630546894D294856EA55A0FD0877C5B9"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "pointer_safe_to_clear_battle_tooltip": true,
+    "observed_point": {
+      "x": 1800,
+      "y": 700
+    },
+    "preview_content_rect": {
+      "left": 0,
+      "top": 0,
+      "width": 2560,
+      "height": 1440
+    },
+    "reviewed_safe_region": {
+      "left": 1700,
+      "top": 600,
+      "width": 250,
+      "height": 200
+    },
+    "root_visible_evidence": {
+      "current_original_png": "Direct original 5E20FF1AB1CFD6E15C9A320B6FC84CA5630546894D294856EA55A0FD0877C5B9 PNG inspection, actual2560x1440 full desktop.",
+      "actual_scene": "墨西拿之战 panel opened below with893/1603. Current cursor remains on crossed swords causing map battle tooltip. Point1800,700 is visibly sea map interior away from any active control, panel, fleet and display edge.",
+      "actual_focus": "Actual current CK3 HWND2558060 PID17844.",
+      "authorized_current_action": "Formal mapper move only to current reviewed interior region; no click. Tooltip absence and full panel will be assessed on subsequent stability originals, not this move acknowledgement."
+    }
+  },
+  "tooltip_absent_claimed_by_move_ack": false,
+  "overlay_free_requires_fresh_final_layout_review": true
+}

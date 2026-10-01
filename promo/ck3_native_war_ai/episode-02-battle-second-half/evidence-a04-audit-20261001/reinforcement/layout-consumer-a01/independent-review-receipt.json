@@ -1,0 +1,1012 @@
+{
+  "schema": "xar.a04.independent-readonly-layout-consumer-review/v1",
+  "created_at_utc": "2026-10-01T00:25:24.008994+00:00",
+  "reviewer": "/root/a04_knights_evidence",
+  "review_scope": "Frozen attempt21 additions and runtime input binding relative to attempt18; static source/bytes only",
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+    "bytes": 54571,
+    "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+  },
+  "baseline": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-18-root-review-reentry\\consumer\\paused_join_pair.py",
+    "bytes": 52480,
+    "sha256": "2F15D371E9B71A94B7D4A1C8A2E37419DF58572FD24AC1FB03DF52C6F3C82055"
+  },
+  "result": "PASS_NARROW_STATIC_REVIEW",
+  "material_findings": [],
+  "checks": [
+    {
+      "name": "freeze:config",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+          "bytes": 13157,
+          "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+          "bytes": 13157,
+          "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+        }
+      }
+    },
+    {
+      "name": "freeze:no_launch_runner",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\run_no_launch_candidate.py",
+          "bytes": 12705,
+          "sha256": "1690A32086E3609418537027900BA8DB492FE9499A4CABBC8F2C22DB36FF7560"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\run_no_launch_candidate.py",
+          "bytes": 12705,
+          "sha256": "1690A32086E3609418537027900BA8DB492FE9499A4CABBC8F2C22DB36FF7560"
+        }
+      }
+    },
+    {
+      "name": "freeze:bootstrap",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\bootstrap_profile.py",
+          "bytes": 6520,
+          "sha256": "93C97134887C0CE31596904A605DC9F014132F9EE48219AF3653BC171A19DCF6"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\bootstrap_profile.py",
+          "bytes": 6520,
+          "sha256": "93C97134887C0CE31596904A605DC9F014132F9EE48219AF3653BC171A19DCF6"
+        }
+      }
+    },
+    {
+      "name": "freeze:runtime_entry",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry_reentry.py",
+          "bytes": 3431,
+          "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry_reentry.py",
+          "bytes": 3431,
+          "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+        }
+      }
+    },
+    {
+      "name": "freeze:runtime_bindings",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\runtime-input-bindings.json",
+          "bytes": 2547,
+          "sha256": "D7B3C307F5733B4FDBA3D056170420C705AFAAE0E646A2A807E256808CDAE2A4"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\runtime-input-bindings.json",
+          "bytes": 2547,
+          "sha256": "D7B3C307F5733B4FDBA3D056170420C705AFAAE0E646A2A807E256808CDAE2A4"
+        }
+      }
+    },
+    {
+      "name": "freeze:layout_consumer",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        }
+      }
+    },
+    {
+      "name": "freeze:native_candidate_manifest",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+          "bytes": 7243,
+          "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+          "bytes": 7243,
+          "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+        }
+      }
+    },
+    {
+      "name": "freeze:native_pair",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+          "bytes": 851,
+          "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+          "bytes": 851,
+          "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+        }
+      }
+    },
+    {
+      "name": "freeze:actual_layout_input_audit",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\actual-layout-input-audit-a01.json",
+          "bytes": 4635,
+          "sha256": "C17D92432830D999A1E9466D7FD1B880D1E854B946B6CE87BD7AEB92D0346E4E"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\actual-layout-input-audit-a01.json",
+          "bytes": 4635,
+          "sha256": "C17D92432830D999A1E9466D7FD1B880D1E854B946B6CE87BD7AEB92D0346E4E"
+        }
+      }
+    },
+    {
+      "name": "freeze:readonly_supported_mode_inventory",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\readonly-display-inventory-a01.json",
+          "bytes": 57701,
+          "sha256": "B423D9349527A621B8D7990C28E18611852F24AD6637ACC97DAE89F225F996BB"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\readonly-display-inventory-a01.json",
+          "bytes": 57701,
+          "sha256": "B423D9349527A621B8D7990C28E18611852F24AD6637ACC97DAE89F225F996BB"
+        }
+      }
+    },
+    {
+      "name": "freeze:targeted_offline_verification",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\layout-variant-offline-verification-a01.json",
+          "bytes": 3429,
+          "sha256": "28E8BF63CFF0A3DF2F8AF54144476F46A1B3140409B1EAF1421FD5F132DBB3A2"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\layout-variant-offline-verification-a01.json",
+          "bytes": 3429,
+          "sha256": "28E8BF63CFF0A3DF2F8AF54144476F46A1B3140409B1EAF1421FD5F132DBB3A2"
+        }
+      }
+    },
+    {
+      "name": "freeze:unchanged_7_offline_cases_reused",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\pointer-order-offline-verification.json",
+          "bytes": 8249,
+          "sha256": "E251091F1B434C23095F99437A3F7D3661C9F2B7A9AB1B219274B548048E92C9"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\pointer-order-offline-verification.json",
+          "bytes": 8249,
+          "sha256": "E251091F1B434C23095F99437A3F7D3661C9F2B7A9AB1B219274B548048E92C9"
+        }
+      }
+    },
+    {
+      "name": "freeze:consumer_files:0",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\hwnd_wgc_frame.py",
+          "bytes": 9830,
+          "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\hwnd_wgc_frame.py",
+          "bytes": 9830,
+          "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+        }
+      }
+    },
+    {
+      "name": "freeze:consumer_files:1",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\native_locale_probe.py",
+          "bytes": 1428,
+          "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\native_locale_probe.py",
+          "bytes": 1428,
+          "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+        }
+      }
+    },
+    {
+      "name": "freeze:consumer_files:2",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        }
+      }
+    },
+    {
+      "name": "freeze:consumer_files:3",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\README.md",
+          "bytes": 9444,
+          "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\README.md",
+          "bytes": 9444,
+          "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+        }
+      }
+    },
+    {
+      "name": "freeze:consumer_files:4",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\run_paused_join_sdk.py",
+          "bytes": 7042,
+          "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\run_paused_join_sdk.py",
+          "bytes": 7042,
+          "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+        }
+      }
+    },
+    {
+      "name": "freeze:consumer_files:5",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\verify_offline_entry.py",
+          "bytes": 19267,
+          "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\verify_offline_entry.py",
+          "bytes": 19267,
+          "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+        }
+      }
+    },
+    {
+      "name": "freeze:helper_files:0",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+          "bytes": 29587,
+          "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+          "bytes": 29587,
+          "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+        }
+      }
+    },
+    {
+      "name": "freeze:helper_files:1",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+          "bytes": 13247,
+          "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+          "bytes": 13247,
+          "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+        }
+      }
+    },
+    {
+      "name": "freeze:helper_files:2",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+          "bytes": 21461,
+          "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+          "bytes": 21461,
+          "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+        }
+      }
+    },
+    {
+      "name": "freeze:helper_files:3",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\ui-controller-config.frozen-center-diag-a01.json",
+          "bytes": 10178,
+          "sha256": "04EBDB33D779442075B1F7018078F25648B38459C99B17AEAB48F786CF8757E4"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\ui-controller-config.frozen-center-diag-a01.json",
+          "bytes": 10178,
+          "sha256": "04EBDB33D779442075B1F7018078F25648B38459C99B17AEAB48F786CF8757E4"
+        }
+      }
+    },
+    {
+      "name": "ready:freeze",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\variant-freeze.json",
+          "bytes": 6432,
+          "sha256": "5853CB71534AE534AE81E76EB67EC9A428637F1EB36021B83BF55C9F4CA42A63"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\variant-freeze.json",
+          "bytes": 6432,
+          "sha256": "5853CB71534AE534AE81E76EB67EC9A428637F1EB36021B83BF55C9F4CA42A63"
+        }
+      }
+    },
+    {
+      "name": "ready:runtime_entry",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry_reentry.py",
+          "bytes": 3431,
+          "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry_reentry.py",
+          "bytes": 3431,
+          "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+        }
+      }
+    },
+    {
+      "name": "ready:bootstrap",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\bootstrap_profile.py",
+          "bytes": 6520,
+          "sha256": "93C97134887C0CE31596904A605DC9F014132F9EE48219AF3653BC171A19DCF6"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\bootstrap_profile.py",
+          "bytes": 6520,
+          "sha256": "93C97134887C0CE31596904A605DC9F014132F9EE48219AF3653BC171A19DCF6"
+        }
+      }
+    },
+    {
+      "name": "ready:consumer",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        }
+      }
+    },
+    {
+      "name": "ready:runtime_bindings",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\runtime-input-bindings.json",
+          "bytes": 2547,
+          "sha256": "D7B3C307F5733B4FDBA3D056170420C705AFAAE0E646A2A807E256808CDAE2A4"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\runtime-input-bindings.json",
+          "bytes": 2547,
+          "sha256": "D7B3C307F5733B4FDBA3D056170420C705AFAAE0E646A2A807E256808CDAE2A4"
+        }
+      }
+    },
+    {
+      "name": "ready:config",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+          "bytes": 13157,
+          "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+          "bytes": 13157,
+          "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+        }
+      }
+    },
+    {
+      "name": "ready:targeted_offline_verification",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\layout-variant-offline-verification-a01.json",
+          "bytes": 3429,
+          "sha256": "28E8BF63CFF0A3DF2F8AF54144476F46A1B3140409B1EAF1421FD5F132DBB3A2"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\layout-variant-offline-verification-a01.json",
+          "bytes": 3429,
+          "sha256": "28E8BF63CFF0A3DF2F8AF54144476F46A1B3140409B1EAF1421FD5F132DBB3A2"
+        }
+      }
+    },
+    {
+      "name": "runtime_bindings:consumer",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+          "bytes": 54571,
+          "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+        }
+      }
+    },
+    {
+      "name": "runtime_bindings:sdk",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\run_paused_join_sdk.py",
+          "bytes": 7042,
+          "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\run_paused_join_sdk.py",
+          "bytes": 7042,
+          "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+        }
+      }
+    },
+    {
+      "name": "runtime_bindings:config",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+          "bytes": 13157,
+          "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+          "bytes": 13157,
+          "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+        }
+      }
+    },
+    {
+      "name": "runtime_bindings:native_candidate_manifest",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+          "bytes": 7243,
+          "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+          "bytes": 7243,
+          "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+        }
+      }
+    },
+    {
+      "name": "runtime_bindings:native_pair",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+          "bytes": 851,
+          "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+          "bytes": 851,
+          "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+        }
+      }
+    },
+    {
+      "name": "runtime_bindings:old_variant",
+      "passed": true,
+      "detail": {
+        "expected": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-18-root-review-reentry\\variant-freeze.json",
+          "bytes": 5739,
+          "sha256": "E962DFAEF2FF6435287F1B245DC6DC40C61C6846998BAD1CCB8A5A9C3BB6E106"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-18-root-review-reentry\\variant-freeze.json",
+          "bytes": 5739,
+          "sha256": "E962DFAEF2FF6435287F1B245DC6DC40C61C6846998BAD1CCB8A5A9C3BB6E106"
+        }
+      }
+    },
+    {
+      "name": "consumer_expected_frozen_sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "config_exact_layout_budget",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "config_exact_viewport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "config_stage_list",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "runtime_only_two_path_overrides",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "runtime_bound_consumer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "runtime_head_bound",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "runtime_new_attempt_seal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged:center_once_after_pointer",
+      "passed": true,
+      "detail": {
+        "function": "center_once_after_pointer",
+        "exact_text_equal": true,
+        "sha256": "010699E50B7E8504E89C8AE808928921C924023C79C2205CF578B473188DEBB3"
+      }
+    },
+    {
+      "name": "unchanged:verify_pointer_ready",
+      "passed": true,
+      "detail": {
+        "function": "verify_pointer_ready",
+        "exact_text_equal": true,
+        "sha256": "7411AC52BF0712117A922B90D7DCBA1BBF49688137B9AF094E03A05737293070"
+      }
+    },
+    {
+      "name": "unchanged:pointer_before_center",
+      "passed": true,
+      "detail": {
+        "function": "pointer_before_center",
+        "exact_text_equal": true,
+        "sha256": "F7088E4A85F7BAF2FA85FEED23BAB578B6D37B142FCEF98739565D065DC166BF"
+      }
+    },
+    {
+      "name": "unchanged:preserve_center_failure_diagnostic",
+      "passed": true,
+      "detail": {
+        "function": "preserve_center_failure_diagnostic",
+        "exact_text_equal": true,
+        "sha256": "66DE1A52679A41768701595AE26DF274C0A5B21FA240F36B83E00D423169CC2D"
+      }
+    },
+    {
+      "name": "unchanged:collect_after_independent_of_trace",
+      "passed": true,
+      "detail": {
+        "function": "collect_after_independent_of_trace",
+        "exact_text_equal": true,
+        "sha256": "547801443752C07D5EEB0C84D96D2075B67BA6AD090F84B9B4AB6CB712EEA772"
+      }
+    },
+    {
+      "name": "unchanged:same_paused_frame",
+      "passed": true,
+      "detail": {
+        "function": "same_paused_frame",
+        "exact_text_equal": true,
+        "sha256": "263B234D68F0D76F1A670E0E3DF8ABC14AB863E5B287160550C9C45D77373441"
+      }
+    },
+    {
+      "name": "unchanged:validate_frozen_ui_binding",
+      "passed": true,
+      "detail": {
+        "function": "validate_frozen_ui_binding",
+        "exact_text_equal": true,
+        "sha256": "EB7474EBE969F7115EC313A7B7771D5D034FEF3C5FBA4137127F5EC98D822EE8"
+      }
+    },
+    {
+      "name": "unchanged:pinned_inputs",
+      "passed": true,
+      "detail": {
+        "function": "pinned_inputs",
+        "exact_text_equal": true,
+        "sha256": "295497A76E3C4D4292E2965FFBD1E7F11F4391C4C56DD75D56891A7C7097A0F2"
+      }
+    },
+    {
+      "name": "unchanged:prepare",
+      "passed": true,
+      "detail": {
+        "function": "prepare",
+        "exact_text_equal": true,
+        "sha256": "34402664FCCC3434BCF6BEF3BCF6B971C14277F873C0E44B36C5004B515EDF32"
+      }
+    },
+    {
+      "name": "unchanged:sample_and_single_day_action",
+      "passed": true,
+      "detail": {
+        "region": "sample_and_single_day_action",
+        "exact_text_equal": true,
+        "sha256": "19DD46BBBA5790F31C751DDCA5450A997D5D2B6D94942394AA756ED9F116D7C7"
+      }
+    },
+    {
+      "name": "unchanged:failure_and_same_owner_cleanup",
+      "passed": true,
+      "detail": {
+        "region": "failure_and_same_owner_cleanup",
+        "exact_text_equal": true,
+        "sha256": "0AB338CA6DB61B777A9466FB603269346C2EB3C58D0621B597A08B11648FF5FE"
+      }
+    },
+    {
+      "name": "unchanged:paused_snapshot_control_binding",
+      "passed": true,
+      "detail": {
+        "region": "paused_snapshot_control_binding",
+        "exact_text_equal": true,
+        "sha256": "59BDBDFF56D55C6491E52E52DE0B8C14397A9FEB7EF93C671CA06B28396C5757"
+      }
+    },
+    {
+      "name": "only_one_execute_step_call_site",
+      "passed": true,
+      "detail": [
+        {
+          "line": 731,
+          "source": "call('one-day', 'ck3_execute_step',\n                                          {'step': 'life-advance', 'expected_revision': saved_values['revision']})"
+        }
+      ]
+    },
+    {
+      "name": "no_date_or_center_request_in_tooltip_move",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_pair_frozen_ED537",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_dll_bytes_match_pair",
+      "passed": true,
+      "detail": {
+        "manifest_identity": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge.dll",
+          "bytes": 3239936,
+          "sha256": "ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge.dll",
+          "bytes": 3239936,
+          "sha256": "ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23"
+        },
+        "pair_sha256": "ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23"
+      }
+    },
+    {
+      "name": "native_injector_bytes_match_pair",
+      "passed": true,
+      "detail": {
+        "manifest_identity": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F"
+        },
+        "actual": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F"
+        },
+        "pair_sha256": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F"
+      }
+    }
+  ],
+  "exact_unchanged_regions": [
+    {
+      "function": "center_once_after_pointer",
+      "exact_text_equal": true,
+      "sha256": "010699E50B7E8504E89C8AE808928921C924023C79C2205CF578B473188DEBB3"
+    },
+    {
+      "function": "verify_pointer_ready",
+      "exact_text_equal": true,
+      "sha256": "7411AC52BF0712117A922B90D7DCBA1BBF49688137B9AF094E03A05737293070"
+    },
+    {
+      "function": "pointer_before_center",
+      "exact_text_equal": true,
+      "sha256": "F7088E4A85F7BAF2FA85FEED23BAB578B6D37B142FCEF98739565D065DC166BF"
+    },
+    {
+      "function": "preserve_center_failure_diagnostic",
+      "exact_text_equal": true,
+      "sha256": "66DE1A52679A41768701595AE26DF274C0A5B21FA240F36B83E00D423169CC2D"
+    },
+    {
+      "function": "collect_after_independent_of_trace",
+      "exact_text_equal": true,
+      "sha256": "547801443752C07D5EEB0C84D96D2075B67BA6AD090F84B9B4AB6CB712EEA772"
+    },
+    {
+      "function": "same_paused_frame",
+      "exact_text_equal": true,
+      "sha256": "263B234D68F0D76F1A670E0E3DF8ABC14AB863E5B287160550C9C45D77373441"
+    },
+    {
+      "function": "validate_frozen_ui_binding",
+      "exact_text_equal": true,
+      "sha256": "EB7474EBE969F7115EC313A7B7771D5D034FEF3C5FBA4137127F5EC98D822EE8"
+    },
+    {
+      "function": "pinned_inputs",
+      "exact_text_equal": true,
+      "sha256": "295497A76E3C4D4292E2965FFBD1E7F11F4391C4C56DD75D56891A7C7097A0F2"
+    },
+    {
+      "function": "prepare",
+      "exact_text_equal": true,
+      "sha256": "34402664FCCC3434BCF6BEF3BCF6B971C14277F873C0E44B36C5004B515EDF32"
+    },
+    {
+      "region": "sample_and_single_day_action",
+      "exact_text_equal": true,
+      "sha256": "19DD46BBBA5790F31C751DDCA5450A997D5D2B6D94942394AA756ED9F116D7C7"
+    },
+    {
+      "region": "failure_and_same_owner_cleanup",
+      "exact_text_equal": true,
+      "sha256": "0AB338CA6DB61B777A9466FB603269346C2EB3C58D0621B597A08B11648FF5FE"
+    },
+    {
+      "region": "paused_snapshot_control_binding",
+      "exact_text_equal": true,
+      "sha256": "59BDBDFF56D55C6491E52E52DE0B8C14397A9FEB7EF93C671CA06B28396C5757"
+    }
+  ],
+  "frozen_native_files_verified": {
+    "dll": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge.dll",
+      "bytes": 3239936,
+      "sha256": "ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23"
+    },
+    "injector": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F"
+    }
+  },
+  "source_observations": [
+    {
+      "claim": "Prepare entry rejects dimensions other than frozen2560x1440; run controller also gates actual initial original PNG size before focus/move.",
+      "locations": [
+        "entry_reentry.py:49-52",
+        "paused_join_pair.py:524-528",
+        "paused_join_pair.py:625-626"
+      ],
+      "boundary": "Explicit2560x1440 is an initial admission gate. Later source frames independently enforce captured size==live desktop before/after; mapper moves enforce same per-stage dimensions. This review does not claim a global cross-stage2560 invariant absent from source."
+    },
+    {
+      "claim": "Frozen config selects600seconds; only layout_deadline budget changes. Budget function requires exactint180..600 and rejectsbool; no date call or loop added.",
+      "locations": [
+        "ui-controller-config.frozen-layout-repair-a01.json:31",
+        "paused_join_pair.py:517-521",
+        "paused_join_pair.py:613-614"
+      ]
+    },
+    {
+      "claim": "New02-post-open-pointer gets new original pixels and actual root review, requires pointer_safe_to_clear_battle_tooltip, uses mapped_action move only with pinned formal mapper, and then verifies actual pointer/focus/PID/dimensions/buttons plus mapper source hash/status/receipt.",
+      "locations": [
+        "paused_join_pair.py:531-547",
+        "paused_join_pair.py:448-475",
+        "camera_layout_and_capture.py:190-284"
+      ]
+    },
+    {
+      "claim": "Move ACK never asserts tooltip dismissed. New stability originals separated by10seconds still require camera_stable/full_battle_panel/date_actor_army_battle_readable/overlay_free. Actual before/after fullpanel and widths/counts review with same paused native revision remains mandatory.",
+      "locations": [
+        "paused_join_pair.py:539-546",
+        "paused_join_pair.py:651-657",
+        "paused_join_pair.py:660-698"
+      ]
+    },
+    {
+      "claim": "One life-advance request only, pre-save fresh revision, controllable combat army guard, tracebegin token, actualDATE+24 paused readback with no resubmit. All sample/day/failure/cleanup source regions are exactequal to frozen attempt18.",
+      "locations": [
+        "paused_join_pair.py:701-764",
+        "paused_join_pair.py:765-797"
+      ]
+    },
+    {
+      "claim": "Entry hashes consumer/config/runner/helpers and runtime bindings; only CONFIG/SEAL path overrides allowed. Fresh attempt21 config/seal and sourceHEAD190147 remain bound, actual nativepair/DLL unchanged.",
+      "locations": [
+        "entry_reentry.py:16-35",
+        "runtime-input-bindings.json",
+        "variant-freeze.json"
+      ]
+    }
+  ],
+  "reviewed_file_identities": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+      "bytes": 54571,
+      "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-18-root-review-reentry\\consumer\\paused_join_pair.py",
+      "bytes": 52480,
+      "sha256": "2F15D371E9B71A94B7D4A1C8A2E37419DF58572FD24AC1FB03DF52C6F3C82055"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ui-controller-config.frozen-layout-repair-a01.json",
+      "bytes": 13157,
+      "sha256": "06155A901C1E83FB23CCAE5DEF90B44D6108D30819C6C6CECE5BC454064D4EBB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\variant-freeze.json",
+      "bytes": 6432,
+      "sha256": "5853CB71534AE534AE81E76EB67EC9A428637F1EB36021B83BF55C9F4CA42A63"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\ready-report-a01.json",
+      "bytes": 5813,
+      "sha256": "B41B32386A1595853452DDC8F0EC57E8B9943744D2A51CD528897637282A3D35"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\runtime-input-bindings.json",
+      "bytes": 2547,
+      "sha256": "D7B3C307F5733B4FDBA3D056170420C705AFAAE0E646A2A807E256808CDAE2A4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\entry_reentry.py",
+      "bytes": 3431,
+      "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\bootstrap_profile.py",
+      "bytes": 6520,
+      "sha256": "93C97134887C0CE31596904A605DC9F014132F9EE48219AF3653BC171A19DCF6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\run_no_launch_candidate.py",
+      "bytes": 12705,
+      "sha256": "1690A32086E3609418537027900BA8DB492FE9499A4CABBC8F2C22DB36FF7560"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\run_paused_join_sdk.py",
+      "bytes": 7042,
+      "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+      "bytes": 29587,
+      "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+      "bytes": 13247,
+      "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+    },
+    {
+      "path": "C:\\w\\desktop_pointer_20260930\\tools\\desktop_coordinate_map.py",
+      "bytes": 14469,
+      "sha256": "B66D25560475D9DAF26827FA4E129D6244E80B9DEA0597D905937ACDE4901043"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\verify_layout_variant_offline.py",
+      "bytes": 6639,
+      "sha256": "54EC11C8F6D968FFA2061F71806B12AA47AA92232EB5F819AE2C04B358EC872C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\layout-variant-offline-verification-a01.json",
+      "bytes": 3429,
+      "sha256": "28E8BF63CFF0A3DF2F8AF54144476F46A1B3140409B1EAF1421FD5F132DBB3A2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+      "bytes": 851,
+      "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+      "bytes": 7243,
+      "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+    }
+  ],
+  "independent_diff": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\native-center-review-attempt-02-layout-repair\\consumer-18-to-21.diff",
+    "bytes": 4050,
+    "sha256": "48C465BFA74CBEEB86AAAD8D219847D203A8E8AE69F3DB31AEC573A41B1FD4C7"
+  },
+  "verification_limits": {
+    "consumer_or_helper_imported": false,
+    "existing_tests_rerun": false,
+    "new_test_cases_executed": false,
+    "author_offline_report_only_read": true,
+    "screen_or_desktop_io": false,
+    "display_mode_changed": false,
+    "Steam_CK3_MCP_or_bus_operation": false,
+    "source_or_old_assets_modified": false,
+    "master_input_or_git_mutation": false,
+    "new_full_panel_fit_or_tooltip_absence_proven": false,
+    "new_live_attempt_outcome_reviewed": false,
+    "recording_or_human1x_signoff_claimed": false
+  }
+}

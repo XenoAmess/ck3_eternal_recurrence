@@ -45,3 +45,7 @@ promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-2026100
 
 # Preserve exact R0132 raw operator receipts, including their original CRLF bytes.
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0132-panel-layout-originals/*.json -text whitespace=cr-at-eol
+
+# Preserve exact R0133 original receipts and the frozen layout consumer archive.
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0133-panel-layout-originals/*.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/layout-consumer-a01/** -text whitespace=cr-at-eol

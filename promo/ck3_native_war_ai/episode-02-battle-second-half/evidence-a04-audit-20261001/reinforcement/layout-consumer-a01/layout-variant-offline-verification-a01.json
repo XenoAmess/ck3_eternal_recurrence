@@ -1,0 +1,131 @@
+{
+  "result": "PASS",
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\consumer\\paused_join_pair.py",
+    "bytes": 54571,
+    "sha256": "974AAADDADD20883733FF30652A23279EAA22C776BCBDA23A84A89E1B4865426"
+  },
+  "guard_source_equality": [
+    {
+      "function": "center_once_after_pointer",
+      "unchanged_exact_source": true,
+      "sha256": "010699E50B7E8504E89C8AE808928921C924023C79C2205CF578B473188DEBB3"
+    },
+    {
+      "function": "verify_pointer_ready",
+      "unchanged_exact_source": true,
+      "sha256": "7411AC52BF0712117A922B90D7DCBA1BBF49688137B9AF094E03A05737293070"
+    },
+    {
+      "function": "preserve_center_failure_diagnostic",
+      "unchanged_exact_source": true,
+      "sha256": "66DE1A52679A41768701595AE26DF274C0A5B21FA240F36B83E00D423169CC2D"
+    },
+    {
+      "function": "collect_after_independent_of_trace",
+      "unchanged_exact_source": true,
+      "sha256": "547801443752C07D5EEB0C84D96D2075B67BA6AD090F84B9B4AB6CB712EEA772"
+    },
+    {
+      "region": "sample-and-single-day-action",
+      "unchanged_exact_source": true,
+      "sha256": "19DD46BBBA5790F31C751DDCA5450A997D5D2B6D94942394AA756ED9F116D7C7"
+    },
+    {
+      "region": "same-owner-cleanup",
+      "unchanged_exact_source": true,
+      "sha256": "3DE969BE62C254CD2E977172FA054CDF7C5782058588CEA97E6275261F5BC533"
+    }
+  ],
+  "readonly_budget_cases": [
+    {
+      "value": 180,
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "value": 600,
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "value": 179,
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "value": 601,
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "value": true,
+      "accepted": false,
+      "passed": true
+    }
+  ],
+  "viewport_cases": [
+    {
+      "actual_fixture_size": [
+        2560,
+        1440
+      ],
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "actual_fixture_size": [
+        1024,
+        768
+      ],
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "actual_fixture_size": [
+        1920,
+        1080
+      ],
+      "accepted": false,
+      "passed": true
+    }
+  ],
+  "tooltip_flow_cases": [
+    {
+      "case": "move-readback-passed",
+      "passed": true,
+      "events": [
+        "frame:02-post-open-pointer",
+        "review:current-original",
+        "mapper:move-only",
+        "wait-stock-tooltip-dismissal",
+        "frame:02-post-open-pointer-safe"
+      ],
+      "all_inputs_injected_offline": true
+    },
+    {
+      "case": "review-refused",
+      "passed": true,
+      "events": [
+        "frame:02-post-open-pointer",
+        "review:current-original"
+      ],
+      "all_inputs_injected_offline": true
+    },
+    {
+      "case": "pointer-readback-drift",
+      "passed": true,
+      "events": [
+        "frame:02-post-open-pointer",
+        "review:current-original",
+        "mapper:move-only",
+        "wait-stock-tooltip-dismissal",
+        "frame:02-post-open-pointer-safe"
+      ],
+      "all_inputs_injected_offline": true
+    }
+  ],
+  "original_7_mapper_controller_cases_reused_not_rerun": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\pointer-order-offline-verification.json",
+  "new_native_day_game_desktop_mcp_inputs": false,
+  "actual_new_center_or_full_panel_fit_proven": false
+}
