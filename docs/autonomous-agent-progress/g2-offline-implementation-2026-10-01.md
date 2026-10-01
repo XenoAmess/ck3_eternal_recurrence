@@ -234,3 +234,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 runner receipt增加build_source_commit／source_freeze两metadata字段并说明最终source与实际target source pins；不改runtime，不重跑已经通过的接口。最终profile按中央已编译binary和最终已提交源码绑定，metadata freeze不称重新编译或实机。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:06:37 Root SDK paused nonwar sampler
+
+3文件提供root实际SDK readonly sampler，消费真实runner eight-permit argv；canonical ck3_take_snapshot先确认paused actor/date/revision，每域查询前后实际snapshot，原packet/errors留存。未知family/Sway IDs显式skip，Gift只消费真实root count，不造recipient。7个file/fake-MCP测试通过，无启动server／游戏；只有root显式execute-readonly后才能生成实机证据。证据：Z:\ck3_mod_rewrite\.task-tmp\g2src\artifacts\g2-offline-2026-10-01\paused-readonly-sdk-sampler\result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
