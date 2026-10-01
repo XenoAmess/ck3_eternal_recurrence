@@ -723,3 +723,9 @@ RED与边界：第七次pause-map返回map unavailable，实际推进超过单�
 测试与artifact：[当前完整进度](../ck3-1.20.0.2-migration-progress-2026-10-01.md)，actual目录B/targeted-sdk-r4/cold-religion-family-sway-readonly-20261001T110102Z、B/family-live-next/root-first-heir-read-r4-02-after-day7、B/family-live-next/root-first-heir-checkpoint-r4-01、B/construction-live-next/root-r4-completed-slot-vm-read-02。官方1495与第27/32阶段真PASS；整体CI最后Python-only handover示例仍需修复后cloud completion。
 
 能力变化：新增production-live primitive读回与一次订婚结果，普通Robert3153/36524、G2 3/8不变，尚非完整OODA长局。Commit/push：source9ab836a5→master42d7467，后续实际增量5fff9356→b5c7c76；本正文随本次Git交付。下一步：由h94恢复R6、复核婚约与新增只读入口，再推进经济空槽与普通一代；宗教开放，战争研究停止，Steam焦点禁止，所有游戏启动直接脚本执行。
+
+### 19:51:02 Fix checkpoint handover Python command example
+
+Official CI steps27 and32 passed; step36 identified one handover shell fence. The single document now uses the existing Python API and exact validator passed. No example execution or game action. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-python-handover-current-fix\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

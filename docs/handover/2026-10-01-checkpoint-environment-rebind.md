@@ -22,12 +22,21 @@
 
 独立 module CLI 可供既有准备流程调用，`PYTHONPATH` 指向稳定 L2 的 `ck3_autonomous_player/src`：
 
-```powershell
-python -B -m xar_autoplayer.checkpoint_environment_rebinder `
-  --state-dir <new-prepared-state> --game-dir <game-dir> `
-  --expected-source-environment-sha256 158fb4a4d7db2a4673566fb1f40ba7c6bd1a64c39359379c9885b31f1462b691 `
-  --expected-pipe '\\.\pipe\xar_ck3_bridge_migration_12002' `
-  --receipt <migration-receipt.json>
+```python
+import subprocess
+import sys
+
+subprocess.run(
+    [
+        sys.executable, "-B", "-m", "xar_autoplayer.checkpoint_environment_rebinder",
+        "--state-dir", "<new-prepared-state>", "--game-dir", "<game-dir>",
+        "--expected-source-environment-sha256",
+        "158fb4a4d7db2a4673566fb1f40ba7c6bd1a64c39359379c9885b31f1462b691",
+        "--expected-pipe", r"\\.\pipe\xar_ck3_bridge_migration_12002",
+        "--receipt", "<migration-receipt.json>",
+    ],
+    check=True,
+)
 ```
 
 本工作包没有修改 `native_driver.py`、preflight 或中央 CLI，也没有进行 CK3／pipe／UI／Git 操作。实际 R2 资格与后续启动由协调者及候选准备 owner 继续。
