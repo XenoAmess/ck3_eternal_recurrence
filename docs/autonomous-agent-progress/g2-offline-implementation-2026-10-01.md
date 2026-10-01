@@ -989,3 +989,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 两权威索引更新：G2保持3/8、Robert3153/36524，M5/M6/M7标in_progress，原visible_outcome和历史RED原样保留。G2 validator一次GREEN3/8/NW0/4。索引00:22:30的首R11 RED快照保持，后续实际queryGREEN/技能回执/h165归当前handoff，不把原记录覆盖。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\g2-status-sync-oct2\source-manifest.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 2026-10-02 00:30:37 Record actual dedicated Sway opinion readback
+
+单专题更新为production-live readonly primitive；实际新PID97312/native6/date53170104/总意见-18，scheme_sway与blocker均observed true/present false/null。首queryRED原包保留，后来同进程fresh3query全部GREEN；不声称终态/收益或M4/M6完成。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m4-intervention-live-next\r11-material-live-doc-source-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
