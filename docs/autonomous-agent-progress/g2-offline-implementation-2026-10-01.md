@@ -586,3 +586,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 3新wrapper/runner/doc用actualnamedcallback替代primary。唯一必要O2/W4WX八checks一fullpacketGREEN，旧23matrix/provider不重跑；中央namedqueue资格不冒pausedcatalogue选择资格。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\catalogue\named-permit-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:52:41 Verify named Rite reform query execution
+
+3 frozen sources. Single necessary O2/W4/WX named-only owner queue case and complete response, 7 checks passed. Existing 8 native runtime sources unchanged; no old matrix repeated or game contact. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\query-named\final-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
