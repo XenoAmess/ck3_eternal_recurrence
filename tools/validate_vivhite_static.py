@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 import struct
 import sys
@@ -41,6 +43,8 @@ LANGUAGES = (
 OTHER_LANGUAGES = tuple(
     language for language in LANGUAGES if language not in {"english", "simp_chinese"}
 )
+LOCALIZATION_CONTRACT = ROOT / "tools/vivhite_localization_contract_1_20_0_2.json"
+LOCALIZATION_CONTRACT_SHA256 = "98115c51c0c7000c9b5a1ad4b9feeaacc277845ecdebea2d43e66342f4a56ed6"
 DESCRIPTOR_FIELDS = {
     "version": "1.0.1",
     "name": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
@@ -404,7 +408,7 @@ def generator_checks(errors: list[str], report: dict[str, object]) -> None:
         )
     if len(union) != generator.EXPECTED_UNION_COUNT:
         errors.append(f"trait catalog union is {len(union)}, expected {generator.EXPECTED_UNION_COUNT}")
-    if len(pairs) != 95 or rendered_pair_count != 95:
+    if len(pairs) != generator.EXPECTED_CONFLICT_PAIR_COUNT or rendered_pair_count != generator.EXPECTED_CONFLICT_PAIR_COUNT:
         errors.append(
             f"trait conflict count drifted: API={len(pairs)}, render={rendered_pair_count}, expected=95"
         )
@@ -451,6 +455,26 @@ def parse_localization(path: Path, language: str, errors: list[str]) -> dict[str
         if key in values:
             errors.append(f"duplicate localization key {key!r} in {language}")
         values[key] = value
+    return values
+
+
+def load_localization_contract(path: Path = LOCALIZATION_CONTRACT) -> dict[str, dict[str, str]]:
+    """Read ERVC's reviewed inheritance baseline without reading another product."""
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest() != LOCALIZATION_CONTRACT_SHA256:
+        raise ValueError("independent localization contract SHA-256 changed")
+    payload = json.loads(data.decode("utf-8"))
+    if (payload.get("schema_version") != 1
+            or payload.get("product") != "vivhite-courtier"
+            or payload.get("compatibility_candidate") != "1.20.0.2"):
+        raise ValueError("independent localization contract identity changed")
+    values = payload.get("values", {})
+    inherited = EXPECTED_LOC_KEYS - {GROUP_KEY, DECISION_TITLE_KEY}
+    if set(values) != set(LANGUAGES):
+        raise ValueError("independent localization contract language inventory changed")
+    for language, entries in values.items():
+        if set(entries) != inherited or not all(isinstance(value, str) for value in entries.values()):
+            raise ValueError(f"independent localization contract keys changed in {language}")
     return values
 
 
@@ -508,30 +532,26 @@ def localization_checks(errors: list[str], report: dict[str, object]) -> None:
         elif not value.startswith("@ervc_decision_group_icon! "):
             errors.append(f"{language} decision-group branding lost its icon prefix")
 
+    try:
+        frozen_values = load_localization_contract()
+    except (OSError, ValueError) as error:
+        errors.append(f"independent localization contract failed: {error}")
+        frozen_values = {}
     inherited_keys = EXPECTED_LOC_KEYS - {GROUP_KEY, DECISION_TITLE_KEY}
     for language in LANGUAGES:
-        original_path = (
-            ORIGINAL_MOD / "localization" / language / f"xar_l_{language}.yml"
-        )
-        original = parse_localization(original_path, language, errors)
+        frozen = frozen_values.get(language, {})
         standalone = all_values.get(language, {})
         for key in sorted(inherited_keys):
-            original_key = key.replace("ervc", "xar", 1)
-            expected = original.get(original_key)
+            expected = frozen.get(key)
             if expected is None:
                 errors.append(
-                    f"frozen original localization lacks inherited key {original_key!r} "
+                    f"independent frozen localization lacks inherited key {key!r} "
                     f"in {language}"
                 )
                 continue
-            expected = expected.replace("xar_cc_", "ervc_cc_")
-            if key == "ervc.cc.other.help":
-                # The seven unchanged main translations still carry the old
-                # catalog count. This is a numeric metadata update, not translation.
-                expected = expected.replace("108", str(generator.EXPECTED_COUNTS["other"]))
             if standalone.get(key) != expected:
                 errors.append(
-                    f"standalone localization drifted from frozen original for "
+                    f"standalone localization drifted from independent frozen contract for "
                     f"{key!r} in {language}"
                 )
 
@@ -857,7 +877,6 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
         ),
         "culture and faith catalog rebuild",
     )
-
     rite_resolver = extract_block(effects, "ervc_cc_resolve_selected_rite_effect")
     require_tokens(
         errors,
@@ -974,7 +993,7 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
     if trait_cost_entries != generator.EXPECTED_UNION_COUNT:
         errors.append(f"generated selected-trait price wiring has {trait_cost_entries} entries, expected {generator.EXPECTED_UNION_COUNT}")
     if generated_effects.count("add_to_variable_list = {") != generator.EXPECTED_UNION_COUNT:
-        errors.append(f"generated trait catalogs do not contain exactly {generator.EXPECTED_UNION_COUNT} additions")
+        errors.append("generated trait catalogs do not match the pinned catalog additions")
     if "ervc_cc_selected_traits_compatible_trigger" not in generated_triggers:
         errors.append("generated conflict compatibility trigger is missing")
 
@@ -1096,6 +1115,11 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
         purchase,
     )
     success_block = extract_block_from_match(purchase, success_match)
+    require_tokens(errors, extract_block(success_block, "limit"), (
+        "culture = root.var:ervc_cc_selected_culture",
+        "faith = root.var:ervc_cc_selected_faith",
+        "rite = root.var:ervc_cc_selected_rite",
+    ), "actual delivered courtier identity before charge")
     else_matches = list(re.finditer(r"(?m)^\s*else\s*=\s*\{", purchase))
     failure_block = extract_block_from_match(
         purchase, else_matches[-1] if else_matches else None

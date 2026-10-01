@@ -111,6 +111,18 @@ class VivhiteReleaseTests(unittest.TestCase):
                     all(info.date_time == release.ZIP_TIMESTAMP for info in infos)
                 )
 
+    def test_actual_production_projection_preserves_new_trait_and_rite_contract(self):
+        with tempfile.TemporaryDirectory(prefix="vivhite-native-candidate-") as name:
+            root = Path(name)
+            staging, manifest, _, _ = self.build(root, release.DEFAULT_SOURCE)
+            self.assertEqual(27, release.verify_manifest(staging, manifest))
+            effects = staging.joinpath("common/scripted_effects/ervc_courtier_creator_effects.txt").read_text(encoding="utf-8-sig")
+            values = staging.joinpath("common/script_values/ervc_generated_courtier_catalog_values.txt").read_text(encoding="utf-8-sig")
+            self.assertIn("rite = root.var:ervc_cc_selected_rite", effects)
+            self.assertIn("trait:erudite", values)
+            self.assertIn("trait:lifestyle_scholar", values)
+            self.assertNotIn("trait:scholar", values)
+
     def test_reproducibility_check_reports_stable_hashes(self):
         with self.fixture() as (_, source):
             first = release.check_reproducible(source, revision=REVISION)

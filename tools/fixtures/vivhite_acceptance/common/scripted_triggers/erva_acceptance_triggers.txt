@@ -115,6 +115,7 @@ erva_ervc_default_courtier_trigger = {
 	is_courtier_of = root
 	culture = root.culture
 	faith = root.faith
+	rite = root.rite
 	NOT = { exists = dynasty }
 	has_trait = education_martial_3
 	diplomacy >= 6
@@ -135,6 +136,7 @@ erva_ervc_custom_courtier_trigger = {
 	is_courtier_of = root
 	culture = root.var:ervc_cc_selected_culture
 	faith = root.var:ervc_cc_selected_faith
+	rite = root.var:ervc_cc_selected_rite
 	house = root.house
 	has_trait = education_intrigue_1
 	has_trait = logistician

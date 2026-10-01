@@ -6,7 +6,10 @@
 - Chinese title: 【琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版】
 - English title: **Eternal Recurrence: Glassfire Courtier Creator - Vivhite Edition**
 - Version: `1.0.1`; tested baseline: CK3 `1.19.0.6`
-- Current migration target: CK3 `1.20.0.2`; updated catalogs and existing creator Rite compatibility are `static-ready`, with their live UI validation pending.
+- The 2026-10-01 CK3 1.20.0.2 source candidate is recorded in
+  [the independent compatibility work package](ck3-1.20.0.2-vivhite-compatibility-2026-10-01.md).
+  The inherited descriptor declares the 1.20.0.2 source compatibility target. Runtime acceptance is pending;
+  runner/native ABI locks remain unchanged.
 - Repository tag namespace: `vivhite-v<version>`; it must never reuse the original mod's `v1.0.0` tag.
 - Workshop identity: item `3787304042`. The original item `3784706360` is forbidden in the standalone runtime and is not a default in its tooling.
 
@@ -34,10 +37,14 @@ rejects any custom `xar`, `xa_`, `XAR:`, original Workshop ID, forbidden subsyst
 ## Generation
 
 `tools/gen_vivhite_courtier.py` reads only the independently pinned
-`tools/vivhite_courtier_traits_1_20_0_2.json`. Ordinary generation never reads the ignored game installation. The
-snapshot records CK3 `1.20.0.2`, source `00_traits.txt` SHA-256
+`tools/vivhite_courtier_traits_1_20_0_2.json`. Ordinary generation never reads the ignored game installation or the
+main product's snapshot. The candidate snapshot records CK3 `1.20.0.2`, source `00_traits.txt` SHA-256
 `93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa`, 306 source traits, 226 catalog traits and
 95 conflict pairs. It emits three generated ERVC catalog files and supports `--check` parity.
+The independently archived 1.19.0.6 snapshot remains unchanged and is rejected by the new generator.
+The former `scholar` trait is now `erudite` (50 points); the new `lifestyle_scholar` (15 points, age 16+) and
+`herald` (100 points) have their own catalog entries. Default configurations retain the player's Rite; another Faith
+uses its main Rite. Existing valid Rite selections survive reopen, and older designs fill their missing Rite.
 
 `tools/compose_vivhite_key_art.py` renders the owner-supplied
 `images/vivhite_courtier_key_art.png` to the standalone mod's 640×640 launcher/Workshop `thumbnail.png`. The static
@@ -53,14 +60,18 @@ py tools/compose_vivhite_key_art.py
 ## Localization Status
 
 The standalone files own their `ervc` keys so the product loads without the original mod, but they do not fork the
-already released translations. Of each language's 45 values, 43 must match the frozen original byte-for-byte after the
+already released translations. Of each language's 45 values, 43 must match the independent
+`tools/vivhite_localization_contract_1_20_0_2.json` contract byte-for-byte after the
 mechanical `xar` to `ervc` key/state namespace substitution. Only the decision title and decision-group title are
 standalone branding deltas. The seven new edition/group values were translated with MiniMax-M3 assistance, then
 manually normalized to each language's existing Eternal Recurrence, Glassfire and courtier terminology while preserving
 `@ervc_decision_group_icon!` and `Vivhite`. The static validator enforces the 43-value inheritance contract, all 45-key
-inventories, protected tokens, numeric literals, BOM and the absence of English group-title placeholders. Release review
-therefore covers only the two branding deltas; it does not repeat the original mod's completed creator-window language
-sign-off.
+inventories, protected tokens, numeric literals, BOM and the absence of English group-title placeholders. The daily gate
+for the 1.20 candidate reads this frozen contract rather than the main product's changing files. English and Simplified
+Chinese help now describe the 110-item other catalog and Rite policy. The seven other origin descriptions retain
+historical text; the upstream numeric catalog update is preserved in all nine languages. The origin descriptions
+require synchronization and release review before publication; the daily
+structure gate does not count them as completed translations.
 
 On 2026-10-01, the existing creator inherited the main product's CK3 1.20
 compatibility for commissioned characters: retain a valid selected Rite; migrate
@@ -70,14 +81,15 @@ verification. This adds no arbitrary Rite selector or autonomous religion policy
 The Chinese and English origin help now describes those actual paths. All nine
 `other.help` values received only the numeric catalog update 108 → 110; the seven
 other origin descriptions remain their existing text pending release translation.
-Static inheritance comparison allows that precise numeric metadata substitution
-when the unchanged main translation still carries 108. This is not a completed
+The independent frozen contract records that precise upstream numeric metadata substitution,
+without reading the changing main translations. This is not a completed
 release localization or live Rite compatibility claim.
 
 ## Build And Static Gates
 
 ```text
 py tools/test_build_vivhite_release.py
+py tools/test_gen_vivhite_courtier.py
 py tools/validate_vivhite_static.py
 py tools/build_vivhite_release.py --check
 py tools/build_vivhite_release.py
@@ -90,11 +102,16 @@ build an otherwise identical local manifest with `--workshop-item-id <digits>` a
 sidecar. Downloaded-cache verification uses the same strict PDX descriptor normalization as the original release and
 requires this temporary manifest's non-null ID.
 
-Current pinned-environment L0 is GREEN: 4 succession projection tests, 6 original release tests, 17 Vivhite release
+Historical 1.0.1 pinned-environment L0 was GREEN: 4 succession projection tests, 6 original release tests, 17 Vivhite release
 tests, both static validators, scoring reference vectors and both deterministic double builds. Untagged candidates
 intentionally record both `git_tag: null` and `workshop_item_id: null`. A formal build replaces only the null Git tag
 after proving the canonical source, clean worktree and matching `vivhite-v<version>` tag; the original Workshop item
 remains rejected.
+
+The current 1.20 source candidate separately passed 5 independent contract tests, 18 Vivhite builder tests, both
+static gates, Python-only validation, catalog parity, the 27-file reproducible build and 14-file parser-only checks.
+The dated compatibility work package binds these results to the exact candidate and external report; live acceptance
+remains pending.
 
 ## 1.0.1 Release
 
