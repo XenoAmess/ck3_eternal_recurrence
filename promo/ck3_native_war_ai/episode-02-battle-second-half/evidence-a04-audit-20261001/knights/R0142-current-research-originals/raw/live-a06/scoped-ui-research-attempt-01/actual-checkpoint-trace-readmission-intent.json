@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-01T11:18:36.666581+00:00",
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\advance_materialized_checkpoint_a11.py",
+    "bytes": 5197,
+    "sha256": "16685C4DEBB7A7ECED9F5EE4FD0898D15B27CF4B2F993E47455312A854822574"
+  },
+  "prior_rejected_admission": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\scoped-chain-begin.json",
+    "bytes": 11532,
+    "sha256": "1A1AEFB51A76393FD22F970A0E3368D6ED52098DF85795D403FDFEE7F1175976"
+  },
+  "actual_saved_pair": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+    "bytes": 4447,
+    "sha256": "FF0C28B6B2A323818F835104A421333ECDD35B25D3C395C6F6F265042A829BB2"
+  },
+  "actual_checkpoint_sequence": 2,
+  "parameters": {
+    "action": "private_phase_trace",
+    "step": "experimental-combat-phase-event-trace-begin-v1",
+    "expected_revision": 6,
+    "combat_id": 16777218,
+    "managed_daily_sequence_token": 458458016122659653,
+    "checkpoint_sequence": 2,
+    "capture_runtime_scoped_chain": true,
+    "scoped_character_id": 33437,
+    "scoped_related_character_id": 34120,
+    "scoped_event_load_index": 11
+  },
+  "prior_GAME_DAY_was_not_submitted": true,
+  "old_rejected_attempt_kept_RED": true
+}

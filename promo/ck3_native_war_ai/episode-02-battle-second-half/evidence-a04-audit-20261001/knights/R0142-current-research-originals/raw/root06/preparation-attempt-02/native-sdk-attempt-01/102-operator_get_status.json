@@ -1,0 +1,55 @@
+{
+  "at_utc": "2026-10-01T11:05:09.338815+00:00",
+  "arguments": {
+    "target_id": "ck3-e2-scoped-ui-20261001-a03"
+  },
+  "reply": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_instance_id\": \"f20aa643-115e-4928-91a6-3150f83bf7ce\",\n  \"target_id\": \"ck3-e2-scoped-ui-20261001-a03\",\n  \"identity\": {\n    \"token_user\": \"1\",\n    \"desktop\": \"WinSta0\\\\Default\",\n    \"machine\": \"DESKTOP-3FEVHD2\",\n    \"process_id\": 17948\n  },\n  \"identity_matches_profile\": true,\n  \"process_gates\": {\n    \"ck3.exe\": [\n      14700\n    ],\n    \"dowser.exe\": [],\n    \"ffmpeg.exe\": [],\n    \"obs64.exe\": [],\n    \"xar_ck3_bridge_injector.exe\": []\n  },\n  \"process_gate_errors\": {},\n  \"jobs\": [\n    {\n      \"job_id\": \"8f602e35-f1b8-463b-b0a3-67e7f72a978c\",\n      \"request_id\": \"e2-scoped-ui-20261001-a03-root\",\n      \"job_name\": \"scoped-ui-research-capture\",\n      \"pid\": 9352,\n      \"state\": \"running\",\n      \"exit_code\": null,\n      \"started_unix\": 1790851234.3943117,\n      \"stdout_path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-06-hidden-modal-ui\\\\preparation-attempt-02\\\\operator-state-a01\\\\jobs\\\\8f602e35-f1b8-463b-b0a3-67e7f72a978c\\\\stdout.log\",\n      \"stderr_path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-06-hidden-modal-ui\\\\preparation-attempt-02\\\\operator-state-a01\\\\jobs\\\\8f602e35-f1b8-463b-b0a3-67e7f72a978c\\\\stderr.log\",\n      \"available_controls\": []\n    }\n  ]\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_instance_id": "f20aa643-115e-4928-91a6-3150f83bf7ce",
+      "target_id": "ck3-e2-scoped-ui-20261001-a03",
+      "identity": {
+        "token_user": "1",
+        "desktop": "WinSta0\\Default",
+        "machine": "DESKTOP-3FEVHD2",
+        "process_id": 17948
+      },
+      "identity_matches_profile": true,
+      "process_gates": {
+        "ck3.exe": [
+          14700
+        ],
+        "dowser.exe": [],
+        "ffmpeg.exe": [],
+        "obs64.exe": [],
+        "xar_ck3_bridge_injector.exe": []
+      },
+      "process_gate_errors": {},
+      "jobs": [
+        {
+          "job_id": "8f602e35-f1b8-463b-b0a3-67e7f72a978c",
+          "request_id": "e2-scoped-ui-20261001-a03-root",
+          "job_name": "scoped-ui-research-capture",
+          "pid": 9352,
+          "state": "running",
+          "exit_code": null,
+          "started_unix": 1790851234.3943117,
+          "stdout_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\operator-state-a01\\jobs\\8f602e35-f1b8-463b-b0a3-67e7f72a978c\\stdout.log",
+          "stderr_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\operator-state-a01\\jobs\\8f602e35-f1b8-463b-b0a3-67e7f72a978c\\stderr.log",
+          "available_controls": []
+        }
+      ]
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "execution_id": "52ce0fa6-674f-4930-a7bb-52c6ac6cb6d6",
+  "identities": [
+    {
+      "allocated_at_utc": "2026-10-01T10:40:42.146626+00:00",
+      "allocator_pid": 9072,
+      "execution_id": "52ce0fa6-674f-4930-a7bb-52c6ac6cb6d6",
+      "legacy_alias": null,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "mod_key": "vanilla",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0142",
+      "schema": "xar.ck3-live-run-identity.v1",
+      "sequence": 142
+    }
+  ],
+  "schema": "xar.ck3-live-run-receipt.v1",
+  "schema_version": 1
+}

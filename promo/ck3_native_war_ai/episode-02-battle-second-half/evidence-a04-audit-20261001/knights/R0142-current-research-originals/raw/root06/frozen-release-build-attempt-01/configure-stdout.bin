@@ -1,0 +1,10 @@
+-- The CXX compiler identification is MSVC 19.51.36256.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe (found version "3.14.7") found components: Interpreter
+-- Configuring done (3.2s)
+-- Generating done (1.0s)
+-- Build files have been written to: C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-06-hidden-modal-ui/frozen-release-build-attempt-01/build

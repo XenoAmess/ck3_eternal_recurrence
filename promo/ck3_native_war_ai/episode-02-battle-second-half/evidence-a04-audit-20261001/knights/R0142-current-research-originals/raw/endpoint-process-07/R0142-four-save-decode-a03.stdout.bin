@@ -1,0 +1,5 @@
+Actual decode/project before-pre-ui-checkpoint complete
+Actual decode/project before complete
+Actual decode/project after-pre-ui-checkpoint complete
+Actual decode/project after complete
+{"status": "PASS_ORIGINAL_FOUR_SAVE_BINDINGS_AND_ENDPOINT_PROJECTIONS_ONLY", "error": null, "receipt": {"path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a02\\R0142-four-save-endpoint-verification.json", "bytes": 48454, "sha256": "F32609D046B67E10ED182386F00BF128349DCCC6E0025BE747DB89FB8D8345AF"}}

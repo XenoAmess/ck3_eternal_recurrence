@@ -1,0 +1,93 @@
+{
+  "schema": "ck3.e2.explicit-current-research-binding/v1",
+  "created_at_utc": "2026-10-01T10:47:05.479189+00:00",
+  "source_root": "C:\\w\\e2cap1001d",
+  "source_commit": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "live_root": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0142",
+  "native_session_binding": {
+    "episode_run_id": "native-29829-a892e2bcf200",
+    "connection_generation": 1,
+    "bridge_pid": 14700,
+    "native_hello_session_generation": 0
+  },
+  "bridge_dll": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+  "bridge_injector": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+  "before_date_raw": 53146848,
+  "after_date_raw": 53146872,
+  "actor_id": 29829,
+  "war_id": 4,
+  "public_unit_id": 18,
+  "combat_id": 16777218,
+  "victim_id": 33437,
+  "killer_id": 34120,
+  "event_load_index": 11,
+  "managed_daily_sequence_token": 458458016122659653,
+  "monitor_sequence_token": 458458016122669107,
+  "pins": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\native-start-readback.json",
+      "bytes": 31341,
+      "sha256": "B30756B25D9089C551B33F0DB7D9C7045CAD210BCF8B31070EDD7D0D95874BE8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\candidate-manifest.json",
+      "bytes": 2918,
+      "sha256": "1D796328E660A7B4A595ABAD5D320962BBA5AD4E0F5CF2F0D29CD71F3DB8AE17"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\new-capture-launch-plan.json",
+      "bytes": 3443,
+      "sha256": "DD7B30C44E0A7157E98BA2D385D2B0AF208EC242A6F76D5B4FD019CF7261B06C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+      "bytes": 34603,
+      "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+      "bytes": 122365,
+      "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+      "bytes": 3556864,
+      "sha256": "C4C16AE5B306712FA9E02B07B6833CB01709E4D461E9B302DD6E96E135205D3A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "FA932A86DB106F8D556BDA9E383025A05F4E106A28155BA296645796DC24CF4B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\preflight.json",
+      "bytes": 21119,
+      "sha256": "68C10ACE836E674A1F7738364375B39B99CDA5B7886627C44BB6F4AC4EBE0CE3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\live-run-identity.json",
+      "bytes": 553,
+      "sha256": "1A9E6A33A0F1950FDD670FDD3EE08BED2C2FC98FE4454A94BF46FB6413D55B38"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+      "bytes": 52880496,
+      "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+    }
+  ],
+  "prior_R0139_is_provenance_only": true,
+  "no_prior_sample_fills_current_fields": true,
+  "video_revision_started": false,
+  "human_movie_signoff": false
+}

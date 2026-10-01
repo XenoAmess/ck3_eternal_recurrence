@@ -1,0 +1,1443 @@
+{
+  "kind": "ACTUAL_R0142_PARTIAL_FAILED_MONITOR_READONLY_DIAGNOSIS_NOT_COMPLETE_TRACE",
+  "source": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\variable-monitor-finish-once.json",
+    "bytes": 711221,
+    "sha256": "C9C162B8D6E69DE048668AE835FDCA455201CE3447880FAE242FAAAA1B5F5E91"
+  },
+  "flags": 8,
+  "truncated": true,
+  "detours_uninstalled": true,
+  "counts": {
+    "arm": 1,
+    "original_owner_return": 125,
+    "house_predicate_enter": 1,
+    "house_predicate_return": 1
+  },
+  "getter_field_summary": {
+    "boundary": {
+      "distinct_count": 1,
+      "first": "original_owner_return",
+      "last": "original_owner_return"
+    },
+    "caller_token": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "character_id": {
+      "distinct_count": 2,
+      "first": 33437,
+      "last": 33437
+    },
+    "container_token": {
+      "distinct_count": 3,
+      "first": 2296824419112,
+      "last": 0
+    },
+    "current_death_commit_context": {
+      "distinct_count": 1,
+      "first": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      },
+      "last": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    },
+    "daily_effect_context": {
+      "distinct_count": 1,
+      "first": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      },
+      "last": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      }
+    },
+    "date_raw": {
+      "distinct_count": 2,
+      "first": 53146848,
+      "last": 53146872
+    },
+    "dead": {
+      "distinct_count": 2,
+      "first": false,
+      "last": true
+    },
+    "duration": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "event_producer": {
+      "distinct_count": 1,
+      "first": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "last": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      }
+    },
+    "execution_context_token": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "failure_flags": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "full_identity_matches": {
+      "distinct_count": 1,
+      "first": true,
+      "last": true
+    },
+    "house_ids": {
+      "distinct_count": 1,
+      "first": [
+        -1,
+        -1
+      ],
+      "last": [
+        -1,
+        -1
+      ]
+    },
+    "invocation": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "key_id": {
+      "distinct_count": 1,
+      "first": 9740,
+      "last": 9740
+    },
+    "native_root_scope_token": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "native_scope_words": {
+      "distinct_count": 1,
+      "first": [
+        0,
+        0
+      ],
+      "last": [
+        0,
+        0
+      ]
+    },
+    "native_stack_rvas": {
+      "distinct_count": 1,
+      "first": [],
+      "last": []
+    },
+    "observed_character_id": {
+      "distinct_count": 2,
+      "first": 33437,
+      "last": 33437
+    },
+    "original_boolean": {
+      "distinct_count": 1,
+      "first": false,
+      "last": false
+    },
+    "original_boolean_read": {
+      "distinct_count": 1,
+      "first": false,
+      "last": false
+    },
+    "original_return_bits": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "owner_from_original_getter": {
+      "distinct_count": 1,
+      "first": true,
+      "last": true
+    },
+    "owner_from_same_setter_invocation": {
+      "distinct_count": 1,
+      "first": false,
+      "last": false
+    },
+    "owner_token": {
+      "distinct_count": 3,
+      "first": 2296824419104,
+      "last": 0
+    },
+    "previous_owner_token": {
+      "distinct_count": 2,
+      "first": 0,
+      "last": 0
+    },
+    "relation_type_id": {
+      "distinct_count": 1,
+      "first": -1,
+      "last": -1
+    },
+    "relation_type_key": {
+      "distinct_count": 1,
+      "first": "",
+      "last": ""
+    },
+    "relation_type_token": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "requested_scope_words": {
+      "distinct_count": 1,
+      "first": [
+        0,
+        0
+      ],
+      "last": [
+        0,
+        0
+      ]
+    },
+    "requested_value_decoding": {
+      "distinct_count": 1,
+      "first": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "last": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      }
+    },
+    "sequence": {
+      "distinct_count": 125,
+      "first": 1,
+      "last": 127
+    },
+    "setter_node_hash": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "setter_node_token": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "setter_node_vtable_rva": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "thread_id": {
+      "distinct_count": 9,
+      "first": 14664,
+      "last": 14868
+    },
+    "value": {
+      "distinct_count": 2,
+      "first": {
+        "read": true,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "last": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      }
+    }
+  },
+  "getter_value_field_summary": {
+    "expiration_raw": {
+      "distinct_count": 1,
+      "first": -1,
+      "last": -1
+    },
+    "flag_identifier_count": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "flag_identifier_epoch": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "flag_index": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "flag_name": {
+      "distinct_count": 1,
+      "first": "",
+      "last": ""
+    },
+    "flag_name_read": {
+      "distinct_count": 1,
+      "first": false,
+      "last": false
+    },
+    "present": {
+      "distinct_count": 1,
+      "first": false,
+      "last": false
+    },
+    "read": {
+      "distinct_count": 2,
+      "first": true,
+      "last": false
+    },
+    "scope_word0": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "scope_word1": {
+      "distinct_count": 1,
+      "first": 0,
+      "last": 0
+    }
+  },
+  "adjacent_getter_changes": [
+    {
+      "previous_sequence": 1,
+      "sequence": 2,
+      "different_fields": [
+        "character_id",
+        "container_token",
+        "observed_character_id",
+        "owner_token",
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 2,
+      "sequence": 5,
+      "different_fields": [
+        "character_id",
+        "container_token",
+        "date_raw",
+        "dead",
+        "observed_character_id",
+        "owner_token",
+        "previous_owner_token",
+        "sequence",
+        "thread_id",
+        "value"
+      ]
+    },
+    {
+      "previous_sequence": 5,
+      "sequence": 6,
+      "different_fields": [
+        "previous_owner_token",
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 6,
+      "sequence": 7,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 7,
+      "sequence": 8,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 8,
+      "sequence": 9,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 9,
+      "sequence": 10,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 10,
+      "sequence": 11,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 11,
+      "sequence": 12,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 12,
+      "sequence": 13,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 13,
+      "sequence": 14,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 14,
+      "sequence": 15,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 15,
+      "sequence": 16,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 16,
+      "sequence": 17,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 17,
+      "sequence": 18,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 18,
+      "sequence": 19,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 19,
+      "sequence": 20,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 20,
+      "sequence": 21,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 21,
+      "sequence": 22,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 22,
+      "sequence": 23,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 23,
+      "sequence": 24,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 24,
+      "sequence": 25,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 25,
+      "sequence": 26,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 26,
+      "sequence": 27,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 27,
+      "sequence": 28,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 28,
+      "sequence": 29,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 29,
+      "sequence": 30,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 30,
+      "sequence": 31,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 31,
+      "sequence": 32,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 32,
+      "sequence": 33,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 33,
+      "sequence": 34,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 34,
+      "sequence": 35,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 35,
+      "sequence": 36,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 36,
+      "sequence": 37,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 37,
+      "sequence": 38,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 38,
+      "sequence": 39,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 39,
+      "sequence": 40,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 40,
+      "sequence": 41,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 41,
+      "sequence": 42,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 42,
+      "sequence": 43,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 43,
+      "sequence": 44,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 44,
+      "sequence": 45,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 45,
+      "sequence": 46,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 46,
+      "sequence": 47,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 47,
+      "sequence": 48,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 48,
+      "sequence": 49,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 49,
+      "sequence": 50,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 50,
+      "sequence": 51,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 51,
+      "sequence": 52,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 52,
+      "sequence": 53,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 53,
+      "sequence": 54,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 54,
+      "sequence": 55,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 55,
+      "sequence": 56,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 56,
+      "sequence": 57,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 57,
+      "sequence": 58,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 58,
+      "sequence": 59,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 59,
+      "sequence": 60,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 60,
+      "sequence": 61,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 61,
+      "sequence": 62,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 62,
+      "sequence": 63,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 63,
+      "sequence": 64,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 64,
+      "sequence": 65,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 65,
+      "sequence": 66,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 66,
+      "sequence": 67,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 67,
+      "sequence": 68,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 68,
+      "sequence": 69,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 69,
+      "sequence": 70,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 70,
+      "sequence": 71,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 71,
+      "sequence": 72,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 72,
+      "sequence": 73,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 73,
+      "sequence": 74,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 74,
+      "sequence": 75,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 75,
+      "sequence": 76,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 76,
+      "sequence": 77,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 77,
+      "sequence": 78,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 78,
+      "sequence": 79,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 79,
+      "sequence": 80,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 80,
+      "sequence": 81,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 81,
+      "sequence": 82,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 82,
+      "sequence": 83,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 83,
+      "sequence": 84,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 84,
+      "sequence": 85,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 85,
+      "sequence": 86,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 86,
+      "sequence": 87,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 87,
+      "sequence": 88,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 88,
+      "sequence": 89,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 89,
+      "sequence": 90,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 90,
+      "sequence": 91,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 91,
+      "sequence": 92,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 92,
+      "sequence": 93,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 93,
+      "sequence": 94,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 94,
+      "sequence": 95,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 95,
+      "sequence": 96,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 96,
+      "sequence": 97,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 97,
+      "sequence": 98,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 98,
+      "sequence": 99,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 99,
+      "sequence": 100,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 100,
+      "sequence": 101,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 101,
+      "sequence": 102,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 102,
+      "sequence": 103,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 103,
+      "sequence": 104,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 104,
+      "sequence": 105,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 105,
+      "sequence": 106,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 106,
+      "sequence": 107,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 107,
+      "sequence": 108,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 108,
+      "sequence": 109,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 109,
+      "sequence": 110,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 110,
+      "sequence": 111,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 111,
+      "sequence": 112,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 112,
+      "sequence": 113,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 113,
+      "sequence": 114,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 114,
+      "sequence": 115,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 115,
+      "sequence": 116,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 116,
+      "sequence": 117,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 117,
+      "sequence": 118,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 118,
+      "sequence": 119,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 119,
+      "sequence": 120,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 120,
+      "sequence": 121,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 121,
+      "sequence": 122,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 122,
+      "sequence": 123,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 123,
+      "sequence": 124,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 124,
+      "sequence": 125,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    },
+    {
+      "previous_sequence": 125,
+      "sequence": 126,
+      "different_fields": [
+        "sequence"
+      ]
+    },
+    {
+      "previous_sequence": 126,
+      "sequence": 127,
+      "different_fields": [
+        "sequence",
+        "thread_id"
+      ]
+    }
+  ],
+  "complete_coverage": false,
+  "no_source_or_game_mutation": true
+}

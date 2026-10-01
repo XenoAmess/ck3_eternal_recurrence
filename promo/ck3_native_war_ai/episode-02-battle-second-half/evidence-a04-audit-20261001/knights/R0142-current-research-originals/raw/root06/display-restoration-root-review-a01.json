@@ -1,0 +1,19 @@
+{
+  "reviewer": "/root",
+  "at_utc": "2026-10-01T11:48:20.139555+00:00",
+  "original_pixels_actually_reviewed": true,
+  "reviewed_image": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display-restore-and-release-attempt-01\\display-restore\\original-desktop-after-mode.png",
+    "bytes": 598978,
+    "sha256": "8EB6BAF1BCDDB6D57F629D5CA2528890EED0EF5CE5882AEED7C80C1B936E701A"
+  },
+  "readback": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display-restore-and-release-attempt-01\\display-restore\\readback.json",
+    "bytes": 1196,
+    "sha256": "113C0FEC32FC2BF032EB09A718B64BE6A62AF2BD554D4B0BA6881420E1A9BBBF"
+  },
+  "observations": [
+    "Root viewed restored original1024x768 desktop; Steam library page and current offline banner are visible. This is a post-run restoration observation, not a new prelaunch freshness proof."
+  ],
+  "human_movie_signoff": false
+}

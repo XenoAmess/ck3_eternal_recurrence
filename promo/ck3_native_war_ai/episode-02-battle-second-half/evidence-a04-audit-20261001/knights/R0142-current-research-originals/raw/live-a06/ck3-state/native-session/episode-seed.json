@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "name": "xar_episode_seed.ck3",
+  "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\profile\\save games\\xar_episode_seed.ck3",
+  "size": 52881742,
+  "sha256": "42ec9d9a502ad6c7a1088b1305aa7b5a0730d6c79e5bf9f4dd66464d577cc87a",
+  "date_raw": 53146848,
+  "character_id": 29829,
+  "source_run_id": "native-29829-a892e2bcf200",
+  "source_checkpoint_name": "xar_checkpoint.ck3",
+  "immutable": true
+}

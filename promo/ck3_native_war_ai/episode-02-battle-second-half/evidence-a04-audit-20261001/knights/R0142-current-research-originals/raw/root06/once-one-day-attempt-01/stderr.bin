@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\scoped_ui_research_a08.py", line 474, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\scoped_ui_research_a08.py", line 471, in main
+    {'ui': original_ui, 'hover': knight_hover, 'fit': fit_combat_panel, 'save': save, 'advance': advance, 'monitor-begin': variable_monitor, 'monitor-finish': variable_monitor, 'finish': finish}[args.mode](args, config, bound)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\scoped_ui_research_a08.py", line 423, in advance
+    begun, bgr = steps.private_call(output, 'scoped-chain-begin', parameters, 120)
+                 ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\w\e2cap1001d\promo\ck3_native_war_ai\episode-02-battle-second-half\remaining_live_step.py", line 87, in private_call
+    require(row.get("result") == "CALL_COMPLETED" and
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            isinstance(row.get("body"), dict),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            f"private request returned RED: {receipt}")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\w\e2cap1001d\promo\ck3_native_war_ai\episode-02-battle-second-half\remaining_live_step.py", line 60, in require
+    raise ValueError(message)
+ValueError: private request returned RED: {'request': {'path': 'C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests\\scoped-chain-begin.json', 'bytes': 376, 'sha256': '687960BF18AFB112043762317342488C6C2826712B09A9B4160A5FD9DCC122FB'}, 'response': {'path': 'C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\scoped-chain-begin.json', 'bytes': 11532, 'sha256': '1A1AEFB51A76393FD22F970A0E3368D6ED52098DF85795D403FDFEE7F1175976'}, 'result': 'RED', 'error': "_NativeCommandRejectedError('native gameplay step failed: experimental trace needs a current materialized checkpoint and idle session')"}

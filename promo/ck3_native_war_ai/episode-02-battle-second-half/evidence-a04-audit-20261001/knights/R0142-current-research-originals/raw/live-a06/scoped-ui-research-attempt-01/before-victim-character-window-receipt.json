@@ -1,0 +1,28 @@
+{
+  "kind": "original WGC HWND frame",
+  "pid": 14700,
+  "creation_time": 1790851314.6089177,
+  "hwnd": 984144,
+  "title": "Crusader Kings III",
+  "rect": [
+    0,
+    0,
+    2560,
+    1440
+  ],
+  "frames": [
+    {
+      "at_utc": "2026-10-01T10:47:33.613036+00:00",
+      "width": 2560,
+      "height": 1440
+    }
+  ],
+  "image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-victim-character-window.png",
+    "bytes": 6157654,
+    "sha256": "FD6986F763FB6EC7B5B91CCA194442A73F2447F1552538AA896468539DC11C7C"
+  },
+  "mouse_inputs": 0,
+  "keyboard_inputs": 0,
+  "visual_review": "pending root original-pixel inspection"
+}

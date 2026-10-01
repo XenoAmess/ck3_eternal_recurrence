@@ -1,0 +1,26 @@
+{
+  "at_utc": "2026-10-01T11:09:55.291671+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "--mode",
+    "advance",
+    "--label",
+    "R0142-single-day"
+  ],
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+    "bytes": 34603,
+    "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+  },
+  "binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "bytes": 4492,
+    "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+  }
+}

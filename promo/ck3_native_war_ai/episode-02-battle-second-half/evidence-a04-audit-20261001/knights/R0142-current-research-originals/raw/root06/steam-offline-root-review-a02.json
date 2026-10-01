@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-10-01T10:37:08.376586+00:00",
+  "reviewer": "/root",
+  "current_offline_ui_observed": true,
+  "original_pixels_actually_reviewed": true,
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+    "bytes": 792585,
+    "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+  },
+  "reviewed_images": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\ck3-library-03.png",
+      "bytes": 793315,
+      "sha256": "71DDD8D51EFA39452249694B9F7EE9FBF7BB4264C4810B6F2E2BB9F4675B6859"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+      "bytes": 792585,
+      "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+    }
+  ],
+  "source_capture": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\receipt.json",
+    "bytes": 5041,
+    "sha256": "A69EF3F33AE406B384951C80F06CAADE1B07CAB6977B0226E862DE4B2B41C195"
+  },
+  "owner": {
+    "hwnd": 197612,
+    "pid": 7068,
+    "process_create_time": 1790777038.7610564
+  },
+  "screen_task_id": "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+  "freshness_basis": "Root_viewed_both_new_originals_same_HWND_CK3_selected_artwork_changed_to_BG3_both_show_current_offline_banner_and_bottom_offline_mode",
+  "same_window_semantic_change_actually_reviewed": true,
+  "steam_mode_changed": false,
+  "movie_signoff": false
+}

@@ -1,0 +1,23 @@
+{
+  "at_utc": "2026-10-01T11:43:00.620071+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display_mode_research.py",
+    "--mode",
+    "restore",
+    "--screen-task-id",
+    "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+    "--expected-sequence",
+    "3460",
+    "--alignment-receipt",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display-align-attempt-01\\readback.json",
+    "--output-dir",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display-restore-and-release-attempt-01\\display-restore"
+  ],
+  "returncode": 0,
+  "stdout": "{\"result\": \"DISPLAY_MODE_READBACK_VERIFIED\", \"receipt\": {\"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-06-hidden-modal-ui\\\\display-restore-and-release-attempt-01\\\\display-restore\\\\readback.json\", \"bytes\": 1196, \"sha256\": \"113C0FEC32FC2BF032EB09A718B64BE6A62AF2BD554D4B0BA6881420E1A9BBBF\"}}\n",
+  "stderr": ""
+}

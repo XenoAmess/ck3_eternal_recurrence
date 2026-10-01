@@ -1,0 +1,9 @@
+{
+  "action": "mcp",
+  "tool": "ck3_hover_combat_knights_v1",
+  "arguments": {
+    "combat_id": 16777218,
+    "ui_side": "left",
+    "expected_revision": 5
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "source_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "bytes": 4492,
+    "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+  },
+  "source_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests\\variable-monitor-begin-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\variable-monitor-begin-snapshot.json",
+      "bytes": 35005,
+      "sha256": "C1D4BB21AFB407CDB3BCE7827A337BB58658ABCAAA468AAC327D1F9051458DBE"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "source_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 4,
+    "native_revision": 3,
+    "snapshot_id": "native:3",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a892e2bcf200",
+    "connection_generation": 1,
+    "bridge_pid": 14700,
+    "native_hello_session_generation": 0
+  },
+  "request_parameters": {
+    "action": "private_phase_trace",
+    "step": "experimental-scoped-character-variable-monitor-begin-v1",
+    "expected_revision": 4,
+    "monitor_sequence_token": 458458016122669107,
+    "scoped_character_id": 33437,
+    "scoped_related_character_id": 34120
+  },
+  "no_gameplay_write": true
+}

@@ -1,0 +1,86 @@
+{
+  "at_utc": "2026-10-01T10:55:23.921027+00:00",
+  "phase": "before",
+  "bindings": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "bytes": 4492,
+    "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+  },
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+    "bytes": 34603,
+    "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+  },
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_active_battle_ui_stage_a09.py",
+    "bytes": 5606,
+    "sha256": "F58B20DFF22D0A32DB8DBAD825CA1B16A3E0C6545F335CBA6D07A03913E20F4A"
+  },
+  "retained_same_run_role_UI": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-victim-character-original-ui-binding.json",
+      "bytes": 390217,
+      "sha256": "B5EC8221BFFFE493C3E77711F4AA43C5F838D098791DFC29E6413D57F9FC734D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-killer-character-original-ui-binding.json",
+      "bytes": 390145,
+      "sha256": "963B97E4FD62833A4FA4451651F42227FF540FF940816A271A1EABDFA28A472D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\actual-army-combat-route-readonly.json",
+      "bytes": 97983,
+      "sha256": "1AE06DEB117A5F046E391B0D0DB9A8310B80BFF2692516C6DA29B8433C32AD7B"
+    }
+  ],
+  "operations": [
+    [
+      "combat",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "combat"
+      ]
+    ],
+    [
+      "combat-fit",
+      [
+        "--mode",
+        "fit"
+      ]
+    ],
+    [
+      "left-knights-tooltip",
+      [
+        "--mode",
+        "hover",
+        "--ui-side",
+        "left"
+      ]
+    ],
+    [
+      "right-knights-tooltip",
+      [
+        "--mode",
+        "hover",
+        "--ui-side",
+        "right"
+      ]
+    ],
+    [
+      "save",
+      [
+        "--mode",
+        "save"
+      ]
+    ]
+  ],
+  "stock_route": "Selecting this in-combat unit opens combat_window; an army_window frame is not a prerequisite for the six requested gaps",
+  "prior_failed_army_visibility_check_stays_preserved": true,
+  "army_selection_retried": false,
+  "eligible_military_list_entry_failure_preserved": true,
+  "roster_UI_scope": "Current combat left/right knight tooltips, independently joined to same-run native full-ID combat rosters",
+  "never_advances_a_day": true,
+  "human_movie_signoff": false
+}

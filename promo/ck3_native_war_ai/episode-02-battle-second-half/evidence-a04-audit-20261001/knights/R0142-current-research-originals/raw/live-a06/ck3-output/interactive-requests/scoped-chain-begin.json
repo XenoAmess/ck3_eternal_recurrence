@@ -1,0 +1,12 @@
+{
+  "action": "private_phase_trace",
+  "step": "experimental-combat-phase-event-trace-begin-v1",
+  "expected_revision": 6,
+  "combat_id": 16777218,
+  "managed_daily_sequence_token": 458458016122659653,
+  "checkpoint_sequence": 1,
+  "capture_runtime_scoped_chain": true,
+  "scoped_character_id": 33437,
+  "scoped_related_character_id": 34120,
+  "scoped_event_load_index": 11
+}

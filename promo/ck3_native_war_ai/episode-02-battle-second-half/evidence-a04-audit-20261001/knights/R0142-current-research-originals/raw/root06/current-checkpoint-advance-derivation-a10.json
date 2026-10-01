@@ -1,0 +1,16 @@
+{
+  "original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\advance_materialized_checkpoint_a09.py",
+    "bytes": 5185,
+    "sha256": "DBA38BF7B632C91003D4066F1014525FE601997D2B0DD60D5CB4B9A6EF6FD1E1"
+  },
+  "derived": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\advance_materialized_checkpoint_a10.py",
+    "bytes": 5344,
+    "sha256": "A28D9A868B58E4BC5D9A1A8E6577275656FC8226CB9CEB3F3A9BED2D54B164F4"
+  },
+  "actual_schema_fix": "Private request parameters are top-level, as preserved in the actual 376-byte request",
+  "actual_revision_rule": "Save increments provider revision; native revision/world/session/paused/date remain identical. Require current provider revision equals the original rejected BEGIN expected_revision.",
+  "prior_failed_advance_a09_before_any_submission": true,
+  "runtime_source_Dll_unchanged": true
+}

@@ -1,0 +1,7 @@
+{
+  "action": "mcp",
+  "tool": "ck3_save_checkpoint",
+  "arguments": {
+    "expected_revision": 9
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-01T10:47:26.733738+00:00",
+  "phase": "before",
+  "bindings": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "bytes": 4492,
+    "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+  },
+  "purpose": "UI-window comparison with main post-UI phase save",
+  "role": "extra pre-UI checkpoint",
+  "day_advance_requested": false
+}

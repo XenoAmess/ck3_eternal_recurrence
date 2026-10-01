@@ -1,0 +1,28 @@
+{
+  "kind": "original WGC HWND frame",
+  "pid": 14700,
+  "creation_time": 1790851314.6089177,
+  "hwnd": 984144,
+  "title": "Crusader Kings III",
+  "rect": [
+    0,
+    0,
+    2560,
+    1440
+  ],
+  "frames": [
+    {
+      "at_utc": "2026-10-01T11:25:26.696976+00:00",
+      "width": 2560,
+      "height": 1440
+    }
+  ],
+  "image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-fit-window.png",
+    "bytes": 6194708,
+    "sha256": "CF0FC289C37448BD58F5AE383F8485D38DE21BAD20D9124E67606F1B21BE7813"
+  },
+  "mouse_inputs": 0,
+  "keyboard_inputs": 0,
+  "visual_review": "pending root original-pixel inspection"
+}

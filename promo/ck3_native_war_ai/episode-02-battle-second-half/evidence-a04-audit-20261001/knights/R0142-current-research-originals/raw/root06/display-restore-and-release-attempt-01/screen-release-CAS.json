@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-10-01T11:43:01.317299+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+    "--expected-sequence",
+    "3460",
+    "--summary",
+    "native_research_capture_stopped_original_display_restored_assets_retained"
+  ],
+  "returncode": 0,
+  "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"git\": {\n      \"branch\": \"codex/war-e2-hidden-modal-capture-20261001\",\n      \"dirty_entries\": 0,\n      \"head\": \"4ad477ee33e15a93e412f711c7b05b216a2e6651\"\n    },\n    \"last_sequence\": 3461,\n    \"next_step\": \"\",\n    \"pid\": 8524,\n    \"repo\": \"C:\\\\w\\\\e2cap1001d\",\n    \"resources\": [],\n    \"schema\": \"codex.task_bus.v1\",\n    \"state\": \"done\",\n    \"summary\": \"native_research_capture_stopped_original_display_restored_assets_retained\",\n    \"task_id\": \"war-e2-six-gap-hidden-modal-screen-20261001-a05\",\n    \"updated_at_utc\": \"2026-10-01T11:43:01.248530+00:00\"\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 3461,\n    \"event_id\": \"76c43c95800641d6acb03574cbedd500\",\n    \"timestamp_utc\": \"2026-10-01T11:43:01.249715+00:00\",\n    \"kind\": \"completed\",\n    \"task_id\": \"war-e2-six-gap-hidden-modal-screen-20261001-a05\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"done\",\n    \"summary\": \"native_research_capture_stopped_original_display_restored_assets_retained\",\n    \"next_step\": \"\",\n    \"resources\": [],\n    \"repo\": \"C:\\\\w\\\\e2cap1001d\",\n    \"git\": {\n      \"branch\": \"codex/war-e2-hidden-modal-capture-20261001\",\n      \"dirty_entries\": 0,\n      \"head\": \"4ad477ee33e15a93e412f711c7b05b216a2e6651\"\n    }\n  }\n}\n",
+  "stderr": ""
+}

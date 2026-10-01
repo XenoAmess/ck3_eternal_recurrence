@@ -1,0 +1,21 @@
+{
+  "original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_required_ui_stage_a08.py",
+    "bytes": 5435,
+    "sha256": "31E0961CC312372BD92094BA4CA1C427D8741A224ABDC2C489BD6503360E05D4"
+  },
+  "derived": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_active_battle_ui_stage_a09.py",
+    "bytes": 5606,
+    "sha256": "F58B20DFF22D0A32DB8DBAD825CA1B16A3E0C6545F335CBA6D07A03913E20F4A"
+  },
+  "purpose": "Six requested gaps use active combat rosters; the unrelated eligible military list is not substituted for those rosters",
+  "changes": [
+    "Collect current combat window directly; do not retry failed eligible list action",
+    "Explicitly preserve prior failed optional checks and roster scope"
+  ],
+  "controller_bytes_changed": false,
+  "native_source_changed": false,
+  "no_day_advance_by_stage": true,
+  "human_movie_signoff": false
+}

@@ -1,0 +1,87 @@
+{
+  "action": "move",
+  "error": "ValueError('unknown file extension: .json')",
+  "failures": [
+    "action_or_readback_failed"
+  ],
+  "focus_after": {
+    "focus_hwnd": 984144,
+    "foreground_hwnd": 984144,
+    "foreground_pid": 14700,
+    "foreground_thread_id": 7144,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 984144,
+    "foreground_hwnd": 984144,
+    "foreground_pid": 14700,
+    "foreground_thread_id": 7144,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    563.0,
+    690.0
+  ],
+  "pointer_after": [
+    1126,
+    1380
+  ],
+  "pointer_before": [
+    1280,
+    720
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1280,
+    720
+  ],
+  "receipt_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-left-knights-mapped-move-receipt.json",
+  "reviewed_bounds": [
+    539.0,
+    682.0,
+    62,
+    18
+  ],
+  "screen_point": [
+    1126,
+    1380
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-left-knights-mapped-move-receipt.json.json",
+  "source_image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-left-hover-source-desktop-original.png",
+    "sha256": "E6EECB119EDF18806E78E911D31DD2375CC1442DD61546F7B249DBF0618591C3"
+  },
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "rejected-readback"
+}

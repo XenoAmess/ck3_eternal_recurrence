@@ -1,0 +1,24 @@
+[
+  {
+    "army_id": 18,
+    "owner_character_id": 29829,
+    "soldiers": null,
+    "current_province_id": 2633,
+    "move_target_province_id": 2638,
+    "move_target_observable": true,
+    "controllable": true,
+    "source": "native",
+    "route_province_ids": [
+      2639,
+      2643,
+      2638
+    ],
+    "in_combat": true,
+    "retreating": false,
+    "army_state": "combat",
+    "army_state_code": 2,
+    "siege_days_left": null,
+    "siege_province_holder_character_id": null,
+    "siege_province_in_player_subrealm": null
+  }
+]

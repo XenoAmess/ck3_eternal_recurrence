@@ -1,0 +1,187 @@
+{
+  "at_utc": "2026-10-01T10:29:37.490917+00:00",
+  "exact_helper_copies": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a08.py",
+        "bytes": 34603,
+        "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+        "bytes": 34603,
+        "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a07.py",
+        "bytes": 5060,
+        "sha256": "F1F78D3DDCD1B4D96CCDF1DAFC024C95C08B8C3D3CE02D3CE1B0708BB08263AB"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_paused_ui_stage_a07.py",
+        "bytes": 5060,
+        "sha256": "F1F78D3DDCD1B4D96CCDF1DAFC024C95C08B8C3D3CE02D3CE1B0708BB08263AB"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a06.py",
+        "bytes": 5029,
+        "sha256": "ED1E49026FB55DAE58D4669CB3C37B8ABEFFC46060DF49EC14E43A1E4DFCCD12"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preserve_paused_ui_checkpoint_a06.py",
+        "bytes": 5029,
+        "sha256": "ED1E49026FB55DAE58D4669CB3C37B8ABEFFC46060DF49EC14E43A1E4DFCCD12"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a08.py",
+        "bytes": 11728,
+        "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\prepare_runtime_binding_and_plan_a08.py",
+        "bytes": 11728,
+        "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\build_frozen_research_a03.py",
+        "bytes": 7646,
+        "sha256": "C585D7641B04F2ECE82F12FB04B4C152BE6A8DC8210049C790522AC9E23CE9E8"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\build_frozen_research_a03.py",
+        "bytes": 7646,
+        "sha256": "C585D7641B04F2ECE82F12FB04B4C152BE6A8DC8210049C790522AC9E23CE9E8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\freeze_capture_checkout_a02.py",
+        "bytes": 4520,
+        "sha256": "D4466F3333F05B790922543AF52F3EDA45E95956923028F4689A243B920019B1"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\freeze_capture_checkout_a02.py",
+        "bytes": 4520,
+        "sha256": "D4466F3333F05B790922543AF52F3EDA45E95956923028F4689A243B920019B1"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_new_capture.py",
+        "bytes": 11297,
+        "sha256": "F45FDD164BEEB522C4BE209173639286D05C95CE914F1A639BE70D6F442F7DFC"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\prepare_new_capture.py",
+        "bytes": 11297,
+        "sha256": "F45FDD164BEEB522C4BE209173639286D05C95CE914F1A639BE70D6F442F7DFC"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_new_capture_sdk.py",
+        "bytes": 4278,
+        "sha256": "892617AE3827664FE5305BC1CC2B7B3A8207DC3B18A419FB0D4E79B5180E4689"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_new_capture_sdk.py",
+        "bytes": 4278,
+        "sha256": "892617AE3827664FE5305BC1CC2B7B3A8207DC3B18A419FB0D4E79B5180E4689"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\display_mode_research.py",
+        "bytes": 6891,
+        "sha256": "A5648AEE0C7A497E283C5EE650D3F27B54303E21023955A3C02D1F1B58E920F8"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display_mode_research.py",
+        "bytes": 6891,
+        "sha256": "A5648AEE0C7A497E283C5EE650D3F27B54303E21023955A3C02D1F1B58E920F8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\capture_current_steam_offline.py",
+        "bytes": 6443,
+        "sha256": "3752BB3408644056AD4F47B592E9B017468001515068168890596436126FAA5B"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\capture_current_steam_offline.py",
+        "bytes": 6443,
+        "sha256": "3752BB3408644056AD4F47B592E9B017468001515068168890596436126FAA5B"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\write_actual_steam_review_a01.py",
+        "bytes": 1733,
+        "sha256": "79930498F736F4DD6F10392489ABCFA1ADC6B2103BE8F65153946770F58A6DB0"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\write_actual_steam_review_a01.py",
+        "bytes": 1733,
+        "sha256": "79930498F736F4DD6F10392489ABCFA1ADC6B2103BE8F65153946770F58A6DB0"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\restore_and_release_screen.py",
+        "bytes": 4077,
+        "sha256": "F4407C81874F519E10989AD7F141C1F4A9E2DF78E0E7405CBEA712C843606D32"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\restore_and_release_screen.py",
+        "bytes": 4077,
+        "sha256": "F4407C81874F519E10989AD7F141C1F4A9E2DF78E0E7405CBEA712C843606D32"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\read_current_attempt_status_a02.py",
+        "bytes": 2275,
+        "sha256": "E60BFCF455804640D838D78F62386638EE226EA4B8952EBA00837BB66DAE581B"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\read_current_attempt_status_a02.py",
+        "bytes": 2275,
+        "sha256": "E60BFCF455804640D838D78F62386638EE226EA4B8952EBA00837BB66DAE581B"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\reviewed-native-targets-a02.json",
+        "bytes": 1633,
+        "sha256": "D40FDC0A4C887FCB097D348CE3C4E2F8D171CCFC3237366DA25B4A8A28E1FF7C"
+      },
+      "current_exact_copy": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\reviewed-native-targets-a02.json",
+        "bytes": 1633,
+        "sha256": "D40FDC0A4C887FCB097D348CE3C4E2F8D171CCFC3237366DA25B4A8A28E1FF7C"
+      }
+    }
+  ],
+  "build_wrapper_original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_frozen_build_a05.cmd",
+    "bytes": 499,
+    "sha256": "4DE056A83AF270E0D9875DC260D1D1EABD1CC173B34F7640E248E583632C2977"
+  },
+  "build_wrapper_current": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_frozen_build_a06.cmd",
+    "bytes": 505,
+    "sha256": "AAE34400B7C549729CD41D6121F04F8509CF8B2FC1D183FC96D89F5AEB2F82DD"
+  },
+  "wrapper_only_change": "Current helper root path",
+  "old_run_evidence_imported": false,
+  "master_intake": false,
+  "video_changed": false
+}

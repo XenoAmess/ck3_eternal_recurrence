@@ -1,0 +1,4 @@
+  File "C:\Users\1\ck3-a04-mechanism-evidence-20261001\decode_R0142_four_endpoints_a01.py", line 139
+    return 0 if report['status'].startswith('PASS_')else2
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: expected 'else' after 'if' expression

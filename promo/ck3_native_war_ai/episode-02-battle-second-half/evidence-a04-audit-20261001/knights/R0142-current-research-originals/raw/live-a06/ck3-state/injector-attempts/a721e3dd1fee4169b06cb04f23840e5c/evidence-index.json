@@ -1,0 +1,27 @@
+{
+  "assets": {
+    "helper_error": {
+      "bytes": 20,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\injector-attempts\\a721e3dd1fee4169b06cb04f23840e5c\\helper-error.json",
+      "sha256": "7CAEEFE05C039F6C30BD0593D321171609C89CB15AC218F9E059154B1C8A035A"
+    },
+    "job_report": {
+      "bytes": 1652,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\injector-attempts\\a721e3dd1fee4169b06cb04f23840e5c\\job-report.json",
+      "sha256": "8A60FC976ECD7BE67C45DB36312468DAE043F0BCE2C2463BF545C277BD3B7618"
+    },
+    "stderr": {
+      "bytes": 0,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\injector-attempts\\a721e3dd1fee4169b06cb04f23840e5c\\stderr.bin",
+      "present": true,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "stdout": {
+      "bytes": 83,
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\injector-attempts\\a721e3dd1fee4169b06cb04f23840e5c\\stdout.bin",
+      "present": true,
+      "sha256": "A25639FF49C0FD2DC09D4C234C7A451491EF39064C3E5E9EACA9A41770201A7A"
+    }
+  },
+  "schema": "xar.ck3.injector-evidence.v1"
+}

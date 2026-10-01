@@ -1,0 +1,16 @@
+{
+  "original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preserve_actual_day_end_trace_red_a01.py",
+    "bytes": 1756,
+    "sha256": "43285C830AFCB866A8DD11D50DEBAB0983D94E242AFCF2D7A9DFB0D621AF39C4"
+  },
+  "derived": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preserve_actual_day_end_trace_red_a02.py",
+    "bytes": 1907,
+    "sha256": "86B7112E224C8E3EFF654608D3D0C63EF1ABB0058AE741424B0A614B31FCD980"
+  },
+  "actual_schema": "life-advance native-composite result publishes progress_status/start/end/elapsed/requested; no accepted field. All four actual postcondition values are required.",
+  "failed_a01_preserved_no_action_or_write": true,
+  "trace_export_stays_RED": true,
+  "game_day_retry": false
+}

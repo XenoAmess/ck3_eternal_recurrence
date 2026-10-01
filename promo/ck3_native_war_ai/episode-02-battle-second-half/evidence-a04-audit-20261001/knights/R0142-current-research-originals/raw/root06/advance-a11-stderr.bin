@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\advance_materialized_checkpoint_a11.py", line 46, in <module>
+    finished,tr=steps.private_call(output,'scoped-a11-chain-finish-once',{'action':'private_phase_trace',
+                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'step':'experimental-combat-phase-event-trace-finish-v1','expected_revision':ev['revision'],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'combat_id':config['combat_id'],'managed_daily_sequence_token':token},120)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\w\e2cap1001d\promo\ck3_native_war_ai\episode-02-battle-second-half\remaining_live_step.py", line 87, in private_call
+    require(row.get("result") == "CALL_COMPLETED" and
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            isinstance(row.get("body"), dict),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            f"private request returned RED: {receipt}")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\w\e2cap1001d\promo\ck3_native_war_ai\episode-02-battle-second-half\remaining_live_step.py", line 60, in require
+    raise ValueError(message)
+ValueError: private request returned RED: {'request': {'path': 'C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests\\scoped-a11-chain-finish-once.json', 'bytes': 204, 'sha256': '46815C6BA4E4C17B6FD850CD55220F325C935F778D14430179E1AE51238BF6C1'}, 'response': {'path': 'C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\scoped-a11-chain-finish-once.json', 'bytes': 11727, 'sha256': 'BA7A0DD9885E60D45DC5E8994294D42EF64DB4DD6BB8AB44BFEB0E8DB148F4CC'}, 'result': 'RED', 'error': "_NativeCommandRejectedError('native gameplay step failed: experimental trace managed DTO unavailable')"}

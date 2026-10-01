@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preserve_paused_ui_checkpoint_a06.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "--phase",
+    "after",
+    "--label",
+    "after-pre-ui-checkpoint"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\01-after-pre-ui-checkpoint-stdout.bin",
+    "bytes": 365,
+    "sha256": "F734D202D0FFC14C27245D24A5F0C7F93FD5F891CD79EE01DB0823A20625E1F4"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\01-after-pre-ui-checkpoint-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

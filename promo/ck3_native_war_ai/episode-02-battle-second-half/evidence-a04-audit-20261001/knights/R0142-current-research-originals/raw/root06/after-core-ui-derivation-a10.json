@@ -1,0 +1,16 @@
+{
+  "original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_active_battle_ui_stage_a09.py",
+    "bytes": 5606,
+    "sha256": "F58B20DFF22D0A32DB8DBAD825CA1B16A3E0C6545F335CBA6D07A03913E20F4A"
+  },
+  "derived": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_after_core_ui_a10.py",
+    "bytes": 5530,
+    "sha256": "A35636A48E78FE7B201699A34ACD4FFEC9F84DE675D7AA049FE3831C3D8E636F"
+  },
+  "only_source_change": "Collect after checkpoint, two\u89d2\u8272 pages, combat/fit; mouse fallback tooltips and main-after save are separate audited operations. No failed native hover is retried.",
+  "trace_export_stays_RED": true,
+  "no_day_advance": true,
+  "controller_runtime_source_unchanged": true
+}
