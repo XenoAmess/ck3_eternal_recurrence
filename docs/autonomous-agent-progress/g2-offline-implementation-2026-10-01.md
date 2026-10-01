@@ -947,3 +947,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 3精确源，3新leaf用例GREEN0.002s，当前实机44feature DTO兼容；当前rogue不计ordinary资格。正式shared消费/旧Robert兼容恢复/第二seed与自然继承实机待完成，Robert3153/36524不变。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m7-r11-gov-normalized-manifest.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 23:49:46 Connect natural event choices to material outcomes
+
+3精确源，event-only registry推荐→authored typed选项→压力或县恢复独立材料；新增route/health/recovery必要用例GREEN。无全域战争planner，未遇自然事件不计M2；旧失败与fixture/live边界保留。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m2-natural-live-next\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
