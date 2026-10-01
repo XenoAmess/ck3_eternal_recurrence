@@ -11,9 +11,9 @@ import sys
 import time
 from pathlib import Path, PurePosixPath
 
-DEFAULT_CK3_EXE = Path(
-    r"C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\ck3.exe"
-)
+from ck3_installation import configured_game_executable
+
+DEFAULT_CK3_EXE = configured_game_executable(Path(__file__).resolve().parents[1])
 if "XAR_CK3_EXE" not in os.environ and DEFAULT_CK3_EXE.is_file():
     os.environ["XAR_CK3_EXE"] = str(DEFAULT_CK3_EXE)
 

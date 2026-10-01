@@ -6,6 +6,7 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import build_tributary_expansion_directives_release as release
 import run_tributary_expansion_directives_acceptance as runner
@@ -51,7 +52,18 @@ class TributaryExpansionAcceptanceRunnerTests(unittest.TestCase):
     def test_bootstrap_projects_only_release_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             profile = Path(raw) / "profile"
-            result = runner.bootstrap_userdir(profile)
+            # The official CI runner has no installed CK3; declarations are
+            # external input, while projection and preset rendering run here.
+            with mock.patch.object(
+                runner.acceptance,
+                "declared_vanilla_rule_defaults",
+                return_value=[("difficulty", "normal_difficulty")],
+            ):
+                result = runner.bootstrap_userdir(profile)
+            presets = (profile / "player/game_rules/presets.txt").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("setting={ normal_difficulty }", presets)
             product = Path(result["targets"]["product"])
             actual = {
                 path.relative_to(product).as_posix()
