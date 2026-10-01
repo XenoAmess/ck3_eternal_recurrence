@@ -159,6 +159,29 @@ bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
   out += ",\"effect_if_optional_read\":";Bool(out,row.effect_if_optional_read);
   out += ",\"effect_if_optional_node_token\":";Token(out,row.effect_if_optional_node);
   out += ",\"effect_if_optional_identity\":";identity(row.effect_if_optional_identity);
+  if (row.node_vtable_rva == 0x44CF0F8 || row.scripted_effect_definition.read) {
+    const auto &definition = row.scripted_effect_definition;
+    if (definition.read &&
+        (row.node_vtable_rva != 0x44CF0F8 || row.node_original_execute_rva != 0x3381DB0 ||
+         definition.object == 0 || definition.vtable_rva != 0x44DCD38 ||
+         definition.key.size == 0 || definition.parameter_count_raw < 0 ||
+         definition.invocation_argument_count_raw < 0 ||
+         definition.default_root_selected_by_empty_arguments !=
+             (definition.invocation_argument_count_raw == 0) ||
+         (definition.default_root.node != 0 && !definition.default_root.read)))
+      return Reject(diagnostic,"scripted_definition_binding","scripted_effect_definition",0,0,out.size());
+    out += ",\"scripted_effect_definition\":{\"read\":";Bool(out,definition.read);
+    out += ",\"object_token\":";Token(out,definition.object);
+    out += ",\"vtable_rva\":";Number(out,definition.vtable_rva);
+    out += ",\"key\":";
+    if (!Key(out,definition.key,diagnostic,"scripted_effect_definition.key")) return false;
+    out += ",\"parameter_count_raw\":";Number(out,definition.parameter_count_raw);
+    out += ",\"invocation_argument_count_raw\":";Number(out,definition.invocation_argument_count_raw);
+    out += ",\"default_root\":";identity(definition.default_root);
+    out += ",\"default_root_selected_by_empty_arguments\":";
+    Bool(out,definition.default_root_selected_by_empty_arguments);
+    out += ",\"parameterized_active_cache_root_read\":false}";
+  }
   out += ",\"depth\":"; Number(out, row.depth);
   out += ",\"caller_return_token\":"; Token(out, row.caller_return_address);
   out += ",\"casualty_damage_raw\":"; Number(out, row.casualty_damage_raw);

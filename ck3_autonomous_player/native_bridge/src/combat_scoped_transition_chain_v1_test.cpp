@@ -124,6 +124,7 @@ Fixture *g_fixture = nullptr;
 std::string g_offline_fixture_json;
 std::string g_offline_trait_definition_fixture_json;
 std::string g_offline_effect_branch_fixture_json;
+std::string g_offline_scripted_definition_fixture_json;
 
 std::uintptr_t Queue(void *header, const void *command) {
   std::memcpy(g_fixture->queued_command.data(), command, 0x30);
@@ -334,7 +335,7 @@ bool OriginalEffectBranchLayoutCases() {
   Store(conditional,0,module+0x44D1E18);Store(conditional,0x38,std::uint32_t{100});
   Store(group,0,module+0x4478388);Store(group,0x38,std::uint32_t{101});
   Store(optional,0,module+0x44CF030);Store(optional,0x38,std::uint32_t{102});
-  Store(unknown,0,module+0x44CF0F8);Store(unknown,0x38,std::uint32_t{103});
+  Store(unknown,0,module+0x44D27B8);Store(unknown,0x38,std::uint32_t{103});
   std::array<std::uintptr_t,256> children{};children.fill(reinterpret_cast<std::uintptr_t>(optional.data()));
   Store(conditional,0x40,reinterpret_cast<std::uintptr_t>(children.data()));Store(conditional,0x4C,std::int32_t{2});
   Store(conditional,0x258,reinterpret_cast<std::uintptr_t>(optional.data()));
@@ -353,7 +354,7 @@ bool OriginalEffectBranchLayoutCases() {
   assert(!chain->records[2].effect_if_optional_identity.read);
   pair(group.data());assert(chain->records[3].effect_children_read&&chain->records[3].effect_child_count_raw==0);
   assert(!chain->records[3].effect_if_optional_read);
-  // Unknown scripted-wrapper type has unreadable uncommitted vtable storage;
+  // An unwhitelisted context type has unreadable uncommitted vtable storage;
   // neither children nor +258 is attempted or represented as a known null.
   pair(unknown.data());assert(!chain->records[5].effect_children_read&&!chain->records[5].effect_if_optional_read);
   assert(chain->failure_flags==0);
@@ -382,6 +383,115 @@ bool OriginalEffectBranchLayoutCases() {
   assert(std::string(diagnostic.field)=="effect_child_identity_count");
   assert(VirtualFree(space,0,MEM_RELEASE));
   std::cout<<"exact3-type original child vector / CIf+258 pointer identity enter-return / unknown-not-null / 256bound / negative257-null-badidentity-SEH-wrongcallee failures retained PASS; OFFLINE_NOT_GAME_TRUTH\n";
+  return true;
+}
+
+bool ScriptedEffectDefinitionLayoutCases() {
+  auto fixture = std::make_unique<Fixture>();
+  auto *space = static_cast<std::byte *>(VirtualAlloc(nullptr, 0x6000000, MEM_RESERVE, PAGE_NOACCESS));
+  assert(space != nullptr);
+  for (const auto page : {0x44CF000U, 0x44DC000U})
+    assert(VirtualAlloc(space + page, 4096, MEM_COMMIT, PAGE_READWRITE));
+  const auto module = reinterpret_cast<std::uintptr_t>(space);
+  fixture->plan.module_base = module;
+  Store(space + 0x44CF0F8, 0xB0, module + 0x3381DB0);
+  Store(space + 0x44CF030, 0xB0, module + 0x3380EC0);
+  std::array<std::byte, 0xA0> wrapper{};
+  std::array<std::byte, 0x140> definition{}, other_definition{};
+  std::array<std::byte, 0x80> root{};
+  std::array<char, 128> heap_name{};
+  const char *const stock_name = "knight_increase_prowess_chance_effect";
+  auto reset = [&] {
+    wrapper.fill(std::byte{}); definition.fill(std::byte{}); root.fill(std::byte{});
+    Store(wrapper, 0, module + 0x44CF0F8); Store(wrapper, 0x38, std::uint32_t{104});
+    Store(wrapper, 0x60, reinterpret_cast<std::uintptr_t>(definition.data()));
+    Store(definition, 0, module + 0x44DCD38);
+    Key(definition.data() + 0x18, "growth_empty");
+    Store(definition, 0x120, reinterpret_cast<std::uintptr_t>(root.data()));
+    Store(root, 0, module + 0x44CF030); Store(root, 0x38, std::uint32_t{105});
+  };
+  auto chain = std::make_unique<CombatScopedChainV1>();
+  const auto database = reinterpret_cast<std::uintptr_t>(fixture->trait_database.data());
+  auto arm = [&] {
+    chain = std::make_unique<CombatScopedChainV1>();
+    assert(ArmCombatScopedChainV1(*chain, fixture->plan, 101, 201, 11, database));
+  };
+  auto pair = [&] {
+    const auto invocation = EnterCombatScopedEffectV1(wrapper.data(), 0, 11, 1);
+    assert(invocation != 0);
+    ReturnCombatScopedEffectV1(invocation, wrapper.data(), 0, 11, 1);
+  };
+  reset(); arm(); pair();
+  const auto &sso = chain->records[1].scripted_effect_definition;
+  assert(sso.read && sso.object == reinterpret_cast<std::uintptr_t>(definition.data()));
+  assert(sso.vtable_rva == 0x44DCD38 && sso.key.size == 12);
+  assert(std::string(sso.key.bytes.data(), sso.key.size) == "growth_empty");
+  assert(sso.default_root.read && sso.default_root.hash == 105 && sso.default_root.original_execute_rva == 0x3380EC0);
+  assert(sso.default_root_selected_by_empty_arguments && sso == chain->records[2].scripted_effect_definition);
+  std::strcpy(heap_name.data(), stock_name);
+  Store(definition, 0x18, reinterpret_cast<std::uintptr_t>(heap_name.data()));
+  Store(definition, 0x28, static_cast<std::uint64_t>(std::strlen(stock_name)));
+  Store(definition, 0x30, std::uint64_t{127});
+  pair();
+  assert(chain->records[3].scripted_effect_definition.read);
+  assert(std::string(chain->records[3].scripted_effect_definition.key.bytes.data(),
+                     chain->records[3].scripted_effect_definition.key.size) == stock_name);
+  Store(wrapper, 0x94, std::int32_t{2}); Store(definition, 0xE4, std::int32_t{2});
+  pair(); assert(!chain->records[5].scripted_effect_definition.default_root_selected_by_empty_arguments);
+  Store(definition, 0x120, std::uintptr_t{0}); pair();
+  assert(chain->records[7].scripted_effect_definition.read &&
+         !chain->records[7].scripted_effect_definition.default_root.read &&
+         chain->records[7].scripted_effect_definition.default_root.node == 0);
+  assert(chain->failure_flags == 0);
+  g_offline_scripted_definition_fixture_json = SerializeCombatScopedChainV1(*chain);
+  assert(!g_offline_scripted_definition_fixture_json.empty());
+  assert(g_offline_scripted_definition_fixture_json.find(stock_name) != std::string::npos);
+  assert(g_offline_scripted_definition_fixture_json.find("\"parameterized_active_cache_root_read\":false") != std::string::npos);
+  auto malformed = std::make_unique<CombatScopedChainV1>();
+  malformed->count = 1; malformed->records[0] = chain->records[1];
+  malformed->records[0].scripted_effect_definition.key.size = 128;
+  CombatScopedWireDiagnosticV1 diagnostic{};
+  assert(SerializeCombatScopedChainV1(*malformed, &diagnostic).empty());
+  assert(std::string(diagnostic.field) == "scripted_effect_definition.key");
+  malformed->records[0] = chain->records[1];
+  malformed->records[0].scripted_effect_definition.default_root_selected_by_empty_arguments = false;
+  assert(SerializeCombatScopedChainV1(*malformed, &diagnostic).empty());
+  assert(std::string(diagnostic.field) == "scripted_effect_definition");
+  CancelCombatScopedChainV1(*chain);
+  auto bad = [&](std::uint32_t flag) {
+    arm(); pair();
+    assert(!chain->records[1].scripted_effect_definition.read);
+    assert((chain->failure_flags & flag) != 0);
+    CancelCombatScopedChainV1(*chain);
+  };
+  reset(); Store(wrapper, 0x60, std::uintptr_t{0}); bad(scoped_chain_failure_binding);
+  reset(); Store(definition, 0, module + 0x44DCD58); bad(scoped_chain_failure_binding);
+  reset(); Store(space + 0x44CF0F8, 0xB0, module + 0x3380EC0); bad(scoped_chain_failure_binding);
+  Store(space + 0x44CF0F8, 0xB0, module + 0x3381DB0);
+  reset(); Store(wrapper, 0x94, std::int32_t{-1}); bad(scoped_chain_failure_container);
+  reset(); Store(definition, 0xE4, std::int32_t{-1}); bad(scoped_chain_failure_container);
+  reset(); Store(definition, 0x28, std::uint64_t{0}); bad(scoped_chain_failure_container);
+  reset(); Store(definition, 0x28, std::uint64_t{128}); bad(scoped_chain_failure_container);
+  reset(); Store(definition, 0x30, std::uint64_t{14}); bad(scoped_chain_failure_container);
+  reset(); Store(definition, 0x18, std::uintptr_t{0}); Store(definition, 0x30, std::uint64_t{31});
+  bad(scoped_chain_failure_container);
+  reset(); Store(definition, 0x24, char{'x'}); bad(scoped_chain_failure_container);
+  for (const auto byte : {' ', '"', '\\'}) {
+    reset(); Store(definition, 0x18, byte); bad(scoped_chain_failure_container);
+  }
+  reset(); Store(root, 0, std::uintptr_t{1}); bad(scoped_chain_failure_binding);
+  reset(); Store(space + 0x44CF030, 0xB0, std::uintptr_t{1}); bad(scoped_chain_failure_binding);
+  Store(space + 0x44CF030, 0xB0, module + 0x3380EC0);
+  reset(); Store(wrapper, 0x60, module + 0x5000000); bad(scoped_chain_failure_memory);
+  reset(); Store(definition, 0x120, module + 0x5000000); bad(scoped_chain_failure_memory);
+  reset(); arm();
+  const auto invocation = EnterCombatScopedEffectV1(wrapper.data(), 0, 11, 1); assert(invocation != 0);
+  other_definition = definition;
+  Store(wrapper, 0x60, reinterpret_cast<std::uintptr_t>(other_definition.data()));
+  ReturnCombatScopedEffectV1(invocation, wrapper.data(), 0, 11, 1);
+  assert(chain->records[1].scripted_effect_definition.object != chain->records[2].scripted_effect_definition.object);
+  CancelCombatScopedChainV1(*chain);
+  assert(VirtualFree(space, 0, MEM_RELEASE));
   return true;
 }
 
@@ -620,12 +730,14 @@ int main(int argc, char **argv) {
   assert(SerializationFailureDiagnostics());
   assert(LoadedTraitTrackDefinitionCases());
   assert(OriginalEffectBranchLayoutCases());
+  assert(ScriptedEffectDefinitionLayoutCases());
   assert(RelocationAndRollbackCase());
   if (argc == 2 && std::string(argv[1]) == "--emit-offline-fixture") {
     std::cout << "{\"kind\":\"OFFLINE_FIXTURE_NOT_NATIVE_GAME_TRUTH\",\"scoped_transition_chain\":"
               << g_offline_fixture_json << ",\"selector_list_fixture\":"<<g_offline_selector_fixture_json
               << ",\"trait_track_definition_fixture\":"<<g_offline_trait_definition_fixture_json
-              << ",\"effect_branch_layout_fixture\":"<<g_offline_effect_branch_fixture_json<<"}\n";
+              << ",\"effect_branch_layout_fixture\":"<<g_offline_effect_branch_fixture_json
+              << ",\"scripted_definition_layout_fixture\":"<<g_offline_scripted_definition_fixture_json<<"}\n";
   } else {
     assert(argc == 1);
     std::cout << "scoped journal / no-draw effect / queue RAX / death detach / traits / prestige / full-ID / +24 / RIP relocation / six ABI arguments / CMP flags / four-hook rollback PASS\n";

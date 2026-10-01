@@ -20,6 +20,7 @@ using QueueOriginal = std::uintptr_t (*)(void *, const void *);
 using CasualtyOriginal = std::uintptr_t (*)(void *, std::int64_t, void *);
 std::atomic<DeathOriginal> g_death_request{nullptr};
 std::atomic<DeathOriginal> g_death_commit{nullptr};
+std::atomic<CombatScopedOriginalDeathCommitObserverV1> g_direct_commit_observer{nullptr};
 std::atomic<QueueOriginal> g_death_enqueue{nullptr};
 std::atomic<CasualtyOriginal> g_casualty{nullptr};
 std::atomic<CombatScopedMaterializerOriginalV1> g_materializer{nullptr};
@@ -155,6 +156,59 @@ void ReadEffectBranchLayout(CombatScopedChainV1 &chain,CombatScopedChainRecordV1
     }
     row.effect_if_optional_read=true;
   }
+}
+
+void ReadScriptedEffectDefinitionLayout(CombatScopedChainV1 &chain,
+                                       CombatScopedChainRecordV1 &row) noexcept {
+  if (row.node_vtable_rva != 0x44CF0F8) return;
+  CombatScopedEffectIdentityV1 wrapper{};
+  if (!ReadEffectIdentity(chain, row.node_identity, wrapper) ||
+      wrapper.original_execute_rva != 0x3381DB0) {
+    Failure(chain, row, scoped_chain_failure_binding); return;
+  }
+  // Exact CJominiScriptedEffectTemplate primary RTTI / constructor 3407345.
+  // 337F5C2 stores this actual template pointer at wrapper+60. Name+18 is
+  // independently read by original 3381C91/3381CA0 and constructed at3407305.
+  // These reads never call the original validator, dispatcher, or cache getter.
+  auto sample = [&]() {
+    CombatScopedScriptedDefinitionV1 value{};
+    value.object = Read<std::uintptr_t>(row.node_identity, 0x60);
+    if (value.object == 0) {
+      Failure(chain, row, scoped_chain_failure_binding); return value;
+    }
+    const auto base = chain.plan->module_base;
+    const auto vtable = Read<std::uintptr_t>(value.object);
+    if (vtable != base + 0x44DCD38) {
+      Failure(chain, row, scoped_chain_failure_binding); return value;
+    }
+    value.vtable_rva = 0x44DCD38;
+    if (!ReadStableKey(value.object + 0x18, value.key)) {
+      Failure(chain, row, scoped_chain_failure_container); return value;
+    }
+    value.parameter_count_raw = Read<std::int32_t>(value.object, 0xE4);
+    value.invocation_argument_count_raw = Read<std::int32_t>(row.node_identity, 0x94);
+    if (value.parameter_count_raw < 0 || value.invocation_argument_count_raw < 0) {
+      Failure(chain, row, scoped_chain_failure_container); return value;
+    }
+    value.default_root.node = Read<std::uintptr_t>(value.object, 0x120);
+    if (value.default_root.node != 0 &&
+        !ReadEffectIdentity(chain, value.default_root.node, value.default_root)) {
+      Failure(chain, row, scoped_chain_failure_binding); return value;
+    }
+    value.default_root_selected_by_empty_arguments = value.invocation_argument_count_raw == 0;
+    value.read = true;
+    return value;
+  };
+  const auto first = sample();
+  if (!first.read) { row.scripted_effect_definition = first; return; }
+  const auto second = sample();
+  if (!second.read || !(first == second)) {
+    row.scripted_effect_definition = first;
+    row.scripted_effect_definition.read = false;
+    Failure(chain, row, scoped_chain_failure_correlation); return;
+  }
+  row.node_original_execute_rva = wrapper.original_execute_rva;
+  row.scripted_effect_definition = first;
 }
 
 bool ReadCharacter(CombatScopedChainV1 &chain, std::size_t index,
@@ -397,7 +451,10 @@ CombatScopedChainRecordV1 *Capture(
         record.node_hash = Read<std::uint32_t>(record.node_identity, 0x38);
         if(boundary==CombatScopedChainBoundaryV1::effect_enter ||
            boundary==CombatScopedChainBoundaryV1::effect_return)
-          ReadEffectBranchLayout(*chain,record);
+          {
+            ReadEffectBranchLayout(*chain,record);
+            ReadScriptedEffectDefinitionLayout(*chain,record);
+          }
       }
       (void)ReadCharacter(*chain, 0, record);
       (void)ReadCharacter(*chain, 1, record);
@@ -490,6 +547,15 @@ void DeathCommitContext(CombatScopedChainV1 &chain, CombatScopedChainRecordV1 *r
 
 } // namespace
 
+bool BindCombatScopedOriginalDeathCommitObserverV1(CombatScopedOriginalDeathCommitObserverV1 observer) noexcept {
+  if(observer==nullptr)return false;
+  const auto existing=g_direct_commit_observer.load(std::memory_order_acquire);
+  if(existing!=nullptr && existing!=observer)return false;
+  // Original wrappers may already be decoded. Keep this module-pinned publication callable after drain.
+  g_direct_commit_observer.store(observer,std::memory_order_release);
+  return true;
+}
+
 extern "C" void __fastcall ScopedDeathRequestImpl(
     void *manager, void *victim, void *reason, void *date, void *killer, void *artifact) noexcept {
   const auto original = g_death_request.load(std::memory_order_acquire);
@@ -531,6 +597,8 @@ extern "C" void __fastcall ScopedDeathCommitImpl(
                         invocation, g_death_request_invocation);
     DeathArguments(row, victim, reason, date, killer,nullptr,artifact);
     DeathCommitContext(*chain,row,manager,victim,reason,date,killer,artifact);
+    if(const auto observer=g_direct_commit_observer.load(std::memory_order_acquire))
+      observer(true,manager,victim,reason,date,killer,artifact);
   }
   __try {
     original(manager, victim, reason, date, killer, artifact);
@@ -538,6 +606,8 @@ extern "C" void __fastcall ScopedDeathCommitImpl(
       auto *row = Capture(CombatScopedChainBoundaryV1::death_commit_return,
                            invocation, g_death_request_invocation, -1, -1, nullptr, 0, true);
       DeathArguments(row, victim, reason, date, killer,nullptr,artifact);
+      if(const auto observer=g_direct_commit_observer.load(std::memory_order_acquire))
+        observer(false,manager,victim,reason,date,killer,artifact);
     }
   } __finally {g_death_commit_context=previous;}
 }

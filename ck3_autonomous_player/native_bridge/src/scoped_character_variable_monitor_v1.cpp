@@ -145,6 +145,86 @@ bool ResolveSignatureKey(ScopedCharacterVariableMonitorV1 &session, std::uintptr
   session.identifier_epoch = epoch;
   return true;
 }
+bool NamedExtent(std::uintptr_t pointer,std::uintptr_t size) noexcept {
+  return pointer!=0 && size<=std::numeric_limits<std::uintptr_t>::max()-pointer;
+}
+bool NamedRows(std::uintptr_t data,std::int32_t count,std::uintptr_t stride) noexcept {
+  if(count<0 || count>65536)return false;
+  return count==0 || NamedExtent(data,static_cast<std::uintptr_t>(count)*stride);
+}
+bool ResolveDeadCharacterKey(ScopedCharacterVariableMonitorV1 &session) noexcept {
+  const auto table=session.identifier_table;
+  if(!NamedExtent(table,0x40))return false;
+  const auto data=Read<std::uintptr_t>(table,0x30);
+  const auto count=Read<std::int32_t>(table,0x3C);
+  const auto epoch=Read<std::uint8_t>(table);
+  if(!NamedExtent(table,0x40) || !data || count<=0 || count>1048576 ||
+      !NamedExtent(data,static_cast<std::uintptr_t>(count)*0x20) || epoch!=session.identifier_epoch ||
+      static_cast<std::uint32_t>(count)!=session.identifier_count)return false;
+  std::int32_t found=-1;
+  for(std::int32_t i=0;i<count;++i)if(KeyEquals(data+i*0x20ULL,"dead_character",14)){
+    if(found!=-1)return false;
+    found=static_cast<std::int32_t>((static_cast<std::uint32_t>(epoch)<<24)|static_cast<std::uint32_t>(i));
+  }
+  if(found<0 || Read<std::uintptr_t>(table,0x30)!=data || Read<std::int32_t>(table,0x3C)!=count ||
+      Read<std::uint8_t>(table)!=epoch)return false;
+  session.dead_character_key_id=found;return true;
+}
+bool ReadNamedDeadCharacterOnce(const ScopedCharacterVariableMonitorV1 &s,std::uintptr_t context,
+    ScopedNotificationNamedDeadCharacterV1 &out) noexcept {
+  out.execution_context=context;out.key_id=s.dead_character_key_id;
+  if(!NamedExtent(context,0x20) || out.key_id<0 || !NamedExtent(s.identifier_table,0x40))return false;
+  const auto names=Read<std::uintptr_t>(s.identifier_table,0x30);
+  const auto count=Read<std::int32_t>(s.identifier_table,0x3C);
+  const auto epoch=Read<std::uint8_t>(s.identifier_table);
+  const auto index=static_cast<std::uint32_t>(out.key_id)&0xFFFFFF;
+  if(!names || count<=0 || count>1048576 || !NamedExtent(names,static_cast<std::uintptr_t>(count)*0x20) ||
+      static_cast<std::uint32_t>(count)!=s.identifier_count || epoch!=s.identifier_epoch ||
+      index>=static_cast<std::uint32_t>(count) || !KeyEquals(names+index*0x20ULL,"dead_character",14))return false;
+  out.store=Read<std::uintptr_t>(context,0x18);if(!NamedExtent(out.store,0x10))return false;
+  out.primary_data=Read<std::uintptr_t>(out.store);out.primary_count=Read<std::int32_t>(out.store,0xC);
+  if(!NamedRows(out.primary_data,out.primary_count,0x20))return false;
+  for(std::int32_t i=0;i<out.primary_count;++i){const auto row=out.primary_data+i*0x20ULL;
+    if(Read<std::int32_t>(row)!=out.key_id)continue;
+    out.present=true;out.source_level=1;out.found_row=row;out.found_index=i;
+    out.scope_words={Read<std::uint64_t>(row,8),Read<std::uint64_t>(row,0x10)};out.scope_words_read=true;break;
+  }
+  // Original3359690 consults the parent only after no primary key match, even when the primary value is kind0.
+  if(!out.present){
+    if(!NamedExtent(out.store,0x3D8))return false;
+    out.fallback_pointer_read=true;out.fallback_parent=Read<std::uintptr_t>(out.store,0x3D0);
+    if(out.fallback_parent){
+      if(!NamedExtent(out.fallback_parent,0x28))return false;
+      out.fallback_header_read=true;out.fallback_data=Read<std::uintptr_t>(out.fallback_parent,0x18);
+      out.fallback_count=Read<std::int32_t>(out.fallback_parent,0x24);
+      if(!NamedRows(out.fallback_data,out.fallback_count,0x18))return false;
+      for(std::int32_t i=0;i<out.fallback_count;++i){const auto row=out.fallback_data+i*0x18ULL;
+        if(Read<std::int32_t>(row)!=out.key_id)continue;
+        out.present=true;out.source_level=2;out.found_row=row;out.found_index=i;
+        out.scope_words={Read<std::uint64_t>(row,8),Read<std::uint64_t>(row,0x10)};out.scope_words_read=true;break;
+      }
+    }
+  }
+  // Missing original lookup writes kind0 and payload0, not the complete word0 padding.
+  if(out.present){out.kind=Read<std::uint16_t>(out.found_row,8);out.subtype=Read<std::uint16_t>(out.found_row,0xA);
+    out.payload=Read<std::int64_t>(out.found_row,0x10);out.payload_raw64=Read<std::uint64_t>(out.found_row,0x10);
+    // Exact original201AD3C reads the dword payload; preserve the full copied16B independently.
+    if(out.kind==4){
+      out.character_full_id_low32_read=true;out.character_full_id_raw32=Read<std::uint32_t>(out.found_row,0x10);
+      out.character_id=static_cast<std::int32_t>(out.character_full_id_raw32);
+    }
+    if(out.kind==4 && out.character_id>0){
+      out.resolved_character=ResolveCharacter(s.bindings,out.character_id);
+      if(out.resolved_character){if(!NamedExtent(out.resolved_character,0x1C))return false;
+        out.character_identity_read=true;out.observed_character_id=Read<std::int32_t>(out.resolved_character,0x18);
+        out.character_full_identity_matches=out.observed_character_id==out.character_id;
+        out.matches_monitored_victim=out.character_full_identity_matches && out.character_id==s.character_ids[0] &&
+          out.resolved_character==s.character_objects[0];}
+    }
+  }
+  return Read<std::uintptr_t>(s.identifier_table,0x30)==names && Read<std::int32_t>(s.identifier_table,0x3C)==count &&
+      Read<std::uint8_t>(s.identifier_table)==epoch;
+}
 bool ReadSignature(const ScopedCharacterVariableMonitorV1 &session, std::uintptr_t container,
                    ScopedVariableValueV1 &value) noexcept {
   const auto rows = Read<std::uintptr_t>(container, 8);
@@ -193,7 +273,10 @@ void ReadRecordState(ScopedCharacterVariableMonitorV1 &session,
         boundary==ScopedVariableMonitorBoundaryV1::original_owner_return) &&
       character>0 && g_event_producer.read) {
     if (EventIdentityStable(session,g_event_producer)) {row.event_producer=g_event_producer;
-      row.event_producer.active_effect_group_depth=g_event_root_depth;}
+      row.event_producer.active_effect_group_depth=g_event_root_depth;
+      if(boundary!=ScopedVariableMonitorBoundaryV1::original_owner_return &&
+          !ReadScopedNotificationNamedDeadCharacterV1(session,row.event_producer.context,
+            row.event_producer.named_dead_character_at_observation))Fail(session,&row,scoped_chain_failure_container);}
     else Fail(session,&row,scoped_chain_failure_identity);
   }
   (void)ReadCurrentCombatScopedEffectContextV1(row.daily_effect_context);
@@ -355,7 +438,8 @@ bool StartUnsafe(ScopedCharacterVariableMonitorV1 &session, const Bindings &bind
   if(session.date_object==0)return false;
   session.begin_date=Read<std::int32_t>(session.date_object,8);
   if(session.begin_date<=0 || session.begin_date>std::numeric_limits<std::int32_t>::max()-24 ||
-      !ResolveSignatureKey(session,table_override!=0?table_override:module+0x585F240)) return false;
+      !ResolveSignatureKey(session,table_override!=0?table_override:module+0x585F240) ||
+      !ResolveDeadCharacterKey(session)) return false;
   if ((table_override==0 || event_override!=0) &&
       !ResolveEventProducers(session,event_override!=0?event_override:module+0x570F790)) return false;
   if (table_override==0) {
@@ -374,11 +458,82 @@ bool StartUnsafe(ScopedCharacterVariableMonitorV1 &session, const Bindings &bind
         (g_event_root.store(reinterpret_cast<ScopedEventImmediateRootOriginalV1>(session.detours[4].trampoline)),true);
     if(!okay){Fail(session,nullptr,scoped_chain_failure_detour);(void)Uninstall(session);return false;}
   } else if(g_owner.load()==nullptr||g_setter.load()==nullptr||g_effect.load()==nullptr||g_house.load()==nullptr) return false;
+  if(!BindCombatScopedOriginalDeathCommitObserverV1(&ObserveScopedVariableMonitorOriginalDeathCommitV1)){
+    Fail(session,nullptr,scoped_chain_failure_detour);(void)Uninstall(session);return false;
+  }
   g_setter_context={};g_event_producer={}; session.armed.store(1);g_monitor.store(&session);session.stage=ScopedVariableMonitorStageV1::armed;
   (void)Record(session,ScopedVariableMonitorBoundaryV1::arm);
   return session.failure_flags.load()==0;
 }
 } // namespace
+
+bool ReadScopedNotificationNamedDeadCharacterV1(const ScopedCharacterVariableMonitorV1 &session,
+    std::uintptr_t context,ScopedNotificationNamedDeadCharacterV1 &out) noexcept {
+  out={};
+  __try {
+    ScopedNotificationNamedDeadCharacterV1 first{},second{};
+    const bool first_read=ReadNamedDeadCharacterOnce(session,context,first);out=first;
+    if(!first_read || !ReadNamedDeadCharacterOnce(session,context,second) || first!=second)return false;
+    out.read=true;out.stable_two_reads=true;return true;
+  } __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+}
+
+void ObserveScopedVariableMonitorOriginalDeathCommitV1(bool entering, void *manager,
+    void *victim, void *reason, void *date, void *killer, void *artifact) noexcept {
+  auto *const session=g_monitor.load(std::memory_order_acquire);
+  if(session==nullptr)return;
+  session->active_callbacks.fetch_add(1);
+  __try {
+    if(session->armed.load(std::memory_order_acquire)==0)return;
+    CombatScopedDeathCommitContextV1 active{};
+    const bool active_read=ReadCurrentCombatScopedDeathCommitContextV1(active);
+    auto *row=Record(*session,entering?ScopedVariableMonitorBoundaryV1::original_death_commit_enter:
+        ScopedVariableMonitorBoundaryV1::original_death_commit_return,
+        active_read?active.victim_id:-1,active.invocation);
+    if(row==nullptr)return;
+    auto &sample=row->original_death_commit_context;
+    sample=active;sample.read=false;
+    // Every argument token below comes from this original call's six parameters.
+    sample.manager=reinterpret_cast<std::uintptr_t>(manager);
+    sample.victim=reinterpret_cast<std::uintptr_t>(victim);
+    sample.reason=reinterpret_cast<std::uintptr_t>(reason);
+    sample.date_argument=reinterpret_cast<std::uintptr_t>(date);
+    sample.killer=reinterpret_cast<std::uintptr_t>(killer);
+    sample.artifact=reinterpret_cast<std::uintptr_t>(artifact);
+    sample.artifact_actual_null=artifact==nullptr;
+    sample.artifact_id_read=false;sample.artifact_id=-1;
+    sample.reason_key_read=false;sample.reason_key={};
+    __try {
+      if(victim==nullptr || date==nullptr || manager==nullptr){Fail(*session,row,scoped_chain_failure_container);return;}
+      sample.victim_id=Read<std::int32_t>(sample.victim,0x18);
+      sample.killer_id=killer!=nullptr?Read<std::int32_t>(sample.killer,0x18):-1;
+      sample.requested_death_date_raw=Read<std::int64_t>(sample.date_argument);
+      if(reason!=nullptr)sample.reason_key_read=ReadStableKey(sample.reason+0x18,sample.reason_key);
+      if(artifact!=nullptr){sample.artifact_id=Read<std::int32_t>(sample.artifact,0x10);sample.artifact_id_read=true;}
+      sample.victim_full_identity_matches=false;sample.killer_full_identity_matches=killer==nullptr;
+      for(std::size_t i=0;i<session->character_ids.size();++i){
+        const auto object=ResolveCharacter(session->bindings,session->character_ids[i]);
+        if(object!=0 && object==session->character_objects[i]){
+          if(sample.victim_id==session->character_ids[i] && sample.victim==object)sample.victim_full_identity_matches=true;
+          if(sample.killer_id==session->character_ids[i] && sample.killer==object)sample.killer_full_identity_matches=true;
+        }
+      }
+      if(!active_read || active.managed_daily_sequence_token==0 || active.invocation==0 || active.combat_id<=0 ||
+         active.thread_id!=row->thread_id || active.native_date_raw!=row->date_raw ||
+         !sample.victim_full_identity_matches || !sample.killer_full_identity_matches ||
+         sample.manager!=active.manager || sample.victim!=active.victim || sample.reason!=active.reason ||
+         sample.date_argument!=active.date_argument || sample.killer!=active.killer || sample.artifact!=active.artifact ||
+         sample.victim_id!=active.victim_id || sample.killer_id!=active.killer_id ||
+         sample.requested_death_date_raw!=active.requested_death_date_raw ||
+         sample.artifact_actual_null!=active.artifact_actual_null || sample.artifact_id_read!=active.artifact_id_read ||
+         sample.artifact_id!=active.artifact_id || sample.reason_key_read!=active.reason_key_read || sample.reason_key!=active.reason_key){
+        Fail(*session,row,scoped_chain_failure_identity);return;
+      }
+      if(reason!=nullptr && !sample.reason_key_read){Fail(*session,row,scoped_chain_failure_container);return;}
+      sample.read=true;
+    } __except(EXCEPTION_EXECUTE_HANDLER){Fail(*session,row,scoped_chain_failure_memory);}
+  } __finally {session->active_callbacks.fetch_sub(1);}
+}
 
 extern "C" void *__fastcall ObservedCharacterVariableOwnerV1Impl(const void *scope,
     std::uintptr_t caller) noexcept {
@@ -522,6 +677,8 @@ extern "C" void __fastcall ObservedScopedEventImmediateRootV1Impl(void *root,voi
         g_event_producer.root_scope=Read<std::uintptr_t>(g_event_producer.context);
         if(g_event_producer.root_scope)g_event_producer.root_scope_words={
             Read<std::uint64_t>(g_event_producer.root_scope),Read<std::uint64_t>(g_event_producer.root_scope,8)};
+        if(!ReadScopedNotificationNamedDeadCharacterV1(*session,g_event_producer.context,
+            g_event_producer.named_dead_character_at_activation))Fail(*session,nullptr,scoped_chain_failure_container);
         break;
       }
     }__except(EXCEPTION_EXECUTE_HANDLER){Fail(*session,nullptr,scoped_chain_failure_memory);g_event_producer={};}
@@ -617,8 +774,9 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
        <<",\"flag_identifier_epoch\":"<<static_cast<unsigned>(v.flag_identifier_epoch)
        <<",\"flag_identifier_count\":"<<v.flag_identifier_count<<",\"flag_name\":";key(v.flag_name);out<<'}';
   };
-  auto commit=[&](const CombatScopedDeathCommitContextV1 &c){
-    out<<"{\"read\":"<<c.read<<",\"context_kind\":\"currently_executing_original_264BCB0_same_thread\""
+  auto commit=[&](const CombatScopedDeathCommitContextV1 &c,bool direct=false){
+    out<<"{\"read\":"<<c.read<<",\"context_kind\":\""
+       <<(direct?"original_264BCB0_direct_enter_return_arguments":"currently_executing_original_264BCB0_same_thread")<<"\""
        <<",\"managed_daily_sequence_token\":"<<c.managed_daily_sequence_token
        <<",\"invocation\":"<<c.invocation<<",\"parent_invocation\":"<<c.parent_invocation
        <<",\"thread_id\":"<<c.thread_id<<",\"native_date_raw\":"<<c.native_date_raw
@@ -631,6 +789,24 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
        <<",\"reason_key_read\":"<<c.reason_key_read<<",\"reason_key\":";key(c.reason_key);
     out<<",\"artifact_token\":"<<c.artifact<<",\"artifact_actual_null\":"<<c.artifact_actual_null
        <<",\"artifact_id_read\":"<<c.artifact_id_read<<",\"artifact_id\":"<<c.artifact_id<<'}';
+  };
+  auto named=[&](const ScopedNotificationNamedDeadCharacterV1 &n){
+    out<<"{\"read\":"<<n.read<<",\"stable_two_reads\":"<<n.stable_two_reads<<",\"present\":"<<n.present
+       <<",\"execution_context_token\":"<<n.execution_context<<",\"saved_target_store_token\":"<<n.store
+       <<",\"key_id\":"<<n.key_id<<",\"primary_data_token\":"<<n.primary_data<<",\"primary_count\":"<<n.primary_count
+       <<",\"fallback_pointer_read\":"<<n.fallback_pointer_read<<",\"fallback_parent_token\":"<<n.fallback_parent
+       <<",\"fallback_header_read\":"<<n.fallback_header_read<<",\"fallback_data_token\":"<<n.fallback_data
+       <<",\"fallback_count\":"<<n.fallback_count<<",\"source_level\":"<<n.source_level
+       <<",\"found_row_token\":"<<n.found_row<<",\"found_index\":"<<n.found_index
+       <<",\"scope_words_read\":"<<n.scope_words_read<<",\"scope_words\":["<<n.scope_words[0]<<','<<n.scope_words[1]
+       <<"],\"kind\":"<<n.kind<<",\"subtype\":"<<n.subtype<<",\"payload\":"<<n.payload
+       <<",\"payload_raw64\":"<<n.payload_raw64<<",\"character_full_id_low32_read\":"<<n.character_full_id_low32_read
+       <<",\"character_full_id_raw32\":"<<n.character_full_id_raw32
+       <<",\"character_id\":"<<n.character_id<<",\"resolved_character_token\":"<<n.resolved_character
+       <<",\"character_identity_read\":"<<n.character_identity_read<<",\"observed_character_id\":"<<n.observed_character_id
+       <<",\"character_full_identity_matches\":"<<n.character_full_identity_matches
+       <<",\"matches_monitored_victim\":"<<n.matches_monitored_victim
+       <<",\"missing_padding_is_unknown\":"<<(!n.present)<<'}';
   };
   auto producer=[&](const ScopedVariableEventProducerV1 &p){
     out<<"{\"identity_read\":"<<p.read<<",\"invocation\":"<<p.invocation
@@ -648,11 +824,15 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
        <<",\"children_count\":"<<p.children_count
        <<",\"execution_context_token\":"<<p.context<<",\"root_scope_token\":"<<p.root_scope
         <<",\"root_scope_words\":["<<p.root_scope_words[0]<<','<<p.root_scope_words[1]<<"]"
-        <<",\"activation_death_commit_context\":";commit(p.activation_death_commit_context);out<<'}';
+         <<",\"activation_death_commit_context\":";commit(p.activation_death_commit_context);
+     out<<",\"named_dead_character_at_activation\":";named(p.named_dead_character_at_activation);
+     out<<",\"named_dead_character_at_observation\":";named(p.named_dead_character_at_observation);out<<'}';
   };
   out<<"{\"schema_version\":1,\"scope\":\"two_full_character_ids_signature_weapon_and_current_house_pair\","
+        "\"direct_original_death_commit_schema_version\":1,\"notification_named_dead_character_schema_version\":1,"
        "\"monitor_sequence_token\":"<<session.token<<",\"character_ids\":["<<session.character_ids[0]<<','<<session.character_ids[1]
-     <<"],\"begin_date_raw\":"<<session.begin_date<<",\"signature_weapon_key_id\":"<<session.signature_key_id
+      <<"],\"begin_date_raw\":"<<session.begin_date<<",\"signature_weapon_key_id\":"<<session.signature_key_id
+      <<",\"dead_character_key_id\":"<<session.dead_character_key_id
      <<",\"native_identifier_table_token\":"<<session.identifier_table<<",\"native_identifier_epoch\":"<<static_cast<unsigned>(session.identifier_epoch)
      <<",\"native_identifier_count\":"<<session.identifier_count<<",\"failure_flags\":"<<session.failure_flags.load()
      <<",\"detours_uninstalled\":"<<session.detours_uninstalled<<",\"truncated\":"<<(session.count.load()>session.records.size())
@@ -670,7 +850,7 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
      <<",\"prearmed_event_definitions\":[";
   for(std::size_t i=0;i<session.event_producer_definitions.size();++i){if(i)out<<',';producer(session.event_producer_definitions[i]);}
   out<<"],\"notification_receiver_inferred_as_victim\":false,\"records\":[";
-  const std::array<const char *,7> boundaries{"arm","original_owner_return","variable_write_enter","variable_write_return","house_predicate_enter","house_predicate_return","final_paused"};
+  const std::array<const char *,9> boundaries{"arm","original_owner_return","variable_write_enter","variable_write_return","house_predicate_enter","house_predicate_return","final_paused","original_death_commit_enter","original_death_commit_return"};
   const auto count=std::min<std::uint32_t>(session.count.load(),static_cast<std::uint32_t>(session.records.size()));
   for(std::uint32_t i=0;i<count;++i){if(i)out<<',';const auto &r=session.records[i];
     if(static_cast<std::size_t>(r.boundary)>=boundaries.size()||r.stack_count>r.stack_rvas.size())return {};
@@ -697,6 +877,7 @@ std::string SerializeScopedCharacterVariableMonitorV1(const ScopedCharacterVaria
     for(std::uint32_t j=0;j<r.relation_type_key.size;++j){const char c=r.relation_type_key.bytes[j];if(c=='\\'||c=='\"')out<<'\\';out<<c;}
     out<<'\"'<<",\"event_producer\":";producer(r.event_producer);
     out<<",\"current_death_commit_context\":";commit(r.current_death_commit_context);
+    out<<",\"original_death_commit_context\":";commit(r.original_death_commit_context,true);
     out
        <<",\"original_boolean_read\":"<<r.original_boolean_read<<",\"original_boolean\":"<<r.original_boolean
        <<",\"original_return_bits\":"<<r.original_return_bits

@@ -13,7 +13,8 @@ inline constexpr std::string_view kScopedCharacterVariableMonitorFinishV1 =
 enum class ScopedVariableMonitorStageV1 : std::uint32_t { idle, armed, drained, failed };
 enum class ScopedVariableMonitorBoundaryV1 : std::uint32_t {
   arm, original_owner_return, variable_write_enter, variable_write_return,
-  house_predicate_enter, house_predicate_return, final_paused
+  house_predicate_enter, house_predicate_return, final_paused,
+  original_death_commit_enter, original_death_commit_return
 };
 struct ScopedVariableValueV1 {
   bool read = false;
@@ -26,6 +27,23 @@ struct ScopedVariableValueV1 {
   CombatScopedStableKeyV1 flag_name{};
   friend bool operator==(const ScopedVariableValueV1 &, const ScopedVariableValueV1 &) = default;
 };
+struct ScopedNotificationNamedDeadCharacterV1 {
+  bool read = false, stable_two_reads = false, present = false, scope_words_read = false;
+  std::uintptr_t execution_context = 0, store = 0, primary_data = 0, fallback_parent = 0, fallback_data = 0, found_row = 0;
+  std::int32_t key_id = -1, primary_count = 0, fallback_count = 0, found_index = -1;
+  bool fallback_pointer_read = false, fallback_header_read = false;
+  std::uint32_t source_level = 0; // 0 absent, 1 primary, 2 fallback; only meaningful when read.
+  std::array<std::uint64_t,2> scope_words{};
+  std::uint16_t kind = 0, subtype = 0;
+  std::int64_t payload = 0;
+  std::uint64_t payload_raw64 = 0;
+  bool character_full_id_low32_read = false;
+  std::uint32_t character_full_id_raw32 = 0;
+  bool character_identity_read = false, character_full_identity_matches = false, matches_monitored_victim = false;
+  std::int32_t character_id = -1, observed_character_id = -1;
+  std::uintptr_t resolved_character = 0;
+  friend bool operator==(const ScopedNotificationNamedDeadCharacterV1 &, const ScopedNotificationNamedDeadCharacterV1 &)=default;
+};
 struct ScopedVariableEventProducerV1 {
   bool read = false;
   std::uint32_t matched_root_execution_depth = 0, active_effect_group_depth = 0;
@@ -37,6 +55,8 @@ struct ScopedVariableEventProducerV1 {
   std::array<std::uint64_t,2> root_scope_words{};
   CombatScopedStableKeyV1 definition_key{};
   CombatScopedDeathCommitContextV1 activation_death_commit_context{};
+  ScopedNotificationNamedDeadCharacterV1 named_dead_character_at_activation{};
+  ScopedNotificationNamedDeadCharacterV1 named_dead_character_at_observation{};
   friend bool operator==(const ScopedVariableEventProducerV1 &,
                          const ScopedVariableEventProducerV1 &)=default;
 };
@@ -66,6 +86,8 @@ struct ScopedVariableMonitorRecordV1 {
   CombatScopedEffectContextV1 daily_effect_context{};
   ScopedVariableEventProducerV1 event_producer{};
   CombatScopedDeathCommitContextV1 current_death_commit_context{};
+  // Direct original264BCB0 argument observations, independent of writer TLS overlap.
+  CombatScopedDeathCommitContextV1 original_death_commit_context{};
   // Aggregate only equal dead/null original getter returns, never writes.
   std::uint64_t owner_observation_first_call_index = 0,
                 owner_observation_last_call_index = 0,
@@ -82,6 +104,7 @@ struct ScopedCharacterVariableMonitorV1 {
   std::array<std::uintptr_t, 2> character_objects{};
   std::array<std::atomic<std::uintptr_t>, 2> owners{};
   std::int32_t signature_key_id = -1;
+  std::int32_t dead_character_key_id = -1;
   std::uintptr_t identifier_table = 0;
   std::uint32_t identifier_count = 0;
   std::uint8_t identifier_epoch = 0;
@@ -141,4 +164,8 @@ extern "C" std::uintptr_t __fastcall ObservedCharacterVariableSetterV1(void *, s
 extern "C" std::uintptr_t __fastcall ObservedCharacterVariableEffectV1(void *, void *) noexcept;
 extern "C" std::uintptr_t __fastcall ObservedScopedHousePredicateV1(void *, void *, void *) noexcept;
 extern "C" void __fastcall ObservedScopedEventImmediateRootV1(void *, void *) noexcept;
+void ObserveScopedVariableMonitorOriginalDeathCommitV1(bool entering, void *manager,
+    void *victim, void *reason, void *date, void *killer, void *artifact) noexcept;
+bool ReadScopedNotificationNamedDeadCharacterV1(const ScopedCharacterVariableMonitorV1 &,
+    std::uintptr_t execution_context, ScopedNotificationNamedDeadCharacterV1 &) noexcept;
 } // namespace xar::ck3_11906

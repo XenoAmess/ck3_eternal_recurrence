@@ -1,0 +1,27 @@
+{
+  "schema": "ck3.scoped_notification_named_dead_character/v1",
+  "exact_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "original_lookup": {"rva":"0x3359690","bytes":162,"sha256":"C67153261D5BC5F8A85859B6E951F8CE446F080025DCBC61EF0FFBCC5CA9B083"},
+  "static_ready_sha256":"5A0D2FC989D915BC1715CB7C7A9CD7B67D0C7F7FBEA865E3B742C7EA03583D23",
+  "original_execution_context_proof":"336ABD5/336ABD9 copy executionctx+18 to evaluationctx+18;340F864/340F868 pass it to3359690. No ActiveEvent layout inference.",
+  "identifier":"read-only unique dead_character scan in already-initialized table585F240; current byte epoch/index and MSVC names+30/count+3C stable; no original helper invoked",
+  "lookup": {
+    "primary":{"store_from_execution_context":"+0x18","data":"store+0","signed_count":"store+0xC","stride":32,"key":0,"typed_scope16":8},
+    "fallback":{"only_when_primary_key_absent":true,"parent":"store+0x3D0","data":"parent+0x18","signed_count":"parent+0x24","stride":24,"key":0,"typed_scope16":8},
+    "first_matching_row_wins":true,"primary_kind0_shadows_fallback":true,
+    "signed_count_bounds":[0,65536],"no_invented_capacity_or_store_vtable":true,
+    "uintptr_overflow":"Reject each consulted header/key table and data+count*stride span before pointer arithmetic; unused fallback is never read or assigned fabricated values.",
+    "two_reads":"Repeat actual execution context/store/headers/first match/key identity/full typed scope/resolved full character identity; unequal or unread keeps read=false and original collector failure flags.",
+    "absent":"read=true present=false kind=0 payload=0 are original missing branch semantics; scope_words_read=false and missing_padding_is_unknown=true, no claimed all-zero native16B output"
+  },
+  "publication":{"version":"notification_named_dead_character_schema_version=1","fields":["event_producer.named_dead_character_at_activation","event_producer.named_dead_character_at_observation"],
+    "edges":"Actual matched producer entry and each real signature setter enter/return; owner rows carry activation only, never manufacture an observation.",
+    "found_raw":"complete original row16B scope_words plus kind:uint16/subtype:uint16/payload:int64, row token/index/source level and all consulted headers",
+    "character":"Exact201AD36 requires kind4,201AD3C reads dword[token+8],201AD70 compares full dword CCharacter+18. Publish payload_raw64/full scope_words unchanged plus independent character_full_id_raw32/low32_read; high32 is not normalized. Positive fullID resolves through existing full-generation storage; wrong kind or invalid fullID remain present raw values, never turn into missing or victim.",
+    "character_original_decoder_proof":"original-character-scope-payload-width-a02.json SHA B58857A2DD431EF29F567B3C4566C69C1FB8CF462FE4432A4D98DEADDAF1102E; stable identity observation never invokes original gameplay-liveness tail",
+    "receiver_root_unchanged":true,"current_activation_death_commit_contexts_unchanged":true,"direct_original_six_arguments_unchanged":true},
+  "capacity":128,"no_new_hook_or_native_getter_call":true,"no_virtual_re_evaluation":true,"no_game_state_writes":true,
+  "old_R0146_new_fields_backfilled":false,"live_attribution":"PENDING new same-run raw observations and strict independent projection",
+  "whole_game_mutable_bundle_complete":false,
+  "open_kaishek_precheck":{"status":"NOT_APPLICABLE_NATIVE_ABI_OBSERVER","reason":"Passive exact native saved-scope lookup reads only; no script parser/IR/finite runtime change."}
+}
