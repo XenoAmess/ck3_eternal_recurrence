@@ -4,6 +4,8 @@
 #include "xar_bridge/frontend_bookmark_model_probe_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
+#include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/ck3_11906.hpp"
 
 #include <cstdint>
 #include <string_view>
@@ -119,6 +121,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   finalize_custom_ruler = 15,
   confirm_custom_ruler = 16,
   start_lobby_selected_character = 17,
+  ingame_ui = 18,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -148,6 +151,10 @@ struct FrontendGuiRouteMailboxContextV1 {
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   ZhongguoScoreboardActionDispatchEnvironmentV1 dispatch_environment{};
   FrontendGuiRouteResultV1 result{};
+  Bindings ingame_bindings{};
+  game::Snapshot ingame_expected_snapshot{};
+  IngameUiRequestV1 ingame_request{};
+  IngameUiResultV1 ingame_result{};
 };
 
 bool ExecuteFrontendGuiRouteMailboxV1(

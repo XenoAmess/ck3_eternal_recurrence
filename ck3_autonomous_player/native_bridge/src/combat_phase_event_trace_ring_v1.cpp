@@ -1,4 +1,5 @@
 #include "xar_bridge/combat_phase_event_trace_ring_v1.hpp"
+#include "xar_bridge/combat_scoped_transition_chain_v1.hpp"
 
 #include <intrin.h>
 #include <windows.h>
@@ -1156,6 +1157,8 @@ bool CaptureCombatPhaseEventTraceBoundaryV1(
   }
   ring->committed_count.store(index + 1, std::memory_order_release);
   ring->capture_in_progress.store(0, std::memory_order_release);
+  if (captured) ObserveCombatScopedPhaseV1(boundary, record.sides[0].side ==
+      reinterpret_cast<std::uintptr_t>(trigger_side) ? 0 : 1);
   return captured;
 }
 
@@ -2123,7 +2126,15 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
     g_original_effect_dispatch_node = reinterpret_cast<std::uintptr_t>(node);
     g_original_effect_dispatch_depth = previous_effect_dispatch_depth + 1;
   }
-  const auto result = original(node, context);
+  const auto scoped_event = record != nullptr ? event_index : g_original_effect_root_event_row;
+  const auto scoped_invocation = EnterCombatScopedEffectV1(
+      node, g_original_phase_fire_side, scoped_event, previous_effect_dispatch_depth, context);
+  std::uintptr_t result = 0;
+  __try { result = original(node, context); }
+  __finally {
+    ReturnCombatScopedEffectV1(scoped_invocation, node, g_original_phase_fire_side,
+                              scoped_event, previous_effect_dispatch_depth);
+  }
   g_original_effect_root_event_row = previous_effect_root_event_row;
   g_original_effect_dispatch_node = previous_effect_dispatch_node;
   g_original_effect_dispatch_depth = previous_effect_dispatch_depth;
@@ -2310,7 +2321,11 @@ extern "C" std::int32_t __fastcall XarCombatPhaseKnightSelectHookV1(
       }
     }
   }
+  ObserveCombatScopedSelectorV1(true, g_original_phase_fire_side,
+                               g_original_effect_root_event_row, candidates);
   const auto chosen = original(selector, candidates, context);
+  ObserveCombatScopedSelectorV1(false, g_original_phase_fire_side,
+                               g_original_effect_root_event_row, candidates, chosen);
   if (record != nullptr && state != 0) {
     record->selected_index = chosen;
 #if defined(_MSC_VER)

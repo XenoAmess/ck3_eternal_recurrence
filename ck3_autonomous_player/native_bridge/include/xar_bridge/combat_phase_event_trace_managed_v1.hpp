@@ -1,5 +1,8 @@
 #pragma once
 
+#include "xar_bridge/combat_scoped_transition_chain_v1.hpp"
+#include <memory>
+
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/combat_phase_event_trace_detour_v1.hpp"
 #include "xar_bridge/combat_counter_output_detour_v1.hpp"
@@ -103,6 +106,9 @@ struct CombatPhaseEventTraceManagedCheckpointV1 {
 // one-day checkpoint.  The external driver must create a recoverable save
 // checkpoint before advancing; neither executor changes speed or game time.
 struct CombatPhaseEventTraceManagedSessionV1 {
+  std::unique_ptr<CombatScopedChainV1> scoped_chain{};
+  CombatScopedDetoursV1 scoped_detours{};
+  bool capture_runtime_scoped_chain = false;
   CombatPhaseEventTraceManagedStageV1 stage =
       CombatPhaseEventTraceManagedStageV1::idle;
   CombatPhaseEventTraceRingV1 ring{};
@@ -132,6 +138,10 @@ struct CombatPhaseEventTraceManagedSessionV1 {
 };
 
 struct CombatPhaseEventTraceBeginContextV1 {
+  bool capture_runtime_scoped_chain = false;
+  std::int32_t scoped_character_id = -1;
+  std::int32_t scoped_related_character_id = -1;
+  std::int32_t scoped_event_load_index = -1;
   MainThreadQueryMailboxV1 *mailbox = nullptr;
   MainThreadQueryTicketV1 ticket{};
   CombatPhaseEventTraceManagedSessionV1 *session = nullptr;

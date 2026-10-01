@@ -42,7 +42,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 102;
+constexpr std::size_t kBaseCapabilityCount = 104;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
@@ -159,6 +159,8 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kCoatOfArmsDesignerProbeV1Capability,
     ck3_11906::kCoatOfArmsDesignerExportV1Capability,
     ck3_11906::kFrontendGuiRouteV1Capability,
+    ck3_11906::kIngameUiNavigationV1Capability,
+    ck3_11906::kIngameUiWindowQueryV1Capability,
     ck3_11906::kFrontendGuiTreeInspectionV1Capability,
     ck3_11906::kFrontendCoatOfArmsTreeInspectionV1Capability,
     ck3_11906::kFrontendCoatOfArmsPatternGridInspectionV1Capability,

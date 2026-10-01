@@ -759,6 +759,9 @@ add_library(xar_ck3_bridge SHARED
   src/combat_advantage_components_observer_v1.cpp
   src/combat_phase_event_trace_managed_v1.cpp
   src/combat_phase_event_trace_ring_v1.cpp
+  src/combat_scoped_transition_chain_v1.cpp
+  src/combat_scoped_transition_chain_v1_wire.cpp
+  src/scoped_character_variable_monitor_v1.cpp
   src/combat_counter_output_readout_v1.cpp
   src/combat_phase_event_trace_wire_v1.cpp
   src/combat_simulation_inputs_v3_mailbox.cpp
@@ -840,6 +843,7 @@ add_library(xar_ck3_bridge SHARED
   src/startup_particle2_stage_recorder_v1.cpp
   src/tactical_daily_sentinel_v1.cpp
   src/title_map_navigation_v1.cpp
+  src/ingame_ui_navigation_v1.cpp
   src/title_map_navigation_v1_camera.cpp
   src/title_map_navigation_v1_mailbox.cpp
   src/title_map_navigation_v1_serializer.cpp
@@ -1657,6 +1661,13 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  add_executable(xar_ck3_ingame_ui_navigation_v1_test
+    tests/ingame_ui_navigation_v1_test.cpp src/protocol.cpp)
+  target_include_directories(xar_ck3_ingame_ui_navigation_v1_test PRIVATE include)
+  target_compile_definitions(xar_ck3_ingame_ui_navigation_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  add_test(NAME xar_ck3_ingame_ui_navigation_v1_test
+    COMMAND xar_ck3_ingame_ui_navigation_v1_test)
   if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     add_executable(xar_ck3_activity_cost_slot12_passive_v1_test
       src/activity_cost_slot12_passive_v1.cpp
@@ -2786,9 +2797,37 @@ if(BUILD_TESTING)
 
   add_executable(xar_ck3_combat_phase_event_trace_ring_v1_test
     src/combat_phase_event_trace_ring_v1.cpp
+    src/combat_scoped_transition_chain_v1.cpp
     src/combat_counter_output_readout_v1.cpp
     src/combat_phase_event_trace_ring_v1_test.cpp
   )
+  add_executable(xar_ck3_scoped_character_variable_monitor_v1_test
+    src/combat_scoped_transition_chain_v1.cpp
+    src/combat_scoped_transition_chain_v1_wire.cpp
+    src/scoped_character_variable_monitor_v1.cpp
+    src/scoped_character_variable_monitor_v1_test.cpp)
+  target_include_directories(xar_ck3_scoped_character_variable_monitor_v1_test PRIVATE include)
+  target_compile_definitions(xar_ck3_scoped_character_variable_monitor_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_scoped_character_variable_monitor_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_scoped_character_variable_monitor_v1
+    COMMAND xar_ck3_scoped_character_variable_monitor_v1_test)
+  add_executable(xar_ck3_combat_scoped_transition_chain_v1_test
+    src/combat_scoped_transition_chain_v1.cpp
+    src/combat_scoped_transition_chain_v1_wire.cpp
+    src/combat_scoped_transition_chain_v1_test.cpp)
+  target_include_directories(xar_ck3_combat_scoped_transition_chain_v1_test PRIVATE include)
+  target_compile_definitions(xar_ck3_combat_scoped_transition_chain_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_combat_scoped_transition_chain_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_combat_scoped_transition_chain_v1
+    COMMAND xar_ck3_combat_scoped_transition_chain_v1_test)
   target_include_directories(
     xar_ck3_combat_phase_event_trace_ring_v1_test PRIVATE include)
   target_compile_definitions(
@@ -2814,6 +2853,7 @@ if(BUILD_TESTING)
     src/combat_phase_event_trace_detour_v1.cpp
     src/combat_counter_output_detour_v1.cpp
     src/combat_phase_event_trace_ring_v1.cpp
+    src/combat_scoped_transition_chain_v1.cpp
     src/combat_counter_output_readout_v1.cpp
     src/combat_phase_event_trace_detour_v1_test.cpp
   )
@@ -2865,6 +2905,8 @@ if(BUILD_TESTING)
     src/combat_advantage_components_observer_v1.cpp
     src/combat_phase_event_trace_managed_v1.cpp
     src/combat_phase_event_trace_ring_v1.cpp
+    src/combat_scoped_transition_chain_v1.cpp
+    src/combat_scoped_transition_chain_v1_wire.cpp
     src/combat_counter_output_readout_v1.cpp
     src/combat_phase_event_trace_wire_v1.cpp
     src/combat_phase_event_trace_managed_v1_test.cpp

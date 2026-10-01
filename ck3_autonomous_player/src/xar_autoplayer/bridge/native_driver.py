@@ -4462,6 +4462,67 @@ class NativeHeadlessGameplayDriver:
             self._rollback_war_failures_migration_required = False
         self._persist_driver_state()
 
+    def _ingame_ui_v1(self, operation: str, kind: str, subject_id: int, *, expected_revision: int) -> dict[str, object]:
+        from .ingame_ui_contract import (NAVIGATE_STEP, QUERY_STEP, NAVIGATE_CAPABILITY,
+            QUERY_CAPABILITY, validate_ui_request, normalize_ui_result)
+        validate_ui_request(operation, kind, subject_id, expected_revision)
+        starting = self.take_snapshot()
+        binding = _title_map_navigation_binding_from_snapshot(starting)
+        if starting.get("paused") is not True or starting.get("map_ready") is not True:
+            raise BridgeUnavailableError("native UI navigation requires a paused map-ready snapshot")
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("native UI public revision differs")
+        played = starting.get("played_character")
+        actor = played.get("character_id") if isinstance(played, dict) else None
+        if isinstance(actor, bool) or not isinstance(actor, int) or actor <= 0:
+            raise BridgeUnavailableError("native UI lacks the played actor")
+        step = QUERY_STEP if operation == "query" else NAVIGATE_STEP
+        fields = {"window_kind": kind, "subject_id": subject_id}
+        if operation != "query":
+            fields["operation"] = operation
+        try:
+            raw = self._execute_primitive_step(step, expected_revision=expected_revision,
+                required_capability=QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY,
+                request_fields=fields)
+            ending = self.take_snapshot()
+            if (not _same_paused_native_frame(starting, ending) or
+                    _title_map_navigation_binding_from_snapshot(ending) != binding or
+                    ending.get("map_ready") is not True or ending.get("played_character") != played):
+                raise BridgeUnavailableError("native UI crossed its paused session binding")
+            result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
+                native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor)
+        except Exception as error:
+            self._record_command(step, ok=False, error=f"{type(error).__name__}: {error}")
+            raise
+        result.update({"queried_snapshot_id": starting.get("snapshot_id"), "queried_revision": expected_revision,
+            "queried_native_revision": starting.get("native_revision"), "episode_run_id": starting.get("episode_run_id"),
+            "queried_connection_generation": binding.get("connection_generation")})
+        self._record_command(step, ok=True, result=result)
+        return result
+
+    def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_character", "character", character_id, expected_revision=expected_revision)
+
+    def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("select_army", "army", subject_army_id, expected_revision=expected_revision)
+
+    def open_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_combat", "combat", combat_id, expected_revision=expected_revision)
+
+    def fit_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("fit_combat_window", "combat", combat_id, expected_revision=expected_revision)
+
+    def open_knights_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_knights", "knights", 0, expected_revision=expected_revision)
+
+    def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("query", window_kind, 0, expected_revision=expected_revision)
+
+    def hover_combat_knights_v1(self, combat_id: int, ui_side: str, *, expected_revision: int) -> dict[str, object]:
+        if ui_side not in {"left", "right"}:
+            raise ValueError("ui_side must be left or right in the original CombatWindow")
+        return self._ingame_ui_v1(f"hover_{ui_side}_knights", "combat", combat_id, expected_revision=expected_revision)
+
     def center_map_on_landed_title_v1(
         self,
         title_key: str,
@@ -19581,6 +19642,47 @@ class ConfiguredHybridFallbackDriver:
             **self._delegate.take_snapshot(),
             "backend_id": "hybrid-fallback",
         }
+
+    def _native_ingame_ui_v1(self, operation: str, kind: str, subject_id: int, expected_revision: int) -> dict[str, object]:
+        from .ingame_ui_contract import validate_ui_request
+        validate_ui_request(operation, kind, subject_id, expected_revision)
+        before = self.take_snapshot()
+        binding = _title_map_navigation_binding_from_snapshot(before)
+        if before.get("revision") != expected_revision or before.get("paused") is not True or before.get("map_ready") is not True:
+            raise BridgeUnavailableError("hybrid typed UI requires its current paused map binding")
+        backends = before.get("backend_revisions")
+        native_revision = backends.get("fast") if isinstance(backends, dict) else None
+        if isinstance(native_revision, bool) or not isinstance(native_revision, int) or native_revision < 0:
+            raise BridgeUnavailableError("hybrid typed UI lacks native public revision")
+        result = self.native._ingame_ui_v1(operation, kind, subject_id, expected_revision=native_revision)
+        after = self.take_snapshot()
+        if (_title_map_navigation_binding_from_snapshot(after) != binding or after.get("paused") is not True or
+                after.get("map_ready") is not True or after.get("played_character") != before.get("played_character")):
+            raise BridgeUnavailableError("hybrid typed UI crossed its native session binding")
+        return {**result, "queried_revision": expected_revision, "queried_snapshot_id": before.get("snapshot_id")}
+
+    def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._native_ingame_ui_v1("open_character", "character", character_id, expected_revision)
+
+    def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._native_ingame_ui_v1("select_army", "army", subject_army_id, expected_revision)
+
+    def open_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._native_ingame_ui_v1("open_combat", "combat", combat_id, expected_revision)
+
+    def fit_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._native_ingame_ui_v1("fit_combat_window", "combat", combat_id, expected_revision)
+
+    def open_knights_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._native_ingame_ui_v1("open_knights", "knights", 0, expected_revision)
+
+    def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
+        return self._native_ingame_ui_v1("query", window_kind, 0, expected_revision)
+
+    def hover_combat_knights_v1(self, combat_id: int, ui_side: str, *, expected_revision: int) -> dict[str, object]:
+        if ui_side not in {"left", "right"}:
+            raise ValueError("ui_side must be left or right in the original CombatWindow")
+        return self._native_ingame_ui_v1(f"hover_{ui_side}_knights", "combat", combat_id, expected_revision)
 
     def center_map_on_landed_title_v1(
         self,

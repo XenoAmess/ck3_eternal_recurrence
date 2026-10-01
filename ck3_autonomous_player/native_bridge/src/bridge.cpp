@@ -100,6 +100,8 @@
 #include "xar_bridge/combat_phase_event_trace_v1_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
 #include "xar_bridge/combat_phase_event_trace_managed_v1.hpp"
+#include "xar_bridge/scoped_character_variable_monitor_v1.hpp"
+#include "xar_bridge/scoped_observer_lifetime_v1.hpp"
 #endif
 #include "xar_bridge/current_timeline_blocker_context_v1_mailbox.hpp"
 #include "xar_bridge/player_epidemic_treatment_presence_v1.hpp"
@@ -9581,6 +9583,9 @@ public:
     environment.permitted_executor_octoquinquagintary =
         &xar::ck3_11906::ExecuteActiveSchemeSwayFormalPrivateCommandV1;
 #endif
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+    environment.permitted_scoped_variable_monitor_executor = &xar::ck3_11906::ExecuteScopedVariableMonitorQueryV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -9921,6 +9926,28 @@ struct WorkerState {
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
   std::unique_ptr<xar::ck3_11906::CombatPhaseEventTraceManagedSessionV1>
       experimental_combat_phase_trace;
+  std::unique_ptr<xar::ck3_11906::ScopedCharacterVariableMonitorV1> scoped_variable_monitor;
+  ~WorkerState() {
+    using namespace xar::ck3_11906;
+    // Retain the entire parent, including plan/ring/chain. Releasing just a
+    // child would leave plan references dangling on disconnect or exceptions.
+    if (experimental_combat_phase_trace) {
+      const auto &s = *experimental_combat_phase_trace;
+      const bool resident = s.capture_runtime_scoped_chain ||
+          s.detours.installed.load() != 0 ||
+          s.counter_output_detour.installed.load() != 0 ||
+          s.join_width_detour.installed.load() != 0 ||
+          std::any_of(s.scoped_detours.hooks.begin(), s.scoped_detours.hooks.end(),
+                      [](const auto &h) { return h.installed; }) ||
+          std::any_of(s.damage_consumer_detours.sites.begin(), s.damage_consumer_detours.sites.end(),
+                      [](const auto &h) { return h.installed; }) ||
+          std::any_of(s.advantage_component_detours.sites.begin(), s.advantage_component_detours.sites.end(),
+                      [](const auto &h) { return h.installed; });
+      RetainScopedObserverParentUntilProcessExitV1(experimental_combat_phase_trace, resident);
+    }
+    RetainScopedObserverParentUntilProcessExitV1(scoped_variable_monitor,
+        scoped_variable_monitor != nullptr);
+  }
 #endif
   std::uint64_t war_termination_query_sequence = 0;
   std::uint64_t war_prisoner_release_pairs_query_sequence = 0;
@@ -9941,6 +9968,76 @@ struct WorkerState {
 };
 
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+
+std::string ScopedVariableMonitorResultFrameV1(std::string_view request_id, std::string_view step,
+    bool accepted, std::string_view status, const xar::ck3_11906::ScopedCharacterVariableMonitorV1 &session) {
+  const auto wire=xar::ck3_11906::SerializeScopedCharacterVariableMonitorV1(session);
+  if(wire.empty())return CommandResultFrame(request_id,step,false,"passive monitor DTO unavailable");
+  std::string frame="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(frame,request_id);
+  frame+=",\"ok\":true,\"result\":{\"step\":";AppendJsonString(frame,step);
+  frame+=",\"accepted\":";frame+=accepted?"true":"false";
+  frame+=",\"private_build\":true,\"production_trace_ready\":false,\"status\":";
+  AppendJsonString(frame,status);frame+=",\"scoped_variable_monitor\":"+wire+"}}";
+  return frame;
+}
+std::string ExecuteScopedVariableMonitorWorkerV1(std::string_view request_id, std::string_view step,
+    std::string_view payload,const xar::game::GameAdapter &game,WorkerState &state) {
+  using namespace xar::ck3_11906;
+  const bool begin=step==kScopedCharacterVariableMonitorBeginV1;
+  std::uint64_t revision=0,token=0,first=0,second=0;
+  if(!xar::bridge::JsonUnsignedField(payload,"expected_revision",revision)||revision==0||
+     revision!=state.state_revision||!state.previous_snapshot.has_value()||
+     !xar::bridge::JsonUnsignedField(payload,"monitor_sequence_token",token)||token==0)
+    return CommandResultFrame(request_id,step,false,"passive monitor request stale or malformed");
+  xar::game::Snapshot snapshot{};
+  if(!xar::game::ReadSnapshot(game,snapshot)||!snapshot.paused||snapshot!=*state.previous_snapshot)
+    return CommandResultFrame(request_id,step,false,"passive monitor requires same paused frame");
+  auto &session=state.scoped_variable_monitor;
+  if(begin) {
+    if (!PinScopedObserverModuleUntilProcessExitV1(
+            reinterpret_cast<const void *>(&ExecuteScopedVariableMonitorWorkerV1)))
+      return CommandResultFrame(request_id,step,false,"observer module pin failed");
+    if(session||!xar::bridge::JsonUnsignedField(payload,"scoped_character_id",first)||
+       !xar::bridge::JsonUnsignedField(payload,"scoped_related_character_id",second)||
+       first==0||second==0||first==second||first>INT32_MAX||second>INT32_MAX)
+      return CommandResultFrame(request_id,step,false,"passive monitor needs idle session and two full IDs");
+    session=std::make_unique<ScopedCharacterVariableMonitorV1>();
+  } else if(!session||session->token!=token||session->stage!=ScopedVariableMonitorStageV1::armed) {
+    return CommandResultFrame(request_id,step,false,"passive monitor finish has no matching arm");
+  }
+  ScopedVariableMonitorQueryV1 query{};
+  query.mailbox=&g_main_thread_query_mailbox_v1;query.session=session.get();
+  query.game_adapter=&game;query.expected_snapshot=snapshot;query.begin=begin;
+  query.exact_build=game.enabled();query.bindings=BindCurrentProcess(true);
+  query.module_base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.token=token;query.character_ids={static_cast<std::int32_t>(first),static_cast<std::int32_t>(second)};
+  const auto submitted=TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+      &ExecuteScopedVariableMonitorQueryV1,&query,query.ticket);
+  if(submitted!=MainThreadQuerySubmitResultV1::submitted) {
+    session->failure_flags.fetch_or(scoped_chain_failure_binding);
+    if(!begin)SetEvent(g_stop_event);
+    return ScopedVariableMonitorResultFrameV1(request_id,step,false,"mailbox_unavailable",*session);
+  }
+  auto wait=WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,
+      kCombatSimulationInputsV3QueuedWaitBudgetMilliseconds);
+  while(wait==MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,
+        kCombatSimulationInputsV3ExecutingWaitSliceMilliseconds);
+  const auto reclaimed=ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+  const bool okay=wait==MainThreadQueryWaitResultV1::completed &&
+      reclaimed==MainThreadQueryReclaimResultV1::reclaimed && query.completed &&
+      session->failure_flags.load()==0 &&
+      (begin?session->stage==ScopedVariableMonitorStageV1::armed:
+             session->stage==ScopedVariableMonitorStageV1::drained&&session->detours_uninstalled);
+  if(!okay) {
+    if(!query.completed)session->failure_flags.fetch_or(scoped_chain_failure_binding);
+    if(ScopedVariableMonitorHasInstalledHooksV1(*session))SetEvent(g_stop_event);
+  }
+  return ScopedVariableMonitorResultFrameV1(request_id,step,okay,
+      okay?(begin?"armed":"drained"):"failed",*session);
+}
+
 std::string ExperimentalCombatPhaseTraceResultFrameV1(
     std::string_view request_id, std::string_view step,
     std::string_view status, std::uint64_t token, std::int32_t combat_id,
@@ -10000,6 +10097,25 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     bool capture_runtime_join_full_entries = false;
     bool capture_runtime_counter_output = false;
     bool capture_runtime_advantage_components = false;
+    bool capture_runtime_scoped_chain = false;
+    std::array<std::uint64_t, 3> scoped_fields{};
+    if (payload.find("\"capture_runtime_scoped_chain\"") != std::string_view::npos &&
+        !xar::bridge::JsonBooleanField(payload, "capture_runtime_scoped_chain",
+                                       capture_runtime_scoped_chain)) {
+      return CommandResultFrame(request_id, step, false,
+                                "experimental scoped-chain flag is malformed");
+    }
+    if (capture_runtime_scoped_chain &&
+        (!xar::bridge::JsonUnsignedField(payload, "scoped_character_id", scoped_fields[0]) ||
+         !xar::bridge::JsonUnsignedField(payload, "scoped_related_character_id", scoped_fields[1]) ||
+         !xar::bridge::JsonUnsignedField(payload, "scoped_event_load_index", scoped_fields[2]) ||
+         scoped_fields[0] == 0 || scoped_fields[1] == 0 || scoped_fields[0] == scoped_fields[1] ||
+         scoped_fields[0] > static_cast<std::uint64_t>(std::numeric_limits<std::int32_t>::max()) ||
+         scoped_fields[1] > static_cast<std::uint64_t>(std::numeric_limits<std::int32_t>::max()) ||
+         scoped_fields[2] >= 13)) {
+      return CommandResultFrame(request_id, step, false,
+                                "experimental scoped-chain binding is malformed");
+    }
     if (payload.find("\"capture_runtime_random_list_weights\"") !=
             std::string_view::npos &&
         !xar::bridge::JsonBooleanField(
@@ -10103,6 +10219,12 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
         capture_runtime_counter_output;
     query.capture_runtime_advantage_components =
         capture_runtime_advantage_components;
+    query.capture_runtime_scoped_chain = capture_runtime_scoped_chain;
+    if (capture_runtime_scoped_chain) {
+      query.scoped_character_id = static_cast<std::int32_t>(scoped_fields[0]);
+      query.scoped_related_character_id = static_cast<std::int32_t>(scoped_fields[1]);
+      query.scoped_event_load_index = static_cast<std::int32_t>(scoped_fields[2]);
+    }
     // The external driver must additionally verify the save file hash and
     // official semantic pair before this private request is sent.
     query.recoverable_checkpoint_created = true;
@@ -10131,6 +10253,9 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
         query.completion != xar::ck3_11906::
                                 CombatPhaseEventTraceManagedCompletionV1::armed) {
       if (session->detours.installed.load(std::memory_order_acquire) != 0 ||
+          std::any_of(session->scoped_detours.hooks.begin(),
+                      session->scoped_detours.hooks.end(),
+                      [](const auto &site) { return site.installed; }) ||
           std::any_of(session->advantage_component_detours.sites.begin(),
                       session->advantage_component_detours.sites.end(),
                       [](const auto &site) { return site.installed; }) ||
@@ -10191,7 +10316,10 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
   const auto wire =
       xar::ck3_11906::SerializeCombatPhaseEventTraceManagedResultV1(*session);
   const auto completion = query.completion;
-  session.reset();
+  if (session->capture_runtime_scoped_chain)
+    xar::ck3_11906::RetainScopedObserverParentUntilProcessExitV1(session, true);
+  else
+    session.reset();
   if (wire.empty()) {
     return CommandResultFrame(request_id, step, false,
                               "experimental trace managed DTO unavailable");
@@ -10481,6 +10609,8 @@ void RunConnectedSession(
                                   kCombatPhaseEventTraceManagedBeginStepV1
                    && step != xar::ck3_11906::
                                   kCombatPhaseEventTraceManagedFinishStepV1
+                    && step != xar::ck3_11906::kScopedCharacterVariableMonitorBeginV1
+                    && step != xar::ck3_11906::kScopedCharacterVariableMonitorFinishV1
 #endif
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
                    && step != xar::ck3_11906::kAiReentryStepV1
@@ -10686,7 +10816,11 @@ void RunConnectedSession(
               tactical_sentinel_request{};
           std::uint64_t tactical_sentinel_cancel_generation = 0;
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
-          if (step == xar::ck3_11906::
+          if (step == xar::ck3_11906::kScopedCharacterVariableMonitorBeginV1 ||
+              step == xar::ck3_11906::kScopedCharacterVariableMonitorFinishV1) {
+            connected = xar::bridge::WriteFrame(pipe, ExecuteScopedVariableMonitorWorkerV1(
+                request_id, step, incoming.payload, game, state));
+          } else if (step == xar::ck3_11906::
                           kCombatPhaseEventTraceManagedBeginStepV1 ||
               step == xar::ck3_11906::
                           kCombatPhaseEventTraceManagedFinishStepV1) {
@@ -12613,7 +12747,54 @@ void RunConnectedSession(
             }
           } else
 #endif
-          if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
+          if (step == xar::ck3_11906::kIngameUiNavigationV1Step ||
+              step == xar::ck3_11906::kIngameUiWindowQueryV1Step) {
+            std::uint64_t expected_revision = 0;
+            xar::ck3_11906::IngameUiRequestV1 ui_request{};
+            xar::game::Snapshot current_snapshot{};
+            if (!xar::bridge::JsonUnsignedField(incoming.payload, "expected_revision", expected_revision) ||
+                expected_revision != state_revision || !previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, current_snapshot) || current_snapshot != previous_snapshot.value()) {
+              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "state_changed"));
+            } else if (!current_snapshot.paused || !current_snapshot.map_ready || !current_snapshot.has_played_character) {
+              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "requires_paused_map_ready_played_actor"));
+            } else if (!xar::ck3_11906::ParseIngameUiRequestV1(incoming.payload,
+                           step == xar::ck3_11906::kIngameUiWindowQueryV1Step, ui_request)) {
+              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "invalid_typed_ui_request"));
+            } else {
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::ingame_ui;
+              query.ingame_bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.ingame_expected_snapshot = current_snapshot;
+              query.ingame_request = ui_request;
+              query.environment = xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+                  reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true);
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1, &query, query.ticket);
+              std::string response;
+              if (submit == xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+                // Once execution starts the stack context must outlive its one
+                // ticket. A timeout is never permission to resubmit an action.
+                while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+                xar::game::Snapshot completion{};
+                if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion) && completion == current_snapshot) {
+                  response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                  response += request_id;
+                  response += "\",\"ok\":true,\"result\":";
+                  response += xar::ck3_11906::SerializeIngameUiResultV1(ui_request, query.ingame_result, state_revision);
+                  response += '}';
+                }
+                if (xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket) !=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) response.clear();
+              }
+              if (response.empty()) response = CommandResultFrame(request_id, step, false, "typed_ui_owner_submission_or_completion_failed");
+              connected = xar::bridge::WriteFrame(pipe, response);
+            }
+          } else if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
               step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
               step == xar::ck3_11906::
                           kFrontendCoatOfArmsTreeInspectionV1Step ||
@@ -21541,6 +21722,10 @@ void RunConnectedSession(
     WaitForSingleObject(g_stop_event, 10);
   }
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+  if(state.scoped_variable_monitor &&
+     xar::ck3_11906::ScopedVariableMonitorHasInstalledHooksV1(*state.scoped_variable_monitor)) {
+    SetEvent(g_stop_event);
+  }
   // A disconnected experimental driver cannot authorize another day while
   // the bounded ring owns the two detours. The managed wrapper must stop the
   // CK3 process; never free the still-referenced session in this process.
@@ -21550,7 +21735,10 @@ void RunConnectedSession(
        state.experimental_combat_phase_trace->counter_output_detour.installed.load(
            std::memory_order_acquire) != 0 ||
        state.experimental_combat_phase_trace->join_width_detour.installed.load(
-           std::memory_order_acquire) != 0)) {
+           std::memory_order_acquire) != 0 ||
+       std::any_of(state.experimental_combat_phase_trace->scoped_detours.hooks.begin(),
+                   state.experimental_combat_phase_trace->scoped_detours.hooks.end(),
+                   [](const auto &site) { return site.installed; }))) {
     SetEvent(g_stop_event);
   }
 #endif

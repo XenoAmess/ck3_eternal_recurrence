@@ -7,6 +7,11 @@ import importlib
 import json
 import os
 from pathlib import Path
+from typing import Annotated, Literal
+from pydantic import Field
+
+IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
+IngameUiRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
 
 from xar_autoplayer.ck3_save_artifacts import Ck3ProfileArtifactInspector
 from xar_autoplayer.ck3_runtime_diagnostics import Ck3RuntimeDiagnosticsInspector
@@ -2076,6 +2081,41 @@ def create_server(
             expected_target_instance_pointer,
             expected_target_vtable_pointer,
         )
+
+    @server.tool()
+    def ck3_open_character_window_v1(character_id: IngameUiHandleV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Open an exact CharacterID; ACK requires independent window readback."""
+        return service.open_character_window_v1(character_id, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_select_army_ui_v1(subject_army_id: IngameUiHandleV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Select a played army's public CUnitID through vanilla presentation routing."""
+        return service.select_army_ui_v1(subject_army_id, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_open_combat_window_v1(combat_id: IngameUiHandleV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Open an exact CombatID scoped to the played army; verify separately."""
+        return service.open_combat_window_v1(combat_id, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_fit_combat_window_v1(combat_id: IngameUiHandleV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Fit the current original battle window using native viewport/layout bounds; verify pixels separately."""
+        return service.fit_combat_window_v1(combat_id, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_open_knights_window_v1(expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Open played actor's military-eligible KnightsView, not active combat roster."""
+        return service.open_knights_window_v1(expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Fresh owner-thread full-ID window readback plus bounded target subtree."""
+        return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_hover_combat_knights_v1(combat_id: IngameUiHandleV1, ui_side: Literal["left", "right"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Native enter/leave of fixed knight-count text; verify hover and original pixels independently."""
+        return service.hover_combat_knights_v1(combat_id, ui_side, expected_revision=expected_revision)
 
     @server.tool()
     def ck3_center_map_on_landed_title_v1(

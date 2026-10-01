@@ -41,7 +41,69 @@ class PrivatePhaseTraceContractTests(unittest.TestCase):
                     {"status": "forwarded"})
                 self.assertIs(self.calls[-1][1]["request_fields"]["capture_runtime_random_list_weights"], value)
         self.assertEqual(self.calls[-1][1]["required_capability"],
-                         "game.command.experimental-combat-phase-event-trace-managed-v1")
+                          "game.command.experimental-combat-phase-event-trace-managed-v1")
+
+    def test_passive_monitor_closed_fields_independent_token_and_same_budget(self):
+        begin = {"action": "private_phase_trace",
+                 "step": "experimental-scoped-character-variable-monitor-begin-v1",
+                 "expected_revision": 7, "monitor_sequence_token": 8866007,
+                 "scoped_character_id": 33437, "scoped_related_character_id": 34120}
+        finish = {k: v for k, v in begin.items() if not k.startswith("scoped_")}
+        finish["step"] = "experimental-scoped-character-variable-monitor-finish-v1"
+        for request in (begin, finish):
+            private_phase_trace_call(request, enabled=True, driver=self.driver)
+            self.assertEqual(self.calls[-1][1]["timeout_seconds"], 90)
+            self.assertEqual(self.calls[-1][1]["request_fields"],
+                             {k: v for k, v in request.items()
+                              if k not in {"action", "step", "expected_revision"}})
+        prior = len(self.calls)
+        invalid = [{**begin, key: value} for key in ("expected_revision", "monitor_sequence_token")
+                   for value in (True, 0, -1, 2**64, "7", None)]
+        invalid += [{**begin, key: value} for key in ("scoped_character_id", "scoped_related_character_id")
+                    for value in (True, 0, -1, 2**31, "33437", None)]
+        invalid += [{**begin, "scoped_related_character_id": 33437},
+                    {k:v for k,v in begin.items() if k != "scoped_related_character_id"},
+                    {**finish, "scoped_character_id": 33437}]
+        invalid += [{**begin, name: 1} for name in
+                    ("combat_id", "checkpoint_sequence", "managed_daily_sequence_token",
+                     "capture_runtime_scoped_chain", "day_count", "retry")]
+        for request in invalid:
+            with self.subTest(request=request), self.assertRaises(RuntimeError):
+                private_phase_trace_call(request, enabled=True, driver=self.driver)
+        with self.assertRaises(RuntimeError):
+            private_phase_trace_call(begin, enabled=False, driver=self.driver)
+        self.assertEqual(len(self.calls), prior)
+
+    def test_scoped_chain_closed_fields_and_native_budget(self):
+        scoped = {**self.begin, "capture_runtime_scoped_chain": True,
+                  "scoped_character_id": 33437, "scoped_related_character_id": 34120,
+                  "scoped_event_load_index": 11}
+        private_phase_trace_call(scoped, enabled=True, driver=self.driver)
+        fields = self.calls[-1][1]["request_fields"]
+        self.assertEqual({key: fields[key] for key in scoped if key.startswith("scoped_")},
+                         {key: scoped[key] for key in scoped if key.startswith("scoped_")})
+        self.assertIs(fields["capture_runtime_scoped_chain"], True)
+        self.assertEqual(self.calls[-1][1]["timeout_seconds"], 90)
+        private_phase_trace_call({**self.begin, "capture_runtime_scoped_chain": False},
+                                 enabled=True, driver=self.driver)
+        prior = len(self.calls)
+        bad = [dict(scoped, scoped_character_id=value) for value in (True, 0, -1, 2**31, "33437", None)]
+        bad += [dict(scoped, scoped_related_character_id=33437),
+                dict(scoped, scoped_event_load_index=True),
+                dict(scoped, scoped_event_load_index=13),
+                dict(scoped, capture_runtime_scoped_chain=1),
+                dict(scoped, capture_runtime_scoped_chain=False),
+                {key: value for key, value in scoped.items() if key != "scoped_related_character_id"},
+                {**self.begin, "scoped_character_id": 33437}]
+        finish = {key: value for key, value in scoped.items() if key != "checkpoint_sequence"}
+        finish["step"] = "experimental-combat-phase-event-trace-finish-v1"
+        bad.append(finish)
+        for request in bad:
+            with self.subTest(request=request), self.assertRaises(RuntimeError):
+                private_phase_trace_call(request, enabled=True, driver=self.driver)
+        with self.assertRaises(RuntimeError):
+            private_phase_trace_call(scoped, enabled=False, driver=self.driver)
+        self.assertEqual(len(self.calls), prior)
 
     def test_absent_flag_preserves_previous_wire_shape(self):
         private_phase_trace_call(self.begin, enabled=True, driver=self.driver)

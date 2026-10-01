@@ -57,6 +57,7 @@ struct CombatPhaseEventTraceDetourEnvironmentV1 {
   bool managed_paused_quiescence_proven = false;
   bool offline_fixture = false;
   bool capture_runtime_random_list_weights = false;
+  bool retain_trampolines_until_process_exit = false;
   std::uintptr_t module_base = 0;
 
   std::uintptr_t schedule_target_override = 0;
@@ -83,6 +84,7 @@ struct CombatPhaseEventTraceDetourEnvironmentV1 {
 };
 
 struct CombatPhaseEventTraceDetourStateV1 {
+  bool retain_trampolines_until_process_exit = false;
   std::atomic<std::uint32_t> installed{0};
   std::atomic<std::uint32_t> failure_flags{trace_detour_failure_none};
   std::uintptr_t module_base = 0;
