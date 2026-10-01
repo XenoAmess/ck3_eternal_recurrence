@@ -187,10 +187,10 @@ def validate(
         'version="4.0.2"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
-        'supported_version="1.19.0.6"\n'
+        'supported_version="1.20.0.2"\n'
     )
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod differs from the 1.19.0.6 maintenance contract")
+        errors.append("descriptor.mod differs from the 1.20.0.2 maintenance contract")
 
     decisions = text("common/decisions/build_decision.txt")
     on_actions = text("common/on_action/aub_on_actions.txt")

@@ -3,4 +3,4 @@ tags={
 	"Balance"
 }
 name="自动升级建筑（XenoAmess维护版）"
-supported_version="1.19.0.6"
+supported_version="1.20.0.2"
