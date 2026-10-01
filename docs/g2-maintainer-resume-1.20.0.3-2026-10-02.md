@@ -2,6 +2,20 @@
 
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
+## 06:39 真实续写：191 日、v6 业务材料与 v7 诊断构建
+
+本段于2026-10-02 06:39（Asia/Shanghai）根据已读取的实际回执续写。生产来源 `dcd61a5b7d6b94536cab3b0272e220d8f211b1b9`/v6 的 `formal-run-v6-06` 实际推进10日，raw53174952→53175192，随后campaign-root读取RED；整批原error保留。累计恢复191日、独立rogue243日；Robert3153/36524、G2 3/8不变，不报总体百分比。成功10日已独立保存 `checkpoint-v6-10d-01`：full619/h619、paused、actor29829/原rogue episode，save72,854,757B/SHA256 `9fc24912e58682f763a0218553ffa48f67d386f452bb14a32559d35414d9a79e`，driver6,722,366B/SHA256 `c7027366a82525006a5cd0cb27326a1c8cd7f960b69da3b39af6960b7e4c99f1`。root已正常停止GAME PID97800，supervisor exit0；后续从此保存点继续，已保存日数不重复推进。
+
+v6冷恢复业务材料来自 `cold-v6-sway-chancellor-01` 的raw53174952/native2，日期早于上述10日终点。Chancellor11原生候选/8合法，当前34867 diplomacy9与最佳合法30784 diplomacy9相等、gain0，现有生产compare为NO_CHANGE；task_foreign_affairs未冻结，无任命动作。只读Chancellor已到 `production-live primitive`，沿用5项native与23项Python聚焦GREEN，不增加M4治理动作信用。Sway同full50331723/gen3、target33433，245/355、CanContinue=true；goal是动态读数，不能沿用v5的350推算剩余天数。三attached ring为空、两modifier缺席，好感−25，无phase/终态/收益；root020独立确认33433为当前direct landed vassal。
+
+Feast `attempt05` 实机规则现为 `observed_active`/active=true、unavailable_reason=null、invoked=false，原nullable missing入口修复的读回已闭合。当前规则已active，未执行activate。随后 `candidate-live-01` 在raw53174952/native10实际读到fullID37502、signed join+200000、行程19日、到达早于计划开始137日。这是预邀请候选观测，尚未证明普通候选已被native Start及Python consumer接纳；没有Start/扣款/生命周期信用。两条既有只读route-proof与named-rule provenance的MCP暴露按原Feast opt-in接入，11项聚焦SDK/transport测试GREEN，当前曝光为static-ready；root将在统一新runtime上fresh candidate/provenance实测后继续普通邀请路径。
+
+读取RED的离线诊断确认只有一个实际failed row618/step52@42，没有第二packet/重复动作；历史fresh帧与native branch未归档，具体helper guard仍未知。Python只增加declined predicate/frame记录，11/11定向测试GREEN；native v7仅 `bridge.cpp` 加入真实失败stage/entry/finish的nullable诊断字段，严格 `/W4 /WX` 增量构建GREEN、61ON/4OFF及933源输入保持。v7 DLL7,648,768B/SHA256 `a296373209ed151708e372c5276ac6b1c567cd80f5b2097189425b0b7eb6fd6b` 已冻结，代码稳定，随本轮报告由root统一commit/freeze。此处readiness为诊断static-ready，未声称故障修复成功、未增加retry或重放动作；下一真实失败保存native分支与Python失败predicate。[dcd61a5b准确Official Runner CI run36931035334](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36931035334) 于05:52:03 SUCCESS，只对应dcd来源。
+
+M7此前Robert same-ruler paused/checkpoint/newPID cold primitive已提交，仍新增Robert日0。第二Murchad seed只完成 genuine archive 的file-only准备：actor31853/episode `native-31853-af642d76cb41`、full1986/saveh1984/raw53327160；prepare/verify/rebind/两managed cold/16-turn官方CLI parser6/6 PASS、外置helper AST PASS，原错误参数parser RED保留。review包绑定dcd/v6，实际新版paused/cold/可见nonwar执行由root后续开展；当前seed新日0、资格0，不计M7完成。完整M2/M4/M5/M6/M7合同和分母保持，继续高并发文件施工及分域材料消费，root唯一操纵游戏/pipe/UI/Git。
+
+本段证据位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/`：`formal-run-v6-06/result.json`、`checkpoint-v6-10d-01/result.json`、`cold-v6-sway-chancellor-01/result.json`、`m4-council/chancellor-readonly/ACTUAL-V6-CHANCELLOR-COMPARE.json`、`m4-sway/v6-cold-proof.json`、`m6-feast/attempt05/rule-live-proof.json`、`m6-feast/guest-route-next/candidate-live-proof.json`、`m6-feast/guest-route-next/mcp-both-exposures-source-and-test.json`、`campaign-root-v6-06-decline-diagnosis/analysis.json`及`targeted-test-result.json`、`native-build-query-reason-v7/REPORT-FIELDS.json`、`official-ci-dcd61a5b/terminal-status.json`、`m7-murchad/archive-root-review-dcd61a5b-v6-02/REPORT-FIELDS.json`。旧RED与此前时点完整保留，新帧按实际日期引用。
+
 ## 05:38 真实续写：181 日、v5 当前材料与 Robert 暂停冷恢复
 
 本段按2026-10-02 05:38（Asia/Shanghai）已收到并读取的实际结果续写，前述时点保留历史状态。生产来源 `458dfe94e0f0769beccbb68c90552753d5785a09`/v5 的 `formal-run-v5-05` 完成50个正式回合、50真实日，raw53173752→53174952；累计恢复181日、独立rogue233日。随后当前家庭consumer的第二次campaign-root读取失败：`step-253-fe37bcacac9c` 期望native162，同帧succession读取 `step-252` 已SUCCESS。整批原RED保留；此前单次fresh只读恢复修复仅覆盖succession，此次family读取沿既有一次fresh入口修复在途，无动作重放。G2仍3/8，Robert3153/36524，不报总体百分比。
