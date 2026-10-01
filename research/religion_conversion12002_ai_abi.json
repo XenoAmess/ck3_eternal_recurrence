@@ -1,0 +1,275 @@
+{
+  "schema": "ck3_12002_religion_conversion_ai_inputs_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "provider_constants": {
+    "kRiteStorageSlotRva": "0x5d1e2f8",
+    "kRiteBaseFulfillmentRva": "0x2bfc270",
+    "kCharacterRiteOffset": "0xb4",
+    "kRiteIdentityOffset": "0x8"
+  },
+  "complete_bodies": [
+    {
+      "name": "expected_rite_fulfillment_change.registration",
+      "start_rva": "0x57e300",
+      "end_exclusive_rva": "0x57e398",
+      "kind": "complete_exception_body",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 30 48 8b 0d d7 0a 74 05 48 8d 05 18 4e 20 04 48 89 44 24 20 c7 44 24 28 20 00 00 00 c6 44 24 2c 00 48 85 c9 75 08 e8 cc 14 9d 03 48 8b c8 0f 28 44 24 20 48 8d 54 24 20 66 0f 7f 44 24 20 e8 54 0f 9d 03 8b f8 e8 cd d4 1a 03 48 8b 1d 5e c1 6e 05 b9 18 00 00 00 e8 50 58 ca 03 48 8d 0d 35 4c 20 04 48 89 44 24 40 4c 8b c0 8b d7 48 89 48 08 48 8d 0d e8 7d 20 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 98 d9 1a 03",
+      "sha256": "67ade6516c63fad60c3bd2a7c89269e340fa8a7988a20ebad0c40e821b8ae986"
+    },
+    {
+      "name": "expected_rite_fulfillment_change.factory",
+      "start_rva": "0x2aebcf0",
+      "end_exclusive_rva": "0x2aebd39",
+      "kind": "complete_exception_body",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 20 48 8b f9 b9 d8 01 00 00 e8 ad 7e 73 01 48 8b c8 48 89 44 24 30 48 8b d8 e8 a9 11 00 00 48 8d 05 5a 91 c9 01 48 89 03 48 8b c3 8b 4f 10 89 4b 08 c6 43 0c 00 48 8b 5c 24 38 48 83 c4 20 5f c3",
+      "sha256": "c3f9ee1dcc00baedad4e3692a15578b2083c591e53ee6e2f4c11530f90e93b49"
+    },
+    {
+      "name": "expected_rite_fulfillment_change.evaluate",
+      "start_rva": "0x2aec800",
+      "end_exclusive_rva": "0x2aec992",
+      "kind": "complete_exception_body",
+      "bytes": "40 55 56 57 48 81 ec 40 02 00 00 49 8b 00 49 8b f0 48 8b fa 48 8b e9 66 83 38 04 75 06 44 8b 48 08 eb 06 41 b9 ff ff ff ff 48 8b 15 38 ad 17 03 48 89 9c 24 68 02 00 00 48 85 d2 74 26 41 8b c1 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 06 44 39 4b 18 74 07 48 8b 1d 06 ad 17 03 4c 8d 45 10 48 8b d6 48 8d 8d 38 01 00 00 e8 13 df 21 ff 81 78 0c 65 74 69 52 75 79 83 78 08 ff 74 73 4c 8b c0 48 8d 8c 24 60 02 00 00 48 8b d3 e8 d1 f9 10 00 48 8b 15 52 1a 23 03 48 85 d2 74 2d 44 8b 8b b4 00 00 00 41 8b c1 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 4c 8b 44 c8 08 4d 85 c0 74 06 45 39 48 08 74 07 4c 8b 05 91 ad 17 03 48 8b d3 48 8d 8c 24 70 02 00 00 e8 81 f9 10 00 48 8b 8c 24 60 02 00 00 48 2b 08 48 89 0f eb 7d 33 db 38 5e 20 75 73 4c 8d 0d f3 6f c9 01 89 9c 24 30 02 00 00 4c 8d 05 5d 6c 9b 01 ba 00 02 00 00 48 8d 4c 24 30 e8 96 ff d8 fd b9 ff 01 00 00 3b c1 0f 4f c1 48 8d 4c 24 30 89 84 24 30 02 00 00 48 8d 44 24 30 48 89 44 24 20 48 c7 c0 ff ff ff ff 48 ff c0 38 1c 01 75 f8 89 44 24 28 48 8d 54 24 20 88 5c 24 2c 48 8b cd 0f 28 44 24 20 66 0f 7f 44 24 20 e8 d7 43 c2 00 48 89 1f 48 8b 9c 24 68 02 00 00 48 8b c7 48 81 c4 40 02 00 00 5f 5e 5d c3",
+      "sha256": "a6113a2261e81d4d4789abe19c03ac5759eac0cab4e6ac0b7bf63af23a690a38"
+    },
+    {
+      "name": "Character.RiteBaseFulfillment.evaluate",
+      "start_rva": "0x2bfc270",
+      "end_exclusive_rva": "0x2bfc457",
+      "kind": "complete_exception_body",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 18 48 89 7c 24 20 41 56 48 83 ec 70 49 8b f0 48 8b ea 4c 8b f1 e8 38 8c fe fd 48 89 44 24 48 33 db 48 89 5c 24 50 88 5c 24 58 f3 0f 10 05 90 a0 df 01 f3 0f 11 44 24 5c 48 8d 05 03 39 8e 02 48 89 44 24 60 48 8b cd e8 c6 0d cc ff 88 5c 24 20 4c 8d 4c 24 40 4c 8d 85 f8 00 00 00 48 8b d0 48 8b ce e8 4b e9 ff ff 48 8b cd e8 f3 77 cc ff 4c 8b d8 4c 63 48 74 4c 8b 50 68 4b 8d 3c 4a 4d 8b c2 49 8b ca be 5d 02 00 00 4d 85 c9 7e 25 0f 1f 40 00 49 8b d1 48 d1 ea 4c 2b ca 4b 8d 0c 48 4c 8b ca 66 41 39 34 50 4c 0f 42 c1 49 8b c8 48 85 d2 75 df 48 3b cf 74 1d 66 3b 31 72 18 49 2b ca 48 d1 f9 85 c9 78 0e 48 63 c1 49 8b 9b d0 00 00 00 48 8b 1c c3 4c 8b 4c 24 48 49 8b c1 41 80 79 04 00 75 0a 48 83 c0 18 80 78 04 00 74 f6 0f b6 54 24 58 8b 4c 24 54 ff c1 03 d1 48 63 ca 48 8d 14 49 49 8d 0c d1 48 3b c1 74 1a 0f 1f 80 00 00 00 00 48 03 58 10 48 83 c0 18 80 78 04 00 74 f6 48 3b c1 75 ed 48 8b 05 4e ca 06 03 48 8b 0d 4f ca 06 03 48 3b d9 7c 0a 48 8b cb 48 3b d8 48 0f 4f c8 49 89 0e ba 10 00 00 00 65 48 8b 04 25 58 00 00 00 48 8b 08 8b 04 0a 39 05 e3 2b 12 03 7f 45 eb 05 4c 8b 4c 24 48 48 8d 05 db 2b 12 03 4c 3b c8 74 14 48 8b 4c 24 60 48 8b 01 41 b8 08 00 00 00 49 8b d1 ff 50 10 49 8b c6 4c 8d 5c 24 70 49 8b 5b 10 49 8b 6b 18 49 8b 73 20 49 8b 7b 28 49 8b e3 41 5e c3 48 8d 0d 95 2b 12 03 e8 74 76 62 01 83 3d 89 2b 12 03 ff 75 a8 c6 05 8c 2b 12 03 00 c6 05 9d 2b 12 03 ff 48 8d 0d 72 2b 12 03 e8 f1 75 62 01 90 eb 8b cc",
+      "sha256": "94a8d3202bf5d7a895d80d347d6722da49a760a36758b057c3a1bfd97efacae6"
+    },
+    {
+      "name": "NAI.MIN_YEARS_BETWEEN_RITE_CHANGE.register",
+      "start_rva": "0x1a62780",
+      "end_exclusive_rva": "0x1a629d7",
+      "kind": "complete_exception_body",
+      "bytes": "48 89 5c 24 08 55 56 57 48 81 ec 60 01 00 00 33 ed 89 ac 24 50 01 00 00 48 8d 05 f1 c1 b4 02 48 89 44 24 28 48 8d 05 dd a3 b4 02 48 89 44 24 20 4c 8d 0d 99 a3 b4 02 4c 8d 05 32 f7 a5 02 ba 00 01 00 00 48 8d 4c 24 50 e8 f3 a0 e1 fe 89 84 24 88 01 00 00 b9 ff 00 00 00 3b c1 0f 4f c1 89 84 24 50 01 00 00 48 8d 05 c8 c6 9c 02 48 89 44 24 40 89 6c 24 48 40 88 6c 24 4c 48 8d 44 24 50 48 89 44 24 30 48 8d 4c 24 50 48 c7 c3 ff ff ff ff 48 8b c3 48 ff c0 40 38 2c 01 75 f7 89 44 24 38 40 88 6c 24 3c b8 02 00 00 00 f0 0f c1 05 0a dd 2d 04 bf fe ff ff ff a8 01 74 34 0f 1f 44 00 00 8b c7 f0 0f c1 05 f2 dc 2d 04 66 0f 1f 44 00 00 8b 05 e6 dc 2d 04 a8 01 74 04 f3 90 eb f2 b8 02 00 00 00 f0 0f c1 05 d1 dc 2d 04 a8 01 75 d1 48 8d 4c 24 30 e8 77 69 53 02 48 8b f0 f0 0f c1 3d b8 dc 2d 04 48 85 c0 74 53 e8 92 45 59 00 48 8b fd 48 39 46 70 48 0f 44 fe 48 85 ff 74 3e 48 8d 54 24 30 48 8b cf e8 15 5c 53 02 48 8d 54 24 40 48 8b cf e8 b8 5c 53 02 48 8d 05 65 5f 20 04 48 89 47 08 c7 87 80 00 00 00 00 00 00 80 c7 87 84 00 00 00 ff ff ff 7f e9 e8 00 00 00 b9 88 00 00 00 e8 ce 12 7c 02 48 8b f8 48 89 84 24 90 01 00 00 48 89 84 24 88 01 00 00 48 8d 05 a8 79 f5 02 48 89 07 48 8d 05 1a 5f 20 04 48 89 47 08 48 89 6f 10 48 89 6f 18 48 8d 05 63 5f a9 03 48 89 47 20 48 89 6f 28 48 8d 4f 30 48 89 29 48 89 69 10 48 c7 41 18 0f 00 00 00 c6 01 00 48 8d 44 24 50 48 ff c3 80 3c 18 00 75 f7 4c 8b c3 48 8d 54 24 50 e8 5a 34 df fe 90 48 89 6f 50 48 c7 47 68 0f 00 00 00 48 89 6f 60 c6 47 50 00 48 8d 5f 70 48 89 9c 24 98 01 00 00 e8 84 32 01 ff 48 89 03 33 c0 48 89 43 08 e8 96 44 59 00 4c 8b c0 48 8d 94 24 88 01 00 00 48 8b cb e8 e3 31 01 ff 90 c7 87 80 00 00 00 00 00 00 80 c7 87 84 00 00 00 ff ff ff 7f 48 8d 05 c7 77 f5 02 48 89 07 48 8b cf e8 7c 69 53 02 48 8b 9c 24 80 01 00 00 48 81 c4 60 01 00 00 5f 5e 5d c3",
+      "sha256": "4a0b17e5483f3a7993ef3cf2e30ef754a66fba148b2a4712aa8dda894ebf5f94"
+    },
+    {
+      "name": "NAI.MIN_YEARS_BETWEEN_RITE_CHANGE.bound_check",
+      "start_rva": "0x1a629e0",
+      "end_exclusive_rva": "0x1a62a11",
+      "kind": "complete_exception_body",
+      "bytes": "48 83 ec 38 48 8d 05 7d a0 a5 02 c7 44 24 20 01 00 00 00 4c 8b c2 48 89 44 24 28 48 8d 15 22 5e 20 04 48 8d 4c 24 20 e8 c4 5d 0e ff 48 83 c4 38 c3",
+      "sha256": "e1ab55cf827c7ee348747720cc8a568adc534aabe60702755ebf02b628281e47"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "script_name_registration",
+      "rva": "0x57e311",
+      "bytes": "48 8d 05 18 4e 20 04",
+      "instruction": "lea rax, [rip + 0x4204e18]",
+      "rip_targets": [
+        "0x4783130"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "script_factory_registration",
+      "rva": "0x57e379",
+      "bytes": "48 8d 0d e8 7d 20 04",
+      "instruction": "lea rcx, [rip + 0x4207de8]",
+      "rip_targets": [
+        "0x4786168"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "actual_trigger_factory_vtable",
+      "rva": "0x2aebd17",
+      "bytes": "48 8d 05 5a 91 c9 01",
+      "instruction": "lea rax, [rip + 0x1c9915a]",
+      "rip_targets": [
+        "0x4784e78"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "target_base_call",
+      "rva": "0x2aec89a",
+      "bytes": "e8 d1 f9 10 00",
+      "instruction": "call 0x2bfc270",
+      "rip_targets": [],
+      "call_targets": [
+        "0x2bfc270"
+      ]
+    },
+    {
+      "name": "current_character_full_rite_id",
+      "rva": "0x2aec8ab",
+      "bytes": "44 8b 8b b4 00 00 00",
+      "instruction": "mov r9d, dword ptr [rbx + 0xb4]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "current_rite_storage",
+      "rva": "0x2aec89f",
+      "bytes": "48 8b 15 52 1a 23 03",
+      "instruction": "mov rdx, qword ptr [rip + 0x3231a52]",
+      "rip_targets": [
+        "0x5d1e2f8"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "current_base_call",
+      "rva": "0x2aec8ea",
+      "bytes": "e8 81 f9 10 00",
+      "instruction": "call 0x2bfc270",
+      "rip_targets": [],
+      "call_targets": [
+        "0x2bfc270"
+      ]
+    },
+    {
+      "name": "delta_target_minus_current",
+      "rva": "0x2aec8f7",
+      "bytes": "48 2b 08",
+      "instruction": "sub rcx, qword ptr [rax]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "native_trait_collection_input",
+      "rva": "0x2bfc2d3",
+      "bytes": "4c 8d 85 f8 00 00 00",
+      "instruction": "lea r8, [rbp + 0xf8]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "native_rite_trait_evaluator_call",
+      "rva": "0x2bfc2e0",
+      "bytes": "e8 4b e9 ff ff",
+      "instruction": "call 0x2bfac30",
+      "rip_targets": [],
+      "call_targets": [
+        "0x2bfac30"
+      ]
+    },
+    {
+      "name": "native_modifier_collection_call",
+      "rva": "0x2bfc2e8",
+      "bytes": "e8 f3 77 cc ff",
+      "instruction": "call 0x28c3ae0",
+      "rip_targets": [],
+      "call_targets": [
+        "0x28c3ae0"
+      ]
+    },
+    {
+      "name": "native_base_modifier_key",
+      "rva": "0x2bfc302",
+      "bytes": "be 5d 02 00 00",
+      "instruction": "mov esi, 0x25d",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "native_modifier_sum",
+      "rva": "0x2bfc390",
+      "bytes": "48 03 58 10",
+      "instruction": "add rbx, qword ptr [rax + 0x10]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "native_upper_bound",
+      "rva": "0x2bfc3a3",
+      "bytes": "48 8b 05 4e ca 06 03",
+      "instruction": "mov rax, qword ptr [rip + 0x306ca4e]",
+      "rip_targets": [
+        "0x5c68df8"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "native_lower_bound",
+      "rva": "0x2bfc3aa",
+      "bytes": "48 8b 0d 4f ca 06 03",
+      "instruction": "mov rcx, qword ptr [rip + 0x306ca4f]",
+      "rip_targets": [
+        "0x5c68e00"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "min_reevaluation_define_name",
+      "rva": "0x1a62798",
+      "bytes": "48 8d 05 f1 c1 b4 02",
+      "instruction": "lea rax, [rip + 0x2b4c1f1]",
+      "rip_targets": [
+        "0x45ae990"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "min_reevaluation_define_value_binding",
+      "rva": "0x1a628b8",
+      "bytes": "48 8d 05 65 5f 20 04",
+      "instruction": "lea rax, [rip + 0x4205f65]",
+      "rip_targets": [
+        "0x5c68824"
+      ],
+      "call_targets": []
+    }
+  ],
+  "vtables": [
+    {
+      "name": "factory",
+      "vtable_rva": "0x4786168",
+      "slot_offset": "0x8",
+      "function_rva": "0x2aebcf0"
+    },
+    {
+      "name": "numeric_evaluator",
+      "vtable_rva": "0x4784e78",
+      "slot_offset": "0x100",
+      "function_rva": "0x2aec800"
+    }
+  ],
+  "define_rtti_name_rva": "0x581bba0",
+  "stock_definitions": [
+    {
+      "path": "common/defines/ai/00_ai.txt",
+      "sha256": "3af5d4100789bad56570e05c5852f35783605813957de7a5129d23142a116120",
+      "first_line": 1839,
+      "last_line": 1842,
+      "text": "\t### Brief: MIN_YEARS_BETWEEN_RITE_CHANGE\n\t# Min years before landed rulers reevaluate which rite to follow\n\t#\n\tMIN_YEARS_BETWEEN_RITE_CHANGE = 5"
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "first_line": 888,
+      "last_line": 900,
+      "text": "\t# Spiritual fulfillment\n\tMIN_SPIRITUAL_FULFILLMENT = -100\n\tMAX_SPIRITUAL_FULFILLMENT = 100\n\n\t# Resting fulfillment from traits affected by personal tenets is multiplied by this\n\tSPIRITUAL_FULFILLMENT_MULT_PERSONAL_TENET = 2\n\t# same for tenets set as Core by Rites\n\tSPIRITUAL_FULFILLMENT_MULT_CORE_TENET = 2\n\t# Permitted Tenets also contribute to virtues, but the weight of their trait is multiplied by this\n\tSPIRITUAL_FULFILLMENT_MULT_PERMITTED_TENET = 0.5\n\t# Religion-type traits are overwritten unless synergistic with a tenet/doctrine\n\t# Synergy adds religion weight multiplied by this, instead of keeping only the highest\n\tSPIRITUAL_FULFILLMENT_MULT_RELIGION_TRAIT = 1"
+    }
+  ],
+  "base_direct_e8_call_sites": [
+    "0xedfdf8",
+    "0x1933ade",
+    "0x1cfc82c",
+    "0x2aec89a",
+    "0x2aec8ea",
+    "0x2aeca3e",
+    "0x2d08ad7"
+  ],
+  "final_ai_desire_verified": false,
+  "ai_scheduler_verified": false,
+  "unknown": [
+    "actual landed AI rite reevaluation scheduler",
+    "complete conversion AI candidate enumeration and final scoring",
+    "MIN_YEARS_BETWEEN_RITE_CHANGE actual AI consumption",
+    "conversion AI command submission and observed outcome"
+  ]
+}
