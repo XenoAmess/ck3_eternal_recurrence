@@ -118,7 +118,54 @@ no metadata inserted by the test. Its unavailable reason and false core
 readiness survive the transport. Together with the already-passed six native
 payload/driver/SDK/default-off cases, seven transport checks are recorded at
 `artifacts/g2-offline-2026-10-01/python-routes/government-actual-caller-sdk.json`
-and `government-python-wire-result.json`; the earlier six were reused.
+and `government-python-wire-result.json`; the earlier six were reused. Those
+tests supplied the completed frame at `wait_for_command_result`; they did not
+exercise the shared driver's preceding `NativeProtocolState.ingest` boundary.
+
+## First paused sample: native observation succeeds, transport rejects frame
+
+The first actual MCP sample at 2026-10-01 08:36 UTC retained
+`paused-readonly-samples/sample-20261001T083615Z-c35a3d15/003-ck3_query_government_runtime_adapter_private_v1.json`
+under the common `artifacts/g2-offline-2026-10-01/` root. It returned
+`government runtime adapter command_result unavailable`. The surrounding
+paused snapshots retained player 29829, date 53169072 and native revision 1;
+the mailbox's published/completed/executed counters changed from zero to one.
+This failed SDK attempt remains evidence and is not replaced by later results.
+
+The coordinator then captured the actual native response under
+`live-raw/readonly-20261001T084349Z/government-response.json`, SHA-256
+`3004d5020ccb605507f4f7346fa2ea41df6e88a998ff5a2240a04480735adad4`.
+That paused response has native revision 3 and the same player/date. Its
+payload is available: `feudal_government`, five complete stock flags, all 44
+current feature identities, actual script DLC identities, `core_supported`
+and both same-frame/core-adapter readiness true. The missing `status` or
+`backend_id` at the outer result level is not a parser defect: those values
+belong to the nested adapter payload and its provenance, where they exist.
+The earlier raw attempt whose step incorrectly ended in `-private` was a
+separate coordinator harness typo, not this capability failure.
+
+The actual caller omitted `protocol_version: 1` from its outer
+`command_result`. The unchanged production `NativeProtocolState.ingest`
+rejects the retained raw response with
+`native bridge protocol_version must be 1`, before it can cache the result.
+`government/live-protocol-red-reproduction.json` records this deterministic
+reproduction through the real cache, without opening a game pipe or reading
+a process. The production fix adds that existing protocol field to the GOV
+caller; the provider, native offsets and shared parser are unchanged.
+
+Only the changed caller fixture was rebuilt under `/Od` and `/O2`, both with
+`/W4 /WX`. Its actual output now asserts an integer `protocol_version` equal
+to 1 and passes real `ingest` followed by `wait_for_command_result`. The new
+packet is `government/caller-protocol-v3/Od/wire/caller-unavailable.json`
+(also `O2`), SHA-256
+`87c16cc7c4c98fa0df525407ddb956116ff7fa79f31c3d00f7f0944e80396b1e`;
+its receipt is `government/caller-protocol-v3/receipt.json`, SHA-256
+`6dca5101783ab6e1fe36af1dc766d11a4c79cecbc23d9b5d946923e4f40a2768`.
+The fixture's absent CK3 campaign roots still produce the expected typed
+`campaign_collector_unavailable`, with false core readiness preserved. The
+earlier producer/legacy matrices and all failed artifacts are reused. The
+frozen running DLL is unchanged; an updated DLL and a new coordinator-owned
+paused SDK query are still required to confirm the repaired live transport.
 
 Focused source acceptance is reproducible with:
 
@@ -146,6 +193,8 @@ Prior exact-build native campaign/feature ABI proofs are reused, including the
 campaign producer's fixture evidence. The new composite fixture owns a narrow
 valid feudal campaign input; it does not claim a new full live campaign read.
 
-This package is `static-ready`. Real paused snapshots, multiple rulers/seeds/
-governments and checkpoint continuation remain live work. M7 completion is
-unchanged.
+This repaired package is `static-ready`. One actual paused native feudal
+observation is now retained, while its original SDK transport was RED and the
+updated transport awaits a coordinator-owned live query. Multiple rulers,
+seeds, governments and checkpoint continuation remain live work. M7
+completion is unchanged.

@@ -66,6 +66,8 @@ def build_mode(root: Path, shell: Path, output_root: Path, optimized: bool) -> d
     payload = envelope["result"]["government_runtime_adapter"]
     if (
         envelope["type"] != "command_result"
+        or type(envelope["protocol_version"]) is not int
+        or envelope["protocol_version"] != 1
         or envelope["request_id"] != "caller-fixture"
         or not envelope["ok"]
         or envelope["result"]["step"] != "query-government-runtime-adapter-v1"
@@ -84,6 +86,7 @@ def build_mode(root: Path, shell: Path, output_root: Path, optimized: bool) -> d
     return {
         "mode": mode,
         "compile": "GREEN_W4_WX",
+        "wire_protocol_version": envelope["protocol_version"],
         "fixture": completed.stdout.strip(),
         "wire_unavailable_reason": payload["unavailable_reason"],
         "wire_json_sha256": hashlib.sha256(wire_json.read_bytes()).hexdigest(),

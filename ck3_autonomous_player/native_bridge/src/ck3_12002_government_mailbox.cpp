@@ -177,7 +177,7 @@ bool ReadGovernmentRuntimeAdapterOnApplicationMain12002(
     operation.result.date_raw = context.observed_date_raw;
     const auto payload = SerializeGovernmentRuntimeAdapterSourceV1(
         operation.result, binding.feature_profile, revision);
-    serialized = "{\"type\":\"command_result\",\"request_id\":";
+    serialized = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
     AppendCallerJsonString(serialized, request_id);
     serialized += ",\"ok\":true,\"result\":{\"step\":";
     AppendCallerJsonString(serialized, kGovernmentRuntimeAdapterV1Step);

@@ -229,6 +229,7 @@ bool TestRealCallerAndMailboxTypedUnavailable() {
          adapter.snapshot_reads.load() >= 1 &&
          g_wire_json.find("\"status\":\"unavailable\"") != std::string::npos &&
          g_wire_json.find("\"type\":\"command_result\"") != std::string::npos &&
+         g_wire_json.find("\"protocol_version\":1,") != std::string::npos &&
          g_wire_json.find("\"accepted\":true") != std::string::npos &&
          g_wire_json.find("\"private_build\":true") != std::string::npos &&
          g_wire_json.find("\"read_only\":true") != std::string::npos &&
@@ -256,7 +257,7 @@ int main(int argc, char **argv) {
     return 2;
   }
   std::cout << "government12002 caller: GREEN (parser, disabled/unknown build, "
-               "zero revision, actual queued provider, private metadata, "
+               "zero revision, actual queued provider, protocol version 1, private metadata, "
                "typed unavailable, reclaim)\n";
   return 0;
 }

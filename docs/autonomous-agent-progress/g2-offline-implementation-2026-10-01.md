@@ -334,3 +334,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 ## 10-01 16:52:49 Root actual cold and paused migration
 
 完成用户要求的迁移进度/ETA文档：[ck3-1.20.0.2-migration-progress-2026-10-01.md](../ck3-1.20.0.2-migration-progress-2026-10-01.md)。正式preflight PASS后root启动CK3 PID63128，实际stdio采样确认paused actor29829/date53169072，Council13候选、Prisoner0、Feast当前counter读回。GOV/LAW真实RED与独立raw定位保留；Sway/家族补真实ID查询成功。首pair为独立legacy rogue/h74，不是Robert ordinary；G2仍3/8，Robert3153/36524，本阶段0日期。root唯一操作游戏，其他约40路后台源/SDK/构建并行，战争停止宗教开放。候选第一freeze7c0e373与L不动；错误最小修复及下一native/profile在途。完整actual日志/失败/artifact/source/binary pins和时间窗口见进度文档，不重复已过矩阵。此文档与runner已执行准备结果独立commit并FF push。
+
+### 16:54:16 Repair actual GOV command result protocol
+
+首paused SDK真实RED已定位：actual native政府44features/core ready成功，但外层command_result漏protocol_version。旧真实raw经NativeProtocolState.ingest确定拒收；cpp仅补1字段，actual caller Od/O2与真实ingest/wait通过，保留首RED和root外部诊断step笔误attempt。需中央受影响DLL重建及root新版实际SDK复验，不改首冻结L。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\government\protocol-fix-commit-paths.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
