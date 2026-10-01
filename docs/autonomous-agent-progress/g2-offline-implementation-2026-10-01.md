@@ -646,3 +646,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 6 owned files. Single O2/W4/WX 30checks and five complete protocol responses passed, real submit owner drain wait reclaim. Informational dependency pins excluded from commit; actual paused frame remains pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\personal-parameters\personal-parameters-mailbox-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:08:20 Add specific Sway invalidation notification observation
+
+14 frozen sources. Actual selected notification command and inherited scope preserve exact pair and authored reason key; opaque keys are not interpreted. Provider and whole caller checks passed. Native termination cause and material effect not inferred; root live remaining. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-completion\invalidation-query-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

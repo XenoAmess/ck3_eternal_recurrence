@@ -1,0 +1,179 @@
+{
+  "schema": "xar.ck3.sway.invalidation-reason-reader-abi.v1",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "source_dependency": {
+    "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\research\\sway_completion12002_invalidation_context_abi.json",
+    "sha256": "83d040cea979de274825ec87330ad4e732ddf7b142a88f7bf5f95ef15be4e458",
+    "proof_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-context\\source-proof.json",
+    "proof_sha256": "23cc35e5fa7b731cee2362daef41e4e01f1a9581e0c00a5508ea77689a657bf7",
+    "verification_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-invalidation-context\\verification.json",
+    "verification_sha256": "45d49de4695205061b1ee70a5c1bea25ba5732264bf7035252e049e27da5e7a6",
+    "previous_native_matrix_repeated": false
+  },
+  "native_named_lookup": {
+    "rva": "0x373B540",
+    "prototype": "GenericToken16* __fastcall(const EnvironmentalScope* RCX, GenericToken16* out RDX, int32 identifier R8D)",
+    "returns": "out pointer RAX; copies token16; missing produces kind0 token",
+    "environment": {
+      "data": "0x00:pointer",
+      "capacity": "0x08:int32",
+      "count": "0x0C:int32",
+      "stride": "0x20",
+      "row_identifier": "0x00:int32",
+      "row_token": "0x08:token16",
+      "persistent_scope_pointer": "0x3D0:pointer"
+    },
+    "script_scope_data": {
+      "root_token": "0x00:token16",
+      "data": "0x18:pointer",
+      "capacity": "0x20:int32",
+      "count": "0x24:int32",
+      "stride": "0x18",
+      "row_identifier": "0x00:int32",
+      "row_token": "0x08:token16"
+    },
+    "precedence": "first matching Env32 row; if none, first matching ScriptScopeData24 row through Env+3D0; do not resolve copied Scheme token",
+    "name_identifier_globals": {
+      "scheme": "0x5D4BD60:int32",
+      "owner": "0x5D4BD5C:int32",
+      "target": "0x5D4BD58:int32"
+    },
+    "name_registry": {
+      "table_getter": "0x3F8A800",
+      "resolve_identifier_name": "0x3F8A6F0"
+    },
+    "effect_context": {
+      "root": "0x00:token16*",
+      "previous_root": "0x08:token16*",
+      "script_scope": "0x10:ScriptScopeData*",
+      "environment": "0x18:EnvironmentalScope*",
+      "flag": "0x20:byte",
+      "rng": "0x28:pointer"
+    },
+    "builder": "0x3765780 sets root and scriptData to input ScriptScopeData, Env+3D0 to same input; 0x376F0B0 changes child root, retains scriptData/environment and stores former root in previous_root",
+    "token": {
+      "size": "0x10",
+      "kind": "0x00:uint16",
+      "subtype": "0x02:uint16",
+      "payload": "0x08:uint64",
+      "character_kind": 4,
+      "scheme_kind": 9,
+      "full_identity": "low32 payload; keep full generation-bearing ID and all16 copied bytes"
+    }
+  },
+  "stock_command_key": {
+    "effect_field": "0x08:int32",
+    "domain_flag": "0x0C:uint8",
+    "supported_flag": 0,
+    "getter_rva": "0x3F4F900",
+    "prototype": "const MsvcString32* __fastcall(int32 command_key_id RCX)",
+    "returned_string": {
+      "inline_or_pointer": "0x00",
+      "size": "0x10:uint64",
+      "capacity": "0x18:uint64",
+      "inline_rule": "capacity<16 uses object+0; otherwise pointer at object+0"
+    },
+    "native_domain_dispatch": "0x37663A5 tests Effect+C; zero calls3F4F900 with Effect+8. Nonzero uses3F8A6F0(table=3768280(), ID=Effect+8).",
+    "unsupported_nonzero": "not covered by this stock reader; return raw input/unclassified instead of treating command ID as named-scope ID"
+  },
+  "selected_source": {
+    "execute_abi": "void __fastcall(const EffectDefinition* RCX, const EffectContext* RDX); reuse frozen execution-install proof",
+    "existing_message_primary_vtables": {
+      "0x4837280": "0x2CC9440",
+      "0x4837428": "0x2CC8490",
+      "0x4837360": "0x2CC71A0"
+    },
+    "command": "send_interface_toast",
+    "scalar_title": "sway_invalidated_title",
+    "title_wrapper": "effect+60 primaryvtable48BD0B0; object pointer+70 primaryvtable4929F08; authored key object+30 MsvcString32",
+    "type": "stock authors no type property; generic toast fallback; reason match does not require a sway-specific type key",
+    "direct_children": {
+      "data": "0x30:pointer",
+      "capacity": "0x38:int32",
+      "count": "0x3C:int32",
+      "stride": "0x08:pointer",
+      "required_count": 1
+    },
+    "child_key": "child+50:MsvcString32, authored parser value before localization",
+    "reason_child_children": "stock reason child+3C count=0; conditional or nested child subtree is outside this literal stock tuple",
+    "matches": [
+      {
+        "source_reason": "target_dead_notification_input",
+        "child_command": "custom_tooltip",
+        "child_vtable": "0x4931918",
+        "authored_key": "sway_invalidated_dead"
+      },
+      {
+        "source_reason": "target_out_of_range_notification_input",
+        "child_command": "custom_description_no_bullet",
+        "child_vtable": "0x4931D10",
+        "authored_key": "scheme_target_not_in_diplomatic_range"
+      },
+      {
+        "source_reason": "opaque_existing_authored_branch",
+        "child_command": "custom_tooltip",
+        "child_vtable": "0x4931918",
+        "authored_key": "sway_invalidated_war",
+        "domain_work": "identity only; no policy or predicate research"
+      }
+    ],
+    "factory_bindings": {
+      "custom_tooltip": "71FF10 literal4703E58 -> entry4932F90 -> factory3770570 -> primary4931918",
+      "custom_description_no_bullet": "720120 literal4930680 -> entry4932F18 -> factory37707E0 -> primary4931D10"
+    },
+    "parser_bindings": "custom_tooltip3779C70 and customdescription3779950, property0x8F -> child+50 ->3F83BE0 direct parser value copy; scalar tooltip3779CB0 forwards value form as0x8F",
+    "selection_proof": "stock conditions surround three distinct toast definitions; CIfEffect376DB90 tests372E020 result before child dispatch; each selected toast contains one direct unconditional reason child. Never recursively search a whole conditional tree for keys.",
+    "join": "copy root4 and native named owner4/target4/scheme9; root fullID and owner fullID equal expected actor, target fullID equals expected target, scheme fullID equals expected SchemeID",
+    "semantics": "actual execution input of selected authored notification branch, including its literal reason child. Does not prove rendering, queue/history insertion, persisted cause enum, final end status, or earlier missed notifications.",
+    "multiple_receipts": "dead/opaque branch is followed by an independent out-of-range if; preserve multiple source records for one full SchemeID",
+    "unknown_cases": "missing tokens, different title domain, multiple/conditional/foreign children, unsupported command domain or keys remain raw/unclassified"
+  },
+  "reader": {
+    "top_vtable": "0x4837428",
+    "top_command": "send_interface_toast",
+    "command_mode": 0,
+    "title": "sway_invalidated_title",
+    "main_direct_count": 1,
+    "child_nested_count": 0,
+    "tooltip_child": {
+      "vtables": [
+        "0x4931918",
+        "0x4931850"
+      ],
+      "command": "custom_tooltip",
+      "supported_authored_keys": [
+        "sway_invalidated_dead",
+        "sway_invalidated_war"
+      ]
+    },
+    "description_child": {
+      "vtable": "0x4931d10",
+      "command": "custom_description_no_bullet",
+      "supported_authored_key": "scheme_target_not_in_diplomatic_range"
+    },
+    "child_text_offset": "0x50",
+    "root_join": "root4 == effective owner4 == played actor",
+    "inherited_scheme_join": "native lookup scheme9/target4 raw full IDs; no destroyed Scheme resolution",
+    "source_semantics": "selected authored notification executing input; preserve multiple receipts; no end cause, terminal, render, history or material claim"
+  },
+  "api": {
+    "header": "include/xar_bridge/ck3_12002_sway_completion_invalidation_reason.hpp",
+    "capture_sink": "CaptureAndRecordSwayInvalidationReason12002",
+    "recorder": "SwayInvalidationReasonRecorder12002",
+    "bare_body": "SerializeSwayInvalidationReason12002",
+    "schema": "xar.ck3.sway-invalidation-notification-source.v1",
+    "selector": "query-sway-completion-invalidation-reason-v1-private",
+    "new_installer": false,
+    "old_hidden_execution_files_changed": false
+  },
+  "fixture": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\invalidation-reason\\attempt-002\\result.json",
+    "compiler": "MSVC /Od and /O2, /W4 /WX",
+    "checks_each": 23,
+    "native_getter": "typed fixture callback; native ABI independently source-proven",
+    "entry_embedding_macro_added_after_native_fixture": true,
+    "default_main_behavior_changed": false
+  }
+}
