@@ -1,0 +1,298 @@
+{
+  "schema": "ck3_12002_religion_conversion_outcome_state_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "provider_constants": {
+    "kFlagExpiryCounterOffset": "0xc",
+    "kFlagCurrentCounterOffset": "0x28",
+    "kBaselineFulfillmentOffset": "0x300"
+  },
+  "native_spans": [
+    {
+      "name": "add_character_flag.registration",
+      "start_rva": "0x5dc8b0",
+      "end_exclusive_rva": "0x5dc954",
+      "kind": "complete_function_body",
+      "abi": "registration only; not called",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 30 48 8b 0d 27 25 6e 05 48 8d 05 38 b1 29 04 48 89 44 24 20 c7 44 24 28 12 00 00 00 c6 44 24 2c 00 48 85 c9 75 08 e8 1c 2f 97 03 48 8b c8 0f 28 44 24 20 48 8d 54 24 20 66 0f 7f 44 24 20 e8 a4 29 97 03 48 8b 1d cd db 68 05 8b f8 48 85 db 75 0c e8 a1 6c 18 03 48 8b 1d ba db 68 05 b9 18 00 00 00 e8 94 72 c4 03 48 8d 0d 19 b0 29 04 48 89 44 24 40 4c 8b c0 8b d7 48 89 48 08 48 8d 0d b4 d7 29 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 dc 72 18 03",
+      "sha256": "f93160cc9cac5c233eb07aa8fbf086c8a1c9df1a9f3aa6f65cd8f50fb143c3ef"
+    },
+    {
+      "name": "CharacterFlagEffect.construct",
+      "start_rva": "0x2d5cf20",
+      "end_exclusive_rva": "0x2d5cf9e",
+      "kind": "complete_function_body",
+      "abi": "constructor attribution; not called",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 20 48 8b f9 b9 98 00 00 00 e8 7d 6c 4c 01 48 8b d8 48 89 44 24 30 48 8b c8 e8 29 72 a0 00 48 8d 05 da d0 b1 01 48 89 03 c7 43 50 ff ff ff ff 33 c0 48 89 43 58 48 89 43 68 48 c7 43 70 0f 00 00 00 88 43 58 89 43 78 48 c7 43 7c ff ff ff ff 48 89 83 88 00 00 00 48 89 83 90 00 00 00 8b 47 10 89 43 08 c6 43 0c 00 48 8b c3 48 8b 5c 24 38 48 83 c4 20 5f c3",
+      "sha256": "94e8484554e23dd5d266d4f9d2ecd11a5441a19076cda94d2505e36bd6dcffd8"
+    },
+    {
+      "name": "CharacterFlagEffect.execute",
+      "start_rva": "0x2d56680",
+      "end_exclusive_rva": "0x2d56830",
+      "kind": "complete_function_body",
+      "abi": "effect attribution; not called",
+      "bytes": "48 89 74 24 10 57 48 81 ec 40 02 00 00 48 8b 02 48 8b f2 48 8b f9 66 83 38 04 75 06 44 8b 40 08 eb 06 41 b8 ff ff ff ff 48 8b 15 b9 0e f1 02 48 85 d2 74 26 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 18 74 07 48 8b 05 8f 0e f1 02 48 89 9c 24 50 02 00 00 33 db 48 39 98 d0 01 00 00 74 79 4c 8d 0d 51 e3 9a 01 89 9c 24 30 02 00 00 4c 8d 05 97 af 87 01 ba 00 02 00 00 48 8d 4c 24 30 e8 a8 61 b2 fd b9 ff 01 00 00 3b c1 0f 4f c1 48 8d 4c 24 30 89 84 24 30 02 00 00 48 8d 44 24 30 48 89 44 24 20 48 c7 c0 ff ff ff ff 90 48 ff c0 38 1c 01 75 f8 89 44 24 28 48 8d 54 24 20 88 5c 24 2c 48 8b cf 0f 28 44 24 20 66 0f 7f 44 24 20 e8 e8 a6 9b 00 e9 aa 00 00 00 80 b8 a5 01 00 00 00 74 58 4c 8d 0d cf e2 9a 01 89 9c 24 30 02 00 00 4c 8d 05 05 65 ac 01 ba 00 02 00 00 48 8d 4c 24 30 e8 26 61 b2 fd b9 ff 01 00 00 3b c1 0f 4f c1 48 8d 4c 24 30 89 84 24 30 02 00 00 48 8d 44 24 30 48 89 44 24 20 48 c7 c0 ff ff ff ff 48 ff c0 38 1c 01 75 f8 e9 7a ff ff ff 48 8b 88 b0 01 00 00 89 5c 24 20 48 89 5c 24 28 48 85 c9 74 08 e8 18 0a 01 ff 48 8b d8 4c 8b 46 28 48 8d 4f 78 48 8b d6 e8 75 6b 9f 00 8b 57 50 48 8d 4b 08 44 8b c8 4c 8d 44 24 20 e8 11 1c 9d 00 48 8b cb e8 c9 16 9d 00 48 8b 9c 24 50 02 00 00 48 8b b4 24 58 02 00 00 48 81 c4 40 02 00 00 5f c3",
+      "sha256": "be2294520204326753ca64c974ae2794bea9a1acbedf16edd33edede7b7846e7"
+    },
+    {
+      "name": "FlagSet.insert_or_replace",
+      "start_rva": "0x3728420",
+      "end_exclusive_rva": "0x37285ae",
+      "kind": "complete_function_body",
+      "abi": "void(FlagSet+8,key,payload,duration); not called",
+      "bytes": "48 89 5c 24 20 56 48 83 ec 40 4c 63 51 14 33 db 48 8b f1 45 85 d2 75 03 89 59 20 48 89 7c 24 58 48 8d 05 d9 4d d6 00 48 89 44 24 20 89 54 24 28 41 0f 10 00 0f 11 44 24 30 45 85 c9 7e 08 8b 79 20 41 03 f9 eb 05 bf ff ff ff ff 48 89 6c 24 50 8b cb 4c 89 74 24 60 89 7c 24 2c 45 85 d2 0f 8e 98 00 00 00 48 8b 6e 08 4c 8b c3 48 8d 45 08 90 44 8d 49 01 39 10 74 11 49 ff c0 48 83 c0 20 41 8b c9 4d 3b c2 7c e9 eb 73 45 8d 5a ff 85 c9 74 21 48 63 c1 48 c1 e0 05 44 8b 44 28 ec 41 83 f8 ff 7e 0f 83 ff ff 7e 05 41 3b f8 7e 05 45 32 d2 eb 03 41 b2 01 41 3b cb 74 1c 83 ff ff 7e 17 49 63 c1 48 c1 e0 05 44 8b 44 28 0c 41 83 f8 ff 7e 20 41 3b f8 7c 1b 45 84 d2 74 16 48 63 c1 48 c1 e0 05 89 54 28 08 89 7c 28 0c 0f 11 44 28 10 eb 54 8b d1 48 8d 4e 08 e8 a4 0a 00 00 48 63 46 14 83 ff ff 7e 5e 8d 50 ff 85 d2 78 29 4c 8b 46 08 48 63 c2 49 83 c0 0c 48 c1 e0 05 4c 03 c0 66 90 41 8b 00 83 f8 ff 7e 37 3b f8 7c 33 49 83 e8 20 83 ea 01 79 eb 33 d2 4c 8d 44 24 20 48 8d 4e 08 e8 2b 0d 00 00 4c 8b 74 24 60 48 8b 7c 24 58 48 8b 6c 24 50 48 8b 5c 24 68 48 83 c4 40 5e c3 ff c2 eb d4 85 c0 7e ce 48 8b d0 48 8b cb 48 8b 46 08 48 83 c0 0c 83 38 ff 7f 10 ff c3 48 ff c1 48 83 c0 20 48 3b ca 7c ed eb ab 8b d3 eb a9",
+      "sha256": "7baa63151016f151ab62b977181058013baed8ef91d71c09ec9eec42dfba71ba"
+    },
+    {
+      "name": "FlagSet.update",
+      "start_rva": "0x3727600",
+      "end_exclusive_rva": "0x372789a",
+      "kind": "complete_function_body",
+      "abi": "void(FlagSet*); increments counter then expires; not called",
+      "bytes": "41 55 41 57 48 83 ec 48 48 63 51 1c 4c 8b f9 48 89 5c 24 70 4c 89 64 24 28 4c 89 74 24 20 85 d2 74 79 48 63 41 1c 4c 8b 41 10 48 c1 e0 05 42 83 7c 00 ec 00 7c 65 ff 41 28 48 8b c2 8b 49 28 48 c1 e0 05 42 3b 4c 00 ec 7c 51 49 8d 4f 08 e8 0d fd 15 fd 49 63 47 1c 85 c0 74 21 48 8b c8 33 d2 49 8b 47 10 48 83 c0 e0 48 c1 e1 05 48 03 c8 48 8b 01 ff 10 41 ff 4f 1c 41 8b 47 1c 41 83 7f 1c 00 74 18 48 63 c8 49 8b 47 10 48 c1 e1 05 8b 54 01 ec 83 fa ff 7e 04 85 d2 74 b8 4d 8b 77 30 45 33 ed 49 63 47 3c 48 8d 0c c0 4d 8d 24 ce 4d 3b f4 0f 84 26 01 00 00 48 89 6c 24 40 49 8d 5e 34 48 89 74 24 38 48 89 7c 24 30 66 0f 1f 44 00 00 44 38 6b 10 0f 84 e3 00 00 00 ff 43 0c 48 63 0b 48 8b 43 f4 8b 53 0c 3b 54 88 fc 0f 8c cc 00 00 00 8b 53 e8 83 ea 01 78 3a 48 63 c2 4c 8d 04 85 00 00 00 00 0f 1f 40 00 0f 1f 84 00 00 00 00 00 4c 8b 4b f4 43 8b 0c 01 83 f9 ff 74 16 2b 4b 0c 41 8b c5 0f 49 c1 43 89 04 01 49 83 e8 04 83 ea 01 79 dd 8b 6b e8 44 89 6b 0c 8d 7d ff 85 ff 78 5e 48 8b 4b f4 48 63 c7 48 8d 34 85 00 00 00 00 8b 04 0e 83 f8 ff 74 47 85 c0 7f 43 48 8d 4b dc 44 8b c5 8b d7 e8 d6 6f 3c fe 4c 8b 4b f4 4c 63 03 49 c1 e0 02 48 63 c5 48 63 cf 49 8d 14 81 4c 2b c2 49 8d 0c 89 4d 03 c1 e8 f2 f0 af 00 ff 0b ff cd 48 8b 4b f4 48 83 ee 04 83 ef 01 79 b1 48 63 03 85 c0 74 12 48 8b c8 48 8b 43 f4 83 7c 88 fc ff 74 04 b0 01 eb 02 32 c0 88 43 10 49 83 c6 48 48 83 c3 48 4d 3b f4 0f 85 02 ff ff ff 48 8b 7c 24 30 48 8b 74 24 38 48 8b 6c 24 40 4c 8b 74 24 20 4c 8b 64 24 28 48 8b 5c 24 70 45 38 6f 4e 0f 85 9b 00 00 00 45 39 6f 1c 74 13 49 63 4f 1c 49 8b 47 10 48 c1 e1 05 83 7c 01 ec ff 7f 34 49 63 47 3c 49 8b 57 30 48 8d 0c c0 48 8d 04 ca 48 3b d0 74 12 44 38 6a 44 75 09 48 83 c2 48 48 3b d0 75 f1 48 3b d0 49 0f 44 d5 48 85 d2 75 04 32 c9 eb 02 b1 01 41 83 7f 48 ff 0f 95 c0 3a c1 74 40 b9 01 00 00 00 8b 05 0c 87 57 02 85 c0 75 0a f0 0f b1 0d 00 87 57 02 74 04 f3 90 eb e8 48 8d 54 24 68 4c 89 7c 24 68 48 8d 0d e9 11 d4 01 e8 bc 8a 15 fd 41 c6 47 4e 01 90 44 89 2d d7 86 57 02 48 83 c4 48 41 5f 41 5d c3",
+      "sha256": "bbeaafd1c74d661774bd18c03eee9182c13ded0cc9fe037b06ea67b9ef222d6f"
+    },
+    {
+      "name": "FlagRows.normalize_counter",
+      "start_rva": "0x887360",
+      "end_exclusive_rva": "0x8873a8",
+      "kind": "complete_function_body",
+      "abi": "void(FlagSet+8); mutating normalizer; not called",
+      "bytes": "83 79 20 00 74 41 8b 51 14 45 33 d2 83 ea 01 78 32 4c 63 c2 49 c1 e0 05 0f 1f 84 00 00 00 00 00 4c 8b 49 08 43 8b 44 01 0c 83 f8 ff 7e 15 2b 41 20 41 0f 48 c2 43 89 44 01 0c 49 83 e8 20 83 ea 01 79 dd 44 89 51 20 c3",
+      "sha256": "e61c55ecba0b25d655bce7ec304ccc812ee3379eb5ac74ce17adb8a8964f8bfa"
+    },
+    {
+      "name": "FlagRow.serialize",
+      "start_rva": "0x888870",
+      "end_exclusive_rva": "0x8889ee",
+      "kind": "complete_function_body",
+      "abi": "serializer attribution; not called",
+      "bytes": "48 89 5c 24 18 55 56 57 48 83 ec 30 48 8b fa 48 8b f1 8b 59 08 e8 76 1f 70 03 8b d3 48 8b c8 e8 5c 1e 70 03 48 8b d8 8b 68 10 48 83 78 18 10 72 03 48 8b 18 48 89 5c 24 20 89 6c 24 28 c6 44 24 2c 00 48 8b cf e8 e6 02 70 03 ba 84 03 00 00 48 8b cf e8 19 06 70 03 ba 01 00 00 00 48 8b cf e8 0c 06 70 03 48 8b 4f 08 80 7f 14 00 74 51 b8 0f 00 00 00 66 89 44 24 58 48 8b 01 41 b8 02 00 00 00 48 8d 54 24 58 ff 50 50 66 89 6c 24 50 48 8b 4f 08 48 8b 01 41 b8 02 00 00 00 48 8d 54 24 50 ff 50 50 0f b7 54 24 50 66 85 d2 74 33 48 8b 4f 08 48 8b 01 44 8b c2 48 8b d3 ff 50 50 eb 21 0f 28 44 24 20 66 0f 7f 44 24 20 48 8b 01 48 8d 54 24 20 ff 50 38 66 66 66 0f 1f 84 00 00 00 00 00 ba 10 00 00 00 48 8b cf e8 83 05 70 03 83 7e 0c ff 7e 3a 48 8b cf e8 35 02 70 03 ba 85 03 00 00 48 8b cf e8 68 05 70 03 ba 01 00 00 00 48 8b cf e8 5b 05 70 03 8b 56 0c 48 8b cf e8 e0 07 70 03 ba 10 00 00 00 48 8b cf e8 43 05 70 03 48 8b cf e8 fb 01 70 03 ba f0 00 00 00 48 8b cf e8 2e 05 70 03 ba 01 00 00 00 48 8b cf e8 21 05 70 03 48 8d 46 10 48 89 44 24 50 48 8d 54 24 50 48 8b cf e8 9b fc ff ff ba 10 00 00 00 48 8b cf 48 8b 5c 24 60 48 83 c4 30 5f 5e 5d e9 f2 04 70 03",
+      "sha256": "bc928980e4d6a9a1cf8b4c381d5e32fd4437ec62c44329234aac3720ef06ebb4"
+    },
+    {
+      "name": "FlagRow.deserialize",
+      "start_rva": "0x888cd0",
+      "end_exclusive_rva": "0x888d36",
+      "kind": "complete_function_body",
+      "abi": "deserializer attribution; not called",
+      "bytes": "48 83 ec 28 4c 8b ca 41 81 e8 f0 00 00 00 74 3b 41 81 e8 94 02 00 00 74 22 41 83 f8 01 74 0c 48 8b ca 48 83 c4 28 e9 e5 8f 6f 03 48 8d 51 0c 49 8b c9 48 83 c4 28 e9 45 b1 6f 03 48 8d 51 08 49 8b c9 48 83 c4 28 e9 25 1d 70 03 48 8d 41 10 49 8b c9 48 8d 54 24 48 48 89 44 24 48 e8 bf fc ff ff 48 83 c4 28 c3",
+      "sha256": "4e858a9a371826302db84d38fee27ea20e1468ab568ae0e7b6ed16812162c3d5"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "effect_script_data",
+      "rva": "0x2d567ce",
+      "bytes": "48 8b 88 b0 01 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x1b0]"
+    },
+    {
+      "name": "effect_flag_collection",
+      "rva": "0x2d567e3",
+      "bytes": "e8 18 0a 01 ff",
+      "instruction": "call 0x1d67200"
+    },
+    {
+      "name": "effect_actual_duration",
+      "rva": "0x2d567f6",
+      "bytes": "e8 75 6b 9f 00",
+      "instruction": "call 0x374d370"
+    },
+    {
+      "name": "effect_flagset_subobject",
+      "rva": "0x2d567fe",
+      "bytes": "48 8d 4b 08",
+      "instruction": "lea rcx, [rbx + 8]"
+    },
+    {
+      "name": "effect_insert",
+      "rva": "0x2d5680a",
+      "bytes": "e8 11 1c 9d 00",
+      "instruction": "call 0x3728420"
+    },
+    {
+      "name": "empty_rows_reset_counter",
+      "rva": "0x3728438",
+      "bytes": "89 59 20",
+      "instruction": "mov dword ptr [rcx + 0x20], ebx"
+    },
+    {
+      "name": "native_flag_row_type",
+      "rva": "0x3728440",
+      "bytes": "48 8d 05 d9 4d d6 00",
+      "instruction": "lea rax, [rip + 0xd64dd9]"
+    },
+    {
+      "name": "duration_positive",
+      "rva": "0x3728459",
+      "bytes": "45 85 c9",
+      "instruction": "test r9d, r9d"
+    },
+    {
+      "name": "actual_current_counter",
+      "rva": "0x372845e",
+      "bytes": "8b 79 20",
+      "instruction": "mov edi, dword ptr [rcx + 0x20]"
+    },
+    {
+      "name": "actual_expiry_from_counter",
+      "rva": "0x3728461",
+      "bytes": "41 03 f9",
+      "instruction": "add edi, r9d"
+    },
+    {
+      "name": "permanent_sentinel",
+      "rva": "0x3728466",
+      "bytes": "bf ff ff ff ff",
+      "instruction": "mov edi, 0xffffffff"
+    },
+    {
+      "name": "row_stride",
+      "rva": "0x372849b",
+      "bytes": "48 83 c0 20",
+      "instruction": "add rax, 0x20"
+    },
+    {
+      "name": "actual_row_key_write",
+      "rva": "0x3728502",
+      "bytes": "89 54 28 08",
+      "instruction": "mov dword ptr [rax + rbp + 8], edx"
+    },
+    {
+      "name": "actual_expiry_write",
+      "rva": "0x3728506",
+      "bytes": "89 7c 28 0c",
+      "instruction": "mov dword ptr [rax + rbp + 0xc], edi"
+    },
+    {
+      "name": "update_counter_increment",
+      "rva": "0x3727636",
+      "bytes": "ff 41 28",
+      "instruction": "inc dword ptr [rcx + 0x28]"
+    },
+    {
+      "name": "update_reads_counter",
+      "rva": "0x372763c",
+      "bytes": "8b 49 28",
+      "instruction": "mov ecx, dword ptr [rcx + 0x28]"
+    },
+    {
+      "name": "update_expiry_comparison",
+      "rva": "0x3727643",
+      "bytes": "42 3b 4c 00 ec",
+      "instruction": "cmp ecx, dword ptr [rax + r8 - 0x14]"
+    },
+    {
+      "name": "update_normalizes_rows",
+      "rva": "0x372764e",
+      "bytes": "e8 0d fd 15 fd",
+      "instruction": "call 0x887360"
+    },
+    {
+      "name": "expired_row_remove",
+      "rva": "0x3727674",
+      "bytes": "41 ff 4f 1c",
+      "instruction": "dec dword ptr [r15 + 0x1c]"
+    },
+    {
+      "name": "normalizer_reads_expiry",
+      "rva": "0x887384",
+      "bytes": "43 8b 44 01 0c",
+      "instruction": "mov eax, dword ptr [r9 + r8 + 0xc]"
+    },
+    {
+      "name": "normalizer_subtracts_counter",
+      "rva": "0x88738e",
+      "bytes": "2b 41 20",
+      "instruction": "sub eax, dword ptr [rcx + 0x20]"
+    },
+    {
+      "name": "normalizer_writes_expiry",
+      "rva": "0x887395",
+      "bytes": "43 89 44 01 0c",
+      "instruction": "mov dword ptr [r9 + r8 + 0xc], eax"
+    },
+    {
+      "name": "normalizer_resets_counter",
+      "rva": "0x8873a3",
+      "bytes": "44 89 51 20",
+      "instruction": "mov dword ptr [rcx + 0x20], r10d"
+    },
+    {
+      "name": "serializer_permanent_check",
+      "rva": "0x88895d",
+      "bytes": "83 7e 0c ff",
+      "instruction": "cmp dword ptr [rsi + 0xc], -1"
+    },
+    {
+      "name": "serializer_actual_expiry",
+      "rva": "0x888985",
+      "bytes": "8b 56 0c",
+      "instruction": "mov edx, dword ptr [rsi + 0xc]"
+    },
+    {
+      "name": "parser_actual_expiry_field",
+      "rva": "0x888cfb",
+      "bytes": "48 8d 51 0c",
+      "instruction": "lea rdx, [rcx + 0xc]"
+    }
+  ],
+  "reused_native_proofs": [
+    {
+      "path": "research/religion_conversion12002_gates_abi.json",
+      "sha256": "e01914c206bfeab7622cc1d9caa1a048551b792b481dce848a1d0aef4c223337",
+      "semantics": "target knowledge / existing atom lookup / flag presence / full Rite identity",
+      "reverified": false
+    },
+    {
+      "path": "research/religion12002_native_abi.json",
+      "sha256": "70bfabedffa73c023bdeeec5b2072e6d8d350936380bc0a2da0d53973025659d",
+      "semantics": "actual Character.GetSpiritualFulfillment 0x28BCE40",
+      "reverified": false
+    },
+    {
+      "path": "research/religion_conversion12002_outcome_abi.json",
+      "sha256": "68e8a2ff864c8ef3149a52f51d90001fc2be6c82d88fdbf0f7ba676d8fff98d4",
+      "semantics": "actual baseline at Character+0x1B0 -> +0x300",
+      "reverified": false
+    }
+  ],
+  "stock_evidence": [
+    {
+      "path": "common/scripted_effects/pam_effects.txt",
+      "first_line": 11516,
+      "last_line": 11524,
+      "sha256": "50b0ebeeab835b98fc2a159baa5806078d706b3f988ecb5a6c1e025c86465161",
+      "key": "faith_conversion_recently_converted",
+      "text": "pam_on_conversion_effect = {\n\tif = {\n\t\tlimit = { is_ai = no }\n\t\tadd_character_flag = {\n\t\t\tflag = faith_conversion_recently_converted\n\t\t\tyears = pam_ui_conversion_cooldown\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "common/scripted_effects/00_religion_effects.txt",
+      "first_line": 1460,
+      "last_line": 1511,
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "key": "conversion_memory_recently_created",
+      "text": "create_conversion_memory_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\texists = scope:old_rite\n\t\t\tscope:old_rite != rite # A rite that diverged into its own faith keeps its object; nobody converted\n\t\t\tNOT = { has_character_flag = conversion_memory_recently_created }\n\t\t}\n\t\tsave_temporary_scope_as = conversion_memory_owner\n\t\tadd_character_flag = { # The conversion window fires on_rite_change twice for a same-faith switch\n\t\t\tflag = conversion_memory_recently_created\n\t\t\tdays = 2\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:old_faith\n\t\t\t\tscope:old_faith != faith\n\t\t\t}\n\t\t\tcreate_character_memory = { type = converted_faith_memory }\n\t\t\tscope:new_memory = {\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = old_faith\n\t\t\t\t\tvalue = scope:old_faith\n\t\t\t\t}\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = new_faith\n\t\t\t\t\tvalue = scope:conversion_memory_owner.faith\n\t\t\t\t}\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = new_rite\n\t\t\t\t\tvalue = scope:conversion_memory_owner.rite\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\telse = {\n\t\t\tcreate_character_memory = { type = converted_rite_memory }\n\t\t\tscope:new_memory = {\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = old_rite\n\t\t\t\t\tvalue = scope:old_rite\n\t\t\t\t}\n\t\t\t\tset_variable = {\n\t\t\t\t\tname = new_rite\n\t\t\t\t\tvalue = scope:conversion_memory_owner.rite\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tif = {\n\t\t\tlimit = { is_adult = no }\n\t\t\tscope:new_memory = { set_variable = childhood_memory }\n\t\t}\n\t}\n}"
+    },
+    {
+      "path": "events/religion_events/faith_conversion_events.txt",
+      "first_line": 456,
+      "last_line": 541,
+      "sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0",
+      "key": "recent_convert",
+      "text": "\toption = { \n\t\tname = faith_conversion.1001.a\n\t}\n\n\toption = { \n\t\tname = faith_conversion.1001.b\n\t\t# Gain scope:template priest as a courtier & earmark them for future friendship.\n\t\tadd_courtier = scope:template_priest\n\t\treverse_add_opinion = {\n\t\t\ttarget = scope:template_priest\n\t\t\tmodifier = pious_opinion\n\t\t\topinion = 50\n\t\t}\n\t\tset_relation_potential_friend = scope:template_priest\n\t}\n\n\tafter = {\n\t\thidden_effect = {\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tthis != scope:template_priest.host\n\t\t\t\t}\n\t\t\t\tscope:template_priest = {\t\t\n\t\t\t\t\tdeath = {\n\t\t\t\t\t\tdeath_reason = death_disappearance\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tscope:template_priest ?= {\n\t\t\t\t\thas_character_flag = is_naked\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:template_priest = {\n\t\t\t\tremove_character_flag = is_naked\n\t\t\t}\n\t\t}\n\t\t\n\n\t\tadd_character_flag  = {\n\t\t\tflag = recent_convert\n\t\t\tyears = 20\n\t\t}\n\t}\n}\n\nfaith_conversion.1002 = {\n\thidden = yes\n\n\timmediate = {\n\t\t# If it's desirable to delay this event (e.g., due to decision) a little, do so.\n\t\tif = {\n\t\t\tlimit = { has_character_flag = delay_player_faith_conversion_notification_event }\n\t\t\ttrigger_event = {\n\t\t\t\tid = faith_conversion.1001\n\t\t\t\tdays = 7\n\t\t\t}\n\t\t}\n\t\t# Otherwise, just send it.\n\t\telse = { trigger_event = faith_conversion.1001 }\n\t}\n}\n\nfaith_conversion.1101 = {\n\thidden = yes\n\n\timmediate = {\n\t\tevery_vassal = {\n\t\t\tlimit = {\n\t\t\t\tis_ai = no\n\t\t\t}\n\t\t\tsend_interface_toast = {\n\t\t\t\ttitle = faith_conversion.1101.toast\n\t\t\t\tleft_icon = root\n\n\t\t\t\tshow_as_tooltip = {\n\t\t\t\t\troot = {\n\t\t\t\t\t\tset_character_faith = faith\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+    }
+  ],
+  "expiry_unit": "native_flag_updates",
+  "expiry_is_game_calendar_date": false,
+  "remaining_updates": "actual signed row+0x0C minus actual FlagSet+0x28, only expiry > -1",
+  "unresolved": [
+    "paused live flag/knowledge/current/baseline samples",
+    "conversion causality and delayed narrative events are not asserted"
+  ]
+}

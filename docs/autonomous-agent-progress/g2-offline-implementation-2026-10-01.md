@@ -592,3 +592,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 3 frozen sources. Single necessary O2/W4/WX named-only owner queue case and complete response, 7 checks passed. Existing 8 native runtime sources unchanged; no old matrix repeated or game contact. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\query-named\final-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:53:47 Independent native conversion outcome observation
+
+20新源actor6/state7/query7冻结。真实signedbalances/currentRite/Faith/Religion/Fulfillment、knowledge和三个实际flagcounter/expiry；原生expiry是counter不能伪称calendar。Od/O2 actor各15/state各25/wholequery各48checks，6完整protocol包。Identitytargetreached只证明身份相等；差值与动作因果须root前后采样，不把quote/ACK/固定gain当结果。R5注册+SDK+paused待施工。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion-outcome\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

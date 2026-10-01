@@ -1,0 +1,65 @@
+{
+  "schema": "ck3_12002_conversion_outcome_actor_source_contract_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "new_reverse_engineered_rvas": [],
+  "old_native_verifiers_rerun": false,
+  "reuse": {
+    "binder": "religion::BindReligionContextImage12002",
+    "played_actor_frame": "ReadCoreSnapshot + ResolveCoreCharacter",
+    "current_religion": "religion::ReadPlayedReligionContext12002",
+    "resources": "ReadActorResourceBalances12002",
+    "nested_serializer": "religion::SerializePlayedReligionContext12002"
+  },
+  "existing_resource_leaf_offsets": {
+    "character_full_id": "0x18",
+    "character_extension": "0x1B0",
+    "gold_raw": "0x100",
+    "prestige_raw": "0x130",
+    "piety_raw": "0x110",
+    "stress_read_by_reused_leaf_not_published_here": "0x2F8"
+  },
+  "resource_type": "signed int64 Q100000",
+  "extension_null": "legal all-zero balances from existing resource leaf",
+  "read_failure": "optional balance null and explicit resource failure",
+  "target_quote_ack_delta_inputs": [],
+  "causality_inferred": false,
+  "reused_source_and_evidence": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002.hpp",
+      "sha256": "3a6a701735402a75dd4c99deb6aa1027aff7283d1a636784ebb8efb68d41308c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp",
+      "sha256": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_religion_context.hpp",
+      "sha256": "620c7d0508d78035c9c1b189ebf5e12bde0b2ab19cf80a0167d4e068e4f2bc63"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_religion_context.cpp",
+      "sha256": "1f9f487f1fba7c74bc75ccf72747acd56dc466cf7073d0b1ca112204cfcd6eb5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_actor_resources.hpp",
+      "sha256": "9ab24e0acc8f018bea608caa6a695f22222bf00486e241f506a84652e634c37f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_actor_resources.cpp",
+      "sha256": "c3021c8e2cd68599320e6385b5b8c66e574f26ed5b5ec0c6f2bbf47052cc6788"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\research\\religion12002_native_abi.json",
+      "sha256": "70bfabedffa73c023bdeeec5b2072e6d8d350936380bc0a2da0d53973025659d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\research\\religion_conversion12002_cost_abi.json",
+      "sha256": "d2a4c4a39a69a999971a033f22810786ed8ebf29218caf014cbc3c7a59cc333b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\native\\native-verification.json",
+      "sha256": "e245cff5e0fc0a0ad839b5e3b0c7d16a870a8f966cc5a6851cea9b45811b9ac3"
+    }
+  ]
+}
