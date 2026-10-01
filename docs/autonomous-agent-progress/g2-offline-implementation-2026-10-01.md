@@ -700,3 +700,9 @@ Three frozen domain and documentation sources. Actual primary2141 ordered20 succ
 Three frozen sources. Single O2/W4/WX8checks complete namedqueue packet passed with primaryNULL and same fullactor/date/epoch. Four-key registry has actual knowntrue/false. Existing fourteen library sources and old matrices unchanged; root paused remains pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\personal-parameters\named-permit-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:27:15 Align promo authoring with canonical production spans
+
+Four frozen handwritten authoring data and documentation files. Two actual canonical spans changed to current B1 visible120/Fterminal and promotionD+1; AF5 independent gate. Shared and two overlay ZH/EN draft cues and sourceSHA aligned, no media or live claims changed. Two affected methods passed; production validator and choreography unchanged, officialfullworkflow pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-promo-authoring-current-fix\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

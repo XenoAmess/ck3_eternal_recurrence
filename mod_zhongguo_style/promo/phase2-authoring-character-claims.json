@@ -9,7 +9,7 @@
   },
   "shared_claim_source": {
     "path": "mod_zhongguo_style/promo/phase2-authoring-claims.json",
-    "sha256": "9CE654A6C2563AAE55D00DDE87C67B61261DA347EB8AC62FCEB7F02E9374FF4D"
+    "sha256": "2AD4105337FBCDAD1794D5A6D1BA1BC4910F141EB2B39FDAA8BE614878D741A5"
   },
   "authoring_status": "draft-only-not-builder-input",
   "chapters": [
@@ -48,9 +48,9 @@
       "id": "phase2_manager_governance",
       "cue": {
         "id": "p2-character-04-manager",
-        "narration_zh_cn": "他去找经理，经理也会留下自己的考核案卷。真实案件抵达业务终态，连责才算发生。",
-        "subtitle_zh_cn_lines": ["他去找经理，经理也会留下自己的考核案卷。", "真实案件抵达业务终态，连责才算发生。"],
-        "subtitle_en_lines": ["He goes to his manager, who leaves a review case of their own.", "Accountability counts only when the real case reaches a business terminal."],
+        "narration_zh_cn": "他以经理身份发布考核。结案回执可见、同一案卷进入终态，才算有结果。",
+        "subtitle_zh_cn_lines": ["他以经理身份发布考核。", "结案回执可见、同一案卷进入终态，才算有结果。"],
+        "subtitle_en_lines": ["He publishes the review as the manager.", "An on-screen case receipt must match the same terminal case."],
         "release_usable": false
       }
     },
@@ -58,9 +58,9 @@
       "id": "phase2_promotion_compensation",
       "cue": {
         "id": "p2-character-05-promotion",
-        "narration_zh_cn": "他等来的晋升不是一句许诺。选择与薪酬回执，必须留在同一个冻结案卷里。",
-        "subtitle_zh_cn_lines": ["他等来的晋升不是一句许诺。", "选择与薪酬回执，必须留在同一个冻结案卷里。"],
-        "subtitle_en_lines": ["The promotion he awaits is not a promise.", "Its choice and pay receipt must remain in one frozen case."],
+        "narration_zh_cn": "他作出晋升选择，还要等次日回执。薪酬结算另行验收，不能拿晋升代替。",
+        "subtitle_zh_cn_lines": ["他作出晋升选择，还要等次日回执。", "薪酬结算另行验收，不能拿晋升代替。"],
+        "subtitle_en_lines": ["His promotion choice still needs its next-day receipt.", "Compensation is verified separately."],
         "release_usable": false
       }
     },

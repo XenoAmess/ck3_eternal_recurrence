@@ -75,6 +75,16 @@ title containing the completion claim.
 
 ## Subtitle editorial guard
 
+### Canonical span refresh, 2026-10-01
+
+Official CI run `36854032193` at source `cae56d2` found that the manager and
+promotion draft rows still bound earlier postconditions. The manager draft now
+requires the player manager's real B1 publication, visible `zg361mg.120`, and the
+same case's F terminal. The promotion draft requires the exact D+1 successor for
+the same played owner and saved subject; AF5 compensation remains a separate
+accepted gate. The shared claims and both cut overlays use wording for those
+observations. These are draft requirements, with no new footage or live claim.
+
 Every cue provides one or two explicit Simplified Chinese lines and one or two
 English lines. Chinese lines reproduce the spoken narration exactly; every line
 must end at a sentence or clause boundary. The frozen promotion mapping joins

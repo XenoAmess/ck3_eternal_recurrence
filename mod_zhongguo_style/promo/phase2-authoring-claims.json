@@ -200,20 +200,20 @@
       "footage_binding": {
         "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "manager-governance",
-        "required_postcondition": "the AI-owned case reaches a provider-observed terminal business state",
+        "required_postcondition": "the player manager's real B1 publication reaches visible zg361mg.120 and F terminal",
         "required_for_release": true,
         "verified": false
       },
       "cue": {
         "id": "p2-zh-04-manager",
-        "narration_zh_cn": "经理也会留下自己的考核案卷。只有真实经理事件抵达业务终态，连责才算发生。",
+        "narration_zh_cn": "经理亲自发布考核。结案回执可见、同一案卷进入终态，才算有结果。",
         "subtitle_zh_cn_lines": [
-          "经理也会留下自己的考核案卷。",
-          "只有真实经理事件抵达业务终态，连责才算发生。"
+          "经理亲自发布考核。",
+          "结案回执可见、同一案卷进入终态，才算有结果。"
         ],
         "subtitle_en_lines": [
-          "Managers leave review cases of their own.",
-          "Accountability counts only when the real case reaches a business terminal."
+          "The player manager publishes the review.",
+          "An on-screen case receipt must match the same terminal case."
         ],
         "release_usable": false
       },
@@ -224,11 +224,11 @@
           "tools/zhongguo_phase2_capture_choreography.py"
         ],
         "required_visible_observations": [
-          "The real manager-governance event is visible and identity-ready.",
-          "The AI-owned case reaches a provider-observed terminal business state.",
-          "The footage does not infer accountability from elapsed time or an action ACK."
+          "The player manager's real B1 publication reaches visible identity-ready zg361mg.120.",
+          "That publication case reaches provider-observed F terminal for the same played manager.",
+          "The footage does not infer the terminal state or accountability from elapsed time or an action ACK."
         ],
-        "required_future_evidence": "The canonical clean span must show the real manager event and a provider-observed terminal business state for the AI-owned case.",
+        "required_future_evidence": "The canonical clean span must show the player manager's real B1 publication, visible zg361mg.120 and F terminal for the same played manager.",
         "release_status": "pending-live-footage-and-postcondition"
       },
       "cannot_claim": [
@@ -243,20 +243,20 @@
       "footage_binding": {
         "kind": "lineage-bound-real-ck3-clean-span",
         "producer_key": "promotion-compensation",
-        "required_postcondition": "promotion choice and compensation receipt remain bound to the same frozen case",
+        "required_postcondition": "the promotion choice reaches its exact D+1 successor for the same played owner and saved subject; AF5 compensation remains an independent accepted gate",
         "required_for_release": true,
         "verified": false
       },
       "cue": {
         "id": "p2-zh-05-promotion",
-        "narration_zh_cn": "晋升不是一句许诺。选择与薪酬回执必须留在同一个冻结案卷里。",
+        "narration_zh_cn": "晋升选择，要等次日回执。薪酬结算另行验收，不能拿晋升代替。",
         "subtitle_zh_cn_lines": [
-          "晋升不是一句许诺。",
-          "选择与薪酬回执必须留在同一个冻结案卷里。"
+          "晋升选择，要等次日回执。",
+          "薪酬结算另行验收，不能拿晋升代替。"
         ],
         "subtitle_en_lines": [
-          "Promotion is not a promise.",
-          "The choice and compensation receipt must stay in one frozen case."
+          "The promotion choice needs its next-day receipt.",
+          "Compensation is verified separately."
         ],
         "release_usable": false
       },
@@ -267,15 +267,16 @@
           "tools/zhongguo_phase2_capture_choreography.py"
         ],
         "required_visible_observations": [
-          "The real promotion choice and compensation result events are both visible.",
-          "The promotion choice and compensation receipt remain bound to one frozen case."
+          "The real promotion choice zg361pp.147 or zg361pp.148 is visible and identity-ready.",
+          "The selected choice reaches its exact D+1 successor for the same played owner and saved subject.",
+          "AF5 compensation settlement is a separate accepted gate and is not inferred from this promotion span."
         ],
-        "required_future_evidence": "The canonical clean span must show promotion choice and compensation receipt bound to the same frozen case.",
+        "required_future_evidence": "The canonical clean span must show the promotion choice and its exact D+1 successor for the same played owner and saved subject; AF5 compensation requires its independent accepted gate.",
         "release_status": "pending-live-footage-and-postcondition"
       },
       "cannot_claim": [
         "A reserved packet guarantees promotion.",
-        "Level and pay settlement are live-proven before a same-case product span passes."
+        "Promotion settlement alone proves AF5 compensation acceptance."
       ]
     },
     {

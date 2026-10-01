@@ -9,7 +9,7 @@
   },
   "shared_claim_source": {
     "path": "mod_zhongguo_style/promo/phase2-authoring-claims.json",
-    "sha256": "9CE654A6C2563AAE55D00DDE87C67B61261DA347EB8AC62FCEB7F02E9374FF4D"
+    "sha256": "2AD4105337FBCDAD1794D5A6D1BA1BC4910F141EB2B39FDAA8BE614878D741A5"
   },
   "authoring_status": "draft-only-not-builder-input",
   "chapters": [
@@ -48,9 +48,9 @@
       "id": "phase2_manager_governance",
       "cue": {
         "id": "p2-institution-04-manager",
-        "narration_zh_cn": "经理当然也有经理。真实经理案卷抵达业务终态，连责才算发生。",
-        "subtitle_zh_cn_lines": ["经理当然也有经理。", "真实经理案卷抵达业务终态，连责才算发生。"],
-        "subtitle_en_lines": ["Managers have managers, too.", "Accountability counts only when the real manager case reaches a terminal."],
+        "narration_zh_cn": "发布考核，也要有结案回执。只有回执可见、案卷进入终态，制度才算落账。",
+        "subtitle_zh_cn_lines": ["发布考核，也要有结案回执。", "只有回执可见、案卷进入终态，制度才算落账。"],
+        "subtitle_en_lines": ["A published review still needs a case receipt.", "The institution needs a visible receipt and a terminal case."],
         "release_usable": false
       }
     },
@@ -58,9 +58,9 @@
       "id": "phase2_promotion_compensation",
       "cue": {
         "id": "p2-institution-05-promotion",
-        "narration_zh_cn": "晋升不是祝贺，而是资源重排。选择与薪酬回执必须留在同一个冻结案卷里。",
-        "subtitle_zh_cn_lines": ["晋升不是祝贺，而是资源重排。", "选择与薪酬回执必须留在同一个冻结案卷里。"],
-        "subtitle_en_lines": ["Promotion is not congratulations; it reallocates resources.", "The choice and pay receipt must stay in one frozen case."],
+        "narration_zh_cn": "制度把选择写进次日回执。晋升与薪酬各自验收，不能彼此代替。",
+        "subtitle_zh_cn_lines": ["制度把选择写进次日回执。", "晋升与薪酬各自验收，不能彼此代替。"],
+        "subtitle_en_lines": ["The institution records the choice in a next-day receipt.", "Promotion and pay must each pass their own check."],
         "release_usable": false
       }
     },
