@@ -1,0 +1,121 @@
+{
+  "contract": "ck3-1.20.0.2-construction-provider-v1",
+  "status": "static-ready-live-pending",
+  "game_version": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "exe_size": 101039736,
+  "image_size": 102518784,
+  "evidence_scope": "exact-build-static-chain plus isolated synthetic callback execution; no live CK3 process",
+  "exact_spans": [
+    {
+      "name": "building-manager",
+      "start_rva": "0x8d1670",
+      "end_rva_exclusive": "0x8d16c7",
+      "sha256": "c3ddfb2a22967bee2b04a76b983641a3ddef417e7d966a297979a14c7f58bcf0"
+    },
+    {
+      "name": "definition-vector-index",
+      "start_rva": "0x2986163",
+      "end_rva_exclusive": "0x2986180",
+      "sha256": "e5c69e528b9ca7580facbdda8efdab2175a74b0c044125abf3b6d9544ddb5cdb"
+    },
+    {
+      "name": "CBuildingType-ctor-vtables",
+      "start_rva": "0x3087277",
+      "end_rva_exclusive": "0x308729c",
+      "sha256": "9d1e5dbcd2fe97ec80c66b1934b90f9223e1fa11cfb30ce1b292e27733fffe53"
+    },
+    {
+      "name": "final-legality-slot-count",
+      "start_rva": "0x2c77e25",
+      "end_rva_exclusive": "0x2c77e49",
+      "sha256": "e2ad769561301f582e47a49940d6917f55eff92f2de17abf9e40c12fa6892b73"
+    },
+    {
+      "name": "completed-slot-membership",
+      "start_rva": "0x2c77ea2",
+      "end_rva_exclusive": "0x2c77edb",
+      "sha256": "460466a967708a5fa17d17922f4472b39d4e333ec2226d762cd30d1b196391db"
+    },
+    {
+      "name": "active-construction-writer",
+      "start_rva": "0x2467905",
+      "end_rva_exclusive": "0x2467934",
+      "sha256": "57ee8183fede5af15e1c82f212ce8712a342ac248bcca44f222f35f49e052508"
+    },
+    {
+      "name": "construction-progress",
+      "start_rva": "0x2467d20",
+      "end_rva_exclusive": "0x2467d7e",
+      "sha256": "8629ba1fc4c92303b7f330d6cff91443c87dfc661165db404185a16115699a50"
+    },
+    {
+      "name": "cost-five-args-call",
+      "start_rva": "0x29823de",
+      "end_rva_exclusive": "0x2982401",
+      "sha256": "339d7a220dfdc3f1b7395b93206d3babe1e752589916563583b4b0412eb14701"
+    },
+    {
+      "name": "player-gold-affordability",
+      "start_rva": "0x310e7b7",
+      "end_rva_exclusive": "0x310e807",
+      "sha256": "662c5e0cba2c265454a6d003c5fb1b88fa9857c3253177888c4d8a3d67e9f26d"
+    },
+    {
+      "name": "province-income-getter",
+      "start_rva": "0x2b41fd0",
+      "end_rva_exclusive": "0x2b4202a",
+      "sha256": "60a5b173062b65647043d580e44542d7afddbc0dd68411c10fb4a34144e1accc"
+    },
+    {
+      "name": "building-validator",
+      "start_rva": "0x2982440",
+      "end_rva_exclusive": "0x29824de",
+      "sha256": "07705c1bfd7221447c25041e46fdae46b2f3d37198d82267b9ee19e1d2836c99"
+    }
+  ],
+  "bindings": {
+    "manager_slot": "0x5c67540",
+    "registry_vector": [
+      "0x50",
+      "0x58",
+      "0x5c"
+    ],
+    "building_primary_vtable": "0x48b6cc8",
+    "final_legality": "0x2c77d50",
+    "cost": "0x2c247c0",
+    "cost_arguments": [
+      "output[10]",
+      "same-frame Province*",
+      "BuildingType+0x6f518",
+      "*(BuildingType+0x6f510)",
+      "resolved same-frame actor Character*"
+    ],
+    "province_slots": "0x620",
+    "completed_vector": "0x10",
+    "slot_count": "0x1c",
+    "active_definition": "0x68",
+    "active_slot": "0x70",
+    "active_initiator": "0xd8",
+    "remaining_work": "0x80",
+    "progress_divisor": "0xe0",
+    "character_gold": "Character+0x1b0 -> extension+0x100",
+    "province_income": "0x718"
+  },
+  "readiness": {
+    "offline_provider": true,
+    "application_main_live": false,
+    "native_cost_live": false,
+    "typed_building_live": false,
+    "material_completion_live": false,
+    "new_holding_construction": false
+  },
+  "non_goals": [
+    "religion",
+    "complete ROI",
+    "war cash budget",
+    "arbitrary save admission",
+    "natural completion",
+    "new holding or domicile construction"
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "contract": "ck3-1.20.0.2-construction-native-submit-binding-v1",
+  "schema_version": 1,
+  "status": "static-ready-building-command-binding-pending-paused-live",
+  "exact_build": {
+    "product_version": "1.20.0.2",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "executable_size": 101039736,
+    "image_base": "0x140000000"
+  },
+  "implementation": {
+    "namespace": "xar::ck3_12002",
+    "header": "research/ck3_12002_construction_submit_binding.hpp",
+    "source": "research/ck3_12002_construction_submit_binding.cpp",
+    "test": "research/ck3_12002_construction_submit_binding_test.cpp"
+  },
+  "building_command": {
+    "native_class": "CAddConstructionCommand",
+    "native_size": 48,
+    "primary_vtable_rva": "0x476C540",
+    "secondary_vtable_rva": "0x476C5D8",
+    "secondary_this_adjustment": 24,
+    "type_descriptor_rva": "0x5A12568",
+    "complete_object_locator_rva": "0x4E1F398",
+    "validator_rva": "0x2982440",
+    "validator_signature": "bool __fastcall(const command*, tooltip*=nullptr)",
+    "final_legality_rva": "0x2C77D50",
+    "materialize_rva": "0x2985DC0",
+    "materialize_signature": "owned_command** __fastcall(command*, owned_command**)",
+    "execute_secondary_rva": "0x29822C0",
+    "field_offsets": {
+      "actor_character_id": 32,
+      "province_id": 36,
+      "slot_index": 40,
+      "building_type_id": 44
+    },
+    "native_caller_span": "0x1A7FF67..0x1A80011",
+    "construction_start_rva": "0x24677D0",
+    "stock_cost_rva": "0x2C247C0",
+    "resource_spend_rva": "0x310D5D0",
+    "execute_is_called_directly": false
+  },
+  "submission": {
+    "receiver_rva": "0x37F06F0",
+    "receiver_singleton_rva": "0x5CC1240",
+    "global_wrapper_rva": "0x37EBC40",
+    "global_wrapper_phase_flags_rva": "0x5CC14D0",
+    "global_wrapper_reject_mask": "0xFD",
+    "flags": 7,
+    "receiver_signature": "bool __fastcall(receiver*, owned_command**, uint32 flags)",
+    "sequence_offset": 1004,
+    "command_sequence_offset": 12,
+    "queue_insert_rva": "0x880340",
+    "accepted_meaning": "ownership accepted and queued; pending receipt only",
+    "ownership": "native materializer copies one 0x30-byte command to owned wrapper; receiver zeroes transfer holder; only a non-null leftover is destroyed",
+    "fresh_receipt": "newer paused proof epoch plus matching active province/building/slot/initiator tuple"
+  },
+  "legacy_misclassification": {
+    "old_contract_branch": "domain_construction_native_submit_adapter_v1.new_holding",
+    "old_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "old_primary_vtable_rva": "0x4333128",
+    "old_complete_object_locator_rva": "0x4978EA8",
+    "old_type_descriptor_rva": "0x54D2F70",
+    "old_native_class": "CBuildDomicileBuildingCommand",
+    "migrated_native_class": "CBuildDomicileBuildingCommand",
+    "primary_vtable_rva": "0x4771128",
+    "type_descriptor_rva": "0x5A173F0",
+    "complete_object_locator_rva": "0x4E27A60",
+    "native_caller_span": "0x1A8001D..0x1A800F8",
+    "final_legality_rva": "0x2A38B30",
+    "domain_tag": "Domi",
+    "building_definition_tag": "GDbO",
+    "correction": "The fallback branch constructs a domicile building, not an ordinary new province holding. No new-holding binding is exposed.",
+    "validate_holding_bound": false
+  },
+  "direct_call_targets": [
+    {
+      "call_rva": "0x1a7ffcf",
+      "target_rva": "0x2982440",
+      "meaning": "building final validator"
+    },
+    {
+      "call_rva": "0x1a80006",
+      "target_rva": "0x37ebc40",
+      "meaning": "building submit wrapper"
+    },
+    {
+      "call_rva": "0x1a800bb",
+      "target_rva": "0x2a38b30",
+      "meaning": "domicile fallback final legality"
+    },
+    {
+      "call_rva": "0x1a800f2",
+      "target_rva": "0x37ebc40",
+      "meaning": "domicile submit wrapper"
+    },
+    {
+      "call_rva": "0x29824c1",
+      "target_rva": "0x2c77d50",
+      "meaning": "building final legality"
+    },
+    {
+      "call_rva": "0x29824a5",
+      "target_rva": "0x29860b0",
+      "meaning": "building definition lookup"
+    },
+    {
+      "call_rva": "0x29823d9",
+      "target_rva": "0x24677d0",
+      "meaning": "start holding construction"
+    },
+    {
+      "call_rva": "0x29823fc",
+      "target_rva": "0x2c247c0",
+      "meaning": "stock construction cost"
+    },
+    {
+      "call_rva": "0x298241e",
+      "target_rva": "0x310d5d0",
+      "meaning": "stock resource deduction"
+    },
+    {
+      "call_rva": "0x37ebc79",
+      "target_rva": "0x37f06f0",
+      "meaning": "global wrapper receiver"
+    },
+    {
+      "call_rva": "0x37f072a",
+      "target_rva": "0x3808e20",
+      "meaning": "receiver pre-hook"
+    },
+    {
+      "call_rva": "0x37f07af",
+      "target_rva": "0x880340",
+      "meaning": "locked queue insert"
+    },
+    {
+      "call_rva": "0x37f07c8",
+      "target_rva": "0x880340",
+      "meaning": "direct queue insert"
+    }
+  ],
+  "rtti": [
+    {
+      "name": ".?AVCAddConstructionCommand@@",
+      "type_rva": "0x5A12568",
+      "col_rva": "0x4E1F398",
+      "object_offset": 0,
+      "vtable_rva": "0x476C540"
+    },
+    {
+      "name": ".?AVCAddConstructionCommand@@",
+      "type_rva": "0x5A12568",
+      "col_rva": "0x4E1F410",
+      "object_offset": 24,
+      "vtable_rva": "0x476C5D8"
+    },
+    {
+      "name": ".?AVCBuildDomicileBuildingCommand@@",
+      "type_rva": "0x5A173F0",
+      "col_rva": "0x4E27A60",
+      "object_offset": 0,
+      "vtable_rva": "0x4771128"
+    }
+  ],
+  "exact_spans": [
+    {
+      "name": "building_type_descriptor",
+      "rva": "0x5a12568",
+      "size": 48,
+      "sha256": "c88bc08a196248ff811f1f5b366e04013aef09647f7fde057404f54a291dc178",
+      "hex": "a01042440100000000000000000000002e3f415643416464436f6e737472756374696f6e436f6d6d616e644040000000"
+    },
+    {
+      "name": "building_complete_object_locator",
+      "rva": "0x4e1f398",
+      "size": 24,
+      "sha256": "15bbe91d4b780b4e2faf5375d82d28b67a47d23d0eca4227b9de03033fd218ee",
+      "hex": "0100000000000000000000006825a10578f2e10498f3e104"
+    },
+    {
+      "name": "building_secondary_complete_object_locator",
+      "rva": "0x4e1f410",
+      "size": 24,
+      "sha256": "45c787eeadf863f0e2f6affd84491a4117814f6ad81c29207cc2b5d10cc0e4ed",
+      "hex": "0100000018000000000000006825a10578f2e10410f4e104"
+    },
+    {
+      "name": "building_primary_vtable",
+      "rva": "0x476c540",
+      "size": 72,
+      "sha256": "7c8dcc6d7eda8e9fbb106c97387e25ee399134a413bd6a62944176d6e5d3da8b",
+      "hex": "60159d4001000000d0e2f74301000000c0b37e430100000050e3f74301000000d0b57e4301000000c0228540010000004024984201000000c0d5864001000000c05d984201000000"
+    },
+    {
+      "name": "building_secondary_vtable",
+      "rva": "0x476c5d8",
+      "size": 40,
+      "sha256": "959ca7dd8cc662e9bcc3458ba9edd7afde8e2d9e8957aeebc655fa20860196e3",
+      "hex": "a077964201000000c022984201000000c022854001000000c022854001000000a05a854001000000"
+    },
+    {
+      "name": "building_context_validator_materialize_receiver_callsite",
+      "rva": "0x1a7ff67",
+      "size": 170,
+      "sha256": "519deff4d521b133f308c3b03c57a39edf32f354cc909c7c8d30d5a28f08ad62",
+      "hex": "488b55a88b4a10418b4618c6442438004c896c243c44896c24444c8d05b8c5ce024c894424304c8d0544c6ce024c8944244889442450894c24548b7dc0897c2458488b4db08b41108944245c8179384f624447755581ba5c080000766f7250754933d2488d4c2430e86c24f00084c07439488b442430488d95900a0000488d4c2430ff504090488b084c892848898d800a0000ba07000000488d8d800a0000e835bcd60190e9e7000000"
+    },
+    {
+      "name": "building_final_validator",
+      "rva": "0x2982440",
+      "size": 158,
+      "sha256": "07705c1bfd7221447c25041e46fdae46b2f3d37198d82267b9ee19e1d2836c99",
+      "hex": "48895c2408574883ec304c8b0517512e03488bfa488bd94d85c074288b51208bc225ffffff00413b402c73188bc8498b40204803c9488b44c8084885c074053950187407488b05e5502e0381781c72616843753d837818ff7437e8d1f1f4fd8b532c488bc8e8063c0000448b4b284c8bc08b53248b4b2048897c2428c644242001e88a582f00488b5c24404883c4305fc3488b5c244032c04883c4305fc3"
+    },
+    {
+      "name": "building_final_legality_entry",
+      "rva": "0x2c77d50",
+      "size": 213,
+      "sha256": "706ab1dd957f650730510d5960efdf7da47779aff0ff3e723fee40417086d5f5",
+      "hex": "48895c240844894c24205556574154415541564157488dac2400feffff4881ec00030000418bd9498bf033c0448bf0898548020000488b05c40eff02488b80a000000083fa017c183b904c0100007d104863d2488b80400100004c8b3cd0eb074c8b3dd9650a034c897dc84181bf5c080000766f72500f85930000004c8b0595f7fe024d85c074298bc125ffffff00413b402c731c8bd04803d2498b4020488b44d008488945c04885c07405394818740b488b0568f7fe02488945c0488bbd680200004c8bc7498bd7488bc8e81f17000084c0743a"
+    },
+    {
+      "name": "building_materialize_wrapper",
+      "rva": "0x2985dc0",
+      "size": 137,
+      "sha256": "aa94b741dc8a5cf3644b78cb5ed78f8dac69323633bc05d7a6ccba2515b8bb11",
+      "hex": "48895c2408574883ec20488bd9488bfab930000000e8dadd89014c8bc8488d05b452b001498901488d055267de01440fb6430845884108448b430c4589410c448b4310458941108b5314498901488d05c467de0149894118418951148b4320418941208b4324418941248b4328418941288b432c488b5c24304189412c488bc74c890f4883c4205fc3"
+    },
+    {
+      "name": "building_execute",
+      "rva": "0x29822c0",
+      "size": 380,
+      "sha256": "862034a27d3eceebacbd0acdefef6447c3ca7a2775abea1f100185cc4432f5b5",
+      "hex": "48895c240848896c24104889742418574881ec50010000488b0572692e03488bf9488b88a00000004863470c83f8017c183b814c0100007d10488bd0488b8140010000488b34d0eb07488b3580c03903e85bf3f4fd8b5714488bc8e8903d0000488b1541522e03488be8448b4f084885d27426418bc125ffffff003b422c73198bc8488b42204803c9488b5cc8084885db740644394b187407488b1d10522e030f10442440448b4710488d8424a00000000f104c2450488d8e20060000c6842490000000000f298424a0000000488bd50f1044246048894424200f298c24b00000000f104c24700f298424c00000000f108424800000000f298c24d0000000f20f108c24900000000f298424e0000000f20f118c24f0000000e8f253aeff4c8b8d10f506004c8d8518f50600488bd648895c2420488d8c2400010000e8bf232a004533c0488d8c240001000044394710488bd3410f95c04533c94183c002e8adb178004c8d9c2450010000498b5b10498b6b18498b7320498be35fc3"
+    },
+    {
+      "name": "global_receiver_wrapper",
+      "rva": "0x37ebc40",
+      "size": 120,
+      "sha256": "535e0b08396233189ea042aa97410ae0debb4c6be69b75e85e4fce6f927ceb58",
+      "hex": "4c8944241848894c2408534883ec20488bd9f60577584d02fd7525488b0148c701000000004889442440448bc2488d542440488d0dc7554d02e8724a0000eb1a488b0948c703000000004885c9740b488b01ba01000000ff1090488b0b4885c97410488b01ba010000004883c4205b48ff204883c4205bc3"
+    },
+    {
+      "name": "receiver_queue_ownership",
+      "rva": "0x37f06f0",
+      "size": 250,
+      "sha256": "535c67b33da7e1cdb8f1838476b2064a6dd4c09ef3efceda33e5e9d28d34a2be",
+      "hex": "4c894c242048895424105356574883ec20418bd8488bfa488bf1418bc0c1e803a8017407488b0280480820488b89d80300004885c97408488b12e8f18601000fb6c32401488b0f80be9a02000000743684c075320fb651080fb6c224063c067425f6c20875204885c9740a488b01ba01000000ff1048c7070000000032c04883c4205f5e5bc38b86ec03000089410c488bb6d0030000c1eb0280e301488b0748c7070000000048894424587423488d4e78ff15e99ebe00488d542458488bcee88cfb08fd488d4e78ff151aa0be00eb0e488d542458488bcee873fb08fd90488b0f4885c9740a488b01ba01000000ff10b0014883c4205f5e5bc3"
+    },
+    {
+      "name": "leftover_wrapper_lifecycle",
+      "rva": "0x1a800f8",
+      "size": 23,
+      "sha256": "f8e5f0c881c0215660177e2338e8fdb548a041a5213c3383bdecfe07700924f8",
+      "hex": "488b8d900a00004885c9740b488b01ba01000000ff1090"
+    },
+    {
+      "name": "domicile_type_descriptor",
+      "rva": "0x5a173f0",
+      "size": 64,
+      "sha256": "1823f1cc0e889aa03e9ac14b2ffe6e85c13a210aa058b602659395f06bf1371d",
+      "hex": "a01042440100000000000000000000002e3f4156434275696c64446f6d6963696c654275696c64696e67436f6d6d616e64404000000000000000000000000000"
+    },
+    {
+      "name": "domicile_complete_object_locator",
+      "rva": "0x4e27a60",
+      "size": 24,
+      "sha256": "aa4424640cb88bd3141a2b006168a67218d144ed5ed590be14e2cba28be3a016",
+      "hex": "010000000000000000000000f073a105b878e204607ae204"
+    },
+    {
+      "name": "domicile_primary_vtable",
+      "rva": "0x4771128",
+      "size": 72,
+      "sha256": "fd3766ff74608e11f38913bf394c761ab283324abf9a20f014876008da8a6413",
+      "hex": "60159d4001000000d0e2f74301000000c0b37e430100000050e3f74301000000d0b57e4301000000c02285400100000020da9a4201000000c0d5864001000000f0e69a4201000000"
+    },
+    {
+      "name": "domicile_fallback_callsite",
+      "rva": "0x1a8001d",
+      "size": 219,
+      "sha256": "01ec650ef5e7896d07da8b8ddc2a014ec48434fa9ab92b0936a91066b854bc0d",
+      "hex": "498b86c80100004885c074068b98680b0000c6442468004c896c246c44896c2474488d05e310cf024889442460488d056f11cf024889442478895d80897d844c8b45b84c894588418178384f6244470f859d000000488b1507eb29044885d274248bc325ffffff003b422c73188bc84803c9488b4220488b4cc8084885c974053959087407488b0d8fea2904c7442428020000004c896c24204533c98bd7e8708afb0084c0744b488b442460488d95900a0000488d4c2460ff504090488b084c892848898d800a0000ba07000000488d8d800a0000e849bbd60190"
+    },
+    {
+      "name": "domicile_final_legality_entry",
+      "rva": "0x2a38b30",
+      "size": 96,
+      "sha256": "c6f1c431c0a3f046dd9fe877175f12208779bf740d4536afb607a7eecedec838",
+      "hex": "48895c2418895424105556574154415541564157488dac2480feffff4881ec80020000498bf9498bd8448bea488bf14533ff4489bdc001000081790c696d6f440f8512070000837908ff0f8408070000418178384f62444774194d85c90f840f"
+    }
+  ],
+  "readiness": {
+    "native_building_executor_implemented": true,
+    "offline_layout_and_receipt_tests": true,
+    "normal_and_optimized_w4_wx": true,
+    "shared_runtime_wired": false,
+    "live_verified": false,
+    "ordinary_new_holding_supported": false
+  },
+  "scope": {
+    "ck3_started": false,
+    "game_process_touched": false,
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "ck3_11906_modified": false
+  },
+  "next_live_entry": "paused player stock farm construction through 12002 direct submit; then fresh active queue/initiator/progress and exact gold readback",
+  "evidence_limit": "Exact frozen PE bytes, RTTI, callsites and standalone DTO tests. No CK3 process, pipe or desktop was used. Production capability advertisement remains the caller integration responsibility."
+}

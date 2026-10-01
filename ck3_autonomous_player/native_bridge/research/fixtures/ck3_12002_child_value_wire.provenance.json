@@ -1,0 +1,19 @@
+{
+  "readiness": "static-ready",
+  "input_kind": "caller-owned native-layout fixture and callbacks",
+  "local_ck3_accessed": false,
+  "native_provider": "ReadMarriageCandidateAlliancePrivateV1",
+  "wire_serializer": "SerializeFamilyAllianceFrameV1 extracted from existing bridge body",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_root": "Z:\\ck3_mod_rewrite\\.task-tmp\\nw12002",
+  "source_sha256": {
+    "ck3_12002_family.cpp": "24286739f78931b68a68833ba7916fc3ba78b73765974b44a746d62ded519b83",
+    "ck3_12002_family_wire.cpp": "57e9c161d4dfe4d55ac8b27f5b7d9a04bbf0f05ddc0e17f765c34e3b2a107f89",
+    "ck3_12002_family_test.cpp": "acb9d427008392e04c5c23463edb274fdf200a5563252d3149b5a2a03e45c111"
+  },
+  "fixture_sha256": "86e0a6e3701630ea886b37c53f4dd564d13a91c9ba57c8850589233f91a06c7c",
+  "test_log": "Z:\\ck3_mod_rewrite\\artifacts\\nonwar-offline\\2026-10-01\\family-wire-provider-build\\test.log",
+  "fixture_ids_are_synthetic": true,
+  "house_and_dynasty_null_are_legitimate_absent_minus_one": true
+}

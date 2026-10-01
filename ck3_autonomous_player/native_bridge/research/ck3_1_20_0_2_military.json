@@ -1,0 +1,962 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready command and preview library; owning-thread live matrix remains required",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "get_army_move_mode",
+      "rva": "0x296a0a0",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 20 81 79 14 74 69 6E 55 48 8B EA 48 8B D9 0F",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "can_character_use_command_kind",
+      "rva": "0x29675f0",
+      "pattern": "40 53 48 83 EC 40 48 8B D9 83 FA 03 74 2F 83 FA 02 75 32 48 8B 81 B0 01 00 00 48 85 C0 74 10 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "can_army_use_move_mode",
+      "rva": "0x24ac1b0",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B F2 48 8B F9 83 FA 02 0F 84 C4 00 00 00 83 79 18",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "can_move_army",
+      "rva": "0x2969570",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 41 8B F8 48 8B DA 44 8B C1 83 FF 02 0F 84 81 00 00 00 81 7A 14 74",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "construct_move_path_context",
+      "rva": "0x2648060",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 20 33 F6 48 89 51 10 48 8D 05 34 D7 0F 02 89 71 08 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "construct_army_move_path",
+      "rva": "0xd1a0b0",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 8D 59 18 33 ED 48 89 29 48 8D 05 F4 C1 7C 03 89 69 08 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "build_army_move_route",
+      "rva": "0x2648150",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 60 FC FF FF",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_unit_current_edge_progress",
+      "rva": "0x24ab2f0",
+      "pattern": "40 53 57 48 83 EC 38 83 79 44 00 48 8B FA 48 8B D9 0F 84 BF 01 00 00 83 B9 70 01 00 00 01 0F 84",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_route_first_province",
+      "rva": "0x24aa7d0",
+      "pattern": "83 79 44 00 7E 34 48 8B 05 73 E4 7B 03 48 8B 90 A0 00 00 00 48 8B 41 38 48 8B 08 48 63 01 83 F8",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_route_last_province",
+      "rva": "0x24aa820",
+      "pattern": "83 79 44 00 48 8B D1 74 3B 48 8B 05 20 E4 7B 03 48 63 49 44 4C 8B 80 A0 00 00 00 48 8B 42 38 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_route_travel_duration",
+      "rva": "0x24aada0",
+      "pattern": "4C 89 44 24 18 48 89 54 24 10 55 57 41 54 41 55 48 83 EC 68 41 83 78 0C 00 49 8B E9 49 8B F8 4C",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_route_edge_duration",
+      "rva": "0x24ab060",
+      "pattern": "40 53 56 41 56 48 83 EC 40 49 63 D8 4C 8B F2 48 8B F1 45 85 C0 0F 88 55 02 00 00 3B 59 44 0F 8D",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_unit_land_route_speed",
+      "rva": "0x24aa940",
+      "pattern": "40 55 57 41 56 48 83 EC 20 83 79 18 00 4C 8B F2 48 8B E9 75 15 48 8B 15 EC 34 87 03 48 85 D2 74",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_unit_naval_route_speed",
+      "rva": "0x24aac00",
+      "pattern": "40 53 48 83 EC 20 83 79 18 00 48 8B DA 75 15 48 8B 15 32 32 87 03 48 85 D2 74 7F 44 8B 81 78 01",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "read_unit_current_edge_speed",
+      "rva": "0x24ab5c0",
+      "pattern": "40 53 48 83 EC 20 44 8B 49 44 48 8B DA 4C 8B 1D 7C D6 7B 03 4C 8B C1 48 8B 15 B2 2D 87 03 45 85",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "move_command_destroy",
+      "rva": "0x2969620",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 8B DA 48 8B F9 E8 6C 59 19 FE F6 C3 01 74 0D BA 68 01 00 00 48 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "move_command_clone",
+      "rva": "0x2976e80",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 57 48 83 EC 20 48 8B F9 48 8B F2 B9 68 01 00 00 E8 15 CD 8A 01 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "move_command_secondary_execute",
+      "rva": "0x2969660",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 8B 15 05 4D 3B 03 48 8B F9 48 85",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "move_command_primary_validate",
+      "rva": "0x29698d0",
+      "pattern": "48 83 EC 38 83 79 44 00 4C 8B D1 44 8B 49 2C 48 8B 05 9A 4A 3B 03 75 7F 48 89 5C 24 30 8B 59 28",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "move_command_path_copy",
+      "rva": "0x22d3cf0",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 63 5A 0C 48 8B F2 48 8B 3A 48 8B E9 E8 9A 63 A4 FE 8B 55",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "move_command_nondeleting_cleanup",
+      "rva": "0xafefa0",
+      "pattern": "40 53 48 83 EC 20 48 8B 51 38 48 8B D9 48 85 D2 74 36 C7 41 44 00 00 00 00 41 B8 08 00 00 00 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "move_plan_and_apply",
+      "rva": "0x24abbe0",
+      "pattern": "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 41 56 41 57 48 81 EC D0 01 00 00 41 8B D9 45 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_ctor",
+      "rva": "0x298c130",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 C6 41 08 00 48 8D 05 6B 84 BA 01 48 89 01",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_validator",
+      "rva": "0x298c2c0",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 F0 FE FF FF 48 81 EC 10 02 00 00 4C 8B F2 48 8B F1 45 33 ED",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_clone",
+      "rva": "0x11f2e40",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 57 48 83 EC 20 48 8B F9 48 8B F2 B9 50 00 00 00 E8 55 0D 03 03 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_destructor",
+      "rva": "0x11f2e00",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 8B DA 48 8B F9 E8 AC 55 90 FF F6 C3 01 74 0D BA 50 00 00 00 48 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "merge_factory",
+      "rva": "0x297bcf0",
+      "pattern": "48 83 EC 28 B9 40 00 00 00 E8 B6 7E 8A 01 33 D2 48 89 44 24 30 48 8D 0D 14 EE DE 01 C6 40 08 00",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "merge_validator",
+      "rva": "0x296ef90",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 4C 8B 05 DF F3 3A 03 48 8B FA 48 8B D9 4D 85 C0 74 28 8B 51 24 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "merge_clone",
+      "rva": "0x29776e0",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 57 48 83 EC 20 48 8B D9 48 8B F2 B9 40 00 00 00 E8 B5 C4 8A 01 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "merge_destructor",
+      "rva": "0x296a220",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 8B DA 48 8B F9 E8 8C E1 18 FE F6 C3 01 74 0D BA 40 00 00 00 48 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "int_array_append",
+      "rva": "0x9e3790",
+      "pattern": "4D 3B C1 0F 84 7B 01 00 00 53 56 57 41 56 48 83 EC 28 48 63 41 0C 49 8B D8 48 89 6C 24 50 48 8B F9 8B 49 08 49 8B E9 48 2B EB 4C 89 7C 24 20 48 C1 FD 02 49 8B F1 4C 63 F2 44 8D 3C 28 44 3B F9 0F 8E E8 00 00 00 66 0F 6E C1 41 B8 04 00 00 00",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "array_cleanup",
+      "rva": "0xaf83c0",
+      "pattern": "40 53 48 83 EC 20 48 8B 51 28 48 8B D9 48 85 D2 74 36 C7 41 34 00 00 00 00 41 B8 04 00 00 00 48",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "character_capital",
+      "rva": "0x28b1cd0",
+      "pattern": "48 83 EC 28 48 8D 54 24 38 E8 42 05 00 00 4C 8B 05 13 BE 46 03 48 8B 15 F4 BD 46 03 4D 85 C0 74",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "choose_raise_province",
+      "rva": "0x24a51b0",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D 6C 24 C9 48 81 EC 90 00 00 00 45 8B E1 45",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_ui_default",
+      "rva": "0x1a28ae4",
+      "pattern": "49 8B CD E8 E4 91 E8 00 81 B8 5C 08 00 00 76 6F 72 50 74 09 4C 8B 3D 91 58 2F 04 EB 17 41 B9 FF",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_submit_wrapper",
+      "rva": "0x1a188b0",
+      "pattern": "4C 89 44 24 18 53 48 83 EC 20 8B DA 48 8B 01 48 8D 54 24 30 FF 50 40 90 48 8B 08 48 C7 00 00 00",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "merge_ui_payload",
+      "rva": "0xd0fa19",
+      "pattern": "C6 45 38 00 48 C7 45 3C 00 00 00 00 44 89 7D 44 48 8D 05 F0 B0 A5 03 48 89 45 30 48 8D 05 7D B1",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_native_default",
+      "rva": "0x2a7eda3",
+      "pattern": "E8 28 2F E3 FF 81 B8 5C 08 00 00 76 6F 72 50 74 09 48 8B 05 D5 F5 29 03 EB 14 41 B9 FF FF FF FF",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "raise_execute",
+      "rva": "0x298c230",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 30 48 8B 05 0F CA 2D 03 45 33 DB 44 38 59 30 4C 8B C1 48 8B 15 16 B3",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "disband_complete_validator",
+      "rva": "0x296a620",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 70 FE FF FF 48 81 EC 90 02 00 00 4D",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "split_complete_validator",
+      "rva": "0x296cf60",
+      "pattern": "48 89 74 24 10 57 48 83 EC 20 4C 8B 15 D7 0E 3B 03 49 8B F1 44 8B D9 4D 85 D2 74 25 8B C2 25 FF",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "start_assault_complete_validator",
+      "rva": "0x29738c0",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 57 48 83 EC 20 8B DA 41 8B F8 48 8B 15 8D 3C 2F 03 49 8B E9 44 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "stop_assault_complete_validator",
+      "rva": "0x2973a70",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 8B DA 41 8B F8 48 8B 15 DD 3A 2F 03 49 8B F1 44 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "pod_scalar_deleting_destructor",
+      "rva": "0x9d1560",
+      "pattern": "40 53 48 83 EC 20 48 8D 05 2B 9B AB 03 48 8B D9 48 89 01 F6 C2 01 74 0A BA 30 00 00 00 E8 E2 29",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "disband_clone",
+      "rva": "0x29770c0",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 28 00 00 00 E8 DA CA 8A 01 4C 8B C8 48 8D 05",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "split_clone",
+      "rva": "0x29772a0",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 30 00 00 00 E8 FA C8 8A 01 4C 8B C8 48 8D 05",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "start_assault_clone",
+      "rva": "0x2977ff0",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 30 00 00 00 E8 AA BB 8A 01 4C 8B C8 48 8D 05",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "stop_assault_clone",
+      "rva": "0x29780f0",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 30 00 00 00 E8 AA BA 8A 01 4C 8B C8 48 8D 05",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "disband_player_ui",
+      "rva": "0x41dc390",
+      "pattern": "40 53 48 83 EC 50 48 8B D9 45 33 C0 8B 91 30 01 00 00 41 8D 48 01 E8 75 E2 78 FE 84 C0 74 4A C6",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "split_player_ui",
+      "rva": "0x13481a0",
+      "pattern": "40 53 57 48 83 EC 58 48 8B D9 45 33 C9 44 8B 05 4C 3A 19 04 8B 91 C8 00 00 00 41 8D 49 01 E8 9D",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "assault_start_primary_validator",
+      "rva": "0x29734d0",
+      "pattern": "44 8B 41 28 4C 8B CA 8B 51 24 8B 49 20 E9 DE 03 00 00 CC CC CC CC CC CC CC CC CC CC CC CC CC CC",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "assault_stop_primary_validator",
+      "rva": "0x29739f0",
+      "pattern": "44 8B 41 28 4C 8B CA 8B 51 24 8B 49 20 E9 6E 00 00 00 CC CC CC CC CC CC CC CC CC CC CC CC CC CC",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "split_primary_validator",
+      "rva": "0x296ce20",
+      "pattern": "44 8B 41 24 4C 8B CA 8B 51 28 8B 49 20 E9 2E 01 00 00 CC CC CC CC CC CC CC CC CC CC CC CC CC CC",
+      "confidence": "reviewed-static-command-lifecycle"
+    },
+    {
+      "name": "disband_primary_validator",
+      "rva": "0x296a540",
+      "pattern": "4C 8B C2 8B 51 24 8B 49 20 E9 D2 00 00 00 CC CC 48 89 5C 24 08 57 48 83 EC 20 44 8B 41 20 48 8B",
+      "confidence": "reviewed-static-command-lifecycle"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "raise.primary",
+      "rva": "0x45345c0",
+      "function_rvas": [
+        "0x11f2e00",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x298c2c0",
+        "0x86d5c0",
+        "0x11f2e40"
+      ]
+    },
+    {
+      "name": "raise.secondary",
+      "rva": "0x4534658",
+      "function_rvas": [
+        "0x29677a0",
+        "0x298c230",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "move.primary",
+      "rva": "0x476b168",
+      "function_rvas": [
+        "0x2969620",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29698d0",
+        "0x86d5c0",
+        "0x2976e80"
+      ]
+    },
+    {
+      "name": "move.secondary",
+      "rva": "0x476b138",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2969660",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "disband.primary",
+      "rva": "0x476ae48",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x296a540",
+        "0x86d5c0",
+        "0x29770c0"
+      ]
+    },
+    {
+      "name": "disband.secondary",
+      "rva": "0x476ae18",
+      "function_rvas": [
+        "0x29677a0",
+        "0x296a4e0",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "split.primary",
+      "rva": "0x476af10",
+      "function_rvas": [
+        "0x9d1560",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x296ce20",
+        "0x86d5c0",
+        "0x29772a0"
+      ]
+    },
+    {
+      "name": "split.secondary",
+      "rva": "0x476aee0",
+      "function_rvas": [
+        "0x29677a0",
+        "0x296c310",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "merge.primary",
+      "rva": "0x476ab20",
+      "function_rvas": [
+        "0x296a220",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x296ef90",
+        "0x86d5c0",
+        "0x29776e0"
+      ]
+    },
+    {
+      "name": "merge.secondary",
+      "rva": "0x476abb8",
+      "function_rvas": [
+        "0x29677a0",
+        "0x296eea0",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "start_assault.primary",
+      "rva": "0x476a288",
+      "function_rvas": [
+        "0x9d1560",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29734d0",
+        "0x86d5c0",
+        "0x2977ff0"
+      ]
+    },
+    {
+      "name": "start_assault.secondary",
+      "rva": "0x476a320",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2973470",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "stop_assault.primary",
+      "rva": "0x476a030",
+      "function_rvas": [
+        "0x9d1560",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29739f0",
+        "0x86d5c0",
+        "0x29780f0"
+      ]
+    },
+    {
+      "name": "stop_assault.secondary",
+      "rva": "0x476a000",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2973990",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "unit_internal_army_id",
+      "rva": "0xd19159",
+      "instruction": "mov edx, dword ptr [rcx + 0x178]",
+      "bytes": "8B 91 78 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_province",
+      "rva": "0x251dd38",
+      "instruction": "mov rdi, qword ptr [rcx + 0x200]",
+      "bytes": "48 8B B9 00 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province_active_siege",
+      "rva": "0x247f2d7",
+      "instruction": "cmp dword ptr [rsi + 0x788], -1",
+      "bytes": "83 BE 88 07 00 00 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "start_actor_death_new_offset",
+      "rva": "0x2973925",
+      "instruction": "cmp qword ptr [rcx + 0x1d0], 0",
+      "bytes": "48 83 B9 D0 01 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "stop_actor_death_new_offset",
+      "rva": "0x2973ad8",
+      "instruction": "cmp qword ptr [rcx + 0x1d0], 0",
+      "bytes": "48 83 B9 D0 01 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_actor_payload",
+      "rva": "0x296ce20",
+      "instruction": "mov r8d, dword ptr [rcx + 0x24]",
+      "bytes": "44 8B 41 24",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_internal_army_payload",
+      "rva": "0x296ce27",
+      "instruction": "mov edx, dword ptr [rcx + 0x28]",
+      "bytes": "8B 51 28",
+      "rip_targets": []
+    },
+    {
+      "purpose": "start_siege_payload",
+      "rva": "0x29734d0",
+      "instruction": "mov r8d, dword ptr [rcx + 0x28]",
+      "bytes": "44 8B 41 28",
+      "rip_targets": []
+    },
+    {
+      "purpose": "stop_siege_payload",
+      "rva": "0x29739f0",
+      "instruction": "mov r8d, dword ptr [rcx + 0x28]",
+      "bytes": "44 8B 41 28",
+      "rip_targets": []
+    },
+    {
+      "purpose": "disband_internal_army_payload",
+      "rva": "0x296a543",
+      "instruction": "mov edx, dword ptr [rcx + 0x24]",
+      "bytes": "8B 51 24",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_clone_size",
+      "rva": "0x29772b0",
+      "instruction": "mov ecx, 0x30",
+      "bytes": "B9 30 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_clone_actor",
+      "rva": "0x2977303",
+      "instruction": "mov eax, dword ptr [rbx + 0x24]",
+      "bytes": "8B 43 24",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_clone_internal_army",
+      "rva": "0x297730a",
+      "instruction": "mov eax, dword ptr [rbx + 0x28]",
+      "bytes": "8B 43 28",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_ui_kind_player",
+      "rva": "0x13481f3",
+      "instruction": "mov dword ptr [rsp + 0x40], 1",
+      "bytes": "C7 44 24 40 01 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_queue_player_channel",
+      "rva": "0x1348243",
+      "instruction": "lea r8d, [rdi + 0xe]",
+      "bytes": "44 8D 47 0E",
+      "rip_targets": []
+    },
+    {
+      "purpose": "split_queue_manager",
+      "rva": "0x134824c",
+      "instruction": "lea rcx, [rip + 0x4978fed]",
+      "bytes": "48 8D 0D ED 8F 97 04",
+      "rip_targets": [
+        "0x5cc1240"
+      ]
+    },
+    {
+      "purpose": "disband_queue_player_channel",
+      "rva": "0x41dc3e9",
+      "instruction": "mov edx, 0xe",
+      "bytes": "BA 0E 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "disband_queue_wrapper",
+      "rva": "0x41dc3f3",
+      "instruction": "call 0x9e16b0",
+      "bytes": "E8 B8 52 80 FC",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pod_destroy_delete_bit",
+      "rva": "0x9d1573",
+      "instruction": "test dl, 1",
+      "bytes": "F6 C2 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "stop_assault_executor_active_offset",
+      "rva": "0x29739db",
+      "instruction": "mov byte ptr [rdx + 0x44c], 0",
+      "bytes": "C6 82 4C 04 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x29695e9",
+      "rva": "0x29695e9",
+      "instruction": "call 0x29675f0",
+      "bytes": "E8 02 E0 FF FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x29695f7",
+      "rva": "0x29695f7",
+      "instruction": "call 0x24ac1b0",
+      "bytes": "E8 B4 2B B4 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x296992c",
+      "rva": "0x296992c",
+      "instruction": "call 0x2969570",
+      "bytes": "E8 3F FC FF FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2969947",
+      "rva": "0x2969947",
+      "instruction": "cmp ebx, dword ptr [rcx + 0x14c]",
+      "bytes": "3B 99 4C 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2976e95",
+      "rva": "0x2976e95",
+      "instruction": "mov ecx, 0x168",
+      "bytes": "B9 68 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2976ee9",
+      "rva": "0x2976ee9",
+      "instruction": "mov qword ptr [rbx + 0x18], rax",
+      "bytes": "48 89 43 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2976f11",
+      "rva": "0x2976f11",
+      "instruction": "call 0x22d3cf0",
+      "bytes": "E8 DA CD 95 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2969639",
+      "rva": "0x2969639",
+      "instruction": "mov edx, 0x168",
+      "bytes": "BA 68 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x296962f",
+      "rva": "0x296962f",
+      "instruction": "call 0xafefa0",
+      "bytes": "E8 6C 59 19 FE",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x24abd15",
+      "rva": "0x24abd15",
+      "instruction": "call 0xd1a0b0",
+      "bytes": "E8 96 E3 86 FE",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x24abd38",
+      "rva": "0x24abd38",
+      "instruction": "call 0x2648060",
+      "bytes": "E8 23 C3 19 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x24abd58",
+      "rva": "0x24abd58",
+      "instruction": "call 0x2648150",
+      "bytes": "E8 F3 C3 19 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2648184",
+      "rva": "0x2648184",
+      "instruction": "cmp dword ptr [rdx + 0x85c], 0x50726f76",
+      "bytes": "81 BA 5C 08 00 00 76 6F 72 50",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2648194",
+      "rva": "0x2648194",
+      "instruction": "cmp dword ptr [r8 + 0x85c], 0x50726f76",
+      "bytes": "41 81 B8 5C 08 00 00 76 6F 72 50",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x2648071",
+      "rva": "0x2648071",
+      "instruction": "mov qword ptr [rcx + 0x10], rdx",
+      "bytes": "48 89 51 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x24abc18",
+      "rva": "0x24abc18",
+      "instruction": "call 0x24ab2f0",
+      "bytes": "E8 D3 F6 FF FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x24abc77",
+      "rva": "0x24abc77",
+      "instruction": "call 0x24aa7d0",
+      "bytes": "E8 54 EB FF FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "move_0x24abd03",
+      "rva": "0x24abd03",
+      "instruction": "call 0x24aa820",
+      "bytes": "E8 18 EB FF FF",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kUnitInternalArmyId": "0x178",
+    "kUnitCurrentProvince": "0x20",
+    "kProvinceId": "0x10",
+    "kProvinceValidityTag": "0x85C",
+    "kProvinceActiveSiege": "0x788",
+    "kSiegeProvince": "0x200",
+    "kSiegeAssaultActive": "0x44C"
+  },
+  "source_files": [
+    "include/xar_bridge/ck3_12002_military.hpp",
+    "src/ck3_12002_military.cpp",
+    "src/ck3_12002_military_test.cpp"
+  ],
+  "layouts": {
+    "move": {
+      "command_size": "0x168",
+      "command_secondary_vtable": "0x18",
+      "command_kind": "0x20",
+      "command_unit_id": "0x24",
+      "command_target_province_id": "0x28",
+      "command_move_mode": "0x2C",
+      "command_route_kind": "0x30",
+      "command_direct_target": "0x34",
+      "command_path": "0x38",
+      "path_size": "0x130",
+      "path_array_ptr": "0x00",
+      "path_capacity": "0x08",
+      "path_count": "0x0C",
+      "path_allocator": "0x10",
+      "path_context_size": "0x70",
+      "path_context_unit": "0x10",
+      "unit_current_province": "0x20",
+      "unit_route_ptr": "0x38",
+      "unit_route_count": "0x44",
+      "province_id": "0x10",
+      "province_validity_magic": "0x85C"
+    },
+    "raise_merge": {
+      "raise_command": {
+        "size": "0x50",
+        "primary_vtable": "0x0",
+        "flags": "0x8",
+        "metadata": "0xC..0x14",
+        "secondary_vtable": "0x18",
+        "character_id": "0x20",
+        "entries": "0x28",
+        "entry_capacity": "0x30",
+        "entry_count": "0x34",
+        "entry_allocator": "0x38",
+        "selected_entry": "0x40",
+        "raise_kind": "0x44",
+        "raise_flag": "0x48",
+        "entry_size": "0x8",
+        "entry_fields": [
+          "province_id:int32",
+          "native_entry_selector:int32 (default=-1; legacy name regiment_id)"
+        ]
+      },
+      "merge_command": {
+        "size": "0x40",
+        "primary_vtable": "0x0",
+        "flags": "0x8",
+        "metadata": "0xC..0x14",
+        "secondary_vtable": "0x18",
+        "command_kind": "0x20",
+        "destination_army_id": "0x24",
+        "source_data": "0x28",
+        "source_capacity": "0x30",
+        "source_count": "0x34",
+        "source_allocator": "0x38",
+        "array_header_size": "0x18"
+      },
+      "province": {
+        "id": "0x10",
+        "type_tag": "0x85C",
+        "expected_tag": "0x50726F76"
+      },
+      "unit": {
+        "id": "0x10",
+        "type_tag": "0x14",
+        "expected_tag": "0x556E6974",
+        "owner_character_id": "0x174"
+      }
+    },
+    "split": "size0x30 kind20 CharacterID24 CArmyID28",
+    "disband": "size0x28 kind20 CArmyID24",
+    "assault": "size0x30 kind20 CharacterID24 SiegeID28",
+    "province_active_siege_id": "1.20 +0x788; old1.19 +0x790 is obsolete"
+  },
+  "lifecycle": {
+    "raise": [
+      "get native capital at 0x28B1CD0",
+      "require capital tag Prov at +0x85C",
+      "select province at 0x24A51B0(character,capital,0,-1)",
+      "read selected province ID at +0x10",
+      "construct 0x50 stack storage via 0x298C130 with one RaiseEntry",
+      "check vtables and validate 0x298C2C0(command,null)",
+      "submit through synchronous clone wrapper flags 7",
+      "destroy original with 0x11F2E00(command,0)"
+    ],
+    "merge": [
+      "native factory 0x297BCF0 allocates a 0x40 object",
+      "set command_kind=1 and destination full ID",
+      "append one full source ID through 0x9E3790(header,0,begin,end)",
+      "check exactly one native array entry and validate 0x296EF90(command,null)",
+      "submit through synchronous clone wrapper flags 0x0E",
+      "destroy original with 0x296A220(command,1)"
+    ]
+  },
+  "migration_changes": [
+    "Old 0x2248260 ResolveMoveOrigin closure is inlined in new 0x24ABBE0. Do not bind an invented new RVA. Implement the exact inlined selection via progress/first/last native functions.",
+    "Native Province validity now checks dword +0x85C against 0x50726F76 rather than calling old vtable slot +0x30.",
+    "Old path context stack allocation size 0x70 and move command allocation size 0x168 still hold.",
+    "Native caller 0x24ABD72..0x24ABD92 releases path array only. Context remains a stack query object with no separate destructor in the production caller.",
+    "Disband and split consume full internal CArmyID at Unit+178; merge/move consume full public CUnitID.",
+    "Province active siege moved from 790 to 788; fixtures put a decoy at the old offset.",
+    "New UI wrappers do not preserve queue bool; all actions use common synchronous clone + QueueOwnedCommand true AL result.",
+    "Initial army move mode, character command kind and army state gates are native; no estimated movement legality."
+  ],
+  "offline_test": {
+    "result": "PASS",
+    "toolchain": "MSVC19.51 C++20 /W4",
+    "artifact": "build-military-msvc/military-test.exe",
+    "scope": "caller-owned synthetic bytes and native function callbacks, no live process access"
+  },
+  "remaining_validation": [
+    "Selected adapter owning-thread integration",
+    "Paused fixture-live action and preview smoke matrix",
+    "Post-command observed outcomes; queue ACK alone proves only submission"
+  ],
+  "binding_rvas": {
+    "get_character_capital": "0x28b1cd0",
+    "resolve_raise_province": "0x24a51b0",
+    "construct_raise": "0x298c130",
+    "validate_raise": "0x298c2c0",
+    "destroy_raise": "0x11f2e00",
+    "move_mode": "0x296a0a0",
+    "character_command_allowed": "0x29675f0",
+    "army_move_allowed": "0x24ac1b0",
+    "move_allowed": "0x2969570",
+    "construct_move_path": "0xd1a0b0",
+    "destroy_move": "0x2969620",
+    "read_move_progress": "0x24ab2f0",
+    "read_route_first": "0x24aa7d0",
+    "read_route_last": "0x24aa820",
+    "construct_path_context": "0x2648060",
+    "build_route": "0x2648150",
+    "validate_disband": "0x296a620",
+    "validate_split": "0x296cf60",
+    "destroy_split": "0x9d1560",
+    "create_merge": "0x297bcf0",
+    "append_int_range": "0x9e3790",
+    "validate_merge": "0x296ef90",
+    "destroy_merge": "0x296a220",
+    "validate_start": "0x29738c0",
+    "validate_stop": "0x2973a70",
+    "destroy_assault": "0x9d1560",
+    "raise_primary": "0x45345c0",
+    "raise_secondary": "0x4534658",
+    "move_primary": "0x476b168",
+    "move_secondary": "0x476b138",
+    "disband_primary": "0x476ae48",
+    "disband_secondary": "0x476ae18",
+    "split_primary": "0x476af10",
+    "split_secondary": "0x476aee0",
+    "merge_primary": "0x476ab20",
+    "merge_secondary": "0x476abb8",
+    "start_primary": "0x476a288",
+    "start_secondary": "0x476a320",
+    "stop_primary": "0x476a030",
+    "stop_secondary": "0x476a000"
+  }
+}

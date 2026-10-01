@@ -1,4 +1,33 @@
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ck3_12002.hpp"
+#include "xar_bridge/ck3_12002_adapter.hpp"
+#include "xar_bridge/ck3_12002_lifestyle.hpp"
+#include "xar_bridge/ck3_12002_family.hpp"
+#include "xar_bridge/ck3_12002_family_projection.hpp"
+#include "xar_bridge/ck3_12002_family_subject.hpp"
+#include "xar_bridge/ck3_12002_family_outbound.hpp"
+#include "xar_bridge/ck3_12002_family_ranked_mailbox.hpp"
+#include "xar_bridge/ck3_12002_family_wire.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+#include "ck3_12002_construction_mailbox.hpp"
+#endif
+#include "xar_bridge/ck3_12002_query_mailbox.hpp"
+#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12002_thread_runtime.hpp"
+#include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
+#include "xar_bridge/ck3_12002_war_entry.hpp"
+#include "xar_bridge/ck3_12002_routes.hpp"
+#include "xar_bridge/ck3_12002_battle.hpp"
+#include "xar_bridge/ck3_12002_battle_journal.hpp"
+#include "xar_bridge/ck3_12002_province.hpp"
+#include "xar_bridge/ck3_12002_world.hpp"
+#include "xar_bridge/ck3_12002_title_map.hpp"
+#include "xar_bridge/ck3_12002_events.hpp"
+#include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/ck3_12002_pending_context.hpp"
+#include "xar_bridge/ck3_12002_event_window_context.hpp"
+#include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/ck3_12002_phase_diagnostic.hpp"
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #endif
@@ -406,6 +435,8 @@ static xar::ck3_11906::CoatOfArmsDesignerProbeHookStateV1
     g_coat_of_arms_designer_probe_hook_v1{};
 static xar::ck3_11906::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_v1{};
+static xar::ck3_12002::BattleTerminalJournalDetourStateV1
+    g_battle_terminal_journal_12002_v1{};
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
@@ -1632,8 +1663,16 @@ void AppendVfsSettingsLookup(
   result += '}';
 }
 
+std::string RenderNativePrivateFrameV1(const xar::game::GameAdapter &game,
+    std::string frame) {
+  return game.descriptor().game_version == "1.20.0.2"
+      ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(frame)) : frame;
+}
+
 std::string IdentityFrame() {
-  const auto &descriptor = xar::game::PreferredAdapterDescriptor();
+  const auto selected = xar::game::SelectCurrentProcessAdapter();
+  const auto &descriptor = selected != nullptr && selected->enabled()
+      ? selected->descriptor() : xar::game::PreferredAdapterDescriptor();
   std::string result =
       "{\"bridge\":\"xar_ck3_bridge\",\"bridge_version\":\"";
   result += XAR_BRIDGE_VERSION;
@@ -1694,7 +1733,7 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
   return result;
 }
 
-std::string HeartbeatFrame(std::uint64_t sequence) {
+std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter &game) {
   const auto mailbox =
       xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
           g_main_thread_query_mailbox_v1);
@@ -1952,7 +1991,24 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += ",\"executed_requests\":";
   result += Number(g_coat_of_arms_designer_probe_hook_v1.executed_requests.load(
       std::memory_order_acquire));
-  result += "},\"startup_particle2_null_guard_v1\":{";
+  result += '}';
+  if (const auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game)) {
+    const auto observer = worker->snapshot_observer_diagnostics();
+    result += ",\"snapshot_observer_12002\":{\"started_ms\":";
+    result += Number(observer.started_ms);
+    result += ",\"completed_ms\":";
+    result += Number(observer.completed_ms);
+    result += ",\"last_read_ms\":";
+    result += Number(observer.last_read_ms);
+    result += ",\"read_in_progress\":";
+    result += observer.started_ms > observer.completed_ms ? "true" : "false";
+    result += ",\"last_read_available\":";
+    result += observer.last_read_available ? "true" : "false";
+    result += ",\"snapshot_cached\":";
+    result += observer.snapshot_cached ? "true" : "false";
+    result += '}';
+  }
+  result += ",\"startup_particle2_null_guard_v1\":{";
   result += "\"installed\":";
   result += startup_guard.installed ? "true" : "false";
   result += ",\"failure\":";
@@ -3513,15 +3569,24 @@ void AppendCombatSimulationInputs(
 
 void AppendCombatSimulationInputsV3(
     std::string &result,
-    const xar::game::CombatSimulationInputsV3Snapshot &snapshot) {
-  result += "{\"schema_version\":3,\"contract_stage\":"
-            "\"production_exact_132_refs\",\"rules_manifest_sha256\":";
-  AppendJsonString(result, xar::game::kCombatPhaseManifestSha256);
+    const xar::game::CombatSimulationInputsV3Snapshot &snapshot,
+    bool crozier = false) {
+  result += "{\"schema_version\":3,\"contract_stage\":";
+  if (crozier) {
+    AppendJsonString(result, xar::ck3_12002::kPhaseContractStage);
+    result += ",\"source_delta_sha256\":";
+    AppendJsonString(result, xar::ck3_12002::kPhaseSourceDeltaSha256);
+  } else {
+    AppendJsonString(result, "production_exact_132_refs");
+    result += ",\"rules_manifest_sha256\":";
+    AppendJsonString(result, xar::game::kCombatPhaseManifestSha256);
+  }
   result += ",\"base_inputs\":";
   AppendCombatSimulationInputs(result, snapshot.base_inputs);
   result += ",\"phase_event_inputs\":";
-  result += xar::ck3_11906::SerializeCombatPhaseInputsV3(
-      snapshot.phase_event_inputs);
+  result += crozier
+      ? xar::ck3_12002::SerializeCombatPhaseInputsV3(snapshot.phase_event_inputs)
+      : xar::ck3_11906::SerializeCombatPhaseInputsV3(snapshot.phase_event_inputs);
   result += '}';
 }
 
@@ -4102,7 +4167,20 @@ void AppendRaiktorGenericWarBoundCurrent(
       "\"raiktor_source_specific_domain_ready\":false}}";
 }
 
-void AppendClaimWarTerminationTermsProvenance(std::string &result) {
+void AppendClaimWarTerminationTermsProvenance(std::string &result, bool crozier = false) {
+  if (crozier) {
+    result +=
+        "{\"game_version\":\"1.20.0.2\","
+        "\"executable_sha256\":"
+        "\"AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D\","
+        "\"native_reader\":\"CWar+0x270/+0x290;0x2B9ECD0\","
+        "\"present_claim_lifecycle\":"
+        "\"present_only_vtable_slot_0_delete_flags_0\","
+        "\"claim_script_sha256\":"
+        "\"887BF0197401CB17CB4588978ADD556AB6B429BF55CB482E3E5F2D0E8351CFD4\"}";
+    return;
+  }
+
   result +=
       "{\"game_version\":\"1.19.0.6\","
       "\"executable_sha256\":"
@@ -4138,7 +4216,7 @@ void AppendRaiktorWarTerminationTermsProvenance(std::string &result) {
 void AppendWarTerminationTerms(
     std::string &result,
     const xar::game::WarTerminationTermsSnapshot &terms,
-    bool supported, std::uint64_t native_revision) {
+    bool supported, std::uint64_t native_revision, bool crozier = false) {
   result += "{\"schema_version\":1,\"status\":\"";
   result += supported ? "available" : "unsupported";
   result += "\",\"war_id\":";
@@ -4157,7 +4235,7 @@ void AppendWarTerminationTerms(
     result +=
         "\"reason\":\"casus_belli_not_claim_cb\","
         "\"readiness\":{\"ready\":false},\"provenance\":";
-    AppendClaimWarTerminationTermsProvenance(result);
+    AppendClaimWarTerminationTermsProvenance(result, crozier);
     result += '}';
     return;
   }
@@ -4430,7 +4508,7 @@ void AppendWarTerminationTerms(
       "\"targets_ready\":true,\"claim_rows_ready\":true,"
       "\"claim_disposition_ready\":true,\"ready\":true},"
       "\"provenance\":";
-  AppendClaimWarTerminationTermsProvenance(result);
+  AppendClaimWarTerminationTermsProvenance(result, crozier);
   result += '}';
 }
 
@@ -5254,7 +5332,8 @@ std::string_view LifestyleFixed(const std::array<char, N> &value) noexcept {
 
 std::string PlayerLifestyleFormalPrivateResultFrame(
     std::string_view request_id, std::string_view step,
-    const xar::ck3_11906::PlayerLifestyleFormalWireContextV1 &context) {
+    const xar::ck3_11906::PlayerLifestyleFormalWireContextV1 &context,
+    bool crozier = false) {
   if (!context.completed) {
     return CommandResultFrame(
         request_id, step, false,
@@ -5273,8 +5352,9 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
     result += "\"status\":\"available\",\"episode_run_id\":";
     AppendJsonString(result, context.episode_run_id);
     result += ",\"snapshot\":";
-    result += xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(
-        *context.snapshot);
+    result += crozier
+        ? xar::ck3_12002::lifestyle::SerializePlayerLifestyleSnapshot12002V1(*context.snapshot)
+        : xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(*context.snapshot);
   } else if (context.mode == xar::ck3_11906::
                                  PlayerLifestyleFormalWireModeV1::
                                      query_focus_only ||
@@ -5489,8 +5569,9 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
         result, xar::ck3_11906::PlayerLifestyleFormalPreconditionResultKeyV1(
                     context.precondition_result));
     result += ",\"snapshot\":";
-    result += xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(
-        *context.snapshot);
+    result += crozier
+        ? xar::ck3_12002::lifestyle::SerializePlayerLifestyleSnapshot12002V1(*context.snapshot)
+        : xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(*context.snapshot);
   } else if (context.mode == xar::ck3_11906::
                                  PlayerLifestyleFormalWireModeV1::submit_perk ||
              context.mode == xar::ck3_11906::
@@ -5559,7 +5640,8 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
     AppendJsonString(result, receipt.reason);
   }
   result += "}}";
-  return result;
+  return crozier ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(result))
+                 : result;
 }
 
 std::string ExecutePlayerLifestyleFormalPrivateStepV1(
@@ -5672,8 +5754,18 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
     }
   }
 
-  auto context =
-      std::make_unique<PlayerLifestyleFormalWireContextV1>();
+  const bool crozier = game.descriptor().game_version == "1.20.0.2";
+  std::unique_ptr<PlayerLifestyleFormalWireContextV1> legacy_context;
+  std::unique_ptr<xar::ck3_12002::lifestyle::PlayerLifestyleFormalWireContext12002V1>
+      context12002;
+  PlayerLifestyleFormalWireContextV1 *context = nullptr;
+  if (crozier) {
+    context12002 = std::make_unique<xar::ck3_12002::lifestyle::PlayerLifestyleFormalWireContext12002V1>();
+    context = context12002.get();
+  } else {
+    legacy_context = std::make_unique<PlayerLifestyleFormalWireContextV1>();
+    context = legacy_context.get();
+  }
   const auto mode =
       step == kPlayerLifestyleFormalPrivateQueryStepV1
           ? PlayerLifestyleFormalWireModeV1::query
@@ -5695,9 +5787,16 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                       : step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1
                             ? PlayerLifestyleFormalWireModeV1::submit_focus
                       : PlayerLifestyleFormalWireModeV1::verify_receipt;
-  if (!InitializePlayerLifestyleFormalWireContextV1(
-          *context, BindCurrentProcess(true), current, revision,
-          episode_run_id, mode)) {
+  const bool initialized = crozier
+      ? xar::ck3_12002::lifestyle::InitializePlayerLifestyleFormalWireContext12002V1(
+            *context12002, xar::ck3_12002::BindCoreImage(
+                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                game.descriptor().executable_sha256),
+            current, revision, episode_run_id, mode)
+      : InitializePlayerLifestyleFormalWireContextV1(
+            *context, BindCurrentProcess(true), current, revision,
+            episode_run_id, mode);
+  if (!initialized) {
     return CommandResultFrame(request_id, step, false,
                               "private_lifestyle_source_bind_unavailable");
   }
@@ -5729,7 +5828,11 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
   MainThreadQueryTicketV1 ticket{};
   const auto submit = TrySubmitMainThreadQueryV1(
       g_main_thread_query_mailbox_v1,
-      &ExecutePlayerLifestyleFormalWireMailboxV1, context.get(), ticket);
+      crozier
+          ? &xar::ck3_12002::lifestyle::ExecutePlayerLifestyleFormalWireMailbox12002V1
+          : &ExecutePlayerLifestyleFormalWireMailboxV1,
+      crozier ? static_cast<void *>(context12002.get())
+              : static_cast<void *>(context), ticket);
   if (submit != MainThreadQuerySubmitResultV1::submitted) {
     return CommandResultFrame(request_id, step, false,
                               "private_lifestyle_application_main_unavailable");
@@ -5760,7 +5863,7 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
   }
   std::string response =
       stable ? PlayerLifestyleFormalPrivateResultFrame(
-                   request_id, step, *context)
+                   request_id, step, *context, crozier)
              : CommandResultFrame(
                    request_id, step, false,
                    "private_lifestyle_executor_or_completion_state_red");
@@ -6444,9 +6547,11 @@ std::string BattleReinforcementAssignmentResultFrame(
 
 std::string CampaignRootContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
-    const xar::game::CampaignRootContextV1 &context) {
-  const auto payload =
-      xar::ck3_11906::SerializeCampaignRootContextV1(context);
+    const xar::game::CampaignRootContextV1 &context,
+    bool crozier = false) {
+  const auto payload = crozier
+      ? xar::ck3_12002::SerializeCampaignRootContextV1(context)
+      : xar::ck3_11906::SerializeCampaignRootContextV1(context);
   if (payload.empty()) {
     return {};
   }
@@ -7308,9 +7413,11 @@ std::string ZhongguoAiOwnedCaseSnapshotResultFrame(
 
 std::string LoadedFeatureManifestResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
-    const xar::game::LoadedFeatureManifestV1 &manifest) {
-  const auto payload =
-      xar::ck3_11906::SerializeLoadedFeatureManifestV1(manifest);
+    const xar::game::LoadedFeatureManifestV1 &manifest,
+    bool crozier = false) {
+  const auto payload = crozier
+      ? xar::ck3_12002::SerializeLoadedFeatureManifestV1(manifest)
+      : xar::ck3_11906::SerializeLoadedFeatureManifestV1(manifest);
   if (payload.empty()) {
     return {};
   }
@@ -7338,9 +7445,11 @@ std::string LoadedFeatureManifestResultFrame(
 
 std::string PendingCharacterInteractionContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
-    const xar::game::PendingCharacterInteractionContextV1 &context) {
-  const auto payload =
-      xar::ck3_11906::SerializePendingCharacterInteractionContextV1(context);
+    const xar::game::PendingCharacterInteractionContextV1 &context,
+    bool crozier = false) {
+  const auto payload = crozier
+      ? xar::ck3_12002::SerializePendingCharacterInteractionContextV1(context)
+      : xar::ck3_11906::SerializePendingCharacterInteractionContextV1(context);
   if (payload.empty()) {
     return {};
   }
@@ -7374,9 +7483,11 @@ std::string PendingCharacterInteractionContextResultFrame(
 
 std::string EventWindowContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
-    const xar::game::EventWindowContextV1 &context) {
-  const auto payload =
-      xar::ck3_11906::SerializeEventWindowContextV1(context);
+    const xar::game::EventWindowContextV1 &context,
+    bool crozier = false) {
+  const auto payload = crozier
+      ? xar::ck3_12002::SerializeEventWindowContextV1(context)
+      : xar::ck3_11906::SerializeEventWindowContextV1(context);
   if (payload.empty()) {
     return {};
   }
@@ -7780,9 +7891,11 @@ bool CaptureWarEntryBridgeFrame(
 std::string WarEntryAssessmentsResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
-    const xar::game::WarEntryAssessmentsV1 &assessments) {
-  const auto payload =
-      xar::ck3_11906::SerializeWarEntryAssessmentsV1(assessments);
+    const xar::game::WarEntryAssessmentsV1 &assessments,
+    bool crozier = false) {
+  const auto payload = crozier
+      ? xar::ck3_12002::SerializeWarEntryAssessmentsV1(assessments)
+      : xar::ck3_11906::SerializeWarEntryAssessmentsV1(assessments);
   if (payload.empty()) {
     return {};
   }
@@ -8044,7 +8157,7 @@ std::string WarTerminationTermsResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
     const xar::game::WarTerminationTermsSnapshot &terms,
-    bool supported, std::uint64_t native_revision) {
+    bool supported, std::uint64_t native_revision, bool crozier = false) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":\"";
@@ -8056,7 +8169,7 @@ std::string WarTerminationTermsResultFrame(
   result += "\",\"query_sequence\":";
   result += Number(query_sequence);
   result += ",\"war_termination_terms\":";
-  AppendWarTerminationTerms(result, terms, supported, native_revision);
+  AppendWarTerminationTerms(result, terms, supported, native_revision, crozier);
   result += "}}";
   return result;
 }
@@ -8116,7 +8229,8 @@ std::string CombatSimulationInputsV3ResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
     xar::game::ReadCombatSimulationInputsV3Result query_result,
-    const xar::game::CombatSimulationInputsV3Snapshot &snapshot) {
+    const xar::game::CombatSimulationInputsV3Snapshot &snapshot,
+    bool crozier = false) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":";
@@ -8131,7 +8245,7 @@ std::string CombatSimulationInputsV3ResultFrame(
   result += "\",\"query_sequence\":";
   result += Number(query_sequence);
   result += ",\"combat_simulation_inputs\":";
-  AppendCombatSimulationInputsV3(result, snapshot);
+  AppendCombatSimulationInputsV3(result, snapshot, crozier);
   result += "}}";
   return result;
 }
@@ -8503,7 +8617,7 @@ std::string CurrentFirstHeirRelationshipResultFrameV1(
     std::string_view request_id, std::uint64_t native_revision,
     std::int32_t heir_character_id,
     const xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &read,
-    std::string_view override_unavailable_reason = {}) {
+    std::string_view override_unavailable_reason = {}, bool crozier = false) {
   const bool available =
       override_unavailable_reason.empty() &&
       read.failure ==
@@ -8557,12 +8671,34 @@ std::string CurrentFirstHeirRelationshipResultFrameV1(
   result += xar::ck3_11906::CurrentFirstHeirBetrothalActionabilityJsonV1(
       read.betrothal_actionability);
   result += "}}";
-  return result;
+  return crozier ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(result))
+                 : result;
 }
 
 struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
   xar::ck3_11906::Bindings bindings{};
+  xar::ck3_12002::FamilyBindings family12002{};
+  std::unique_ptr<xar::game::GameAdapter> adapter12002;
+  bool outbound_only12002 = false;
+  xar::ck3_12002::FamilyOutboundBindings outbound_bindings12002{};
+  std::int32_t outbound_recipient12002 = -1;
+  xar::bridge::MarriageOutboundPendingSnapshotV1 outbound12002{};
+  bool outbound_read12002 = false;
+  bool alliance_pair_only12002 = false;
+  xar::ck3_12002::FamilyProjectionBindings projection12002{};
+  bool alliance_pair_read12002 = false;
+  bool alliance_pair_forward12002 = false;
+  bool alliance_pair_reverse12002 = false;
+  bool bilateral_only12002 = false;
+  bool child_only12002 = false;
+  bool diagnose_family_arrays12002 = false;
+  std::int32_t bilateral_candidate12002 = -1;
+  xar::bridge::MarriageProposalBilateralRelationshipV1 bilateral12002{};
+  bool bilateral_read12002 = false;
+  xar::ck3_12002::FamilySubjectBindings subject_bindings12002{};
+  xar::ck3_12002::PlayerChildMarriageSubjectRead12002 child12002{};
+  xar::ck3_11906::PlayerFamilyArrayProbeV1 family_probe12002{};
   xar::game::Snapshot expected_snapshot{};
   std::int32_t heir_character_id = -1;
   xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 read{};
@@ -8575,6 +8711,45 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto &query = *static_cast<CurrentFirstHeirBetrothalMailboxQueryV1 *>(opaque);
+  if (query.adapter12002) {
+    xar::game::Snapshot before{};
+    if (!stamp.paused || stamp.date_raw != query.expected_snapshot.date_raw ||
+        !xar::game::ReadSnapshot(*query.adapter12002, before) ||
+        before != query.expected_snapshot) return true;
+    if (query.outbound_only12002) {
+      query.outbound_read12002 = xar::ck3_12002::ReadMarriageOutboundPendingSnapshotV1(
+          query.outbound_bindings12002, before.played_character_id,
+          query.outbound_recipient12002, query.heir_character_id,
+          query.bilateral_candidate12002, query.outbound12002);
+    } else if (query.alliance_pair_only12002) {
+      query.alliance_pair_read12002 = xar::ck3_12002::ReadFamilyAlliancePairV1(
+          query.family12002, query.projection12002, query.heir_character_id,
+          query.bilateral_candidate12002, query.alliance_pair_forward12002,
+          query.alliance_pair_reverse12002);
+    } else if (query.bilateral_only12002) {
+      query.bilateral_read12002 = xar::ck3_12002::ReadFamilyBilateralRelationshipV1(
+          query.family12002, query.heir_character_id,
+          query.bilateral_candidate12002, query.bilateral12002);
+    } else if (query.child_only12002) {
+      query.child12002 = xar::ck3_12002::ReadPlayerChildMarriageSubjectV1(
+          query.subject_bindings12002, query.heir_character_id);
+      if (query.diagnose_family_arrays12002) {
+        query.family_probe12002 = xar::ck3_12002::ReadPlayerFamilyArrayProbeV1(
+            query.subject_bindings12002, before.played_character_id);
+      }
+    } else {
+      query.read = xar::ck3_12002::ReadCurrentFirstHeirRelationshipV1(
+          query.family12002, query.heir_character_id);
+      query.read.betrothal_actionability =
+          xar::ck3_12002::ReadCurrentFirstHeirBetrothalActionabilityV1(
+              query.family12002, query.read);
+    }
+    xar::game::Snapshot after{};
+    query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) &&
+        after == before && (query.outbound_only12002 || query.alliance_pair_only12002 || query.bilateral_only12002 || query.child_only12002 ||
+        query.read.failure != xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::frame_changed);
+    return true;
+  }
   xar::game::Snapshot before{};
   if (!stamp.paused || stamp.date_raw != query.expected_snapshot.date_raw ||
       !xar::ck3_11906::ReadSnapshot(query.bindings, before) ||
@@ -8593,12 +8768,138 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
   return true;
 }
 
+void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
+    const xar::game::GameAdapter &game, const xar::game::Snapshot &expected) {
+  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
+  query.subject_bindings12002 = xar::ck3_12002::BindFamilySubjectImage(base, game.descriptor().executable_sha256);
+  query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+  query.outbound_bindings12002 = xar::ck3_12002::BindFamilyOutboundImage(base, game.descriptor().executable_sha256);
+  query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
+      xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+  query.expected_snapshot = expected;
+}
+
+bool RunFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query) {
+  const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, &ExecuteCurrentFirstHeirBetrothalMailboxQueryV1,
+      &query, query.ticket);
+  if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) return false;
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+  }
+  const auto reclaim = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket);
+  return wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      reclaim == xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed &&
+      query.frame_observed;
+}
+
+bool ReadFamilyBilateralOnApplicationMain12002(
+    const xar::game::GameAdapter &game, const xar::game::Snapshot &expected,
+    std::int32_t subject, std::int32_t candidate,
+    xar::bridge::MarriageProposalBilateralRelationshipV1 &output) {
+  CurrentFirstHeirBetrothalMailboxQueryV1 query{};
+  BindFamilyMailbox12002(query, game, expected);
+  query.heir_character_id = subject;
+  query.bilateral_candidate12002 = candidate;
+  query.bilateral_only12002 = true;
+  if (!RunFamilyMailbox12002(query) || !query.bilateral_read12002) return false;
+  output = query.bilateral12002;
+  return true;
+}
+
+xar::ck3_11906::PlayerChildMarriageSubjectReadV1
+ReadPlayerChildOnApplicationMain12002(const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &expected, std::int32_t subject,
+    xar::ck3_11906::PlayerFamilyArrayProbeV1 *probe = nullptr) {
+  CurrentFirstHeirBetrothalMailboxQueryV1 query{};
+  BindFamilyMailbox12002(query, game, expected);
+  query.heir_character_id = subject;
+  query.child_only12002 = true;
+  query.diagnose_family_arrays12002 = probe != nullptr;
+  if (!RunFamilyMailbox12002(query)) return {};
+  if (probe != nullptr) *probe = query.family_probe12002;
+  return query.child12002;
+}
+
+xar::ck3_11906::PlayerChildMarriageSubjectReadV1
+ReadPlayerChildForAdapterV1(const xar::game::GameAdapter &game, std::int32_t subject) {
+  if (game.descriptor().game_version != "1.20.0.2") {
+    return xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
+        xar::ck3_11906::BindCurrentProcess(true), subject);
+  }
+  xar::game::Snapshot expected{};
+  if (!xar::game::ReadSnapshot(game, expected)) return {};
+  return ReadPlayerChildOnApplicationMain12002(game, expected, subject);
+}
+
+xar::bridge::MarriageProposalNativeReadbackResultV1
+ReadMarriageBilateralForAdapterV1(const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &expected, std::uint32_t subject,
+    std::uint32_t candidate, xar::bridge::MarriageProposalBilateralRelationshipV1 &output) {
+  if (game.descriptor().game_version != "1.20.0.2") {
+    return xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
+        g_marriage_shared_glue_v1.binder, subject, candidate, output);
+  }
+  return ReadFamilyBilateralOnApplicationMain12002(game, expected,
+      static_cast<std::int32_t>(subject), static_cast<std::int32_t>(candidate), output)
+      ? xar::bridge::MarriageProposalNativeReadbackResultV1::available
+      : xar::bridge::MarriageProposalNativeReadbackResultV1::failed;
+}
+
+xar::bridge::MarriageProposalNativeReadbackResultV1
+ReadMarriageAllianceForAdapterV1(const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &expected, std::uint32_t first, std::uint32_t second,
+    bool &forward, bool &reverse) {
+  if (game.descriptor().game_version != "1.20.0.2") {
+    return xar::bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
+        g_marriage_shared_glue_v1.binder, first, second, forward, reverse);
+  }
+  CurrentFirstHeirBetrothalMailboxQueryV1 query{};
+  BindFamilyMailbox12002(query, game, expected);
+  query.heir_character_id = static_cast<std::int32_t>(first);
+  query.bilateral_candidate12002 = static_cast<std::int32_t>(second);
+  query.alliance_pair_only12002 = true;
+  if (!RunFamilyMailbox12002(query) || !query.alliance_pair_read12002) {
+    return xar::bridge::MarriageProposalNativeReadbackResultV1::failed;
+  }
+  forward = query.alliance_pair_forward12002;
+  reverse = query.alliance_pair_reverse12002;
+  return xar::bridge::MarriageProposalNativeReadbackResultV1::available;
+}
+
+bool ReadMarriageOutboundForAdapterV1(const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &expected, std::int32_t actor, std::int32_t recipient,
+    std::int32_t subject, std::int32_t candidate,
+    xar::bridge::MarriageOutboundPendingSnapshotV1 &output) {
+  if (game.descriptor().game_version != "1.20.0.2") {
+    return xar::bridge::ReadMarriageOutboundPendingSnapshotV1(
+        g_marriage_shared_glue_v1.resolution, actor, recipient, subject, candidate, output);
+  }
+  if (actor != expected.played_character_id) return false;
+  CurrentFirstHeirBetrothalMailboxQueryV1 query{};
+  BindFamilyMailbox12002(query, game, expected);
+  query.heir_character_id = subject;
+  query.bilateral_candidate12002 = candidate;
+  query.outbound_recipient12002 = recipient;
+  query.outbound_only12002 = true;
+  if (!RunFamilyMailbox12002(query) || !query.outbound_read12002) return false;
+  output = query.outbound12002;
+  return true;
+}
+
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
 struct CurrentFirstHeirBetrothalFulfillmentMailboxV1 {
   CurrentFirstHeirBetrothalMailboxQueryV1 query{};
   xar::ck3_11906::CurrentFirstHeirBetrothalActionabilityReadV1 observed{};
   std::uint64_t revision = 0;
   xar::bridge::ObservedHeirMarriagePendingV1 pending{};
+  bool generic_submission12002 = false;
+  xar::bridge::MarriageProposalSubmissionV1 submission12002{};
   bool submit_attempted = false;
   xar::bridge::MarriageProposalNativeSubmitResultV1 submitted =
       xar::bridge::MarriageProposalNativeSubmitResultV1::unavailable;
@@ -8612,6 +8913,16 @@ bool ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1(
   if (!action.query.frame_observed || action.query.read.failure !=
       xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none)
     return true;
+  if (action.query.adapter12002) {
+    action.submit_attempted = true;
+    action.submitted = action.generic_submission12002
+        ? xar::ck3_12002::SubmitFamilyMarriageProposalV1(
+              action.query.family12002, action.submission12002)
+        : xar::ck3_12002::SubmitCurrentFirstHeirBetrothalFulfillmentV1(
+              action.query.family12002, action.query.expected_snapshot.played_character_id,
+              action.query.heir_character_id, action.observed, action.revision, action.pending);
+    return true;
+  }
   xar::bridge::MarriageProposalBilateralRelationshipV1 before{};
   xar::bridge::MarriageProposalSubmissionV1 submission{};
   xar::game::Snapshot checked{};
@@ -8634,11 +8945,45 @@ bool ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1(
       &g_marriage_shared_glue_v1.binder, submission);
   return true;
 }
+xar::bridge::MarriageProposalNativeSubmitResultV1
+SubmitMarriageForAdapterV1(const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &expected,
+    const xar::bridge::MarriageProposalSubmissionV1 &submission) {
+  if (game.descriptor().game_version != "1.20.0.2") {
+    return xar::bridge::SubmitMarriageProposalFromNativeBinderV1(
+        &g_marriage_shared_glue_v1.binder, submission);
+  }
+  CurrentFirstHeirBetrothalFulfillmentMailboxV1 action{};
+  BindFamilyMailbox12002(action.query, game, expected);
+  action.query.heir_character_id = static_cast<std::int32_t>(submission.subject_character_id);
+  action.generic_submission12002 = true;
+  action.submission12002 = submission;
+  const auto queued = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, &ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1,
+      &action, action.query.ticket);
+  if (queued != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    return xar::bridge::MarriageProposalNativeSubmitResultV1::unavailable;
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.query.ticket, 8'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, action.query.ticket, 2'000);
+  }
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.query.ticket);
+  return wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      reclaimed == xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed
+      ? action.submitted : xar::bridge::MarriageProposalNativeSubmitResultV1::unavailable;
+}
 #endif
 
 struct MarriageCandidateAllianceMailboxQueryV1 {
   xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
   xar::ck3_11906::Bindings bindings{};
+  xar::ck3_12002::FamilyBindings family12002{};
+  xar::ck3_12002::FamilyProjectionBindings projection12002{};
+  std::unique_ptr<xar::game::GameAdapter> adapter12002;
   xar::game::Snapshot expected_snapshot{};
   xar::bridge::MarriageCandidateAllianceProjectionEnvironmentV1 environment{};
   xar::bridge::MarriageNativeOutcomeClassifierEnvironmentV1
@@ -8659,6 +9004,21 @@ bool ExecuteMarriageCandidateAllianceMailboxQueryV1(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto &query = *static_cast<MarriageCandidateAllianceMailboxQueryV1 *>(opaque);
+  if (query.adapter12002) {
+    xar::game::Snapshot before{};
+    if (!stamp.paused || stamp.date_raw != query.expected_snapshot.date_raw ||
+        !xar::game::ReadSnapshot(*query.adapter12002, before) ||
+        before != query.expected_snapshot) return true;
+    for (std::size_t index = 0; index < query.row_count; ++index) {
+      query.reads[index] = xar::ck3_12002::ReadMarriageCandidateAlliancePrivateV1(
+          query.family12002, query.observed[index], query.projection12002,
+          query.request_matrilineal_option, query.read_fertility);
+    }
+    xar::game::Snapshot after{};
+    query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) && after == before;
+    if (!query.frame_observed) query.reads = {};
+    return true;
+  }
   xar::game::Snapshot before{};
   if (!stamp.paused || stamp.date_raw != query.expected_snapshot.date_raw ||
       !xar::ck3_11906::ReadSnapshot(query.bindings, before) ||
@@ -8701,315 +9061,18 @@ std::string_view MarriageCandidateAllianceSubmitFailureKeyV1(
   return "unknown";
 }
 
-std::string_view MarriageCandidateAlliancePrivateFailureKeyV1(
-    xar::ck3_11906::MarriageCandidateAlliancePrivateFailureV1 failure) {
-  using Failure = xar::ck3_11906::MarriageCandidateAlliancePrivateFailureV1;
-  switch (failure) {
-  case Failure::none: return "none";
-  case Failure::binding_unavailable: return "binding_unavailable";
-  case Failure::frame_changed: return "frame_changed";
-  case Failure::identity_changed: return "identity_changed";
-  case Failure::role_changed: return "role_changed";
-  case Failure::final_legality_changed: return "final_legality_changed";
-  case Failure::projection_unavailable: return "projection_unavailable";
-  case Failure::outcome_unavailable: return "outcome_unavailable";
-  case Failure::heir_relationship_unavailable:
-    return "heir_relationship_unavailable";
-  case Failure::lineage_unavailable: return "lineage_unavailable";
-  case Failure::sex_selector_unavailable: return "sex_selector_unavailable";
-  case Failure::selected_option_unavailable:
-    return "selected_option_unavailable";
-  case Failure::generic_cost_unavailable:
-    return "generic_cost_unavailable";
-  }
-  return "unknown";
-}
-
-std::string_view MarriageCandidateAllianceCoreFailureKeyV1(
-    xar::bridge::MarriageCandidateAllianceProjectionFailureV1 failure) {
-  using Failure = xar::bridge::MarriageCandidateAllianceProjectionFailureV1;
-  switch (failure) {
-  case Failure::none: return "none";
-  case Failure::exact_build_not_admitted: return "exact_build_not_admitted";
-  case Failure::binding_unavailable: return "binding_unavailable";
-  case Failure::signature_mismatch: return "signature_mismatch";
-  case Failure::invalid_input: return "invalid_input";
-  case Failure::context_roles_mismatch: return "context_roles_mismatch";
-  case Failure::option_id_unavailable: return "option_id_unavailable";
-  case Failure::native_vector_invalid: return "native_vector_invalid";
-  case Failure::row_identity_mismatch: return "row_identity_mismatch";
-  }
-  return "unknown";
-}
-
-std::string_view MarriageCandidateOutcomeFailureKeyV1(
-    xar::bridge::MarriageNativeOutcomeClassifierFailureV1 failure) {
-  using Failure = xar::bridge::MarriageNativeOutcomeClassifierFailureV1;
-  switch (failure) {
-  case Failure::none: return "none";
-  case Failure::exact_build_not_admitted: return "exact_build_not_admitted";
-  case Failure::binding_mismatch: return "binding_mismatch";
-  case Failure::signature_mismatch: return "signature_mismatch";
-  case Failure::memory_reader_unavailable: return "memory_reader_unavailable";
-  case Failure::invalid_input: return "invalid_input";
-  case Failure::secondary_pair_identity_mismatch:
-    return "secondary_pair_identity_mismatch";
-  case Failure::runtime_threshold_unavailable:
-    return "runtime_threshold_unavailable";
-  case Failure::option_identifier_unavailable:
-    return "option_identifier_unavailable";
-  case Failure::outcome_sample_drift: return "outcome_sample_drift";
-  }
-  return "unknown";
-}
-
 std::string MarriageCandidateAllianceProjectionFrameV1(
     std::string_view request_id, std::uint64_t revision,
     std::uint64_t legality_query_sequence,
     const MarriageCandidateAllianceMailboxQueryV1 &query,
     std::string_view step = kMarriageCandidateAllianceProjectionStepV1) {
-  std::string result =
-      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
-  AppendJsonString(result, request_id);
-  result += ",\"ok\":true,\"result\":{\"step\":";
-  AppendJsonString(result, step);
-  result += ",\"accepted\":true,\"private_build\":true,\"read_only\":true,"
-            "\"advertised\":false,\"native_revision\":";
-  result += Number(revision);
-  result += ",\"legality_query_sequence\":";
-  result += Number(legality_query_sequence);
-  result += ",\"status\":";
-  const bool all_available = std::all_of(
-      query.reads.begin(), query.reads.begin() + query.row_count,
-      [](const auto &row) {
-        return row.failure == xar::ck3_11906::
-                                  MarriageCandidateAlliancePrivateFailureV1::none;
-      });
-  AppendJsonString(result, all_available ? "available" : "unavailable");
-  result += ",\"rows\":[";
+  std::array<xar::ck3_12002::FamilyAllianceWireRowV1, 5> rows{};
   for (std::size_t index = 0; index < query.row_count; ++index) {
-    if (index != 0) result += ',';
-    const auto &observed = query.observed[index];
-    const auto &read = query.reads[index];
-    result += "{\"actor_character_id\":";
-    result += SignedNumber(observed.played_character_id);
-    result += ",\"heir_character_id\":";
-    result += SignedNumber(observed.subject_character_id);
-    result += ",\"candidate_character_id\":";
-    result += SignedNumber(observed.candidate_character_id);
-    result += ",\"recipient_character_id\":";
-    result += SignedNumber(observed.recipient_matchmaker_character_id);
-    result += ",\"status\":";
-    const bool available = read.failure == xar::ck3_11906::
-                                               MarriageCandidateAlliancePrivateFailureV1::none;
-    AppendJsonString(result, available ? "available" : "unavailable");
-    result += ",\"requested_matrilineal_option\":";
-    result += read.requested_matrilineal_option ? "true" : "false";
-    result += ",\"selected_option_readback\":";
-    result += read.requested_matrilineal_option
-                  ? (read.selected_option_readback ? "true" : "false")
-                  : "null";
-    result += ",\"final_legality_sampled\":";
-    result += read.final_legality_sampled ? "true" : "false";
-    result += ",\"complete_can_send\":";
-    result += read.final_legality_sampled
-                  ? (read.complete_can_send ? "true" : "false") : "null";
-    result += ",\"recipient_ai_accept_raw\":";
-    result += read.final_legality_sampled && read.recipient_acceptance_ready
-                  ? SignedNumber(read.recipient_ai_accept_raw) : "null";
-    result += ",\"recipient_answer_status_raw\":";
-    result += read.final_legality_sampled && read.recipient_acceptance_ready
-                  ? Number(read.recipient_answer_status_raw) : "null";
-    result += ",\"generic_costs\":";
-    if (!available) {
-      result += "null";
-    } else {
-      constexpr std::array<std::string_view, 10> keys{
-          "gold_raw", "prestige_raw", "piety_raw", "renown_raw",
-          "influence_raw", "herd_raw", "treasury_raw",
-          "treasury_or_gold_raw", "merit_raw", "barter_goods_raw"};
-      result += "{\"raw_scale\":100000,\"payer_role\":\"actor\","
-                "\"application_timing\":\"on_send\"";
-      for (std::size_t slot = 0; slot < keys.size(); ++slot) {
-        result += ",\"";
-        result += keys[slot];
-        result += "\":";
-        result += SignedNumber(read.generic_cost_raw[slot]);
-      }
-      result += '}';
-    }
-    result += ",\"failure\":";
-    AppendJsonString(result,
-                     MarriageCandidateAlliancePrivateFailureKeyV1(read.failure));
-    result += ",\"projection_failure\":";
-    AppendJsonString(result,
-                     MarriageCandidateAllianceCoreFailureKeyV1(
-                         read.projection_failure));
-    result += ",\"outcome_failure\":";
-    AppendJsonString(result,
-                     MarriageCandidateOutcomeFailureKeyV1(
-                         read.outcome_failure));
-    result += ",\"predicted_outcome_if_accepted\":";
-    if (!available) {
-      result += "null";
-    } else {
-      AppendJsonString(
-          result, read.predicted_outcome ==
-                          xar::bridge::MarriagePredictedOutcomeV1::marriage
-                      ? "marriage"
-                      : "betrothal");
-    }
-    result += ",\"heir_is_adult\":";
-    result += available ? (read.heir_is_adult ? "true" : "false") : "null";
-    result += ",\"candidate_is_adult\":";
-    result += available ? (read.candidate_is_adult ? "true" : "false") : "null";
-    result += ",\"heir_adult_measure_raw\":";
-    result += available ? SignedNumber(read.heir_adult_measure_raw) : "null";
-    result += ",\"candidate_adult_measure_raw\":";
-    result += available ? SignedNumber(read.candidate_adult_measure_raw) : "null";
-    result += ",\"heir_adult_threshold_raw\":";
-    result += available ? SignedNumber(read.heir_adult_threshold_raw) : "null";
-    result += ",\"candidate_adult_threshold_raw\":";
-    result += available ? SignedNumber(read.candidate_adult_threshold_raw) : "null";
-    if (step == kPlayerChildMarriageValueStepV1) {
-      const auto append_fertility = [&](std::string_view key,
-                                        const auto &fertility) {
-        result += ",\"";
-        result += key;
-        result += "\":";
-        if (!available || !fertility.available) {
-          result += "null";
-        } else {
-          result += "{\"source\":\"native_marriage_fertility_input\","
-                    "\"extension_present\":";
-          result += fertility.extension_present ? "true" : "false";
-          result += ",\"native_gate_evaluated\":";
-          result += fertility.native_gate_evaluated ? "true" : "false";
-          result += ",\"native_gate_allows\":";
-          result += fertility.native_gate_evaluated
-                        ? (fertility.native_gate_allows ? "true" : "false")
-                        : "null";
-          result += ",\"effective_raw\":";
-          result += SignedNumber(fertility.effective_raw);
-          result += '}';
-        }
-      };
-      append_fertility("heir_native_fertility", read.heir_fertility);
-      append_fertility("candidate_native_fertility", read.candidate_fertility);
-    }
-    result += ",\"grand_wedding_option_selected\":";
-    result += available ? (read.grand_wedding_option_selected ? "true" : "false")
-                        : "null";
-    result += ",\"heir_betrothed_character_id\":";
-    if (available && read.heir_relationship.betrothed_character_id > 0) {
-      result += SignedNumber(
-          read.heir_relationship.betrothed_character_id);
-    } else {
-      result += "null";
-    }
-    result += ",\"heir_primary_spouse_character_id\":";
-    if (available &&
-        read.heir_relationship.primary_spouse_character_id > 0) {
-      result += SignedNumber(
-          read.heir_relationship.primary_spouse_character_id);
-    } else {
-      result += "null";
-    }
-    result += ",\"heir_spouse_character_ids\":";
-    if (!available) {
-      result += "null";
-    } else {
-      result += '[';
-      for (std::size_t spouse_index = 0;
-           spouse_index < read.heir_relationship.spouse_character_ids.size();
-           ++spouse_index) {
-        if (spouse_index != 0) result += ',';
-        result += SignedNumber(
-            read.heir_relationship.spouse_character_ids[spouse_index]);
-      }
-      result += ']';
-    }
-    result += ",\"candidate_betrothed_character_id\":";
-    if (available &&
-        read.candidate_relationship.betrothed_character_id > 0)
-      result += SignedNumber(
-          read.candidate_relationship.betrothed_character_id);
-    else
-      result += "null";
-    result += ",\"candidate_primary_spouse_character_id\":";
-    if (available &&
-        read.candidate_relationship.primary_spouse_character_id > 0)
-      result += SignedNumber(
-          read.candidate_relationship.primary_spouse_character_id);
-    else
-      result += "null";
-    result += ",\"candidate_spouse_character_ids\":";
-    if (!available) {
-      result += "null";
-    } else {
-      result += '[';
-      for (std::size_t spouse_index = 0;
-           spouse_index < read.candidate_relationship.spouse_character_ids.size();
-           ++spouse_index) {
-        if (spouse_index != 0) result += ',';
-        result += SignedNumber(
-            read.candidate_relationship.spouse_character_ids[spouse_index]);
-      }
-      result += ']';
-    }
-    result += ",\"played_house_id\":";
-    result += available && read.played_lineage.house_id >= 0
-                  ? SignedNumber(read.played_lineage.house_id) : "null";
-    result += ",\"played_dynasty_id\":";
-    result += available && read.played_lineage.dynasty_id >= 0
-                  ? SignedNumber(read.played_lineage.dynasty_id) : "null";
-    result += ",\"heir_house_id\":";
-    result += available && read.heir_lineage.house_id >= 0
-                  ? SignedNumber(read.heir_lineage.house_id) : "null";
-    result += ",\"heir_dynasty_id\":";
-    result += available && read.heir_lineage.dynasty_id >= 0
-                  ? SignedNumber(read.heir_lineage.dynasty_id) : "null";
-    result += ",\"candidate_house_id\":";
-    result += available && read.candidate_lineage.house_id >= 0
-                  ? SignedNumber(read.candidate_lineage.house_id) : "null";
-    result += ",\"candidate_dynasty_id\":";
-    result += available && read.candidate_lineage.dynasty_id >= 0
-                  ? SignedNumber(read.candidate_lineage.dynasty_id) : "null";
-    result += ",\"heir_sex_selector_raw\":";
-    result += available ? Number(read.heir_sex_selector_raw) : "null";
-    result += ",\"candidate_sex_selector_raw\":";
-    result += available ? Number(read.candidate_sex_selector_raw) : "null";
-    result += ",\"effective_matrilineal_if_accepted\":";
-    result += available
-                  ? (read.effective_matrilineal_if_accepted ? "true" : "false")
-                  : "null";
-    result += ",\"matrilineal_option_selected\":";
-    result += available
-                  ? (read.projection.matrilineal_option_selected ? "true" : "false")
-                  : "null";
-    result += ",\"possible_alliance_pairs\":[";
-    if (available) {
-      for (std::uint32_t pair_index = 0;
-           pair_index < read.projection.pair_count; ++pair_index) {
-        if (pair_index != 0) result += ',';
-        const auto &pair = read.projection.pairs[pair_index];
-        result += "{\"first_character_id\":";
-        result += Number(pair.first_character_id);
-        result += ",\"second_character_id\":";
-        result += Number(pair.second_character_id);
-        result += ",\"already_allied\":";
-        result += pair.already_allied ? "true" : "false";
-        result += ",\"both_have_realm_data\":";
-        result += pair.both_have_realm_data ? "true" : "false";
-        result += ",\"would_attempt_if_accepted\":";
-        result += pair.would_attempt_if_accepted ? "true" : "false";
-        result += '}';
-      }
-    }
-    result += "]}";
+    rows[index].observed = query.observed[index];
+    rows[index].read = query.reads[index];
   }
-  result += "]}}";
-  return result;
+  return xar::ck3_12002::SerializeFamilyAllianceFrameV1(request_id, revision,
+      legality_query_sequence, std::span(rows.data(), query.row_count), step);
 }
 #endif
 
@@ -9516,18 +9579,328 @@ bool InstallMarriageSharedGlueForCurrentProcessV1(
       g_marriage_shared_glue_v1, environment);
 }
 
+enum class QueryKind12002 : std::uint32_t {
+  war_entry, route, actual_contact, combat_v3, battle_control,
+  battle_transition, battle_reinforcement, battle_terminal, campaign,
+  loaded_features, pending_interaction, event_window, title_map,
+};
+
+struct TypedQuery12002 {
+  xar::ck3_12002::QueryMailboxEnvelope envelope{};
+  QueryKind12002 kind = QueryKind12002::war_entry;
+  bool typed_result = false;
+  std::uintptr_t image_base = 0;
+  xar::game::RouteContactHorizonRequest route_request{};
+  xar::game::ActualContactScopeRequest actual_request{};
+  xar::game::CombatSimulationInputsRequest combat_request{};
+  xar::game::BattleControlRequest battle_request{};
+  xar::game::BattleTransitionRequest transition_request{};
+  xar::game::BattleReinforcementAssignmentRequest reinforcement_request{};
+  xar::game::BattleTerminalTransitionRequestV1 terminal_request{};
+  xar::ck3_12002::WarEntryAssessmentsV1Request war_entry_request{};
+  xar::ck3_11906::CampaignRootContextRequestV1 campaign_request{};
+  xar::ck3_11906::LoadedFeatureManifestRequestV1 loaded_request{};
+  xar::ck3_12002::PendingCharacterInteractionContextRequestV1 pending_request{};
+  std::int32_t event_instance_id = -1;
+  xar::game::TitleMapNavigationCommandV1 title_command{};
+  std::uint64_t title_dispatch_ticket = 0;
+  xar::game::RouteContactHorizonSnapshot route{};
+  xar::game::ActualContactScopeSnapshot actual{};
+  xar::game::CombatSimulationInputsV3Snapshot combat{};
+  xar::game::ReadCombatSimulationInputsV3Result combat_result =
+      xar::game::ReadCombatSimulationInputsV3Result::unavailable;
+  xar::game::BattleControlSnapshot battle{};
+  xar::game::BattleTransitionSnapshot transition{};
+  xar::game::BattleReinforcementAssignmentSnapshot reinforcement{};
+  xar::game::BattleTerminalTransitionSnapshotV1 terminal{};
+  xar::game::WarEntryAssessmentsV1 war_entry{};
+  xar::game::CampaignRootContextV1 campaign{};
+  xar::game::LoadedFeatureManifestV1 loaded{};
+  xar::game::PendingCharacterInteractionContextV1 pending{};
+  xar::game::EventWindowContextV1 event{};
+};
+
+template <class Frame>
+bool CaptureTypedFrame12002(void *opaque, Frame &output) noexcept {
+  auto *envelope = static_cast<xar::ck3_12002::QueryMailboxEnvelope *>(opaque);
+  xar::game::Snapshot snapshot{};
+  if (envelope == nullptr ||
+      !xar::ck3_12002::CaptureQuerySnapshot(envelope, snapshot)) {
+    return false;
+  }
+  output = {};
+  output.snapshot_revision = envelope->expected_snapshot_revision;
+  output.date_raw = snapshot.date_raw;
+  output.paused = snapshot.paused;
+  output.map_ready = snapshot.map_ready;
+  if constexpr (requires { output.has_played_character; }) {
+    output.has_played_character = snapshot.has_played_character;
+    output.played_character_alive = snapshot.played_character_alive;
+    output.played_character_id = snapshot.played_character_id;
+  }
+  return true;
+}
+
+bool CaptureWarEntryFrame12002(
+    void *opaque, xar::game::WarEntryAssessmentFrameV1 &output) noexcept {
+  auto *envelope = static_cast<xar::ck3_12002::QueryMailboxEnvelope *>(opaque);
+  xar::game::Snapshot snapshot{};
+  if (envelope == nullptr ||
+      !xar::ck3_12002::CaptureQuerySnapshot(envelope, snapshot)) {
+    return false;
+  }
+  try {
+    std::vector<xar::game::DeclarableWarSnapshot> declarations;
+    if (!xar::game::ReadDeclarableWars(*envelope->game, declarations)) {
+      return false;
+    }
+    output = {};
+    output.snapshot_revision = envelope->expected_snapshot_revision;
+    output.date_raw = snapshot.date_raw;
+    output.paused = snapshot.paused;
+    output.map_ready = snapshot.map_ready;
+    output.actor_alive = snapshot.has_played_character &&
+                         snapshot.played_character_alive;
+    output.actor_character_id = snapshot.played_character_id;
+    for (const auto &declaration : declarations) {
+      const auto id = declaration.target_character_id;
+      if (id > 0 && std::find(output.declarable_target_character_ids.begin(),
+                             output.declarable_target_character_ids.end(), id) ==
+                        output.declarable_target_character_ids.end()) {
+        output.declarable_target_character_ids.push_back(id);
+      }
+    }
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+
+void *ResolveBattleProvince12002(void *opaque, std::int32_t id) {
+  const auto *bindings = static_cast<const xar::ck3_12002::ProvinceBindings *>(opaque);
+  return bindings == nullptr ? nullptr :
+      xar::ck3_12002::ResolveObjectiveProvince(*bindings, id);
+}
+
+bool ResolvePendingWar12002(void *opaque, std::int32_t id, void *&output) noexcept {
+  output = nullptr;
+  auto *envelope = static_cast<xar::ck3_12002::QueryMailboxEnvelope *>(opaque);
+  if (envelope == nullptr || !xar::ck3_12002::IsQueryOwningThread(envelope)) {
+    return false;
+  }
+  auto *query = static_cast<TypedQuery12002 *>(envelope->typed_context);
+  const auto bindings = xar::ck3_12002::BindWorldImage(
+      query->image_base, envelope->game->descriptor().executable_sha256);
+  output = xar::ck3_12002::ResolveWar(bindings, id);
+  return output != nullptr;
+}
+
+template <QueryKind12002 Kind>
+bool ExecuteTypedQuery12002(
+    void *opaque, const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *envelope = static_cast<xar::ck3_12002::QueryMailboxEnvelope *>(opaque);
+  if (envelope == nullptr || envelope->typed_context == nullptr ||
+      !xar::ck3_12002::EnterQueryMailbox(
+          *envelope, stamp, &ExecuteTypedQuery12002<Kind>)) {
+    return false;
+  }
+  auto &query = *static_cast<TypedQuery12002 *>(envelope->typed_context);
+  if (query.kind != Kind) {
+    return false;
+  }
+  try {
+    const auto sha = envelope->game->descriptor().executable_sha256;
+    const auto &snapshot = envelope->expected_snapshot;
+    if constexpr (Kind == QueryKind12002::war_entry) {
+      xar::ck3_12002::WarEntryAssessmentAccessV1 access{};
+      access.context = envelope;
+      access.capture_frame = &CaptureWarEntryFrame12002;
+      access.is_main_thread = &xar::ck3_12002::IsQueryOwningThread;
+      const auto environment = xar::ck3_12002::BindWarEntryNativeEnvironmentV1(
+          query.image_base, sha);
+      query.typed_result = xar::ck3_12002::ReadWarEntryAssessmentsV1(
+          environment, access, query.war_entry_request, query.war_entry) ==
+          xar::game::ReadWarEntryAssessmentsV1Result::available;
+    } else if constexpr (Kind == QueryKind12002::route) {
+      const auto bindings = xar::ck3_12002::BindRouteImage(query.image_base, sha);
+      query.typed_result = xar::ck3_12002::ReadRouteContactHorizon(
+          bindings, snapshot, query.route_request, query.route) ==
+          xar::game::RouteContactHorizonStatus::available;
+      query.route.snapshot_revision = envelope->expected_snapshot_revision;
+    } else if constexpr (Kind == QueryKind12002::actual_contact) {
+      const auto bindings = xar::ck3_12002::BindRouteImage(query.image_base, sha);
+      query.typed_result = xar::ck3_12002::ReadActualContactScope(
+          bindings, snapshot, query.actual_request, query.actual) ==
+          xar::game::ActualContactScopeStatus::available;
+      query.actual.snapshot_revision = envelope->expected_snapshot_revision;
+    } else if constexpr (Kind == QueryKind12002::combat_v3) {
+      query.combat_result = xar::ck3_12002::ReadCombatSimulationInputsV3(
+          xar::ck3_12002::BindPhaseImage(query.image_base, sha), snapshot,
+          query.combat_request, query.combat);
+      query.typed_result = query.combat_result ==
+          xar::game::ReadCombatSimulationInputsV3Result::available ||
+          query.combat_result ==
+          xar::game::ReadCombatSimulationInputsV3Result::phase_inputs_unavailable;
+    } else if constexpr (Kind == QueryKind12002::battle_control ||
+                         Kind == QueryKind12002::battle_transition ||
+                         Kind == QueryKind12002::battle_reinforcement ||
+                         Kind == QueryKind12002::battle_terminal) {
+      auto province = xar::ck3_12002::BindProvinceImage(query.image_base, sha);
+      auto bindings = xar::ck3_12002::BindBattleImage(query.image_base, sha);
+      bindings.province_context = &province;
+      bindings.resolve_province = &ResolveBattleProvince12002;
+      if constexpr (Kind == QueryKind12002::battle_control) {
+        query.typed_result = xar::ck3_12002::ReadBattleControlSnapshot(
+            bindings, snapshot, query.battle_request, query.battle) ==
+            xar::game::BattleControlSnapshotStatus::available;
+        query.battle.snapshot_revision = envelope->expected_snapshot_revision;
+      } else if constexpr (Kind == QueryKind12002::battle_transition) {
+        xar::ck3_12002::ReadBattleTransitionSnapshot(
+            bindings, snapshot, query.transition_request, query.transition);
+        query.typed_result = true;
+        query.transition.snapshot_revision = envelope->expected_snapshot_revision;
+      } else if constexpr (Kind == QueryKind12002::battle_reinforcement) {
+        xar::ck3_12002::ReadBattleReinforcementAssignmentV1(
+            bindings, snapshot, query.reinforcement_request, query.reinforcement);
+        query.typed_result = true;
+        query.reinforcement.snapshot_revision = envelope->expected_snapshot_revision;
+      } else {
+        xar::ck3_12002::ReadBattleTerminalTransitionV1(
+            bindings, snapshot, query.terminal_request, query.terminal);
+        query.typed_result = true;
+        query.terminal.snapshot_revision = envelope->expected_snapshot_revision;
+      }
+    } else if constexpr (Kind == QueryKind12002::campaign) {
+      xar::ck3_11906::CampaignRootAccessV1 access{};
+      access.context = envelope;
+      access.capture_frame = &CaptureTypedFrame12002<xar::game::CampaignRootFrameV1>;
+      access.is_main_thread = &xar::ck3_12002::IsQueryOwningThread;
+      xar::ck3_12002::ReadCampaignRootContextV1(
+          xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(query.image_base, true),
+          access, query.campaign_request, query.campaign);
+      query.typed_result = true;
+    } else if constexpr (Kind == QueryKind12002::loaded_features) {
+      xar::ck3_11906::LoadedFeatureManifestAccessV1 access{};
+      access.context = envelope;
+      access.capture_frame = &CaptureTypedFrame12002<xar::game::LoadedFeatureManifestFrameV1>;
+      access.is_main_thread = &xar::ck3_12002::IsQueryOwningThread;
+      xar::ck3_12002::ReadLoadedFeatureManifestV1(
+          xar::ck3_12002::BindLoadedFeatureManifestNativeEnvironmentV1(query.image_base, true),
+          access, query.loaded_request, query.loaded);
+      query.typed_result = true;
+    } else if constexpr (Kind == QueryKind12002::pending_interaction) {
+      xar::ck3_12002::PendingCharacterInteractionAccessV1 access{};
+      access.context = envelope;
+      access.capture_frame = &CaptureTypedFrame12002<xar::game::PendingCharacterInteractionFrameV1>;
+      access.is_main_thread = &xar::ck3_12002::IsQueryOwningThread;
+      access.resolve_active_war = &ResolvePendingWar12002;
+      access.invoke_local_routing = &xar::ck3_12002::InvokePendingCharacterInteractionLocalRoutingDirectV1;
+      access.invoke_reply_validator = &xar::ck3_12002::InvokePendingCharacterInteractionReplyValidatorDirectV1;
+      access.invoke_trigger_evaluator = &xar::ck3_12002::InvokePendingCharacterInteractionTriggerEvaluatorDirectV1;
+      access.invoke_cost_evaluator = &xar::ck3_12002::InvokePendingCharacterInteractionCostEvaluatorDirectV1;
+      access.invoke_common_war_relation = &xar::ck3_12002::InvokePendingCharacterInteractionCommonWarRelationDirectV1;
+      access.invoke_target_type_registry = &xar::ck3_12002::InvokePendingCharacterInteractionTargetTypeRegistryDirectV1;
+      access.invoke_script_identifier_name = &xar::ck3_12002::InvokePendingCharacterInteractionScriptIdentifierNameDirectV1;
+      xar::ck3_12002::ReadPendingCharacterInteractionContextV1(
+          xar::ck3_12002::BindPendingCharacterInteractionNativeEnvironmentV1(query.image_base, true),
+          access, query.pending_request, query.pending);
+      query.typed_result = true;
+    } else if constexpr (Kind == QueryKind12002::event_window) {
+      xar::ck3_12002::ReadEventWindowContextV1(
+          xar::ck3_12002::BindEventWindowImage(query.image_base, sha),
+          envelope->expected_snapshot_revision, query.event_instance_id, query.event);
+      query.typed_result = true;
+    } else if constexpr (Kind == QueryKind12002::title_map) {
+      xar::ck3_12002::TitleMapNavigationCameraAccessV1 access{};
+      access.title.context = envelope;
+      access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
+      access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
+      const bool previously_dispatched = query.title_command.dispatched;
+      xar::ck3_12002::AdvanceTitleMapNavigationCommandV1(
+          xar::ck3_12002::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, true),
+          xar::ck3_12002::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, true),
+          access, query.title_command);
+      if (!previously_dispatched && query.title_command.dispatched) {
+        query.title_dispatch_ticket = envelope->ticket.sequence;
+      }
+      query.typed_result = true;
+    }
+    return xar::ck3_12002::FinishQueryMailbox(*envelope);
+  } catch (...) {
+    return false;
+  }
+}
+
+const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 13>
+    kTypedExecutors12002 = {
+      &ExecuteTypedQuery12002<QueryKind12002::war_entry>,
+      &ExecuteTypedQuery12002<QueryKind12002::route>,
+      &ExecuteTypedQuery12002<QueryKind12002::actual_contact>,
+      &ExecuteTypedQuery12002<QueryKind12002::combat_v3>,
+      &ExecuteTypedQuery12002<QueryKind12002::battle_control>,
+      &ExecuteTypedQuery12002<QueryKind12002::battle_transition>,
+      &ExecuteTypedQuery12002<QueryKind12002::battle_reinforcement>,
+      &ExecuteTypedQuery12002<QueryKind12002::battle_terminal>,
+      &ExecuteTypedQuery12002<QueryKind12002::campaign>,
+      &ExecuteTypedQuery12002<QueryKind12002::loaded_features>,
+      &ExecuteTypedQuery12002<QueryKind12002::pending_interaction>,
+      &ExecuteTypedQuery12002<QueryKind12002::event_window>,
+      &ExecuteTypedQuery12002<QueryKind12002::title_map>,
+    };
+
 class WarEntryApplicationMainMailboxWorkerLifetime final {
 public:
   explicit WarEntryApplicationMainMailboxWorkerLifetime(
-      const xar::game::GameAdapter &game) noexcept
-      : game_(&game) {}
+      const xar::game::GameAdapter &game,
+      xar::ck3_12002::WorkerAdapter *observer = nullptr) noexcept
+      : game_(&game), observer_(observer) {}
 
   WarEntryApplicationMainMailboxWorkerLifetime(
       const WarEntryApplicationMainMailboxWorkerLifetime &) = delete;
   WarEntryApplicationMainMailboxWorkerLifetime &operator=(
       const WarEntryApplicationMainMailboxWorkerLifetime &) = delete;
 
+  void InstallNewAdapter() noexcept {
+    if (installed_ || attempted_ || game_ == nullptr || observer_ == nullptr ||
+        !game_->enabled() || game_->descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64") {
+      return;
+    }
+    attempted_ = true;
+    std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 14> executors{};
+    std::copy(kTypedExecutors12002.begin(), kTypedExecutors12002.end(), executors.begin());
+    executors.back() = &xar::ck3_12002::ExecuteSemanticAdapter12002;
+    auto environment = xar::ck3_12002::BindThreadRuntimeImage(
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+        game_->descriptor().executable_sha256, executors);
+    xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+    nonwar.lifestyle = &xar::ck3_12002::lifestyle::ExecutePlayerLifestyleFormalWireMailbox12002V1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+    nonwar.construction = &xar::ck3_12002::ExecuteConstructionMailboxV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+    nonwar.ranked_marriage = &xar::ck3_12002::ExecuteFamilyRankedMailboxV1;
+#endif
+    nonwar.alliance_projection = &ExecuteMarriageCandidateAllianceMailboxQueryV1;
+    nonwar.relationship = &ExecuteCurrentFirstHeirBetrothalMailboxQueryV1;
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+    nonwar.marriage_submit = &ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1;
+#endif
+#endif
+    xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment, nonwar);
+    environment.snapshot_observer_callback = &xar::ck3_12002::ObserveAdapterSnapshot12002;
+    environment.snapshot_observer_context = observer_;
+    installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
+        g_main_thread_query_mailbox_v1, environment);
+  }
+
   void MaybeInstallFrontend() noexcept {
+    if (observer_ != nullptr) {
+      InstallNewAdapter();
+      return;
+    }
     if (installed_) {
       MaybeConfigureMarriageRoute();
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
@@ -9672,6 +10045,8 @@ public:
         &xar::ck3_11906::ExecutePlayerEpidemicRecoveryMailboxV1;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    environment.permitted_executor_octoquadragintary =
+        &ExecuteMarriageCandidateAllianceMailboxQueryV1;
     environment.permitted_executor_octoquadragintary =
         &ExecuteMarriageCandidateAllianceMailboxQueryV1;
     environment.permitted_executor_octosexagintary =
@@ -9844,6 +10219,7 @@ public:
   }
 
   const xar::game::GameAdapter *game_ = nullptr;
+  xar::ck3_12002::WorkerAdapter *observer_ = nullptr;
   bool attempted_ = false;
   bool installed_ = false;
   bool marriage_route_configured_ = false;
@@ -10416,6 +10792,276 @@ std::string NewProviderSessionId() noexcept {
   }
 }
 
+std::optional<QueryKind12002> TypedQueryKind12002(std::string_view step) {
+  if (step.starts_with(xar::ck3_11906::kWarEntryAssessmentsV1StepPrefix))
+    return QueryKind12002::war_entry;
+  if (step.starts_with(xar::ck3_11906::kRouteContactHorizonV1StepPrefix))
+    return QueryKind12002::route;
+  if (step.starts_with(xar::ck3_11906::kActualContactScopeV1StepPrefix))
+    return QueryKind12002::actual_contact;
+  if (step.starts_with("query-combat-simulation-inputs-v3-") ||
+      step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix))
+    return QueryKind12002::combat_v3;
+  if (step.starts_with(xar::ck3_11906::kBattleControlSnapshotV1StepPrefix))
+    return QueryKind12002::battle_control;
+  if (step.starts_with(xar::ck3_11906::kBattleTransitionV1StepPrefix))
+    return QueryKind12002::battle_transition;
+  if (step.starts_with(xar::ck3_11906::kBattleReinforcementAssignmentV1StepPrefix))
+    return QueryKind12002::battle_reinforcement;
+  if (step.starts_with(xar::ck3_11906::kBattleTerminalTransitionV1StepPrefix))
+    return QueryKind12002::battle_terminal;
+  if (step == xar::ck3_11906::kCampaignRootContextV1Step)
+    return QueryKind12002::campaign;
+  if (step == xar::ck3_11906::kLoadedFeatureManifestV1Step)
+    return QueryKind12002::loaded_features;
+  if (step == xar::ck3_11906::kPendingCharacterInteractionContextV1Step)
+    return QueryKind12002::pending_interaction;
+  if (step == xar::ck3_11906::kEventWindowContextV1Step)
+    return QueryKind12002::event_window;
+  if (step == xar::ck3_11906::kTitleMapNavigationV1Step)
+    return QueryKind12002::title_map;
+  return std::nullopt;
+}
+
+bool ParseTypedQuery12002(std::string_view step, std::string_view payload,
+                         TypedQuery12002 &query) {
+  const auto kind = TypedQueryKind12002(step);
+  if (!kind.has_value()) return false;
+  query.kind = *kind;
+  auto &revision = query.envelope.expected_snapshot_revision;
+  bool parsed = false;
+  switch (query.kind) {
+  case QueryKind12002::war_entry:
+    return xar::ck3_11906::ParseWarEntryAssessmentsV1Step(
+               step, query.war_entry_request.target_character_ids) &&
+           query.war_entry_request.target_character_ids.size() == 1;
+  case QueryKind12002::route:
+    parsed = xar::ck3_11906::ParseRouteContactHorizonV1Step(step, query.route_request);
+    break;
+  case QueryKind12002::actual_contact:
+    parsed = xar::ck3_11906::ParseActualContactScopeV1Step(step, query.actual_request);
+    break;
+  case QueryKind12002::combat_v3:
+    if (step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix)) {
+      std::string public_step = "query-combat-simulation-inputs-v3-";
+      public_step += step.substr(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix.size());
+      parsed = xar::game::ParseCombatSimulationInputsV3Step(public_step, query.combat_request);
+    } else {
+      parsed = xar::game::ParseCombatSimulationInputsV3Step(step, query.combat_request);
+    }
+    break;
+  case QueryKind12002::battle_control:
+    parsed = xar::ck3_11906::ParseBattleControlSnapshotV1Step(step, query.battle_request);
+    break;
+  case QueryKind12002::battle_transition:
+    parsed = xar::ck3_11906::ParseBattleTransitionV1Step(step, query.transition_request);
+    break;
+  case QueryKind12002::battle_reinforcement:
+    parsed = xar::ck3_11906::ParseBattleReinforcementAssignmentV1Step(
+        step, query.reinforcement_request);
+    break;
+  case QueryKind12002::battle_terminal:
+    parsed = xar::ck3_11906::ParseBattleTerminalTransitionV1Step(
+        step, query.terminal_request);
+    break;
+  case QueryKind12002::campaign:
+  case QueryKind12002::loaded_features:
+    parsed = true;
+    break;
+  case QueryKind12002::pending_interaction:
+    return xar::ck3_11906::ParsePendingCharacterInteractionContextRequestV1(
+        payload, revision, query.pending_request.pending_interaction_id);
+  case QueryKind12002::event_window:
+    return xar::ck3_11906::ParseEventWindowContextRequestV1(
+        payload, revision, query.event_instance_id);
+  case QueryKind12002::title_map:
+    if (!xar::ck3_11906::ParseTitleMapNavigationRequestV1(
+            payload, query.title_command.request)) return false;
+    revision = query.title_command.request.expected_snapshot_revision;
+    return true;
+  }
+  return parsed && xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                       payload, revision);
+}
+
+std::string RunTypedQuery12002(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step, std::string_view payload) {
+  TypedQuery12002 query{};
+  query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
+  query.envelope.typed_context = &query;
+  query.envelope.expected_snapshot_revision = state.state_revision;
+  query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  if (!ParseTypedQuery12002(step, payload, query)) {
+    return CommandResultFrame(request_id, step, false, "typed query request is malformed");
+  }
+  if (query.envelope.expected_snapshot_revision != state.state_revision ||
+      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, query.envelope.expected_snapshot) ||
+      query.envelope.expected_snapshot != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  const auto &snapshot = query.envelope.expected_snapshot;
+  if (!snapshot.paused) {
+    return CommandResultFrame(request_id, step, false, "requires_paused");
+  }
+  if (!snapshot.map_ready) {
+    return CommandResultFrame(request_id, step, false, "map_not_ready");
+  }
+  if (query.kind == QueryKind12002::route &&
+      !RouteHostileScopeMatchesSnapshot(snapshot, query.route_request)) {
+    return CommandResultFrame(request_id, step, false,
+                              "route-contact hostile scope is incomplete or stale");
+  }
+  if (query.kind == QueryKind12002::event_window &&
+      (!snapshot.has_active_event || snapshot.active_event_instance_id != query.event_instance_id)) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  if (query.kind == QueryKind12002::pending_interaction &&
+      (!snapshot.has_pending_character_interaction ||
+       snapshot.pending_character_interaction_id != query.pending_request.pending_interaction_id)) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  query.war_entry_request.expected_snapshot_revision = state.state_revision;
+  query.campaign_request.expected_snapshot_revision = state.state_revision;
+  query.loaded_request.expected_snapshot_revision = state.state_revision;
+  query.pending_request.expected_snapshot_revision = state.state_revision;
+  query.pending_request.played_character_id = snapshot.played_character_id;
+  const auto executor = kTypedExecutors12002[static_cast<std::size_t>(query.kind)];
+  const auto started = GetTickCount64();
+  std::uint32_t callback_count = 0;
+  while (true) {
+    ++callback_count;
+    const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, executor, &query.envelope, query.envelope.ticket);
+    if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      return CommandResultFrame(request_id, step, false,
+          submit == xar::ck3_11906::MainThreadQuerySubmitResultV1::paused_main_thread_not_observed
+              ? "paused application-main boundary is not ready"
+              : "application-main typed query executor is unavailable or busy");
+    }
+    auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.envelope.ticket, 30'000);
+    while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+      wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+          g_main_thread_query_mailbox_v1, query.envelope.ticket, 2'000);
+    }
+    xar::game::Snapshot completed_snapshot{};
+    const bool completed = wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+        query.envelope.frame_stable && query.typed_result &&
+        xar::game::ReadSnapshot(game, completed_snapshot) && completed_snapshot == snapshot;
+    const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.envelope.ticket);
+    if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+      return CommandResultFrame(request_id, step, false,
+                                "application-main typed query result was not reclaimable");
+    }
+    if (!completed) {
+      return CommandResultFrame(request_id, step, false,
+                                "application-main typed query failed or its snapshot changed");
+    }
+    if (query.kind != QueryKind12002::title_map ||
+        xar::ck3_12002::IsTitleMapNavigationTerminalV1(query.title_command.status)) break;
+    if (GetTickCount64() - started >= xar::ck3_11906::kTitleMapNavigationV1TotalSettleBudgetMilliseconds ||
+        callback_count >= xar::ck3_11906::kTitleMapNavigationV1MaximumApplicationMainCallbacks) {
+      return CommandResultFrame(request_id, step, false, "camera_state_unavailable");
+    }
+    query.envelope.ticket = {};
+    query.envelope.entered = false;
+    query.envelope.frame_stable = false;
+    query.envelope.executor = nullptr;
+    query.typed_result = false;
+    Sleep(1);
+  }
+  std::string response;
+  switch (query.kind) {
+  case QueryKind12002::war_entry:
+    response = WarEntryAssessmentsResultFrame(request_id, step,
+        ++state.war_entry_assessment_query_sequence, query.war_entry, true); break;
+  case QueryKind12002::route:
+    response = RouteContactHorizonResultFrame(request_id, step,
+        ++state.route_contact_horizon_query_sequence, query.route); break;
+  case QueryKind12002::actual_contact:
+    response = ActualContactScopeResultFrame(request_id, step,
+        ++state.actual_contact_scope_query_sequence, query.actual); break;
+  case QueryKind12002::combat_v3:
+    response = CombatSimulationInputsV3ResultFrame(request_id, step,
+        ++state.combat_inputs_query_sequence, query.combat_result, query.combat, true);
+    if (step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix)) {
+      xar::ck3_12002::PhaseDiagnosticSnapshot diagnostic{};
+      const bool completed = xar::ck3_12002::ProjectPhaseNonreligiousDiagnostic(
+          query.combat_result, query.combat, diagnostic);
+      response.resize(response.size() - 2);
+      response += ",\"private_diagnostic\":true,\"diagnostic_completed\":";
+      response += completed ? "true" : "false";
+      response += ",\"nonreligious_ready\":";
+      response += diagnostic.nonreligious_ready ? "true" : "false";
+      response += ",\"full_phase_inputs_ready\":false}}";
+    }
+    break;
+  case QueryKind12002::battle_control:
+    response = BattleControlSnapshotResultFrame(request_id, step,
+        ++state.battle_control_snapshot_query_sequence, query.battle); break;
+  case QueryKind12002::battle_transition:
+    response = BattleTransitionResultFrame(request_id, step,
+        ++state.battle_transition_query_sequence, query.transition); break;
+  case QueryKind12002::battle_reinforcement:
+    response = BattleReinforcementAssignmentResultFrame(request_id, step,
+        ++state.battle_reinforcement_assignment_query_sequence, query.reinforcement); break;
+  case QueryKind12002::battle_terminal:
+    response = BattleTerminalTransitionResultFrame(request_id, step,
+        ++state.battle_terminal_transition_query_sequence, query.terminal); break;
+  case QueryKind12002::campaign:
+    response = CampaignRootContextResultFrame(request_id,
+        ++state.campaign_root_context_query_sequence, query.campaign, true);
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+    state.observed_primary_heir_character_id.reset();
+    state.observed_primary_heir_revision = state.state_revision;
+    state.observed_primary_heir_connection_generation = state.connection_generation;
+    if (query.campaign.status == xar::game::CampaignRootContextStatusV1::available) {
+      for (const auto &row : query.campaign.held_title_partition) {
+        if (row.primary && row.first_heir_character_id) {
+          state.observed_primary_heir_character_id = *row.first_heir_character_id;
+          break;
+        }
+      }
+    }
+#endif
+    break;
+  case QueryKind12002::loaded_features:
+    response = LoadedFeatureManifestResultFrame(request_id,
+        ++state.loaded_feature_manifest_query_sequence, query.loaded, true); break;
+  case QueryKind12002::pending_interaction:
+    response = PendingCharacterInteractionContextResultFrame(request_id,
+        ++state.pending_character_interaction_context_query_sequence, query.pending, true); break;
+  case QueryKind12002::event_window:
+    response = EventWindowContextResultFrame(request_id,
+        ++state.event_window_context_query_sequence, query.event, true); break;
+  case QueryKind12002::title_map: {
+    const auto status = query.title_command.status;
+    if (status != xar::game::TitleMapNavigationCommandStatusV1::centered &&
+        status != xar::game::TitleMapNavigationCommandStatusV1::already_centered) {
+      return CommandResultFrame(request_id, step, false,
+          xar::ck3_12002::TitleMapNavigationCommandRejectionCodeV1(status));
+    }
+    const auto title_payload = xar::ck3_12002::SerializeTitleMapNavigationResultV1(
+        query.title_command, query.title_dispatch_ticket);
+    if (!title_payload.empty()) {
+      response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+      AppendJsonString(response, request_id);
+      response += ",\"ok\":true,\"result\":";
+      response += title_payload;
+      response += '}';
+    }
+    break;
+  }
+  }
+  return response.empty()
+      ? CommandResultFrame(request_id, step, false, "typed query result is inconsistent")
+      : response;
+}
+
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
@@ -10602,7 +11248,7 @@ void RunConnectedSession(
           state_revision, state_revision);
 #endif
       ++sequence;
-      connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
+      connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence, game));
       if (connected && game.supports_snapshot()) {
         connected = PublishSnapshot(pipe, game, previous_snapshot,
                                     state_revision, checkpoint_submission,
@@ -10663,6 +11309,58 @@ void RunConnectedSession(
               pipe, CommandResultFrame(request_id, step, false,
                                        "experimental trace permits only exact-day timeline controls and finish"));
 #endif
+        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+                   step == "fixture-run-inbox-v1") {
+          std::uint64_t expected_revision = 0;
+          auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game);
+          if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision) ||
+              expected_revision != state_revision || worker == nullptr) {
+            connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+                request_id, step, false, "fixture inbox snapshot revision is stale or malformed"));
+          } else {
+            std::string fixture_json;
+            const bool executed = worker->run_inbox_fixture(fixture_json);
+            if (fixture_json.empty()) {
+              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+                  request_id, step, false, "application-main fixture inbox executor unavailable"));
+            } else {
+              std::string response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+              AppendJsonString(response, request_id);
+              response += executed ? ",\"ok\":true" : ",\"ok\":false,\"error\":\"native fixture inbox command was not executed\"";
+              response += ",\"result\":{\"step\":";
+              AppendJsonString(response, step);
+              response += ",\"private_fixture\":true,\"fixture_inbox\":";
+              response += fixture_json;
+              response += "}}";
+              connected = xar::bridge::WriteFrame(pipe, response);
+            }
+          }
+        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+                   step == "query-marriage-native-diagnostic-v1") {
+          std::uint64_t expected_revision = 0;
+          auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game);
+          std::string diagnostic;
+          if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision) ||
+              expected_revision != state_revision || worker == nullptr ||
+              !worker->read_marriage_diagnostic(diagnostic)) {
+            connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+                request_id, step, false, "application-main marriage diagnostic unavailable"));
+          } else {
+            std::string response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+            AppendJsonString(response, request_id);
+            response += ",\"ok\":true,\"result\":{\"step\":";
+            AppendJsonString(response, step);
+            response += ",\"private_diagnostic\":true,\"marriage_native_diagnostic\":";
+            response += diagnostic;
+            response += "}}";
+            connected = xar::bridge::WriteFrame(pipe, response);
+          }
+        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+                   TypedQueryKind12002(step).has_value()) {
+          connected = xar::bridge::WriteFrame(pipe, RunTypedQuery12002(
+              game, state, request_id, step, incoming.payload));
         } else if (!game.supports_step(step)
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
                    && step != xar::ck3_11906::
@@ -13748,11 +14446,11 @@ void RunConnectedSession(
                 }
 #endif
                 connected = xar::bridge::WriteFrame(
-                    pipe, ObservedHeirMarriagePrivateResultFrameV1(
+                    pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriagePrivateResultFrameV1(
                               request_id, step,
                               state.marriage_family_private_query_sequence,
                               subject_id, read_result, rows, diagnostics,
-                              unavailable_reason));
+                              unavailable_reason)));
               }
             }
           }
@@ -13797,7 +14495,14 @@ void RunConnectedSession(
                     "public_campaign_root_primary_first_heir_absent";
               } else {
                 CurrentFirstHeirBetrothalMailboxQueryV1 query{};
-                query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+                if (game.descriptor().game_version == "1.20.0.2") {
+                  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+                  query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
+                  query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
+                      xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+                } else {
+                  query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+                }
                 query.expected_snapshot = before;
                 query.heir_character_id = heir_id;
                 const auto module_base = reinterpret_cast<std::uintptr_t>(
@@ -13817,8 +14522,10 @@ void RunConnectedSession(
                 if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
                   // Keep the independent relationship observation available when
                   // application-main cannot evaluate the optional fixed pair.
-                  read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
-                      query.bindings, heir_id);
+                  if (!query.adapter12002) {
+                    read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
+                        query.bindings, heir_id);
+                  }
                   // Preserve the observed reason category while recording the
                   // actual failed admission stage for the next bounded readback.
                   const char *reason = "current_betrothal_application_main_unavailable";
@@ -13858,8 +14565,10 @@ void RunConnectedSession(
                     read.failure = xar::ck3_11906::
                         CurrentFirstHeirRelationshipFailureV1::frame_changed;
                   } else if (!stable) {
-                    read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
-                        query.bindings, heir_id);
+                    if (!query.adapter12002) {
+                      read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
+                          query.bindings, heir_id);
+                    }
                     read.betrothal_actionability.unavailable_reason =
                         "current_betrothal_application_main_read_unavailable";
                   }
@@ -13884,7 +14593,7 @@ void RunConnectedSession(
                 connected = xar::bridge::WriteFrame(
                     pipe, CurrentFirstHeirRelationshipResultFrameV1(
                         request_id, state_revision, heir_id, read,
-                        unavailable_reason));
+                        unavailable_reason, game.descriptor().game_version == "1.20.0.2"));
               }
             }
           }
@@ -13916,20 +14625,23 @@ void RunConnectedSession(
             } else {
               const auto subject_id =
                   static_cast<std::int32_t>(requested_subject_id);
-              const auto child =
-                  xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
-                      xar::ck3_11906::BindCurrentProcess(true), subject_id);
+              xar::ck3_11906::PlayerChildMarriageSubjectReadV1 child{};
               bool diagnose_family_arrays = false;
               (void)xar::bridge::JsonBooleanField(
                   incoming.payload, "diagnose_family_arrays",
                   diagnose_family_arrays);
               std::optional<xar::ck3_11906::PlayerFamilyArrayProbeV1>
                   family_probe;
-              if (diagnose_family_arrays) {
-                family_probe.emplace(
-                    xar::ck3_11906::ReadPlayerFamilyArrayProbeV1(
-                        xar::ck3_11906::BindCurrentProcess(true),
-                        before.played_character_id));
+              if (game.descriptor().game_version == "1.20.0.2") {
+                if (diagnose_family_arrays) family_probe.emplace();
+                child = ReadPlayerChildOnApplicationMain12002(game, before, subject_id,
+                    family_probe ? &*family_probe : nullptr);
+              } else {
+                child = ReadPlayerChildForAdapterV1(game, subject_id);
+                if (diagnose_family_arrays) {
+                  family_probe.emplace(xar::ck3_11906::ReadPlayerFamilyArrayProbeV1(
+                      xar::ck3_11906::BindCurrentProcess(true), before.played_character_id));
+                }
               }
               std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> rows;
               xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
@@ -13967,12 +14679,12 @@ void RunConnectedSession(
               } else {
                 ++state.marriage_family_private_query_sequence;
                 connected = xar::bridge::WriteFrame(
-                    pipe, ObservedHeirMarriagePrivateResultFrameV1(
+                    pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriagePrivateResultFrameV1(
                         request_id, step,
                         state.marriage_family_private_query_sequence,
                         subject_id, read_result, rows, diagnostics, reason,
                         "specified_player_child", &child, state_revision,
-                        family_probe ? &*family_probe : nullptr));
+                        family_probe ? &*family_probe : nullptr)));
               }
             }
           }
@@ -13986,8 +14698,8 @@ void RunConnectedSession(
           std::uint64_t candidate_id = 0;
           const bool request_valid =
               game.enabled() &&
-              game.descriptor().executable_sha256 ==
-                  xar::ck3_11906::kExecutableSha256 &&
+              (game.descriptor().executable_sha256 == xar::ck3_11906::kExecutableSha256 ||
+               game.descriptor().executable_sha256 == xar::ck3_12002::kExecutableSha256) &&
               xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) &&
               xar::bridge::JsonUnsignedField(
@@ -14019,9 +14731,7 @@ void RunConnectedSession(
           bool selected_ready = false;
           if (frame_ready) {
             const auto child =
-                xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
-                    xar::ck3_11906::BindCurrentProcess(true),
-                    static_cast<std::int32_t>(subject_id));
+                ReadPlayerChildForAdapterV1(game, static_cast<std::int32_t>(subject_id));
             std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> rows;
             xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
             const auto read = child.failure == xar::ck3_11906::
@@ -14062,7 +14772,15 @@ void RunConnectedSession(
                     "specified child and candidate need fresh same-frame native legality"));
           } else {
             query.expected_snapshot = before;
-            query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            if (game.descriptor().game_version == "1.20.0.2") {
+              const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
+              query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+              query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
+                  xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+            } else {
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            }
             query.environment = xar::bridge::
                 BindMarriageCandidateAllianceProjectionEnvironmentV1(
                     reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
@@ -14100,9 +14818,9 @@ void RunConnectedSession(
                   query.frame_observed &&
                   xar::game::ReadSnapshot(game, after) && after == before;
               std::string response = stable
-                  ? MarriageCandidateAllianceProjectionFrameV1(
+                  ? RenderNativePrivateFrameV1(game, MarriageCandidateAllianceProjectionFrameV1(
                         request_id, state_revision, legality_query_sequence,
-                        query, step)
+                        query, step))
                   : CommandResultFrame(request_id, step, false,
                         "application-main child marriage value read changed frame");
               if (xar::ck3_11906::ReclaimMainThreadQueryV1(
@@ -14147,8 +14865,8 @@ void RunConnectedSession(
                      kMarriageCandidateAllianceProjectionRowsV1> ids{};
           bool request_valid =
               game.enabled() &&
-              game.descriptor().executable_sha256 ==
-                  xar::ck3_11906::kExecutableSha256 &&
+              (game.descriptor().executable_sha256 == xar::ck3_11906::kExecutableSha256 ||
+               game.descriptor().executable_sha256 == xar::ck3_12002::kExecutableSha256) &&
               xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) &&
               xar::bridge::JsonUnsignedField(
@@ -14219,7 +14937,15 @@ void RunConnectedSession(
                           "five distinct current final-legal candidates and same paused revision required"));
           } else {
             query.expected_snapshot = before;
-            query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            if (game.descriptor().game_version == "1.20.0.2") {
+              const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
+              query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+              query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
+                  xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+            } else {
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            }
             query.environment = xar::bridge::
                 BindMarriageCandidateAllianceProjectionEnvironmentV1(
                     reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
@@ -14258,9 +14984,9 @@ void RunConnectedSession(
                   query.frame_observed &&
                   xar::game::ReadSnapshot(game, after) && after == before;
               std::string response = frame_unchanged
-                  ? MarriageCandidateAllianceProjectionFrameV1(
+                  ? RenderNativePrivateFrameV1(game, MarriageCandidateAllianceProjectionFrameV1(
                         request_id, state_revision, legality_query_sequence,
-                        query)
+                        query))
                   : CommandResultFrame(
                         request_id, step, false,
                         "application-main marriage projection did not complete on the same paused frame");
@@ -14322,9 +15048,7 @@ void RunConnectedSession(
                 CommandResultFrame(request_id, step, false,
                     "selected player-child proposal needs same paused proof"));
           } else {
-            const auto child = xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
-                xar::ck3_11906::BindCurrentProcess(true),
-                static_cast<std::int32_t>(subject_id));
+            const auto child = ReadPlayerChildForAdapterV1(game, static_cast<std::int32_t>(subject_id));
             std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> fresh;
             xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
             const auto read = child.failure == xar::ck3_11906::
@@ -14429,9 +15153,7 @@ void RunConnectedSession(
             }
             xar::bridge::MarriageProposalBilateralRelationshipV1 baseline{};
             const bool baseline_ready = selected_ready &&
-                xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
-                    g_marriage_shared_glue_v1.binder,
-                    static_cast<std::uint32_t>(subject_id),
+                ReadMarriageBilateralForAdapterV1(game, before, static_cast<std::uint32_t>(subject_id),
                     static_cast<std::uint32_t>(candidate_id), baseline) ==
                     xar::bridge::MarriageProposalNativeReadbackResultV1::
                         available;
@@ -14459,8 +15181,7 @@ void RunConnectedSession(
               // Preserve uncertainty after any attempted native queue call.
               state.child_matrilineal_may_have_submitted = true;
               const auto submitted =
-                  xar::bridge::SubmitMarriageProposalFromNativeBinderV1(
-                      &g_marriage_shared_glue_v1.binder, submission);
+                  SubmitMarriageForAdapterV1(game, before, submission);
               if (submitted != xar::bridge::
                                    MarriageProposalNativeSubmitResultV1::submitted) {
                 connected = xar::bridge::WriteFrame(pipe,
@@ -14469,8 +15190,8 @@ void RunConnectedSession(
               } else {
                 state.child_matrilineal_pending_submission = pending;
                 connected = xar::bridge::WriteFrame(pipe,
-                    ObservedHeirMarriageSubmitFrameV1(request_id, pending,
-                        step));
+                    RenderNativePrivateFrameV1(game, ObservedHeirMarriageSubmitFrameV1(request_id, pending,
+                        step)));
                 if (connected) connected = PublishSnapshot(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
@@ -14515,7 +15236,14 @@ void RunConnectedSession(
                 request_id, step, false, "current betrothal fulfillment needs same-frame current pair observation"));
           } else {
             CurrentFirstHeirBetrothalFulfillmentMailboxV1 action{};
-            action.query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            if (game.descriptor().game_version == "1.20.0.2") {
+              const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              action.query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
+              action.query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
+                  xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+            } else {
+              action.query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            }
             action.query.expected_snapshot = before;
             action.query.heir_character_id = static_cast<std::int32_t>(heir_id);
             action.observed = *state.current_first_heir_betrothal_observed;
@@ -14549,8 +15277,8 @@ void RunConnectedSession(
             } else {
               state.marriage_family_pending_submission = action.pending;
               state.current_first_heir_betrothal_observed.reset();
-              connected = xar::bridge::WriteFrame(pipe, ObservedHeirMarriageSubmitFrameV1(
-                  request_id, action.pending, step));
+              connected = xar::bridge::WriteFrame(pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageSubmitFrameV1(
+                  request_id, action.pending, step)));
               if (connected) connected = PublishSnapshot(pipe, game, previous_snapshot,
                   state_revision, checkpoint_submission, published_checkpoint_sequence);
             }
@@ -14630,9 +15358,7 @@ void RunConnectedSession(
                                           ReadArrangeMarriageFamilyCandidatesResultV1::
                                               available &&
                 fresh == state.marriage_family_action_candidates &&
-                xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
-                    g_marriage_shared_glue_v1.binder,
-                    static_cast<std::uint32_t>(
+                ReadMarriageBilateralForAdapterV1(game, before, static_cast<std::uint32_t>(
                         state.marriage_family_action_heir_id),
                     static_cast<std::uint32_t>(candidate_id), baseline) ==
                     xar::bridge::MarriageProposalNativeReadbackResultV1::
@@ -14656,8 +15382,7 @@ void RunConnectedSession(
               // A failed or timed-out queue call cannot license a second send.
               state.marriage_family_action_may_have_submitted = true;
               const auto submitted =
-                  xar::bridge::SubmitMarriageProposalFromNativeBinderV1(
-                      &g_marriage_shared_glue_v1.binder, submission);
+                  SubmitMarriageForAdapterV1(game, before, submission);
               if (submitted != xar::bridge::
                                    MarriageProposalNativeSubmitResultV1::submitted) {
                 connected = xar::bridge::WriteFrame(
@@ -14667,8 +15392,8 @@ void RunConnectedSession(
               } else {
                 state.marriage_family_pending_submission = pending;
                 connected = xar::bridge::WriteFrame(
-                    pipe, ObservedHeirMarriageSubmitFrameV1(request_id,
-                                                              pending));
+                    pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageSubmitFrameV1(request_id,
+                                                              pending)));
                 if (connected) {
                   connected = PublishSnapshot(
                       pipe, game, previous_snapshot, state_revision,
@@ -14708,9 +15433,7 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
               ((step == kPlayerChildMatrilinealAllianceResultStepV1 ||
                 step == kPlayerChildDefaultAllianceResultStepV1) &&
-               xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
-                   xar::ck3_11906::BindCurrentProcess(true),
-                   static_cast<std::int32_t>(heir_id)).failure !=
+               ReadPlayerChildForAdapterV1(game, static_cast<std::int32_t>(heir_id)).failure !=
                    xar::ck3_11906::PlayerChildMarriageSubjectFailureV1::none) ||
 #endif
               !previous_snapshot.has_value() ||
@@ -14724,9 +15447,7 @@ void RunConnectedSession(
           } else {
             xar::bridge::MarriageProposalBilateralRelationshipV1 relation{};
             const auto relationship_read =
-                xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
-                    g_marriage_shared_glue_v1.binder,
-                    static_cast<std::uint32_t>(heir_id),
+                ReadMarriageBilateralForAdapterV1(game, before, static_cast<std::uint32_t>(heir_id),
                     static_cast<std::uint32_t>(candidate_id), relation);
             xar::game::Snapshot after_relation{};
             if (relationship_read != xar::bridge::
@@ -14755,9 +15476,7 @@ void RunConnectedSession(
                 bool first_has_second = false;
                 bool second_has_first = false;
                 const auto alliance_read = (married || betrothed)
-                    ? xar::bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
-                        g_marriage_shared_glue_v1.binder,
-                        static_cast<std::uint32_t>(played_id),
+                    ? ReadMarriageAllianceForAdapterV1(game, before, static_cast<std::uint32_t>(played_id),
                         static_cast<std::uint32_t>(recipient_id),
                         first_has_second, second_has_first)
                     : xar::bridge::MarriageProposalNativeReadbackResultV1::blocked;
@@ -14774,7 +15493,7 @@ void RunConnectedSession(
                     alliance_status = first_has_second ? "allied" : "not_allied";
                   }
                   connected = xar::bridge::WriteFrame(
-                      pipe, ObservedHeirMarriageAllianceResultFrameV1(
+                      pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageAllianceResultFrameV1(
                           request_id, state_revision,
                           static_cast<std::int32_t>(played_id),
                           static_cast<std::int32_t>(recipient_id),
@@ -14784,7 +15503,7 @@ void RunConnectedSession(
                           alliance_status,
                           alliance_read == xar::bridge::
                               MarriageProposalNativeReadbackResultV1::available,
-                          first_has_second, second_has_first, step));
+                          first_has_second, second_has_first, step)));
                 }
               }
             }
@@ -14853,9 +15572,7 @@ void RunConnectedSession(
                                   cold_matrilineal) ||
                               cold_matrilineal == child_default_route ||
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
-                              xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
-                                  xar::ck3_11906::BindCurrentProcess(true),
-                                  static_cast<std::int32_t>(cold_heir)).failure !=
+                              ReadPlayerChildForAdapterV1(game, static_cast<std::int32_t>(cold_heir)).failure !=
                                   xar::ck3_11906::
                                       PlayerChildMarriageSubjectFailureV1::none)
 #else
@@ -14909,9 +15626,7 @@ void RunConnectedSession(
             xar::bridge::MarriageProposalBilateralRelationshipV1 relation{};
             xar::game::Snapshot after{};
             const bool read =
-                xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
-                    g_marriage_shared_glue_v1.binder,
-                    static_cast<std::uint32_t>(pending.heir_character_id),
+                ReadMarriageBilateralForAdapterV1(game, before, static_cast<std::uint32_t>(pending.heir_character_id),
                     static_cast<std::uint32_t>(pending.candidate_character_id),
                     relation) == xar::bridge::
                                      MarriageProposalNativeReadbackResultV1::
@@ -14919,7 +15634,7 @@ void RunConnectedSession(
                 xar::game::ReadSnapshot(game, after) && after == before;
             xar::bridge::MarriageProposalNativeResolutionV1 resolution =
                 xar::bridge::MarriageProposalNativeResolutionV1::pending;
-            if (!cold_recovery) {
+            if (!cold_recovery && game.descriptor().game_version != "1.20.0.2") {
               (void)xar::bridge::ReadMarriageProposalResolutionJournalV1(
                   &g_marriage_shared_glue_v1.resolution,
                   static_cast<std::uint32_t>(pending.heir_character_id),
@@ -14937,8 +15652,7 @@ void RunConnectedSession(
                 cold_recovery &&
                 material == xar::bridge::
                                 ObservedHeirMarriageMaterialStatusV1::pending &&
-                xar::bridge::ReadMarriageOutboundPendingSnapshotV1(
-                    g_marriage_shared_glue_v1.resolution,
+                ReadMarriageOutboundForAdapterV1(game, before,
                     pending.played_character_id,
                     static_cast<std::int32_t>(cold_recipient),
                     pending.heir_character_id, pending.candidate_character_id,
@@ -14955,11 +15669,11 @@ void RunConnectedSession(
                             "observed-heir marriage bilateral result RED"));
             } else {
               connected = xar::bridge::WriteFrame(
-                  pipe, ObservedHeirMarriageMaterialFrameV1(
+                  pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageMaterialFrameV1(
                             request_id, pending, state_revision, material,
                             cold_recovery,
                             outbound_read ? &outbound_pending : nullptr,
-                            step));
+                            step)));
             }
           }
 #endif
@@ -14987,12 +15701,24 @@ void RunConnectedSession(
                             "the application-main query"));
             } else {
               xar::bridge::MarriageCandidateInternalQueryV1 query{};
-              const auto read =
-                  xar::bridge::ReadMarriageCandidatesOnApplicationMainV1(
+              xar::bridge::MarriageCandidateWorkerReadResultV1 read{};
+              if (game.descriptor().game_version == "1.20.0.2") {
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+                read = xar::ck3_12002::ReadFamilyRankedOnApplicationMainV1(
+                            game, g_main_thread_query_mailbox_v1,
+                            admission_snapshot, state_revision,
+                            xar::bridge::kMarriageMatchmakingMaximumCandidatesV1,
+                            0, query);
+#else
+                read.status = xar::bridge::MarriageCandidateWorkerReadStatusV1::unavailable;
+#endif
+              } else {
+                read = xar::bridge::ReadMarriageCandidatesOnApplicationMainV1(
                       g_marriage_candidate_internal_route_v1,
                       admission_snapshot, state_revision,
                       xar::bridge::kMarriageMatchmakingMaximumCandidatesV1,
                       0, query);
+              }
               xar::game::Snapshot completion_snapshot{};
               const bool same_frame_after =
                   xar::game::ReadSnapshot(game, completion_snapshot) &&
@@ -15003,17 +15729,17 @@ void RunConnectedSession(
                   same_frame_after) {
                 ++ranked_marriage_private_query_sequence;
                 connected = xar::bridge::WriteFrame(
-                    pipe, RankedMarriagePrivateResultFrame(
+                    pipe, RenderNativePrivateFrameV1(game, RankedMarriagePrivateResultFrame(
                               request_id,
                               ranked_marriage_private_query_sequence,
-                              query.candidates));
+                              query.candidates)));
               } else if (read.status == xar::bridge::
                                           MarriageCandidateWorkerReadStatusV1::
                                               unavailable &&
                        same_frame_after) {
                 connected = xar::bridge::WriteFrame(
-                    pipe, RankedMarriagePrivateUnavailableFrame(request_id,
-                                                                 read));
+                    pipe, RenderNativePrivateFrameV1(game,
+                        RankedMarriagePrivateUnavailableFrame(request_id, read)));
               } else {
                 connected = xar::bridge::WriteFrame(
                     pipe, CommandResultFrame(
@@ -15279,10 +16005,17 @@ void RunConnectedSession(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "private construction probe paused frame unavailable"));
             } else {
-              xar::ck3_11906::PlayerConstructionViewProbeMailboxContextV1
-                  query{};
+              const bool crozier = game.descriptor().game_version == "1.20.0.2";
+              xar::ck3_11906::PlayerConstructionViewProbeMailboxContextV1 legacy_query{};
+              xar::ck3_12002::ConstructionMailboxContextV1 query12002{};
+              auto &query = crozier ? query12002.query : legacy_query;
+              if (crozier) {
+                query12002.core = xar::ck3_12002::BindCoreImage(
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                    game.descriptor().executable_sha256);
+              }
               query.mailbox = &g_main_thread_query_mailbox_v1;
-              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              if (!crozier) query.bindings = xar::ck3_11906::BindCurrentProcess(true);
               query.module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));
               query.expected_snapshot = current_snapshot;
@@ -15290,9 +16023,10 @@ void RunConnectedSession(
               query.request_private_action = request_private_action;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
-                  &xar::ck3_11906::
-                      ExecutePlayerConstructionViewProbeMailboxV1,
-                  &query, query.ticket);
+                  crozier ? &xar::ck3_12002::ExecuteConstructionMailboxV1
+                          : &xar::ck3_11906::ExecutePlayerConstructionViewProbeMailboxV1,
+                  crozier ? static_cast<void *>(&query12002)
+                          : static_cast<void *>(&query), query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
                 connected = xar::bridge::WriteFrame(
@@ -15344,31 +16078,37 @@ void RunConnectedSession(
                           xar::ck3::shared::
                               PlayerWorldBuildingDirectActionPhaseV1::
                                   pending_receipt
-                      : query.result.status != xar::ck3::shared::
-                                                   PlayerConstructionViewProbeStatusV1::
-                                                       unavailable;
+                      : crozier
+                            ? query.player_world_building_source_executed &&
+                                  query.player_world_building_sources.source_available
+                            : query.result.status != xar::ck3::shared::
+                                  PlayerConstructionViewProbeStatusV1::unavailable;
                   response = CommandResultFrame(
                       request_id, step, observed,
                       request_private_action
                           ? observed
                                 ? "private stock building command pending receipt"
                                 : "private stock building command unavailable"
-                          : observed
-                                ? "private construction cache branch observed"
-                                : "private construction cache branch unavailable");
+                          : crozier
+                                ? observed ? "private construction world sources observed"
+                                           : "private construction world sources unavailable"
+                                : observed ? "private construction cache branch observed"
+                                           : "private construction cache branch unavailable");
                   if (observed && response.size() >= 2 &&
                       response.substr(response.size() - 2) == "}}") {
                     response.resize(response.size() - 2);
                     response += ",\"private_probe\":";
-                    response += xar::ck3_11906::
-                        SerializePlayerConstructionViewProbePrivateV1(query);
+                    response += crozier
+                        ? xar::ck3_12002::SerializeConstructionMailboxV1(query12002)
+                        : xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query);
                     response += "}}";
                   } else if (!observed && !response.empty() &&
                              response.back() == '}') {
                     response.pop_back();
                     response += ",\"private_probe\":";
-                    response += xar::ck3_11906::
-                        SerializePlayerConstructionViewProbePrivateV1(query);
+                    response += crozier
+                        ? xar::ck3_12002::SerializeConstructionMailboxV1(query12002)
+                        : xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query);
                     response += '}';
                   }
                 } else {
@@ -20461,7 +21201,7 @@ void RunConnectedSession(
                               query_result ==
                                   xar::game::ReadWarTerminationTermsResult::
                                       available,
-                              state_revision));
+                              state_revision, game.descriptor().game_version == "1.20.0.2"));
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
                 if (connected &&
                     query_result ==
@@ -22026,7 +22766,13 @@ DWORD WINAPI WorkerMain(void *) noexcept {
       g_coat_of_arms_designer_probe_hook_v1,
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
       exact_ck3_build);
-  WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(*game);
+  xar::ck3_12002::WorkerAdapter new_worker_adapter(*game, g_main_thread_query_mailbox_v1);
+  const bool new_build = game->enabled() &&
+      game->descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64";
+  const xar::game::GameAdapter &session_game = new_build
+      ? static_cast<const xar::game::GameAdapter &>(new_worker_adapter) : *game;
+  WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(
+      session_game, new_build ? &new_worker_adapter : nullptr);
   mailbox_lifetime.MaybeInstallFrontend();
 #if defined(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
   if (exact_ck3_build) {
@@ -22055,7 +22801,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
     if (pipe == INVALID_HANDLE_VALUE) {
       return WaitForSingleObject(g_stop_event, 0) == WAIT_OBJECT_0 ? 0 : 1;
     }
-    RunConnectedSession(pipe, *game, state, mailbox_lifetime);
+    RunConnectedSession(pipe, session_game, state, mailbox_lifetime);
     CloseHandle(pipe);
     if (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
       WaitForSingleObject(g_stop_event, 50);
@@ -22124,6 +22870,19 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     return FALSE;
   }
   if (!game->enabled()) {
+    return TRUE;
+  }
+  if (game->descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64") {
+    xar::ck3_12002::BattleTerminalJournalInstallEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    environment.bindings = xar::ck3_12002::BindBattleImage(
+        environment.module_base, game->descriptor().executable_sha256);
+    return xar::ck3_12002::InstallBattleTerminalJournalV1(
+        g_battle_terminal_journal_12002_v1, environment) ? TRUE : FALSE;
+  }
+  if (game->descriptor().adapter_id != xar::ck3_11906::kMainThreadQueryMailboxV1AdapterId) {
     return TRUE;
   }
   const auto exact_bindings = xar::ck3_11906::BindCurrentProcess(true);

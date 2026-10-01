@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736
+  },
+  "readiness": "static-ready realm projection candidate; new paused live verification pending",
+  "live_verified": false,
+  "read_only": true,
+  "native_helpers": {
+    "title_province": "0x230F900",
+    "province_holder_character_id": "0x247D030",
+    "held_title_enumerator_layout": "0x2BB11E0",
+    "stock_my_realm_first_heir": "0x12435F0"
+  },
+  "source_constants": {
+    "include/xar_bridge/ck3_12002_nonwar_realm.hpp": {
+      "kNonwarRealmTitleProvinceRva": "0x230F900",
+      "kNonwarRealmProvinceHolderCharacterIdRva": "0x247D030",
+      "kNonwarRealmCharacterLandStateOffset": "0x1C0",
+      "kNonwarRealmHeldTitlesOffset": "0x1E0",
+      "kNonwarRealmTitleHolderOffset": "0x128",
+      "kNonwarRealmTitleSuccessorDataOffset": "0x150",
+      "kNonwarRealmTitleSuccessorCapacityOffset": "0x158",
+      "kNonwarRealmTitleSuccessorCountOffset": "0x15C"
+    },
+    "src/ck3_12002_nonwar_realm.cpp": {
+      "kCharacterIdentityOffset": "0x18",
+      "kCharacterDeathMarkerOffset": "0x1D0",
+      "kStorageSlotsOffset": "0x20",
+      "kStorageCapacityOffset": "0x2C",
+      "kStorageSlotStride": "0x10",
+      "kStorageObjectOffset": "0x08",
+      "kLandedTitleIdentityOffset": "0x10",
+      "kLandedTitleTemplateOffset": "0x48",
+      "kLandedTitleTierOffset": "0x64",
+      "kProvinceMapNodeOffset": "0x08",
+      "kProvinceIdentityOffset": "0x10",
+      "kGameDataProvinceArrayOffset": "0x140",
+      "kGameDataProvinceCountOffset": "0x14C",
+      "kMapNodeAdjacencyDataOffset": "0x50",
+      "kMapNodeAdjacencyCountOffset": "0x5C",
+      "kAdjacencyRowStride": "0x30",
+      "kAdjacencyRowKindOffset": "0x00",
+      "kAdjacencyRowTargetProvinceIdOffset": "0x04"
+    }
+  },
+  "instruction_checks": [
+    {
+      "name": "land_state",
+      "rva": "0x2bb11ea",
+      "bytes": "48 8B 81 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]"
+    },
+    {
+      "name": "held_titles_span",
+      "rva": "0x2bb11fc",
+      "bytes": "48 05 E0 01 00 00",
+      "instruction": "add rax, 0x1e0"
+    },
+    {
+      "name": "held_titles_count",
+      "rva": "0x2bb120e",
+      "bytes": "48 63 40 0C",
+      "instruction": "movsxd rax, dword ptr [rax + 0xc]"
+    },
+    {
+      "name": "held_titles_stride",
+      "rva": "0x2bb1212",
+      "bytes": "48 8D 3C 83",
+      "instruction": "lea rdi, [rbx + rax*4]"
+    },
+    {
+      "name": "title_template",
+      "rva": "0x2bb127c",
+      "bytes": "48 8B 45 48",
+      "instruction": "mov rax, qword ptr [rbp + 0x48]"
+    },
+    {
+      "name": "title_tier",
+      "rva": "0x2bb1280",
+      "bytes": "44 39 68 64",
+      "instruction": "cmp dword ptr [rax + 0x64], r13d"
+    },
+    {
+      "name": "title_successor_count",
+      "rva": "0x12435f3",
+      "bytes": "41 83 BE 5C 01 00 00 00",
+      "instruction": "cmp dword ptr [r14 + 0x15c], 0"
+    },
+    {
+      "name": "title_first_successor_data",
+      "rva": "0x1243604",
+      "bytes": "49 8B 86 50 01 00 00",
+      "instruction": "mov rax, qword ptr [r14 + 0x150]"
+    },
+    {
+      "name": "title_first_successor_value",
+      "rva": "0x124360b",
+      "bytes": "8B 10",
+      "instruction": "mov edx, dword ptr [rax]"
+    },
+    {
+      "name": "title_successor_destructor_count",
+      "rva": "0x2308be6",
+      "bytes": "89 B3 5C 01 00 00",
+      "instruction": "mov dword ptr [rbx + 0x15c], esi"
+    },
+    {
+      "name": "title_successor_destructor_data",
+      "rva": "0x2308bf2",
+      "bytes": "48 89 B3 50 01 00 00",
+      "instruction": "mov qword ptr [rbx + 0x150], rsi"
+    },
+    {
+      "name": "title_successor_destructor_capacity",
+      "rva": "0x2308bf9",
+      "bytes": "89 B3 58 01 00 00",
+      "instruction": "mov dword ptr [rbx + 0x158], esi"
+    },
+    {
+      "name": "title_province_template",
+      "rva": "0x230f900",
+      "bytes": "48 8B 41 48",
+      "instruction": "mov rax, qword ptr [rcx + 0x48]"
+    },
+    {
+      "name": "title_province_tier",
+      "rva": "0x230f904",
+      "bytes": "83 78 64 02",
+      "instruction": "cmp dword ptr [rax + 0x64], 2"
+    },
+    {
+      "name": "title_province_result",
+      "rva": "0x230f96e",
+      "bytes": "48 8B 81 38 03 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x338]"
+    },
+    {
+      "name": "province_preferred_holder",
+      "rva": "0x247d030",
+      "bytes": "8B 81 3C 07 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x73c]"
+    },
+    {
+      "name": "province_title_id",
+      "rva": "0x247d05d",
+      "bytes": "44 8B 99 38 07 00 00",
+      "instruction": "mov r11d, dword ptr [rcx + 0x738]"
+    },
+    {
+      "name": "province_holder_parent_title",
+      "rva": "0x247d09d",
+      "bytes": "44 8B 91 E8 00 00 00",
+      "instruction": "mov r10d, dword ptr [rcx + 0xe8]"
+    },
+    {
+      "name": "province_holder_title_owner",
+      "rva": "0x247d0ce",
+      "bytes": "44 8B 92 28 01 00 00",
+      "instruction": "mov r10d, dword ptr [rdx + 0x128]"
+    },
+    {
+      "name": "adjacency_count",
+      "rva": "0x24aae56",
+      "bytes": "45 8B 41 5C",
+      "instruction": "mov r8d, dword ptr [r9 + 0x5c]"
+    },
+    {
+      "name": "adjacency_data",
+      "rva": "0x24aae66",
+      "bytes": "4D 8B 49 50",
+      "instruction": "mov r9, qword ptr [r9 + 0x50]"
+    },
+    {
+      "name": "adjacency_target",
+      "rva": "0x24aae7e",
+      "bytes": "39 7A 04",
+      "instruction": "cmp dword ptr [rdx + 4], edi"
+    },
+    {
+      "name": "province_array",
+      "rva": "0x24aaed3",
+      "bytes": "48 8B 80 40 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x140]"
+    },
+    {
+      "name": "character_generation",
+      "rva": "0x28ee7d0",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx"
+    },
+    {
+      "name": "character_death",
+      "rva": "0x28ee9ba",
+      "bytes": "48 83 B9 D0 01 00 00 00",
+      "instruction": "cmp qword ptr [rcx + 0x1d0], 0"
+    }
+  ],
+  "semantics": {
+    "succession": "native ordered duplicate-free generation-valid CharacterID vector; no synthetic first heir or law inference",
+    "partition": "validate all held titles and holders; publish county and higher, native first heir, county title->Province only; primary exactly once unless barony/landless",
+    "vassals": "generation-valid living Character store rows with native immediate-liege == played Character and valid primary title",
+    "boundary": "all provinces owned in player's native immediate-liege subrealm; adjacent valid foreign holder IDs, sorted unique",
+    "related_contexts": "each vassal/adjacent holder publishes native primary title, capital, immediate/top liege; canonical no-province sentinel is absence",
+    "same_frame": "projection participates in caller paused application-main double-sample equality",
+    "deferred": "faith/religion/holy orders are not queried"
+  }
+}

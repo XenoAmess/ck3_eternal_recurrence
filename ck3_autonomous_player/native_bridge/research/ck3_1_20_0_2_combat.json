@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready complete combat v2 input reader, paused live pending",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "army_commander",
+      "rva": "0x24e9ed0",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 8B 05 91 D6 77 03 48 85 C0 74 29 8B 91 20 01 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 05"
+    },
+    {
+      "name": "generic_commander_advantage",
+      "rva": "0xc6ded0",
+      "confidence": "reviewed-static-combat",
+      "pattern": "4C 89 44 24 18 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 58 FC FF FF 48 81 EC A8 04 00 00 8B DA 4C 8B E9 C7 85 F8 03 00 00"
+    },
+    {
+      "name": "province_terrain",
+      "rva": "0x247e590",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 8B 41 20 48 8B 80 B8 00 00 00 C3 CC CC CC CC 48 8B 41 20 48 8B 88 B8 00 00 00 81 79 38 4F 62 44 47 0F 94 C0 C3 CC CC CC CC CC CC CC CC CC CC"
+    },
+    {
+      "name": "encounter_stats",
+      "rva": "0x26344c0",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 60 49 8B F0 48 8B FA 48 8B D9 E8 A3 03 00 00 84 C0 74 5B 48 8B 15 80 30 63 03 48 85 D2 74 2D 44 8B 83"
+    },
+    {
+      "name": "special_regiment",
+      "rva": "0x2634880",
+      "confidence": "reviewed-static-combat",
+      "pattern": "8B 91 48 01 00 00 83 FA FF 74 48 48 8B 05 D6 2C 63 03 48 85 C0 74 23 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 44 C8 08"
+    },
+    {
+      "name": "character_modifier_aggregator",
+      "rva": "0x28c3ae0",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 83 EC 28 48 8B 81 B0 01 00 00 48 85 C0 74 1B 48 8B 80 58 02 00 00 48 85 C0 74 0F 48 39 48 08 75 09 48 83 C0 10 48 83 C4 28 C3 65 48 8B 04 25"
+    },
+    {
+      "name": "modifier_fixedpoint_read",
+      "rva": "0x2303700",
+      "confidence": "reviewed-static-combat",
+      "pattern": "40 57 B8 FF FF 00 00 45 0F B7 D8 4C 8B D2 48 8B F9 66 44 3B C0 75 0A 33 C0 48 89 02 48 8B C2 5F C3 4C 63 49 0C 48 89 5C 24 10 48 8B 19 48 89 74"
+    },
+    {
+      "name": "maa_counter_classes_database",
+      "rva": "0x899e40",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 83 EC 38 48 8B 05 0D D7 3C 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 A9 31 BF 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9"
+    },
+    {
+      "name": "counter_current_chunk",
+      "rva": "0x2657970",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 89 5C 24 08 48 8B 59 18 4C 8B D2 48 8B 15 BD 79 6C 03 48 85 D2 74 2A 44 8B 41 08 41 8B C0 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 8B 42 20 48"
+    },
+    {
+      "name": "counter_class_resolution",
+      "rva": "0x2653f10",
+      "confidence": "reviewed-static-combat",
+      "pattern": "4C 89 44 24 18 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 81 EC 98 00 00 00 48 8D 6C 24 20 45 33 F6 4C 8B FA 4D 85 C9 41 8B FE 49 0F"
+    },
+    {
+      "name": "counter_context_scale",
+      "rva": "0x2c533e0",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 89 5C 24 18 48 89 6C 24 20 56 57 41 56 4C 8B 5A 68 49 8B F8 4C 63 52 74 48 8B DA 48 8B F1 4D 8B CB 49 8B C3 BD 14 01 00 00 4F 8D 04 53 4D 85"
+    },
+    {
+      "name": "knight_context",
+      "rva": "0x28bfc70",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 8B 81 C0 01 00 00 48 8B 91 B8 01 00 00 48 85 C0 74 1E 48 8B 80 C0 01 00 00 48 8B 40 28 81 78 1C 72 61 68 43 75 06 83 78 18 FF 75 48 48 8B C1"
+    },
+    {
+      "name": "knight_effectiveness",
+      "rva": "0x2c06b00",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 30 48 8B F1 4D 8B F0 48 8B CA 48 8B FA E8 BD CF CB FF 41 B8 C1 00 00 00 48 C7 44 24 20 A0 86"
+    },
+    {
+      "name": "holding_defender",
+      "rva": "0x2c09d30",
+      "confidence": "reviewed-static-combat",
+      "pattern": "4C 89 44 24 18 53 48 83 EC 20 48 8B C2 48 8B D9 48 8B C8 48 8D 54 24 40 E8 E3 32 87 FF 48 8B 15 14 D8 05 03 48 85 D2 74 29 44 8B 00 41 8B C0 25"
+    },
+    {
+      "name": "commander_roll_bounds",
+      "rva": "0x2650d70",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 48 83 EC 40 4C 8B EA 4C 8B 05 D2 67 61 03 4D 85 C0 74 28 8B 51 74 8B C2"
+    },
+    {
+      "name": "army_regiment_serialize",
+      "rva": "0x2632e60",
+      "confidence": "reviewed-static-combat",
+      "pattern": "48 89 5C 24 10 55 56 57 48 83 EC 30 48 8B DA 48 8B F1 48 8B 79 18 48 85 FF 0F 84 CE 00 00 00 81 7F 38 4F 62 44 47 0F 85 C1 00 00 00 48 83 C7 18"
+    }
+  ],
+  "vtable_anchors": [
+    {
+      "name": "ArmyRegiment_secondary_only_deleting_destructor",
+      "rva": "0x4744DD8",
+      "function_rvas": [
+        "0x26379F8"
+      ]
+    },
+    {
+      "name": "MenAtArmsType_initializer_only",
+      "rva": "0x48B8E00",
+      "function_rvas": [
+        "0x30BB100"
+      ]
+    }
+  ],
+  "instruction_checks": [
+    {
+      "purpose": "army_commander_id",
+      "rva": "0x24e9edc",
+      "instruction": "mov edx, dword ptr [rcx + 0x120]",
+      "bytes": "8B 91 20 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_store",
+      "rva": "0x24e9ed0",
+      "instruction": "mov rax, qword ptr [rip + 0x377d691]",
+      "bytes": "48 8B 05 91 D6 77 03",
+      "rip_targets": [
+        "0x5c67568"
+      ]
+    },
+    {
+      "purpose": "character_extension_for_modifiers",
+      "rva": "0x28c3ae4",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b0]",
+      "bytes": "48 8B 81 B0 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter_class_count",
+      "rva": "0x2653f51",
+      "instruction": "mov r12d, dword ptr [rax + 0xefc]",
+      "bytes": "44 8B A0 FC 0E 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter_targets",
+      "rva": "0x26540d8",
+      "instruction": "mov r11, qword ptr [rax + 0x2a8]",
+      "bytes": "4C 8B 98 A8 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter_targets_count",
+      "rva": "0x26540df",
+      "instruction": "movsxd rbx, dword ptr [rax + 0x2b4]",
+      "bytes": "48 63 98 B4 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter_class_index",
+      "rva": "0x26543a8",
+      "instruction": "movsxd rsi, dword ptr [rax + 0x260]",
+      "bytes": "48 63 B0 60 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter_stack_size",
+      "rva": "0x26579bd",
+      "instruction": "movsxd rcx, dword ptr [rax + 0x70]",
+      "bytes": "48 63 48 70",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter_resistance_modifier",
+      "rva": "0x2c53405",
+      "instruction": "mov ebp, 0x114",
+      "bytes": "BD 14 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "counter_efficiency_modifier",
+      "rva": "0x2c534a0",
+      "instruction": "mov r14d, 0x113",
+      "bytes": "41 BE 13 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "commander_min_modifier",
+      "rva": "0x2650df0",
+      "instruction": "mov r8d, 0x115",
+      "bytes": "41 B8 15 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "commander_max_modifier",
+      "rva": "0x2650e7a",
+      "instruction": "mov r8d, 0x116",
+      "bytes": "41 B8 16 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "width_updater_province_map_node",
+      "rva": "0x2587e29",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "bytes": "48 8B 40 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "width_updater_map_node_terrain",
+      "rva": "0x2587e2d",
+      "instruction": "mov rcx, qword ptr [rax + 0xb8]",
+      "bytes": "48 8B 88 B8 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "width_updater_terrain_multiplier_signed_q100000",
+      "rva": "0x2587e34",
+      "instruction": "mov r9, qword ptr [rcx + 0x60]",
+      "bytes": "4C 8B 49 60",
+      "rip_targets": []
+    },
+    {
+      "purpose": "terrain_min_modifier",
+      "rva": "0x2650e26",
+      "instruction": "movzx r8d, word ptr [r13 + 0x776]",
+      "bytes": "45 0F B7 85 76 07 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "terrain_max_modifier",
+      "rva": "0x2650ea6",
+      "instruction": "movzx r8d, word ptr [r13 + 0x778]",
+      "bytes": "45 0F B7 85 78 07 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "commander_min_define",
+      "rva": "0x2650ddc",
+      "instruction": "cmovne r14d, dword ptr [rip + 0x3618bd8]",
+      "bytes": "44 0F 45 35 D8 8B 61 03",
+      "rip_targets": [
+        "0x5c699bc"
+      ]
+    },
+    {
+      "purpose": "commander_max_define",
+      "rva": "0x2650e67",
+      "instruction": "cmovne ebp, dword ptr [rip + 0x3618b4a]",
+      "bytes": "0F 45 2D 4A 8B 61 03",
+      "rip_targets": [
+        "0x5c699b8"
+      ]
+    },
+    {
+      "purpose": "knight_effective_prowess",
+      "rva": "0x2c06d3a",
+      "instruction": "mov ebx, dword ptr [rdx + 0xec]",
+      "bytes": "8B 9A EC 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "knight_context_call",
+      "rva": "0x2c06d46",
+      "instruction": "call 0x28bfc70",
+      "bytes": "E8 25 8F CB FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "knight_effectiveness_call",
+      "rva": "0x2c06d56",
+      "instruction": "call 0x2c06b00",
+      "bytes": "E8 A5 FD FF FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "knight_damage_define",
+      "rva": "0x2c06d90",
+      "instruction": "movsxd rax, dword ptr [rip + 0x3062c11]",
+      "bytes": "48 63 05 11 2C 06 03",
+      "rip_targets": [
+        "0x5c699a8"
+      ]
+    },
+    {
+      "purpose": "knight_toughness_define",
+      "rva": "0x2c06da5",
+      "instruction": "movsxd rax, dword ptr [rip + 0x3062c04]",
+      "bytes": "48 63 05 04 2C 06 03",
+      "rip_targets": [
+        "0x5c699b0"
+      ]
+    },
+    {
+      "purpose": "knight_regiment_backlink",
+      "rva": "0x28cc08c",
+      "instruction": "mov eax, dword ptr [rax + 0xf8]",
+      "bytes": "8B 80 F8 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "knight_character_link",
+      "rva": "0x28cc080",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b8]",
+      "bytes": "48 8B 81 B8 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_magic",
+      "rva": "0x28bfc8e",
+      "instruction": "cmp dword ptr [rax + 0x1c], 0x43686172",
+      "bytes": "81 78 1C 72 61 68 43",
+      "rip_targets": []
+    },
+    {
+      "purpose": "regiment_magic",
+      "rva": "0x24796f4",
+      "instruction": "cmp dword ptr [r9 + 0x14], 0x41725267",
+      "bytes": "41 81 79 14 67 52 72 41",
+      "rip_targets": []
+    },
+    {
+      "purpose": "regiment_identity",
+      "rva": "0x24796fe",
+      "instruction": "cmp dword ptr [r9 + 0x10], -1",
+      "bytes": "41 83 79 10 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "regiment_maa_type",
+      "rva": "0x2632e72",
+      "instruction": "mov rdi, qword ptr [rcx + 0x18]",
+      "bytes": "48 8B 79 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "maa_type_identity",
+      "rva": "0x2632e7f",
+      "instruction": "cmp dword ptr [rdi + 0x38], 0x4744624f",
+      "bytes": "81 7F 38 4F 62 44 47",
+      "rip_targets": []
+    },
+    {
+      "purpose": "combat_type_identity",
+      "rva": "0x2634540",
+      "instruction": "cmp dword ptr [rax + 0x38], 0x4744624f",
+      "bytes": "81 78 38 4F 62 44 47",
+      "rip_targets": []
+    },
+    {
+      "purpose": "army_regiment_owning_army_id",
+      "rva": "0x2632fc5",
+      "instruction": "mov edx, dword ptr [rsi + 0x140]",
+      "bytes": "8B 96 40 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "army_regiment_primary_vtable",
+      "rva": "0x2632cde",
+      "instruction": "lea rax, [rip + 0x21120bb]",
+      "bytes": "48 8D 05 BB 20 11 02",
+      "rip_targets": [
+        "0x4744da0"
+      ]
+    },
+    {
+      "purpose": "army_regiment_secondary_vtable",
+      "rva": "0x2632ce8",
+      "instruction": "lea rax, [rip + 0x21120e9]",
+      "bytes": "48 8D 05 E9 20 11 02",
+      "rip_targets": [
+        "0x4744dd8"
+      ]
+    },
+    {
+      "purpose": "combat_type_main_phase",
+      "rva": "0x265538c",
+      "instruction": "cmp byte ptr [rcx + 0x98a], 0",
+      "bytes": "80 B9 8A 09 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "removed_regiment_validity_slot",
+      "rva": "0x26379f8",
+      "instruction": "sub rcx, 8",
+      "bytes": "48 83 E9 08",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "src/ck3_12002_combat.cpp": {
+      "kArmyCurrentProvinceOffset": 32,
+      "kArmyIdOffset": 16,
+      "kArmyOwnerCharacterIdOffset": 372,
+      "kCharacterEffectiveProwessOffset": 236,
+      "kCharacterIdOffset": 24,
+      "kCharacterKnightLinkOffset": 440,
+      "kCharacterKnightLinkRegimentIdOffset": 248,
+      "kCombatBaseAdvantageOffset": 1736,
+      "kCombatBaseWidthOffset": 1728,
+      "kCombatFinalWidthOffset": 1732,
+      "kCombatIdOffset": 8,
+      "kCombatPhaseDayOffset": 1716,
+      "kCombatPhaseOffset": 1712,
+      "kCombatProvinceOffset": 1720,
+      "kCombatResolvedAdvantageOffset": 1808,
+      "kCombatRulesCounterClassCountOffset": 3836,
+      "kCombatSide0RollOffset": 1744,
+      "kCombatSide1RollOffset": 1748,
+      "kCommanderMaxRollModifierIndex": 278,
+      "kCommanderMinRollModifierIndex": 277,
+      "kComponentStorageCapacityOffset": 44,
+      "kComponentStorageSlotObjectOffset": 8,
+      "kComponentStorageSlotSize": 16,
+      "kComponentStorageSlotsOffset": 32,
+      "kCounterEfficiencyModifierIndex": 275,
+      "kCounterResistanceModifierIndex": 276,
+      "kDatabaseObjectKeyOffset": 24,
+      "kEncounterMaaStatsDamageOffset": 24,
+      "kEncounterMaaStatsMaximumOffset": 8,
+      "kEncounterMaaStatsPursuitOffset": 40,
+      "kEncounterMaaStatsScreenOffset": 48,
+      "kEncounterMaaStatsSiegeOffset": 16,
+      "kEncounterMaaStatsToughnessOffset": 32,
+      "kFixedPointScale": 100000,
+      "kGameDataProvinceArrayOffset": 320,
+      "kGameDataProvinceCountOffset": 332,
+      "kGameStateGameDataOffset": 160,
+      "kInternalArmyCombatIdOffset": 296,
+      "kInternalArmyCommanderCharacterIdOffset": 288,
+      "kInternalArmyIdOffset": 16,
+      "kInternalArmyRegimentCapacityOffset": 64,
+      "kInternalArmyRegimentCountOffset": 68,
+      "kInternalArmyRegimentIdsOffset": 56,
+      "kInternalArmyUnitIdOffset": 292,
+      "kMapAdjacencyKindOffset": 0,
+      "kMapAdjacencyStride": 48,
+      "kMapAdjacencyTargetProvinceIdOffset": 4,
+      "kMapNodeAdjacencyCountOffset": 92,
+      "kMapNodeAdjacencyDataOffset": 80,
+      "kMaximumArmyRegiments": 65536,
+      "kMaximumComponentCapacity": 1000000,
+      "kMaximumCounterClasses": 4096,
+      "kMaximumCounterTargets": 4096,
+      "kMaximumDatabaseObjectKeyBytes": 4096,
+      "kMaximumProvinceAdjacencies": 4096,
+      "kMsvcStringInlineCapacity": 15,
+      "kProvinceIdOffset": 16,
+      "kProvinceMapNodeOffset": 8,
+      "kRegimentArmyIdOffset": 320,
+      "kRegimentCounterClassOffset": 608,
+      "kRegimentCounterTargetClassOffset": 0,
+      "kRegimentCounterTargetEffectivenessOffset": 8,
+      "kRegimentCounterTargetStride": 16,
+      "kRegimentCounterTargetsCountOffset": 692,
+      "kRegimentCounterTargetsDataOffset": 680,
+      "kRegimentCurrentSoldiersOffset": 56,
+      "kRegimentIdOffset": 16,
+      "kRegimentInnerTypeOffset": 24,
+      "kRegimentKnightCharacterIdOffset": 328,
+      "kRegimentMaaTypeOffset": 24,
+      "kRegimentMainPhaseEligibilityOffset": 2442,
+      "kRegimentMaximumSoldiersOffset": 60,
+      "kTerrainCombatWidthMultiplierOffset": 96,
+      "kTerrainCommanderMaxRollModifierIndexOffset": 1912,
+      "kTerrainCommanderMinRollModifierIndexOffset": 1910,
+      "kUnitArmyIdOffset": 376
+    }
+  },
+  "dependencies": [
+    "ck3_1_20_0_2_army.json: CUnit/CArmy/CArmyRegiment stores, owner, generations and regiment arrays",
+    "ck3_1_20_0_2_routes.json: Province array and adjacency",
+    "ck3_1_20_0_2_phase_definitions.json: six runtime define slots and their stable-key getters"
+  ],
+  "legacy_differences": {
+    "regiment_validity": "Removed virtual slot; magic +0x14 and full ID +0x10",
+    "character_validity": "Inline Char magic +0x1C and full ID +0x18",
+    "maa_validity": "GDbo magic +0x38; slot zero initializes database entry and is not bool validity",
+    "counter_class": [
+      "0x270",
+      "0x260"
+    ],
+    "counter_targets": [
+      "0x2B8/0x2C4",
+      "0x2A8/0x2B4"
+    ],
+    "main_phase": [
+      "0xA0A",
+      "0x98A"
+    ],
+    "character_prowess": [
+      "0xE8",
+      "0xEC"
+    ],
+    "character_knight_link": [
+      "0x1B0",
+      "0x1B8"
+    ],
+    "counter_modifier_ids": [
+      "0x106/0x107",
+      "0x113/0x114"
+    ],
+    "roll_modifier_ids": [
+      "0x108/0x109",
+      "0x115/0x116"
+    ],
+    "terrain_roll_modifier_offsets": [
+      "0x76E/0x770",
+      "0x776/0x778"
+    ],
+    "counter_class_count": [
+      "0xF14",
+      "0xEFC"
+    ]
+  },
+  "known_gaps": [
+    "Real owning-thread paused query and per-army native data cross-check",
+    "Monte Carlo transitions remain outside the pre-existing input observation readiness contract"
+  ],
+  "fixture_result": "GREEN; synthetic two-side encounter, commander/terrain modifier indices, knight full-ID backlink, counter resolution, ongoing combat, stale generation and paused gate; no running game access"
+}

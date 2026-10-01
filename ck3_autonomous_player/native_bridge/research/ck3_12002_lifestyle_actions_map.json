@@ -1,0 +1,416 @@
+{
+  "schema": "xar.ck3_12002_lifestyle_actions_map.v1",
+  "work_package": "NW-LIFE-12002-offline",
+  "status": "exact-build-static-mapping",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "ck3_launched": false,
+  "process_or_pipe_access_performed": false,
+  "exact_build": {
+    "version": "1.20.0.2",
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\binaries\\ck3.exe",
+    "size_bytes": 101039736,
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "image_base": "0x140000000"
+  },
+  "old_build": {
+    "version": "1.19.0.6",
+    "path": "Z:\\Crusader Kings III\\Crusader Kings III_1.19.0.6_20260604\\binaries\\ck3.exe",
+    "size_bytes": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "functions": {
+    "focus_validator": {
+      "old_rva": "0x25df570",
+      "new_rva": "0x288a890",
+      "length": "0x3a8",
+      "sha256": "14b2c831321cbdde2bba1e0a06aec5941dcd99f63fcd5f90cdc37c28b41853f5",
+      "prefix_hex": "48895c240855565741564157488dac2440feffff4881ecc0020000488bf24c8b",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "perk_validator": {
+      "old_rva": "0x25dfaf0",
+      "new_rva": "0x288ae20",
+      "length": "0x3b0",
+      "sha256": "64723899d7eab3733031c14e79e3d13dab5e673e90fa9f2724393227c3ba5dad",
+      "prefix_hex": "48895c24105556574154415541564157488dac2450feffff4881ecb002000048",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "focus_clone": {
+      "old_rva": "0x25ebf70",
+      "new_rva": "0x2895bf0",
+      "length": "0x83",
+      "sha256": "2dc89f62134dd201f40e2282c1f6420687375b4578d08e43285bdf6c995e3be0",
+      "prefix_hex": "48895c2408574883ec20488bd9488bfab938000000e8aadf98014c8bc8488d05",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "perk_clone": {
+      "old_rva": "0x25ec070",
+      "new_rva": "0x2895cf0",
+      "length": "0x7c",
+      "sha256": "30fc89f3414c3e0555c10196cc7207c770d105ba72aaddaa7a5c4957fceb2c0e",
+      "prefix_hex": "48895c2408574883ec20488bd9488bfab930000000e8aade98014c8bc8488d05",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "focus_execute": {
+      "old_rva": "0x25df400",
+      "new_rva": "0x288a720",
+      "length": "0x166",
+      "sha256": "2a9ff1659479335916674d45a63be8b894ae2009f14c642bdb126436eaf8457a",
+      "prefix_hex": "48895c2408574881ec80000000488bd9488b1531ce3d034885d2742a448b4108",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "perk_execute": {
+      "old_rva": "0x25dfa50",
+      "new_rva": "0x288ad80",
+      "length": "0x99",
+      "sha256": "129ed59e9cb85cdccf27411dfc9a781cfd73ee0b169bcda92b7a6e9b98b26332",
+      "prefix_hex": "48895c2408574883ec30488b15d7c73d03488bf94885d2742a448b4108418bc0",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "focus_confirmation_accept": {
+      "old_rva": "0x132bc80",
+      "new_rva": "0x1444f70",
+      "length": "0xec",
+      "sha256": "219ee54f5311314703a80a431b0c7113f33234701eb2616297a46060f3a430c4",
+      "prefix_hex": "405355565741564883ec20488b813001000033ed4889a830010000488bb93001",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "perk_confirmation_accept": {
+      "old_rva": "0x132bb00",
+      "new_rva": "0x1444de0",
+      "length": "0xdd",
+      "sha256": "a4ee4705ae27acce8aba9802a6bf7832396db4fb515e2689616735a41fe60c7b",
+      "prefix_hex": "40535556574883ec28488b813001000033ed4889a828010000488b9930010000",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "lifestyle_window_refresh": {
+      "old_rva": "0x132cb70",
+      "new_rva": "0x1445e60",
+      "length": "0x627",
+      "sha256": "13f21bf76daf72e01bb6ebfa71a6887faa6250bc24863ed8faa7b6dfa4307883",
+      "prefix_hex": "405355565741544155415641574881ecc80100000f29b424b0010000488bf94c",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "perk_database_getter": {
+      "old_rva": "0x88ec20",
+      "new_rva": "0x8fcd40",
+      "length": "0x57",
+      "sha256": "2efc539860c454033d48a5a463b969137af32c509d144cf82adf317592d60070",
+      "prefix_hex": "4883ec38488b05dda336054885c07542c74424281e000000488d05a902b90348",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "get_perk_points": {
+      "old_rva": "0x2668a00",
+      "new_rva": "0x2918bd0",
+      "length": "0x74",
+      "sha256": "daa666b35479f0bb899426933f2a6ee5441c7144eed94f76227a34c99ef7494a",
+      "prefix_hex": "4c8bc2488b91b00100004885d2750433c9eb3d488b8208020000486392140200",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "get_perk_points_used": {
+      "old_rva": "0x2668a80",
+      "new_rva": "0x2918c50",
+      "length": "0x47",
+      "sha256": "86c51e77f215a0e7ebcd2e2a0db3e801686c951df277c216605a7857af2fffec",
+      "prefix_hex": "40534883ec20488bdae8020700004c8b004863400c4d8d0cc033c04d3bc17421",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "get_lifestyle_xp": {
+      "old_rva": "0x2668b80",
+      "new_rva": "0x2918d50",
+      "length": "0x7c",
+      "sha256": "0603352f5fb406eb794d95d7585df5bb0c5cce89664947f3017eae763026bb42",
+      "prefix_hex": "4c8bd2488b91b00100004885d2750933c949890a498bc2c3488b820802000048",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "get_owned_perks": {
+      "old_rva": "0x2669170",
+      "new_rva": "0x2919360",
+      "length": "0x40",
+      "sha256": "97a7568b663070807b2709f883e3428a863ac4a9c0fe0e41374f3028cd1bf038",
+      "prefix_hex": "4883ec28488b81b00100004885c0752865488b042558000000ba10000000488b",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "focus_character_gate": {
+      "old_rva": "0x26694a0",
+      "new_rva": "0x2919690",
+      "length": "0x24e",
+      "sha256": "a7c9177fe02831486e51d4b4b0d3028990a35bec9681cf3a522d2459cf22a1d3",
+      "prefix_hex": "48895c240848897c241055488dac24f0feffff4881ec10020000498bd8488bf9",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "focus_definition_final_gate": {
+      "old_rva": "0x2d88e60",
+      "new_rva": "0x31e7130",
+      "length": "0x3a9",
+      "sha256": "4b52504d7c0d9f5384468bb554da13beda7bba4068485e2618b4517c433dc9a7",
+      "prefix_hex": "48895c2408488974241848895424105557415441564157488dac2440ffffff48",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "perk_command_final_gate": {
+      "old_rva": "0x25dfea0",
+      "new_rva": "0x288b1d0",
+      "length": "0x71",
+      "sha256": "f6c7185f2db9d836900cca614e444b67f609e1100e8257960d5a00329476e04c",
+      "prefix_hex": "488b1591c33d034c8bc94885d2742a448b4120418bc025ffffff003b422c7319",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "perk_definition_final_gate": {
+      "old_rva": null,
+      "new_rva": "0x31ebe70",
+      "length": "0x40",
+      "sha256": "29aeb2ca1cb3173aa4b2238f209b0f09fe527919f4df204ab9caf5ca48031997",
+      "prefix_hex": "48895c241848895424105556574154415541564157488dac2410ffffff4881ec",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "set_focus": {
+      "old_rva": null,
+      "new_rva": "0x2919420",
+      "length": "0x40",
+      "sha256": "115eb21f4d711e0f114152ab13083c81fe75bb225f35164d78795d72baf1711b",
+      "prefix_hex": "40534883ec20488bd94c8bca488b89b00100004885c97443817a384f62444774",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "add_perk": {
+      "old_rva": null,
+      "new_rva": "0x2919090",
+      "length": "0x40",
+      "sha256": "acab65d5a550c6365f1ddc11883ac883f2e3f36059d1fb113fb341f677c6308c",
+      "prefix_hex": "48895c24084889742418488954241055574156488dac2440ffffff4881ecc001",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "modify_lifestyle_xp": {
+      "old_rva": null,
+      "new_rva": "0x2918dd0",
+      "length": "0x40",
+      "sha256": "589835bf92752dc2ec7ccc6cb603ea0b6ad63f36f94b726bcad2a0e6bee14e9f",
+      "prefix_hex": "48895c241048896c24184889742420574154415541564157b8d0110000e8deb9",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "native_clone_then_queue_wrapper": {
+      "old_rva": "0x973e00",
+      "new_rva": "0x9e16b0",
+      "length": "0x78",
+      "sha256": "5048d599b10a65e292fc7c179cf2516943fec8cbb30d29d73beea4844c828c18",
+      "prefix_hex": "4c89442418534883ec308bda488b01488d542458ff504090488b0833d2488910",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    },
+    "owned_command_queue": {
+      "old_rva": "0x341d990",
+      "new_rva": "0x37f06f0",
+      "length": "0xfa",
+      "sha256": "535c67b33da7e1cdb8f1838476b2064a6dd4c09ef3efceda33e5e9d28d34a2be",
+      "prefix_hex": "4c894c242048895424105356574883ec20418bd8488bfa488bf1418bc0c1e803",
+      "anchor_scope": "complete_function_or_bounded_entry_span"
+    }
+  },
+  "command_vtables": {
+    "focus": {
+      "primary_rva": "0x4760b80",
+      "secondary_rva": "0x4760b50",
+      "validator_slot_rva": "0x4760bb0",
+      "clone_slot_rva": "0x4760bc0",
+      "executor_slot_rva": "0x4760b58",
+      "prefix_span_rva": "0x4760b50",
+      "prefix_span_length": "0x78",
+      "prefix_span_sha256": "5d1564714e1c455f20a76dc9483672a55573fa0b3e2a35ff7b02e97d56304b06",
+      "exact_slot_assertions": "PASS"
+    },
+    "perk": {
+      "primary_rva": "0x47609f0",
+      "secondary_rva": "0x47609c0",
+      "validator_slot_rva": "0x4760a20",
+      "clone_slot_rva": "0x4760a30",
+      "executor_slot_rva": "0x47609c8",
+      "prefix_span_rva": "0x47609c0",
+      "prefix_span_length": "0x78",
+      "prefix_span_sha256": "634e4ba12f4116a9358dd9379e5c780a30fb0dfe6323298f298779e55162c763",
+      "exact_slot_assertions": "PASS"
+    }
+  },
+  "semantic_instruction_checks": [
+    {
+      "rva": "0x1444f99",
+      "bytes": "8b1d616c0904",
+      "meaning": "played full CharacterID global = 0x54DBC00",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x288a776",
+      "bytes": "8b058414c502",
+      "meaning": "same played full CharacterID global in focus executor = 0x54DBC00",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1446141",
+      "bytes": "488b0540108204",
+      "meaning": "published focus definition DB pointer global = 0x5C67188",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1446148",
+      "bytes": "488b98080f0000",
+      "meaning": "FocusDB pointer data span +0xF08",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x144614f",
+      "bytes": "486380140f0000",
+      "meaning": "FocusDB signed row count +0xF14",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1446173",
+      "bytes": "4839aef8070000",
+      "meaning": "FocusType target Lifestyle pointer +0x7F8",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1445f43",
+      "bytes": "4839ae40040000",
+      "meaning": "CharacterPerk target Lifestyle pointer +0x440",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1445f08",
+      "bytes": "e8336e4bff",
+      "meaning": "CharacterPerk database getter 0x8FCD40",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1445f0d",
+      "bytes": "4c8b7050",
+      "meaning": "CharacterPerkDB pointer data span +0x50",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1445f11",
+      "bytes": "4863405c",
+      "meaning": "CharacterPerkDB signed row count +0x5C",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x288afbb",
+      "bytes": "488b9240040000",
+      "meaning": "perk validator resolves target Lifestyle +0x440",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x2918c3c",
+      "bytes": "41f7b830010000",
+      "meaning": "GetPerkPoints divisor Lifestyle XP-per-level +0x130",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x2918da7",
+      "bytes": "49638830010000",
+      "meaning": "GetLifestyleXp within-level divisor +0x130",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x2918bd3",
+      "bytes": "488b91b0010000",
+      "meaning": "Character state pointer +0x1B0 replaces +0x1A8",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x288abcf",
+      "bytes": "e8bcea0800",
+      "meaning": "focus command -> character final gate 0x2919690",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x288abe6",
+      "bytes": "e845c59500",
+      "meaning": "focus command -> FocusType final gate 0x31E7130",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x288b162",
+      "bytes": "e869000000",
+      "meaning": "perk command -> additional final gate 0x288B1D0",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x288b239",
+      "bytes": "e9320c9600",
+      "meaning": "perk final gate tailcalls Perk final gate 0x31EBE70",
+      "status": "PASS"
+    },
+    {
+      "rva": "0x1444e17",
+      "bytes": "8b8bc8000000",
+      "meaning": "new lifestyle window bound full CharacterID +0xC8 (old +0xF8)",
+      "status": "PASS"
+    }
+  ],
+  "command_layout": {
+    "secondary_vtable": "0x18",
+    "played_full_character_id": "0x20",
+    "definition_pointer": "0x28",
+    "focus_current_player_full_character_id": "0x30",
+    "focus_bytes": "0x38",
+    "perk_bytes": "0x30",
+    "channel_flags": "0x0E",
+    "validator_abi": "bool(void *command, void *nullable_validation_context)",
+    "clone_abi": "void **(const void *command, void **return_storage)",
+    "executor_this_adjustment": "secondary_this=command+0x18; executor reads relative +8 ID and +0x10 definition"
+  },
+  "definition_layout": {
+    "stable_key": "0x18",
+    "focus_lifestyle": "0x7F8",
+    "perk_lifestyle": "0x440",
+    "lifestyle_xp_per_level": "0x130"
+  },
+  "stock_focus_database": {
+    "published_pointer_global_rva": "0x5C67188",
+    "data_offset": "0xF08",
+    "capacity_i32_offset": "0xF10",
+    "count_i32_offset": "0xF14",
+    "element_bytes": 8,
+    "max_rows_policy": 64,
+    "capacity_evidence": "native adjacent pointer/int/int vector layout; exact refresh directly proves data and signed count. capacity is not a separate getter."
+  },
+  "stock_perk_database": {
+    "getter_rva": "0x8FCD40",
+    "data_offset": "0x50",
+    "capacity_i32_offset": "0x58",
+    "count_i32_offset": "0x5C",
+    "element_bytes": 8,
+    "max_rows_policy": 512,
+    "capacity_evidence": "native adjacent pointer/int/int vector layout; exact refresh directly proves data and signed count. capacity is not a separate getter."
+  },
+  "player_binding": {
+    "played_full_character_id_global_rva": "0x54DBC00",
+    "character_id_offset": "0x18",
+    "character_storage_pointer_global_rva": "0x5C67568",
+    "character_storage_null_object_global_rva": "0x5C67570"
+  },
+  "submit_migration": {
+    "embedded_manager_rva": "0x5CC1240",
+    "queue_rva": "0x37F06F0",
+    "queue_abi": "bool(void *manager, void **owned_command, uint32_t channel_flags)",
+    "implementation_reuse": "xar::ck3_12002::SubmitCommandCopy / SubmitCommandCopyCompat",
+    "reason": "new 0x9E16B0 native wrapper takes command and flags, uses embedded manager, then destructor calls clobber queue AL; it is not the old bool(manager,stack_command,flags) ABI. Clone synchronously via primary+0x40 and submit owning pointer through the already verified new command helper."
+  },
+  "query_call_abi": {
+    "get_lifestyle_xp": "int64_t *(void *character, int64_t *return_storage, void *lifestyle, bool within_level)",
+    "get_perk_points": "int32_t(void *character, void *lifestyle)",
+    "get_perk_points_used": "int32_t(void *character, void *lifestyle)",
+    "get_perk_database": "void *()",
+    "lifestyle_window_refresh": "producer proof only; do not call from stock-windowless source",
+    "stock_legality_rule": "construct stack command with exact vtables and full player ID; final validator(command, nullptr) is a read-only legality call, not a submitted action"
+  },
+  "policy_boundary": {
+    "no_new_public_action_registration": true,
+    "valid_focus_noop_preserved": true,
+    "zero_unspent_points_noop_preserved": true,
+    "queued_ack_is_not_material_postcondition": true,
+    "remaining_live": "paused stock focus/perk query, one typed mutation where legal, independent focus/perk/points readback, following formal turn and save/cold restoration"
+  },
+  "proof_commands": [
+    "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe Z:/ck3_mod_rewrite/.task-tmp/life_actions_map.py write"
+  ],
+  "disassembly_directory": "Z:\\ck3_mod_rewrite\\.task-tmp\\life_actions"
+}

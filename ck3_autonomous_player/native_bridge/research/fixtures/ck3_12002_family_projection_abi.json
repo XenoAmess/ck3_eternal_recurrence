@@ -1,0 +1,522 @@
+{
+  "schema": "xar.ck3_12002.alliance_projection_offline_derivation.v1",
+  "exact_build": {
+    "product_version": "1.20.0.2",
+    "executable_size": 101039736,
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "native_spans": [
+    {
+      "name": "ui_projection_producer",
+      "rva_start": "0x1373c00",
+      "rva_end_exclusive": "0x1373e72",
+      "sha256": "63A4BE4212116B131E82CDA86C600CF8B0514B3CDA3974B630B8F6E749E135F2",
+      "raw_hex": "48895c241848895424105556574154415541564157488d6c24d94881ecb0000000488bfa4c8be9e8c4f6ffff498d4d50e83b6500008b1581819d04488bcfe83d4cd001418885800000008b1564849d04488bcfe8284cd001418885810000004c8b0502398f044d85c0742d8b058f7f16048bc881e1ffffff00413b482c73198bd14803d2498b48204c8b74d1084d85f674064139461874074c8b35d1388f0441817e1c726168430f85aa01000041837e18ff0f849f01000033f6488975974889759f488d45af488945a7488d0517aa1d03488945af488b051caa1d0333d2448d4608488d4dafffd0488975974889759f488b45af4c8d459f488d5597488d4dafff502090488d5597488bcfe8601819014c6365a349c1e405488b5d974c03e3493bdc746e0f1f40000f1f840000000000488b33488b7b08418b461839461875214883bfc00100000074178b4718894567488d5567498d4d50e823760000418b4618394718751d4883bec00100000074138b4618894567488d5567498d4d50e8fd7500004883c320493bdc75a4488b7d6f33f68b87e00200004c8b0dc9378f044c8b05ca378f044d85c974278bc881e1ffffff00413b492c73198bd14803d2498b49204c8b54d1084d85d274064139421874034d8bd08b87e40200004d85c9742a8bc881e1ffffff00413b492c731c8bd14803d2498b49204c8b4cd1084d85c974094139411875034d8bc1418b825801000041894568418b80580100004189456c498bd2488d4d17e8c4889001488b0849894d70488b400849894578488b55974885d274138975a3488b4da7488b0141b808000000ff5010488b9c24000100004881c4b0000000415f415e415d415c5f5e5dc3",
+      "prefix_16_hex": "48895c24184889542410555657415441"
+    },
+    {
+      "name": "actual_marriage_alliance_consumer",
+      "rva_start": "0x2504300",
+      "rva_end_exclusive": "0x2504551",
+      "sha256": "F22E68BD24399759A0AF91A6C1250F56AF7A58C145394BAD10DD5C8324827989",
+      "raw_hex": "48895c2408488974241048897c24204c89442418554154415541564157488dac24a0eeffffb860120000e8a104d201482be04d8be9488bda33ff48897c244048897c2448488d4424584889442450488d0593a304024889442458488b0597a3040233d2448d4708488d4c2458ffd048897c244048897c2448488b4424584c8d442448488d542440488d4c2458ff502090488d542440488bcbe8d31100004c8b05c43176034d85c0742d8b055178fd028bc881e1ffffff00413b482c73198bd14803d2498b48204c8b7cd1084d85ff74064139471874074c8b3d933176034c8b7424404c6364244c49c1e4054d03e64d3bf40f841c010000660f1f840000000000498b36498b7e08418b47183b461874093b47180f85bd000000488bd7488bcee8ccd9400084c00f85aa0000004883bec0010000000f849c0000004883bfc0010000000f848e0000008b5e18413b5f1875038b5f18e8a75e3ffe488b90b0120000488d4dc0e887250000c7442430040000008bc348894424380f104424300f1145d8488d4dc0e80626000090488d8d40110000e8b91b35fe488d8d08110000e8ad1b35fe488d8de8100000e8a11b35fe488d4d10e878dc50fe488b55f84885d2741533c0894504488b4d08488b0141b808000000ff5010488bd7488bcee83f7e3b00c64424200041b101458b4518488b8da01100008b5118488bc8e8d1e90e004983c6204d3bf40f85f4feffff4c8b74244033ff4d85f67418897c244c488b4c2450488b0141b808000000498bd6ff50104c8d9c2460120000498b5b30498b7338498b7b48498be3415f415e415d415c5dc3",
+      "prefix_16_hex": "48895c2408488974241048897c24204c"
+    },
+    {
+      "name": "candidate_context_pair_wrapper",
+      "rva_start": "0x2505570",
+      "rva_end_exclusive": "0x2505694",
+      "sha256": "7176BE7EDC2F56B75EA85A332C19265CD15DC0CFA7DEEE29FD6AF63027C493CC",
+      "raw_hex": "40554883ec304c8b05eb1f7603488bea4c8bc94d85c075154c8b15e11f7603498bd24d8bda4d8bcae9e10000008b91d80200008bc248895c244025ffffff00488b1dba1f76034889742448418b702c48897c24503bc673198bc8498b40204803c94c8b54c8084d85d274064139521874034c8bd3458b99dc020000418bc325ffffff003bc673198bc8498b40204803c9488b54c8084885d2740644395a187403488bd3418bb9e00200008bc725ffffff003bc673198bc8498b40204803c94c8b5cc8084d85db740641397b1874034c8bdb418bb9e40200008bc725ffffff003bc6488b74244873198bc8498b40204803c94c8b4cc8084d85c974064139791874034c8bcb488b5c2440488b7c24504d8bc348896c2420498bcae8126e77004883c4305dc3",
+      "prefix_16_hex": "40554883ec304c8b05eb1f7603488bea"
+    },
+    {
+      "name": "maximum_three_pair_generator",
+      "rva_start": "0x2c7c4a0",
+      "rva_end_exclusive": "0x2c7c584",
+      "sha256": "8C3CD55F81087E17E64380E5CFDBB01DA3D60290BFC36BC42A93B86BBA3F7E57",
+      "raw_hex": "48895c240848896c24104889742418574883ec50498bf9498bd8488bf2488be9e88b01000084c07426488b8c2480000000488d54243048896c2430488974243848895c244048897c2448e8917a4afe4c8bcf4c8bc3488bd7488bcde85001000084c0742b483bf77426488b8c2480000000488d54243048896c243048897c243848895c244048897c2448e8517a4afe4c8bcb4c8bc7488bd3488bcee81001000084c0742b483beb7426488b8c2480000000488d542430488974243048895c243848895c244048897c2448e8117a4afe488b5c2460488b6c2468488b7424704883c4505fc3",
+      "prefix_16_hex": "48895c240848896c2410488974241857"
+    },
+    {
+      "name": "actual_is_allied_to",
+      "rva_start": "0x2911df0",
+      "rva_end_exclusive": "0x2911ef2",
+      "sha256": "4584B6E154D01DC6ABA278DA6D8A4CB81B8279DFB2CBA1AF24969484013C5A7E",
+      "raw_hex": "48895c24104889742418574883ec20488bb9a8010000488bf2488bd94885ff74064883c720eb07488d3d6a77b4028b42184c8d442430488b0f894424304863470c488d1481e8f6e5f6fd488b0f4863570c4c8d049133c9493bc0480f44c14885c00f8589000000488b83a80100004885c07436488b15fe5635034885d2742a448b4010418bc025ffffff003b422c73198bc8488b42204803c9488b44c8084885c07406443940187407488b05d0563503483bc6743b488bd6488bcbe8c0a3faff81b81002000052746341751280b8a901000000750983b89400000000751232c0488b5c2438488b7424404883c4205fc3488b5c2438b001488b7424404883c4205fc3",
+      "prefix_16_hex": "48895c24104889742418574883ec2048"
+    },
+    {
+      "name": "three_pair_predicate",
+      "rva_start": "0x2c7c650",
+      "rva_end_exclusive": "0x2c7c6e2",
+      "sha256": "40AD4D41272023E912114E21FF7E5307B5C362D4816CC860554B72FECFA6A7A5",
+      "raw_hex": "48895c240848896c24104889742418574883ec20498bf1498be8488bda488bf9483bca7456498bd0e813ffffff84c0744a488bd6488bcbe804ffffff84c0743b483bfd7509483bde7504b001eb2f488bd5488bcfe85758c9ff8bf885c07e1c488bd6488bcbe84658c9ff85c07e0d03c73b0546d7fe020f9ec0eb0232c0488b5c2430488b6c2438488b7424404883c4205fc3",
+      "prefix_16_hex": "48895c240848896c2410488974241857"
+    },
+    {
+      "name": "alliance_pair_character_eligibility_predicate",
+      "rva_start": "0x2c7c590",
+      "rva_end_exclusive": "0x2c7c647",
+      "sha256": "4AE0224F92E5D0CBA37C61C1C901E0CA64D1CC095E76DC264207B50EFF7596B5",
+      "raw_hex": "48895c2408574883ec2081791c72616843488bfa488bd90f858d000000837918ff0f8483000000483bca747ee84f68c4ff4885c07474488b4840488bc148c1e821a801755848c1e922f6c101745c488b05131d0a034885c074298b93b40000008bca81e1ffffff003b482c7316488b40204803c9488b4cc8084885c974053951087407488b0d56b0fe0280bfa1010000000f95c2e8c7ce87ff84c0750d32c0488b5c24304883c4205fc3488b5c2430b0014883c4205fc3",
+      "prefix_16_hex": "48895c2408574883ec2081791c726168"
+    },
+    {
+      "name": "alliance_relation_degree_classifier",
+      "rva_start": "0x2911f00",
+      "rva_end_exclusive": "0x2912001",
+      "sha256": "5DDB1D70C6954987DBAA261FE0C4668E9774FB7661AB6229F3E59C5298750EB1",
+      "raw_hex": "48895c2408574883ec20488bda488bf9483bca7510b801000000488b5c24304883c4205fc34533c0e8231bfaff84c00f85bc000000817b1c7261684375258b431883f8ff741d488b8fa80100004885c974113941040f849600000039010f848e000000817f1c72616843751d8b4f1883f9ff7415488b83a80100004885c07409394804746c39087468488bd3488bcfe8ac18faff84c07549488bd7488bcbe89d18faff84c0753a488bd3488bcfe87e1cfaff84c0752b488bd7488bcbe86f1cfaff84c0751c488bd3488bcfe8a01efaff84c0750d33c0488b5c24304883c4205fc3b803000000488b5c24304883c4205fc3488b5c2430b8020000004883c4205fc3",
+      "prefix_16_hex": "48895c2408574883ec20488bda488bf9"
+    },
+    {
+      "name": "stock_matrilineal_toggle_callback",
+      "rva_start": "0x1374a30",
+      "rva_end_exclusive": "0x1374a86",
+      "sha256": "B10C21F42CD6E24696943B5E46AE92E4AC02518AED90AB936EB835DF2CCF7AC0",
+      "raw_hex": "40574883ec20488b4108488bf94885c0743e8b1574739d0448895c2430488b98c8000000488d8bc8000000e8203ed0013401488d8bc8000000440fb6c0e86e3ed001488b4f08e8f51b0000488b5c24304883c4205fc3",
+      "prefix_16_hex": "40574883ec20488b4108488bf94885c0"
+    },
+    {
+      "name": "native_three_row_inline_owner_vtable",
+      "rva_start": "0x454e6e8",
+      "rva_end_exclusive": "0x454e728",
+      "sha256": "C1DCEA2EF46F735E81E45BBFF27AF50671996B85D0872B8E08124DB697F2C76D",
+      "raw_hex": "1061e54001000000b05a854001000000c022854001000000a05a854001000000c05a854001000000c05a854001000000b05a854001000000b05a854001000000",
+      "prefix_16_hex": "1061e54001000000b05a854001000000"
+    },
+    {
+      "name": "native_three_row_inline_owner_initializer",
+      "rva_start": "0x855ac0",
+      "rva_end_exclusive": "0x855acf",
+      "sha256": "DE00C1103583F8BCC571875E5BB9589C9C3ADE3B3C39BFD17E1655E68CBC24D5",
+      "raw_hex": "488d410848890241c70003000000c3",
+      "prefix_16_hex": "488d410848890241c70003000000c3"
+    },
+    {
+      "name": "native_three_row_inline_owner_destructor",
+      "rva_start": "0xe56110",
+      "rva_end_exclusive": "0xe56131",
+      "sha256": "6B3EEB51A702D1553DA1FC60190DCE039D123ABAFCE1095EF81F5D0139AA1B21",
+      "raw_hex": "40534883ec20488bd9f6c201740aba68000000e83cde3c03488bc34883c4205bc3",
+      "prefix_16_hex": "40534883ec20488bd9f6c201740aba68"
+    },
+    {
+      "name": "stock_read_option",
+      "rva_start": "0x3078880",
+      "rva_end_exclusive": "0x30788d0",
+      "sha256": "6821CA26793EFB06CF06AC289CFACE8668D60330BDC52004D448FDAD90FA7701",
+      "raw_hex": "4c8b0933c04c8bd9458b91642200004585d27e3085c07818413bc27d134c63c04969c83007000049038958220000eb0533c94c63c0399168030000740affc0413bc27cd032c0c383f8ff74f8498b8300"
+    },
+    {
+      "name": "stock_set_option",
+      "rva_start": "0x30788e0",
+      "rva_end_exclusive": "0x3078930",
+      "sha256": "69933E2BFA954453F065BD42FC4A2FC1A15559847B968029205C8E969669CAEC",
+      "raw_hex": "48895c24084889742410574883ec204c8b094533d2410fb6f0488bf9418bda458b99642200004585db0f8e950000009085db7818413bdb7d134863c34869c83007000049038958220000eb03498bca39"
+    }
+  ],
+  "direct_calls": [
+    {
+      "site": "0x1373c27",
+      "target": "0x13732f0",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x1373c30",
+      "target": "0x137a170",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x1373c3e",
+      "target": "0x3078880",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x1373c53",
+      "target": "0x3078880",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x1373d0b",
+      "target": "0x2505570",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x1373d58",
+      "target": "0x137b380",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x1373d7e",
+      "target": "0x137b380",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x1373e27",
+      "target": "0x2c7c6f0",
+      "function": "ui_projection_producer"
+    },
+    {
+      "site": "0x250432a",
+      "target": "0x42247d0",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x2504398",
+      "target": "0x2505570",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x250441f",
+      "target": "0x2911df0",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x2504454",
+      "target": "0x8fa300",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x2504464",
+      "target": "0x25069f0",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x2504485",
+      "target": "0x2506a90",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x2504492",
+      "target": "0x856050",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x250449e",
+      "target": "0x856050",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x25044aa",
+      "target": "0x856050",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x25044b3",
+      "target": "0xa12130",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x25044dc",
+      "target": "0x28bc320",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x25044fa",
+      "target": "0x25f2ed0",
+      "function": "actual_marriage_alliance_consumer"
+    },
+    {
+      "site": "0x2505689",
+      "target": "0x2c7c4a0",
+      "function": "candidate_context_pair_wrapper"
+    },
+    {
+      "site": "0x2c7c4c0",
+      "target": "0x2c7c650",
+      "function": "maximum_three_pair_generator"
+    },
+    {
+      "site": "0x2c7c4ea",
+      "target": "0x1123f80",
+      "function": "maximum_three_pair_generator"
+    },
+    {
+      "site": "0x2c7c4fb",
+      "target": "0x2c7c650",
+      "function": "maximum_three_pair_generator"
+    },
+    {
+      "site": "0x2c7c52a",
+      "target": "0x1123f80",
+      "function": "maximum_three_pair_generator"
+    },
+    {
+      "site": "0x2c7c53b",
+      "target": "0x2c7c650",
+      "function": "maximum_three_pair_generator"
+    },
+    {
+      "site": "0x2c7c56a",
+      "target": "0x1123f80",
+      "function": "maximum_three_pair_generator"
+    },
+    {
+      "site": "0x2911e35",
+      "target": "0x880430",
+      "function": "actual_is_allied_to"
+    },
+    {
+      "site": "0x2911eab",
+      "target": "0x28bc270",
+      "function": "actual_is_allied_to"
+    },
+    {
+      "site": "0x2c7c678",
+      "target": "0x2c7c590",
+      "function": "three_pair_predicate"
+    },
+    {
+      "site": "0x2c7c687",
+      "target": "0x2c7c590",
+      "function": "three_pair_predicate"
+    },
+    {
+      "site": "0x2c7c6a4",
+      "target": "0x2911f00",
+      "function": "three_pair_predicate"
+    },
+    {
+      "site": "0x2c7c6b5",
+      "target": "0x2911f00",
+      "function": "three_pair_predicate"
+    },
+    {
+      "site": "0x2c7c5bc",
+      "target": "0x28c2e10",
+      "function": "alliance_pair_character_eligibility_predicate"
+    },
+    {
+      "site": "0x2c7c624",
+      "target": "0x24f94f0",
+      "function": "alliance_pair_character_eligibility_predicate"
+    },
+    {
+      "site": "0x2911f28",
+      "target": "0x28b3a50",
+      "function": "alliance_relation_degree_classifier"
+    },
+    {
+      "site": "0x2911f8f",
+      "target": "0x28b3840",
+      "function": "alliance_relation_degree_classifier"
+    },
+    {
+      "site": "0x2911f9e",
+      "target": "0x28b3840",
+      "function": "alliance_relation_degree_classifier"
+    },
+    {
+      "site": "0x2911fad",
+      "target": "0x28b3c30",
+      "function": "alliance_relation_degree_classifier"
+    },
+    {
+      "site": "0x2911fbc",
+      "target": "0x28b3c30",
+      "function": "alliance_relation_degree_classifier"
+    },
+    {
+      "site": "0x2911fcb",
+      "target": "0x28b3e70",
+      "function": "alliance_relation_degree_classifier"
+    },
+    {
+      "site": "0x1374a5b",
+      "target": "0x3078880",
+      "function": "stock_matrilineal_toggle_callback"
+    },
+    {
+      "site": "0x1374a6d",
+      "target": "0x30788e0",
+      "function": "stock_matrilineal_toggle_callback"
+    },
+    {
+      "site": "0x1374a76",
+      "target": "0x1376670",
+      "function": "stock_matrilineal_toggle_callback"
+    },
+    {
+      "site": "0xe56123",
+      "target": "0x4223f64",
+      "function": "native_three_row_inline_owner_destructor"
+    }
+  ],
+  "vtable_prefix": {
+    "rva": "0x454E6E8",
+    "function_rvas": [
+      "0xe56110",
+      "0x855ab0",
+      "0x8522c0",
+      "0x855aa0",
+      "0x855ac0",
+      "0x855ac0",
+      "0x855ab0",
+      "0x855ab0"
+    ]
+  },
+  "layout": {
+    "context_roles": [
+      "0x2D8",
+      "0x2DC",
+      "0x2E0",
+      "0x2E4"
+    ],
+    "character_id": "0x18",
+    "character_realm_pointer": "0x1C0",
+    "character_relation_pointer": "0x1A8",
+    "pair_row_stride": 32,
+    "pair_pointer_offsets": [
+      0,
+      8,
+      16,
+      24
+    ],
+    "vector_header_bytes": 24,
+    "vector_count_offset": 12,
+    "vector_capacity_offset": 8,
+    "inline_owner_bytes": 104,
+    "inline_capacity": 3,
+    "inline_data_offset": 8
+  },
+  "guard_caveat": "Consumer IsAllied/+1C0 guards target 0x25044D6, which still enters relation effect call. These gates guard only player-facing branch; not complete alliance creation legality.",
+  "predicate_semantics": {
+    "0x2C7C590": {
+      "directly_observed": "Returns true for invalid first Character sentinel/type, identical first/second pointer, null object returned from 0x28C2E10, object+0x40 bit34 clear with bit33 clear, or true helper0x24F94F0 after second+0x1A1 sex-like byte projection. Returns false when object+0x40 bit33 set, or bit34 set and helper0x24F94F0 false. The object/helper semantic names are not certified here.",
+      "details": [
+        "first tag+0x1C == 0x43686172 and ID+0x18 != 0xFFFFFFFF test",
+        "opaque helper0x28C2E10 receives first Character pointer",
+        "when bit33 clear and bit34 set, first+0xB4 resolves object through global0x5D1E2F8 and native full-generation identity+8",
+        "helper0x24F94F0 receives resolved object and DL=(second+0x1A1 != 0)"
+      ],
+      "unsupported_labels": [
+        "No claim this standalone routine is complete marriage legality or guaranteed alliance creation",
+        "No faith/doctrine/tenet/fervor interpretation"
+      ]
+    },
+    "0x2911F00": {
+      "directly_observed": "Native relation-class integer: identical pointers return1; helper0x28B3A50(first,second,r8d=0) true or reciprocal family-ID matches return2; helpers0x28B3840 in either direction, 0x28B3C30 in either direction, or0x28B3E70(first,second) true return3; otherwise0.",
+      "family_id_matches": "For valid target Character, compare target+0x18 to dwords first.relationship_ptr(+0x1A8)+0 and +4; repeat reversed. No semantic name assigned to the opaque helpers."
+    },
+    "0x2C7C650": {
+      "directly_observed": "Require first!=second, eligibility0x2C7C590(first,secondary_actor) true and eligibility0x2C7C590(second,secondary_recipient) true. If first==secondary_actor and second==secondary_recipient return true. Otherwise require two relation-class0x2911F00 values strictly >0, then signed sum <= runtime dword at0x5C69E0C.",
+      "runtime_limit": "RIP-relative CMP at0x2C7C6C0 addresses0x5C69E0C; current-process configured value not read and no numeric default claimed."
+    }
+  },
+  "matrilineal_ui_setter_path": {
+    "old_callback": "0x126E360",
+    "new_callback": "0x1374A30",
+    "option_id_load": {
+      "site": "0x1374A42",
+      "bytes": "8b1574739d04",
+      "target": "0x5D4BDBC",
+      "instruction": "mov edx, dword ptr [rip+0x49D7374]"
+    },
+    "getter_call": {
+      "site": "0x1374A5B",
+      "target": "0x3078880",
+      "bytes": "e8203ed001"
+    },
+    "toggle": "0x1374A60 xor al,1; 0x1374A69 movzx r8d,al",
+    "setter_call": {
+      "site": "0x1374A6D",
+      "target": "0x30788E0",
+      "bytes": "e86e3ed001"
+    },
+    "context": "Loaded from qword[callback_owner+8]+0xC8 then finalized context at object+0xC8; same RCX read and write",
+    "refresh_call": {
+      "site": "0x1374A76",
+      "target": "0x1376670"
+    },
+    "boundary": "Only authored UI callback binding proven offline; no setter execution or gameplay claim."
+  },
+  "private_key": "ck3_12002_family_projection",
+  "readiness": "static-ready",
+  "live_validation": false,
+  "process_access": false,
+  "source_constants": {
+    "kFamilyProjectionPairWrapperRva": "0x2505570",
+    "kFamilyProjectionPairGeneratorRva": "0x2C7C4A0",
+    "kFamilyProjectionOwnerVtableRva": "0x454E6E8",
+    "kFamilyProjectionReadOptionRva": "0x3078880",
+    "kFamilyProjectionSetOptionRva": "0x30788E0",
+    "kFamilyProjectionMatrilinealSlotRva": "0x5D4BDBC",
+    "kFamilyProjectionIsAlliedRva": "0x2911DF0",
+    "kFamilyProjectionRealmDataOffset": "0x1C0"
+  },
+  "native_operand_bindings": [
+    {
+      "constant": "kFamilyProjectionPairWrapperRva",
+      "rva": "0x1373d0b",
+      "kind": "immediate",
+      "bytes": "e860181901",
+      "instruction": "call 0x2505570"
+    },
+    {
+      "constant": "kFamilyProjectionPairGeneratorRva",
+      "rva": "0x2505689",
+      "kind": "immediate",
+      "bytes": "e8126e7700",
+      "instruction": "call 0x2c7c4a0"
+    },
+    {
+      "constant": "kFamilyProjectionOwnerVtableRva",
+      "rva": "0x250434e",
+      "kind": "rip",
+      "bytes": "488d0593a30402",
+      "instruction": "lea rax, [rip + 0x204a393]"
+    },
+    {
+      "constant": "kFamilyProjectionReadOptionRva",
+      "rva": "0x1373c3e",
+      "kind": "immediate",
+      "bytes": "e83d4cd001",
+      "instruction": "call 0x3078880"
+    },
+    {
+      "constant": "kFamilyProjectionSetOptionRva",
+      "rva": "0x1374a6d",
+      "kind": "immediate",
+      "bytes": "e86e3ed001",
+      "instruction": "call 0x30788e0"
+    },
+    {
+      "constant": "kFamilyProjectionMatrilinealSlotRva",
+      "rva": "0x1373c35",
+      "kind": "rip",
+      "bytes": "8b1581819d04",
+      "instruction": "mov edx, dword ptr [rip + 0x49d8181]"
+    },
+    {
+      "constant": "kFamilyProjectionMatrilinealSlotRva",
+      "rva": "0x1374a42",
+      "kind": "rip",
+      "bytes": "8b1574739d04",
+      "instruction": "mov edx, dword ptr [rip + 0x49d7374]"
+    },
+    {
+      "constant": "kFamilyProjectionIsAlliedRva",
+      "rva": "0x250441f",
+      "kind": "immediate",
+      "bytes": "e8ccd94000",
+      "instruction": "call 0x2911df0"
+    },
+    {
+      "constant": "kFamilyProjectionRealmDataOffset",
+      "rva": "0x250442c",
+      "kind": "displacement",
+      "bytes": "4883bec001000000",
+      "instruction": "cmp qword ptr [rsi + 0x1c0], 0"
+    },
+    {
+      "constant": "kFamilyProjectionRealmDataOffset",
+      "rva": "0x250443a",
+      "kind": "displacement",
+      "bytes": "4883bfc001000000",
+      "instruction": "cmp qword ptr [rdi + 0x1c0], 0"
+    }
+  ],
+  "boundary": "Native candidate-pair projection, not an accepted marriage, completed alliance, or guaranteed future effect. Existing would_attempt_if_accepted wire field is the narrow non-allied/both-realm UI branch criterion; false still converges into native relationship effect."
+}

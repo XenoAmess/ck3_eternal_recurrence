@@ -1,0 +1,565 @@
+#include "ck3_12002_construction.hpp"
+
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <array>
+#include <cstring>
+#include <iostream>
+#include <unordered_map>
+
+namespace {
+
+constexpr std::uintptr_t kModule = 0x100000000ULL;
+constexpr std::int32_t kActor = 29829;
+constexpr std::int32_t kCounty = 2142;
+constexpr std::int32_t kBarony = 2143;
+constexpr std::int32_t kProvince = 2619;
+constexpr std::int32_t kSecondBarony = 2146;
+constexpr std::int32_t kSecondProvince = 2617;
+
+struct Fixture {
+  std::unordered_map<std::uintptr_t, std::uint8_t> bytes;
+  xar::game::CampaignRootFrameV1 frame{
+      3, 53178312, true, true, true, true, kActor};
+  bool main_thread = true;
+  bool change_final_frame = false;
+  bool validator_fails = false;
+  bool cost_fails = false;
+  bool only_second_province = false;
+  std::int32_t native_checks = 0;
+  std::int32_t cost_calls = 0;
+  std::int32_t frame_reads = 0;
+
+  template <typename T>
+  void Put(std::uintptr_t address, T value) {
+    const auto *raw = reinterpret_cast<const std::uint8_t *>(&value);
+    for (std::size_t index = 0; index < sizeof(T); ++index) {
+      bytes[address + index] = raw[index];
+    }
+  }
+
+  void PutKey(std::uintptr_t definition, const char *key) {
+    const auto size = std::strlen(key);
+    const auto native_string = definition + 0x18;
+    Put(native_string + 0x10, size);
+    if (size <= 15) {
+      Put(native_string + 0x18, std::size_t{15});
+      for (std::size_t index = 0; index < size; ++index)
+        Put(native_string + index, key[index]);
+    } else {
+      Put(native_string + 0x18, size);
+      Put(native_string, std::uintptr_t{0xE00000});
+      for (std::size_t index = 0; index < size; ++index)
+        Put(0xE00000 + index, key[index]);
+    }
+  }
+
+  static bool Read(void *context, const void *address, void *output,
+                   std::size_t size) noexcept {
+    auto &self = *static_cast<Fixture *>(context);
+    const auto base = reinterpret_cast<std::uintptr_t>(address);
+    auto *raw = static_cast<std::uint8_t *>(output);
+    for (std::size_t index = 0; index < size; ++index) {
+      const auto found = self.bytes.find(base + index);
+      if (found == self.bytes.end()) return false;
+      raw[index] = found->second;
+    }
+    return true;
+  }
+
+  static bool Capture(void *context,
+                      xar::game::CampaignRootFrameV1 &output) noexcept {
+    auto &self = *static_cast<Fixture *>(context);
+    output = self.frame;
+    if (self.change_final_frame && ++self.frame_reads == 4) {
+      ++output.snapshot_revision;
+    }
+    return true;
+  }
+
+  static bool IsMain(void *context) noexcept {
+    return static_cast<Fixture *>(context)->main_thread;
+  }
+
+  static bool Validate(void *context, std::int32_t actor,
+                       std::int32_t province, std::uintptr_t definition,
+                       std::int32_t slot, bool &allowed) noexcept {
+    auto &self = *static_cast<Fixture *>(context);
+    ++self.native_checks;
+    std::int32_t type = -1;
+    if (self.validator_fails || actor != kActor ||
+        (province != kProvince && province != kSecondProvince) ||
+        slot < 0 || slot >= 2 ||
+        !Read(context, reinterpret_cast<const void *>(definition + 0x10),
+              &type, sizeof(type))) {
+      return false;
+    }
+    allowed = type == 22 && slot == 1 &&
+              (!self.only_second_province || province == kSecondProvince);
+    return true;
+  }
+
+  static bool CaptureCost(
+      void *context, std::int32_t actor, std::int32_t province_id,
+      std::uintptr_t province, std::int32_t building_type_id,
+      std::uintptr_t definition, std::int32_t slot,
+      std::array<std::int64_t, 10> &raw) noexcept {
+    auto &self = *static_cast<Fixture *>(context);
+    ++self.cost_calls;
+    if (self.cost_fails || actor != kActor || province_id != kProvince ||
+        province != 0x700000 || building_type_id != 22 ||
+        definition != 0xB10000 || slot != 1) {
+      return false;
+    }
+    raw = {10000000, 0, 500000, 0, 0, 0, 0, 800000, 0, 0};
+    return true;
+  }
+
+  xar::ck3_12002::PlayerWorldBuildingSourceAccessV1 Access(
+      bool enable_final = true, bool enable_cost = false) {
+    xar::ck3_12002::PlayerWorldBuildingSourceAccessV1 result{};
+    result.campaign = {this, Capture, IsMain, Read, nullptr};
+    if (enable_final) {
+      result.final_legality = &Validate;
+      result.final_legality_context = this;
+    }
+    if (enable_cost) {
+      result.native_cost = &CaptureCost;
+      result.native_cost_context = this;
+    }
+    return result;
+  }
+};
+
+void Require(bool condition, const char *name) {
+  if (!condition) {
+    std::cerr << "RED " << name << '\n';
+    std::abort();
+  }
+}
+
+Fixture Scene() {
+  Fixture f;
+  f.Put(kModule + 0x5C68C50, std::uintptr_t{0x100000});
+  f.Put(kModule + 0x5C6A520, std::uintptr_t{0x110000});
+  f.Put(kModule + 0x5C67568, std::uintptr_t{0x400000});
+  f.Put(kModule + 0x5C67570, std::uintptr_t{0x410000});
+  f.Put(kModule + 0x5D1DAF8, std::uintptr_t{0x500000});
+  f.Put(kModule + 0x5D1DAE0, std::uintptr_t{0x510000});
+  f.Put(kModule + 0x57BFBA8, std::uintptr_t{0x900000});
+  f.Put(kModule + 0x5C67540, std::uintptr_t{0xD00000});
+  f.Put(kModule + 0x57BFFF8, std::uintptr_t{0xA00000});
+  f.Put(kModule + 0x57BFFD0, std::uintptr_t{0xC00000});
+
+  f.Put(0x100000 + 0xA0, std::uintptr_t{0x200000});
+  f.Put(0x110000 + 0x18, std::uintptr_t{0x120000});
+  f.Put(0x120000 + 0x1F0, std::int32_t{7});
+  f.Put(0x200000 + 0x222E8 + 0x58, std::uintptr_t{0x300000});
+  f.Put(0x200000 + 0x222E8 + 0x64, std::int32_t{1});
+  f.Put(0x300000, std::uintptr_t{0x310000});
+  f.Put(0x310000 + 0xD8, std::int32_t{7});
+  f.Put(0x310000 + 0xB0, kActor);
+  f.Put(0x400000 + 0x20, std::uintptr_t{0x400020});
+  f.Put(0x400000 + 0x2C, std::int32_t{30000});
+  f.Put(0x400020 + static_cast<std::uintptr_t>(kActor) * 0x10 + 8,
+        std::uintptr_t{0x420000});
+  f.Put(0x420000 + 0x18, kActor);
+  f.Put(0x420000 + 0x1B0, std::uintptr_t{0x450000});
+  f.Put(0x450000 + 0x100, std::int64_t{49048276});
+  f.Put(0x420000 + 0x1D0, std::uintptr_t{0});
+  f.Put(0x420000 + 0x1C0, std::uintptr_t{0x430000});
+  f.Put(0x430000 + 0x1E0, std::uintptr_t{0x440000});
+  f.Put(0x430000 + 0x1E8, std::int32_t{2});
+  f.Put(0x430000 + 0x1EC, std::int32_t{2});
+  f.Put(0x440000, kCounty);
+  f.Put(0x440004, kBarony);
+  f.Put(0x500000 + 0x20, std::uintptr_t{0x500020});
+  f.Put(0x500000 + 0x2C, std::int32_t{4000});
+  f.Put(0x500020 + kCounty * 0x10 + 8, std::uintptr_t{0x600000});
+  f.Put(0x500020 + kBarony * 0x10 + 8, std::uintptr_t{0x620000});
+  f.Put(0x600000 + 0x10, kCounty);
+  f.Put(0x600000 + 0x48, std::uintptr_t{0x610000});
+  f.Put(0x610000 + 0x64, std::int32_t{2});
+  f.Put(0x600000 + 0x128, kActor);
+  f.Put(0x620000 + 0x10, kBarony);
+  f.Put(0x620000 + 0x48, std::uintptr_t{0x630000});
+  f.Put(0x630000 + 0x64, std::int32_t{1});
+  f.Put(0x620000 + 0x128, kActor);
+  f.Put(0x620000 + 0x338, std::uintptr_t{0x700000});
+  f.Put(0x200000 + 0x140, std::uintptr_t{0x720000});
+  f.Put(0x200000 + 0x14C, std::int32_t{4000});
+  f.Put(0x720000 + kProvince * 8, std::uintptr_t{0x700000});
+  f.Put(0x700000 + 0x10, kProvince);
+  f.Put(0x700000 + 0x718, std::int64_t{2468000});
+  f.Put(0x700000 + 0x620 + 0x10, std::uintptr_t{0x730000});
+  f.Put(0x700000 + 0x620 + 0x1C, std::int32_t{2});
+  f.Put(0x730000, std::uintptr_t{0});
+  f.Put(0x730000 + 0x10, std::uintptr_t{0});
+  f.Put(0x700000 + 0x620 + 0x68, std::uintptr_t{0});
+  // The R722-style CHoldingView mode-0 list is empty although the stock
+  // CBuildingType manager vector contains two definitions.
+  f.Put(0x900000 + 0x628, std::uintptr_t{0x910000});
+  f.Put(0x910000 + 0x60, std::uintptr_t{0});
+  f.Put(0x910000 + 0x6C, std::int32_t{0});
+  f.Put(0xD00000 + 0x50, std::uintptr_t{0xD10000});
+  f.Put(0xD00000 + 0x58, std::int32_t{2});
+  f.Put(0xD00000 + 0x5C, std::int32_t{2});
+  f.Put(0xD10000, std::uintptr_t{0xB00000});
+  f.Put(0xD10008, std::uintptr_t{0xB10000});
+  f.Put(0xB00000, kModule + 0x48B6CC8);
+  f.Put(0xB00000 + 0x10, std::int32_t{11});
+  f.PutKey(0xB00000, "hospices_01");
+  f.Put(0xB10000, kModule + 0x48B6CC8);
+  f.Put(0xB10000 + 0x10, std::int32_t{22});
+  f.PutKey(0xB10000, "farm_estates_01");
+  // R735's wrong registry is a CCourtTypeSetting peer. Its first type
+  // cannot replace the manager's typed CBuildingType definitions.
+  f.Put(0xA00000 + 0x68, std::uintptr_t{0xA10000});
+  f.Put(0xA00000 + 0x70, std::int32_t{7});
+  f.Put(0xA00000 + 0x74, std::int32_t{7});
+  f.Put(0xA10000, std::uintptr_t{0xA20000});
+  f.Put(0xA20000, kModule + 0x441EF38);
+  // R730's other wrong registry contains a CDomicileBuildingType peer.
+  f.Put(0xC00000 + 0x68, std::uintptr_t{0xC10000});
+  f.Put(0xC00000 + 0x70, std::int32_t{1});
+  f.Put(0xC00000 + 0x74, std::int32_t{1});
+  f.Put(0xC10000, std::uintptr_t{0xC20000});
+  f.Put(0xC20000, kModule + 0x4172FA8);
+  f.Put(0xC20000 + 0x10, std::int32_t{7});
+  return f;
+}
+
+void AddSecondHolding(Fixture &f) {
+  f.Put(0x430000 + 0x1E8, std::int32_t{3});
+  f.Put(0x430000 + 0x1EC, std::int32_t{3});
+  f.Put(0x440008, kSecondBarony);
+  f.Put(0x500020 + kSecondBarony * 0x10 + 8,
+        std::uintptr_t{0x640000});
+  f.Put(0x640000 + 0x10, kSecondBarony);
+  f.Put(0x640000 + 0x48, std::uintptr_t{0x650000});
+  f.Put(0x650000 + 0x64, std::int32_t{1});
+  f.Put(0x640000 + 0x128, kActor);
+  f.Put(0x640000 + 0x338, std::uintptr_t{0x710000});
+  f.Put(0x720000 + kSecondProvince * 8,
+        std::uintptr_t{0x710000});
+  f.Put(0x710000 + 0x10, kSecondProvince);
+  f.Put(0x710000 + 0x620 + 0x10,
+        std::uintptr_t{0x740000});
+  f.Put(0x710000 + 0x620 + 0x1C, std::int32_t{2});
+  f.Put(0x740000, std::uintptr_t{0});
+  f.Put(0x740000 + 0x10, std::uintptr_t{0});
+  f.Put(0x710000 + 0x620 + 0x68, std::uintptr_t{0});
+}
+
+} // namespace
+
+int main() {
+  using namespace xar::ck3_12002;
+  {
+    auto f = Scene();
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::none &&
+                r.definition_source_count == 2 &&
+                r.directly_held_barony_provinces ==
+                    std::vector<PlayerHeldHoldingSourceV1>{{kBarony, kProvince}} &&
+                r.active_constructions ==
+                    std::vector<PlayerWorldActiveConstructionV1>{
+                        {kBarony, kProvince, false, -1, -1, -1,
+                         0, 0, true, 2468000}},
+            "world_definitions_independent_of_closed_gui");
+    Require(r.native_final_legality_evaluated &&
+                r.snapshot_revision == 3 &&
+                r.final_legality_checks == 4 && !r.checks_truncated &&
+                r.legal_samples ==
+                    std::vector<PlayerWorldBuildingLegalSampleV1>{
+                        {kBarony, kProvince, 22, 1,
+                         "farm_estates_01"}} &&
+                !r.cost_ready && f.native_checks == 4,
+            "same_frame_player_final_legality_sample_not_cost_or_action");
+  }
+  {
+    auto f = Scene();
+    for (std::uintptr_t byte = 0; byte < sizeof(std::int64_t); ++byte)
+      f.bytes.erase(0x700000 + 0x718 + byte);
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(r.source_available && r.active_constructions.size() == 1 &&
+                !r.active_constructions[0].native_province_monthly_income_observed,
+            "unreadable_province_income_is_null_not_zero_or_source_red");
+  }
+  {
+    auto f = Scene();
+    // The stock command executor's independent material state: not a queue
+    // ACK. Its native CBuildingType pointer is resolved to manager ID 22.
+    f.Put(0x700000 + 0x620 + 0x68, std::uintptr_t{0xB10000});
+    f.Put(0x700000 + 0x620 + 0x70, std::int32_t{1});
+    f.Put(0x700000 + 0x620 + 0xD8, kActor);
+    f.Put(0x700000 + 0x620 + 0x80, std::int64_t{109500000});
+    f.Put(0x700000 + 0x620 + 0xE0, std::int64_t{100000});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(r.source_available && r.active_constructions ==
+                std::vector<PlayerWorldActiveConstructionV1>{
+                    {kBarony, kProvince, true, 22, 1, kActor,
+                     109500000, 100000, true, 2468000}},
+            "stock_active_building_is_independent_material_receipt");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x730000 + 0x10, std::uintptr_t{0xB10000});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(r.source_available && r.completed_buildings_observed &&
+                r.completed_buildings ==
+                std::vector<PlayerWorldCompletedBuildingV1>{
+                    {kBarony, kProvince, 22, 1}} &&
+                !r.active_constructions[0].active &&
+                r.active_constructions[0].native_province_monthly_income_observed &&
+                r.active_constructions[0].native_province_monthly_income_raw == 2468000,
+            "stock_completed_slot_is_separate_from_active_queue");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x730000 + 0x10, std::uintptr_t{0xA20000});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::none &&
+                !r.completed_buildings_observed &&
+                r.completed_buildings.empty() &&
+                r.native_final_legality_evaluated &&
+                r.legal_samples.size() == 1,
+            "unmapped_completed_slot_does_not_block_native_legality");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x700000 + 0x620 + 0x10, std::uintptr_t{0});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::none &&
+                !r.completed_buildings_observed &&
+                r.completed_buildings.empty() &&
+                r.native_final_legality_evaluated &&
+                r.legal_samples.size() == 1,
+            "missing_completed_array_is_unobserved_without_blocking_legality");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x700000 + 0x620 + 0x68, std::uintptr_t{0xA20000});
+    f.Put(0x700000 + 0x620 + 0x70, std::int32_t{1});
+    f.Put(0x700000 + 0x620 + 0xD8, kActor);
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(!r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::construction_state,
+            "active_type_outside_stock_manager_remains_red");
+  }
+  {
+    auto f = Scene();
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(true, true), {3, kProvince, 512, 8});
+    Require(r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::none &&
+                r.player_gold_observed && r.player_gold_raw == 49048276 &&
+                r.native_cost_evaluated && r.native_cost_checks == 1 &&
+                f.cost_calls == 1 && r.legal_samples.size() == 1 &&
+                r.legal_samples[0].native_cost_observed &&
+                r.legal_samples[0].cost_raw_slots ==
+                    std::array<std::int64_t, 8>{
+                        10000000, 0, 500000, 0, 0, 0, 0, 0} &&
+                r.legal_samples[0].cost_raw_native ==
+                    std::array<std::int64_t, 10>{
+                        10000000, 0, 500000, 0, 0,
+                        0, 0, 800000, 0, 0} &&
+                !r.cost_ready,
+            "same_paused_legal_tuple_has_opaque_stock_cost_and_player_gold");
+  }
+  {
+    auto f = Scene();
+    f.PutKey(0xB10000, "common_tradeport_01");
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(r.source_available && r.legal_samples.size() == 1 &&
+                r.legal_samples[0].building_key == "common_tradeport_01",
+            "heap_backed_building_key_copied_from_same_definition");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000 + 0x18 + 0x10, std::size_t{0});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::definition_key,
+            "missing_building_key_is_not_positive_value");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x420000 + 0x1B0, std::uintptr_t{0x338000});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(true, true), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::player_gold_source &&
+                f.cost_calls == 0,
+            "missing_player_gold_read_is_unavailable_not_zero");
+  }
+  {
+    auto f = Scene();
+    f.cost_fails = true;
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(true, true), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::native_cost &&
+                f.cost_calls == 1,
+            "failed_stock_cost_is_red_not_free_construction");
+  }
+  {
+    auto f = Scene();
+    f.Put(kModule + 0x5C67540, std::uintptr_t{0});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::registry_source &&
+                r.definition_identity_diagnostic.registry_count == -1 &&
+                f.native_checks == 0,
+            "court_and_domicile_peers_cannot_substitute_manager_source");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xD10000, std::uintptr_t{0xA20000});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.registry_count == 2 &&
+                r.definition_identity_diagnostic.failed_index == 0 &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::vtable_mismatch &&
+                r.definition_identity_diagnostic.observed_vtable_rva ==
+                    0x441EF38 && f.native_checks == 0,
+            "court_type_peer_in_manager_is_red_not_building_legality");
+  }
+  {
+    auto f = Scene();
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(r.source_available && r.definition_source_count == 2 &&
+                !r.native_final_legality_evaluated && r.legal_samples.empty(),
+            "registry_only_does_not_claim_legality");
+  }
+  {
+    auto f = Scene();
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 1, 8});
+    Require(r.source_available && r.final_legality_checks == 1 &&
+                r.checks_truncated && !r.positive_income_coverage_complete &&
+                r.legal_samples.empty(),
+            "bounded_positive_sample_is_not_global_negative_evidence");
+  }
+  {
+    auto f = Scene();
+    AddSecondHolding(f);
+    f.only_second_province = true;
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 4, 8});
+    Require(r.source_available && r.final_legality_checks == 4 &&
+                r.checks_truncated && r.positive_income_coverage_complete &&
+                r.directly_held_barony_provinces.size() == 2 &&
+                r.legal_samples ==
+                    std::vector<PlayerWorldBuildingLegalSampleV1>{
+                        {kSecondBarony, kSecondProvince, 22, 1,
+                         "farm_estates_01"}},
+            "positive_definition_reaches_second_holding_before_generic_cap");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000, kModule + std::uintptr_t{0x48B6CD8});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_source_count == 0 &&
+                r.definition_identity_diagnostic.registry_count == 2 &&
+                r.definition_identity_diagnostic.failed_index == 1 &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::vtable_mismatch &&
+                r.definition_identity_diagnostic.has_observed_vtable_rva &&
+                r.definition_identity_diagnostic.observed_vtable_rva ==
+                    0x48B6CD8 &&
+                !r.definition_identity_diagnostic.has_observed_building_type_id,
+            "definition_vtable_mismatch_keeps_red_with_pointer_free_rva");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xD10008, std::uintptr_t{0});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.failed_index == 1 &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::element_null &&
+                !r.definition_identity_diagnostic.has_observed_vtable_rva,
+            "null_world_element_is_not_zero_legal_buildings");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000, kModule + std::uintptr_t{0x7000000});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::vtable_mismatch &&
+                !r.definition_identity_diagnostic.has_observed_vtable_rva,
+            "out_of_image_pointer_has_no_receipt_address");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000 + 0x10, std::int32_t{-3});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::building_type_id_negative &&
+                r.definition_identity_diagnostic.has_observed_building_type_id &&
+                r.definition_identity_diagnostic.observed_building_type_id == -3,
+            "negative_building_type_id_has_distinct_read_only_diagnostic");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000 + 0x10, std::int32_t{11});
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::building_type_id_duplicate &&
+                r.definition_identity_diagnostic.observed_building_type_id == 11,
+            "duplicate_building_type_id_not_inferred_as_legality");
+  }
+  {
+    auto f = Scene();
+    f.validator_fails = true;
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::native_final_legality,
+            "failed_validator_is_not_native_rejection");
+  }
+  {
+    auto f = Scene();
+    f.change_final_frame = true;
+    auto r = xar::ck3_12002::ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::frame_changed,
+            "same_paused_revision_after_native_checks");
+  }
+  std::cout << "GREEN CK3 1.20 player world building definitions and bounded player legality\n";
+  return 0;
+}

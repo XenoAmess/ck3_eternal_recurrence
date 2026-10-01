@@ -1,0 +1,838 @@
+{
+  "schema_version": 1,
+  "contract": "pending-character-interaction-context-v1-static-migration",
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready native context reader and synthetic fixture; paused production live remains unverified",
+  "runtime_registered": false,
+  "live_verified": false,
+  "game_process_started": false,
+  "scope": "generic pending identity, roles, target type key, send option gates, routing, deadline, auto acceptance, native reply legality, generic costs, and nonreligious special war binding",
+  "signature_anchors": [
+    {
+      "name": "pending_constructor",
+      "rva": "0x2a32790",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 4D 8B E9 4C 8B E2 48 8D 59 08 80 7B 40 00 0F"
+    },
+    {
+      "name": "pending_local_routing",
+      "rva": "0x136d1b0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 83 EC 28 81 79 14 6E 49 68 43 75 1E 83 79 10 FF 74 18 44 8B 81 C0 05 00 00 45 85 C0 74 1B 41 83 E8 01 74 0D 41 83 F8"
+    },
+    {
+      "name": "reply_validator",
+      "rva": "0x2968490",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F9 83 79 24 04 0F 84 DB 00 00 00 48 8B 05 CD 67 3B 03 48 85 C0 74 26"
+    },
+    {
+      "name": "pending_daily_age",
+      "rva": "0x2a2fc60",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 6C 24 18 48 89 74 24 20 41 56 48 83 EC 20 33 C0 48 8B E9 89 41 24 89 41 3C 48 8B 71 50 48 63 41 5C 4C 8D 34 86 49"
+    },
+    {
+      "name": "pending_daily_reply",
+      "rva": "0x2a2fd80",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 20 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 4C 8B E9 48 8B 59 48 80 7B 4A 00 74 10 48 8D"
+    },
+    {
+      "name": "context_copy",
+      "rva": "0x3076b80",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 57 41 56 41 57 48 83 EC 20 4C 8B F2 4C 8B F9 48 8B 02 48 89 01 48 83 C1 08"
+    },
+    {
+      "name": "context_send_option_gate",
+      "rva": "0x30789c0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 63 DA 48 8B F9 85 D2 78 64 48 8B 01 3B 98 64 22 00 00 7D"
+    },
+    {
+      "name": "context_send_option_finalize",
+      "rva": "0x3078c90",
+      "confidence": "reviewed-exact-static",
+      "pattern": "40 53 57 41 57 48 83 EC 20 48 8B 01 48 8B D9 44 8B B8 64 22 00 00 44 39 B9 0C 03 00 00 74 3C 7D 30 41 8B D7 48 81 C1 00"
+    },
+    {
+      "name": "definition_constructor",
+      "rva": "0x31449a0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 20 48 89 4C 24 08 56 57 41 56 48 83 EC 30 0F 29 74 24 20 44 8B D2 48 8B F1 45 85 C9 74 0D 48"
+    },
+    {
+      "name": "trigger_evaluator",
+      "rva": "0x372df30",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 30 04 00 00 48 8B DA 48 8B F9 48 8D 4C 24 50 E8 0E 81 00 00 48 8D 8C 24 78 01"
+    },
+    {
+      "name": "generic_cost_evaluator",
+      "rva": "0x310cee0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 C0 FC FF FF 48 81 EC 40 04 00 00 4D 8B F0 4C 8B E2 4C 8B E9 33 DB 48 8D B1 A0 09 00 00 4D 8B F8 0F 1F 40 00"
+    },
+    {
+      "name": "common_war_relation",
+      "rva": "0x28bc270",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 83 EC 08 4C 8B 91 B0 01 00 00 4D 85 D2 0F 84 90 00 00 00 4D 63 4A 2C 4D 8B 52 20 4D 8B D9 49 C1 E3 04 4D 8B C2 4D 03"
+    },
+    {
+      "name": "target_type_registry_getter",
+      "rva": "0x3795a80",
+      "confidence": "reviewed-exact-static",
+      "pattern": "40 53 48 83 EC 20 65 48 8B 04 25 58 00 00 00 BA 10 00 00 00 48 8B 08 8B 04 0A 39 05 34 47 5E 02 7F 0D 48 8D 05 47 D0 D5"
+    },
+    {
+      "name": "script_identifier_name",
+      "rva": "0x3f4f900",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 83 EC 28 4C 63 C9 48 8B 05 DA F4 D6 01 BA 02 00 00 00 F0 0F C1 10 41 B8 FE FF FF FF F6 C2 01 74 27 41 8B C8 F0 0F C1"
+    },
+    {
+      "name": "cost_resource_formatter",
+      "rva": "0x310b460",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 55 57 41 56 48 8D AC 24 50 FE FF FF 48 81 EC B0 02 00 00 49 8B D8 48 8B F9 45 33 F6 44 89 74 24 30 83 FA 0A 0F 87 18 0C 00 00 48 63 C2 48 8D 0D 5D"
+    },
+    {
+      "name": "cost_resource_render_loop",
+      "rva": "0x310c1c0",
+      "confidence": "reviewed-exact-static",
+      "pattern": "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 48 89 48 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 A8 F6 FF FF 48 81 EC 18 0A 00 00 0F 29 70 A8 4D 8B F9 49 8B D8 4C 8B EA 48 8B C1 33 C9 89"
+    },
+    {
+      "name": "cost_resource_formatter_jump_table",
+      "rva": "0x310c0e8",
+      "confidence": "reviewed-exact-static-data",
+      "pattern": "AF B4 10 03 C8 B5 10 03 E1 B6 10 03 FA B7 10 03 13 B9 10 03 2C BA 10 03 45 BB 10 03 5E BC 10 03 82 BE 10 03 9B BF 10 03 B1 C0 10 03"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "reply_primary",
+      "rva": "0x448bc18",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0"
+      ]
+    },
+    {
+      "name": "reply_secondary",
+      "rva": "0x448bbe8",
+      "function_rvas": [
+        "0x29677a0",
+        "0x29683d0",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    },
+    {
+      "name": "war_victory_special",
+      "rva": "0x46c3aa0",
+      "function_rvas": [
+        "0x852420",
+        "0x3f7e2d0",
+        "0x8522c0",
+        "0x3f7e350",
+        "0x22c6010"
+      ]
+    },
+    {
+      "name": "war_white_peace_special",
+      "rva": "0x46c3b10",
+      "function_rvas": [
+        "0x852420",
+        "0x3f7e2d0",
+        "0x8522c0",
+        "0x3f7e350",
+        "0x22c6010"
+      ]
+    },
+    {
+      "name": "war_defeat_special",
+      "rva": "0x46c3b80",
+      "function_rvas": [
+        "0x852420",
+        "0x3f7e2d0",
+        "0x8522c0",
+        "0x3f7e350",
+        "0x22c6010"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "component_magic",
+      "rva": "0x136d1b4",
+      "instruction": "cmp dword ptr [rcx + 0x14], 0x4368496e",
+      "bytes": "81 79 14 6E 49 68 43",
+      "rip_targets": []
+    },
+    {
+      "purpose": "component_full_id",
+      "rva": "0x136d1bd",
+      "instruction": "cmp dword ptr [rcx + 0x10], -1",
+      "bytes": "83 79 10 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "routing_kind",
+      "rva": "0x136d1c3",
+      "instruction": "mov r8d, dword ptr [rcx + 0x5c0]",
+      "bytes": "44 8B 81 C0 05 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "routing_intermediary",
+      "rva": "0x136d1e2",
+      "instruction": "mov eax, dword ptr [rcx + 0x300]",
+      "bytes": "8B 81 00 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "routing_recipient",
+      "rva": "0x136d1ea",
+      "instruction": "mov eax, dword ptr [rcx + 0x2f4]",
+      "bytes": "8B 81 F4 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_full_id",
+      "rva": "0x136d1f0",
+      "instruction": "cmp eax, dword ptr [rdx + 0x18]",
+      "bytes": "3B 42 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_offset",
+      "rva": "0x136d202",
+      "instruction": "add rcx, 0x18",
+      "bytes": "48 83 C1 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_reply_state",
+      "rva": "0x136d206",
+      "instruction": "call 0x307ab70",
+      "bytes": "E8 65 D9 D0 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "reply_enum",
+      "rva": "0x29684a2",
+      "instruction": "cmp dword ptr [rcx + 0x24], 4",
+      "bytes": "83 79 24 04",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_storage_slot",
+      "rva": "0x29684ac",
+      "instruction": "mov rax, qword ptr [rip + 0x33b67cd]",
+      "bytes": "48 8B 05 CD 67 3B 03",
+      "rip_targets": [
+        "0x5d1ec80"
+      ]
+    },
+    {
+      "purpose": "pending_generation",
+      "rva": "0x29684d9",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "bytes": "39 50 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_storage_fallback",
+      "rva": "0x29684de",
+      "instruction": "mov rax, qword ptr [rip + 0x33b678b]",
+      "bytes": "48 8B 05 8B 67 3B 03",
+      "rip_targets": [
+        "0x5d1ec70"
+      ]
+    },
+    {
+      "purpose": "native_reply_context_identity",
+      "rva": "0x29684ff",
+      "instruction": "call 0x307a770",
+      "bytes": "E8 6C 22 71 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_slot_stride",
+      "rva": "0x2a3284b",
+      "instruction": "add rax, rax",
+      "bytes": "48 03 C0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_object_size",
+      "rva": "0x2a32828",
+      "instruction": "imul r14, rax, 0x5c8",
+      "bytes": "4C 69 F0 C8 05 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_context_copy",
+      "rva": "0x2a328e4",
+      "instruction": "call 0x3076b80",
+      "bytes": "E8 97 42 64 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_age",
+      "rva": "0x2a328f7",
+      "instruction": "mov dword ptr [r14 + 0x5b8], ecx",
+      "bytes": "41 89 8E B8 05 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_routing_kind_write",
+      "rva": "0x2a32911",
+      "instruction": "mov dword ptr [r14 + 0x5c0], ecx",
+      "bytes": "41 89 8E C0 05 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_autoaccept_notification",
+      "rva": "0x2a3293a",
+      "instruction": "mov byte ptr [r14 + 0x5c6], cl",
+      "bytes": "41 88 8E C6 05 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pending_deadline_define",
+      "rva": "0x2a2fd30",
+      "instruction": "mov eax, dword ptr [rip + 0x3238fc6]",
+      "bytes": "8B 05 C6 8F 23 03",
+      "rip_targets": [
+        "0x5c68cfc"
+      ]
+    },
+    {
+      "purpose": "definition_autotrigger",
+      "rva": "0x2a2fe45",
+      "instruction": "mov rcx, qword ptr [rax + 0x2290]",
+      "bytes": "48 8B 88 90 22 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_autoscalar",
+      "rva": "0x2a2fe51",
+      "instruction": "movzx eax, byte ptr [rax + 0x2718]",
+      "bytes": "0F B6 80 18 27 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_actor",
+      "rva": "0x3076bc6",
+      "instruction": "mov eax, dword ptr [r14 + 0x2d8]",
+      "bytes": "41 8B 86 D8 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_recipient",
+      "rva": "0x3076bd4",
+      "instruction": "mov eax, dword ptr [r14 + 0x2dc]",
+      "bytes": "41 8B 86 DC 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_secondary_actor",
+      "rva": "0x3076be2",
+      "instruction": "mov eax, dword ptr [r14 + 0x2e0]",
+      "bytes": "41 8B 86 E0 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_secondary_recipient",
+      "rva": "0x3076bf0",
+      "instruction": "mov eax, dword ptr [r14 + 0x2e4]",
+      "bytes": "41 8B 86 E4 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_intermediary",
+      "rva": "0x3076bfe",
+      "instruction": "mov eax, dword ptr [r14 + 0x2e8]",
+      "bytes": "41 8B 86 E8 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_target_envelope",
+      "rva": "0x3076c1a",
+      "instruction": "movups xmm0, xmmword ptr [r14 + 0x2f0]",
+      "bytes": "41 0F 10 86 F0 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_selected_count",
+      "rva": "0x3076c2a",
+      "instruction": "movsxd rbx, dword ptr [r14 + 0x30c]",
+      "bytes": "49 63 9E 0C 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_selected_data",
+      "rva": "0x3076c31",
+      "instruction": "mov rdi, qword ptr [r14 + 0x300]",
+      "bytes": "49 8B BE 00 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_sendoption_count",
+      "rva": "0x3078888",
+      "instruction": "mov r10d, dword ptr [r9 + 0x2264]",
+      "bytes": "45 8B 91 64 22 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_sendoption_stride",
+      "rva": "0x30788a0",
+      "instruction": "imul rcx, r8, 0x730",
+      "bytes": "49 69 C8 30 07 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_sendoption_data",
+      "rva": "0x30788a7",
+      "instruction": "add rcx, qword ptr [r9 + 0x2258]",
+      "bytes": "49 03 89 58 22 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "sendoption_numeric_flag",
+      "rva": "0x30788b5",
+      "instruction": "cmp dword ptr [rcx + 0x368], edx",
+      "bytes": "39 91 68 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "sendoption_valid_trigger",
+      "rva": "0x30789fa",
+      "instruction": "add r8, 0xd0",
+      "bytes": "49 81 C0 D0 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "sendoption_valid_evaluator",
+      "rva": "0x3078a08",
+      "instruction": "call 0x372df30",
+      "bytes": "E8 23 55 6B 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "sendoption_shown_trigger",
+      "rva": "0x3078a23",
+      "instruction": "add rcx, qword ptr [rax + 0x2258]",
+      "bytes": "48 03 88 58 22 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "sendoption_shown_evaluator",
+      "rva": "0x3078a2e",
+      "instruction": "call 0x372df30",
+      "bytes": "E8 FD 54 6B 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_sendoption_exclusive",
+      "rva": "0x3078ceb",
+      "instruction": "cmp byte ptr [rax + 0x271e], 0",
+      "bytes": "80 B8 1E 27 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_runtime_id",
+      "rva": "0x3144a05",
+      "instruction": "mov dword ptr [rsi + 0x10], r10d",
+      "bytes": "44 89 56 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_key_hash",
+      "rva": "0x3144a21",
+      "instruction": "mov dword ptr [rsi + 0x14], eax",
+      "bytes": "89 46 14",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_canonical_key",
+      "rva": "0x3144a24",
+      "instruction": "lea rcx, [rsi + 0x18]",
+      "bytes": "48 8D 4E 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_cost_block",
+      "rva": "0x3144a8e",
+      "instruction": "lea rcx, [rsi + 0x40]",
+      "bytes": "48 8D 4E 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_scope_argument",
+      "rva": "0x310cf0a",
+      "instruction": "mov r12, rdx",
+      "bytes": "4C 8B E2",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_out_argument",
+      "rva": "0x310cf07",
+      "instruction": "mov r14, r8",
+      "bytes": "4D 8B F0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_resource_stride",
+      "rva": "0x310cf23",
+      "instruction": "imul rdi, rax, 0xf0",
+      "bytes": "48 69 F8 F0 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_adds_to_out",
+      "rva": "0x310d01c",
+      "instruction": "add qword ptr [r15], rax",
+      "bytes": "49 01 07",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_ten_resources",
+      "rva": "0x310d025",
+      "instruction": "cmp ebx, 0xa",
+      "bytes": "83 FB 0A",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_diplomacy_data",
+      "rva": "0x28bc274",
+      "instruction": "mov r10, qword ptr [rcx + 0x1b0]",
+      "bytes": "4C 8B 91 B0 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "recipient_character_id",
+      "rva": "0x28bc29d",
+      "instruction": "mov ebx, dword ptr [rdx + 0x18]",
+      "bytes": "8B 5A 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "target_registry_static",
+      "rva": "0x3795aa2",
+      "instruction": "lea rax, [rip + 0x1d5d047]",
+      "bytes": "48 8D 05 47 D0 D5 01",
+      "rip_targets": [
+        "0x54f2af0"
+      ]
+    },
+    {
+      "purpose": "war_ended_byte",
+      "rva": "0x2496219",
+      "instruction": "cmp byte ptr [rcx + 0x358], 0",
+      "bytes": "80 B9 58 03 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cost_ordinal_switch",
+      "rva": "0x310b4a3",
+      "instruction": "mov edx, dword ptr [rcx + rax*4 + 0x310c0e8]",
+      "bytes": "8B 94 81 E8 C0 10 03",
+      "rip_targets": []
+    },
+    {
+      "purpose": "render_compiled_row_start",
+      "rva": "0x310c229",
+      "instruction": "add rax, 0x40",
+      "bytes": "48 83 C0 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "render_compiled_row_stride",
+      "rva": "0x310c250",
+      "instruction": "imul rsi, r12, 0xf0",
+      "bytes": "49 69 F4 F0 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "render_formatter_ordinal",
+      "rva": "0x310c74b",
+      "instruction": "mov edx, edi",
+      "bytes": "8B D7",
+      "rip_targets": []
+    },
+    {
+      "purpose": "render_formatter_call",
+      "rva": "0x310c752",
+      "instruction": "call 0x310b460",
+      "bytes": "E8 09 ED FF FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "render_enum_increment",
+      "rva": "0x310cc3e",
+      "instruction": "inc edi",
+      "bytes": "FF C7",
+      "rip_targets": []
+    },
+    {
+      "purpose": "render_row_increment",
+      "rva": "0x310cc40",
+      "instruction": "inc r12",
+      "bytes": "49 FF C4",
+      "rip_targets": []
+    },
+    {
+      "purpose": "render_ten_rows",
+      "rva": "0x310cc48",
+      "instruction": "cmp edi, 0xa",
+      "bytes": "83 FF 0A",
+      "rip_targets": []
+    },
+    {
+      "purpose": "resource_0_formatter_key",
+      "rva": "0x310b4c0",
+      "instruction": "lea r8, [rip + 0x17b22d1]",
+      "bytes": "4C 8D 05 D1 22 7B 01",
+      "rip_targets": [
+        "0x48bd798"
+      ]
+    },
+    {
+      "purpose": "resource_1_formatter_key",
+      "rva": "0x310b5d9",
+      "instruction": "lea r8, [rip + 0x17b22c8]",
+      "bytes": "4C 8D 05 C8 22 7B 01",
+      "rip_targets": [
+        "0x48bd8a8"
+      ]
+    },
+    {
+      "purpose": "resource_2_formatter_key",
+      "rva": "0x310b6f2",
+      "instruction": "lea r8, [rip + 0x17b219f]",
+      "bytes": "4C 8D 05 9F 21 7B 01",
+      "rip_targets": [
+        "0x48bd898"
+      ]
+    },
+    {
+      "purpose": "resource_3_formatter_key",
+      "rva": "0x310b80b",
+      "instruction": "lea r8, [rip + 0x17b2066]",
+      "bytes": "4C 8D 05 66 20 7B 01",
+      "rip_targets": [
+        "0x48bd878"
+      ]
+    },
+    {
+      "purpose": "resource_4_formatter_key",
+      "rva": "0x310b924",
+      "instruction": "lea r8, [rip + 0x17b1f35]",
+      "bytes": "4C 8D 05 35 1F 7B 01",
+      "rip_targets": [
+        "0x48bd860"
+      ]
+    },
+    {
+      "purpose": "resource_5_formatter_key",
+      "rva": "0x310ba3d",
+      "instruction": "lea r8, [rip + 0x17b1e0c]",
+      "bytes": "4C 8D 05 0C 1E 7B 01",
+      "rip_targets": [
+        "0x48bd850"
+      ]
+    },
+    {
+      "purpose": "resource_6_formatter_key",
+      "rva": "0x310bb56",
+      "instruction": "lea r8, [rip + 0x17b1cdb]",
+      "bytes": "4C 8D 05 DB 1C 7B 01",
+      "rip_targets": [
+        "0x48bd838"
+      ]
+    },
+    {
+      "purpose": "resource_7_formatter_key",
+      "rva": "0x310bc86",
+      "instruction": "lea r8, [rip + 0x17b1bab]",
+      "bytes": "4C 8D 05 AB 1B 7B 01",
+      "rip_targets": [
+        "0x48bd838"
+      ]
+    },
+    {
+      "purpose": "resource_8_formatter_key",
+      "rva": "0x310be93",
+      "instruction": "lea r8, [rip + 0x17b198e]",
+      "bytes": "4C 8D 05 8E 19 7B 01",
+      "rip_targets": [
+        "0x48bd828"
+      ]
+    },
+    {
+      "purpose": "resource_9_formatter_key",
+      "rva": "0x310bfac",
+      "instruction": "lea r8, [rip + 0x17b185d]",
+      "bytes": "4C 8D 05 5D 18 7B 01",
+      "rip_targets": [
+        "0x48bd810"
+      ]
+    },
+    {
+      "purpose": "treasury_or_gold_alternate_formatter_key",
+      "rva": "0x310bd84",
+      "instruction": "lea r8, [rip + 0x17b1a0d]",
+      "bytes": "4C 8D 05 0D 1A 7B 01",
+      "rip_targets": [
+        "0x48bd798"
+      ]
+    }
+  ],
+  "source_constants": {
+    "kPendingInteractionStorageSlotV1Rva": "0x5d1ec80",
+    "kPendingInteractionCharacterStorageSlotV1Rva": "0x5c67568",
+    "kPendingInteractionExpirationDaysV1Rva": "0x5c68cfc",
+    "kPendingInteractionLocalRoutingV1Rva": "0x136d1b0",
+    "kPendingInteractionReplyValidatorV1Rva": "0x2968490",
+    "kPendingInteractionTriggerEvaluatorV1Rva": "0x372df30",
+    "kPendingInteractionCostEvaluatorV1Rva": "0x310cee0",
+    "kPendingInteractionCommonWarRelationV1Rva": "0x28bc270",
+    "kPendingInteractionTargetTypeRegistryGetterV1Rva": "0x3795a80",
+    "kPendingInteractionTargetTypeRegistryV1Rva": "0x54f2af0",
+    "kPendingInteractionScriptIdentifierNameV1Rva": "0x3f4f900",
+    "kPendingInteractionReplyPrimaryVtableV1Rva": "0x448bc18",
+    "kPendingInteractionReplySecondaryVtableV1Rva": "0x448bbe8",
+    "kPendingInteractionWarVictorySpecialVtableV1Rva": "0x46c3aa0",
+    "kPendingInteractionWarWhitePeaceSpecialVtableV1Rva": "0x46c3b10",
+    "kPendingInteractionWarDefeatSpecialVtableV1Rva": "0x46c3b80"
+  },
+  "source_constants_file": "include/xar_bridge/ck3_12002_pending_context.hpp",
+  "layout_constants": {
+    "kStorageSlotsOffset": "0x20",
+    "kStorageCapacityOffset": "0x2c",
+    "kStorageSlotStride": "0x10",
+    "kStorageSlotObjectOffset": "0x8",
+    "kComponentIdentityOffset": "0x10",
+    "kCharacterIdentityOffset": "0x18",
+    "kPendingDefinitionOffset": "0x18",
+    "kPendingPrimaryScopeOffset": "0x20",
+    "kPendingActorOffset": "0x2f0",
+    "kPendingRecipientOffset": "0x2f4",
+    "kPendingSecondaryActorOffset": "0x2f8",
+    "kPendingSecondaryRecipientOffset": "0x2fc",
+    "kPendingIntermediaryOffset": "0x300",
+    "kPendingTargetEnvelopeOffset": "0x308",
+    "kPendingSelectedOptionsDataOffset": "0x318",
+    "kPendingSelectedOptionsCapacityOffset": "0x320",
+    "kPendingSelectedOptionsCountOffset": "0x324",
+    "kPendingSpecialDataOffset": "0x348",
+    "kPendingAgeDaysOffset": "0x5b8",
+    "kPendingRoutingKindOffset": "0x5c0",
+    "kPendingAutoAcceptNotificationOffset": "0x5c6",
+    "kWarIdentityOffset": "0x8",
+    "kWarPrimaryAttackerCharacterIdOffset": "0x288",
+    "kWarPrimaryDefenderCharacterIdOffset": "0x28c",
+    "kWarEndedDataOffset": "0x358",
+    "kCommonWarRelationWarIdOffset": "0x20",
+    "kDefinitionRuntimeOrdinalOffset": "0x10",
+    "kDefinitionKeyHashOffset": "0x14",
+    "kDefinitionCanonicalKeyOffset": "0x18",
+    "kDefinitionCostBlockOffset": "0x40",
+    "kDefinitionSendOptionRowsOffset": "0x2258",
+    "kDefinitionSendOptionCountOffset": "0x2264",
+    "kDefinitionAutoAcceptTriggerOffset": "0x2290",
+    "kDefinitionAutoAcceptScalarOffset": "0x2718",
+    "kDefinitionSendOptionsExclusiveOffset": "0x271e",
+    "kSendOptionRowStride": "0x730",
+    "kSendOptionShownTriggerOffset": "0x0",
+    "kSendOptionValidTriggerOffset": "0xd0",
+    "kSendOptionNumericFlagIdentifierOffset": "0x368",
+    "kTargetTypeRegistryDataOffset": "0x0",
+    "kTargetTypeRegistryCountOffset": "0xc",
+    "kTargetTypeRegistryEntryStride": "0x50",
+    "kTargetTypeRegistryEntryIdentifierOffset": "0x0",
+    "kMsvcStringSizeOffset": "0x10",
+    "kMsvcStringCapacityOffset": "0x18",
+    "kMsvcStringInlineCapacity": "0xf"
+  },
+  "layout_constants_file": "src/ck3_12002_pending_context.cpp",
+  "source_files": {
+    "include/xar_bridge/ck3_12002_pending_context.hpp": "3847801942757C029E32F5D807A2471D0D134920D5B114021036CCC86CA9A8BE",
+    "src/ck3_12002_pending_context.cpp": "8BD69B8B1612E2369F4E9A6FEC4D9ECC53BB0C880A589B20813F13BC1F766C99",
+    "src/ck3_12002_pending_context_serializer.cpp": "E4B6AB647B444D6FD837A7E7CAB38FF9040DED5ACFAA7595FB43FAD31771DFF0",
+    "src/ck3_12002_pending_context_test.cpp": "D9AC55426C194D6930EF077A3FF1B7FE21E5E834338B98A15F9980D9C8AEB6F3"
+  },
+  "changed_layouts": {
+    "definition_cost_block": "0x38 -> 0x40",
+    "definition_send_options": "data0x2548/count0x2554 -> data0x2258/count0x2264",
+    "send_option_stride": "0x7D0 -> 0x730",
+    "send_option_valid_trigger": "0xE0 -> 0xD0",
+    "send_option_numeric_flag": "0x3A8 -> 0x368",
+    "definition_autoaccept": "trigger0x2580/scalar0x2A48 -> trigger0x2290/scalar0x2718",
+    "definition_send_option_exclusive": "0x2A4E -> 0x271E",
+    "war_ended": "read byte0x358 (previous reader treated eight bytes as pointer)"
+  },
+  "preserved_semantic_gaps": [
+    "generic target payload typed identity",
+    "structured outcome/exchange/effect preview",
+    "full interaction semantic decision gate"
+  ],
+  "validation": {
+    "offline_fixture": "PASS",
+    "compiler": "MSVC 19.51 x64 C++20",
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/build-pending-context-msvc/pending-context-test.exe",
+    "additional_regression": "CWar byte0x358 false remains live despite nonzero adjacent359/35F",
+    "wire_fixture": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/build-pending-context-msvc/pending-context-fixture.json"
+  },
+  "cost_ordinal_mapping": {
+    "compiled_evaluator": "0x310CEE0",
+    "render_loop": "0x310C1C0",
+    "formatter": "0x310B460",
+    "formatter_jump_table_rva": "0x310C0E8",
+    "formatter_jump_table_entries": [
+      "0x310b4af",
+      "0x310b5c8",
+      "0x310b6e1",
+      "0x310b7fa",
+      "0x310b913",
+      "0x310ba2c",
+      "0x310bb45",
+      "0x310bc5e",
+      "0x310be82",
+      "0x310bf9b",
+      "0x310c0b1"
+    ],
+    "resource_keys": [
+      "gold",
+      "prestige",
+      "piety",
+      "renown",
+      "influence",
+      "herd",
+      "treasury",
+      "treasury_or_gold",
+      "merit",
+      "barter_goods"
+    ],
+    "proof": "render row index and formatter enum both start at zero, both increment together, and stop at ten; evaluator out index follows the same compiled row stride F0",
+    "excluded_from_cost_vector": "UI spiritual fulfillment is not an additional compiled cost row"
+  }
+}

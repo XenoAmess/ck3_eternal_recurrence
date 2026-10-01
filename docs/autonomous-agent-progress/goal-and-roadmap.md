@@ -1,5 +1,21 @@
 ﻿# CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 2026-10-01 11:56：1.20 非战争接入的当前能力边界
+
+本轮执行用户要求的后台并发迁移，不占用本地 CK3。新构建绑定 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`；master 上现有正式消费者与新版 provider 的连接以[交接 intake](../ck3-1.20.0.2-nonwar-handoff-intake.md)、[执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)及各[原生专题](../ck3-native-ai/README.md)为准。下方累计能力仍保留其原始 exact build、seed 与证据范围。
+
+| 对完整自治的增量 | 本轮已经通过 | 尚未获得的资格 |
+| --- | --- | --- |
+| [LIFE](../ck3-native-ai/ck3-1.20.0.2-lifestyle.md) | 当前 focus/XP/点数/角色观测及 native 最终合法性、typed focus/perk command/receipt 的独立离线实现 | 新版 paused 同帧与合法实际动作 |
+| [ECON](../ck3-native-ai/ck3-1.20.0.2-construction.md) | held/candidate/cost/active-state 和已有地产 submit provider，保留原生费用、储备、pending 和 receipt 消费 | 新版实际扣款/施工/收益、下一 turn 与 cold |
+| [FAMILY](../ck3-native-ai/ck3-1.20.0.2-family.md) | 当前婚约 query 68 / fulfill 69，实际权限对应候选、联盟/child provider 的独立 ABI/fixture | 中央最终接线/联编仍在收口；新版合法婚配、真实关系/联盟与 cold 待验 |
+| [完整 campaign-root](../ck3-native-ai/ck3-1.20.0.2-nonwar-campaign-context.md) | 15 组真实 reader/serializer fixture 及实际 C++ wire→Python 消费，补齐原生收入、健康、领地、继承、关系与内阁 | 新版 paused 数据互证，不能以字段存在代替 |
+| [JOINT](../ck3-native-ai/ck3-1.20.0.2-joint-offline.md) | 两个正式生产路径故障最小修复，111 项普通与 `-O` 回归；独立合法和平建设继续，pending 承诺保留一次 | 真实五候选选择与物质后置；战争远期现金和长期婚配义务仍沿原缺口 |
+
+独立包最高为 `static-ready`；中央所有离线包、最终 native DLL 与候选冻结尚未统一收口。此前 `d19e794` 的[基础迁移实机](../ck3-1.20.0.2-migration-completion.md)没有覆盖上述新增高级非战争 provider，旧 1.19 private live 也不自动升级为新版 live。本轮 G2 保持 **3/8**、Robert **3,153/36,524** 持久日，百年/首整局/独立种子仍 **0/1、0/1、0/2**；当前 h4025 输出未 cold-tested 的交接事实保留。
+
+最近的可交付门槛是完成余下后台接线、联编和回归，然后集中验证新版 paused 读口及现有合法 typed 动作的独立后置、下一 turn 和规定 cold 恢复。完整宗教、holy order 和完整 combat-v3 的原边界保持，圣战及婚配必要最终判定仍仅按所有者已授权窄例外施工。
+
 ## 终极目标
 
 构建一整套能够高智商游玩 CK3 的玩家智能体。它必须在 exact-build 原生桥之上长期、无人接管地反复完成：
@@ -24,9 +40,9 @@ flowchart LR
 [`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `3/8` 个可见 OODA 里程碑完成（M0/M1/M3）；历史上出现的
 `T1=90%` 仅是 GEN-034 窄包的临时估计，不得再解释或汇报为全游戏自治完成率。
 
-- 当前 exact build：CK3 `1.19.0.6`。
+- 以下历史累计盘点的 exact build：CK3 `1.19.0.6`；当前 `1.20.0.2` 增量见顶部独立段落。
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-- 本页盘点日期：2026-08-27；实现与验收合同盘点基线：runtime `8efa23f`（exact production bridge DLL 源提交仍为
+- 历史累计盘点日期：2026-08-27；实现与验收合同盘点基线：runtime `8efa23f`（exact production bridge DLL 源提交仍为
   `51fe8cf`）。
 - 能力明细以
   [`autonomous-capability-roadmap.md`](../ck3-native-ai/autonomous-capability-roadmap.md) 为施工账本，

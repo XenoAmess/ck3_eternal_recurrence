@@ -1,0 +1,388 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready CUnit armies, routes, generation-bound CArmy/CRegiment strength; no live validation",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "unit_state",
+      "rva": "0xd19140",
+      "confidence": "reviewed-static-army",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 05 F7 4C 00 05 48 8B F9 48 85 C0 74 29 8B 91 78 01 00 00 8B"
+    },
+    {
+      "name": "unit_constructor",
+      "rva": "0x24aa540",
+      "confidence": "reviewed-static-army",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 C7 41 10 FF FF FF FF 48 8D 05 F0 93 28 02 48 89 01 48 8B F9 C7 41"
+    },
+    {
+      "name": "unit_serialize",
+      "rva": "0x24ae160",
+      "confidence": "reviewed-static-army",
+      "pattern": "48 89 5C 24 18 48 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 60 0F 29 74 24 50 48 8B"
+    },
+    {
+      "name": "split_source_unit_resolver",
+      "rva": "0x296b6e0",
+      "confidence": "reviewed-static-army",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 30 48 8B 05 55 D5 2F 03 48 8B F9 4C 8B"
+    },
+    {
+      "name": "current_soldiers",
+      "rva": "0x2a95740",
+      "confidence": "reviewed-static-army",
+      "pattern": "40 53 48 83 EC 20 4C 8B 01 33 DB 48 63 41 0C 44 0F B6 CA 4D 8D 14 80 4D 3B C2 0F 84 93 00 00 00"
+    },
+    {
+      "name": "maximum_soldiers",
+      "rva": "0x24e0450",
+      "confidence": "reviewed-static-army",
+      "pattern": "48 83 EC 08 48 8B 41 38 45 33 C9 48 63 49 44 48 8D 0C 88 48 3B C1 74 5D 4C 8B 1D D1 EE 83 03 48"
+    },
+    {
+      "name": "ai_power_aggregate",
+      "rva": "0x2c3e850",
+      "confidence": "reviewed-static-army",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 48 8B 1D CD"
+    },
+    {
+      "name": "apply_army_path",
+      "rva": "0x24abdb0",
+      "confidence": "reviewed-static-army",
+      "pattern": "40 53 56 57 41 57 48 83 EC 28 83 79 44 00 41 8B D8 48 8B F2 48 8B F9 74 0E 83 B9 70 01 00 00 01"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CUnit_primary",
+      "rva": "0x4733948",
+      "function_rvas": [
+        "0x24aa660",
+        "0x3f7e2d0",
+        "0x24ae160",
+        "0x3f7e350",
+        "0x24ae6d0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "CArmy_primary",
+      "rva": "0x47364a8",
+      "function_rvas": [
+        "0x24de950",
+        "0x3f7e2d0",
+        "0x24dea50",
+        "0x3f7e350",
+        "0x24df060",
+        "0x24df360"
+      ]
+    },
+    {
+      "name": "CRegiment_primary",
+      "rva": "0x4744b80",
+      "function_rvas": [
+        "0x262a060",
+        "0x3f7e2d0",
+        "0x262a0c0",
+        "0x3f7e350",
+        "0x262a5e0",
+        "0x262ac80"
+      ]
+    },
+    {
+      "name": "CRegiment_identity_subobject_removed_predicate",
+      "rva": "0x4744bb8",
+      "function_rvas": [
+        "0x2632b78"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "CArmy storage slot",
+      "rva": "0xd1914a",
+      "bytes": "48 8B 05 F7 4C 00 05",
+      "instruction": "mov rax, qword ptr [rip + 0x5004cf7]",
+      "rip_targets": [
+        "0x5d1de48"
+      ]
+    },
+    {
+      "purpose": "Unit internal ArmyID",
+      "rva": "0xd19159",
+      "bytes": "8B 91 78 01 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x178]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage capacity",
+      "rva": "0xd19167",
+      "bytes": "3B 48 2C",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage object array",
+      "rva": "0xd1916c",
+      "bytes": "48 8B 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "component slot object offset",
+      "rva": "0xd19173",
+      "bytes": "48 8B 5C C8 08",
+      "instruction": "mov rbx, qword ptr [rax + rcx*8 + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "CArmy full generation",
+      "rva": "0xd1917d",
+      "bytes": "39 53 10",
+      "instruction": "cmp dword ptr [rbx + 0x10], edx",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Unit retreat state",
+      "rva": "0xd1923c",
+      "bytes": "83 BF 70 01 00 00 00",
+      "instruction": "cmp dword ptr [rdi + 0x170], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Unit route count",
+      "rva": "0xd19255",
+      "bytes": "83 7F 44 00",
+      "instruction": "cmp dword ptr [rdi + 0x44], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "CUnit storage slot",
+      "rva": "0x296b6fe",
+      "bytes": "4C 8B 05 7B 2C 3B 03",
+      "instruction": "mov r8, qword ptr [rip + 0x33b2c7b]",
+      "rip_targets": [
+        "0x5d1e380"
+      ]
+    },
+    {
+      "purpose": "CArmy public UnitID",
+      "rva": "0x296b71f",
+      "bytes": "44 8B 91 24 01 00 00",
+      "instruction": "mov r10d, dword ptr [rcx + 0x124]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "CUnit full generation",
+      "rva": "0x296b747",
+      "bytes": "44 39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], r10d",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Unit current Province",
+      "rva": "0x296b750",
+      "bytes": "48 8B 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Province ID",
+      "rva": "0x296b762",
+      "bytes": "48 63 48 10",
+      "instruction": "movsxd rcx, dword ptr [rax + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province array count",
+      "rva": "0x296b76b",
+      "bytes": "41 3B 89 4C 01 00 00",
+      "instruction": "cmp ecx, dword ptr [r9 + 0x14c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province array",
+      "rva": "0x296b774",
+      "bytes": "49 8B 81 40 01 00 00",
+      "instruction": "mov rax, qword ptr [r9 + 0x140]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Unit owner CharacterID",
+      "rva": "0x296b802",
+      "bytes": "44 8B 92 74 01 00 00",
+      "instruction": "mov r10d, dword ptr [rdx + 0x174]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "route array pointer",
+      "rva": "0x24abe3d",
+      "bytes": "48 8B 47 38",
+      "instruction": "mov rax, qword ptr [rdi + 0x38]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "route info ProvinceID",
+      "rva": "0x24abe46",
+      "bytes": "48 63 08",
+      "instruction": "movsxd rcx, dword ptr [rax]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Regiment storage slot current",
+      "rva": "0x2a95771",
+      "bytes": "48 8B 3D C8 9B 28 03",
+      "instruction": "mov rdi, qword ptr [rip + 0x3289bc8]",
+      "rip_targets": [
+        "0x5d1f340"
+      ]
+    },
+    {
+      "purpose": "Regiment full generation current",
+      "rva": "0x2a9579d",
+      "bytes": "41 39 4B 10",
+      "instruction": "cmp dword ptr [r11 + 0x10], ecx",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new Regiment identity magic",
+      "rva": "0x2a957a6",
+      "bytes": "41 81 7B 14 67 52 72 41",
+      "instruction": "cmp dword ptr [r11 + 0x14], 0x41725267",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new Regiment valid public ID",
+      "rva": "0x2a957b0",
+      "bytes": "41 83 7B 10 FF",
+      "instruction": "cmp dword ptr [r11 + 0x10], -1",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Regiment current soldiers",
+      "rva": "0x2a957dc",
+      "bytes": "41 03 5B 38",
+      "instruction": "add ebx, dword ptr [r11 + 0x38]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Regiment maximum soldiers",
+      "rva": "0x24e04b4",
+      "bytes": "44 03 4A 3C",
+      "instruction": "add r9d, dword ptr [rdx + 0x3c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Regiment storage slot max",
+      "rva": "0x24e0468",
+      "bytes": "4C 8B 1D D1 EE 83 03",
+      "instruction": "mov r11, qword ptr [rip + 0x383eed1]",
+      "rip_targets": [
+        "0x5d1f340"
+      ]
+    },
+    {
+      "purpose": "CArmy regiment IDs",
+      "rva": "0x24e0454",
+      "bytes": "48 8B 41 38",
+      "instruction": "mov rax, qword ptr [rcx + 0x38]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "CArmy regiment count",
+      "rva": "0x24e045b",
+      "bytes": "48 63 49 44",
+      "instruction": "movsxd rcx, dword ptr [rcx + 0x44]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Regiment identity magic power",
+      "rva": "0x2c3e943",
+      "bytes": "81 7A 14 67 52 72 41",
+      "instruction": "cmp dword ptr [rdx + 0x14], 0x41725267",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Regiment AI base power raw",
+      "rva": "0x2c3e952",
+      "bytes": "48 03 6A 40",
+      "instruction": "add rbp, qword ptr [rdx + 0x40]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "Unit route capacity relative to path member",
+      "rva": "0xd1a0d4",
+      "bytes": "89 69 08",
+      "instruction": "mov dword ptr [rcx + 8], ebp",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kUnitStorageSlotRva12002": "0x5D1E380",
+    "kInternalArmyStorageSlotRva12002": "0x5D1DE48",
+    "kRegimentStorageSlotRva12002": "0x5D1F340",
+    "kUnitStateRva12002": "0xD19140",
+    "kArmyCurrentSoldiersRva12002": "0x2A95740",
+    "kArmyMaximumSoldiersRva12002": "0x24E0450"
+  },
+  "layouts": {
+    "storage": {
+      "slots": "0x20",
+      "capacity": "0x2c",
+      "stride": "0x10",
+      "object": "0x08"
+    },
+    "CUnit": {
+      "id": "0x10",
+      "current_province": "0x20",
+      "route_data": "0x38",
+      "route_capacity": "0x40",
+      "route_count": "0x44",
+      "retreat": "0x170",
+      "owner": "0x174",
+      "native_carmy_id": "0x178"
+    },
+    "CArmy": {
+      "id": "0x10",
+      "regiment_ids": "0x38",
+      "capacity": "0x40",
+      "count": "0x44",
+      "public_unit_id": "0x124"
+    },
+    "CRegiment": {
+      "id": "0x10",
+      "magic": "0x14",
+      "magic_value": "0x41725267",
+      "current_soldiers": "0x38",
+      "maximum_soldiers": "0x3c",
+      "ai_base_power_raw": "0x40",
+      "identity": "inline magic and ID; previous virtual predicate removed"
+    },
+    "Province": {
+      "id": "0x10",
+      "game_data_array": "0x140",
+      "game_data_count": "0x14c"
+    }
+  },
+  "fixture": {
+    "binary": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/build-army-native/out/armyfixture.exe",
+    "result": "GREEN offline synthetic objects",
+    "sha256": "a0b9c1acb9b063cbaa9d6d6422053bddc0816abc8bda1b0b2bef93caedc29b59",
+    "resolver_gathering_supplement": "GREEN full-generation handles and native UnitState code 5"
+  },
+  "remaining": [
+    "owning-thread mailbox integration",
+    "exact-build real paused snapshot and MCP semantic validation"
+  ]
+}

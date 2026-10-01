@@ -6,8 +6,8 @@ its paused production query and bilateral result gates have passed.
 
 from __future__ import annotations
 
+from .version_identity import CK3_11906, NativeBuildIdentity
 
-_BUILD = "1.19.0.6"
 _READY_KEYS = {
     "ranked_candidates_ready",
     "pair_character_ids_ready",
@@ -50,6 +50,7 @@ def normalize_ranked_marriage_observation(
     native_revision: int,
     date_raw: int,
     played_character_id: int,
+    native_build: NativeBuildIdentity = CK3_11906,
 ) -> dict[str, object]:
     """Accept only the private observer's same-frame direct-player payload."""
     if not isinstance(value, dict) or value.get("status") != "available":
@@ -62,7 +63,7 @@ def normalize_ranked_marriage_observation(
     }
     if set(value) != expected or value["private_build"] is not True or value["advertised"] is not False:
         raise ValueError("ranked marriage observation schema is malformed")
-    if value["exact_build"] != _BUILD or value["religion_projection"] != "native_final_results_only":
+    if value["exact_build"] != native_build.game_version or value["religion_projection"] != "native_final_results_only":
         raise ValueError("ranked marriage exact-build or result provenance changed")
     if (
         value["snapshot_id"] != snapshot_id

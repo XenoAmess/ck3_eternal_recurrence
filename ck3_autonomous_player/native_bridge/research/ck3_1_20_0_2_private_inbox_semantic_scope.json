@@ -1,0 +1,45 @@
+{
+  "schema": "ck3-private-fixture-semantic-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "status": "static-ready",
+  "operation": "WorkerAdapter::run_inbox_fixture",
+  "wire_step": "fixture-run-inbox-v1",
+  "payload_fields": [
+    "expected_snapshot_revision"
+  ],
+  "command_parameters": [],
+  "fixed_command": "run xar_mcp_inbox.txt",
+  "fixed_command_utf8_bytes": 21,
+  "executor": "ExecuteSemanticAdapter12002",
+  "executor_slot": 14,
+  "new_executor_slots": [],
+  "new_public_capabilities": [],
+  "scope": {
+    "before_native_execution": "full snapshot equality",
+    "after_native_execution": [
+      "paused",
+      "date_raw",
+      "player_id",
+      "map_ready",
+      "has_played_character",
+      "played_character_id",
+      "played_character_alive"
+    ],
+    "world_delta": "accepted only for fixture_inbox_mutation",
+    "other_operations": "unchanged full comparison except existing route-only war-options policy"
+  },
+  "native_helper_contract": "ck3_1_20_0_2_console_fixture.json",
+  "result_field": "result.fixture_inbox",
+  "native_result_values": [
+    "unavailable",
+    "console_unavailable",
+    "command_rejected",
+    "executed"
+  ],
+  "marker_confirmed": false,
+  "effects_postcondition": "coordinator SDK fixture verifies unique log marker and desired world snapshot",
+  "necessary_evidence": "attempt-05 selection inbox succeeded then GUI timer stopped: no further run/createwidget in debug.log while native owner pump continued for 60 seconds",
+  "fixture_artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/bridge-console-fixture/result.json",
+  "remaining": "root builds DLL; SDK fixture atomically writes inbox, invokes this private step, verifies unique debug.log marker and resulting snapshot"
+}

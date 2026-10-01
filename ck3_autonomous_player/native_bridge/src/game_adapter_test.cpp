@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906_adapter.hpp"
+#include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/game_adapter.hpp"
 
@@ -829,9 +830,38 @@ int main() {
     return Fail("empty adapter registry did not return null");
   }
 
+  const auto &new_known = xar::game::Ck3_12002AdapterDescriptor();
+  if (new_known.adapter_id != "ck3-1.20.0.2-msvc-x64" ||
+      new_known.game_version != "1.20.0.2" ||
+      new_known.executable_sha256 != xar::ck3_12002::kExecutableSha256 ||
+      new_known.checkpoint_save_name != "xar_checkpoint" ||
+      &xar::game::PreferredAdapterDescriptor() != &new_known) {
+    return Fail("new preferred exact-build descriptor drifted");
+  }
+  constexpr std::array<xar::game::AdapterFactory, 2> real_builds{
+      &xar::game::CreateCk3_12002Adapter,
+      &xar::game::CreateCk3_11906Adapter,
+  };
+  for (const auto *descriptor : {&new_known, &known}) {
+    selected = xar::game::SelectAdapter(descriptor->executable_sha256, real_builds);
+    if (selected == nullptr || !selected->enabled() ||
+        selected->descriptor().adapter_id != descriptor->adapter_id ||
+        !selected->supports_snapshot() ||
+        !selected->supports_step("query-army-strengths-v1") ||
+        selected->supports_step("query-war-termination-exit-terms-v2-16777290")) {
+      return Fail("two-build registry selected the wrong native implementation");
+    }
+  }
+  selected = xar::game::SelectAdapter("unknown-fixture-hash", real_builds);
+  if (selected == nullptr || selected->enabled() ||
+      selected->descriptor().adapter_id != new_known.adapter_id ||
+      selected->supports_snapshot()) {
+    return Fail("unmatched real registry did not retain disabled new metadata");
+  }
+
   auto current = xar::game::SelectCurrentProcessAdapter();
   if (current == nullptr || current->enabled() ||
-      current->descriptor().adapter_id != known.adapter_id ||
+      current->descriptor().adapter_id != new_known.adapter_id ||
       current->supports("game.state.snapshot")) {
     return Fail("unknown current test executable exposed CK3 gameplay");
   }

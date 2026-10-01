@@ -1,0 +1,872 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready",
+  "live_verified": false,
+  "process_access": false,
+  "signature_anchors": [
+    {
+      "name": "registered_child_of_wrapper",
+      "rva": "0x2b6edc0",
+      "pattern": "48 89 6C 24 10 48 89 74 24 18 57 48 81 EC 50 02 00 00 48 8B 02 48 8B F2 48 8B E9 66 83 38 04 75 06 44 8B 40 08 EB 06 41 B8 FF FF FF FF 48 8B 15 74 87 0F 03 48 89 9C 24 60 02 00 00 48 85 D2 74 26 41 8B C0 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 8B 42 20 48 03 C9 48 8B 5C C8 08 48 85 DB 74",
+      "confidence": "frozen registration/vtable/call-chain proof"
+    },
+    {
+      "name": "native_children_collector",
+      "rva": "0x1c11b50",
+      "pattern": "48 89 5C 24 18 55 56 57 48 83 EC 30 49 8B 00 48 8B EA 48 8B F9 66 83 38 04 75 06 44 8B 40 08 EB 06 41 B8 FF FF FF FF 4C 8B 0D EA 59 05 04 4C 8B 15 EB 59 05 04 4D 85 C9 74 27 41 8B C0 25 FF FF FF 00 41 3B 41 2C 73 19 8B C8 49 8B 41 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 06 44 39 40 18 74",
+      "confidence": "frozen registration/vtable/call-chain proof"
+    }
+  ],
+  "vtable_prefixes": [],
+  "semantic_checks": [
+    {
+      "rva": "0x9d56e1",
+      "bytes": "8B 87 58 01 00 00",
+      "instruction": "mov eax, dword ptr [rdi + 0x158]",
+      "rip_targets": [],
+      "purpose": "character_house_full_id",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x9d56e7",
+      "bytes": "4C 8B 05 02 84 34 05",
+      "instruction": "mov r8, qword ptr [rip + 0x5348402]",
+      "rip_targets": [
+        "0x5d1daf0"
+      ],
+      "purpose": "house_storage_slot",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x9d56f5",
+      "bytes": "81 E1 FF FF FF 00",
+      "instruction": "and ecx, 0xffffff",
+      "rip_targets": [],
+      "purpose": "house_index_mask",
+      "immediate_operands": [
+        "0xffffff"
+      ]
+    },
+    {
+      "rva": "0x9d56fb",
+      "bytes": "41 3B 48 2C",
+      "instruction": "cmp ecx, dword ptr [r8 + 0x2c]",
+      "rip_targets": [],
+      "purpose": "house_capacity",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x9d5703",
+      "bytes": "48 03 D2",
+      "instruction": "add rdx, rdx",
+      "rip_targets": [],
+      "purpose": "house_slot_index_double",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x9d5706",
+      "bytes": "49 8B 48 20",
+      "instruction": "mov rcx, qword ptr [r8 + 0x20]",
+      "rip_targets": [],
+      "purpose": "house_storage_slots",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x9d570a",
+      "bytes": "48 8B 5C D1 08",
+      "instruction": "mov rbx, qword ptr [rcx + rdx*8 + 8]",
+      "rip_targets": [],
+      "purpose": "house_slot_pointer",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x9d5714",
+      "bytes": "39 43 10",
+      "instruction": "cmp dword ptr [rbx + 0x10], eax",
+      "rip_targets": [],
+      "purpose": "house_full_generation_identity",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x9d5719",
+      "bytes": "48 8B 1D C8 83 34 05",
+      "instruction": "mov rbx, qword ptr [rip + 0x53483c8]",
+      "rip_targets": [
+        "0x5d1dae8"
+      ],
+      "purpose": "house_fallback_slot",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78c90",
+      "bytes": "48 8B 05 59 4E 0A 05",
+      "instruction": "mov rax, qword ptr [rip + 0x50a4e59]",
+      "rip_targets": [
+        "0x5d1daf0"
+      ],
+      "purpose": "lineage_consumer_house_storage_slot",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78c9f",
+      "bytes": "8B 91 58 01 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x158]",
+      "rip_targets": [],
+      "purpose": "lineage_consumer_house_full_id",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78cc3",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": [],
+      "purpose": "lineage_consumer_house_identity",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78cc8",
+      "bytes": "48 8B 05 19 4E 0A 05",
+      "instruction": "mov rax, qword ptr [rip + 0x50a4e19]",
+      "rip_targets": [
+        "0x5d1dae8"
+      ],
+      "purpose": "lineage_consumer_house_fallback",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78ccf",
+      "bytes": "48 8B 15 A2 51 0A 05",
+      "instruction": "mov rdx, qword ptr [rip + 0x50a51a2]",
+      "rip_targets": [
+        "0x5d1de78"
+      ],
+      "purpose": "dynasty_storage_slot",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78cdb",
+      "bytes": "44 8B 40 2C",
+      "instruction": "mov r8d, dword ptr [rax + 0x2c]",
+      "rip_targets": [],
+      "purpose": "house_dynasty_full_id",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78ce2",
+      "bytes": "25 FF FF FF 00",
+      "instruction": "and eax, 0xffffff",
+      "rip_targets": [],
+      "purpose": "dynasty_index_mask",
+      "immediate_operands": [
+        "0xffffff"
+      ]
+    },
+    {
+      "rva": "0xc78ce7",
+      "bytes": "3B 42 2C",
+      "instruction": "cmp eax, dword ptr [rdx + 0x2c]",
+      "rip_targets": [],
+      "purpose": "dynasty_capacity",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78cee",
+      "bytes": "48 8B 42 20",
+      "instruction": "mov rax, qword ptr [rdx + 0x20]",
+      "rip_targets": [],
+      "purpose": "dynasty_storage_slots",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78cf2",
+      "bytes": "48 03 C9",
+      "instruction": "add rcx, rcx",
+      "rip_targets": [],
+      "purpose": "dynasty_slot_index_double",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78cf5",
+      "bytes": "48 8B 4C C8 08",
+      "instruction": "mov rcx, qword ptr [rax + rcx*8 + 8]",
+      "rip_targets": [],
+      "purpose": "dynasty_slot_pointer",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78cff",
+      "bytes": "44 39 41 10",
+      "instruction": "cmp dword ptr [rcx + 0x10], r8d",
+      "rip_targets": [],
+      "purpose": "dynasty_full_generation_identity",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0xc78d05",
+      "bytes": "48 8B 0D 1C 51 0A 05",
+      "instruction": "mov rcx, qword ptr [rip + 0x50a511c]",
+      "rip_targets": [
+        "0x5d1de28"
+      ],
+      "purpose": "dynasty_fallback_slot",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfc77",
+      "bytes": "48 8B 91 B8 01 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0x1b8]",
+      "rip_targets": [],
+      "purpose": "character_court_relation_pointer",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfca1",
+      "bytes": "48 85 D2",
+      "instruction": "test rdx, rdx",
+      "rip_targets": [],
+      "purpose": "court_relation_nullable",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfca6",
+      "bytes": "48 8B 05 BB 78 3A 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33a78bb]",
+      "rip_targets": [
+        "0x5c67568"
+      ],
+      "purpose": "employer_character_storage_slot",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfcb2",
+      "bytes": "44 8B 82 C8 00 00 00",
+      "instruction": "mov r8d, dword ptr [rdx + 0xc8]",
+      "rip_targets": [],
+      "purpose": "court_relation_employer_full_id",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfcbc",
+      "bytes": "81 E1 FF FF FF 00",
+      "instruction": "and ecx, 0xffffff",
+      "rip_targets": [],
+      "purpose": "employer_index_mask",
+      "immediate_operands": [
+        "0xffffff"
+      ]
+    },
+    {
+      "rva": "0x28bfcc2",
+      "bytes": "3B 48 2C",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]",
+      "rip_targets": [],
+      "purpose": "employer_capacity",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfcc7",
+      "bytes": "48 8B 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "rip_targets": [],
+      "purpose": "employer_storage_slots",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfccb",
+      "bytes": "48 03 C9",
+      "instruction": "add rcx, rcx",
+      "rip_targets": [],
+      "purpose": "employer_slot_index_double",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfcce",
+      "bytes": "48 8B 44 C8 08",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]",
+      "rip_targets": [],
+      "purpose": "employer_slot_pointer",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfcd8",
+      "bytes": "44 39 40 18",
+      "instruction": "cmp dword ptr [rax + 0x18], r8d",
+      "rip_targets": [],
+      "purpose": "employer_full_generation_identity",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x28bfcde",
+      "bytes": "48 8B 05 8B 78 3A 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33a788b]",
+      "rip_targets": [
+        "0x5c67570"
+      ],
+      "purpose": "employer_character_fallback_slot",
+      "immediate_operands": []
+    },
+    {
+      "rva": "0x5a8b01",
+      "bytes": "48 8D 05 08 DB 24 04",
+      "instruction": "lea rax, [rip + 0x424db08]",
+      "rip_targets": [
+        "0x47f6610"
+      ],
+      "immediate_operands": [],
+      "purpose": "child_of_trigger_name"
+    },
+    {
+      "rva": "0x5a8b69",
+      "bytes": "48 8D 0D E8 EB 24 04",
+      "instruction": "lea rcx, [rip + 0x424ebe8]",
+      "rip_targets": [
+        "0x47f7758"
+      ],
+      "immediate_operands": [],
+      "purpose": "child_of_factory_vtable"
+    },
+    {
+      "rva": "0x2b6fc8f",
+      "bytes": "48 8D 05 42 72 C8 01",
+      "instruction": "lea rax, [rip + 0x1c87242]",
+      "rip_targets": [
+        "0x47f6ed8"
+      ],
+      "immediate_operands": [],
+      "purpose": "child_of_predicate_vtable"
+    },
+    {
+      "rva": "0x2b6ee21",
+      "bytes": "44 39 43 18",
+      "instruction": "cmp dword ptr [rbx + 0x18], r8d",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_scope_full_id"
+    },
+    {
+      "rva": "0x2b6eeed",
+      "bytes": "3D 72 61 68 43",
+      "instruction": "cmp eax, 0x43686172",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x43686172"
+      ],
+      "purpose": "target_character_tag"
+    },
+    {
+      "rva": "0x2b6eef4",
+      "bytes": "8B 4F 18",
+      "instruction": "mov ecx, dword ptr [rdi + 0x18]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "target_parent_full_id"
+    },
+    {
+      "rva": "0x2b6eef7",
+      "bytes": "83 F9 FF",
+      "instruction": "cmp ecx, -1",
+      "rip_targets": [],
+      "immediate_operands": [
+        "-0x1"
+      ],
+      "purpose": "target_parent_missing_id"
+    },
+    {
+      "rva": "0x2b6eefc",
+      "bytes": "48 8B 83 A8 01 00 00",
+      "instruction": "mov rax, qword ptr [rbx + 0x1a8]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_family_pointer"
+    },
+    {
+      "rva": "0x2b6ef03",
+      "bytes": "48 85 C0",
+      "instruction": "test rax, rax",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_family_null"
+    },
+    {
+      "rva": "0x2b6ef08",
+      "bytes": "39 48 04",
+      "instruction": "cmp dword ptr [rax + 4], ecx",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "second_parent_full_id"
+    },
+    {
+      "rva": "0x2b6ef0d",
+      "bytes": "39 08",
+      "instruction": "cmp dword ptr [rax], ecx",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "first_parent_full_id"
+    },
+    {
+      "rva": "0x2b6ef11",
+      "bytes": "B0 01",
+      "instruction": "mov al, 1",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x1"
+      ],
+      "purpose": "child_of_true"
+    },
+    {
+      "rva": "0x2b6ef15",
+      "bytes": "32 C0",
+      "instruction": "xor al, al",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_of_false"
+    },
+    {
+      "rva": "0x36eb04",
+      "bytes": "48 8D 05 35 70 2A 04",
+      "instruction": "lea rax, [rip + 0x42a7035]",
+      "rip_targets": [
+        "0x4615b40"
+      ],
+      "immediate_operands": [],
+      "purpose": "children_iterator_description"
+    },
+    {
+      "rva": "0x36eb1d",
+      "bytes": "48 8D 05 90 F1 12 04",
+      "instruction": "lea rax, [rip + 0x412f190]",
+      "rip_targets": [
+        "0x449dcb4"
+      ],
+      "immediate_operands": [],
+      "purpose": "children_iterator_token"
+    },
+    {
+      "rva": "0x36eb40",
+      "bytes": "E8 1B DA 8A 01",
+      "instruction": "call 0x1c1c560",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x1c1c560"
+      ],
+      "purpose": "children_registration_constructor"
+    },
+    {
+      "rva": "0x1c1c67b",
+      "bytes": "48 8D 0D 96 1D A0 02",
+      "instruction": "lea rcx, [rip + 0x2a01d96]",
+      "rip_targets": [
+        "0x461e418"
+      ],
+      "immediate_operands": [],
+      "purpose": "children_factory_vtable"
+    },
+    {
+      "rva": "0x1c2773e",
+      "bytes": "48 8D 05 73 2B 9F 02",
+      "instruction": "lea rax, [rip + 0x29f2b73]",
+      "rip_targets": [
+        "0x461a2b8"
+      ],
+      "immediate_operands": [],
+      "purpose": "children_iterator_vtable"
+    },
+    {
+      "rva": "0x1c2fd1b",
+      "bytes": "E8 30 1E FE FF",
+      "instruction": "call 0x1c11b50",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x1c11b50"
+      ],
+      "purpose": "children_collector_call"
+    },
+    {
+      "rva": "0x1c11bab",
+      "bytes": "44 39 40 18",
+      "instruction": "cmp dword ptr [rax + 0x18], r8d",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "children_source_full_id"
+    },
+    {
+      "rva": "0x1c11bb4",
+      "bytes": "48 8B 80 A8 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x1a8]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "children_family_pointer"
+    },
+    {
+      "rva": "0x1c11bc0",
+      "bytes": "48 83 C0 38",
+      "instruction": "add rax, 0x38",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x38"
+      ],
+      "purpose": "children_array_header"
+    },
+    {
+      "rva": "0x1c11bcd",
+      "bytes": "48 8B 18",
+      "instruction": "mov rbx, qword ptr [rax]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "children_data_pointer"
+    },
+    {
+      "rva": "0x1c11bd0",
+      "bytes": "48 63 40 0C",
+      "instruction": "movsxd rax, dword ptr [rax + 0xc]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "children_count"
+    },
+    {
+      "rva": "0x1c11bd4",
+      "bytes": "48 8D 34 83",
+      "instruction": "lea rsi, [rbx + rax*4]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "children_stride"
+    },
+    {
+      "rva": "0x1c11bf5",
+      "bytes": "8B 13",
+      "instruction": "mov edx, dword ptr [rbx]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_row_id"
+    },
+    {
+      "rva": "0x1c11bf9",
+      "bytes": "25 FF FF FF 00",
+      "instruction": "and eax, 0xffffff",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0xffffff"
+      ],
+      "purpose": "child_row_index_mask"
+    },
+    {
+      "rva": "0x1c11bfe",
+      "bytes": "41 3B 41 2C",
+      "instruction": "cmp eax, dword ptr [r9 + 0x2c]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_row_storage_bound"
+    },
+    {
+      "rva": "0x1c11c06",
+      "bytes": "49 8B 41 20",
+      "instruction": "mov rax, qword ptr [r9 + 0x20]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_row_storage_pointer"
+    },
+    {
+      "rva": "0x1c11c0d",
+      "bytes": "48 8B 44 C8 08",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_row_storage_stride"
+    },
+    {
+      "rva": "0x1c11c17",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_row_full_id_generation"
+    },
+    {
+      "rva": "0x1c11c1f",
+      "bytes": "81 78 1C 72 61 68 43",
+      "instruction": "cmp dword ptr [rax + 0x1c], 0x43686172",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x43686172"
+      ],
+      "purpose": "child_row_character_tag"
+    },
+    {
+      "rva": "0x1c11c3a",
+      "bytes": "48 8B 88 D0 01 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x1d0]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "child_row_death_pointer"
+    },
+    {
+      "rva": "0x1c11c7d",
+      "bytes": "48 83 C3 04",
+      "instruction": "add rbx, 4",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x4"
+      ],
+      "purpose": "child_row_next"
+    },
+    {
+      "rva": "0x1c11b39",
+      "bytes": "48 8B 88 A8 01 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x1a8]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "children_count_family_pointer"
+    },
+    {
+      "rva": "0x1c11b45",
+      "bytes": "8B 41 44",
+      "instruction": "mov eax, dword ptr [rcx + 0x44]",
+      "rip_targets": [],
+      "immediate_operands": [],
+      "purpose": "children_count_direct"
+    },
+    {
+      "purpose": "spouse_array",
+      "rva": "0x1375993",
+      "bytes": "48 8D 78 20",
+      "instruction": "lea rdi, [rax + 0x20]",
+      "rip_targets": [],
+      "immediate_operands": []
+    }
+  ],
+  "frozen_spans": [
+    {
+      "name": "character_house_resolution",
+      "start_rva": "0x9d56e1",
+      "end_rva_exclusive": "0x9d5720",
+      "sha256": "d4c61f297b5c2d44a393e55379e3a69a6d40565ddd11988a3464010efdf43fb1"
+    },
+    {
+      "name": "house_dynasty_resolution",
+      "start_rva": "0xc78c90",
+      "end_rva_exclusive": "0xc78d0c",
+      "sha256": "25111a344b425b62c87b7d48ebd9b0c78b860182b66f0d5f788dfcaacc92190f"
+    },
+    {
+      "name": "character_court_context_resolution",
+      "start_rva": "0x28bfc70",
+      "end_rva_exclusive": "0x28bfce6",
+      "sha256": "d7675380a1279ba5242feb3bb6053302519af85c32e56e2338ea6015e76f545c"
+    },
+    {
+      "name": "child_of_registration",
+      "start_rva": "0x5a8af0",
+      "end_rva_exclusive": "0x5a8b88",
+      "sha256": "6bcab0c4dd6130db494d2e485e8b9f05dab1cb043204892b584d6cf298a2bea4"
+    },
+    {
+      "name": "child_of_factory",
+      "start_rva": "0x2b6fc40",
+      "end_rva_exclusive": "0x2b6fcb1",
+      "sha256": "5e2ae2a73fe220850508ff4e5b29bc8f9b563028a90143600b162f2aa2a13a4f"
+    },
+    {
+      "name": "child_of_predicate_wrapper",
+      "start_rva": "0x2b6edc0",
+      "end_rva_exclusive": "0x2b6ef34",
+      "sha256": "2437aea11bb7c1e02f4e8331411b607d1a9e5d8444c7fbddaae004378667af53"
+    },
+    {
+      "name": "children_iterator_registration",
+      "start_rva": "0x36eb00",
+      "end_rva_exclusive": "0x36eb55",
+      "sha256": "72bc4ec626aa4a1eb23a95abbe5af0db31277edd54c859a20388078429a53d9f"
+    },
+    {
+      "name": "children_registration_constructor",
+      "start_rva": "0x1c1c560",
+      "end_rva_exclusive": "0x1c1cf85",
+      "sha256": "6259b7198abc1c9979cd3d4012b0348f7d7122b0ab305b36ae73fd2f22cc25e8"
+    },
+    {
+      "name": "children_iterator_factory",
+      "start_rva": "0x1c27700",
+      "end_rva_exclusive": "0x1c27777",
+      "sha256": "40f5e634b470ebb27605fe84048f10e6ab49847f61c7da85309f23ed5ee1b87b"
+    },
+    {
+      "name": "children_list_collector",
+      "start_rva": "0x1c11b50",
+      "end_rva_exclusive": "0x1c11ca1",
+      "sha256": "779a6aaf6b06c001bb4f75fef9f5c9167486349ee90965b47660cabb9f689246"
+    },
+    {
+      "name": "children_count_reader",
+      "start_rva": "0x1c11af0",
+      "end_rva_exclusive": "0x1c11b50",
+      "sha256": "2083933147557e294e3201e8a46a6247a34481f594cd82836d7a2efcde473ba1"
+    }
+  ],
+  "vtable_checks": [
+    {
+      "role": "child_of_factory",
+      "slot_rva": "0x47f7760",
+      "function_rva": "0x2b6fc40"
+    },
+    {
+      "role": "child_of_predicate",
+      "slot_rva": "0x47f6fa0",
+      "function_rva": "0x2b6edc0"
+    },
+    {
+      "role": "children_factory",
+      "slot_rva": "0x461e420",
+      "function_rva": "0x1c27700"
+    },
+    {
+      "role": "children_collector_virtual_method",
+      "slot_rva": "0x461a390",
+      "function_rva": "0x1c2fce0"
+    }
+  ],
+  "string_checks": [
+    {
+      "rva": "0x47F6610",
+      "value": "is_child_of"
+    },
+    {
+      "rva": "0x449DCB4",
+      "value": "child"
+    },
+    {
+      "rva": "0x4615B40",
+      "value": "Iterate through all children"
+    }
+  ],
+  "source_constants": {
+    "kFamilySubjectCharacterHouseIdOffset": "0x158",
+    "kFamilySubjectHouseDynastyIdOffset": "0x2C",
+    "kFamilySubjectCharacterCourtRelationOffset": "0x1B8",
+    "kFamilySubjectCourtEmployerIdOffset": "0xC8",
+    "kFamilySubjectHouseStorageSlotRva": "0x5D1DAF0",
+    "kFamilySubjectHouseFallbackSlotRva": "0x5D1DAE8",
+    "kFamilySubjectDynastyStorageSlotRva": "0x5D1DE78",
+    "kFamilySubjectDynastyFallbackSlotRva": "0x5D1DE28",
+    "kFamilySubjectFirstParentIdOffset": "0x0",
+    "kFamilySubjectSecondParentIdOffset": "0x4",
+    "kFamilySubjectSpouseArrayOffset": "0x20",
+    "kFamilySubjectChildrenArrayOffset": "0x38",
+    "kFamilySubjectNativeChildPredicateWrapperRva": "0x2B6EDC0",
+    "kFamilySubjectNativeChildCollectorRva": "0x1C11B50"
+  },
+  "native_constant_bindings": [
+    {
+      "constant": "kFamilySubjectCharacterHouseIdOffset",
+      "rva": "0x9d56e1",
+      "kind": "displacement"
+    },
+    {
+      "constant": "kFamilySubjectHouseDynastyIdOffset",
+      "rva": "0xc78cdb",
+      "kind": "displacement"
+    },
+    {
+      "constant": "kFamilySubjectCharacterCourtRelationOffset",
+      "rva": "0x28bfc77",
+      "kind": "displacement"
+    },
+    {
+      "constant": "kFamilySubjectCourtEmployerIdOffset",
+      "rva": "0x28bfcb2",
+      "kind": "displacement"
+    },
+    {
+      "constant": "kFamilySubjectHouseStorageSlotRva",
+      "rva": "0x9d56e7",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilySubjectHouseFallbackSlotRva",
+      "rva": "0x9d5719",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilySubjectDynastyStorageSlotRva",
+      "rva": "0xc78ccf",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilySubjectDynastyFallbackSlotRva",
+      "rva": "0xc78d05",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilySubjectFirstParentIdOffset",
+      "rva": "0x2b6ef0d",
+      "kind": "displacement"
+    },
+    {
+      "constant": "kFamilySubjectSecondParentIdOffset",
+      "rva": "0x2b6ef08",
+      "kind": "displacement"
+    },
+    {
+      "constant": "kFamilySubjectSpouseArrayOffset",
+      "rva": "0x1375993",
+      "kind": "displacement"
+    },
+    {
+      "constant": "kFamilySubjectChildrenArrayOffset",
+      "rva": "0x1c11bc0",
+      "kind": "immediate"
+    }
+  ],
+  "native_child_predicate": {
+    "native_trigger": "is_child_of",
+    "predicate_wrapper_rva": "0x2B6EDC0",
+    "standalone_two_character_callback_rva": null,
+    "calling_convention_note": "Do not cast the trigger wrapper as bool(child,parent). The old standalone relation was inlined into this native wrapper.",
+    "query_mirror_semantics": "For generation-validated child and parent CCharacter identities, read child+0x1A8 FamilyData. A null FamilyData yields false. Compare each native full parent ID at FamilyData+0 and +4 against the validated parent full CharacterID at parent+0x18; either equality yields true.",
+    "character_family_offset": "0x1A8",
+    "parent_pair_offsets": [
+      "0x0",
+      "0x4"
+    ],
+    "parent_full_character_id_offset": "0x18",
+    "unknown": "No separately callable bool(CCharacter*,CCharacter*) helper was bound."
+  },
+  "native_children_collection": {
+    "native_iterator": "child",
+    "registration_rva": "0x36EB00",
+    "description_rva": "0x4615B40",
+    "collector_rva": "0x1C11B50",
+    "character_family_offset": "0x1A8",
+    "family_children_array_offset": "0x38",
+    "data_pointer_offset": "0x0",
+    "signed_count_offset": "0xC",
+    "element_size": 4,
+    "direct_count_family_offset": "0x44",
+    "count_reader_rva": "0x1C11AF0",
+    "capacity_offset_not_consumed_by_this_collector": "0x8",
+    "source_semantics": "Native child iterator resolves the scope character, reads FamilyData+0x38 int32 IDs, generation-validates each row, and optionally filters dead/alive before publishing child Character scopes.",
+    "old_probe_limitation": "ReadPlayerFamilyArrayProbeV1 sampled headers only at +0x20/+0x30/+0x40/+0x50/+0x60/+0x70, missing actual children +0x38. Its empty +0x50 was never actual child authority."
+  },
+  "source_files": [
+    "include/xar_bridge/ck3_12002_family_subject.hpp",
+    "include/xar_bridge/ck3_12002_family_subject_abi.hpp",
+    "src/ck3_12002_family_subject.cpp",
+    "src/ck3_12002_family_subject_test.cpp"
+  ],
+  "dependency_abi": "ck3_12002_family_query_abi.json holds runtime adult threshold / signed comparison / spouse read",
+  "permission_boundary": "Native actual child-of is observation only; first-heir identity and finalized marriage authority stay separate; historical Guy outbox reuse remains default OFF",
+  "remaining_live": [
+    "paused current-player known child plus unrelated control",
+    "same-frame actual native children-array and bilateral subject relationship",
+    "runtime subject age threshold, actual house/dynasty/employer identity readback"
+  ]
+}

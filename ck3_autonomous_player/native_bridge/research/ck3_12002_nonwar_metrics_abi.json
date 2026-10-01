@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "contract": "ck3-1.20.0.2-campaign-root-nonwar-metrics",
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "architecture": "msvc-x64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready; enclosing campaign-root 1.20.0.2 paused application-main live verification pending",
+  "live_verified": false,
+  "application_main_only": true,
+  "read_only": true,
+  "native_function_abi": {
+    "monthly_gold_income": {
+      "old_rva": "0x28DBE90",
+      "rva": "0x2BCA960",
+      "signature": "int64_t* __fastcall(int64_t* output, void* character, void* optional_breakdown, void* evaluation_context)",
+      "return_contract": "caller-provided output pointer",
+      "null_optional_args": true,
+      "scale": 100000,
+      "cached_leaf_excluded": true
+    },
+    "health": {
+      "old_rva": "0x2619AD0",
+      "rva": "0x28C6500",
+      "signature": "int64_t* __fastcall(void* character, int64_t* output)",
+      "return_contract": "caller-provided output pointer",
+      "scale": 100000,
+      "extension_offset": "0x1B0",
+      "health_leaf_offset": "0x2F0"
+    },
+    "domain_size": {
+      "old_rva": "0x260BA50",
+      "rva": "0x28B7200",
+      "signature": "int32_t __fastcall(void* character)",
+      "reflection_name": "GetDomainSize",
+      "minimum": 0
+    },
+    "domain_limit": {
+      "old_rva": "0x260BA20",
+      "rva": "0x28B71D0",
+      "signature": "int32_t __fastcall(void* character)",
+      "reflection_name": "GetDomainLimit",
+      "minimum": 1,
+      "land_state_leaf": "0x3D8"
+    }
+  },
+  "memory_layout": {
+    "character_land_state": "0x1C0",
+    "targeting_faction_count": "0x12C",
+    "has_targeting_faction_trigger": "0x2B250D0",
+    "character_legitimacy_data": "0x1C8",
+    "legitimacy_raw_balance": "0x28"
+  },
+  "legitimacy": {
+    "reflection_thunk": "0x28D2C50",
+    "reflection_registration": "0x568050",
+    "scale": 100000,
+    "optional_diagnostic": true,
+    "missing_data_semantics": "data_absent; never synthetic zero",
+    "negative_raw_semantics": "balance_invalid; preserve preexisting campaign-root diagnostic contract"
+  },
+  "caller_contract": "already resolved played Character; generation revalidation and paused two-sample equality retained by enclosing campaign-root reader",
+  "code_spans": [
+    {
+      "name": "monthly_gold_income",
+      "start_rva": "0x2bca960",
+      "size": "0x5f0",
+      "sha256": "1A0783DBBE9C674F2FC542B98DBCC89209C5C9ABEE0D9B204B9478445A6ADB2A"
+    },
+    {
+      "name": "health",
+      "start_rva": "0x28c6500",
+      "size": "0x49",
+      "sha256": "1196B877366BEF67555445C90B9CE89B7A7C20AEFFBC725A63A097CD1A5BDC53"
+    },
+    {
+      "name": "domain_limit",
+      "start_rva": "0x28b71d0",
+      "size": "0x25",
+      "sha256": "D314F56CA764480D4D0E5E49132A52E4504A1E6E417FD9F55CD0F3813BEF97D9"
+    },
+    {
+      "name": "domain_size",
+      "start_rva": "0x28b7200",
+      "size": "0x152",
+      "sha256": "9E37C0F1EC7531A165776408DB1037CB0FEEB14D3BBA7CDEA5C7295506F97561"
+    },
+    {
+      "name": "has_targeting_faction_trigger",
+      "start_rva": "0x2b250d0",
+      "size": "0x72",
+      "sha256": "4A2FCF44725E557BDAEA722D47D0D029458D3A90C4A43DE2A05B4FADB2268C51"
+    },
+    {
+      "name": "health_reflection_registration",
+      "start_rva": "0x55ddc0",
+      "size": "0x163",
+      "sha256": "3D09FB10AF4996A50862BF52A70CADB875EC0B83D7D8F3804A55E1D8696A6EBC"
+    },
+    {
+      "name": "health_reflection_thunk",
+      "start_rva": "0x28cfe60",
+      "size": "0x38",
+      "sha256": "6C8EDC07E6F38FCC5E3FF7C375832AB72376FDFA43F2C1A777AA9FB52C7DE0D9"
+    },
+    {
+      "name": "domain_size_reflection_registration",
+      "start_rva": "0x55ff70",
+      "size": "0x16c",
+      "sha256": "64A68418638A0015961D21089B4E3A38C0DDC35169A6540589F7D06AA513D54A"
+    },
+    {
+      "name": "domain_size_reflection_thunk",
+      "start_rva": "0x28d0440",
+      "size": "0x38",
+      "sha256": "FA37617523652FF67A3741E7F2690FF289178A7C2BE764D337F4D0154CA52CC2"
+    },
+    {
+      "name": "domain_limit_reflection_registration",
+      "start_rva": "0x560270",
+      "size": "0x16d",
+      "sha256": "CB2CFD4A69F5C834560B6238EBB7411925D140BC956E5453F5341A9B7DAE8BE6"
+    },
+    {
+      "name": "domain_limit_reflection_thunk",
+      "start_rva": "0x28d04c0",
+      "size": "0x38",
+      "sha256": "9B12CBA7C1E71904AE4FFD36312F66E1D1994D8B5A7FB98ACC8A7BC37C15CCFB"
+    },
+    {
+      "name": "legitimacy_reflection_registration",
+      "start_rva": "0x568050",
+      "size": "0xcf",
+      "sha256": "C1E9F42A050165542AF8481349FABB21FB6588538108D364C821F12282D028B1"
+    },
+    {
+      "name": "legitimacy_reflection_thunk",
+      "start_rva": "0x28d2c50",
+      "size": "0x48",
+      "sha256": "D01F3A283DEFED6A674AB0A660C515072A7F56F216ED33D5E2EFFE42FF97BFBF"
+    }
+  ],
+  "instruction_checks": [
+    {
+      "name": "income_context_arg_r9",
+      "rva": "0x2bca989",
+      "bytes": "4D 8B E1",
+      "instruction": "mov r12, r9"
+    },
+    {
+      "name": "income_character_arg_rdx",
+      "rva": "0x2bca98f",
+      "bytes": "4C 8B EA",
+      "instruction": "mov r13, rdx"
+    },
+    {
+      "name": "income_character_kind",
+      "rva": "0x2bca995",
+      "bytes": "81 7A 1C 72 61 68 43",
+      "instruction": "cmp dword ptr [rdx + 0x1c], 0x43686172"
+    },
+    {
+      "name": "income_generation_presence",
+      "rva": "0x2bca9a2",
+      "bytes": "83 7A 18 FF",
+      "instruction": "cmp dword ptr [rdx + 0x18], -1"
+    },
+    {
+      "name": "income_death_marker",
+      "rva": "0x2bca9ac",
+      "bytes": "48 83 BA D0 01 00 00 00",
+      "instruction": "cmp qword ptr [rdx + 0x1d0], 0"
+    },
+    {
+      "name": "income_top_liege_call",
+      "rva": "0x2bca9bd",
+      "bytes": "E8 DE 53 CF FF",
+      "instruction": "call 0x28bfda0"
+    },
+    {
+      "name": "income_full_gold_evaluator",
+      "rva": "0x2bca9e3",
+      "bytes": "E8 28 E2 FF FF",
+      "instruction": "call 0x2bc8c10"
+    },
+    {
+      "name": "income_out_store",
+      "rva": "0x2bcaf0e",
+      "bytes": "4C 89 0B",
+      "instruction": "mov qword ptr [rbx], r9"
+    },
+    {
+      "name": "income_output_pointer_return",
+      "rva": "0x2bcaf2b",
+      "bytes": "48 8B C3",
+      "instruction": "mov rax, rbx"
+    },
+    {
+      "name": "health_extension_offset",
+      "rva": "0x28c6500",
+      "bytes": "48 8B 81 B0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b0]"
+    },
+    {
+      "name": "health_leaf_offset",
+      "rva": "0x28c6530",
+      "bytes": "48 8B 80 F0 02 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x2f0]"
+    },
+    {
+      "name": "health_output_pointer_return",
+      "rva": "0x28c653a",
+      "bytes": "48 8B C2",
+      "instruction": "mov rax, rdx"
+    },
+    {
+      "name": "health_reflection_name",
+      "rva": "0x55de19",
+      "bytes": "F2 0F 10 05 E7 42 20 04",
+      "instruction": "movsd xmm0, qword ptr [rip + 0x42042e7]"
+    },
+    {
+      "name": "health_reflection_callback",
+      "rva": "0x55de98",
+      "bytes": "48 8D 15 C1 1F 37 02",
+      "instruction": "lea rdx, [rip + 0x2371fc1]"
+    },
+    {
+      "name": "health_native_call",
+      "rva": "0x28cfe77",
+      "bytes": "E8 84 66 FF FF",
+      "instruction": "call 0x28c6500"
+    },
+    {
+      "name": "domain_land_state",
+      "rva": "0x28b71d0",
+      "bytes": "48 8B 91 C0 01 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0x1c0]"
+    },
+    {
+      "name": "domain_limit_leaf",
+      "rva": "0x28b71e1",
+      "bytes": "8B 8A D8 03 00 00",
+      "instruction": "mov ecx, dword ptr [rdx + 0x3d8]"
+    },
+    {
+      "name": "domain_size_held_titles",
+      "rva": "0x28b7224",
+      "bytes": "48 05 E0 01 00 00",
+      "instruction": "add rax, 0x1e0"
+    },
+    {
+      "name": "domain_size_title_generation",
+      "rva": "0x28b7283",
+      "bytes": "41 39 52 10",
+      "instruction": "cmp dword ptr [r10 + 0x10], edx"
+    },
+    {
+      "name": "domain_size_title_template",
+      "rva": "0x28b7290",
+      "bytes": "49 8B 42 48",
+      "instruction": "mov rax, qword ptr [r10 + 0x48]"
+    },
+    {
+      "name": "domain_size_title_tier",
+      "rva": "0x28b7294",
+      "bytes": "83 78 64 01",
+      "instruction": "cmp dword ptr [rax + 0x64], 1"
+    },
+    {
+      "name": "domain_size_actual_province",
+      "rva": "0x28b72a1",
+      "bytes": "E8 5A 86 A5 FF",
+      "instruction": "call 0x230f900"
+    },
+    {
+      "name": "domain_size_government",
+      "rva": "0x28b7317",
+      "bytes": "E8 F4 BA 00 00",
+      "instruction": "call 0x28c2e10"
+    },
+    {
+      "name": "domain_size_reflection_name",
+      "rva": "0x55ffc9",
+      "bytes": "F2 0F 10 05 67 11 20 04",
+      "instruction": "movsd xmm0, qword ptr [rip + 0x4201167]"
+    },
+    {
+      "name": "domain_size_reflection_callback",
+      "rva": "0x560051",
+      "bytes": "48 8D 15 E8 03 37 02",
+      "instruction": "lea rdx, [rip + 0x23703e8]"
+    },
+    {
+      "name": "domain_size_native_call",
+      "rva": "0x28d0452",
+      "bytes": "E8 A9 6D FE FF",
+      "instruction": "call 0x28b7200"
+    },
+    {
+      "name": "domain_limit_reflection_name",
+      "rva": "0x5602c9",
+      "bytes": "F2 0F 10 05 DF 0D 20 04",
+      "instruction": "movsd xmm0, qword ptr [rip + 0x4200ddf]"
+    },
+    {
+      "name": "domain_limit_reflection_callback",
+      "rva": "0x560352",
+      "bytes": "48 8D 15 67 01 37 02",
+      "instruction": "lea rdx, [rip + 0x2370167]"
+    },
+    {
+      "name": "domain_limit_native_call",
+      "rva": "0x28d04d2",
+      "bytes": "E8 F9 6C FE FF",
+      "instruction": "call 0x28b71d0"
+    },
+    {
+      "name": "faction_character_storage",
+      "rva": "0x2b250e3",
+      "bytes": "48 8B 05 7E 24 14 03",
+      "instruction": "mov rax, qword ptr [rip + 0x314247e]"
+    },
+    {
+      "name": "faction_character_generation",
+      "rva": "0x2b2510d",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx"
+    },
+    {
+      "name": "faction_land_state",
+      "rva": "0x2b25119",
+      "bytes": "48 8B 80 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x1c0]"
+    },
+    {
+      "name": "faction_vector",
+      "rva": "0x2b25125",
+      "bytes": "48 05 20 01 00 00",
+      "instruction": "add rax, 0x120"
+    },
+    {
+      "name": "faction_count",
+      "rva": "0x2b2512b",
+      "bytes": "83 78 0C 00",
+      "instruction": "cmp dword ptr [rax + 0xc], 0"
+    },
+    {
+      "name": "legitimacy_reflection_name",
+      "rva": "0x56809b",
+      "bytes": "F2 0F 10 05 75 97 1F 04",
+      "instruction": "movsd xmm0, qword ptr [rip + 0x41f9775]"
+    },
+    {
+      "name": "legitimacy_reflection_callback",
+      "rva": "0x5680c7",
+      "bytes": "4C 8D 05 82 AB 36 02",
+      "instruction": "lea r8, [rip + 0x236ab82]"
+    },
+    {
+      "name": "legitimacy_data",
+      "rva": "0x28d2c61",
+      "bytes": "48 8B 81 C8 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c8]"
+    },
+    {
+      "name": "legitimacy_balance",
+      "rva": "0x28d2c6d",
+      "bytes": "48 8B 40 28",
+      "instruction": "mov rax, qword ptr [rax + 0x28]"
+    },
+    {
+      "name": "legitimacy_negative_ui_clamp",
+      "rva": "0x28d2c74",
+      "bytes": "79 02",
+      "instruction": "jns 0x28d2c78"
+    }
+  ],
+  "literal_checks": [
+    {
+      "name": "reflection_health_key",
+      "rva": "0x4762108",
+      "bytes": "47 65 74 48 65 61 6C 74 68"
+    },
+    {
+      "name": "reflection_domain_size_key",
+      "rva": "0x4761138",
+      "bytes": "47 65 74 44 6F 6D 61 69 6E 53 69 7A 65"
+    },
+    {
+      "name": "reflection_domain_limit_key",
+      "rva": "0x47610b0",
+      "bytes": "47 65 74 44 6F 6D 61 69 6E 4C 69 6D 69 74"
+    },
+    {
+      "name": "reflection_legitimacy_key",
+      "rva": "0x4761818",
+      "bytes": "47 65 74 4C 65 67 69 74 69 6D 61 63 79"
+    },
+    {
+      "name": "faction_fallback_zero_count",
+      "rva": "0x545ad14",
+      "bytes": "00 00 00 00"
+    }
+  ]
+}

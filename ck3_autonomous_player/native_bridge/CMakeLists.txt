@@ -703,6 +703,37 @@ target_compile_definitions(xar_bridge_injector PUBLIC
   _UNICODE
 )
 
+# Exact 1.20 readers retain the verified adapter layer while this tree keeps
+# the delivered master nonwar consumers and their fixed private interfaces.
+file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
+list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
+add_library(xar_ck3_12002_runtime STATIC
+  ${XAR_CK3_12002_SOURCES}
+  research/ck3_12002_construction_submit_binding.cpp
+  src/player_lifestyle_window_candidates_v1.cpp
+  src/main_thread_query_mailbox_v1.cpp)
+target_include_directories(xar_ck3_12002_runtime PUBLIC include PRIVATE src research)
+target_compile_definitions(xar_ck3_12002_runtime PUBLIC
+  NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+target_link_libraries(xar_ck3_12002_runtime PUBLIC bcrypt)
+if(MSVC)
+  target_compile_options(xar_ck3_12002_runtime PRIVATE
+    /W4 /permissive- /EHsc)
+endif()
+foreach(private_option IN ITEMS
+    XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1
+    XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1
+    XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
+  if(${private_option})
+    target_compile_definitions(xar_ck3_12002_runtime PUBLIC ${private_option}=1)
+  endif()
+endforeach()
+
 add_library(xar_ck3_bridge SHARED
   src/cold_map_vfs_observer_v1.cpp
   src/named_path_583_root_observer_v1.cpp
@@ -981,7 +1012,8 @@ if(XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1)
     XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1=1
   )
 endif()
-target_link_libraries(xar_ck3_bridge PRIVATE xar_bridge_protocol bcrypt)
+target_link_libraries(xar_ck3_bridge PRIVATE
+  xar_bridge_protocol xar_ck3_12002_runtime bcrypt)
 target_compile_definitions(xar_ck3_bridge PRIVATE
   XAR_BRIDGE_VERSION="${PROJECT_VERSION}"
 )
@@ -1669,6 +1701,43 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  set(XAR_CK3_12002_FROZEN_EXE "${XAR_CK3_EXECUTABLE_PATH}"
+    CACHE FILEPATH "Frozen 1.20 executable for offline reader fixtures")
+  file(GLOB XAR_CK3_12002_FIXTURES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_*_test.cpp")
+  foreach(fixture IN LISTS XAR_CK3_12002_FIXTURES)
+    get_filename_component(fixture_name "${fixture}" NAME_WE)
+    if(fixture_name MATCHES "^ck3_12002_family" AND
+       NOT XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+      continue()
+    endif()
+    set(fixture_target "xar_${fixture_name}")
+    add_executable(${fixture_target} "${fixture}")
+    target_link_libraries(${fixture_target} PRIVATE xar_ck3_12002_runtime)
+    if(fixture_name MATCHES "^ck3_12002_family" OR
+       (XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1 AND
+        fixture_name MATCHES "^ck3_12002_(adapter|semantic_adapter)_test$"))
+      target_sources(${fixture_target} PRIVATE
+        src/current_first_heir_relationship_v1.cpp
+        src/observed_heir_marriage_private_v1.cpp)
+    endif()
+    if(fixture_name STREQUAL "ck3_12002_family_ranked_test")
+      target_sources(${fixture_target} PRIVATE
+        src/marriage_matchmaking_observer_v1.cpp)
+    endif()
+    if(MSVC)
+      target_compile_options(${fixture_target} PRIVATE /UNDEBUG /W4 /permissive- /EHsc)
+    else()
+      target_compile_options(${fixture_target} PRIVATE -UNDEBUG)
+    endif()
+    if(fixture_name STREQUAL "ck3_12002_thread_runtime_test")
+      add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target}
+        "${XAR_CK3_12002_FROZEN_EXE}")
+    else()
+      add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target})
+    endif()
+  endforeach()
+
   if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     add_executable(xar_ck3_activity_cost_slot12_passive_v1_test
       src/activity_cost_slot12_passive_v1.cpp
@@ -2495,7 +2564,15 @@ if(BUILD_TESTING)
     src/game_adapter_test.cpp
   )
   target_include_directories(xar_ck3_adapter_registry_test PRIVATE include)
-  target_link_libraries(xar_ck3_adapter_registry_test PRIVATE bcrypt)
+  target_link_libraries(xar_ck3_adapter_registry_test PRIVATE
+    xar_ck3_12002_runtime bcrypt)
+  if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    target_sources(xar_ck3_adapter_registry_test PRIVATE
+      src/current_first_heir_relationship_v1.cpp
+      src/observed_heir_marriage_private_v1.cpp
+      src/marriage_candidate_alliance_projection_v1.cpp
+      src/marriage_native_outcome_classifier_v1.cpp)
+  endif()
   target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
     NOMINMAX
     WIN32_LEAN_AND_MEAN

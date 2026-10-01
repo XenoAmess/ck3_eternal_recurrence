@@ -1,0 +1,989 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "readiness": "static-ready",
+  "live_validation": false,
+  "process_access": false,
+  "game_access": false,
+  "exact_build": {
+    "product_version": "1.20.0.2",
+    "steam_build_id": 25588574,
+    "executable_path": "Z:\\ck3_mod_rewrite\\artifacts\\nonwar-offline\\2026-10-01\\family-subject-frozen-ck3.exe",
+    "executable_size": 101039736,
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "image_base": "0x140000000"
+  },
+  "mapping": {
+    "initialize_scored_container": {
+      "old_rva": "0x101E070",
+      "new_rva": "0x1121DA0",
+      "abi": "void *(void *header)",
+      "purpose": "Constructor for previously zeroed/uninitialized 0x228-byte storage; not a populated-container reset/destructor."
+    },
+    "release_native_buffer": {
+      "old_rva": "0x7E8FB0",
+      "new_rva": "0x855830",
+      "abi": "void(void *owner,void *original_data,size_t alignment)"
+    },
+    "initialize_candidate_buffer": {
+      "old_rva": "0x947C00",
+      "new_rva": "0x9B4F80",
+      "abi": "void(void *owner,void **data,int32_t *capacity)"
+    },
+    "destroy_scored_row": {
+      "old_rva": "0x81B620",
+      "new_rva": "0x8863D0",
+      "abi": "void *(void *row,uint32_t deleting_flags)",
+      "container_cleanup_flags": 0
+    },
+    "candidate_owner_vtable": {
+      "old_rva": "0x4117388",
+      "new_rva": "0x45284A8"
+    },
+    "scored_owner_vtable": {
+      "old_rva": "0x4117340",
+      "new_rva": "0x4528460"
+    },
+    "scored_row_vtable": {
+      "old_rva": "0x4116F08",
+      "new_rva": "0x4528100"
+    },
+    "candidate_backing_allocator": {
+      "old_rva": "0x4FEAE00",
+      "new_rva": "0x54DEBB8",
+      "kind": "Static allocator object address, not pointer-to-object slot."
+    },
+    "scored_backing_allocator": {
+      "old_rva": "0x4FED500",
+      "new_rva": "0x54E1420",
+      "kind": "Static allocator object address, not pointer-to-object slot."
+    }
+  },
+  "layout": {
+    "header_size": "0x18",
+    "header_data_offset": "0x0",
+    "header_capacity_offset": "0x8",
+    "header_count_offset": "0xC",
+    "header_owner_offset": "0x10",
+    "embedded_owner_offset": "0x18",
+    "owner_vtable_offset": "0x0",
+    "owner_inline_buffer_offset": "0x8",
+    "candidate_owner_size": "0x410",
+    "scored_owner_size": "0x210",
+    "candidate_storage_size": "0x428",
+    "scored_storage_size": "0x228",
+    "candidate_inline_capacity": 128,
+    "scored_inline_capacity": 32,
+    "candidate_element_size": 8,
+    "scored_element_size": 16,
+    "candidate_backing_allocator_owner_offset": "0x408",
+    "scored_backing_allocator_owner_offset": "0x208",
+    "scored_row_vtable_offset": "0x0",
+    "scored_row_character_id_offset": "0x8",
+    "scored_row_score_offset": "0xC",
+    "native_buffer_alignment": 8,
+    "unchanged_from_1_19_0_6": true
+  },
+  "native_caller": {
+    "entry_rva": "0x111E830",
+    "candidate_initialize_virtual_call_rva": "0x111E98D",
+    "enumerate_call_rva": "0x111E9D3",
+    "enumerate_function_rva": "0x1A3BD40",
+    "scored_constructor_call_rva": "0x111E9DD",
+    "score_call_rva": "0x111E9F7",
+    "score_function_rva": "0x1A3C670",
+    "cleanup_begin_rva": "0x111EB39",
+    "cleanup_end_rva_exclusive": "0x111EBB6"
+  },
+  "destruction_order": [
+    "Retain the original scored header data and signed count before modifying the header.",
+    "If scored data is nonnull and count > 0, visit rows with stride 0x10 and invoke row vtable slot 0 with deleting flags 0.",
+    "Zero scored count, then call scored owner vtable slot +0x10 with original data and alignment 8.",
+    "Zero scored data and capacity after release.",
+    "Retain candidate data, zero candidate count, then call candidate owner vtable slot +0x10 with original data and alignment 8.",
+    "Native caller then returns from stack storage; our heap wrapper can discard its own storage only after these native buffer releases."
+  ],
+  "constructor_is_not_cleanup": {
+    "proof": "0x1121DB9 clears capacity/count and 0x1121DC4 clears data before the later nominal row/release path reads those fields. Calling this constructor over a populated container cannot release its original spilled buffer.",
+    "existing_adapter_path": "marriage_ranked_container_adapter_v1.cpp DestroyToken uses initialize_scored_container on populated scored storage.",
+    "migration_action": "Use the exact native caller destructor order instead of constructor-as-destructor in the new 1.20 adapter.",
+    "evidence_kind": "Deterministic production-path header writes and cleanup caller; no theoretical hazard expansion or live claim."
+  },
+  "semantic_checks": [
+    {
+      "role": "scored_constructor_header_owner",
+      "rva": "0x1121db5",
+      "bytes": "4C 8D 71 18",
+      "instruction": "lea r14, [rcx + 0x18]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_clear_capacity_and_count",
+      "rva": "0x1121db9",
+      "bytes": "48 89 69 08",
+      "instruction": "mov qword ptr [rcx + 8], rbp",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_owner_vtable",
+      "rva": "0x1121dbd",
+      "bytes": "48 8D 05 9C 66 40 03",
+      "instruction": "lea rax, [rip + 0x340669c]",
+      "rip_targets": [
+        "0x4528460"
+      ],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_clear_data",
+      "rva": "0x1121dc4",
+      "bytes": "48 89 29",
+      "instruction": "mov qword ptr [rcx], rbp",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_header_owner_pointer",
+      "rva": "0x1121dca",
+      "bytes": "4C 89 71 10",
+      "instruction": "mov qword ptr [rcx + 0x10], r14",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_set_owner_vtable",
+      "rva": "0x1121dce",
+      "bytes": "49 89 06",
+      "instruction": "mov qword ptr [r14], rax",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_backing_allocator",
+      "rva": "0x1121dd1",
+      "bytes": "48 8D 05 48 F6 3B 04",
+      "instruction": "lea rax, [rip + 0x43bf648]",
+      "rip_targets": [
+        "0x54e1420"
+      ],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_set_backing_allocator",
+      "rva": "0x1121dd8",
+      "bytes": "49 89 86 08 02 00 00",
+      "instruction": "mov qword ptr [r14 + 0x208], rax",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_read_count",
+      "rva": "0x1121ddf",
+      "bytes": "8B 79 0C",
+      "instruction": "mov edi, dword ptr [rcx + 0xc]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_release_alignment",
+      "rva": "0x1121e0d",
+      "bytes": "41 B8 08 00 00 00",
+      "instruction": "mov r8d, 8",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x8"
+      ]
+    },
+    {
+      "role": "scored_constructor_release_virtual_slot",
+      "rva": "0x1121e1c",
+      "bytes": "FF 50 10",
+      "instruction": "call qword ptr [rax + 0x10]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_initial_capacity_pointer",
+      "rva": "0x1121e22",
+      "bytes": "4C 8D 46 08",
+      "instruction": "lea r8, [rsi + 8]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_constructor_initialize_virtual_slot",
+      "rva": "0x1121e33",
+      "bytes": "FF 50 20",
+      "instruction": "call qword ptr [rax + 0x20]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "candidate_inline_buffer",
+      "rva": "0x9b4f80",
+      "bytes": "48 8D 41 08",
+      "instruction": "lea rax, [rcx + 8]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "candidate_inline_capacity",
+      "rva": "0x9b4f87",
+      "bytes": "41 C7 00 80 00 00 00",
+      "instruction": "mov dword ptr [r8], 0x80",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x80"
+      ]
+    },
+    {
+      "role": "scored_inline_buffer",
+      "rva": "0x86e150",
+      "bytes": "48 8D 41 08",
+      "instruction": "lea rax, [rcx + 8]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_inline_capacity",
+      "rva": "0x86e157",
+      "bytes": "41 C7 00 20 00 00 00",
+      "instruction": "mov dword ptr [r8], 0x20",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x20"
+      ]
+    },
+    {
+      "role": "candidate_backing_allocator_owner_offset",
+      "rva": "0x86e140",
+      "bytes": "48 8B 81 08 04 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x408]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "scored_backing_allocator_owner_offset",
+      "rva": "0x896550",
+      "bytes": "48 8B 81 08 02 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x208]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "release_inline_buffer_identity",
+      "rva": "0x85583a",
+      "bytes": "48 8D 41 08",
+      "instruction": "lea rax, [rcx + 8]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "release_backing_allocator_virtual_slot",
+      "rva": "0x85584c",
+      "bytes": "FF 50 38",
+      "instruction": "call qword ptr [rax + 0x38]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "release_backing_free_virtual_slot",
+      "rva": "0x85585b",
+      "bytes": "41 FF 51 10",
+      "instruction": "call qword ptr [r9 + 0x10]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "candidate_owner_delete_size",
+      "rva": "0x86e1de",
+      "bytes": "BA 10 04 00 00",
+      "instruction": "mov edx, 0x410",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x410"
+      ]
+    },
+    {
+      "role": "scored_owner_delete_size",
+      "rva": "0x89991e",
+      "bytes": "BA 10 02 00 00",
+      "instruction": "mov edx, 0x210",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x210"
+      ]
+    },
+    {
+      "role": "scored_row_delete_flag",
+      "rva": "0x8863d9",
+      "bytes": "F6 C2 01",
+      "instruction": "test dl, 1",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x1"
+      ]
+    },
+    {
+      "role": "scored_row_delete_size",
+      "rva": "0x8863de",
+      "bytes": "BA 10 00 00 00",
+      "instruction": "mov edx, 0x10",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x10"
+      ]
+    },
+    {
+      "role": "native_candidate_header_data_zero",
+      "rva": "0x111e915",
+      "bytes": "4C 89 AD 80 01 00 00",
+      "instruction": "mov qword ptr [rbp + 0x180], r13",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_header_capacity_count_zero",
+      "rva": "0x111e91c",
+      "bytes": "4C 89 AD 88 01 00 00",
+      "instruction": "mov qword ptr [rbp + 0x188], r13",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_owner_after_header",
+      "rva": "0x111e923",
+      "bytes": "48 8D 85 98 01 00 00",
+      "instruction": "lea rax, [rbp + 0x198]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_owner_header_slot",
+      "rva": "0x111e92a",
+      "bytes": "48 89 85 90 01 00 00",
+      "instruction": "mov qword ptr [rbp + 0x190], rax",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_owner_vtable",
+      "rva": "0x111e931",
+      "bytes": "48 8D 05 70 9B 40 03",
+      "instruction": "lea rax, [rip + 0x3409b70]",
+      "rip_targets": [
+        "0x45284a8"
+      ],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_backing_allocator",
+      "rva": "0x111e93f",
+      "bytes": "48 8D 05 72 02 3C 04",
+      "instruction": "lea rax, [rip + 0x43c0272]",
+      "rip_targets": [
+        "0x54debb8"
+      ],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_backing_owner_plus_408",
+      "rva": "0x111e946",
+      "bytes": "48 89 85 A0 05 00 00",
+      "instruction": "mov qword ptr [rbp + 0x5a0], rax",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_release_method",
+      "rva": "0x111e94d",
+      "bytes": "48 8B 05 64 9B 40 03",
+      "instruction": "mov rax, qword ptr [rip + 0x3409b64]",
+      "rip_targets": [
+        "0x45284b8"
+      ],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_initial_release_null",
+      "rva": "0x111e954",
+      "bytes": "33 D2",
+      "instruction": "xor edx, edx",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_initial_release_alignment",
+      "rva": "0x111e956",
+      "bytes": "44 8D 42 08",
+      "instruction": "lea r8d, [rdx + 8]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_initial_capacity_pointer",
+      "rva": "0x111e978",
+      "bytes": "4C 8D 85 88 01 00 00",
+      "instruction": "lea r8, [rbp + 0x188]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_initial_data_pointer",
+      "rva": "0x111e97f",
+      "bytes": "48 8D 95 80 01 00 00",
+      "instruction": "lea rdx, [rbp + 0x180]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_initialize_virtual_slot",
+      "rva": "0x111e98d",
+      "bytes": "FF 50 20",
+      "instruction": "call qword ptr [rax + 0x20]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_enumeration_output_header",
+      "rva": "0x111e9bc",
+      "bytes": "48 8D 8D 80 01 00 00",
+      "instruction": "lea rcx, [rbp + 0x180]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_candidate_enumeration_call",
+      "rva": "0x111e9d3",
+      "bytes": "E8 68 D3 91 00",
+      "instruction": "call 0x1a3bd40",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x1a3bd40"
+      ]
+    },
+    {
+      "role": "native_scored_constructor_output_header",
+      "rva": "0x111e9d8",
+      "bytes": "48 8D 4C 24 50",
+      "instruction": "lea rcx, [rsp + 0x50]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_scored_constructor_call",
+      "rva": "0x111e9dd",
+      "bytes": "E8 BE 33 00 00",
+      "instruction": "call 0x1121da0",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x1121da0"
+      ]
+    },
+    {
+      "role": "native_scored_output_header",
+      "rva": "0x111e9e3",
+      "bytes": "4C 8D 4C 24 50",
+      "instruction": "lea r9, [rsp + 0x50]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_score_candidate_input_header",
+      "rva": "0x111e9e8",
+      "bytes": "4C 8D 85 80 01 00 00",
+      "instruction": "lea r8, [rbp + 0x180]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_score_call",
+      "rva": "0x111e9f7",
+      "bytes": "E8 74 DC 91 00",
+      "instruction": "call 0x1a3c670",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x1a3c670"
+      ]
+    },
+    {
+      "role": "native_scored_count_read",
+      "rva": "0x111ea0d",
+      "bytes": "48 63 7C 24 5C",
+      "instruction": "movsxd rdi, dword ptr [rsp + 0x5c]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_scored_row_score_offset",
+      "rva": "0x111ea35",
+      "bytes": "8B 4C 30 0C",
+      "instruction": "mov ecx, dword ptr [rax + rsi + 0xc]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_scored_row_character_id_offset",
+      "rva": "0x111ea39",
+      "bytes": "8B 44 30 08",
+      "instruction": "mov eax, dword ptr [rax + rsi + 8]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_scored_row_stride",
+      "rva": "0x111eb27",
+      "bytes": "48 83 C6 10",
+      "instruction": "add rsi, 0x10",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x10"
+      ]
+    },
+    {
+      "role": "native_destroy_scored_original_data",
+      "rva": "0x111eb39",
+      "bytes": "48 8B 5C 24 50",
+      "instruction": "mov rbx, qword ptr [rsp + 0x50]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_row_vtable",
+      "rva": "0x111eb50",
+      "bytes": "48 8B 03",
+      "instruction": "mov rax, qword ptr [rbx]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_row_flag_zero",
+      "rva": "0x111eb53",
+      "bytes": "33 D2",
+      "instruction": "xor edx, edx",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_row_call",
+      "rva": "0x111eb58",
+      "bytes": "FF 10",
+      "instruction": "call qword ptr [rax]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_row_stride",
+      "rva": "0x111eb5c",
+      "bytes": "48 83 C3 10",
+      "instruction": "add rbx, 0x10",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x10"
+      ]
+    },
+    {
+      "role": "native_destroy_scored_count_zero",
+      "rva": "0x111eb69",
+      "bytes": "44 89 6C 24 5C",
+      "instruction": "mov dword ptr [rsp + 0x5c], r13d",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_owner",
+      "rva": "0x111eb6e",
+      "bytes": "48 8B 4C 24 60",
+      "instruction": "mov rcx, qword ptr [rsp + 0x60]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_alignment",
+      "rva": "0x111eb76",
+      "bytes": "41 B8 08 00 00 00",
+      "instruction": "mov r8d, 8",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x8"
+      ]
+    },
+    {
+      "role": "native_destroy_scored_release_virtual_slot",
+      "rva": "0x111eb7f",
+      "bytes": "FF 50 10",
+      "instruction": "call qword ptr [rax + 0x10]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_data_zero",
+      "rva": "0x111eb82",
+      "bytes": "4C 89 6C 24 50",
+      "instruction": "mov qword ptr [rsp + 0x50], r13",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_scored_capacity_zero",
+      "rva": "0x111eb87",
+      "bytes": "44 89 6C 24 58",
+      "instruction": "mov dword ptr [rsp + 0x58], r13d",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_candidate_original_data",
+      "rva": "0x111eb90",
+      "bytes": "48 8B 95 80 01 00 00",
+      "instruction": "mov rdx, qword ptr [rbp + 0x180]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_candidate_count_zero",
+      "rva": "0x111eb9c",
+      "bytes": "44 89 AD 8C 01 00 00",
+      "instruction": "mov dword ptr [rbp + 0x18c], r13d",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_candidate_owner",
+      "rva": "0x111eba3",
+      "bytes": "48 8B 8D 90 01 00 00",
+      "instruction": "mov rcx, qword ptr [rbp + 0x190]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_destroy_candidate_alignment",
+      "rva": "0x111ebad",
+      "bytes": "41 B8 08 00 00 00",
+      "instruction": "mov r8d, 8",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x8"
+      ]
+    },
+    {
+      "role": "native_destroy_candidate_release_virtual_slot",
+      "rva": "0x111ebb3",
+      "bytes": "FF 50 10",
+      "instruction": "call qword ptr [rax + 0x10]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_gate_row_vtable",
+      "rva": "0x1a3c9a6",
+      "bytes": "48 8D 05 53 B7 AE 02",
+      "instruction": "lea rax, [rip + 0x2aeb753]",
+      "rip_targets": [
+        "0x4528100"
+      ],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_gate_row_count",
+      "rva": "0x1a3c9ad",
+      "bytes": "49 63 56 0C",
+      "instruction": "movsxd rdx, dword ptr [r14 + 0xc]",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_gate_row_stride",
+      "rva": "0x1a3c9b5",
+      "bytes": "48 C1 E2 04",
+      "instruction": "shl rdx, 4",
+      "rip_targets": [],
+      "immediate_operands": [
+        "0x4"
+      ]
+    },
+    {
+      "role": "native_gate_row_id",
+      "rva": "0x1a3c9c1",
+      "bytes": "44 89 44 24 28",
+      "instruction": "mov dword ptr [rsp + 0x28], r8d",
+      "rip_targets": [],
+      "immediate_operands": []
+    },
+    {
+      "role": "native_gate_row_score",
+      "rva": "0x1a3c9c6",
+      "bytes": "89 7C 24 2C",
+      "instruction": "mov dword ptr [rsp + 0x2c], edi",
+      "rip_targets": [],
+      "immediate_operands": []
+    }
+  ],
+  "vtable_and_allocator_checks": [
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x0",
+      "slot_rva": "0x45284a8",
+      "target_rva": "0x86e1d0"
+    },
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x8",
+      "slot_rva": "0x45284b0",
+      "target_rva": "0x855870"
+    },
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x10",
+      "slot_rva": "0x45284b8",
+      "target_rva": "0x855830"
+    },
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x18",
+      "slot_rva": "0x45284c0",
+      "target_rva": "0x855810"
+    },
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x20",
+      "slot_rva": "0x45284c8",
+      "target_rva": "0x9b4f80"
+    },
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x28",
+      "slot_rva": "0x45284d0",
+      "target_rva": "0x9b4f80"
+    },
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x30",
+      "slot_rva": "0x45284d8",
+      "target_rva": "0x86e140"
+    },
+    {
+      "role": "candidate_owner",
+      "slot_offset": "0x38",
+      "slot_rva": "0x45284e0",
+      "target_rva": "0x86e140"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x0",
+      "slot_rva": "0x4528460",
+      "target_rva": "0x899910"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x8",
+      "slot_rva": "0x4528468",
+      "target_rva": "0x855870"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x10",
+      "slot_rva": "0x4528470",
+      "target_rva": "0x855830"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x18",
+      "slot_rva": "0x4528478",
+      "target_rva": "0x855810"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x20",
+      "slot_rva": "0x4528480",
+      "target_rva": "0x86e150"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x28",
+      "slot_rva": "0x4528488",
+      "target_rva": "0x86e150"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x30",
+      "slot_rva": "0x4528490",
+      "target_rva": "0x896550"
+    },
+    {
+      "role": "scored_owner",
+      "slot_offset": "0x38",
+      "slot_rva": "0x4528498",
+      "target_rva": "0x896550"
+    },
+    {
+      "role": "scored_row",
+      "slot_offset": "0x0",
+      "slot_rva": "0x4528100",
+      "target_rva": "0x8863d0"
+    },
+    {
+      "role": "candidate_backing_allocator",
+      "slot_offset": "0x0",
+      "slot_rva": "0x54debb8",
+      "target_rva": "0x449d198"
+    },
+    {
+      "role": "scored_backing_allocator",
+      "slot_offset": "0x0",
+      "slot_rva": "0x54e1420",
+      "target_rva": "0x4528370"
+    }
+  ],
+  "function_spans": [
+    {
+      "role": "initialize_scored_container_constructor",
+      "start_rva": "0x1121da0",
+      "end_rva_exclusive": "0x1121e4d",
+      "size": 173,
+      "sha256": "b9772581bc2b94ccc04249d95a4b0ee0e1d1764029dac0f13d64b897d78278a3"
+    },
+    {
+      "role": "release_native_buffer",
+      "start_rva": "0x855830",
+      "end_rva_exclusive": "0x85586a",
+      "size": 58,
+      "sha256": "713f21ed3585fdf7d226ebef14cdd488cbe394d4a489fdc3227bea74f126a604"
+    },
+    {
+      "role": "initialize_candidate_inline_buffer",
+      "start_rva": "0x9b4f80",
+      "end_rva_exclusive": "0x9b4f8f",
+      "size": 15,
+      "sha256": "8ec9a09aa8eda475dddea1a0ab37053b6de681c57b6d28d4df7e44acdd21622d"
+    },
+    {
+      "role": "initialize_scored_inline_buffer",
+      "start_rva": "0x86e150",
+      "end_rva_exclusive": "0x86e15f",
+      "size": 15,
+      "sha256": "de4a829c6c88ec5aa61bbb42c246dcab3c991649a7dbf0aa4a63d868645bc6e9"
+    },
+    {
+      "role": "candidate_backing_allocator_getter",
+      "start_rva": "0x86e140",
+      "end_rva_exclusive": "0x86e148",
+      "size": 8,
+      "sha256": "8f07b1074c83410f33ebf37059ef5d88e560bd1b81decd74d35506ec5408e384"
+    },
+    {
+      "role": "scored_backing_allocator_getter",
+      "start_rva": "0x896550",
+      "end_rva_exclusive": "0x896558",
+      "size": 8,
+      "sha256": "4e03387da9dff9a179536811b04328f4eb2426581d13f4cd0d99585bbc78d397"
+    },
+    {
+      "role": "candidate_owner_deleting_destructor",
+      "start_rva": "0x86e1d0",
+      "end_rva_exclusive": "0x86e1f1",
+      "size": 33,
+      "sha256": "80dd8edb6b0a0377118bfd538120c1db6bcb78dd6cd2154d5f913e65446e926f"
+    },
+    {
+      "role": "scored_owner_deleting_destructor",
+      "start_rva": "0x899910",
+      "end_rva_exclusive": "0x899931",
+      "size": 33,
+      "sha256": "3de1f643da257e6f225f99fbdf208fa8f35136a8b28a9c34425b6ccb0744a814"
+    },
+    {
+      "role": "scored_row_deleting_destructor",
+      "start_rva": "0x8863d0",
+      "end_rva_exclusive": "0x8863f1",
+      "size": 33,
+      "sha256": "14e13a383e540a16b542eeca92f1562a79d667b19132be3ebf51e7c14822c7dc"
+    },
+    {
+      "role": "native_marriage_ranked_container_caller",
+      "start_rva": "0x111e830",
+      "end_rva_exclusive": "0x111ebd9",
+      "size": 937,
+      "sha256": "2649cac0ba0c9a5fa5e8a1742a4236cd2e5dbe1f4670825e60277f9dbb64e698"
+    },
+    {
+      "role": "native_marriage_ranked_container_cleanup",
+      "start_rva": "0x111eb39",
+      "end_rva_exclusive": "0x111ebb6",
+      "size": 125,
+      "sha256": "d64ed4e74edc288ebf26965a10b2825407c3e035747dc4d2281008a929f9d74d"
+    },
+    {
+      "role": "native_marriage_scored_row_construction",
+      "start_rva": "0x1a3c9a3",
+      "end_rva_exclusive": "0x1a3c9f8",
+      "size": 85,
+      "sha256": "eccadd0a2e9c2a98945eaf1d77c1fc0f2734ded1c55aff28df053d37b632d144"
+    }
+  ],
+  "validation_summary": {
+    "instruction_count": 71,
+    "vtable_and_allocator_edge_count": 19,
+    "function_span_count": 12
+  },
+  "next_validation": "Offline adapter fixture must exercise a scored buffer exceeding inline capacity and verify original pointer reaches native release before wrapper storage is discarded. Native invocations require separately authorized paused exact-build CK3 acceptance; this artifact performs none.",
+  "source_constants": {
+    "kFamilyRankedInitializeScoredRva": "0x1121DA0",
+    "kFamilyRankedReleaseBufferRva": "0x855830",
+    "kFamilyRankedInitializeCandidatesRva": "0x9B4F80",
+    "kFamilyRankedDestroyScoredRowRva": "0x8863D0",
+    "kFamilyRankedCandidateOwnerVtableRva": "0x45284A8",
+    "kFamilyRankedScoredOwnerVtableRva": "0x4528460",
+    "kFamilyRankedScoredRowVtableRva": "0x4528100",
+    "kFamilyRankedCandidateBackingAllocatorRva": "0x54DEBB8",
+    "kFamilyRankedScoredBackingAllocatorRva": "0x54E1420"
+  },
+  "native_constant_bindings": [
+    {
+      "constant": "kFamilyRankedInitializeScoredRva",
+      "rva": "0x111e9dd",
+      "kind": "immediate"
+    },
+    {
+      "constant": "kFamilyRankedCandidateOwnerVtableRva",
+      "rva": "0x111e931",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilyRankedScoredOwnerVtableRva",
+      "rva": "0x1121dbd",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilyRankedScoredRowVtableRva",
+      "rva": "0x1a3c9a6",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilyRankedCandidateBackingAllocatorRva",
+      "rva": "0x111e93f",
+      "kind": "rip"
+    },
+    {
+      "constant": "kFamilyRankedScoredBackingAllocatorRva",
+      "rva": "0x1121dd1",
+      "kind": "rip"
+    }
+  ],
+  "source_vtable_bindings": [
+    {
+      "constant": "kFamilyRankedReleaseBufferRva",
+      "slot_rva": "0x45284b8"
+    },
+    {
+      "constant": "kFamilyRankedInitializeCandidatesRva",
+      "slot_rva": "0x45284c8"
+    },
+    {
+      "constant": "kFamilyRankedDestroyScoredRowRva",
+      "slot_rva": "0x4528100"
+    }
+  ]
+}

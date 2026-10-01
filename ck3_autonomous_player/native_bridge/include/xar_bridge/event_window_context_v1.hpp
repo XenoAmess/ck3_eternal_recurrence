@@ -18,6 +18,8 @@ enum class EventWindowContextStatusV1 {
 enum class EventEffectIndicatorKindV1 {
   trait,
   stress,
+  fulfillment,
+  stress_and_fulfillment,
   death,
   scheme,
   unknown,
@@ -27,6 +29,7 @@ struct EventEffectIndicatorRowV1 {
   EventEffectIndicatorKindV1 kind = EventEffectIndicatorKindV1::unknown;
   std::int32_t raw_kind = -1;
   bool gain = false;
+  bool secondary_gain = false;
   bool affected_by_trait = false;
   bool critical = false;
   bool identity_available = false;

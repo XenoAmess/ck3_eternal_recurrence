@@ -1,0 +1,266 @@
+CK3 1.20.0.2 personally held construction layout: offline static proof
+EXE SHA256 AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D
+EXE size 101039736
+No CK3 process, pipe, injection, desktop input, or profile mutation.
+Input title vector data and count are direct native loads. Capacity is vector-base+8, using the unchanged descriptor layout evidenced by the same native enumerator output vector capacity+8/count+0xC; no claim of a direct held-input capacity load in these spans.
+
+primary_title_live_land_branch
+0x289DA30..0x289DA50 SHA256 9F697FBAE5205EEAE728B5A4D0C13FED25AEAF7580923BA38D8D641E203841DB
+Alive Character uses +0x1C0 land object, held-title count +0x1EC and ID-data pointer +0x1E0.
+0x289DA30    48 8b 81 c0 01 00 00                     mov rax, qword ptr [rcx + 0x1c0]
+0x289DA37    48 85 c0                                 test rax, rax
+0x289DA3A    74 14                                    je 0x289da50
+0x289DA3C    83 b8 ec 01 00 00 00                     cmp dword ptr [rax + 0x1ec], 0
+0x289DA43    74 25                                    je 0x289da6a
+0x289DA45    48 8b 80 e0 01 00 00                     mov rax, qword ptr [rax + 0x1e0]
+0x289DA4C    8b 10                                    mov edx, dword ptr [rax]
+0x289DA4E    eb 1f                                    jmp 0x289da6f
+
+held_title_enumerator
+0x2BB11E0..0x2BB1356 SHA256 BD7B389A677A0012D961AA70AA148655B1D3984320AB8FE801BD61F78D8D3EE8
+Native tier-filtered personally held title enumeration: 4-byte full-generation IDs; storage+0x20/+0x2C slot resolution and title+0x10 generation equality; title template +0x48 / tier +0x64. Native vector output has capacity +8 / count +0xC.
+0x2BB11E0    40 53                                    push rbx
+0x2BB11E2    56                                       push rsi
+0x2BB11E3    57                                       push rdi
+0x2BB11E4    41 55                                    push r13
+0x2BB11E6    48 83 ec 38                              sub rsp, 0x38
+0x2BB11EA    48 8b 81 c0 01 00 00                     mov rax, qword ptr [rcx + 0x1c0]
+0x2BB11F1    49 8b f0                                 mov rsi, r8
+0x2BB11F4    44 8b ea                                 mov r13d, edx
+0x2BB11F7    48 85 c0                                 test rax, rax
+0x2BB11FA    74 08                                    je 0x2bb1204
+0x2BB11FC    48 05 e0 01 00 00                        add rax, 0x1e0
+0x2BB1202    eb 07                                    jmp 0x2bb120b
+0x2BB1204    48 8d 05 7d 8a 8a 02                     lea rax, [rip + 0x28a8a7d]
+0x2BB120B    48 8b 18                                 mov rbx, qword ptr [rax]
+0x2BB120E    48 63 40 0c                              movsxd rax, dword ptr [rax + 0xc]
+0x2BB1212    48 8d 3c 83                              lea rdi, [rbx + rax*4]
+0x2BB1216    48 3b df                                 cmp rbx, rdi
+0x2BB1219    0f 84 2d 01 00 00                        je 0x2bb134c
+0x2BB121F    48 8b 15 d2 c8 16 03                     mov rdx, qword ptr [rip + 0x316c8d2]
+0x2BB1226    48 89 6c 24 60                           mov qword ptr [rsp + 0x60], rbp
+0x2BB122B    0f 29 74 24 20                           movaps xmmword ptr [rsp + 0x20], xmm6
+0x2BB1230    f3 0f 10 35 c8 51 e4 01                  movss xmm6, dword ptr [rip + 0x1e451c8]
+0x2BB1238    4c 89 64 24 68                           mov qword ptr [rsp + 0x68], r12
+0x2BB123D    4c 89 74 24 70                           mov qword ptr [rsp + 0x70], r14
+0x2BB1242    4c 89 7c 24 30                           mov qword ptr [rsp + 0x30], r15
+0x2BB1247    48 85 d2                                 test rdx, rdx
+0x2BB124A    74 29                                    je 0x2bb1275
+0x2BB124C    44 8b 03                                 mov r8d, dword ptr [rbx]
+0x2BB124F    41 8b c0                                 mov eax, r8d
+0x2BB1252    25 ff ff ff 00                           and eax, 0xffffff
+0x2BB1257    3b 42 2c                                 cmp eax, dword ptr [rdx + 0x2c]
+0x2BB125A    73 19                                    jae 0x2bb1275
+0x2BB125C    8b c8                                    mov ecx, eax
+0x2BB125E    48 8b 42 20                              mov rax, qword ptr [rdx + 0x20]
+0x2BB1262    48 03 c9                                 add rcx, rcx
+0x2BB1265    48 8b 6c c8 08                           mov rbp, qword ptr [rax + rcx*8 + 8]
+0x2BB126A    48 85 ed                                 test rbp, rbp
+0x2BB126D    74 06                                    je 0x2bb1275
+0x2BB126F    44 39 45 10                              cmp dword ptr [rbp + 0x10], r8d
+0x2BB1273    74 07                                    je 0x2bb127c
+0x2BB1275    48 8b 2d 64 c8 16 03                     mov rbp, qword ptr [rip + 0x316c864]
+0x2BB127C    48 8b 45 48                              mov rax, qword ptr [rbp + 0x48]
+0x2BB1280    44 39 68 64                              cmp dword ptr [rax + 0x64], r13d
+0x2BB1284    0f 85 9c 00 00 00                        jne 0x2bb1326
+0x2BB128A    48 63 46 0c                              movsxd rax, dword ptr [rsi + 0xc]
+0x2BB128E    8b 4e 08                                 mov ecx, dword ptr [rsi + 8]
+0x2BB1291    3b c1                                    cmp eax, ecx
+0x2BB1293    0f 85 80 00 00 00                        jne 0x2bb1319
+0x2BB1299    44 8d 60 01                              lea r12d, [rax + 1]
+0x2BB129D    66 0f 6e c1                              movd xmm0, ecx
+0x2BB12A1    48 8b 4e 10                              mov rcx, qword ptr [rsi + 0x10]
+0x2BB12A5    45 8b fc                                 mov r15d, r12d
+0x2BB12A8    0f 5b c0                                 cvtdq2ps xmm0, xmm0
+0x2BB12AB    41 b8 08 00 00 00                        mov r8d, 8
+0x2BB12B1    f3 0f 59 c6                              mulss xmm0, xmm6
+0x2BB12B5    f3 0f 2c c0                              cvttss2si eax, xmm0
+0x2BB12B9    44 3b e0                                 cmp r12d, eax
+0x2BB12BC    44 0f 4c f8                              cmovl r15d, eax
+0x2BB12C0    48 8b 01                                 mov rax, qword ptr [rcx]
+0x2BB12C3    41 8b d7                                 mov edx, r15d
+0x2BB12C6    48 c1 e2 03                              shl rdx, 3
+0x2BB12CA    ff 50 08                                 call qword ptr [rax + 8]
+0x2BB12CD    48 63 4e 0c                              movsxd rcx, dword ptr [rsi + 0xc]
+0x2BB12D1    4c 8b f0                                 mov r14, rax
+0x2BB12D4    48 89 2c c8                              mov qword ptr [rax + rcx*8], rbp
+0x2BB12D8    48 63 46 0c                              movsxd rax, dword ptr [rsi + 0xc]
+0x2BB12DC    85 c0                                    test eax, eax
+0x2BB12DE    7e 12                                    jle 0x2bb12f2
+0x2BB12E0    48 8b 16                                 mov rdx, qword ptr [rsi]
+0x2BB12E3    4c 8b c0                                 mov r8, rax
+0x2BB12E6    49 c1 e0 03                              shl r8, 3
+0x2BB12EA    49 8b ce                                 mov rcx, r14
+0x2BB12ED    e8 8e 55 67 01                           call 0x4226880
+0x2BB12F2    48 8b 4e 10                              mov rcx, qword ptr [rsi + 0x10]
+0x2BB12F6    41 b8 08 00 00 00                        mov r8d, 8
+0x2BB12FC    48 8b 16                                 mov rdx, qword ptr [rsi]
+0x2BB12FF    48 8b 01                                 mov rax, qword ptr [rcx]
+0x2BB1302    ff 50 10                                 call qword ptr [rax + 0x10]
+0x2BB1305    48 8b 15 ec c7 16 03                     mov rdx, qword ptr [rip + 0x316c7ec]
+0x2BB130C    4c 89 36                                 mov qword ptr [rsi], r14
+0x2BB130F    44 89 66 0c                              mov dword ptr [rsi + 0xc], r12d
+0x2BB1313    44 89 7e 08                              mov dword ptr [rsi + 8], r15d
+0x2BB1317    eb 0d                                    jmp 0x2bb1326
+0x2BB1319    48 8b c8                                 mov rcx, rax
+0x2BB131C    48 8b 06                                 mov rax, qword ptr [rsi]
+0x2BB131F    48 89 2c c8                              mov qword ptr [rax + rcx*8], rbp
+0x2BB1323    ff 46 0c                                 inc dword ptr [rsi + 0xc]
+0x2BB1326    48 83 c3 04                              add rbx, 4
+0x2BB132A    48 3b df                                 cmp rbx, rdi
+0x2BB132D    0f 85 14 ff ff ff                        jne 0x2bb1247
+0x2BB1333    0f 28 74 24 20                           movaps xmm6, xmmword ptr [rsp + 0x20]
+0x2BB1338    4c 8b 7c 24 30                           mov r15, qword ptr [rsp + 0x30]
+0x2BB133D    4c 8b 74 24 70                           mov r14, qword ptr [rsp + 0x70]
+0x2BB1342    4c 8b 64 24 68                           mov r12, qword ptr [rsp + 0x68]
+0x2BB1347    48 8b 6c 24 60                           mov rbp, qword ptr [rsp + 0x60]
+0x2BB134C    48 83 c4 38                              add rsp, 0x38
+0x2BB1350    41 5d                                    pop r13
+0x2BB1352    5f                                       pop rdi
+0x2BB1353    5e                                       pop rsi
+0x2BB1354    5b                                       pop rbx
+0x2BB1355    c3                                       ret
+
+province_holder_resolver
+0x247D030..0x247D0DC SHA256 B7EF728BA079F4EF622074E717ECB49ADD6E0D50882F40E23F5AE2C8437D7915
+Generation-checked title chain resolves holder CharacterID at title+0x128. This province helper uses its effective county title for tier-1 baronies; the provider reads each directly held title holder field itself.
+0x247D030    8b 81 3c 07 00 00                        mov eax, dword ptr [rcx + 0x73c]
+0x247D036    41 ba ff ff ff ff                        mov r10d, 0xffffffff
+0x247D03C    4c 8b c2                                 mov r8, rdx
+0x247D03F    41 3b c2                                 cmp eax, r10d
+0x247D042    74 06                                    je 0x247d04a
+0x247D044    89 02                                    mov dword ptr [rdx], eax
+0x247D046    48 8b c2                                 mov rax, rdx
+0x247D049    c3                                       ret
+0x247D04A    4c 8b 0d a7 0a 8a 03                     mov r9, qword ptr [rip + 0x38a0aa7]
+0x247D051    48 8b 15 88 0a 8a 03                     mov rdx, qword ptr [rip + 0x38a0a88]
+0x247D058    4d 85 c9                                 test r9, r9
+0x247D05B    74 2e                                    je 0x247d08b
+0x247D05D    44 8b 99 38 07 00 00                     mov r11d, dword ptr [rcx + 0x738]
+0x247D064    41 8b c3                                 mov eax, r11d
+0x247D067    25 ff ff ff 00                           and eax, 0xffffff
+0x247D06C    41 3b 41 2c                              cmp eax, dword ptr [r9 + 0x2c]
+0x247D070    73 19                                    jae 0x247d08b
+0x247D072    8b c8                                    mov ecx, eax
+0x247D074    49 8b 41 20                              mov rax, qword ptr [r9 + 0x20]
+0x247D078    48 03 c9                                 add rcx, rcx
+0x247D07B    48 8b 4c c8 08                           mov rcx, qword ptr [rax + rcx*8 + 8]
+0x247D080    48 85 c9                                 test rcx, rcx
+0x247D083    74 06                                    je 0x247d08b
+0x247D085    44 39 59 10                              cmp dword ptr [rcx + 0x10], r11d
+0x247D089    74 03                                    je 0x247d08e
+0x247D08B    48 8b ca                                 mov rcx, rdx
+0x247D08E    48 8b 41 48                              mov rax, qword ptr [rcx + 0x48]
+0x247D092    83 78 64 01                              cmp dword ptr [rax + 0x64], 1
+0x247D096    75 3d                                    jne 0x247d0d5
+0x247D098    4d 85 c9                                 test r9, r9
+0x247D09B    74 31                                    je 0x247d0ce
+0x247D09D    44 8b 91 e8 00 00 00                     mov r10d, dword ptr [rcx + 0xe8]
+0x247D0A4    41 8b c2                                 mov eax, r10d
+0x247D0A7    25 ff ff ff 00                           and eax, 0xffffff
+0x247D0AC    41 3b 41 2c                              cmp eax, dword ptr [r9 + 0x2c]
+0x247D0B0    73 1c                                    jae 0x247d0ce
+0x247D0B2    8b c8                                    mov ecx, eax
+0x247D0B4    49 8b 41 20                              mov rax, qword ptr [r9 + 0x20]
+0x247D0B8    48 03 c9                                 add rcx, rcx
+0x247D0BB    4c 8b 4c c8 08                           mov r9, qword ptr [rax + rcx*8 + 8]
+0x247D0C0    4d 85 c9                                 test r9, r9
+0x247D0C3    74 09                                    je 0x247d0ce
+0x247D0C5    45 39 51 10                              cmp dword ptr [r9 + 0x10], r10d
+0x247D0C9    75 03                                    jne 0x247d0ce
+0x247D0CB    49 8b d1                                 mov rdx, r9
+0x247D0CE    44 8b 92 28 01 00 00                     mov r10d, dword ptr [rdx + 0x128]
+0x247D0D5    45 89 10                                 mov dword ptr [r8], r10d
+0x247D0D8    49 8b c0                                 mov rax, r8
+0x247D0DB    c3                                       ret
+
+landed_title_province_resolver
+0x230F900..0x230F976 SHA256 21CBFDE5D804E550C0584431331DF1FCAEA77B7489964E66D6A3520FBC0A9ADE
+Tier-2 counties descend through first child title +0x110 / count +0x11C; non-county terminal title returns Province pointer at +0x338.
+0x230F900    48 8b 41 48                              mov rax, qword ptr [rcx + 0x48]
+0x230F904    83 78 64 02                              cmp dword ptr [rax + 0x64], 2
+0x230F908    75 64                                    jne 0x230f96e
+0x230F90A    4c 8b 05 e7 e1 a0 03                     mov r8, qword ptr [rip + 0x3a0e1e7]
+0x230F911    4c 8b 0d c8 e1 a0 03                     mov r9, qword ptr [rip + 0x3a0e1c8]
+0x230F918    0f 1f 84 00 00 00 00 00                  nop dword ptr [rax + rax]
+0x230F920    83 b9 1c 01 00 00 00                     cmp dword ptr [rcx + 0x11c], 0
+0x230F927    75 07                                    jne 0x230f930
+0x230F929    ba ff ff ff ff                           mov edx, 0xffffffff
+0x230F92E    eb 09                                    jmp 0x230f939
+0x230F930    48 8b 81 10 01 00 00                     mov rax, qword ptr [rcx + 0x110]
+0x230F937    8b 10                                    mov edx, dword ptr [rax]
+0x230F939    4d 85 c0                                 test r8, r8
+0x230F93C    74 23                                    je 0x230f961
+0x230F93E    8b c2                                    mov eax, edx
+0x230F940    25 ff ff ff 00                           and eax, 0xffffff
+0x230F945    41 3b 40 2c                              cmp eax, dword ptr [r8 + 0x2c]
+0x230F949    73 16                                    jae 0x230f961
+0x230F94B    49 8b 48 20                              mov rcx, qword ptr [r8 + 0x20]
+0x230F94F    48 03 c0                                 add rax, rax
+0x230F952    48 8b 4c c1 08                           mov rcx, qword ptr [rcx + rax*8 + 8]
+0x230F957    48 85 c9                                 test rcx, rcx
+0x230F95A    74 05                                    je 0x230f961
+0x230F95C    39 51 10                                 cmp dword ptr [rcx + 0x10], edx
+0x230F95F    74 03                                    je 0x230f964
+0x230F961    49 8b c9                                 mov rcx, r9
+0x230F964    48 8b 41 48                              mov rax, qword ptr [rcx + 0x48]
+0x230F968    83 78 64 02                              cmp dword ptr [rax + 0x64], 2
+0x230F96C    74 b2                                    je 0x230f920
+0x230F96E    48 8b 81 38 03 00 00                     mov rax, qword ptr [rcx + 0x338]
+0x230F975    c3                                       ret
+
+capital_province_independent_reader
+0x28B1CD0..0x28B1D8B SHA256 EB5693F312EB22EA036D0871CE13486D0ABED5EE3BA885DD0E8A5CDF50BC2262
+Independent character capital reader agrees on title template +0x48 / tier +0x64 and non-county Province pointer +0x338.
+0x28B1CD0    48 83 ec 28                              sub rsp, 0x28
+0x28B1CD4    48 8d 54 24 38                           lea rdx, [rsp + 0x38]
+0x28B1CD9    e8 42 05 00 00                           call 0x28b2220
+0x28B1CDE    4c 8b 05 13 be 46 03                     mov r8, qword ptr [rip + 0x346be13]
+0x28B1CE5    48 8b 15 f4 bd 46 03                     mov rdx, qword ptr [rip + 0x346bdf4]
+0x28B1CEC    4d 85 c0                                 test r8, r8
+0x28B1CEF    74 2a                                    je 0x28b1d1b
+0x28B1CF1    44 8b 08                                 mov r9d, dword ptr [rax]
+0x28B1CF4    41 8b c1                                 mov eax, r9d
+0x28B1CF7    25 ff ff ff 00                           and eax, 0xffffff
+0x28B1CFC    41 3b 40 2c                              cmp eax, dword ptr [r8 + 0x2c]
+0x28B1D00    73 19                                    jae 0x28b1d1b
+0x28B1D02    8b c8                                    mov ecx, eax
+0x28B1D04    49 8b 40 20                              mov rax, qword ptr [r8 + 0x20]
+0x28B1D08    48 03 c9                                 add rcx, rcx
+0x28B1D0B    48 8b 4c c8 08                           mov rcx, qword ptr [rax + rcx*8 + 8]
+0x28B1D10    48 85 c9                                 test rcx, rcx
+0x28B1D13    74 06                                    je 0x28b1d1b
+0x28B1D15    44 39 49 10                              cmp dword ptr [rcx + 0x10], r9d
+0x28B1D19    74 03                                    je 0x28b1d1e
+0x28B1D1B    48 8b ca                                 mov rcx, rdx
+0x28B1D1E    48 8b 41 48                              mov rax, qword ptr [rcx + 0x48]
+0x28B1D22    83 78 64 02                              cmp dword ptr [rax + 0x64], 2
+0x28B1D26    75 57                                    jne 0x28b1d7f
+0x28B1D28    83 b9 1c 01 00 00 00                     cmp dword ptr [rcx + 0x11c], 0
+0x28B1D2F    75 08                                    jne 0x28b1d39
+0x28B1D31    41 b9 ff ff ff ff                        mov r9d, 0xffffffff
+0x28B1D37    eb 0a                                    jmp 0x28b1d43
+0x28B1D39    48 8b 81 10 01 00 00                     mov rax, qword ptr [rcx + 0x110]
+0x28B1D40    44 8b 08                                 mov r9d, dword ptr [rax]
+0x28B1D43    4d 85 c0                                 test r8, r8
+0x28B1D46    74 2a                                    je 0x28b1d72
+0x28B1D48    41 8b c1                                 mov eax, r9d
+0x28B1D4B    25 ff ff ff 00                           and eax, 0xffffff
+0x28B1D50    41 3b 40 2c                              cmp eax, dword ptr [r8 + 0x2c]
+0x28B1D54    73 1c                                    jae 0x28b1d72
+0x28B1D56    8b c8                                    mov ecx, eax
+0x28B1D58    49 8b 40 20                              mov rax, qword ptr [r8 + 0x20]
+0x28B1D5C    48 03 c9                                 add rcx, rcx
+0x28B1D5F    4c 8b 44 c8 08                           mov r8, qword ptr [rax + rcx*8 + 8]
+0x28B1D64    4d 85 c0                                 test r8, r8
+0x28B1D67    74 09                                    je 0x28b1d72
+0x28B1D69    45 39 48 10                              cmp dword ptr [r8 + 0x10], r9d
+0x28B1D6D    75 03                                    jne 0x28b1d72
+0x28B1D6F    49 8b d0                                 mov rdx, r8
+0x28B1D72    48 8b ca                                 mov rcx, rdx
+0x28B1D75    e8 86 db a5 ff                           call 0x230f900
+0x28B1D7A    48 83 c4 28                              add rsp, 0x28
+0x28B1D7E    c3                                       ret
+0x28B1D7F    48 8b 81 38 03 00 00                     mov rax, qword ptr [rcx + 0x338]
+0x28B1D86    48 83 c4 28                              add rsp, 0x28
+0x28B1D8A    c3                                       ret

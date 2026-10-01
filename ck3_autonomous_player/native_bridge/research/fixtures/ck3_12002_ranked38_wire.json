@@ -1,0 +1,89 @@
+{
+  "private_build": true,
+  "advertised": false,
+  "status": "available",
+  "exact_build": "1.20.0.2",
+  "snapshot_id": "native:7",
+  "public_revision": 7,
+  "native_revision": 7,
+  "proof_epoch": 9,
+  "date_raw": 53220000,
+  "subject_character_id": 50331649,
+  "matchmaker_character_id": 50331649,
+  "religion_projection": "native_final_results_only",
+  "candidates": [
+    {
+      "rank": 1,
+      "subject_character_id": 50331649,
+      "matchmaker_character_id": 50331649,
+      "candidate_character_id": 50331652,
+      "native_candidate_score": 200,
+      "pair_roles": {
+        "actor_character_id": 50331649,
+        "recipient_character_id": 50331711,
+        "secondary_actor_character_id": 50331649,
+        "secondary_recipient_character_id": 50331652,
+        "intermediary_character_id": 4294967295
+      },
+      "complete_can_send": true,
+      "complete_can_send_status_raw": 1,
+      "recipient_ai_accept_raw": 1600000,
+      "recipient_ai_accept_scale": 100000,
+      "recipient_answer_status_raw": 0,
+      "recipient_answer_allows_send": true,
+      "predicted_outcome": "marriage"
+    },
+    {
+      "rank": 2,
+      "subject_character_id": 50331649,
+      "matchmaker_character_id": 50331649,
+      "candidate_character_id": 50331650,
+      "native_candidate_score": 200,
+      "pair_roles": {
+        "actor_character_id": 50331649,
+        "recipient_character_id": 50331711,
+        "secondary_actor_character_id": 50331649,
+        "secondary_recipient_character_id": 50331650,
+        "intermediary_character_id": 4294967295
+      },
+      "complete_can_send": true,
+      "complete_can_send_status_raw": 1,
+      "recipient_ai_accept_raw": 1600000,
+      "recipient_ai_accept_scale": 100000,
+      "recipient_answer_status_raw": 0,
+      "recipient_answer_allows_send": true,
+      "predicted_outcome": "betrothal"
+    },
+    {
+      "rank": 3,
+      "subject_character_id": 50331649,
+      "matchmaker_character_id": 50331649,
+      "candidate_character_id": 50331651,
+      "native_candidate_score": 99,
+      "pair_roles": {
+        "actor_character_id": 50331649,
+        "recipient_character_id": 50331711,
+        "secondary_actor_character_id": 50331649,
+        "secondary_recipient_character_id": 50331651,
+        "intermediary_character_id": 4294967295
+      },
+      "complete_can_send": true,
+      "complete_can_send_status_raw": 1,
+      "recipient_ai_accept_raw": 1600000,
+      "recipient_ai_accept_scale": 100000,
+      "recipient_answer_status_raw": 0,
+      "recipient_answer_allows_send": true,
+      "predicted_outcome": "marriage"
+    }
+  ],
+  "readiness": {
+    "ranked_candidates_ready": true,
+    "pair_character_ids_ready": true,
+    "native_score_ready": true,
+    "complete_can_send_ready": true,
+    "recipient_ai_accept_ready": true,
+    "recipient_answer_ready": true,
+    "predicted_outcome_ready": true,
+    "same_frame_ready": true
+  }
+}

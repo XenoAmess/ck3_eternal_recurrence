@@ -19,8 +19,20 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 现行 G2 使用固定八项可见 OODA 分母，当前为 `3/8`；G2-M0 的三路战争退出、G2-M1 的实体发现/core turn bundle，以及 R0077 自然继承与真实继承人续玩（G2-M3）已完成。需求、状态和施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读 JSON 为准。
 
+## 2026-10-01 11:56：非战争 1.20 后台施工增量
+
+用户要求结合[09-30 非战争交接](../handover/2026-09-30-nonwar-maintainer-vacation-handoff.md)继续并发，全部可离线工作完成前不占用本地 CK3。新版绑定 `1.20.0.2 / Steam25588574`、EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`；源码、provider、消费者与集成事实以[执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)和[原生专题入口](../ck3-native-ai/README.md)回链。
+
+独立离线已通过的增量是 LIFE 当前观测/typed 命令，ECON held/cost/state/submit，FAMILY 68/69 与候选/联盟/child provider，完整 campaign 的 15 组真实 C++ fixture 及实际 wire→Python 消费，JOINT 两项生产路径修复和 **111/111 普通、111/111 `-O`** 回归。这些包最高为 `static-ready`；中央最终 FAMILY/共享接线、DLL 联编和候选冻结仍在收口，此处不预填整包通过。
+
+此前[1.20 基础迁移实机](../ck3-1.20.0.2-migration-completion.md)与旧版 BA5 各自保留原资格，本轮新增 provider 没有新版 paused artifact。G2 仍为 **3/8**，Robert 仍为交接的 **3,153/36,524** 持久日，百年/首整局/双种子分别 **0/1、0/1、0/2**。下一门槛是在全部离线施工完成后取得新版 paused 同帧观测，再验证现有合法 typed 路径、独立后置、下一 turn 和规定 cold 恢复；宗教域原暂缓及窄例外保持。
+
 ## 导航
 
+- [2026-10-01 日报（滚动）](daily/2026-10-01.md)
+- [1.20 非战争交接依赖与集成基线](../ck3-1.20.0.2-nonwar-handoff-intake.md)
+- [1.20 非战争后台执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)
+- [1.20 非战争后台 runner 与最终实机接手](../handover/2026-10-01-nonwar-12002-offline-runner.md)
 - [2026-09-28 日报（已收口；对照当日早会）](daily/2026-09-28.md)
 - [2026-W40 周报（滚动）](weekly/2026-W40.md)
 - [2026-09-29 早会（真实时间）](meetings/daily/2026-09-29.md)

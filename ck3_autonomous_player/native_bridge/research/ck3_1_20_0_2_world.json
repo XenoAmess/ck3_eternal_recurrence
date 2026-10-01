@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready world/war graph; fixture-tested, paused live pending",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "war_participant_contains",
+      "rva": "0x2494b60",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 48 8B 79 08 4C 8D"
+    },
+    {
+      "name": "war_score_attacker_relative",
+      "rva": "0x249ac40",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 40 48 8B F2 48 8B E9 4C 8B CA 45 33 C0"
+    },
+    {
+      "name": "war_manager_ctor_inline",
+      "rva": "0x2addf33",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "49 8D 9F E0 EB 02 00 48 89 5D 48 89 73 10 48 B8 00 00 00 00 00 00 F0 BF 48 89 43 18 48 8D 05 AA"
+    },
+    {
+      "name": "war_storage_constructor",
+      "rva": "0x2a83c40",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 89 5C 24 18 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 30 4C 8B E1 B9 58 00 00 00 E8 4E FF 79 01 48 8B F0 48 89 44 24 70 48 8D"
+    },
+    {
+      "name": "war_constructor",
+      "rva": "0x27feb50",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 C7 41 08 FF FF FF FF 48 8D 05 10 49 F3 01 48 89 01 48 8B D9 C7 41"
+    },
+    {
+      "name": "war_validate_leaders",
+      "rva": "0x249adf0",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 30 8B 99 88 02 00 00 48 8B F1 8B B9 8C"
+    },
+    {
+      "name": "war_destructor",
+      "rva": "0x2494f40",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 48 8D 05 CF E4 29"
+    },
+    {
+      "name": "get_character_capital_for_default_raise",
+      "rva": "0x28b1cd0",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 83 EC 28 48 8D 54 24 38 E8 42 05 00 00 4C 8B 05 13 BE 46 03 48 8B 15 F4 BD 46 03 4D 85 C0 74"
+    },
+    {
+      "name": "default_raise_province_selector",
+      "rva": "0x24a51b0",
+      "confidence": "reviewed-exact-build-offline",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D 6C 24 C9 48 81 EC 90 00 00 00 45 8B E1 45 8B F0 48 8B DA 48 8B F9"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CWar_primary",
+      "rva": "0x4733430",
+      "function_rvas": [
+        "0x24951c0"
+      ]
+    },
+    {
+      "name": "CWar_secondary_offset10",
+      "rva": "0x4733440",
+      "function_rvas": [
+        "0x24a3e8c",
+        "0x3f7e2d0",
+        "0x2495200",
+        "0x3f7e350",
+        "0x2495510",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "CWarManager_primary",
+      "rva": "0x477b400",
+      "function_rvas": [
+        "0x2a7dbf0",
+        "0x3f7e2d0",
+        "0x2a7ddd0",
+        "0x3f7e350",
+        "0x2a7de80",
+        "0x8522c0"
+      ]
+    }
+  ],
+  "instruction_checks": [
+    {
+      "purpose": "manager_gamedata_offset",
+      "rva": "0x2addf33",
+      "bytes": "49 8D 9F E0 EB 02 00",
+      "instruction": "lea rbx, [r15 + 0x2ebe0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "manager_storage_ctor",
+      "rva": "0x2addf64",
+      "bytes": "48 8D 4B 20",
+      "instruction": "lea rcx, [rbx + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_id",
+      "rva": "0x27feb5a",
+      "bytes": "C7 41 08 FF FF FF FF",
+      "instruction": "mov dword ptr [rcx + 8], 0xffffffff",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_primary_leaders",
+      "rva": "0x27fecc3",
+      "bytes": "48 C7 83 88 02 00 00 FF FF FF FF",
+      "instruction": "mov qword ptr [rbx + 0x288], 0xffffffffffffffff",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_claimant",
+      "rva": "0x27fecce",
+      "bytes": "C7 83 90 02 00 00 FF FF FF FF",
+      "instruction": "mov dword ptr [rbx + 0x290], 0xffffffff",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_cb_pointer",
+      "rva": "0x27fec8d",
+      "bytes": "48 89 83 00 01 00 00",
+      "instruction": "mov qword ptr [rbx + 0x100], rax",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_start_date",
+      "rva": "0x27fec6b",
+      "bytes": "C7 83 E0 00 00 00 F8 77 9C 02",
+      "instruction": "mov dword ptr [rbx + 0xe0], 0x29c77f8",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_target_array_pointer",
+      "rva": "0x2495057",
+      "bytes": "48 8B 93 70 02 00 00",
+      "instruction": "mov rdx, qword ptr [rbx + 0x270]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_target_array_capacity",
+      "rva": "0x2495083",
+      "bytes": "89 B3 78 02 00 00",
+      "instruction": "mov dword ptr [rbx + 0x278], esi",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_target_array_count",
+      "rva": "0x2495070",
+      "bytes": "89 B3 7C 02 00 00",
+      "instruction": "mov dword ptr [rbx + 0x27c], esi",
+      "rip_targets": []
+    },
+    {
+      "purpose": "participant_array_pointer",
+      "rva": "0x2494b7a",
+      "bytes": "48 8B 79 08",
+      "instruction": "mov rdi, qword ptr [rcx + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "participant_array_count",
+      "rva": "0x2494b85",
+      "bytes": "48 63 41 14",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x14]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "participant_character_id",
+      "rva": "0x2494b50",
+      "bytes": "39 51 08",
+      "instruction": "cmp dword ptr [rcx + 8], edx",
+      "rip_targets": []
+    },
+    {
+      "purpose": "participant_array_capacity_and_count_initialization",
+      "rva": "0x27fec05",
+      "bytes": "48 89 7B 30",
+      "instruction": "mov qword ptr [rbx + 0x30], rdi",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_ended_single_byte",
+      "rva": "0x249a88b",
+      "bytes": "80 B9 58 03 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x358], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_capacity",
+      "rva": "0x2a7e27c",
+      "bytes": "41 3B 48 2C",
+      "instruction": "cmp ecx, dword ptr [r8 + 0x2c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_slots",
+      "rva": "0x2a7e287",
+      "bytes": "49 8B 48 20",
+      "instruction": "mov rcx, qword ptr [r8 + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_stride_object",
+      "rva": "0x2a7e28b",
+      "bytes": "48 8B 7C D1 08",
+      "instruction": "mov rdi, qword ptr [rcx + rdx*8 + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "storage_full_generation_check",
+      "rva": "0x2a7e295",
+      "bytes": "39 47 08",
+      "instruction": "cmp dword ptr [rdi + 8], eax",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_primary_attacker_read",
+      "rva": "0x249ae04",
+      "bytes": "8B 99 88 02 00 00",
+      "instruction": "mov ebx, dword ptr [rcx + 0x288]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_primary_defender_read",
+      "rva": "0x249ae0d",
+      "bytes": "8B B9 8C 02 00 00",
+      "instruction": "mov edi, dword ptr [rcx + 0x28c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "attackers_side",
+      "rva": "0x249ae5b",
+      "bytes": "48 8D 4E 20",
+      "instruction": "lea rcx, [rsi + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "defenders_side",
+      "rva": "0x249ae31",
+      "bytes": "48 8D 8E 80 00 00 00",
+      "instruction": "lea rcx, [rsi + 0x80]",
+      "rip_targets": []
+    }
+  ],
+  "layouts": {
+    "WarManager": {
+      "gamedata_offset": "0x2EBE0",
+      "storage_pointer": "0x20"
+    },
+    "CWar": {
+      "full_id": "int32 +0x08",
+      "attackers": "0x20",
+      "defenders": "0x80",
+      "cb_pointer": "0x100",
+      "start_date_raw": "int32 +0xE0",
+      "target_title_ids": "pointer +0x270, capacity int32 +0x278, count int32 +0x27C",
+      "primary_attacker": "int32 +0x288",
+      "primary_defender": "int32 +0x28C",
+      "claimant": "int32 +0x290",
+      "ended": "byte +0x358"
+    },
+    "WarParticipantContainer": {
+      "pointers": "0x08",
+      "capacity": "int32 +0x10",
+      "count": "int32 +0x14",
+      "participant_character_id": "int32 +0x08"
+    },
+    "ComponentStorage": {
+      "slots": "pointer +0x20",
+      "capacity": "int32 +0x2C",
+      "index_mask": "0xFFFFFF",
+      "slot_stride": "0x10",
+      "object": "pointer +0x08",
+      "full_generation_identity": "int32 CWar+0x08"
+    }
+  },
+  "integration": {
+    "header": "xar_bridge/ck3_12002_world.hpp",
+    "source": "src/ck3_12002_world.cpp",
+    "fixture": "src/ck3_12002_world_test.cpp",
+    "requires_owning_thread": true,
+    "full_snapshot_rich_details_require_paused": true,
+    "linked_sources": [
+      "src/ck3_12002_world.cpp",
+      "src/ck3_12002_army.cpp",
+      "src/ck3_12002_province.cpp"
+    ]
+  },
+  "source_constants": {
+    "kWorldWarManagerOffset": "0x2ebe0",
+    "kWorldWarIdOffset": "0x8",
+    "kWorldWarAttackersOffset": "0x20",
+    "kWorldWarDefendersOffset": "0x80",
+    "kWorldWarCasusBelliOffset": "0x100",
+    "kWorldWarStartDateOffset": "0xe0",
+    "kWorldWarTargetTitleIdsOffset": "0x270",
+    "kWorldWarPrimaryAttackerOffset": "0x288",
+    "kWorldWarPrimaryDefenderOffset": "0x28c",
+    "kWorldWarClaimantOffset": "0x290",
+    "kWorldWarEndedOffset": "0x358",
+    "kWorldContainsParticipantRva": "0x2494b60",
+    "kWorldGetWarScoreRva": "0x249ac40",
+    "kWorldCharacterCapitalRva": "0x28b1cd0",
+    "kWorldRaiseProvinceSelectorRva": "0x24a51b0"
+  }
+}

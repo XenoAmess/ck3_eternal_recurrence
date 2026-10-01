@@ -271,6 +271,12 @@ bool ExecuteThirdenary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteSemantic12002(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 bool ExecuteQuattuordenary(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
@@ -1356,6 +1362,7 @@ bool TestMailboxStateMachine() {
   typed_environment.permitted_executor_thirdenary = &ExecuteThirdenary;
   typed_environment.permitted_executor_quattuordenary =
       &ExecuteQuattuordenary;
+  typed_environment.permitted_executor_semantic12002 = &ExecuteSemantic12002;
   typed_environment.permitted_executor_quindenary = &ExecuteQuindenary;
   typed_environment.permitted_executor_sexdenary = &ExecuteSexdenary;
   typed_environment.permitted_executor_septendenary = &ExecuteSeptendenary;
@@ -1403,7 +1410,7 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 34> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 35> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
@@ -1416,7 +1423,7 @@ bool TestMailboxStateMachine() {
       &ExecuteOctovigintary, &ExecuteNovemvigintary,
       &ExecuteQuadragintary, &ExecuteUnquadragintary,
       &ExecuteDuoquadragintary, &ExecuteTrioquadragintary,
-      &ExecuteOctoquadragintary};
+      &ExecuteOctoquadragintary, &ExecuteSemantic12002};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -2314,16 +2321,37 @@ bool TestSourceContract(int argc, char **argv) {
   }
   const auto lifetime_constructor = bridge.find(
       "explicit WarEntryApplicationMainMailboxWorkerLifetime(");
+  const auto new_adapter_install =
+      bridge.find("void InstallNewAdapter() noexcept", lifetime_constructor);
+  const auto new_adapter_iat_install = bridge.find(
+      "installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(",
+      new_adapter_install);
   const auto maybe_install_frontend =
-      bridge.find("void MaybeInstallFrontend() noexcept");
+      bridge.find("void MaybeInstallFrontend() noexcept", new_adapter_iat_install);
+  const auto frontend_new_adapter_install =
+      bridge.find("InstallNewAdapter();", maybe_install_frontend);
   const auto iat_install = bridge.find(
-      "installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(");
+      "installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(",
+      maybe_install_frontend);
   const auto maybe_install =
       bridge.find("void MaybeInstall(const xar::game::Snapshot &)");
   const auto worker_main =
       bridge.find("DWORD WINAPI WorkerMain(void *) noexcept");
+  const auto worker_adapter = bridge.find(
+      "xar::ck3_12002::WorkerAdapter new_worker_adapter(", worker_main);
+  const auto worker_session_game = bridge.find(
+      "const xar::game::GameAdapter &session_game = new_build", worker_adapter);
+  const auto worker_mailbox_lifetime = bridge.find(
+      "WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(",
+      worker_session_game);
+  const auto worker_mailbox_observer = bridge.find(
+      "session_game, new_build ? &new_worker_adapter : nullptr)",
+      worker_mailbox_lifetime);
   const auto frontend_bootstrap =
       bridge.find("mailbox_lifetime.MaybeInstallFrontend();", worker_main);
+  const auto worker_connected_session = bridge.find(
+      "RunConnectedSession(pipe, session_game, state, mailbox_lifetime)",
+      frontend_bootstrap);
   const auto connected_session = bridge.find("void RunConnectedSession(");
   const auto hello_connection_generation = bridge.find(
       "\\\"connection_generation\\\":");
@@ -2332,18 +2360,34 @@ bool TestSourceContract(int argc, char **argv) {
   const auto readiness_observer = bridge.find(
       "&mailbox_lifetime", hello_publish);
   if (lifetime_constructor == std::string::npos ||
+      new_adapter_install == std::string::npos ||
+      new_adapter_iat_install == std::string::npos ||
       maybe_install_frontend == std::string::npos ||
+      frontend_new_adapter_install == std::string::npos ||
       maybe_install == std::string::npos || iat_install == std::string::npos ||
       worker_main == std::string::npos ||
+      worker_adapter == std::string::npos ||
+      worker_session_game == std::string::npos ||
+      worker_mailbox_lifetime == std::string::npos ||
+      worker_mailbox_observer == std::string::npos ||
       frontend_bootstrap == std::string::npos ||
+      worker_connected_session == std::string::npos ||
       connected_session == std::string::npos ||
       hello_connection_generation == std::string::npos ||
       hello_publish == std::string::npos ||
       readiness_observer == std::string::npos ||
-      !(lifetime_constructor < maybe_install_frontend &&
-        maybe_install_frontend < iat_install &&
+      !(lifetime_constructor < new_adapter_install &&
+        new_adapter_install < new_adapter_iat_install &&
+        new_adapter_iat_install < maybe_install_frontend &&
+        maybe_install_frontend < frontend_new_adapter_install &&
+        frontend_new_adapter_install < iat_install &&
         iat_install < maybe_install) ||
-      !(worker_main < frontend_bootstrap) ||
+      !(worker_main < worker_adapter &&
+        worker_adapter < worker_session_game &&
+        worker_session_game < worker_mailbox_lifetime &&
+        worker_mailbox_lifetime < worker_mailbox_observer &&
+        worker_mailbox_observer < frontend_bootstrap &&
+        frontend_bootstrap < worker_connected_session) ||
       !(hello_connection_generation < connected_session &&
         connected_session < hello_publish &&
         hello_publish < readiness_observer)) {

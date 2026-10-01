@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "adapter_id": "ck3-1.20.0.2-msvc-x64",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "runtime_installation_executed": false,
+  "signature_anchors": [
+    {
+      "name": "WindowsPump",
+      "rva": "0x40d93f0",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 57 48 83 EC 60 FF 15 2B 11 30 00 33 F6 8B F8 8B DE 39 1D 4F 72 35"
+    },
+    {
+      "name": "FirstPeekCall",
+      "rva": "0x40d9422",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "45 33 C0 48 8D 4C 24 30 33 D2 FF 15 06 1A 30 00"
+    },
+    {
+      "name": "DevicePumpInstall",
+      "rva": "0x40f39bb",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 8D 05 2E 5A FE FF 48 89 85 38 02 00 00"
+    },
+    {
+      "name": "SdlPumpDispatch",
+      "rva": "0x40c8874",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 85 F6 74 09 48 8B CE FF 96 38 02 00 00 83"
+    },
+    {
+      "name": "RngOwnerDiagnostic",
+      "rva": "0x393ee5a",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "E8 B1 63 7B 00 48 8B 0B 44 8B 41 10 44 3B C0 74 20 33"
+    },
+    {
+      "name": "CurrentThreadThunk",
+      "rva": "0x40f5210",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 FF 25 81 53 2E 00"
+    },
+    {
+      "name": "TlsGetter",
+      "rva": "0x3f784c0",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "40 53 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8B 08 BA 28 32 00 00 8B 04 0A 41 B8 30 32 00 00"
+    },
+    {
+      "name": "TlsGetterMarkerInit",
+      "rva": "0x3f78505",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "C6 43 20 00 B8 10 00 00 00 8B 04 08 39 05 FD 8C"
+    },
+    {
+      "name": "TlsStartup",
+      "rva": "0x8545f8",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "C6 05 C0 A0 46 05 01 E8 BC 3E 72 03 C6 40 20 01"
+    },
+    {
+      "name": "HandleTlsGate",
+      "rva": "0x3e146ad",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "0F B6 05 0B A0 EA 01 84 C0 74 28 E8 03 3E 16 00 80 78 20 00 74 1D"
+    },
+    {
+      "name": "ApplicationPumpGate",
+      "rva": "0x3929486",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "80 B9 60 01 00 00 00 48 8B D9 75 5B 80 B9 89 00 00 00 00"
+    },
+    {
+      "name": "ApplicationEventCall",
+      "rva": "0x39294db",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 8B CB E8 FD F8 FF FF"
+    },
+    {
+      "name": "EventSingletonConstruct",
+      "rva": "0x854fab",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 8D 05 6E B4 14 04 48 89 03 4C 89 63 38 4C 89 63 40 4C 89 63 48 FF 15 81 F7 C7 04 48 89 1D B2 56 41 05"
+    },
+    {
+      "name": "EventSingletonLoad",
+      "rva": "0x3928e49",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 8B 35 30 18 34 02"
+    },
+    {
+      "name": "EventSingletonVslot",
+      "rva": "0x3928e8b",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 8B 06 4C 8B 50 08 48 8B 47 28 48 89 54 24 28 48 89 44 24 20 4C 8B 4F 20 4C 8B 47 18 48 8B CE 41 FF D2"
+    },
+    {
+      "name": "PdxSdlPollSlot",
+      "rva": "0x3e148fe",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 8D 4C 24 48 FF 15 EF FA 6B 01"
+    },
+    {
+      "name": "SdlPollSlotBind",
+      "rva": "0x4099d96",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "48 8D 05 A3 EB 02 00 48 89 05 54 A6 43 01"
+    },
+    {
+      "name": "SdlUpperPumpCall",
+      "rva": "0x40c8970",
+      "confidence": "reviewed-exact-build-static-thread-chain",
+      "pattern": "8D 48 01 E8 98 FE FF FF"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CPdxEvents",
+      "rva": "0x49a0420",
+      "function_rvas": [
+        "0x3e14640",
+        "0x3e14690",
+        "0x3e14710",
+        "0x3e14730",
+        "0x3e14770"
+      ]
+    }
+  ],
+  "abi": {
+    "peek_message_iat_rva": "0x43dae38",
+    "get_current_thread_id_iat_rva": "0x43da598",
+    "windows_video_device_pump_slot": "0x238",
+    "pump_return_rva": "0x40d9432",
+    "rng_wrapper_slot_rva": "0x54defc0",
+    "rng_owner_policy": "diagnostic only",
+    "tls_initialized_global_rva": "0x5cbe6bf",
+    "tls_getter_rva": "0x3f784c0",
+    "tls_context_offset": "0x3230",
+    "tls_initialized_offset": "0x3228",
+    "tls_main_marker_offset": "0x20",
+    "tls_startup_store_rva": "0x8545f8",
+    "jomini_slot_rva": "0x5c6a520",
+    "jomini_pause_offset": "0x20",
+    "game_state_slot_rva": "0x5c68c50",
+    "game_date_offset": "0x08",
+    "pdx_event_singleton_slot_rva": "0x5c6a680",
+    "pdx_event_vtable_rva": "0x49a0420",
+    "sdl_poll_dynamic_slot_rva": "0x54d43f8",
+    "sdl_poll_slot_binding_rva": "0x4099d96",
+    "sdl_poll_real_target_rva": "0x40c8940",
+    "application_frame_rva": "0x3929480",
+    "application_event_rva": "0x3928de0"
+  },
+  "live_remaining": [
+    "observe actual application owner thread and consecutive paused SDL pump epochs",
+    "run each concrete native reader executor on the paused boundary",
+    "verify minimized/headless pump continuity and mailbox uninstall on an owned acceptance process"
+  ],
+  "integration": {
+    "fixed_executor_slots": 14,
+    "legacy_typed_slots": 13,
+    "semantic_adapter_slot": 14,
+    "snapshot_observer": "valid application TLS stamp; both paused and unpaused; reader failure invalidates bridge cache only",
+    "observer_callback_field": "snapshot_observer_callback",
+    "observer_context_field": "snapshot_observer_context",
+    "uninstall": "clear observer callback/context after IAT restore and active hook drain"
+  }
+}

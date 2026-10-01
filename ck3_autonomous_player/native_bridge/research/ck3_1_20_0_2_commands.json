@@ -1,0 +1,426 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready command clone/queue lifecycle and pause/resume/speed/checkpoint; owning-thread and paused live validation pending",
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "submit_command_ui_wrapper",
+      "rva": "0x9e16b0",
+      "pattern": "4C 89 44 24 18 53 48 83 EC 30 8B DA 48 8B 01 48 8D 54 24 58 FF 50 40 90 48 8B 08 33 D2 48 89 10",
+      "confidence": "reviewed-static-native-command-lifecycle"
+    },
+    {
+      "name": "queue_owned_command",
+      "rva": "0x37f06f0",
+      "pattern": "4C 89 4C 24 20 48 89 54 24 10 53 56 57 48 83 EC 20 41 8B D8 48 8B FA 48 8B F1 41 8B C0 C1 E8 03 A8 01 74 07",
+      "confidence": "reviewed-static-native-command-lifecycle"
+    },
+    {
+      "name": "autosave_clone",
+      "rva": "0xa93060",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 48 89 54 24 10 57 48 83 EC 20 48 8B F2 48 8B D9 B9 40 00 00 00 E8 30 0B 79 03 48 8B F8 48 89 44 24 38 48 8D 05 05 80 9F 03 48 89 07 44 0F B6 43 08 44 88 47 08 44",
+      "confidence": "reviewed-static-native-command-lifecycle"
+    },
+    {
+      "name": "autosave_scalar_deleting_destructor",
+      "rva": "0xa75eb0",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B F9 8B DA 48 83 C1 20 E8 88 01 DE FF 48 8D 05 C9 51 A1 03 48 89 07 F6 C3 01 74 0D BA",
+      "confidence": "reviewed-static-native-command-lifecycle"
+    },
+    {
+      "name": "pause_command_clone",
+      "rva": "0x2987d00",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 28 00 00 00 E8 9A BE 89 01 4C 8B C8 48 8D 05 74 33 B0 01",
+      "confidence": "reviewed-static-native-command-lifecycle"
+    },
+    {
+      "name": "speed_command_clone",
+      "rva": "0x2987b30",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 48 8B FA B9 28 00 00 00 E8 6A C0 89 01 4C 8B C8 48 8D 05 44 35 B0 01",
+      "confidence": "reviewed-static-native-command-lifecycle"
+    },
+    {
+      "name": "autosave_ui_construct",
+      "rva": "0x22a2f4a",
+      "pattern": "41 0F 28 0E C6 45 C8 20 44 89 7D CC 0F 57 C0 F3 0F 7F 45 D0 48 8D 05 E3 21 21 02 48 89 45 C0 48 8D 05 70 22 21 02 48 89 45 D8 66",
+      "confidence": "reviewed-static-native-command-lifecycle"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "autosave_primary",
+      "rva": "0x44b5148",
+      "function_rvas": [
+        "0xa75eb0",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x855aa0",
+        "0x86d5c0",
+        "0xa93060",
+        "0xa930f0"
+      ]
+    },
+    {
+      "name": "autosave_secondary",
+      "rva": "0x44b51e0",
+      "function_rvas": [
+        "0x29677a0",
+        "0x8522c0",
+        "0x29894b0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    },
+    {
+      "name": "pause_primary",
+      "rva": "0x476c898",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x2987a80",
+        "0x86d5c0",
+        "0x2987d00",
+        "0x2987d80"
+      ]
+    },
+    {
+      "name": "pause_secondary",
+      "rva": "0x476c868",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2987970",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    },
+    {
+      "name": "speed_primary",
+      "rva": "0x476c708",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x855aa0",
+        "0x86d5c0",
+        "0x2987b30",
+        "0x2987bb0"
+      ]
+    },
+    {
+      "name": "speed_secondary",
+      "rva": "0x476c640",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2987640",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "native clone virtual slot 0x40",
+      "rva": "0x9e16c4",
+      "instruction": "call qword ptr [rax + 0x40]",
+      "bytes": "FF 50 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "embedded native command manager object address",
+      "rva": "0x9e16ec",
+      "instruction": "lea rcx, [rip + 0x52dfb4d]",
+      "bytes": "48 8D 0D 4D FB 2D 05",
+      "rip_targets": [
+        "0x5cc1240"
+      ]
+    },
+    {
+      "purpose": "native owned queue call",
+      "rva": "0x9e16f3",
+      "instruction": "call 0x37f06f0",
+      "bytes": "E8 F8 EF E0 02",
+      "rip_targets": []
+    },
+    {
+      "purpose": "queue rejection native deleting destructor",
+      "rva": "0x37f0763",
+      "instruction": "call qword ptr [rax]",
+      "bytes": "FF 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "queue rejection ownership consumed",
+      "rva": "0x37f0765",
+      "instruction": "mov qword ptr [rdi], 0",
+      "bytes": "48 C7 07 00 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "queue rejection explicit false AL",
+      "rva": "0x37f076c",
+      "instruction": "xor al, al",
+      "bytes": "32 C0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native command sequence read",
+      "rva": "0x37f0776",
+      "instruction": "mov eax, dword ptr [rsi + 0x3ec]",
+      "bytes": "8B 86 EC 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native cloned command sequence write",
+      "rva": "0x37f077c",
+      "instruction": "mov dword ptr [rcx + 0xc], eax",
+      "bytes": "89 41 0C",
+      "rip_targets": []
+    },
+    {
+      "purpose": "queue success ownership transferred",
+      "rva": "0x37f078f",
+      "instruction": "mov qword ptr [rdi], 0",
+      "bytes": "48 C7 07 00 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native queue mutex address",
+      "rva": "0x37f079d",
+      "instruction": "lea rcx, [rsi + 0x78]",
+      "bytes": "48 8D 4E 78",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native queue mutex lock",
+      "rva": "0x37f07a1",
+      "instruction": "call qword ptr [rip + 0xbe9ee9]",
+      "bytes": "FF 15 E9 9E BE 00",
+      "rip_targets": [
+        "0x43da690"
+      ]
+    },
+    {
+      "purpose": "native queue insertion",
+      "rva": "0x37f07af",
+      "instruction": "call 0x880340",
+      "bytes": "E8 8C FB 08 FD",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native queue mutex unlock",
+      "rva": "0x37f07b8",
+      "instruction": "call qword ptr [rip + 0xbea01a]",
+      "bytes": "FF 15 1A A0 BE 00",
+      "rip_targets": [
+        "0x43da7d8"
+      ]
+    },
+    {
+      "purpose": "queue success explicit true AL",
+      "rva": "0x37f07e0",
+      "instruction": "mov al, 1",
+      "bytes": "B0 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave clone size 0x40",
+      "rva": "0xa9307a",
+      "instruction": "mov ecx, 0x40",
+      "bytes": "B9 40 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave clone string destination offset 0x20",
+      "rva": "0xa930c8",
+      "instruction": "lea rcx, [rdi + 0x20]",
+      "bytes": "48 8D 4F 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave native deep string copy",
+      "rva": "0xa930d0",
+      "instruction": "call 0x855f00",
+      "bytes": "E8 2B 2E DC FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave clone owning return storage",
+      "rva": "0xa930d6",
+      "instruction": "mov qword ptr [rsi], rdi",
+      "bytes": "48 89 3E",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave native string destructor",
+      "rva": "0xa75ec3",
+      "instruction": "call 0x856050",
+      "bytes": "E8 88 01 DE FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave deleting destructor flag",
+      "rva": "0xa75ed2",
+      "instruction": "test bl, 1",
+      "bytes": "F6 C3 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave deletion object size 0x40",
+      "rva": "0xa75ed7",
+      "instruction": "mov edx, 0x40",
+      "bytes": "BA 40 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave game allocator deletion",
+      "rva": "0xa75edf",
+      "instruction": "call 0x4223f64",
+      "bytes": "E8 80 E0 7A 03",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native string SSO capacity threshold",
+      "rva": "0x85605d",
+      "instruction": "cmp rdx, 0x10",
+      "bytes": "48 83 FA 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native string reset size zero",
+      "rva": "0x85608f",
+      "instruction": "mov qword ptr [rbx + 0x10], 0",
+      "bytes": "48 C7 43 10 00 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native string SSO capacity 15",
+      "rva": "0x856097",
+      "instruction": "mov qword ptr [rbx + 0x18], 0xf",
+      "bytes": "48 C7 43 18 0F 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave command flag 0x20",
+      "rva": "0x22a2f4e",
+      "instruction": "mov byte ptr [rbp - 0x38], 0x20",
+      "bytes": "C6 45 C8 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave source secondary vtable",
+      "rva": "0x22a2f69",
+      "instruction": "lea rax, [rip + 0x2212270]",
+      "bytes": "48 8D 05 70 22 21 02",
+      "rip_targets": [
+        "0x44b51e0"
+      ]
+    },
+    {
+      "purpose": "autosave source string native construction",
+      "rva": "0x22a2fa2",
+      "instruction": "call 0x855db0",
+      "bytes": "E8 09 2E 5B FE",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave queue channel 7",
+      "rva": "0x22a2fa8",
+      "instruction": "mov edx, 7",
+      "bytes": "BA 07 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "autosave source SSO heap-free test",
+      "rva": "0x22a2fbb",
+      "instruction": "cmp rdx, 0x10",
+      "bytes": "48 83 FA 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pause clone size 0x28",
+      "rva": "0x2987d10",
+      "instruction": "mov ecx, 0x28",
+      "bytes": "B9 28 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pause clone player id offset 0x20",
+      "rva": "0x2987d5c",
+      "instruction": "mov eax, dword ptr [rbx + 0x20]",
+      "bytes": "8B 43 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "pause clone paused flag offset 0x24",
+      "rva": "0x2987d63",
+      "instruction": "movzx eax, byte ptr [rbx + 0x24]",
+      "bytes": "0F B6 43 24",
+      "rip_targets": []
+    },
+    {
+      "purpose": "speed clone size 0x28",
+      "rva": "0x2987b40",
+      "instruction": "mov ecx, 0x28",
+      "bytes": "B9 28 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "speed clone speed offset 0x20",
+      "rva": "0x2987b8c",
+      "instruction": "mov eax, dword ptr [rbx + 0x20]",
+      "bytes": "8B 43 20",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {},
+  "command_source_constants": {
+    "kCommandManagerRva": "0x5CC1240",
+    "kQueueOwnedCommandRva": "0x37F06F0",
+    "kAutoSavePrimaryVtableRva": "0x44B5148",
+    "kAutoSaveSecondaryVtableRva": "0x44B51E0"
+  },
+  "calling_contracts": {
+    "clone": "void **(const void *command, void **return_storage), primary vtable slot +0x40",
+    "queue": "bool(void *embedded_manager, void **owning_command, uint32 channel_flags); consumes on true and false",
+    "delete": "void *(void *owning_command, uint32 flags=1), primary vtable slot +0",
+    "ui_wrapper": "void(const void *command, uint32 channel_flags); return AL is not preserved as a queue result",
+    "manager": "image_base + 0x5CC1240 is an embedded object, not a global pointer slot",
+    "submitted": "native queue accepted the clone; execution/gameplay/checkpoint file result still needs observation"
+  },
+  "layouts": {
+    "time_command_size": "0x28",
+    "time_flags": "0x08",
+    "time_secondary_vtable": "0x18",
+    "time_value": "0x20",
+    "time_paused": "0x24",
+    "autosave_command_size": "0x40",
+    "autosave_string": "0x20",
+    "string_size": "0x10",
+    "string_capacity": "0x18",
+    "inline_capacity": 15,
+    "checkpoint_name": "xar_checkpoint",
+    "checkpoint_name_length": 14
+  }
+}

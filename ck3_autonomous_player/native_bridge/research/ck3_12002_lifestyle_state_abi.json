@@ -1,0 +1,153 @@
+{
+  "schema": "xar.ck3_12002_lifestyle_state_abi.v1",
+  "readiness": "static-ready",
+  "exact_build": {
+    "version": "1.20.0.2",
+    "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "current_state_functions": {
+    "current_focus": {
+      "new_rva": "0x29194d0",
+      "length": "0x25",
+      "sha256": "08281bdce49cd932fd5998fb64813385030f0fc171e58b3b5b05a70c67208834"
+    },
+    "current_lifestyle": {
+      "new_rva": "0x29193e0",
+      "length": "0x33",
+      "sha256": "fe77eecd651907ff18c70a5a22f8536bb7f4a5cf1ba51b4af4131d435687b402"
+    },
+    "unspent_points": {
+      "new_rva": "0x2918bd0",
+      "length": "0x74",
+      "sha256": "daa666b35479f0bb899426933f2a6ee5441c7144eed94f76227a34c99ef7494a"
+    },
+    "used_points": {
+      "new_rva": "0x2918c50",
+      "length": "0x47",
+      "sha256": "86c51e77f215a0e7ebcd2e2a0db3e801686c951df277c216605a7857af2fffec"
+    },
+    "lifestyle_xp": {
+      "new_rva": "0x2918d50",
+      "length": "0x7c",
+      "sha256": "0603352f5fb406eb794d95d7585df5bb0c5cce89664947f3017eae763026bb42"
+    },
+    "owned_perks_span": {
+      "new_rva": "0x2919360",
+      "length": "0x7c",
+      "sha256": "21df15fa8ee3c72f25a25fbe2e8fb71e3e6aaf4f66bff33e667f2574f95046d1"
+    },
+    "has_perk": {
+      "new_rva": "0x2919070",
+      "length": "0x20",
+      "sha256": "71cd9bd8bc11ebef732aa007cbf40b881b748fee4b5415c17207ede64ba282bc"
+    },
+    "trait_database": {
+      "new_rva": "0x89e5b0",
+      "length": "0x57",
+      "sha256": "58f28183fe49beed3e2f7ce1cb4bbbf439204b857fcc75f33579aa3b1922ef64"
+    },
+    "has_trait": {
+      "new_rva": "0x28bb1f0",
+      "length": "0x57",
+      "sha256": "9c791c9e028caa8921c3cb37e37a4c242fa972b3bcecf0239ba0ebdad0a729a7"
+    }
+  },
+  "semantic_instruction_checks": [
+    {
+      "rva": "0x29194d0",
+      "bytes": "488b81b0010000",
+      "meaning": "Character state extension +0x1B0"
+    },
+    {
+      "rva": "0x29194dc",
+      "bytes": "488b8080020000",
+      "meaning": "Focus owner in state extension +0x280"
+    },
+    {
+      "rva": "0x29194e8",
+      "bytes": "488b4008",
+      "meaning": "Current focus in focus owner +8"
+    },
+    {
+      "rva": "0x29194ed",
+      "bytes": "488b05144e4003",
+      "meaning": "Focus fallback pointer global 0x5D1E308"
+    },
+    {
+      "rva": "0x29193fc",
+      "bytes": "488b80f8070000",
+      "meaning": "Focus target Lifestyle +0x7F8"
+    },
+    {
+      "rva": "0x2918c3c",
+      "bytes": "41f7b830010000",
+      "meaning": "Lifestyle XP threshold +0x130"
+    },
+    {
+      "rva": "0x2918c76",
+      "bytes": "488b8840040000",
+      "meaning": "Perk target Lifestyle +0x440"
+    },
+    {
+      "rva": "0x2918da3",
+      "bytes": "488b4008",
+      "meaning": "Lifestyle total XP is signed 64-bit"
+    },
+    {
+      "rva": "0x2918db0",
+      "bytes": "4c69c1a0860100",
+      "meaning": "XP within-level modulo uses 100000 fixed-point scale"
+    },
+    {
+      "rva": "0x2919398",
+      "bytes": "480520020000",
+      "meaning": "Owned perk span extension +0x220"
+    },
+    {
+      "rva": "0x2918c61",
+      "bytes": "4863400c",
+      "meaning": "Owned perk count signed 32-bit +0xC"
+    }
+  ],
+  "layout": {
+    "definition_msvc_stable_key": "0x18",
+    "focus_lifestyle": "0x7F8",
+    "lifestyle_xp_per_level": "0x130",
+    "perk_lifestyle": "0x440",
+    "owned_perk_span_data": "0x0",
+    "owned_perk_span_count": "0xC",
+    "trait_database_data": "0x50",
+    "trait_database_count": "0x5C",
+    "focus_fallback_global": "0x5D1E308"
+  },
+  "actor_traits": {
+    "education_families": 5,
+    "ranks_per_family": 5,
+    "personality_keys": [
+      "greedy",
+      "generous",
+      "shy",
+      "arrogant",
+      "ambitious",
+      "diligent",
+      "just"
+    ],
+    "source": "reuse new exact-build phase-character native trait database and HasTrait ABI; fixed LIFE-only subset"
+  },
+  "semantics": {
+    "scale": 100000,
+    "zero_unused_points": "available value; existing policy no-op",
+    "valid_focus": "retain without repeat submission",
+    "unavailable_traits": "explicit optional unavailable, never an empty held-traits claim",
+    "command_ack": "verification pending; independent later state/receipt required",
+    "existing_policy": "master focus/perk parent order unchanged",
+    "gui_window_enumeration": "fixed policy-target database reads used, no old GUI owner ABI"
+  },
+  "live_verified": false,
+  "ck3_launched": false,
+  "remaining_live": [
+    "paused current-state/focus/perk double query",
+    "legal typed focus/perk change and independent post-read",
+    "following formal turn and checkpoint/cold restore"
+  ]
+}

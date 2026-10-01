@@ -1,0 +1,732 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready: complete battle frame, transition, assignment and passive terminal migration; paused live pending",
+  "live_verified": false,
+  "running_game_touched": false,
+  "signature_anchors": [
+    {
+      "name": "combat_constructor",
+      "rva": "0x25863a0",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 54 41 55 41 56 41 57 48 83 EC 40 41 0F B6 F9 4D 8B F8 48 8B EA 48 8B F1 48 8D",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "combat_side_constructor",
+      "rva": "0x264ca60",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B D9 C7",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "combat_side_strength",
+      "rva": "0x2651100",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 59 28 45 33 DB 48 63 41 34 48 8B F1 48 8D 3C",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "combat_entry_strength",
+      "rva": "0x2657b50",
+      "pattern": "4C 8B 41 48 48 BA 66 E6 09 6A 01 00 00 00 4C 03 41 40 4C 8B 49 18 B9 33 F3 04 B5 49 8D 04 08 48",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "combat_regiment_initializer",
+      "rva": "0x26552c0",
+      "pattern": "8B 02 4C 8B C1 4C 8B 0D 74 A0 6C 03 48 8D 0D 9D 09 0F 02 33 D2 49 89 08 48 8D 0D D9 24 F0 01 41",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "active_combat_predicate",
+      "rva": "0x24e8360",
+      "pattern": "48 8B 05 09 5B 83 03 48 85 C0 74 29 8B 91 28 01 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "manual_retreat_four_gates",
+      "rva": "0x258aa10",
+      "pattern": "48 89 5C 24 18 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 40 FE FF FF 48 81 EC C0 02 00 00 49",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "character_retreat_rule_object",
+      "rva": "0x28c2e10",
+      "pattern": "48 83 EC 38 4C 8B 05 4D 47 3A 03 4C 8B 0D 4E 47 3A 03 81 79 1C 72 61 68 43 0F 85 C2 00 00 00 8B",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "terminal_finalizer",
+      "rva": "0x258cd50",
+      "pattern": "48 8B C4 88 50 10 48 89 48 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 08 FE FF FF 48 81 EC",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "battle_warscore_writer",
+      "rva": "0x249a940",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 18 56 57 41 54 41 56 41 57 48 83 EC 30 48 8B FA 48 8B F1 48 63 82 E0",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "ai_subunit_constructor",
+      "rva": "0x19f26cf",
+      "pattern": "44 8B 83 88 00 00 00 48 8D 05 D3 8D BB 02 33 C9 4C 89 4C 24 30 41 8D 50 01 89 93 88 00 00 00 48",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "ai_subunit_serializer",
+      "rva": "0x1a19d50",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 48 8B FA 48 8B F1 48 8B CA E8 33 EE 56 02 BA 0B 00",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "ai_subunit_help_recalculation",
+      "rva": "0x1a1d420",
+      "pattern": "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 F9 FF FF 48 81 EC 90 07 00 00 48",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "ai_coordinator_storage_constructor",
+      "rva": "0x1acb7f3",
+      "pattern": "48 8D 35 80 62 25 04 48 8B 05 4F 4D 25 04 48 85 C0 74 22 49 3B C7 74 18 48 89 74 24 20 48 8D 0D",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "province_combat_removal",
+      "rva": "0x258db29",
+      "pattern": "48 8B 9E B8 06 00 00 81 BB 5C 08 00 00 76 6F 72 50 0F 85 09 01 00 00 8B 46 08 89 85 08 02 00 00",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "retreat_landless_gate",
+      "rva": "0x258aef7",
+      "pattern": "39 41 18 74 07 48 8B 0D 6D C6 6D 03 48 8B 81 C0 01 00 00 48 85 C0 0F 84 DB 00 00 00 83 B8 F8 01",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "main_phase_flag",
+      "rva": "0x2655384",
+      "pattern": "48 8B 49 18 49 8B 50 18 80 B9 8A 09 00 00 00 48 0F 45 D0 49 8B C0 49 89 50 18 C3 CC 48 83 EC 08",
+      "confidence": "reviewed-static-exact-build"
+    },
+    {
+      "name": "retreat_day_runtime_define",
+      "rva": "0x258abfe",
+      "pattern": "44 8B 0D AF ED 6D 03 41 3B D1 0F 8F AD 01 00 00 48 85 FF 0F 84 23 03 00 00 4D 85 DB 74 31 44 8B",
+      "confidence": "reviewed-static-exact-build"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CCombat_primary",
+      "rva": "0x473d138",
+      "function_rvas": [
+        "0x2586160"
+      ]
+    },
+    {
+      "name": "CCombat_secondary",
+      "rva": "0x473d100",
+      "function_rvas": [
+        "0x25907c8",
+        "0x3f7e2d0",
+        "0x2588420",
+        "0x3f7e350",
+        "0x2588960",
+        "0x2588eb0"
+      ]
+    },
+    {
+      "name": "CAIUnitStack",
+      "rva": "0x45aa608",
+      "function_rvas": [
+        "0x19ef710",
+        "0x3f7e2d0",
+        "0x19ef900",
+        "0x3f7e350"
+      ]
+    },
+    {
+      "name": "CAISubunitStack",
+      "rva": "0x45ab4b0",
+      "function_rvas": [
+        "0x1a19c00",
+        "0x3f7e2d0",
+        "0x1a19d50",
+        "0x3f7e350"
+      ]
+    },
+    {
+      "name": "CAIWarCoordinator",
+      "rva": "0x45ab0b8",
+      "function_rvas": [
+        "0x19fcb30",
+        "0x3f7e2d0",
+        "0x19fdd60",
+        "0x3f7e350"
+      ]
+    },
+    {
+      "name": "CArmyRegiment_primary",
+      "rva": "0x4744da0",
+      "function_rvas": [
+        "0x2632db0",
+        "0x3f7e2d0",
+        "0x2632e60",
+        "0x3f7e350",
+        "0x2633090",
+        "0x26331f0"
+      ]
+    },
+    {
+      "name": "CArmyRegiment_secondary",
+      "rva": "0x4744dd8",
+      "function_rvas": [
+        "0x26379f8"
+      ]
+    }
+  ],
+  "layouts": {
+    "CCombat": {
+      "id": 8,
+      "attacker_side": 32,
+      "defender_side": 872,
+      "phase": 1712,
+      "phase_day": 1716,
+      "province": 1720,
+      "base_width": 1728,
+      "final_width": 1732,
+      "base_advantage_int64": 1736,
+      "rolls": [
+        1744,
+        1748
+      ],
+      "winner": 1760,
+      "roll_cadence": 1764,
+      "forced_winner": 1792,
+      "finalized_byte": 1796,
+      "daily_dispatch_byte": 1797,
+      "result_id": 1800,
+      "resolved_advantage_int64": 1808
+    },
+    "CCombatSide": {
+      "army_vector": [
+        16,
+        24,
+        28
+      ],
+      "levy_vector": [
+        40,
+        48,
+        52
+      ],
+      "maa_vector": [
+        64,
+        72,
+        76
+      ],
+      "hard_ledger_vector": [
+        88,
+        96,
+        100
+      ],
+      "primary_owner": 112,
+      "commander": 116,
+      "tick_start_total_int64": 152,
+      "tick_start_levy_int64": 160,
+      "combat_backpointer": 184,
+      "flags": [
+        192,
+        193,
+        194
+      ]
+    },
+    "CAISubunitStack": {
+      "unit_ids": [
+        16,
+        24,
+        28
+      ],
+      "asking_request_power": 40,
+      "cross_coordinator_power": 48,
+      "parent": 56,
+      "assignment_target": 64,
+      "flags": 72,
+      "cross_coordinator_valid": 84
+    },
+    "Province": {
+      "identity": 16,
+      "combat_ids": [
+        1880,
+        1888,
+        1892
+      ],
+      "unit_ids": [
+        1856,
+        1864,
+        1868
+      ],
+      "identity_tag": 2140
+    },
+    "CCharacter": {
+      "identity": 24,
+      "land_status": 448
+    },
+    "retreat_rules": {
+      "flags": 64,
+      "override_bit": 10
+    },
+    "CArmyRegiment": {
+      "identity": 16,
+      "type": 24,
+      "owning_carmy_id": 320,
+      "storage_rva": "0x5D1F340",
+      "distinct_from_CRegiment": true
+    },
+    "CMenAtArmsType": {
+      "fights_in_main_phase_byte": 2442
+    }
+  },
+  "globals": {
+    "combat_storage": "0x5D1DE70",
+    "battle_result_storage": "0x5D1FFE0",
+    "battle_result_fallback": "0x5D1FFD8",
+    "ai_coordinator_storage": "0x5D204F0",
+    "minimum_retreat_days": "0x5C699B4"
+  },
+  "native_abis": {
+    "get_combat_side_strength": "int32(CCombatSide*)",
+    "get_combat_regiment_strength": "int32(CCombatRegiment*)",
+    "can_order_combat_retreat": "bool(CCombat*, CArmy*, ErrorSink* nullptr)",
+    "get_combat_retreat_rule_state": "void*(CCharacter* owner RCX), returned flags+0x40 bit10",
+    "terminal_finalizer": "void(CCombat*, bool suppress_normal_result_envelopes)",
+    "battle_warscore_writer": "void(CWar*, CCombat*)"
+  },
+  "journal_patch": {
+    "terminal_rva": "0x258CD50",
+    "terminal_bytes": 16,
+    "terminal_prologue": "48 8b c4 88 50 10 48 89 48 08 55 53 56 57 41 54",
+    "warscore_rva": "0x249A940",
+    "warscore_bytes": 16,
+    "warscore_prologue": "48 89 5c 24 08 48 89 6c 24 18 56 57 41 54 41 56",
+    "install_boundary": "managed startup with primary thread suspended; never install in this running user game"
+  },
+  "shared_route_reader": "ck3_12002_routes.ReadCommittedRouteTimeline; no approximate or guessed ETA",
+  "remaining_acceptance": [
+    "new-build paused CCombat and selected-unit fixture",
+    "full-side/owner-subset retreat postcondition",
+    "native reinforcement assigned route ETA and join",
+    "natural terminal hooks and warscore row capture",
+    "same-province residual/reentry outcomes"
+  ],
+  "instruction_checks": [
+    {
+      "rva": "0x2586425",
+      "bytes": "48 8b d6",
+      "instruction": "mov rdx, rsi"
+    },
+    {
+      "rva": "0x2586435",
+      "bytes": "48 8d 8e 68 03 00 00",
+      "instruction": "lea rcx, [rsi + 0x368]"
+    },
+    {
+      "rva": "0x2586444",
+      "bytes": "48 89 8e b0 06 00 00",
+      "instruction": "mov qword ptr [rsi + 0x6b0], rcx"
+    },
+    {
+      "rva": "0x2586453",
+      "bytes": "48 89 86 b8 06 00 00",
+      "instruction": "mov qword ptr [rsi + 0x6b8], rax"
+    },
+    {
+      "rva": "0x258645a",
+      "bytes": "48 89 8e c0 06 00 00",
+      "instruction": "mov qword ptr [rsi + 0x6c0], rcx"
+    },
+    {
+      "rva": "0x2586461",
+      "bytes": "48 89 8e c8 06 00 00",
+      "instruction": "mov qword ptr [rsi + 0x6c8], rcx"
+    },
+    {
+      "rva": "0x258646a",
+      "bytes": "48 89 86 d0 06 00 00",
+      "instruction": "mov qword ptr [rsi + 0x6d0], rax"
+    },
+    {
+      "rva": "0x2586478",
+      "bytes": "c7 86 e0 06 00 00 ff ff ff ff",
+      "instruction": "mov dword ptr [rsi + 0x6e0], 0xffffffff"
+    },
+    {
+      "rva": "0x2586482",
+      "bytes": "89 8e e4 06 00 00",
+      "instruction": "mov dword ptr [rsi + 0x6e4], ecx"
+    },
+    {
+      "rva": "0x25864aa",
+      "bytes": "c7 86 00 07 00 00 ff ff ff ff",
+      "instruction": "mov dword ptr [rsi + 0x700], 0xffffffff"
+    },
+    {
+      "rva": "0x25864b4",
+      "bytes": "66 89 8e 04 07 00 00",
+      "instruction": "mov word ptr [rsi + 0x704], cx"
+    },
+    {
+      "rva": "0x25864bb",
+      "bytes": "44 89 b6 08 07 00 00",
+      "instruction": "mov dword ptr [rsi + 0x708], r14d"
+    },
+    {
+      "rva": "0x25864c2",
+      "bytes": "48 89 8e 10 07 00 00",
+      "instruction": "mov qword ptr [rsi + 0x710], rcx"
+    },
+    {
+      "rva": "0x264cab5",
+      "bytes": "48 89 6b 10",
+      "instruction": "mov qword ptr [rbx + 0x10], rbp"
+    },
+    {
+      "rva": "0x264cab9",
+      "bytes": "48 89 6b 18",
+      "instruction": "mov qword ptr [rbx + 0x18], rbp"
+    },
+    {
+      "rva": "0x264cac8",
+      "bytes": "48 89 6b 28",
+      "instruction": "mov qword ptr [rbx + 0x28], rbp"
+    },
+    {
+      "rva": "0x264cacc",
+      "bytes": "48 89 6b 30",
+      "instruction": "mov qword ptr [rbx + 0x30], rbp"
+    },
+    {
+      "rva": "0x264cadb",
+      "bytes": "48 89 6b 40",
+      "instruction": "mov qword ptr [rbx + 0x40], rbp"
+    },
+    {
+      "rva": "0x264cadf",
+      "bytes": "48 89 6b 48",
+      "instruction": "mov qword ptr [rbx + 0x48], rbp"
+    },
+    {
+      "rva": "0x264cae7",
+      "bytes": "48 89 6b 58",
+      "instruction": "mov qword ptr [rbx + 0x58], rbp"
+    },
+    {
+      "rva": "0x264caeb",
+      "bytes": "48 89 6b 60",
+      "instruction": "mov qword ptr [rbx + 0x60], rbp"
+    },
+    {
+      "rva": "0x264cafa",
+      "bytes": "48 c7 43 70 ff ff ff ff",
+      "instruction": "mov qword ptr [rbx + 0x70], 0xffffffffffffffff"
+    },
+    {
+      "rva": "0x264cb22",
+      "bytes": "48 89 ab 98 00 00 00",
+      "instruction": "mov qword ptr [rbx + 0x98], rbp"
+    },
+    {
+      "rva": "0x264cb29",
+      "bytes": "48 89 ab a0 00 00 00",
+      "instruction": "mov qword ptr [rbx + 0xa0], rbp"
+    },
+    {
+      "rva": "0x264cb3e",
+      "bytes": "48 89 bb b8 00 00 00",
+      "instruction": "mov qword ptr [rbx + 0xb8], rdi"
+    },
+    {
+      "rva": "0x264cb45",
+      "bytes": "66 89 ab c0 00 00 00",
+      "instruction": "mov word ptr [rbx + 0xc0], bp"
+    },
+    {
+      "rva": "0x264cb4c",
+      "bytes": "40 88 ab c2 00 00 00",
+      "instruction": "mov byte ptr [rbx + 0xc2], bpl"
+    },
+    {
+      "rva": "0x2651116",
+      "bytes": "48 63 41 34",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x34]"
+    },
+    {
+      "rva": "0x265113b",
+      "bytes": "48 83 c3 60",
+      "instruction": "add rbx, 0x60"
+    },
+    {
+      "rva": "0x2651148",
+      "bytes": "48 63 46 4c",
+      "instruction": "movsxd rax, dword ptr [rsi + 0x4c]"
+    },
+    {
+      "rva": "0x265114c",
+      "bytes": "48 8d 3c 40",
+      "instruction": "lea rdi, [rax + rax*2]"
+    },
+    {
+      "rva": "0x2657b50",
+      "bytes": "4c 8b 41 48",
+      "instruction": "mov r8, qword ptr [rcx + 0x48]"
+    },
+    {
+      "rva": "0x2657b5e",
+      "bytes": "4c 03 41 40",
+      "instruction": "add r8, qword ptr [rcx + 0x40]"
+    },
+    {
+      "rva": "0x2657b62",
+      "bytes": "4c 8b 49 18",
+      "instruction": "mov r9, qword ptr [rcx + 0x18]"
+    },
+    {
+      "rva": "0x2655348",
+      "bytes": "49 89 40 10",
+      "instruction": "mov qword ptr [r8 + 0x10], rax"
+    },
+    {
+      "rva": "0x2655384",
+      "bytes": "48 8b 49 18",
+      "instruction": "mov rcx, qword ptr [rcx + 0x18]"
+    },
+    {
+      "rva": "0x265538c",
+      "bytes": "80 b9 8a 09 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x98a], 0"
+    },
+    {
+      "rva": "0x258ab64",
+      "bytes": "4c 8b 1d 75 54 79 03",
+      "instruction": "mov r11, qword ptr [rip + 0x3795475]"
+    },
+    {
+      "rva": "0x258ab6b",
+      "bytes": "4c 8b 15 66 54 79 03",
+      "instruction": "mov r10, qword ptr [rip + 0x3795466]"
+    },
+    {
+      "rva": "0x258ab77",
+      "bytes": "44 8b 86 08 07 00 00",
+      "instruction": "mov r8d, dword ptr [rsi + 0x708]"
+    },
+    {
+      "rva": "0x258aba8",
+      "bytes": "8b 50 2c",
+      "instruction": "mov edx, dword ptr [rax + 0x2c]"
+    },
+    {
+      "rva": "0x258abfe",
+      "bytes": "44 8b 0d af ed 6d 03",
+      "instruction": "mov r9d, dword ptr [rip + 0x36dedaf]"
+    },
+    {
+      "rva": "0x258ac05",
+      "bytes": "41 3b d1",
+      "instruction": "cmp edx, r9d"
+    },
+    {
+      "rva": "0x258adbe",
+      "bytes": "83 be b0 06 00 00 02",
+      "instruction": "cmp dword ptr [rsi + 0x6b0], 2"
+    },
+    {
+      "rva": "0x258aef7",
+      "bytes": "39 41 18",
+      "instruction": "cmp dword ptr [rcx + 0x18], eax"
+    },
+    {
+      "rva": "0x258af03",
+      "bytes": "48 8b 81 c0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]"
+    },
+    {
+      "rva": "0x258af13",
+      "bytes": "83 b8 f8 01 00 00 ff",
+      "instruction": "cmp dword ptr [rax + 0x1f8], -1"
+    },
+    {
+      "rva": "0x258af20",
+      "bytes": "e8 eb 7e 33 00",
+      "instruction": "call 0x28c2e10"
+    },
+    {
+      "rva": "0x258af25",
+      "bytes": "8b 48 40",
+      "instruction": "mov ecx, dword ptr [rax + 0x40]"
+    },
+    {
+      "rva": "0x258af2c",
+      "bytes": "f6 c1 01",
+      "instruction": "test cl, 1"
+    },
+    {
+      "rva": "0x19f2701",
+      "bytes": "49 89 49 10",
+      "instruction": "mov qword ptr [r9 + 0x10], rcx"
+    },
+    {
+      "rva": "0x19f2705",
+      "bytes": "49 89 49 18",
+      "instruction": "mov qword ptr [r9 + 0x18], rcx"
+    },
+    {
+      "rva": "0x19f270d",
+      "bytes": "49 89 49 28",
+      "instruction": "mov qword ptr [r9 + 0x28], rcx"
+    },
+    {
+      "rva": "0x19f2711",
+      "bytes": "49 89 49 30",
+      "instruction": "mov qword ptr [r9 + 0x30], rcx"
+    },
+    {
+      "rva": "0x19f2715",
+      "bytes": "49 89 59 38",
+      "instruction": "mov qword ptr [r9 + 0x38], rbx"
+    },
+    {
+      "rva": "0x19f2720",
+      "bytes": "49 89 41 40",
+      "instruction": "mov qword ptr [r9 + 0x40], rax"
+    },
+    {
+      "rva": "0x19f2724",
+      "bytes": "41 88 49 48",
+      "instruction": "mov byte ptr [r9 + 0x48], cl"
+    },
+    {
+      "rva": "0x1a1a01d",
+      "bytes": "80 7e 54 00",
+      "instruction": "cmp byte ptr [rsi + 0x54], 0"
+    },
+    {
+      "rva": "0x1a1a087",
+      "bytes": "48 8d 56 30",
+      "instruction": "lea rdx, [rsi + 0x30]"
+    },
+    {
+      "rva": "0x1a1d8a7",
+      "bytes": "48 89 4e 28",
+      "instruction": "mov qword ptr [rsi + 0x28], rcx"
+    },
+    {
+      "rva": "0x1a19cfc",
+      "bytes": "49 89 90 d0 01 00 00",
+      "instruction": "mov qword ptr [r8 + 0x1d0], rdx"
+    },
+    {
+      "rva": "0x1acb7fa",
+      "bytes": "48 8b 05 4f 4d 25 04",
+      "instruction": "mov rax, qword ptr [rip + 0x4254d4f]"
+    },
+    {
+      "rva": "0x1acb828",
+      "bytes": "4c 89 3d 21 4d 25 04",
+      "instruction": "mov qword ptr [rip + 0x4254d21], r15"
+    },
+    {
+      "rva": "0x258cd53",
+      "bytes": "88 50 10",
+      "instruction": "mov byte ptr [rax + 0x10], dl"
+    },
+    {
+      "rva": "0x258cd7f",
+      "bytes": "c6 81 04 07 00 00 01",
+      "instruction": "mov byte ptr [rcx + 0x704], 1"
+    },
+    {
+      "rva": "0x258ce26",
+      "bytes": "45 84 c9",
+      "instruction": "test r9b, r9b"
+    },
+    {
+      "rva": "0x258db49",
+      "bytes": "48 8d 8b 58 07 00 00",
+      "instruction": "lea rcx, [rbx + 0x758]"
+    },
+    {
+      "rva": "0x2482306",
+      "bytes": "48 63 79 0c",
+      "instruction": "movsxd rdi, dword ptr [rcx + 0xc]"
+    },
+    {
+      "rva": "0x248230a",
+      "bytes": "48 8b 19",
+      "instruction": "mov rbx, qword ptr [rcx]"
+    },
+    {
+      "rva": "0x249a9ab",
+      "bytes": "4c 8d b6 98 02 00 00",
+      "instruction": "lea r14, [rsi + 0x298]"
+    },
+    {
+      "rva": "0x2632e72",
+      "bytes": "48 8b 79 18",
+      "instruction": "mov rdi, qword ptr [rcx + 0x18]"
+    },
+    {
+      "rva": "0x2632fc5",
+      "bytes": "8b 96 40 01 00 00",
+      "instruction": "mov edx, dword ptr [rsi + 0x140]"
+    },
+    {
+      "rva": "0x2a9efda",
+      "bytes": "48 8d 05 6f d1 cd 01",
+      "instruction": "lea rax, [rip + 0x1cdd16f]"
+    }
+  ],
+  "source_constants": {
+    "include/xar_bridge/ck3_12002_battle.hpp": {
+      "kBattleCombatStorageRva": 97640048,
+      "kBattleResultStorageRva": 97648608,
+      "kBattleResultFallbackRva": 97648600,
+      "kBattleSideStrengthRva": 40177920,
+      "kBattleEntryStrengthRva": 40205136,
+      "kBattleCanRetreatRva": 39365136,
+      "kBattleRetreatRuleRva": 42741264,
+      "kBattleMinimumRetreatDaysRva": 96901556,
+      "kBattleMainPhaseTypeFlag": 2442,
+      "kBattleArmyRegimentTypeOffset": 24,
+      "kBattleArmyRegimentArmyOffset": 320,
+      "kBattleAttackerSideOffset": 32,
+      "kBattleDefenderSideOffset": 872,
+      "kBattlePhaseOffset": 1712,
+      "kBattlePhaseDayOffset": 1716,
+      "kBattleFinalizedOffset": 1796,
+      "kBattleDailyGuardOffset": 1797,
+      "kBattleLandStatusOffset": 448,
+      "kBattleRuleFlagsOffset": 64,
+      "kBattleSubunitParentOffset": 56,
+      "kBattleSubunitTargetOffset": 64,
+      "kBattleSubunitFlagsOffset": 72,
+      "kBattleSubunitCrossValidityOffset": 84,
+      "kBattleSubunitCrossPowerOffset": 48
+    },
+    "include/xar_bridge/ck3_12002_battle_journal.hpp": {
+      "kBattleTerminalFinalizerRvaV1": 39374160,
+      "kBattleWarscoreWriterRvaV1": 38381888,
+      "kBattleTerminalFinalizerPatchBytesV1": 16,
+      "kBattleWarscoreWriterPatchBytesV1": 16,
+      "kBattleTerminalAbsoluteJumpBytesV1": 14,
+      "kBattleTerminalMaximumSideCunitsV1": 128
+    }
+  }
+}

@@ -1,0 +1,524 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready clock/player/played-character prefix and time-command construction; full adapter remains research",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "get_local_player",
+      "rva": "0x383e2b0",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 59 18 45 32 C9 44 38 0D 50 C2 42 02 48 8D BB F8 01 00 00"
+    },
+    {
+      "name": "set_speed_ui_constructor_and_submit",
+      "rva": "0xa7ddf0",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 83 EC 58 F6 05 D5 36 24 05 FD 75 48 85 C9 78 44 3B 0D 2D A7 9D 04 7D 3C C6 44 24 28 00 33 C0 48 89 44 24 2C 89 44 24 34 48 8D 05 E8 E8 CE 03 48 89 44 24 20 48 8D 05 14 E8 CE 03 48 89 44"
+    },
+    {
+      "name": "pause_ui_constructor_and_submit",
+      "rva": "0xa7d113",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 8B 0D 06 D4 1E 05 E8 91 11 DC 02 48 85 C0 74 05 8B 50 70 EB 05 BA FF FF FF FF 48 8B 05 EB D3 1E 05 0F B6 48 20 32 C0 45 33 C0 4C 89 44 24 2C 44 89 44 24 34 4C"
+    },
+    {
+      "name": "set_game_speed_core",
+      "rva": "0x383d730",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 70 01 00 00 49 8B F0 8B DA 48 8B F9"
+    },
+    {
+      "name": "set_pause_core",
+      "rva": "0x383e340",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 40 02 00 00 41 8B F0 0F B6 DA 48 8B F9"
+    },
+    {
+      "name": "game_state_constructor",
+      "rva": "0x229a5f0",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 89 5C 24 18 48 89 4C 24 08 55 56 57 41 56 41 57 48 8D AC 24 B0 FC FF FF 48 81 EC 50 04 00 00 48 8B F9"
+    },
+    {
+      "name": "game_state_base_constructor",
+      "rva": "0x383d390",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 48 89 4C 24 08 55 48 8D AC 24 20 FE FF FF 48 81 EC E0 02 00 00 48 8B F9"
+    },
+    {
+      "name": "submit_command_ui_wrapper",
+      "rva": "0x9e16b0",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "4C 89 44 24 18 53 48 83 EC 30 8B DA 48 8B 01 48 8D 54 24 58 FF 50 40 90 48 8B 08 33 D2 48 89 10 48 8D 44 24 50"
+    },
+    {
+      "name": "locked_command_queue",
+      "rva": "0x37f06f0",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "4C 89 4C 24 20 48 89 54 24 10 53 56 57 48 83 EC 20 41 8B D8 48 8B FA 48 8B F1 41 8B C0 C1 E8 03 A8 01 74 07 48 8B 02"
+    },
+    {
+      "name": "sdl_windows_pump",
+      "rva": "0x40d93f0",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 57 48 83 EC 60 FF 15 2B 11 30 00 33 F6 8B F8 8B DE 39 1D 4F 72 35 01 0F 84 C7 00 00 00 45 33 C9 C7 44 24 20 01 00"
+    },
+    {
+      "name": "handle_pdx_events_wrapper",
+      "rva": "0x3e14690",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 49 8B F8 48 8B DA 48 8B F1 48 85 D2 74 4B 0F B6 05 0B A0 EA 01 84 C0 74 28 E8 03 3E 16 00 80 78 20 00 74 1D 4C 8B C7 48 8B D3 48 8B CE 48 8B 5C 24"
+    },
+    {
+      "name": "main_thread_context_getter",
+      "rva": "0x3f784c0",
+      "confidence": "reviewed-static-foundation",
+      "pattern": "40 53 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8B 08 BA 28 32 00 00 8B 04 0A 41 B8 30 32 00 00 A8 01 75 5B 83"
+    },
+    {
+      "name": "game_data_constructor",
+      "rva": "0x2adc3d0",
+      "confidence": "reviewed-static-core-binding",
+      "pattern": "48 89 5C 24 20 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 50 4C 8B EA 4C 8B F9 45 33 E4"
+    },
+    {
+      "name": "player_character_manager_update",
+      "rva": "0x28ee700",
+      "confidence": "reviewed-static-core-binding",
+      "pattern": "40 53 55 56 57 41 54 41 55 41 56 41 57 48 81 EC B8 01 00 00 4C 8B 2D 35 A5 37 03 41 0F B6 95 C0 00 00 00 4D 8D 75 08"
+    },
+    {
+      "name": "player_record_comparator",
+      "rva": "0x28ee540",
+      "confidence": "reviewed-static-core-binding",
+      "pattern": "48 89 6C 24 18 56 48 83 EC 20 8B 81 D8 00 00 00 48 8B F2 48 8B E9 3B 82 D8 00 00 00 75 7C 48 81 C2 B8 00 00 00 48 89 5C"
+    },
+    {
+      "name": "player_record_lookup_by_character",
+      "rva": "0x28efb00",
+      "confidence": "reviewed-static-core-binding",
+      "pattern": "83 FA FF 74 41 48 8B 41 58 48 63 49 64 4C 8D 04 C8 49 3B C0 74 1E 66 66 0F 1F 84 00 00 00 00 00 48 8B 08 39 91 B0 00 00 00 74 09 48 83 C0 08 49"
+    },
+    {
+      "name": "character_betrothed_link",
+      "rva": "0x1b97170",
+      "confidence": "reviewed-static-core-binding",
+      "pattern": "49 8B 00 4C 8B D2 66 83 38 04 75 06 44 8B 48 08 EB 06 41 B9 FF FF FF FF 4C 8B 05 D9 03 0D 04 48 8B 15 DA 03 0D 04 4D 85 C0 74 27 41 8B C1 25 FF FF FF"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CPauseGameCommand.primary",
+      "rva": "0x476c898",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0"
+      ]
+    },
+    {
+      "name": "CPauseGameCommand.secondary",
+      "rva": "0x476c868",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2987970",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    },
+    {
+      "name": "CSetGameSpeedCommand.primary",
+      "rva": "0x476c708",
+      "function_rvas": [
+        "0x86bf20",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0"
+      ]
+    },
+    {
+      "name": "CSetGameSpeedCommand.secondary",
+      "rva": "0x476c640",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2987640",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    },
+    {
+      "name": "CGameState.primary",
+      "rva": "0x46c3960",
+      "function_rvas": [
+        "0x229aa50",
+        "0x3f7e2d0",
+        "0x2843100",
+        "0x3f7e350",
+        "0x2846900"
+      ]
+    },
+    {
+      "name": "CInGameInterfaceIdler.primary",
+      "rva": "0x44d6048",
+      "function_rvas": [
+        "0x899420",
+        "0x8522c0",
+        "0x383e4e0",
+        "0x8522c0",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "CPlayerCharacterManager.primary",
+      "rva": "0x4763ed0",
+      "function_rvas": [
+        "0x28ee5f0",
+        "0x8522c0",
+        "0x9d09f0",
+        "0x28ee700",
+        "0x1a2e130"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "date_field_constructor_write",
+      "rva": "0x383d3c4",
+      "instruction": "mov qword ptr [rcx + 8], rax",
+      "bytes": "48 89 41 08",
+      "rip_targets": []
+    },
+    {
+      "purpose": "date_field_read",
+      "rva": "0x229a7fd",
+      "instruction": "mov ecx, dword ptr [rdi + 8]",
+      "bytes": "8B 4F 08",
+      "rip_targets": []
+    },
+    {
+      "purpose": "speed_field_write",
+      "rva": "0x383d7ab",
+      "instruction": "mov dword ptr [rdi + 0x70], ebx",
+      "bytes": "89 5F 70",
+      "rip_targets": []
+    },
+    {
+      "purpose": "paused_field_write",
+      "rva": "0x383e3db",
+      "instruction": "mov byte ptr [rdi + 0x20], bl",
+      "bytes": "88 5F 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "players_pointer",
+      "rva": "0x383e2ba",
+      "instruction": "mov rbx, qword ptr [rcx + 0x18]",
+      "bytes": "48 8B 59 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "local_player_id",
+      "rva": "0x383e2e8",
+      "instruction": "mov r10d, dword ptr [rbx + 0x1f0]",
+      "bytes": "44 8B 93 F0 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "player_id_comparison",
+      "rva": "0x383e307",
+      "instruction": "cmp dword ptr [rbx + 0x70], r10d",
+      "bytes": "44 39 53 70",
+      "rip_targets": []
+    },
+    {
+      "purpose": "jomini_global",
+      "rva": "0xa7d113",
+      "instruction": "mov rcx, qword ptr [rip + 0x51ed406]",
+      "bytes": "48 8B 0D 06 D4 1E 05",
+      "rip_targets": [
+        "0x5c6a520"
+      ]
+    },
+    {
+      "purpose": "speed_primary_vptr",
+      "rva": "0xa7de19",
+      "instruction": "lea rax, [rip + 0x3cee8e8]",
+      "bytes": "48 8D 05 E8 E8 CE 03",
+      "rip_targets": [
+        "0x476c708"
+      ]
+    },
+    {
+      "purpose": "speed_secondary_vptr",
+      "rva": "0xa7de25",
+      "instruction": "lea rax, [rip + 0x3cee814]",
+      "bytes": "48 8D 05 14 E8 CE 03",
+      "rip_targets": [
+        "0x476c640"
+      ]
+    },
+    {
+      "purpose": "pause_primary_vptr",
+      "rva": "0xa7d148",
+      "instruction": "lea r8, [rip + 0x3cef749]",
+      "bytes": "4C 8D 05 49 F7 CE 03",
+      "rip_targets": [
+        "0x476c898"
+      ]
+    },
+    {
+      "purpose": "pause_secondary_vptr",
+      "rva": "0xa7d154",
+      "instruction": "lea r8, [rip + 0x3cef70d]",
+      "bytes": "4C 8D 05 0D F7 CE 03",
+      "rip_targets": [
+        "0x476c868"
+      ]
+    },
+    {
+      "purpose": "command_manager",
+      "rva": "0x9e16ec",
+      "instruction": "lea rcx, [rip + 0x52dfb4d]",
+      "bytes": "48 8D 0D 4D FB 2D 05",
+      "rip_targets": [
+        "0x5cc1240"
+      ]
+    },
+    {
+      "purpose": "new_wrapper_queue_call",
+      "rva": "0x9e16f3",
+      "instruction": "call 0x37f06f0",
+      "bytes": "E8 F8 EF E0 02",
+      "rip_targets": []
+    },
+    {
+      "purpose": "tls_global_flag",
+      "rva": "0x3e146ad",
+      "instruction": "movzx eax, byte ptr [rip + 0x1eaa00b]",
+      "bytes": "0F B6 05 0B A0 EA 01",
+      "rip_targets": [
+        "0x5cbe6bf"
+      ]
+    },
+    {
+      "purpose": "tls_getter_call",
+      "rva": "0x3e146b8",
+      "instruction": "call 0x3f784c0",
+      "bytes": "E8 03 3E 16 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "tls_marker_check",
+      "rva": "0x3e146bd",
+      "instruction": "cmp byte ptr [rax + 0x20], 0",
+      "bytes": "80 78 20 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "peek_message_call",
+      "rva": "0x40d942c",
+      "instruction": "call qword ptr [rip + 0x301a06]",
+      "bytes": "FF 15 06 1A 30 00",
+      "rip_targets": [
+        "0x43dae38"
+      ]
+    },
+    {
+      "purpose": "game_state_global_player_manager",
+      "rva": "0x28ee714",
+      "instruction": "mov r13, qword ptr [rip + 0x337a535]",
+      "bytes": "4C 8B 2D 35 A5 37 03",
+      "rip_targets": [
+        "0x5c68c50"
+      ]
+    },
+    {
+      "purpose": "game_state_data_pointer_reader",
+      "rva": "0x9dd71e",
+      "instruction": "mov rcx, qword ptr [rax + 0xa0]",
+      "bytes": "48 8B 88 A0 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "player_manager_vptr_source",
+      "rva": "0x2add750",
+      "instruction": "lea rax, [rip + 0x1c86779]",
+      "bytes": "48 8D 05 79 67 C8 01",
+      "rip_targets": [
+        "0x4763ed0"
+      ]
+    },
+    {
+      "purpose": "player_manager_vptr_destination",
+      "rva": "0x2add757",
+      "instruction": "mov qword ptr [r15 + 0x222e8], rax",
+      "bytes": "49 89 87 E8 22 02 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "player_record_array",
+      "rva": "0x28ee72f",
+      "instruction": "mov r15, qword ptr [rcx + 0x58]",
+      "bytes": "4C 8B 79 58",
+      "rip_targets": []
+    },
+    {
+      "purpose": "player_record_count",
+      "rva": "0x28ee73b",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x64]",
+      "bytes": "48 63 41 64",
+      "rip_targets": []
+    },
+    {
+      "purpose": "player_record_local_key_read",
+      "rva": "0x28ef84a",
+      "instruction": "mov eax, dword ptr [rsi + 0xd8]",
+      "bytes": "8B 86 D8 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "player_record_local_key_compare",
+      "rva": "0x28ef859",
+      "instruction": "cmp eax, dword ptr [rbp + 0x67]",
+      "bytes": "3B 45 67",
+      "rip_targets": []
+    },
+    {
+      "purpose": "player_record_character_id",
+      "rva": "0x28ee965",
+      "instruction": "mov eax, dword ptr [rsi + 0xb0]",
+      "bytes": "8B 86 B0 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_storage_global",
+      "rva": "0x28ee760",
+      "instruction": "mov rbx, qword ptr [rip + 0x3378e01]",
+      "bytes": "48 8B 1D 01 8E 37 03",
+      "rip_targets": [
+        "0x5c67568"
+      ]
+    },
+    {
+      "purpose": "character_slot_index_mask",
+      "rva": "0x28ee7b3",
+      "instruction": "and eax, 0xffffff",
+      "bytes": "25 FF FF FF 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_storage_capacity",
+      "rva": "0x28ee7b8",
+      "instruction": "cmp eax, dword ptr [rbx + 0x2c]",
+      "bytes": "3B 43 2C",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_storage_slots",
+      "rva": "0x28ee7c2",
+      "instruction": "mov rax, qword ptr [rbx + 0x20]",
+      "bytes": "48 8B 43 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_storage_slot_stride_and_object",
+      "rva": "0x28ee7c6",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]",
+      "bytes": "48 8B 44 C8 08",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_full_generation_check",
+      "rva": "0x28ee7d0",
+      "instruction": "cmp dword ptr [rax + 0x18], edx",
+      "bytes": "39 50 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character_death_pointer",
+      "rva": "0x28ee9ba",
+      "instruction": "cmp qword ptr [rcx + 0x1d0], 0",
+      "bytes": "48 83 B9 D0 01 00 00 00",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kJominiStateSlotRva": "0x5C6A520",
+    "kGetLocalPlayerRva": "0x383E2B0",
+    "kPausePrimaryVtableRva": "0x476C898",
+    "kPauseSecondaryVtableRva": "0x476C868",
+    "kSetSpeedPrimaryVtableRva": "0x476C708",
+    "kSetSpeedSecondaryVtableRva": "0x476C640",
+    "kGameStateSlotRva": "0x5C68C50",
+    "kCharacterStorageSlotRva": "0x5C67568",
+    "kPlayerCharacterManagerOffset": "0x222E8",
+    "kCharacterDeathDataOffset": "0x1D0"
+  },
+  "known_gaps": [
+    "core_binding_requires_paused_live_and_owning_thread_before_public_snapshot",
+    "new_command_wrapper_return_and_full_lifecycle",
+    "owning_thread_runtime_wiring",
+    "complete_snapshot_and_typed_query_adapters",
+    "new_build_paused_live_and_OODA"
+  ],
+  "layouts": {
+    "CGameState": {
+      "date_raw": "int32 +0x08",
+      "speed": "int32 +0x70 native 0..4",
+      "game_data": "pointer +0xA0; allocated 0x36780 bytes; player-character manager offset +0x222E8 verified"
+    },
+    "CJominiGameStateBase": {
+      "players": "pointer +0x18",
+      "paused": "byte +0x20"
+    },
+    "Players": {
+      "local_id": "int32 +0x1F0"
+    },
+    "Player": {
+      "id": "int32 +0x70"
+    },
+    "TimeCommand": {
+      "size": "0x28",
+      "primary_vptr": "0x00",
+      "flags": "0x08",
+      "secondary_vptr": "0x18",
+      "value": "0x20",
+      "paused": "0x24"
+    },
+    "CPlayerCharacterManager": {
+      "game_data_offset": "0x222E8",
+      "entries": "pointer +0x58",
+      "count": "int32 +0x64",
+      "record_character_id": "int32 +0xB0",
+      "record_local_player_key": "int32 +0xD8"
+    },
+    "CharacterStorage": {
+      "global": "pointer slot RVA 0x5C67568",
+      "slots": "pointer +0x20",
+      "capacity": "int32 +0x2C",
+      "index_mask": "0x00FFFFFF",
+      "slot_stride": "0x10",
+      "slot_object": "pointer +0x08",
+      "character_identity": "int32 +0x18, full-generation equality"
+    },
+    "CCharacter": {
+      "death_data": "pointer +0x1D0; zero=alive, nonzero=dead; old +0x1C8 is not compatible"
+    }
+  }
+}

@@ -1,0 +1,183 @@
+﻿#include "xar_bridge/ck3_12002_thread_runtime.hpp"
+
+#include <array>
+#include <cstring>
+
+namespace xar::ck3_12002 {
+namespace {
+
+constexpr std::array<std::uint8_t, 32> kWindowsPump{
+    0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
+    0x24, 0x18, 0x57, 0x48, 0x83, 0xEC, 0x60, 0xFF,
+    0x15, 0x2B, 0x11, 0x30, 0x00, 0x33, 0xF6, 0x8B,
+    0xF8, 0x8B, 0xDE, 0x39, 0x1D, 0x4F, 0x72, 0x35
+};
+
+constexpr std::array<std::uint8_t, 16> kFirstPeekCall{
+    0x45, 0x33, 0xC0, 0x48, 0x8D, 0x4C, 0x24, 0x30,
+    0x33, 0xD2, 0xFF, 0x15, 0x06, 0x1A, 0x30, 0x00
+};
+
+constexpr std::array<std::uint8_t, 14> kDevicePumpInstall{
+    0x48, 0x8D, 0x05, 0x2E, 0x5A, 0xFE, 0xFF, 0x48,
+    0x89, 0x85, 0x38, 0x02, 0x00, 0x00
+};
+
+constexpr std::array<std::uint8_t, 15> kSdlPumpDispatch{
+    0x48, 0x85, 0xF6, 0x74, 0x09, 0x48, 0x8B, 0xCE,
+    0xFF, 0x96, 0x38, 0x02, 0x00, 0x00, 0x83
+};
+
+constexpr std::array<std::uint8_t, 18> kRngOwnerDiagnostic{
+    0xE8, 0xB1, 0x63, 0x7B, 0x00, 0x48, 0x8B, 0x0B,
+    0x44, 0x8B, 0x41, 0x10, 0x44, 0x3B, 0xC0, 0x74,
+    0x20, 0x33
+};
+
+constexpr std::array<std::uint8_t, 7> kCurrentThreadThunk{
+    0x48, 0xFF, 0x25, 0x81, 0x53, 0x2E, 0x00
+};
+
+constexpr std::array<std::uint8_t, 32> kTlsGetter{
+    0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x65, 0x48,
+    0x8B, 0x04, 0x25, 0x58, 0x00, 0x00, 0x00, 0x48,
+    0x8B, 0x08, 0xBA, 0x28, 0x32, 0x00, 0x00, 0x8B,
+    0x04, 0x0A, 0x41, 0xB8, 0x30, 0x32, 0x00, 0x00
+};
+
+constexpr std::array<std::uint8_t, 16> kTlsGetterMarkerInit{
+    0xC6, 0x43, 0x20, 0x00, 0xB8, 0x10, 0x00, 0x00,
+    0x00, 0x8B, 0x04, 0x08, 0x39, 0x05, 0xFD, 0x8C
+};
+
+constexpr std::array<std::uint8_t, 16> kTlsStartup{
+    0xC6, 0x05, 0xC0, 0xA0, 0x46, 0x05, 0x01, 0xE8,
+    0xBC, 0x3E, 0x72, 0x03, 0xC6, 0x40, 0x20, 0x01
+};
+
+constexpr std::array<std::uint8_t, 22> kHandleTlsGate{
+    0x0F, 0xB6, 0x05, 0x0B, 0xA0, 0xEA, 0x01, 0x84,
+    0xC0, 0x74, 0x28, 0xE8, 0x03, 0x3E, 0x16, 0x00,
+    0x80, 0x78, 0x20, 0x00, 0x74, 0x1D
+};
+
+constexpr std::array<std::uint8_t, 19> kApplicationPumpGate{
+    0x80, 0xB9, 0x60, 0x01, 0x00, 0x00, 0x00, 0x48,
+    0x8B, 0xD9, 0x75, 0x5B, 0x80, 0xB9, 0x89, 0x00,
+    0x00, 0x00, 0x00
+};
+
+constexpr std::array<std::uint8_t, 8> kApplicationEventCall{
+    0x48, 0x8B, 0xCB, 0xE8, 0xFD, 0xF8, 0xFF, 0xFF
+};
+
+constexpr std::array<std::uint8_t, 35> kEventSingletonConstruct{
+    0x48, 0x8D, 0x05, 0x6E, 0xB4, 0x14, 0x04, 0x48,
+    0x89, 0x03, 0x4C, 0x89, 0x63, 0x38, 0x4C, 0x89,
+    0x63, 0x40, 0x4C, 0x89, 0x63, 0x48, 0xFF, 0x15,
+    0x81, 0xF7, 0xC7, 0x04, 0x48, 0x89, 0x1D, 0xB2,
+    0x56, 0x41, 0x05
+};
+
+constexpr std::array<std::uint8_t, 7> kEventSingletonLoad{
+    0x48, 0x8B, 0x35, 0x30, 0x18, 0x34, 0x02
+};
+
+constexpr std::array<std::uint8_t, 35> kEventSingletonVslot{
+    0x48, 0x8B, 0x06, 0x4C, 0x8B, 0x50, 0x08, 0x48,
+    0x8B, 0x47, 0x28, 0x48, 0x89, 0x54, 0x24, 0x28,
+    0x48, 0x89, 0x44, 0x24, 0x20, 0x4C, 0x8B, 0x4F,
+    0x20, 0x4C, 0x8B, 0x47, 0x18, 0x48, 0x8B, 0xCE,
+    0x41, 0xFF, 0xD2
+};
+
+constexpr std::array<std::uint8_t, 11> kPdxSdlPollSlot{
+    0x48, 0x8D, 0x4C, 0x24, 0x48, 0xFF, 0x15, 0xEF,
+    0xFA, 0x6B, 0x01
+};
+
+constexpr std::array<std::uint8_t, 14> kSdlPollSlotBind{
+    0x48, 0x8D, 0x05, 0xA3, 0xEB, 0x02, 0x00, 0x48,
+    0x89, 0x05, 0x54, 0xA6, 0x43, 0x01
+};
+
+constexpr std::array<std::uint8_t, 8> kSdlUpperPumpCall{
+    0x8D, 0x48, 0x01, 0xE8, 0x98, 0xFE, 0xFF, 0xFF
+};
+
+template <std::size_t Size>
+bool BytesMatch(std::uintptr_t address,
+                const std::array<std::uint8_t, Size> &expected) noexcept {
+  return std::memcmp(reinterpret_cast<const void *>(address), expected.data(),
+                     expected.size()) == 0;
+}
+
+} // namespace
+
+bool VerifyThreadRuntimeImage(std::uintptr_t image_base) noexcept {
+  if (image_base == 0) { return false; }
+#if defined(_MSC_VER)
+  __try {
+#endif
+    return
+        BytesMatch(image_base + 0x40D93F0, kWindowsPump) &&
+        BytesMatch(image_base + 0x40D9422, kFirstPeekCall) &&
+        BytesMatch(image_base + 0x40F39BB, kDevicePumpInstall) &&
+        BytesMatch(image_base + 0x40C8874, kSdlPumpDispatch) &&
+        BytesMatch(image_base + 0x393EE5A, kRngOwnerDiagnostic) &&
+        BytesMatch(image_base + 0x40F5210, kCurrentThreadThunk) &&
+        BytesMatch(image_base + 0x3F784C0, kTlsGetter) &&
+        BytesMatch(image_base + 0x3F78505, kTlsGetterMarkerInit) &&
+        BytesMatch(image_base + 0x8545F8, kTlsStartup) &&
+        BytesMatch(image_base + 0x3E146AD, kHandleTlsGate) &&
+        BytesMatch(image_base + 0x3929486, kApplicationPumpGate) &&
+        BytesMatch(image_base + 0x39294DB, kApplicationEventCall) &&
+        BytesMatch(image_base + 0x854FAB, kEventSingletonConstruct) &&
+        BytesMatch(image_base + 0x3928E49, kEventSingletonLoad) &&
+        BytesMatch(image_base + 0x3928E8B, kEventSingletonVslot) &&
+        BytesMatch(image_base + 0x3E148FE, kPdxSdlPollSlot) &&
+        BytesMatch(image_base + 0x4099D96, kSdlPollSlotBind) &&
+        BytesMatch(image_base + 0x40C8970, kSdlUpperPumpCall);
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#endif
+}
+
+const ck3_11906::MainThreadQueryBuildProfileV1 &ThreadRuntimeBuildProfile()
+    noexcept {
+  static const ck3_11906::MainThreadQueryBuildProfileV1 profile{
+      kSdlWindowsPumpFirstPeekReturnRva, kPeekMessageWIatSlotRva,
+      kGlobalRngWrapperSlotRva, kJominiStateSlotRva, kGameStateSlotRva,
+      kMainThreadTlsInitializedFlagRva, kMainThreadTlsContextGetterRva,
+      &VerifyThreadRuntimeImage};
+  return profile;
+}
+
+ck3_11906::MainThreadQueryInstallEnvironmentV1 BindThreadRuntimeImage(
+    std::uintptr_t image_base, std::string_view executable_sha256,
+    std::span<const ck3_11906::MainThreadQueryExecutorV1> executors) noexcept {
+  ck3_11906::MainThreadQueryInstallEnvironmentV1 output{};
+  if (image_base == 0 || executable_sha256 != kExecutableSha256 ||
+      executors.size() > 14) { return output; }
+  output.module_base = image_base;
+  output.exact_build_admitted = true;
+  output.build_profile = &ThreadRuntimeBuildProfile();
+  output.executor_submission_enabled = !executors.empty();
+  const std::array slots{
+      &output.permitted_executor, &output.permitted_executor_secondary,
+      &output.permitted_executor_tertiary, &output.permitted_executor_quaternary,
+      &output.permitted_executor_quinary, &output.permitted_executor_senary,
+      &output.permitted_executor_septenary, &output.permitted_executor_octonary,
+      &output.permitted_executor_nonary, &output.permitted_executor_denary,
+      &output.permitted_executor_undenary, &output.permitted_executor_duodenary,
+      &output.permitted_executor_thirdenary,
+      &output.permitted_executor_semantic12002};
+  for (std::size_t i = 0; i < executors.size(); ++i) {
+    *slots[i] = executors[i];
+  }
+  return output;
+}
+
+} // namespace xar::ck3_12002

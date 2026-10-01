@@ -141,7 +141,8 @@ def query_player_child_marriage_value_private_v1(
             or effective is not (bool(first) if first == second else selected)
             or row.get("heir_dynasty_id") != legality.get("dynasty_id")
             or row.get("heir_house_id") != legality.get("house_id")
-            or type(row.get("candidate_dynasty_id")) is not int
+            or (row.get("candidate_dynasty_id") is not None
+                and type(row["candidate_dynasty_id"]) is not int)
             or not _native_fertility_input_valid(
                 row.get("heir_native_fertility"))
             or not _native_fertility_input_valid(

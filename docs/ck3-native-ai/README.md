@@ -1,5 +1,20 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-01 11:56：1.20.0.2 非战争 provider 后台接入
+
+新版 exact build 是 CK3 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。本轮从 master 非战争正式消费者接回初次迁移的新版 adapter，按 LIFE → ECON → FAMILY、JOINT 并行施工；[交接入口](../ck3-1.20.0.2-nonwar-handoff-intake.md)与[执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)记录范围和集成状态。用户当前要求全程后台，不占用本地 CK3。
+
+| 专题入口 | 已通过的独立离线范围 | 当前资格 |
+| --- | --- | --- |
+| [LIFE](ck3-1.20.0.2-lifestyle.md) | 当前 focus/XP/点数/教育及角色输入，stock focus/perk 最终合法性、typed 命令和 receipt | 组件 `static-ready`；新版真实 paused 及动作待验 |
+| [ECON](ck3-1.20.0.2-construction.md) / [建设提交](construction-submit-1.20.0.2.md) | 玩家亲持地产、候选/合法性/费用/实际状态、已有地产 typed submit；MSVC `/Od` 与 `/O2` fixture | 组件 `static-ready`；实际扣款、施工及后继消费待验 |
+| [FAMILY](ck3-1.20.0.2-family.md) / [候选主体](ck3-1.20.0.2-family-subject-migration.md) / [联盟投影](ck3-1.20.0.2-family-alliance-projection.md) | 当前婚约 query 68 / fulfillment 69，候选、联盟、child subject、新提案与双向关系 provider 的独立 ABI/fixture | 独立 provider `static-ready`；中央最终接线与联编仍在收口 |
+| [完整 campaign-root](ck3-1.20.0.2-nonwar-campaign-context.md) | 材料/健康/领地/继承/关系/内阁，真实 C++ reader→serializer 的 15 组 fixture 和实际 wire→Python normalization | `static-ready`；字段在新版 paused 帧的互证待验 |
+| [JOINT](ck3-1.20.0.2-joint-offline.md) | 两个真实正式路径缺口：无关 faction unavailable 阻断独立和平建设，以及 submit OFF 遗失已发送 first-heir 角色承诺；111 项普通与 `-O` 回归 | `static-ready`；实际选中动作及物质后置待验 |
+| [Python transport](../ck3-1.20.0.2-nonwar-python-transport.md) / [非战争事件](ck3-1.20.0.2-nonwar-events.md) / [后台 runner](../handover/2026-10-01-nonwar-12002-offline-runner.md) | 新版生产 DTO/consumer 接口与 source-bound replay，沿各专题记录实际通过范围 | 随中央接线、最终 DLL 与候选冻结继续收口，不预填整包完成 |
+
+此前 `d19e794` 的[基础迁移实机交付](../ck3-1.20.0.2-migration-completion.md)与 1.19 R0407/BA5 实证分别保留；它们不能倒算本轮新增高级非战争 provider 的新版 paused/live 资格。当前 G2 仍为 **3/8**，Robert 主线 **3,153/36,524** 持久日；本轮没有新增游戏日。中央最后所有离线包通过后才把组合标为 `static-ready`，然后集中进行新版 paused 观测及现有 typed 路径的独立后置/下一 turn/规定 cold 恢复。宗教与 holy order 暂缓、圣战/婚配必要判定窄例外和完整 combat-v3 的原边界保持。
+
 - [R0225 production RED; exact-build source tree] [Robert 入站人质要求 `demand_hostage_interaction`](demand-hostage-inbound-r0225.md)：冻结原版发送/接受/拒绝路径及非宗教外交后果；当前 native accept/reject 均合法，但定义未分类使正式策略零回复。窄范围降级拒绝与旧 pending ID 独立后置仍待验证。
 
 - [战争影片审片结论与研究优先重做](war-video-research-rebuild-2026-09-23.md)：旧片风格、实机与解释闭合程度未达要求；按 W0–W9 补研、落树、实机取材后重做，当前尚未完成。
@@ -27,7 +42,7 @@
 
 ## 版本与证据边界
 
-- [static-confirmed] 本目录只绑定 CK3 `1.19.0.6` 的
+- [static-confirmed] 本目录历史 `1.19.0.6` 专题绑定该版的
   `Crusader Kings III/binaries/ck3.exe`，SHA-256 为
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - [static-confirmed] `static-confirmed` 表示结论由该 EXE 的 RTTI、反汇编调用链，或同一安装包随附的
@@ -38,8 +53,8 @@
 - [inference] `inference` 表示由多个已证事实推出、但尚未找到执行分支或独立实机对照的解释，不能当成
   exact ABI 或确定策略。
 - [unknown] `unknown` 表示尚未闭合；图中的虚线边和虚线节点也一律表示 unknown，不能据此实现原生动作。
-- [static-confirmed] EXE、原版 AI 数据或版本任一变化后，本目录的地址、阈值和决策树都失效，必须先重算
-  SHA、重新定位锚点，再逐条升级证据等级。
+- [static-confirmed] 新版 `1.20.0.2` 专题使用顶部给出的独立 EXE 绑定。EXE、原版 AI 数据或版本任一变化后，
+  对应 exact-build 专题的地址、阈值和决策树须重新定位并逐条记录证据等级；历史实证保留原构建资格。
 
 ## 文档
 

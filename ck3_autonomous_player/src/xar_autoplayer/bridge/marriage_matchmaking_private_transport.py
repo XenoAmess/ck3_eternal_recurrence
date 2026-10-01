@@ -12,7 +12,8 @@ import uuid
 
 from .marriage_matchmaking_contract import normalize_ranked_marriage_observation
 from .driver import BridgeUnavailableError
-from .nonwar_private_build import private_native_provenance
+from .nonwar_private_build import private_native_build_identity, private_native_provenance
+from .version_identity import CK3_11906
 
 
 PRIVATE_RANKED_MARRIAGE_STEP_V1 = "query-ranked-marriage-candidates-v1-private"
@@ -340,9 +341,12 @@ def query_ranked_marriage_private_v1(
         native_revision=expected_native_revision,
         date_raw=snapshot["date_raw"],
         played_character_id=played_id,
+        native_build=private_native_build_identity(snapshot),
     )
     _require_same_paused_frame(driver.take_snapshot(), snapshot, expected_native_revision, played_id)
-    return {"status": "available", "query_sequence": sequence,
+    provenance = ({} if private_native_build_identity(snapshot) == CK3_11906
+                  else private_native_provenance(snapshot))
+    return {**provenance, "status": "available", "query_sequence": sequence,
             "observation": normalized}
 
 

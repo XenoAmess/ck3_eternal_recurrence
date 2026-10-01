@@ -1,0 +1,812 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready two native readers and version-specific serializers; paused application-main live verification pending",
+  "runtime_registered": false,
+  "live_verified": false,
+  "capabilities": [
+    "game.command.query-campaign-root-context-v1",
+    "game.command.query-loaded-feature-manifest-v1"
+  ],
+  "signature_anchors": [
+    {
+      "name": "primary_title",
+      "rva": "0x289da30",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 8B 81 C0 01 00 00 48 85 C0 74 14 83 B8 EC 01 00 00 00 74 25 48 8B 80 E0 01 00 00 8B 10 EB 1F 48 8B 81 D0 01 00 00 48 85 C0 74 0E 83 78 74 00 74 08 48 8B 40 68 8B 10 EB 05 BA FF FF FF FF 48 8B 05 82 00 48 03 48 85 C0 74 23 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 05 39 50 10 74 07 48 8B 05 3B 00 48 03 C3 CC CC CC CC CC CC CC CC CC CC"
+    },
+    {
+      "name": "capital_province",
+      "rva": "0x28b1cd0",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 83 EC 28 48 8D 54 24 38 E8 42 05 00 00 4C 8B 05 13 BE 46 03 48 8B 15 F4 BD 46 03 4D 85 C0 74 2A 44 8B 08 41 8B C1 25 FF FF FF 00 41 3B 40 2C 73 19 8B C8 49 8B 40 20 48 03 C9 48 8B 4C C8 08"
+    },
+    {
+      "name": "immediate_liege",
+      "rva": "0x28bfc70",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 8B 81 C0 01 00 00 48 8B 91 B8 01 00 00 48 85 C0 74 1E 48 8B 80 C0 01 00 00 48 8B 40 28 81 78 1C 72 61 68 43 75 06 83 78 18 FF 75 48 48 8B C1 C3 48 85 D2 74 38 48 8B 05 BB 78 3A 03 48 85 C0"
+    },
+    {
+      "name": "top_liege",
+      "rva": "0x28bfda0",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "4C 8B 0D C9 77 3A 03 4C 3B C9 0F 84 84 00 00 00 4C 8B 15 B1 77 3A 03 66 0F 1F 84 00 00 00 00 00 48 8B 81 C0 01 00 00 48 8B D1 48 85 C0 74 1C 48 8B 88 C0 01 00 00 48 8B 49 28 81 79 1C 72 61 68"
+    },
+    {
+      "name": "government",
+      "rva": "0x28c2e10",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 83 EC 38 4C 8B 05 4D 47 3A 03 4C 8B 0D 4E 47 3A 03 81 79 1C 72 61 68 43 0F 85 C2 00 00 00 8B 51 18 83 FA FF 0F 84 B6 00 00 00 48 8B 81 D0 01 00 00 48 85 C0 75 7A 48 8B 81 C0 01 00 00 48 85"
+    },
+    {
+      "name": "cstring_name",
+      "rva": "0x3f4f900",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 83 EC 28 4C 63 C9 48 8B 05 DA F4 D6 01 BA 02 00 00 00 F0 0F C1 10 41 B8 FE FF FF FF F6 C2 01 74 27 41 8B C8 F0 0F C1 08 0F 1F 80 00 00 00 00 8B 08 F6 C1 01 74 04 F3 90 EB F5 B9 02 00 00 00"
+    },
+    {
+      "name": "feature_root_consumer",
+      "rva": "0x8c2120",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 8B 05 D1 66 3F 05 83 B8 8C 0A 00 00 00 7E 0B 48 8B 80 80 0A 00 00 48 8B 00 C3 33 C0 C3 CC CC"
+    },
+    {
+      "name": "rule_setting_constructor_key",
+      "rva": "0x3665947",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 8D 4B 18 33 FF 48 C7 41 18 0F 00 00 00 66 0F 6F C6 48 89 39 66 0F 73 D8 08 66 48 0F 7E F2 66 0F 7E C0 48 89 79 10 40 88 39 4C 63 C0 E8 37 04 1F FD 0F 28 74 24 20 48 8D 05 53 6A 2B 01 C7 43"
+    },
+    {
+      "name": "rule_token_fallback",
+      "rva": "0x366622c",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 8B 05 3D 18 6D 02 48 89 43 78 48 8D 05 62 85 E7 01 48 89 BB 80 00 00 00 40 88 BB 80 00 00 00 48 89 BB 90 00 00 00 48 C7 83 98 00 00 00 0F 00 00 00 48 89 83 B0 00 00 00 48 8B C3 48 89 BB A0"
+    },
+    {
+      "name": "selected_rule_set_native_leaf",
+      "rva": "0x36670a0",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B F9 48 8B 0D C4 CC 64 02 48 85 C9 74 54 48 8B 01 FF 50 10 48 8B D8 48 85 C0 74 46 48 8B 4F 60 4C 8D 44 24 40 48 63 50 14 48 89 4C 24 40 48 8B 48 08 48 8D 14"
+    },
+    {
+      "name": "government_flag_span",
+      "rva": "0x2b1e46d",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "E8 9E 49 DA FF 48 8D 57 40 48 8D 48 50 48 8B 9C 24 50 02 00 00 48 81 C4 40 02 00 00 5F E9 F1 F9 07 FE CC 48 89 5C 24 08 57 48 83 EC 20 48 8B 1A 48 8B F9 66 83 3B 2E 75 18 83 7B 08 FF 74 12 E8"
+    },
+    {
+      "name": "script_dlc_contains",
+      "rva": "0x37a4470",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 54 41 56 41 57 48 83 EC 20 0F 10 0A 48 8B F2 4C 8B F1 66 0F 6F C1 66 48 0F 7E CA 66 0F 73 D8 08 66 41 0F 7E C0 E8 91 9D 7D 00 4D"
+    },
+    {
+      "name": "feature_enum_data",
+      "rva": "0x47334c0",
+      "confidence": "reviewed-static-campaign-migration",
+      "pattern": "87 35 00 00 88 35 00 00 A7 34 00 00 38 35 00 00 39 35 00 00 70 32 00 00 6D 36 00 00 DC 34 00 00 73 37 00 00 08 36 00 00 CF 37 00 00 CE 37 00 00 C4 36 00 00 7A 37 00 00 E0 35 00 00 4A 39 00 00 0A 3B 00 00 5B 3A 00 00 09 3A 00 00 08 3A 00 00 53 39 00 00 00 3A 00 00 02 3A 00 00 01 3A 00 00 DA 39 00 00 BB 3C 00 00 07 3A 00 00 98 3C 00 00 A1 3C 00 00 06 3A 00 00 F7 39 00 00 67 3D 00 00 ED 39 00 00 EE 39 00 00 EF 39 00 00 F0 39 00 00 DB 39 00 00 DC 39 00 00 DD 39 00 00 DE 39 00 00 DF 39 00 00 01 41 00 00 02 41 00 00 69 41 00 00"
+    }
+  ],
+  "vtable_prefixes": [],
+  "semantic_checks": [
+    {
+      "purpose": "title_storage",
+      "rva": "0x289da6f",
+      "bytes": "48 8B 05 82 00 48 03",
+      "instruction": "mov rax, qword ptr [rip + 0x3480082]",
+      "rip_targets": [
+        "0x5d1daf8"
+      ]
+    },
+    {
+      "purpose": "title_generation",
+      "rva": "0x289da99",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_fallback",
+      "rva": "0x289da9e",
+      "bytes": "48 8B 05 3B 00 48 03",
+      "instruction": "mov rax, qword ptr [rip + 0x348003b]",
+      "rip_targets": [
+        "0x5d1dae0"
+      ]
+    },
+    {
+      "purpose": "title_template",
+      "rva": "0x28b1d1e",
+      "bytes": "48 8B 41 48",
+      "instruction": "mov rax, qword ptr [rcx + 0x48]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_tier",
+      "rva": "0x28b1d22",
+      "bytes": "83 78 64 02",
+      "instruction": "cmp dword ptr [rax + 0x64], 2",
+      "rip_targets": []
+    },
+    {
+      "purpose": "capital_title",
+      "rva": "0x28b1cd9",
+      "bytes": "E8 42 05 00 00",
+      "instruction": "call 0x28b2220",
+      "rip_targets": []
+    },
+    {
+      "purpose": "capital_title_province",
+      "rva": "0x28b1d75",
+      "bytes": "E8 86 DB A5 FF",
+      "instruction": "call 0x230f900",
+      "rip_targets": []
+    },
+    {
+      "purpose": "capital_pointer",
+      "rva": "0x28b1d7f",
+      "bytes": "48 8B 81 38 03 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x338]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "landed_liege",
+      "rva": "0x28bfc70",
+      "bytes": "48 8B 81 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "unlanded_liege",
+      "rva": "0x28bfc77",
+      "bytes": "48 8B 91 B8 01 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0x1b8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "liege_generation",
+      "rva": "0x28bfcd8",
+      "bytes": "44 39 40 18",
+      "instruction": "cmp dword ptr [rax + 0x18], r8d",
+      "rip_targets": []
+    },
+    {
+      "purpose": "top_liege_loop",
+      "rva": "0x28bfe2e",
+      "bytes": "75 90",
+      "instruction": "jne 0x28bfdc0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "government_death",
+      "rva": "0x28c2e3b",
+      "bytes": "48 8B 81 D0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1d0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "government_landed",
+      "rva": "0x28c2e47",
+      "bytes": "48 8B 81 C0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "government_pointer",
+      "rva": "0x28c2eb8",
+      "bytes": "48 8B 80 F8 03 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x3f8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "government_dead_pointer",
+      "rva": "0x28c2ec1",
+      "bytes": "48 8B 80 88 00 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x88]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "government_fallback",
+      "rva": "0x28c2ef1",
+      "bytes": "48 8B 05 B0 B3 45 03",
+      "instruction": "mov rax, qword ptr [rip + 0x345b3b0]",
+      "rip_targets": [
+        "0x5d1e2a8"
+      ]
+    },
+    {
+      "purpose": "government_flag_span",
+      "rva": "0x2b1e476",
+      "bytes": "48 8D 48 50",
+      "instruction": "lea rcx, [rax + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "government_flag_count",
+      "rva": "0xb9de8a",
+      "bytes": "4C 63 49 0C",
+      "instruction": "movsxd r9, dword ptr [rcx + 0xc]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "selection_service",
+      "rva": "0x36670ad",
+      "bytes": "48 8B 0D C4 CC 64 02",
+      "instruction": "mov rcx, qword ptr [rip + 0x264ccc4]",
+      "rip_targets": [
+        "0x5cb3d78"
+      ]
+    },
+    {
+      "purpose": "selection_vcall",
+      "rva": "0x36670bc",
+      "bytes": "FF 50 10",
+      "instruction": "call qword ptr [rax + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "selected_rule_count",
+      "rva": "0x36670d0",
+      "bytes": "48 63 50 14",
+      "instruction": "movsxd rdx, dword ptr [rax + 0x14]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "selected_rule_data",
+      "rva": "0x36670d9",
+      "bytes": "48 8B 48 08",
+      "instruction": "mov rcx, qword ptr [rax + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "token_key_string",
+      "rva": "0x3665947",
+      "bytes": "48 8D 4B 18",
+      "instruction": "lea rcx, [rbx + 0x18]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "token_fallback",
+      "rva": "0x366622c",
+      "bytes": "48 8B 05 3D 18 6D 02",
+      "instruction": "mov rax, qword ptr [rip + 0x26d183d]",
+      "rip_targets": [
+        "0x5d37a70"
+      ]
+    },
+    {
+      "purpose": "feature_root",
+      "rva": "0x8c2120",
+      "bytes": "48 8B 05 D1 66 3F 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53f66d1]",
+      "rip_targets": [
+        "0x5cb87f8"
+      ]
+    },
+    {
+      "purpose": "feature_bits_zero",
+      "rva": "0x229268a",
+      "bytes": "48 89 47 20",
+      "instruction": "mov qword ptr [rdi + 0x20], rax",
+      "rip_targets": []
+    },
+    {
+      "purpose": "feature_count_zero",
+      "rva": "0x229268e",
+      "bytes": "44 89 77 28",
+      "instruction": "mov dword ptr [rdi + 0x28], r14d",
+      "rip_targets": []
+    },
+    {
+      "purpose": "feature_bit_test",
+      "rva": "0x22926e5",
+      "bytes": "48 8B 4C D7 20",
+      "instruction": "mov rcx, qword ptr [rdi + rdx*8 + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "feature_bit_write",
+      "rva": "0x22926f2",
+      "bytes": "48 89 44 D7 20",
+      "instruction": "mov qword ptr [rdi + rdx*8 + 0x20], rax",
+      "rip_targets": []
+    },
+    {
+      "purpose": "feature_enabled_counter",
+      "rva": "0x22926f7",
+      "bytes": "FF 47 28",
+      "instruction": "inc dword ptr [rdi + 0x28]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "script_dlc_direct",
+      "rva": "0x22926ad",
+      "bytes": "48 8D 0D 2C EF A2 03",
+      "instruction": "lea rcx, [rip + 0x3a2ef2c]",
+      "rip_targets": [
+        "0x5cc15e0"
+      ]
+    },
+    {
+      "purpose": "dlc_mask",
+      "rva": "0x37a44af",
+      "bytes": "4D 63 7E 14",
+      "instruction": "movsxd r15, dword ptr [r14 + 0x14]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "dlc_bucket_base",
+      "rva": "0x37a44b6",
+      "bytes": "4D 8B 66 08",
+      "instruction": "mov r12, qword ptr [r14 + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "dlc_control",
+      "rva": "0x37a44c6",
+      "bytes": "41 38 7C C4 04",
+      "instruction": "cmp byte ptr [r12 + rax*8 + 4], dil",
+      "rip_targets": []
+    },
+    {
+      "purpose": "dlc_bucket_key",
+      "rva": "0x37a44da",
+      "bytes": "48 8D 53 08",
+      "instruction": "lea rdx, [rbx + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "dlc_bucket_stride",
+      "rva": "0x37a450e",
+      "bytes": "48 83 C3 28",
+      "instruction": "add rbx, 0x28",
+      "rip_targets": []
+    },
+    {
+      "purpose": "dlc_spill",
+      "rva": "0x37a451b",
+      "bytes": "41 0F B6 46 18",
+      "instruction": "movzx eax, byte ptr [r14 + 0x18]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "feature_enum_begin",
+      "rva": "0xc131ac",
+      "bytes": "48 8D 3D 0D 03 B2 03",
+      "instruction": "lea rdi, [rip + 0x3b2030d]",
+      "rip_targets": [
+        "0x47334c0"
+      ]
+    },
+    {
+      "purpose": "feature_enum_end",
+      "rva": "0xc131a2",
+      "bytes": "48 8D 1D C7 03 B2 03",
+      "instruction": "lea rbx, [rip + 0x3b203c7]",
+      "rip_targets": [
+        "0x4733570"
+      ]
+    },
+    {
+      "purpose": "feature_native_count",
+      "rva": "0xc131cc",
+      "bytes": "B8 2C 00 00 00",
+      "instruction": "mov eax, 0x2c",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province_validity_after_native_resolver",
+      "rva": "0x2311056",
+      "bytes": "81 B8 5C 08 00 00 76 6F 72 50",
+      "instruction": "cmp dword ptr [rax + 0x85c], 0x50726f76",
+      "rip_targets": []
+    }
+  ],
+  "source_constants": {
+    "kCampaignRootGameStateSlotRva": "0x5C68C50",
+    "kCampaignRootJominiStateSlotRva": "0x5C6A520",
+    "kCampaignRootCharacterStorageSlotRva": "0x5C67568",
+    "kCampaignRootCharacterFallbackSlotRva": "0x5C67570",
+    "kCampaignRootLandedTitleStorageSlotRva": "0x5D1DAF8",
+    "kCampaignRootLandedTitleFallbackSlotRva": "0x5D1DAE0",
+    "kCampaignRootGovernmentFallbackSlotRva": "0x5D1E2A8",
+    "kCampaignRootGameRuleSelectionServiceSlotRva": "0x5CB3D78",
+    "kCampaignRootGameRuleTokenFallbackSlotRva": "0x5D37A70",
+    "kCampaignRootPrimaryTitleRva": "0x289DA30",
+    "kCampaignRootCapitalProvinceRva": "0x28B1CD0",
+    "kCampaignRootImmediateLiegeRva": "0x28BFC70",
+    "kCampaignRootTopLiegeRva": "0x28BFDA0",
+    "kCampaignRootGovernmentRva": "0x28C2E10",
+    "kCampaignRootScriptIdentifierNameRva": "0x3F4F900",
+    "kLoadedFeatureRootSlotRva": "0x5CB87F8",
+    "kLoadedFeatureScriptDlcSetRva": "0x5CC15E0",
+    "kLoadedFeatureEnumTableRva": "0x47334C0",
+    "kLoadedFeatureEnumTableEndRva": "0x4733570",
+    "kLoadedFeatureScriptIdentifierNameRva": "0x3F4F900"
+  },
+  "source_layout_constants": {
+    "src/ck3_12002_features.cpp": {
+      "kFeatureBitsetOffset": "0x2B0",
+      "kFeatureEnabledCountOffset": "0x2B8",
+      "kScriptDlcBucketBaseOffset": "0x08",
+      "kScriptDlcBucketMaskOffset": "0x14",
+      "kScriptDlcMaximumSpillOffset": "0x18",
+      "kScriptDlcBucketStride": "0x28",
+      "kScriptDlcBucketControlOffset": "0x04",
+      "kScriptDlcBucketKeyOffset": "0x08",
+      "kMsvcStringSizeOffset": "0x10",
+      "kMsvcStringCapacityOffset": "0x18",
+      "kMsvcStringInlineCapacity": "0x0F"
+    }
+  },
+  "layouts": {
+    "player_character_manager_offset": "0x222E8",
+    "character_death_marker_offset": "0x1D0",
+    "landed_title_template_offset": "0x48",
+    "landed_title_tier_offset": "0x64",
+    "government_key_offset": "0x18",
+    "government_flags_offset": "0x50",
+    "selected_rule_tokens_data_offset": "0x08",
+    "selected_rule_tokens_count_offset": "0x14",
+    "rule_setting_token_key_offset": "0x18",
+    "game_data_province_array_offset": "0x140",
+    "game_data_province_count_offset": "0x14C",
+    "full_generation_equality_required": true,
+    "province_type_tag_offset": "0x85C",
+    "province_type_tag": "0x50726F76"
+  },
+  "feature_registry": [
+    {
+      "native_index": 0,
+      "cstring_id": "0x3587",
+      "key": "garments_of_the_hre",
+      "compiled_record_rva": "0x46f4120",
+      "key_string_rva": "0x46cd478"
+    },
+    {
+      "native_index": 1,
+      "cstring_id": "0x3588",
+      "key": "fashion_of_the_abbasid_court",
+      "compiled_record_rva": "0x46f4130",
+      "key_string_rva": "0x46ce818"
+    },
+    {
+      "native_index": 2,
+      "cstring_id": "0x34a7",
+      "key": "the_northern_lords",
+      "compiled_record_rva": "0x46f3330",
+      "key_string_rva": "0x46ccf50"
+    },
+    {
+      "native_index": 3,
+      "cstring_id": "0x3538",
+      "key": "hybridize_culture",
+      "compiled_record_rva": "0x46f3c40",
+      "key_string_rva": "0x46cdb78"
+    },
+    {
+      "native_index": 4,
+      "cstring_id": "0x3539",
+      "key": "diverge_culture",
+      "compiled_record_rva": "0x46f3c50",
+      "key_string_rva": "0x46cdb38"
+    },
+    {
+      "native_index": 5,
+      "cstring_id": "0x3270",
+      "key": "royal_court",
+      "compiled_record_rva": "0x46f11f0",
+      "key_string_rva": "0x46c9a40"
+    },
+    {
+      "native_index": 6,
+      "cstring_id": "0x366d",
+      "key": "reform_culture",
+      "compiled_record_rva": "0x46f4f60",
+      "key_string_rva": "0x46cf028"
+    },
+    {
+      "native_index": 7,
+      "cstring_id": "0x34dc",
+      "key": "court_artifacts",
+      "compiled_record_rva": "0x46f3680",
+      "key_string_rva": "0x46cc760"
+    },
+    {
+      "native_index": 8,
+      "cstring_id": "0x3773",
+      "key": "the_fate_of_iberia",
+      "compiled_record_rva": "0x46f5f80",
+      "key_string_rva": "0x46d0820"
+    },
+    {
+      "native_index": 9,
+      "cstring_id": "0x3608",
+      "key": "friends_and_foes",
+      "compiled_record_rva": "0x46f4910",
+      "key_string_rva": "0x46ce140"
+    },
+    {
+      "native_index": 10,
+      "cstring_id": "0x37cf",
+      "key": "tours_and_tournaments",
+      "compiled_record_rva": "0x46f6520",
+      "key_string_rva": "0x46d1630"
+    },
+    {
+      "native_index": 11,
+      "cstring_id": "0x37ce",
+      "key": "advanced_activities",
+      "compiled_record_rva": "0x46f6510",
+      "key_string_rva": "0x46d1618"
+    },
+    {
+      "native_index": 12,
+      "cstring_id": "0x36c4",
+      "key": "accolades",
+      "compiled_record_rva": "0x46f54c0",
+      "key_string_rva": "0x44b18d0"
+    },
+    {
+      "native_index": 13,
+      "cstring_id": "0x377a",
+      "key": "legacy_of_persia",
+      "compiled_record_rva": "0x46f5ff0",
+      "key_string_rva": "0x46d0468"
+    },
+    {
+      "native_index": 14,
+      "cstring_id": "0x35e0",
+      "key": "elegance_of_the_empire",
+      "compiled_record_rva": "0x46f46a0",
+      "key_string_rva": "0x46ce420"
+    },
+    {
+      "native_index": 15,
+      "cstring_id": "0x394a",
+      "key": "wards_and_wardens",
+      "compiled_record_rva": "0x46f7ca0",
+      "key_string_rva": "0x46d2638"
+    },
+    {
+      "native_index": 16,
+      "cstring_id": "0x3b0a",
+      "key": "legends_of_the_dead",
+      "compiled_record_rva": "0x46f9890",
+      "key_string_rva": "0x46d5b30"
+    },
+    {
+      "native_index": 17,
+      "cstring_id": "0x3a5b",
+      "key": "legends",
+      "compiled_record_rva": "0x46f8da0",
+      "key_string_rva": "0x448cc58"
+    },
+    {
+      "native_index": 18,
+      "cstring_id": "0x3a09",
+      "key": "north_african_attire",
+      "compiled_record_rva": "0x46f8880",
+      "key_string_rva": "0x46d45c8"
+    },
+    {
+      "native_index": 19,
+      "cstring_id": "0x3a08",
+      "key": "couture_of_the_capets",
+      "compiled_record_rva": "0x46f8870",
+      "key_string_rva": "0x46d45b0"
+    },
+    {
+      "native_index": 20,
+      "cstring_id": "0x3953",
+      "key": "landless_playable",
+      "compiled_record_rva": "0x46f7d30",
+      "key_string_rva": "0x46d2548"
+    },
+    {
+      "native_index": 21,
+      "cstring_id": "0x3a00",
+      "key": "admin_gov",
+      "compiled_record_rva": "0x46f87f0",
+      "key_string_rva": "0x46d4628"
+    },
+    {
+      "native_index": 22,
+      "cstring_id": "0x3a02",
+      "key": "roads_to_power",
+      "compiled_record_rva": "0x46f8810",
+      "key_string_rva": "0x46d4598"
+    },
+    {
+      "native_index": 23,
+      "cstring_id": "0x3a01",
+      "key": "court_room_view",
+      "compiled_record_rva": "0x46f8800",
+      "key_string_rva": "0x46d4638"
+    },
+    {
+      "native_index": 24,
+      "cstring_id": "0x39da",
+      "key": "wandering_nobles",
+      "compiled_record_rva": "0x46f8590",
+      "key_string_rva": "0x46d3188"
+    },
+    {
+      "native_index": 25,
+      "cstring_id": "0x3cbb",
+      "key": "west_slavic_attire",
+      "compiled_record_rva": "0x46fb330",
+      "key_string_rva": "0x46d7d38"
+    },
+    {
+      "native_index": 26,
+      "cstring_id": "0x3a07",
+      "key": "medieval_monuments",
+      "compiled_record_rva": "0x46f8860",
+      "key_string_rva": "0x46d45f0"
+    },
+    {
+      "native_index": 27,
+      "cstring_id": "0x3c98",
+      "key": "khans_of_the_steppe",
+      "compiled_record_rva": "0x46fb110",
+      "key_string_rva": "0x46d8048"
+    },
+    {
+      "native_index": 28,
+      "cstring_id": "0x3ca1",
+      "key": "nomads",
+      "compiled_record_rva": "0x46fb1a0",
+      "key_string_rva": "0x46d7f94"
+    },
+    {
+      "native_index": 29,
+      "cstring_id": "0x3a06",
+      "key": "arctic_attire",
+      "compiled_record_rva": "0x46f8850",
+      "key_string_rva": "0x46d45e0"
+    },
+    {
+      "native_index": 30,
+      "cstring_id": "0x39f7",
+      "key": "crowns_of_the_world",
+      "compiled_record_rva": "0x46f8760",
+      "key_string_rva": "0x46d44a8"
+    },
+    {
+      "native_index": 31,
+      "cstring_id": "0x3d67",
+      "key": "landless_adventurer",
+      "compiled_record_rva": "0x46fbde0",
+      "key_string_rva": "0x449f180"
+    },
+    {
+      "native_index": 32,
+      "cstring_id": "0x39ed",
+      "key": "coronations",
+      "compiled_record_rva": "0x46f86c0",
+      "key_string_rva": "0x46d44e0"
+    },
+    {
+      "native_index": 33,
+      "cstring_id": "0x39ee",
+      "key": "all_under_heaven",
+      "compiled_record_rva": "0x46f86d0",
+      "key_string_rva": "0x46d4548"
+    },
+    {
+      "native_index": 34,
+      "cstring_id": "0x39ef",
+      "key": "merit_admin",
+      "compiled_record_rva": "0x46f86e0",
+      "key_string_rva": "0x46d4560"
+    },
+    {
+      "native_index": 35,
+      "cstring_id": "0x39f0",
+      "key": "advanced_aspirations",
+      "compiled_record_rva": "0x46f86f0",
+      "key_string_rva": "0x46d4520"
+    },
+    {
+      "native_index": 36,
+      "cstring_id": "0x39db",
+      "key": "high_medieval_warfare_attire",
+      "compiled_record_rva": "0x46f85a0",
+      "key_string_rva": "0x46d31a0"
+    },
+    {
+      "native_index": 37,
+      "cstring_id": "0x39dc",
+      "key": "holy_buildings",
+      "compiled_record_rva": "0x46f85b0",
+      "key_string_rva": "0x46d3160"
+    },
+    {
+      "native_index": 38,
+      "cstring_id": "0x39dd",
+      "key": "north_pacific_attire",
+      "compiled_record_rva": "0x46f85c0",
+      "key_string_rva": "0x46d3170"
+    },
+    {
+      "native_index": 39,
+      "cstring_id": "0x39de",
+      "key": "east_asian_wonders",
+      "compiled_record_rva": "0x46f85d0",
+      "key_string_rva": "0x46d31f0"
+    },
+    {
+      "native_index": 40,
+      "cstring_id": "0x39df",
+      "key": "celestial_court_attire",
+      "compiled_record_rva": "0x46f85e0",
+      "key_string_rva": "0x46d3208"
+    },
+    {
+      "native_index": 41,
+      "cstring_id": "0x4101",
+      "key": "symbols_of_authority",
+      "compiled_record_rva": "0x46ff6d0",
+      "key_string_rva": "0x46dd0b8"
+    },
+    {
+      "native_index": 42,
+      "cstring_id": "0x4102",
+      "key": "songs_of_the_realm",
+      "compiled_record_rva": "0x46ff6e0",
+      "key_string_rva": "0x46dd0d0"
+    },
+    {
+      "native_index": 43,
+      "cstring_id": "0x4169",
+      "key": "by_god_alone",
+      "compiled_record_rva": "0x46ffd50",
+      "key_string_rva": "0x46ddb00"
+    }
+  ],
+  "campaign_root": {
+    "globals": {
+      "game_state_slot_rva": "0x5C68C50",
+      "jomini_state_slot_rva": "0x5C6A520",
+      "character_storage_slot_rva": "0x5C67568",
+      "character_fallback_slot_rva": "0x5C67570",
+      "landed_title_storage_slot_rva": "0x5D1DAF8",
+      "landed_title_fallback_slot_rva": "0x5D1DAE0",
+      "government_fallback_slot_rva": "0x5D1E2A8",
+      "game_rule_selection_service_slot_rva": "0x5CB3D78",
+      "game_rule_token_fallback_slot_rva": "0x5D37A70"
+    },
+    "functions": {
+      "primary_title_rva": "0x289DA30",
+      "capital_province_rva": "0x28B1CD0",
+      "immediate_liege_rva": "0x28BFC70",
+      "top_liege_rva": "0x28BFDA0",
+      "government_rva": "0x28C2E10",
+      "script_identifier_name_rva": "0x3F4F900"
+    },
+    "backend_id": "ck3-1.20.0.2-native-campaign-root-context-v1"
+  },
+  "loaded_features": {
+    "backend_id": "ck3-1.20.0.2-native-loaded-feature-manifest-v1",
+    "root_pointer_slot_rva": "0x5CB87F8",
+    "bitset_offset": "0x2B0",
+    "enabled_count_offset": "0x2B8",
+    "enum_table_begin_rva": "0x47334C0",
+    "enum_table_end_rva": "0x4733570",
+    "native_count": 44,
+    "script_dlc_set_rva": "0x5CC15E0",
+    "script_identifier_name_rva": "0x3F4F900",
+    "entitlements": "unavailable/store_verdict_provenance_unclosed inherited scope; no false entitlement inference"
+  }
+}

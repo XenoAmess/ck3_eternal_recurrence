@@ -1,0 +1,328 @@
+{
+  "schema_version": 1,
+  "private_key": "ck3_12002_family_value",
+  "status": "static-ready",
+  "live_verified": false,
+  "advertised": false,
+  "build": {
+    "product_version": "1.20.0.2",
+    "file_size": 101039736,
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000"
+  },
+  "signature_anchors": [
+    {
+      "name": "native_house_resolution",
+      "rva": "0x9d56e1",
+      "confidence": "exact-file consumer-derived layout/native gate; no live process",
+      "pattern": "8B 87 58 01 00 00 4C 8B 05 02 84 34 05 4D 85 C0 74 26 8B C8 81 E1 FF FF FF 00 41 3B 48 2C 73 18 8B D1 48 03 D2 49 8B 48 20 48 8B 5C D1 08 48 85 DB 74 05 39 43 10 74 07 48 8B 1D C8 83 34 05 44 38 A3 18 02 00 00 0F 84 DB 01 00 00 48 8D 4C 24 30 E8 29 48 EB FF 90 B9 04 00 00 00 66 89 4C 24"
+    },
+    {
+      "name": "native_dynasty_resolution",
+      "rva": "0xc78ccf",
+      "confidence": "exact-file consumer-derived layout/native gate; no live process",
+      "pattern": "48 8B 15 A2 51 0A 05 48 85 D2 74 2A 44 8B 40 2C 41 8B C0 25 FF FF FF 00 3B 42 2C 73 19 8B C8 48 8B 42 20 48 03 C9 48 8B 4C C8 08 48 85 C9 74 06 44 39 41 10 74 07 48 8B 0D 1C 51 0A 05 41 8B 41 18 39 81 D4 00 00 00 0F 94 C0 C3 CC CC CC CC CC CC 48 8B 05 C9 4D 0A 05 4C 8B D1 48 8B 15 B7 4D"
+    },
+    {
+      "name": "native_employer_reader",
+      "rva": "0x28bfc70",
+      "confidence": "exact-file consumer-derived layout/native gate; no live process",
+      "pattern": "48 8B 81 C0 01 00 00 48 8B 91 B8 01 00 00 48 85 C0 74 1E 48 8B 80 C0 01 00 00 48 8B 40 28 81 78 1C 72 61 68 43 75 06 83 78 18 FF 75 48 48 8B C1 C3 48 85 D2 74 38 48 8B 05 BB 78 3A 03 48 85 C0 74 2C 44 8B 82 C8 00 00 00 41 8B C8 81 E1 FF FF FF 00 3B 48 2C 73 17 48 8B 40 20 48 03 C9 48 8B"
+    },
+    {
+      "name": "native_marriage_age_selector_consumer",
+      "rva": "0x2503cf6",
+      "confidence": "exact-file consumer-derived layout/native gate; no live process",
+      "pattern": "44 0F B6 B3 A1 01 00 00 4C 89 BC 24 98 00 00 00 44 38 B7 A1 01 00 00 75 0A 44 0F B6 BF A1 01 00 00 EB 12 8B 15 9D 80 84 03 48 8B CE E8 59 4B B7 00 44 0F B6 F8 8B 15 83 83 84 03 48 8B CE E8 47 4B B7 00 80 BF A1 01 00 00 00 44 0F B6 D0 44 8B 05 11 64 76 03 41 8B D0 44 8B 0D BB 5F 76 03 41"
+    },
+    {
+      "name": "native_fertility_gate",
+      "rva": "0x28bb4e0",
+      "confidence": "exact-file consumer-derived layout/native gate; no live process",
+      "pattern": "40 53 48 83 EC 20 80 B9 A1 01 00 00 00 48 8B D9 0F 84 E0 00 00 00 48 89 6C 24 30 48 89 74 24 38 48 89 7C 24 40 E8 D6 85 00 00 BD BF 00 00 00 4C 8B 58 68 4C 63 50 74 4D 8B CB 4D 8B C3 4B 8D 34 53 4D 85 D2 7E 2B 66 66 0F 1F 84 00 00 00 00 00 49 8B D2 48 D1 EA 4C 2B D2 66 41 39 2C 51 4B 8D"
+    },
+    {
+      "name": "native_effective_fertility_getter",
+      "rva": "0x28c6360",
+      "confidence": "exact-file consumer-derived layout/native gate; no live process",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 83 B9 B0 01 00 00 00 48 8B DA 48 8B F9 74 28 E8 61 51 FF FF 84 C0 74 1F 48 8B 87 B0 01 00 00 48 8B 88 E0 02 00 00 48 8B C3 48 89 0B 48 8B 5C 24 30 48 83 C4 20 5F C3 48 C7 03 00 00 00 00 48 8B C3 48 8B 5C 24 30 48 83 C4 20 5F C3 CC CC CC CC CC CC CC CC CC"
+    }
+  ],
+  "vtable_prefixes": [],
+  "semantic_checks": [
+    {
+      "name": "native_house_id",
+      "rva": "0x9d56e1",
+      "bytes": "8B 87 58 01 00 00",
+      "instruction": "mov eax, dword ptr [rdi + 0x158]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_house_store",
+      "rva": "0x9d56e7",
+      "bytes": "4C 8B 05 02 84 34 05",
+      "instruction": "mov r8, qword ptr [rip + 0x5348402]",
+      "rip_targets": [
+        "0x5d1daf0"
+      ],
+      "direct_target": []
+    },
+    {
+      "name": "native_house_store_capacity",
+      "rva": "0x9d56fb",
+      "bytes": "41 3B 48 2C",
+      "instruction": "cmp ecx, dword ptr [r8 + 0x2c]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_house_store_slots",
+      "rva": "0x9d5706",
+      "bytes": "49 8B 48 20",
+      "instruction": "mov rcx, qword ptr [r8 + 0x20]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_house_slot_object",
+      "rva": "0x9d570a",
+      "bytes": "48 8B 5C D1 08",
+      "instruction": "mov rbx, qword ptr [rcx + rdx*8 + 8]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_house_full_id",
+      "rva": "0x9d5714",
+      "bytes": "39 43 10",
+      "instruction": "cmp dword ptr [rbx + 0x10], eax",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_house_fallback",
+      "rva": "0x9d5719",
+      "bytes": "48 8B 1D C8 83 34 05",
+      "instruction": "mov rbx, qword ptr [rip + 0x53483c8]",
+      "rip_targets": [
+        "0x5d1dae8"
+      ],
+      "direct_target": []
+    },
+    {
+      "name": "native_dynasty_store",
+      "rva": "0xc78ccf",
+      "bytes": "48 8B 15 A2 51 0A 05",
+      "instruction": "mov rdx, qword ptr [rip + 0x50a51a2]",
+      "rip_targets": [
+        "0x5d1de78"
+      ],
+      "direct_target": []
+    },
+    {
+      "name": "native_house_dynasty_id",
+      "rva": "0xc78cdb",
+      "bytes": "44 8B 40 2C",
+      "instruction": "mov r8d, dword ptr [rax + 0x2c]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_dynasty_full_id",
+      "rva": "0xc78cff",
+      "bytes": "44 39 41 10",
+      "instruction": "cmp dword ptr [rcx + 0x10], r8d",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_dynasty_fallback",
+      "rva": "0xc78d05",
+      "bytes": "48 8B 0D 1C 51 0A 05",
+      "instruction": "mov rcx, qword ptr [rip + 0x50a511c]",
+      "rip_targets": [
+        "0x5d1de28"
+      ],
+      "direct_target": []
+    },
+    {
+      "name": "native_employer_relation",
+      "rva": "0x28bfc77",
+      "bytes": "48 8B 91 B8 01 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0x1b8]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_employer_character_storage",
+      "rva": "0x28bfca6",
+      "bytes": "48 8B 05 BB 78 3A 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33a78bb]",
+      "rip_targets": [
+        "0x5c67568"
+      ],
+      "direct_target": []
+    },
+    {
+      "name": "native_employer_id",
+      "rva": "0x28bfcb2",
+      "bytes": "44 8B 82 C8 00 00 00",
+      "instruction": "mov r8d, dword ptr [rdx + 0xc8]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_candidate_sex_selector",
+      "rva": "0x2503cf6",
+      "bytes": "44 0F B6 B3 A1 01 00 00",
+      "instruction": "movzx r14d, byte ptr [rbx + 0x1a1]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_subject_sex_selector",
+      "rva": "0x2503d0f",
+      "bytes": "44 0F B6 BF A1 01 00 00",
+      "instruction": "movzx r15d, byte ptr [rdi + 0x1a1]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_subject_age",
+      "rva": "0x2503d59",
+      "bytes": "0F BF 4F 68",
+      "instruction": "movsx ecx, word ptr [rdi + 0x68]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_candidate_age",
+      "rva": "0x2503d61",
+      "bytes": "0F BF 43 68",
+      "instruction": "movsx eax, word ptr [rbx + 0x68]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_fertility_extension_check",
+      "rva": "0x28c636a",
+      "bytes": "48 83 B9 B0 01 00 00 00",
+      "instruction": "cmp qword ptr [rcx + 0x1b0], 0",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_fertility_gate_call",
+      "rva": "0x28c637a",
+      "bytes": "E8 61 51 FF FF",
+      "instruction": "call 0x28bb4e0",
+      "rip_targets": [],
+      "direct_target": [
+        "0x28bb4e0"
+      ]
+    },
+    {
+      "name": "native_fertility_extension_load",
+      "rva": "0x28c6383",
+      "bytes": "48 8B 87 B0 01 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0x1b0]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_fertility_raw_load",
+      "rva": "0x28c638a",
+      "bytes": "48 8B 88 E0 02 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x2e0]",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_fertility_output",
+      "rva": "0x28c6394",
+      "bytes": "48 89 0B",
+      "instruction": "mov qword ptr [rbx], rcx",
+      "rip_targets": [],
+      "direct_target": []
+    },
+    {
+      "name": "native_fertility_zero_output",
+      "rva": "0x28c63a2",
+      "bytes": "48 C7 03 00 00 00 00",
+      "instruction": "mov qword ptr [rbx], 0",
+      "rip_targets": [],
+      "direct_target": []
+    }
+  ],
+  "source_constants": {
+    "kHouseStoreSlotRva": "0x5d1daf0",
+    "kHouseFallbackSlotRva": "0x5d1dae8",
+    "kDynastyStoreSlotRva": "0x5d1de78",
+    "kDynastyFallbackSlotRva": "0x5d1de28",
+    "kCharacterAgeOffset": "0x68",
+    "kCharacterSexSelectorOffset": "0x1a1",
+    "kCharacterHouseOffset": "0x158",
+    "kHouseDynastyOffset": "0x2c",
+    "kCharacterCourtRelationOffset": "0x1b8",
+    "kCourtRelationEmployerOffset": "0xc8",
+    "kFertilityGateRva": "0x28bb4e0",
+    "kFertilityExtensionOffset": "0x1b0",
+    "kFertilityRawOffset": "0x2e0"
+  },
+  "field_source_bindings": {
+    "native_house_id": "kCharacterHouseOffset",
+    "native_house_dynasty_id": "kHouseDynastyOffset",
+    "native_employer_relation": "kCharacterCourtRelationOffset",
+    "native_employer_id": "kCourtRelationEmployerOffset",
+    "native_subject_sex_selector": "kCharacterSexSelectorOffset",
+    "native_subject_age": "kCharacterAgeOffset",
+    "native_fertility_extension_load": "kFertilityExtensionOffset",
+    "native_fertility_raw_load": "kFertilityRawOffset"
+  },
+  "global_source_bindings": {
+    "native_house_store": "kHouseStoreSlotRva",
+    "native_house_fallback": "kHouseFallbackSlotRva",
+    "native_dynasty_store": "kDynastyStoreSlotRva",
+    "native_dynasty_fallback": "kDynastyFallbackSlotRva"
+  },
+  "native_call_bindings": {
+    "native_fertility_gate_call": "kFertilityGateRva"
+  },
+  "source_files": [
+    "include/xar_bridge/ck3_12002_family_value.hpp",
+    "src/ck3_12002_family_value.cpp",
+    "src/ck3_12002_family_value_test.cpp"
+  ],
+  "abi": {
+    "family_value_api": "family_value::BindImage / ReadCharacterValue / ReadCharacterLineage",
+    "fertility_gate": "bool(void* character),RVA28BB4E0",
+    "native_effective_getter": "int64_t*(void* character,int64_t* output),RVA28C6360,proof reference; provider reuses same gate and extension qword",
+    "full_id_resolution": "Component storage slots+20,count+2C,stride10,pointer+8,house/dynasty objectfullID+10; CharacterID+18 via migrated ResolveCoreCharacter",
+    "zero_absence": "Only -1 means absent. House/dynasty ID0 is valid. A denied fertility gate or missing extension produces available effective raw0."
+  },
+  "boundaries": [
+    "Owning application thread; enclosing family query supplies paused frame and repeats observation when needed.",
+    "No faith,doctrine,tenet,fervor observation. Native eligibility gate remains opaque.",
+    "Fertility raw is a native input, not a pair future birth probability.",
+    "No new paused live artifact; private implementation static-ready only."
+  ],
+  "tests": {
+    "compiler": "MSVC x64 /std:c++20 /EHsc /W4 /WX",
+    "passed": true,
+    "compile_log": "artifacts/nonwar/2026-10-01/family-value-build/compile.log",
+    "result_log": "artifacts/nonwar/2026-10-01/family-value-build/test.log",
+    "coverage": [
+      "full generation-bearing character/house/dynasty/employer IDs",
+      "age signedword and native sexselector",
+      "real native gate callback invoked using resolved fixturecharacter",
+      "allowed/denied/zero/absent-extension fertility branches",
+      "no house/no dynasty/no employer legal absence",
+      "zero house and zero dynasty legitimate IDs",
+      "wrong-generation or fallback lineage failed read",
+      "unavailable binding and liveness failed read"
+    ]
+  }
+}

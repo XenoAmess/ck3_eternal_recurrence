@@ -1,5 +1,19 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-10-01 11:56：非战争 1.20 provider 与正式消费接入
+
+该条目记录用户要求的无本地 CK3 后台工作，冻结 `1.20.0.2 / Steam25588574`、EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。源码与各包状态回链[离线执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)；历史条目继续保留原构建、seed 与原始失败证据。
+
+| 实际缺口 / 施工 | 本轮离线结果 | 尚需闭合的最小入口 |
+| --- | --- | --- |
+| [LIFE 新版 native](../ck3-native-ai/ck3-1.20.0.2-lifestyle.md) | 当前观测、最终合法性、typed command/receipt 已独立通过；组件 `static-ready` | 完成中央组合后，在新版 paused 帧读回，合法场景下一次动作及其后置/下一 turn/cold |
+| [ECON 新版 native](../ck3-native-ai/ck3-1.20.0.2-construction.md) | held/cost/state/submit 已独立通过；组件 `static-ready` | 正式候选实际费用、同槽开工/完工及收入；pending 与恢复沿既有合同 |
+| [FAMILY 新版 native](../ck3-native-ai/ck3-1.20.0.2-family.md) | query 68 / fulfill 69、candidate/alliance/child 独立 provider 通过；最终中央接线/联编仍进行中 | 先收口后台整合，再读回完整权限/成年/CanSend/answer；当前婚约负结果不重提，合法兑现才计真实 spouse/联盟 |
+| [campaign-root 缺少非战争输入](../ck3-native-ai/ck3-1.20.0.2-nonwar-campaign-context.md) | 完整 reader/serializer 的 15 组 fixture，实际 C++ 输出→Python normalization GREEN；组件 `static-ready` | 新版 paused 物质/健康/domain/继承/内阁/关系互证 |
+| [JOINT 正式路径两项故障](../ck3-native-ai/ck3-1.20.0.2-joint-offline.md) | faction unavailable 不再阻断独立合法和平建设；提交 OFF 后既有 first-heir pending 角色承诺保持一次；111 普通和 111 `-O` GREEN | 保持缺失战争现金/长期义务 typed 缺失，实际被选中动作与物质后置另验；完整 M5 五候选门未完成 |
+
+中央全部包联编和最终候选仍在后台收口，不能预写新组合 `complete` 或 production-live。此前 [d19 基础迁移](../ck3-1.20.0.2-migration-completion.md)与旧版 R0407/BA5 实证不能代替本条新增 provider 的新版 paused artifact。当前交接主线仍为 Robert **3,153/36,524** 持久日、G2 **3/8**，百年/首整局/两独立种子 **0/1、0/1、0/2**；本轮没有新增日期。原战争 hold、h4025 未 cold-tested 与宗教/holy order 暂缓及其窄例外保留。
+
 ## 2026-09-24 COMBAT-RATIO-GATE-B0：围城解围接战比例门
 
 | 缺口 | 当前事实与影响 | 本包最小改动 | 后续解除条件 |

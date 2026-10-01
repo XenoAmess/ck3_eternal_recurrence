@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "scope": "Reviewed exact-build native and C++ static consistency only; no process access or live validation.",
+  "modules": [
+    {
+      "id": "foundation",
+      "manifest": "ck3_1_20_0_2_foundation.json",
+      "source_literals": [
+        {
+          "file": "include/xar_bridge/ck3_12002.hpp",
+          "value": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+        }
+      ],
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002.hpp"
+        }
+      ]
+    },
+    {
+      "id": "commands",
+      "manifest": "ck3_1_20_0_2_commands.json",
+      "constant_groups": [
+        {
+          "field": "command_source_constants",
+          "file": "include/xar_bridge/ck3_12002_commands.hpp"
+        }
+      ]
+    },
+    {
+      "id": "thread_runtime",
+      "manifest": "ck3_1_20_0_2_thread_runtime.json",
+      "extra_semantic_checks": [
+        {
+          "purpose": "SDL first PeekMessage IAT call",
+          "rva": "0x40d942c",
+          "bytes": "FF 15 06 1A 30 00",
+          "instruction": "call qword ptr [rip + 0x301a06]",
+          "rip_targets": [
+            "0x43dae38"
+          ]
+        },
+        {
+          "purpose": "Windows video device pump binding",
+          "rva": "0x40f39bb",
+          "bytes": "48 8D 05 2E 5A FE FF",
+          "instruction": "lea rax, [rip - 0x1a5d2]",
+          "rip_targets": [
+            "0x40d93f0"
+          ]
+        },
+        {
+          "purpose": "TLS initialization flag offset",
+          "rva": "0x3f784d2",
+          "bytes": "BA 28 32 00 00",
+          "instruction": "mov edx, 0x3228",
+          "rip_targets": []
+        },
+        {
+          "purpose": "TLS context offset",
+          "rva": "0x3f784da",
+          "bytes": "41 B8 30 32 00 00",
+          "instruction": "mov r8d, 0x3230",
+          "rip_targets": []
+        },
+        {
+          "purpose": "TLS main marker initialized false",
+          "rva": "0x3f78505",
+          "bytes": "C6 43 20 00",
+          "instruction": "mov byte ptr [rbx + 0x20], 0",
+          "rip_targets": []
+        },
+        {
+          "purpose": "startup TLS global initialized",
+          "rva": "0x8545f8",
+          "bytes": "C6 05 C0 A0 46 05 01",
+          "instruction": "mov byte ptr [rip + 0x546a0c0], 1",
+          "rip_targets": [
+            "0x5cbe6bf"
+          ]
+        },
+        {
+          "purpose": "startup TLS getter call",
+          "rva": "0x8545ff",
+          "bytes": "E8 BC 3E 72 03",
+          "instruction": "call 0x3f784c0",
+          "rip_targets": []
+        },
+        {
+          "purpose": "startup TLS main marker true",
+          "rva": "0x854604",
+          "bytes": "C6 40 20 01",
+          "instruction": "mov byte ptr [rax + 0x20], 1",
+          "rip_targets": []
+        },
+        {
+          "purpose": "SDL poll native target binding",
+          "rva": "0x4099d96",
+          "bytes": "48 8D 05 A3 EB 02 00",
+          "instruction": "lea rax, [rip + 0x2eba3]",
+          "rip_targets": [
+            "0x40c8940"
+          ]
+        },
+        {
+          "purpose": "SDL poll dynamic slot write",
+          "rva": "0x4099d9d",
+          "bytes": "48 89 05 54 A6 43 01",
+          "instruction": "mov qword ptr [rip + 0x143a654], rax",
+          "rip_targets": [
+            "0x54d43f8"
+          ]
+        },
+        {
+          "purpose": "Pdx events SDL poll slot call",
+          "rva": "0x3e14903",
+          "bytes": "FF 15 EF FA 6B 01",
+          "instruction": "call qword ptr [rip + 0x16bfaef]",
+          "rip_targets": [
+            "0x54d43f8"
+          ]
+        },
+        {
+          "purpose": "RNG owner diagnostic thread thunk",
+          "rva": "0x393ee5a",
+          "bytes": "E8 B1 63 7B 00",
+          "instruction": "call 0x40f5210",
+          "rip_targets": []
+        },
+        {
+          "purpose": "RNG owner diagnostic thread field",
+          "rva": "0x393ee62",
+          "bytes": "44 8B 41 10",
+          "instruction": "mov r8d, dword ptr [rcx + 0x10]",
+          "rip_targets": []
+        }
+      ],
+      "additional_source_constants": {
+        "include/xar_bridge/ck3_12002_thread_runtime.hpp": {
+          "kSdlWindowsVideoDevicePumpInstallRva": "0x40F39BB",
+          "kSdlPumpEventsRva": "0x40C8810",
+          "kSdlWindowsPumpFunctionRva": "0x40D93F0",
+          "kSdlWindowsPumpFirstPeekCallRva": "0x40D942C",
+          "kSdlWindowsPumpFirstPeekReturnRva": "0x40D9432",
+          "kPeekMessageWIatSlotRva": "0x43DAE38",
+          "kGlobalRngWrapperSlotRva": "0x54DEFC0",
+          "kGetCurrentThreadIdThunkRva": "0x40F5210",
+          "kGetCurrentThreadIdIatSlotRva": "0x43DA598",
+          "kMainThreadTlsInitializedFlagRva": "0x5CBE6BF",
+          "kMainThreadTlsContextGetterRva": "0x3F784C0",
+          "kMainThreadTlsStartupStoreRva": "0x8545F8",
+          "kHandlePdxEventsRva": "0x3E14690",
+          "kHandlePdxEventsTlsGateRva": "0x3E146AD"
+        }
+      }
+    },
+    {
+      "id": "world",
+      "manifest": "ck3_1_20_0_2_world.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_world.hpp"
+        }
+      ]
+    },
+    {
+      "id": "army",
+      "manifest": "ck3_1_20_0_2_army.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_army.hpp"
+        }
+      ]
+    },
+    {
+      "id": "province",
+      "manifest": "ck3_1_20_0_2_province.json",
+      "additional_source_constants": {
+        "include/xar_bridge/ck3_12002_province.hpp": {
+          "kProvinceSiegeStorageSlotRva": "0x5D1EC88",
+          "kProvinceUnitStorageSlotRva": "0x5D1E380",
+          "kObjectiveTitleStorageSlotRva": "0x5D1DAF8",
+          "kObjectiveTitleTemplateOffset": "0x48",
+          "kObjectiveTitleTemplateTierOffset": "0x64",
+          "kObjectiveTitleChildrenOffset": "0x110",
+          "kObjectiveProvinceArrayOffset": "0x140",
+          "kObjectiveProvinceCountOffset": "0x14C",
+          "kObjectiveProvinceOccupationIdOffset": "0x73C",
+          "kObjectiveProvinceActiveSiegeIdOffset": "0x788",
+          "kObjectiveProvinceFortLevelOffset": "0x850",
+          "kObjectiveProvinceMagicOffset": "0x85C",
+          "kObjectiveSiegeProvinceOffset": "0x200",
+          "kObjectiveSiegeArmyIdOffset": "0x208",
+          "kObjectiveSiegeCurrentWorkOffset": "0x3D0",
+          "kObjectiveSiegeBreachOffset": "0x3D8",
+          "kObjectiveSiegeAssaultOffset": "0x44C"
+        }
+      },
+      "binding_source_file": "src/ck3_12002_province.cpp",
+      "additional_binding_rvas": {
+        "title_province": "0x230f900",
+        "is_occupied": "0x247d0e0",
+        "fort_level": "0x247ab90",
+        "garrison_size": "0x247f370",
+        "besieging_strength": "0x247f1d0",
+        "siege_progress": "0x251c9c0",
+        "siege_total_work": "0x251dd20",
+        "siege_days_left": "0x251cb00",
+        "assault_daily_progress": "0x25207f0",
+        "assault_daily_casualties": "0x25205c0",
+        "validate_start_assault": "0x29738c0",
+        "validate_stop_assault": "0x2973a70"
+      }
+    },
+    {
+      "id": "settlement",
+      "manifest": "ck3_1_20_0_2_settlement.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_settlement.hpp"
+        }
+      ]
+    },
+    {
+      "id": "events",
+      "manifest": "ck3_1_20_0_2_events.json"
+    },
+    {
+      "id": "context",
+      "manifest": "ck3_1_20_0_2_context.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_context.hpp"
+        }
+      ]
+    },
+    {
+      "id": "pending_context",
+      "manifest": "ck3_1_20_0_2_pending_context.json",
+      "source_hash_policy": "git-lf-with-bom",
+      "source_git_lf_sha256": {
+        "include/xar_bridge/ck3_12002_pending_context.hpp": "F8E1CF8C907A7784AD0329C577B5814A56A0921221B2BA2552D66483ED12C21B",
+        "src/ck3_12002_pending_context.cpp": "70C353314EACA3F5E81F4B4DD6A05676106B813C5AEF1D2816046DF497573589",
+        "src/ck3_12002_pending_context_serializer.cpp": "3892F3468EB91FF73CF4647EAAC5D26C450D23F8BD4F3C63DD29092877F7B1DE",
+        "src/ck3_12002_pending_context_test.cpp": "BEAFB09700E8F2074B9CE0606F999390719FDDCF968E103101D2F07B84673CC9"
+      }
+    },
+    {
+      "id": "phase",
+      "manifest": "ck3_1_20_0_2_phase.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_phase.hpp"
+        }
+      ]
+    },
+    {
+      "id": "title_map",
+      "manifest": "ck3_1_20_0_2_title_map.json"
+    },
+    {
+      "id": "war_entry",
+      "manifest": "ck3_1_20_0_2_war_entry.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_war_entry.hpp"
+        },
+        {
+          "field": "source_layout_constants",
+          "file": "src/ck3_12002_war_entry.cpp"
+        }
+      ]
+    },
+    {
+      "id": "claim_terms",
+      "manifest": "ck3_1_20_0_2_claim_terms.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_claim_terms.hpp"
+        }
+      ]
+    },
+    {
+      "id": "declarations",
+      "manifest": "ck3_1_20_0_2_declarations.json"
+    },
+    {
+      "id": "campaign",
+      "manifest": "ck3_1_20_0_2_campaign.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_campaign.hpp"
+        }
+      ],
+      "feature_definition_source_file": "src/ck3_12002_features.cpp",
+      "additional_source_constants": {
+        "src/ck3_12002_features.cpp": {
+          "kFeatureBitsetOffset": "0x2B0",
+          "kFeatureEnabledCountOffset": "0x2B8",
+          "kScriptDlcBucketBaseOffset": "0x08",
+          "kScriptDlcBucketMaskOffset": "0x14",
+          "kScriptDlcMaximumSpillOffset": "0x18",
+          "kScriptDlcBucketStride": "0x28",
+          "kScriptDlcBucketControlOffset": "0x04",
+          "kScriptDlcBucketKeyOffset": "0x08",
+          "kMsvcStringSizeOffset": "0x10",
+          "kMsvcStringCapacityOffset": "0x18",
+          "kMsvcStringInlineCapacity": "0x0F"
+        }
+      }
+    },
+    {
+      "id": "diplomacy",
+      "manifest": "ck3_1_20_0_2_diplomacy.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_diplomacy.hpp"
+        }
+      ]
+    },
+    {
+      "id": "military",
+      "manifest": "ck3_1_20_0_2_military.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "src/ck3_12002_military.cpp"
+        }
+      ],
+      "binding_source_file": "src/ck3_12002_military.cpp"
+    },
+    {
+      "id": "routes",
+      "manifest": "ck3_1_20_0_2_routes.json"
+    },
+    {
+      "id": "phase_character",
+      "manifest": "ck3_1_20_0_2_phase_character.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_phase_character.hpp"
+        }
+      ]
+    },
+    {
+      "id": "combat",
+      "manifest": "ck3_1_20_0_2_combat.json"
+    },
+    {
+      "id": "phase_definitions",
+      "manifest": "ck3_1_20_0_2_phase_definitions.json",
+      "constant_groups": [
+        {
+          "field": "source_constants",
+          "file": "include/xar_bridge/ck3_12002_phase_definitions.hpp"
+        }
+      ]
+    },
+    {
+      "id": "battle",
+      "manifest": "ck3_1_20_0_2_battle.json"
+    },
+    {
+      "id": "phase_culture",
+      "manifest": "ck3_1_20_0_2_phase_culture.json"
+    },
+    {
+      "id": "phase_advantage",
+      "manifest": "ck3_1_20_0_2_phase_advantage.json"
+    },
+    {
+      "id": "event_window_context",
+      "manifest": "ck3_1_20_0_2_event_window_context.json",
+      "source_hash_policy": "git-lf-with-bom",
+      "source_git_lf_sha256": {
+        "include/xar_bridge/ck3_12002_event_window_context.hpp": "8EEC6F877B4A9B1BF761F4F3D01477B909D825746505A137731B6C8380B5309B",
+        "src/ck3_12002_event_window_context.cpp": "82A9B2F05F47D47E2BC2C311AF94F9380593969E8F76ED8F1B92DD73C5EDE111",
+        "src/ck3_12002_event_window_context_serializer.cpp": "C474CD21D030101BBC04619F213346641BB2AB0FA03314DF202CD41654893E4B",
+        "src/ck3_12002_event_window_context_test.cpp": "4B2177388785DE04B1F12E9138F1DE2DC869FD77D3341904E5CE5B5728B40D90"
+      }
+    },
+    {
+      "id": "phase_misc",
+      "manifest": "ck3_1_20_0_2_phase_misc.json"
+    },
+    {
+      "id": "console_fixture",
+      "manifest": "ck3_1_20_0_2_console_fixture.json",
+      "constant_groups": [
+        {
+          "field": "console_source_constants",
+          "file": "include/xar_bridge/ck3_12002_console_fixture.hpp"
+        }
+      ]
+    }
+  ],
+  "unindexed_domains": []
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-native-query-scope-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "status": "static-ready",
+  "operation": "WorkerAdapter::read_war_termination_options",
+  "wire_step": "query-war-termination-options-<war_id>",
+  "mailbox_executor": "ExecuteSemanticAdapter12002",
+  "executor_slot": 14,
+  "snapshot_comparison": "war_termination_options",
+  "ignored_snapshot_fields": [
+    "player_armies[*].route_province_ids",
+    "player_armies[*].move_target_province_id",
+    "active_wars[*].allied_armies[*].route_province_ids",
+    "active_wars[*].allied_armies[*].move_target_province_id",
+    "active_wars[*].enemy_armies[*].route_province_ids",
+    "active_wars[*].enemy_armies[*].move_target_province_id"
+  ],
+  "remaining_snapshot_fields": "full equality, including paused/date/played identity, war score, objectives, army identity, current province, observability and combat state",
+  "other_operations": "full_snapshot comparison remains the default for all other reads and writes",
+  "native_abi_rvas_changed": false,
+  "public_wire_dto_changed": false,
+  "new_public_capabilities": [],
+  "necessary_evidence": {
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-06/mcp.native-wire.jsonl",
+    "request_utc": "2026-09-30T21:57:32.008507+00:00",
+    "response_utc": "2026-09-30T21:57:32.040084+00:00",
+    "native_revision_before": 15,
+    "native_revision_after": 16,
+    "date_raw": 53168952,
+    "paused": true,
+    "only_changed_army": 33554657,
+    "route_length_before": 33,
+    "route_length_after": 31,
+    "move_target_before": 2602,
+    "move_target_after": 2589,
+    "mailbox_executed_requests_before": 9,
+    "mailbox_executed_requests_after": 10
+  },
+  "fixture": {
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/bridge-war-options-scope-fixture/result.json",
+    "old_strict_comparison_exit": 1,
+    "new_scope_exit": 0,
+    "same_date_route_update_allowed": true,
+    "war_score_update_rejected": true,
+    "write_scope_unchanged": true
+  },
+  "remaining": "coordinator builds the DLL and repeats the actual R2 loop"
+}

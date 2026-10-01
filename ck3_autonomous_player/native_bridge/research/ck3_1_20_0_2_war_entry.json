@@ -1,0 +1,322 @@
+﻿{
+  "schema_version": 1,
+  "contract": "query-war-entry-assessments-v1",
+  "game_version": "1.20.0.2",
+  "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "production_query_invoked": false,
+  "runtime_advertised": false,
+  "assessment": {
+    "rva": "0x1A23240",
+    "abi": "RCX actor, RDX State16 pointer, R8 effective target, R9 caller-owned 0x28 output, stack5 nullable int64 distance override, stack6 int32 include-network mode",
+    "output_offsets": {
+      "0x00": "int64 distance_raw",
+      "0x08": "int64 target_power_total_raw",
+      "0x10": "int64 actual_power_ratio_raw",
+      "0x18": "int32 target_ai_context_actor_entry_raw",
+      "0x1C": "int32 actor_ai_context_target_entry_raw",
+      "0x20": "uint8 native_flags_raw"
+    }
+  },
+  "actor_state_builder": {
+    "rva": "0x1A22D30",
+    "scratch_size": "0x10",
+    "zero_before_call": true,
+    "dependency_slot_rva": "0x5D1DD50",
+    "old_build_dependency_rva": "0x570C638",
+    "dependency_getter_rva": "0xA07970",
+    "layout": {
+      "0x00": "int64 base power",
+      "0x08": "int32 native state",
+      "0x0C": "uint16 native state",
+      "0x0E": "uint8 native flags",
+      "0x0F": "caller zero"
+    }
+  },
+  "network_collector": {
+    "rva": "0x1A24010",
+    "configuration_size": "0x28",
+    "pointer_offsets": [
+      "0x00 root",
+      "0x08 filter_a",
+      "0x10 filter_b",
+      "0x18 filter_c",
+      "0x20 accumulator"
+    ],
+    "target_filters": [
+      0,
+      0,
+      0
+    ],
+    "actor_filters": [
+      1,
+      1,
+      1
+    ],
+    "logical_end_rva": "0x1A24F3F",
+    "lifecycle": "Synchronous stack pointees and local seen vector; local vector cleanup at 0x1A24F00..0x1A24F19."
+  },
+  "effective_target": {
+    "rva": "0x2C13460",
+    "abi": "RCX actor, RDX requested target, R8D unused home value=0, R9B alternate resolution=false; RAX effective CCharacter*",
+    "canonical_callsite_rva": "0x1A6ABEE"
+  },
+  "layouts": {
+    "character_full_id": "0x18",
+    "character_power_container": "0x1C0",
+    "character_power_leaf": "0x308",
+    "character_death_component": "0x1D0",
+    "character_storage_slot": "0x5C67568",
+    "character_fallback_slot": "0x5C67570",
+    "storage_slots": "0x20",
+    "storage_capacity": "0x2C",
+    "storage_stride": "0x10",
+    "storage_object": "0x08"
+  },
+  "integration": {
+    "header": "include/xar_bridge/ck3_12002_war_entry.hpp",
+    "source": "src/ck3_12002_war_entry.cpp",
+    "binder": "xar::ck3_12002::BindWarEntryNativeEnvironmentV1(module_base, executable_sha256)",
+    "reader": "xar::ck3_12002::ReadWarEntryAssessmentsV1(environment, access, request, output)",
+    "dto": "game::WarEntryAssessmentsV1",
+    "frame": "game::WarEntryAssessmentFrameV1 with expected full declarable-target set from same paused frame",
+    "dispatch": "Requires version-bound owning-main-thread mailbox. Existing generic scratch/request shapes are aliases; use fully qualified reader calls to avoid old-version argument-dependent lookup.",
+    "serializer": "xar::ck3_12002::SerializeWarEntryAssessmentsV1(result)",
+    "serializer_source": "src/ck3_12002_war_entry_serializer.cpp"
+  },
+  "remaining_live_work": [
+    "Paused application-main-thread exact build query with a real declarable target",
+    "Native power/ratio and effective target comparison against the paused frame",
+    "Adapter/MCP capability advertisement after integration and live result"
+  ],
+  "offline_fixture": {
+    "status": "GREEN",
+    "compiler": "MSVC 19.51 x64 C++20",
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/war-entry-build/ck3_12002_war_entry_test.exe",
+    "checks": [
+      "exact build RVA binding and old-build rejection",
+      "migrated power/death offsets with old-death-slot nonnull decoy",
+      "effective target full ID and separate target/actor network calls",
+      "two zeroed State16/native assessment samples",
+      "same slot different character generation rejection",
+      "paused frame and application owning-thread gates",
+      "native ratio consistency",
+      "expected snapshot revision",
+      "exact 1.20 wire provenance, no old RVA leakage"
+    ],
+    "source_sha256": {
+      "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_war_entry.hpp": "866ffbfdb5e794447f5856cb8192bdf6a1db642cf8910c58428893cdf802ad4f",
+      "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_war_entry.cpp": "8f4e984d057b405e4c029094d50afeba3904d8f83d1621ff0fec78916a1dd846",
+      "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_war_entry_serializer.cpp": "d40cce6ee4676d50b379fc465c63ede9d607b7ae07a687f90c6ad8921e9f4ef4",
+      "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_war_entry_test.cpp": "b771f8dc11bb54f3cb0028e4228cfcb92cab4e66b631a2c6bcc370d43d27e2a0"
+    },
+    "artifact_sha256": "876695b00437d511248266684a55de75a42de31154fae8527652549d6216d1ef"
+  },
+  "logical_function_ranges": [
+    {
+      "name": "actor_state_builder",
+      "start_rva": "0x1a22d30",
+      "end_rva": "0x1a23238",
+      "sha256": "8535e3b3d2165a18e56df76b94c83e31ec2b2d20d6a4d67fe53a8123eb7af824"
+    },
+    {
+      "name": "assessment",
+      "start_rva": "0x1a23240",
+      "end_rva": "0x1a23ab1",
+      "sha256": "abf8546daa865be787d7b8fb3ed4f31168ed4d499ba435a007d9fac9ae7b9b5f"
+    },
+    {
+      "name": "network_collector",
+      "start_rva": "0x1a24010",
+      "end_rva": "0x1a24f3f",
+      "sha256": "39c040ad1db35f556a222614a90b4b8d40d0591daf6c481657c091e67468b576"
+    },
+    {
+      "name": "effective_target_resolver",
+      "start_rva": "0x2c13460",
+      "end_rva": "0x2c13567",
+      "sha256": "84cdf27abe5f1c3087ae69daf68f77c3d08d63e5d0194c1d051dfb5db5559ea2"
+    }
+  ],
+  "instruction_evidence": [
+    {
+      "rva": "0x1a22d9a",
+      "bytes": "48 8b 85 c0 01 00 00",
+      "instruction": "mov rax, qword ptr [rbp + 0x1c0]",
+      "meaning": "Actor power component pointer"
+    },
+    {
+      "rva": "0x1a22dc2",
+      "bytes": "0f b6 4f 0e",
+      "instruction": "movzx ecx, byte ptr [rdi + 0xe]",
+      "meaning": "State16 flag at +0x0E"
+    },
+    {
+      "rva": "0x1a22e75",
+      "bytes": "48 8b 85 c0 01 00 00",
+      "instruction": "mov rax, qword ptr [rbp + 0x1c0]",
+      "meaning": "Actor power component pointer for raw base"
+    },
+    {
+      "rva": "0x1a22e81",
+      "bytes": "48 8b 80 08 03 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x308]",
+      "meaning": "Power raw int64 at +0x308"
+    },
+    {
+      "rva": "0x1a22e90",
+      "bytes": "48 89 07",
+      "instruction": "mov qword ptr [rdi], rax",
+      "meaning": "State16 base qword write"
+    },
+    {
+      "rva": "0x1a23379",
+      "bytes": "49 8b 87 c0 01 00 00",
+      "instruction": "mov rax, qword ptr [r15 + 0x1c0]",
+      "meaning": "Target power component pointer"
+    },
+    {
+      "rva": "0x1a23385",
+      "bytes": "48 8b 80 08 03 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x308]",
+      "meaning": "Target raw base power"
+    },
+    {
+      "rva": "0x1a23395",
+      "bytes": "48 89 47 08",
+      "instruction": "mov qword ptr [rdi + 8], rax",
+      "meaning": "Output target total at +0x08"
+    },
+    {
+      "rva": "0x1a233e2",
+      "bytes": "e8 29 0c 00 00",
+      "instruction": "call 0x1a24010",
+      "meaning": "Target network collector call"
+    },
+    {
+      "rva": "0x1a2343b",
+      "bytes": "e8 d0 0b 00 00",
+      "instruction": "call 0x1a24010",
+      "meaning": "Actor network collector call"
+    },
+    {
+      "rva": "0x1a2388e",
+      "bytes": "48 89 4f 10",
+      "instruction": "mov qword ptr [rdi + 0x10], rcx",
+      "meaning": "Output native ratio at +0x10"
+    },
+    {
+      "rva": "0x1a238ac",
+      "bytes": "41 f6 40 0e 01",
+      "instruction": "test byte ptr [r8 + 0xe], 1",
+      "meaning": "Input State16 flag at +0x0E"
+    },
+    {
+      "rva": "0x1a239a2",
+      "bytes": "89 47 1c",
+      "instruction": "mov dword ptr [rdi + 0x1c], eax",
+      "meaning": "Output actor context entry at +0x1C"
+    },
+    {
+      "rva": "0x1a24035",
+      "bytes": "4c 8b ea",
+      "instruction": "mov r13, rdx",
+      "meaning": "Collector configuration RDX retained"
+    },
+    {
+      "rva": "0x1a24038",
+      "bytes": "4c 8b f9",
+      "instruction": "mov r15, rcx",
+      "meaning": "Collector root RCX retained"
+    },
+    {
+      "rva": "0x1a2420e",
+      "bytes": "49 8b 4d 20",
+      "instruction": "mov rcx, qword ptr [r13 + 0x20]",
+      "meaning": "Accumulator pointer configuration+0x20"
+    },
+    {
+      "rva": "0x1a24212",
+      "bytes": "48 01 01",
+      "instruction": "add qword ptr [rcx], rax",
+      "meaning": "Write accumulator only"
+    },
+    {
+      "rva": "0xa07974",
+      "bytes": "48 8b 05 d5 63 31 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53163d5]",
+      "meaning": "Dependency singleton slot +0x5D1DD50"
+    },
+    {
+      "rva": "0x2c13481",
+      "bytes": "48 83 b9 c0 01 00 00 00",
+      "instruction": "cmp qword ptr [rcx + 0x1c0], 0",
+      "meaning": "Effective resolver actor component"
+    },
+    {
+      "rva": "0x2c1348f",
+      "bytes": "48 83 ba c0 01 00 00 00",
+      "instruction": "cmp qword ptr [rdx + 0x1c0], 0",
+      "meaning": "Effective resolver target component"
+    },
+    {
+      "rva": "0x1a6ac2e",
+      "bytes": "48 8d 56 08",
+      "instruction": "lea rdx, [rsi + 8]",
+      "meaning": "Canonical assessment caller passes context+8"
+    },
+    {
+      "rva": "0x1a6ac32",
+      "bytes": "c7 44 24 28 01 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x28], 1",
+      "meaning": "Canonical include-network stack mode"
+    },
+    {
+      "rva": "0x1a6ac3a",
+      "bytes": "48 89 44 24 20",
+      "instruction": "mov qword ptr [rsp + 0x20], rax",
+      "meaning": "Canonical optional distance pointer stack argument"
+    },
+    {
+      "rva": "0x1a6ac3f",
+      "bytes": "4c 8d 8d d0 03 00 00",
+      "instruction": "lea r9, [rbp + 0x3d0]",
+      "meaning": "Canonical caller-owned output pointer R9"
+    },
+    {
+      "rva": "0x1a6ac46",
+      "bytes": "4d 8b c5",
+      "instruction": "mov r8, r13",
+      "meaning": "Canonical effective target R8"
+    },
+    {
+      "rva": "0x1a6ac49",
+      "bytes": "49 8b cf",
+      "instruction": "mov rcx, r15",
+      "meaning": "Canonical actor RCX"
+    },
+    {
+      "rva": "0x1a6ac4c",
+      "bytes": "e8 ef 85 fb ff",
+      "instruction": "call 0x1a23240",
+      "meaning": "Canonical native assessment call"
+    }
+  ],
+  "source_constants": {
+    "kWarEntryAssessmentRva": "0x1A23240",
+    "kWarEntryActorStateBuilderRva": "0x1A22D30",
+    "kWarEntryNetworkCollectorRva": "0x1A24010",
+    "kWarEntryEffectiveTargetResolverRva": "0x2C13460",
+    "kWarEntryGameStateSlotRva": "0x5C68C50",
+    "kWarEntryCharacterStorageSlotRva": "0x5C67568",
+    "kWarEntryCharacterFallbackSlotRva": "0x5C67570",
+    "kWarEntryActorStateDependencySlotRva": "0x5D1DD50"
+  },
+  "source_layout_constants": {
+    "kCharacterIdentityOffset": "0x18",
+    "kCharacterPowerContainerOffset": "0x1C0",
+    "kCharacterDeathMarkerOffset": "0x1D0",
+    "kCharacterPowerRawOffset": "0x308"
+  }
+}

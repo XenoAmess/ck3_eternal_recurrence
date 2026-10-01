@@ -1,0 +1,613 @@
+{
+  "schema_version": 1,
+  "build": {
+    "version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": 1790629985,
+    "image_base": "0x140000000",
+    "size_of_image": 102518784
+  },
+  "evidence_level": "static-ready; fixture-only; no live process was opened",
+  "signature_anchors": [
+    {
+      "name": "cb_database_getter",
+      "rva": "0x8fc320",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 83 EC 38 48 8B 05 C5 AE 36 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00"
+    },
+    {
+      "name": "interaction_database_getter",
+      "rva": "0x89da60",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 83 EC 38 48 8B 05 CD 9A 3C 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00"
+    },
+    {
+      "name": "cb_evaluator",
+      "rva": "0x31f4540",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 10 FC FF FF 48 81 EC F0 04 00 00 4D"
+    },
+    {
+      "name": "configuration_destructor",
+      "rva": "0x111f190",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B 51 50 33 FF 48 8B D9 48 85 D2 74 18 89 79 5C 44 8D 47 04 48 8B 49 60 48 8B 01 FF 50 10 48 89 7B 50 89 7B 58 48 8B 53 08 48 85 D2 74"
+    },
+    {
+      "name": "context_constructor",
+      "rva": "0x3076c90",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 54 41 55 41 56 41 57 48 83 EC 40 41 8B D9 41 8B F8 4C"
+    },
+    {
+      "name": "context_refresh",
+      "rva": "0x3078a60",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 30 48"
+    },
+    {
+      "name": "context_finalize",
+      "rva": "0x3078c90",
+      "confidence": "high-static-exact-build",
+      "pattern": "40 53 57 41 57 48 83 EC 20 48 8B 01 48 8B D9 44 8B B8 64 22 00 00 44 39"
+    },
+    {
+      "name": "context_validate",
+      "rva": "0x307c040",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 00 00 00 48 8B FA 48 8B D9 4C 8B CA 41 B0"
+    },
+    {
+      "name": "context_destructor",
+      "rva": "0x30773a0",
+      "confidence": "high-static-exact-build",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 48 8B 89 30 03 00 00 48 85 C9 74 0A 48 8B 01"
+    },
+    {
+      "name": "send_constructor",
+      "rva": "0x2968170",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B F1 C6 41 08 00 33 C0"
+    },
+    {
+      "name": "native_int_array_copy",
+      "rva": "0xc858c0",
+      "confidence": "high-static-exact-build",
+      "pattern": "40 56 48 83 EC 20 48 8B F1 48 3B CA 74 64 48 89 5C 24 30 8B 5A 0C 48 89"
+    },
+    {
+      "name": "native_int_array_append",
+      "rva": "0x9e3790",
+      "confidence": "high-static-exact-build",
+      "pattern": "4D 3B C1 0F 84 7B 01 00 00 53 56 57 41 56 48 83 EC 28 48 63 41 0C 49 8B D8 48 89 6C 24 50 48 8B F9 8B 49 08 49 8B E9 48 2B EB 4C 89 7C 24 20 48 C1 FD 02 49 8B F1 4C 63 F2 44 8D 3C 28 44 3B F9 0F 8E E8 00 00 00 66 0F 6E C1 41 B8 04 00 00 00"
+    },
+    {
+      "name": "native_declare_war_enumeration",
+      "rva": "0x118c6c0",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 B8 20 10 00 00 E8 EE 80"
+    },
+    {
+      "name": "native_declare_war_apply",
+      "rva": "0x118df00",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC C0 00 00 00 48 8B F1 8B 81 F8"
+    },
+    {
+      "name": "declare_war_canonical_registration",
+      "rva": "0x3214d3b",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 8D 05 AE F9 4A 01 48 89 45 F0 4C 8D 83 60 0F 00 00 C7 45 F8 17 00 00"
+    },
+    {
+      "name": "cb_rule_disabled_layout",
+      "rva": "0x118c74b",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 8B 46 40 44 38 A8 F9 01 00 00 0F 85 C3 01 00 00 8B 3D 62 4D 35 04 85"
+    },
+    {
+      "name": "cb_combined_flags_layout",
+      "rva": "0x118c83a",
+      "confidence": "high-static-exact-build",
+      "pattern": "8B 86 48 15 00 00 C1 E8 14 A8 01 75 6F 48 69 F1 98 00 00 00 48 8B 1D 63"
+    },
+    {
+      "name": "cb_canonical_key_constructor",
+      "rva": "0x31f1aeb",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 8D 4E 18 66 0F 6F C6 66 0F 73 D8 08 66 0F 7E C0 4C 63 C0 45 33 E4 4C 89 21 4C 89 61 10 48 C7 41 18 0F 00 00 00 44 88 21 66 48 0F 7E F2 E8 92"
+    },
+    {
+      "name": "native_send_lifecycle",
+      "rva": "0x10451da",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 8B D7 48 8D 4C 24 20 E8 89 2F 92 01 90 BA 0E 00 00 00 48 8B C8 E8 BB"
+    },
+    {
+      "name": "send_native_clone",
+      "rva": "0x86d760",
+      "confidence": "high-static-exact-build",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 48 89 54 24 10 57 48 83 EC 20 48 8B F2 48 8B D9 B9 68 03 00 00 E8"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CWarDeclaration",
+      "rva": "0x452ffc0",
+      "function_rvas": [
+        "0x1199610",
+        "0x3f7e2d0",
+        "0x277f390",
+        "0x3f7e350",
+        "0x277f550",
+        "0x8522c0",
+        "0x8522c0",
+        "0x277f370",
+        "0x277f150"
+      ]
+    },
+    {
+      "name": "CSendCharacterInteractionCommand_primary",
+      "rva": "0x448bce0",
+      "function_rvas": [
+        "0x86be90",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29682a0",
+        "0x86d5c0",
+        "0x86d760"
+      ]
+    },
+    {
+      "name": "CSendCharacterInteractionCommand_secondary",
+      "rva": "0x448bcb0",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2968220",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    }
+  ],
+  "rvas": {
+    "cb_database_getter": "0x8fc320",
+    "interaction_database_getter": "0x89da60",
+    "cb_evaluator": "0x31f4540",
+    "configuration_destructor": "0x111f190",
+    "context_constructor": "0x3076c90",
+    "context_refresh": "0x3078a60",
+    "context_finalize": "0x3078c90",
+    "context_validate": "0x307c040",
+    "context_destructor": "0x30773a0",
+    "send_constructor": "0x2968170",
+    "native_int_array_copy": "0xc858c0",
+    "native_int_array_append": "0x9e3790",
+    "native_declare_war_enumeration": "0x118c6c0",
+    "native_declare_war_apply": "0x118df00",
+    "declare_war_canonical_registration": "0x3214d3b",
+    "cb_rule_disabled_layout": "0x118c74b",
+    "cb_combined_flags_layout": "0x118c83a",
+    "cb_canonical_key_constructor": "0x31f1aeb",
+    "native_send_lifecycle": "0x10451da"
+  },
+  "layouts": {
+    "CCasusBelliTypeDatabase": {
+      "types": "+0x50",
+      "count": "+0x5C",
+      "evidence": "0x118C71D..0x118C725"
+    },
+    "CCasusBelliType": {
+      "canonical_key": "+0x18 MSVC string; size +0x28; capacity +0x30",
+      "rule": "+0x40 pointer",
+      "rule_disabled": "+0x1F9 byte",
+      "flags": "+0x1548 uint32; combined selection bit 20",
+      "evidence": "0x31F1AEB..0x31F1B1E; 0x118C74B..0x118C756; 0x118C83A..0x118C845"
+    },
+    "configuration_scratch": {
+      "rva": "0x54E14B8",
+      "array": "data +0; capacity +8; signed count +0xC",
+      "element_size": "0x98",
+      "claimant": "+0x0 int32",
+      "target_title_ids": "+0x8 native int32 array",
+      "evidence": "0x118C735..0x118C77B; 0x118C812; 0x118C847..0x118C892"
+    },
+    "declare_war_interaction": {
+      "database_offset": "0xF60",
+      "canonical_key_rva": "0x46C46F0",
+      "evidence": "0x3214D3B..0x3214D6F"
+    },
+    "CCharacterInteractionContext": {
+      "size": "0x338",
+      "special_data": "+0x330",
+      "actor": "+0x2D8",
+      "recipient": "+0x2DC",
+      "additional_role": "+0x2EC; constructor initializes actor and native redirection updates it",
+      "constructor_signature": "void *(context,interaction,int32 actor,int32 recipient,extra_context,bool redirect_roles)",
+      "evidence": "0x3076C90..0x3076E4B"
+    },
+    "CWarDeclaration": {
+      "cb_type": "+0x8",
+      "target_titles": "+0x10",
+      "claimant": "+0x28",
+      "evidence": "0x118DF87..0x118DFB2; native execute 0x277F150..0x277F1AA"
+    },
+    "CSendCharacterInteractionCommand": {
+      "size": "0x368",
+      "embedded_context": "+0x20",
+      "secondary_vptr": "+0x18",
+      "channel_flags": "0x0E",
+      "evidence": "0x2968170..0x2968201; UI lifecycle 0x10451DA..0x10451FB",
+      "size_evidence": "native clone 0x86D77A allocates 0x368; context starts +0x20 and first scalar after it at +0x358 proves context 0x338"
+    }
+  },
+  "semantics": {
+    "enumeration": "Native evaluator with include_blocked=false, unknown_flag=false, context=null; skip disabled CB type; combined item when zero configurations or flags bit20; otherwise only nonempty title configurations",
+    "mutation": "Fresh full choice re-enumeration, native context construction/refresh/finalize/validation, game allocator clone/queue and destruction of both local contexts",
+    "receipt": "submitted proves queue accepted only; later war snapshot supplies gameplay result",
+    "execution": "Owning-thread paused-map mailbox; no worker-thread native evaluator calls"
+  },
+  "pending": [
+    "Paused live enumeration equality with native declare-war UI",
+    "Live declare command acceptance and resulting new WarID snapshot",
+    "Native owning-thread mailbox integration acceptance"
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "cb_type_array",
+      "rva": "0x118c71d",
+      "instruction": "mov r14, qword ptr [rbx + 0x50]",
+      "bytes": "4C 8B 73 50",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_type_count",
+      "rva": "0x118c721",
+      "instruction": "movsxd rax, dword ptr [rbx + 0x5c]",
+      "bytes": "48 63 43 5C",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_rule_pointer",
+      "rva": "0x118c74b",
+      "instruction": "mov rax, qword ptr [rsi + 0x40]",
+      "bytes": "48 8B 46 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_rule_disabled_byte",
+      "rva": "0x118c74f",
+      "instruction": "cmp byte ptr [rax + 0x1f9], r13b",
+      "bytes": "44 38 A8 F9 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "scratch_data_pointer",
+      "rva": "0x118c735",
+      "instruction": "mov rbx, qword ptr [rip + 0x4354d7c]",
+      "bytes": "48 8B 1D 7C 4D 35 04",
+      "rip_targets": [
+        "0x54e14b8"
+      ]
+    },
+    {
+      "purpose": "scratch_count",
+      "rva": "0x118c75c",
+      "instruction": "mov edi, dword ptr [rip + 0x4354d62]",
+      "bytes": "8B 3D 62 4D 35 04",
+      "rip_targets": [
+        "0x54e14c4"
+      ]
+    },
+    {
+      "purpose": "scratch_clear_count",
+      "rva": "0x118c77b",
+      "instruction": "mov dword ptr [rip + 0x4354d42], r13d",
+      "bytes": "44 89 2D 42 4D 35 04",
+      "rip_targets": [
+        "0x54e14c4"
+      ]
+    },
+    {
+      "purpose": "scratch_evaluator_argument",
+      "rva": "0x118c812",
+      "instruction": "lea r9, [rip + 0x4354c9f]",
+      "bytes": "4C 8D 0D 9F 4C 35 04",
+      "rip_targets": [
+        "0x54e14b8"
+      ]
+    },
+    {
+      "purpose": "native_evaluator_call",
+      "rva": "0x118c822",
+      "instruction": "call 0x31f4540",
+      "bytes": "E8 19 7D 06 02",
+      "rip_targets": []
+    },
+    {
+      "purpose": "configuration_destructor_call",
+      "rva": "0x118c769",
+      "instruction": "call 0x111f190",
+      "bytes": "E8 22 2A F9 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "configuration_stride_cleanup",
+      "rva": "0x118c770",
+      "instruction": "add rbx, 0x98",
+      "bytes": "48 81 C3 98 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "configuration_stride_materialization",
+      "rva": "0x118c847",
+      "instruction": "imul rsi, rcx, 0x98",
+      "bytes": "48 69 F1 98 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "configuration_title_array",
+      "rva": "0x118c861",
+      "instruction": "lea rdi, [rbx + 8]",
+      "bytes": "48 8D 7B 08",
+      "rip_targets": []
+    },
+    {
+      "purpose": "configuration_claimant",
+      "rva": "0x118c885",
+      "instruction": "mov ecx, dword ptr [rdi - 8]",
+      "bytes": "8B 4F F8",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_combined_flag_field",
+      "rva": "0x118c83a",
+      "instruction": "mov eax, dword ptr [rsi + 0x1548]",
+      "bytes": "8B 86 48 15 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_combined_bit_shift",
+      "rva": "0x118c840",
+      "instruction": "shr eax, 0x14",
+      "bytes": "C1 E8 14",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_key_string_offset",
+      "rva": "0x31f1aeb",
+      "instruction": "lea rcx, [rsi + 0x18]",
+      "bytes": "48 8D 4E 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cb_key_inline_capacity",
+      "rva": "0x31f1b09",
+      "instruction": "mov qword ptr [rcx + 0x18], 0xf",
+      "bytes": "48 C7 41 18 0F 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "declare_interaction_registration_slot",
+      "rva": "0x3214d46",
+      "instruction": "lea r8, [rbx + 0xf60]",
+      "bytes": "4C 8D 83 60 0F 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_actor",
+      "rva": "0x3076cd7",
+      "instruction": "mov dword ptr [rsi + 0x2d8], edi",
+      "bytes": "89 BE D8 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_recipient",
+      "rva": "0x3076cdd",
+      "instruction": "mov dword ptr [rsi + 0x2dc], ebx",
+      "bytes": "89 9E DC 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_additional_role",
+      "rva": "0x3076cf8",
+      "instruction": "mov dword ptr [rsi + 0x2ec], edi",
+      "bytes": "89 BE EC 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_special_data",
+      "rva": "0x3076d1a",
+      "instruction": "mov qword ptr [rsi + 0x330], rbx",
+      "bytes": "48 89 9E 30 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_redirect_additional_role_argument",
+      "rva": "0x3076d2a",
+      "instruction": "lea rax, [rsi + 0x2ec]",
+      "bytes": "48 8D 86 EC 02 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_redirect_native_call",
+      "rva": "0x3076d66",
+      "instruction": "call 0x3148de0",
+      "bytes": "E8 75 20 0D 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_context_embedded_offset",
+      "rva": "0x29681ac",
+      "instruction": "add rcx, 0x20",
+      "bytes": "48 83 C1 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_context_copy_call",
+      "rva": "0x29681b0",
+      "instruction": "call 0x3076b80",
+      "bytes": "E8 CB E9 70 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_last_payload_field",
+      "rva": "0x29681ee",
+      "instruction": "lea rcx, [rsi + 0x360]",
+      "bytes": "48 8D 8E 60 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_cb_write",
+      "rva": "0x118df9c",
+      "instruction": "mov qword ptr [rbx + 8], rax",
+      "bytes": "48 89 43 08",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_title_destination",
+      "rva": "0x118dfa0",
+      "instruction": "lea rcx, [rbx + 0x10]",
+      "bytes": "48 8D 4B 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_title_copy",
+      "rva": "0x118dfa9",
+      "instruction": "call 0xc858c0",
+      "bytes": "E8 12 79 AF FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_claimant_write",
+      "rva": "0x118dfb2",
+      "instruction": "mov dword ptr [rbx + 0x28], eax",
+      "bytes": "89 43 28",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_native_array_append",
+      "rva": "0x118df47",
+      "instruction": "call 0x9e3790",
+      "bytes": "E8 44 58 85 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_context_refresh",
+      "rva": "0x118dfc5",
+      "instruction": "call 0x3078a60",
+      "bytes": "E8 96 AA EE 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "war_context_finalize",
+      "rva": "0x118dfd1",
+      "instruction": "call 0x3078c90",
+      "bytes": "E8 BA AC EE 01",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_channel_flags",
+      "rva": "0x10451e8",
+      "instruction": "mov edx, 0xe",
+      "bytes": "BA 0E 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_ui_submit",
+      "rva": "0x10451f0",
+      "instruction": "call 0x9e16b0",
+      "bytes": "E8 BB C4 99 FF",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_local_copy_context_destructor",
+      "rva": "0x10451f6",
+      "instruction": "lea rcx, [rsp + 0x40]",
+      "bytes": "48 8D 4C 24 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_clone_heap_size",
+      "rva": "0x86d77a",
+      "instruction": "mov ecx, 0x368",
+      "bytes": "B9 68 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "context_size_next_field_after_embedded_context",
+      "rva": "0x86d7d5",
+      "instruction": "mov rax, qword ptr [rbx + 0x358]",
+      "bytes": "48 8B 83 58 03 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_clone_primary_vtable",
+      "rva": "0x86d7b3",
+      "instruction": "lea rax, [rip + 0x3c1e526]",
+      "bytes": "48 8D 05 26 E5 C1 03",
+      "rip_targets": [
+        "0x448bce0"
+      ]
+    },
+    {
+      "purpose": "send_clone_secondary_vtable",
+      "rva": "0x86d7bd",
+      "instruction": "lea rax, [rip + 0x3c1e4ec]",
+      "bytes": "48 8D 05 EC E4 C1 03",
+      "rip_targets": [
+        "0x448bcb0"
+      ]
+    },
+    {
+      "purpose": "send_original_context_destructor_call",
+      "rva": "0x10451fb",
+      "instruction": "call 0x30773a0",
+      "bytes": "E8 A0 21 03 02",
+      "rip_targets": []
+    }
+  ],
+  "source_files": [
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_declarations.hpp"
+  ],
+  "source_constants": {
+    "kDeclarationsCbDatabaseGetterRva": "0x8FC320",
+    "kDeclarationsInteractionDatabaseGetterRva": "0x89DA60",
+    "kDeclarationsEvaluateCbRva": "0x31F4540",
+    "kDeclarationsScratchRva": "0x54E14B8",
+    "kDeclarationsDestroyConfigurationRva": "0x111F190",
+    "kDeclarationsConstructContextRva": "0x3076C90",
+    "kDeclarationsRefreshContextRva": "0x3078A60",
+    "kDeclarationsFinalizeContextRva": "0x3078C90",
+    "kDeclarationsValidateContextRva": "0x307C040",
+    "kDeclarationsDestroyContextRva": "0x30773A0",
+    "kDeclarationsConstructSendRva": "0x2968170",
+    "kDeclarationsCopyIntArrayRva": "0xC858C0",
+    "kDeclarationsAppendIntArrayRva": "0x9E3790",
+    "kDeclarationsWarVtableRva": "0x452FFC0",
+    "kDeclarationsSendPrimaryVtableRva": "0x448BCE0",
+    "kDeclarationsSendSecondaryVtableRva": "0x448BCB0",
+    "kDeclarationsInteractionOffset": "0xF60",
+    "kDeclarationsCbArrayOffset": "0x50",
+    "kDeclarationsCbCountOffset": "0x5C",
+    "kDeclarationsCbRuleOffset": "0x40",
+    "kDeclarationsCbDisabledOffset": "0x1F9",
+    "kDeclarationsCbFlagsOffset": "0x1548",
+    "kDeclarationsConfigurationSize": "0x98",
+    "kDeclarationsContextSize": "0x338",
+    "kDeclarationsSendSize": "0x368",
+    "kDeclarationsSpecialDataOffset": "0x330",
+    "kDeclarationsAdditionalRoleOffset": "0x2EC",
+    "kDeclarationsSendContextOffset": "0x20",
+    "kDeclarationsWarCbOffset": "0x08",
+    "kDeclarationsWarTitlesOffset": "0x10",
+    "kDeclarationsWarClaimantOffset": "0x28"
+  },
+  "readiness": "static-ready",
+  "live_verified": false,
+  "source_constants_file": "include/xar_bridge/ck3_12002_declarations.hpp"
+}

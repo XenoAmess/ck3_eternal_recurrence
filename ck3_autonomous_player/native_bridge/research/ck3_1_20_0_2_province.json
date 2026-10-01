@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000"
+  },
+  "runtime_registered": false,
+  "live_verified": false,
+  "readiness": "static-ready owning-thread province/occupation/fort/garrison/siege/assault/title-objective reader; paused live required",
+  "signature_anchors": [
+    {
+      "name": "province_occupied",
+      "rva": "0x247d0e0",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "83 b9 3c 07 00 00 ff 0f 95 c0 c3 cc cc cc cc cc 48 83 ec 28 c7 81 3c 07"
+    },
+    {
+      "name": "province_fort",
+      "rva": "0x247ab90",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "8b 81 50 08 00 00 c3 cc cc cc cc cc cc cc cc cc 83 b9 50 08 00 00 00 0f"
+    },
+    {
+      "name": "province_garrison",
+      "rva": "0x247f370",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "48 81 c1 20 06 00 00 e9 e4 99 fe ff cc cc cc cc 89 54 24 10 48 83 ec 28"
+    },
+    {
+      "name": "province_besieging_strength",
+      "rva": "0x247f1d0",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "40 55 56 48 83 ec 28 8b 81 4c 07 00 00 33 ed 48 8b f1 85 c0 0f 8e 71 01"
+    },
+    {
+      "name": "province_active_siege",
+      "rva": "0x247d930",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "83 b9 88 07 00 00 ff 0f 95 c0 c3 cc cc cc cc cc 48 89 5c 24 08 48 89 74"
+    },
+    {
+      "name": "siege_progress",
+      "rva": "0x251c9c0",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "48 89 5c 24 08 57 48 83 ec 20 48 8b da 48 8b f9 48 8d 54 24 40 e8 46 13"
+    },
+    {
+      "name": "siege_total_work",
+      "rva": "0x251dd20",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "48 89 5c 24 10 48 89 6c 24 18 56 57 41 56 48 83 ec 30 48 8b f2 48 8b e9"
+    },
+    {
+      "name": "siege_days_left",
+      "rva": "0x251cb00",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "40 55 56 48 83 ec 38 81 79 0c 65 67 69 53 48 8b f1 0f 85 d3 01 00 00 bd"
+    },
+    {
+      "name": "assault_daily_progress",
+      "rva": "0x25207f0",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "40 53 57 48 83 ec 38 48 8b fa 48 8b d9 48 63 15 74 8e 74 03 85 d2 7f 0f"
+    },
+    {
+      "name": "assault_daily_casualties",
+      "rva": "0x25205c0",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "40 53 48 83 ec 20 48 8b d9 48 8b 89 00 02 00 00 81 b9 5c 08 00 00 76 6f"
+    },
+    {
+      "name": "start_assault_complete_validator",
+      "rva": "0x29738c0",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "48 89 5c 24 10 48 89 6c 24 18 57 48 83 ec 20 8b da 41 8b f8 48 8b 15 8d"
+    },
+    {
+      "name": "stop_assault_complete_validator",
+      "rva": "0x2973a70",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "48 89 5c 24 08 48 89 74 24 10 57 48 83 ec 30 8b da 41 8b f8 48 8b 15 dd"
+    },
+    {
+      "name": "title_province",
+      "rva": "0x230f900",
+      "confidence": "reviewed-static-call-chain-and-layout",
+      "pattern": "48 8b 41 48 83 78 64 02 75 64 4c 8b 05 e7 e1 a0 03 4c 8b 0d c8 e1 a0 03"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CProvince.primary",
+      "rva": "0x47320e8",
+      "function_rvas": [
+        "0x24782e0",
+        "0x3f7e2d0",
+        "0x2478680",
+        "0x3f7e350",
+        "0x2478a30",
+        "0x8522c0"
+      ]
+    },
+    {
+      "name": "CSiege.primary",
+      "rva": "0x4739bf0",
+      "function_rvas": [
+        "0x251bc80",
+        "0x4dddab8",
+        "0x2525c48",
+        "0x3f7e2d0"
+      ]
+    },
+    {
+      "name": "CLandedTitle.primary",
+      "rva": "0x4712a18",
+      "function_rvas": [
+        "0x23089d0",
+        "0x3f7e2d0",
+        "0x2308e80",
+        "0x3f7e350",
+        "0x230b0a0",
+        "0x8522c0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "game_data_pointer",
+      "rva": "0x28ee850",
+      "bytes": "49 8b 9d a0 00 00 00",
+      "instruction": "mov rbx, qword ptr [r13 + 0xa0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province_count",
+      "rva": "0x28ee868",
+      "bytes": "3b 83 4c 01 00 00",
+      "instruction": "cmp eax, dword ptr [rbx + 0x14c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province_array",
+      "rva": "0x28ee873",
+      "bytes": "48 8b 83 40 01 00 00",
+      "instruction": "mov rax, qword ptr [rbx + 0x140]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province_magic",
+      "rva": "0x28ee883",
+      "bytes": "41 81 b9 5c 08 00 00 76 6f 72 50",
+      "instruction": "cmp dword ptr [r9 + 0x85c], 0x50726f76",
+      "rip_targets": []
+    },
+    {
+      "purpose": "occupation_id",
+      "rva": "0x247d0e0",
+      "bytes": "83 b9 3c 07 00 00 ff",
+      "instruction": "cmp dword ptr [rcx + 0x73c], -1",
+      "rip_targets": []
+    },
+    {
+      "purpose": "fort_level",
+      "rva": "0x247ab90",
+      "bytes": "8b 81 50 08 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x850]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "active_siege_id",
+      "rva": "0x247d930",
+      "bytes": "83 b9 88 07 00 00 ff",
+      "instruction": "cmp dword ptr [rcx + 0x788], -1",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_province",
+      "rva": "0x251dd38",
+      "bytes": "48 8b b9 00 02 00 00",
+      "instruction": "mov rdi, qword ptr [rcx + 0x200]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_besieging_carmy",
+      "rva": "0x251cb4d",
+      "bytes": "44 8b 86 08 02 00 00",
+      "instruction": "mov r8d, dword ptr [rsi + 0x208]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_current_work",
+      "rva": "0x251c9f5",
+      "bytes": "48 8b 87 d0 03 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0x3d0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_magic",
+      "rva": "0x251cb07",
+      "bytes": "81 79 0c 65 67 69 53",
+      "instruction": "cmp dword ptr [rcx + 0xc], 0x53696765",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_alive_id",
+      "rva": "0x251cb1c",
+      "bytes": "39 69 08",
+      "instruction": "cmp dword ptr [rcx + 8], ebp",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_breach",
+      "rva": "0x25205e5",
+      "bytes": "48 63 93 d8 03 00 00",
+      "instruction": "movsxd rdx, dword ptr [rbx + 0x3d8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_assault",
+      "rva": "0x252073a",
+      "bytes": "80 b9 4c 04 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x44c], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "siege_storage",
+      "rva": "0x2973470",
+      "bytes": "48 8b 05 11 b8 3a 03",
+      "instruction": "mov rax, qword ptr [rip + 0x33ab811]",
+      "rip_targets": [
+        "0x5d1ec88"
+      ]
+    },
+    {
+      "purpose": "public_unit_storage",
+      "rva": "0x247f221",
+      "bytes": "4c 8b 05 58 f1 89 03",
+      "instruction": "mov r8, qword ptr [rip + 0x389f158]",
+      "rip_targets": [
+        "0x5d1e380"
+      ]
+    },
+    {
+      "purpose": "unit_internal_army",
+      "rva": "0x247f299",
+      "bytes": "8b 93 78 01 00 00",
+      "instruction": "mov edx, dword ptr [rbx + 0x178]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_storage",
+      "rva": "0x230f90a",
+      "bytes": "4c 8b 05 e7 e1 a0 03",
+      "instruction": "mov r8, qword ptr [rip + 0x3a0e1e7]",
+      "rip_targets": [
+        "0x5d1daf8"
+      ]
+    },
+    {
+      "purpose": "title_template",
+      "rva": "0x230f900",
+      "bytes": "48 8b 41 48",
+      "instruction": "mov rax, qword ptr [rcx + 0x48]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_tier",
+      "rva": "0x230f904",
+      "bytes": "83 78 64 02",
+      "instruction": "cmp dword ptr [rax + 0x64], 2",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_children_count",
+      "rva": "0x230f920",
+      "bytes": "83 b9 1c 01 00 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x11c], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_children",
+      "rva": "0x230f930",
+      "bytes": "48 8b 81 10 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x110]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_province_pointer",
+      "rva": "0x230f96e",
+      "bytes": "48 8b 81 38 03 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x338]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "title_manager_offset",
+      "rva": "0x2adc6d7",
+      "bytes": "49 8d 8f f8 2f 00 00",
+      "instruction": "lea rcx, [r15 + 0x2ff8]",
+      "rip_targets": []
+    }
+  ],
+  "layouts": {
+    "Province": {
+      "id": "int32 +0x10",
+      "magic": "uint32 +0x85C ==0x50726F76",
+      "occupation": "full-generation CharacterID +0x73C",
+      "fort": "int32 +0x850",
+      "units": "int32 array +0x740/count+0x74C",
+      "combats": "int32 array +0x758/count+0x764",
+      "active_siege": "full-generation SiegeID +0x788"
+    },
+    "GameData": {
+      "provinces": "pointer array +0x140/count+0x14C",
+      "landed_title_manager": "embedded +0x2FF8; storage pointer +0x20"
+    },
+    "Siege": {
+      "id": "full-generation int32 +0x08",
+      "magic": "uint32 +0x0C ==0x53696765",
+      "province": "pointer +0x200",
+      "internal_army_id": "int32 +0x208",
+      "current_work": "Q100000 int64 +0x3D0",
+      "breach_level": "int32 +0x3D8,0..2",
+      "assault": "byte +0x44C,0..1"
+    },
+    "LandedTitle": {
+      "id": "full-generation int32 +0x10",
+      "template": "pointer +0x48",
+      "tier": "template int32 +0x64; barony1 county2 duchy3 kingdom4 empire5",
+      "de_jure_children": "int32 array +0x110/cap+0x118/count+0x11C",
+      "province": "native getter230F900: county first-child recursion then title pointer+0x338"
+    },
+    "Unit": {
+      "id": "full-generation int32 +0x10",
+      "internal_army": "full-generation CArmyID int32 +0x178"
+    }
+  },
+  "contracts": [
+    "BindProvinceImage is pure address arithmetic and only enables the pinned EXE SHA256",
+    "ReadObjectiveProvince must run on the owning thread; garrison/siege/assault require a paused rich read",
+    "Occupation only publishes occupied=true when the occupying CharacterID resolves",
+    "Assault getters are not evaluated for breach=0 because native casualty indexes breach-1",
+    "Siege days INT_MAX means unavailable, not zero",
+    "Public besieger ID requires exactly one generation-valid CUnit with matching native CArmyID",
+    "Title objective province publication is atomic across a hierarchy; county uses native capital-barony getter and province identity round-trip"
+  ]
+}

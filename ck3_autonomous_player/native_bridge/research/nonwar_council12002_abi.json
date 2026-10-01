@@ -1,0 +1,89 @@
+{
+  "contract": "nonwar-council-projection-12002",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "evidence_level": "static-ready",
+  "read_only": true,
+  "application_main_only": true,
+  "globals": {
+    "active_task_storage_slot": "0x5D1DEA0",
+    "active_task_fallback_slot": "0x5D1DDF8"
+  },
+  "functions": {
+    "position_lookup": "0x2684F00",
+    "active_task_ids_enumerator": "0x2916CE0",
+    "value_progress_current": "0x31AB520",
+    "value_progress_maximum": "0x31AB840"
+  },
+  "layout": {
+    "character_landed_extension": "0x1C0",
+    "extension_task_ids": "0x230",
+    "extension_task_count": "0x23C",
+    "active_task_identity": "0x10",
+    "active_task_type": "0x18",
+    "active_task_progress": "0x20",
+    "active_task_frozen": "0x39",
+    "active_task_scopes": "0x40",
+    "active_task_incumbent": "0x40",
+    "active_task_owner": "0x44",
+    "active_task_target_tag": "0x48",
+    "active_task_target_value": "0x50",
+    "task_type_key": "0x18",
+    "task_type_position_type": "0x40",
+    "task_type_kind": "0x48",
+    "task_type_progress_kind": "0x54",
+    "position_type_key": "0x18",
+    "province_identity": "0x10",
+    "province_type_tag": "0x85C"
+  },
+  "native_semantics": {
+    "task_kind": {"0": "general", "1": "county", "2": "court"},
+    "progress_kind": {"0": "infinite", "1": "percentage", "2": "value"},
+    "scope_tags": {"4": "character", "8": "province"},
+    "fixed_point_scale": 100000,
+    "percentage_maximum_raw": 10000000,
+    "value_progress_signature": "int64_t* __fastcall(void* task_type, int64_t* output, void* task_scopes)",
+    "value_return_contract": "returned pointer equals supplied output pointer",
+    "core_vacancies": ["councillor_chancellor", "councillor_steward", "councillor_marshal", "councillor_spymaster", "councillor_court_chaplain"],
+    "auxiliary_vacancies_complete": false,
+    "religious_seat_boundary": "opaque existing role/task identity only; no faith/doctrine/tenet/fervor evaluation or policy"
+  },
+  "spans": [
+    {"name": "position_lookup", "start": "0x2684F00", "end": "0x2685057", "sha256": "4DA00D0F6771601193B71C141D0620D0289D3402F677BBD631DB1353182C2FB8"},
+    {"name": "active_task_ids_enumerator", "start": "0x2916CE0", "end": "0x2916E19", "sha256": "584EF4EA9528093DE80BF07BE6DB4EA12AB126E5282331C972C1A8D694AC4112"},
+    {"name": "owner_task_key_validator", "start": "0x31B5450", "end": "0x31B5601", "sha256": "1F1544B55B5FF0885AAD4551A811D79BAD24C8EE99B35CE1FECB7C4F43E1897F"},
+    {"name": "county_target_dispatch", "start": "0x31B4ED0", "end": "0x31B4F34", "sha256": "072D747EF5AFBA37E0DDAE63D5FD4C8FBBD5A1B75DE26B7661FDF3B8DC654898"},
+    {"name": "court_target_resolver", "start": "0x31B4F40", "end": "0x31B4F94", "sha256": "81606CC713B71BB7490A6FCE2CDF4D66A8427BC8B9DC75192A45812D7BE1424B"},
+    {"name": "frozen_leaf", "start": "0x31B5610", "end": "0x31B5615", "sha256": "08ABBE356A9EE8386E2E8088ACA4B51FDA3CD0276AFF092AB434DEE5E0D78170"},
+    {"name": "current_progress_core", "start": "0x31B5680", "end": "0x31B56BF", "sha256": "D3764CC073B901FC551266976316705D99F3FA5E7100D2C0F80529995C6F3F5C"},
+    {"name": "maximum_progress_core", "start": "0x31B56C0", "end": "0x31B570F", "sha256": "93DB0E7E05264147269E60B0E00917666C88B66A76DD9A503D134C764C9D7181"},
+    {"name": "value_current", "start": "0x31AB520", "end": "0x31AB831", "sha256": "DFA8EC1FA0DC3ECD2521F192B02AA7B7BC8D732734E7AE5DF47D42D1AA3A6B12"},
+    {"name": "value_maximum", "start": "0x31AB840", "end": "0x31ABB54", "sha256": "EB2F72E4D9E3B55F6F4FC0CE8E67057E7C48647343DB1645D748481F59E11988"}
+  ],
+  "instructions": [
+    {"rva": "0x268500B", "mnemonic": "call", "operand": "0x2916ce0"},
+    {"rva": "0x2916CE6", "mnemonic": "mov", "operand": "r10, qword ptr [rcx + 0x1c0]"},
+    {"rva": "0x2916D0F", "mnemonic": "mov", "operand": "rax, qword ptr [r10 + 0x230]"},
+    {"rva": "0x2916D16", "mnemonic": "movsxd", "operand": "rcx, dword ptr [r10 + 0x23c]"},
+    {"rva": "0x2916D97", "mnemonic": "cmp", "operand": "qword ptr [rdx + 0x40], r12"},
+    {"rva": "0x2916DA2", "mnemonic": "mov", "operand": "r10d, dword ptr [r9 + 0x40]"},
+    {"rva": "0x31B54A1", "mnemonic": "mov", "operand": "ebp, dword ptr [rsi + 0x44]"},
+    {"rva": "0x31B4ED8", "mnemonic": "cmp", "operand": "dword ptr [rax + 0x48], 1"},
+    {"rva": "0x31B4EDE", "mnemonic": "cmp", "operand": "word ptr [rcx + 0x48], 8"},
+    {"rva": "0x31B4EF3", "mnemonic": "movsxd", "operand": "rax, dword ptr [rcx + 0x50]"},
+    {"rva": "0x31B4F40", "mnemonic": "cmp", "operand": "word ptr [rcx + 0x48], 4"},
+    {"rva": "0x31B5610", "mnemonic": "movzx", "operand": "eax, byte ptr [rcx + 0x39]"},
+    {"rva": "0x31B5688", "mnemonic": "cmp", "operand": "dword ptr [rax + 0x54], 2"},
+    {"rva": "0x31B568E", "mnemonic": "lea", "operand": "r8, [rcx + 0x40]"},
+    {"rva": "0x31B569A", "mnemonic": "call", "operand": "0x31ab520"},
+    {"rva": "0x31B56E5", "mnemonic": "call", "operand": "0x31ab840"},
+    {"rva": "0x31B56F1", "mnemonic": "mov", "operand": "eax, 0x989680"}
+  ],
+  "global_loads": [
+    {"instruction_rva": "0x2916D2F", "target_rva": "0x5D1DEA0"},
+    {"instruction_rva": "0x2916D47", "target_rva": "0x5D1DDF8"},
+    {"instruction_rva": "0x2685010", "target_rva": "0x5D1DEA0"},
+    {"instruction_rva": "0x2685045", "target_rva": "0x5D1DDF8"}
+  ],
+  "live_acceptance": "pending; no local CK3 session used for this work package"
+}

@@ -60,6 +60,53 @@ python tools/run_nonwar_12002_offline.py --lane ordinary --source-repo <repo> --
 
 最终 source/mod projection/native bundle freeze 后，此 file-only 模式即可实际执行，无需游戏时段。真实 pair 绑定、game parse/runtime、新 PID cold 与可玩闭环仍是后续独立步骤。
 
+## 初始 A-only pair 实体盘点
+
+为判断是否还能继续做真实 file-only pair staging，初始阶段只盘点冻结 migration artifact 根 `Z:/ck3_mod_rewrite/artifacts/migrations/2026-09-30/post-update-1.20.0.2`，当时没有读取 current P/state、真实 profile 或 D 盘。实际发现 **save 实体 0、full driver 实体 0、seed/checkpoint/state/pair archive 实体 0**。`canonical-registered-live-attempt-01/result.json` 包含实际保存记录与 native command history，但不包含完整 persisted driver-state v2 record；不从观测 history 重造 full driver。后续扩大只读取件范围的实际结果见下一节。
+
+| 冻结 metadata 已证明的 pin | 值 |
+| --- | --- |
+| canonical 证据 SHA-256 | `073e31d5884c7bad8100b6319416301621531b93853d0735d4430b97e1eef127` |
+| save SHA-256 / size | `15fec60d3ec284161f135b095402181be9f64de966c002e1282e9bd2e5827825` / `67,083,928` bytes |
+| date / actor / history | `53169072` / `29829` / `74` |
+| episode / pipe | `native-29829-3f80e147d033` / `\\.\pipe\xar_ck3_bridge_migration_12002` |
+| save metadata 指向的位置 | `C:/Users/xenoa/AppData/Local/XarAutoplayer-1.20.0.2-migration/profile/save games/xar_checkpoint.ck3`；**本包未访问** |
+| full driver metadata 指向的位置 | 同 state 的 `native-session/driver-state.json`；**未访问、无 frozen full-driver SHA/实体** |
+
+盘点与提取分别保存为 `S/.task-tmp/FROZEN-12002-PAIR-ASSET-INVENTORY.json`、`S/.task-tmp/FROZEN-12002-PAIR-METADATA-PINS.json`，其中 `S` 为本次集成 source worktree。初始阶段没有添设无实体输入的配对实现，也没有以 fake fixture、改写 1.19 metadata 或 command-history 重建替代实体。此历史记录不代表后续取件后的当前资产资格。
+
+## 后续只读取件与实际冻结
+
+root 随后依据用户“不要占用 CK3”的真实边界，允许只读 canonical metadata 精确指定的本机 save/full-driver 两文件；没有扩大到遍历 Documents、Robert、D 盘、另一机器或操作游戏。实际 save 仍完全符合上表 frozen pins；实际完整 persisted-v2 driver 为 **536,722 bytes**、SHA-256 **`7eba0a48b78c06d6ee31bef47ecaf7f8408bc24702bf88a5966dd1ab94dbbaa7`**，history 完整 **74** 项、episode/actor/date/pipe 均相符。源资格记录为 `S/.task-tmp/CANONICAL-12002-SOURCE-PAIR-QUALIFICATION.json`。
+
+源资格另保留于冻结 A 根的 `nonwar-offline-2026-10-01/CANONICAL-SOURCE-PAIR-QUALIFICATION.json`，SHA-256 `9c3c309d1f44bb99a0c9ac68d462fadd424f6efb438cb5b8ec7929f7675f0ab4`；不依赖临时源码 worktree 继续存在。
+
+据此实现了真正有输入和施工价值的 [stage_nonwar_12002_pair_files.py](../../tools/stage_nonwar_12002_pair_files.py)。它只接受明确 save/full-driver 路径与预期 pins，调用实际 `inspect_ck3_save_artifact_v1`、`require_seedable_ck3_save_v1`、`load_native_driver_state_for_resume`、`validate_cold_start_checkpoint_for_pipe`，逐字节复制到新 canonical 文件布局，并在目标重复使用同一生产 file validators。它不解析/重写 save，不截尾/归一化回写 driver，不调用 ordinary rebind、official preflight、process inventory、pipe、desktop、Steam 或 allocator。原 driver 没有 persisted lifecycle 字段，consumer 正常采用已有 **legacy rogue_one_life** binding；没有因此改成 ordinary G2。
+
+实际冻结到：
+
+```text
+Z:/ck3_mod_rewrite/artifacts/migrations/2026-09-30/post-update-1.20.0.2/nonwar-offline-2026-10-01/canonical-seed-files/
+  profile/save games/xar_checkpoint.ck3
+  native-session/driver-state.json
+  SEED-IDENTITY.json
+  PAIR-FILES-QUALIFICATION.json
+```
+
+**`PASS_STATIC_FILE_PAIR`**：源与目标 save/full-driver 的 SHA 完全相同，完整 pipe/episode/history 保持；原 P 两文件未写。本 pair 来自已验证的 1.20 公共生产入口，不是旧 BA5 私有 NW pair，不携带/宣称 Robert/Guy/first-heir/prisoner ledger 或 tutorial 延续资格；其 file pairing scope 只覆盖 save/full-driver。raw save 格式识别仍明确为 **header-only + canonical full-file SHA/size**，不是完整 gamestate 语义解析。
+
+`PAIR-FILES-QUALIFICATION.json` SHA-256 为 `a244c0d5c7fb63fa63a41e145d0bc48623bc9e0f5647ae048a16cf3a027c480e`，`SEED-IDENTITY.json` 为 `0e4d144fc71ae446d293bfb7c75a078a8e515cd16199ac8a7760027e3fe4b196`。两份 receipt 都明确 `official_zero_process_preflight_completed=false`、`real_game_cold_restore_completed=false`、Robert/G2 增量零。
+
+工具的 portable 调用入口为：
+
+```text
+python tools/stage_nonwar_12002_pair_files.py --source-save <canonical-save> --source-driver <full-driver> --target-state <fresh-Z-state> --pipe <original-pipe> --expected-save-sha256 <save-sha> --expected-driver-sha256 <driver-sha> --expected-character-id <actor> --expected-episode-run-id <episode> --expected-date-raw <date> --expected-history-index <history>
+```
+
+最终 fresh production profile 已准备时，可增加 `--into-prepared-profile --game-dir <game-root>`，纯文件验证该新 profile 为 `xar_on/1.20.0.2` 后把这份 Z 盘冻结 pair 写入仍无 save/driver 的目标。不得以此刷新或覆盖原 P/其他运行 state。生成器 `--lane rogue --seed-identity <frozen-pair>/SEED-IDENTITY.json` 直接复用实际冻结身份；official exact zero-process preflight与真实 cold 仍在后续游戏时段执行。
+
+新 staging fixture **2/2 PASS**（真实生产 file validators、byte-preserving copy、SHA 不匹配拒绝），之后对 main 的既有目标拒绝路径补了 **1/1 PASS**，证明重复请求不写已有 archive。全部 fixture 都是明确 fake save；实际 P 的 PASS 则来自上述独立真实源/目标文件资格，不混记成 fixture 或 live。
+
 ## 已执行的离线验证
 
 ```text

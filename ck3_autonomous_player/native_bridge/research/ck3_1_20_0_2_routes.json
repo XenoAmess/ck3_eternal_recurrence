@@ -1,0 +1,815 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready offline route/contact readers; paused production live validation pending",
+  "live_verified": false,
+  "user_game_touched": false,
+  "source_constants": {
+    "src/ck3_12002_routes.cpp": {
+      "kArmyCurrentProvinceOffset": "0x20",
+      "kArmyIdOffset": "0x10",
+      "kArmyOwnerCharacterIdOffset": "0x174",
+      "kArmyTargetProvinceOffset": "0x30",
+      "kBattleResultIdOffset": "0x8",
+      "kBattleResultReadyOffset": "0x28",
+      "kCombatAttackerSideOffset": "0x20",
+      "kCombatBattleResultIdOffset": "0x708",
+      "kCombatDefenderSideOffset": "0x368",
+      "kCombatFinalizedOffset": "0x704",
+      "kCombatIdOffset": "0x8",
+      "kCombatProvinceOffset": "0x6b8",
+      "kCombatSideArmyCountOffset": "0x1c",
+      "kCombatSideArmyIdsOffset": "0x10",
+      "kCombatSideCombatBackPointerOffset": "0xb8",
+      "kCombatSidePrimaryCharacterIdOffset": "0x70",
+      "kCombatWinnerOffset": "0x6e0",
+      "kInternalArmyCombatIdOffset": "0x128",
+      "kInternalArmyIdOffset": "0x10",
+      "kInternalArmyRegimentCountOffset": "0x44",
+      "kInternalArmyRegimentIdsOffset": "0x38",
+      "kInternalArmyUnitIdOffset": "0x124",
+      "kMapAdjacencyKindOffset": "0x0",
+      "kMapAdjacencyStride": "0x30",
+      "kMapAdjacencyTargetProvinceIdOffset": "0x4",
+      "kMapNodeAdjacencyCountOffset": "0x5c",
+      "kMapNodeAdjacencyDataOffset": "0x50",
+      "kMapNodePathProvinceInfoOffset": "0xb0",
+      "kPathProvinceInfoLandOffset": "0x9",
+      "kPathProvinceInfoWaterOffset": "0xb",
+      "kProvinceCombatIdCountOffset": "0x764",
+      "kProvinceCombatIdsOffset": "0x758",
+      "kProvinceContactGatePointerOffset": "0x20",
+      "kProvinceFortLevelOffset": "0x850",
+      "kProvinceIdOffset": "0x10",
+      "kProvinceMapNodeOffset": "0x8",
+      "kProvinceUnitIdCountOffset": "0x74c",
+      "kProvinceUnitIdsOffset": "0x740",
+      "kRegimentCurrentSoldiersOffset": "0x38",
+      "kRegimentIdOffset": "0x10",
+      "kUnitArmyIdOffset": "0x178",
+      "kUnitCachedCurrentEdgeSpeedOffset": "0x190",
+      "kUnitPathProvinceIdOffset": "0x0",
+      "kUnitPathProvinceInfosOffset": "0x38",
+      "kUnitRetreatStateOffset": "0x170"
+    }
+  },
+  "signature_anchors": [
+    {
+      "name": "contact_resolver_mirror_only",
+      "rva": "0x2479180",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 20 48 89 54 24 10 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 50 4C 8B E2 48 8B F1 48 8B 41 20 80 78 1B 00 0F 84 C3 05 00 00 48 8B 05 3C F6 83 03 4C 8B 80 C0"
+    },
+    {
+      "name": "contact_opponent_builder_mirror_only",
+      "rva": "0x247a330",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 8B C4 48 89 58 18 48 89 50 10 48 89 48 08 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 48 FE FF FF 48 81 EC 80 02 00 00 0F 29 70 B8 41 8B F0 4C 8B F2 4C 8B F9 45 33 E4 4C 89 64 24 40 4C 89 64"
+    },
+    {
+      "name": "hostility_read_only",
+      "rva": "0x2c09640",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B 42 18 49 8B D8 48 8B FA 48 8B F1 39 41 18 0F 84 89 00 00 00 E8 07 2C CB FF 8B 40 20 83 F8 FF 74 49 48 8B 0D E0 47 11 03 48 85 C9 74 23 8B D0 81"
+    },
+    {
+      "name": "army_empty_read_only",
+      "rva": "0x24e83c0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "40 57 48 8B 41 38 45 33 DB 48 63 51 44 48 8B F9 48 8D 14 90 48 3B C2 74 71 4C 8B 15 60 6F 83 03 48 89 5C 24 10 48 8B 1D 4C 6F 83 03 0F 1F 40 00 4D 85 D2 74 2C 44 8B 08 41 8B C9 81 E1 FF FF FF"
+    },
+    {
+      "name": "army_in_combat_read_only",
+      "rva": "0x24e8360",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 8B 05 09 5B 83 03 48 85 C0 74 29 8B 91 28 01 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 05 39 50 08 74 07 48 8B 05 7C 5A 83 03 81 78 0C 62"
+    },
+    {
+      "name": "province_holder_read_only",
+      "rva": "0x247d030",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "8B 81 3C 07 00 00 41 BA FF FF FF FF 4C 8B C2 41 3B C2 74 06 89 02 48 8B C2 C3 4C 8B 0D A7 0A 8A 03 48 8B 15 88 0A 8A 03 4D 85 C9 74 2E 44 8B 99 38 07 00 00 41 8B C3 25 FF FF FF 00 41 3B 41 2C"
+    },
+    {
+      "name": "defender_holder_read_only",
+      "rva": "0x2c09810",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 55 41 56 41 57 48 83 EC 20 8B 42 18 4C 8B FA 4C 8B E9 39 41 18 0F 84 80 01 00 00 45 33 C0 E8 A8 F8 FF FF 84 C0 75 58 45 33 C0 49"
+    },
+    {
+      "name": "defender_fallback_read_only",
+      "rva": "0x2c164e0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 48 8B DA 48 8B F9 48 8B CB 48 8D 54 24 40 E8 43 74 86 FF 83 38 FF 0F 84 74 01 00 00 48 8D 54 24 48 48 8B CB E8 2D 74 86 FF 48 8B 15 A6 93 10 03 48 85 D2 74 29 44"
+    },
+    {
+      "name": "land_speed_read_only",
+      "rva": "0x24aa940",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "40 55 57 41 56 48 83 EC 20 83 79 18 00 4C 8B F2 48 8B E9 75 15 48 8B 15 EC 34 87 03 48 85 D2 74 7F 44 8B 81 78 01 00 00 EB 50 48 8B 15 47 50 87 03 48 85 D2 74 2D 44 8B 81 7C 01 00 00 41 8B C0"
+    },
+    {
+      "name": "naval_speed_read_only",
+      "rva": "0x24aac00",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "40 53 48 83 EC 20 83 79 18 00 48 8B DA 75 15 48 8B 15 32 32 87 03 48 85 D2 74 7F 44 8B 81 78 01 00 00 EB 50 48 8B 15 8D 4D 87 03 48 85 D2 74 2D 44 8B 81 7C 01 00 00 41 8B C0 25 FF FF FF 00 3B"
+    },
+    {
+      "name": "travel_duration_read_only",
+      "rva": "0x24aada0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "4C 89 44 24 18 48 89 54 24 10 55 57 41 54 41 55 48 83 EC 68 41 83 78 0C 00 49 8B E9 49 8B F8 4C 8B E2 4C 8B E9 75 15 48 C7 02 00 00 00 00 48 8B C2 48 83 C4 68 41 5D 41 5C 5F 5D C3 48 89 9C 24"
+    },
+    {
+      "name": "edge_duration_read_only",
+      "rva": "0x24ab060",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "40 53 56 41 56 48 83 EC 40 49 63 D8 4C 8B F2 48 8B F1 45 85 C0 0F 88 55 02 00 00 3B 59 44 0F 8D 4C 02 00 00 48 8B 49 38 48 8B D3 48 89 6C 24 60 4C 89 7C 24 70 45 85 C0 75 0A 48 8B 46 20 48 83"
+    },
+    {
+      "name": "current_speed_read_only",
+      "rva": "0x24ab5c0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "40 53 48 83 EC 20 44 8B 49 44 48 8B DA 4C 8B 1D 7C D6 7B 03 4C 8B C1 48 8B 15 B2 2D 87 03 45 85 C9 7E 2F 48 8B 41 38 4D 8B 93 A0 00 00 00 48 8B 08 48 63 01 83 F8 01 7C 19 41 3B 82 4C 01 00 00"
+    },
+    {
+      "name": "route_progress_read_only",
+      "rva": "0x24ab2f0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "40 53 57 48 83 EC 38 83 79 44 00 48 8B FA 48 8B D9 0F 84 BF 01 00 00 83 B9 70 01 00 00 01 0F 84 B2 01 00 00 48 8B 41 38 48 89 74 24 30 48 8B 30 48 8B 41 20 44 8B 16 4C 8B 58 08 33 C0 45 8B 43"
+    },
+    {
+      "name": "route_front_read_only",
+      "rva": "0x24aa7d0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "83 79 44 00 7E 34 48 8B 05 73 E4 7B 03 48 8B 90 A0 00 00 00 48 8B 41 38 48 8B 08 48 63 01 83 F8 01 7C 17 3B 82 4C 01 00 00 7D 0F 48 8B C8 48 8B 82 40 01 00 00 48 8B 04 C8 C3 48 8B 05 7F 3B 87"
+    },
+    {
+      "name": "route_tail_read_only",
+      "rva": "0x24aa820",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "83 79 44 00 48 8B D1 74 3B 48 8B 05 20 E4 7B 03 48 63 49 44 4C 8B 80 A0 00 00 00 48 8B 42 38 48 8B 4C C8 F8 48 63 01 83 F8 01 7C 18 41 3B 80 4C 01 00 00 7D 0F 48 8B C8 49 8B 80 40 01 00 00 48"
+    },
+    {
+      "name": "move_origin_inlined_mirror_only",
+      "rva": "0x24abbe0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 41 56 41 57 48 81 EC D0 01 00 00 41 8B D9 45 8B F8 48 8B EA 48 8B F9 4C 8B 35 42 D0 7B 03 41 F6 C1 01 75 70 48 8D 50 08 E8 D3 F6 FF FF 4C 8B 0D"
+    },
+    {
+      "name": "move_mode_read_only",
+      "rva": "0x296a0a0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 20 81 79 14 74 69 6E 55 48 8B EA 48 8B D9 0F 85 CA 00 00 00 83 79 10 FF 0F 84 C0 00 00 00 45 33 F6 45 85 C0 75 0C 44 39 71 44 74 06 41 8D 7E"
+    },
+    {
+      "name": "move_path_context_constructor",
+      "rva": "0x2648060",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 20 33 F6 48 89 51 10 48 8D 05 34 D7 0F 02 89 71 08 48 89 01 48 8B FA 81 7A 14 74 69 6E 55 48 8B D9 75 15 83 7A 10 FF 74 0F 48 8D 54 24 30 48 8B CF E8"
+    },
+    {
+      "name": "move_path_constructor",
+      "rva": "0xd1a0b0",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 8D 59 18 33 ED 48 89 29 48 8D 05 F4 C1 7C 03 89 69 08 48 8B F1 48 89 59 10 48 89 03 44 8D 45 08 48 8D 05 C4 4A 7C 04 48 89 83 08"
+    },
+    {
+      "name": "move_route_builder",
+      "rva": "0x2648150",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 60 FC FF FF 48 81 EC A0 04 00 00 45 8B D1 48 8B F9 4C 8B BD F0 03 00 00 81 BA 5C 08 00 00 76 6F 72 50 0F 85"
+    },
+    {
+      "name": "move_command_destructor",
+      "rva": "0x2969620",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 20 8B DA 48 8B F9 E8 6C 59 19 FE F6 C3 01 74 0D BA 68 01 00 00 48 8B CF E8 1E A9 8B 01 48 8B 5C 24 30 48 8B C7 48 83 C4 20 5F C3 CC CC CC CC CC CC CC CC CC CC CC CC"
+    },
+    {
+      "name": "edge_timing_q100000",
+      "rva": "0x2649320",
+      "confidence": "reviewed-static-1.20-routes-contact",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 48 8B 1A 49 8B F1 48 89 19 4C 8B D9 41 80 78 09 00 0F 84 F0 00 00 00 48 8B 44 24 28 48 8B 38 48 85 FF 75 0A B8 FF FF FF FF E9 C0 00 00 00 48 B8 A3"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "move_command_primary",
+      "rva": "0x476b168",
+      "function_rvas": [
+        "0x2969620",
+        "0x3f7e2d0",
+        "0x37eb3c0"
+      ]
+    },
+    {
+      "name": "move_command_secondary",
+      "rva": "0x476b138",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2969660",
+        "0x8522c0"
+      ]
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "province contact gate pointer +20",
+      "rva": "0x24791a7",
+      "bytes": "48 8B 41 20",
+      "instruction": "mov rax, qword ptr [rcx + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "province contact admission raw +1B",
+      "rva": "0x24791ab",
+      "bytes": "80 78 1B 00",
+      "instruction": "cmp byte ptr [rax + 0x1b], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "contact mode global",
+      "rva": "0x24791b5",
+      "bytes": "48 8B 05 3C F6 83 03",
+      "instruction": "mov rax, qword ptr [rip + 0x383f63c]",
+      "rip_targets": [
+        "0x5cb87f8"
+      ]
+    },
+    {
+      "purpose": "unit contact entry predicate native call",
+      "rva": "0x24791d3",
+      "bytes": "E8 98 D5 79 00",
+      "instruction": "call 0x2c16770",
+      "rip_targets": []
+    },
+    {
+      "purpose": "unit owner full character ID +174",
+      "rva": "0x24791e0",
+      "bytes": "41 8B 84 24 74 01 00 00",
+      "instruction": "mov eax, dword ptr [r12 + 0x174]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character storage global",
+      "rva": "0x24791e8",
+      "bytes": "4C 8B 05 79 E3 7E 03",
+      "instruction": "mov r8, qword ptr [rip + 0x37ee379]",
+      "rip_targets": [
+        "0x5c67568"
+      ]
+    },
+    {
+      "purpose": "character complete generation ID",
+      "rva": "0x2479215",
+      "bytes": "41 39 45 18",
+      "instruction": "cmp dword ptr [r13 + 0x18], eax",
+      "rip_targets": []
+    },
+    {
+      "purpose": "character magic identity replaces virtual guessing",
+      "rva": "0x2479222",
+      "bytes": "41 81 7D 1C 72 61 68 43",
+      "instruction": "cmp dword ptr [r13 + 0x1c], 0x43686172",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new province combat ID array +758",
+      "rva": "0x2479296",
+      "bytes": "48 8B 9E 58 07 00 00",
+      "instruction": "mov rbx, qword ptr [rsi + 0x758]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new province combat count +764",
+      "rva": "0x247929d",
+      "bytes": "48 63 86 64 07 00 00",
+      "instruction": "movsxd rax, dword ptr [rsi + 0x764]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "combat storage global",
+      "rva": "0x24792c2",
+      "bytes": "48 83 3D A6 4B 8A 03 00",
+      "instruction": "cmp qword ptr [rip + 0x38a4ba6], 0",
+      "rip_targets": [
+        "0x5d1de70"
+      ]
+    },
+    {
+      "purpose": "combat finalized raw +704",
+      "rva": "0x2479300",
+      "bytes": "80 BE 04 07 00 00 00",
+      "instruction": "cmp byte ptr [rsi + 0x704], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "combat attacker primary +90",
+      "rva": "0x247930d",
+      "bytes": "8B 86 90 00 00 00",
+      "instruction": "mov eax, dword ptr [rsi + 0x90]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "owner to attacker hostility direction",
+      "rva": "0x2479352",
+      "bytes": "E8 E9 02 79 00",
+      "instruction": "call 0x2c09640",
+      "rip_targets": []
+    },
+    {
+      "purpose": "combat defender primary +3D8",
+      "rva": "0x2479362",
+      "bytes": "8B 86 D8 03 00 00",
+      "instruction": "mov eax, dword ptr [rsi + 0x3d8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "owner to defender hostility direction",
+      "rva": "0x24793a7",
+      "bytes": "E8 94 02 79 00",
+      "instruction": "call 0x2c09640",
+      "rip_targets": []
+    },
+    {
+      "purpose": "last compatible combat overwrites selected",
+      "rva": "0x24793b9",
+      "bytes": "4C 8B FE",
+      "instruction": "mov r15, rsi",
+      "rip_targets": []
+    },
+    {
+      "purpose": "battle result storage global",
+      "rva": "0x24793ca",
+      "bytes": "4C 39 3D 0F 6C 8A 03",
+      "instruction": "cmp qword ptr [rip + 0x38a6c0f], r15",
+      "rip_targets": [
+        "0x5d1ffe0"
+      ]
+    },
+    {
+      "purpose": "combat result full ID +708",
+      "rva": "0x24793d3",
+      "bytes": "8B 96 08 07 00 00",
+      "instruction": "mov edx, dword ptr [rsi + 0x708]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "battle result identity magic",
+      "rva": "0x247940c",
+      "bytes": "81 78 0C 73 52 62 43",
+      "instruction": "cmp dword ptr [rax + 0xc], 0x43625273",
+      "rip_targets": []
+    },
+    {
+      "purpose": "battle result ready raw +28",
+      "rva": "0x247941b",
+      "bytes": "80 78 28 00",
+      "instruction": "cmp byte ptr [rax + 0x28], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "winner side +6E0",
+      "rva": "0x2479421",
+      "bytes": "8B 8E E0 06 00 00",
+      "instruction": "mov ecx, dword ptr [rsi + 0x6e0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "loser stored native army ID array",
+      "rva": "0x247943c",
+      "bytes": "4C 8B 40 10",
+      "instruction": "mov r8, qword ptr [rax + 0x10]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "loser stored native army count",
+      "rva": "0x2479440",
+      "bytes": "48 63 40 1C",
+      "instruction": "movsxd rax, dword ptr [rax + 0x1c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new province unit ID array +740",
+      "rva": "0x24794c4",
+      "bytes": "48 8B 9E 40 07 00 00",
+      "instruction": "mov rbx, qword ptr [rsi + 0x740]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new province unit ID count +74C",
+      "rva": "0x24794cb",
+      "bytes": "48 63 86 4C 07 00 00",
+      "instruction": "movsxd rax, dword ptr [rsi + 0x74c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "public unit storage global",
+      "rva": "0x24794e1",
+      "bytes": "48 83 3D 97 4E 8A 03 00",
+      "instruction": "cmp qword ptr [rip + 0x38a4e97], 0",
+      "rip_targets": [
+        "0x5d1e380"
+      ]
+    },
+    {
+      "purpose": "candidate unit contact state +18",
+      "rva": "0x2479572",
+      "bytes": "83 7E 18 00",
+      "instruction": "cmp dword ptr [rsi + 0x18], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "candidate retreat state +170",
+      "rva": "0x247957c",
+      "bytes": "83 BE 70 01 00 00 00",
+      "instruction": "cmp dword ptr [rsi + 0x170], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "candidate native army full ID +178",
+      "rva": "0x2479589",
+      "bytes": "8B 86 78 01 00 00",
+      "instruction": "mov eax, dword ptr [rsi + 0x178]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "internal army storage global",
+      "rva": "0x247958f",
+      "bytes": "48 83 3D B1 48 8A 03 00",
+      "instruction": "cmp qword ptr [rip + 0x38a48b1], 0",
+      "rip_targets": [
+        "0x5d1de48"
+      ]
+    },
+    {
+      "purpose": "native empty-for-contact predicate",
+      "rva": "0x24795d1",
+      "bytes": "E8 EA ED 06 00",
+      "instruction": "call 0x24e83c0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native in-combat predicate",
+      "rva": "0x24795e1",
+      "bytes": "E8 7A ED 06 00",
+      "instruction": "call 0x24e8360",
+      "rip_targets": []
+    },
+    {
+      "purpose": "seed directional hostility predicate",
+      "rva": "0x2479637",
+      "bytes": "E8 04 00 79 00",
+      "instruction": "call 0x2c09640",
+      "rip_targets": []
+    },
+    {
+      "purpose": "initiator regiments array +38",
+      "rva": "0x2479696",
+      "bytes": "48 8B 47 38",
+      "instruction": "mov rax, qword ptr [rdi + 0x38]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "initiator regiments count +44",
+      "rva": "0x247969a",
+      "bytes": "48 63 4F 44",
+      "instruction": "movsxd rcx, dword ptr [rdi + 0x44]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "regiment storage global",
+      "rva": "0x24796ab",
+      "bytes": "4C 8B 1D 8E 5C 8A 03",
+      "instruction": "mov r11, qword ptr [rip + 0x38a5c8e]",
+      "rip_targets": [
+        "0x5d1f340"
+      ]
+    },
+    {
+      "purpose": "regiment magic replaces removed vslot1",
+      "rva": "0x24796f4",
+      "bytes": "41 81 79 14 67 52 72 41",
+      "instruction": "cmp dword ptr [r9 + 0x14], 0x41725267",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native current soldiers +38",
+      "rva": "0x2479705",
+      "bytes": "41 03 59 38",
+      "instruction": "add ebx, dword ptr [r9 + 0x38]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "opponent scan new unit array +740",
+      "rva": "0x247a46d",
+      "bytes": "49 8B 9F 40 07 00 00",
+      "instruction": "mov rbx, qword ptr [r15 + 0x740]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "opponent owner ID +174",
+      "rva": "0x247a555",
+      "bytes": "41 8B 96 74 01 00 00",
+      "instruction": "mov edx, dword ptr [r14 + 0x174]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "opponent to subject reverse hostility direction",
+      "rva": "0x247a59b",
+      "bytes": "E8 A0 F0 78 00",
+      "instruction": "call 0x2c09640",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new province fort level +850",
+      "rva": "0x247a6c2",
+      "bytes": "41 83 BF 50 08 00 00 00",
+      "instruction": "cmp dword ptr [r15 + 0x850], 0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "new province occupation holder +73C",
+      "rva": "0x247a6d0",
+      "bytes": "41 8B 87 3C 07 00 00",
+      "instruction": "mov eax, dword ptr [r15 + 0x73c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "fort holder defender classification",
+      "rva": "0x247a7aa",
+      "bytes": "E8 61 F0 78 00",
+      "instruction": "call 0x2c09810",
+      "rip_targets": []
+    },
+    {
+      "purpose": "fallback defender classification",
+      "rva": "0x247a7c1",
+      "bytes": "E8 1A BD 79 00",
+      "instruction": "call 0x2c164e0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "duration output stack home",
+      "rva": "0x24aade4",
+      "bytes": "48 8D 54 24 38",
+      "instruction": "lea rdx, [rsp + 0x38]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "duration native land speed query",
+      "rva": "0x24aadf3",
+      "bytes": "E8 48 FB FF FF",
+      "instruction": "call 0x24aa940",
+      "rip_targets": []
+    },
+    {
+      "purpose": "duration native naval speed query",
+      "rva": "0x24aae00",
+      "bytes": "E8 FB FD FF FF",
+      "instruction": "call 0x24aac00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "origin province mapnode +8",
+      "rva": "0x24aae05",
+      "bytes": "48 8B 45 08",
+      "instruction": "mov rax, qword ptr [rbp + 8]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "mapnode pathinfo +B0",
+      "rva": "0x24aae11",
+      "bytes": "4C 8B 90 B0 00 00 00",
+      "instruction": "mov r10, qword ptr [rax + 0xb0]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "mapnode adjacency count +5C",
+      "rva": "0x24aae56",
+      "bytes": "45 8B 41 5C",
+      "instruction": "mov r8d, dword ptr [r9 + 0x5c]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "mapnode adjacency data +50",
+      "rva": "0x24aae66",
+      "bytes": "4D 8B 49 50",
+      "instruction": "mov r9, qword ptr [r9 + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "adjacency target ID +4",
+      "rva": "0x24aae7e",
+      "bytes": "39 7A 04",
+      "instruction": "cmp dword ptr [rdx + 4], edi",
+      "rip_targets": []
+    },
+    {
+      "purpose": "native exact edge timing",
+      "rva": "0x24aaeb4",
+      "bytes": "E8 67 E4 19 00",
+      "instruction": "call 0x2649320",
+      "rip_targets": []
+    },
+    {
+      "purpose": "GameData province array +140",
+      "rva": "0x24aaed3",
+      "bytes": "48 8B 80 40 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x140]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "cached current-edge speed +190",
+      "rva": "0x24aaf3a",
+      "bytes": "49 8B 8D 90 01 00 00",
+      "instruction": "mov rcx, qword ptr [r13 + 0x190]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "inlined origin calls native movement progress",
+      "rva": "0x24abc18",
+      "bytes": "E8 D3 F6 FF FF",
+      "instruction": "call 0x24ab2f0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "movement lock threshold global",
+      "rva": "0x24abc1d",
+      "bytes": "4C 8B 0D C4 DD 7B 03",
+      "instruction": "mov r9, qword ptr [rip + 0x37bddc4]",
+      "rip_targets": [
+        "0x5c699e8"
+      ]
+    },
+    {
+      "purpose": "new province identity magic +85C",
+      "rva": "0x24abc68",
+      "bytes": "81 B8 5C 08 00 00 76 6F 72 50",
+      "instruction": "cmp dword ptr [rax + 0x85c], 0x50726f76",
+      "rip_targets": []
+    },
+    {
+      "purpose": "inlined origin chooses route front",
+      "rva": "0x24abc77",
+      "bytes": "E8 54 EB FF FF",
+      "instruction": "call 0x24aa7d0",
+      "rip_targets": []
+    },
+    {
+      "purpose": "inlined origin current province +20",
+      "rva": "0x24abc91",
+      "bytes": "48 8B 77 20",
+      "instruction": "mov rsi, qword ptr [rdi + 0x20]",
+      "rip_targets": []
+    },
+    {
+      "purpose": "inlined origin chooses route tail",
+      "rva": "0x24abd03",
+      "bytes": "E8 18 EB FF FF",
+      "instruction": "call 0x24aa820",
+      "rip_targets": []
+    }
+  ],
+  "bindings": {
+    "contact_resolver_mirror_only": "0x2479180",
+    "contact_opponent_builder_mirror_only": "0x247a330",
+    "hostility_read_only": "0x2c09640",
+    "army_empty_read_only": "0x24e83c0",
+    "army_in_combat_read_only": "0x24e8360",
+    "province_holder_read_only": "0x247d030",
+    "defender_holder_read_only": "0x2c09810",
+    "defender_fallback_read_only": "0x2c164e0",
+    "land_speed_read_only": "0x24aa940",
+    "naval_speed_read_only": "0x24aac00",
+    "travel_duration_read_only": "0x24aada0",
+    "edge_duration_read_only": "0x24ab060",
+    "current_speed_read_only": "0x24ab5c0",
+    "route_progress_read_only": "0x24ab2f0",
+    "route_front_read_only": "0x24aa7d0",
+    "route_tail_read_only": "0x24aa820",
+    "move_origin_inlined_mirror_only": "0x24abbe0",
+    "move_mode_read_only": "0x296a0a0",
+    "move_path_context_constructor": "0x2648060",
+    "move_path_constructor": "0xd1a0b0",
+    "move_route_builder": "0x2648150",
+    "move_command_destructor": "0x2969620",
+    "edge_timing_q100000": "0x2649320"
+  },
+  "layout_delta": {
+    "province_unit_ids": [
+      "0x748",
+      "0x740"
+    ],
+    "province_unit_count": [
+      "0x754",
+      "0x74c"
+    ],
+    "province_combat_ids": [
+      "0x760",
+      "0x758"
+    ],
+    "province_combat_count": [
+      "0x76c",
+      "0x764"
+    ],
+    "province_fort": [
+      "0x858",
+      "0x850"
+    ],
+    "province_occupation_holder": [
+      "0x744",
+      "0x73c"
+    ],
+    "province_identity_magic": [
+      "0x864",
+      "0x85c"
+    ],
+    "regiment_identity": "CArmyRegiment (ArRg) old +8 vslot1 removed; use magic +14 and full ID +10 as new native call sites do",
+    "move_origin": "old callable helper removed; mirror 0x24ABC07..0x24ABD10 instead of inventing a callable RVA"
+  },
+  "query_contract": {
+    "owning_thread_required": true,
+    "caller_complete_paused_scope_required": true,
+    "clock_and_two_complete_samples_must_match": true,
+    "commands_submitted": false,
+    "native_mutators_invoked": false,
+    "readonly_projection_calls": [
+      "native route builder allocates temporary path only, followed by nondeleting command destructor",
+      "read-only speed/duration/relationship/holder predicates"
+    ],
+    "results": [
+      "same_province",
+      "opposing_edge",
+      "none",
+      "create_new",
+      "join_existing",
+      "in_combat"
+    ],
+    "order": "stored native arrays and last compatible combat retained",
+    "reinforcement_eta_helper": "ReadCommittedRouteTimeline exports only committed native path timing; enclosing battle reader validates complete frame and projected ID equality",
+    "pause_field": "Jomini byte +20 only; +24 tick cache is not a pause state"
+  },
+  "remaining_validation": [
+    "paused current production snapshot scope agrees with bridge revision",
+    "precontact predictions versus CK3 actual subsequent contacts and CombatID side arrays",
+    "locked current edge and mixed land/naval route timing in the actual loaded game"
+  ],
+  "source_bindings_file": "src/ck3_12002_routes.cpp",
+  "source_binding_rvas": {
+    "game_state_slot": "0x5c68c50",
+    "jomini_state_slot": "0x5c6a520",
+    "army_storage_slot": "0x5d1e380",
+    "army_internal_storage_slot": "0x5d1de48",
+    "regiment_storage_slot": "0x5d1f340",
+    "character_storage_slot": "0x5c67568",
+    "combat_storage_slot": "0x5d1de70",
+    "battle_result_storage_slot": "0x5d1ffe0",
+    "contact_game_mode_slot": "0x5cb87f8",
+    "read_unit_land_route_speed": "0x24aa940",
+    "read_unit_naval_route_speed": "0x24aac00",
+    "read_unit_current_edge_speed": "0x24ab5c0",
+    "read_route_travel_duration": "0x24aada0",
+    "read_route_progress": "0x24ab2f0",
+    "movement_locked_threshold": "0x5c699e8",
+    "get_route_front": "0x24aa7d0",
+    "get_route_tail": "0x24aa820",
+    "get_army_move_mode": "0x296a0a0",
+    "construct_move_path_context": "0x2648060",
+    "construct_army_move_path": "0xd1a0b0",
+    "build_army_move_route": "0x2648150",
+    "destroy_move_army_command": "0x2969620",
+    "move_army_primary_vtable": "0x476b168",
+    "move_army_secondary_vtable": "0x476b138",
+    "is_character_hostile": "0x2c09640",
+    "is_army_empty_for_contact": "0x24e83c0",
+    "is_army_in_combat": "0x24e8360",
+    "read_province_holder_character_id": "0x247d030",
+    "classify_contact_defender_by_holder": "0x2c09810",
+    "classify_contact_defender_fallback": "0x2c164e0"
+  },
+  "rtti_labels": {
+    "regiment_storage_slot": {
+      "native_type": "CArmyRegiment",
+      "slot_rva": "0x5D1F340",
+      "primary_vtable_rva": "0x4744DA0",
+      "secondary_vtable_rva": "0x4744DD8",
+      "secondary_only_function_rva": "0x26379F8",
+      "identity_magic": "0x41725267",
+      "full_id_offset": "0x10",
+      "type_offset": "0x18",
+      "army_id_offset": "0x140",
+      "distinct_type_note": "CRegiment primary 0x4744B80 is a different object, not the ArRg storage type"
+    }
+  }
+}

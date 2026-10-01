@@ -1,0 +1,45 @@
+{
+  "schema": "xar.offline.native-family-ranked-wire.v1",
+  "source": "actual compiled 1.20 native-ranked provider fixture followed by shared C++ serializer and RenderQueryBuildIdentity",
+  "local_ck3_contacted": false,
+  "readiness": "static-ready",
+  "frozen_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "fixture_returncode": 0,
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\offline-nonwar-2026-10-01\\family-ranked38-native.json",
+      "bytes": 2993,
+      "sha256": "88d6b99a9226a4d45c0032242ada527b0ad89fe8bc83a2c1c4eec8ed2d0c7c9f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\offline-nonwar-2026-10-01\\build-native-msvc\\fixtures-xar_ck3_12002_family_ranked_test.json",
+      "bytes": 10246,
+      "sha256": "c6c207164d084817c3282f7d0608807635920a5772340e701146b28f8fbf5782"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\offline-nonwar-2026-10-01\\build-native-msvc\\xar_ck3_12002_family_ranked_test.exe",
+      "bytes": 70144,
+      "sha256": "cfe044fea70d24f565698f1c6c950c8f8cc236e139990ffc384e18ad5f4fdcf3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\nw12002\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_family_ranked.cpp",
+      "bytes": 19947,
+      "sha256": "ddd44a78482060d13bf79141ca35cbf588d6b3c9199947224d3318f4ebb6420c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\nw12002\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_family_ranked_test.cpp",
+      "bytes": 20127,
+      "sha256": "b1513ba390358464df58f98824a194b548612f40e370c492a52a57892de667ce"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\nw12002\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp",
+      "bytes": 6174,
+      "sha256": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\nw12002\\ck3_autonomous_player\\native_bridge\\src\\marriage_matchmaking_observer_v1.cpp",
+      "bytes": 19645,
+      "sha256": "6838a9eee37b693072542d841bea530f5f3fd88ecb370dbd393406c268f21bca"
+    }
+  ]
+}
