@@ -6,6 +6,8 @@ import uuid
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
+from .version_identity import CK3_12002
 
 
 STEP_PREFIX = "query-active-scheme-sway-target-v1-private-"
@@ -21,10 +23,40 @@ _VALUE_KEYS = {
     "active_scheme_count", "matching_sway_active", "native_complete_can_send",
     "native_legal_now", "native_failure_classification",
 }
+_ACTIVE_SWAY_KEYS = {
+    "scheme_instance_id", "scheme_instance_generation", "target_character_id",
+    "progress", "progress_goal", "is_exposed", "is_frozen",
+}
 
 
 def _positive_int(value: object) -> bool:
     return type(value) is int and value > 0
+
+
+def _valid_active_sway_instances(value: Mapping[str, object]) -> bool:
+    rows = value.get("active_sway_instances")
+    if (not isinstance(rows, list)
+            or len(rows) > value["active_scheme_count"]):
+        return False
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != _ACTIVE_SWAY_KEYS:
+            return False
+        if (not _positive_int(row["scheme_instance_id"])
+                or row["scheme_instance_id"] > 0xFFFFFFFF
+                or type(row["scheme_instance_generation"]) is not int
+                or not 0 <= row["scheme_instance_generation"] <= 255
+                or not _positive_int(row["target_character_id"])
+                or row["target_character_id"] > 0xFFFFFFFF
+                or type(row["progress"]) is not int
+                or type(row["progress_goal"]) is not int
+                or not 0 <= row["progress"] <= row["progress_goal"] <= 0x7FFFFFFF
+                or row["progress_goal"] == 0
+                or type(row["is_exposed"]) is not bool
+                or type(row["is_frozen"]) is not bool):
+            return False
+    return value["matching_sway_active"] == any(
+        row["target_character_id"] == value["target_character_id"] for row in rows
+    )
 
 
 def query_active_scheme_sway_target_private_v1(
@@ -54,6 +86,9 @@ def query_active_scheme_sway_target_private_v1(
         or type(before.get("date_raw")) is not int
     ):
         raise BridgeUnavailableError("private sway requires a living player on a paused map frame")
+    provenance = private_native_provenance(before)
+    current_build = provenance["exact_ck3_build"] == CK3_12002.game_version
+    expected_keys = _VALUE_KEYS | {"active_sway_instances"} if current_build else _VALUE_KEYS
     step = f"{STEP_PREFIX}{target_character_id}"
     request_id = "sway-read-" + uuid.uuid4().hex
     driver.endpoint.send({
@@ -91,7 +126,7 @@ def query_active_scheme_sway_target_private_v1(
     value = envelope.get("active_scheme_sway")
     if (
         not isinstance(value, dict)
-        or set(value) != _VALUE_KEYS
+        or set(value) != expected_keys
         or value.get("schema") != SCHEMA
         or value.get("snapshot_revision") != native_revision
         or not _positive_int(value.get("capture_epoch"))
@@ -114,6 +149,7 @@ def query_active_scheme_sway_target_private_v1(
             and (value["matching_sway_active"]
                  or not value["native_complete_can_send"])
         )
+        or (current_build and not _valid_active_sway_instances(value))
     ):
         raise BridgeUnavailableError("private sway native payload malformed")
     after = driver.take_snapshot()
@@ -125,6 +161,7 @@ def query_active_scheme_sway_target_private_v1(
         raise BridgeUnavailableError("private sway read crossed the paused actor/date frame")
     return {
         **value,
+        **provenance,
         "queried_snapshot_id": before.get("snapshot_id"),
         "queried_revision": expected_revision,
         "queried_native_revision": native_revision,

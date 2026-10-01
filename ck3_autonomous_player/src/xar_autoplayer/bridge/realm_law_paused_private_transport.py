@@ -6,6 +6,7 @@ import uuid
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "query-realm-law-final-terms-v1-private"
@@ -99,6 +100,7 @@ def query_realm_law_final_terms_private_v1(
             or type(native_revision) is not int or native_revision <= 0
             or type(before.get("date_raw")) is not int):
         raise BridgeUnavailableError("private realm-law query requires a living paused actor")
+    provenance = private_native_provenance(before)
     request_id = "realm-law-read-" + uuid.uuid4().hex
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
@@ -136,6 +138,7 @@ def query_realm_law_final_terms_private_v1(
         raise BridgeUnavailableError("private realm-law read crossed the paused actor/date frame")
     return {
         **envelope["realm_law_final_terms"],
+        **provenance,
         "queried_snapshot_id": before.get("snapshot_id"),
         "queried_revision": expected_revision,
         "queried_native_revision": native_revision,

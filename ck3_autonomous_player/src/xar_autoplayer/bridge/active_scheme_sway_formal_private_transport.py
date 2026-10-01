@@ -6,6 +6,9 @@ import uuid
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import (
+    private_native_provenance, private_native_readback_matches,
+)
 
 
 SCHEMA = "active-scheme-sway-formal-private-v1"
@@ -23,7 +26,9 @@ def _positive(value: object) -> bool:
 
 def _send(driver: object, *, step: str, action_id: str,
           expected_revision: int, stage: str,
-          extra: Mapping[str, object] | None = None) -> dict[str, object]:
+          extra: Mapping[str, object] | None = None,
+          source_readback: Mapping[str, object] | None = None,
+          ) -> dict[str, object]:
     if getattr(driver, "allow_private_active_scheme_sway_action", False) is not True:
         raise UnsupportedStepError("private active-scheme sway action is disabled")
     if not _positive(expected_revision):
@@ -37,6 +42,11 @@ def _send(driver: object, *, step: str, action_id: str,
             or before.get("paused") is not True
             or before.get("map_ready") is not True):
         raise BridgeUnavailableError("private sway action requires its paused native frame")
+    provenance = private_native_provenance(before)
+    if (source_readback is not None
+            and ("exe_sha256" in provenance or "exact_ck3_build" in source_readback)
+            and not private_native_readback_matches(before, source_readback)):
+        raise BridgeUnavailableError("private sway readback belongs to another native build")
     request_id = "sway-formal-" + uuid.uuid4().hex
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
@@ -73,7 +83,7 @@ def _send(driver: object, *, step: str, action_id: str,
             or after.get("paused") is not True
             or after.get("map_ready") is not True):
         raise BridgeUnavailableError("private sway action crossed actor/date frame")
-    return dict(result)
+    return {**result, **provenance}
 
 
 def submit_active_scheme_sway_private_v1(
@@ -99,6 +109,7 @@ def submit_active_scheme_sway_private_v1(
         extra={"expected_capture_epoch": epoch,
                "expected_container_generation": generation,
                "expected_target_opinion_of_actor": str(opinion)},
+        source_readback=readback,
     )
     if (result.get("actor_character_id") != readback.get("actor_character_id")
             or result.get("target_character_id") != target
