@@ -8,6 +8,7 @@
 #include "ck3_12002_feast_planner_private_transport_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include "xar_bridge/ck3_12002_activity_feast_costs.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -74,8 +75,8 @@ void AppendString(std::string &output, std::string_view value) {
       static_cast<const game::GameAdapter *>(context)->read_snapshot(output);
 }
 
-// ScriptIdentifier::GetName is the same exact-build source already used by
-// campaign, feature and pending-interaction readers. It returns interned names.
+// ActivityOption+8 is a ScriptIdentifierTable ID, not a generic type ID.
+// Use the exact parser/option-name table rather than the campaign name domain.
 [[maybe_unused]] bool ResolveScriptIdentifier(
     void *context, std::int32_t identifier, std::string_view &output) noexcept {
   output = {};
@@ -85,10 +86,14 @@ void AppendString(std::string &output, std::string_view value) {
     return false;
   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   if (base == 0) return false;
-  const auto getter = reinterpret_cast<NativeCampaignRootScriptIdentifierNameV1>(
-      base + kCampaignRootScriptIdentifierNameRva);
+  const auto table_getter = reinterpret_cast<EventGetRegistry>(
+      base + kEventScriptIdentifierTableGetterRva);
+  const auto name_resolver = reinterpret_cast<EventResolveIdentifierName>(
+      base + kEventScriptIdentifierNameResolverRva);
   __try {
-    const auto *name = getter(identifier);
+    void *const table = table_getter();
+    if (table == nullptr) return false;
+    const auto *name = name_resolver(table, identifier);
     if (name == nullptr || name->empty() || name->size() > 96) return false;
     output = std::string_view(name->data(), name->size());
     return true;
