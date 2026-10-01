@@ -413,7 +413,14 @@ void AppendIdentities(std::string &payload,
                std::to_string(ids[index].host_character_id) +
                ",\"activity_type_key\":\"";
     payload.append(ids[index].type_key.data(), ids[index].type_key_size);
-    payload += "\"}";
+    payload += "\"";
+    if (ids[index].terminal_flags_observed) {
+      payload += ",\"terminal_flags_observed\":true,\"native_completed\":";
+      payload += ids[index].native_completed ? "true" : "false";
+      payload += ",\"native_invalidated\":";
+      payload += ids[index].native_invalidated ? "true" : "false";
+    }
+    payload += "}";
   }
   payload += "]";
 }
@@ -433,6 +440,27 @@ void AppendBalances(std::string &payload,
                    ? std::to_string(balances.raw[index]) : "null";
     payload += "}";
   }
+  payload += "}";
+}
+
+void AppendOutcomeValues(std::string &payload,
+                         const bridge::FeastOutcomeValuesV1 &values) {
+  if (!values.prestige_available && !values.stress_available &&
+      !values.reveler_available && !values.reveler_xp_available)
+    return;
+  payload += ",\"outcome_values\":{\"prestige_raw\":";
+  payload += values.prestige_available ? std::to_string(values.prestige_raw)
+                                      : "null";
+  payload += ",\"stress_points\":";
+  payload += values.stress_available ? std::to_string(values.stress_points)
+                                    : "null";
+  payload += ",\"reveler_present\":";
+  payload += values.reveler_available
+                 ? values.reveler_present ? "true" : "false"
+                 : "null";
+  payload += ",\"reveler_xp_raw\":";
+  payload += values.reveler_xp_available
+                 ? std::to_string(values.reveler_xp_raw) : "null";
   payload += "}";
 }
 
@@ -538,6 +566,7 @@ std::string SerializeActivityFeastStage5PrivateV1(
     AppendBalances(payload, post.balances);
     payload += ",\"hosted_activities\":";
     AppendIdentities(payload, post.hosted, post.hosted_count);
+    AppendOutcomeValues(payload, post.outcome_values);
     payload += ",\"read_only\":true,\"advertised\":false}";
     return payload;
   }
@@ -573,6 +602,7 @@ std::string SerializeActivityFeastStage5PrivateV1(
   AppendBalances(payload, input.balances);
   payload += ",\"hosted_activities\":";
   AppendIdentities(payload, input.hosted, input.hosted_count);
+  AppendOutcomeValues(payload, input.outcome_values);
   payload += ",\"guest_join_status\":\"";
   payload += bridge::ActivityFeastGuestJoinStatusKeyV1(query.guest_status);
   payload += "\",\"selected_nonhost_count\":";

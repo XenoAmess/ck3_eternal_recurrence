@@ -1,4 +1,6 @@
 #include "xar_bridge/activity_stage5_canstart_read_v1.hpp"
+#include "xar_bridge/ck3_12002_activity_feast_start.hpp"
+#include "xar_bridge/ck3_12002_feast_planner.hpp"
 
 #include <array>
 #include <cstring>
@@ -60,6 +62,14 @@ bool VerifyAbi(const ActivityStage5CanStartEnvironmentV1 &environment) noexcept 
       0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89};
   constexpr std::array<std::uint8_t, 7> kStage5Signature{
       0x48, 0x8D, 0x91, 0x30, 0x15, 0x00, 0x00};
+  if (IsActivityPlanner12002V1(d))
+    return d.enabled && d.module_base != 0 &&
+           d.read_memory != nullptr && d.read_frame != nullptr &&
+           d.rtti_cast != nullptr && d.invoke_visibility != nullptr &&
+           MatchCode(d, ck3_12002::kFeastFinalCanStartRva,
+                     ck3_12002::kFeastFinalCanStartPrefix) &&
+           MatchCode(d, ck3_12002::kFeastFinalStage5BranchRva,
+                     ck3_12002::kFeastFinalStage5Prefix);
   return d.enabled && d.module_base != 0 &&
          d.admitted_executable_sha256 == kActivityPlannerDiagExeSha256V1 &&
          d.read_memory != nullptr && d.read_frame != nullptr &&
@@ -75,7 +85,8 @@ bool IsFeastType(const ActivityPlannerDiagEnvironmentV1 &environment,
   std::uint64_t size = 0, capacity = 0;
   std::uintptr_t data = type + 0x18;
   if (!ReadAt(environment, type, 0, vtable) ||
-      vtable != environment.module_base + kActivityTypeVtable ||
+      vtable != environment.module_base +
+                    ActivityPlannerRvaV1(environment, kActivityTypeVtable) ||
       !ReadAt(environment, type, 0x28, size) ||
       !ReadAt(environment, type, 0x30, capacity) || size != key.size() ||
       size > capacity)
@@ -91,6 +102,17 @@ bool ResolveNative(const ActivityPlannerDiagEnvironmentV1 &environment,
                    const ActivityPlannerDiagFrameV1 &frame,
                    NativeIdentity &identity,
                    bool &selected_feast) noexcept {
+  if (IsActivityPlanner12002V1(environment)) {
+    ActivityPlannerIdentityV1 current{};
+    if (!ResolveActivityPlannerIdentityV1(environment, frame, current) ||
+        current.stage != 5 || current.activity_type == 0)
+      return false;
+    identity.handler = current.handler;
+    identity.planner = current.planner;
+    identity.activity_type = current.activity_type;
+    selected_feast = IsFeastType(environment, identity.activity_type);
+    return true;
+  }
   std::uintptr_t root = 0, idler = 0, gfx_vtable = 0;
   std::uintptr_t handler_vtable = 0, primary = 0, secondary = 0, owner = 0;
   std::int32_t stage = -1;

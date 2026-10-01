@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_feast_stage5_start_v1.hpp"
+#include "xar_bridge/ck3_12002_activity_feast_start.hpp"
 
 #include <array>
 #include <cstring>
@@ -27,6 +28,16 @@ bool Abi(const ActivityFeastStage5StartEnvironmentV1 &environment) noexcept {
       0x00, 0x00};
   constexpr std::array<std::uint8_t, 7> kCanStart{
       0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89};
+  if (environment.admitted_executable_sha256 ==
+      ck3_12002::kFeastExecutableSha256)
+    return environment.enabled && environment.module_base != 0 &&
+           environment.capture != nullptr &&
+           Match(environment, ck3_12002::kFeastCommitRva,
+                 ck3_12002::kFeastCommitPrefix.data(),
+                 ck3_12002::kFeastCommitPrefix.size()) &&
+           Match(environment, ck3_12002::kFeastFinalCanStartRva,
+                 ck3_12002::kFeastFinalCanStartPrefix.data(),
+                 ck3_12002::kFeastFinalCanStartPrefix.size());
   return environment.enabled && environment.module_base != 0 &&
          environment.admitted_executable_sha256 ==
              kActivityHostedIdentityExeSha256V1 &&
@@ -85,6 +96,7 @@ bool Same(const ActivityFeastStage5StartSnapshotV1 &a,
       a.balances.raw != b.balances.raw ||
       a.hosted_identities_observed != b.hosted_identities_observed ||
       a.hosted_count != b.hosted_count ||
+      a.outcome_values != b.outcome_values ||
       a.selected_guests.status != b.selected_guests.status ||
       a.selected_guests.frame != b.selected_guests.frame ||
       a.selected_guests.normal_refresh_sequence !=
@@ -105,7 +117,10 @@ bool Same(const ActivityFeastStage5StartSnapshotV1 &a,
     if (left.activity_id != right.activity_id ||
         left.host_character_id != right.host_character_id ||
         left.type_key_size != right.type_key_size ||
-        left.type_key != right.type_key)
+        left.type_key != right.type_key ||
+        left.terminal_flags_observed != right.terminal_flags_observed ||
+        left.native_completed != right.native_completed ||
+        left.native_invalidated != right.native_invalidated)
       return false;
   }
   return true;
@@ -147,6 +162,24 @@ bool InvokeActivityFeastNativeCommitV1(void *, std::uintptr_t module_base,
 #endif
 }
 
+bool InvokeActivityFeastNativeCommit12002V1(
+    void *, std::uintptr_t module_base, std::uintptr_t planner) noexcept {
+#if defined(_WIN32)
+  if (module_base == 0 || planner == 0 ||
+      module_base > (std::numeric_limits<std::uintptr_t>::max)() -
+                        ck3_12002::kFeastCommitRva)
+    return false;
+  using Commit = void(__fastcall *)(void *);
+  reinterpret_cast<Commit>(module_base + ck3_12002::kFeastCommitRva)(
+      reinterpret_cast<void *>(planner));
+  return true;
+#else
+  (void)module_base;
+  (void)planner;
+  return false;
+#endif
+}
+
 ActivityFeastStage5StartResultV1 StartActivityFeastStage5V1(
     const ActivityFeastStage5StartEnvironmentV1 &environment,
     const ActivityFeastStage5StartRequestV1 &request) noexcept {
@@ -167,7 +200,10 @@ ActivityFeastStage5StartResultV1 StartActivityFeastStage5V1(
   result.invoked = true;
   const auto invoke = environment.invoke_commit != nullptr
                           ? environment.invoke_commit
-                          : &InvokeActivityFeastNativeCommitV1;
+                          : environment.admitted_executable_sha256 ==
+                                    ck3_12002::kFeastExecutableSha256
+                                ? &InvokeActivityFeastNativeCommit12002V1
+                                : &InvokeActivityFeastNativeCommitV1;
   result.status = invoke(environment.context, environment.module_base,
                          first.planner)
                       ? ActivityFeastStage5StartStatusV1::submitted_pending

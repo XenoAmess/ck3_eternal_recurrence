@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_planner_diag_v1.hpp"
+#include "xar_bridge/ck3_12002_feast_planner.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -101,14 +102,20 @@ bool FrameValid(const ActivityPlannerDiagFrameV1 &frame) noexcept {
 
 bool VerifyAbi(const ActivityPlannerDiagEnvironmentV1 &environment) noexcept {
   if (!environment.enabled || environment.module_base == 0 ||
-      environment.admitted_executable_sha256 !=
-          kActivityPlannerDiagExeSha256V1 ||
+      !IsActivityPlannerSupportedBuildV1(environment) ||
       environment.read_memory == nullptr || environment.read_frame == nullptr ||
       environment.rtti_cast == nullptr ||
       environment.invoke_visibility == nullptr ||
-      !MatchCode(environment, 0x10AC0F3, kPlannerOwnerWrite) ||
-      !MatchCode(environment, 0x1F3097A, kWidgetRead) ||
-      !MatchCode(environment, 0x10B0DC3, kStageRead))
+      !(IsActivityPlanner12002V1(environment)
+            ? (MatchCode(environment, 0x11B2885,
+                   std::array<std::uint8_t, 8>{0x49, 0x89, 0xB4, 0x24, 0xA0, 0, 0, 0}) &&
+               MatchCode(environment, 0x21603AA,
+                   std::array<std::uint8_t, 4>{0x48, 0x8B, 0x59, 0x60}) &&
+               MatchCode(environment, 0x11B8693,
+                   std::array<std::uint8_t, 7>{0x48, 0x63, 0x81, 0xE8, 0x1A, 0, 0}))
+            : (MatchCode(environment, 0x10AC0F3, kPlannerOwnerWrite) &&
+               MatchCode(environment, 0x1F3097A, kWidgetRead) &&
+               MatchCode(environment, 0x10B0DC3, kStageRead))))
     return false;
   std::uintptr_t slot0 = 0;
   std::uintptr_t slot7 = 0;
@@ -116,21 +123,21 @@ bool VerifyAbi(const ActivityPlannerDiagEnvironmentV1 &environment) noexcept {
   std::uintptr_t slot12 = 0;
   std::uintptr_t secondary_slot0 = 0;
   return ReadAt(environment, environment.module_base,
-                kPlannerPrimaryVtable, slot0) &&
+                ActivityPlannerRvaV1(environment, kPlannerPrimaryVtable), slot0) &&
          ReadAt(environment, environment.module_base,
-                kPlannerPrimaryVtable + 7 * 8, slot7) &&
+                ActivityPlannerRvaV1(environment, kPlannerPrimaryVtable) + 7 * 8, slot7) &&
          ReadAt(environment, environment.module_base,
-                kPlannerPrimaryVtable + 11 * 8, slot11) &&
+                ActivityPlannerRvaV1(environment, kPlannerPrimaryVtable) + 11 * 8, slot11) &&
          ReadAt(environment, environment.module_base,
-                kPlannerPrimaryVtable + 12 * 8, slot12) &&
+                ActivityPlannerRvaV1(environment, kPlannerPrimaryVtable) + 12 * 8, slot12) &&
          ReadAt(environment, environment.module_base,
-                kPlannerSecondaryVtable, secondary_slot0) &&
-         slot0 == environment.module_base + kPlannerSlotZero &&
-         slot7 == environment.module_base + kPlannerVisibilitySlotSeven &&
-         slot11 == environment.module_base + kPlannerCostSlotEleven &&
-         slot12 == environment.module_base + kPlannerCostSlotTwelve &&
+                ActivityPlannerRvaV1(environment, kPlannerSecondaryVtable), secondary_slot0) &&
+         slot0 == environment.module_base + ActivityPlannerRvaV1(environment, kPlannerSlotZero) &&
+         slot7 == environment.module_base + ActivityPlannerRvaV1(environment, kPlannerVisibilitySlotSeven) &&
+         slot11 == environment.module_base + ActivityPlannerRvaV1(environment, kPlannerCostSlotEleven) &&
+         slot12 == environment.module_base + ActivityPlannerRvaV1(environment, kPlannerCostSlotTwelve) &&
          secondary_slot0 ==
-             environment.module_base + kPlannerSecondarySlotZero;
+             environment.module_base + ActivityPlannerRvaV1(environment, kPlannerSecondarySlotZero);
 }
 
 ActivityPlannerDiagStatusV1 ReadOne(
@@ -140,14 +147,14 @@ ActivityPlannerDiagStatusV1 ReadOne(
   value = {};
   std::uintptr_t root = 0;
   std::uintptr_t idler = 0;
-  if (!ReadAt(environment, environment.module_base, kGlobalInterfaceRoot,
+  if (!ReadAt(environment, environment.module_base, ActivityPlannerRvaV1(environment, kGlobalInterfaceRoot),
               root) || root == 0 || !ReadAt(environment, root, 0x10, idler) ||
       idler == 0)
     return ActivityPlannerDiagStatusV1::native_owner_unavailable;
   const auto gfx = environment.rtti_cast(
       environment.context, idler,
-      environment.module_base + kIdlerSourceType,
-      environment.module_base + kIdlerGfxType);
+      environment.module_base + ActivityPlannerRvaV1(environment, kIdlerSourceType),
+      environment.module_base + ActivityPlannerRvaV1(environment, kIdlerGfxType));
   std::uintptr_t gfx_vtable = 0;
   std::uintptr_t handler = 0;
   std::uintptr_t handler_vtable = 0;
@@ -155,11 +162,11 @@ ActivityPlannerDiagStatusV1 ReadOne(
   if (gfx == 0 || !ReadAt(environment, gfx, 0, gfx_vtable) ||
       !ReadAt(environment, gfx, 0x88, handler) || handler == 0 ||
       !ReadAt(environment, handler, 0, handler_vtable) ||
-      !ReadAt(environment, environment.module_base, kPlayedCharacterId,
+      !ReadAt(environment, environment.module_base, ActivityPlannerRvaV1(environment, kPlayedCharacterId),
               played_id))
     return ActivityPlannerDiagStatusV1::native_owner_unavailable;
-  if (gfx_vtable != environment.module_base + kIdlerGfxVtable ||
-      handler_vtable != environment.module_base + kHandlerVtable ||
+  if (gfx_vtable != environment.module_base + ActivityPlannerRvaV1(environment, kIdlerGfxVtable) ||
+      handler_vtable != environment.module_base + ActivityPlannerRvaV1(environment, kHandlerVtable) ||
       played_id != static_cast<std::uint32_t>(frame.actor_character_id))
     return ActivityPlannerDiagStatusV1::native_identity_mismatch;
 
@@ -168,9 +175,9 @@ ActivityPlannerDiagStatusV1 ReadOne(
   std::uintptr_t slots = 0;
   std::int32_t capacity = 0;
   const auto index = played_id & 0x00FFFFFFu;
-  if (!ReadAt(environment, environment.module_base, kCharacterStorage,
+  if (!ReadAt(environment, environment.module_base, ActivityPlannerRvaV1(environment, kCharacterStorage),
               storage) || storage == 0 ||
-      !ReadAt(environment, environment.module_base, kCharacterFallback,
+      !ReadAt(environment, environment.module_base, ActivityPlannerRvaV1(environment, kCharacterFallback),
               fallback) || !ReadAt(environment, storage, 0x20, slots) ||
       !ReadAt(environment, storage, 0x2C, capacity) || slots == 0 ||
       capacity <= 0 || capacity > 0x01000000 ||
@@ -198,12 +205,12 @@ ActivityPlannerDiagStatusV1 ReadOne(
   std::int32_t stage = -1;
   if (!ReadAt(environment, planner, 0, primary) ||
       !ReadAt(environment, planner, 0x10, secondary) ||
-      !ReadAt(environment, planner, 0xD0, owner) ||
-      !ReadAt(environment, planner, 0x78, widget) ||
-      !ReadAt(environment, planner, 0x1AB0, stage))
+      !ReadAt(environment, planner, ActivityPlannerObjectOffsetV1(environment, 0xD0), owner) ||
+      !ReadAt(environment, planner, ActivityPlannerObjectOffsetV1(environment, 0x78), widget) ||
+      !ReadAt(environment, planner, ActivityPlannerObjectOffsetV1(environment, 0x1AB0), stage))
     return ActivityPlannerDiagStatusV1::native_read_failed;
-  if (primary != environment.module_base + kPlannerPrimaryVtable ||
-      secondary != environment.module_base + kPlannerSecondaryVtable ||
+  if (primary != environment.module_base + ActivityPlannerRvaV1(environment, kPlannerPrimaryVtable) ||
+      secondary != environment.module_base + ActivityPlannerRvaV1(environment, kPlannerSecondaryVtable) ||
       owner != handler || stage < 0 || stage > 5)
     return ActivityPlannerDiagStatusV1::native_identity_mismatch;
   value.stage = stage;
@@ -211,7 +218,7 @@ ActivityPlannerDiagStatusV1 ReadOne(
   bool visible = false;
   if (!environment.invoke_visibility(
           environment.context, planner,
-          environment.module_base + kPlannerVisibilitySlotSeven, visible) ||
+          environment.module_base + ActivityPlannerRvaV1(environment, kPlannerVisibilitySlotSeven), visible) ||
       (!value.widget_attached && visible))
     return ActivityPlannerDiagStatusV1::native_read_failed;
   value.widget_visible = visible;
@@ -227,12 +234,12 @@ ActivityPlannerDiagStatusV1 ReadOne(
     std::uintptr_t type = 0;
     if (!ReadAt(environment, host, 0, host_primary) ||
         !ReadAt(environment, host, 0x10, host_secondary) ||
-        !ReadAt(environment, host, 0xD0, host_owner) ||
-        !ReadAt(environment, host, 0x100, host_actor_id) ||
-        !ReadAt(environment, host, 0x268, type))
+        !ReadAt(environment, host, (IsActivityPlanner12002V1(environment) ? 0xA0 : 0xD0), host_owner) ||
+        !ReadAt(environment, host, (IsActivityPlanner12002V1(environment) ? 0xD0 : 0x100), host_actor_id) ||
+        !ReadAt(environment, host, (IsActivityPlanner12002V1(environment) ? 0x238 : 0x268), type))
       return ActivityPlannerDiagStatusV1::native_read_failed;
-    if (host_primary != environment.module_base + kHostPrimaryVtable ||
-        host_secondary != environment.module_base + kHostSecondaryVtable ||
+    if (host_primary != environment.module_base + ActivityPlannerRvaV1(environment, kHostPrimaryVtable) ||
+        host_secondary != environment.module_base + ActivityPlannerRvaV1(environment, kHostSecondaryVtable) ||
         host_owner != handler)
       return ActivityPlannerDiagStatusV1::native_identity_mismatch;
     // The HostView may exist before any player activity is selected. Its
@@ -242,7 +249,7 @@ ActivityPlannerDiagStatusV1 ReadOne(
     if (type != 0) {
       std::uintptr_t type_vtable = 0;
       if (!ReadAt(environment, type, 0, type_vtable) ||
-          type_vtable != environment.module_base + kActivityTypeVtable ||
+          type_vtable != environment.module_base + ActivityPlannerRvaV1(environment, kActivityTypeVtable) ||
           !ReadStableKey(environment, type, value))
         return ActivityPlannerDiagStatusV1::native_identity_mismatch;
     }
@@ -251,6 +258,52 @@ ActivityPlannerDiagStatusV1 ReadOne(
 }
 
 } // namespace
+
+bool ResolveActivityPlannerIdentityV1(
+    const ActivityPlannerDiagEnvironmentV1 &environment,
+    const ActivityPlannerDiagFrameV1 &expected,
+    ActivityPlannerIdentityV1 &output) noexcept {
+  output = {};
+  const auto diagnostic = ReadActivityPlannerDiagV1(environment, expected);
+  if (diagnostic.status != ActivityPlannerDiagStatusV1::observed ||
+      !diagnostic.value.planner_present)
+    return false;
+  ActivityPlannerIdentityV1 candidate{};
+  std::uintptr_t root = 0, idler = 0, storage = 0, slots = 0;
+  if (!ReadAt(environment, environment.module_base,
+              ActivityPlannerRvaV1(environment, kGlobalInterfaceRoot), root) ||
+      !ReadAt(environment, root, 0x10, idler))
+    return false;
+  const auto gfx = environment.rtti_cast(environment.context, idler,
+      environment.module_base + ActivityPlannerRvaV1(environment, kIdlerSourceType),
+      environment.module_base + ActivityPlannerRvaV1(environment, kIdlerGfxType));
+  const std::size_t planner_offset = 0x3C0;
+  if (gfx == 0 || !ReadAt(environment, gfx, 0x88, candidate.handler) ||
+      !ReadAt(environment, candidate.handler, planner_offset, candidate.planner) ||
+      candidate.planner == 0 ||
+      !ReadAt(environment, candidate.planner,
+              ActivityPlannerObjectOffsetV1(environment, 0x1530),
+              candidate.activity_type) ||
+      !ReadAt(environment, candidate.planner,
+              ActivityPlannerObjectOffsetV1(environment, 0x1AB0), candidate.stage) ||
+      !ReadAt(environment, environment.module_base,
+              ActivityPlannerRvaV1(environment, kCharacterStorage), storage) ||
+      !ReadAt(environment, storage, 0x20, slots) || slots == 0)
+    return false;
+  const auto index = static_cast<std::uint32_t>(expected.actor_character_id) &
+      0x00FFFFFFu;
+  std::uint32_t actor_id = 0;
+  if (!ReadAt(environment, slots, static_cast<std::size_t>(index) * 0x10 + 8,
+              candidate.actor) || candidate.actor == 0 ||
+      !ReadAt(environment, candidate.actor, 0x18, actor_id) ||
+      actor_id != static_cast<std::uint32_t>(expected.actor_character_id))
+    return false;
+  ActivityPlannerDiagFrameV1 frame{};
+  if (!environment.read_frame(environment.context, frame) || frame != expected)
+    return false;
+  output = candidate;
+  return true;
+}
 
 ActivityPlannerDiagResultV1 ReadActivityPlannerDiagV1(
     const ActivityPlannerDiagEnvironmentV1 &environment,

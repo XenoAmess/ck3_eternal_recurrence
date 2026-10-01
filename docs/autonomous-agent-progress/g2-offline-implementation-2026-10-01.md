@@ -157,3 +157,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 13个独立transport/test/docs/真实wire文件闭合Sway读取/progress/submit/独立receipt及LAW观测/typed submit/独立receipt，经真实driver和MCP SDK验证21个unique案例与2 receipt subtests。显式law选择/预算，不把ACK当作生效；Sway hidden phase/terminal仍未闭合。实际生产wire的初次harness错误保留。status为static-ready；共享driver/MCP随后独立提交，paused/material/next/cold尚待。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-sway-law\READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:45:46 Feast full native planner costs guests start and terminal migration
+
+97个native/research/docs/tool文件接入实际1.20 planner1/2/5身份、原生最终CanStart/4费用/guest-arrival、typed Start、完整hosted ID及completion+421/invalidation+422。规则provenance、stage2确认helper和资源leaf闭合；真实prestige/stress/RevelerXP before/after provider→serializer Debug/Release各8案例，公共gold/prestige/piety/stress leaf O2 W4WX4案例通过。重复利用已闭合planner/guest/cost/start测试。消失不代表terminal，counter变化不代表Feast因果收益。状态static-ready，自然Start/扣款/后续terminal/next/cold尚待。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\feast\tracked-source-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

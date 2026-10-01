@@ -63,6 +63,11 @@ bool InvokeActivityStage5NativeNamedFeastCostV1(
     std::string_view resource_key, std::uint32_t &resource_index,
     std::int64_t &cost_raw) noexcept;
 
+bool InvokeActivityStage5NativeNamedFeastCost12002V1(
+    void *context, std::uintptr_t module_base, std::uintptr_t cost_breakdown,
+    std::string_view resource_key, std::uint32_t &resource_index,
+    std::int64_t &cost_raw) noexcept;
+
 std::string_view ActivityStage5FeastFullCostStatusKeyV1(
     ActivityStage5FeastFullCostStatusV1 status) noexcept;
 

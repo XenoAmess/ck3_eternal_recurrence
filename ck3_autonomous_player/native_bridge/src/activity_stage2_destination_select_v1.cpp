@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_stage2_destination_select_v1.hpp"
+#include "xar_bridge/ck3_12002_feast_planner.hpp"
 
 #include <limits>
 
@@ -50,17 +51,24 @@ bool ExactActionAbi(const ActivityPlannerDiagEnvironmentV1 &diagnostic)
       0x8B, 0x8B, 0xB4, 0x1A, 0x00, 0x00};
   constexpr std::array<std::uint8_t, 8> kStageFiveBranch{
       0xBA, 0x05, 0x00, 0x00, 0x00, 0x48, 0x8B, 0xCB};
+  constexpr std::array<std::uint8_t, 7> kSingleLocationBranch12002{
+      0x40, 0x38, 0xBD, 0xED, 0x3B, 0x00, 0x00};
+  constexpr std::array<std::uint8_t, 6> kPreviousStageBranch12002{
+      0x8B, 0x8B, 0xEC, 0x1A, 0x00, 0x00};
+  const bool current = IsActivityPlanner12002V1(diagnostic);
   return diagnostic.enabled && diagnostic.module_base != 0 &&
-         diagnostic.admitted_executable_sha256 ==
-             kActivityPlannerDiagExeSha256V1 &&
-         MatchCode(diagnostic, kCanSelectRva, kCanSelect) &&
-         MatchCode(diagnostic, kSelectRva, kSelect) &&
-         MatchCode(diagnostic, kProvinceIdWriteRva, kProvinceIdWrite) &&
-         MatchCode(diagnostic, kSingleLocationBranchRva,
-                   kSingleLocationBranch) &&
-         MatchCode(diagnostic, kPreviousStageBranchRva,
-                   kPreviousStageBranch) &&
-         MatchCode(diagnostic, kStageFiveBranchRva, kStageFiveBranch);
+         (diagnostic.admitted_executable_sha256 ==
+              kActivityPlannerDiagExeSha256V1 || current) &&
+         MatchCode(diagnostic, current ? 0x11B6F50 : kCanSelectRva, kCanSelect) &&
+         MatchCode(diagnostic, current ? 0x11B6C80 : kSelectRva, kSelect) &&
+         MatchCode(diagnostic, current ? 0x11B6CB7 : kProvinceIdWriteRva,
+                   kProvinceIdWrite) &&
+         MatchCode(diagnostic, current ? 0x11B6CD3 : kSingleLocationBranchRva,
+                   current ? kSingleLocationBranch12002 : kSingleLocationBranch) &&
+         MatchCode(diagnostic, current ? 0x11B6CE0 : kPreviousStageBranchRva,
+                   current ? kPreviousStageBranch12002 : kPreviousStageBranch) &&
+         MatchCode(diagnostic, current ? 0x11B6D51 : kStageFiveBranchRva,
+                   kStageFiveBranch);
 }
 
 bool ReadProvinceId(const ActivityPlannerDiagEnvironmentV1 &diagnostic,

@@ -57,6 +57,10 @@ bool InvokeActivityStage5NativeGoldCostV1(
     void *context, std::uintptr_t module_base,
     std::uintptr_t cost_breakdown, std::int64_t &gold_raw) noexcept;
 
+bool InvokeActivityStage5NativeGoldCost12002V1(
+    void *context, std::uintptr_t module_base,
+    std::uintptr_t cost_breakdown, std::int64_t &gold_raw) noexcept;
+
 std::string_view ActivityStage5GoldCostStatusKeyV1(
     ActivityStage5GoldCostStatusV1 status) noexcept;
 

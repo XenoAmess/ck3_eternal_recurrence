@@ -64,7 +64,8 @@ struct ActivityCostSlot12ObserverV1 {
   ActivityCostSlot12CaptureV1 latest{};
 };
 
-// This records data only after the original 0x10B2B30 has returned. It never
+// Records only normal refresh returns: 1.19.0.6 0x10B2B30 or 1.20.0.2
+// 0x11BA6D0 selected by the admitted SHA. It never
 // calls the recomputation, ProgressPlanningStage, or a start command.
 bool RecordActivityCostSlot12NormalReturnV1(
     ActivityCostSlot12ObserverV1 &observer, std::uintptr_t caller_return,

@@ -3,6 +3,7 @@
 #include "xar_bridge/activity_feast_resource_balance_v1.hpp"
 #include "xar_bridge/activity_stage5_feast_full_cost_v1.hpp"
 #include "xar_bridge/activity_stage5_feast_guest_join_v1.hpp"
+#include "xar_bridge/ck3_12002_feast_outcome_values.hpp"
 
 #include <array>
 #include <cstdint>
@@ -27,6 +28,7 @@ struct ActivityFeastStage5StartSnapshotV1 {
   std::uint32_t hosted_count = 0;
   std::array<ActivityHostedIdentityV1, 64> hosted{};
   ActivityFeastGuestJoinResultV1 selected_guests{};
+  FeastOutcomeValuesV1 outcome_values{};
 };
 
 bool IsActivityFeastSelectedGuestRouteQualifiedV1(
@@ -84,6 +86,7 @@ struct ActivityFeastStage5PostV1 {
   bool hosted_identities_observed = false;
   std::uint32_t hosted_count = 0;
   std::array<ActivityHostedIdentityV1, 64> hosted{};
+  FeastOutcomeValuesV1 outcome_values{};
 };
 
 enum class ActivityFeastStage5PostStatusV1 {
@@ -110,5 +113,9 @@ ActivityFeastStage5PostResultV1 ReconcileActivityFeastStage5StartV1(
 // must have passed the Start core's exact build, ABI, and same-frame gates.
 bool InvokeActivityFeastNativeCommitV1(void *, std::uintptr_t module_base,
                                       std::uintptr_t planner) noexcept;
+// Exact 1.20.0.2 original accept branch; the Start core selects it only after
+// that build's prefix, same-frame final gate and resource/guest checks pass.
+bool InvokeActivityFeastNativeCommit12002V1(void *, std::uintptr_t module_base,
+                                          std::uintptr_t planner) noexcept;
 
 } // namespace xar::bridge

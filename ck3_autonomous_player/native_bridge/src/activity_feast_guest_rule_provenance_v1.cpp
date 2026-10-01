@@ -1,5 +1,7 @@
 #include "xar_bridge/activity_feast_guest_rule_provenance_v1.hpp"
 
+#include "xar_bridge/ck3_12002_feast_guests_abi.hpp"
+
 #include <windows.h>
 #include <intrin.h>
 
@@ -63,7 +65,7 @@ bool FeastType(const ActivityCostSlot12EnvironmentV1 &env,
   std::uintptr_t vtable = 0, data = type + 0x18;
   std::uint64_t length = 0, capacity = 0;
   if (!Read(env, type, 0, vtable) ||
-      vtable != env.module_base + kFeastTypeVtableRva ||
+      vtable != env.module_base + ActivityFeastGuestRvaV1(env.executable_sha256, kFeastTypeVtableRva) ||
       !Read(env, type, 0x28, length) ||
       !Read(env, type, 0x30, capacity) ||
       length != key.size() || length > capacity ||
@@ -232,12 +234,12 @@ std::uintptr_t __fastcall RefreshHook(void *activity_type, void *context,
   bool capture = false;
   if (previous != nullptr)
     CountRefresh(*observer, ActivityGuestRuleRefreshDiagnosticV1::nested_refresh);
-  else if (groups < 0x1590)
+  else if (groups < ActivityFeastGuestPlannerOffsetV1(observer->environment.executable_sha256, 0x1590))
     CountRefresh(*observer,
                  ActivityGuestRuleRefreshDiagnosticV1::invalid_group_argument);
   else {
     capture = BeginActivityGuestRuleRefreshV1(
-        *observer, return_address, groups - 0x1590,
+        *observer, return_address, groups - ActivityFeastGuestPlannerOffsetV1(observer->environment.executable_sha256, 0x1590),
         reinterpret_cast<std::uintptr_t>(active_rules), groups);
   }
   g_current_refresh = capture ? observer : nullptr;
@@ -261,12 +263,12 @@ bool BeginActivityGuestRuleRefreshV1(
     std::uintptr_t active_rules, std::uintptr_t filtered_groups) noexcept {
   const auto &env = observer.environment;
   if (caller_return !=
-      env.module_base + kActivityGuestRuleRefreshReturnRvaV1) {
+      env.module_base + ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleRefreshReturnRvaV1)) {
     CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::wrong_caller);
     return false;
   }
-  if (planner == 0 || active_rules != planner + 0x1A18 ||
-      filtered_groups != planner + 0x1590 || env.read_frame == nullptr) {
+  if (planner == 0 || active_rules != planner + ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1A18) ||
+      filtered_groups != planner + ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1590) || env.read_frame == nullptr) {
     CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::invalid_arguments);
     return false;
   }
@@ -288,16 +290,16 @@ bool BeginActivityGuestRuleRefreshV1(
     return false;
   }
   if (!Read(env, planner, 0, vtable) ||
-      vtable != env.module_base + 0x41205F0) {
+      vtable != env.module_base + ActivityFeastGuestRvaV1(env.executable_sha256, 0x41205F0)) {
     CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::planner_unavailable);
     return false;
   }
-  if (!Read(env, planner, 0x1530, type) || !FeastType(env, type)) {
+  if (!Read(env, planner, ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1530), type) || !FeastType(env, type)) {
     CountRefresh(observer,
                  ActivityGuestRuleRefreshDiagnosticV1::feast_type_unavailable);
     return false;
   }
-  if (!Read(env, planner, 0x1AB0, stage)) {
+  if (!Read(env, planner, ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1AB0), stage)) {
     CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::stage_unavailable);
     return false;
   }
@@ -327,15 +329,15 @@ void RecordActivityGuestRuleEffectReturnV1(
     std::uintptr_t temporary_output) noexcept {
   auto &capture = observer.working;
   const auto &env = observer.environment;
-  if (caller_return != env.module_base + kActivityGuestRuleEffectReturnRvaV1 ||
+  if (caller_return != env.module_base + ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleEffectReturnRvaV1) ||
       capture.planner == 0 || capture.native_read_failed || capture.overflow ||
-      effect < 0x38 || temporary_output == 0)
+      effect < (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? 0x40u : 0x38u) || temporary_output == 0)
     return;
   if (capture.rule_count == kActivityGuestRuleMaxRulesV1) {
     capture.overflow = true;
     return;
   }
-  const auto definition = effect - 0x38;
+  const auto definition = effect - (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? 0x40u : 0x38u);
   std::uintptr_t active_rows = 0;
   std::int32_t active_count = -1;
   std::uint32_t hash = 0, list_key = 0;
@@ -345,7 +347,7 @@ void RecordActivityGuestRuleEffectReturnV1(
           static_cast<std::int32_t>(kActivityGuestRuleMaxRulesV1) ||
       (active_count != 0 && active_rows == 0) ||
       !Read(env, definition, 0x14, hash) ||
-      !Read(env, definition, 0x9C, list_key)) {
+      !Read(env, definition, env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? 0x94u : 0x9Cu, list_key)) {
     MarkReadFailed(capture);
     return;
   }
@@ -431,9 +433,9 @@ void FinishActivityGuestRuleRefreshV1(
       after.date_raw != capture.frame.date_raw ||
       after.actor_character_id != capture.frame.actor_character_id ||
       after.thread_id != capture.frame.thread_id ||
-      !Read(env, capture.planner, 0x1530, type) ||
+      !Read(env, capture.planner, ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1530), type) ||
       type != capture.activity_type ||
-      !Read(env, capture.planner, 0x1AB0, stage) ||
+      !Read(env, capture.planner, ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1AB0), stage) ||
       stage != capture.planning_stage) {
     capture.native_read_failed = true;
   }
@@ -519,7 +521,8 @@ ActivityGuestRuleProvenanceResultV1 ReadActivityGuestRuleProvenanceV1(
   ActivityGuestRuleProvenanceResultV1 result{};
   const auto &env = observer.environment;
   if (!env.enabled ||
-      env.executable_sha256 != kActivityGuestRuleProvenanceExeSha256V1)
+      (env.executable_sha256 != kActivityGuestRuleProvenanceExeSha256V1 &&
+       env.executable_sha256 != kActivityPlanner12002ExeSha256V1))
     return result;
   ActivityGuestRuleProvenanceCaptureV1 capture{};
   {
@@ -539,8 +542,8 @@ ActivityGuestRuleProvenanceResultV1 ReadActivityGuestRuleProvenanceV1(
   }
   if (capture.planner != planner ||
       (capture.planning_stage != 2 && capture.planning_stage != 5) ||
-      capture.filtered_groups != planner + 0x1590 ||
-      capture.active_rules != planner + 0x1A18) {
+      capture.filtered_groups != planner + ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1590) ||
+      capture.active_rules != planner + ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1A18)) {
     result.status = ActivityGuestRuleProvenanceStatusV1::planner_unavailable;
     return result;
   }
@@ -562,9 +565,9 @@ ActivityGuestRuleProvenanceResultV1 ReadActivityGuestRuleProvenanceV1(
       current_fingerprint != capture.group_fingerprint ||
       !ActiveRuleFingerprint(env, capture.active_rules, current_rules) ||
       current_rules != capture.active_rule_fingerprint ||
-      !Read(env, planner, 0x1530, current_type) ||
+      !Read(env, planner, ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1530), current_type) ||
       current_type != capture.activity_type ||
-      !Read(env, planner, 0x1AB0, current_stage) || current_stage != 5 ||
+      !Read(env, planner, ActivityFeastGuestPlannerOffsetV1(env.executable_sha256, 0x1AB0), current_stage) || current_stage != 5 ||
       env.read_frame == nullptr ||
       !env.read_frame(env.context, after) ||
       after.date_raw != expected.date_raw ||
@@ -605,7 +608,8 @@ ActivityGuestRuleProvenanceResultV1 ReadActivityGuestRuleProvenanceV1(
 bool VerifyActivityGuestRuleProvenanceExactAbiV1(
     const ActivityCostSlot12EnvironmentV1 &env) noexcept {
   if (!env.enabled || !env.primary_thread_suspended ||
-      env.executable_sha256 != kActivityGuestRuleProvenanceExeSha256V1 ||
+      (env.executable_sha256 != kActivityGuestRuleProvenanceExeSha256V1 &&
+       env.executable_sha256 != kActivityPlanner12002ExeSha256V1) ||
       env.module_base == 0 || env.read_memory == nullptr ||
       env.read_frame == nullptr)
     return false;
@@ -614,20 +618,20 @@ bool VerifyActivityGuestRuleProvenanceExactAbiV1(
   std::array<std::uint8_t, kActivityGuestRuleEffectPatchBytesV1>
       effect{};
   std::array<std::uint8_t, 5> refresh_call{}, effect_call{};
-  return ReadBytes(env, env.module_base, kActivityGuestRuleRefreshRvaV1,
+  return ReadBytes(env, env.module_base, ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleRefreshRvaV1),
                    refresh.data(), refresh.size()) &&
          refresh == kRefreshPrologue &&
-         ReadBytes(env, env.module_base, kActivityGuestRuleEffectRvaV1,
+         ReadBytes(env, env.module_base, ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleEffectRvaV1),
                    effect.data(), effect.size()) &&
          effect == kEffectPrologue &&
          ReadBytes(env, env.module_base,
-                   kActivityGuestRuleRefreshReturnRvaV1 - 5,
+                   ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleRefreshReturnRvaV1) - 5,
                    refresh_call.data(), refresh_call.size()) &&
-         refresh_call == kRefreshCall &&
+         refresh_call == (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? std::array<std::uint8_t, 5>{0xE8, 0x7F, 0x4E, 0xA0, 0x01} : kRefreshCall) &&
          ReadBytes(env, env.module_base,
-                   kActivityGuestRuleEffectReturnRvaV1 - 5,
+                   ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleEffectReturnRvaV1) - 5,
                    effect_call.data(), effect_call.size()) &&
-         effect_call == kEffectCall;
+         effect_call == (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? std::array<std::uint8_t, 5>{0xE8, 0x56, 0x85, 0xBA, 0} : kEffectCall);
 }
 
 bool InstallActivityGuestRuleProvenanceV1(
@@ -636,9 +640,9 @@ bool InstallActivityGuestRuleProvenanceV1(
   if (observer.installed || !VerifyActivityGuestRuleProvenanceExactAbiV1(env))
     return false;
   auto *refresh = reinterpret_cast<std::uint8_t *>(
-      env.module_base + kActivityGuestRuleRefreshRvaV1);
+      env.module_base + ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleRefreshRvaV1));
   auto *effect = reinterpret_cast<std::uint8_t *>(
-      env.module_base + kActivityGuestRuleEffectRvaV1);
+      env.module_base + ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleEffectRvaV1));
   std::memcpy(observer.refresh_original.data(), refresh,
               observer.refresh_original.size());
   std::memcpy(observer.effect_original.data(), effect,

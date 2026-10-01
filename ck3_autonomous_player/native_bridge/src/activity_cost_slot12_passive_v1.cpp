@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_cost_slot12_passive_v1.hpp"
+#include "xar_bridge/ck3_12002_activity_feast_costs.hpp"
 
 #include <windows.h>
 #include <intrin.h>
@@ -17,10 +18,7 @@ constexpr std::array<std::uint8_t, kActivityCostPatchBytesV1> kRefreshPrologue{
 constexpr std::array<std::uint8_t, 5> kSlot12Call{
     0xE8, 0x81, 0x49, 0x00, 0x00};
 constexpr std::size_t kJumpBytes = 14;
-constexpr std::size_t kConfigurationBegin = 0x1530;
-constexpr std::size_t kConfigurationEnd = 0x1AD8;
-constexpr std::size_t kConfigurationBytes =
-    kConfigurationEnd - kConfigurationBegin;
+constexpr std::size_t kConfigurationCapacity = 0x1B10 - 0x1500;
 std::atomic<ActivityCostSlot12ObserverV1 *> g_active_observer{nullptr};
 
 bool Add(std::uintptr_t base, std::size_t offset,
@@ -50,10 +48,13 @@ bool ReadAt(const ActivityCostSlot12EnvironmentV1 &environment,
 bool IsFeastType(const ActivityCostSlot12EnvironmentV1 &environment,
                  std::uintptr_t type) noexcept {
   constexpr std::string_view key = "activity_feast";
+  const auto *layout = ActivityFeastCostLayoutForBuildV1(
+      environment.executable_sha256);
+  if (layout == nullptr) return false;
   std::uintptr_t vtable = 0, data = type + 0x18;
   std::uint64_t length = 0, capacity = 0;
   if (!ReadAt(environment, type, 0, vtable) ||
-      vtable != environment.module_base + 0x440E308 ||
+      vtable != environment.module_base + layout->type_vtable_rva ||
       !ReadAt(environment, type, 0x28, length) ||
       !ReadAt(environment, type, 0x30, capacity) ||
       length != key.size() || length > capacity)
@@ -67,12 +68,17 @@ bool IsFeastType(const ActivityCostSlot12EnvironmentV1 &environment,
 bool FingerprintConfiguration(
     const ActivityCostSlot12EnvironmentV1 &environment,
     std::uintptr_t planner, std::uint64_t &output) noexcept {
-  std::array<std::uint8_t, kConfigurationBytes> bytes{};
-  if (!Read(environment, planner, kConfigurationBegin, bytes.data(),
-            bytes.size()))
+  const auto *layout = ActivityFeastCostLayoutForBuildV1(
+      environment.executable_sha256);
+  if (layout == nullptr) return false;
+  std::array<std::uint8_t, kConfigurationCapacity> bytes{};
+  const auto configuration_size = layout->breakdown_offset - layout->type_offset;
+  if (!Read(environment, planner, layout->type_offset, bytes.data(),
+            configuration_size))
     return false;
   std::uint64_t hash = 14695981039346656037ULL;
-  for (const auto byte : bytes) {
+  for (std::size_t i = 0; i < configuration_size; ++i) {
+    const auto byte = bytes[i];
     hash ^= byte;
     hash *= 1099511628211ULL;
   }
@@ -84,9 +90,9 @@ bool FingerprintConfiguration(
     std::size_t count_offset;
     std::size_t stride;
   };
-  constexpr std::array<Rows, 2> row_sets{{
-      {0x1560, 0x156C, 0x10},
-      {0x1578, 0x1584, 0x38},
+  const std::array<Rows, 2> row_sets{{
+      {layout->category_rows_offset, layout->category_count_offset, 0x10},
+      {layout->option_rows_offset, layout->option_count_offset, 0x38},
   }};
   std::array<std::uint8_t, 128 * 0x38> rows{};
   for (const auto &set : row_sets) {
@@ -132,27 +138,36 @@ void __fastcall RefreshHook(void *planner) noexcept {
 
 bool VerifyActivityCostSlot12ExactAbiV1(
     const ActivityCostSlot12EnvironmentV1 &environment) noexcept {
+  const auto *layout = ActivityFeastCostLayoutForBuildV1(
+      environment.executable_sha256);
   if (!environment.enabled || !environment.primary_thread_suspended ||
-      environment.executable_sha256 != kActivityCostSlot12ExeSha256V1 ||
+      layout == nullptr ||
       environment.module_base == 0 || environment.read_memory == nullptr ||
       environment.read_frame == nullptr)
     return false;
   std::array<std::uint8_t, kActivityCostPatchBytesV1> prologue{};
   std::array<std::uint8_t, 5> call{};
+  const std::array<std::uint8_t, 5> expected_call =
+      environment.executable_sha256 == kActivityFeastCosts12002ExeSha256V1
+          ? std::array<std::uint8_t, 5>{0xE8, 0x71, 0x4B, 0x00, 0x00}
+          : kSlot12Call;
   return ReadAt(environment, environment.module_base,
-                kActivityCostRefreshRvaV1, prologue) &&
+                layout->refresh_rva, prologue) &&
          prologue == kRefreshPrologue &&
          ReadAt(environment, environment.module_base,
-                kActivityCostSlot12ReturnRvaV1 - 5, call) &&
-         call == kSlot12Call;
+                layout->slot12_return_rva - 5, call) &&
+         call == expected_call;
 }
 
 bool RecordActivityCostSlot12NormalReturnV1(
     ActivityCostSlot12ObserverV1 &observer, std::uintptr_t caller_return,
     std::uintptr_t planner) noexcept {
   const auto &environment = observer.environment;
+  const auto *layout = ActivityFeastCostLayoutForBuildV1(
+      environment.executable_sha256);
+  if (layout == nullptr) return false;
   if (caller_return !=
-          environment.module_base + kActivityCostSlot12ReturnRvaV1 ||
+          environment.module_base + layout->slot12_return_rva ||
       planner == 0 || environment.read_memory == nullptr ||
       environment.read_frame == nullptr)
     return false;
@@ -165,19 +180,19 @@ bool RecordActivityCostSlot12NormalReturnV1(
   candidate.planner = planner;
   std::uintptr_t vtable = 0;
   if (!ReadAt(environment, planner, 0, vtable) ||
-      vtable != environment.module_base + 0x41205F0 ||
-      !ReadAt(environment, planner, 0xD0, candidate.owner) ||
+      vtable != environment.module_base + layout->planner_vtable_rva ||
+      !ReadAt(environment, planner, layout->owner_offset, candidate.owner) ||
       candidate.owner == 0 ||
-      !ReadAt(environment, planner, 0x1530, candidate.activity_type) ||
+      !ReadAt(environment, planner, layout->type_offset, candidate.activity_type) ||
       candidate.activity_type == 0 ||
       !IsFeastType(environment, candidate.activity_type) ||
-      !ReadAt(environment, planner, 0x1AB0, candidate.planning_stage) ||
+      !ReadAt(environment, planner, layout->stage_offset, candidate.planning_stage) ||
       candidate.planning_stage < 0 || candidate.planning_stage > 5 ||
       !FingerprintConfiguration(environment, planner,
                                 candidate.configuration_fingerprint))
     return false;
   for (std::size_t index = 0; index < candidate.raw_aggregate.size(); ++index) {
-    const std::size_t offset = 0x1AD8 + 0x50 + index * 0x90 + 0x78;
+    const std::size_t offset = layout->breakdown_offset + 0x50 + index * 0x90 + 0x78;
     if (!ReadAt(environment, planner, offset,
                 candidate.raw_aggregate[index]))
       return false;
@@ -201,9 +216,9 @@ ActivityCostSlot12ReadStatusV1 ReadActivityCostSlot12PassiveV1(
     ActivityCostSlot12ObserverV1 &observer,
     const ActivityCostSlot12FrameV1 &expected,
     ActivityCostSlot12CaptureV1 &output) noexcept {
-  if (!observer.environment.enabled ||
-      observer.environment.executable_sha256 !=
-          kActivityCostSlot12ExeSha256V1)
+  const auto *layout = ActivityFeastCostLayoutForBuildV1(
+      observer.environment.executable_sha256);
+  if (!observer.environment.enabled || layout == nullptr)
     return ActivityCostSlot12ReadStatusV1::exact_build_rejected;
   {
     std::lock_guard lock(observer.capture_mutex);
@@ -221,12 +236,12 @@ ActivityCostSlot12ReadStatusV1 ReadActivityCostSlot12PassiveV1(
   std::uint64_t fingerprint = 0;
   const auto &environment = observer.environment;
   if (!ReadAt(environment, output.planner, 0, vtable) ||
-      vtable != environment.module_base + 0x41205F0 ||
-      !ReadAt(environment, output.planner, 0xD0, owner) ||
+      vtable != environment.module_base + layout->planner_vtable_rva ||
+      !ReadAt(environment, output.planner, layout->owner_offset, owner) ||
       owner != output.owner ||
-      !ReadAt(environment, output.planner, 0x1530, type) ||
+      !ReadAt(environment, output.planner, layout->type_offset, type) ||
       type != output.activity_type || !IsFeastType(environment, type) ||
-      !ReadAt(environment, output.planner, 0x1AB0, stage) ||
+      !ReadAt(environment, output.planner, layout->stage_offset, stage) ||
       stage != output.planning_stage ||
       !FingerprintConfiguration(environment, output.planner, fingerprint) ||
       fingerprint != output.configuration_fingerprint)
@@ -246,7 +261,8 @@ bool InstallActivityCostSlot12PassiveV1(
   if (observer.installed || !VerifyActivityCostSlot12ExactAbiV1(environment))
     return false;
   auto *target = reinterpret_cast<std::uint8_t *>(
-      environment.module_base + kActivityCostRefreshRvaV1);
+      environment.module_base + ActivityFeastCostLayoutForBuildV1(
+          environment.executable_sha256)->refresh_rva);
   auto *trampoline = static_cast<std::uint8_t *>(VirtualAlloc(
       nullptr, kActivityCostPatchBytesV1 + kJumpBytes,
       MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE));

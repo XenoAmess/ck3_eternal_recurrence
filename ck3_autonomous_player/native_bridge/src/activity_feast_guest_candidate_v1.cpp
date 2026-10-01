@@ -1,5 +1,7 @@
 #include "xar_bridge/activity_feast_guest_candidate_v1.hpp"
 
+#include "xar_bridge/ck3_12002_feast_guests_abi.hpp"
+
 #include <windows.h>
 
 #include <array>
@@ -38,6 +40,8 @@ bool Read(const ActivityPlannerDiagEnvironmentV1 &source,
 template <typename T>
 bool ReadAt(const ActivityPlannerDiagEnvironmentV1 &source,
             std::uintptr_t base, std::size_t offset, T &value) noexcept {
+  if (base == source.module_base)
+    offset = ActivityFeastGuestRvaV1(source.admitted_executable_sha256, offset);
   return base != 0 &&
          offset <= (std::numeric_limits<std::uintptr_t>::max)() - base &&
          Read(source, base + offset, value);
@@ -49,7 +53,7 @@ bool BytesAt(const ActivityPlannerDiagEnvironmentV1 &source,
              const std::array<std::uint8_t, N> &expected) noexcept {
   std::array<std::uint8_t, N> actual{};
   return source.read_memory != nullptr &&
-         source.read_memory(source.context, source.module_base + rva,
+         source.read_memory(source.context, source.module_base + ActivityFeastGuestRvaV1(source.admitted_executable_sha256, rva),
                             actual.data(), actual.size()) && actual == expected;
 }
 
@@ -57,25 +61,25 @@ bool VerifyAbi(const ActivityFeastGuestJoinEnvironmentV1 &env) noexcept {
   const auto &source = env.diagnostic;
   return env.enabled && env.passive_cost != nullptr && source.enabled &&
          source.module_base != 0 &&
-         source.admitted_executable_sha256 == kActivityPlannerDiagExeSha256V1 &&
+         IsActivityPlannerSupportedBuildV1(source) &&
          env.passive_cost->environment.module_base == source.module_base &&
          env.passive_cost->environment.executable_sha256 ==
-             kActivityCostSlot12ExeSha256V1 &&
+             source.admitted_executable_sha256 &&
          // 0x10B0780 maps active rules +0x1A18 into filtered groups +0x1590.
          BytesAt(source, 0x10B0796,
-                 std::array<std::uint8_t, 7>{0x4C, 0x8D, 0xB9, 0x90,
-                                             0x15, 0x00, 0x00}) &&
+                 (IsActivityPlanner12002V1(source) ? std::array<std::uint8_t, 7>{0x4C, 0x8D, 0xB9, 0xC8, 0x15, 0, 0} : std::array<std::uint8_t, 7>{0x4C, 0x8D, 0xB9, 0x90, 0x15, 0, 0})) &&
          BytesAt(source, 0x10B07A3,
-                 std::array<std::uint8_t, 7>{0x48, 0x81, 0xC1, 0x18,
-                                             0x1A, 0x00, 0x00}) &&
+                 (IsActivityPlanner12002V1(source) ? std::array<std::uint8_t, 7>{0x48, 0x81, 0xC1, 0x50, 0x1A, 0, 0} : std::array<std::uint8_t, 7>{0x48, 0x81, 0xC1, 0x18, 0x1A, 0, 0})) &&
          // 0x28D06C0 removes IDs rejected by the native guest predicate.
          BytesAt(source, 0x28D07A1,
-                 std::array<std::uint8_t, 5>{0xE8, 0xBA, 0xE4, 0xFF, 0xFF}) &&
-         // Stock list first loads the host view at 0x151CD6E, then reads its
-         // filtered group vector at 0x151CD75.
+                 (IsActivityPlanner12002V1(source) ? std::array<std::uint8_t, 5>{0xE8, 0xDA, 0xE3, 0xFF, 0xFF} : std::array<std::uint8_t, 5>{0xE8, 0xBA, 0xE4, 0xFF, 0xFF})) &&
+         // Stock guest-window list loads its planner at +0xD0 in 1.20,
+         // then reads the planner's filtered groups at +0x15C8. The old
+         // window used +0x100 and planner groups +0x1590.
          BytesAt(source, 0x151CD75,
-                 std::array<std::uint8_t, 7>{0x48, 0x8B, 0x90, 0x90,
-                                             0x15, 0x00, 0x00});
+                 (IsActivityPlanner12002V1(source)
+                      ? std::array<std::uint8_t, 7>{0x48,0x8B,0x90,0xC8,0x15,0,0}
+                      : std::array<std::uint8_t, 7>{0x48,0x8B,0x90,0x90,0x15,0,0}));
 }
 
 bool FeastType(const ActivityPlannerDiagEnvironmentV1 &source,
@@ -84,7 +88,7 @@ bool FeastType(const ActivityPlannerDiagEnvironmentV1 &source,
   std::uintptr_t vtable = 0, data = type + 0x18;
   std::uint64_t size = 0, capacity = 0;
   if (!ReadAt(source, type, 0, vtable) ||
-      vtable != source.module_base + 0x440E308 ||
+      vtable != source.module_base + ActivityFeastGuestRvaV1(source.admitted_executable_sha256, 0x440E308) ||
       !ReadAt(source, type, 0x28, size) ||
       !ReadAt(source, type, 0x30, capacity) ||
       size != sizeof(key) - 1 || size > capacity ||
@@ -142,10 +146,10 @@ ActivityFeastGuestCandidateStatusV1 Arrival(
   if (!ReadAt(source, source.module_base, kWorldRva, world) || world == 0 ||
       !ReadAt(source, world, 8, today) || today != expected.date_raw ||
       !ReadAt(source, world, 0xA0, province_table) || province_table == 0 ||
-      !ReadAt(source, capture.planner, 0x1578, location_row) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1578), location_row) ||
       location_row == 0 || !ReadAt(source, location_row, 8, province_id) ||
       !ReadAt(source, province_table, 0x14C, province_count) ||
-      !ReadAt(source, capture.planner, 0x1550, start_raw))
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1550), start_raw))
     return ActivityFeastGuestCandidateStatusV1::arrival_unavailable;
   if (province_id >= 1 && province_id < province_count &&
       ReadAt(source, province_table, 0x140, provinces) && provinces != 0 &&
@@ -157,7 +161,7 @@ ActivityFeastGuestCandidateStatusV1 Arrival(
   }
   const auto activity_invoke = env.invoke_activity != nullptr
                                    ? env.invoke_activity
-                                   : &InvokeActivityFeastNativePlannerActivityV1;
+                                   : (IsActivityPlanner12002V1(source) ? &InvokeActivityFeastNativePlannerActivity12002V1 : &InvokeActivityFeastNativePlannerActivityV1);
   const auto activity = activity_invoke(env.arrival_context, source.module_base,
                                         capture.planner);
   std::uintptr_t activity_rows = 0;
@@ -181,7 +185,7 @@ ActivityFeastGuestCandidateStatusV1 Arrival(
   if (!already_in_activity) {
     const auto invoke = env.invoke_travel_days != nullptr
                             ? env.invoke_travel_days
-                            : &InvokeActivityFeastNativeTravelDaysV1;
+                            : (IsActivityPlanner12002V1(source) ? &InvokeActivityFeastNativeTravelDays12002V1 : &InvokeActivityFeastNativeTravelDaysV1);
     if (!invoke(env.arrival_context, source.module_base, character,
                 destination, travel_days))
       return ActivityFeastGuestCandidateStatusV1::arrival_unavailable;
@@ -234,14 +238,14 @@ ActivityFeastGuestCandidateStatusV1 ReadOne(
       current_planner != capture.planner ||
       !ReadAt(source, source.module_base, kPlayedIdRva, played_id) ||
       played_id != static_cast<std::uint32_t>(expected.actor_character_id) ||
-      !ReadAt(source, capture.planner, 0x1538, host_id) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1538), host_id) ||
       host_id != expected.actor_character_id ||
-      !ReadAt(source, capture.planner, 0x1590, groups) ||
-      !ReadAt(source, capture.planner, 0x159C, group_count) ||
-      !ReadAt(source, capture.planner, 0x1A18, rules) ||
-      !ReadAt(source, capture.planner, 0x1A24, rule_count) ||
-      !ReadAt(source, capture.planner, 0x1678, selected) ||
-      !ReadAt(source, capture.planner, 0x1684, selected_count) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1590), groups) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x159C), group_count) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1A18), rules) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1A24), rule_count) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1678), selected) ||
+      !ReadAt(source, capture.planner, ActivityFeastGuestPlannerOffsetV1(source.admitted_executable_sha256, 0x1684), selected_count) ||
       group_count < 0 || group_count > static_cast<std::int32_t>(kMaxGroups) ||
       rule_count < 0 || rule_count > static_cast<std::int32_t>(kMaxGroups) ||
       selected_count < 0 ||
@@ -274,7 +278,7 @@ ActivityFeastGuestCandidateStatusV1 ReadOne(
   }
   const auto invoke_join = env.invoke_join != nullptr
                                ? env.invoke_join
-                               : &InvokeActivityFeastNativePlannerGuestJoinV1;
+                               : (IsActivityPlanner12002V1(source) ? &InvokeActivityFeastNativePlannerGuestJoin12002V1 : &InvokeActivityFeastNativePlannerGuestJoinV1);
   std::array<std::int32_t, kMaxCandidates> candidates{};
   std::size_t examined = 0;
   for (std::int32_t group = 0; group < group_count; ++group) {

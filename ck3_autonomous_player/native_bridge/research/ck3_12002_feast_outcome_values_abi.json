@@ -1,0 +1,231 @@
+{
+  "schema": "xar.ck3.feast_outcome_values_12002.abi.v1",
+  "product_version": "1.20.0.2",
+  "steam_build_id": "25588574",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "file_size": 101039736,
+  "image_base": "0x140000000",
+  "readiness": "static-ready independent actor counters; no live or attributed Feast reward",
+  "local_ck3_contacted": false,
+  "live_verified": false,
+  "anchors": [
+    {
+      "name": "prestige_getter",
+      "rva": "0x28be040",
+      "bytes": "488B81B00100004885C0740E488B8030010000488902488BC2C348C70200000000488BC2C3",
+      "semantic": "Character+1B0 resource extension; int64 extension+130 copied to output; null extension returns legal zero"
+    },
+    {
+      "name": "affordability_prestige_extension",
+      "rva": "0x310e820",
+      "bytes": "498B86B0010000",
+      "semantic": "native final affordability cost ordinal1 reads Character+1B0"
+    },
+    {
+      "name": "affordability_prestige_raw",
+      "rva": "0x310e82c",
+      "bytes": "488B8030010000",
+      "semantic": "independent final affordability prestige resource reads extension+130"
+    },
+    {
+      "name": "stress_getter",
+      "rva": "0x28bc580",
+      "bytes": "488B81B00100004885C074078B80F8020000C3C3",
+      "semantic": "Character+1B0 resource extension; signed int32 extension+2F8, null returns zero"
+    },
+    {
+      "name": "stress_native_points_to_fixed_point",
+      "rva": "0x28bc6b4",
+      "bytes": "488B81B00100004885C07422486380F80200004869C8A086010048894C2430488D4C2430E8C3FEFFFF4883C428C3",
+      "semantic": "movsxd int32 extension+2F8; multiply100000 before calling stress level converter"
+    },
+    {
+      "name": "trait_xp_span_pointer",
+      "rva": "0x28bb1c2",
+      "bytes": "488D0CC848890B",
+      "semantic": "raw XP int64 element stride8; span pointer output+0"
+    }
+  ],
+  "reused_phase_character_anchors": [
+    {
+      "name": "trait_database",
+      "rva": "0x89e5b0",
+      "bytes": "48 83 EC 38 48 8B 05 6D 8F 3C 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 39 EA BE 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44 24 20 41 8D 49 9D E8 65 D0 6E 03 48 8B 05 26 8F 3C 05 48 83 C4 38 C3 CC",
+      "source": "ck3_1_20_0_2_phase_character.json/signature_anchors"
+    },
+    {
+      "name": "character_has_trait",
+      "rva": "0x28bb1f0",
+      "bytes": "40 53 48 83 EC 20 8B 42 10 4C 8D 44 24 30 48 8B D9 89 44 24 30 48 8B 89 F8 00 00 00 48 63 83 04 01 00 00 48 8D 14 81 E8 14 52 FC FD 48 8B 8B F8 00 00 00 48 63 93 04 01 00 00 4C 8D 04 91 33 C9 49 3B C0 48 0F 44 C1 48 85 C0 0F 95 C0 48 83 C4 20 5B C3",
+      "source": "ck3_1_20_0_2_phase_character.json/signature_anchors"
+    },
+    {
+      "name": "character_trait_tracks",
+      "rva": "0x28bb0f0",
+      "bytes": "48 89 5C 24 20 56 48 83 EC 20 80 B9 A5 01 00 00 00",
+      "source": "ck3_1_20_0_2_phase_character.json/signature_anchors"
+    },
+    {
+      "name": "trait_definition_count",
+      "rva": "0x28bb124",
+      "bytes": "41 8B B8 9C 02 00 00",
+      "semantic": "mov edi, dword ptr [r8 + 0x29c]",
+      "source": "ck3_1_20_0_2_phase_character.json/instruction_checks"
+    },
+    {
+      "name": "character_xp_array",
+      "rva": "0x28bb1b3",
+      "bytes": "48 8B 86 40 01 00 00",
+      "semantic": "mov rax, qword ptr [rsi + 0x140]",
+      "source": "ck3_1_20_0_2_phase_character.json/instruction_checks"
+    },
+    {
+      "name": "character_xp_count",
+      "rva": "0x28bb1a4",
+      "bytes": "8B 96 4C 01 00 00",
+      "semantic": "mov edx, dword ptr [rsi + 0x14c]",
+      "source": "ck3_1_20_0_2_phase_character.json/instruction_checks"
+    },
+    {
+      "name": "xp_output_count_offset",
+      "rva": "0x28bb1bf",
+      "bytes": "89 7B 08",
+      "semantic": "mov dword ptr [rbx + 8], edi",
+      "source": "ck3_1_20_0_2_phase_character.json/instruction_checks"
+    },
+    {
+      "name": "database_objects_count",
+      "rva": "0xc85f37",
+      "bytes": "3B 51 5C",
+      "semantic": "cmp edx, dword ptr [rcx + 0x5c]",
+      "source": "ck3_1_20_0_2_phase_character.json/instruction_checks"
+    },
+    {
+      "name": "database_objects_array",
+      "rva": "0xc85f3c",
+      "bytes": "48 8B 41 50",
+      "semantic": "mov rax, qword ptr [rcx + 0x50]",
+      "source": "ck3_1_20_0_2_phase_character.json/instruction_checks"
+    }
+  ],
+  "source_layout": {
+    "character_storage_rva": "0x5C67568",
+    "character_fallback_rva": "0x5C67570",
+    "character_full_id_offset": "0x18",
+    "character_resource_extension": "0x1B0",
+    "prestige_offset": "0x130",
+    "prestige_type": "int64",
+    "prestige_scale": 100000,
+    "stress_offset": "0x2F8",
+    "stress_type": "int32",
+    "stress_scale": 1,
+    "reveler_definition_key": "lifestyle_reveler",
+    "reveler_track_key": "",
+    "reveler_track_count": 1,
+    "trait_definition_track_count_offset": "0x29C",
+    "trait_xp_span_pointer": "0x00",
+    "trait_xp_span_count": "0x08",
+    "trait_xp_span_reserved": "0x0C",
+    "reveler_xp_type": "int64",
+    "reveler_xp_scale": 100000
+  },
+  "script_sources": {
+    "game/common/activities/activity_types/feast.txt": {
+      "sha256": "fbc2e6e3f74bc8c2db1bb1eb01609aa7cf50e9546671a12617301f175be84598",
+      "reviewed_line_ranges": [
+        [
+          4992,
+          5014
+        ],
+        [
+          5110,
+          5131
+        ]
+      ]
+    },
+    "game/common/scripted_effects/00_activity_effects.txt": {
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "reviewed_line_ranges": [
+        [
+          3052,
+          3056
+        ],
+        [
+          3294,
+          3300
+        ],
+        [
+          3355,
+          3361
+        ],
+        [
+          3422,
+          3428
+        ],
+        [
+          3749,
+          3844
+        ],
+        [
+          4169,
+          4240
+        ]
+      ]
+    },
+    "game/common/traits/00_traits.txt": {
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa",
+      "reviewed_line_ranges": [
+        [
+          1063,
+          1102
+        ]
+      ]
+    }
+  },
+  "reader": {
+    "namespace": "xar::bridge",
+    "dto": "FeastOutcomeValuesV1",
+    "function": "ReadFeastOutcomeValues12002",
+    "environment": "FeastOutcomeEnvironmentV1",
+    "frame": "full actor ID and same paused owning-thread frame before and after read",
+    "wire": {
+      "prestige_raw": "int64/null, Q100000",
+      "stress_points": "int32/null, plain integer",
+      "reveler_present": "bool/null",
+      "reveler_xp_raw": "int64/null, Q100000"
+    },
+    "known_trait_absence": "reveler_available=true; reveler_present=false; reveler_xp_available=false; XP null",
+    "hidden_reveler_points": "not observed or fabricated; authored no-trait progress is a separate character variable",
+    "partial": "prestige/stress remain available if native trait definition/database cannot be read"
+  },
+  "actual_wire_fixture": {
+    "path": "fixtures/ck3_12002_feast_outcome_values_wire.json",
+    "sha256": "32f9a6efcb07a0f173f0518c763ce91f327e49bbf774e73ff5afa027f12fb780",
+    "labels": [
+      "ongoing_before",
+      "completed_after",
+      "nonreveler_ongoing",
+      "released"
+    ],
+    "before": {
+      "prestige_raw": -500000,
+      "stress_points": 48,
+      "reveler_present": true,
+      "reveler_xp_raw": 6500000
+    },
+    "after": {
+      "prestige_raw": 9500000,
+      "stress_points": 28,
+      "reveler_present": true,
+      "reveler_xp_raw": 7000000
+    },
+    "meaning": "synthetic native storage copied by actual new production readers and actual production C++ serializer; changes do not prove reward causality",
+    "baseline": "fixtures/ck3_12002_feast_outcome_values_wire_baseline.json",
+    "baseline_fixture_metadata": "Stage5 costs, CanStart, refresh and guest status are wrapper data; counter/hosted/balance copies are actual reader outputs"
+  },
+  "known_gaps": [
+    "new paused production reads and genuine Feast completion/independent benefit outcome",
+    "hidden reveler_points is not part of the native trait XP read",
+    "queued feast.7101 conclusion option and recipient opinion require separate typed event/opinion observation"
+  ]
+}

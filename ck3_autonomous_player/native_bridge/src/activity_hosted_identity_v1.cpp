@@ -16,6 +16,11 @@ constexpr std::uint32_t kMaximumSlotIndex = 0x00FFFFFE;
 constexpr std::size_t kActivityStride = 0x5F0;
 constexpr std::size_t kSlotsPerChunk = 1024;
 
+bool Is12002(const ActivityHostedIdentityEnvironmentV1 &environment) noexcept {
+  return environment.admitted_executable_sha256 ==
+         kActivityHostedIdentity12002ExeSha256V1;
+}
+
 struct ManagerSample {
   std::uintptr_t chunks = 0;
   std::uint32_t chunk_count = 0;
@@ -69,14 +74,24 @@ bool VerifyExactBuild(
   constexpr std::array<std::uint8_t, 7> kIdentityCopy{
       0x48, 0x8B, 0x07, 0x49, 0x89, 0x84, 0x24};
   return environment.enabled && environment.module_base != 0 &&
-         environment.admitted_executable_sha256 ==
-             kActivityHostedIdentityExeSha256V1 &&
+         (environment.admitted_executable_sha256 ==
+              kActivityHostedIdentityExeSha256V1 || Is12002(environment)) &&
          environment.read_memory != nullptr &&
          environment.read_frame != nullptr &&
-         MatchCode(environment, 0x26C8050, kDispatch) &&
+         (Is12002(environment)
+              ? MatchCode(environment, 0x2ADD8EE,
+                          std::array<std::uint8_t, 7>{0x49, 0x8D, 0xBF, 0xB8,
+                                                       0x2C, 0x02, 0x00}) &&
+                    MatchCode(environment, 0x29C2E97,
+                              std::array<std::uint8_t, 7>{0x48, 0x81, 0xC3, 0x28,
+                                                           0x06, 0x00, 0x00}) &&
+                    MatchCode(environment, 0x23F0195,
+                              std::array<std::uint8_t, 7>{0x41, 0x89, 0x87, 0xA8,
+                                                           0x03, 0x00, 0x00})
+              : MatchCode(environment, 0x26C8050, kDispatch) &&
          MatchCode(environment, 0x2700340, kApply) &&
          MatchCode(environment, 0x2703AF0, kEnumerate) &&
-         MatchCode(environment, 0x218EE1F, kIdentityCopy);
+         MatchCode(environment, 0x218EE1F, kIdentityCopy));
 }
 
 bool ReadManager(const ActivityHostedIdentityEnvironmentV1 &environment,
@@ -111,12 +126,17 @@ bool ResolveActor(const ActivityHostedIdentityEnvironmentV1 &environment,
   std::uint32_t played_id = 0;
   std::uintptr_t storage = 0, fallback = 0, slots = 0, character = 0;
   std::uint32_t capacity = 0, observed_id = 0;
-  if (!ReadAt(environment, environment.module_base, kPlayedCharacterIdRva,
-              played_id) ||
-      played_id != full_id ||
-      !ReadAt(environment, environment.module_base, kCharacterStorageRva,
+  const bool current = Is12002(environment);
+  // The admitted frame is captured by the existing native played-character
+  // resolver. 1.20 does not read the old build's UI-selected CharacterID slot.
+  if ((!current &&
+       (!ReadAt(environment, environment.module_base, kPlayedCharacterIdRva,
+                played_id) || played_id != full_id)) ||
+      !ReadAt(environment, environment.module_base,
+              current ? kActivityHosted12002CharacterStorageRva : kCharacterStorageRva,
               storage) ||
-      !ReadAt(environment, environment.module_base, kCharacterFallbackRva,
+      !ReadAt(environment, environment.module_base,
+              current ? kActivityHosted12002CharacterFallbackRva : kCharacterFallbackRva,
               fallback) ||
       storage == 0 || !ReadAt(environment, storage, 0x20, slots) ||
       !ReadAt(environment, storage, 0x2C, capacity) || slots == 0 ||
@@ -135,7 +155,8 @@ bool ReadTypeKey(const ActivityHostedIdentityEnvironmentV1 &environment,
   std::uintptr_t vtable = 0, data = 0;
   std::uint64_t size = 0, capacity = 0;
   if (type == 0 || !ReadAt(environment, type, 0, vtable) ||
-      vtable != environment.module_base + kActivityTypeVtableRva ||
+      vtable != environment.module_base +
+          (Is12002(environment) ? kActivityHosted12002ActivityTypeVtableRva : kActivityTypeVtableRva) ||
       !ReadAt(environment, type, 0x28, size) ||
       !ReadAt(environment, type, 0x30, capacity) || size == 0 ||
       size > capacity || size >= identity.type_key.size() ||
@@ -169,7 +190,7 @@ bool ReadSlot(const ActivityHostedIdentityEnvironmentV1 &environment,
                 static_cast<std::size_t>(chunk_index) * 8, chunk) &&
          CheckedAdd(chunk,
                     static_cast<std::size_t>(index % kSlotsPerChunk) *
-                        kActivityStride,
+                        (Is12002(environment) ? kActivityHosted12002ObjectStride : kActivityStride),
                     expected) &&
          object == expected;
 }
@@ -198,9 +219,9 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
   }
   std::uintptr_t root = 0, world = 0, manager = 0;
   ManagerSample first{};
-  if (!ReadAt(environment, environment.module_base, kManagerRootRva, root) ||
+  if (!ReadAt(environment, environment.module_base, (Is12002(environment) ? kActivityHosted12002GameStateRva : kManagerRootRva), root) ||
       root == 0 || !ReadAt(environment, root, 0xA0, world) ||
-      !CheckedAdd(world, 0x1DEC0, manager) ||
+      !CheckedAdd(world, Is12002(environment) ? kActivityHosted12002ManagerOffset : 0x1DEC0, manager) ||
       !ReadManager(environment, manager, first)) {
     result.status = ActivityHostedIdentityStatusV1::manager_unavailable;
     return result;
@@ -232,7 +253,8 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
       auto &identity = result.hosted[result.hosted_count];
       std::uintptr_t vtable = 0, type = 0, row_again = 0;
       if (!ReadAt(environment, activity, 0, vtable) ||
-          vtable != environment.module_base + kActivityVtableRva ||
+          vtable != environment.module_base +
+              (Is12002(environment) ? kActivityHosted12002ActivityVtableRva : kActivityVtableRva) ||
           !ReadAt(environment, activity, 0x3A0, type) ||
           !ReadTypeKey(environment, type, identity) ||
           !ReadSlot(environment, first, index, row_again) ||
@@ -242,6 +264,18 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
       }
       identity.activity_id = id;
       identity.host_character_id = host_id;
+      if (Is12002(environment)) {
+        std::uint8_t complete = 0, invalidated = 0;
+        if (!ReadAt(environment, activity, 0x421, complete) ||
+            !ReadAt(environment, activity, 0x422, invalidated) ||
+            complete > 1 || invalidated > 1) {
+          result.status = ActivityHostedIdentityStatusV1::activity_identity_unavailable;
+          return result;
+        }
+        identity.terminal_flags_observed = true;
+        identity.native_completed = complete != 0;
+        identity.native_invalidated = invalidated != 0;
+      }
       ++result.hosted_count;
     }
   }
@@ -249,7 +283,7 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
   ActivityHostedIdentityFrameV1 after{};
   std::uintptr_t root_after = 0, world_after = 0;
   if (seen != first.active_count ||
-      !ReadAt(environment, environment.module_base, kManagerRootRva,
+      !ReadAt(environment, environment.module_base, (Is12002(environment) ? kActivityHosted12002GameStateRva : kManagerRootRva),
               root_after) ||
       root_after != root || !ReadAt(environment, root_after, 0xA0,
                                    world_after) ||

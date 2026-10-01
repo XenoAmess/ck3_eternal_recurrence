@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/ck3_12002_activity_hosted_identity.hpp"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -42,6 +44,11 @@ struct ActivityHostedIdentityV1 {
   std::int32_t host_character_id = -1;
   std::array<char, 64> type_key{};
   std::uint8_t type_key_size = 0;
+  // 1.20: native completion/invalidation flags while this full activity ID
+  // remains in the manager. Missing identities never imply either outcome.
+  bool terminal_flags_observed = false;
+  bool native_completed = false;
+  bool native_invalidated = false;
 };
 
 enum class ActivityHostedIdentityStatusV1 {

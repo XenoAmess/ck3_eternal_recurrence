@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_stage2_gate_read_v1.hpp"
+#include "xar_bridge/ck3_12002_feast_planner.hpp"
 
 #include <limits>
 
@@ -37,34 +38,50 @@ bool ExactStage2Branch(const ActivityPlannerDiagEnvironmentV1 &environment)
       0x48, 0x8B, 0x89, 0x78, 0x15, 0x00, 0x00,
       0x49, 0x63, 0x80, 0x84, 0x15, 0x00, 0x00};
   std::array<std::uint8_t, expected.size()> actual{};
-  return ReadAt(environment, environment.module_base, kStage2GateBranchRva,
-                actual) && actual == expected;
+  constexpr std::array<std::uint8_t, 14> expected_12002{
+      0x48, 0x8B, 0x89, 0xB0, 0x15, 0x00, 0x00,
+      0x49, 0x63, 0x80, 0xBC, 0x15, 0x00, 0x00};
+  const bool current = IsActivityPlanner12002V1(environment);
+  return ReadAt(environment, environment.module_base,
+                current ? 0x11B86DF : kStage2GateBranchRva, actual) &&
+         actual == (current ? expected_12002 : expected);
 }
 
 bool ResolvePlanner(const ActivityPlannerDiagEnvironmentV1 &environment,
+                    const ActivityPlannerDiagFrameV1 &expected,
                     std::uintptr_t &planner) noexcept {
+  if (IsActivityPlanner12002V1(environment)) {
+    ActivityPlannerIdentityV1 identity{};
+    if (!ResolveActivityPlannerIdentityV1(environment, expected, identity) ||
+        identity.stage != 2)
+      return false;
+    planner = identity.planner;
+    return true;
+  }
   std::uintptr_t root = 0, idler = 0, gfx = 0, handler = 0;
   std::uintptr_t gfx_vtable = 0, handler_vtable = 0, planner_vtable = 0;
   std::uintptr_t owner = 0;
   std::int32_t stage = -1;
-  if (!ReadAt(environment, environment.module_base, kRootRva, root) ||
+  if (!ReadAt(environment, environment.module_base,
+              ActivityPlannerRvaV1(environment, kRootRva), root) ||
       root == 0 || !ReadAt(environment, root, 0x10, idler) || idler == 0 ||
       environment.rtti_cast == nullptr)
     return false;
   gfx = environment.rtti_cast(
       environment.context, idler,
-      environment.module_base + kIdlerSourceTypeRva,
-      environment.module_base + kIdlerGfxTypeRva);
+      environment.module_base + ActivityPlannerRvaV1(environment, kIdlerSourceTypeRva),
+      environment.module_base + ActivityPlannerRvaV1(environment, kIdlerGfxTypeRva));
   return gfx != 0 && ReadAt(environment, gfx, 0, gfx_vtable) &&
-         gfx_vtable == environment.module_base + kGfxVtableRva &&
+         gfx_vtable == environment.module_base + ActivityPlannerRvaV1(environment, kGfxVtableRva) &&
          ReadAt(environment, gfx, 0x88, handler) && handler != 0 &&
          ReadAt(environment, handler, 0, handler_vtable) &&
-         handler_vtable == environment.module_base + kHandlerVtableRva &&
+         handler_vtable == environment.module_base + ActivityPlannerRvaV1(environment, kHandlerVtableRva) &&
          ReadAt(environment, handler, 0x3C0, planner) && planner != 0 &&
          ReadAt(environment, planner, 0, planner_vtable) &&
-         planner_vtable == environment.module_base + kPlannerVtableRva &&
+         planner_vtable == environment.module_base + ActivityPlannerRvaV1(environment, kPlannerVtableRva) &&
          ReadAt(environment, planner, 0xD0, owner) && owner == handler &&
-         ReadAt(environment, planner, 0x1AB0, stage) && stage == 2;
+         ReadAt(environment, planner,
+                ActivityPlannerObjectOffsetV1(environment, 0x1AB0), stage) && stage == 2;
 }
 
 struct RowSnapshot {
@@ -77,8 +94,10 @@ struct RowSnapshot {
 
 bool ReadRows(const ActivityPlannerDiagEnvironmentV1 &environment,
               std::uintptr_t planner, RowSnapshot &output) noexcept {
-  if (!ReadAt(environment, planner, 0x1578, output.data) ||
-      !ReadAt(environment, planner, 0x1584, output.count) ||
+  if (!ReadAt(environment, planner,
+              ActivityPlannerObjectOffsetV1(environment, 0x1578), output.data) ||
+      !ReadAt(environment, planner,
+              ActivityPlannerObjectOffsetV1(environment, 0x1584), output.count) ||
       output.count < 0 ||
       output.count > static_cast<std::int32_t>(kActivityStage2MaximumRowsV1) ||
       (output.count != 0 && output.data == 0))
@@ -100,8 +119,9 @@ ActivityStage2GateReadResultV1 ReadActivityStage2GateV1(
   ActivityStage2GateReadResultV1 result{};
   const auto &diagnostic = environment.diagnostic;
   if (!diagnostic.enabled || diagnostic.module_base == 0 ||
-      diagnostic.admitted_executable_sha256 !=
-          kActivityPlannerDiagExeSha256V1 ||
+      (diagnostic.admitted_executable_sha256 !=
+           kActivityPlannerDiagExeSha256V1 &&
+       !IsActivityPlanner12002V1(diagnostic)) ||
       !ExactStage2Branch(diagnostic))
     return result;
   if (environment.can_progress == nullptr || diagnostic.read_frame == nullptr) {
@@ -139,7 +159,7 @@ ActivityStage2GateReadResultV1 ReadActivityStage2GateV1(
     return result;
   }
   std::uintptr_t first_planner = 0;
-  if (!ResolvePlanner(diagnostic, first_planner)) {
+  if (!ResolvePlanner(diagnostic, expected, first_planner)) {
     result.status = ActivityStage2GateReadStatusV1::planner_identity_mismatch;
     return result;
   }
@@ -166,7 +186,7 @@ ActivityStage2GateReadResultV1 ReadActivityStage2GateV1(
       !final_option.generic_feast_selected ||
       final_option.option_key_size != result.selected_option.option_key_size ||
       final_option.option_key != result.selected_option.option_key ||
-      !ResolvePlanner(diagnostic, final_planner) ||
+      !ResolvePlanner(diagnostic, expected, final_planner) ||
       final_planner != first_planner ||
       !ReadRows(diagnostic, final_planner, final_rows) ||
       final_rows != first_rows) {

@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_stage2_confirm_v1.hpp"
+#include "xar_bridge/ck3_12002_feast_planner.hpp"
 
 #include <array>
 #include <cstring>
@@ -63,16 +64,24 @@ bool VerifyActionAbi(const ActivityPlannerDiagEnvironmentV1 &d) noexcept {
       0xBA, 0x05, 0x00, 0x00, 0x00};
   constexpr std::array<std::uint8_t, 10> kSetter{
       0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x8B, 0x81, 0xB0, 0x1A};
+  constexpr std::array<std::uint8_t, 7> kStageTwoGate12002{
+      0x48, 0x8B, 0x89, 0xB0, 0x15, 0x00, 0x00};
+  constexpr std::array<std::uint8_t, 15> kSetter12002{
+      0x40, 0x53, 0x48, 0x81, 0xEC, 0xA0, 0x00, 0x00, 0x00,
+      0x8B, 0x81, 0xE8, 0x1A, 0x00, 0x00};
+  const bool current = IsActivityPlanner12002V1(d);
   std::uintptr_t stage_notification = 0;
   return d.enabled && d.module_base != 0 &&
-         d.admitted_executable_sha256 == kActivityPlannerDiagExeSha256V1 &&
-         MatchCode(d, kCanProgressRva, kCanProgress) &&
-         MatchCode(d, kStageTwoGateRva, kStageTwoGate) &&
-         MatchCode(d, kStageTwoBranchRva, kStageTwoBranch) &&
-         MatchCode(d, kSetStageRva, kSetter) &&
-         Read(d, d.module_base, kPlannerVtableRva + 0xC8,
+         (d.admitted_executable_sha256 == kActivityPlannerDiagExeSha256V1 || current) &&
+         MatchCode(d, current ? 0x11B8670 : kCanProgressRva, kCanProgress) &&
+         MatchCode(d, current ? 0x11B86DF : kStageTwoGateRva,
+                   current ? kStageTwoGate12002 : kStageTwoGate) &&
+         MatchCode(d, current ? 0x11B8D53 : kStageTwoBranchRva, kStageTwoBranch) &&
+         (current ? MatchCode(d, 0x11B95D0, kSetter12002)
+                  : MatchCode(d, kSetStageRva, kSetter)) &&
+         Read(d, d.module_base, ActivityPlannerRvaV1(d, kPlannerVtableRva) + 0xC8,
               stage_notification) &&
-         stage_notification == d.module_base + 0x10AEC20;
+         stage_notification == d.module_base + ActivityPlannerRvaV1(d, 0x10AEC20);
 }
 
 bool IsFeastType(const ActivityPlannerDiagEnvironmentV1 &d,
@@ -82,7 +91,7 @@ bool IsFeastType(const ActivityPlannerDiagEnvironmentV1 &d,
   std::uint64_t size = 0, capacity = 0;
   std::uintptr_t bytes = type + 0x18;
   if (!Read(d, type, 0, vtable) ||
-      vtable != d.module_base + kActivityTypeVtableRva ||
+      vtable != d.module_base + ActivityPlannerRvaV1(d, kActivityTypeVtableRva) ||
       !Read(d, type, 0x28, size) || !Read(d, type, 0x30, capacity) ||
       size != key.size() || size > capacity)
     return false;
@@ -97,35 +106,52 @@ bool ResolveSelection(const ActivityStage1OptionEnvironmentV1 &env,
                       std::int32_t required_stage,
                       NativeSelection &out) noexcept {
   const auto &d = env.diagnostic;
+  if (IsActivityPlanner12002V1(d)) {
+    ActivityPlannerIdentityV1 identity{};
+    std::uintptr_t option_vtable = 0;
+    if (!ResolveActivityPlannerIdentityV1(d, expected, identity) ||
+        identity.stage != required_stage ||
+        !IsFeastType(d, identity.activity_type) ||
+        env.selected_option == nullptr ||
+        !env.selected_option(d.context, identity.planner, out.option) ||
+        out.option == 0 ||
+        !Read(d, out.option, 0, option_vtable) ||
+        option_vtable != d.module_base + ActivityPlannerRvaV1(d, kOptionVtableRva) ||
+        !Read(d, out.option, 8, out.option_id) || out.option_id < 0)
+      return false;
+    out.planner = identity.planner;
+    out.type = identity.activity_type;
+    return true;
+  }
   std::uintptr_t root = 0, idler = 0, gfx = 0, handler = 0;
   std::uintptr_t vtable = 0, owner = 0, category = 0, rows = 0;
   std::uintptr_t selected_row = 0, matching_row = 0;
   std::int32_t stage = -1, count = 0;
   std::uint32_t played_id = 0;
-  if (!Read(d, d.module_base, kRootRva, root) || root == 0 ||
+  if (!Read(d, d.module_base, ActivityPlannerRvaV1(d, kRootRva), root) || root == 0 ||
       !Read(d, root, 0x10, idler) || idler == 0)
     return false;
   gfx = d.rtti_cast(d.context, idler,
-                    d.module_base + kIdlerSourceTypeRva,
-                    d.module_base + kIdlerGfxTypeRva);
+                    d.module_base + ActivityPlannerRvaV1(d, kIdlerSourceTypeRva),
+                    d.module_base + ActivityPlannerRvaV1(d, kIdlerGfxTypeRva));
   if (gfx == 0 || !Read(d, gfx, 0, vtable) ||
-      vtable != d.module_base + kGfxVtableRva ||
+      vtable != d.module_base + ActivityPlannerRvaV1(d, kGfxVtableRva) ||
       !Read(d, gfx, 0x88, handler) || handler == 0 ||
       !Read(d, handler, 0, vtable) ||
-      vtable != d.module_base + kHandlerVtableRva ||
-      !Read(d, d.module_base, kPlayedIdRva, played_id) ||
+      vtable != d.module_base + ActivityPlannerRvaV1(d, kHandlerVtableRva) ||
+      !Read(d, d.module_base, ActivityPlannerRvaV1(d, kPlayedIdRva), played_id) ||
       played_id != static_cast<std::uint32_t>(expected.actor_character_id) ||
       !Read(d, handler, 0x3C0, out.planner) || out.planner == 0 ||
       !Read(d, out.planner, 0, vtable) ||
-      vtable != d.module_base + kPlannerVtableRva ||
+      vtable != d.module_base + ActivityPlannerRvaV1(d, kPlannerVtableRva) ||
       !Read(d, out.planner, 0xD0, owner) || owner != handler ||
-      !Read(d, out.planner, 0x1AB0, stage) || stage != required_stage ||
-      !Read(d, out.planner, 0x1530, out.type) || out.type == 0 ||
+      !Read(d, out.planner, ActivityPlannerObjectOffsetV1(d, 0x1AB0), stage) || stage != required_stage ||
+      !Read(d, out.planner, ActivityPlannerObjectOffsetV1(d, 0x1530), out.type) || out.type == 0 ||
       !IsFeastType(d, out.type) ||
-      !Read(d, out.type, 0xA88, category) || category == 0 ||
-      !Read(d, out.planner, 0x1560, rows) || rows == 0 ||
-      !Read(d, out.planner, 0x156C, count) || count <= 0 || count > 128 ||
-      !Read(d, out.planner, 0x1AC8, selected_row) || selected_row != 0)
+      !Read(d, out.type, ActivityPlannerTypeOffsetV1(d, 0xA88), category) || category == 0 ||
+      !Read(d, out.planner, ActivityPlannerObjectOffsetV1(d, 0x1560), rows) || rows == 0 ||
+      !Read(d, out.planner, ActivityPlannerObjectOffsetV1(d, 0x156C), count) || count <= 0 || count > 128 ||
+      !Read(d, out.planner, ActivityPlannerObjectOffsetV1(d, 0x1AC8), selected_row) || selected_row != 0)
     return false;
   for (std::int32_t index = 0; index < count; ++index) {
     std::uintptr_t row = 0, row_category = 0;
@@ -140,7 +166,7 @@ bool ResolveSelection(const ActivityStage1OptionEnvironmentV1 &env,
   if (matching_row == 0 ||
       !Read(d, matching_row, 0x08, out.option) || out.option == 0 ||
       !Read(d, out.option, 0, vtable) ||
-      vtable != d.module_base + kOptionVtableRva ||
+      vtable != d.module_base + ActivityPlannerRvaV1(d, kOptionVtableRva) ||
       !Read(d, out.option, 0x08, out.option_id))
     return false;
   std::uintptr_t native_getter_option = 0;
@@ -183,7 +209,7 @@ ActivityStage2ConfirmResultV1 ConfirmActivityStage2V1(
   std::uint8_t stage_auto = 1;
   std::int64_t gold_before = 0;
   if (!ResolveSelection(env, frozen_expected, 2, first) ||
-      !Read(d, first.planner, 0x1AD0, stage_auto) || stage_auto != 0 ||
+      !Read(d, first.planner, ActivityPlannerObjectOffsetV1(d, 0x1AD0), stage_auto) || stage_auto != 0 ||
       !env.can_progress(d.context, first.planner,
                         result.can_progress_stage_two) ||
       !result.can_progress_stage_two ||

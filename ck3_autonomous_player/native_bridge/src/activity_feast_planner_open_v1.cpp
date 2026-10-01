@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_feast_planner_open_v1.hpp"
+#include "xar_bridge/ck3_12002_feast_planner.hpp"
 
 #include <array>
 #include <cstring>
@@ -49,8 +50,35 @@ bool VerifyOpenAbi(const ActivityFeastPlannerOpenEnvironmentV1 &environment)
   if (env.module_base == 0 || env.read_memory == nullptr ||
       env.read_frame == nullptr || env.rtti_cast == nullptr ||
       environment.dispatch == nullptr ||
-      env.admitted_executable_sha256 != kActivityPlannerDiagExeSha256V1)
+      !IsActivityPlannerSupportedBuildV1(env))
     return false;
+  if (IsActivityPlanner12002V1(env)) {
+    std::uintptr_t descriptor_vtable = 0, descriptor_copy = 0, descriptor_move = 0;
+    const auto descriptor = ActivityPlannerRvaV1(env, kTypeDescriptor);
+    const auto descriptor_table = ActivityPlannerRvaV1(env, kTypeDescriptorVtable);
+    const auto pointer_copy = ActivityPlannerRvaV1(env, kTypeCopy);
+    // Native HostView slot 26 packages CActivityType* and sends event 0x65.
+    // The new handler additionally evaluates CanDeliverPayload before queuing.
+    return Match(env, 0xAF39E0,
+                 std::array<std::uint8_t, 8>{0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74}) &&
+           Match(env, 0xAF39FD,
+                 std::array<std::uint8_t, 13>{0xE8, 0x4E, 0xFF, 0xFF, 0xFF,
+                   0x33, 0xF6, 0x81, 0xFF, 0xAC, 0x00, 0x00, 0x00}) &&
+           Match(env, 0x1643A17,
+                 std::array<std::uint8_t, 13>{0xBA, 0x65, 0x00, 0x00, 0x00,
+                   0x48, 0x8B, 0xCD, 0xE8, 0xBC, 0xFF, 0x4A, 0xFF}) &&
+           Match(env, 0x1642F05,
+                 std::array<std::uint8_t, 13>{0xE8, 0xF6, 0x92, 0x2B, 0xFF,
+                   0x48, 0x8B, 0x78, 0x50, 0x48, 0x63, 0x48, 0x5C}) &&
+           Match(env, 0x23FC85A,
+                 std::array<std::uint8_t, 7>{0x48, 0x8B, 0x05, 0xDF, 0x32, 0x92, 0x03}) &&
+           Read(env, env.module_base, descriptor, descriptor_vtable) &&
+           Read(env, env.module_base, descriptor_table + 0x58, descriptor_copy) &&
+           Read(env, env.module_base, descriptor_table + 0x60, descriptor_move) &&
+           descriptor_vtable == env.module_base + descriptor_table &&
+           descriptor_copy == env.module_base + pointer_copy &&
+           descriptor_move == env.module_base + pointer_copy;
+  }
   constexpr std::array<std::uint8_t, 8> kQueueEntry{
       0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74};
   constexpr std::array<std::uint8_t, 8> kImmediateDelivery{
@@ -84,7 +112,7 @@ bool IsFeastKey(const ActivityPlannerDiagEnvironmentV1 &env,
   std::uint64_t capacity = 0;
   std::uintptr_t key = 0;
   if (!Read(env, type, 0, vtable) ||
-      vtable != env.module_base + kTypeVtable || !Add(type, 0x18, key) ||
+      vtable != env.module_base + ActivityPlannerRvaV1(env, kTypeVtable) || !Add(type, 0x18, key) ||
       !Read(env, key, 0x10, size) || !Read(env, key, 0x18, capacity) ||
       size != sizeof(kFeast) - 1 || size > capacity)
     return false;
@@ -98,6 +126,15 @@ bool IsFeastKey(const ActivityPlannerDiagEnvironmentV1 &env,
 bool ResolveOwner(const ActivityPlannerDiagEnvironmentV1 &env,
                   std::uintptr_t &handler,
                   std::uintptr_t &planner) noexcept {
+  if (IsActivityPlanner12002V1(env)) {
+    ActivityPlannerDiagFrameV1 frame{};
+    ActivityPlannerIdentityV1 identity{};
+    if (env.read_frame == nullptr || !env.read_frame(env.context, frame) ||
+        !ResolveActivityPlannerIdentityV1(env, frame, identity)) return false;
+    handler = identity.handler;
+    planner = identity.planner;
+    return true;
+  }
   std::uintptr_t root = 0;
   std::uintptr_t idler = 0;
   std::uintptr_t gfx = 0;
@@ -126,9 +163,9 @@ TypeLookup ResolveFeastType(const ActivityPlannerDiagEnvironmentV1 &env,
   std::uintptr_t manager = 0;
   std::uintptr_t types = 0;
   std::int32_t count = 0;
-  if (!Read(env, env.module_base, kTypeManager, manager) || manager == 0 ||
-      !Read(env, manager, 0x68, types) || types == 0 ||
-      !Read(env, manager, 0x74, count) || count < 0 || count > 1024)
+  if (!Read(env, env.module_base, ActivityPlannerRvaV1(env, kTypeManager), manager) || manager == 0 ||
+      !Read(env, manager, IsActivityPlanner12002V1(env) ? 0x50 : 0x68, types) || types == 0 ||
+      !Read(env, manager, IsActivityPlanner12002V1(env) ? 0x5C : 0x74, count) || count < 0 || count > 1024)
     return TypeLookup::invalid;
   for (std::int32_t index = 0; index < count; ++index) {
     std::uintptr_t type = 0;
@@ -137,7 +174,7 @@ TypeLookup ResolveFeastType(const ActivityPlannerDiagEnvironmentV1 &env,
     if (type == 0) continue;
     std::uintptr_t vtable = 0;
     if (!Read(env, type, 0, vtable)) return TypeLookup::invalid;
-    if (vtable != env.module_base + kTypeVtable) continue;
+    if (vtable != env.module_base + ActivityPlannerRvaV1(env, kTypeVtable)) continue;
     if (IsFeastKey(env, type)) {
       if (feast != 0) return TypeLookup::ambiguous;
       feast = type;
@@ -186,8 +223,8 @@ ActivityFeastPlannerOpenResultV1 OpenActivityFeastPlannerV1(
   std::uintptr_t selected = 0;
   std::uintptr_t initial_type = 0;
   if (!ResolveOwner(env, handler, planner) ||
-      !Read(env, planner, 0x1530, selected) ||
-      !Read(env, env.module_base, kInitialTypePointer, initial_type) ||
+      !Read(env, planner, ActivityPlannerObjectOffsetV1(env, 0x1530), selected) ||
+      !Read(env, env.module_base, ActivityPlannerRvaV1(env, kInitialTypePointer), initial_type) ||
       initial_type == 0) {
     result.status = ActivityFeastPlannerOpenStatusV1::native_precondition_failed;
     return result;
@@ -204,7 +241,7 @@ ActivityFeastPlannerOpenResultV1 OpenActivityFeastPlannerV1(
   case TypeLookup::found: break;
   }
   std::uintptr_t special_option_category = 0;
-  if (!Read(env, feast, kSpecialOptionCategory, special_option_category)) {
+  if (!Read(env, feast, ActivityPlannerTypeOffsetV1(env, kSpecialOptionCategory), special_option_category)) {
     result.status = ActivityFeastPlannerOpenStatusV1::native_precondition_failed;
     return result;
   }
@@ -237,7 +274,7 @@ ActivityFeastPlannerOpenResultV1 OpenActivityFeastPlannerV1(
   std::uintptr_t after_selected = 0;
   const bool selected_read =
       Read(env, handler, 0x3C0, after_planner) && after_planner == planner &&
-      Read(env, planner, 0x1530, after_selected);
+      Read(env, planner, ActivityPlannerObjectOffsetV1(env, 0x1530), after_selected);
   result.selected_feast_verified =
       selected_read && after_selected == feast &&
       result.after.status == ActivityPlannerDiagStatusV1::observed;

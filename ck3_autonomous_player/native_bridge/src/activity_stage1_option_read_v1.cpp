@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_stage1_option_read_v1.hpp"
+#include "xar_bridge/ck3_12002_feast_planner.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -60,7 +61,7 @@ bool MatchCode(const ActivityPlannerDiagEnvironmentV1 &env,
                std::uintptr_t rva,
                const std::array<std::uint8_t, N> &expected) noexcept {
   std::array<std::uint8_t, N> actual{};
-  return ReadAt(env, env.module_base, rva, actual) && actual == expected;
+  return ReadAt(env, env.module_base, ActivityPlannerRvaV1(env, rva), actual) && actual == expected;
 }
 
 bool VerifyAbi(const ActivityStage1OptionEnvironmentV1 &env) noexcept {
@@ -74,10 +75,13 @@ bool VerifyAbi(const ActivityStage1OptionEnvironmentV1 &env) noexcept {
   constexpr std::array<std::uint8_t, 7> kProgressSignature{
       0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89};
   return d.enabled && d.module_base != 0 &&
-         d.admitted_executable_sha256 == kActivityPlannerDiagExeSha256V1 &&
+         IsActivityPlannerSupportedBuildV1(d) &&
          d.read_memory != nullptr && d.read_frame != nullptr &&
          d.rtti_cast != nullptr && d.invoke_visibility != nullptr &&
-         MatchCode(d, kGetSelectedOptionRva, kSelectedSignature) &&
+         (IsActivityPlanner12002V1(d)
+               ? MatchCode(d, kGetSelectedOptionRva,
+                           std::array<std::uint8_t, 7>{0x48, 0x8B, 0x81, 0x00, 0x15, 0x00, 0x00})
+               : MatchCode(d, kGetSelectedOptionRva, kSelectedSignature)) &&
          MatchCode(d, kIsShownRva, kShownSignature) &&
          MatchCode(d, kIsValidRva, kValidSignature) &&
          MatchCode(d, kCanProgressRva, kProgressSignature);
@@ -91,7 +95,7 @@ bool IsFeastType(const ActivityPlannerDiagEnvironmentV1 &env,
   std::uint64_t capacity = 0;
   std::uintptr_t data = type + 0x18;
   if (!ReadAt(env, type, 0, vtable) ||
-      vtable != env.module_base + kActivityTypeVtable ||
+      vtable != env.module_base + ActivityPlannerRvaV1(env, kActivityTypeVtable) ||
       !ReadAt(env, type, 0x28, size) ||
       !ReadAt(env, type, 0x30, capacity) ||
       size != key.size() || size > capacity)
@@ -107,6 +111,43 @@ bool ResolveNative(const ActivityStage1OptionEnvironmentV1 &env,
                    NativeIdentity &output,
                    std::int32_t expected_stage = 1) noexcept {
   const auto &d = env.diagnostic;
+  if (IsActivityPlanner12002V1(d)) {
+    ActivityPlannerIdentityV1 native{};
+    std::uintptr_t category = 0, rows = 0, selected_row = 0;
+    std::int32_t count = 0;
+    if (!ResolveActivityPlannerIdentityV1(d, frame, native) ||
+        native.stage != expected_stage || !IsFeastType(d, native.activity_type) ||
+        !ReadAt(d, native.activity_type,
+                ActivityPlannerTypeOffsetV1(d, 0xA88), category) || category == 0 ||
+        !ReadAt(d, native.planner, ActivityPlannerObjectOffsetV1(d, 0x1560), rows) ||
+        rows == 0 ||
+        !ReadAt(d, native.planner, ActivityPlannerObjectOffsetV1(d, 0x156C), count) ||
+        count <= 0 || count > 128 ||
+        !ReadAt(d, native.planner, ActivityPlannerObjectOffsetV1(d, 0x1AC8), selected_row))
+      return false;
+    std::uintptr_t found = 0;
+    for (std::int32_t i = 0; i < count; ++i) {
+      std::uintptr_t row = 0, row_category = 0;
+      if (!Add(rows, static_cast<std::size_t>(i) * 0x10, row) ||
+          !ReadAt(d, row, 0, row_category)) return false;
+      if (row_category == category) {
+        if (found != 0) return false;
+        found = row;
+      }
+    }
+    std::uintptr_t option_vtable = 0, native_option = 0;
+    if (found == 0 || (expected_stage == 1 && selected_row != found) ||
+        (expected_stage == 2 && selected_row != 0) ||
+        !ReadAt(d, found, 8, output.option) || output.option == 0 ||
+        !ReadAt(d, output.option, 0, option_vtable) ||
+        option_vtable != d.module_base + ActivityPlannerRvaV1(d, kOptionVtable) ||
+        !ReadAt(d, output.option, 8, output.option_id) ||
+        !env.selected_option(d.context, native.planner, native_option) ||
+        native_option != output.option) return false;
+    output.actor = native.actor;
+    output.planner = native.planner;
+    return true;
+  }
   std::uintptr_t root = 0, idler = 0, gfx = 0, handler = 0;
   std::uintptr_t gfx_vtable = 0, handler_vtable = 0, planner_vtable = 0;
   std::uintptr_t owner = 0, type = 0, category = 0, rows = 0;
@@ -222,10 +263,10 @@ ActivityStage1OptionReadResultV1 ReadActivityStage1OptionV1(
     return result;
   }
   const auto base = env.diagnostic.module_base;
-  if (!env.option_predicate(env.diagnostic.context, base + kIsShownRva,
+  if (!env.option_predicate(env.diagnostic.context, base + ActivityPlannerRvaV1(env.diagnostic, kIsShownRva),
                             first.option, first.actor, first.option,
                             result.shown) ||
-      !env.option_predicate(env.diagnostic.context, base + kIsValidRva,
+      !env.option_predicate(env.diagnostic.context, base + ActivityPlannerRvaV1(env.diagnostic, kIsValidRva),
                             first.option, first.actor, first.option,
                             result.valid) ||
       !env.can_progress(env.diagnostic.context, first.planner,
@@ -349,14 +390,19 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
   constexpr std::array<std::uint8_t, 10> kStageSetterSignature{
       0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x8B, 0x81, 0xB0, 0x1A};
   std::uintptr_t stage_notification = 0;
-  if (!MatchCode(env.diagnostic, kSetStageRva, kStageSetterSignature)) {
+  const bool stage_setter_matches = IsActivityPlanner12002V1(env.diagnostic)
+      ? MatchCode(env.diagnostic, kSetStageRva,
+                  std::array<std::uint8_t, 15>{0x40, 0x53, 0x48, 0x81, 0xEC,
+                    0xA0, 0x00, 0x00, 0x00, 0x8B, 0x81, 0xE8, 0x1A, 0x00, 0x00})
+      : MatchCode(env.diagnostic, kSetStageRva, kStageSetterSignature);
+  if (!stage_setter_matches) {
     result.reject_reason =
         ActivityStage1ConfirmRejectReasonV1::stage_setter_abi_mismatch;
     return result;
   }
   if (!ReadAt(env.diagnostic, env.diagnostic.module_base,
-              kPlannerVtable + 0xC8, stage_notification) ||
-      stage_notification != env.diagnostic.module_base + 0x10AEC20) {
+              ActivityPlannerRvaV1(env.diagnostic, kPlannerVtable) + 0xC8, stage_notification) ||
+      stage_notification != env.diagnostic.module_base + ActivityPlannerRvaV1(env.diagnostic, 0x10AEC20)) {
     result.reject_reason =
         ActivityStage1ConfirmRejectReasonV1::stage_notification_slot_mismatch;
     return result;
@@ -367,7 +413,7 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
         ActivityStage1ConfirmRejectReasonV1::planner_identity_changed;
     return result;
   }
-  if (!ReadAt(env.diagnostic, first.planner, 0x1AD0,
+  if (!ReadAt(env.diagnostic, first.planner, ActivityPlannerObjectOffsetV1(env.diagnostic, 0x1AD0),
               result.planner_stage_auto_raw)) {
     result.reject_reason =
         ActivityStage1ConfirmRejectReasonV1::stage_auto_read_failed;
@@ -387,10 +433,16 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
     constexpr std::array<std::uint8_t, 10> kProgressSignature{
         0x40, 0x53, 0x48, 0x83, 0xEC, 0x20,
         0x48, 0x63, 0x81, 0xB0};
-    if (!MatchCode(env.diagnostic, kFindAutoRowRva,
-                   kFindAutoRowSignature) ||
-        !MatchCode(env.diagnostic, kProgressPlanningStageRva,
-                   kProgressSignature)) {
+    const bool progress_abi_matches = IsActivityPlanner12002V1(env.diagnostic)
+        ? MatchCode(env.diagnostic, kFindAutoRowRva,
+                    std::array<std::uint8_t, 13>{0x48, 0x8B, 0x81, 0xB0, 0x15,
+                      0x00, 0x00, 0x48, 0x63, 0x89, 0xBC, 0x15, 0x00}) &&
+          MatchCode(env.diagnostic, kProgressPlanningStageRva,
+                    std::array<std::uint8_t, 10>{0x40, 0x53, 0x48, 0x83, 0xEC,
+                      0x20, 0x48, 0x63, 0x81, 0xE8})
+        : MatchCode(env.diagnostic, kFindAutoRowRva, kFindAutoRowSignature) &&
+          MatchCode(env.diagnostic, kProgressPlanningStageRva, kProgressSignature);
+    if (!progress_abi_matches) {
       result.reject_reason =
           ActivityStage1ConfirmRejectReasonV1::stage_progress_abi_mismatch;
       return result;
@@ -402,8 +454,8 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
     }
     std::uintptr_t rows = 0, row = 0;
     std::int32_t row_count = 0;
-    if (!ReadAt(env.diagnostic, first.planner, 0x1578, rows) || rows == 0 ||
-        !ReadAt(env.diagnostic, first.planner, 0x1584, row_count) ||
+    if (!ReadAt(env.diagnostic, first.planner, ActivityPlannerObjectOffsetV1(env.diagnostic, 0x1578), rows) || rows == 0 ||
+        !ReadAt(env.diagnostic, first.planner, ActivityPlannerObjectOffsetV1(env.diagnostic, 0x1584), row_count) ||
         row_count <= 0 ||
         !env.find_auto_row(env.diagnostic.context, first.planner, row)) {
       result.reject_reason =
@@ -429,7 +481,7 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
         first.planner != still_selected.planner ||
         first.option != still_selected.option ||
         first.option_id != still_selected.option_id ||
-        !ReadAt(env.diagnostic, first.planner, 0x1AD0, still_auto) ||
+        !ReadAt(env.diagnostic, first.planner, ActivityPlannerObjectOffsetV1(env.diagnostic, 0x1AD0), still_auto) ||
         still_auto != 1) {
       result.reject_reason =
           ActivityStage1ConfirmRejectReasonV1::planner_identity_changed;

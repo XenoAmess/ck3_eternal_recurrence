@@ -1,0 +1,251 @@
+{
+  "schema": "xar.ck3_12002.activity_feast_costs_abi.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "instructions": [
+    {
+      "rva": "0x11b5b37",
+      "bytes": "8B 81 E8 1A 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x1ae8]"
+    },
+    {
+      "rva": "0x11b5b5a",
+      "bytes": "E8 71 4B 00 00",
+      "instruction": "call 0x11ba6d0"
+    },
+    {
+      "rva": "0x11ba6f2",
+      "bytes": "48 81 C1 10 1B 00 00",
+      "instruction": "add rcx, 0x1b10"
+    },
+    {
+      "rva": "0x11ba706",
+      "bytes": "48 8D 8F 00 15 00 00",
+      "instruction": "lea rcx, [rdi + 0x1500]"
+    },
+    {
+      "rva": "0x11ba786",
+      "bytes": "39 B7 BC 15 00 00",
+      "instruction": "cmp dword ptr [rdi + 0x15bc], esi"
+    },
+    {
+      "rva": "0x11ba794",
+      "bytes": "4C 8B BF B0 15 00 00",
+      "instruction": "mov r15, qword ptr [rdi + 0x15b0]"
+    },
+    {
+      "rva": "0x11ba8bb",
+      "bytes": "48 83 C3 38",
+      "instruction": "add rbx, 0x38"
+    },
+    {
+      "rva": "0x11ba8e0",
+      "bytes": "48 8B 9F 98 15 00 00",
+      "instruction": "mov rbx, qword ptr [rdi + 0x1598]"
+    },
+    {
+      "rva": "0x11ba8e7",
+      "bytes": "48 63 BF A4 15 00 00",
+      "instruction": "movsxd rdi, dword ptr [rdi + 0x15a4]"
+    },
+    {
+      "rva": "0x11ba8ee",
+      "bytes": "48 C1 E7 04",
+      "instruction": "shl rdi, 4"
+    },
+    {
+      "rva": "0x11ba925",
+      "bytes": "48 83 C3 10",
+      "instruction": "add rbx, 0x10"
+    },
+    {
+      "rva": "0x11ba937",
+      "bytes": "4C 8D 70 50",
+      "instruction": "lea r14, [rax + 0x50]"
+    },
+    {
+      "rva": "0x11ba945",
+      "bytes": "48 8D 0C FF",
+      "instruction": "lea rcx, [rdi + rdi*8]"
+    },
+    {
+      "rva": "0x11ba949",
+      "bytes": "48 C1 E1 04",
+      "instruction": "shl rcx, 4"
+    },
+    {
+      "rva": "0x11ba965",
+      "bytes": "FF C3",
+      "instruction": "inc ebx"
+    },
+    {
+      "rva": "0x11ba967",
+      "bytes": "83 FB 0A",
+      "instruction": "cmp ebx, 0xa"
+    },
+    {
+      "rva": "0x11b11ce",
+      "bytes": "48 8D 71 50",
+      "instruction": "lea rsi, [rcx + 0x50]"
+    },
+    {
+      "rva": "0x11b11d2",
+      "bytes": "48 8D A9 F0 05 00 00",
+      "instruction": "lea rbp, [rcx + 0x5f0]"
+    },
+    {
+      "rva": "0x11b1209",
+      "bytes": "48 81 C6 90 00 00 00",
+      "instruction": "add rsi, 0x90"
+    },
+    {
+      "rva": "0x310ae1d",
+      "bytes": "49 83 78 18 10",
+      "instruction": "cmp qword ptr [r8 + 0x18], 0x10"
+    },
+    {
+      "rva": "0x310ae25",
+      "bytes": "41 8B 40 10",
+      "instruction": "mov eax, dword ptr [r8 + 0x10]"
+    },
+    {
+      "rva": "0x310aea0",
+      "bytes": "B9 0C 00 00 00",
+      "instruction": "mov ecx, 0xc"
+    },
+    {
+      "rva": "0x310aed9",
+      "bytes": "B8 0A 00 00 00",
+      "instruction": "mov eax, 0xa"
+    },
+    {
+      "rva": "0x310aee5",
+      "bytes": "49 8B 0C C6",
+      "instruction": "mov rcx, qword ptr [r14 + rax*8]"
+    },
+    {
+      "rva": "0x310aeec",
+      "bytes": "48 89 0E",
+      "instruction": "mov qword ptr [rsi], rcx"
+    },
+    {
+      "rva": "0xc86121",
+      "bytes": "48 8B 81 B0 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1b0]"
+    },
+    {
+      "rva": "0xc86128",
+      "bytes": "48 85 C0",
+      "instruction": "test rax, rax"
+    },
+    {
+      "rva": "0xc86146",
+      "bytes": "48 8B 80 00 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x100]"
+    },
+    {
+      "rva": "0x11b2885",
+      "bytes": "49 89 B4 24 A0 00 00 00",
+      "instruction": "mov qword ptr [r12 + 0xa0], rsi"
+    },
+    {
+      "rva": "0x11b2a3c",
+      "bytes": "49 8D 8C 24 00 15 00 00",
+      "instruction": "lea rcx, [r12 + 0x1500]"
+    },
+    {
+      "rva": "0xb0ab48",
+      "bytes": "48 89 87 C0 03 00 00",
+      "instruction": "mov qword ptr [rdi + 0x3c0], rax"
+    },
+    {
+      "rva": "0xb0af25",
+      "bytes": "48 89 B5 D8 03 00 00",
+      "instruction": "mov qword ptr [rbp + 0x3d8], rsi"
+    }
+  ],
+  "spans": [
+    {
+      "name": "named_cost_getter",
+      "start": "0x310ae10",
+      "end": "0x310aef8",
+      "sha256": "4a96800cbda10d4be2c92c4d95d7e20a8dfaa535c5f61f6e2724c9f31cfb8dad"
+    },
+    {
+      "name": "normal_refresh",
+      "start": "0x11ba6d0",
+      "end": "0x11baa7d",
+      "sha256": "c15a5ffa78b5e291eccff27589395785d12943ef0fe30cac5e27968cd1337f97"
+    },
+    {
+      "name": "slot12_refresh_call",
+      "start": "0x11b5b30",
+      "end": "0x11b5b5f",
+      "sha256": "6560acdff4915808eee84610a91413744893e9ff9e0cef5b4c0aa4d3d77c6120"
+    },
+    {
+      "name": "character_gold",
+      "start": "0xc86110",
+      "end": "0xc8616d",
+      "sha256": "3f9476cd1bddf603ba006c5d017dfe8cbe1df1bb7c856b2339b8a5137bb396da"
+    },
+    {
+      "name": "cost_breakdown_reset_prefix",
+      "start": "0x11b11b0",
+      "end": "0x11b1218",
+      "sha256": "42fc9190f7f55c1f367556204cf36f8c60259b756a1a14cba46cab95e637773d"
+    }
+  ],
+  "vtable_edges": [
+    {
+      "slot_rva": "0x4532628",
+      "function_rva": "0x11b5b30"
+    },
+    {
+      "slot_rva": "0x45325c8",
+      "function_rva": "0x11b2e30"
+    },
+    {
+      "slot_rva": "0x48bfe50",
+      "function_rva": "0x3112140"
+    }
+  ],
+  "source_constants": {
+    "kActivityCostRefresh12002RvaV1": "0x11BA6D0",
+    "kActivityCostSlot12Return12002RvaV1": "0x11B5B5F",
+    "kActivityGetCostByName12002RvaV1": "0x310AE10",
+    "kActivityGetCostIndexed12002RvaV1": "0x310AEE5",
+    "kActivityGoldLeaf12002RvaV1": "0xC86146"
+  },
+  "new_layout": {
+    "owner": "0xA0",
+    "type": "0x1500",
+    "stage": "0x1AE8",
+    "breakdown": "0x1B10",
+    "categories_pointer": "0x1598",
+    "categories_count": "0x15A4",
+    "category_stride": "0x10",
+    "options_pointer": "0x15B0",
+    "options_count": "0x15BC",
+    "option_stride": "0x38",
+    "character_resource_extension": "0x1B0",
+    "gold": "0x100",
+    "fixed_point_scale": 100000,
+    "resource_keys": [
+      "gold",
+      "treasury",
+      "piety",
+      "barter_goods"
+    ],
+    "unmapped_index": 10,
+    "handler_current_planner": "0x3C0",
+    "handler_host": "0x3D8"
+  },
+  "remaining_live": [
+    "normal planner refresh capture in the exact new game",
+    "four native named-cost values plus final CanStart in the same paused frame",
+    "selected useful Feast Start, cost debit and full completion receipt"
+  ]
+}

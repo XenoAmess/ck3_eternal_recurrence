@@ -1,0 +1,212 @@
+{
+  "schema": "xar.ck3_12002_feast_guests_abi.v1",
+  "exact_build": {
+    "version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "size_bytes": 101039736
+  },
+  "readiness": "static-ready",
+  "live": false,
+  "functions": {
+    "guest_join": {
+      "old_rva": "0x10b0a80",
+      "rva": "0x11b8350",
+      "length": 446,
+      "sha256": "57ae4fb558a5e5b945f780b1fafd4bdf19cea0e09735e38bc4b02e4e0c73fc4e"
+    },
+    "guest_travel_days": {
+      "old_rva": "0x28cd180",
+      "rva": "0x2bbade0",
+      "length": 574,
+      "sha256": "94ba62fa2767b5db9b427b6559cec5a7348c04ac93f91d0b7ad0b5667cf6112b"
+    },
+    "guest_predicate": {
+      "old_rva": "0x28d06c0",
+      "rva": "0x2bbe5b0",
+      "length": 351,
+      "sha256": "4f60e84e9bf7bfb12415898ed87a62ef1f6c037d9c84255bd13805ab61891588"
+    },
+    "normal_rule_refresh": {
+      "old_rva": "0x28cf3a0",
+      "rva": "0x2bbd1b0",
+      "length": 1683,
+      "sha256": "632cba7a1e4c277fe4e9ae1d898b83e213dfbb87b069dcb31dd00441a3342bbb"
+    },
+    "normal_rule_effect": {
+      "old_rva": "0x3380410",
+      "rva": "0x3765880",
+      "length": 265,
+      "sha256": "c7cadeddee8d0d437a709a9fead1527e5169cece347ae59f82aac341dc60ad46"
+    },
+    "planner_activity": {
+      "old_rva": "0x10cda10",
+      "rva": "0x11d8ec0",
+      "length": 96,
+      "sha256": "2f329cc3ece26596b4311ed3610c4752ec61a7f8b91eaedfe5f968b9e621f08b"
+    },
+    "stock_gui_filtered_guest_list": {
+      "old_rva": "0x151cd40",
+      "rva": "0x165b620",
+      "length": 442,
+      "sha256": "88dab88ebb3b22cdde6d9761bb817c00c88092752c01c3ed3138fa19c27e88f6"
+    }
+  },
+  "semantic_instructions": [
+    {
+      "name": "normal_selected_rows",
+      "rva": "0x11b5be0",
+      "bytes": "488B83B0160000",
+      "meaning": "planner selected native 16-byte rows +0x16B0"
+    },
+    {
+      "name": "host_id_comparison",
+      "rva": "0x11b5bf0",
+      "bytes": "3B9308150000",
+      "meaning": "full generation-bearing actor CharacterID +0x1508"
+    },
+    {
+      "name": "positive_join_cache",
+      "rva": "0x11b5bf8",
+      "bytes": "488B83681A0000",
+      "meaning": "parallel positive-join cache +0x1A68"
+    },
+    {
+      "name": "normal_join_call",
+      "rva": "0x11b5c46",
+      "bytes": "E805270000",
+      "meaning": "original normal-refresh call to signed native join final result"
+    },
+    {
+      "name": "join_cache_write",
+      "rva": "0x11b5c58",
+      "bytes": "880C0748",
+      "meaning": "cache stores native final score >0"
+    },
+    {
+      "name": "filtered_group_vector",
+      "rva": "0x11b8066",
+      "bytes": "4C8DB9C8150000",
+      "meaning": "planner filtered native groups +0x15C8"
+    },
+    {
+      "name": "active_rule_vector",
+      "rva": "0x11b8073",
+      "bytes": "4881C1501A0000",
+      "meaning": "planner active rules +0x1A50"
+    },
+    {
+      "name": "native_rule_refresh_call",
+      "rva": "0x11b832c",
+      "bytes": "E87F4EA001",
+      "meaning": "normal refresh populates native groups"
+    },
+    {
+      "name": "join_selected_context",
+      "rva": "0x11b83b9",
+      "bytes": "498D96B0160000",
+      "meaning": "join evaluator obtains exact selected guest row context"
+    },
+    {
+      "name": "join_location",
+      "rva": "0x11b8428",
+      "bytes": "498B8EB0150000",
+      "meaning": "join evaluator destination row +0x15B0"
+    },
+    {
+      "name": "join_planned_start",
+      "rva": "0x11b8465",
+      "bytes": "4D8D8E20150000",
+      "meaning": "join evaluator planned start date +0x1520"
+    },
+    {
+      "name": "join_native_final",
+      "rva": "0x11b848f",
+      "bytes": "E80C925A02",
+      "meaning": "exact final native score evaluation; no proxy score"
+    },
+    {
+      "name": "guest_predicate_call",
+      "rva": "0x2bbe691",
+      "bytes": "E8DAE3FFFF",
+      "meaning": "native rejected guest IDs removed from group vector"
+    },
+    {
+      "name": "stock_gui_filtered_groups",
+      "rva": "0x165b655",
+      "bytes": "488B90C8150000",
+      "meaning": "guest-window planner filtered group vector +0x15C8"
+    },
+    {
+      "name": "planner_activity_virtual",
+      "rva": "0x11d8ec0",
+      "bytes": "80B9A809000000740E4881C100010000488B0148FF6008488B",
+      "meaning": "planner activity virtual branch +0x100 and discriminator +0x9A8"
+    },
+    {
+      "name": "activity_current_travel_record",
+      "rva": "0x9dff19",
+      "bytes": "4963813C080000",
+      "meaning": "current record index +0x83C"
+    },
+    {
+      "name": "activity_travel_records",
+      "rva": "0x9dff2f",
+      "bytes": "4D8B8160030000",
+      "meaning": "native activity record array +0x360"
+    },
+    {
+      "name": "activity_first_record_date",
+      "rva": "0x9dff4c",
+      "bytes": "8B483881E9C0559C02",
+      "meaning": "actual native first-record date and epoch, not indexed row date"
+    },
+    {
+      "name": "arrival_native_travel_call",
+      "rva": "0x9dff87",
+      "bytes": "E854AE1D02",
+      "meaning": "native travel fallback exact query"
+    },
+    {
+      "name": "arrival_date_write",
+      "rva": "0x9e002a",
+      "bytes": "48894B04",
+      "meaning": "pre-Start predicted arrival date output"
+    },
+    {
+      "name": "rule_definition_effect",
+      "rva": "0x2bbd321",
+      "bytes": "488D4B40",
+      "meaning": "native rule effect subobject +0x40"
+    },
+    {
+      "name": "rule_effect_call",
+      "rva": "0x2bbd325",
+      "bytes": "E85685BA00",
+      "meaning": "effect is observed only on normal native refresh"
+    },
+    {
+      "name": "rule_definition_list_key",
+      "rva": "0x2bbd32a",
+      "bytes": "8B8B94000000",
+      "meaning": "rule definition output list key +0x94"
+    },
+    {
+      "name": "rule_output_count",
+      "rva": "0x2bbd336",
+      "bytes": "4D63970C010000",
+      "meaning": "temporary output native list count +0x10C"
+    },
+    {
+      "name": "rule_output_rows",
+      "rva": "0x2bbd346",
+      "bytes": "4D8B8F00010000",
+      "meaning": "temporary output native list rows +0x100"
+    },
+    {
+      "name": "rule_id_type",
+      "rva": "0x2bbd3a0",
+      "bytes": "66833B0475058B4308",
+      "meaning": "character script value type4 and full CharacterID payload +8"
+    }
+  ]
+}

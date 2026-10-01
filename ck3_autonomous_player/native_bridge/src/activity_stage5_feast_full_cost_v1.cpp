@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_stage5_feast_full_cost_v1.hpp"
+#include "xar_bridge/ck3_12002_activity_feast_costs.hpp"
 
 #include <array>
 #include <cstring>
@@ -64,7 +65,10 @@ bool InvokeFourNames(void *opaque, std::uintptr_t module_base,
   const auto &environment = *invocation.environment;
   const auto invoke = environment.invoke_named_cost != nullptr
                           ? environment.invoke_named_cost
-                          : &InvokeActivityStage5NativeNamedFeastCostV1;
+                          : environment.gold.diagnostic.admitted_executable_sha256 ==
+                                    kActivityFeastCosts12002ExeSha256V1
+                              ? &InvokeActivityStage5NativeNamedFeastCost12002V1
+                              : &InvokeActivityStage5NativeNamedFeastCostV1;
   for (std::size_t index = 0; index < kActivityFeastCostKeysV1.size(); ++index) {
     std::uint32_t resource_index = 10;
     std::int64_t value = 0;
@@ -87,8 +91,8 @@ bool InvokeFourNames(void *opaque, std::uintptr_t module_base,
 
 } // namespace
 
-bool InvokeActivityStage5NativeNamedFeastCostV1(
-    void *, std::uintptr_t module_base, std::uintptr_t cost_breakdown,
+static bool InvokeNativeNamedFeastCost(
+    std::uintptr_t getter_rva, std::uintptr_t module_base, std::uintptr_t cost_breakdown,
     std::string_view resource_key, std::uint32_t &resource_index,
     std::int64_t &cost_raw) noexcept {
   if (module_base == 0 || cost_breakdown == 0 || resource_key.empty() ||
@@ -100,7 +104,7 @@ bool InvokeActivityStage5NativeNamedFeastCostV1(
   using GetCost = std::int64_t *(__fastcall *)(
       std::int64_t *, const void *, const NativeShortString *);
   const auto getter = reinterpret_cast<GetCost>(
-      module_base + kActivityGetCostByNameRvaV1);
+      module_base + getter_rva);
   constexpr std::int64_t kMarkerBase = 0x4C41524300000000LL;
   std::array<std::int64_t, 11> markers{};
   for (std::size_t index = 0; index < markers.size(); ++index)
@@ -117,6 +121,22 @@ bool InvokeActivityStage5NativeNamedFeastCostV1(
     return false;
   cost_raw = value;
   return true;
+}
+
+bool InvokeActivityStage5NativeNamedFeastCostV1(
+    void *, std::uintptr_t module_base, std::uintptr_t cost_breakdown,
+    std::string_view resource_key, std::uint32_t &resource_index,
+    std::int64_t &cost_raw) noexcept {
+  return InvokeNativeNamedFeastCost(kActivityGetCostByNameRvaV1, module_base,
+      cost_breakdown, resource_key, resource_index, cost_raw);
+}
+
+bool InvokeActivityStage5NativeNamedFeastCost12002V1(
+    void *, std::uintptr_t module_base, std::uintptr_t cost_breakdown,
+    std::string_view resource_key, std::uint32_t &resource_index,
+    std::int64_t &cost_raw) noexcept {
+  return InvokeNativeNamedFeastCost(kActivityGetCostByName12002RvaV1, module_base,
+      cost_breakdown, resource_key, resource_index, cost_raw);
 }
 
 ActivityStage5FeastFullCostResultV1 ReadActivityStage5FeastFullCostV1(

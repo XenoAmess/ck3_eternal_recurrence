@@ -1,0 +1,146 @@
+{
+  "schema": "xar.ck3.12002.feast-guest-rule-abi.v1",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "game_version": "1.20.0.2",
+  "source_only": true,
+  "local_ck3_contacted": false,
+  "anchors": [
+    {
+      "key": "hash_key",
+      "rva": "0x3f7e240",
+      "bytes": "89 4c 24 08 53 48 83 ec 20 33 c0 48 8d 4c 24 30",
+      "meaning": "Native authored-key resolver 0x3053C71 and constructor0x3049481 use this hash; zero seed initialization at0x3F7E249."
+    },
+    {
+      "key": "database_getter",
+      "rva": "0x3057bc0",
+      "bytes": "48 83 ec 38 48 8b 05 1d c3 cd 02 48 85 c0 75 42",
+      "meaning": "References singleton0x5D33EE8; normal keyed resolver calls at0x3053BBD."
+    },
+    {
+      "key": "lookup_rule",
+      "rva": "0x305a280",
+      "bytes": "48 89 5c 24 08 45 33 c0 48 63 da 44 38 81 e0 0e",
+      "meaning": "Keyed resolver0x3053C7B passes native hash; returns missing singleton on lookup miss."
+    },
+    {
+      "key": "lookup_missing_sentinel",
+      "rva": "0x305a38a",
+      "bytes": "48 8b 05 b7 9c cd 02",
+      "meaning": "RIP-relative load resolves0x5D33F48."
+    },
+    {
+      "key": "database_constructor_vtables",
+      "rva": "0x30618bc",
+      "bytes": "48 8d 05 5d 16 85 01 48 89 03 48 8d 05 f3 15 85 01 48 89 43 38",
+      "meaning": "Stores vtables0x48B2F20 and0x48B2EC0 atobject0/+38."
+    },
+    {
+      "key": "database_singleton_store",
+      "rva": "0x3061873",
+      "bytes": "48 89 05 6e 26 cd 02",
+      "meaning": "Constructor singleton is0x5D33EE8."
+    },
+    {
+      "key": "window_constructor",
+      "rva": "0xb0b329",
+      "bytes": "48 8d 05 70 fe a6 03 48 89 06 48 8d 05 3e fe a6 03 48 89 46 10 c7 86 c8 00 00 00 ff ff ff ff 48 89 8e d0 00 00 00 c7 86 d8 00 00 00 ff ff ff ff 48 89 8e e0 00 00 00 48 89 8e e8 00 00 00 48 8d",
+      "meaning": "GuestWindow mainvtable457B1A0, plannerD0, modeC8; owner+3F0 retained."
+    },
+    {
+      "key": "toggle_entry",
+      "rva": "0x165a9d0",
+      "bytes": "40 57 41 55 48 83 ec 38 83 b9 c8 00 00 00 ff 48",
+      "meaning": "Native typed category toggle; requires planningmodeC8==-1."
+    },
+    {
+      "key": "toggle_rule_block",
+      "rva": "0x165a9eb",
+      "bytes": "48 89 74 24 60 48 8b 32 80 be 98 00 00 00 00 0f 85 7b 01 00 00 48 89 5c 24",
+      "meaning": "Special/incompatible definition byte+98 denies this ordinary category toggle."
+    },
+    {
+      "key": "toggle_active_copy",
+      "rva": "0x165ab25",
+      "bytes": "49 8b 9d d0 00 00 00 49 8b d7 48 8d 8b 50 1a 00 00 e8 c5 8a ab ff 48 8b cb e8 0d d5 b5 ff",
+      "meaning": "Copies current window rows to planner+1A50 and refreshes through11B8050."
+    },
+    {
+      "key": "active_entry",
+      "rva": "0x165ab90",
+      "bytes": "48 89 5c 24 08 48 89 74 24 10 57 48 83 ec 20 48",
+      "meaning": "Independent native active query; accesses window activevectorE0/EC."
+    },
+    {
+      "key": "active_definition_compare",
+      "rva": "0x165abcd",
+      "bytes": "8b 47 08 41 3b 40 08 75 0c 49 8b 00 48 8b 17 8b 48 10 39 4a 10",
+      "meaning": "Ordered row priority+8 anddefinition priority+10 preserve complete membership."
+    },
+    {
+      "key": "ordered_rules_getter",
+      "rva": "0x3118700",
+      "bytes": "48 83 ec 58 4c 8b c2 48 85 c9 74 43 48 8d 81 c8 0b 00 00 c7 44 24 28 ff ff ff ff",
+      "meaning": "GetGuestInviteRules-style bounded row iterator takes CActivityType+BC8."
+    },
+    {
+      "key": "ordered_and_default_rule_sort",
+      "rva": "0x31138be",
+      "bytes": "49 8d bd c8 0b 00 00 48 8d 4f 18 e8 62 46 00 00 4c 8b 47 18 4c 63 4f 24 49 c1 e1 04 4d 03 c8 8b 57 0c 48 8b cf e8 c8 37 7b fd 48 8b cf e8 40",
+      "meaning": "Type parser sorts +BE0(defaults) and+BC8(ordered), not common RVA/field delta."
+    },
+    {
+      "key": "default_rules_copy",
+      "rva": "0x11b4f5b",
+      "bytes": "49 8d 95 e0 0b 00 00 48 8d 8f 50 1a 00 00 e8 92 e6 f5 ff 48",
+      "meaning": "Copies type+BE0 defaults into planner+1A50, then refreshes."
+    },
+    {
+      "key": "rule_hash_definition_store",
+      "rva": "0x304947c",
+      "bytes": "66 48 0f 7e f2 e8 ba 4d f3 00 89 47 14",
+      "meaning": "Hash result stored at SActivityGuestInviteRule+14."
+    },
+    {
+      "key": "rule_hash_database_insert",
+      "rva": "0x3057f22",
+      "bytes": "48 8b 85 a8 00 00 00 44 8b 40 14 44 89 85",
+      "meaning": "Reads definition+14 to use as database hashkey."
+    },
+    {
+      "key": "guest_filter_entry",
+      "rva": "0x11b8050",
+      "bytes": "48 89 5c 24 10 48 89 6c 24 18 56 57 41 54 41 56 41 57 48 83 ec 30 4c 8d b9 c8 15 00 00 48 8b f1 49 8b d7 48 81 c1 50 1a 00 00 e8 41 50 a0 01",
+      "meaning": "Planner active rowvector+1A50 feeds filtered groupvector+15C8."
+    }
+  ],
+  "layout": {
+    "database_slot": "0x5D33EE8",
+    "missing_rule_slot": "0x5D33F48",
+    "database_main_vtable": "0x48B2F20",
+    "database_secondary_vtable": "0x48B2EC0",
+    "window_main_vtable": "0x457B1A0",
+    "handler_current_planner": "0x3C0",
+    "handler_guest_window": "0x3F0",
+    "window_planner": "0xD0",
+    "window_mode": "0xC8",
+    "window_active_rows": "0xE0",
+    "window_active_count": "0xEC",
+    "planner_owner": "0xA0",
+    "planner_actor": "0x1508",
+    "planner_active_rows": "0x1A50",
+    "planner_active_count": "0x1A5C",
+    "planner_filtered_groups": "0x15C8",
+    "planner_filtered_group_count": "0x15D4",
+    "type_ordered_rows": "0xBC8",
+    "type_ordered_count": "0xBD4",
+    "type_default_rows": "0xBE0",
+    "type_default_count": "0xBEC",
+    "rule_key_hash": "0x14"
+  },
+  "live_boundary": [
+    "guest-list window binding and ordinary native toggle on paused exact build",
+    "candidate category membership plus value and independent readback",
+    "activity terminal completion and visible gains"
+  ]
+}

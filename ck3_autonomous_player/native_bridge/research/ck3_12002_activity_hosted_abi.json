@@ -1,0 +1,167 @@
+{
+  "schema": "xar.ck3.activity_hosted_12002.abi.v1",
+  "product_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "file_size": 101039736,
+  "image_base": "0x140000000",
+  "evidence_scope": "static executable and stock source; synthetic production reader fixtures",
+  "local_ck3_contacted": false,
+  "live_verified": false,
+  "anchors": [
+    {
+      "name": "world_activity_manager",
+      "rva": "0x2add8ee",
+      "bytes": "498DBFB82C0200",
+      "semantic": "lea rdi,[r15+0x22CB8]"
+    },
+    {
+      "name": "manager_initialized",
+      "rva": "0x29be6df",
+      "bytes": "C6411001",
+      "semantic": "mov byte ptr [rcx+0x10],1"
+    },
+    {
+      "name": "storage_chunk_stride",
+      "rva": "0x29c2e97",
+      "bytes": "4881C328060000",
+      "semantic": "add rbx,0x628"
+    },
+    {
+      "name": "activity_type_copy",
+      "rva": "0x23f0185",
+      "bytes": "498B0424498987A0030000",
+      "semantic": "payload type pointer copied to activity+0x3A0"
+    },
+    {
+      "name": "activity_host_copy",
+      "rva": "0x23f0190",
+      "bytes": "418B442408418987A8030000",
+      "semantic": "payload host CharacterID copied to activity+0x3A8"
+    },
+    {
+      "name": "final_phase_test",
+      "rva": "0x29bfaa2",
+      "bytes": "8B86D4030000FFC83986E00300007516",
+      "semantic": "phase_count-1 equals current_phase"
+    },
+    {
+      "name": "final_phase_complete_call",
+      "rva": "0x29bfac1",
+      "bytes": "E84A090000",
+      "semantic": "call manager completion 0x29C0410"
+    },
+    {
+      "name": "complete_actor_callback",
+      "rva": "0x29c0439",
+      "bytes": "E86265A3FF",
+      "semantic": "call activity completion 0x23F69A0"
+    },
+    {
+      "name": "complete_type_effect",
+      "rva": "0x23f6e26",
+      "bytes": "488B88A00300004881C1E0080000488D542420E842E93601",
+      "semantic": "type+0x8E0 effect executed for actor"
+    },
+    {
+      "name": "native_completion_flag",
+      "rva": "0x23f6d5b",
+      "bytes": "41C6872104000001",
+      "semantic": "mov byte ptr [r15+0x421],1 after effects"
+    },
+    {
+      "name": "native_completion_time",
+      "rva": "0x23f6d63",
+      "bytes": "49898708040000",
+      "semantic": "mov qword ptr [r15+0x408],rax"
+    },
+    {
+      "name": "native_invalidation_flag",
+      "rva": "0x29bf6a5",
+      "bytes": "C6822204000001",
+      "semantic": "mov byte ptr [rdx+0x422],1"
+    },
+    {
+      "name": "invalidated_type_effect",
+      "rva": "0x29bf717",
+      "bytes": "488B8BA00300004881C120050000488D542450E85160DA00",
+      "semantic": "type+0x520 effect invoked on invalidation"
+    },
+    {
+      "name": "invalidated_release",
+      "rva": "0x29bf7ca",
+      "bytes": "E811310000",
+      "semantic": "call release 0x29C28E0"
+    },
+    {
+      "name": "gold_extension",
+      "rva": "0xc86121",
+      "bytes": "488B81B0010000",
+      "semantic": "mov rax,[rcx+0x1B0]"
+    },
+    {
+      "name": "gold_raw",
+      "rva": "0xc86146",
+      "bytes": "488B8000010000",
+      "semantic": "mov rax,[rax+0x100]"
+    },
+    {
+      "name": "piety_getter",
+      "rva": "0x28be010",
+      "bytes": "488B81B00100004885C0740E488B8010010000488902488BC2C3",
+      "semantic": "resource extension+0x1B0; piety+0x110 output"
+    }
+  ],
+  "vtables": [
+    {
+      "name": "CActivity",
+      "rva": "0x472E130",
+      "col_rva": "0x4DD06A0",
+      "type_rva": "0x59D10D8",
+      "object_offset": 0,
+      "entry0_rva": "0x23EF6A0"
+    },
+    {
+      "name": "CActivityType",
+      "rva": "0x48BFE50",
+      "col_rva": "0x4F819A8",
+      "type_rva": "0x55C11C8",
+      "object_offset": 0,
+      "entry0_rva": "0x3112140"
+    }
+  ],
+  "source_layout": {
+    "manager_game_data_offset": "0x22CB8",
+    "object_stride": "0x628",
+    "slots_per_chunk": 1024,
+    "object_id": "0x08",
+    "object_type": "0x3A0",
+    "object_host": "0x3A8",
+    "object_completed": "0x421",
+    "object_invalidated": "0x422",
+    "type_key_string": "0x18",
+    "character_resource_extension": "0x1B0",
+    "resource_gold_raw": "0x100",
+    "resource_piety_raw": "0x110"
+  },
+  "script_sources": {
+    "game/common/activities/activity_types/feast.txt": {
+      "sha256": "fbc2e6e3f74bc8c2db1bb1eb01609aa7cf50e9546671a12617301f175be84598"
+    },
+    "game/common/activities/activity_types/_activity_type.info": {
+      "sha256": "b082e108a1f1ca8c3e2c6d20ce0b561bc031fc43bb83ee727547e7e24dd985fa"
+    },
+    "game/gui/window_activity.gui": {
+      "sha256": "b57338cd4ed9613b54b5b2fade3f761b0b538f635eda36d6842f223523247798"
+    }
+  },
+  "terminal_contract": {
+    "completed_marker": "native completion callback returned; manager reachable full ID has +0x421=1",
+    "invalidated_marker": "native invalidation started; +0x422=1; object is then released",
+    "missing_activity_id": "absence_unknown; does not distinguish completion, invalidation or lost observation",
+    "visible_gain": "must be independently observed; completion flag does not imply opinion or prestige gain"
+  },
+  "unsupported_balances": [
+    "treasury",
+    "barter_goods"
+  ]
+}

@@ -29,10 +29,16 @@ bool Sample(const ActivityHostedIdentityEnvironmentV1 &environment,
   std::uintptr_t storage = 0, fallback = 0, slots = 0, actor = 0;
   std::uintptr_t extension = 0;
   const auto base = environment.module_base;
-  if (!Read(environment, base, 0x4FE7EE0, played_id) ||
-      played_id != actor_id ||
-      !Read(environment, base, 0x570C130, storage) || storage == 0 ||
-      !Read(environment, base, 0x570C138, fallback) ||
+  const bool current = environment.admitted_executable_sha256 ==
+                       kActivityHostedIdentity12002ExeSha256V1;
+  if ((!current &&
+       (!Read(environment, base, 0x4FE7EE0, played_id) || played_id != actor_id)) ||
+      !Read(environment, base,
+            current ? kActivityHosted12002CharacterStorageRva : 0x570C130,
+            storage) || storage == 0 ||
+      !Read(environment, base,
+            current ? kActivityHosted12002CharacterFallbackRva : 0x570C138,
+            fallback) ||
       !Read(environment, storage, 0x20, slots) || slots == 0 ||
       !Read(environment, storage, 0x2C, slot_count) ||
       (actor_id & 0x00FFFFFFU) >= slot_count ||
@@ -41,7 +47,9 @@ bool Sample(const ActivityHostedIdentityEnvironmentV1 &environment,
             actor) || actor == 0 || actor == fallback ||
       !Read(environment, actor, 0x18, roundtrip_id) ||
       roundtrip_id != actor_id ||
-      !Read(environment, actor, 0x1A8, extension) || extension == 0 ||
+      !Read(environment, actor,
+            current ? kActivityFeast12002ResourceExtensionOffset : 0x1A8,
+            extension) || extension == 0 ||
       !Read(environment, extension, 0x100, values[0]) ||
       !Read(environment, extension, 0x110, values[1]))
     return false;
@@ -51,7 +59,9 @@ bool Sample(const ActivityHostedIdentityEnvironmentV1 &environment,
               static_cast<std::size_t>(actor_id & 0x00FFFFFFU) * 16 + 8,
               actor_after) && actor_after == actor &&
          Read(environment, actor, 0x18, id_after) && id_after == actor_id &&
-         Read(environment, actor, 0x1A8, extension_after) &&
+         Read(environment, actor,
+              current ? kActivityFeast12002ResourceExtensionOffset : 0x1A8,
+              extension_after) &&
          extension_after == extension;
 }
 
@@ -63,8 +73,10 @@ ActivityFeastBalanceResultV1 ReadActivityFeastResourceBalancesV1(
   ActivityFeastBalanceResultV1 result{};
   result.value.frame = expected;
   if (!environment.enabled || environment.module_base == 0 ||
-      environment.admitted_executable_sha256 !=
-          kActivityHostedIdentityExeSha256V1 ||
+      (environment.admitted_executable_sha256 !=
+           kActivityHostedIdentityExeSha256V1 &&
+       environment.admitted_executable_sha256 !=
+           kActivityHostedIdentity12002ExeSha256V1) ||
       environment.read_memory == nullptr || environment.read_frame == nullptr)
     return result;
   ActivityHostedIdentityFrameV1 before{};
