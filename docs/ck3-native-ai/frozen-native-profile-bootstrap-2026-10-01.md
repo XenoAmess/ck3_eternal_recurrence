@@ -37,6 +37,10 @@ healthy simulation.
 Artifact names are the existing `xar_ck3_bridge.dll` and
 `xar_ck3_bridge_injector.exe`, both bound by SHA-256. Before injection the tool
 polls the pinned task bus and repeats the guard. The existing Windows contained
+injector is only invoked after the independent read-only clock proves an
+initialized paused campaign prefix. The first native provider snapshot must
+be map-ready, remain paused and match that pre-attach raw date. The before-clock
+receipt is retained with the attach evidence. The existing Windows contained
 injector Job must prove return code zero and complete process-tree containment.
 That ACK alone is insufficient: the tool reads the provider's actual hello PID,
 exact game version, EXE SHA and ready adapter, followed by native integer
@@ -164,7 +168,7 @@ The bootstrap does not start the one-generation controller, observe, reseed,
 jump dates, skip simulation ticks or alter AI behavior. It performs no desktop
 input or OCR. Live attach and gameplay are left to the exclusive desktop owner.
 
-Validation: 6 read-only clock tests, 13 profile/bootstrap/ordinary-player tests,
+Validation: 6 read-only clock tests, 14 profile/bootstrap/ordinary-player tests,
 4 real-provider endpoint campaign-projection tests and 11 existing semantic-profile tests
 passed, including official in-memory MCP schemas, stale process/Steam/lease
 rejection, wrong userdir and artifact rejection, native hello/build rejection,

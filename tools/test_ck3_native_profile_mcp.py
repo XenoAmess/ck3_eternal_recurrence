@@ -38,6 +38,7 @@ class Backend:
         self.polls = []
         self.command_line = [profile["guard"]["target"]["executable"], f'-userdir={profile["userdir"]}']
         self.report = {"returncode": 0, "complete_process_tree_proven": True}
+        self.clock = {"date_raw": 123456, "paused": True, "speed": 3}
 
     def observe(self, profile):
         return {**self.desktop.observe(profile["guard"]), "command_line": self.command_line}
@@ -49,6 +50,9 @@ class Backend:
     def inject(self, command):
         self.injections.append(command)
         return SimpleNamespace(report=self.report, error=None)
+
+    def read_clock(self, profile):
+        return copy.deepcopy(self.clock)
 
 
 class Driver:
@@ -115,6 +119,15 @@ class NativeProfileTests(unittest.TestCase):
                 self.assertEqual(backend.injections, [])
                 self.assertEqual(arguments, [])
 
+    def test_running_clock_rejects_attach_before_endpoint_or_injector(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            service, backend, _, arguments, _ = service_fixture(Path(temporary))
+            backend.clock["paused"] = False
+            with self.assertRaisesRegex(RuntimeError, "paused initialized"):
+                service.attach()
+            self.assertEqual(backend.injections, [])
+            self.assertEqual(arguments, [])
+
     def test_userdir_and_artifact_changes_are_denied_before_attach(self):
         for mode in ("userdir", "duplicate_userdir", "dll", "injector", "guard"):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
@@ -173,7 +186,7 @@ class NativeProfileTests(unittest.TestCase):
             self.assertEqual(len(backend.injections), 1)
 
     def test_native_wrong_pid_build_or_unavailable_clock_cannot_verify_attach(self):
-        for mode in ("pid", "hash", "version", "adapter", "paused", "projection"):
+        for mode in ("pid", "hash", "version", "adapter", "paused", "projection", "date", "map"):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
                 service, backend, driver, _, _ = service_fixture(Path(temporary))
                 if mode == "pid":
@@ -182,6 +195,10 @@ class NativeProfileTests(unittest.TestCase):
                     driver.snapshot["paused"] = None
                 elif mode == "projection":
                     driver.snapshot["episode_projection"] = "one_life"
+                elif mode == "date":
+                    driver.snapshot["date_raw"] += 24
+                elif mode == "map":
+                    driver.snapshot["map_ready"] = False
                 else:
                     field = {"hash": "expected_ck3_sha256", "version": "expected_ck3_version", "adapter": "game_adapter_status"}[mode]
                     driver.snapshot["diagnostics"]["hello"][field] = "other"

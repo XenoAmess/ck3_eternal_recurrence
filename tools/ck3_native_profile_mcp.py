@@ -170,6 +170,10 @@ class NativeProfileService:
                     raise RuntimeError(f"frozen {name} artifact SHA-256 changed")
             self.backend.poll(self.profile)
             self.guard()
+            clock_before = self.backend.read_clock(self.profile)
+            self.guard()
+            if clock_before.get("paused") is not True:
+                raise RuntimeError("profile bridge attach requires a paused initialized native clock")
             evidence = Path(self.profile["evidence_directory"])
             evidence.mkdir(parents=True, exist_ok=True)
             claim = evidence / "attach-claim.json"
@@ -199,6 +203,9 @@ class NativeProfileService:
                 while True:
                     try:
                         snapshot = self._snapshot()
+                        if (snapshot.get("map_ready") is not True or snapshot["paused"] is not True
+                                or snapshot["date_raw"] != clock_before.get("date_raw")):
+                            raise RuntimeError("first bridge snapshot does not match the paused map clock before attach")
                         break
                     except Exception:
                         if time.monotonic() >= deadline:
@@ -207,7 +214,8 @@ class NativeProfileService:
                 after = self.guard()
                 self._attach_result = self._receipt("attach", {
                     "status": "attached_snapshot_verified", "observation_before": observed,
-                    "observation_after": after, "injector": injected.report, "snapshot": snapshot,
+                    "observation_after": after, "native_clock_before": clock_before,
+                    "injector": injected.report, "snapshot": snapshot,
                     "uses_ocr": False, "uses_desktop_input": False})
             except Exception as error:
                 self._attach_result = self._receipt("attach", {
