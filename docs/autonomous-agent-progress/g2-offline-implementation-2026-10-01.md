@@ -941,3 +941,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 4精确源与实际9DTO；两个新生产consumer用例GREEN0.40s，任命一次→pending→独立holder/task回执→冷帧next消费；当前实机最佳内阁15对11，NO_CHANGE，不为验收更换劣质廷臣。共享正式接线与实机后验继续。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m4-council-live-next\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 23:49:45 Bind ordinary goals to current government context
+
+3精确源，3新leaf用例GREEN0.002s，当前实机44feature DTO兼容；当前rogue不计ordinary资格。正式shared消费/旧Robert兼容恢复/第二seed与自然继承实机待完成，Robert3153/36524不变。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m7-r11-gov-normalized-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

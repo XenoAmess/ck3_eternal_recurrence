@@ -49,7 +49,7 @@ flowchart TD
   G --> D["DLC families: spec only"]
   G --> U["Unknown key: retain identity / unadapted"]
   G --> R["Religious identity: owner deferred"]
-  K -. "New paused live evidence pending" .-> L["M7 multi-ruler/government qualification"]
+  K -. "Wider paused qualification pending" .-> L["M7 multi-ruler/government qualification"]
 ```
 
 The existing stock-government rows describe identity and capability families,
@@ -164,8 +164,78 @@ its receipt is `government/caller-protocol-v3/receipt.json`, SHA-256
 The fixture's absent CK3 campaign roots still produce the expected typed
 `campaign_collector_unavailable`, with false core readiness preserved. The
 earlier producer/legacy matrices and all failed artifacts are reused. The
-frozen running DLL is unchanged; an updated DLL and a new coordinator-owned
-paused SDK query are still required to confirm the repaired live transport.
+frozen running DLL from that first attempt was unchanged. Later coordinator
+queries supply the repaired live transport evidence, without replacing the
+original RED.
+
+## Ordinary campaign consumer and current paused evidence
+
+The actual R10 paused SDK packet at
+`targeted-sdk-r10/r10-law-feast-readonly-20261001T151418Z/012-ck3_query_government_runtime_adapter_private_v1.json`
+is available and has no SDK error. Its preceding snapshot and GOV result both
+have native revision 2, player 29829 and date 53169360. The result retains
+`feudal_government`, `core_landed`, all 44 feature rows, current source
+provenance and true same-frame/core readiness. This is a real private
+observation primitive for this feudal frame, not the M7 ruler/government
+matrix or an ordinary campaign action.
+
+The R9 continuation remains `rogue_one_life/xar_on`: checkpoint h98, full
+history 101, date 53169360 and `campaign_goal: null`. It cannot be relabelled
+ordinary or counted toward Robert. The original Robert h4025 checkpoint has
+full history 4028, `ordinary_campaign_succession/xar_off`, date 53220000 and
+also a null legacy goal. Its persisted 3153/36524 days remain the original
+1.19.0.6 mainline; current-version save compatibility still requires the
+official prepared pair and an actual 1.20 paused restore.
+
+The existing ordinary goal is already a real production consumer chain:
+checkpoint persistence and successful same-PID/cold adoption feed the
+driver's ordinary goal, `service.plan_turn` passes its plan to
+`choose_one_life_turn`, and matched natural successor/title reconciliation
+continues that same goal. A null legacy ordinary goal is initialized after
+successful adoption using the restored episode identity and immediately
+persisted. No driver rewrite, history trimming or manually inserted goal is
+needed. Existing successions are not retrospectively added. The current
+highest marriage priority genuinely affects planning; the retained progress
+and second succession priority do not yet form a calibrated long-horizon
+policy.
+
+The missing GOV consumption is now supplied by
+[`ordinary_campaign_government_context_v1.py`](../../ck3_autonomous_player/src/xar_autoplayer/ordinary_campaign_government_context_v1.py).
+This pure leaf reuses the existing GOV normalizer and the actual ordinary
+goal to publish fresh current-ruler identity, native adapter family/status,
+the full feature/source payload and existing readiness. The shared service
+owner connects it at the ordinary goal-plan seam, with a fresh query only
+when the existing private GOV query permit is enabled. The default performs
+no query. The leaf persists no profile, adds no global planner restriction
+and cannot inherit a predecessor's government. A spec-only family retains
+its native verdict and false core/context readiness; it is not promoted to
+an implemented adapter.
+
+`m7-campaign-live-next/r10-actual-payload-consumption.json` records the latest
+real SDK payload's file-only consumption. The unchanged real rogue snapshot
+produces an inactive ordinary context. A separately labelled ordinary
+fixture changes only the lifecycle/goal input to verify compatibility with
+the actual native payload. That fixture does not establish an actual
+ordinary turn, checkpoint, cold restore, inheritance or Robert progress.
+The executable root plan and source review are
+`m7-campaign-live-next/ordinary-root-plan.json` and
+`m7-campaign-live-next/goal-consumer-source-review.json`: first officially
+prepare/rebind the original ordinary pair; if its current-version restore
+cannot be qualified, use a separate fresh 1.20 ordinary seed. Then retain
+the actual goal in next-turn planning, checkpoint/cold continuation and
+natural succession, refreshing the observed government for each current
+ruler. New seeds and rogue migration primitives have separate counters.
+
+The new pure leaf has three focused tests, executed once in 0.002 seconds:
+actual native feudal/44-feature consumption with explicitly fixture ordinary
+inputs, default-off behavior and a clearly synthetic spec-only identity that
+retains false core/goal readiness. The receipt is
+`m7-campaign-live-next/leaf-tests/receipt.json`, SHA-256
+`16a1011c8fd4281bd16fea1be29e5693c280fa49132af3489414995601aa83ed`.
+These tests do not re-run the old native matrices or claim an ordinary live
+loop. The ordinary leaf source SHA-256 is
+`2460766f87c30380b20519fcce011994499224b763ea4989ab58043b126617f7`;
+the shared service owner's production-seam validation is tracked separately.
 
 Focused source acceptance is reproducible with:
 
@@ -193,8 +263,9 @@ Prior exact-build native campaign/feature ABI proofs are reused, including the
 campaign producer's fixture evidence. The new composite fixture owns a narrow
 valid feudal campaign input; it does not claim a new full live campaign read.
 
-This repaired package is `static-ready`. One actual paused native feudal
-observation is now retained, while its original SDK transport was RED and the
-updated transport awaits a coordinator-owned live query. Multiple rulers,
-seeds, governments and checkpoint continuation remain live work. M7
+The native feudal private observation is now a
+`production-live private observation primitive`; the original SDK RED is
+retained. The new ordinary goal/GOV consumer is `static-ready` pending its
+shared service integration and actual ordinary next-turn/cold/successor
+qualification. Multiple rulers, seeds and governments remain live work. M7
 completion is unchanged.
