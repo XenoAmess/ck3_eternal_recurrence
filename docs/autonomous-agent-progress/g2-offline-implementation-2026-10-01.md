@@ -897,3 +897,9 @@ Actual R8 selected-definition failure traced by one597byte paused VMread to exac
 Five owned source/test/fixture/topic files. Actual corrected provider DTO reproduces prior strictstr rejection; only selected_tenet_key permits None. One actualDTO normalizer case passes preserving three slots/eight source/final fields. Shared APIs and old SDK cases not repeated, actual paused pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\tenet-blank-slot-python-r9\final-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 22:01:50 Record actual empty gift targeting and envelope correction
+
+One topic records actual R8 root targeting factioncount0,pausedactor29829/raw53169360/submissions0 and initial malformed faction-alert attempt. Production formatter to realSDK reproduces RED then GREEN with exact existing8keys; other law envelope unchanged. Native sharedrouter belongs sole R9central manifest; no gift applied or M4 increase. External runner omits optionalalerts/war query. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\gift-execution-preparation\root-gift-doc-source.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
