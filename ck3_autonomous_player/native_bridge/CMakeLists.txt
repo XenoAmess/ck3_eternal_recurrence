@@ -2029,6 +2029,31 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  # The 1.20 feast fixtures exercise pure shared readers even when the
+  # corresponding private live feature is disabled in the production DLL.
+  add_library(xar_ck3_12002_feast_fixture_support STATIC
+    src/activity_planner_diag_v1.cpp
+    src/activity_cost_slot12_passive_v1.cpp
+    src/activity_stage5_gold_cost_v1.cpp
+    src/activity_stage5_canstart_read_v1.cpp
+    src/activity_stage5_canstart_failure_display_v1.cpp
+    src/activity_stage5_feast_full_cost_v1.cpp
+    src/activity_stage5_feast_guest_join_v1.cpp
+    src/activity_feast_guest_candidate_v1.cpp
+    src/activity_feast_guest_opinion_v1.cpp
+    src/activity_feast_guest_rule_provenance_v1.cpp
+    src/activity_feast_guest_rule_toggle_v1.cpp
+    src/activity_feast_planner_open_v1.cpp
+    src/activity_feast_resource_balance_v1.cpp
+    src/activity_feast_stage5_start_v1.cpp
+    src/activity_hosted_identity_v1.cpp)
+  target_include_directories(xar_ck3_12002_feast_fixture_support PRIVATE include)
+  target_compile_definitions(xar_ck3_12002_feast_fixture_support PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12002_feast_fixture_support PRIVATE
+      /UNDEBUG /W4 /permissive- /EHsc)
+  endif()
   set(XAR_CK3_12002_FROZEN_EXE "${XAR_CK3_EXECUTABLE_PATH}"
     CACHE FILEPATH "Frozen 1.20 executable for offline reader fixtures")
   file(GLOB XAR_CK3_12002_FIXTURES CONFIGURE_DEPENDS
@@ -2055,6 +2080,11 @@ if(BUILD_TESTING)
     set(fixture_target "xar_${fixture_name}")
     add_executable(${fixture_target} "${fixture}")
     target_link_libraries(${fixture_target} PRIVATE xar_ck3_12002_runtime)
+    target_include_directories(${fixture_target} PRIVATE src research)
+    if(fixture_name MATCHES "^ck3_12002_(activity_feast_(costs|guest_rule|guest_wire|planner_open_v1|start)|activity_hosted_identity|feast_guests)_test$")
+      target_link_libraries(${fixture_target} PRIVATE
+        xar_ck3_12002_feast_fixture_support)
+    endif()
     if(fixture_name STREQUAL "ck3_12002_nonwar_mailbox_test")
       target_link_libraries(${fixture_target} PRIVATE user32)
     endif()
