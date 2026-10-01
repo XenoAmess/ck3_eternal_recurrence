@@ -1,0 +1,18 @@
+flowchart TD
+    R["[static-confirmed] has_county_modifier registration 359BB0"] --> F["factory slot 45C4128+8 → 1AF7440"]
+    F --> V["CHasModifierTrigger SCountyModifierTraits vtable45C2C90 slot25"]
+    V --> E["execute1AF9E80: kind5 / payload+8 fullTitleID"]
+    E --> T["storage5D1DAF8: slots+20/capacity+2C/stride10/object+8"]
+    T --> I{"title+10 equals full generation ID?"}
+    I -->|yes| C["title+48 template; template+64 county tier2"]
+    I -->|no| U["provider title unavailable"]
+    C --> P["actual native province path; Prov tag+85C; county data+848"]
+    P --> D["CoDa tag+3E0; active modifiers+338/count+344/stride48"]
+    D --> M["row+0 matches loaded CStaticModifier pointer"]
+    M --> B["native Boolean1AF5BB0 returns AL presence"]
+    M --> S["sret16 native1AF5D40: out+8=presence; RAX=out"]
+    S --> Q["provider queries fresh minor/tiny presence on each owning callback"]
+    S -. "[unknown] row+8 time semantics not proved" .-> X["remaining_days unavailable"]
+    Q -. "[unknown] new-build paused/action outcome required" .-> L["live readiness pending"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class X,L unknown;

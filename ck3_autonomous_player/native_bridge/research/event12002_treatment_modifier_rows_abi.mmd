@@ -1,0 +1,18 @@
+flowchart TD
+    A["exact 1.20.0.2 / full played CharacterID"] --> B["native storage slot+20, count+2C, slot stride10+8"]
+    B --> C["Character+18 full-generation identity roundtrip"]
+    C --> D["Character+1B0 extension"]
+    D --> E{"extension null?"}
+    E -->|yes| F["native returns false: legal absent"]
+    E -->|no| G["extension+188 data / +194 signed int32 count"]
+    G --> H{"count zero?"}
+    H -->|yes| F
+    H -->|no| I["native row stride48; first qword = definition pointer"]
+    I --> J{"exact resolved definition pointer matches?"}
+    J -->|yes| K["present"]
+    J -->|no rows match| F
+    G -. "wrapper cannot read rows" .-> U["unavailable, not absence"]
+    C -. "wrapper full-ID roundtrip fails" .-> U
+    K -. "no expiry field / paused material in this package" .-> V["unknown: duration and actual treatment outcome"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,V unknown;

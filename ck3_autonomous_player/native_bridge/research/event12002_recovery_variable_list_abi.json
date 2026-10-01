@@ -1,0 +1,517 @@
+{
+  "build": {
+    "file_size": 101039736,
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "steam_build_id": 25588574,
+    "version": "1.20.0.2"
+  },
+  "call_edges": [
+    {
+      "purpose": "has uses shared scope context",
+      "rva": "0x378a64b",
+      "target_rva": "0x370eb10"
+    },
+    {
+      "purpose": "clear uses shared scope context",
+      "rva": "0x377907b",
+      "target_rva": "0x370eb10"
+    },
+    {
+      "purpose": "add uses shared scope context",
+      "rva": "0x3776b70",
+      "target_rva": "0x370eb10"
+    },
+    {
+      "purpose": "clear actual list helper",
+      "rva": "0x377918c",
+      "target_rva": "0x3727d50"
+    },
+    {
+      "purpose": "add actual context list helper",
+      "rva": "0x3776cd2",
+      "target_rva": "0x3727c10"
+    },
+    {
+      "purpose": "context helper complete-target insert",
+      "rva": "0x3727c74",
+      "target_rva": "0x37ab380"
+    }
+  ],
+  "cross_referenced_type_evidence": {
+    "character_kind4": "existing event-window context contract: registration0x43FB20/resolver0x225E000, fullCharacterID at object+18",
+    "landed_title_kind5": "sibling county contract: executor0x1AF9E80, kind5 check0x1AF9E86, payload low32 +8 at0x1AF9E8C, full title+10 equality at0x1AF9EC0"
+  },
+  "instruction_spans": [
+    {
+      "end_rva": "0x7222e8",
+      "name": "has-variable-list registration",
+      "rva": "0x722250",
+      "sha256": "18239821E5DF491A0BF5B59133C4D68326CC234B2B13B43DAC41C480A9E3C646"
+    },
+    {
+      "end_rva": "0x3789910",
+      "name": "has-variable-list factory",
+      "rva": "0x37898c0",
+      "sha256": "C00D278AFE70FDBF9D56E5795C5482CA15941AFFAAE34611BBBEE8040794BF31"
+    },
+    {
+      "end_rva": "0x378a7ac",
+      "name": "has-variable-list readonly executor",
+      "rva": "0x378a630",
+      "sha256": "56F53A3DF604F482A0BE924AE088332BB1FEB7D1E816BC8374CCD47CD85F060C"
+    },
+    {
+      "end_rva": "0x7205e4",
+      "name": "clear-variable-list registration",
+      "rva": "0x720540",
+      "sha256": "C3E7A4900E6C8371966F3813027447884B9DAA7888B4D94C9CA6039DD1B06EBC"
+    },
+    {
+      "end_rva": "0x3770b90",
+      "name": "clear-variable-list factory",
+      "rva": "0x3770b40",
+      "sha256": "2AA3F3C6E749897C335DDEE11746B74D2FAA2895134CE47E83499D1BFB442547"
+    },
+    {
+      "end_rva": "0x37791ae",
+      "name": "clear-variable-list positive execute slice",
+      "rva": "0x3779186",
+      "sha256": "E8FAE1724C5305FEB586EB9792859A445712E9BC23D35773BAD8D2997953F6D5"
+    },
+    {
+      "end_rva": "0x720c14",
+      "name": "add-to-variable-list registration",
+      "rva": "0x720b70",
+      "sha256": "54443D781EEA497E4444E663A43F81EDA3BCC35ED0DEFE968A06CA4069A3B7B5"
+    },
+    {
+      "end_rva": "0x37710d3",
+      "name": "add-to-variable-list factory",
+      "rva": "0x3771020",
+      "sha256": "D72D6DAFD8F74F1021F0B32DC9DE9ECD175C2576EE6C715398B31E8958A908DD"
+    },
+    {
+      "end_rva": "0x3776cdd",
+      "name": "add-to-variable-list positive execute slice",
+      "rva": "0x3776c80",
+      "sha256": "E15F1194302EC35F34CE20653B19BE15FB030E37A33CA84A6A4651EDBDD23113"
+    },
+    {
+      "end_rva": "0x3727c90",
+      "name": "context keyed list-row insertion",
+      "rva": "0x3727c10",
+      "sha256": "6630C5B0E9413468425CA6EDB1DA9F4CA545CB255447FDD0EBCE816A61B88B1F"
+    },
+    {
+      "end_rva": "0x3727ed5",
+      "name": "readonly context list-target contains",
+      "rva": "0x3727e50",
+      "sha256": "EA720C0B6C014FFBEB88A26211503D801CEAFA6D61DC93151FBFDC0DAE9996E1"
+    },
+    {
+      "end_rva": "0x37ab48c",
+      "name": "complete-target unique insertion",
+      "rva": "0x37ab380",
+      "sha256": "2712E3ADB87B47A37250B409FD933F7EE0DC45F657B995873A0A0CBCAB38DA71"
+    },
+    {
+      "end_rva": "0x3728e10",
+      "name": "list-row constructor key and vector initialization",
+      "rva": "0x3728d79",
+      "sha256": "5812A3720AA0AAAADA96E7CB6FBC721A475BBF9264BE0145963977C1F0612BC6"
+    }
+  ],
+  "layouts": {
+    "event_target16": {
+      "kind_u16": "0x00",
+      "padding_unused_in_comparison": "0x04",
+      "payload_u64": "0x08",
+      "stride": "0x10",
+      "subtype_u16": "0x02"
+    },
+    "list_row": {
+      "elements_pointer": "0x10",
+      "signed_element_count": "0x1C",
+      "signed_variable_identifier": "0x08",
+      "stride": "0x48"
+    },
+    "variable_context": {
+      "rows_pointer": "0x30",
+      "signed_row_count": "0x3C"
+    }
+  },
+  "live_acceptance_performed": false,
+  "native_entry_points": {
+    "add_list_target_MUTATING": "0x3727C10",
+    "clear_list_MUTATING": "0x3727D50",
+    "has_variable_list_executor": "0x378A630",
+    "list_insert_complete_target_MUTATING": "0x37AB380",
+    "list_target_contains_readonly": "0x3727E50",
+    "variable_context_for_scope": "0x370EB10",
+    "variable_identifier_lookup": "0x3F8A680",
+    "variable_identifier_name": "0x3F8A6F0",
+    "variable_identifier_table": "0x3F8A800"
+  },
+  "provider_call_shape": {
+    "after": "event after clears list; use pre-action frozen full title IDs for explicit-title post query",
+    "context": "void* VariableContextForScope(const EventTarget16*) via existing PhaseDefinitionBindings",
+    "duplicate_semantics": "native context insertion locates existing key; complete-target insertion returns without inserting when kind/subtype/qword payload already match",
+    "duration": "no element expiry / remaining-duration ABI is claimed or required by this presence-only provider",
+    "empty_semantics": "missing matching key, or matching key with zero element count, gives an empty current target collection; unreadable context/vector/row/element is a read failure",
+    "key": "resolve formerly_infected_counties through existing identifier table/lookup/name round-trip",
+    "native_target_equality": [
+      "kind_u16",
+      "subtype_u16",
+      "payload_u64"
+    ],
+    "query": "Read context list rows and matching variable key, then row elements; native has/contains are readonly evidence, no factory/effect or mutation invocation.",
+    "scope": "EventTarget16{kind=4, subtype=0, padding=0, payload=played full CharacterID}",
+    "title_target": "kind5 landed_title; payload low32 is full-generation LandedTitleID, not low24 storage index or object pointer"
+  },
+  "readiness": "static-ready",
+  "remaining": [
+    "provider-owned production reader fixture",
+    "new-build natural .0110 paused pre-list and explicit-title after-state",
+    "no live/G2 credit or remaining-duration claim"
+  ],
+  "reused_contracts": [
+    {
+      "path": "ck3_1_20_0_2_phase_definitions.json",
+      "scope": "existing PhaseDefinitionBindings context/table/identifier lookup/name",
+      "sha256": "96BE7321B927BD891F3881CD4BA1CCC33DE99157CE52F45FB33847D33580B556"
+    },
+    {
+      "path": "ck3_1_20_0_2_event_window_context.json",
+      "scope": "existing type4 Character generic resolver and full-generation identity",
+      "sha256": "D2C51EC340B08050A5E2A7B6C00D61F358647F914A75CB26B6EB4F74842A9E81"
+    },
+    {
+      "path": "event12002_recovery_county_modifier_abi.json",
+      "scope": "sibling exact kind5, generic payload+8 and title+10 full-generation match; no repeated county getter scan",
+      "sha256": "50976F688A6462EB7BFB9346493440576FDD69F19199CA7A22EE8BBF64161453"
+    }
+  ],
+  "rip_edges": [
+    {
+      "purpose": "has authored token",
+      "rva": "0x722261",
+      "target_rva": "0x4934000"
+    },
+    {
+      "purpose": "clear authored token",
+      "rva": "0x720551",
+      "target_rva": "0x4930090"
+    },
+    {
+      "purpose": "add authored token",
+      "rva": "0x720b81",
+      "target_rva": "0x492fcd0"
+    },
+    {
+      "purpose": "has factory vtable",
+      "rva": "0x7222c9",
+      "target_rva": "0x4936ae8"
+    },
+    {
+      "purpose": "clear factory vtable",
+      "rva": "0x7205c5",
+      "target_rva": "0x4932e28"
+    },
+    {
+      "purpose": "add factory vtable",
+      "rva": "0x720bf5",
+      "target_rva": "0x4932d80"
+    },
+    {
+      "purpose": "has executor vtable",
+      "rva": "0x37898e7",
+      "target_rva": "0x4935ba8"
+    },
+    {
+      "purpose": "clear executor vtable",
+      "rva": "0x3770b67",
+      "target_rva": "0x4931ea0"
+    },
+    {
+      "purpose": "add executor vtable",
+      "rva": "0x377104c",
+      "target_rva": "0x49322a8"
+    }
+  ],
+  "schema": "xar.ck3.event12002.recovery-variable-list.abi.v1",
+  "scope": "readonly formerly_infected_counties list layout, complete generic targets and exact stock producer/consumer anchors",
+  "semantic_instructions": [
+    {
+      "bytes": "48 8B 4A 30",
+      "instruction": "mov rcx, qword ptr [rdx + 0x30]",
+      "purpose": "context list rows pointer",
+      "rva": "0x378a75f"
+    },
+    {
+      "bytes": "48 63 52 3C",
+      "instruction": "movsxd rdx, dword ptr [rdx + 0x3c]",
+      "purpose": "context signed list count",
+      "rva": "0x378a763"
+    },
+    {
+      "bytes": "4C 8D 04 D2",
+      "instruction": "lea r8, [rdx + rdx*8]",
+      "purpose": "list-row 9x8 stride bound",
+      "rva": "0x378a767"
+    },
+    {
+      "bytes": "39 41 08",
+      "instruction": "cmp dword ptr [rcx + 8], eax",
+      "purpose": "list-row key at +08",
+      "rva": "0x378a774"
+    },
+    {
+      "bytes": "48 83 C1 48",
+      "instruction": "add rcx, 0x48",
+      "purpose": "list-row stride 48",
+      "rva": "0x378a779"
+    },
+    {
+      "bytes": "48 0F 44 C8",
+      "instruction": "cmove rcx, rax",
+      "purpose": "readonly query row absence is null",
+      "rva": "0x378a787"
+    },
+    {
+      "bytes": "0F 95 C0",
+      "instruction": "setne al",
+      "purpose": "readonly query bool found",
+      "rva": "0x378a78e"
+    },
+    {
+      "bytes": "4C 8B 49 30",
+      "instruction": "mov r9, qword ptr [rcx + 0x30]",
+      "purpose": "contains rows pointer",
+      "rva": "0x3727e50"
+    },
+    {
+      "bytes": "48 63 41 3C",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x3c]",
+      "purpose": "contains signed row count",
+      "rva": "0x3727e54"
+    },
+    {
+      "bytes": "49 8B 41 10",
+      "instruction": "mov rax, qword ptr [r9 + 0x10]",
+      "purpose": "elements pointer at row+10",
+      "rva": "0x3727e83"
+    },
+    {
+      "bytes": "49 63 51 1C",
+      "instruction": "movsxd rdx, dword ptr [r9 + 0x1c]",
+      "purpose": "signed elements count at row+1C",
+      "rva": "0x3727e87"
+    },
+    {
+      "bytes": "48 C1 E2 04",
+      "instruction": "shl rdx, 4",
+      "purpose": "target stride 10 for bounds",
+      "rva": "0x3727e8b"
+    },
+    {
+      "bytes": "66 44 39 08",
+      "instruction": "cmp word ptr [rax], r9w",
+      "purpose": "target u16 kind comparison",
+      "rva": "0x3727ea0"
+    },
+    {
+      "bytes": "41 0F B7 48 02",
+      "instruction": "movzx ecx, word ptr [r8 + 2]",
+      "purpose": "target u16 subtype input",
+      "rva": "0x3727ea6"
+    },
+    {
+      "bytes": "66 39 48 02",
+      "instruction": "cmp word ptr [rax + 2], cx",
+      "purpose": "target u16 subtype comparison",
+      "rva": "0x3727eab"
+    },
+    {
+      "bytes": "49 8B 48 08",
+      "instruction": "mov rcx, qword ptr [r8 + 8]",
+      "purpose": "target qword payload input",
+      "rva": "0x3727eb1"
+    },
+    {
+      "bytes": "48 39 48 08",
+      "instruction": "cmp qword ptr [rax + 8], rcx",
+      "purpose": "target qword payload comparison",
+      "rva": "0x3727eb5"
+    },
+    {
+      "bytes": "48 83 C0 10",
+      "instruction": "add rax, 0x10",
+      "purpose": "target stride 10 in iterator",
+      "rva": "0x3727ebb"
+    },
+    {
+      "bytes": "4C 8B 49 10",
+      "instruction": "mov r9, qword ptr [rcx + 0x10]",
+      "purpose": "insert uses same row element vector",
+      "rva": "0x37ab38b"
+    },
+    {
+      "bytes": "48 63 51 1C",
+      "instruction": "movsxd rdx, dword ptr [rcx + 0x1c]",
+      "purpose": "insert signed element count",
+      "rva": "0x37ab398"
+    },
+    {
+      "bytes": "66 45 39 11",
+      "instruction": "cmp word ptr [r9], r10w",
+      "purpose": "insert kind comparison",
+      "rva": "0x37ab3b0"
+    },
+    {
+      "bytes": "66 41 39 41 02",
+      "instruction": "cmp word ptr [r9 + 2], ax",
+      "purpose": "insert subtype comparison",
+      "rva": "0x37ab3bb"
+    },
+    {
+      "bytes": "49 39 41 08",
+      "instruction": "cmp qword ptr [r9 + 8], rax",
+      "purpose": "insert payload comparison",
+      "rva": "0x37ab3c6"
+    },
+    {
+      "bytes": "0F 85 99 00 00 00",
+      "instruction": "jne 0x37ab480",
+      "purpose": "already present skips actual insert",
+      "rva": "0x37ab3e1"
+    },
+    {
+      "bytes": "89 4C D0 08",
+      "instruction": "mov dword ptr [rax + rdx*8 + 8], ecx",
+      "purpose": "constructor stores list key",
+      "rva": "0x3728d8e"
+    },
+    {
+      "bytes": "4C 89 44 D0 10",
+      "instruction": "mov qword ptr [rax + rdx*8 + 0x10], r8",
+      "purpose": "constructor initializes element pointer",
+      "rva": "0x3728d95"
+    },
+    {
+      "bytes": "4C 89 44 D0 18",
+      "instruction": "mov qword ptr [rax + rdx*8 + 0x18], r8",
+      "purpose": "constructor initializes capacity and count",
+      "rva": "0x3728d9a"
+    }
+  ],
+  "stock_source_anchors": [
+    {
+      "file_sha256": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+      "line": 865,
+      "purpose": "plague_recovery_event_effect = {",
+      "relative_path": "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt",
+      "text": "plague_recovery_event_effect = {"
+    },
+    {
+      "file_sha256": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+      "line": 866,
+      "purpose": "county.holder.liege = {",
+      "relative_path": "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt",
+      "text": "county.holder.liege = {"
+    },
+    {
+      "file_sha256": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+      "line": 867,
+      "purpose": "add_to_variable_list = {",
+      "relative_path": "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt",
+      "text": "add_to_variable_list = {"
+    },
+    {
+      "file_sha256": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+      "line": 868,
+      "purpose": "name = formerly_infected_counties",
+      "relative_path": "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt",
+      "text": "name = formerly_infected_counties"
+    },
+    {
+      "file_sha256": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+      "line": 869,
+      "purpose": "target = root.county",
+      "relative_path": "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt",
+      "text": "target = root.county"
+    },
+    {
+      "file_sha256": "559E5E7952A1B943D9059122ADC402993529891703B81048FA75A0475614F652",
+      "line": 870,
+      "purpose": "years = 10",
+      "relative_path": "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt",
+      "text": "years = 10"
+    },
+    {
+      "file_sha256": "A1CF48ABA07E121618F1190D5B8CF590D985FCA5A32DFF16D28F9A826FF0B950",
+      "line": 745,
+      "purpose": "has_variable_list = formerly_infected_counties",
+      "relative_path": "events/dlc/ce1/epidemic_events.txt",
+      "text": "has_variable_list = formerly_infected_counties"
+    },
+    {
+      "file_sha256": "A1CF48ABA07E121618F1190D5B8CF590D985FCA5A32DFF16D28F9A826FF0B950",
+      "line": 936,
+      "purpose": "variable = formerly_infected_counties",
+      "relative_path": "events/dlc/ce1/epidemic_events.txt",
+      "text": "variable = formerly_infected_counties"
+    },
+    {
+      "file_sha256": "A1CF48ABA07E121618F1190D5B8CF590D985FCA5A32DFF16D28F9A826FF0B950",
+      "line": 946,
+      "purpose": "variable = formerly_infected_counties",
+      "relative_path": "events/dlc/ce1/epidemic_events.txt",
+      "text": "variable = formerly_infected_counties"
+    },
+    {
+      "file_sha256": "A1CF48ABA07E121618F1190D5B8CF590D985FCA5A32DFF16D28F9A826FF0B950",
+      "line": 965,
+      "purpose": "clear_variable_list = formerly_infected_counties",
+      "relative_path": "events/dlc/ce1/epidemic_events.txt",
+      "text": "clear_variable_list = formerly_infected_counties"
+    }
+  ],
+  "vtable_slots": [
+    {
+      "purpose": "has factory",
+      "slot": 1,
+      "table_rva": "0x4936ae8",
+      "target_rva": "0x37898c0"
+    },
+    {
+      "purpose": "clear factory",
+      "slot": 1,
+      "table_rva": "0x4932e28",
+      "target_rva": "0x3770b40"
+    },
+    {
+      "purpose": "add factory",
+      "slot": 1,
+      "table_rva": "0x4932d80",
+      "target_rva": "0x3771020"
+    },
+    {
+      "purpose": "has readonly executor",
+      "slot": 25,
+      "table_rva": "0x4935ba8",
+      "target_rva": "0x378a630"
+    },
+    {
+      "purpose": "clear mutating executor",
+      "slot": 22,
+      "table_rva": "0x4931ea0",
+      "target_rva": "0x3779060"
+    },
+    {
+      "purpose": "add mutating executor",
+      "slot": 22,
+      "table_rva": "0x49322a8",
+      "target_rva": "0x3776b50"
+    }
+  ]
+}

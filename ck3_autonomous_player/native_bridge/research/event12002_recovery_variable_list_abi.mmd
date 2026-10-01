@@ -1,0 +1,18 @@
+flowchart TD
+    S["stock: county.holder.liege / add_to_variable_list formerly_infected_counties target=root.county"] --> A["existing type4 Character target / full CharacterID"]
+    A --> B["existing PhaseDefinitionBindings: scope context 370EB10; stable list identifier round-trip"]
+    B --> C["new EXE: has_variable_list 378A630 → context rows+30 / count+3C"]
+    C --> D["new EXE: list row48 / key+08"]
+    D --> E{"matching row exists?"}
+    E -->|no| EMPTY["known empty target collection"]
+    E -->|yes| F["new EXE readonly contains3727E50: row elements+10 / count+1C / stride10"]
+    F --> G{"element count zero?"}
+    G -->|yes| EMPTY
+    G -->|no| H["EventTarget16: kind u16+0, subtype u16+2, payload qword+8"]
+    H --> I["sibling county ABI: kind5 / payload low32 full LandedTitleID / title+10 generation match"]
+    I --> PRE["provider: freeze exact pre-action county IDs and modifier presence"]
+    H --> EQ["new EXE insert37AB380 compares all 3 fields; identical target is not inserted again"]
+    PRE --> J["stock .0110 after: clear_variable_list; post reader uses frozen explicit title IDs"]
+    J -. "provider fixture and natural paused values separate" .-> U["unknown: new-build pre/action/post county outcome"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;

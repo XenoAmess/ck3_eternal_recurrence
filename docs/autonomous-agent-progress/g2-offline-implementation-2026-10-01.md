@@ -406,3 +406,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 真实member provider→TrySubmit/owner drain/Wait/Reclaim→full command_result，Od/O2各36checks5runtimecase4wire通过；current/knownempty/titleunavailable/legalnoRite区分。既有15reader检查复用，中央/MCP/paused待完成。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-rite-governance\members-mailbox\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:07:38 Current build epidemic material observation providers
+
+26源关闭原旧ABI止步项：真实县titles/fullIDs/recovery modifier和treatment Character rows读取，复用现有定义库与legitimacy native getter，不扩其它事件。治疗Od/O2各26checks6wire，recovery各22checks9wire，所有actual serializer生成；首runner SyntaxError保留。完整command_result wrappers/同MCP接线待下一增量，裸payload不是live。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\events12002\ce1-provider-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

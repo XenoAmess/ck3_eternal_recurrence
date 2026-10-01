@@ -1,0 +1,604 @@
+{
+  "schema": "xar.ck3.event12002.recovery-county-modifier-abi.v1",
+  "created_utc": "2026-10-01T08:47:16.956069+00:00",
+  "game_version": "1.20.0.2",
+  "steam_build_id": 25588574,
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "executable_path": "Z:\\ck3_mod_rewrite\\artifacts\\migrations\\2026-09-30\\post-update-1.20.0.2\\installation\\binaries\\ck3.exe",
+  "executable_size": 101039736,
+  "image_base": "0x140000000",
+  "readiness": "static-confirmed ABI; provider fixture/paused validation owned by recovery implementation",
+  "live_validated": false,
+  "process_accessed": false,
+  "source_contract": {
+    "range_convention": "start inclusive, end exclusive; execute leaf has no own unwind entry",
+    "exact_function_spans": [
+      {
+        "name": "has_county_modifier_registration",
+        "start_rva": "0x359bb0",
+        "end_rva": "0x359c48",
+        "sha256": "A248C1CCA230AD79EC79043B1C6A73DFAE0151463CD59D88CE5C8880400DE589"
+      },
+      {
+        "name": "has_county_modifier_factory",
+        "start_rva": "0x1af7440",
+        "end_rva": "0x1af74b3",
+        "sha256": "8876626F33672FE9F3750C1FAD99C070E1BF991F730F121ED2DA37131620DE0E"
+      },
+      {
+        "name": "has_county_modifier_execute_leaf",
+        "start_rva": "0x1af9e80",
+        "end_rva": "0x1af9ed5",
+        "sha256": "3F86B53BEBF08FF86D11A452762F1B3FB98268E70E7A2AE837497CDA92F1D6B0"
+      },
+      {
+        "name": "county_modifier_boolean_native",
+        "start_rva": "0x1af5bb0",
+        "end_rva": "0x1af5d40",
+        "sha256": "3949DA1325C6D92DF0AE55365B3C22A2DB98E7ABC62586BC5B74B134D24A4005"
+      },
+      {
+        "name": "county_modifier_sret16_native",
+        "start_rva": "0x1af5d40",
+        "end_rva": "0x1af5eea",
+        "sha256": "19C2382E0E354452B74D6D1A4822EA5DD3B9F30837FC46B9B5888A6EF02F0883"
+      },
+      {
+        "name": "county_modifier_sret16_consumer",
+        "start_rva": "0x1af8ab0",
+        "end_rva": "0x1af8b30",
+        "sha256": "6E3EF37CBB993D47828E2EA45996BC3C49E234C9A979F8434C736D4A5837D30C"
+      },
+      {
+        "name": "title_full_identity_resolver",
+        "start_rva": "0xa847a0",
+        "end_rva": "0xa8483b",
+        "sha256": "73AAEBBB970D86C42E2F68B06D989EF2711CCA6AC006F4F3279142B25512DA11"
+      },
+      {
+        "name": "county_capital_province_resolver",
+        "start_rva": "0x230f900",
+        "end_rva": "0x230f976",
+        "sha256": "21CBFDE5D804E550C0584431331DF1FCAEA77B7489964E66D6A3520FBC0A9ADE"
+      }
+    ]
+  },
+  "instruction_checks": [
+    {
+      "rva": "0x359bc1",
+      "bytes": "48 8d 05 c0 79 26 04",
+      "instruction": "lea rax, [rip + 0x42679c0]",
+      "rip_targets": [
+        "0x45c1588"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x359c29",
+      "bytes": "48 8d 0d f8 a4 26 04",
+      "instruction": "lea rcx, [rip + 0x426a4f8]",
+      "rip_targets": [
+        "0x45c4128"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af7467",
+      "bytes": "48 8d 05 22 c6 ac 02",
+      "instruction": "lea rax, [rip + 0x2acc622]",
+      "rip_targets": [
+        "0x45c3a90"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af747e",
+      "bytes": "48 8d 05 0b b8 ac 02",
+      "instruction": "lea rax, [rip + 0x2acb80b]",
+      "rip_targets": [
+        "0x45c2c90"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af748d",
+      "bytes": "48 8b 0d 1c 6c 22 04",
+      "instruction": "mov rcx, qword ptr [rip + 0x4226c1c]",
+      "rip_targets": [
+        "0x5d1e0b0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9e86",
+      "bytes": "66 83 38 05",
+      "instruction": "cmp word ptr [rax], 5",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9e8c",
+      "bytes": "8b 50 08",
+      "instruction": "mov edx, dword ptr [rax + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9e96",
+      "bytes": "48 8b 05 5b 3c 22 04",
+      "instruction": "mov rax, qword ptr [rip + 0x4223c5b]",
+      "rip_targets": [
+        "0x5d1daf8"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9ea4",
+      "bytes": "81 e1 ff ff ff 00",
+      "instruction": "and ecx, 0xffffff",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9eaa",
+      "bytes": "3b 48 2c",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9eaf",
+      "bytes": "48 8b 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9eb3",
+      "bytes": "48 03 c9",
+      "instruction": "add rcx, rcx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9eb6",
+      "bytes": "48 8b 4c c8 08",
+      "instruction": "mov rcx, qword ptr [rax + rcx*8 + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9ec0",
+      "bytes": "39 51 10",
+      "instruction": "cmp dword ptr [rcx + 0x10], edx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9ec5",
+      "bytes": "48 8b 0d 14 3c 22 04",
+      "instruction": "mov rcx, qword ptr [rip + 0x4223c14]",
+      "rip_targets": [
+        "0x5d1dae0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9ecc",
+      "bytes": "49 8b 50 60",
+      "instruction": "mov rdx, qword ptr [r8 + 0x60]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af9ed0",
+      "bytes": "e9 db bc ff ff",
+      "instruction": "jmp 0x1af5bb0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1af5bb0"
+      ]
+    },
+    {
+      "rva": "0x1af5d54",
+      "bytes": "81 7a 14 64 6e 61 4c",
+      "instruction": "cmp dword ptr [rdx + 0x14], 0x4c616e64",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5d5b",
+      "bytes": "49 8b e8",
+      "instruction": "mov rbp, r8",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5d5e",
+      "bytes": "48 8b fa",
+      "instruction": "mov rdi, rdx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5d61",
+      "bytes": "48 8b d9",
+      "instruction": "mov rbx, rcx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5d6f",
+      "bytes": "39 72 10",
+      "instruction": "cmp dword ptr [rdx + 0x10], esi",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5d78",
+      "bytes": "48 8b 42 48",
+      "instruction": "mov rax, qword ptr [rdx + 0x48]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5d7c",
+      "bytes": "83 78 64 02",
+      "instruction": "cmp dword ptr [rax + 0x64], 2",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5d89",
+      "bytes": "e8 62 51 81 00",
+      "instruction": "call 0x230aef0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x230aef0"
+      ]
+    },
+    {
+      "rva": "0x1af5da4",
+      "bytes": "48 8d 4c 24 60",
+      "instruction": "lea rcx, [rsp + 0x60]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5dad",
+      "bytes": "e8 3e 10 ee fe",
+      "instruction": "call 0x9d6df0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x9d6df0"
+      ]
+    },
+    {
+      "rva": "0x1af5db5",
+      "bytes": "e8 46 9b 81 00",
+      "instruction": "call 0x230f900",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x230f900"
+      ]
+    },
+    {
+      "rva": "0x1af5dbc",
+      "bytes": "48 8b 05 a5 17 17 04",
+      "instruction": "mov rax, qword ptr [rip + 0x41717a5]",
+      "rip_targets": [
+        "0x5c67568"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5dc8",
+      "bytes": "8b 97 28 01 00 00",
+      "instruction": "mov edx, dword ptr [rdi + 0x128]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5df1",
+      "bytes": "48 8b 0d 78 17 17 04",
+      "instruction": "mov rcx, qword ptr [rip + 0x4171778]",
+      "rip_targets": [
+        "0x5c67570"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5df8",
+      "bytes": "e8 53 be db 00",
+      "instruction": "call 0x28b1c50",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x28b1c50"
+      ]
+    },
+    {
+      "rva": "0x1af5dfd",
+      "bytes": "81 b8 5c 08 00 00 76 6f 72 50",
+      "instruction": "cmp dword ptr [rax + 0x85c], 0x50726f76",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e0d",
+      "bytes": "48 8b 88 48 08 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x848]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e14",
+      "bytes": "81 b9 e0 03 00 00 61 44 6f 43",
+      "instruction": "cmp dword ptr [rcx + 0x3e0], 0x436f4461",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e24",
+      "bytes": "48 8b 91 38 03 00 00",
+      "instruction": "mov rdx, qword ptr [rcx + 0x338]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e2b",
+      "bytes": "48 63 81 44 03 00 00",
+      "instruction": "movsxd rax, dword ptr [rcx + 0x344]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e32",
+      "bytes": "48 8d 0c c0",
+      "instruction": "lea rcx, [rax + rax*8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e36",
+      "bytes": "48 8d 04 ca",
+      "instruction": "lea rax, [rdx + rcx*8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e40",
+      "bytes": "48 39 2a",
+      "instruction": "cmp qword ptr [rdx], rbp",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e45",
+      "bytes": "48 83 c2 48",
+      "instruction": "add rdx, 0x48",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e5e",
+      "bytes": "88 43 08",
+      "instruction": "mov byte ptr [rbx + 8], al",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e63",
+      "bytes": "48 8b 42 08",
+      "instruction": "mov rax, qword ptr [rdx + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e67",
+      "bytes": "48 89 03",
+      "instruction": "mov qword ptr [rbx], rax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5e6c",
+      "bytes": "88 43 08",
+      "instruction": "mov byte ptr [rbx + 8], al",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5ece",
+      "bytes": "c6 43 08 00",
+      "instruction": "mov byte ptr [rbx + 8], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5ed7",
+      "bytes": "48 8b c3",
+      "instruction": "mov rax, rbx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af5cbe",
+      "bytes": "0f 95 c0",
+      "instruction": "setne al",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af8b0e",
+      "bytes": "4c 8b 43 60",
+      "instruction": "mov r8, qword ptr [rbx + 0x60]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af8b12",
+      "bytes": "48 8d 4c 24 20",
+      "instruction": "lea rcx, [rsp + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x1af8b17",
+      "bytes": "e8 24 d2 ff ff",
+      "instruction": "call 0x1af5d40",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1af5d40"
+      ]
+    },
+    {
+      "rva": "0x1af8b1c",
+      "bytes": "80 7c 24 28 00",
+      "instruction": "cmp byte ptr [rsp + 0x28], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0xa847f7",
+      "bytes": "4c 8b 05 fa 92 29 05",
+      "instruction": "mov r8, qword ptr [rip + 0x52992fa]",
+      "rip_targets": [
+        "0x5d1daf8"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0xa84807",
+      "bytes": "25 ff ff ff 00",
+      "instruction": "and eax, 0xffffff",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0xa8480c",
+      "bytes": "41 3b 40 2c",
+      "instruction": "cmp eax, dword ptr [r8 + 0x2c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0xa84814",
+      "bytes": "49 8b 40 20",
+      "instruction": "mov rax, qword ptr [r8 + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0xa8481b",
+      "bytes": "48 8b 44 c8 08",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0xa84825",
+      "bytes": "39 50 10",
+      "instruction": "cmp dword ptr [rax + 0x10], edx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0xa8482a",
+      "bytes": "48 8b 05 af 92 29 05",
+      "instruction": "mov rax, qword ptr [rip + 0x52992af]",
+      "rip_targets": [
+        "0x5d1dae0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x230f900",
+      "bytes": "48 8b 41 48",
+      "instruction": "mov rax, qword ptr [rcx + 0x48]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "rva": "0x230f904",
+      "bytes": "83 78 64 02",
+      "instruction": "cmp dword ptr [rax + 0x64], 2",
+      "rip_targets": [],
+      "direct_targets": []
+    }
+  ],
+  "vtable_checks": [
+    {
+      "name": "has_county_modifier_factory_slot",
+      "vtable_rva": "0x45c4128",
+      "index": 1,
+      "target_rva": "0x1af7440"
+    },
+    {
+      "name": "has_county_modifier_execute_slot",
+      "vtable_rva": "0x45c2c90",
+      "index": 25,
+      "target_rva": "0x1af9e80"
+    }
+  ],
+  "rtti": {
+    "vtable_rva": "0x45c2c90",
+    "complete_object_locator_rva": "0x4c11478",
+    "type_descriptor_rva": "0x5833b30",
+    "decorated_type_name": ".?AV?$CHasModifierTrigger@USCountyModifierTraits@@@@"
+  },
+  "provider_constants": {
+    "landed_title_storage_slot_rva": "0x5d1daf8",
+    "landed_title_fallback_slot_rva": "0x5d1dae0",
+    "storage_slots_offset": "0x20",
+    "storage_capacity_offset": "0x2c",
+    "storage_slot_stride": "0x10",
+    "storage_slot_object_offset": "0x8",
+    "storage_index_mask": "0xffffff",
+    "landed_title_full_identity_offset": "0x10",
+    "landed_title_type_tag_offset": "0x14",
+    "landed_title_type_tag": "0x4c616e64",
+    "landed_title_template_offset": "0x48",
+    "landed_title_template_tier_offset": "0x64",
+    "county_tier": 2,
+    "county_modifier_getter_rva": "0x1af5d40",
+    "county_modifier_boolean_rva": "0x1af5bb0",
+    "province_type_tag_offset": "0x85c",
+    "province_type_tag": "0x50726f76",
+    "province_county_data_offset": "0x848",
+    "county_data_type_tag_offset": "0x3e0",
+    "county_data_type_tag": "0x436f4461",
+    "county_active_modifiers_array_offset": "0x338",
+    "county_active_modifiers_count_offset": "0x344",
+    "county_active_modifier_stride": "0x48",
+    "county_active_modifier_definition_offset": "0x0",
+    "county_active_modifier_time_offset": "0x8",
+    "county_result_size": "0x10",
+    "county_result_time_offset": "0x0",
+    "county_result_presence_offset": "0x8"
+  },
+  "getter_call_shape": {
+    "msvc_x64": "RCX = 16-byte out; RDX = current CLandedTitle*; R8 = loaded CStaticModifier*; RAX = same out pointer",
+    "signature": "CountyModifierResult* (*)(CountyModifierResult*, void*, void*)",
+    "fresh_boolean": "call on owning paused callback each query, consume result.present only",
+    "presence": "valid output byte is 0 or 1; set 1 only on matching current modifier definition pointer in the county active array; normal absence writes 0",
+    "time": "copied from active row+8 only on found; semantics and remaining-days conversion unverified; zero initialize result and do not publish time"
+  },
+  "loaded_modifier_definition_dependency": {
+    "owner": "epidemic_1100",
+    "library_type": "CStaticModifier; not COpinionModifier",
+    "parse_entry_rva": "0x1af96d0",
+    "trigger_definition_offset": "0x60",
+    "constructor_fallback_slot_rva": "0x5d1e0b0",
+    "status": "same table query confirmed by sibling; standalone definition ABI manifest delivered separately"
+  },
+  "reused_title_binding": {
+    "manifest": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_2_title_map.json",
+    "scope": "storage/full generation and template offsets agree; no camera/navigation action reused"
+  },
+  "remaining": [
+    "provider fixture for actual production ReadEpidemicRecovery12002 path",
+    "new-build paused list and fresh minor/tiny presence",
+    "same-date event before/action/after, next turn, required cold",
+    "native_time duration semantics remain unverified and unavailable"
+  ]
+}

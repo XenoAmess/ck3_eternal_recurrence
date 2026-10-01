@@ -1,0 +1,19 @@
+flowchart TD
+    C["native county parser 1AF96D0; string input"] --> G["8FD4E0: loaded CStaticModifierDatabase; slot5C670F8"]
+    G --> H["3F7E240: fixed-key Murmur3 uint32"]
+    H --> L["AB8D20: native hash lookup; existing DB read lock"]
+    L -->|hit| D["borrowed const CStaticModifier pointer"]
+    L -->|miss| F["fallback singleton slot5D1E0B0"]
+    D --> P["county parser stores pointer+60; tag+38 ObDG"]
+    D --> N["provider exact CString key: storage+18, size+28, cap+30"]
+    N --> B{"capacity below16?"}
+    B -->|yes| I["inline data = definition+18"]
+    B -->|no| E["heap data = pointer at definition+18"]
+    G --> X["DB vslot20 ->312D450: by-index name StringView16"]
+    X --> N
+    I --> K["three fixed keys; treatment / county minor / county tiny"]
+    E --> K
+    K --> O["new provider owners compare actual rows against exact loaded pointer"]
+    O -. "owned-provider fixtures and actual paused frame are separate" .-> U["unknown here: live presence and material outcome"]
+    classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;

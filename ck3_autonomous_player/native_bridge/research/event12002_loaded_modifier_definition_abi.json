@@ -1,0 +1,312 @@
+{
+  "boundaries": {
+    "ck3_launched": false,
+    "duration_abi": false,
+    "gameplay_writes": false,
+    "general_database_enumeration": false,
+    "lookup_may_take_existing_database_read_lock": true,
+    "paused_live": false,
+    "running_process_access": false
+  },
+  "build": {
+    "file_size": 101039736,
+    "game_version": "1.20.0.2",
+    "image_base": "0x140000000",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "steam_build_id": "25588574"
+  },
+  "call_shapes": {
+    "database": "void* GetStaticModifierDatabase()",
+    "lookup": "const void* LookupStaticModifier(void* database, int32_t hash_bit_pattern)",
+    "name_by_index": "StringView16* NameByIndex(void* database, StringView16* output, int32_t definition_index)",
+    "stable_hash": "uint32_t StableHash(void* ignored_or_database, const char* data, uint32_t length)"
+  },
+  "canonical_key_layout": {
+    "capacity_offset": "0x30",
+    "encoding": "ASCII for these three canonical keys",
+    "heap": "capacity >= 16: data = *(definition + 0x18)",
+    "inline": "capacity < 16: data = definition + 0x18",
+    "inline_capacity_threshold": 16,
+    "length_and_capacity_width": 8,
+    "length_offset": "0x28",
+    "storage_offset": "0x18"
+  },
+  "constants": {
+    "database_getter_rva": "0x8FD4E0",
+    "database_name_by_index_rva": "0x312D450",
+    "database_slot_rva": "0x5C670F8",
+    "definition_index_offset": "0x10",
+    "definition_key_capacity_offset": "0x30",
+    "definition_key_cstring_offset": "0x18",
+    "definition_key_length_offset": "0x28",
+    "definition_loaded_tag": "0x4744624F",
+    "definition_loaded_tag_offset": "0x38",
+    "lookup_hash_rva": "0xAB8D20",
+    "null_fallback_slot_rva": "0x5D1E0B0",
+    "stable_hash_rva": "0x3F7E240"
+  },
+  "database_primary_vtable_prefix": {
+    "functions": [
+      "0x3129F50",
+      "0x312D310",
+      "0x312D350",
+      "0x312D570",
+      "0x312D450"
+    ],
+    "rva": "0x48C04A8"
+  },
+  "direct_calls": [
+    {
+      "name": "county_parse_database",
+      "site_rva": "0x1af96e5",
+      "target_rva": "0x8fd4e0"
+    },
+    {
+      "name": "county_parse_hash",
+      "site_rva": "0x1af9702",
+      "target_rva": "0x3f7e240"
+    },
+    {
+      "name": "county_parse_lookup",
+      "site_rva": "0x1af970c",
+      "target_rva": "0xab8d20"
+    },
+    {
+      "name": "hash_incremental_core",
+      "site_rva": "0x3f7e266",
+      "target_rva": "0x3f7e100"
+    }
+  ],
+  "fixed_keys": [
+    {
+      "key": "ce1_unorthodox_epidemic_treatment",
+      "stable_hash_u32": "0x22a483b2"
+    },
+    {
+      "key": "county_epidemic_recovered_minor_modifier",
+      "stable_hash_u32": "0x3e54a9f3"
+    },
+    {
+      "key": "county_epidemic_recovered_tiny_modifier",
+      "stable_hash_u32": "0xc37024d"
+    }
+  ],
+  "name_by_index_view_layout": {
+    "byte_flag_zero": "0xC",
+    "data_pointer": "0x0",
+    "size": 16,
+    "uint32_length": "0x8"
+  },
+  "native_spans": [
+    {
+      "end_rva": "0x8fd537",
+      "first_rva": "0x8fd4e0",
+      "name": "static_modifier_database_getter",
+      "sha256": "3C918CDCCFA4C4AF20D328CD07AD127970F86C186A12B996DC0270EA4C55DA6C"
+    },
+    {
+      "end_rva": "0xab8e5a",
+      "first_rva": "0xab8d20",
+      "name": "static_modifier_lookup_by_stable_hash",
+      "sha256": "C29A0DF9611CB53F8BED78C8464A98A7306C392494F375701674E24ED5A7A37C"
+    },
+    {
+      "end_rva": "0x3f7e2c7",
+      "first_rva": "0x3f7e240",
+      "name": "stable_key_hash",
+      "sha256": "E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD"
+    },
+    {
+      "end_rva": "0x3f7e240",
+      "first_rva": "0x3f7e100",
+      "name": "stable_key_hash_incremental_core",
+      "sha256": "A4DF4EC91D1224BD127DA5C1E6212ACD812F7DA20D7A2106713BDE17C26BCC8A"
+    },
+    {
+      "end_rva": "0x1af973d",
+      "first_rva": "0x1af96d0",
+      "name": "county_modifier_parse_definition_prefix",
+      "sha256": "ACC55913BDB7005860F92FB3443319B5D671C2EF896E5D2C9F42B828F4B16217"
+    },
+    {
+      "end_rva": "0x1af74b3",
+      "first_rva": "0x1af7440",
+      "name": "county_modifier_trigger_constructor",
+      "sha256": "8876626F33672FE9F3750C1FAD99C070E1BF991F730F121ED2DA37131620DE0E"
+    },
+    {
+      "end_rva": "0x312d565",
+      "first_rva": "0x312d450",
+      "name": "static_modifier_database_name_by_index",
+      "sha256": "E5F9DC87604E2876F29B46884AEB8A582C4566CD250DE60FDA9F6D032638D241"
+    },
+    {
+      "end_rva": "0x31299be",
+      "first_rva": "0x3129960",
+      "name": "static_modifier_database_constructor_prefix",
+      "sha256": "EF7E5A1A4B501AD318293BF7507C5DD4FB06FB9D8871B60E9D3FB691B1FFE40A"
+    }
+  ],
+  "readiness": "static-ready definition ABI; provider fixtures and paused observations separate",
+  "reuse": {
+    "canonical_reader": "Provider binds these native functions and keeps existing exact key/fallback checks.",
+    "hash_algorithm": "Existing gift/FAMILY actual stable-key API and Murmur3 helper; newly checked CStaticModifier caller.",
+    "new_shared_production_source_required": false,
+    "opinion_modifier_database_reusable": false,
+    "tag_boundary": "ObDG is the native county-parser definition validity tag, not a new mandatory per-frame name/RTTI gate."
+  },
+  "rip_relative_bindings": [
+    {
+      "name": "database_getter_load",
+      "site_rva": "0x8fd4e4",
+      "target_rva": "0x5c670f8"
+    },
+    {
+      "name": "database_getter_second_load",
+      "site_rva": "0x8fd52b",
+      "target_rva": "0x5c670f8"
+    },
+    {
+      "name": "lookup_missing_fallback",
+      "site_rva": "0xab8e2a",
+      "target_rva": "0x5d1e0b0"
+    },
+    {
+      "name": "county_trigger_fallback",
+      "site_rva": "0x1af748d",
+      "target_rva": "0x5d1e0b0"
+    },
+    {
+      "name": "name_by_index_fallback",
+      "site_rva": "0x312d51b",
+      "target_rva": "0x5d1e0b0"
+    },
+    {
+      "name": "database_ctor_vtable",
+      "site_rva": "0x31299a9",
+      "target_rva": "0x48c04a8"
+    }
+  ],
+  "rtti": [
+    {
+      "complete_object_locator_rva": "0x4f82148",
+      "constructor_displacement_offset": 0,
+      "name": "static_modifier_database",
+      "object_offset": 0,
+      "type_descriptor_rva": "0x5b22f28",
+      "type_name": ".?AVCStaticModifierDatabase@@",
+      "vtable_rva": "0x48c04a8"
+    },
+    {
+      "complete_object_locator_rva": "0x4f82080",
+      "constructor_displacement_offset": 0,
+      "name": "static_modifier",
+      "object_offset": 0,
+      "type_descriptor_rva": "0x55c2618",
+      "type_name": ".?AVCStaticModifier@@",
+      "vtable_rva": "0x48c0508"
+    },
+    {
+      "complete_object_locator_rva": "0x4f57f68",
+      "constructor_displacement_offset": 0,
+      "name": "static_modifier_null",
+      "object_offset": 0,
+      "type_descriptor_rva": "0x5af56f8",
+      "type_name": ".?AV?$TPdxNullObject@VCStaticModifier@@@@",
+      "vtable_rva": "0x48a84b0"
+    }
+  ],
+  "schema": "xar.ck3_12002.loaded-static-modifier-definition.abi.v1",
+  "semantic_instructions": [
+    {
+      "bytes": "4C8BC2",
+      "name": "hash_input_pointer_from_RDX",
+      "rva": "0x3f7e25e"
+    },
+    {
+      "bytes": "418BD8",
+      "name": "hash_input_length_from_R8D",
+      "rva": "0x3f7e250"
+    },
+    {
+      "bytes": "4863DA",
+      "name": "lookup_hash_as_32_bit_pattern",
+      "rva": "0xab8d28"
+    },
+    {
+      "bytes": "4C8B9180010000",
+      "name": "lookup_hash_table_data_new_offset",
+      "rva": "0xab8dda"
+    },
+    {
+      "bytes": "4C63898C010000",
+      "name": "lookup_hash_table_mask_new_offset",
+      "rva": "0xab8dd3"
+    },
+    {
+      "bytes": "488B4010",
+      "name": "lookup_loaded_definition_result_pointer",
+      "rva": "0xab8e24"
+    },
+    {
+      "bytes": "48894660",
+      "name": "county_parser_definition_pointer_slot",
+      "rva": "0x1af9711"
+    },
+    {
+      "bytes": "8178384F624447",
+      "name": "county_parser_loaded_definition_tag",
+      "rva": "0x1af9718"
+    },
+    {
+      "bytes": "48635710",
+      "name": "county_parser_definition_numeric_index",
+      "rva": "0x1af9726"
+    },
+    {
+      "bytes": "4983783010",
+      "name": "database_name_CString_capacity",
+      "rva": "0x312d541"
+    },
+    {
+      "bytes": "498D4018",
+      "name": "database_name_CString_storage",
+      "rva": "0x312d546"
+    },
+    {
+      "bytes": "8B4810",
+      "name": "database_name_CString_length",
+      "rva": "0x312d54a"
+    },
+    {
+      "bytes": "488B00",
+      "name": "database_name_CString_heap_pointer",
+      "rva": "0x312d54f"
+    },
+    {
+      "bytes": "488903",
+      "name": "database_name_view_pointer",
+      "rva": "0x312d552"
+    },
+    {
+      "bytes": "894B08",
+      "name": "database_name_view_length",
+      "rva": "0x312d558"
+    },
+    {
+      "bytes": "C6430C00",
+      "name": "database_name_view_flag",
+      "rva": "0x312d55b"
+    },
+    {
+      "bytes": "498906",
+      "name": "database_ctor_primary_vptr_store",
+      "rva": "0x31299b0"
+    },
+    {
+      "bytes": "48894B60",
+      "name": "county_factory_definition_fallback_store",
+      "rva": "0x1af7497"
+    }
+  ]
+}
