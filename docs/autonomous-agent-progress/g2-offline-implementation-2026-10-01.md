@@ -127,3 +127,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 按用户明确解禁恢复宗教：先落新版stock及原生解析树，再实现真实只读Rite/Faith/Religion/mainRite refs、stable tags、fervor/精神满足度signed Q100000。Character+B4是Rite而不是Faith；实际getter处理原生fallback，保留nil/合法零与读取失败。Od/O2各20检查及实际wire parse通过，PE verifier19函数、25语义指令、14生产常量通过。当前独立library static-ready；中央/MCP/paused查询及通用转换最终判定尚未交付，不涉及战争。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:40:33 New G2 file candidate and real MCP readonly plan
+
+新候选纯文件工具使用最终40 ON/4 OFF：旧council slot33、warcash/prewar/plannerdiag OFF，新版候选走slot41，LAW enact保留。真实stdio parser验证七项nonwar只读permit，typed action开关不加入只读计划，lifetime无假参数。接口3项测试通过；待中央最终source/binary pins后实际准备全新Z目录和完整匹配save/driver，不把canonical rogue存档称ordinary资格。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
