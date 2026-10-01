@@ -242,7 +242,7 @@ void SynchronousDeathCommitAttribution() {
       reinterpret_cast<std::uintptr_t>(f.table.data()),reinterpret_cast<std::uintptr_t>(&f.date_slot),
       reinterpret_cast<std::uintptr_t>(&f.event_manager_slot)));
   std::array<std::byte,0x720> combat{};
-  std::array<std::byte,0x80> trait_db{};std::array<std::byte,0x40> trait_def{},reason{};
+  std::array<std::byte,0x80> trait_db{};std::array<std::byte,0x298> trait_def{};std::array<std::byte,0x40> reason{};
   std::array<std::byte,0x18> artifact{};std::uintptr_t defptr=reinterpret_cast<std::uintptr_t>(trait_def.data());
   Put(trait_def.data(),0x10,std::int32_t(1));Key(trait_def.data()+0x18,"brave");
   Put(trait_db.data(),0x68,reinterpret_cast<std::uintptr_t>(&defptr));Put(trait_db.data(),0x74,std::int32_t(1));
@@ -333,4 +333,138 @@ void WholeCallbackAndParentLifetime() {
   std::cout<<"whole-original callback drain rejection / late forwarding / whole parent retention PASS\n";
 }
 }
-int main(){Observation();Guards();ExactAnchorsAndRollback();WholeCallbackAndParentLifetime();EventProducerIdentity();SynchronousDeathCommitAttribution();std::cout<<"passive monitor offline checks passed; no CK3 process invoked\n";}
+namespace {
+std::atomic<std::uint32_t> g_null_original_calls{0};
+std::atomic<bool> g_null_return_nonnull{false};
+void *NullOwner(const void *) {
+  g_null_original_calls.fetch_add(1);
+  return g_null_return_nonnull.load()?g_fixture->owners[1].data():nullptr;
+}
+__declspec(noinline) void NullCalls(Fixture &f,std::uint32_t count) {
+  for(std::uint32_t i=0;i<count;++i)(void)ObservedCharacterVariableOwnerV1(f.scopes[1].data());
+}
+std::uintptr_t NullEffect(void *,void *){NullCalls(*g_fixture,2);return 0x1234;}
+void NullRoot(void *,void *){NullCalls(*g_fixture,2);}
+void NullCommit(void *,void *,void *,void *,void *,void *){NullCalls(*g_fixture,2);}
+bool NullArm(ScopedCharacterVariableMonitorV1 &m,Fixture &f) {
+  g_fixture=&f;g_null_return_nonnull.store(false);g_null_original_calls.store(0);
+  Put(f.chars[1].data(),0x1C8,std::uintptr_t(123));
+  assert(BindScopedVariableMonitorOfflineOriginalsV1(NullOwner,Setter,NullEffect,House,NullRoot));
+  return StartScopedCharacterVariableMonitorV1(m,f.bindings,0x140000000,{101,201},61,true,true,
+      reinterpret_cast<std::uintptr_t>(f.table.data()),reinterpret_cast<std::uintptr_t>(&f.date_slot));
+}
+void DeadNullRepeatedAndTransitions() {
+  Fixture f;auto m=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(NullArm(*m,f));
+  NullCalls(f,1000);
+  assert(g_null_original_calls.load()==1000&&m->owner_getter_observed.load()==1000);
+  assert(m->owner_getter_retained.load()==1&&m->owner_getter_coalesced.load()==999);
+  const auto &first=Find(*m,ScopedVariableMonitorBoundaryV1::original_owner_return);
+  assert(first.victim_dead&&!first.value.read&&first.owner==0&&first.full_identity_matches);
+  assert(first.owner_observation_count==1000&&first.owner_observation_first_call_index==0&&first.owner_observation_last_call_index==999);
+  // Never reuse a null row across null -> nonnull -> null transitions.
+  g_null_return_nonnull.store(true);NullCalls(f,1);
+  g_null_return_nonnull.store(false);NullCalls(f,1);NullCalls(f,10);
+  assert(m->owner_getter_retained.load()==4&&m->owner_getter_coalesced.load()==1008);
+  const auto &last=Find(*m,ScopedVariableMonitorBoundaryV1::original_owner_return,true);
+  assert(last.owner_state_epoch==3&&last.owner_observation_count==10&&last.previous_owner==0);
+  // An actual house invocation cuts the aggregate interval; both edges remain.
+  const auto kept=m->owner_getter_retained.load();
+  for(int i=0;i<5;++i)(void)ObservedScopedHousePredicateV1(f.type.data(),f.houses[0].data(),f.houses[1].data());
+  NullCalls(f,10);assert(m->owner_getter_retained.load()==kept+1);
+  // Dead-state change, source scope pointer and source callsite must not aggregate.
+  Put(f.chars[1].data(),0x1C8,std::uintptr_t(0));NullCalls(f,3);
+  assert(m->owner_getter_retained.load()==kept+4);
+  Put(f.chars[1].data(),0x1C8,std::uintptr_t(123));
+  std::array<std::uint64_t,2> other_scope{4,201};
+  (void)ObservedCharacterVariableOwnerV1(other_scope.data());
+  assert(m->owner_getter_retained.load()==kept+5);
+  Put(f.date.data(),8,std::int32_t(53146872));NullCalls(f,2);
+  assert(FinishScopedCharacterVariableMonitorV1(*m,true)&&m->failure_flags.load()==0);
+  std::cout<<"{\"kind\":\"OFFLINE_DEAD_NULL_COMPRESSION_FIXTURE_NOT_GAME_TRUTH\",\"scoped_variable_monitor\":"<<SerializeScopedCharacterVariableMonitorV1(*m)<<"}\n";
+  std::cout<<"exact repeated null / original forward once / owner-dead-date-source transitions / house edges PASS\n";
+}
+void ConcurrentDeadNullReturns() {
+  Fixture f;auto m=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(NullArm(*m,f));
+  std::array<std::thread,8> workers;
+  for(auto &worker:workers)worker=std::thread([&]{NullCalls(f,250);});
+  for(auto &worker:workers)worker.join();
+  assert(g_null_original_calls.load()==2000&&m->owner_getter_observed.load()==2000);
+  assert(m->owner_getter_retained.load()==8&&m->owner_getter_coalesced.load()==1992);
+  std::array<DWORD,8> threads{};std::uint32_t n=0;
+  for(std::uint32_t i=0;i<m->count.load();++i){const auto &r=m->records[i];
+    if(r.boundary!=ScopedVariableMonitorBoundaryV1::original_owner_return)continue;
+    assert(r.owner_observation_count==250&&r.owner_observation_last_call_index>=r.owner_observation_first_call_index);
+    threads[n++]=r.thread_id;
+  }
+  assert(n==8);for(std::size_t i=0;i<n;++i)for(std::size_t j=0;j<i;++j)assert(threads[i]!=threads[j]);
+  assert(FinishScopedCharacterVariableMonitorV1(*m,true)&&m->failure_flags.load()==0);
+  std::cout<<"eight concurrent original GUI-like threads / locked state and aggregation / separate thread first rows PASS\n";
+}
+void ContextsWritersAndOverflow() {
+  Fixture f;auto m=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(NullArm(*m,f));
+  (void)ObservedCharacterVariableEffectV1(f.node.data(),f.context.data());
+  auto other_context=f.context;
+  (void)ObservedCharacterVariableEffectV1(f.node.data(),other_context.data());
+  assert(m->owner_getter_retained.load()==2&&m->owner_getter_coalesced.load()==2);
+  assert(FinishScopedCharacterVariableMonitorV1(*m,true)&&m->failure_flags.load()==0);
+  // Real setters are never compressed, even when requested/current values repeat.
+  auto writers=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(Arm(*writers,f));
+  for(int i=0;i<30;++i)(void)ObservedCharacterVariableEffectV1(f.node.data(),f.context.data());
+  std::uint32_t enters=0,returns=0;
+  for(std::uint32_t i=0;i<writers->count.load();++i){const auto b=writers->records[i].boundary;
+    enters+=b==ScopedVariableMonitorBoundaryV1::variable_write_enter;returns+=b==ScopedVariableMonitorBoundaryV1::variable_write_return;}
+  assert(enters==30&&returns==30&&writers->owner_getter_coalesced.load()==0);
+  assert(FinishScopedCharacterVariableMonitorV1(*writers,true)&&writers->failure_flags.load()==0);
+  auto overflow=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(NullArm(*overflow,f));
+  for(int i=0;i<70;++i)(void)ObservedScopedHousePredicateV1(f.type.data(),f.houses[0].data(),f.houses[1].data());
+  assert((overflow->failure_flags.load()&scoped_chain_failure_capacity)!=0&&overflow->records.size()==128);
+  assert(FinishScopedCharacterVariableMonitorV1(*overflow,true));
+  assert(SerializeScopedCharacterVariableMonitorV1(*overflow).find("\"truncated\":true")!=std::string::npos);
+  std::cout<<"different original effect contexts retained / 30 identical setters preserve60edges / capacity128 overflow staysRED PASS\n";
+}
+void NullProducerContexts() {
+  auto *space=static_cast<std::byte*>(VirtualAlloc(nullptr,0x6000000,MEM_RESERVE,PAGE_NOACCESS));assert(space);
+  assert(VirtualAlloc(space+0x44CF000,4096,MEM_COMMIT,PAGE_READWRITE));
+  const auto module=reinterpret_cast<std::uintptr_t>(space);Fixture f;f.Events(module);g_fixture=&f;
+  Put(f.chars[1].data(),0x1C8,std::uintptr_t(123));g_null_return_nonnull.store(false);
+  assert(BindScopedVariableMonitorOfflineOriginalsV1(NullOwner,Setter,NullEffect,House,NullRoot));
+  auto m=std::make_unique<ScopedCharacterVariableMonitorV1>();
+  assert(StartScopedCharacterVariableMonitorV1(*m,f.bindings,module,{101,201},71,true,true,
+      reinterpret_cast<std::uintptr_t>(f.table.data()),reinterpret_cast<std::uintptr_t>(&f.date_slot),reinterpret_cast<std::uintptr_t>(&f.event_manager_slot)));
+  ObservedScopedEventImmediateRootV1(f.event_roots[0].data(),f.context.data());
+  ObservedScopedEventImmediateRootV1(f.event_roots[0].data(),f.context.data());
+  ObservedScopedEventImmediateRootV1(f.event_roots[1].data(),f.context.data());
+  assert(m->owner_getter_retained.load()==3&&m->owner_getter_coalesced.load()==3);
+  const auto &last=Find(*m,ScopedVariableMonitorBoundaryV1::original_owner_return,true);
+  assert(last.event_producer.read&&last.event_producer.definition_id==1201);
+  // Same null return on the same thread/source, but different original commits.
+  assert(BindCombatScopedOriginalsForOfflineFixtureV1(UnusedDeath,NullCommit,UnusedQueue,UnusedCasualty));
+  std::array<std::byte,0x720> combat{};std::array<std::byte,0x80> trait_db{};
+  std::array<std::byte,0x298> trait_def{};std::array<std::byte,0x40> reason{};std::uintptr_t defptr=reinterpret_cast<std::uintptr_t>(trait_def.data());
+  Put(trait_def.data(),0x10,std::int32_t(1));Key(trait_def.data()+0x18,"brave");
+  Put(trait_db.data(),0x68,reinterpret_cast<std::uintptr_t>(&defptr));Put(trait_db.data(),0x74,std::int32_t(1));
+  Key(reason.data()+0x18,"death_battle");std::int64_t requested_date=53146848;
+  std::array<std::byte,0x30> death_data{};
+  Put(death_data.data(),4,requested_date);Put(death_data.data(),0x10,reinterpret_cast<std::uintptr_t>(reason.data()));
+  Put(death_data.data(),0x18,std::int32_t(101));Put(death_data.data(),0x1C,std::int32_t(-1));
+  Put(f.chars[1].data(),0x1C8,reinterpret_cast<std::uintptr_t>(death_data.data()));
+  CombatPhaseEventTraceCapturePlanV1 plan{};plan.module_base=module;plan.managed_daily_sequence_token=81;
+  plan.combat_id=0x01000002;plan.combat=reinterpret_cast<std::uintptr_t>(combat.data());Put(combat.data(),8,plan.combat_id);
+  plan.current_date_slot=reinterpret_cast<std::uintptr_t>(&f.date_slot);plan.expected_current_date_object=f.date_slot;
+  plan.character_count=2;plan.loaded_event_row_objects_available=true;
+  for(std::size_t i=0;i<2;++i){plan.characters[i]={std::int32_t(101+i*100),reinterpret_cast<std::uintptr_t>(f.chars[i].data())};
+    plan.sides[i]=plan.combat+(i==0?0x20:0x368);Put(reinterpret_cast<void*>(plan.sides[i]),0xB8,plan.combat);}
+  auto chain=std::make_unique<CombatScopedChainV1>();assert(ArmCombatScopedChainV1(*chain,plan,101,201,11,reinterpret_cast<std::uintptr_t>(trait_db.data())));
+  ScopedDeathCommit(combat.data(),f.chars[0].data(),reason.data(),&requested_date,f.chars[1].data(),nullptr);
+  const auto commit1=Find(*m,ScopedVariableMonitorBoundaryV1::original_owner_return,true).current_death_commit_context;
+  ScopedDeathCommit(combat.data(),f.chars[0].data(),reason.data(),&requested_date,f.chars[1].data(),nullptr);
+  const auto commit2=Find(*m,ScopedVariableMonitorBoundaryV1::original_owner_return,true).current_death_commit_context;
+  assert(commit1.read&&commit2.read&&commit1.invocation!=commit2.invocation);
+  assert(m->owner_getter_retained.load()==5&&m->owner_getter_coalesced.load()==5);
+  FinishCombatScopedChainV1(*chain);assert(chain->failure_flags.load()==0);
+  assert(FinishScopedCharacterVariableMonitorV1(*m,true)&&m->failure_flags.load()==0);
+  assert(VirtualFree(space,0,MEM_RELEASE));
+  std::cout<<"different actual notification producer invocations / definitions / current commit tuples never aggregate PASS\n";
+}
+}
+int main(){Observation();Guards();ExactAnchorsAndRollback();WholeCallbackAndParentLifetime();EventProducerIdentity();SynchronousDeathCommitAttribution();DeadNullRepeatedAndTransitions();ConcurrentDeadNullReturns();ContextsWritersAndOverflow();NullProducerContexts();std::cout<<"passive monitor offline checks passed; no CK3 process invoked\n";}

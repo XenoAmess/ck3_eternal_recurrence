@@ -18,7 +18,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
 from xar_autoplayer.simulation.knight_causal_save_projection import (
     block_body, character_snapshot, delta, extract_exact_indented_block,
-    find_key_blocks, parse_block, validate_scoped_journal,
+    find_key_blocks, parse_block, validate_scoped_journal, validate_slain_side_knights_saved, DATE_CONTRACT_PATH,
 )
 
 RAKALY_SHA = 'E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D'
@@ -77,7 +77,12 @@ def verify(args) -> dict:
         selector_module = Path(sys.modules['xar_autoplayer.simulation.knight_selector_replay'].__file__)
         report['verifier_sources'] = [freeze(Path(__file__), out / 'verifier-exact.py'),
                                       freeze(module, out / 'pure-projection-exact.py'),
-                                      freeze(selector_module, out / 'pure-selector-replay-exact.py')]
+                                      freeze(selector_module, out / 'pure-selector-replay-exact.py'),
+                                      freeze(DATE_CONTRACT_PATH, out / 'historical-date-source-contract-exact.json')]
+        report['evaluator_identity'] = {'kind': 'NEW_EVALUATOR_SOURCE_BYTES_COMMIT_PENDING',
+                                        'evaluator_commit': None, 'source_pins': report['verifier_sources'],
+                                        'runtime_source_commit_expected': args.expected_source_head,
+                                        'runtime_dll_sha256_expected': args.expected_dll_sha256.upper()}
         source_pairs = [args.before_pair.resolve(), args.after_pair.resolve()]
         gate('pair originals same directory', source_pairs[0].parent == source_pairs[1].parent)
         pairs = [read(path) for path in source_pairs]
@@ -92,8 +97,17 @@ def verify(args) -> dict:
             config = read(config_path)
             report['source_binding'] = freeze(config_path, out / 'research-binding-exact.json')
             gate('expected explicit source commit', config['source_commit'] == args.expected_source_head)
-            gate('actual local frozen source HEAD matches', subprocess.check_output(
-                ['git', 'rev-parse', 'HEAD'], cwd=config['source_root'], text=True).strip() == config['source_commit'])
+            head_argv = ['git', 'rev-parse', 'HEAD']
+            write(out / 'runtime-head-command.json', {'argv': head_argv, 'cwd': config['source_root'], 'read_only': True})
+            head_result = subprocess.run(head_argv, cwd=config['source_root'], capture_output=True, check=False)
+            for name, raw in (('runtime-head-stdout.bin', head_result.stdout), ('runtime-head-stderr.bin', head_result.stderr)):
+                with (out / name).open('xb') as stream:
+                    stream.write(raw)
+            write(out / 'runtime-head-process.json', {'argv': head_argv, 'cwd': config['source_root'],
+                  'returncode': head_result.returncode, 'stdout': identity(out / 'runtime-head-stdout.bin'),
+                  'stderr': identity(out / 'runtime-head-stderr.bin')})
+            gate('actual local frozen source HEAD matches', head_result.returncode == 0 and
+                 head_result.stdout.decode('ascii').strip() == config['source_commit'])
             for pin in config['pins']:
                 bound(pin)
             dll = Path(config['bridge_dll']).resolve()
@@ -268,7 +282,11 @@ def verify(args) -> dict:
         journal = managed.get('scoped_transition_chain')
         if explicit_binding and journal is not None:
             gate('scoped journal exact declared event', journal['event_load_index'] == config['event_load_index'])
-        report['scoped_journal_validation'] = validate_scoped_journal(journal, checkpoint, args.victim, args.related)
+        report['scoped_journal_validation'] = validate_scoped_journal(journal, checkpoint, args.victim, args.related, trace,
+            saved_victim=parsed[1]['characters'][0])
+        if journal is not None:
+            report['slain_side_knights_saved_list_validation'] = validate_slain_side_knights_saved(journal,
+                parsed[0]['objects']['matched_combat_blocks'], parsed[1]['objects']['matched_combat_blocks'], args.victim)
         report['original_scoped_transition_chain'] = journal
         before_victim, after_victim = parsed[0]['characters'][0], parsed[1]['characters'][0]
         report['observed_saved_death_transition'] = before_victim['status'] == 'ALIVE' and after_victim['status'] == 'DEAD'

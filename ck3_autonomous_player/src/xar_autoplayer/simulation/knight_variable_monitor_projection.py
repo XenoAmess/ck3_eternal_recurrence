@@ -86,6 +86,72 @@ def _flag(value: dict, monitor: dict, *, required: bool) -> dict | None:
             'identifier_count': value['flag_identifier_count'], 'native_name': value['flag_name']}
 
 
+def validate_owner_return_compression(monitor: dict) -> dict | None:
+    """Validate additive native compression metadata without inventing call order.
+
+    Old native originals omit this additive field. Null means no value was read,
+    never a known absent signature. Aggregate first/last are bounds only.
+    """
+    compression = monitor.get('owner_return_compression')
+    if compression is None:
+        return None
+
+    def require(passed: bool, message: str):
+        if not passed:
+            raise ValueError('owner return compression: ' + message)
+
+    require(type(compression) is dict and type(compression.get('schema_version')) is int and compression['schema_version'] == 1 and
+            compression.get('scope') == 'exact_dead_null_original_returns_only', 'native schema/scope')
+    fields = ('observed', 'retained', 'coalesced', 'unchanged_nonnull_unrecorded')
+    require(all(type(compression.get(key)) is int and 0 <= compression[key] < 2**64
+                for key in fields), 'actual count types/range')
+    require(type(compression.get('capacity')) is int and compression['capacity'] == 128 and
+            type(compression.get('writer_calls_coalesced')) is int and
+            compression['writer_calls_coalesced'] == 0 and
+            compression.get('aggregate_bounds_are_not_per_call_chronology') is True,
+            'original capacity/writer/chronology boundary')
+    records = monitor['records']
+    owner_rows = [r for r in records if r['boundary'] == 'original_owner_return']
+    require(compression['retained'] == len(owner_rows), 'retained original getter rows')
+    multiplicity = 0
+    first_indices = []
+    for row in records:
+        count = row.get('owner_observation_count')
+        require(type(count) is int and 0 <= count < 2**64, 'row multiplicity type')
+        if row['boundary'] != 'original_owner_return':
+            require(count == 0, 'non-getter operation must not be compressed')
+            continue
+        first, last = row.get('owner_observation_first_call_index'), row.get('owner_observation_last_call_index')
+        require(type(first) is int and type(last) is int and
+                0 <= first <= last < compression['observed'] and
+                1 <= count <= last - first + 1 and (count != 1 or first == last),
+                'original observed call index bounds')
+        require(type(row.get('owner_state_epoch')) is int and row['owner_state_epoch'] > 0 and
+                type(row.get('owner_activity_epoch')) is int and row['owner_activity_epoch'] >= 0,
+                'state/activity epoch types')
+        first_indices.append(first)
+        multiplicity += count
+        if count > 1:
+            words = row['native_scope_words']
+            require(row['failure_flags'] == 0 and row['dead'] is True and
+                    row['full_identity_matches'] is True and
+                    row['owner_from_original_getter'] is True and
+                    row['owner_token'] == 0 and row['container_token'] == 0 and
+                    row['value']['read'] is False and row['character_id'] == row['observed_character_id'] and
+                    row['character_id'] in monitor['character_ids'] and
+                    row['key_id'] == monitor['signature_weapon_key_id'] and
+                    type(row['thread_id']) is int and row['thread_id'] > 0 and
+                    row['native_root_scope_token'] > 0 and row['caller_token'] > 0 and
+                    len(words) == 2 and all(type(word) is int for word in words) and
+                    words[0] & 0xFFFF == 4 and words[1] == row['character_id'],
+                    'only source-bound full-ID dead/null getter returns aggregate')
+    require(first_indices == sorted(set(first_indices)), 'unique retained first call indices')
+    require(compression['coalesced'] == multiplicity - compression['retained'], 'coalesced original calls')
+    require(compression['observed'] == multiplicity + compression['unchanged_nonnull_unrecorded'],
+            'observed calls exhaustively accounted for')
+    return dict(compression)
+
+
 def validate_variable_monitor(monitor: dict | None, *, character_ids: list[int],
                               expected_monitor_token: int, before_date_raw: int,
                               after_date_raw: int, expected_thread: int | None = None) -> dict:
@@ -125,6 +191,7 @@ def validate_variable_monitor(monitor: dict | None, *, character_ids: list[int],
           monitor['native_identifier_table_token'] > 0 and key_id > 0 and
           key_id >> 24 == epoch and key_id & 0xFFFFFF < count)
     records = monitor['records']
+    owner_compression = validate_owner_return_compression(monitor)
     producer_bindings = _prearmed_producers(monitor)
     check('nonempty arm through final paused', bool(records) and records[0]['boundary'] == 'arm' and
           records[-1]['boundary'] == 'final_paused' and records[0]['date_raw'] == before_date_raw and
@@ -245,6 +312,7 @@ def validate_variable_monitor(monitor: dict | None, *, character_ids: list[int],
             'controlled_lifecycle_thread_id': lifecycle_thread,
             'actual_observer_thread_ids': sorted({r['thread_id'] for r in records}),
             'first_original_owner_observations': first_owners,
+            'original_owner_return_compression': owner_compression,
             'prearmed_event_definition_bindings': producer_bindings, 'gaps': gaps,
             'whole_game_mutable_bundle_complete': False,
             'limits': 'Requested names are independently decoded from original typed words. Saved endpoints, UI timing and producer proof are separate checks.'}

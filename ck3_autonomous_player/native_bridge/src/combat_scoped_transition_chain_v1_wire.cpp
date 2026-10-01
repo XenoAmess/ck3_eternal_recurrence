@@ -140,6 +140,25 @@ bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
   out += ",\"node_identity_token\":"; Token(out, row.node_identity);
   out += ",\"node_vtable_rva\":"; Number(out, row.node_vtable_rva);
   out += ",\"node_hash\":"; Number(out, row.node_hash);
+  out += ",\"node_original_execute_rva\":";Number(out,row.node_original_execute_rva);
+  out += ",\"effect_children_read\":";Bool(out,row.effect_children_read);
+  out += ",\"effect_children_data_token\":";Token(out,row.effect_children_data);
+  out += ",\"effect_child_count_raw\":";Number(out,row.effect_child_count_raw);
+  if(row.effect_child_identity_count>row.effect_children.size())
+    return Reject(diagnostic,"count_bound","effect_child_identity_count",row.effect_child_identity_count,row.effect_children.size(),out.size());
+  out += ",\"effect_children\":[";
+  auto identity=[&](const CombatScopedEffectIdentityV1 &value){
+    out += "{\"read\":";Bool(out,value.read);
+    out += ",\"node_identity_token\":";Token(out,value.node);
+    out += ",\"node_vtable_rva\":";Number(out,value.vtable_rva);
+    out += ",\"node_hash\":";Number(out,value.hash);
+    out += ",\"node_original_execute_rva\":";Number(out,value.original_execute_rva);out+='}';
+  };
+  for(std::uint32_t i=0;i<row.effect_child_identity_count;++i){if(i)out+=',';identity(row.effect_children[i]);}
+  out += "]";
+  out += ",\"effect_if_optional_read\":";Bool(out,row.effect_if_optional_read);
+  out += ",\"effect_if_optional_node_token\":";Token(out,row.effect_if_optional_node);
+  out += ",\"effect_if_optional_identity\":";identity(row.effect_if_optional_identity);
   out += ",\"depth\":"; Number(out, row.depth);
   out += ",\"caller_return_token\":"; Token(out, row.caller_return_address);
   out += ",\"casualty_damage_raw\":"; Number(out, row.casualty_damage_raw);
@@ -303,6 +322,11 @@ std::string SerializeCombatScopedChainV1(const CombatScopedChainV1 &chain,
     if (i) out += ',';
     out += "{\"trait_id\":"; Number(out, chain.trait_definitions[i].trait_id);
     out += ",\"key\":"; if (!Key(out, chain.trait_definitions[i].key,diagnostic,"trait_definition.key")) return {};
+    const auto track_count = chain.trait_definitions[i].track_count;
+    if (track_count < 0 || track_count > static_cast<std::int32_t>(kCombatScopedChainMaxTraitTracksV1)) {
+      Reject(diagnostic,"count_bound","trait_definition.track_count",track_count,kCombatScopedChainMaxTraitTracksV1,out.size());return {};
+    }
+    out += ",\"track_count\":"; Number(out, track_count);
     out += '}';
   }
   out += ']';

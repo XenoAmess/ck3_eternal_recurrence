@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.scoped-original-effect-branch-layout.contract/v1",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "proof_source": {
+    "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0144-growth-writer-inventory-reinforcement-a01/R0144-actual-branch-execute-control-flow-a02.json",
+    "bytes": 31521,
+    "sha256": "2A506C531986D752583C4B82F3DA6C1C84E101F538A6E00A845A8C9B9367267A",
+    "supersedes_incomplete_primary_pdata_span": true
+  },
+  "whitelisted_original_layouts": [
+    {"vtable_rva": "0x44CF030", "type": "CJominiEffect", "original_execute_rva": "0x3380EC0"},
+    {"vtable_rva": "0x4478388", "type": "CRandomListEntryEffect", "original_execute_rva": "0x3380EC0"},
+    {"vtable_rva": "0x44D1E18", "type": "CIfEffect", "original_execute_rva": "0x33884B0"}
+  ],
+  "original_children": {
+    "data_offset": "0x40", "data_type": "qword pointer",
+    "count_offset": "0x4C", "count_type": "signed int32", "stride": 8,
+    "observer_bound": 256,
+    "zero_count_nonnull_data_is_valid": true,
+    "capacity_at_48_not_inferred_or_read": true,
+    "identity_fields": ["node pointer", "vtable RVA", "hash at +38", "original execute slot +B0 RVA"]
+  },
+  "conditional_false_optional": {
+    "offset": "0x258", "type": "qword object pointer, not embedded object",
+    "original_path": "CIf false CFG reads optional pointer, and when nonnull directly tail-jumps [optional vtable+B0], bypassing generic 3380A00",
+    "capture": "original pointer and identity at each existing effect enter/return; no predicate or virtual call repeated",
+    "actual_null": "read=true and pointer token process-local-0x0",
+    "unknown_type": "read=false, must never be interpreted as a verified null optional branch"
+  },
+  "failure_semantics": {
+    "negative_or_missing_nonzero_vector": "existing container flag",
+    "count_above_256": "existing capacity flag",
+    "wrong_original_callee_or_invalid_child_identity": "existing binding flag",
+    "unreadable_original_bytes": "existing memory flag / SEH",
+    "original_flags_guards_hooks_dates_not_weakened": true
+  },
+  "limits": [
+    "Not a global effect platform or an observation of an optional child executing.",
+    "Nonnull optional node means that no-write closure remains pending until its original writer/path is proven.",
+    "Unknown wrapper/random-list vtables are not inferred to use this children layout.",
+    "Old R0144 raw captures do not acquire these new fields; new runtime is required."
+  ]
+}

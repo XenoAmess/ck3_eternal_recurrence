@@ -37,6 +37,8 @@ struct ScopedVariableEventProducerV1 {
   std::array<std::uint64_t,2> root_scope_words{};
   CombatScopedStableKeyV1 definition_key{};
   CombatScopedDeathCommitContextV1 activation_death_commit_context{};
+  friend bool operator==(const ScopedVariableEventProducerV1 &,
+                         const ScopedVariableEventProducerV1 &)=default;
 };
 struct ScopedVariableMonitorRecordV1 {
   std::uint32_t sequence = 0, invocation = 0, failure_flags = 0, thread_id = 0;
@@ -64,6 +66,11 @@ struct ScopedVariableMonitorRecordV1 {
   CombatScopedEffectContextV1 daily_effect_context{};
   ScopedVariableEventProducerV1 event_producer{};
   CombatScopedDeathCommitContextV1 current_death_commit_context{};
+  // Aggregate only equal dead/null original getter returns, never writes.
+  std::uint64_t owner_observation_first_call_index = 0,
+                owner_observation_last_call_index = 0,
+                owner_observation_count = 0, owner_state_epoch = 0,
+                owner_activity_epoch = 0;
 };
 struct ScopedCharacterVariableMonitorV1 {
   ScopedVariableMonitorStageV1 stage = ScopedVariableMonitorStageV1::idle;
@@ -86,6 +93,16 @@ struct ScopedCharacterVariableMonitorV1 {
   bool event_producer_definitions_read = false;
   std::array<ScopedVariableMonitorRecordV1, 128> records{};
   std::array<ScopedVariableValueV1, 2> last_owner_values{};
+  // Protect owner/value state and published owner-row aggregation across GUI threads.
+  // No original native call runs while this lock is held.
+  SRWLOCK owner_observation_lock = SRWLOCK_INIT;
+  std::array<bool, 2> owner_state_seen{}, last_owner_dead{};
+  std::array<std::uint64_t, 2> owner_state_epochs{};
+  std::array<std::uint32_t, 128> owner_record_indices{};
+  std::uint32_t owner_record_count = 0;
+  std::atomic<std::uint64_t> owner_activity_epoch{0}, owner_getter_observed{0},
+      owner_getter_retained{0}, owner_getter_coalesced{0},
+      owner_nonnull_unchanged_unrecorded{0};
   bool detours_uninstalled = false;
 };
 struct ScopedVariableMonitorQueryV1 {

@@ -76,6 +76,9 @@ bool ReadTraitDefinitions(CombatScopedChainV1 &chain, std::uintptr_t database) n
     if (definition == 0) return false;
     out.trait_id = Read<std::int32_t>(definition, 0x10);
     if (out.trait_id < 0 || !ReadStableKey(definition + 0x18, out.key)) return false;
+    out.track_count = Read<std::int32_t>(definition, 0x294);
+    if (out.track_count < 0 || out.track_count >
+        static_cast<std::int32_t>(kCombatScopedChainMaxTraitTracksV1)) return false;
   }
   std::sort(chain.trait_definitions.begin(), chain.trait_definitions.begin() + count,
             [](const auto &left, const auto &right) { return left.trait_id < right.trait_id; });
@@ -99,6 +102,59 @@ void Failure(CombatScopedChainV1 &chain, CombatScopedChainRecordV1 &row,
              std::uint32_t flag) noexcept {
   row.failure_flags |= flag;
   chain.failure_flags.fetch_or(flag, std::memory_order_acq_rel);
+}
+
+bool ReadEffectIdentity(const CombatScopedChainV1 &chain,std::uintptr_t node,
+                        CombatScopedEffectIdentityV1 &identity) noexcept {
+  identity.node=node;
+  if(node==0 || chain.plan==nullptr)return false;
+  const auto base=chain.plan->module_base;
+  const auto vtable=Read<std::uintptr_t>(node);
+  if(vtable<base || vtable-base>=0x6000000)return false;
+  const auto execute=Read<std::uintptr_t>(vtable,0xB0);
+  if(execute<base || execute-base>=0x6000000)return false;
+  identity.vtable_rva=static_cast<std::uint32_t>(vtable-base);
+  identity.hash=Read<std::uint32_t>(node,0x38);
+  identity.original_execute_rva=static_cast<std::uint32_t>(execute-base);
+  identity.read=true;
+  return true;
+}
+
+void ReadEffectBranchLayout(CombatScopedChainV1 &chain,CombatScopedChainRecordV1 &row) noexcept {
+  // Exact original 3380EC0 child loop and 33884B0 CIf full CFG. A scripted
+  // wrapper or random-list type is not inferred to share this layout.
+  const bool conditional=row.node_vtable_rva==0x44D1E18;
+  if(!conditional && row.node_vtable_rva!=0x44CF030 && row.node_vtable_rva!=0x4478388)return;
+  CombatScopedEffectIdentityV1 identity{};
+  if(!ReadEffectIdentity(chain,row.node_identity,identity) ||
+     identity.original_execute_rva!=(conditional?0x33884B0U:0x3380EC0U)) {
+    Failure(chain,row,scoped_chain_failure_binding);return;
+  }
+  row.node_original_execute_rva=identity.original_execute_rva;
+  row.effect_children_data=Read<std::uintptr_t>(row.node_identity,0x40);
+  row.effect_child_count_raw=Read<std::int32_t>(row.node_identity,0x4C);
+  if(row.effect_child_count_raw<0 || (row.effect_child_count_raw!=0&&row.effect_children_data==0)) {
+    Failure(chain,row,scoped_chain_failure_container);return;
+  }
+  if(row.effect_child_count_raw>static_cast<std::int32_t>(row.effect_children.size())) {
+    Failure(chain,row,scoped_chain_failure_capacity);return;
+  }
+  for(std::int32_t i=0;i<row.effect_child_count_raw;++i){
+    const auto child=Read<std::uintptr_t>(row.effect_children_data,static_cast<std::size_t>(i)*8);
+    if(!ReadEffectIdentity(chain,child,row.effect_children[static_cast<std::size_t>(i)])) {
+      Failure(chain,row,scoped_chain_failure_binding);return;
+    }
+    ++row.effect_child_identity_count;
+  }
+  row.effect_children_read=true;
+  if(conditional){
+    row.effect_if_optional_node=Read<std::uintptr_t>(row.node_identity,0x258);
+    if(row.effect_if_optional_node!=0 &&
+       !ReadEffectIdentity(chain,row.effect_if_optional_node,row.effect_if_optional_identity)) {
+      Failure(chain,row,scoped_chain_failure_binding);return;
+    }
+    row.effect_if_optional_read=true;
+  }
 }
 
 bool ReadCharacter(CombatScopedChainV1 &chain, std::size_t index,
@@ -339,6 +395,9 @@ CombatScopedChainRecordV1 *Capture(
           record.node_vtable_rva = static_cast<std::uint32_t>(vtable - chain->plan->module_base);
         }
         record.node_hash = Read<std::uint32_t>(record.node_identity, 0x38);
+        if(boundary==CombatScopedChainBoundaryV1::effect_enter ||
+           boundary==CombatScopedChainBoundaryV1::effect_return)
+          ReadEffectBranchLayout(*chain,record);
       }
       (void)ReadCharacter(*chain, 0, record);
       (void)ReadCharacter(*chain, 1, record);
