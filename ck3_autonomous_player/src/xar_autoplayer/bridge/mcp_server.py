@@ -1350,11 +1350,26 @@ def create_server(
     if getattr(driver, "allow_private_prisoner_collection_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_prisoner_collection_private_v1(
-            expected_revision: int,
+            expected_revision: int, ransom_ordinal: int = 0,
         ) -> dict[str, object]:
             """Read current-player prisoner IDs on one paused native frame."""
+            if ransom_ordinal != 0:
+                return driver.query_player_prisoner_collection_private_v1(
+                    expected_revision=expected_revision,
+                    ransom_ordinal=ransom_ordinal,
+                )
             return driver.query_player_prisoner_collection_private_v1(
                 expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_prisoner_ransom_action", False) is True:
+        @server.tool()
+        def ck3_ransom_player_prisoner_private_v1(
+            collection: dict[str, object], prisoner_character_id: int,
+        ) -> dict[str, object]:
+            """Submit one current native ransom quote and return its pending ACK."""
+            return driver.submit_player_prisoner_ransom_private_v1(
+                collection=collection, prisoner_character_id=prisoner_character_id,
             )
 
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is True:
@@ -1400,6 +1415,238 @@ def create_server(
             return query_activity_feast_guest_target_private_v1(
                 driver, expected_revision=expected_revision,
                 target_character_id=target_character_id,
+            )
+
+    if getattr(driver, "allow_private_active_scheme_sway_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_active_scheme_sway_target_private_v1(
+            expected_revision: int, target_character_id: int,
+        ) -> dict[str, object]:
+            """Read the current Sway instance, opinion and native final legality."""
+            return driver.query_active_scheme_sway_target_private_v1(
+                expected_revision=expected_revision,
+                target_character_id=target_character_id,
+            )
+
+    if getattr(driver, "allow_private_active_scheme_sway_action", False) is True:
+        @server.tool()
+        def ck3_start_active_scheme_sway_private_v1(
+            readback: dict[str, object], action_id: str,
+        ) -> dict[str, object]:
+            """Submit one selected Sway target from its current native final quote."""
+            return driver.submit_active_scheme_sway_private_v1(readback=readback, action_id=action_id)
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_active_scheme_sway_receipt_private_v1(
+            target_character_id: int, action_id: str, expected_revision: int,
+            pre_capture_epoch: int,
+        ) -> dict[str, object]:
+            """Read the independent active-instance receipt for a submitted Sway."""
+            return driver.query_active_scheme_sway_receipt_private_v1(
+                target_character_id=target_character_id, action_id=action_id,
+                expected_revision=expected_revision, pre_capture_epoch=pre_capture_epoch,
+            )
+
+    if getattr(driver, "allow_private_realm_law_paused_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_realm_law_final_terms_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read active realm laws, native final enactability and all cost slots."""
+            return driver.query_realm_law_final_terms_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_realm_law_action", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_realm_law_crown_action_private_v1(expected_revision: int) -> dict[str, object]:
+            """Read final crown-law candidates, balances and title successor state."""
+            return driver.query_realm_law_crown_action_private_v1(expected_revision=expected_revision)
+
+        @server.tool()
+        def ck3_enact_realm_law_crown_private_v1(
+            readback: dict[str, object], law_key: str, budgets: dict[str, int],
+            action_id: str,
+        ) -> dict[str, object]:
+            """Enact one explicitly selected crown law within caller resource limits."""
+            return driver.submit_realm_law_crown_private_v1(
+                readback=readback, law_key=law_key, budgets=budgets, action_id=action_id,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_realm_law_crown_receipt_private_v1(
+            expected_revision: int, submitted_request_id: str,
+        ) -> dict[str, object]:
+            """Read independent effective-law, resource and successor postconditions."""
+            return driver.query_realm_law_crown_receipt_private_v1(
+                expected_revision=expected_revision, submitted_request_id=submitted_request_id,
+            )
+
+    if getattr(driver, "allow_private_council_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_council_composition_candidates_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read completed native Steward candidates through the private mailbox."""
+            return driver.query_council_composition_candidates_private_v1(expected_revision=expected_revision)
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_council_final_gates_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native candidate, pending interaction and incumbent final gates."""
+            return driver.query_council_final_gates_private_v1(expected_revision=expected_revision)
+
+    if getattr(driver, "allow_private_council_action", False) is True:
+        @server.tool()
+        def ck3_assign_councillor_private_v1(
+            query: dict[str, object], candidate_character_id: int,
+            expected_revision: int, action_request_id: str | None = None,
+        ) -> dict[str, object]:
+            """Assign one selected native council candidate from its same-frame quote."""
+            return driver.submit_council_assign_private_v1(
+                query=query, candidate_character_id=candidate_character_id,
+                expected_revision=expected_revision, action_request_id=action_request_id,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_council_assign_receipt_private_v1(
+            pending: dict[str, object], expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the assignment's independent later-frame incumbent receipt."""
+            return driver.query_council_assign_receipt_private_v1(pending=pending, expected_revision=expected_revision)
+
+    if getattr(driver, "allow_private_government_runtime_adapter_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_government_runtime_adapter_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the native government identity and same-frame adapter readiness."""
+            return driver.query_government_runtime_adapter_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_family_obligations_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_family_obligations_private_v1(
+            expected_revision: int, subject_character_id: int,
+            candidate_character_id: int, request_matrilineal_option: bool = False,
+            break_recipient_character_id: int | None = None,
+        ) -> dict[str, object]:
+            """Read native child-house preview and betrothal-break cost coverage."""
+            return driver.query_family_obligations_private_v1(
+                expected_revision=expected_revision, subject_character_id=subject_character_id,
+                candidate_character_id=candidate_character_id,
+                request_matrilineal_option=request_matrilineal_option,
+                break_recipient_character_id=break_recipient_character_id,
+            )
+
+    if getattr(driver, "allow_private_war_cash_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_war_cash_current_resources_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read treasury, monthly flow and native military expense vectors."""
+            return driver.query_war_cash_current_resources_private_v1(expected_revision=expected_revision)
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_war_cash_termination_send_costs_private_v1(
+            expected_revision: int, war_id: int, outcome: str,
+        ) -> dict[str, object]:
+            """Read one war choice's on-send fees, keeping unpriced effects explicit."""
+            return driver.query_war_cash_termination_send_costs_private_v1(
+                expected_revision=expected_revision, war_id=war_id, outcome=outcome,
+            )
+
+    if getattr(driver, "allow_private_faction_gift_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_faction_gift_candidate_private_v1(
+            expected_revision: int,
+            same_frame_root: dict[str, object],
+            minimum_gold_reserve_raw: int = 10_000_000,
+        ) -> dict[str, object]:
+            """Read the native gift candidate against an observed same-frame root."""
+            from .driver import PreSubmissionRevisionMismatchError
+
+            snapshot = driver.take_internal_semantic_snapshot()
+            if type(expected_revision) is not int or snapshot.get("revision") != expected_revision:
+                raise PreSubmissionRevisionMismatchError(
+                    "private faction gift query requires the current public revision"
+                )
+            return driver.query_faction_gift_private_candidate_v1(
+                snapshot=snapshot,
+                same_frame_root=same_frame_root,
+                minimum_gold_reserve_raw=minimum_gold_reserve_raw,
+            )
+
+    if getattr(driver, "allow_private_faction_gift_action", False) is True:
+        @server.tool()
+        def ck3_send_faction_gift_private_v1(
+            candidate: dict[str, object],
+            checkpoint: dict[str, object],
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Submit one observed native gift candidate through its existing ledger."""
+            return driver.submit_faction_gift_private_v1(
+                candidate=candidate, checkpoint=checkpoint,
+                expected_revision=expected_revision,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_faction_gift_receipt_private_v1(
+            pending: dict[str, object], expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the independent native result of the pending gift."""
+            return driver.query_faction_gift_receipt_private_v1(
+                pending=pending, expected_revision=expected_revision,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_faction_gift_cold_recovery_private_v1(
+            pending: dict[str, object], expected_revision: int,
+        ) -> dict[str, object]:
+            """Re-read the pending gift's material facts after an existing restore."""
+            return driver.query_faction_gift_cold_recovery_private_v1(
+                pending=pending, expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_activity_feast_stage5_start_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_feast_stage5_start_inputs_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read Feast final Start legality, configured costs and guest inputs."""
+            return driver.query_activity_feast_stage5_start_inputs_private_v1(
+                expected_revision=expected_revision,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_feast_hosted_post_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read hosted Feast identity and native completed or invalidated flags."""
+            return driver.query_activity_feast_hosted_post_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_activity_stage5_feast_full_cost_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_stage5_feast_full_cost_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read every native Feast resource cost on the current paused frame."""
+            return driver.query_activity_stage5_feast_full_cost_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_activity_feast_guest_candidate_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_feast_guest_candidate_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native guest candidate IDs and join or arrival observations."""
+            return driver.query_activity_feast_guest_candidate_private_v1(
+                expected_revision=expected_revision,
             )
 
     @server.tool()
@@ -1785,7 +2032,7 @@ def create_server(
             task_key,
         )
 
-    @server.tool()
+    @server.tool(annotations=read_only_tool)
     def ck3_query_player_faction_alerts_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -3034,6 +3281,62 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="enable a local stdio-only read of one specified player child",
     )
+    result.add_argument(
+        "--private-active-scheme-sway-query", action="store_true",
+        help="enable the private read of the current Sway instance and native terms",
+    )
+    result.add_argument(
+        "--private-realm-law-paused-query", action="store_true",
+        help="enable the private current-player realm-law final-terms read",
+    )
+    result.add_argument(
+        "--private-government-runtime-adapter-query", action="store_true",
+        help="enable the private same-frame government and effective-feature read",
+    )
+    result.add_argument(
+        "--private-prisoner-collection-query", action="store_true",
+        help="enable the private prisoner collection and native ransom quote read",
+    )
+    result.add_argument(
+        "--private-activity-feast-queries", action="store_true",
+        help="enable private Feast observation tools without enabling Start",
+    )
+    result.add_argument(
+        "--private-war-cash-queries", action="store_true",
+        help="enable actual current military expenses and termination send-fee reads",
+    )
+    result.add_argument(
+        "--private-family-obligations-query", action="store_true",
+        help="enable native child-house preview and betrothal-break terms reads",
+    )
+    result.add_argument(
+        "--private-council-query", action="store_true",
+        help="enable native Steward candidates and complete final-gate reads",
+    )
+    result.add_argument(
+        "--private-realm-law-crown-action", action="store_true",
+        help="enable the private explicit crown-law quote, typed enact and receipt",
+    )
+    result.add_argument(
+        "--private-active-scheme-sway-action", action="store_true",
+        help="enable explicit private Sway quote, typed start and independent receipt",
+    )
+    result.add_argument(
+        "--private-council-action", action="store_true",
+        help="enable the private explicit council candidate assignment and receipt",
+    )
+    result.add_argument(
+        "--private-faction-gift-query", action="store_true",
+        help="enable the private gift candidate read against an observed campaign root",
+    )
+    result.add_argument(
+        "--private-faction-gift-action", action="store_true",
+        help="enable explicit private gift submit, independent receipt and cold fact read",
+    )
+    result.add_argument(
+        "--private-prisoner-ransom-action", action="store_true",
+        help="enable an explicit private ransom using the current native collection quote",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3101,6 +3404,18 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError(
             "private player-child marriage MCP query requires native-headless stdio"
         )
+    if (args.private_active_scheme_sway_query or args.private_realm_law_paused_query
+            or args.private_government_runtime_adapter_query
+            or args.private_prisoner_collection_query
+            or args.private_activity_feast_queries or args.private_war_cash_queries
+            or args.private_family_obligations_query or args.private_council_query
+            or args.private_realm_law_crown_action
+            or args.private_active_scheme_sway_action or args.private_council_action
+            or args.private_faction_gift_query or args.private_faction_gift_action
+            or args.private_prisoner_ransom_action) and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError("private nonwar MCP queries require native-headless stdio")
     selected_state_dir = Path(args.state_dir) if args.state_dir else _default_state_dir()
     driver = load_driver(
         args.driver,
@@ -3114,6 +3429,43 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_current_first_heir_relationship_query = True
     if args.private_player_child_marriage_subject_query:
         driver.allow_private_player_child_marriage_subject_query = True
+    if args.private_active_scheme_sway_query:
+        driver.allow_private_active_scheme_sway_query = True
+    if args.private_realm_law_paused_query:
+        driver.allow_private_realm_law_paused_query = True
+    if args.private_government_runtime_adapter_query:
+        driver.allow_private_government_runtime_adapter_query = True
+    if args.private_prisoner_collection_query:
+        driver.allow_private_prisoner_collection_query = True
+    if args.private_activity_feast_queries:
+        driver.allow_private_activity_planner_diag_query = True
+        driver.allow_private_activity_stage5_feast_full_cost_query = True
+        driver.allow_private_activity_feast_stage5_start_query = True
+        driver.allow_private_activity_feast_guest_candidate_query = True
+        driver.allow_private_activity_feast_guest_target_query = True
+        driver.allow_private_activity_feast_lifecycle_observation = True
+    if args.private_war_cash_queries:
+        driver.allow_private_war_cash_query = True
+    if args.private_family_obligations_query:
+        driver.allow_private_family_obligations_query = True
+    if args.private_council_query:
+        driver.allow_private_council_query = True
+    if args.private_realm_law_crown_action:
+        driver.allow_private_realm_law_action = True
+    if args.private_active_scheme_sway_action:
+        driver.allow_private_active_scheme_sway_query = True
+        driver.allow_private_active_scheme_sway_action = True
+    if args.private_council_action:
+        driver.allow_private_council_query = True
+        driver.allow_private_council_action = True
+    if args.private_faction_gift_query:
+        driver.allow_private_faction_gift_query = True
+    if args.private_faction_gift_action:
+        driver.allow_private_faction_gift_query = True
+        driver.allow_private_faction_gift_action = True
+    if args.private_prisoner_ransom_action:
+        driver.allow_private_prisoner_collection_query = True
+        driver.allow_private_prisoner_ransom_action = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

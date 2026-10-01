@@ -1,0 +1,36 @@
+{
+  "source": "actual native current resources and termination send fees C++ fixture serializer",
+  "local_ck3_operations": [],
+  "fixtures": [
+    {
+      "file": "ck3_12002_war_cash_current-resources-normal.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\war-cash\\native-producer\\current-resources-normal.json",
+      "sha256": "a5fd96bedaa9fc073e136940b147e0f7632cbd4dccede008367f93e07568b7d0"
+    },
+    {
+      "file": "ck3_12002_war_cash_current-zero-normal.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\war-cash\\native-producer\\current-zero-normal.json",
+      "sha256": "d7aaa86077a2dcf586eac067f62a11327f4839a529ce2e0523fc6145559a9e2c"
+    },
+    {
+      "file": "ck3_12002_war_cash_partial-resources-normal.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\war-cash\\native-producer\\partial-resources-normal.json",
+      "sha256": "9360741fe52d2516b5a99283be81fe7e852977e234de27edd8a80d225372459b"
+    },
+    {
+      "file": "ck3_12002_war_cash_drift-unavailable-normal.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\war-cash\\native-producer\\drift-unavailable-normal.json",
+      "sha256": "b451b4c1d73af4fc5d544f91c6113ad4d2f563eb53a72443c7fa883be5344ec9"
+    },
+    {
+      "file": "ck3_12002_war_cash_termination-send-zero-normal.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\war-cash\\native-producer\\termination-send-zero-normal.json",
+      "sha256": "7978aae753e2069fb599b64e09fb054ed90aeb9f7512e5d5312cb6d0787a778e"
+    },
+    {
+      "file": "ck3_12002_war_cash_termination-send-unavailable-normal.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\war-cash\\native-producer\\termination-send-unavailable-normal.json",
+      "sha256": "7d521863ce7d96a8bb47ec5cbfcd66b2883165e4721c206838de761fe535b17d"
+    }
+  ]
+}

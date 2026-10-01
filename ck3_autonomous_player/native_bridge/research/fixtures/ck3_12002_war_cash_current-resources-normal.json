@@ -1,0 +1,105 @@
+{
+  "schema": "xar.ck3.war-cash-current-resources.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "status": "available",
+  "read_only": true,
+  "advertised": false,
+  "formal_action_ready": false,
+  "snapshot_revision": 71,
+  "date_raw": 53175816,
+  "played_character_id": 50331652,
+  "active_war_ids": [
+    33554435,
+    33554439
+  ],
+  "player_army_ids": [
+    83886089
+  ],
+  "current_treasury": {
+    "raw": -1250001,
+    "scale": 100000
+  },
+  "player_monthly_net_income": {
+    "raw": -321987,
+    "scale": 100000
+  },
+  "military_expenses": {
+    "current": {
+      "status": "available",
+      "resource_kind": "actor_military_current_maintenance",
+      "resource_id": "50331652",
+      "owner_character_id": 50331652,
+      "war_ids": [
+        33554435,
+        33554439
+      ],
+      "time_basis": "month",
+      "raw_scale": 100000,
+      "source_scope": "actor_owned_military_once_across_all_wars",
+      "source": "native_character_current_military_expenses",
+      "resource_raw_native": [
+        123456,
+        0,
+        0,
+        0,
+        0,
+        0,
+        987654,
+        0,
+        0,
+        0
+      ],
+      "gold_raw": 123456,
+      "treasury_raw": 987654,
+      "future_war_cost_upper_ready": false,
+      "unavailable_reason": null
+    },
+    "all_raised": {
+      "status": "available",
+      "resource_kind": "actor_military_all_raised_maintenance",
+      "resource_id": "50331652",
+      "owner_character_id": 50331652,
+      "war_ids": [
+        33554435,
+        33554439
+      ],
+      "time_basis": "month",
+      "raw_scale": 100000,
+      "source_scope": "actor_owned_military_once_across_all_wars",
+      "source": "native_character_all_raised_military_expenses",
+      "resource_raw_native": [
+        456789,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1234567,
+        0,
+        0,
+        0
+      ],
+      "gold_raw": 456789,
+      "treasury_raw": 1234567,
+      "future_war_cost_upper_ready": false,
+      "unavailable_reason": null
+    }
+  },
+  "readiness": {
+    "current_treasury_ready": true,
+    "monthly_net_income_ready": true,
+    "current_military_expenses_ready": true,
+    "all_raised_military_expenses_ready": true,
+    "same_frame_ready": true
+  },
+  "unobserved_future_inputs": [
+    "pending_war_cash_raw",
+    "future_war_cost_upper_raw",
+    "future_risk_budget_raw",
+    "policy_minimum_gold_reserve_raw",
+    "horizon_days",
+    "future_bound_assumptions"
+  ],
+  "unavailable_reason": null
+}

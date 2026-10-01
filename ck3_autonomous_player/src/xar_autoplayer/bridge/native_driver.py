@@ -2599,6 +2599,161 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_realm_law_crown_action_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the current crown-law command source and resource balances."""
+        from .realm_law_formal_private_transport import query_realm_law_crown_action_private_v1
+
+        return query_realm_law_crown_action_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def submit_realm_law_crown_private_v1(
+        self, *, readback: Mapping[str, object], law_key: str,
+        budgets: Mapping[str, int], action_id: str,
+    ) -> dict[str, object]:
+        """Submit an explicit final-legal crown law with caller resource limits."""
+        from .realm_law_formal_private_transport import submit_realm_law_crown_private_v1
+
+        return submit_realm_law_crown_private_v1(
+            self, readback=readback, law_key=law_key, budgets=budgets,
+            action_id=action_id, timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_realm_law_crown_receipt_private_v1(
+        self, *, expected_revision: int, submitted_request_id: str,
+    ) -> dict[str, object]:
+        """Read the selected law's independent enactment and resource receipt."""
+        from .realm_law_formal_private_transport import query_realm_law_crown_receipt_private_v1
+
+        return query_realm_law_crown_receipt_private_v1(
+            self, expected_revision=expected_revision, submitted_request_id=submitted_request_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_council_composition_candidates_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Consume the private council query's completed owner-thread result."""
+        if getattr(self, "allow_private_council_query", False) is not True:
+            raise UnsupportedStepError("private council query is disabled")
+        from .council_private_transport_v1 import query_council_private_v1
+        from .nonwar_private_build import private_native_build_identity
+
+        source = private_native_build_identity(self.take_snapshot())
+        return query_council_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+            expected_game_version=source.game_version,
+            expected_executable_sha256=source.executable_sha256,
+        )
+
+    def query_council_final_gates_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read every candidate's native assignment and incumbent firing gates."""
+        if getattr(self, "allow_private_council_query", False) is not True:
+            raise UnsupportedStepError("private council query is disabled")
+        from .council_private_transport_v1 import PRIVATE_GATES_STEP, query_council_private_v1
+        from .nonwar_private_build import private_native_build_identity
+
+        source = private_native_build_identity(self.take_snapshot())
+        return query_council_private_v1(
+            self, expected_revision=expected_revision, query_step=PRIVATE_GATES_STEP,
+            timeout_seconds=self.command_timeout_seconds,
+            expected_game_version=source.game_version,
+            expected_executable_sha256=source.executable_sha256,
+        )
+
+    def submit_council_assign_private_v1(
+        self, *, query: Mapping[str, object], candidate_character_id: int,
+        expected_revision: int, action_request_id: str | None = None,
+    ) -> dict[str, object]:
+        """Assign a selected native council candidate and retain its pending receipt."""
+        if getattr(self, "allow_private_council_action", False) is not True:
+            raise UnsupportedStepError("private council assignment is disabled")
+        from .council_private_transport_v1 import submit_council_assign_private_v1
+        from .nonwar_private_build import private_native_build_identity
+
+        source = private_native_build_identity(self.take_snapshot())
+        return submit_council_assign_private_v1(
+            self, query=query, candidate_character_id=candidate_character_id,
+            expected_revision=expected_revision, action_request_id=action_request_id,
+            timeout_seconds=self.command_timeout_seconds,
+            expected_game_version=source.game_version,
+            expected_executable_sha256=source.executable_sha256,
+        )
+
+    def query_council_assign_receipt_private_v1(
+        self, *, pending: Mapping[str, object], expected_revision: int,
+    ) -> dict[str, object]:
+        """Verify the independent later-frame native incumbent postcondition."""
+        if getattr(self, "allow_private_council_action", False) is not True:
+            raise UnsupportedStepError("private council assignment is disabled")
+        from .council_private_transport_v1 import query_council_assign_receipt_private_v1
+        from .nonwar_private_build import private_native_build_identity
+
+        source = private_native_build_identity(self.take_snapshot())
+        return query_council_assign_receipt_private_v1(
+            self, pending=pending, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+            expected_game_version=source.game_version,
+            expected_executable_sha256=source.executable_sha256,
+        )
+
+    def query_government_runtime_adapter_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the native government and effective-feature adapter together."""
+        from .government_runtime_adapter_private_transport import (
+            query_government_runtime_adapter_private_v1,
+        )
+
+        return query_government_runtime_adapter_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_family_obligations_private_v1(
+        self, *, expected_revision: int, subject_character_id: int,
+        candidate_character_id: int, request_matrilineal_option: bool = False,
+        break_recipient_character_id: int | None = None,
+    ) -> dict[str, object]:
+        """Read native child-house preview and sampled betrothal-break penalties."""
+        from .family_obligations_private_transport import query_family_obligations_private_v1
+
+        return query_family_obligations_private_v1(
+            self, expected_revision=expected_revision, subject_character_id=subject_character_id,
+            candidate_character_id=candidate_character_id,
+            request_matrilineal_option=request_matrilineal_option,
+            break_recipient_character_id=break_recipient_character_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_war_cash_current_resources_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read actual treasury and actor-global military expenses once."""
+        from .war_cash_private_transport_v1 import query_war_cash_current_resources_private_v1
+
+        return query_war_cash_current_resources_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_war_cash_termination_send_costs_private_v1(
+        self, *, expected_revision: int, war_id: int, outcome: str,
+    ) -> dict[str, object]:
+        """Read generic on-send fees for one war termination choice."""
+        from .war_cash_private_transport_v1 import query_war_cash_termination_send_costs_private_v1
+
+        return query_war_cash_termination_send_costs_private_v1(
+            self, expected_revision=expected_revision, war_id=war_id, outcome=outcome,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_activity_planner_diag_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:
@@ -2608,6 +2763,58 @@ class NativeHeadlessGameplayDriver:
         )
 
         return query_activity_planner_diag_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_activity_stage5_feast_full_cost_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the Feast's native configured and minimum resource costs."""
+        from .activity_stage5_feast_full_cost_private_transport import (
+            query_activity_stage5_feast_full_cost_private_v1,
+        )
+
+        return query_activity_stage5_feast_full_cost_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_activity_feast_stage5_start_inputs_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read final Start terms without invoking the activity command."""
+        from .activity_feast_stage5_start_private_transport import (
+            query_activity_feast_stage5_start_inputs_private_v1,
+        )
+
+        return query_activity_feast_stage5_start_inputs_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_activity_feast_hosted_post_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read exact hosted activity identities and observed terminal flags."""
+        from .activity_feast_stage5_start_private_transport import (
+            query_activity_feast_hosted_post_private_v1,
+        )
+
+        return query_activity_feast_hosted_post_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_activity_feast_guest_candidate_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read native Feast guest candidates on the current paused stage."""
+        from .activity_feast_guest_candidate_private_transport import (
+            query_activity_feast_guest_candidate_private_v1,
+        )
+
+        return query_activity_feast_guest_candidate_private_v1(
             self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
         )
@@ -2983,7 +3190,7 @@ class NativeHeadlessGameplayDriver:
         self, *, snapshot: dict[str, object],
         same_frame_root: dict[str, object], minimum_gold_reserve_raw: int,
     ) -> dict[str, object]:
-        """Controlled paused faction read; absent from public steps and MCP."""
+        """Controlled paused faction read, also used by the opt-in private MCP tool."""
         from .faction_gift_private_transport_v1 import (
             query_faction_gift_private_candidate_v1,
         )
@@ -12700,10 +12907,15 @@ class NativeHeadlessGameplayDriver:
                 "native player faction alert query lacks query_sequence"
             )
         try:
+            from .nonwar_private_build import private_native_build_identity
+
+            source_build = private_native_build_identity(starting)
             normalized = normalize_player_faction_alerts_v1(
                 result.get("player_faction_alerts"),
                 expected_date_raw=date_raw,
                 expected_snapshot_revision=native_revision,
+                expected_game_version=source_build.game_version,
+                expected_executable_sha256=source_build.executable_sha256,
             )
             validate_player_faction_war_handoffs_v1(
                 normalized, starting.get("active_wars")

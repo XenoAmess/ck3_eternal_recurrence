@@ -662,6 +662,16 @@ class GameplayBridgeService:
 
             campaign_goal_plan = ordinary_campaign_goal_plan_v1(campaign_goal)
         state_dir = self._strategy_state_dir()
+        feast_lifecycle_observation = None
+        if (getattr(self.driver, "allow_private_activity_feast_lifecycle_observation", False) is True
+                and state_dir is not None and snapshot.get("paused") is True):
+            from ..activity_feast_stage5_start_formal_consumer import (
+                reconcile_feast_lifecycle_private_v1,
+            )
+
+            feast_lifecycle_observation = reconcile_feast_lifecycle_private_v1(
+                self.driver, snapshot=snapshot,
+            )
         if state_dir is not None and campaign_goal_plan is None:
             strategy = read_one_life_strategy(state_dir)
             if strategy.get("episodes"):
@@ -736,6 +746,8 @@ class GameplayBridgeService:
                     **plan,
                     "campaign_goal_plan_used": copy.deepcopy(campaign_goal_plan),
                 }
+            if feast_lifecycle_observation is not None:
+                plan = {**plan, "activity_feast_lifecycle_observation": feast_lifecycle_observation}
             routable_steps = set(available_steps)
             selected_step = plan.get("selected_step")
             if (
@@ -4421,10 +4433,15 @@ class GameplayBridgeService:
                 "player faction alert result lacks query_sequence"
             )
         try:
+            from .nonwar_private_build import private_native_build_identity
+
+            source_build = private_native_build_identity(snapshot)
             normalized = normalize_player_faction_alerts_v1(
                 result.get("player_faction_alerts"),
                 expected_date_raw=date_raw,
                 expected_snapshot_revision=native_revision,
+                expected_game_version=source_build.game_version,
+                expected_executable_sha256=source_build.executable_sha256,
             )
             validate_player_faction_war_handoffs_v1(
                 normalized, snapshot.get("active_wars")

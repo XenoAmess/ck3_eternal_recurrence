@@ -1,0 +1,20 @@
+{
+  "schema": "ck3_12002_prisoner_retention_python_wire_provenance_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "scope": "Actual production 1.20 prisoner-retention reader and production serializer in synthetic exact-layout memory. Existing ransom dependency only; no new war research or live evidence.",
+  "wire_metadata": "Existing stable DTO and selector do not add version fields; native source fixture identity and current driver hello bind the new provider.",
+  "fixtures": [
+    {
+      "file": "ck3_12002_prisoner_retention_positive.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\prisoner\\war-retention-wire\\actual-wire\\positive.json",
+      "sha256": "bc5069b1d961f6c81ed65d2529909c7c2e520838ddb523361cf2308da3a41f3b"
+    },
+    {
+      "file": "ck3_12002_prisoner_retention_empty.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\prisoner\\war-retention-wire\\actual-wire\\empty.json",
+      "sha256": "b26b085dbaec7285a73fe316b0bde807d300436521e00857eb8d3762987c7cad"
+    }
+  ],
+  "local_ck3_operations": []
+}

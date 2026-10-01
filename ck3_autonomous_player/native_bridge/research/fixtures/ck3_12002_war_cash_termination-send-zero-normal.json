@@ -1,0 +1,63 @@
+{
+  "schema": "xar.ck3.war-cash-termination-send-costs.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "status": "available",
+  "read_only": true,
+  "advertised": false,
+  "formal_action_ready": false,
+  "snapshot_revision": 71,
+  "date_raw": 53175816,
+  "played_character_id": 50331652,
+  "war_id": 33554435,
+  "outcome": "surrender",
+  "actor_character_id": 50331652,
+  "recipient_character_id": 67108869,
+  "interaction_key": "end_war_attacker_defeat_interaction",
+  "native_validator": {
+    "observable": true,
+    "passed": false
+  },
+  "generic_send_costs": {
+    "status": "available",
+    "resource_raw_native": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "resource_keys": [
+      "gold",
+      "prestige",
+      "piety",
+      "renown",
+      "influence",
+      "herd",
+      "treasury",
+      "treasury_or_gold",
+      "merit",
+      "barter_goods"
+    ],
+    "raw_scale": 100000,
+    "gold_raw": 0,
+    "payer_role": "actor",
+    "application_timing": "on_send",
+    "payment_state": "not_yet_applied",
+    "source": "ck3-1.20.0.2-native-termination-context-generic-send-cost"
+  },
+  "special_outcome_gold_cost_raw": null,
+  "total_immediate_gold_cost_raw": null,
+  "unpriced_reason": "special_outcome_and_authored_effect_costs_not_observed",
+  "readiness": {
+    "generic_send_costs_ready": true,
+    "total_immediate_gold_cost_ready": false,
+    "same_frame_ready": true
+  },
+  "unavailable_reason": null
+}
