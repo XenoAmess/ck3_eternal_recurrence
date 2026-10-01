@@ -1,0 +1,423 @@
+{
+  "schema": "ck3_12002_religion_reform_willingness_research_v1",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "game_version": "1.20.0.2",
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "native_spans": [
+    {
+      "name": "native_ai_reform_handler",
+      "start_rva": "0x1a9d890",
+      "end_exclusive_rva": "0x1a9da1f",
+      "kind": "complete_function",
+      "sha256": "457eaba2e073c8e0025f6359c5652fdd7f9479f0c4f31d31469e2b4376bcf148",
+      "bytes": "40 53 48 81 ec f0 0e 00 00 f6 41 16 01 0f 84 73 01 00 00 0f b6 41 14 c0 e8 06 a8 01 0f 84 64 01 00 00 80 79 2e 00 0f 85 5a 01 00 00 48 8b 59 18 48 8b 15 31 0a 28 04 48 85 d2 74 2d 44 8b 83 b4 00 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 08 74 07 48 8b 05 70 9d 1c 04 8b 80 b8 04 00 00 4c 8b 05 f3 09 28 04 4d 85 c0 74 27 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 19 8b d1 48 03 d2 49 8b 48 20 4c 8b 4c d1 08 4d 85 c9 74 06 41 39 41 08 74 07 4c 8b 0d a0 09 28 04 49 8b c9 e8 18 b0 13 01 84 c0 0f 84 c6 00 00 00 41 b8 01 00 00 00 49 8b d1 48 8d 8c 24 a0 07 00 00 e8 3a d8 13 01 90 8b 4b 18 c6 44 24 28 00 33 db 48 89 5c 24 2c 89 5c 24 34 48 8d 15 cf 2b cd 02 48 89 54 24 20 48 8d 15 7b 2a cd 02 48 89 54 24 38 89 4c 24 40 48 8b d0 48 8d 4c 24 48 e8 6d 45 f0 00 90 48 8d 8c 24 a0 07 00 00 e8 2f 56 a5 ff 33 d2 48 8d 4c 24 20 e8 a3 55 f0 00 84 c0 74 4b 48 8b 44 24 20 48 8d 94 24 08 0f 00 00 48 8d 4c 24 20 ff 50 40 90 48 8b 08 48 89 18 48 89 8c 24 00 0f 00 00 8d 53 07 48 8d 8c 24 00 0f 00 00 e8 4b e2 d4 01 90 48 8b 8c 24 08 0f 00 00 48 85 c9 74 09 48 8b 01 8d 53 01 ff 10 90 48 8d 4c 24 48 e8 ca 55 a5 ff 48 81 c4 f0 0e 00 00 5b c3"
+    },
+    {
+      "name": "Faith.IsUnreformed",
+      "start_rva": "0x2bd8960",
+      "end_exclusive_rva": "0x2bd89b6",
+      "kind": "complete_function",
+      "sha256": "2ade2b49e932715d3b62cd923567d319db5da0ba744d80be984ea9f49ef25f93",
+      "bytes": "48 8b 05 91 59 14 03 48 85 c0 75 0f 48 8b 05 fd ec 08 03 0f b6 80 b0 08 00 00 c3 44 8b 81 98 00 00 00 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 c2 ec 08 03 0f b6 82 b0 08 00 00 c3"
+    },
+    {
+      "name": "Faith.GetMainRite",
+      "start_rva": "0x2444360",
+      "end_exclusive_rva": "0x244439d",
+      "kind": "complete_function",
+      "sha256": "3e4943fa3e2f996168b9b3f0846540c91a7f5ae61be9bfd85d9e9603bea52c32",
+      "bytes": "48 8b 05 91 9f 8d 03 48 85 c0 74 29 8b 91 98 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 d4 32 82 03 c3"
+    },
+    {
+      "name": "Faith.IsUnreformed.reflection",
+      "start_rva": "0x2444600",
+      "end_exclusive_rva": "0x2444635",
+      "kind": "complete_function",
+      "sha256": "35b46755cc0a9308df188a8b2391e38e6bbdb45668ccaaca1908887b30fd76f8",
+      "bytes": "4c 89 44 24 18 48 83 ec 28 4c 8b ca 48 85 c9 74 1d e8 4a 43 79 00 48 8d 54 24 40 88 44 24 40 49 8b c9 e8 c9 54 43 fe b0 01 48 83 c4 28 c3 32 c0 48 83 c4 28 c3"
+    },
+    {
+      "name": "Faith.default_draft.mode_1",
+      "start_rva": "0x2bdb1a0",
+      "end_exclusive_rva": "0x2bdb2c8",
+      "kind": "complete_function",
+      "sha256": "f1969ef6f0c1a11edbbc920931df10bde1136bf7aa3a36103bf93acef36988f1",
+      "bytes": "48 89 5c 24 10 48 89 74 24 18 48 89 4c 24 08 57 48 81 ec 20 05 00 00 41 8b f0 48 8b fa 48 8b d9 c7 44 24 20 00 00 00 00 e8 b3 00 86 ff c7 44 24 20 01 00 00 00 4c 8b 87 90 00 00 00 48 8b 15 55 50 14 03 41 80 78 4c 00 74 0b 41 80 78 4c 02 75 04 49 8b 50 40 45 33 c9 48 8b cb e8 e0 02 86 ff 48 8b d7 48 8d 4c 24 28 e8 03 f9 ff ff 90 48 8d 8b 40 02 00 00 48 8b d0 e8 c3 9b 91 fe 90 48 8d 4c 24 28 e8 48 79 91 fe 48 8b cf e8 30 d7 ff ff 44 0f b6 c0 48 8d 97 d8 00 00 00 48 8d 4b 28 e8 cc f7 85 ff 85 f6 75 32 48 8d 8b 18 01 00 00 48 83 bb 30 01 00 00 10 72 07 48 8b 8b 18 01 00 00 48 c7 83 28 01 00 00 00 00 00 00 c6 01 00 c7 83 18 02 00 00 ff ff ff ff eb 36 48 8b 97 90 00 00 00 48 83 c2 70 48 8b cb e8 d3 0d 86 ff 48 8b 05 bc d9 08 03 4c 8b 80 a0 00 00 00 49 81 c0 28 d5 00 00 48 8b d3 8b 8f f0 02 00 00 e8 b0 e1 ff ff 48 8b c3 4c 8d 9c 24 20 05 00 00 49 8b 5b 18 49 8b 73 20 49 8b e3 5f c3"
+    },
+    {
+      "name": "CCreateRiteCommand.owning_clone",
+      "start_rva": "0x29a7030",
+      "end_exclusive_rva": "0x29a70c2",
+      "kind": "complete_function",
+      "sha256": "8553ee0a4dd4f819bc51b5eedfa427fb49c7b08fbd597071cd13606b3581b458",
+      "bytes": "48 89 5c 24 08 48 89 74 24 18 48 89 54 24 10 57 48 83 ec 20 48 8b f2 48 8b d9 b9 78 07 00 00 e8 60 cb 87 01 48 8b f8 48 89 44 24 38 48 8d 05 35 40 ae 01 48 89 07 44 0f b6 43 08 44 88 47 08 44 8b 43 0c 44 89 47 0c 8b 53 10 89 57 10 8b 4b 14 89 4f 14 48 8d 05 c6 94 dc 01 48 89 07 48 8d 05 74 93 dc 01 48 89 47 18 8b 43 20 89 47 20 48 8d 4f 28 48 8d 53 28 e8 65 ae ff ff 90 48 89 3e 48 8b c6 48 8b 5c 24 30 48 8b 74 24 40 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "AI.ToggleReligiousReformation.registration",
+      "start_rva": "0x337820",
+      "end_exclusive_rva": "0x3379f8",
+      "kind": "complete_function",
+      "sha256": "4141a8fe510aecf660cf630774f4bfbed23b14b557cd1576590509e428d21782",
+      "bytes": "40 53 56 57 48 83 ec 40 48 8d 05 85 76 0f 04 48 89 44 24 30 33 f6 89 74 24 38 40 88 74 24 3c 48 8d 05 92 2b 27 04 48 89 44 24 20 c7 44 24 28 1d 00 00 00 40 88 74 24 2c b8 02 00 00 00 f0 0f c1 05 d7 8c a0 05 8d 5e fe a8 01 74 33 0f 1f 40 00 8b c3 f0 0f c1 05 c2 8c a0 05 66 0f 1f 44 00 00 8b 05 b6 8c a0 05 a8 01 74 04 f3 90 eb f2 b8 02 00 00 00 f0 0f c1 05 a1 8c a0 05 a8 01 75 d1 48 8d 4c 24 20 e8 47 19 c6 03 48 8b f8 f0 0f c1 1d 88 8c a0 05 48 85 c0 74 42 e8 42 f9 cb 01 48 8b de 48 39 47 70 48 0f 44 df 48 85 db 74 2d 48 8d 54 24 20 48 8b cb e8 e5 0b c6 03 48 8d 54 24 30 48 8b cb e8 88 0c c6 03 48 8d 05 8a 0c 11 05 48 89 43 08 48 83 c4 40 5f 5e 5b c3 b9 80 00 00 00 e8 af c2 ee 03 48 8b f8 48 89 44 24 68 48 89 44 24 60 48 8d 05 8f 29 68 04 48 89 07 48 8d 05 56 0c 11 05 48 89 47 08 48 89 77 10 48 89 77 18 48 8d 05 4a 0f 1c 05 48 89 47 20 48 89 77 28 48 89 77 30 48 89 77 40 48 c7 47 48 0f 00 00 00 c6 47 30 00 b9 20 00 00 00 e8 54 f4 51 00 48 c7 47 40 1d 00 00 00 48 c7 47 48 1f 00 00 00 0f 10 05 65 2a 27 04 0f 11 00 f2 0f 10 0d 6a 2a 27 04 f2 0f 11 48 10 8b 0d 67 2a 27 04 89 48 18 0f b6 0d 61 2a 27 04 88 48 1c c6 40 1d 00 48 89 47 30 48 89 77 50 48 c7 47 68 0f 00 00 00 48 89 77 60 c6 47 50 00 48 8d 5f 70 48 89 5c 24 70 e8 40 e2 73 00 48 89 03 33 c0 48 89 43 08 e8 32 f8 cb 01 4c 8b c0 48 8d 54 24 60 48 8b cb e8 a2 e1 73 00 90 48 8d 05 42 34 68 04 48 89 07 48 8b cf 48 83 c4 40 5f 5e 5b e9 48 19 c6 03"
+    },
+    {
+      "name": "rare_dispatch.reform_only",
+      "start_rva": "0x19e87c8",
+      "end_exclusive_rva": "0x19e87d9",
+      "kind": "slice",
+      "sha256": "acc42566907da4d0c0aefc12e51af105fdfa4571d5b2a575d0c8173d6dd11491",
+      "bytes": "80 3d aa fd a5 03 00 74 08 48 8b ce e8 b7 50 0b 00"
+    },
+    {
+      "name": "rare_queue.callsite",
+      "start_rva": "0x1a3219c",
+      "end_exclusive_rva": "0x1a32246",
+      "kind": "slice",
+      "sha256": "1b7ffce556afddd6402b3b883af7422243c939e1ff056d4ccb6c46d2b72e8a0f",
+      "bytes": "48 8b 9e 38 01 00 00 48 63 86 44 01 00 00 48 8d 3c c3 48 3b df 0f 84 8f 00 00 00 4c 8d 3d 22 a0 b7 02 66 90 4c 8b 33 80 3d eb 65 a1 03 00 74 58 48 89 75 b0 4c 89 75 b8 4c 89 bd a0 00 00 00 0f 28 45 b0 0f 11 85 a8 00 00 00 48 8d 85 a0 00 00 00 48 89 85 d8 00 00 00 48 8d 95 a0 00 00 00 49 8b cc e8 cd 0d 00 00 48 8b 8d d8 00 00 00 48 85 c9 74 2a 48 8b 01 48 8d 95 a0 00 00 00 48 3b ca 0f 95 c2 ff 50 20 eb 15 49 8b d6 48 8b ce e8 21 08 00 00 8b d0 49 8b ce e8 47 65 fb ff 48 83 c3 08 48 3b df 0f 85 7a ff ff ff"
+    },
+    {
+      "name": "Faith.IsUnreformed.registration",
+      "start_rva": "0x4d5b19",
+      "end_exclusive_rva": "0x4d5bb7",
+      "kind": "slice",
+      "sha256": "bf190ae4465ea72551a844e4560b6401f13a81b5f334d4cc8f32d92bbf296497",
+      "bytes": "48 c7 45 07 0f 00 00 00 48 c7 45 ff 0c 00 00 00 f2 0f 10 05 e7 a1 25 04 f2 0f 11 45 ef 8b 05 e4 a1 25 04 89 45 f7 40 88 7d fb 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 a8 03 38 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 82 e7 39 00 90 48 8d 45 0f 48 89 44 24 30 89 7c 24 28 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 52 ea f6 01 48 8d 4d ef e8 19 a6 5f 00"
+    },
+    {
+      "name": "profiler.enum_22_label",
+      "start_rva": "0x24b82bf",
+      "end_exclusive_rva": "0x24b82c7",
+      "kind": "slice",
+      "sha256": "fbb8feb2d259c121414f6cf8eac36d6b4ab16aba5df00c2236099a1ee18b21a1",
+      "bytes": "48 8d 05 d2 c7 27 02 c3"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "ai_bit_0_required",
+      "rva": "0x1a9d899",
+      "bytes": "f6 41 16 01",
+      "instruction": "test byte ptr [rcx + 0x16], 1",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "ai_bit_6_required",
+      "rva": "0x1a9d8a3",
+      "bytes": "0f b6 41 14",
+      "instruction": "movzx eax, byte ptr [rcx + 0x14]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "ai_special_state_zero",
+      "rva": "0x1a9d8b2",
+      "bytes": "80 79 2e 00",
+      "instruction": "cmp byte ptr [rcx + 0x2e], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "ai_actor_pointer",
+      "rva": "0x1a9d8bc",
+      "bytes": "48 8b 59 18",
+      "instruction": "mov rbx, qword ptr [rcx + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "character_rite_full_id",
+      "rva": "0x1a9d8cc",
+      "bytes": "44 8b 83 b4 00 00 00",
+      "instruction": "mov r8d, dword ptr [rbx + 0xb4]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_faith_full_id",
+      "rva": "0x1a9d900",
+      "bytes": "8b 80 b8 04 00 00",
+      "instruction": "mov eax, dword ptr [rax + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "native_unreformed_call",
+      "rva": "0x1a9d943",
+      "bytes": "e8 18 b0 13 01",
+      "instruction": "call 0x2bd8960",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bd8960"
+      ]
+    },
+    {
+      "name": "default_draft_mode_1",
+      "rva": "0x1a9d950",
+      "bytes": "41 b8 01 00 00 00",
+      "instruction": "mov r8d, 1",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "default_draft_call",
+      "rva": "0x1a9d961",
+      "bytes": "e8 3a d8 13 01",
+      "instruction": "call 0x2bdb1a0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bdb1a0"
+      ]
+    },
+    {
+      "name": "actor_full_id",
+      "rva": "0x1a9d967",
+      "bytes": "8b 4b 18",
+      "instruction": "mov ecx, dword ptr [rbx + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "command_vtable",
+      "rva": "0x1a9d97a",
+      "bytes": "48 8d 15 cf 2b cd 02",
+      "instruction": "lea rdx, [rip + 0x2cd2bcf]",
+      "rip_targets": [
+        "0x4770550"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "draft_copy_call",
+      "rva": "0x1a9d99e",
+      "bytes": "e8 6d 45 f0 00",
+      "instruction": "call 0x29a1f10",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x29a1f10"
+      ]
+    },
+    {
+      "name": "final_can_execute",
+      "rva": "0x1a9d9b8",
+      "bytes": "e8 a3 55 f0 00",
+      "instruction": "call 0x29a2f60",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x29a2f60"
+      ]
+    },
+    {
+      "name": "final_gate_result",
+      "rva": "0x1a9d9bf",
+      "bytes": "74 4b",
+      "instruction": "je 0x1a9da0c",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "clone_virtual_40",
+      "rva": "0x1a9d9d3",
+      "bytes": "ff 50 40",
+      "instruction": "call qword ptr [rax + 0x40]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "queue_priority_7",
+      "rva": "0x1a9d9e5",
+      "bytes": "8d 53 07",
+      "instruction": "lea edx, [rbx + 7]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "owning_queue_call",
+      "rva": "0x1a9d9f0",
+      "bytes": "e8 4b e2 d4 01",
+      "instruction": "call 0x37ebc40",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x37ebc40"
+      ]
+    },
+    {
+      "name": "faith_main_rite_full_id",
+      "rva": "0x2bd897b",
+      "bytes": "44 8b 81 98 00 00 00",
+      "instruction": "mov r8d, dword ptr [rcx + 0x98]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "native_main_rite_full_generation",
+      "rva": "0x2bd89a1",
+      "bytes": "44 39 42 08",
+      "instruction": "cmp dword ptr [rdx + 8], r8d",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "native_main_rite_unreformed_bool",
+      "rva": "0x2bd89ae",
+      "bytes": "0f b6 82 b0 08 00 00",
+      "instruction": "movzx eax, byte ptr [rdx + 0x8b0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "reflection_bool_call",
+      "rva": "0x2444611",
+      "bytes": "e8 4a 43 79 00",
+      "instruction": "call 0x2bd8960",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bd8960"
+      ]
+    },
+    {
+      "name": "reflection_registration_callback",
+      "rva": "0x4d5ba7",
+      "bytes": "48 8d 15 52 ea f6 01",
+      "instruction": "lea rdx, [rip + 0x1f6ea52]",
+      "rip_targets": [
+        "0x2444600"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "AI_toggle_global",
+      "rva": "0x3378e8",
+      "bytes": "48 8d 05 8a 0c 11 05",
+      "instruction": "lea rax, [rip + 0x5110c8a]",
+      "rip_targets": [
+        "0x5448579"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "rare_toggle_comparison",
+      "rva": "0x19e87c8",
+      "bytes": "80 3d aa fd a5 03 00",
+      "instruction": "cmp byte ptr [rip + 0x3a5fdaa], 0",
+      "rip_targets": [
+        "0x5448579"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "rare_handler_call",
+      "rva": "0x19e87d4",
+      "bytes": "e8 b7 50 0b 00",
+      "instruction": "call 0x1a9d890",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1a9d890"
+      ]
+    },
+    {
+      "name": "rare_queue_actor_loop",
+      "rva": "0x1a32234",
+      "bytes": "e8 47 65 fb ff",
+      "instruction": "call 0x19e8780",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x19e8780"
+      ]
+    },
+    {
+      "name": "clone_allocation_778",
+      "rva": "0x29a704a",
+      "bytes": "b9 78 07 00 00",
+      "instruction": "mov ecx, 0x778",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "clone_actor_id",
+      "rva": "0x29a7098",
+      "bytes": "8b 43 20",
+      "instruction": "mov eax, dword ptr [rbx + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    }
+  ],
+  "command_vtable": {
+    "rva": "0x4770550",
+    "validator_slot": "0x30",
+    "validator_rva": "0x29a2f60",
+    "clone_slot": "0x40",
+    "clone_rva": "0x29a7030"
+  },
+  "reflection_name": {
+    "rva": "0x472fd18",
+    "literal": "IsUnreformed"
+  },
+  "source_bindings": {
+    "kFaithMainRiteGetterRva": "0x2444360",
+    "kFaithIsUnreformedGetterRva": "0x2bd8960",
+    "kFaithMainRiteIdOffset": "0x98",
+    "kObjectFullReferenceOffset": "0x8",
+    "kRiteUnreformedOffset": "0x8b0"
+  },
+  "stock_sources": [
+    {
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "b446a8935566ebe17cfa3b76888b197c56fc5041629414167bd07a8f9f4a0475",
+      "ranges": [
+        [
+          3,
+          17
+        ],
+        [
+          207,
+          225
+        ],
+        [
+          390,
+          436
+        ],
+        [
+          483,
+          537
+        ],
+        [
+          563,
+          572
+        ],
+        [
+          694,
+          701
+        ]
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "ranges": [
+        [
+          338,
+          344
+        ]
+      ]
+    },
+    {
+      "path": "common/script_values/02_religion_values.txt",
+      "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+      "ranges": [
+        [
+          4805,
+          4806
+        ]
+      ]
+    }
+  ],
+  "unresolved": [
+    "AI masks semantic names",
+    "Rare queue scheduling period and membership",
+    "general non-unreformed AI Rite creation",
+    "native outcome hook dispatch and independent post-action readback"
+  ]
+}

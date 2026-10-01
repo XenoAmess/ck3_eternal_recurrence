@@ -1,0 +1,185 @@
+{
+  "schema": "ck3_12002_current_rite_creation_window_static_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "source_constants": {
+    "kDraftIdlerVtableRva": "0x44bc408",
+    "kDraftHandlerVtableRva": "0x44ba890",
+    "kDraftWindowPrimaryVtableRva": "0x4565c30",
+    "kDraftWindowSecondaryVtableRva": "0x4565c08",
+    "kDraftWindowVisibilityRva": "0x21603a0",
+    "kDraftHandlerFromIdlerOffset": "0x88",
+    "kDraftWindowFromHandlerOffset": "0x278",
+    "kDraftWindowOwnerOffset": "0xa0",
+    "kDraftWindowRiteIdOffset": "0xc8",
+    "kDraftWindowActorIdOffset": "0xcc"
+  },
+  "complete_functions": [
+    {
+      "name": "CRiteCreationWindow.constructor",
+      "start_rva": "0x14f21f0",
+      "end_exclusive_rva": "0x14f268f",
+      "sha256": "4cc0f4a46fd7594fda90afd6460a16f2aa8a0689a9b6a7ab3f255f12aa5a743e",
+      "bytes": "48 89 5c 24 20 48 89 4c 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8b ec 48 83 ec 50 49 8b f8 48 8b da 4c 8b f1 48 8d 05 14 40 07 03 48 89 45 d0 c7 45 d8 14 00 00 00 c6 45 dc 00 48 8d 05 de 3f 07 03 48 89 45 e0 c7 45 e8 1c 00 00 00 c6 45 ec 00 48 8b 42 18 4c 8b 80 b8 01 00 00 49 8b 50 58 4c 8d 4d d0 4c 8d 45 e0 e8 d3 f5 5c 02 49 89 9e 98 00 00 00 49 89 be a0 00 00 00 0f 57 c0 33 c0 41 0f 11 86 a8 00 00 00 49 89 86 b8 00 00 00 45 33 ed 45 89 ae c0 00 00 00 48 8d 05 a0 39 07 03 49 89 06 48 8d 05 6e 39 07 03 49 89 46 10 49 c7 86 c8 00 00 00 ff ff ff ff 49 8d 8e d0 00 00 00 e8 ab 7c 39 ff 90 49 8d 8e 38 02 00 00 e8 ce 03 00 00 90 8b 05 c7 9b 85 04 48 8d 0d c0 25 07 03 49 89 8e 30 07 00 00 41 89 86 38 07 00 00 4d 89 ae 40 07 00 00 4d 89 ae 48 07 00 00 48 8d 05 6d bf fe 03 49 89 86 50 07 00 00 4d 89 ae 58 07 00 00 4d 89 ae 60 07 00 00 48 8d 05 59 bf fe 03 49 89 86 68 07 00 00 45 89 ae 70 07 00 00 45 88 ae 74 07 00 00 4d 89 ae 78 07 00 00 4d 89 ae 80 07 00 00 48 8d 3d 7f e9 fe 03 49 89 be 88 07 00 00 4d 89 ae 90 07 00 00 4d 89 ae 98 07 00 00 48 8d 1d 6b e9 fe 03 49 89 9e a0 07 00 00 49 8d b6 a8 07 00 00 4c 89 2e 4c 89 6e 08 48 8d 05 97 fc fe 03 48 89 46 10 4d 8d be c0 07 00 00 4d 89 2f 4d 89 6f 08 48 8d 05 b6 f1 fe 03 49 89 47 10 66 45 89 6f 18 4d 89 6f 20 4d 89 6f 28 e8 e0 81 00 00 49 89 86 f8 07 00 00 4d 89 ae 00 08 00 00 45 88 ae 08 08 00 00 41 c7 86 0c 08 00 00 66 66 66 3f 48 8d 05 a1 fc fe 03 49 89 86 10 08 00 00 e8 8d 82 00 00 49 89 86 20 08 00 00 4d 89 ae 28 08 00 00 45 88 ae 30 08 00 00 41 c7 86 34 08 00 00 66 66 66 3f 48 8d 05 76 fc fe 03 49 89 86 38 08 00 00 4d 89 ae 40 08 00 00 4d 89 ae 48 08 00 00 48 8d 05 02 fc fe 03 49 89 86 50 08 00 00 4d 89 ae 58 08 00 00 4d 89 ae 60 08 00 00 49 89 86 68 08 00 00 4d 89 ae 70 08 00 00 4d 89 ae 78 08 00 00 48 8d 05 31 fc fe 03 49 89 86 80 08 00 00 4d 89 b6 88 08 00 00 48 8b 05 d4 e9 82 04 49 89 86 90 08 00 00 48 8b 05 1e be 82 04 49 89 86 98 08 00 00 4d 89 ae a0 08 00 00 4d 89 ae a8 08 00 00 4d 89 ae b0 08 00 00 49 89 9e b8 08 00 00 4d 89 ae c0 08 00 00 4d 89 ae c8 08 00 00 49 89 be d0 08 00 00 41 c7 86 d8 08 00 00 ff ff ff ff 41 8d 4d 08 e8 fe 16 d3 02 48 8b f8 48 89 45 48 b9 d0 01 00 00 e8 ed 16 d3 02 48 8b d8 48 89 45 50 33 d2 41 b8 d0 01 00 00 48 8b c8 e8 52 4a d3 02 48 8b cb e8 1a dd 3e 00 48 8d 05 1b 35 07 03 48 89 03 48 89 1f 49 89 be e0 08 00 00 49 8d 8e e8 08 00 00 e8 7a 8d f4 00 90 66 45 89 ae 38 10 00 00 45 88 ae 3a 10 00 00 49 8d 8e 40 10 00 00 e8 de a2 77 ff 90 49 8d 8e 20 11 00 00 e8 d1 a2 77 ff 90 49 89 77 20 41 8d 4d 20 e8 73 48 36 ff 48 c7 45 f0 13 00 00 00 48 c7 45 f8 1f 00 00 00 0f 10 05 9c e6 03 03 0f 11 00 0f b7 0d a2 e6 03 03 66 89 48 10 0f b6 0d 99 e6 03 03 88 48 12 44 88 68 13 48 89 45 e0 44 88 6d 48 4c 8d 45 48 48 8d 55 e0 49 8b cf e8 48 37 9f ff 90 48 8b 55 f8 48 83 fa 10 72 31 48 ff c2 48 8b 4d e0 48 8b c1 48 81 fa 00 10 00 00 72 19 48 83 c2 27 48 8b 49 f8 48 2b c1 48 83 c0 f8 48 83 f8 1f 0f 87 ca 00 00 00 e8 a0 19 d3 02 b9 20 00 00 00 e8 e2 47 36 ff 48 c7 45 f0 19 00 00 00 48 c7 45 f8 1f 00 00 00 0f 10 05 93 e6 03 03 0f 11 00 f2 0f 10 0d 98 e6 03 03 f2 0f 11 48 10 0f b6 15 94 e6 03 03 88 50 18 c6 40 19 00 48 89 45 e0 c6 45 48 01 4c 8d 45 48 48 8d 55 e0 49 8b cf e8 b5 36 9f ff 90 48 8b 55 f8 48 83 fa 10 72 2d 48 ff c2 48 8b 4d e0 48 8b c1 48 81 fa 00 10 00 00 72 15 48 83 c2 27 48 8b 49 f8 48 2b c1 48 83 c0 f8 48 83 f8 1f 77 3b e8 11 19 d3 02 49 8b 86 e0 08 00 00 48 8b 10 c6 82 b0 01 00 00 17 49 8d 4e 10 e8 83 89 c1 ff 90 49 8b c6 48 8b 9c 24 a8 00 00 00 48 83 c4 50 41 5f 41 5e 41 5d 41 5c 5f 5e 5d c3 e8 02 04 d4 02 90"
+    },
+    {
+      "name": "CIngameInterfaceHandler.publish_rite_creation_window",
+      "start_rva": "0xb07ee0",
+      "end_exclusive_rva": "0xb07f6c",
+      "sha256": "01c860b39adb4641fcb5900054768dd2c1a77fd0f4845afea6d00ed0cf7e6cbc",
+      "bytes": "48 89 5c 24 10 57 48 83 ec 20 48 8b f9 48 8b 59 40 b9 00 12 00 00 e8 b9 bc 71 03 48 89 44 24 30 4c 8b c7 48 8b d3 48 8b c8 e8 e2 a2 9e 00 48 8b d8 48 8b 8f 78 02 00 00 48 89 87 78 02 00 00 48 85 c9 74 11 48 8b 01 ba 01 00 00 00 ff 10 48 8b 9f 78 02 00 00 48 8b 03 48 8b cb ff 50 38 84 c0 74 09 48 8b 03 48 8b cb ff 50 20 48 89 5c 24 30 48 8d 8f 00 06 00 00 48 8d 54 24 30 e8 df 83 d7 ff 48 8b 5c 24 38 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "CWindow.IsVisible",
+      "start_rva": "0x21603a0",
+      "end_exclusive_rva": "0x2160430",
+      "sha256": "4af93fa4073aec88c4d4b87950c4d6b90b7fc677ba38ed224b9e3a555f505aa4",
+      "bytes": "48 89 5c 24 08 57 48 83 ec 20 48 8b 59 60 48 85 db 74 70 ba 01 00 00 00 48 8b cb e8 40 63 97 01 48 63 f8 83 ff ff 74 1a e8 c3 35 aa 01 4c 69 c7 08 03 00 00 48 8b 00 41 80 bc 00 00 03 00 00 00 75 41 f6 83 d0 00 00 00 08 74 2b 33 d2 48 8b cb e8 0b 63 97 01 48 63 d8 83 fb ff 74 26 e8 8e 35 aa 01 48 69 d3 08 03 00 00 48 8b 00 80 bc 02 00 03 00 00 00 74 0d b0 01 48 8b 5c 24 30 48 83 c4 20 5f c3 48 8b 5c 24 30 32 c0 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "root_idler_handler_layout_reused_accessor",
+      "start_rva": "0xb20140",
+      "end_exclusive_rva": "0xb201ff",
+      "sha256": "f2aadd54ba8d1015ddd0f59f33b8f9c05f465001858c3ff7b8c72ca6a36f5f2c",
+      "bytes": "40 53 48 83 ec 30 8b d9 48 8b 0d d1 a3 14 05 48 85 c9 0f 84 a1 00 00 00 48 8b 49 10 4c 8d 0d fd 42 9f 04 4c 8d 05 ce 42 9f 04 c7 44 24 20 00 00 00 00 33 d2 e8 1b 0d 74 03 48 85 c0 74 7b 48 8b 88 88 00 00 00 48 85 c9 74 6f 48 89 7c 24 40 e8 7c 1c ef ff 48 8b c8 48 8b f8 48 8b 10 ff 52 38 84 c0 74 50 39 9f d8 2f 00 00 74 05 83 fb ff 75 43 48 8b 07 48 8b cf ff 50 38 88 87 f0 31 00 00 b9 01 00 00 00 48 8b 05 2c 86 19 05 48 8b 90 78 09 00 00 8b c1 66 c7 82 48 01 00 00 00 01 c7 82 44 01 00 00 00 00 00 00 86 82 30 01 00 00 86 8a c0 0f 00 00 48 8b 7c 24 40 48 83 c4 30 5b c3"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "window_allocator_size",
+      "rva": "0xb07ef1",
+      "bytes": "b9 00 12 00 00",
+      "instruction": "mov ecx, 0x1200",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "window_constructor_call",
+      "rva": "0xb07f09",
+      "bytes": "e8 e2 a2 9e 00",
+      "instruction": "call 0x14f21f0",
+      "rip_targets": [],
+      "call_targets": [
+        "0x14f21f0"
+      ]
+    },
+    {
+      "name": "window_owner_publication",
+      "rva": "0xb07f18",
+      "bytes": "48 89 87 78 02 00 00",
+      "instruction": "mov qword ptr [rdi + 0x278], rax",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "window_owned_handler",
+      "rva": "0x14f2264",
+      "bytes": "49 89 be a0 00 00 00",
+      "instruction": "mov qword ptr [r14 + 0xa0], rdi",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "window_primary_vtable",
+      "rva": "0x14f2289",
+      "bytes": "48 8d 05 a0 39 07 03",
+      "instruction": "lea rax, [rip + 0x30739a0]",
+      "rip_targets": [
+        "0x4565c30"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "window_secondary_vtable",
+      "rva": "0x14f2293",
+      "bytes": "48 8d 05 6e 39 07 03",
+      "instruction": "lea rax, [rip + 0x307396e]",
+      "rip_targets": [
+        "0x4565c08"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "window_initial_rite_and_actor_absent",
+      "rva": "0x14f229e",
+      "bytes": "49 c7 86 c8 00 00 00 ff ff ff ff",
+      "instruction": "mov qword ptr [r14 + 0xc8], 0xffffffffffffffff",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "window_visibility_ui_root",
+      "rva": "0x21603aa",
+      "bytes": "48 8b 59 60",
+      "instruction": "mov rbx, qword ptr [rcx + 0x60]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "jomini_global_root",
+      "rva": "0xb20148",
+      "bytes": "48 8b 0d d1 a3 14 05",
+      "instruction": "mov rcx, qword ptr [rip + 0x514a3d1]",
+      "rip_targets": [
+        "0x5c6a520"
+      ],
+      "call_targets": []
+    },
+    {
+      "name": "idler_from_root",
+      "rva": "0xb20158",
+      "bytes": "48 8b 49 10",
+      "instruction": "mov rcx, qword ptr [rcx + 0x10]",
+      "rip_targets": [],
+      "call_targets": []
+    },
+    {
+      "name": "handler_from_idler",
+      "rva": "0xb2017e",
+      "bytes": "48 8b 88 88 00 00 00",
+      "instruction": "mov rcx, qword ptr [rax + 0x88]",
+      "rip_targets": [],
+      "call_targets": []
+    }
+  ],
+  "exact_class_vtables": [
+    {
+      "class": "CRiteCreationWindow",
+      "type_descriptor_rva": "0x57a59f0",
+      "col_rva": "0x4b71388",
+      "base_offset": 0,
+      "vtable_rva": "0x4565c30",
+      "function_rvas": [
+        "0x14f28c0",
+        "0x14f3170",
+        "0x102eed0",
+        "0x110b070",
+        "0x110b0e0",
+        "0x2160360",
+        "0x2160380",
+        "0x21603a0",
+        "0x2160430",
+        "0x2160440"
+      ]
+    },
+    {
+      "class": "CRiteCreationWindow",
+      "type_descriptor_rva": "0x57a59f0",
+      "col_rva": "0x4b712c0",
+      "base_offset": 16,
+      "vtable_rva": "0x4565c08",
+      "function_rvas": [
+        "0x1516148",
+        "0x3ac1bd0",
+        "0x110aff0",
+        "0x8522c0"
+      ]
+    }
+  ],
+  "reused_root_evidence": "ck3_1_20_0_2_event_window_context.json; ck3_1_20_0_2_title_map.json",
+  "scope": "existing visible current player CRiteCreationWindow draft only; no window creation/opening",
+  "live_verified": false,
+  "local_ck3_touched": false
+}

@@ -318,3 +318,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 真实知识/最近改宗原子查询，不插入新atom；复用已冻结topliege/primarytitle/stateRite来源。ABI13spans29指令11constants及Od/O2各19checks6wire通过。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\gates\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:47:34 Native Rite reform window sources and getters
+
+36文件闭合真实现存RiteCreationWindow root与visible草案、finalCreate/Edit资格、真实报价、currentmainRite unreformed及Rite草案模型。各原生来源和生产reader/serializer Od/O2通过，共用window8case4wire；不伪造CreateFaith树，不称完整改革或AI愿望。Choices后续另包，首次DLL不动。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\ready-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

@@ -1,0 +1,489 @@
+{
+  "schema": "religion_reform12002_rite_native_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "provider_constants": {
+    "kRiteIsMainRva": 38764096,
+    "kRiteDivergenceToMainRva": 46005152,
+    "kFaithHeresyThresholdRva": 38013216,
+    "kRiteFounderCharacterIdOffset": 1212,
+    "kRiteHeadCharacterIdOffset": 1216
+  },
+  "native_spans": [
+    {
+      "name": "Rite.IsMain.core",
+      "kind": "complete_function",
+      "start_rva": "0x24f7e40",
+      "end_exclusive_rva": "0x24f7ea2",
+      "abi": "bool(CRite*)",
+      "sha256": "510bf2756b617c6a672224ca073c73ce9a138d2ed4cb6cc9f598cfd6bc08dc2b",
+      "bytes": "48 8b 05 b9 64 82 03 4c 8b c9 48 85 c0 74 2c 44 8b 81 b8 04 00 00 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 5e 64 82 03 81 7a 0c 74 69 61 46 75 14 83 7a 08 ff 74 0e 41 8b 41 08 39 82 98 00 00 00 0f 94 c0 c3 32 c0 c3"
+    },
+    {
+      "name": "Rite.IsMain.thunk",
+      "kind": "complete_function",
+      "start_rva": "0x24fc0e0",
+      "end_exclusive_rva": "0x24fc118",
+      "abi": "reflection wrapper",
+      "sha256": "5bd1619aa90313b8ef0a97d069c41e1521e20423d42390fed4d08733ba11e6a0",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1e e8 49 bd ff ff 48 8d 54 24 40 88 44 24 40 48 8b cb e8 e8 d9 37 fe b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "Faith.GetHeresyThreshold.core",
+      "kind": "complete_function",
+      "start_rva": "0x2440920",
+      "end_exclusive_rva": "0x2440974",
+      "abi": "int64_t*(CFaith*,int64_t*out)",
+      "sha256": "5c045506b1e4d3263ea2043af2bf7194a29121ebe7338460bce27491ce403273",
+      "bytes": "48 8b 05 d1 d9 8d 03 4c 8b c2 48 85 c0 74 29 8b 91 98 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 4c c8 08 48 85 c9 74 05 39 51 08 74 07 48 8b 0d 11 6d 82 03 48 8b 89 f8 07 00 00 49 8b c0 48 03 0d 18 84 82 03 49 89 08 c3"
+    },
+    {
+      "name": "Faith.GetHeresyThreshold.thunk",
+      "kind": "complete_function",
+      "start_rva": "0x24435c0",
+      "end_exclusive_rva": "0x24435f7",
+      "abi": "reflection wrapper",
+      "sha256": "86a83251cfa931d15dcb7d731e6094ea8805d830df304cf7efc6c88756daded5",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1d 48 8d 54 24 40 e8 44 d3 ff ff 48 8b d0 48 8b cb e8 69 78 59 fe b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "FaithWindow.GetDivergence.core",
+      "kind": "complete_function",
+      "start_rva": "0x2618d00",
+      "end_exclusive_rva": "0x2618d59",
+      "abi": "int64_t*(FaithWindow*,int64_t*out)",
+      "sha256": "e1741ef0d5ef23c9886093409e08eaebbd4f24e324af15bd57b54e2c159c2c25",
+      "bytes": "40 53 48 83 ec 20 48 8b 05 eb 55 70 03 48 8b da 48 85 c0 74 29 44 8b 41 24 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 2b e9 64 03 45 33 c0 48 8b cb e8 50 6e 5c 00 48 8b c3 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "FaithWindow.GetDivergence.thunk",
+      "kind": "complete_function",
+      "start_rva": "0x261cc80",
+      "end_exclusive_rva": "0x261ccb7",
+      "abi": "reflection wrapper",
+      "sha256": "7453571ddf278ebee4e483ba94b1296947c76736ab1cc701c729326eef7b47f9",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1d 48 8d 54 24 40 e8 64 c0 ff ff 48 8b d0 48 8b cb e8 a9 e1 3b fe b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "CurrentRite.divergence_to_main",
+      "kind": "complete_function",
+      "start_rva": "0x2bdfba0",
+      "end_exclusive_rva": "0x2bdfcb8",
+      "abi": "int64_t*(int64_t*out,CRite*,optional tooltip*)",
+      "sha256": "cefabab0b5103f3576827734f357a7272079c60b39b1e8e149538218a4a32038",
+      "bytes": "48 89 5c 24 08 48 89 74 24 10 57 48 83 ec 40 4c 8b 0d 4a e7 13 03 49 8b f0 4c 8b 15 20 e7 13 03 48 8b da 48 8b f9 4d 85 c9 74 2b 8b 92 b8 04 00 00 8b c2 25 ff ff ff 00 41 3b 41 2c 73 18 8b c8 49 8b 41 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 03 49 8b c2 48 8b 15 f8 e6 13 03 48 85 d2 74 2d 44 8b 80 98 00 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 08 74 07 48 8b 15 37 7a 08 03 4d 85 c9 74 34 44 8b 9a b8 04 00 00 41 8b c3 25 ff ff ff 00 41 3b 41 2c 73 19 8b c8 49 8b 41 20 48 03 c9 4c 8b 44 c8 08 4d 85 c0 74 06 45 39 58 08 74 03 4d 8b c2 4d 8b d0 48 8d 83 a0 07 00 00 48 89 74 24 30 4c 8d 82 a0 07 00 00 4c 89 54 24 28 48 81 c2 88 07 00 00 48 89 44 24 20 4c 8d 8b 58 07 00 00 48 8b cf e8 cb ea ff ff 48 8b 5c 24 50 48 8b c7 48 8b 74 24 58 48 83 c4 40 5f c3"
+    },
+    {
+      "name": "Divergence.tenet_doctrine_native_sum",
+      "kind": "complete_function",
+      "start_rva": "0x2bde770",
+      "end_exclusive_rva": "0x2bdf404",
+      "abi": "native evaluation; null tooltip branch writes only output",
+      "sha256": "21b27d4c45523ffa7d912a804571289381259fb14dfc5103e0f4028ec8eaad02",
+      "bytes": "48 89 5c 24 08 48 89 74 24 18 48 89 7c 24 20 48 89 54 24 10 55 41 54 41 55 41 56 41 57 48 8d ac 24 50 fe ff ff 48 81 ec b0 02 00 00 4d 8b e1 4d 8b e8 48 8b f1 33 db 89 5c 24 30 48 8b bd 10 02 00 00 48 85 ff 0f 84 dd 09 00 00 48 8d 05 1e a8 c2 01 48 89 44 24 50 c7 44 24 58 21 00 00 00 88 5c 24 5c 48 8d 05 c6 89 c7 fd 48 89 44 24 20 4c 8d 0d 6a 89 c7 fd 8d 53 78 44 8d 43 01 48 8d 4d 80 e8 a2 57 64 01 90 48 8d 4d 00 e8 e0 b1 ca fd 90 48 8d 05 54 26 92 01 48 89 44 24 40 c7 44 24 48 05 00 00 00 88 5c 24 4c 89 5d 80 41 bf 10 00 00 00 65 48 8b 04 25 58 00 00 00 4c 03 38 41 8b 07 39 05 e9 f8 13 03 0f 8f 14 0a 00 00 8b 05 e1 f8 13 03 89 85 10 02 00 00 4c 8b b5 08 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 40 48 8d 4d 00 e8 a1 a0 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 50 48 8d 4c 24 60 e8 aa 7d 23 01 c7 44 24 30 02 00 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 22 b2 ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d d0 88 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 5a 53 64 01 90 c7 44 24 30 01 00 00 00 4c 8b c3 48 8d 54 24 60 48 8b cf e8 45 d7 84 ff 90 48 8d 4c 24 60 e8 4a 77 c7 fd 48 8d 05 ab a6 c2 01 48 89 44 24 40 c7 44 24 48 21 00 00 00 c6 44 24 4c 00 48 8d 05 7a 88 c7 fd 48 89 44 24 20 4c 8d 0d 1e 88 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 54 56 64 01 90 48 8d 4d 00 e8 92 b0 ca fd 90 48 8d 05 06 25 92 01 48 89 44 24 50 c7 44 24 58 05 00 00 00 c6 44 24 5c 00 89 5d 80 41 8b 07 39 05 ac f7 13 03 0f 8f 15 09 00 00 8b 05 a4 f7 13 03 89 85 10 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 50 48 8d 4d 00 e8 6b 9f 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 40 48 8d 4c 24 60 e8 74 7c 23 01 c7 44 24 30 09 00 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 ec b0 ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d 9a 87 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 24 52 64 01 90 c7 44 24 30 05 00 00 00 4c 8b c3 48 8d 54 24 60 48 8b cf e8 0f d6 84 ff 90 48 8d 4c 24 60 e8 14 76 c7 fd 48 8d 05 55 a5 c2 01 48 89 44 24 40 c7 44 24 48 1c 00 00 00 c6 44 24 4c 00 48 8d 05 44 87 c7 fd 48 89 44 24 20 4c 8d 0d e8 86 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 1e 55 64 01 90 48 8d 4d 00 e8 5c af ca fd 90 48 8d 05 d0 23 92 01 48 89 44 24 50 c7 44 24 58 05 00 00 00 c6 44 24 5c 00 89 5d 80 41 8b 07 39 05 76 f6 13 03 0f 8f 1d 08 00 00 8b 05 6e f6 13 03 89 85 10 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 50 48 8d 4d 00 e8 35 9e 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 40 48 8d 4c 24 60 e8 3e 7b 23 01 c7 44 24 30 25 00 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 b6 af ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d 64 86 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 ee 50 64 01 90 c7 44 24 30 15 00 00 00 4c 8b c3 48 8d 54 24 60 48 8b cf e8 d9 d4 84 ff 90 48 8d 4c 24 60 e8 de 74 c7 fd 48 8d 05 ff a3 c2 01 48 89 44 24 40 c7 44 24 48 1d 00 00 00 c6 44 24 4c 00 48 8d 05 0e 86 c7 fd 48 89 44 24 20 4c 8d 0d b2 85 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 e8 53 64 01 90 48 8d 4d 00 e8 26 ae ca fd 90 48 8d 05 9a 22 92 01 48 89 44 24 50 c7 44 24 58 05 00 00 00 c6 44 24 5c 00 89 5d 80 41 8b 07 39 05 40 f5 13 03 0f 8f 25 07 00 00 8b 05 38 f5 13 03 89 85 10 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 50 48 8d 4d 00 e8 ff 9c 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 40 48 8d 4c 24 60 e8 08 7a 23 01 c7 44 24 30 95 00 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 80 ae ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d 2e 85 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 b8 4f 64 01 90 c7 44 24 30 55 00 00 00 4c 8b c3 48 8d 54 24 60 48 8b cf e8 a3 d3 84 ff 90 48 8d 4c 24 60 e8 a8 73 c7 fd 48 8d 05 a9 a2 c2 01 48 89 44 24 40 c7 44 24 48 1a 00 00 00 c6 44 24 4c 00 48 8d 05 d8 84 c7 fd 48 89 44 24 20 4c 8d 0d 7c 84 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 b2 52 64 01 90 48 8d 4d 00 e8 f0 ac ca fd 90 48 8d 05 64 21 92 01 48 89 44 24 50 c7 44 24 58 05 00 00 00 c6 44 24 5c 00 89 5d 80 41 8b 07 39 05 0a f4 13 03 0f 8f 2d 06 00 00 8b 05 02 f4 13 03 89 85 10 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 50 48 8d 4d 00 e8 c9 9b 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 40 48 8d 4c 24 60 e8 d2 78 23 01 c7 44 24 30 55 02 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 4a ad ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d f8 83 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 82 4e 64 01 90 c7 44 24 30 55 01 00 00 4c 8b c3 48 8d 54 24 60 48 8b cf e8 6d d2 84 ff 90 48 8d 4c 24 60 e8 72 72 c7 fd 48 8d 05 53 a1 c2 01 48 89 44 24 40 c7 44 24 48 18 00 00 00 c6 44 24 4c 00 48 8d 05 a2 83 c7 fd 48 89 44 24 20 4c 8d 0d 46 83 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 7c 51 64 01 90 48 8d 4d 00 e8 ba ab ca fd 90 48 8d 05 2e 20 92 01 48 89 44 24 50 c7 44 24 58 05 00 00 00 c6 44 24 5c 00 89 5d 80 41 8b 07 39 05 d4 f2 13 03 0f 8f 35 05 00 00 8b 05 cc f2 13 03 89 85 10 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 50 48 8d 4d 00 e8 93 9a 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 40 48 8d 4c 24 60 e8 9c 77 23 01 c7 44 24 30 55 09 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 14 ac ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d c2 82 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 4c 4d 64 01 90 c7 44 24 30 55 05 00 00 4c 8b c3 48 8d 54 24 60 48 8b cf e8 37 d1 84 ff 90 48 8d 4c 24 60 e8 3c 71 c7 fd 48 8d 05 fd 9f c2 01 48 89 44 24 40 c7 44 24 48 1c 00 00 00 c6 44 24 4c 00 48 8d 05 6c 82 c7 fd 48 89 44 24 20 4c 8d 0d 10 82 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 46 50 64 01 90 48 8d 4d 00 e8 84 aa ca fd 90 48 8d 05 f8 1e 92 01 48 89 44 24 50 c7 44 24 58 05 00 00 00 c6 44 24 5c 00 89 5d 80 41 8b 07 39 05 9e f1 13 03 0f 8f 3d 04 00 00 8b 05 96 f1 13 03 89 85 10 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 50 48 8d 4d 00 e8 5d 99 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 40 48 8d 4c 24 60 e8 66 76 23 01 c7 44 24 30 55 25 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 de aa ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d 8c 81 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 16 4c 64 01 90 c7 44 24 30 55 15 00 00 4c 8b c3 48 8d 54 24 60 48 8b cf e8 01 d0 84 ff 90 48 8d 4c 24 60 e8 06 70 c7 fd 48 8d 05 bf a0 c2 01 48 89 44 24 40 c7 44 24 48 17 00 00 00 c6 44 24 4c 00 48 8d 05 36 81 c7 fd 48 89 44 24 20 4c 8d 0d da 80 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 10 4f 64 01 90 48 8d 4d 00 e8 4e a9 ca fd 90 48 8d 05 c2 1d 92 01 48 89 44 24 50 c7 44 24 58 05 00 00 00 c6 44 24 5c 00 89 5d 80 41 8b 07 39 05 68 f0 13 03 0f 8f 55 01 00 00 8b 05 60 f0 13 03 89 85 10 02 00 00 4c 89 74 24 38 4c 8d 8d 10 02 00 00 4c 8d 44 24 38 48 8d 54 24 50 48 8d 4d 00 e8 27 98 23 01 48 89 5c 24 28 48 8d 45 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 80 48 8d 54 24 40 48 8d 4c 24 60 e8 30 75 23 01 c7 44 24 30 55 95 00 00 48 83 7d 00 00 74 24 48 8d 4d 00 e8 a8 a9 ca fd 48 8b 4d 10 48 8b 01 41 b8 08 00 00 00 48 8b 55 00 ff 50 10 48 89 5d 00 89 5d 08 4c 8d 0d 56 80 c7 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 80 e8 e0 4a 64 01 90 4c 8b c3 48 8d 54 24 60 48 8b cf e8 d3 ce 84 ff 90 48 8d 4c 24 60 e8 d8 6e c7 fd 83 7f 0c 08 74 1a 48 8d 05 5f ad 14 03 48 89 44 24 20 48 8d 0d 3f 9f c2 01 e8 ca b8 39 01 eb 54 4c 8b cf 4c 8b 85 00 02 00 00 49 8b d5 48 8d 8d 10 02 00 00 e8 1f 1f 00 00 4c 8b cf 4d 8b c4 48 8b 95 e8 01 00 00 48 8d 4c 24 38 e8 68 1b 00 00 4c 8b 85 10 02 00 00 4c 03 00 4d 85 c0 49 0f 4f d8 48 85 ff 74 0e 48 89 5f 78 b2 04 48 8b cf e8 b4 c0 84 ff 48 8b c6 48 89 1e 4c 8d 9c 24 b0 02 00 00 49 8b 5b 30 49 8b 73 40 49 8b 7b 48 49 8b e3 41 5f 41 5e 41 5d 41 5c 5d c3 48 8d 0d 06 ef 13 03 e8 85 48 64 01 83 3d fa ee 13 03 ff 0f 85 92 fe ff ff 8b 05 76 0b 08 03 89 05 ec ee 13 03 ff c0 89 05 68 0b 08 03 48 8d 0d d9 ee 13 03 e8 f8 47 64 01 e9 6d fe ff ff 48 8d 0d c8 ee 13 03 e8 47 48 64 01 83 3d bc ee 13 03 ff 0f 85 d3 f5 ff ff 8b 05 38 0b 08 03 89 05 ae ee 13 03 ff c0 89 05 2a 0b 08 03 48 8d 0d 9b ee 13 03 e8 ba 47 64 01 e9 ae f5 ff ff 48 8d 0d 8a ee 13 03 e8 09 48 64 01 83 3d 7e ee 13 03 ff 0f 85 d2 f6 ff ff 8b 05 fa 0a 08 03 89 05 70 ee 13 03 ff c0 89 05 ec 0a 08 03 48 8d 0d 5d ee 13 03 e8 7c 47 64 01 e9 ad f6 ff ff 48 8d 0d 4c ee 13 03 e8 cb 47 64 01 83 3d 40 ee 13 03 ff 0f 85 ca f7 ff ff 8b 05 bc 0a 08 03 89 05 32 ee 13 03 ff c0 89 05 ae 0a 08 03 48 8d 0d 1f ee 13 03 e8 3e 47 64 01 e9 a5 f7 ff ff 48 8d 0d 0e ee 13 03 e8 8d 47 64 01 83 3d 02 ee 13 03 ff 0f 85 c2 f8 ff ff 8b 05 7e 0a 08 03 89 05 f4 ed 13 03 ff c0 89 05 70 0a 08 03 48 8d 0d e1 ed 13 03 e8 00 47 64 01 e9 9d f8 ff ff 48 8d 0d d0 ed 13 03 e8 4f 47 64 01 83 3d c4 ed 13 03 ff 0f 85 ba f9 ff ff 8b 05 40 0a 08 03 89 05 b6 ed 13 03 ff c0 89 05 32 0a 08 03 48 8d 0d a3 ed 13 03 e8 c2 46 64 01 e9 95 f9 ff ff 48 8d 0d 92 ed 13 03 e8 11 47 64 01 83 3d 86 ed 13 03 ff 0f 85 b2 fa ff ff 8b 05 02 0a 08 03 89 05 78 ed 13 03 ff c0 89 05 f4 09 08 03 48 8d 0d 65 ed 13 03 e8 84 46 64 01 e9 8d fa ff ff 48 8d 0d 54 ed 13 03 e8 d3 46 64 01 83 3d 48 ed 13 03 ff 0f 85 aa fb ff ff 8b 05 c4 09 08 03 89 05 3a ed 13 03 ff c0 89 05 b6 09 08 03 48 8d 0d 27 ed 13 03 e8 46 46 64 01 e9 85 fb ff ff cc"
+    },
+    {
+      "name": "Rite.founder.scope_link",
+      "kind": "complete_function",
+      "start_rva": "0x1afe330",
+      "end_exclusive_rva": "0x1afe391",
+      "abi": "CRiteFounderLink output full Character ref",
+      "sha256": "4f4037808831a9e5231605f393098e02e8351dfbe0be0ec90a710e003c95048b",
+      "bytes": "49 8b 00 66 83 38 2a 75 06 44 8b 40 08 eb 06 41 b8 ff ff ff ff 48 8b 05 ac ff 21 04 48 85 c0 74 25 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 08 74 07 48 8b 05 f3 92 16 04 8b 80 bc 04 00 00 48 89 42 08 48 8b c2 c7 02 04 00 00 00 c3"
+    },
+    {
+      "name": "Rite.head.ref_getter",
+      "kind": "complete_function",
+      "start_rva": "0xd55cf0",
+      "end_exclusive_rva": "0xd55cfc",
+      "abi": "uint32_t*(CRite*,uint32_t*out)",
+      "sha256": "eac468a6728bbe227df6656513138a43e2285fcd5d8b38b28abd757c06419171",
+      "bytes": "8b 81 c0 04 00 00 89 02 48 8b c2 c3"
+    },
+    {
+      "name": "Rite.GetHeadOfRite.thunk",
+      "kind": "complete_function",
+      "start_rva": "0x24fc610",
+      "end_exclusive_rva": "0x24fc672",
+      "abi": "Character*(CRite*); preserves ref generation",
+      "sha256": "c9cfaffb76cbc5bc34c4e53127f2df051aae4b94952f3c38596bf1675718df90",
+      "bytes": "48 89 54 24 10 48 83 ec 28 48 8d 54 24 38 e8 cd 96 85 fe 4c 8b 0d 3e af 76 03 4c 8b 05 3f af 76 03 4d 85 c9 74 2a 8b 44 24 38 8b c8 81 e1 ff ff ff 00 41 3b 49 2c 73 18 8b d1 49 8b 49 20 48 03 d2 48 8b 4c d1 08 48 85 c9 74 05 39 41 18 74 03 49 8b c8 48 85 c9 49 0f 44 c8 48 8b c1 48 83 c4 28 c3"
+    },
+    {
+      "name": "CreationWindow.draft_divergence",
+      "kind": "complete_function",
+      "start_rva": "0x14f14b0",
+      "end_exclusive_rva": "0x14f15c9",
+      "abi": "int64_t*(out,CreationWindow*)",
+      "sha256": "3dc4b970f00d3b691bedfbf168b2734030f28fd433bb4e4c2206cd4e1d604513",
+      "bytes": "48 89 5c 24 08 57 48 83 ec 40 4c 8b 05 37 ce 82 04 48 8b da 48 8b f9 4d 85 c0 75 09 48 8b 15 9d 61 77 04 eb 35 44 8b 8a c8 00 00 00 41 8b c1 48 8b 15 8a 61 77 04 25 ff ff ff 00 41 3b 40 2c 73 19 8b c8 49 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 48 08 74 03 48 8b c2 4c 8b 0d ec cd 82 04 4d 85 c9 74 2e 44 8b 98 b8 04 00 00 41 8b c3 25 ff ff ff 00 41 3b 41 2c 73 19 8b c8 49 8b 41 20 48 03 c9 4c 8b 54 c8 08 4d 85 d2 74 06 45 39 5a 08 74 07 4c 8b 15 92 cd 82 04 4d 85 c0 74 31 45 8b 8a 98 00 00 00 41 8b c1 25 ff ff ff 00 41 3b 40 2c 73 1c 8b c8 49 8b 40 20 48 03 c9 4c 8b 44 c8 08 4d 85 c0 74 09 45 39 48 08 75 03 49 8b d0 48 8d 83 78 0b 00 00 48 c7 44 24 30 00 00 00 00 4c 8d 82 a0 07 00 00 4c 89 54 24 28 48 81 c2 88 07 00 00 48 89 44 24 20 4c 8d 8b 30 0b 00 00 48 8b cf e8 b5 d1 6e 01 48 8b 5c 24 50 48 8b c7 48 83 c4 40 5f c3"
+    },
+    {
+      "name": "CreationWindow.divergence_creates_faith.thunk",
+      "kind": "complete_function",
+      "start_rva": "0x14fc910",
+      "end_exclusive_rva": "0x14fc95b",
+      "abi": "native draft >= creation define",
+      "sha256": "e88fb70d4eafb8f0e4aaa45c611fd06e54bc12d4b48687269c301c1a8d4c4fa0",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 31 48 8b d1 48 8d 4c 24 48 e8 81 4b ff ff 48 8b 0d 32 c3 76 04 48 8d 54 24 40 48 39 08 48 8b cb 0f 9d 44 24 40 e8 a5 d1 37 ff b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "Rite.IsMain.registration",
+      "kind": "registration_slice",
+      "start_rva": "0x4ee8d5",
+      "end_exclusive_rva": "0x4ee969",
+      "abi": null,
+      "sha256": "ace247aeb582fad1a95162b5f77c30ffbae72f2017bc32a91ac78f68d529a373",
+      "bytes": "48 c7 45 ff 06 00 00 00 8b 05 a9 95 24 04 89 45 ef 0f b7 05 a3 95 24 04 66 89 45 f3 40 88 7d f5 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 f6 75 36 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 d0 59 38 00 90 48 8d 45 0f 48 89 44 24 30 89 7c 24 28 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 80 d7 00 02 48 8d 4d ef e8 a7 db 76 00"
+    },
+    {
+      "name": "Faith.GetHeresyThreshold.registration",
+      "kind": "registration_slice",
+      "start_rva": "0x4d368b",
+      "end_exclusive_rva": "0x4d3721",
+      "abi": null,
+      "sha256": "ade1dd1a34013bf85610c91f71a387b17ae0d8e4c358355a0ad385cbd0f2883d",
+      "bytes": "37 52 04 f3 0f 7f 45 ff 0f 10 05 7e d6 02 04 0f 11 00 0f b7 0d 84 d6 02 04 66 89 48 10 40 88 78 12 48 89 45 ef 48 8d 45 0f 48 89 45 67 48 8d 55 b7 48 8d 4d 0f e8 3b 28 38 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 15 0c 3a 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 a9 fe f6 01 48 8d 4d ef e8 d0 bd 78 00 90"
+    },
+    {
+      "name": "FaithWindow.GetDivergence.registration",
+      "kind": "registration_slice",
+      "start_rva": "0x516731",
+      "end_exclusive_rva": "0x5167cd",
+      "abi": null,
+      "sha256": "45d2519dac2e49a01517484c0e1be6264f1840cdf0eff50b1744f3e391643cf4",
+      "bytes": "48 c7 45 ff 0d 00 00 00 f2 0f 10 05 b7 a9 fe 03 f2 0f 11 45 ef 8b 05 b4 a9 fe 03 89 45 f7 0f b6 05 ae a9 fe 03 88 45 fb 40 88 7d fc 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 8e f7 33 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 68 db 35 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 bc 64 10 02 48 8d 4d ef e8 23 95 10 02"
+    },
+    {
+      "name": "Rite.GetHeadOfRite.registration",
+      "kind": "registration_slice",
+      "start_rva": "0x4efb4a",
+      "end_exclusive_rva": "0x4efbe3",
+      "abi": null,
+      "sha256": "85f73aec1f962cf1374dac32e52ac8209d8493c6e9c1c4049b2e73ac5a9ca298",
+      "bytes": "48 c7 45 88 0d 00 00 00 f2 0f 10 05 c6 83 24 04 f2 0f 11 44 24 78 8b 05 c2 83 24 04 89 45 80 0f b6 05 bc 83 24 04 88 45 84 40 88 7d 85 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 73 63 36 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 4b 47 38 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 37 ca 00 02 48 8d 4c 24 78 e8 0d 03 01 02"
+    },
+    {
+      "name": "CreationWindow.new_faith_result.registration",
+      "kind": "registration_slice",
+      "start_rva": "0x22e9c9",
+      "end_exclusive_rva": "0x22ea05",
+      "abi": null,
+      "sha256": "f48d56f21aca576d9c1d8b6d50affd35aea6c2b80c34a98b8743337b95ae5f36",
+      "bytes": "0f 10 05 98 7a 33 04 0f 11 00 0f 10 0d 9e 7a 33 04 0f 11 48 10 c6 40 20 00 48 89 44 24 20 4c 8d 4c 24 40 4c 8d 05 1d df 2c 01 48 8d 54 24 20 e8 93 c5 2c 01 90 48 8b 54 24 38 48 83"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "is_main_parent_faith_ref",
+      "rva": "0x24f7e4f",
+      "bytes": "44 8b 81 b8 04 00 00",
+      "instruction": "mov r8d, dword ptr [rcx + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "is_main_current_rite_ref",
+      "rva": "0x24f7e91",
+      "bytes": "41 8b 41 08",
+      "instruction": "mov eax, dword ptr [r9 + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "is_main_faith_main_ref_comparison",
+      "rva": "0x24f7e95",
+      "bytes": "39 82 98 00 00 00",
+      "instruction": "cmp dword ptr [rdx + 0x98], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "is_main_core_call",
+      "rva": "0x24fc0f2",
+      "bytes": "e8 49 bd ff ff",
+      "instruction": "call 0x24f7e40",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x24f7e40"
+      ]
+    },
+    {
+      "name": "threshold_main_rite_ref",
+      "rva": "0x244092f",
+      "bytes": "8b 91 98 00 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x98]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "threshold_main_rite_modifier",
+      "rva": "0x244095f",
+      "bytes": "48 8b 89 f8 07 00 00",
+      "instruction": "mov rcx, qword ptr [rcx + 0x7f8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "threshold_native_define",
+      "rva": "0x2440969",
+      "bytes": "48 03 0d 18 84 82 03",
+      "instruction": "add rcx, qword ptr [rip + 0x3828418]",
+      "rip_targets": [
+        "0x5c68d88"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "threshold_core_call",
+      "rva": "0x24435d7",
+      "bytes": "e8 44 d3 ff ff",
+      "instruction": "call 0x2440920",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2440920"
+      ]
+    },
+    {
+      "name": "current_divergence_null_tooltip",
+      "rva": "0x2618d45",
+      "bytes": "45 33 c0",
+      "instruction": "xor r8d, r8d",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "current_divergence_output_first",
+      "rva": "0x2618d48",
+      "bytes": "48 8b cb",
+      "instruction": "mov rcx, rbx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "current_divergence_actual_call",
+      "rva": "0x2618d4b",
+      "bytes": "e8 50 6e 5c 00",
+      "instruction": "call 0x2bdfba0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bdfba0"
+      ]
+    },
+    {
+      "name": "divergence_current_rite_parent_faith",
+      "rva": "0x2bdfbcb",
+      "bytes": "8b 92 b8 04 00 00",
+      "instruction": "mov edx, dword ptr [rdx + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "divergence_main_rite_ref",
+      "rva": "0x2bdfc05",
+      "bytes": "44 8b 80 98 00 00 00",
+      "instruction": "mov r8d, dword ptr [rax + 0x98]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "divergence_current_doctrines",
+      "rva": "0x2bdfc72",
+      "bytes": "48 8d 83 a0 07 00 00",
+      "instruction": "lea rax, [rbx + 0x7a0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "divergence_current_tenets",
+      "rva": "0x2bdfc96",
+      "bytes": "4c 8d 8b 58 07 00 00",
+      "instruction": "lea r9, [rbx + 0x758]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "divergence_native_sum_call",
+      "rva": "0x2bdfca0",
+      "bytes": "e8 cb ea ff ff",
+      "instruction": "call 0x2bde770",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bde770"
+      ]
+    },
+    {
+      "name": "divergence_result_written",
+      "rva": "0x2bdf1ef",
+      "bytes": "48 89 1e",
+      "instruction": "mov qword ptr [rsi], rbx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "founder_native_full_character_ref",
+      "rva": "0x1afe37d",
+      "bytes": "8b 80 bc 04 00 00",
+      "instruction": "mov eax, dword ptr [rax + 0x4bc]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "founder_scope_character_type",
+      "rva": "0x1afe38a",
+      "bytes": "c7 02 04 00 00 00",
+      "instruction": "mov dword ptr [rdx], 4",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "head_native_full_character_ref",
+      "rva": "0xd55cf0",
+      "bytes": "8b 81 c0 04 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0x4c0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "creation_draft_tenets",
+      "rva": "0x14f15ac",
+      "bytes": "4c 8d 8b 30 0b 00 00",
+      "instruction": "lea r9, [rbx + 0xb30]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "creation_draft_doctrines",
+      "rva": "0x14f1584",
+      "bytes": "48 8d 83 78 0b 00 00",
+      "instruction": "lea rax, [rbx + 0xb78]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "creation_draft_native_sum_call",
+      "rva": "0x14f15b6",
+      "bytes": "e8 b5 d1 6e 01",
+      "instruction": "call 0x2bde770",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bde770"
+      ]
+    },
+    {
+      "name": "creation_divergence_call",
+      "rva": "0x14fc92a",
+      "bytes": "e8 81 4b ff ff",
+      "instruction": "call 0x14f14b0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x14f14b0"
+      ]
+    },
+    {
+      "name": "creation_own_threshold",
+      "rva": "0x14fc92f",
+      "bytes": "48 8b 0d 32 c3 76 04",
+      "instruction": "mov rcx, qword ptr [rip + 0x476c332]",
+      "rip_targets": [
+        "0x5c68c68"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "creation_threshold_ge",
+      "rva": "0x14fc941",
+      "bytes": "0f 9d 44 24 40",
+      "instruction": "setge byte ptr [rsp + 0x40]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "is_main_registration_callback",
+      "rva": "0x4ee959",
+      "bytes": "48 8d 15 80 d7 00 02",
+      "instruction": "lea rdx, [rip + 0x200d780]",
+      "rip_targets": [
+        "0x24fc0e0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "threshold_registration_callback",
+      "rva": "0x4d3710",
+      "bytes": "48 8d 15 a9 fe f6 01",
+      "instruction": "lea rdx, [rip + 0x1f6fea9]",
+      "rip_targets": [
+        "0x24435c0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "head_registration_callback",
+      "rva": "0x4efbd2",
+      "bytes": "48 8d 15 37 ca 00 02",
+      "instruction": "lea rdx, [rip + 0x200ca37]",
+      "rip_targets": [
+        "0x24fc610"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "draft_result_registration_callback",
+      "rva": "0x22e9ec",
+      "bytes": "4c 8d 05 1d df 2c 01",
+      "instruction": "lea r8, [rip + 0x12cdf1d]",
+      "rip_targets": [
+        "0x14fc910"
+      ],
+      "direct_targets": []
+    }
+  ],
+  "founder_link_rtti": {
+    "type_descriptor_rva": "0x5835dc8",
+    "col_rva": "0x4c12210",
+    "vtable_rva": "0x45c5aa8",
+    "slot_index": 4,
+    "callback_rva": "0x1afe330"
+  },
+  "stock_sources": [
+    {
+      "path": "common/religion/rite_types/_rite_types.info",
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f",
+      "first_line": 31,
+      "last_line": 74,
+      "window": "31: \t# Rite founder will be first holder of provided title (unless set elsewhere in script)\n32: \t#\n33: \tfounder = title_key\n34: \n35: \t### brief: faith ( database key )\n36: \t# What is the parent faith of this Rite? If a faith has no scripted Rites a dynamic one with the same name will be created instead\n37: \t# if no parent faith is defined, the Rite will not be generated from history and will only be available via the create_rite_from_type effect.\n38: \t# you can still specify parent faith overrides in specific bookmarks (see below), starting the game in those dates will generate the rite from history\n39: \t#\n40: \tfaith = key\n41: \n42: \t# brief: cultures (database keys)\n43: \t# keys of cultures associated with this rite. refers to the cultures found in culture/cultures\n44: \t#\n45: \tcultures = { culture_1 culture_2 ... }\n46: \n47: \t### brief: convert (bool)\n48: \t# if set to no, characters cannot convert to this rite. default value is yes\n49: \t#\n50: \tconvert = yes\n51: \n52: \t### brief: create (bool)\n53: \t# if set to no, this rite will not be created until specified in history. default value is yes\n54: \t# warning! not created rites will error when accessed with rite:key. Always check if the object is valid in script\n55: \t#\n56: \tcreate = yes\n57: \n58: \t### brief: tenets ( database keys )\n59: \t# List of tenets associated with this Rite. If this is a faith's scripted main Rite, these are the faith's\n60: \t# effective core tenets; do not duplicate them in the faith type.\n61: \t#\n62: \ttenets = {\n63: \t\tkey\n64: \t\tkey\n65: \t}\n66: \n67: \t### brief: doctrines ( database keys )\n68: \t# List of doctrines associated with this Rite. Rite doctrines override parent-religion and faith doctrines from the\n69: \t# same doctrine group. Faith doctrines from otherwise unfilled groups are added to the instantiated main Rite.\n70: \t# Put doctrine choices intrinsic to the whole faith on the faith type and Rite-specific choices here.\n71: \t#\n72: \tdoctrines = {\n73: \t\tkey\n74: \t\tkey"
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "first_line": 824,
+      "last_line": 836,
+      "window": "824: \t# how many relics can be extracted from a saint? must be positive\n825: \tMAX_RELICS_FROM_SAINT = 4\n826: }\n827: \n828: NRite = {\n829: \tRITE_CREATION_FERVOR_DISCOUNT_PER_MISSING_FERVOR = 1 # How much cheaper does creating a faith get per fervor below 100%? 1 means 1% per point\n830: \tRITE_CREATION_FERVOR_DISCOUNT_MAX = 50 # What percentage does the discount cap out at? With these numbers, 0-50 fervor means a 50% discount. Above 50 means between 0% and 50% discount\n831: \tRITE_CREATION_DIVERGENCE_FAITH_THRESHOLD = 100 # when creating a Rite, divergence values at or over this threshold will result in a Faith being created instead of a Rite\n832: \tRITE_CREATION_PIETY_COST = 1.0\t# Fixed cost how much piety it costs to branch off a Faith with new Rite\n833: \tRITE_DIVERGENCE_HERETICAL_THRESHOLD = 65 # Divergence above which a Rite is considered heretical\n834: \tRITE_DIVERGENCE_HOSTILITY_THRESHOLD = 1 # Divergence below that will lower faith hostility by 1 level\n835: \tRITE_DIVERGENCE_GRACE_THRESHOLD = 0 # rites below this divergence will not add to the yearly fervor decrease\n836: "
+    },
+    {
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "b446a8935566ebe17cfa3b76888b197c56fc5041629414167bd07a8f9f4a0475",
+      "first_line": 3,
+      "last_line": 18,
+      "window": "3: # Code on-action: a new faith is created (character create/convert, or a rite detaching into its own faith)\n4: # Root is the new faith; its head/leader is root.main_rite.head_of_rite (use it for faith-setup effects)\n5: # scope:founder is the acting character that triggered the creation (creator/converter, heresy declarer, or on a divergence the head of the diverging rite)\n6: # scope:founder can be absent - the game creates faiths with no acting character, so it is entered with ?=\n7: # scope:old_faith is the faith they used to have\n8: # scope:old_rite is the rite they used to have\n9: # scope:diverged (true/false) optional scope, true if the faith was created because of a Rite diverging too much. Notice create a 100+ divergence heresy at the start does not count.\n10: on_faith_created = {\n11: \teffect = {\n12: \t\t# Faiths created by a rite diverging too far start at 0 fervor\n13: \t\tif = {\n14: \t\t\tlimit = {\n15: \t\t\t\tscope:diverged ?= yes\n16: \t\t\t}\n17: \t\t\tdiverged_faith_starting_fervor_effect = yes\n18: \t\t}"
+    },
+    {
+      "path": "gui/window_rite_creation.gui",
+      "sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "first_line": 488,
+      "last_line": 524,
+      "window": "488: \t\t\t\t\tvbox = {\n489: \t\t\t\t\t\tname = \"divergence\"\n490: \n491: \t\t\t\t\t\ttext_single = {\n492: \t\t\t\t\t\t\ttext = \"RITE_CREATION_DIVERGENCE\"\n493: \n494: \t\t\t\t\t\t\ttooltipwidget = {\n495: \t\t\t\t\t\t\t\twidget_rite_divergence_tooltip = {\n496: \t\t\t\t\t\t\t\t\tdatacontext = \"[RiteCreationWindow.GetRite.GetFaith]\"\n497: \t\t\t\t\t\t\t\t\tdatacontext = \"[RiteCreationWindow.GetRiteDivergenceTooltip]\"\n498: \t\t\t\t\t\t\t\t\tblockoverride \"main_rite_header_visible\"\n499: \t\t\t\t\t\t\t\t\t{\n500: \t\t\t\t\t\t\t\t\t\tvisible = no\n501: \t\t\t\t\t\t\t\t\t}\n502: \t\t\t\t\t\t\t\t}\n503: \t\t\t\t\t\t\t}\n504: \t\t\t\t\t\t}\n505: \n506: \t\t\t\t\t\ttext_single = {\n507: \t\t\t\t\t\t\tdatacontext = \"[GetPlayer.GetFaith]\"\n508: \t\t\t\t\t\t\tdatacontext = \"[GetPlayer.GetRite]\"\n509: \t\t\t\t\t\t\tvisible = \"[And3( Or( Not( Rite.IsMain ), RiteCreationWindow.IsCreating ), Not( RiteCreationWindow.DivergenceResultsInFaithCreation ), LessThan_CFixedPoint( RiteCreationWindow.GetRiteDivergence, Faith.GetHeresyThreshold ) )]\"\n510: \t\t\t\t\t\t\ttext = \"RITE_CREATION_VIEW_HERETICAL_DIVERGENCE\"\n511: \t\t\t\t\t\t}\n512: \t\t\t\t\t\ttext_single = {\n513: \t\t\t\t\t\t\tdatacontext = \"[GetPlayer.GetFaith]\"\n514: \t\t\t\t\t\t\tdatacontext = \"[GetPlayer.GetRite]\"\n515: \t\t\t\t\t\t\tvisible = \"[Nor3( And( Rite.IsMain , RiteCreationWindow.IsEditing ), RiteCreationWindow.DivergenceResultsInFaithCreation, LessThan_CFixedPoint( RiteCreationWindow.GetRiteDivergence, Faith.GetHeresyThreshold ) )]\"\n516: \t\t\t\t\t\t\ttext = \"RITE_CREATION_WARNING_HERETICAL_DIVERGENCE\"\n517: \t\t\t\t\t\t}\n518: \t\t\t\t\t\ttext_multi = {\n519: \t\t\t\t\t\t\tvisible = \"[RiteCreationWindow.DivergenceResultsInFaithCreation]\"\n520: \t\t\t\t\t\t\tautoresize = yes\n521: \t\t\t\t\t\t\tmax_width = 420\n522: \t\t\t\t\t\t\ttext = \"RITE_CREATION_VIEW_CONFIRM_NEW_FAITH\"\n523: \t\t\t\t\t\t\talign = center\n524: \t\t\t\t\t\t}"
+    }
+  ],
+  "unresolved": [
+    "exact creation date / derivation ancestry getter",
+    "automatic divergence detachment scheduler and final predicate",
+    "creation command execution and independent result",
+    "current provider central registration, MCP transport and paused live"
+  ]
+}
