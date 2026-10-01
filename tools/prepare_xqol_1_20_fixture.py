@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 import fixture_engine_prepare as prep
@@ -12,7 +13,7 @@ START = '''on_game_start_after_lobby = { on_actions = { zqa120_start } }
 zqa120_start = {
     effect = {
         debug_log = "ZQA120: TEST BEGIN engine_startup"
-        random_player = { trigger_event = { id = zqa120.1 } }
+        random_player = { trigger_event = { id = zqa120.1 days = 1 } }
     }
 }
 '''
@@ -95,6 +96,14 @@ def events(governors_only: bool) -> str:
             zqa120_enable_transfer_effect = yes
             zqa120_enable_defenders_effect = yes
             debug_log = "ZQA120: TEST PASS production_enable_effects_invoked"
+            set_variable = { name = zqa120_stage value = 11 }
+        }
+        else_if = {
+            limit = { var:zqa120_stage = 11 has_character_flag = zqa_await_product_toggles }
+            debug_log = "ZQA120: OBSERVED enabled_governor_current_scopes"
+            var:zqa120_removal_incumbent = { debug_log_scopes = yes }
+            var:zqa120_baseline_heir = { debug_log_scopes = yes }
+            var:zqa120_removal_title = { debug_log_scopes = yes current_heir = { debug_log_scopes = yes } }
             zqa_run_enabled_matrix_effect = yes
             set_variable = { name = zqa120_stage value = 2 }
         }
@@ -188,9 +197,37 @@ def prepare(repo: Path, output: Path, scenario: str) -> dict:
     base = base_path.read_text(encoding="utf-8-sig")
     # This fixture excludes the legacy defense GUI/decisions; their separate
     # initializer is unreachable here and must not leave orphan flag contracts.
-    defense_init = prep.balanced_excerpt(base, r"^zqa_defense_initialize_effect\s*=\s*\{")
-    base = prep.replace_once(base, defense_init, "# Legacy defense initializer excluded from this core fixture.")
+    for key in ("zqa_defense_initialize_effect", "zqa_defense_setup_after_switch_effect"):
+        defense_init = prep.balanced_excerpt(base, rf"^{key}\s*=\s*\{{")
+        base = prep.replace_once(base, defense_init, "# Legacy defense initializer/callback excluded from this core fixture.")
     base = base.replace("golden_obligation_value", "xqol_full_golden_obligation_value")
+    # Baselines must refer to actual appointment governors, not estate titles
+    # or frail randomly chosen incumbents. Preserve the strict heir assertion.
+    init = prep.balanced_excerpt(base, r"^zqa_initialize_effect\s*=\s*\{")
+    guard = ("is_ai = yes\n{indent}age < 60\n{indent}health >= 4\n"
+             "{indent}OR = {{ has_realm_law = appointment_succession_law "
+             "has_realm_law = celestial_appointment_succession_law "
+             "has_realm_law = celestial_military_appointment_succession_law }}\n"
+             "{indent}primary_title = {{ is_landless_type_title = no }}")
+    changed_init = re.sub(r"(?m)^(\t+)is_landed = yes$", lambda m: m[0] + "\n" + m[1] + guard.format(indent=m[1]), init)
+    proof = '''
+            scope:zqa_vanilla_removal_incumbent = {
+                debug_log = "ZQA120: OBSERVED baseline_incumbent_scope"
+                debug_log_scopes = yes
+                primary_title = { save_scope_as = zqa120_removal_title debug_log_scopes = yes }
+                primary_title.current_heir = { save_scope_as = zqa120_baseline_heir debug_log_scopes = yes }
+            }
+            scope:zqa_song_emperor = {
+                set_variable = { name = zqa120_removal_incumbent value = scope:zqa_vanilla_removal_incumbent }
+                set_variable = { name = zqa120_removal_title value = scope:zqa120_removal_title }
+                set_variable = { name = zqa120_baseline_heir value = scope:zqa120_baseline_heir }
+            }
+'''
+    changed_init = prep.replace_once(changed_init, '\t\t\tdebug_log = "ZQA: TEST PASS vanilla_baseline_heirs_recorded"', proof + '\t\t\tdebug_log = "ZQA: TEST PASS vanilla_baseline_heirs_recorded"')
+    base = prep.replace_once(base, init, changed_init)
+    death = prep.balanced_excerpt(base, r"^zqa_run_enabled_matrix_effect\s*=\s*\{")
+    death_changed = prep.replace_once(death, "\t\t\tis_ai = yes\n\t\t\tis_landed = yes", "\t\t\tis_ai = yes\n\t\t\tis_landed = yes\n\t\t\t" + guard.format(indent="\t\t\t") + "\n\t\t\tNOT = { has_character_flag = zqa_removal_incumbent_subject }")
+    base = prep.replace_once(base, death, death_changed)
     # The driver invokes the next setup once; the original callback had chained it.
     base = prep.replace_once(base, "\tzqa_setup_payment_matrix_effect = yes\n", "\t# The 1.20 hidden driver chooses the next matrix.\n")
     if scenario == "administrative":
