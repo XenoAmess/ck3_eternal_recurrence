@@ -1,0 +1,123 @@
+{
+  "at_utc": "2026-10-01T08:53:26.296808+00:00",
+  "phase": "before",
+  "bindings": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "bytes": 4424,
+    "sha256": "2828542D1B8F40496AC4E4D0036142BDDE3B77CC5E4E724E3DDFFBC53502BC4F"
+  },
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\scoped_ui_research_a05.py",
+    "bytes": 32440,
+    "sha256": "BF88D05E946233993F64F5F3275C11A20AE1297105F4194A0699586F45E90A6E"
+  },
+  "stage_helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\run_paused_ui_stage_a04.py",
+    "bytes": 5059,
+    "sha256": "6C9B7C24901E73F255F6CB2A374697793AEBB73232F89BAEB3F00BCE62F5F9B2"
+  },
+  "extra_checkpoint_helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\preserve_paused_ui_checkpoint_a03.py",
+    "bytes": 5029,
+    "sha256": "449E492DA55B659053FA04B66F6EA8CE0F92EF95BFCBF6E9FAD33A7BF8D58FC0"
+  },
+  "operations": [
+    [
+      "monitor-begin",
+      [
+        "--mode",
+        "monitor-begin"
+      ]
+    ],
+    [
+      "pre-ui-checkpoint",
+      [
+        "--mode",
+        "extra-checkpoint"
+      ]
+    ],
+    [
+      "victim-character",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "victim"
+      ]
+    ],
+    [
+      "killer-character",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "killer"
+      ]
+    ],
+    [
+      "army",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "army"
+      ]
+    ],
+    [
+      "knights",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "knights"
+      ]
+    ],
+    [
+      "combat",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "combat"
+      ]
+    ],
+    [
+      "combat-fit",
+      [
+        "--mode",
+        "fit"
+      ]
+    ],
+    [
+      "left-knights-tooltip",
+      [
+        "--mode",
+        "hover",
+        "--ui-side",
+        "left"
+      ]
+    ],
+    [
+      "right-knights-tooltip",
+      [
+        "--mode",
+        "hover",
+        "--ui-side",
+        "right"
+      ]
+    ],
+    [
+      "save",
+      [
+        "--mode",
+        "save"
+      ]
+    ]
+  ],
+  "never_advances_a_day": true,
+  "automatic_pixel_review_or_signoff": false
+}

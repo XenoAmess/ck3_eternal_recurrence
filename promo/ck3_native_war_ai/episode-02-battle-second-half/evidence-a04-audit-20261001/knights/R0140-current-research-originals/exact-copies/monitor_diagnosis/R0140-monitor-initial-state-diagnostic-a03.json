@@ -1,0 +1,2400 @@
+{
+  "schema_version": 1,
+  "kind": "R0140_ACTUAL_FAILED_PRE_UI_MONITOR_DIAGNOSTIC",
+  "research_status": "RED_UI_ADMISSION_NO_DAY_ADVANCE",
+  "created_at_utc": "2026-10-01T09:17:39.954766+00:00",
+  "checks": [
+    {
+      "name": "same original frozen config",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+      "pass": true
+    },
+    {
+      "name": "actual source commit/DLL pin",
+      "pass": true
+    },
+    {
+      "name": "failed before UI no day markers",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\variable-monitor-begin-once.json",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\variable-monitor-begin-once.json",
+      "pass": true
+    },
+    {
+      "name": "begin exact original additive body",
+      "pass": true
+    },
+    {
+      "name": "begin same original token/scope",
+      "pass": true
+    },
+    {
+      "name": "begin source session/date",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\failed-ui-monitor-end-once.json",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\failed-ui-monitor-end-once.json",
+      "pass": true
+    },
+    {
+      "name": "abort-finish exact original additive body",
+      "pass": true
+    },
+    {
+      "name": "abort-finish same original token/scope",
+      "pass": true
+    },
+    {
+      "name": "abort-finish source session/date",
+      "pass": true
+    },
+    {
+      "name": "arm/drain flags and uninstall",
+      "pass": true
+    },
+    {
+      "name": "all actual paused rows flags0/date",
+      "pass": true
+    },
+    {
+      "name": "actual initial rows exact retained prefix",
+      "pass": true
+    },
+    {
+      "name": "seven definition prearm stable and distinct",
+      "pass": true
+    },
+    {
+      "name": "reproduced actual overly strict old same-thread gate",
+      "pass": true
+    },
+    {
+      "name": "zero actual writers and house calls",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-save.json",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-save.json",
+      "pass": true
+    },
+    {
+      "name": "original SHA C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-source.json",
+      "pass": true
+    },
+    {
+      "name": "original saved receipt exact actor/date/hash",
+      "pass": true
+    },
+    {
+      "name": "checkpoint original expected revision",
+      "pass": true
+    },
+    {
+      "name": "monitor/save same real process connection",
+      "pass": true
+    },
+    {
+      "name": "pinned original Rakaly",
+      "pass": true
+    },
+    {
+      "name": "actual strict decoder exit0/stderr empty",
+      "pass": true
+    },
+    {
+      "name": "33437 unique saved signature row",
+      "pass": true
+    },
+    {
+      "name": "34120 unique saved signature row",
+      "pass": true
+    }
+  ],
+  "sources": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\variable-monitor-begin.json",
+        "bytes": 41142,
+        "sha256": "02EF1E3BF1B2C65868249C198B713AA3032F8B4C7E8BB9414FD6EF7D6AA7DB15"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\variable-monitor-begin.json",
+        "bytes": 41142,
+        "sha256": "02EF1E3BF1B2C65868249C198B713AA3032F8B4C7E8BB9414FD6EF7D6AA7DB15"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\failed-ui-monitor-end.json",
+        "bytes": 71685,
+        "sha256": "3BA0C32D015F0C55BCC43439384510A8AF6F1B420C49B56D0DA587AEAE30F397"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\failed-ui-monitor-end.json",
+        "bytes": 71685,
+        "sha256": "3BA0C32D015F0C55BCC43439384510A8AF6F1B420C49B56D0DA587AEAE30F397"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-saved-pair.json",
+        "bytes": 5876,
+        "sha256": "3DE2672E71D8E76D5C63F6CC9CCD8EF083C6FE59CBCEA418510C1572D32B264A"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\before-pre-ui-checkpoint-saved-pair.json",
+        "bytes": 5876,
+        "sha256": "3DE2672E71D8E76D5C63F6CC9CCD8EF083C6FE59CBCEA418510C1572D32B264A"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\verify_R0140_failed_UI_monitor_a03.py",
+        "bytes": 11226,
+        "sha256": "A733C340C0B811311010F59B8B560F6E6BA6F605514238A241D42B61FADD1F7A"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\verify_R0140_failed_UI_monitor_a03.py",
+        "bytes": 11226,
+        "sha256": "A733C340C0B811311010F59B8B560F6E6BA6F605514238A241D42B61FADD1F7A"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001b\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+        "bytes": 15264,
+        "sha256": "55D4077ABC6EA3B76D49E81AB9F736A74962BF262BCE2B1133A7C83394077B4F"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\knight_variable_monitor_projection.py",
+        "bytes": 15264,
+        "sha256": "55D4077ABC6EA3B76D49E81AB9F736A74962BF262BCE2B1133A7C83394077B4F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001b\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_causal_save_projection.py",
+        "bytes": 15996,
+        "sha256": "96B345E9BDFB3F07CB3E8C4B7F77CE27DEFB95FAB7EC064BBF8203D88386EFE6"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\knight_causal_save_projection.py",
+        "bytes": 15996,
+        "sha256": "96B345E9BDFB3F07CB3E8C4B7F77CE27DEFB95FAB7EC064BBF8203D88386EFE6"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+        "bytes": 4424,
+        "sha256": "2828542D1B8F40496AC4E4D0036142BDDE3B77CC5E4E724E3DDFFBC53502BC4F"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\current-run-bindings-exact.json",
+        "bytes": 4424,
+        "sha256": "2828542D1B8F40496AC4E4D0036142BDDE3B77CC5E4E724E3DDFFBC53502BC4F"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\variable-monitor-begin-once.json",
+        "bytes": 31515,
+        "sha256": "461AA61E60D30594AB219D231EB903DD1958B7F5B8C602A056CD85CC3C102E41"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\begin-native-response-exact.json",
+        "bytes": 31515,
+        "sha256": "461AA61E60D30594AB219D231EB903DD1958B7F5B8C602A056CD85CC3C102E41"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\variable-monitor-begin-once.json",
+        "bytes": 253,
+        "sha256": "D7CFB3560CAE5C11111B7BC2A862334B7F99298F43BD01E0D4D2E382BD3A6884"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\begin-native-request-exact.json",
+        "bytes": 253,
+        "sha256": "D7CFB3560CAE5C11111B7BC2A862334B7F99298F43BD01E0D4D2E382BD3A6884"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\failed-ui-monitor-end-once.json",
+        "bytes": 47589,
+        "sha256": "0F354A69D6CD9FE8DC98C350926B045EC8D25B008306D6F2B33AE19AFB4017D7"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\abort-finish-native-response-exact.json",
+        "bytes": 47589,
+        "sha256": "0F354A69D6CD9FE8DC98C350926B045EC8D25B008306D6F2B33AE19AFB4017D7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\failed-ui-monitor-end-once.json",
+        "bytes": 182,
+        "sha256": "439128A60F37F825198A1EDFFBC3788AA3F8DD9F5E2FFE1BF1169F5E4D302BDB"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\abort-finish-native-request-exact.json",
+        "bytes": 182,
+        "sha256": "439128A60F37F825198A1EDFFBC3788AA3F8DD9F5E2FFE1BF1169F5E4D302BDB"
+      }
+    }
+  ],
+  "raw_original_save": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+    "bytes": 52881742,
+    "sha256": "150C230021F9D8B0F8BA28DFDAFC7FE18FEDBC09CB0CE13AE5B301F54FCEE8D9"
+  },
+  "melted": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\before-preUI-melted.ck3",
+    "bytes": 81787236,
+    "sha256": "A1F3B0D74AA261DDD6B8F1413E6FF9EC8C6496031078423F89EDFF5DA15A5DD3"
+  },
+  "native_connection": [
+    "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_429f0d7ed1824d6982911c0b8512456d",
+    1,
+    832
+  ],
+  "actual_prearmed_definitions": [
+    {
+      "identity_read": true,
+      "invocation": 0,
+      "actual_original_execution_observed": false,
+      "identity_kind": "nearest_matched_notification_immediate_ancestor",
+      "matched_root_execution_depth": 0,
+      "active_effect_group_depth": 0,
+      "definition_token": 2094318136896,
+      "definition_index": 7862,
+      "definition_id": 4851200,
+      "runtime_stats_ordinal": 7862,
+      "definition_key": "death_management.1200",
+      "compiled_immediate_root_token": 2086015054288,
+      "definition_vtable_rva": 70211344,
+      "root_vtable_rva": 72151088,
+      "root_hash": 3873555748,
+      "original_execute_rva": 54005440,
+      "children_data_token": 2085934853296,
+      "children_capacity": 4,
+      "children_count": 4,
+      "execution_context_token": 0,
+      "root_scope_token": 0,
+      "root_scope_words": [
+        0,
+        0
+      ],
+      "activation_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    },
+    {
+      "identity_read": true,
+      "invocation": 0,
+      "actual_original_execution_observed": false,
+      "identity_kind": "nearest_matched_notification_immediate_ancestor",
+      "matched_root_execution_depth": 0,
+      "active_effect_group_depth": 0,
+      "definition_token": 2094318563712,
+      "definition_index": 7863,
+      "definition_id": 4851201,
+      "runtime_stats_ordinal": 7863,
+      "definition_key": "death_management.1201",
+      "compiled_immediate_root_token": 2086015056528,
+      "definition_vtable_rva": 70211344,
+      "root_vtable_rva": 72151088,
+      "root_hash": 4221432002,
+      "original_execute_rva": 54005440,
+      "children_data_token": 2085934855696,
+      "children_capacity": 4,
+      "children_count": 4,
+      "execution_context_token": 0,
+      "root_scope_token": 0,
+      "root_scope_words": [
+        0,
+        0
+      ],
+      "activation_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    },
+    {
+      "identity_read": true,
+      "invocation": 0,
+      "actual_original_execution_observed": false,
+      "identity_kind": "nearest_matched_notification_immediate_ancestor",
+      "matched_root_execution_depth": 0,
+      "active_effect_group_depth": 0,
+      "definition_token": 2094318842784,
+      "definition_index": 7864,
+      "definition_id": 4851202,
+      "runtime_stats_ordinal": 7864,
+      "definition_key": "death_management.1202",
+      "compiled_immediate_root_token": 2086015052384,
+      "definition_vtable_rva": 70211344,
+      "root_vtable_rva": 72151088,
+      "root_hash": 3950042204,
+      "original_execute_rva": 54005440,
+      "children_data_token": 2085934856416,
+      "children_capacity": 4,
+      "children_count": 4,
+      "execution_context_token": 0,
+      "root_scope_token": 0,
+      "root_scope_words": [
+        0,
+        0
+      ],
+      "activation_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    },
+    {
+      "identity_read": true,
+      "invocation": 0,
+      "actual_original_execution_observed": false,
+      "identity_kind": "nearest_matched_notification_immediate_ancestor",
+      "matched_root_execution_depth": 0,
+      "active_effect_group_depth": 0,
+      "definition_token": 2094319138272,
+      "definition_index": 7865,
+      "definition_id": 4851204,
+      "runtime_stats_ordinal": 7865,
+      "definition_key": "death_management.1204",
+      "compiled_immediate_root_token": 2086015056752,
+      "definition_vtable_rva": 70211344,
+      "root_vtable_rva": 72151088,
+      "root_hash": 1218930815,
+      "original_execute_rva": 54005440,
+      "children_data_token": 2089067722736,
+      "children_capacity": 6,
+      "children_count": 5,
+      "execution_context_token": 0,
+      "root_scope_token": 0,
+      "root_scope_words": [
+        0,
+        0
+      ],
+      "activation_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    },
+    {
+      "identity_read": true,
+      "invocation": 0,
+      "actual_original_execution_observed": false,
+      "identity_kind": "nearest_matched_notification_immediate_ancestor",
+      "matched_root_execution_depth": 0,
+      "active_effect_group_depth": 0,
+      "definition_token": 2094319499424,
+      "definition_index": 7866,
+      "definition_id": 4851205,
+      "runtime_stats_ordinal": 7866,
+      "definition_key": "death_management.1205",
+      "compiled_immediate_root_token": 2086015053168,
+      "definition_vtable_rva": 70211344,
+      "root_vtable_rva": 72151088,
+      "root_hash": 1863269836,
+      "original_execute_rva": 54005440,
+      "children_data_token": 2089067725744,
+      "children_capacity": 6,
+      "children_count": 5,
+      "execution_context_token": 0,
+      "root_scope_token": 0,
+      "root_scope_words": [
+        0,
+        0
+      ],
+      "activation_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    },
+    {
+      "identity_read": true,
+      "invocation": 0,
+      "actual_original_execution_observed": false,
+      "identity_kind": "nearest_matched_notification_immediate_ancestor",
+      "matched_root_execution_depth": 0,
+      "active_effect_group_depth": 0,
+      "definition_token": 2094319663584,
+      "definition_index": 7867,
+      "definition_id": 4851206,
+      "runtime_stats_ordinal": 7867,
+      "definition_key": "death_management.1206",
+      "compiled_immediate_root_token": 2086015055632,
+      "definition_vtable_rva": 70211344,
+      "root_vtable_rva": 72151088,
+      "root_hash": 112685841,
+      "original_execute_rva": 54005440,
+      "children_data_token": 2085934859200,
+      "children_capacity": 4,
+      "children_count": 4,
+      "execution_context_token": 0,
+      "root_scope_token": 0,
+      "root_scope_words": [
+        0,
+        0
+      ],
+      "activation_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    },
+    {
+      "identity_read": true,
+      "invocation": 0,
+      "actual_original_execution_observed": false,
+      "identity_kind": "nearest_matched_notification_immediate_ancestor",
+      "matched_root_execution_depth": 0,
+      "active_effect_group_depth": 0,
+      "definition_token": 2094319959072,
+      "definition_index": 7868,
+      "definition_id": 4851207,
+      "runtime_stats_ordinal": 7868,
+      "definition_key": "death_management.1207",
+      "compiled_immediate_root_token": 2086015056976,
+      "definition_vtable_rva": 70211344,
+      "root_vtable_rva": 72151088,
+      "root_hash": 2586783424,
+      "original_execute_rva": 54005440,
+      "children_data_token": 2085934861168,
+      "children_capacity": 4,
+      "children_count": 4,
+      "execution_context_token": 0,
+      "root_scope_token": 0,
+      "root_scope_words": [
+        0,
+        0
+      ],
+      "activation_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      }
+    }
+  ],
+  "actual_original_monitor_records": [
+    {
+      "sequence": 0,
+      "invocation": 0,
+      "boundary": "arm",
+      "failure_flags": 0,
+      "thread_id": 13000,
+      "date_raw": 53146848,
+      "character_id": -1,
+      "observed_character_id": -1,
+      "full_identity_matches": false,
+      "dead": false,
+      "owner_token": 0,
+      "previous_owner_token": 0,
+      "container_token": 0,
+      "owner_from_original_getter": false,
+      "owner_from_same_setter_invocation": false,
+      "key_id": 8234,
+      "duration": 0,
+      "value": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_value_decoding": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_scope_words": [
+        0,
+        0
+      ],
+      "setter_node_token": 0,
+      "setter_node_vtable_rva": 0,
+      "setter_node_hash": 0,
+      "execution_context_token": 0,
+      "native_root_scope_token": 0,
+      "native_scope_words": [
+        0,
+        0
+      ],
+      "caller_token": 0,
+      "native_stack_rvas": [],
+      "house_ids": [
+        -1,
+        -1
+      ],
+      "relation_type_token": 0,
+      "relation_type_id": -1,
+      "relation_type_key": "",
+      "event_producer": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "current_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      },
+      "original_boolean_read": false,
+      "original_boolean": false,
+      "original_return_bits": 0,
+      "daily_effect_context": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      }
+    },
+    {
+      "sequence": 1,
+      "invocation": 0,
+      "boundary": "original_owner_return",
+      "failure_flags": 0,
+      "thread_id": 3900,
+      "date_raw": 53146848,
+      "character_id": 33437,
+      "observed_character_id": 33437,
+      "full_identity_matches": true,
+      "dead": false,
+      "owner_token": 2099190739760,
+      "previous_owner_token": 0,
+      "container_token": 2099190739768,
+      "owner_from_original_getter": true,
+      "owner_from_same_setter_invocation": false,
+      "key_id": 8234,
+      "duration": 0,
+      "value": {
+        "read": true,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_value_decoding": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_scope_words": [
+        0,
+        0
+      ],
+      "setter_node_token": 0,
+      "setter_node_vtable_rva": 0,
+      "setter_node_hash": 0,
+      "execution_context_token": 0,
+      "native_root_scope_token": 0,
+      "native_scope_words": [
+        0,
+        0
+      ],
+      "caller_token": 0,
+      "native_stack_rvas": [],
+      "house_ids": [
+        -1,
+        -1
+      ],
+      "relation_type_token": 0,
+      "relation_type_id": -1,
+      "relation_type_key": "",
+      "event_producer": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "current_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      },
+      "original_boolean_read": false,
+      "original_boolean": false,
+      "original_return_bits": 0,
+      "daily_effect_context": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      }
+    },
+    {
+      "sequence": 2,
+      "invocation": 0,
+      "boundary": "final_paused",
+      "failure_flags": 0,
+      "thread_id": 13000,
+      "date_raw": 53146848,
+      "character_id": -1,
+      "observed_character_id": -1,
+      "full_identity_matches": false,
+      "dead": false,
+      "owner_token": 0,
+      "previous_owner_token": 0,
+      "container_token": 0,
+      "owner_from_original_getter": false,
+      "owner_from_same_setter_invocation": false,
+      "key_id": 8234,
+      "duration": 0,
+      "value": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_value_decoding": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_scope_words": [
+        0,
+        0
+      ],
+      "setter_node_token": 0,
+      "setter_node_vtable_rva": 0,
+      "setter_node_hash": 0,
+      "execution_context_token": 0,
+      "native_root_scope_token": 0,
+      "native_scope_words": [
+        0,
+        0
+      ],
+      "caller_token": 0,
+      "native_stack_rvas": [],
+      "house_ids": [
+        -1,
+        -1
+      ],
+      "relation_type_token": 0,
+      "relation_type_id": -1,
+      "relation_type_key": "",
+      "event_producer": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "current_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      },
+      "original_boolean_read": false,
+      "original_boolean": false,
+      "original_return_bits": 0,
+      "daily_effect_context": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      }
+    },
+    {
+      "sequence": 3,
+      "invocation": 0,
+      "boundary": "final_paused",
+      "failure_flags": 0,
+      "thread_id": 13000,
+      "date_raw": 53146848,
+      "character_id": 33437,
+      "observed_character_id": 33437,
+      "full_identity_matches": true,
+      "dead": false,
+      "owner_token": 2099190739760,
+      "previous_owner_token": 0,
+      "container_token": 2099190739768,
+      "owner_from_original_getter": true,
+      "owner_from_same_setter_invocation": false,
+      "key_id": 8234,
+      "duration": 0,
+      "value": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_value_decoding": {
+        "read": false,
+        "present": false,
+        "expiration_raw": -1,
+        "scope_word0": 0,
+        "scope_word1": 0,
+        "flag_name_read": false,
+        "flag_index": 0,
+        "flag_identifier_epoch": 0,
+        "flag_identifier_count": 0,
+        "flag_name": ""
+      },
+      "requested_scope_words": [
+        0,
+        0
+      ],
+      "setter_node_token": 0,
+      "setter_node_vtable_rva": 0,
+      "setter_node_hash": 0,
+      "execution_context_token": 0,
+      "native_root_scope_token": 0,
+      "native_scope_words": [
+        0,
+        0
+      ],
+      "caller_token": 0,
+      "native_stack_rvas": [],
+      "house_ids": [
+        -1,
+        -1
+      ],
+      "relation_type_token": 0,
+      "relation_type_id": -1,
+      "relation_type_key": "",
+      "event_producer": {
+        "identity_read": false,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 0,
+        "definition_index": 0,
+        "definition_id": 0,
+        "runtime_stats_ordinal": 0,
+        "definition_key": "",
+        "compiled_immediate_root_token": 0,
+        "definition_vtable_rva": 0,
+        "root_vtable_rva": 0,
+        "root_hash": 0,
+        "original_execute_rva": 0,
+        "children_data_token": 0,
+        "children_capacity": 0,
+        "children_count": 0,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "current_death_commit_context": {
+        "read": false,
+        "context_kind": "currently_executing_original_264BCB0_same_thread",
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "parent_invocation": 0,
+        "thread_id": 0,
+        "native_date_raw": 0,
+        "combat_id": -1,
+        "victim_id": -1,
+        "killer_id": -1,
+        "victim_full_identity_matches": false,
+        "killer_full_identity_matches": false,
+        "manager_token": 0,
+        "victim_token": 0,
+        "killer_token": 0,
+        "reason_token": 0,
+        "date_argument_token": 0,
+        "requested_death_date_raw": 0,
+        "reason_key_read": false,
+        "reason_key": "",
+        "artifact_token": 0,
+        "artifact_actual_null": false,
+        "artifact_id_read": false,
+        "artifact_id": -1
+      },
+      "original_boolean_read": false,
+      "original_boolean": false,
+      "original_return_bits": 0,
+      "daily_effect_context": {
+        "read": false,
+        "managed_daily_sequence_token": 0,
+        "invocation": 0,
+        "node_token": 0,
+        "node_vtable_rva": 0,
+        "node_hash": 0,
+        "execution_context_token": 0,
+        "depth": 0,
+        "combat_id": -1,
+        "side_index": -1,
+        "event_load_index": -1
+      }
+    }
+  ],
+  "original_monitor_projection_without_invalid_cross_thread_assumption": {
+    "status": "CAPTURED_ACTUAL_MONITOR_OPERATIONS_CHECKED",
+    "checks": [
+      {
+        "name": "schema1",
+        "pass": true
+      },
+      {
+        "name": "two exact full characters",
+        "pass": true
+      },
+      {
+        "name": "actual monitor token",
+        "pass": true
+      },
+      {
+        "name": "begin paused date",
+        "pass": true
+      },
+      {
+        "name": "zero or one native day window",
+        "pass": true
+      },
+      {
+        "name": "no truncation/failure",
+        "pass": true
+      },
+      {
+        "name": "real uninstall receipt flag",
+        "pass": true
+      },
+      {
+        "name": "global and endpoint-cause flags retained",
+        "pass": true
+      },
+      {
+        "name": "independent signature key epoch/index",
+        "pass": true
+      },
+      {
+        "name": "nonempty arm through final paused",
+        "pass": true
+      },
+      {
+        "name": "unique ordered original sequences",
+        "pass": true
+      },
+      {
+        "name": "every record same declared window",
+        "pass": true
+      },
+      {
+        "name": "every scoped character full identity",
+        "pass": true
+      },
+      {
+        "name": "complete ordered paired original calls",
+        "pass": true
+      }
+    ],
+    "monitor_sequence_token": 458456270100707056,
+    "actual_write_pairs": [],
+    "original_house_predicate_pairs": [],
+    "producer_closed": false,
+    "prearmed_event_definition_bindings": {
+      "death_management.1200": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094318136896,
+        "definition_index": 7862,
+        "definition_id": 4851200,
+        "runtime_stats_ordinal": 7862,
+        "definition_key": "death_management.1200",
+        "compiled_immediate_root_token": 2086015054288,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 3873555748,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934853296,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1201": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094318563712,
+        "definition_index": 7863,
+        "definition_id": 4851201,
+        "runtime_stats_ordinal": 7863,
+        "definition_key": "death_management.1201",
+        "compiled_immediate_root_token": 2086015056528,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 4221432002,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934855696,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1202": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094318842784,
+        "definition_index": 7864,
+        "definition_id": 4851202,
+        "runtime_stats_ordinal": 7864,
+        "definition_key": "death_management.1202",
+        "compiled_immediate_root_token": 2086015052384,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 3950042204,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934856416,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1204": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319138272,
+        "definition_index": 7865,
+        "definition_id": 4851204,
+        "runtime_stats_ordinal": 7865,
+        "definition_key": "death_management.1204",
+        "compiled_immediate_root_token": 2086015056752,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 1218930815,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2089067722736,
+        "children_capacity": 6,
+        "children_count": 5,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1205": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319499424,
+        "definition_index": 7866,
+        "definition_id": 4851205,
+        "runtime_stats_ordinal": 7866,
+        "definition_key": "death_management.1205",
+        "compiled_immediate_root_token": 2086015053168,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 1863269836,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2089067725744,
+        "children_capacity": 6,
+        "children_count": 5,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1206": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319663584,
+        "definition_index": 7867,
+        "definition_id": 4851206,
+        "runtime_stats_ordinal": 7867,
+        "definition_key": "death_management.1206",
+        "compiled_immediate_root_token": 2086015055632,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 112685841,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934859200,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1207": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319959072,
+        "definition_index": 7868,
+        "definition_id": 4851207,
+        "runtime_stats_ordinal": 7868,
+        "definition_key": "death_management.1207",
+        "compiled_immediate_root_token": 2086015056976,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 2586783424,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934861168,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      }
+    },
+    "gaps": [
+      "no matched signature writes observed; a no-write branch requires separate actual branch/inventory proof"
+    ],
+    "whole_game_mutable_bundle_complete": false,
+    "limits": "Requested names are independently decoded from original typed words. Saved endpoints, UI timing and producer proof are separate checks."
+  },
+  "strict_saved_initial_states": [
+    {
+      "character_id": 33437,
+      "entries": [
+        {
+          "key": "first_name",
+          "value": "\"Turgise\""
+        },
+        {
+          "key": "birth",
+          "value": "1035.1.1"
+        },
+        {
+          "key": "nickname_text",
+          "value": "\"\""
+        },
+        {
+          "key": "ethnicity",
+          "value": "\"caucasian_brown_hair\""
+        },
+        {
+          "key": "culture",
+          "value": "73"
+        },
+        {
+          "key": "faith",
+          "value": "23"
+        },
+        {
+          "key": "dynasty_house",
+          "value": "1105"
+        },
+        {
+          "key": "skill",
+          "value": [
+            {
+              "key": null,
+              "value": "4"
+            },
+            {
+              "key": null,
+              "value": "0"
+            },
+            {
+              "key": null,
+              "value": "4"
+            },
+            {
+              "key": null,
+              "value": "6"
+            },
+            {
+              "key": null,
+              "value": "6"
+            },
+            {
+              "key": null,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "key": "trait_xp_amounts",
+          "value": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "key": "mass",
+          "value": "14"
+        },
+        {
+          "key": "traits",
+          "value": [
+            {
+              "key": null,
+              "value": "50"
+            },
+            {
+              "key": null,
+              "value": "76"
+            },
+            {
+              "key": null,
+              "value": "54"
+            },
+            {
+              "key": null,
+              "value": "16"
+            },
+            {
+              "key": null,
+              "value": "236"
+            }
+          ]
+        },
+        {
+          "key": "family_data",
+          "value": [
+            {
+              "key": "child",
+              "value": [
+                {
+                  "key": null,
+                  "value": "38574"
+                },
+                {
+                  "key": null,
+                  "value": "38963"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "alive_data",
+          "value": [
+            {
+              "key": "fertility",
+              "value": "0.5"
+            },
+            {
+              "key": "health",
+              "value": "4.26192"
+            },
+            {
+              "key": "piety",
+              "value": [
+                {
+                  "key": "currency",
+                  "value": "207.6"
+                },
+                {
+                  "key": "accumulated",
+                  "value": "1007.6"
+                }
+              ]
+            },
+            {
+              "key": "prestige",
+              "value": [
+                {
+                  "key": "currency",
+                  "value": "300.3456"
+                },
+                {
+                  "key": "accumulated",
+                  "value": "1000.3456"
+                }
+              ]
+            },
+            {
+              "key": "influence",
+              "value": [
+                {
+                  "key": "currency",
+                  "value": "120"
+                }
+              ]
+            },
+            {
+              "key": "languages",
+              "value": [
+                {
+                  "key": null,
+                  "value": "language_french"
+                }
+              ]
+            },
+            {
+              "key": "activity_data",
+              "value": []
+            },
+            {
+              "key": "location",
+              "value": [
+                {
+                  "key": "location",
+                  "value": "2633"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "court_data",
+          "value": [
+            {
+              "key": "employer",
+              "value": "29829"
+            },
+            {
+              "key": "regiment",
+              "value": "65"
+            },
+            {
+              "key": "knight",
+              "value": "yes"
+            },
+            {
+              "key": "join_court_date",
+              "value": "1066.9.15"
+            }
+          ]
+        }
+      ],
+      "status": "ALIVE",
+      "base_skills": [
+        4,
+        0,
+        4,
+        6,
+        6,
+        2
+      ],
+      "trait_indices": [
+        50,
+        76,
+        54,
+        16,
+        236
+      ],
+      "trait_keys": [
+        "temperate",
+        "callous",
+        "diligent",
+        "education_martial_2",
+        "logistician"
+      ],
+      "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+      "prestige_currency": "300.3456",
+      "prestige_accumulated": "1000.3456",
+      "regiment_id": 65,
+      "house_id": 1105,
+      "death_date": null,
+      "death_reason": null,
+      "death_killer_id": null,
+      "exact_extract": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\33437-preUI-exact.txt",
+        "bytes": 715,
+        "sha256": "A212E176344DA71BE7AE221DE619EFE54482214C7F0F55E21B5694FE703794CB"
+      },
+      "signature_weapon_saved_state": {
+        "present": false,
+        "row": null,
+        "evidence_level": "strict same-run pre-UI saved endpoint"
+      }
+    },
+    {
+      "character_id": 34120,
+      "entries": [
+        {
+          "key": "first_name",
+          "value": "\"Amr\""
+        },
+        {
+          "key": "birth",
+          "value": "1039.1.1"
+        },
+        {
+          "key": "nickname_text",
+          "value": "\"\""
+        },
+        {
+          "key": "ethnicity",
+          "value": "\"arab\""
+        },
+        {
+          "key": "culture",
+          "value": "20"
+        },
+        {
+          "key": "faith",
+          "value": "67"
+        },
+        {
+          "key": "dynasty_house",
+          "value": "1053"
+        },
+        {
+          "key": "skill",
+          "value": [
+            {
+              "key": null,
+              "value": "7"
+            },
+            {
+              "key": null,
+              "value": "5"
+            },
+            {
+              "key": null,
+              "value": "4"
+            },
+            {
+              "key": null,
+              "value": "6"
+            },
+            {
+              "key": null,
+              "value": "8"
+            },
+            {
+              "key": null,
+              "value": "7"
+            }
+          ]
+        },
+        {
+          "key": "trait_xp_amounts",
+          "value": [
+            {
+              "key": null,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "key": "mass",
+          "value": "-2"
+        },
+        {
+          "key": "traits",
+          "value": [
+            {
+              "key": null,
+              "value": "62"
+            },
+            {
+              "key": null,
+              "value": "69"
+            },
+            {
+              "key": null,
+              "value": "71"
+            },
+            {
+              "key": null,
+              "value": "16"
+            },
+            {
+              "key": null,
+              "value": "248"
+            }
+          ]
+        },
+        {
+          "key": "alive_data",
+          "value": [
+            {
+              "key": "fertility",
+              "value": "0.5"
+            },
+            {
+              "key": "health",
+              "value": "4.19766"
+            },
+            {
+              "key": "piety",
+              "value": [
+                {
+                  "key": "currency",
+                  "value": "50"
+                }
+              ]
+            },
+            {
+              "key": "prestige",
+              "value": [
+                {
+                  "key": "currency",
+                  "value": "301.0608"
+                },
+                {
+                  "key": "accumulated",
+                  "value": "1001.0608"
+                }
+              ]
+            },
+            {
+              "key": "influence",
+              "value": [
+                {
+                  "key": "currency",
+                  "value": "120"
+                }
+              ]
+            },
+            {
+              "key": "languages",
+              "value": [
+                {
+                  "key": null,
+                  "value": "language_berber"
+                }
+              ]
+            },
+            {
+              "key": "activity_data",
+              "value": []
+            },
+            {
+              "key": "location",
+              "value": [
+                {
+                  "key": "location",
+                  "value": "2633"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "court_data",
+          "value": [
+            {
+              "key": "employer",
+              "value": "32725"
+            },
+            {
+              "key": "regiment",
+              "value": "115"
+            },
+            {
+              "key": "knight",
+              "value": "yes"
+            },
+            {
+              "key": "join_court_date",
+              "value": "1066.9.15"
+            }
+          ]
+        }
+      ],
+      "status": "ALIVE",
+      "base_skills": [
+        7,
+        5,
+        4,
+        6,
+        8,
+        7
+      ],
+      "trait_indices": [
+        62,
+        69,
+        71,
+        16,
+        248
+      ],
+      "trait_keys": [
+        "honest",
+        "arbitrary",
+        "cynical",
+        "education_martial_2",
+        "rough_terrain_expert"
+      ],
+      "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+      "prestige_currency": "301.0608",
+      "prestige_accumulated": "1001.0608",
+      "regiment_id": 115,
+      "house_id": 1053,
+      "death_date": null,
+      "death_reason": null,
+      "death_killer_id": null,
+      "exact_extract": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\34120-preUI-exact.txt",
+        "bytes": 618,
+        "sha256": "6B9F7DC5E410FA5A1A4F29F01E98B137D5254DFDFD871F78FFBF02E85D38D301"
+      },
+      "signature_weapon_saved_state": {
+        "present": false,
+        "row": null,
+        "evidence_level": "strict same-run pre-UI saved endpoint"
+      }
+    }
+  ],
+  "old_same_thread_rejection": "variable monitor: every record same declared window",
+  "actual_initial_native_signature": {
+    "33437": [
+      {
+        "sequence": 1,
+        "invocation": 0,
+        "boundary": "original_owner_return",
+        "failure_flags": 0,
+        "thread_id": 3900,
+        "date_raw": 53146848,
+        "character_id": 33437,
+        "observed_character_id": 33437,
+        "full_identity_matches": true,
+        "dead": false,
+        "owner_token": 2099190739760,
+        "previous_owner_token": 0,
+        "container_token": 2099190739768,
+        "owner_from_original_getter": true,
+        "owner_from_same_setter_invocation": false,
+        "key_id": 8234,
+        "duration": 0,
+        "value": {
+          "read": true,
+          "present": false,
+          "expiration_raw": -1,
+          "scope_word0": 0,
+          "scope_word1": 0,
+          "flag_name_read": false,
+          "flag_index": 0,
+          "flag_identifier_epoch": 0,
+          "flag_identifier_count": 0,
+          "flag_name": ""
+        },
+        "requested_value_decoding": {
+          "read": false,
+          "present": false,
+          "expiration_raw": -1,
+          "scope_word0": 0,
+          "scope_word1": 0,
+          "flag_name_read": false,
+          "flag_index": 0,
+          "flag_identifier_epoch": 0,
+          "flag_identifier_count": 0,
+          "flag_name": ""
+        },
+        "requested_scope_words": [
+          0,
+          0
+        ],
+        "setter_node_token": 0,
+        "setter_node_vtable_rva": 0,
+        "setter_node_hash": 0,
+        "execution_context_token": 0,
+        "native_root_scope_token": 0,
+        "native_scope_words": [
+          0,
+          0
+        ],
+        "caller_token": 0,
+        "native_stack_rvas": [],
+        "house_ids": [
+          -1,
+          -1
+        ],
+        "relation_type_token": 0,
+        "relation_type_id": -1,
+        "relation_type_key": "",
+        "event_producer": {
+          "identity_read": false,
+          "invocation": 0,
+          "actual_original_execution_observed": false,
+          "identity_kind": "nearest_matched_notification_immediate_ancestor",
+          "matched_root_execution_depth": 0,
+          "active_effect_group_depth": 0,
+          "definition_token": 0,
+          "definition_index": 0,
+          "definition_id": 0,
+          "runtime_stats_ordinal": 0,
+          "definition_key": "",
+          "compiled_immediate_root_token": 0,
+          "definition_vtable_rva": 0,
+          "root_vtable_rva": 0,
+          "root_hash": 0,
+          "original_execute_rva": 0,
+          "children_data_token": 0,
+          "children_capacity": 0,
+          "children_count": 0,
+          "execution_context_token": 0,
+          "root_scope_token": 0,
+          "root_scope_words": [
+            0,
+            0
+          ],
+          "activation_death_commit_context": {
+            "read": false,
+            "context_kind": "currently_executing_original_264BCB0_same_thread",
+            "managed_daily_sequence_token": 0,
+            "invocation": 0,
+            "parent_invocation": 0,
+            "thread_id": 0,
+            "native_date_raw": 0,
+            "combat_id": -1,
+            "victim_id": -1,
+            "killer_id": -1,
+            "victim_full_identity_matches": false,
+            "killer_full_identity_matches": false,
+            "manager_token": 0,
+            "victim_token": 0,
+            "killer_token": 0,
+            "reason_token": 0,
+            "date_argument_token": 0,
+            "requested_death_date_raw": 0,
+            "reason_key_read": false,
+            "reason_key": "",
+            "artifact_token": 0,
+            "artifact_actual_null": false,
+            "artifact_id_read": false,
+            "artifact_id": -1
+          }
+        },
+        "current_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        },
+        "original_boolean_read": false,
+        "original_boolean": false,
+        "original_return_bits": 0,
+        "daily_effect_context": {
+          "read": false,
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "node_token": 0,
+          "node_vtable_rva": 0,
+          "node_hash": 0,
+          "execution_context_token": 0,
+          "depth": 0,
+          "combat_id": -1,
+          "side_index": -1,
+          "event_load_index": -1
+        }
+      }
+    ],
+    "34120": []
+  },
+  "day_advanced": false,
+  "six_gap_evidence_closed": false,
+  "whole_game_mutable_bundle_complete": false,
+  "sole_cause_proven": false,
+  "initial_arm_values_are_character_state": false,
+  "cached_final_owner_values_reread": false,
+  "limits": [
+    "Seven source-bound prearmed roots are not seven actually executed notifications.",
+    "No write is published in this observed failed admission window; coverage remains only the two-character signature setter contract.",
+    "33437 native original getter reports read=true/present=false. 34120 has no native getter here, so native initial state is unobserved.",
+    "Single saved endpoint gives initial character/variable state only; no post-UI checkpoint, RNG equality, day transition or full case closure."
+  ],
+  "game_calls": 0,
+  "desktop_inputs": 0,
+  "master_intake": false
+}

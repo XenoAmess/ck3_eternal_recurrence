@@ -1,0 +1,171 @@
+{
+  "at_utc": "2026-10-01T08:45:35.226195+00:00",
+  "arguments": {
+    "target_id": "ck3-e2-scoped-ui-20261001-a03",
+    "job_name": "scoped-ui-research-capture"
+  },
+  "reply": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"result\": \"GREEN\",\n  \"target_id\": \"ck3-e2-scoped-ui-20261001-a03\",\n  \"job_name\": \"scoped-ui-research-capture\",\n  \"profile_sha256\": \"35A3DDDF348E727CB5F75B51D5613940D6B121F5A21234256279A08464E7C6CD\",\n  \"job_spec_sha256\": \"F54BD5CE3E2C61D667CBAD7693C09CEBF9E56ACA9A6C96E573C55CA667FBA9B2\",\n  \"checks\": {\n    \"target_identity_exact\": true,\n    \"working_directory_present\": true,\n    \"executable_present\": true,\n    \"process_absent:ck3.exe\": true,\n    \"process_absent:xar_ck3_bridge_injector.exe\": true,\n    \"process_absent:ffmpeg.exe\": true,\n    \"process_absent:obs64.exe\": true,\n    \"process_absent:dowser.exe\": true,\n    \"required_path:0\": true,\n    \"required_path:1\": true,\n    \"required_path:2\": true,\n    \"required_path:3\": true,\n    \"required_path:4\": true,\n    \"required_path:5\": true,\n    \"required_path:6\": true,\n    \"required_path:7\": true,\n    \"required_path:8\": true,\n    \"required_path:9\": true,\n    \"required_path:10\": true,\n    \"required_path:11\": true,\n    \"required_path:12\": true,\n    \"path_absent:0\": true,\n    \"no_active_operator_job\": true\n  },\n  \"observations\": {\n    \"identity\": {\n      \"token_user\": \"1\",\n      \"desktop\": \"WinSta0\\\\Default\",\n      \"machine\": \"DESKTOP-3FEVHD2\",\n      \"process_id\": 6520\n    },\n    \"process_gates\": {\n      \"ck3.exe\": [],\n      \"xar_ck3_bridge_injector.exe\": [],\n      \"ffmpeg.exe\": [],\n      \"obs64.exe\": [],\n      \"dowser.exe\": []\n    },\n    \"required_paths\": [\n      {\n        \"path\": \"C:\\\\w\\\\e2cap1001b\\\\promo\\\\ck3_native_war_ai\\\\integration\\\\capture_session.py\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 122365,\n        \"sha256\": \"2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\frozen-release-build-attempt-01\\\\build\\\\xar_ck3_bridge.dll\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 3551232,\n        \"sha256\": \"405040213C99F1FBC73AC2C9236EDBED7E2DD416289F87431D687FB366D167D3\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\frozen-release-build-attempt-01\\\\build\\\\xar_ck3_bridge_injector.exe\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 39936,\n        \"sha256\": \"0DB9DEDB4452D1B98586A8DE176195EF47C27ADB7D09415198B09654BE0381E3\"\n      },\n      {\n        \"path\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\episode01-paired-counter-trace-attempt-010\\\\d26-immutable.ck3\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 52880496,\n        \"sha256\": \"C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B\"\n      },\n      {\n        \"path\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\episode01-paired-counter-trace-attempt-010\\\\ck3-output\\\\interactive-requests-responses\\\\d26-save.json\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 13452,\n        \"sha256\": \"78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C\"\n      },\n      {\n        \"path\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\episode02-e2-04-d05-screen-lease-20260928-a04\\\\native-ui-saved-settings-a01.pdx.txt\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 6891,\n        \"sha256\": \"E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D\"\n      },\n      {\n        \"path\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\episode02-e2-04-d05-screen-lease-20260928-a04\\\\native-ui-saved-settings-a01.json\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 2452,\n        \"sha256\": \"69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\steam-offline-root-review-a01.json\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 1761,\n        \"sha256\": \"AEA9359ECDA9788E32737133DE08BC6303B0029CDC709CB4DEC4DA2268648F27\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\steam-fresh-pixels-attempt-01\\\\bg3-library-03.png\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 796178,\n        \"sha256\": \"C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\capture-toolchain-interpreter-probe.json\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 4537,\n        \"sha256\": \"D267FADADA101E11334F0197D8F5BCEE592278337662DA9F1470667D492329B1\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\new-no-launch-process.json\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 2756,\n        \"sha256\": \"B1C94924C6235AC65906BE9B40731313BD3211847D16529AEEC0B42A79CDA74B\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\AppData\\\\Local\\\\ck3-capture-preparation\\\\episode02-e2-05-d26-six-gap-ui-preflight-20261001-a04\\\\ck3-output\\\\preflight.json\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 21127,\n        \"sha256\": \"A86EA9184C50940F669D2526632BABD285BD1136E7ED6245DA1C948DA55419F3\"\n      },\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\ck3-e2-six-gap-research-20261001\\\\root-attempt-04-scoped-ui\\\\frozen-release-build-attempt-01\\\\candidate-manifest.json\",\n        \"kind\": \"file\",\n        \"exists\": true,\n        \"size\": 2906,\n        \"sha256\": \"7E211AE30C38466B138026DD4A306831022741A283B1FEE3CD75D7D7C8537C61\"\n      }\n    ],\n    \"absent_paths\": [\n      {\n        \"path\": \"C:\\\\Users\\\\1\\\\AppData\\\\Local\\\\ck3-capture-preparation\\\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\",\n        \"absent\": true\n      }\n    ]\n  },\n  \"process_gate_errors\": {},\n  \"running_job_ids\": [],\n  \"failed_checks\": [],\n  \"evidence_sha256\": \"1F9A19F751C586FD5863D0B227D0B77625AD8477305418C1FBDCF111CA5D2514\"\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "result": "GREEN",
+      "target_id": "ck3-e2-scoped-ui-20261001-a03",
+      "job_name": "scoped-ui-research-capture",
+      "profile_sha256": "35A3DDDF348E727CB5F75B51D5613940D6B121F5A21234256279A08464E7C6CD",
+      "job_spec_sha256": "F54BD5CE3E2C61D667CBAD7693C09CEBF9E56ACA9A6C96E573C55CA667FBA9B2",
+      "checks": {
+        "target_identity_exact": true,
+        "working_directory_present": true,
+        "executable_present": true,
+        "process_absent:ck3.exe": true,
+        "process_absent:xar_ck3_bridge_injector.exe": true,
+        "process_absent:ffmpeg.exe": true,
+        "process_absent:obs64.exe": true,
+        "process_absent:dowser.exe": true,
+        "required_path:0": true,
+        "required_path:1": true,
+        "required_path:2": true,
+        "required_path:3": true,
+        "required_path:4": true,
+        "required_path:5": true,
+        "required_path:6": true,
+        "required_path:7": true,
+        "required_path:8": true,
+        "required_path:9": true,
+        "required_path:10": true,
+        "required_path:11": true,
+        "required_path:12": true,
+        "path_absent:0": true,
+        "no_active_operator_job": true
+      },
+      "observations": {
+        "identity": {
+          "token_user": "1",
+          "desktop": "WinSta0\\Default",
+          "machine": "DESKTOP-3FEVHD2",
+          "process_id": 6520
+        },
+        "process_gates": {
+          "ck3.exe": [],
+          "xar_ck3_bridge_injector.exe": [],
+          "ffmpeg.exe": [],
+          "obs64.exe": [],
+          "dowser.exe": []
+        },
+        "required_paths": [
+          {
+            "path": "C:\\w\\e2cap1001b\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+            "kind": "file",
+            "exists": true,
+            "size": 122365,
+            "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+            "kind": "file",
+            "exists": true,
+            "size": 3551232,
+            "sha256": "405040213C99F1FBC73AC2C9236EDBED7E2DD416289F87431D687FB366D167D3"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+            "kind": "file",
+            "exists": true,
+            "size": 39936,
+            "sha256": "0DB9DEDB4452D1B98586A8DE176195EF47C27ADB7D09415198B09654BE0381E3"
+          },
+          {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+            "kind": "file",
+            "exists": true,
+            "size": 52880496,
+            "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+          },
+          {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\ck3-output\\interactive-requests-responses\\d26-save.json",
+            "kind": "file",
+            "exists": true,
+            "size": 13452,
+            "sha256": "78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C"
+          },
+          {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.pdx.txt",
+            "kind": "file",
+            "exists": true,
+            "size": 6891,
+            "sha256": "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D"
+          },
+          {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-04-d05-screen-lease-20260928-a04\\native-ui-saved-settings-a01.json",
+            "kind": "file",
+            "exists": true,
+            "size": 2452,
+            "sha256": "69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-offline-root-review-a01.json",
+            "kind": "file",
+            "exists": true,
+            "size": 1761,
+            "sha256": "AEA9359ECDA9788E32737133DE08BC6303B0029CDC709CB4DEC4DA2268648F27"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-fresh-pixels-attempt-01\\bg3-library-03.png",
+            "kind": "file",
+            "exists": true,
+            "size": 796178,
+            "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\capture-toolchain-interpreter-probe.json",
+            "kind": "file",
+            "exists": true,
+            "size": 4537,
+            "sha256": "D267FADADA101E11334F0197D8F5BCEE592278337662DA9F1470667D492329B1"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\new-no-launch-process.json",
+            "kind": "file",
+            "exists": true,
+            "size": 2756,
+            "sha256": "B1C94924C6235AC65906BE9B40731313BD3211847D16529AEEC0B42A79CDA74B"
+          },
+          {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-preflight-20261001-a04\\ck3-output\\preflight.json",
+            "kind": "file",
+            "exists": true,
+            "size": 21127,
+            "sha256": "A86EA9184C50940F669D2526632BABD285BD1136E7ED6245DA1C948DA55419F3"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\candidate-manifest.json",
+            "kind": "file",
+            "exists": true,
+            "size": 2906,
+            "sha256": "7E211AE30C38466B138026DD4A306831022741A283B1FEE3CD75D7D7C8537C61"
+          }
+        ],
+        "absent_paths": [
+          {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04",
+            "absent": true
+          }
+        ]
+      },
+      "process_gate_errors": {},
+      "running_job_ids": [],
+      "failed_checks": [],
+      "evidence_sha256": "1F9A19F751C586FD5863D0B227D0B77625AD8477305418C1FBDCF111CA5D2514"
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

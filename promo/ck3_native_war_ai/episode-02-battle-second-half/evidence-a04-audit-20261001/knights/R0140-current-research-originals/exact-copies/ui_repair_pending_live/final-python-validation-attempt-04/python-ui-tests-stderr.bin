@@ -1,0 +1,7 @@
+Executing <Task pending name='Task-2' coro=<IngameUiMcpTests.test_real_mcp_registration_query_and_strict_handle_negative_cases() running at C:\w\e2research1001\ck3_autonomous_player\tests\unit\test_ingame_ui_navigation_v1.py:273> wait_for=<Future pending cb=[Task.task_wakeup()] created at D:\workspace\ck3_eternal_recurrence\tools\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:1007> cb=[_run_until_complete_cb() at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:181] created at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:110> took 1.740 seconds
+Executing <Task pending name='Task-2' coro=<IngameUiMcpTests.test_real_mcp_registration_query_and_strict_handle_negative_cases() running at C:\w\e2research1001\ck3_autonomous_player\tests\unit\test_ingame_ui_navigation_v1.py:282> cb=[_run_until_complete_cb() at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:181, <1 more>, WorkerThread.stop()] created at C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:110> took 0.122 seconds
+........................
+----------------------------------------------------------------------
+Ran 24 tests in 2.048s
+
+OK

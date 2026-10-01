@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Win32-ninja"
+	tests="1"
+	failures="1"
+	disabled="0"
+	skipped="0"
+	hostname="DESKTOP-3FEVHD2"
+	time="3"
+	timestamp="2026-10-01T17:19:29"
+	>
+	<testcase name="xar_ck3_ingame_ui_navigation_v1_test" classname="xar_ck3_ingame_ui_navigation_v1_test" time="3.09805" status="fail">
+		<failure message="Exit code 0xc0000409"/>
+		<properties/>
+		<system-out>Assertion failed: result.unavailable_reason=="current_gui_owner_binding_changed_before_navigation", file C:\w\e2research1001\ck3_autonomous_player\native_bridge\tests\ingame_ui_navigation_v1_test.cpp, line 138
+</system-out>
+	</testcase>
+</testsuite>

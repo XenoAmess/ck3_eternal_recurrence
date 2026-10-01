@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "git",
+    "sparse-checkout",
+    "set",
+    "--no-cone",
+    "--stdin"
+  ],
+  "cwd": "C:\\w\\e2cap1001b",
+  "stdin": "/ck3_autonomous_player/\n/docs/ck3-native-ai/\n/promo/ck3_native_war_ai/integration/\n/promo/ck3_native_war_ai/episode-02-battle-second-half/*.py\n/tools/*.py\n/tools/requirements*.txt\n",
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "at_utc": "2026-10-01T08:36:09.489015+00:00"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "add",
+    "--",
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

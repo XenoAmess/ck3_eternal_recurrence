@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "status",
+    "--porcelain=v1"
+  ],
+  "cwd": "C:\\w\\e2cap1001b",
+  "stdin": null,
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "at_utc": "2026-10-01T08:36:13.365631+00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "returncode": 0,
+  "at_utc": "2026-10-01T08:43:22.154589+00:00",
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build-stdout.bin",
+    "bytes": 28250,
+    "sha256": "06056D1B1351FDFDEA01FFF9F4DE0ABB37D8F9E865FC01050B9195B2F2CD5374"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "before-navigation",
+  "frames": [
+    {
+      "at_utc": "2026-10-01T08:37:07.624982+00:00",
+      "elapsed": 0.32641329999023583,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-fresh-pixels-attempt-01\\before-navigation-01.png",
+        "bytes": 792585,
+        "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T08:37:08.628789+00:00",
+      "elapsed": 1.3304984999995213,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-fresh-pixels-attempt-01\\before-navigation-02.png",
+        "bytes": 792585,
+        "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T08:37:09.634877+00:00",
+      "elapsed": 2.3385589999961667,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-fresh-pixels-attempt-01\\before-navigation-03.png",
+        "bytes": 792585,
+        "sha256": "8D9FFF7A3A0E4F1F0F96C8CA22124486DD1807626E2757234A6D8FA627E5B63C"
+      }
+    }
+  ],
+  "errors": []
+}

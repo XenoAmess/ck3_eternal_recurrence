@@ -1,0 +1,29 @@
+{
+  "at_utc": "2026-10-01T08:53:27.472505+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\scoped_ui_research_a05.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "--mode",
+    "monitor-begin",
+    "--phase",
+    "before",
+    "--label",
+    "before-monitor-begin"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\before-paused-ui-stage-attempt-01\\01-before-monitor-begin-stdout.bin",
+    "bytes": 310,
+    "sha256": "85542F768C576AA7A034170F98828D6FF1CCB5930B23AF48AEEF0FA65FE97238"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\before-paused-ui-stage-attempt-01\\01-before-monitor-begin-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

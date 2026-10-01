@@ -1,0 +1,16 @@
+usage: verify_knight_variable_monitor_run.py [-h] --begin BEGIN
+                                             --finish FINISH
+                                             --causal-projection CAUSAL_PROJECTION
+                                             --output-dir OUTPUT_DIR
+
+Verify original begin/finish monitor receipts against a same-run save
+projection. Reads only existing local evidence. Creates a new output directory
+and exact copies, never calls CK3, a provider, desktop, transport or network
+operations.
+
+options:
+  -h, --help            show this help message and exit
+  --begin BEGIN
+  --finish FINISH
+  --causal-projection CAUSAL_PROJECTION
+  --output-dir OUTPUT_DIR

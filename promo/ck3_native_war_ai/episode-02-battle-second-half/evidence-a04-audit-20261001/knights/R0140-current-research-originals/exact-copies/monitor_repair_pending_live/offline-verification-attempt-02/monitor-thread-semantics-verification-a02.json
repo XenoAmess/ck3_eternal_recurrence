@@ -1,0 +1,764 @@
+{
+  "schema_version": 1,
+  "status": "PASS_NEW_MONITOR_THREAD_CONTRACT",
+  "created_at_utc": "2026-10-01T09:24:35.590274+00:00",
+  "sources": [
+    {
+      "original": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+        "bytes": 17942,
+        "sha256": "6DFAB0C073FE068A3703D9F9AD0B7B378AD19346565013B499D805E4BA7F0973"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\new-pure-exact.py",
+        "bytes": 17942,
+        "sha256": "6DFAB0C073FE068A3703D9F9AD0B7B378AD19346565013B499D805E4BA7F0973"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+        "bytes": 13443,
+        "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\new-run-verifier-exact.py",
+        "bytes": 13443,
+        "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\failed-ui-monitor-end.json",
+        "bytes": 71685,
+        "sha256": "3BA0C32D015F0C55BCC43439384510A8AF6F1B420C49B56D0DA587AEAE30F397"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\R0140-actual-original-end-exact.json",
+        "bytes": 71685,
+        "sha256": "3BA0C32D015F0C55BCC43439384510A8AF6F1B420C49B56D0DA587AEAE30F397"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\mechanism-native-bundle-attempt-01\\build-attempt-12-current-death-commit\\offline-monitor-fixture-stdout.bin",
+        "bytes": 180312,
+        "sha256": "46EC502BB1DD84A07CBA57C75E115A6729BD77030100A063444D5E35D87422D4"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\compiled-native-OFFLINE-fixtures-exact.bin",
+        "bytes": 180312,
+        "sha256": "46EC502BB1DD84A07CBA57C75E115A6729BD77030100A063444D5E35D87422D4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\signature_commit_correlation_a02.py",
+        "bytes": 8939,
+        "sha256": "3C15C0E56A814A2D8F72489925D5FBF87312F1B60D3AC84640D001A783E3C0F5"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\external-commit-correlator-exact.py",
+        "bytes": 8939,
+        "sha256": "3C15C0E56A814A2D8F72489925D5FBF87312F1B60D3AC84640D001A783E3C0F5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\verify_monitor_thread_semantics_a02.py",
+        "bytes": 7951,
+        "sha256": "CB1F8BE944F152943A7FF3D6A432BAC16510342EA2D8A1AA04CE444F5778A93E"
+      },
+      "exact_copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\runner-exact.py",
+        "bytes": 7951,
+        "sha256": "CB1F8BE944F152943A7FF3D6A432BAC16510342EA2D8A1AA04CE444F5778A93E"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "name": "actual R0140 GUI getter thread3900 allowed; controlled lifecycle13000 retained; missing34120 getter UNKNOWN",
+      "pass": true,
+      "kind": "ACTUAL_FAILED_NO_DAY_WINDOW_ONLY"
+    },
+    {
+      "name": "actual compiled commit/producer/write fixture still passes original per-operation binding",
+      "pass": true,
+      "kind": "OFFLINE_COMMIT_PRODUCER_FIXTURE_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "actual compiled original house operation fixture passes strict paired arguments",
+      "pass": true,
+      "kind": "OFFLINE_FIXTURE_NOT_NATIVE_GAME_TRUTH"
+    },
+    {
+      "name": "actual writer enter/return thread crossover rejected",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: complete ordered paired original calls",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "actual writer context crossover rejected",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: each original operation preserves context/key/full identity",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "actual writer full ID crossover rejected",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: every scoped character full identity",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "actual house enter/return thread crossover rejected",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: complete ordered paired original calls",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "actual house execution context crossover rejected",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: each original operation preserves context/key/full identity",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "actual house key crossover rejected",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: house original arguments stable",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "final lifecycle cannot switch to GUI thread",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: controlled arm/final lifecycle thread",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "observer thread must be actual nonzero stamp",
+      "pass": true,
+      "actual_rejection": "ValueError: variable monitor: every record same declared window",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "commit ancestry cannot cross writer thread",
+      "pass": true,
+      "actual_rejection": "ValueError: active original commit identity/token/thread/date/typed tuple invalid",
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    },
+    {
+      "name": "unread original getter value stays UNKNOWN, never absent",
+      "pass": true,
+      "kind": "DERIVED_OFFLINE_MUTANT_NOT_GAME_TRUTH"
+    }
+  ],
+  "pass_count": 13,
+  "actual_R0140_projection": {
+    "status": "CAPTURED_ACTUAL_MONITOR_OPERATIONS_CHECKED",
+    "checks": [
+      {
+        "name": "schema1",
+        "pass": true
+      },
+      {
+        "name": "two exact full characters",
+        "pass": true
+      },
+      {
+        "name": "actual monitor token",
+        "pass": true
+      },
+      {
+        "name": "begin paused date",
+        "pass": true
+      },
+      {
+        "name": "zero or one native day window",
+        "pass": true
+      },
+      {
+        "name": "no truncation/failure",
+        "pass": true
+      },
+      {
+        "name": "real uninstall receipt flag",
+        "pass": true
+      },
+      {
+        "name": "global and endpoint-cause flags retained",
+        "pass": true
+      },
+      {
+        "name": "independent signature key epoch/index",
+        "pass": true
+      },
+      {
+        "name": "nonempty arm through final paused",
+        "pass": true
+      },
+      {
+        "name": "unique ordered original sequences",
+        "pass": true
+      },
+      {
+        "name": "every record same declared window",
+        "pass": true
+      },
+      {
+        "name": "controlled arm/final lifecycle thread",
+        "pass": true
+      },
+      {
+        "name": "every scoped character full identity",
+        "pass": true
+      },
+      {
+        "name": "complete ordered paired original calls",
+        "pass": true
+      },
+      {
+        "name": "each original operation preserves context/key/full identity",
+        "pass": true
+      },
+      {
+        "name": "first original getter actual owner and typed presence",
+        "pass": true
+      }
+    ],
+    "monitor_sequence_token": 458456270100707056,
+    "actual_write_pairs": [],
+    "original_house_predicate_pairs": [],
+    "producer_closed": false,
+    "controlled_lifecycle_thread_id": 13000,
+    "actual_observer_thread_ids": [
+      3900,
+      13000
+    ],
+    "first_original_owner_observations": [
+      {
+        "character_id": 33437,
+        "status": "OBSERVED_ABSENT_AT_ORIGINAL_GETTER",
+        "is_arm_initial_state": false,
+        "is_final_state": false,
+        "sequence": 1,
+        "thread_id": 3900,
+        "date_raw": 53146848,
+        "owner_token": 2099190739760,
+        "full_identity_matches": true,
+        "flag": null
+      },
+      {
+        "character_id": 34120,
+        "status": "UNKNOWN_NO_ORIGINAL_GETTER",
+        "is_arm_initial_state": false,
+        "is_final_state": false
+      }
+    ],
+    "prearmed_event_definition_bindings": {
+      "death_management.1200": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094318136896,
+        "definition_index": 7862,
+        "definition_id": 4851200,
+        "runtime_stats_ordinal": 7862,
+        "definition_key": "death_management.1200",
+        "compiled_immediate_root_token": 2086015054288,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 3873555748,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934853296,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1201": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094318563712,
+        "definition_index": 7863,
+        "definition_id": 4851201,
+        "runtime_stats_ordinal": 7863,
+        "definition_key": "death_management.1201",
+        "compiled_immediate_root_token": 2086015056528,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 4221432002,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934855696,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1202": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094318842784,
+        "definition_index": 7864,
+        "definition_id": 4851202,
+        "runtime_stats_ordinal": 7864,
+        "definition_key": "death_management.1202",
+        "compiled_immediate_root_token": 2086015052384,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 3950042204,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934856416,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1204": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319138272,
+        "definition_index": 7865,
+        "definition_id": 4851204,
+        "runtime_stats_ordinal": 7865,
+        "definition_key": "death_management.1204",
+        "compiled_immediate_root_token": 2086015056752,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 1218930815,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2089067722736,
+        "children_capacity": 6,
+        "children_count": 5,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1205": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319499424,
+        "definition_index": 7866,
+        "definition_id": 4851205,
+        "runtime_stats_ordinal": 7866,
+        "definition_key": "death_management.1205",
+        "compiled_immediate_root_token": 2086015053168,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 1863269836,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2089067725744,
+        "children_capacity": 6,
+        "children_count": 5,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1206": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319663584,
+        "definition_index": 7867,
+        "definition_id": 4851206,
+        "runtime_stats_ordinal": 7867,
+        "definition_key": "death_management.1206",
+        "compiled_immediate_root_token": 2086015055632,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 112685841,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934859200,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      },
+      "death_management.1207": {
+        "identity_read": true,
+        "invocation": 0,
+        "actual_original_execution_observed": false,
+        "identity_kind": "nearest_matched_notification_immediate_ancestor",
+        "matched_root_execution_depth": 0,
+        "active_effect_group_depth": 0,
+        "definition_token": 2094319959072,
+        "definition_index": 7868,
+        "definition_id": 4851207,
+        "runtime_stats_ordinal": 7868,
+        "definition_key": "death_management.1207",
+        "compiled_immediate_root_token": 2086015056976,
+        "definition_vtable_rva": 70211344,
+        "root_vtable_rva": 72151088,
+        "root_hash": 2586783424,
+        "original_execute_rva": 54005440,
+        "children_data_token": 2085934861168,
+        "children_capacity": 4,
+        "children_count": 4,
+        "execution_context_token": 0,
+        "root_scope_token": 0,
+        "root_scope_words": [
+          0,
+          0
+        ],
+        "activation_death_commit_context": {
+          "read": false,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 0,
+          "invocation": 0,
+          "parent_invocation": 0,
+          "thread_id": 0,
+          "native_date_raw": 0,
+          "combat_id": -1,
+          "victim_id": -1,
+          "killer_id": -1,
+          "victim_full_identity_matches": false,
+          "killer_full_identity_matches": false,
+          "manager_token": 0,
+          "victim_token": 0,
+          "killer_token": 0,
+          "reason_token": 0,
+          "date_argument_token": 0,
+          "requested_death_date_raw": 0,
+          "reason_key_read": false,
+          "reason_key": "",
+          "artifact_token": 0,
+          "artifact_actual_null": false,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        }
+      }
+    },
+    "gaps": [
+      "no matched signature writes observed; a no-write branch requires separate actual branch/inventory proof"
+    ],
+    "whole_game_mutable_bundle_complete": false,
+    "limits": "Requested names are independently decoded from original typed words. Saved endpoints, UI timing and producer proof are separate checks."
+  },
+  "compiled_OFFLINE_commit_fixture_projection": {
+    "schema_version": 2,
+    "kind": "SAME_RUN_CURRENT_ORIGINAL_COMMIT_CORRELATION",
+    "specific_victim_trigger_closed": false,
+    "writes": [
+      {
+        "write_invocation": 2,
+        "character_id": 201,
+        "notification_key": "death_management.1200",
+        "specific_victim_correlation": "closed",
+        "time_resolution": "actual-original-call-lifecycle",
+        "same_current_original_commit": {
+          "read": true,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 73,
+          "invocation": 1,
+          "parent_invocation": 0,
+          "thread_id": 8496,
+          "native_date_raw": 53146848,
+          "combat_id": 16777218,
+          "victim_id": 101,
+          "killer_id": 201,
+          "victim_full_identity_matches": true,
+          "killer_full_identity_matches": true,
+          "manager_token": 356041530832,
+          "victim_token": 356041532912,
+          "killer_token": 356041533376,
+          "reason_token": 356041530224,
+          "date_argument_token": 356041530168,
+          "requested_death_date_raw": 53146872,
+          "reason_key_read": true,
+          "reason_key": "death_battle",
+          "artifact_token": 356041530384,
+          "artifact_actual_null": false,
+          "artifact_id_read": true,
+          "artifact_id": 51
+        },
+        "commit_sequence_enter": 1,
+        "commit_sequence_return": 2,
+        "allowed_statement": "During this original victim/killer death commit, this actual notification immediate produced the killer signature variable write."
+      },
+      {
+        "write_invocation": 4,
+        "character_id": 201,
+        "notification_key": "death_management.1200",
+        "specific_victim_correlation": "pending",
+        "time_resolution": "actual-original-call-lifecycle",
+        "gap": "actual notification activation or write is outside a current scoped original death commit"
+      },
+      {
+        "write_invocation": 6,
+        "character_id": 201,
+        "notification_key": "death_management.1202",
+        "specific_victim_correlation": "pending",
+        "time_resolution": "actual-original-call-lifecycle",
+        "gap": "actual notification activation or write is outside a current scoped original death commit"
+      },
+      {
+        "write_invocation": 8,
+        "character_id": 201,
+        "notification_key": "death_management.1200",
+        "specific_victim_correlation": "closed",
+        "time_resolution": "actual-original-call-lifecycle",
+        "same_current_original_commit": {
+          "read": true,
+          "context_kind": "currently_executing_original_264BCB0_same_thread",
+          "managed_daily_sequence_token": 73,
+          "invocation": 2,
+          "parent_invocation": 0,
+          "thread_id": 8496,
+          "native_date_raw": 53146848,
+          "combat_id": 16777218,
+          "victim_id": 101,
+          "killer_id": 201,
+          "victim_full_identity_matches": true,
+          "killer_full_identity_matches": true,
+          "manager_token": 356041530832,
+          "victim_token": 356041532912,
+          "killer_token": 356041533376,
+          "reason_token": 356041530224,
+          "date_argument_token": 356041530168,
+          "requested_death_date_raw": 53146872,
+          "reason_key_read": true,
+          "reason_key": "death_battle",
+          "artifact_token": 0,
+          "artifact_actual_null": true,
+          "artifact_id_read": false,
+          "artifact_id": -1
+        },
+        "commit_sequence_enter": 3,
+        "commit_sequence_return": 4,
+        "allowed_statement": "During this original victim/killer death commit, this actual notification immediate produced the killer signature variable write."
+      }
+    ],
+    "same_run_victim_commit_count": 2,
+    "unique_case_victim_commit_observed": false,
+    "sole_cause_proven": false,
+    "dead_character_named_scope_decoded": false,
+    "whole_game_mutable_bundle_complete": false,
+    "limits": "Checks synchronous original-call ancestry per write. The complete case death request/queue/commit chain and named scopes are separate."
+  },
+  "help": {
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+      "--help"
+    ],
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\actual-help.stdout.bin",
+      "bytes": 698,
+      "sha256": "F9677C98666588984BB965D98B2404C96EDE4D44EBED64AC1A231B065FAF46BF"
+    },
+    "stderr": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\actual-help.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    }
+  },
+  "R0140_research_status": "RED_UI_ADMISSION_NO_DAY_ADVANCE",
+  "R0140_day_advance_count": 0,
+  "R0140_six_gaps_closed": false,
+  "game_calls": 0,
+  "desktop_inputs": 0,
+  "master_intake": false,
+  "frozen_e2cap_source_changed": false,
+  "limits": "R0140 has no day and no writers. Compiled fixtures are not game truth. Complete live commit/selector/13-domain verdict still awaits a new successful run."
+}

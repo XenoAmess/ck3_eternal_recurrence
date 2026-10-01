@@ -1,0 +1,46 @@
+{
+  "source_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "bytes": 4424,
+    "sha256": "2828542D1B8F40496AC4E4D0036142BDDE3B77CC5E4E724E3DDFFBC53502BC4F"
+  },
+  "source_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 5,
+    "native_revision": 4,
+    "snapshot_id": "native:4",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-5abfe990ef98",
+    "connection_generation": 1,
+    "bridge_pid": 832,
+    "native_hello_session_generation": 0
+  },
+  "source_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\failed-ui-monitor-end-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\failed-ui-monitor-end-source.json",
+      "bytes": 37767,
+      "sha256": "8D378E877394F9ECA4F15CAAF6165AF3B95B1438251907BA2AB749AAF47422AE"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "parameters": {
+    "action": "private_phase_trace",
+    "step": "experimental-scoped-character-variable-monitor-finish-v1",
+    "expected_revision": 5,
+    "monitor_sequence_token": 458456270100707056
+  },
+  "normal_research_lifecycle_complete": false,
+  "reason": "Original character action rejected; abandon this sampling attempt before any day advance"
+}

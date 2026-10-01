@@ -1,0 +1,14 @@
+{
+  "schema": "xar.promo.screen-lease-cas/v1",
+  "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a03",
+  "expected_sequence": 3387,
+  "sequence": 3388,
+  "event_id": "323170a3604b4817b514757c6fd25be2",
+  "updated_at_utc": "2026-10-01T08:45:42.531165+00:00",
+  "repo": "C:\\w\\e2cap1001b",
+  "checkout_head": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420",
+  "source_cli": "C:\\w\\e2cap1001b\\tools\\codex_task_bus.py",
+  "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+  "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+  "screen_resource": "ck3-screen:acquired"
+}

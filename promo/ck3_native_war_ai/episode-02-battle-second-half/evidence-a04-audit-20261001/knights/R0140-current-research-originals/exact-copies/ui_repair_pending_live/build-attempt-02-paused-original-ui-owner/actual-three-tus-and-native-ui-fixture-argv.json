@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "--build",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-02-paused-original-ui-owner\\build",
+    "--parallel",
+    "2",
+    "--target",
+    "CMakeFiles/xar_ck3_bridge.dir/src/frontend_gui_route_v1.cpp.obj",
+    "CMakeFiles/xar_ck3_bridge.dir/src/ingame_ui_navigation_v1.cpp.obj",
+    "CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj",
+    "xar_ck3_ingame_ui_navigation_v1_test"
+  ],
+  "cwd": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge",
+  "utc": "2026-10-01T09:18:12.083764+00:00"
+}

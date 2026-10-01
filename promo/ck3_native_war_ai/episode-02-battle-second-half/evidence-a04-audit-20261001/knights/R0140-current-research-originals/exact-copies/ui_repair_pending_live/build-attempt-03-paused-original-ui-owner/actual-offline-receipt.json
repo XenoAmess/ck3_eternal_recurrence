@@ -1,0 +1,24 @@
+{
+  "status": "ACTUAL_THREE_RELEASE_TUS_NATIVE_UI_FIXTURE_PYTHON_UI_CAPTURE_TESTS_PASS",
+  "source_fingerprint_sha256": "522227B4CC1E50B8DDD73D88A15DB01BCA551174CC8B7AFD465C45AEE5586033",
+  "sources_unchanged_during_validation": true,
+  "native_objects": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\frontend_gui_route_v1.cpp.obj",
+      "bytes": 192269,
+      "sha256": "AEF7D05C36AA78FD80C986383665D6B07E0C6BE3269573B3C349E23284306D6E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\ingame_ui_navigation_v1.cpp.obj",
+      "bytes": 426974,
+      "sha256": "0C44E9C77657620CCB21D6C576294FE32443D8AD34A9E8A54BB134C04662DC6A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\build\\CMakeFiles\\xar_ck3_bridge.dir\\src\\bridge.cpp.obj",
+      "bytes": 3078749,
+      "sha256": "DCBD54625E19F3CF59F67B43CA784C8350DFD1F44FB09C42FCFEBDBD4900B3B2"
+    }
+  ],
+  "no_full_dll_link_or_game_claim": true,
+  "R0140_RED_preserved": true
+}

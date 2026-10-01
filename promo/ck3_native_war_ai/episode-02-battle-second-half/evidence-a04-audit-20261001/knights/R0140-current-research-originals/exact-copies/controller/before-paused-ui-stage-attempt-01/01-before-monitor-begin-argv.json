@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\scoped_ui_research_a05.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "--mode",
+    "monitor-begin",
+    "--phase",
+    "before",
+    "--label",
+    "before-monitor-begin"
+  ],
+  "at_utc": "2026-10-01T08:53:26.300696+00:00"
+}

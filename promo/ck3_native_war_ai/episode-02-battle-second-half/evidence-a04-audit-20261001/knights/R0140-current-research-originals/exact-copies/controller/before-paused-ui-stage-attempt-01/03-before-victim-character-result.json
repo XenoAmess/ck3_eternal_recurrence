@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-01T08:53:32.028695+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\scoped_ui_research_a05.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "--mode",
+    "ui",
+    "--window-kind",
+    "character",
+    "--character-role",
+    "victim",
+    "--phase",
+    "before",
+    "--label",
+    "before-victim-character"
+  ],
+  "returncode": 1,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\before-paused-ui-stage-attempt-01\\03-before-victim-character-stdout.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\before-paused-ui-stage-attempt-01\\03-before-victim-character-stderr.bin",
+    "bytes": 2123,
+    "sha256": "792672096C364C34ADE46B864AD65FCA5F02C7BDCA1840B1C70A95ECA2B3ABA1"
+  }
+}

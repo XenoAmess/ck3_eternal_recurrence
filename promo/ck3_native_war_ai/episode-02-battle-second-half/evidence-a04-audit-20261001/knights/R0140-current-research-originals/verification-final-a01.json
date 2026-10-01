@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.e2.research-archive-final-verification/v1",
+  "status": "PASS_CURRENT_ORIGINALS_AND_CREATED_COPIES_MATCH_HASH_BOUND_INDEX",
+  "originals_stat_stable": 5891,
+  "source_and_repository_copy_SHA256_recomputed_matches": 696,
+  "six_gaps_pending": true,
+  "raw_native_UI_missing_and_source_inference_labeled": true,
+  "fda_sampling_fix_pending_live": true,
+  "no_old_file_mutated": true
+}

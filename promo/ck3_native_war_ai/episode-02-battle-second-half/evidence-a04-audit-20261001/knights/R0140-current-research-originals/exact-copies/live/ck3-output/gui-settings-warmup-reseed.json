@@ -1,0 +1,43 @@
+{
+  "schema": "war-film-gui-scale-warmup-reseed/v1",
+  "at": "2026-10-01T08:46:51.515075+00:00",
+  "requested_scale": "1.0",
+  "before_readback": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\gui-settings-before-final-launch.json",
+  "before_disk_gate_passed": true,
+  "before_observed_scale": "1",
+  "before_observed_scale_ratio": "1",
+  "source_snapshot": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\gui-settings-warmup-before-reseed.pdx.txt",
+    "bytes": 6859,
+    "sha256": "9942D7B22484078E8B4C48CCEF9297B13F1CEA60FFABFCA27D88C33CA6C7E07C"
+  },
+  "replacement_performed": false,
+  "atomic_same_directory_replace": false,
+  "after_readback": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\gui-settings-after-reseed-before-final-launch.json",
+  "runtime_scale_proven": false,
+  "visual_geometry_reviewed": false,
+  "recording_authorized_by_this_receipt": false,
+  "status": "GREEN_DISK_ONLY",
+  "source_settings": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\pdx_settings.txt",
+    "bytes": 6859,
+    "sha256": "9942D7B22484078E8B4C48CCEF9297B13F1CEA60FFABFCA27D88C33CA6C7E07C",
+    "mtime_ns": 1790844387432983100
+  },
+  "native_a04_gui_block_sha256": "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593",
+  "warmup_gui_block": {
+    "bytes": 54,
+    "sha256": "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593"
+  },
+  "expected_target": {
+    "bytes": 6859,
+    "sha256": "9942D7B22484078E8B4C48CCEF9297B13F1CEA60FFABFCA27D88C33CA6C7E07C"
+  },
+  "after_settings": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-state\\profile\\pdx_settings.txt",
+    "bytes": 6859,
+    "sha256": "9942D7B22484078E8B4C48CCEF9297B13F1CEA60FFABFCA27D88C33CA6C7E07C",
+    "mtime_ns": 1790844387432983100
+  },
+  "final_native_gui_block_exact": true
+}

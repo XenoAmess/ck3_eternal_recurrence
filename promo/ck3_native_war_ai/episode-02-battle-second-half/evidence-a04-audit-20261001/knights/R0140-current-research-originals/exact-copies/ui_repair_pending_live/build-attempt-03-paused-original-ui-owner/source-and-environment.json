@@ -1,0 +1,55 @@
+{
+  "source_fingerprint_sha256": "522227B4CC1E50B8DDD73D88A15DB01BCA551174CC8B7AFD465C45AEE5586033",
+  "modified_source_identities": [
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+      "bytes": 6061,
+      "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+      "bytes": 40749,
+      "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+      "bytes": 31175,
+      "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+      "bytes": 11542,
+      "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1182561,
+      "sha256": "52F64A9E5D2D3920CEF1FA54EC79A2165732A51B114E16CF22B2B586BC372DF7"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+      "bytes": 13854,
+      "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+      "bytes": 20108,
+      "sha256": "5ABBF153F7B9AEDF65A2286992B892914A581EA75536634C33FDAD0133E5FEC6"
+    }
+  ],
+  "python": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "bytes": 255200,
+    "sha256": "9B7BFFC26240463C965A2A2A5FADA1D8E741C21C25CD2E977728C339B82D9977"
+  },
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "compiler": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.EXE",
+    "bytes": 893328,
+    "sha256": "E6D57100C82AE0310C18B16ABFE52BC0DF8FBB272CA6C5FB287D485807CFCE91"
+  },
+  "mcp_module_probe": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\mcp\\__init__.py",
+  "isolated_worktree_relative_venv": "absent; main worktree interpreter explicitly verified",
+  "no_git_game_screen_bus_or_video": true,
+  "vs_environment_selected_keys_only": true
+}

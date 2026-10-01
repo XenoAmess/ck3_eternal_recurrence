@@ -1,0 +1,26 @@
+{
+  "source": "C:\\w\\e2research1001",
+  "bridge": {
+    "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+    "bytes": 1092626,
+    "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+  },
+  "freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\mechanism-native-bundle-attempt-01\\scoped-publisher-source-freeze-a04\\source-freeze-and-test-receipt.json",
+    "bytes": 13780,
+    "sha256": "E34912B4BC442CD05CF5C9390EA77858051ABDA1A799F11824B3193E6FB5683B"
+  },
+  "review": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-observer-residency-compile-review-other-a01\\independent-two-line-residency-review-a01.json",
+    "bytes": 6804,
+    "sha256": "E0344FF8FACB57031047A04FD6CF685C2BAEC1355DE22D2693B98E328C71C23B"
+  },
+  "actual_tu": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\mechanism-native-bundle-attempt-01\\build-attempt-13-managed-parent-residency-bridge-tu\\actual-bridge-tu-receipt.json",
+    "bytes": 972,
+    "sha256": "A127A3267CC9E696D7F9F97D1584224BFDFB588B507C443FE4D3BB8C3067584B"
+  },
+  "prior_full_build_RED_preserved": true,
+  "full_new_build_and_live_pending": true,
+  "remote_or_master_operation": false
+}

@@ -1,0 +1,59 @@
+{
+  "module": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture\\__init__.py",
+    "bytes": 13294,
+    "sha256": "A9E3BF0F2E510AA4E9E1950B12E510A669600078EC4B5630F7FFBD23622FC5FA"
+  },
+  "files": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture\\__init__.py",
+      "bytes": 13294,
+      "sha256": "A9E3BF0F2E510AA4E9E1950B12E510A669600078EC4B5630F7FFBD23622FC5FA"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture\\windows_capture.pyd",
+      "bytes": 534016,
+      "sha256": "9464E5A6A05E980418EEAB6B3A774441B4C737BA6BD596FF0D1EEAD3E48BF7AA"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\direct_url.json",
+      "bytes": 336,
+      "sha256": "59AF01756A5F50082208F4BAF769B90B4E55CBAD270597B4EA2953BF50115B26"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\INSTALLER",
+      "bytes": 4,
+      "sha256": "CEEBAE7B8927A3227E5303CF5E0F1F7B34BB542AD7250AC03FBCDE36EC2F1508"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\licenses\\LICENCE",
+      "bytes": 1091,
+      "sha256": "E11EFF681F6F0EB76DBEA5787B100D646E4EB5D711E50CB5C9032595F6CA6A68"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\METADATA",
+      "bytes": 4899,
+      "sha256": "72E2F9FD8156102B08848E2794A0BC989B481A42B4A5C821E68EEEAB88788BEA"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\RECORD",
+      "bytes": 1006,
+      "sha256": "E1F12900DFA6FB998492572EE7D804CE6D66BE175D785FADF3D216C73C8A8A83"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\REQUESTED",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\sboms\\windows-capture-python.cyclonedx.json",
+      "bytes": 48312,
+      "sha256": "27E16ACAF7C98F77EFAF4165FE787C8CE961D6437F1338CF15CB3ACD951B3B50"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\desktop-capture-freeze-static-20260927\\wgc-lib\\windows_capture-2.0.1.dist-info\\WHEEL",
+      "bytes": 95,
+      "sha256": "FEB81975073DB0B144AADD887A65FBAB2C6C1ADE5F1519C10C04F11B37AB7668"
+    }
+  ]
+}

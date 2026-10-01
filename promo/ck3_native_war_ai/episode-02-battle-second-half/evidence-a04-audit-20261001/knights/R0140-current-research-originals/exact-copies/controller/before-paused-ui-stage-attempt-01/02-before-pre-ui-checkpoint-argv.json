@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\preserve_paused_ui_checkpoint_a03.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "--phase",
+    "before",
+    "--label",
+    "before-pre-ui-checkpoint"
+  ],
+  "at_utc": "2026-10-01T08:53:27.493853+00:00"
+}

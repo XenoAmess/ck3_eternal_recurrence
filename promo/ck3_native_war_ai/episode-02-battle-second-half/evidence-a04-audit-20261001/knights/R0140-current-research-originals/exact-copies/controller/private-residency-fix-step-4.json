@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "commit",
+    "-m",
+    "Fix observer parent residency integration using real managed detour ownership"
+  ],
+  "returncode": 0,
+  "stdout": "[codex/war-e2-mechanism-closure-20261001 0bb40ba14] Fix observer parent residency integration using real managed detour ownership\n 1 file changed, 2 deletions(-)\n",
+  "stderr": ""
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "ck3.e2.current-native-research-preservation/v2",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0140",
+  "status": "RED_UI_ADMISSION_NO_DAY_ADVANCE_RESEARCH_OPEN",
+  "source_commit": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420",
+  "bridge_sha256": "405040213C99F1FBC73AC2C9236EDBED7E2DD416289F87431D687FB366D167D3",
+  "PID": 832,
+  "actual_day_advance": 0,
+  "six_gap_evidence_closed": false,
+  "global_mutable_bundle_complete": false,
+  "six_gaps": [
+    {
+      "key": "nextday_character_ui",
+      "name": "骑士次日角色界面",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "knight_roster_change",
+      "name": "骑士名单变化",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "complete_battle_window",
+      "name": "完整战斗窗",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "knight_selector",
+      "name": "骑士选择器",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "unique_actual_death_execution_path",
+      "name": "本次受害者唯一实际死亡执行路径",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    },
+    {
+      "key": "full_case_13_domain_mutable_chain",
+      "name": "本案13域完整可变状态链",
+      "status": "PENDING_NO_NEW_CLOSED_FACT_FROM_R0140"
+    }
+  ],
+  "facts": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0140-current-research-originals/derived-facts/R0140-actual-facts-a01.json",
+    "bytes": 24127,
+    "sha256": "D32B3337FDCCB4C878AE8E5BBB1E5249AFA5AACDB13A6D4E55EB19B801773E4B"
+  },
+  "all_assets_index": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0140-current-research-originals/all-assets-index-a01.json",
+    "bytes": 4565515,
+    "sha256": "CD91AF7D4F0BF930C3D23636B9A907F29C0AC5192D990357DF6A46E968094260"
+  },
+  "copy_verification": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0140-current-research-originals/copy-verification-a01.json",
+    "bytes": 405623,
+    "sha256": "8A641DA440AFB7930708222F67B0BFD2A696C88C3326FBAB4A18E44985AFC04A"
+  },
+  "inventory_count": 5891,
+  "repository_exact_copy_count": 696,
+  "latest_fda_sampling_fix_is_pending_live": true,
+  "raw_native_UI_return_missing_for_R0140": true,
+  "rng_owner0_reason_is_source_inference_not_wire": true,
+  "SDK_cleanup_display_restore_completed": true,
+  "video_revision_started": false,
+  "human_full_movie_signoff": false,
+  "master_intake_merge_or_push": false
+}

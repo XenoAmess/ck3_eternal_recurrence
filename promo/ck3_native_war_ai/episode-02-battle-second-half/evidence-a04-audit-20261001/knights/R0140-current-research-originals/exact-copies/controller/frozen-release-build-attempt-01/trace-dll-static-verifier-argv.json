@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\w\\e2cap1001b\\ck3_autonomous_player\\native_bridge\\tools\\verify_private_combat_trace_dll.py",
+    "--dll",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "--cmake-cache",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\frozen-release-build-attempt-01\\build\\CMakeCache.txt"
+  ],
+  "cwd": "C:\\w\\e2cap1001b\\ck3_autonomous_player\\native_bridge",
+  "at_utc": "2026-10-01T08:43:30.906131+00:00"
+}

@@ -1,0 +1,101 @@
+{
+  "source_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\current-run-bindings.json",
+    "bytes": 4424,
+    "sha256": "2828542D1B8F40496AC4E4D0036142BDDE3B77CC5E4E724E3DDFFBC53502BC4F"
+  },
+  "before_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 5,
+    "native_revision": 4,
+    "snapshot_id": "native:4",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-5abfe990ef98",
+    "connection_generation": 1,
+    "bridge_pid": 832,
+    "native_hello_session_generation": 0
+  },
+  "after_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 5,
+    "native_revision": 4,
+    "snapshot_id": "native:4",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-5abfe990ef98",
+    "connection_generation": 1,
+    "bridge_pid": 832,
+    "native_hello_session_generation": 0
+  },
+  "before_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\failed-victim-ui-diagnostic-before-pixels.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\failed-victim-ui-diagnostic-before-pixels.json",
+      "bytes": 37780,
+      "sha256": "E4775CD1DBB0C8100EF60D3F55A48E56CF848FDB2F06A5A980704A5E36105915"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "after_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests\\failed-victim-ui-diagnostic-after-pixels.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\ck3-output\\interactive-requests-responses\\failed-victim-ui-diagnostic-after-pixels.json",
+      "bytes": 37779,
+      "sha256": "7C1F80CA74D01E64A3F8179FAE8ECD4F69834455DB599F78201EB27E9D8CE031"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "image": {
+    "kind": "original WGC HWND frame",
+    "pid": 832,
+    "creation_time": 1790844415.9642026,
+    "hwnd": 1312316,
+    "title": "Crusader Kings III",
+    "rect": [
+      0,
+      0,
+      2560,
+      1440
+    ],
+    "frames": [
+      {
+        "at_utc": "2026-10-01T08:56:59.267508+00:00",
+        "width": 2560,
+        "height": 1440
+      }
+    ],
+    "image": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a04\\scoped-ui-research-attempt-01\\failed-victim-ui-diagnostic-window.png",
+      "bytes": 6435979,
+      "sha256": "64BAE6EFA2876404BA9B430C0F50BB664585BBB1E22BB5B055598DC60870A2C2"
+    },
+    "mouse_inputs": 0,
+    "keyboard_inputs": 0,
+    "visual_review": "pending root original-pixel inspection"
+  },
+  "original_open_action_retry_count": 0,
+  "day_advance_count": 0,
+  "ui_identity_semantics": "pending original pixels and native contract correction",
+  "purpose": "Diagnose date_raw action validation failure without treating failed ACK as accepted"
+}

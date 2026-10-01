@@ -1,0 +1,533 @@
+{
+  "at_utc": "2026-10-01T09:30:55.206196+00:00",
+  "source": "C:\\w\\e2research1001",
+  "predecessor": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420",
+  "exact_source_inputs": [
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+      "bytes": 6061,
+      "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+      "bytes": 40749,
+      "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+      "bytes": 31175,
+      "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+      "bytes": 11542,
+      "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1182986,
+      "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+      "bytes": 13854,
+      "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+      "bytes": 23223,
+      "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+      "bytes": 17942,
+      "sha256": "6DFAB0C073FE068A3703D9F9AD0B7B378AD19346565013B499D805E4BA7F0973"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+      "bytes": 13443,
+      "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+    }
+  ],
+  "ready_receipts": [
+    {
+      "identity": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\source-ready-and-test-receipt.json",
+        "bytes": 20736,
+        "sha256": "F0B0DD7C0A49A0C7A87DA1D927087C36002AD27746202EDF7DCAC8C3540E5B1A"
+      },
+      "contents": {
+        "schema": "xar.ck3.ui-paused-original-owner-source-ready/v1",
+        "status": "SOURCE_READY_FOR_FRESH_FULL_DLL_BUILD_AND_NEW_LIVE_UI_ATTEMPT",
+        "generated_at": "2026-10-01T09:30:14.043877+00:00",
+        "writable_source": "C:\\w\\e2research1001",
+        "private_baseline_head_parent_reported": "0bb (not independently queried; no Git used)",
+        "sources": [
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_ui_navigation_v1.hpp",
+            "modified_this_UI_repair": true,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+              "bytes": 6061,
+              "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_ui_navigation_v1.hpp",
+              "bytes": 6061,
+              "sha256": "8213673C516FACCC22663EE268AF5929549524EFA3C68BA6054B5CE627E5196B"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+            "modified_this_UI_repair": true,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+              "bytes": 40749,
+              "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\src\\ingame_ui_navigation_v1.cpp",
+              "bytes": 40749,
+              "sha256": "E3897DB2839882C7D3D9A03280F6EEEA73F8B427EAAD55627ECBAE659AB8E29B"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/src/frontend_gui_route_v1.cpp",
+            "modified_this_UI_repair": true,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+              "bytes": 31175,
+              "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\src\\frontend_gui_route_v1.cpp",
+              "bytes": 31175,
+              "sha256": "A0C18C38BAB27790A1CBCDBA534EA42E7790CE05969F04C1C18E0D0D6BCA969D"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/tests/ingame_ui_navigation_v1_test.cpp",
+            "modified_this_UI_repair": true,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+              "bytes": 11542,
+              "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\tests\\ingame_ui_navigation_v1_test.cpp",
+              "bytes": 11542,
+              "sha256": "50065B3BEFF7882D94FB01A048A634CE1FAE47BBDDB9B6721DE5A6E325488BC5"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+            "modified_this_UI_repair": true,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+              "bytes": 1182986,
+              "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+              "bytes": 1182986,
+              "sha256": "19A2F2F41219B3159A78286319453F230BF9CC8D01FB12F02AB20CF8D115C88E"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py",
+            "modified_this_UI_repair": true,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+              "bytes": 13854,
+              "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_ui_contract.py",
+              "bytes": 13854,
+              "sha256": "5B7C0A9662FFA2EA59E6C9C4F2F384A39987A0EBB21A37C9D2303058CCBC9965"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py",
+            "modified_this_UI_repair": true,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+              "bytes": 23223,
+              "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py",
+              "bytes": 23223,
+              "sha256": "2DE9755A848952375706F6BB56D2701271DFF820E2DF20577795CCFEB30F41AB"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/src/zhongguo_scoreboard_state_v1.cpp",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+              "bytes": 93513,
+              "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+              "bytes": 93513,
+              "sha256": "D9504792B5E6D81E34DD90F964FBDD08B1DBDD01A323FC548E6DF6E64E49AEE9"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_scoreboard_state_v1.hpp",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+              "bytes": 15729,
+              "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+              "bytes": 15729,
+              "sha256": "45DD442C4B3ECDC091CDFBD61A7C6908D917CDEC067812EC6C6BCD1C27727D3D"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1.cpp",
+              "bytes": 76845,
+              "sha256": "49A5DA9801DDB6DDB6206E58D8F8ACB34BF795787F68EA4F1E1D9C9D3DC6A495"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1.cpp",
+              "bytes": 76845,
+              "sha256": "49A5DA9801DDB6DDB6206E58D8F8ACB34BF795787F68EA4F1E1D9C9D3DC6A495"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp",
+              "bytes": 30887,
+              "sha256": "B7F97A3DA12C27DB682D5E0D44106FCA41F9B4FEBE59E43E2B61F0C3B074969A"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp",
+              "bytes": 30887,
+              "sha256": "B7F97A3DA12C27DB682D5E0D44106FCA41F9B4FEBE59E43E2B61F0C3B074969A"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/frontend_gui_route_v1.hpp",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\frontend_gui_route_v1.hpp",
+              "bytes": 7279,
+              "sha256": "C26D13C7EAA8681284ED3FB55642CE333E631A8F6CE38FB76A9620594755BECB"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\frontend_gui_route_v1.hpp",
+              "bytes": 7279,
+              "sha256": "C26D13C7EAA8681284ED3FB55642CE333E631A8F6CE38FB76A9620594755BECB"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+              "bytes": 1092626,
+              "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+              "bytes": 1092626,
+              "sha256": "CA9687A443FFDBE668F947C7BD3EFC60C1FF08720991BFC3D98698DEB8D80445"
+            }
+          },
+          {
+            "relative_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+              "bytes": 233042,
+              "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+              "bytes": 233042,
+              "sha256": "B8D9763E63B9D69B9424D7DDEC5739AD4A92B688081B546D3A2E230117292555"
+            }
+          },
+          {
+            "relative_path": "promo/ck3_native_war_ai/integration/capture_session.py",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+              "bytes": 122365,
+              "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+              "bytes": 122365,
+              "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+            }
+          },
+          {
+            "relative_path": "promo/ck3_native_war_ai/integration/test_capture_hot_service.py",
+            "modified_this_UI_repair": false,
+            "original": {
+              "path": "C:\\w\\e2research1001\\promo\\ck3_native_war_ai\\integration\\test_capture_hot_service.py",
+              "bytes": 14979,
+              "sha256": "F7D3C6B5BD4936EA240B58442A8A9016FC4CF648AB7F0210D13C8447E320DCCD"
+            },
+            "frozen_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\source-freeze-ui-paused-owner-a03\\sources\\promo\\ck3_native_war_ai\\integration\\test_capture_hot_service.py",
+              "bytes": 14979,
+              "sha256": "F7D3C6B5BD4936EA240B58442A8A9016FC4CF648AB7F0210D13C8447E320DCCD"
+            }
+          }
+        ],
+        "native_fingerprint_sha256": "522227B4CC1E50B8DDD73D88A15DB01BCA551174CC8B7AFD465C45AEE5586033",
+        "validation": {
+          "three_actual_Release_TUs": [
+            "frontend_gui_route_v1.cpp",
+            "ingame_ui_navigation_v1.cpp",
+            "bridge.cpp"
+          ],
+          "native_UI_CTest": "PASS 1/1",
+          "exact_verbatim_frontend_UI_branch_cases": "PASS 30; original snapshot/GUI/navigation calls are explicit offline stubs",
+          "native_UI_fixture": "PASS parser/fullID/RTTI, production paused-owner gateway, RNG0/foreign diagnostic, GUI double-read/replacement negative cases; no game calls",
+          "final_Python_UI_MCP_tests": "PASS 24",
+          "final_capture_service_tests": "PASS (exact count in stdio)",
+          "compiled_native_source_bytes_equal_final_frozen_source": true,
+          "full_DLL_link_and_live_game": "NOT_RUN_BY_THIS_AGENT; root mandatory next step"
+        },
+        "evidence": [
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\actual-offline-receipt.json",
+            "bytes": 1364,
+            "sha256": "36DF516DFBCFB686CAE1DA4FC97D04F3FB059D98BF318E8DBE03E0CE110D4311"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\actual-three-tus-and-native-ui-fixture-result.json",
+            "bytes": 656,
+            "sha256": "2ABAEAB8539DC17E94FD8098C9543810FE8DFB88BBE0F116D9D317261C8D8576"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\native-ui-ctest-result.json",
+            "bytes": 610,
+            "sha256": "DF9578310DC3869395F53023C4A288BCABEF04088D5264314643E91340080A6C"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\native-ui-ctest-junit.xml",
+            "bytes": 535,
+            "sha256": "15F61ED0DD2D5D33986556A5A661478CB3D69FD0E1691C9C6B2F73D3FCC52D59"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\native-ui-fixture-result.json",
+            "bytes": 614,
+            "sha256": "6480757C3E5727DEC5E28866144C054D385BEE5474269D443E145A775C444FA9"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\build-attempt-03-paused-original-ui-owner\\native-ui-fixture-stdout.bin",
+            "bytes": 121,
+            "sha256": "D890365F274CDCE43BA30427C94384D8480C122688A0E35697CA249D557B2985"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\offline-exact-frontend-branch-attempt-01\\exact-source-extraction.json",
+            "bytes": 5341,
+            "sha256": "DAAE6D95734B4CAA33E131401F284B67FEB0A8EFDC0F15BCC77087B5C800503C"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\offline-exact-frontend-branch-attempt-01\\compile-result.json",
+            "bytes": 591,
+            "sha256": "08CDA17F0789AF748D3BF9A27404707A74AE3DFFA155CD169900317F699CBDFF"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\offline-exact-frontend-branch-attempt-01\\execute-result.json",
+            "bytes": 592,
+            "sha256": "32C2043C9393AA294B24D54769F0F51EBD42BBE188FA863CEBE05DCD388362A2"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\offline-exact-frontend-branch-attempt-01\\execute-stdout.bin",
+            "bytes": 111,
+            "sha256": "5D25F934E9D2F14E895069F6E6501862252B784CBDA07DD9373464BB8A25ACC9"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\final-python-validation-attempt-04\\python-ui-tests-result.json",
+            "bytes": 597,
+            "sha256": "D8A374C3C829EBD3E801A7EFE05F0DE5C936510781182A485158A6CC032AD7DC"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\final-python-validation-attempt-04\\python-ui-tests-stderr.bin",
+            "bytes": 1229,
+            "sha256": "E748332ADF1F2A413229D8D50C5285711CDFA4557FBA8E554A4CA50583CDFA1D"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\final-python-validation-attempt-04\\python-capture-service-tests-result.json",
+            "bytes": 622,
+            "sha256": "0114B408401F783B30CDDEA6880E6B794588FFB24336049289C90EC3B675CC1B"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-repair-other-a01\\final-python-validation-attempt-04\\python-capture-service-tests-stderr.bin",
+            "bytes": 116,
+            "sha256": "03899D9860D50D93D826EBF1BD1DEC952BA5855D8CDABC6F90967A2F78CB821E"
+          },
+          {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0140-ui-binding-diagnosis-other-a01\\readonly-diagnosis-a01.json",
+            "bytes": 11670,
+            "sha256": "0AA93617AFD9145BEAD17B65BD9A59B8156A8FB494AD870948CE609CF3E1B05E"
+          }
+        ],
+        "interface_delta": {
+          "tools_and_arguments": "Unchanged seven explicit MCP tools; character33437/killer34120 IDs require each fresh public revision",
+          "new_fields": {
+            "application_owner_thread_verified": "bool; actual original SDL/TLS/ticket/thread/paused proof",
+            "gui_owner_binding_verified": "bool; actual original current GUI context+owner before/after equal",
+            "gui_context_address": "uint64 original singleton-chain context pointer, never caller input",
+            "gui_owner_address": "uint64 original singleton-chain owner pointer, never RNG thread",
+            "rng_owner_thread_id": "uint32 diagnostic; zero/foreign can coexist with valid UI ownership",
+            "rng_owner_is_ui_admission_gate": "always false"
+          },
+          "new_UI_dispatch_precondition": "Actual driver state_dir and evidence directory must exist/be creatable before the original UI action is sent.",
+          "raw_return_storage": "state_dir/native-session/ingame-ui-native-results/native-ui-<uuid>.json; xb, parsed request/command_result and actual pre-submission snapshot saved before ok/result/UI normalization; no wire byte claim",
+          "raw_failure_history": "raw_native_ui_result retained on later identity/session/normalization failure; native RED frame retained in original parsed-return file",
+          "metadata": "Date/pause/thread/pump from actual original execution stamp and actor from actual successful fresh snapshot; never from requested expected date."
+        },
+        "guards_preserved": [
+          "exact executing ticket/executor/context/state/stop/failure",
+          "original event-boundary TLS/current thread and both owner epoch minima",
+          "before actual snapshot equals expected; paused map actor and original stamp date",
+          "original GUI-chain context/owner fresh double reads before, immediate pre-navigation and after",
+          "handler RTTI/vtable/modal/full-ID/actor scope",
+          "post native snapshot equals pre; unchanged mailbox post-stamp proof",
+          "query/ACK remain pending and non-pixel; actual WGC/manual review still needed"
+        ],
+        "historical_RED_preserved": [
+          "R0140 actual UI date_raw failure/no day advance",
+          "build-attempt-01 environment quoting RED",
+          "build-attempt-02 3TU compiled PASS but stale-GUI fixture had invalid prior request, CTest RED; corrected explicit fixture request only in attempt03"
+        ],
+        "no_game_screen_bus_Git_master_video_cloud_changes": true,
+        "all_source_writes_stopped": true,
+        "not_proven": [
+          "character/knight/full-panel actual UI pixels",
+          "live navigation ABI successful execution",
+          "death/weapon/event mechanism closure",
+          "full DLL linked by this agent"
+        ]
+      }
+    },
+    {
+      "identity": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\source-freeze-a01\\monitor-thread-source-freeze-a01.json",
+        "bytes": 5475,
+        "sha256": "90F4038B12EB0B78F35C20D7495054A25F4E424DDBED7C50ABBCF8E28DC5F731"
+      },
+      "contents": {
+        "schema_version": 1,
+        "status": "SOURCE_READY_STOPPED",
+        "created_at_utc": "2026-10-01T09:26:41.757829+00:00",
+        "authorized_writable_root": "C:\\w\\e2research1001",
+        "changed_sources": [
+          {
+            "current": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+              "bytes": 17942,
+              "sha256": "6DFAB0C073FE068A3703D9F9AD0B7B378AD19346565013B499D805E4BA7F0973"
+            },
+            "exact_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\source-freeze-a01\\knight_variable_monitor_projection.py",
+              "bytes": 17942,
+              "sha256": "6DFAB0C073FE068A3703D9F9AD0B7B378AD19346565013B499D805E4BA7F0973"
+            },
+            "before": {
+              "source": "C:\\w\\e2research1001\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+              "bytes": 15264,
+              "sha256": "55D4077ABC6EA3B76D49E81AB9F736A74962BF262BCE2B1133A7C83394077B4F",
+              "exact_copy": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\before-knight_variable_monitor_projection.py"
+            },
+            "prior_capture_source_unchanged": {
+              "path": "C:\\w\\e2cap1001b\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+              "bytes": 15264,
+              "sha256": "55D4077ABC6EA3B76D49E81AB9F736A74962BF262BCE2B1133A7C83394077B4F"
+            }
+          },
+          {
+            "current": {
+              "path": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+              "bytes": 13443,
+              "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+            },
+            "exact_copy": {
+              "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\source-freeze-a01\\verify_knight_variable_monitor_run.py",
+              "bytes": 13443,
+              "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+            },
+            "before": {
+              "source": "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+              "bytes": 12679,
+              "sha256": "BF45DD141D4B4E7E1C2373E219F026884F2A22EBDCE0CA620D08D204835FCA0E",
+              "exact_copy": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\before-verify_knight_variable_monitor_run.py"
+            },
+            "prior_capture_source_unchanged": {
+              "path": "C:\\w\\e2cap1001b\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+              "bytes": 12679,
+              "sha256": "BF45DD141D4B4E7E1C2373E219F026884F2A22EBDCE0CA620D08D204835FCA0E"
+            }
+          }
+        ],
+        "offline_verification": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\monitor-thread-semantics-verification-a02.json",
+          "bytes": 28668,
+          "sha256": "1BD43EB84B6E165FD390722CF3F1C08EE23DE2BD7C800C8A9E8AA533BB1C85A1"
+        },
+        "actual_help": {
+          "argv": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "C:\\w\\e2research1001\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+            "--help"
+          ],
+          "returncode": 0,
+          "stdout": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\actual-help.stdout.bin",
+            "bytes": 698,
+            "sha256": "F9677C98666588984BB965D98B2404C96EDE4D44EBED64AC1A231B065FAF46BF"
+          },
+          "stderr": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\monitor-thread-semantics-repair-attempt-01\\offline-verification-attempt-02\\actual-help.stderr.bin",
+            "bytes": 0,
+            "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+          }
+        },
+        "R0140_diagnostic": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\R0140-failed-UI-monitor-diagnostic-attempt-03\\R0140-monitor-initial-state-diagnostic-a03.json",
+          "bytes": 74924,
+          "sha256": "66965919A4C8AF9434071FE36AD2FAA58294AACFF2132B15D1610F9F6847F627"
+        },
+        "changes": [
+          "Bind controlled arm/final to actual lifecycle thread; preserve GUI callback threads.",
+          "Require each original write/house operation pair to retain its actual thread, context, key and full identities.",
+          "Report first actual getter observation separately; absent/unread/missing remain distinct and do not claim arm initial state.",
+          "Keep death-commit token/invocation/tuple/thread correlation independently strict."
+        ],
+        "R0140_outcome": "RED_UI_ADMISSION_NO_DAY_ADVANCE",
+        "R0140_six_gap_evidence_closed": false,
+        "new_successful_day_verification": "NOT_RUN",
+        "global_mutable_bundle_complete": false,
+        "game_calls": 0,
+        "desktop_inputs": 0,
+        "git_operations": 0,
+        "master_intake": false,
+        "historical_READY_receipts_modified": false
+      }
+    }
+  ],
+  "R0140_originals_retained": true,
+  "live_evidence_pending": true,
+  "movie_changed": false,
+  "master_intake": false,
+  "remote_operations": false
+}

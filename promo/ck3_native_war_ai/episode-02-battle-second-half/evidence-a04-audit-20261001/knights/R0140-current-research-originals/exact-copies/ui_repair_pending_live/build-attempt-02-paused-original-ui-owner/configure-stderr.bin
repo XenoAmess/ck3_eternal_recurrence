@@ -1,0 +1,1008 @@
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_ai_terminal_reentry_dispatch_observer_v1_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/ai_terminal_reentry_dispatch_observer_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_player_prisoner_collection_query_v1_private_test.dir/./
+
+  has 203 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/player_prisoner_collection_query_v1_private_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_activity_planning_snapshot_v1_application_glue_test.dir/./
+
+  has 206 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/activity_planning_snapshot_v1_private_observer.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_marriage_native_outcome_classifier_v1_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/marriage_native_outcome_classifier_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_marriage_alliance_projection_adapter_v1_test.dir/./
+
+  has 199 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/marriage_alliance_projection_adapter_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_marriage_alliance_readback_adapter_v1_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/marriage_alliance_readback_adapter_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_marriage_proposal_resolution_journal_v1_test.dir/./
+
+  has 199 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/marriage_proposal_resolution_journal_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_culture_innovation_snapshot_v1_mailbox_test.dir/./
+
+  has 198 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/culture_innovation_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_battle_reinforcement_assignment_v1_mailbox_test.dir/./
+
+  has 202 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/battle_reinforcement_assignment_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_battle_terminal_transition_v1_mailbox_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/battle_terminal_transition_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_combat_phase_event_trace_v1_source_contract_test.dir/./
+
+  has 203 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/combat_phase_event_trace_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_campaign_root_context_v1_source_contract_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/campaign_root_context_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_government_runtime_adapter_bridge_binder_v1_test.dir/./
+
+  has 203 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/government_runtime_adapter_bridge_binder_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_player_faction_alerts_v1_source_contract_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/player_faction_alerts_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_major_decision_found_kingdom_shared_glue_v1_test.dir/./
+
+  has 203 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/major_decision_found_kingdom_shared_glue_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_major_decision_found_kingdom_internal_route_v1_test.dir/./
+
+  has 206 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/major_decision_found_kingdom_internal_route_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_major_decision_found_kingdom_internal_route_v1_source_contract_test.dir/./
+
+  has 222 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/major_decision_found_kingdom_internal_route_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_steward_develop_county_action_v1_source_contract_test.dir/./
+
+  has 208 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/steward_develop_county_action_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_serializer_test.dir/./
+
+  has 207 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/steward_develop_county_candidates_v1_serializer_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/./
+
+  has 204 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/steward_develop_county_candidates_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_source_contract_test.dir/./
+
+  has 212 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/steward_develop_county_candidates_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_steward_develop_county_enumerator_observer_v1_test.dir/./
+
+  has 205 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/steward_develop_county_enumerator_observer_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_domain_construction_candidate_observer_v1_test.dir/./
+
+  has 201 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_candidate_observer_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_domain_construction_candidate_observer_v1_suspended_injection_test.dir/./
+
+  has 221 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_candidate_observer_v1_suspended_injection_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_domain_construction_runtime_callsite_observer_v1_test.dir/./
+
+  has 208 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_runtime_callsite_observer_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test.dir/./
+
+  has 228 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_runtime_callsite_observer_v1_suspended_injection_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_domain_construction_application_main_runtime_v1_test.dir/./
+
+  has 207 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_application_main_runtime_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_council_composition_candidate_observer_v1_test.dir/./
+
+  has 201 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_composition_candidate_observer_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_council_assign_councillor_native_submit_adapter_v1_test.dir/./
+
+  has 210 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_assign_councillor_native_submit_adapter_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_military_preparation_summary_v1_private_probe_test.dir/./
+
+  has 205 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/military_preparation_summary_v1_private_probe_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_faction_gift_mitigation_async_glue_v1_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/faction_gift_mitigation_async_glue_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_council_composition_steward_candidates_private_probe_v1_test.dir/./
+
+  has 215 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_composition_steward_candidates_private_probe_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_council_composition_candidates_public_v1_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_composition_candidates_public_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_council_composition_steward_candidates_binding_v1_test.dir/./
+
+  has 209 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_composition_steward_candidates_binding_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_council_composition_candidates_enrichment_v1_test.dir/./
+
+  has 204 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_composition_candidates_enrichment_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_ai_owned_case_snapshot_v1_mailbox_test.dir/./
+
+  has 202 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_ai_owned_case_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_ai_owned_case_snapshot_v1_source_contract_test.dir/./
+
+  has 210 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_ai_owned_case_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_case_snapshot_v1_source_contract_test.dir/./
+
+  has 201 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_case_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_b2_pip_snapshot_v1_source_contract_test.dir/./
+
+  has 203 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_b2_pip_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_manager_governance_snapshot_v1_test.dir/./
+
+  has 199 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_manager_governance_snapshot_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_manager_subordinate_selector_v1_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_manager_subordinate_selector_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_incident_snapshot_v1_mailbox_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_incident_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_incident_snapshot_v1_source_contract_test.dir/./
+
+  has 205 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_incident_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_player_epidemic_treatment_presence_v1_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/player_epidemic_treatment_presence_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_death_succession_modal_continue_v1_source_contract_test.dir/./
+
+  has 210 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/death_succession_modal_continue_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_scoreboard_action_v1_mailbox_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_scoreboard_action_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_workforce_collective_snapshot_v1_test.dir/./
+
+  has 201 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_collective_snapshot_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_workforce_normal_exit_snapshot_v1_test.dir/./
+
+  has 202 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_normal_exit_snapshot_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_compensation_af5_snapshot_v1_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_compensation_af5_snapshot_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test.dir/./
+
+  has 208 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_promotion_compensation_postcondition_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zg_promo_comp_mailbox_v1_test.dir/./
+
+  has 184 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_promotion_compensation_postcondition_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_projects_metrics_postcondition_v1_test.dir/./
+
+  has 202 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_projects_metrics_postcondition_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zg_projects_metrics_mailbox_v1_test.dir/./
+
+  has 190 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_projects_metrics_postcondition_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zg_career_hc_workforce_mailbox_v1_test.dir/./
+
+  has 193 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_career_hc_workforce_postcondition_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_workforce_normal_exit_snapshot_v1_mailbox_test.dir/./
+
+  has 210 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_normal_exit_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_workforce_normal_exit_snapshot_v1_source_contract_test.dir/./
+
+  has 218 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_normal_exit_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_workforce_collective_snapshot_v1_mailbox_test.dir/./
+
+  has 209 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_collective_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_workforce_collective_snapshot_v1_source_contract_test.dir/./
+
+  has 217 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_collective_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_result_case_snapshot_v1_mailbox_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_result_case_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_zhongguo_result_case_snapshot_v1_source_contract_test.dir/./
+
+  has 208 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_result_case_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_loaded_feature_manifest_v1_source_contract_test.dir/./
+
+  has 202 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/loaded_feature_manifest_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_pending_character_interaction_context_v1_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/pending_character_interaction_context_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_pending_character_interaction_context_v1_mailbox_test.dir/./
+
+  has 208 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/pending_character_interaction_context_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_pending_interaction_v1_source_contract_test.dir/./
+
+  has 198 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/pending_character_interaction_context_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_war_entry_assessments_v1_source_contract_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/war_entry_assessments_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_war_termination_same_frame_source_contract_test.dir/./
+
+  has 202 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/war_termination_same_frame_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_startup_particle2_consumer_null_guard_v1_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/startup_particle2_consumer_null_guard_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_startup_dx11_render_context_draw_guard_v1_test.dir/./
+
+  has 201 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/startup_dx11_render_context_draw_guard_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_startup_localize_current_root_guard_v1_test.dir/./
+
+  has 198 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/startup_localize_current_root_guard_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_startup_widget_null_flag_call_guard_v1_test.dir/./
+
+  has 198 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/startup_widget_null_flag_call_guard_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_phase2_wrapper_consumer_edge_observer_v1_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/phase2_wrapper_consumer_edge_observer_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0140-ui-binding-repair-other-a01/build-attempt-02-paused-original-ui-owner/build/CMakeFiles/xar_ck3_phase2_post_call_list_identity_observer_v1_test.dir/./
+
+  has 202 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/phase2_post_call_list_identity_observer_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+

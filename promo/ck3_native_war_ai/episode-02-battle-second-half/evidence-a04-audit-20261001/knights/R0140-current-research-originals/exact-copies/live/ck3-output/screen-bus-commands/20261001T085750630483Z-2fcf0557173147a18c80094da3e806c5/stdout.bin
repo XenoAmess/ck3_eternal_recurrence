@@ -1,0 +1,46 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "schema": "codex.task_bus.v1",
+    "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a03",
+    "state": "running",
+    "summary": "frozen_bfec9e22_source_build_and_offline_freshness_preparation",
+    "next_step": "fresh_Steam_offline_pixels_then_same_process_native_UI_and_scoped_death_chain",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "updated_at_utc": "2026-10-01T08:57:51.436404+00:00",
+    "pid": 17420,
+    "repo": "C:\\w\\e2cap1001b",
+    "git": {
+      "head": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420",
+      "branch": "codex/war-e2-scoped-ui-capturefix-20261001",
+      "dirty_entries": 0
+    },
+    "last_sequence": 3401
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 3401,
+    "event_id": "32e71334660b4585820bebc0798aa0a3",
+    "timestamp_utc": "2026-10-01T08:57:51.437812+00:00",
+    "kind": "heartbeat",
+    "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a03",
+    "to": [
+      "*"
+    ],
+    "state": "running",
+    "summary": "frozen_bfec9e22_source_build_and_offline_freshness_preparation",
+    "next_step": "fresh_Steam_offline_pixels_then_same_process_native_UI_and_scoped_death_chain",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "repo": "C:\\w\\e2cap1001b",
+    "git": {
+      "head": "0bb40ba1495c4bb15f24e152799d1f62eb1a2420",
+      "branch": "codex/war-e2-scoped-ui-capturefix-20261001",
+      "dirty_entries": 0
+    }
+  }
+}

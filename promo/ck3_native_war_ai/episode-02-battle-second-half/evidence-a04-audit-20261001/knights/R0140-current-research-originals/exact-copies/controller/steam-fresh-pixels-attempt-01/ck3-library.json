@@ -1,0 +1,39 @@
+{
+  "label": "ck3-library",
+  "frames": [
+    {
+      "at_utc": "2026-10-01T08:37:13.251510+00:00",
+      "elapsed": 0.2809997000003932,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-fresh-pixels-attempt-01\\ck3-library-01.png",
+        "bytes": 803262,
+        "sha256": "7C8BEB999B23F27D79AFC4013DD45EBCED68C7A26DD8C9D5412D424DF9C5E854"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T08:37:14.267733+00:00",
+      "elapsed": 1.291060000003199,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-fresh-pixels-attempt-01\\ck3-library-02.png",
+        "bytes": 803262,
+        "sha256": "7C8BEB999B23F27D79AFC4013DD45EBCED68C7A26DD8C9D5412D424DF9C5E854"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T08:37:15.261309+00:00",
+      "elapsed": 2.2974806999991415,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-04-scoped-ui\\steam-fresh-pixels-attempt-01\\ck3-library-03.png",
+        "bytes": 803262,
+        "sha256": "7C8BEB999B23F27D79AFC4013DD45EBCED68C7A26DD8C9D5412D424DF9C5E854"
+      }
+    }
+  ],
+  "errors": []
+}
