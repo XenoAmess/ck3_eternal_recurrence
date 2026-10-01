@@ -41,6 +41,10 @@ bool identifier_callback_abi_valid = true;
 std::size_t identifier_calls = 0;
 void *LocalPlayer(void *) { return local_player; }
 void *IdentifierTable() { return &names; }
+const std::string *GlobalCommandKey(std::int32_t key) {
+  const auto found = names.find(key);
+  return found == names.end() ? nullptr : &found->second;
+}
 const std::string *IdentifierName(void *table, std::int32_t key) {
   ++identifier_calls;
   if (table != &names) {
@@ -130,6 +134,7 @@ struct Fixture {
     bindings.image_base = image_base;
     bindings.core = {true, &state_pointer, &jomini_pointer,
                      &characters_pointer, &LocalPlayer};
+    bindings.get_global_command_key = &GlobalCommandKey;
     bindings.get_script_identifier_table = &IdentifierTable;
     bindings.resolve_script_identifier_name = &IdentifierName;
   }

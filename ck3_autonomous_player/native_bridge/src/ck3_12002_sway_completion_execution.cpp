@@ -33,6 +33,12 @@ bool Identifier(EventResolveIdentifierName resolver, void *table,
   __try { output = resolver(table, identifier); return output != nullptr; }
   __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
 }
+bool GlobalCommandKey(SwayExecutionGlobalCommandKeyGetter12002 getter,
+    std::int32_t identifier, const std::string *&output) noexcept {
+  if (getter == nullptr) return false;
+  __try { output = getter(identifier); return output != nullptr; }
+  __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+}
 // All canonical identifiers in this source contract fit inside this buffer.
 // Compare original scalar keys, never the localized message renderer output.
 struct CopiedKey {
@@ -80,14 +86,21 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
       vtable != b.image_base + kSwayExecutionToastVtableRva12002 &&
       vtable != b.image_base + kSwayExecutionPopupVtableRva12002)
     return SwayExecutionCaptureResult12002::ignored;
+  std::int32_t command_id{};
+  std::uint8_t command_domain{};
+  CopiedKey command;
+  if (!Read(effect + 0x08, command_id) || !Read(effect + 0x0C, command_domain))
+    return Unavailable(out, "sway_execution_command_identifier_unavailable");
+  if (command_domain != 0)
+    return Unavailable(out, "sway_execution_dynamic_command_identifier_unsupported");
+  const std::string *native_command{};
+  if (!GlobalCommandKey(b.get_global_command_key, command_id, native_command) ||
+      !Key(reinterpret_cast<std::uintptr_t>(native_command), command))
+    return Unavailable(out, "sway_execution_command_identifier_unavailable");
+  if (!command.Is("send_interface_message")) return SwayExecutionCaptureResult12002::ignored;
   void *table{};
   if (!Table(b.get_script_identifier_table, table))
     return Unavailable(out, "sway_execution_identifier_table_unavailable");
-  std::int32_t command_id{};
-  CopiedKey command;
-  if (!Read(effect + 0x08, command_id) || !Name(b, table, command_id, command))
-    return Unavailable(out, "sway_execution_command_identifier_unavailable");
-  if (!command.Is("send_interface_message")) return SwayExecutionCaptureResult12002::ignored;
   std::uint8_t type_state{};
   CopiedKey type;
   if (!Read(effect + 0x5C, type_state))
@@ -182,6 +195,8 @@ SwayExecutionBindings12002 BindSwayExecutionImage12002(
   b.core = BindCoreImage(base, sha);
   if (!b.core.enabled) return b;
   b.enabled = true; b.image_base = base;
+  b.get_global_command_key = reinterpret_cast<SwayExecutionGlobalCommandKeyGetter12002>(
+      base + kSwayExecutionGlobalCommandKeyGetterRva12002);
   b.get_script_identifier_table = reinterpret_cast<EventGetRegistry>(
       base + kEventScriptIdentifierTableGetterRva);
   b.resolve_script_identifier_name = reinterpret_cast<EventResolveIdentifierName>(

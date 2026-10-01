@@ -550,3 +550,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 44精确源含currentpopup最终selection8、loadedcatalogue5+9、numericcache8+finalgetter7+组合完整mailbox6及专题1。各新actualprovider/queue首轮GREEN并复用旧证据；minimum=-1 nativeunset、observedzero不当authoredabsence、finalthreshold真实getter非我方计算。已提交相同catalogue5按HEAD排除，旧73不重复；personalparameterconsumer仍有明确实际依赖，不冒完整religionloop。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\READY-NATIVE-FOLLOWUP.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:18:53 Fix the actual stock Sway command identifier domain
+
+实际37663A5 Effect+8/+C==0使用global command getter3F4F900，旧decoder误用namedScope registry；真实不同ID域会漏hidden记录。7文件4modified+3new精确最小修复，installer/API/protocol不变，dyn域准确不可用。唯一必要distinct-domain production Capture→copiedQuery→fullformatter Od/O2各17checks3actualwires通过；两旧fixture仅适配独立typedcallback，196/installer/named旧矩阵不重跑。旧17receipt留历史，R4actualDLL/root执行后才有live source资格。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-command-domain\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

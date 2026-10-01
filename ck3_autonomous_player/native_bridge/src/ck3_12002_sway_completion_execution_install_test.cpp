@@ -31,6 +31,10 @@ std::map<std::int32_t, std::string> names;
 void *local_pointer{};
 void *LocalPlayer(void *) { return local_pointer; }
 void *IdentifierTable() { return &names; }
+const std::string *GlobalCommandKey(std::int32_t identifier) {
+  const auto found = names.find(identifier);
+  return found == names.end() ? nullptr : &found->second;
+}
 const std::string *IdentifierName(void *table, std::int32_t identifier) {
   if (table != &names) return nullptr;
   const auto found = names.find(identifier);
@@ -147,6 +151,7 @@ struct Fixture {
     bindings.image_base = base;
     bindings.core = {true, &core_pointer, &jomini_pointer,
                      &storage_pointer, &LocalPlayer};
+    bindings.get_global_command_key = &GlobalCommandKey;
     bindings.get_script_identifier_table = &IdentifierTable;
     bindings.resolve_script_identifier_name = &IdentifierName;
     expected_effect = effect.data();

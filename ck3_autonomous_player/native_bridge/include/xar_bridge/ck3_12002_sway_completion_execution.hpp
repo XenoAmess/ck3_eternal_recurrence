@@ -15,6 +15,12 @@ inline constexpr std::uintptr_t kSwayExecutionToastVtableRva12002 = 0x4837428;
 inline constexpr std::uintptr_t kSwayExecutionPopupVtableRva12002 = 0x4837360;
 inline constexpr std::uintptr_t kSwayExecutionTitleWrapperVtableRva12002 = 0x48BD0B0;
 inline constexpr std::uintptr_t kSwayExecutionScalarLocalizationVtableRva12002 = 0x4929F08;
+inline constexpr std::uintptr_t kSwayExecutionGlobalCommandKeyGetterRva12002 = 0x3F4F900;
+
+// Effect+8 with Effect+C == 0 belongs to the global command-key domain.
+// Named scope and authored type identifiers retain their separate registry.
+using SwayExecutionGlobalCommandKeyGetter12002 =
+    const std::string *(*)(std::int32_t command_key_id);
 
 enum class SwayExecutionSourceBranch12002 {
   none,
@@ -42,6 +48,7 @@ struct SwayExecutionBindings12002 {
   bool enabled = false;
   std::uintptr_t image_base = 0;
   CoreBindings core;
+  SwayExecutionGlobalCommandKeyGetter12002 get_global_command_key = nullptr;
   EventGetRegistry get_script_identifier_table = nullptr;
   EventResolveIdentifierName resolve_script_identifier_name = nullptr;
 };
