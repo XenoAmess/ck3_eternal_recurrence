@@ -13,6 +13,8 @@
 
 最终 run：`C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-research-20261002-a02/`。原始 a08 attempt、第一版图卡、图卡放大版本、TTS、字幕、chunks、失败记录和旧 a07 均保留。每个新 run 查询最新正式工具链，实际使用 xar-promo-toolchain 0.2.1，wheel SHA-256 `F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621`，显式使用主 worktree 的 `tools/.venv/Scripts/python.exe`。
 
+归档已完成：882 份过程文件逐字节建立完整哈希清单并再次验证，原目录永久保留；正式 RunManifest 有 294 份保全记录，CLI validate 通过，人工 signoff 数量为 0。原逐文件保全器因反复校验大素材而由本轮停止，其 exit 15、已生成 CAS、manifest 历史与独立 failed phase 均保留；后续一次完整清单封存使用另一个 succeeded phase，没有把中断记录改为成功。回执见 `native-preservation-complete.json` 和 `retained-process-index-a02.json`。
+
 `audit/machine-report.json`、`frame-review/final-frame-quality.json` 只证明其声明条件。正式工具链已生成 `pending-human-review/` 包，其人工反馈与 signoff 留空。尚未发生人工按 1× 完整观看/听音签核，不能把成片标为已获人工批准或 production-clean。
 
 OneDrive 只传这一份 MP4，固定目录和客户端设置未改变，没有客户端下载其他文件。13 次 metadata 采样后为 `CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED`：本地副本 SHA 一致，客户端 InSync、validated 全尺寸、modified 0；没有独立云端回读。原始回执见 `delivery/final-delivery.json`，不得把这个边界省略成云端独立确认。

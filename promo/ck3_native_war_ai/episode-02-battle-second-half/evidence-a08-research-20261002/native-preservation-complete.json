@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-10-01T23:25:25.838437+00:00",
+  "manifest": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\native-run\\run-manifest.json",
+    "bytes": 136323,
+    "sha256": "2AFA272BCB7324FDE4B38A6324EE59733C77D4B4267160866E858E6FDC331147"
+  },
+  "artifact_records": 294,
+  "fully_indexed_process_files": 882,
+  "all_source_bytes_verified_once_after_index": true,
+  "previous_bulk_interruption_retained": true,
+  "human_signoffs": 0,
+  "full_human_review": "pending",
+  "remote_readback": "not-performed",
+  "index": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\retained-process-index-a02.json",
+    "bytes": 335059,
+    "sha256": "9D967E6E5ED3DE727BC9630AD5C0A3B461ABBE42C98A866A9589540FCD70D771"
+  }
+}
