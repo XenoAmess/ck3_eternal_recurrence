@@ -300,3 +300,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 六事件冻结新版源码与直接依赖，实际stress_and_fulfillment使1190/5007生产policy阻断已确定性复现并最小修复primary stress两分支，未把fulfillment当效用。10 passed/5 subtests及首RED保留。major stress新旧均-65，旧-80文案纠正并按既有生成器刷新。旧治疗modifier/县材料观测ABI仍待独立新provider，未假报完整live。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\events12002\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:47:13 Native Rite conversion piety quote
+
+真实dynamic int32 native piety报价与paid最终命令distinct，quote available不代表affordable/allowed。ABI6complete functions/5slices/38anchors6bindings及Od/O2各9场景14checks5wire通过；复用Rite包command结构。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\cost\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

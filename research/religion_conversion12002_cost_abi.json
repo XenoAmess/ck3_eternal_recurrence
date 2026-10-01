@@ -1,0 +1,524 @@
+{
+  "schema": "ck3_12002_religion_conversion_cost_native_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "source_constants": {
+    "kFinalPietyCostRva": "0x29a3de0",
+    "kConversionCommandVtableRva": "0x4770340",
+    "kConversionCommandSecondaryVtableRva": "0x47703d8",
+    "kRiteDatabaseGlobalRva": "0x5d1e2f8",
+    "kResourceExtensionOffset": "0x1b0",
+    "kPietyBalanceOffset": "0x110"
+  },
+  "native_spans": [
+    {
+      "name": "FaithConversionWindow.CalcPietyCost.thunk",
+      "start_rva": "0x1516cd0",
+      "end_exclusive_rva": "0x1516d08",
+      "kind": "complete_function",
+      "abi": "reflection wrapper int32",
+      "sha256": "da2ce2f25a27443b60e2f5f6c936e96e494224684f576c1746d26931c80514ae",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1e e8 c9 fc ff ff 48 8d 54 24 40 89 44 24 40 48 8b cb e8 58 2d 36 ff b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "FaithConversionWindow.CalcPietyCost",
+      "start_rva": "0x15169b0",
+      "end_exclusive_rva": "0x1516a07",
+      "kind": "complete_function",
+      "abi": "int32_t(const Window*)",
+      "sha256": "e92b8d14b15d50dd0a80e33564c5f6cf75573aeeabe13c1ee990327f19f0ce9c",
+      "bytes": "48 83 ec 58 c6 44 24 28 00 33 c0 48 89 44 24 2c 89 44 24 34 48 8d 05 75 99 25 03 48 89 44 24 20 48 8d 05 01 9a 25 03 48 89 44 24 38 8b 05 1e 52 fc 03 89 44 24 40 8b 81 c8 00 00 00 89 44 24 44 c6 44 24 48 01 33 d2 48 8d 4c 24 20 e8 df d3 48 01 90 48 83 c4 58 c3"
+    },
+    {
+      "name": "FaithConversionWindow.CalcPietyMissing",
+      "start_rva": "0x1516a10",
+      "end_exclusive_rva": "0x1516a9d",
+      "kind": "complete_function",
+      "abi": "int32_t(const Window*)",
+      "sha256": "8c4166e4951e23eae768ca1a84f91531f6769b8f422d8735ec711a35d51714c3",
+      "bytes": "40 53 48 83 ec 20 4c 8b 05 4b 0b 75 04 4c 8b c9 4d 85 c0 74 2c 8b 05 d5 51 fc 03 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 49 8b 48 20 48 03 d2 48 8b 54 d1 08 48 85 d2 74 05 39 42 18 74 07 48 8b 15 18 0b 75 04 48 8b 9a b0 01 00 00 48 85 db 74 07 48 8b 9b 10 01 00 00 49 8b c9 e8 3d ff ff ff 44 8b c0 48 b8 09 e1 d1 c6 11 6b f1 29 48 f7 eb 48 c1 fa 0e 48 8b ca 48 c1 e9 3f 48 03 d1 44 2b c2 41 8b c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "FaithConversionWindow.GetPietyCostDesc",
+      "start_rva": "0x1516aa0",
+      "end_exclusive_rva": "0x1516b1e",
+      "kind": "complete_function",
+      "abi": "CString*(const Window*,CString* out)",
+      "sha256": "76dae1fded9598973f88612d7a6b0846f16efb50d2c3068967a45a2c07f0609c",
+      "bytes": "48 89 54 24 10 53 48 83 ec 60 48 8b da 33 c0 89 44 24 20 48 89 02 48 89 42 10 48 c7 42 18 0f 00 00 00 88 02 c7 44 24 20 01 00 00 00 88 44 24 30 48 89 44 24 34 89 44 24 3c 48 8d 05 60 98 25 03 48 89 44 24 28 48 8d 05 ec 98 25 03 48 89 44 24 40 8b 05 09 51 fc 03 89 44 24 48 8b 81 c8 00 00 00 89 44 24 4c c6 44 24 50 01 48 8d 4c 24 28 e8 cc d2 48 01 90 48 8b c3 48 83 c4 60 5b c3"
+    },
+    {
+      "name": "CConvertFaithAndRiteCommand.final_piety_cost",
+      "start_rva": "0x29a3de0",
+      "end_exclusive_rva": "0x29a4247",
+      "kind": "complete_function",
+      "abi": "int32_t(const Command*,tooltip_or_null)",
+      "sha256": "6fba7f29b7f7fb27d8d75ac47266a6f554f483198669cc540bed5a7cb5de04fa",
+      "bytes": "48 89 5c 24 10 55 56 57 41 56 41 57 48 8d ac 24 60 fe ff ff 48 81 ec a0 02 00 00 48 8b f2 4c 8b c1 45 33 ff 44 89 bd d0 01 00 00 44 38 79 28 75 07 33 c0 e9 18 04 00 00 48 8b 15 49 37 2c 03 48 85 d2 74 2a 44 8b 49 20 41 8b c1 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 7c c8 08 48 85 ff 74 06 44 39 4f 18 74 07 48 8b 3d 1b 37 2c 03 48 8b 15 9c a4 37 03 48 85 d2 74 2a 45 8b 48 24 41 8b c1 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 4c 8b 54 c8 08 4d 85 d2 74 06 45 39 4a 08 74 07 4c 8b 15 de 37 2c 03 41 8b 82 b8 04 00 00 4c 8b 05 60 a4 37 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 5c d1 08 48 85 db 74 05 39 43 08 74 07 48 8b 1d 0e a4 37 03 4d 8d 82 50 07 00 00 4c 89 7c 24 20 4c 8b ce 49 8b d2 48 8d 8d e0 01 00 00 e8 10 03 2c 00 48 8b cf e8 e8 fb f1 ff 41 b8 21 02 00 00 48 c7 44 24 20 a0 86 01 00 4c 8b ce 48 8b d0 48 8d 8d e8 01 00 00 e8 67 97 2a 00 4c 8b 00 4c 01 85 e0 01 00 00 4c 8b ce 4c 8b c7 48 8b d3 48 8d 8d e8 01 00 00 e8 e8 fa ff ff 4c 8b 30 49 8d 9e a0 86 01 00 48 8b cf e8 96 fb f1 ff 41 b8 22 02 00 00 48 c7 44 24 20 a0 86 01 00 4c 8b ce 48 8b d0 48 8d 8d e8 01 00 00 e8 15 97 2a 00 4c 8b 10 49 8d 8a a0 86 01 00 41 bb 33 f3 04 b5 4a 8d 04 1b 48 bf 66 e6 09 6a 01 00 00 00 48 3b c7 77 30 4a 8d 04 19 48 3b c7 77 27 48 0f af cb 49 b9 09 e1 d1 c6 11 6b f1 29 49 8b c1 48 f7 e9 4c 8b c2 49 c1 f8 0e 49 8b c0 48 c1 e8 3f 4c 03 c0 eb 69 4d 8b c2 48 3b cb 4d 0f 4c c6 49 81 c0 a0 86 01 00 48 3b d9 4d 0f 4c d6 49 81 c2 a0 86 01 00 49 b9 09 e1 d1 c6 11 6b f1 29 49 8b c1 49 f7 e8 48 c1 fa 0e 48 8b c2 48 c1 e8 3f 48 03 d0 48 69 c2 a0 86 01 00 4c 2b c0 4d 0f af c2 4c 0f af d2 49 8b c1 49 f7 e8 4c 8b c2 49 c1 f8 0e 49 8b c0 48 c1 e8 3f 4c 03 c0 4d 03 c2 48 8b 85 e0 01 00 00 4a 8d 0c 18 48 3b cf 77 23 4b 8d 0c 18 48 3b cf 77 1a 4c 0f af c0 49 8b c1 49 f7 e8 48 c1 fa 0e 48 8b c2 48 c1 e8 3f 48 03 d0 eb 4b 49 8b c8 4c 3b c0 48 0f 4c c8 4c 0f 4f c0 49 8b c1 48 f7 e9 48 c1 fa 0e 48 8b c2 48 c1 e8 3f 48 03 d0 48 69 c2 a0 86 01 00 48 2b c8 49 0f af c8 4c 0f af c2 49 8b c1 48 f7 e9 48 c1 fa 0e 48 8b ca 48 c1 e9 3f 48 03 d1 49 03 d0 49 8b c1 48 85 d2 48 8d 8a b0 3c ff ff 78 07 48 8d 8a 50 c3 00 00 48 f7 e9 48 c1 fa 0e 48 8b c2 48 c1 e8 3f 48 03 d0 8b 05 da 55 2c 03 3b d0 0f 8d 54 01 00 00 48 85 f6 0f 84 4d 01 00 00 48 8d 05 3e 8f ae 01 48 89 44 24 30 c7 44 24 38 01 00 00 00 44 88 7c 24 3c 48 8d 54 24 30 48 8b ce e8 77 30 5b 01 48 8d 05 38 ba dc 01 48 89 44 24 40 c7 44 24 48 23 00 00 00 44 88 7c 24 4c 48 8d 1d 77 30 eb fd 48 89 5c 24 20 4c 8d 0d 1b 30 eb fd ba 78 00 00 00 44 8d 42 89 48 8d 4c 24 70 e8 50 fe 87 01 90 48 8d 4d f0 e8 8e 58 ee fd 90 48 8d 05 be cf af 01 48 89 44 24 30 c7 44 24 38 05 00 00 00 c6 44 24 3c 00 0f 10 44 24 30 0f 11 45 98 c7 44 24 70 05 00 00 00 48 63 05 28 55 2c 03 48 89 45 e0 4c 89 7c 24 28 48 8d 45 f0 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 44 24 70 48 8d 54 24 40 48 8d 4c 24 50 e8 90 24 47 01 c7 85 d0 01 00 00 02 00 00 00 48 83 7d f0 00 74 25 48 8d 4d f0 e8 06 59 ee fd 48 8b 4d 00 48 8b 01 41 b8 08 00 00 00 48 8b 55 f0 ff 50 10 4c 89 7d f0 44 89 7d f8 4c 8b cb ba 78 00 00 00 44 8d 42 89 48 8d 4c 24 70 e8 40 fa 87 01 90 48 8d 54 24 50 48 83 7c 24 68 10 48 0f 43 54 24 50 4c 8b 44 24 60 48 8b ce e8 b5 1d ee fd 90 48 8d 4c 24 50 e8 2a 1e eb fd 8b 05 80 54 2c 03 eb 02 8b c2 48 8b 9c 24 d8 02 00 00 48 81 c4 a0 02 00 00 41 5f 41 5e 5f 5e 5d c3"
+    },
+    {
+      "name": "faith_conversion_cost_mult.evaluate",
+      "start_rva": "0x29a3a20",
+      "end_exclusive_rva": "0x29a3dd4",
+      "kind": "complete_function",
+      "abi": "int64_t*(int64_t* out,Faith*,Character*,tooltip_or_null)",
+      "sha256": "522c408600db2f8fa30f6cbc447470f47b16429a2964dedae23213416c3371fd",
+      "bytes": "48 89 5c 24 08 48 89 74 24 10 48 89 7c 24 18 4c 89 64 24 20 55 41 56 41 57 48 8d ac 24 90 f6 ff ff 48 81 ec 70 0a 00 00 4d 8b f1 4d 8b f8 4c 8b e2 48 8b f9 e8 17 3f 06 fe 48 8b 80 f0 0e 00 00 48 8b b0 08 01 00 00 80 7e 7c 00 75 0a 33 db 48 89 1f e9 39 03 00 00 48 8d 4d 40 e8 e0 64 ee fd 90 48 8d 8d 90 05 00 00 e8 d3 25 d9 00 48 8d 8d b8 06 00 00 e8 17 25 d9 00 48 8d 45 40 48 89 85 60 09 00 00 33 db c7 44 24 30 04 00 00 00 41 8b 47 18 48 89 44 24 38 4c 8d 44 24 30 8b 15 4a 84 3a 03 48 8d 4d 58 e8 45 66 d9 00 c7 44 24 30 0d 00 00 00 41 8b 44 24 08 48 89 44 24 38 4c 8d 44 24 30 8b 15 b4 83 3a 03 48 8d 4d 58 e8 1f 66 d9 00 4d 85 f6 0f 84 3d 01 00 00 48 8d 4d 90 e8 8d d5 80 fe 90 c6 45 cb 01 48 8d 8d b0 01 00 00 e8 4c 25 d9 00 48 8d 8d d8 02 00 00 e8 90 24 d9 00 48 8d 45 40 48 89 85 80 05 00 00 48 8b 4e 70 48 8d 45 40 48 89 44 24 40 48 89 5c 24 48 48 8d 45 40 48 89 44 24 50 48 8d 85 b0 01 00 00 48 89 44 24 58 0f b6 05 83 9f 37 03 88 44 24 60 48 83 c1 08 48 8b 01 4c 8d 45 90 48 8d 54 24 40 ff 50 38 48 39 5d e8 74 40 48 8d 05 ab 94 ae 01 48 89 44 24 30 c7 44 24 38 01 00 00 00 88 5c 24 3c 48 8d 54 24 30 49 8b ce e8 e5 35 5b 01 48 8d 55 d8 48 83 7d f0 10 48 0f 43 55 d8 4c 8b 45 e8 49 8b ce e8 1b 24 ee fd 90 48 83 bd d8 02 00 00 00 74 33 48 8d 8d d8 02 00 00 e8 74 37 03 fe 48 8b 8d e8 02 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 95 d8 02 00 00 ff 50 10 48 89 9d d8 02 00 00 89 9d e0 02 00 00 48 8b 95 b0 01 00 00 48 85 d2 74 26 89 9d bc 01 00 00 48 8b 8d c0 01 00 00 48 8b 01 41 b8 08 00 00 00 ff 50 10 48 89 9d b0 01 00 00 89 9d b8 01 00 00 48 8d 4d 10 e8 b2 54 14 fe 48 8d 4d d8 e8 19 24 eb fd 48 8d 46 18 8b 48 10 48 83 78 18 10 72 03 48 8b 00 48 89 44 24 30 89 4c 24 38 c6 44 24 3c 00 e8 c5 5e 5d 01 0f 28 44 24 30 66 0f 7f 44 24 30 48 8d 54 24 30 48 8b c8 e8 7d 61 5d 01 48 89 44 24 40 48 89 5c 24 48 89 5c 24 50 c6 44 24 54 01 c7 44 24 58 ff ff ff ff 89 5c 24 5c 48 8d 45 40 48 89 44 24 68 48 89 5c 24 70 48 8d 45 40 48 89 44 24 78 48 8d 85 90 05 00 00 48 89 45 80 0f b6 05 21 9e 37 03 88 45 88 48 8d 44 24 40 48 89 44 24 20 45 33 c9 4c 8d 44 24 68 48 8b d7 48 8b ce e8 15 06 db 00 90 48 83 bd b8 06 00 00 00 74 33 48 8d 8d b8 06 00 00 e8 4e 36 03 fe 48 8b 8d c8 06 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 95 b8 06 00 00 ff 50 10 48 89 9d b8 06 00 00 89 9d c0 06 00 00 48 8b 95 90 05 00 00 48 85 d2 74 26 89 9d 9c 05 00 00 48 8b 8d a0 05 00 00 48 8b 01 41 b8 08 00 00 00 ff 50 10 48 89 9d 90 05 00 00 89 9d 98 05 00 00 48 8d 8d 58 01 00 00 e8 a9 59 ee fd 48 83 bd 40 01 00 00 00 74 33 48 8d 8d 40 01 00 00 e8 13 5a ee fd 48 8b 8d 50 01 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 95 40 01 00 00 ff 50 10 48 89 9d 40 01 00 00 89 9d 48 01 00 00 48 8b 55 58 48 85 d2 74 13 89 5d 64 48 8b 4d 68 48 8b 01 41 b8 08 00 00 00 ff 50 10 48 8b c7 4c 8d 9c 24 70 0a 00 00 49 8b 5b 20 49 8b 73 28 49 8b 7b 30 4d 8b 63 38 49 8b e3 41 5f 41 5e 5d c3"
+    },
+    {
+      "name": "CalcPietyCost.registration",
+      "start_rva": "0x22ee69",
+      "end_exclusive_rva": "0x22eefd",
+      "kind": "registration_or_semantic_slice",
+      "abi": null,
+      "sha256": "e2163b031d8b5eb7abfedce59761c07fcf8c3f2c314b2b9426fae0e1f9eb6886",
+      "bytes": "f2 0f 10 05 d7 71 33 04 f2 0f 11 45 ef 8b 05 d4 71 33 04 89 45 f7 0f b6 05 ce 71 33 04 88 45 fb 40 88 7d fc 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 5e 70 62 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 38 54 64 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 dc 7d 2e 01 48 8d 4d ef e8 13 8c 2e 01"
+    },
+    {
+      "name": "CalcPietyMissing.registration",
+      "start_rva": "0x22eff3",
+      "end_exclusive_rva": "0x22f075",
+      "kind": "registration_or_semantic_slice",
+      "abi": null,
+      "sha256": "6fb358c27b9283ed131db9ba62caa40a062385146f2e85f7bcec9b3815d07037",
+      "bytes": "0f 10 05 5e 70 33 04 0f 11 00 40 88 78 10 48 89 45 ef 48 8d 45 0f 48 89 45 67 48 8d 55 b7 48 8d 4d 0f e8 e6 6e 62 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 c0 52 64 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 a4 7c 2e 01 48 8d 4d ef e8 9b 8a 2e 01"
+    },
+    {
+      "name": "GetPietyCostDesc.registration",
+      "start_rva": "0x22f163",
+      "end_exclusive_rva": "0x22f1e5",
+      "kind": "registration_or_semantic_slice",
+      "abi": null,
+      "sha256": "00e835ba99cfcde7f180299aa3e9d92eb343bc7120cd69766c11818b5818afe8",
+      "bytes": "0f 10 05 06 6f 33 04 0f 11 00 40 88 78 10 48 89 45 ef 48 8d 45 0f 48 89 45 67 48 8d 55 b7 48 8d 4d 0f e8 76 6d 62 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 50 51 64 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 74 7b 2e 01 48 8d 4d ef e8 fb 8d 2e 01"
+    },
+    {
+      "name": "script_value.faith_conversion_cost_mult.registration",
+      "start_rva": "0x1d62022",
+      "end_exclusive_rva": "0x1d62033",
+      "kind": "registration_or_semantic_slice",
+      "abi": null,
+      "sha256": "12e7ff44539def52c1b5ca4c46239326035db917ac7f09e51946eb47edcbaf6c",
+      "bytes": "ba 21 00 00 00 48 8d 0d b2 75 90 02 e8 7d 18 9f 01"
+    },
+    {
+      "name": "validator.final_piety_requirement",
+      "start_rva": "0x29a36de",
+      "end_exclusive_rva": "0x29a379c",
+      "kind": "registration_or_semantic_slice",
+      "abi": null,
+      "sha256": "19c6a8a5c89eebf555635ebac9a24e9197f364166bba1e6b3a296bbcf7097abb",
+      "bytes": "41 80 7f 28 00 0f 84 c2 01 00 00 33 d2 49 8b cf e8 ed 06 00 00 48 63 d8 48 8d 05 7b c5 dc 01 48 89 45 b7 c7 45 bf 15 00 00 00 c6 45 c3 00 e8 0f 64 5d 01 0f 28 45 b7 66 0f 7f 45 b7 48 8d 55 b7 48 8b c8 e8 ca 66 5d 01 48 89 45 b7 4c 89 65 bf 44 89 65 c7 c6 45 cb 01 c7 45 cf ff ff ff ff 44 89 65 d3 48 69 cb a0 86 01 00 0f 10 45 b7 0f 10 4d c7 48 89 7d d7 48 89 4d df 48 8d 05 01 cf dc 01 48 89 45 e7 c7 45 f7 cb 03 00 00 48 8d 05 c7 cc dc 01 48 89 45 ef 0f 11 45 ff 0f 11 4d 0f 0f 10 45 d7 0f 11 45 1f 4d 85 f6 75 1a 48 8b 05 df ce dc 01 45 33 c0 33 d2 48 8d 4d e7 ff d0"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "reflection_cost_callback",
+      "rva": "0x22eeed",
+      "bytes": "48 8d 15 dc 7d 2e 01",
+      "instruction": "lea rdx, [rip + 0x12e7ddc]",
+      "rip_targets": [
+        "0x1516cd0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "reflection_cost_core",
+      "rva": "0x1516ce2",
+      "bytes": "e8 c9 fc ff ff",
+      "instruction": "call 0x15169b0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x15169b0"
+      ]
+    },
+    {
+      "name": "window_primary_vtable",
+      "rva": "0x15169c4",
+      "bytes": "48 8d 05 75 99 25 03",
+      "instruction": "lea rax, [rip + 0x3259975]",
+      "rip_targets": [
+        "0x4770340"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "window_secondary_vtable",
+      "rva": "0x15169d0",
+      "bytes": "48 8d 05 01 9a 25 03",
+      "instruction": "lea rax, [rip + 0x3259a01]",
+      "rip_targets": [
+        "0x47703d8"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "window_played_actor_full_id",
+      "rva": "0x15169dc",
+      "bytes": "8b 05 1e 52 fc 03",
+      "instruction": "mov eax, dword ptr [rip + 0x3fc521e]",
+      "rip_targets": [
+        "0x54dbc00"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "window_target_rite_full_id",
+      "rva": "0x15169e6",
+      "bytes": "8b 81 c8 00 00 00",
+      "instruction": "mov eax, dword ptr [rcx + 0xc8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "window_pay_flag",
+      "rva": "0x15169f0",
+      "bytes": "c6 44 24 48 01",
+      "instruction": "mov byte ptr [rsp + 0x48], 1",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "window_final_cost_call",
+      "rva": "0x15169fc",
+      "bytes": "e8 df d3 48 01",
+      "instruction": "call 0x29a3de0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x29a3de0"
+      ]
+    },
+    {
+      "name": "cost_charge_flag",
+      "rva": "0x29a3e0b",
+      "bytes": "44 38 79 28",
+      "instruction": "cmp byte ptr [rcx + 0x28], r15b",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "cost_actor_full_ref",
+      "rva": "0x29a3e24",
+      "bytes": "44 8b 49 20",
+      "instruction": "mov r9d, dword ptr [rcx + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "cost_rite_database",
+      "rva": "0x29a3e55",
+      "bytes": "48 8b 15 9c a4 37 03",
+      "instruction": "mov rdx, qword ptr [rip + 0x337a49c]",
+      "rip_targets": [
+        "0x5d1e2f8"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "cost_target_rite_full_ref",
+      "rva": "0x29a3e61",
+      "bytes": "45 8b 48 24",
+      "instruction": "mov r9d, dword ptr [r8 + 0x24]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "cost_rite_faith_full_ref",
+      "rva": "0x29a3e92",
+      "bytes": "41 8b 82 b8 04 00 00",
+      "instruction": "mov eax, dword ptr [r10 + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "cost_target_rite_compiled_value",
+      "rva": "0x29a3ed2",
+      "bytes": "4d 8d 82 50 07 00 00",
+      "instruction": "lea r8, [r10 + 0x750]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "cost_compiled_value_evaluation",
+      "rva": "0x29a3eeb",
+      "bytes": "e8 10 03 2c 00",
+      "instruction": "call 0x2c64200",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2c64200"
+      ]
+    },
+    {
+      "name": "cost_actor_additive_modifier",
+      "rva": "0x29a3ef8",
+      "bytes": "41 b8 21 02 00 00",
+      "instruction": "mov r8d, 0x221",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "cost_actor_modifier_evaluation",
+      "rva": "0x29a3f14",
+      "bytes": "e8 67 97 2a 00",
+      "instruction": "call 0x2c4d680",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2c4d680"
+      ]
+    },
+    {
+      "name": "cost_dynamic_faith_actor_multiplier",
+      "rva": "0x29a3f33",
+      "bytes": "e8 e8 fa ff ff",
+      "instruction": "call 0x29a3a20",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x29a3a20"
+      ]
+    },
+    {
+      "name": "cost_actor_multiplicative_modifier",
+      "rva": "0x29a3f4a",
+      "bytes": "41 b8 22 02 00 00",
+      "instruction": "mov r8d, 0x222",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "fixedpoint_one",
+      "rva": "0x29a3f3b",
+      "bytes": "49 8d 9e a0 86 01 00",
+      "instruction": "lea rbx, [r14 + 0x186a0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "fixedpoint_scale_division",
+      "rva": "0x29a3f9b",
+      "bytes": "49 b9 09 e1 d1 c6 11 6b f1 29",
+      "instruction": "movabs r9, 0x29f16b11c6d1e109",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "native_round_negative",
+      "rva": "0x29a40ab",
+      "bytes": "48 8d 8a b0 3c ff ff",
+      "instruction": "lea rcx, [rdx - 0xc350]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "native_round_positive",
+      "rva": "0x29a40b4",
+      "bytes": "48 8d 8a 50 c3 00 00",
+      "instruction": "lea rcx, [rdx + 0xc350]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "native_minimum_define",
+      "rva": "0x29a40cc",
+      "bytes": "8b 05 da 55 2c 03",
+      "instruction": "mov eax, dword ptr [rip + 0x32c55da]",
+      "rip_targets": [
+        "0x5c696ac"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "script_registry_root",
+      "rva": "0x29a3a59",
+      "bytes": "48 8b 80 f0 0e 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0xef0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "script_registry_slot_0x21",
+      "rva": "0x29a3a60",
+      "bytes": "48 8b b0 08 01 00 00",
+      "instruction": "mov rsi, qword ptr [rax + 0x108]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "script_actor_kind",
+      "rva": "0x29a3aa6",
+      "bytes": "c7 44 24 30 04 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x30], 4",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "script_actor_full_id",
+      "rva": "0x29a3aae",
+      "bytes": "41 8b 47 18",
+      "instruction": "mov eax, dword ptr [r15 + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "script_target_faith_kind",
+      "rva": "0x29a3acb",
+      "bytes": "c7 44 24 30 0d 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x30], 0xd",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "script_target_faith_full_id",
+      "rva": "0x29a3ad3",
+      "bytes": "41 8b 44 24 08",
+      "instruction": "mov eax, dword ptr [r12 + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "script_native_evaluation",
+      "rva": "0x29a3cd6",
+      "bytes": "e8 15 06 db 00",
+      "instruction": "call 0x37542f0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x37542f0"
+      ]
+    },
+    {
+      "name": "script_value_registered_ordinal",
+      "rva": "0x1d62022",
+      "bytes": "ba 21 00 00 00",
+      "instruction": "mov edx, 0x21",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "script_value_registered_name",
+      "rva": "0x1d62027",
+      "bytes": "48 8d 0d b2 75 90 02",
+      "instruction": "lea rcx, [rip + 0x29075b2]",
+      "rip_targets": [
+        "0x46695e0"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "wallet_character_resources",
+      "rva": "0x1516a58",
+      "bytes": "48 8b 9a b0 01 00 00",
+      "instruction": "mov rbx, qword ptr [rdx + 0x1b0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "wallet_piety_fixedpoint",
+      "rva": "0x1516a64",
+      "bytes": "48 8b 9b 10 01 00 00",
+      "instruction": "mov rbx, qword ptr [rbx + 0x110]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "wallet_native_whole_point_division",
+      "rva": "0x1516a76",
+      "bytes": "48 b8 09 e1 d1 c6 11 6b f1 29",
+      "instruction": "movabs rax, 0x29f16b11c6d1e109",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "validator_cost_call",
+      "rva": "0x29a36ee",
+      "bytes": "e8 ed 06 00 00",
+      "instruction": "call 0x29a3de0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x29a3de0"
+      ]
+    },
+    {
+      "name": "validator_piety_raw_requirement",
+      "rva": "0x29a3741",
+      "bytes": "48 69 cb a0 86 01 00",
+      "instruction": "imul rcx, rbx, 0x186a0",
+      "rip_targets": [],
+      "direct_targets": []
+    }
+  ],
+  "vtables": [
+    {
+      "rva": "0x4770340",
+      "locator_rva": "0x4e263f0",
+      "this_offset": 0,
+      "type_descriptor_rva": "0x5a16768",
+      "locator_bytes": "01 00 00 00 00 00 00 00 00 00 00 00 68 67 a1 05 90 61 e2 04 f0 63 e2 04"
+    },
+    {
+      "rva": "0x47703d8",
+      "locator_rva": "0x4e263c8",
+      "this_offset": 24,
+      "type_descriptor_rva": "0x5a16768",
+      "locator_bytes": "01 00 00 00 18 00 00 00 00 00 00 00 68 67 a1 05 90 61 e2 04 c8 63 e2 04"
+    }
+  ],
+  "command_rtti": {
+    "type_descriptor_rva": "0x5a16768",
+    "name": ".?AVCConvertFaithAndRiteCommand@@"
+  },
+  "stock": [
+    {
+      "path": "gui/window_faith_conversion.gui",
+      "sha256": "3e52e3c75bd0f177714a52fafd76a7bfcd67925e37275994118842d2fc2eb78b",
+      "excerpts": [
+        {
+          "first": 64,
+          "last": 88,
+          "text": "\n\t\t\tvbox = {\n\t\t\t\tname = \"cost\"\n\t\t\t\tdatacontext = \"[FaithConversionWindow.GetFaith]\"\n\n\t\t\t\ttooltip = \"FAITH_CONVERSION_COST_TOOLTIP\"\n\n\t\t\t\ttext_single = {\n\t\t\t\t\tname = \"label\"\n\t\t\t\t\tlayoutpolicy_horizontal = expanding\n\t\t\t\t\ttext = \"FAITH_CONVERSION_TOTAL_COST\"\n\t\t\t\t\tdefault_format = \"#high\"\n\t\t\t\t\tusing = Font_Size_Medium\n\t\t\t\t\talign = right\n\t\t\t\t}\n\n\t\t\t\ttext_single = {\n\t\t\t\t\tname = \"missing\"\n\t\t\t\t\tlayoutpolicy_horizontal = expanding\n\t\t\t\t\tvisible = \"[GreaterThan_int32( FaithConversionWindow.CalcPietyMissing, '(int32)0' )]\"\n\t\t\t\t\ttext = \"FAITH_CONVERSION_COST_MISSING\"\n\t\t\t\t\tusing = Font_Size_Medium\n\t\t\t\t\talign = right\n\t\t\t\t}\n\t\t\t}"
+        }
+      ]
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "excerpts": [
+        {
+          "first": 876,
+          "last": 880,
+          "text": "\tPIETY_LOSS_PER_MISSING_SPOUSE = 0.5 # If you have fewer spouses than expected in a polygamous faith, you'll lose this much piety for each spouse you fall short.\n\tDESIRED_SPOUSES_PER_TIER = { 0 1 1 2 3 4 4 }  # Number of spouses you are expected to have per tier, starging with unlanded, then baron and ending with hegemon\n\tFAITH_CONVERSION_PIETY_MINIMUM = 250 # The minimum amount of piety converting faith costs\n\tPART_OF_GHW_POT_DESIGNATED_FOR_KINGDOM_RECIPIENT = 10 # How many percent of the pot will be reserved for the person receiving the kingdom?\n\tGHW_HOSTILITY_MIN_LEVEL = 2 # Any independent ruler within the target kingdom at least this hostile to the caller faith will be a forced defender"
+        }
+      ]
+    },
+    {
+      "path": "common/script_values/02_religion_values.txt",
+      "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+      "excerpts": [
+        {
+          "first": 3355,
+          "last": 3439,
+          "text": "faith_conversion_fervor_mult = {\n\tvalue = define:NFaith|MAX_FERVOR\n\tsubtract = fervor\n\tmultiply = define:NRite|RITE_CREATION_FERVOR_DISCOUNT_PER_MISSING_FERVOR\n\tmax = define:NRite|RITE_CREATION_FERVOR_DISCOUNT_MAX\n\tdivide = define:NFaith|MAX_FERVOR\n}\n\n# Modify (multiply) the doctrine cost when creating a faith.\n# The returned value is interpreted as a multiplicative modifier (e.g. 0.5 means +50% cost).\n# scope:character = the creation character\n# scope:old_rite = the rite the character had before creating\n# scope:old_faith = the faith the character is converting from\nrite_creation_cost_mult = {\n\tsubtract = {\n\t\tvalue = scope:old_faith.faith_conversion_fervor_mult\n\t\tmultiply = 0.5\n\t\tdesc = \"faith_creation_cost_fervor_impact\"\n\t\tformat = \"BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD\"\n\t}\n}\n\n# Modify (multiply) the doctrine cost when converting to a faith.\n# The returned value is interpreted as a multiplicative modifier (e.g. 0.5 means +50% cost).\n# scope:character = the converting character\n# scope:new_faith = the faith the character is converting to\n# There should be no subtract equal or higher than 1\nfaith_conversion_cost_mult = {\n\t\n\t#Adding 1 to apply properly the following multipliers\n\tadd = {\n\t\tvalue = 1\n\t}\n\n\t# Try to always be cheaper than creating a new faith\n\tif = {\n\t\tlimit = {\n\t\t\tscope:character.learning > 0\n\t\t}\n\t\tmultiply = {\n\t\t\tvalue = 1\n\t\t\tsubtract = {\n\t\t\t\tdesc = \"learning_modifier\"\n\t\t\t\tformat = \"BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD\"\n\t\t\t\tvalue = scope:character.learning\n\t\t\t\tdivide = 100\n\t\t\t}\n\t\t}\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\talways = yes\n\t\t}\n\t\tmultiply = {\n\t\t\tvalue = 1\n\t\t\tadd = {\n\t\t\t\tvalue = scope:new_faith.faith_conversion_fervor_mult\n\t\t\t\tsubtract = scope:character.faith.faith_conversion_fervor_mult\n\t\t\t\tdesc = \"faith_conversion_cost_fervor_difference\"\n\t\t\t\tformat = \"BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD\"\n\t\t\t}\n\t\t}\t\n\t}\n\t# Try to always be cheaper than creating a new faith\n\tif = {\n\t\tlimit = {\n\t\t\tscope:new_faith.religion = scope:character.faith.religion\n\t\t}\n\t\tmultiply = {\n\t\t\tvalue = 1\n\t\t\tsubtract = {\n\t\t\t\tdesc = \"faith_conversion_cost_existing_faith\"\n\t\t\t\tformat = \"BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD\"\n\t\t\t\tvalue = 0.5\n\t\t\t}\n\t\t}\n\t}\n\t# Try to always be cheaper than creating a new faith\n\telse = {\n\t\tmultiply = {\n\t\t\tvalue = 1\n\t\t\tsubtract = {\n\t\t\t\tdesc = \"faith_conversion_cost_existing_faith\"\n\t\t\t\tformat = \"BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD\"\n\t\t\t\tvalue = 0.35"
+        }
+      ]
+    }
+  ],
+  "cost_semantics": {
+    "return_type": "int32 whole piety points",
+    "intermediate_raw_scale": 100000,
+    "paid_flag_offset": "0x28",
+    "target_identity": "full RiteID; Faith resolved from Rite+0x4b8",
+    "script_value_ordinal": "0x21",
+    "script_value_key": "faith_conversion_cost_mult",
+    "modifier_add_ordinal": "0x221",
+    "modifier_mult_ordinal": "0x222",
+    "native_minimum_runtime_define_rva": "0x5c696ac",
+    "stock_minimum_piety_points": 250
+  },
+  "unresolved": [
+    "native modifier-name mapping for numeric ordinals 0x221/0x222",
+    "live positive/negative paused cost snapshots",
+    "payment/outcome semantics owned by the outcome work package"
+  ]
+}
