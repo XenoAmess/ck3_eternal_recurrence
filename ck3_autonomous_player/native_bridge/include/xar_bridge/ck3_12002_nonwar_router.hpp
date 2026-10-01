@@ -1,6 +1,39 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_rite_governance12002_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_rite_governance12002_clergy_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12002_religion_conversion_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_doctrine12002_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_rite_governance12002_members_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12002_religion_conversion_choices_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12002_religion_conversion_inputs_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+#include "xar_bridge/ck3_12002_sway_completion_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_doctrine12002_hostility_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_doctrine12002_choices_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+#include "xar_bridge/religion_doctrine12002_tenet_rows_mailbox.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_religion_mailbox.hpp"
 #endif

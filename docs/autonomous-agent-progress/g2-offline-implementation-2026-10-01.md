@@ -478,3 +478,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 Sway 当前原生 CanContinue 返回值已补齐 mode1/linked1 ABI 与 serializer，包括可观测 false；false 不推断历史结束或原因。本包仅 static-ready：复用 Debug/Release getter 各3项 GREEN 与 named queue 各1项 GREEN；后者覆盖安装 named permit→runtime→两次 observed paused pump→TrySubmit→production executor/provider→Wait/Reclaim→完整 command wire。旧 current status/phase/cancel ABI 矩阵和历史 status fixture 已复用，named-queue-001 harness RED 原样保留，本次不执行测试。fixture 使用 synthetic pump profile，不能声称 live EXE anchor；中央接线与 exact-build paused/cold 实机资格仍待 root 完成，status1 不识别结束原因。owner 6文件及 parent-owned serializer 共7项源 SHA 一次核对通过，按已提交 L2 b995fad1f25838c3b31e82086da9c116b2d77b80 相同字节排除 0 项，准备提交 7 项。Owner final：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-provider\can-continue-delivery-result.json（SHA-256 bc94ce72794e268e12ee1fab79d0d1ec7a42e6f5131b3ef8ca6d4ea276890790）；完整 pins、测试与边界见 Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ready-packages-1730\sway-can-continue\qualification.json。无 CK3/进程/pipe/UI/Steam 操作，没有新增 live、游戏日、G2 或 lifetime 计分；Git 和共享报告由 root 独占。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:48:26 Integrate the next eleven native readonly queries
+
+18中央源冻结R3 49ON4OFF，仅actualready33CPP。11真实readonly callbacks/namedpermissions/typedparser；default158/selected388路由及43mappings/4default44candidate registration GREEN，双DLL/injector构建GREEN，10新增namedfixtures由owner单次验收。实际DLL最终manifest等待所有编译input提交，未触CK；R4 Reform/CE1/reasons/execution另增量。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-integration-next\central-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

@@ -11392,16 +11392,85 @@ void RunConnectedSession(
           if (status_only && previous_snapshot.has_value())
             current = *previous_snapshot;
           bool revision_parsed = status_only;
+          bool current_revision_allowed = false;
           if (!status_only) {
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
-            if (xar::ck3_12002::IsPlayerReligionPrivateStep12002(step))
-              revision_parsed = xar::ck3_12002::ParsePlayerReligionRevision12002(
-                  incoming.payload, expected_revision);
-            else
+            if (xar::ck3_12002::IsPlayerReligionPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerRiteGovernancePrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerRiteGovernanceRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerClergyAppointmentPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              xar::ck3_12002::PlayerClergyAppointmentRequest12002 request{};
+              revision_parsed = xar::ck3_12002::ParsePlayerClergyAppointmentRequest12002(incoming.payload, request);
+              expected_revision = request.expected_revision;
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerRiteMembersPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerRiteMembersRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionDoctrinesPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionDoctrinesRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionHostilityPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              std::uint32_t target_rite_id = 0;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionHostilityRequest12002(incoming.payload, target_rite_id, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionDoctrineKnowledgePrivateStep12002(step)) {
+              current_revision_allowed = true;
+              std::optional<std::string> doctrine_key;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionDoctrineKnowledgeRequest12002(incoming.payload, expected_revision, doctrine_key);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionTenetsPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionTenetsRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionConversionTermsPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              std::uint32_t target_rite_id = 0;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionConversionTermsRequest12002(incoming.payload, target_rite_id, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionConversionChoicesPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionConversionChoicesRequest12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerReligionConversionInputsPrivateStep12002(step)) {
+              current_revision_allowed = true;
+              std::uint32_t target_rite_id = 0;
+              revision_parsed = xar::ck3_12002::ParsePlayerReligionConversionInputsRequest12002(incoming.payload, target_rite_id, expected_revision);
+            } else
 #endif
               revision_parsed = xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
                   incoming.payload, expected_revision);
           }
+          if (current_revision_allowed && revision_parsed && expected_revision == 0)
+            expected_revision = state_revision;
           if (!status_only && (!revision_parsed ||
               expected_revision == 0 || expected_revision != state_revision ||
               !previous_snapshot.has_value() ||

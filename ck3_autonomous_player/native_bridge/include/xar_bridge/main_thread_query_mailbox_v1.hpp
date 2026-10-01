@@ -366,6 +366,19 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_sway_completion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_rite_governance12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_clergy12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_rite_members12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_doctrines12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_hostility12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_doctrine_knowledge12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_tenets12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion_choices12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion_inputs12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_epidemic_treatment12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_epidemic_recovery12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   // Optional read-only observer runs on every valid TLS main-thread pump,
   // including unpaused pumps. Context remains alive until uninstall succeeds.
@@ -541,6 +554,19 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_prewar12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_government12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_sway_completion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_rite_governance12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_clergy12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_rite_members12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_doctrines12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_hostility12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_doctrine_knowledge12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_tenets12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion_choices12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_religion_conversion_inputs12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_epidemic_treatment12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_epidemic_recovery12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
   void *snapshot_observer_context = nullptr;

@@ -102,6 +102,8 @@ void ExerciseMailbox(MainThreadQueryInstallEnvironmentV1 environment,
   environment.system_page_size_override = 4096;
   MainThreadQueryMailboxV1 mailbox{};
   assert(InstallMainThreadQueryMailboxV1(mailbox, environment));
+  assert(mailbox.permitted_executor_epidemic_treatment12002 == nullptr);
+  assert(mailbox.permitted_executor_epidemic_recovery12002 == nullptr);
   assert(iat == reinterpret_cast<void *>(&XarMainThreadPeekMessageWHookV1));
   const auto return_rva = environment.build_profile->pump_exact_return_rva;
   for (std::size_t i = 0; i < 3; ++i) {
@@ -172,6 +174,17 @@ int main() {
   callbacks.religion = &Executor<1200237>;
   callbacks.prisoner_collection = &Executor<53>;
   callbacks.prisoner_ransom = &Executor<54>;
+  callbacks.rite_governance = &Executor<1200238>;
+  callbacks.clergy = &Executor<1200239>;
+  callbacks.religion_conversion = &Executor<1200240>;
+  callbacks.religion_doctrines = &Executor<1200241>;
+  callbacks.rite_members = &Executor<1200242>;
+  callbacks.religion_conversion_choices = &Executor<1200243>;
+  callbacks.religion_conversion_inputs = &Executor<1200244>;
+  callbacks.sway_completion = &Executor<1200245>;
+  callbacks.religion_hostility = &Executor<1200246>;
+  callbacks.religion_doctrine_knowledge = &Executor<1200247>;
+  callbacks.religion_tenets = &Executor<1200248>;
   RegisterNonwarMailboxExecutorsV1(environment, callbacks);
   assert(environment.build_profile == profile);
   assert(environment.permitted_executor == &Executor<1>);
@@ -340,9 +353,67 @@ int main() {
 #else
   Check(environment.permitted_executor_quattuorquinquagintary, callbacks.prisoner_ransom, false, 54, selected);
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_rite_governance12002, callbacks.rite_governance, true, 1200238, selected);
+#else
+  Check(environment.permitted_executor_rite_governance12002, callbacks.rite_governance, false, 1200238, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_clergy12002, callbacks.clergy, true, 1200239, selected);
+#else
+  Check(environment.permitted_executor_clergy12002, callbacks.clergy, false, 1200239, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_conversion12002, callbacks.religion_conversion, true, 1200240, selected);
+#else
+  Check(environment.permitted_executor_religion_conversion12002, callbacks.religion_conversion, false, 1200240, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_doctrines12002, callbacks.religion_doctrines, true, 1200241, selected);
+#else
+  Check(environment.permitted_executor_religion_doctrines12002, callbacks.religion_doctrines, false, 1200241, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_rite_members12002, callbacks.rite_members, true, 1200242, selected);
+#else
+  Check(environment.permitted_executor_rite_members12002, callbacks.rite_members, false, 1200242, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_conversion_choices12002, callbacks.religion_conversion_choices, true, 1200243, selected);
+#else
+  Check(environment.permitted_executor_religion_conversion_choices12002, callbacks.religion_conversion_choices, false, 1200243, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_conversion_inputs12002, callbacks.religion_conversion_inputs, true, 1200244, selected);
+#else
+  Check(environment.permitted_executor_religion_conversion_inputs12002, callbacks.religion_conversion_inputs, false, 1200244, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  Check(environment.permitted_executor_sway_completion12002, callbacks.sway_completion, true, 1200245, selected);
+#else
+  Check(environment.permitted_executor_sway_completion12002, callbacks.sway_completion, false, 1200245, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_hostility12002, callbacks.religion_hostility, true, 1200246, selected);
+#else
+  Check(environment.permitted_executor_religion_hostility12002, callbacks.religion_hostility, false, 1200246, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_doctrine_knowledge12002, callbacks.religion_doctrine_knowledge, true, 1200247, selected);
+#else
+  Check(environment.permitted_executor_religion_doctrine_knowledge12002, callbacks.religion_doctrine_knowledge, false, 1200247, selected);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  Check(environment.permitted_executor_religion_tenets12002, callbacks.religion_tenets, true, 1200248, selected);
+#else
+  Check(environment.permitted_executor_religion_tenets12002, callbacks.religion_tenets, false, 1200248, selected);
+#endif
+  // CE1 providers are reserved for the next increment; no registration credit.
+  assert(environment.permitted_executor_epidemic_treatment12002 == nullptr);
+  assert(environment.permitted_executor_epidemic_recovery12002 == nullptr);
   ExerciseMailbox(environment, selected);
   const auto wrong = BindThreadRuntimeImage(0x100000, "unsupported", typed);
   assert(wrong.build_profile == nullptr);
-  std::cout << "PASS: all32 private slot mappings, " << selected.size()
+  std::cout << "PASS: all43 private slot mappings, " << selected.size()
             << " installed callbacks submit/drain, retained14/35/semantic identities, exact12002 profile; no CK3 access\n";
 }

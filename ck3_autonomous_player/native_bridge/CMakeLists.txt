@@ -719,13 +719,29 @@ option(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1
   "Compile the exact-build paused crown-law action candidate" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
   "Compile the exact-build paused player religion observation candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1
+  "Compile the private READY player_rite_governance_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1
+  "Compile the private READY player_clergy_appointment_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1
+  "Compile the private READY player_rite_members_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1
+  "Compile the private READY player_religion_doctrines_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1
+  "Compile the private READY religion_conversion_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1
+  "Compile the private READY player_religion_hostility_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1
+  "Compile the private READY player_religion_doctrine_knowledge_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1
+  "Compile the private READY player_religion_tenets_private_query_v1 candidate" OFF)
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
-# These parallel work packages have no registered caller in this bundle.
-# Their later increments append only the delivered source set explicitly.
+# READY explicit source lists below own these namespaces.
+# Pending Sway execution and all epidemic packages stay excluded.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
-  "/ck3_12002_(epidemic_recovery|epidemic_treatment_presence|sway_completion(_execution|_handler|_mailbox|_serializer)?)\\.cpp$")
+  "/ck3_12002_(religion.*|sway_completion.*|epidemic.*)\\.cpp$")
 if(NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1)
   # The owner stopped war work. Retain the independent actual treasury source
   # used by ordinary snapshots; do not compile or register the cash package.
@@ -737,14 +753,85 @@ if(NOT XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1)
 endif()
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
   "/ck3_12002_family_obligations_alliance\\.cpp$")
-# Religion is a separate opt-in increment after the frozen 40-option bundle.
-list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
-  "/ck3_12002_religion.*\\.cpp$")
+# The delivered queries share the current-player religion leaf.
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_context.cpp")
+endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_mailbox.cpp")
 endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_state_rite.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_head.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_organization.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_context.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_organization_members.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_members_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_intrinsic.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_rite.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_query.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_rite.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_cost.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_terms.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_faith.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_choices_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_gates.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_ai_inputs.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_inputs_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_state_rite.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_hostility.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_hostility_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_choices.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_choices_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_handler.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_completion_serializer.cpp")
+endif()
+list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   research/ck3_12002_construction_submit_binding.cpp
@@ -799,6 +886,14 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1
     XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
@@ -1791,6 +1886,7 @@ if(BUILD_TESTING)
         NOT XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1) OR
        (fixture_name MATCHES "^ck3_12002_war_cash" AND
         NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1) OR
+       fixture_name MATCHES "^ck3_12002_(sway_completion|epidemic)" OR
        fixture_name STREQUAL "ck3_12002_family_obligations_alliance_test" OR
        (fixture_name MATCHES "^ck3_12002_religion" AND
         (NOT XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
@@ -1849,7 +1945,15 @@ if(BUILD_TESTING)
         XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=1
         XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1=1
-        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1)
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1)
     endif()
     if(MSVC)
       target_compile_options(${router_target} PRIVATE /W4 /WX /permissive- /EHsc)
@@ -1879,6 +1983,267 @@ if(BUILD_TESTING)
     add_test(NAME xar_ck3_12002_religion_mailbox_test
       COMMAND xar_ck3_12002_religion_mailbox_test
         "${CMAKE_BINARY_DIR}/religion-mailbox-wire")
+  endif()
+
+  # R3 named mailbox fixtures use owner standalone source recipes.
+  # Their sole argument is an output directory, never the frozen game EXE.
+  if(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-rite-governance-wire")
+    add_executable(xar_r3_rite_governance_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_rite_governance12002_state_rite.cpp
+      src/religion_rite_governance12002_head.cpp
+      src/religion_rite_governance12002_organization.cpp
+      src/religion_rite_governance12002_context.cpp
+      src/religion_rite_governance12002_mailbox.cpp
+      src/r3_rite_governance_named_test.cpp)
+    target_include_directories(xar_r3_rite_governance_named_test PRIVATE include)
+    target_link_libraries(xar_r3_rite_governance_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_rite_governance_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1=1
+      XAR_RITE_GOVERNANCE_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_rite_governance_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_rite_governance_named_test
+      COMMAND xar_r3_rite_governance_named_test "${CMAKE_BINARY_DIR}/r3-rite-governance-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-clergy-wire")
+    add_executable(xar_r3_clergy_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/religion_rite_governance12002_clergy.cpp
+      src/religion_rite_governance12002_clergy_mailbox.cpp
+      src/r3_clergy_named_test.cpp)
+    target_include_directories(xar_r3_clergy_named_test PRIVATE include)
+    target_link_libraries(xar_r3_clergy_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_clergy_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1=1
+      XAR_CLERGY_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_clergy_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_clergy_named_test
+      COMMAND xar_r3_clergy_named_test "${CMAKE_BINARY_DIR}/r3-clergy-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-rite-members-wire")
+    add_executable(xar_r3_rite_members_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/religion_rite_governance12002_organization_members.cpp
+      src/religion_rite_governance12002_members_mailbox.cpp
+      src/r3_rite_members_named_test.cpp)
+    target_include_directories(xar_r3_rite_members_named_test PRIVATE include)
+    target_link_libraries(xar_r3_rite_members_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_rite_members_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1=1
+      XAR_RITE_MEMBERS_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_rite_members_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_rite_members_named_test
+      COMMAND xar_r3_rite_members_named_test "${CMAKE_BINARY_DIR}/r3-rite-members-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-religion-doctrines-wire")
+    add_executable(xar_r3_religion_doctrines_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_doctrine12002_intrinsic.cpp
+      src/religion_doctrine12002_rite.cpp
+      src/religion_doctrine12002_tenet.cpp
+      src/religion_doctrine12002_query.cpp
+      src/religion_doctrine12002_mailbox.cpp
+      src/r3_religion_doctrines_named_test.cpp)
+    target_include_directories(xar_r3_religion_doctrines_named_test PRIVATE include)
+    target_link_libraries(xar_r3_religion_doctrines_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_religion_doctrines_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1=1)
+    if(MSVC)
+      target_compile_options(xar_r3_religion_doctrines_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_religion_doctrines_named_test
+      COMMAND xar_r3_religion_doctrines_named_test "${CMAKE_BINARY_DIR}/r3-religion-doctrines-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-religion-hostility-wire")
+    add_executable(xar_r3_religion_hostility_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_doctrine12002_hostility.cpp
+      src/religion_doctrine12002_hostility_mailbox.cpp
+      src/r3_religion_hostility_named_test.cpp)
+    target_include_directories(xar_r3_religion_hostility_named_test PRIVATE include)
+    target_link_libraries(xar_r3_religion_hostility_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_religion_hostility_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1=1
+      XAR_HOSTILITY_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_religion_hostility_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_religion_hostility_named_test
+      COMMAND xar_r3_religion_hostility_named_test "${CMAKE_BINARY_DIR}/r3-religion-hostility-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-religion-doctrine-knowledge-wire")
+    add_executable(xar_r3_religion_doctrine_knowledge_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_doctrine12002_intrinsic.cpp
+      src/religion_doctrine12002_choices.cpp
+      src/religion_doctrine12002_choices_mailbox.cpp
+      src/r3_religion_doctrine_knowledge_named_test.cpp)
+    target_include_directories(xar_r3_religion_doctrine_knowledge_named_test PRIVATE include)
+    target_link_libraries(xar_r3_religion_doctrine_knowledge_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_religion_doctrine_knowledge_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1=1
+      XAR_DOCTRINE_KNOWLEDGE_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_religion_doctrine_knowledge_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_religion_doctrine_knowledge_named_test
+      COMMAND xar_r3_religion_doctrine_knowledge_named_test "${CMAKE_BINARY_DIR}/r3-religion-doctrine-knowledge-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-religion-tenets-wire")
+    add_executable(xar_r3_religion_tenets_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_doctrine12002_tenet_rows.cpp
+      src/religion_doctrine12002_tenet_rows_mailbox.cpp
+      src/r3_religion_tenets_named_test.cpp)
+    target_include_directories(xar_r3_religion_tenets_named_test PRIVATE include)
+    target_link_libraries(xar_r3_religion_tenets_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_religion_tenets_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_religion_tenets_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_religion_tenets_named_test
+      COMMAND xar_r3_religion_tenets_named_test "${CMAKE_BINARY_DIR}/r3-religion-tenets-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-religion-conversion-terms-wire")
+    add_executable(xar_r3_religion_conversion_terms_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_conversion_rite.cpp
+      src/ck3_12002_religion_conversion_cost.cpp
+      src/ck3_12002_religion_conversion_terms.cpp
+      src/ck3_12002_religion_conversion_mailbox.cpp
+      src/ck3_12002_religion_conversion_terms_test.cpp)
+    target_include_directories(xar_r3_religion_conversion_terms_named_test PRIVATE include)
+    target_link_libraries(xar_r3_religion_conversion_terms_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_religion_conversion_terms_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_religion_conversion_terms_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_religion_conversion_terms_named_test
+      COMMAND xar_r3_religion_conversion_terms_named_test "${CMAKE_BINARY_DIR}/r3-religion-conversion-terms-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-religion-conversion-choices-wire")
+    add_executable(xar_r3_religion_conversion_choices_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_conversion_faith.cpp
+      src/ck3_12002_religion_conversion_rite.cpp
+      src/ck3_12002_religion_conversion_choices_mailbox.cpp
+      src/ck3_12002_religion_conversion_choices_mailbox_test.cpp)
+    target_include_directories(xar_r3_religion_conversion_choices_named_test PRIVATE include)
+    target_link_libraries(xar_r3_religion_conversion_choices_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_religion_conversion_choices_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_religion_conversion_choices_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_religion_conversion_choices_named_test
+      COMMAND xar_r3_religion_conversion_choices_named_test "${CMAKE_BINARY_DIR}/r3-religion-conversion-choices-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-religion-conversion-inputs-wire")
+    add_executable(xar_r3_religion_conversion_inputs_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_rite_governance12002_state_rite.cpp
+      src/ck3_12002_religion_conversion_gates.cpp
+      src/ck3_12002_religion_conversion_ai_inputs.cpp
+      src/ck3_12002_religion_conversion_inputs_mailbox.cpp
+      src/ck3_12002_religion_conversion_inputs_mailbox_test.cpp)
+    target_include_directories(xar_r3_religion_conversion_inputs_named_test PRIVATE include)
+    target_link_libraries(xar_r3_religion_conversion_inputs_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_religion_conversion_inputs_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_CONVERSION_INPUTS_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_r3_religion_conversion_inputs_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_religion_conversion_inputs_named_test
+      COMMAND xar_r3_religion_conversion_inputs_named_test "${CMAKE_BINARY_DIR}/r3-religion-conversion-inputs-wire")
+  endif()
+
+  if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/r3-sway-completion-wire")
+    add_executable(xar_r3_sway_completion_named_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_sway_completion.cpp
+      src/ck3_12002_sway_completion_mailbox.cpp
+      src/ck3_12002_sway_completion_serializer.cpp
+      src/r3_sway_completion_named_test.cpp)
+    target_include_directories(xar_r3_sway_completion_named_test PRIVATE include)
+    target_link_libraries(xar_r3_sway_completion_named_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_r3_sway_completion_named_test PRIVATE
+      XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1)
+    if(MSVC)
+      target_compile_options(xar_r3_sway_completion_named_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_r3_sway_completion_named_test
+      COMMAND xar_r3_sway_completion_named_test "${CMAKE_BINARY_DIR}/r3-sway-completion-wire")
   endif()
 
   if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)

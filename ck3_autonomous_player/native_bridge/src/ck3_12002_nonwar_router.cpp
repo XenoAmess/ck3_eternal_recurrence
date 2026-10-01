@@ -129,6 +129,39 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   out.family_obligations = &ExecuteFamilyObligationsMailbox12002;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  out.rite_governance = &ExecutePlayerRiteGovernanceMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  out.clergy = &ExecutePlayerClergyAppointmentMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  out.religion_conversion = &ExecutePlayerReligionConversionTermsMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  out.religion_doctrines = &ExecutePlayerReligionDoctrinesMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  out.rite_members = &ExecutePlayerRiteMembersMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  out.religion_conversion_choices = &ExecutePlayerReligionConversionChoicesMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  out.religion_conversion_inputs = &ExecutePlayerReligionConversionInputsMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  out.sway_completion = &ExecuteSwayCompletionMailboxV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  out.religion_hostility = &ExecutePlayerReligionHostilityMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  out.religion_doctrine_knowledge = &ExecutePlayerReligionDoctrineKnowledgeMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  out.religion_tenets = &ExecutePlayerReligionTenetsMailbox12002;
+#endif
   (void)out;
 }
 
@@ -172,6 +205,39 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   if (IsFamilyObligationsPrivateStep12002(step)) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  if (IsPlayerRiteGovernancePrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  if (IsPlayerClergyAppointmentPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionConversionTermsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDoctrinesPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  if (IsPlayerRiteMembersPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionConversionChoicesPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionConversionInputsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  if (step == kSwayCompletionStepV1) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionHostilityPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDoctrineKnowledgePrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionTenetsPrivateStep12002(step)) return true;
+#endif
   return IsActivityFeastPrivateStep12002(step);
 }
 
@@ -193,6 +259,61 @@ bool HandleNonwarPrivate12002(
   serialized.clear(); failure.clear();
   try {
     const auto &native = NativeAdapter12002(adapter);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+    if (IsPlayerRiteGovernancePrivateStep12002(step))
+      return HandlePlayerRiteGovernancePrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+    if (IsPlayerClergyAppointmentPrivateStep12002(step))
+      return HandlePlayerClergyAppointmentPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionConversionTermsPrivateStep12002(step))
+      return HandlePlayerReligionConversionTermsPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionDoctrinesPrivateStep12002(step))
+      return HandlePlayerReligionDoctrinesPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+    if (IsPlayerRiteMembersPrivateStep12002(step))
+      return HandlePlayerRiteMembersPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionConversionChoicesPrivateStep12002(step))
+      return HandlePlayerReligionConversionChoicesPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionConversionInputsPrivateStep12002(step))
+      return HandlePlayerReligionConversionInputsPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    if (step == kSwayCompletionStepV1)
+      return HandleSwayCompletionV1(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionHostilityPrivateStep12002(step))
+      return HandlePlayerReligionHostilityPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionDoctrineKnowledgePrivateStep12002(step))
+      return HandlePlayerReligionDoctrineKnowledgePrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionTenetsPrivateStep12002(step))
+      return HandlePlayerReligionTenetsPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
     if (IsCouncilPrivate12002(step)) {
       if (!state.council.configured && !ConfigureCouncilTransport12002(

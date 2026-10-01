@@ -23,6 +23,24 @@ std::size_t sway_calls = 0;
 std::size_t prisoner_calls = 0;
 std::size_t religion_calls = 0;
 std::size_t fallback_calls = 0;
+std::array<std::size_t, 11> readonly_calls{};
+constexpr std::array<std::string_view, 11> readonly_steps{
+    "query-player-rite-governance-v1",
+    "query-player-clergy-appointment-v1",
+    "query-player-religion-conversion-terms-v1",
+    "query-player-religion-doctrines-v1",
+    "query-player-religion-hostility-v1",
+    "query-player-religion-doctrine-knowledge-v1",
+    "query-player-religion-tenets-v1",
+    "query-player-rite-members-v1",
+    "query-player-religion-conversion-choices-v1",
+    "query-player-religion-conversion-inputs-v1",
+    "query-sway-completion-v1-private"};
+constexpr std::array<std::string_view, 11> readonly_outputs{
+    "rite-governance-forwarded", "clergy-forwarded", "conversion-terms-forwarded",
+    "doctrines-forwarded", "hostility-forwarded", "doctrine-knowledge-forwarded",
+    "tenets-forwarded", "rite-members-forwarded", "conversion-choices-forwarded",
+    "conversion-inputs-forwarded", "sway-completion-forwarded"};
 void Check(bool value, const char *message) {
   ++checks;
   if (!value) {
@@ -99,6 +117,20 @@ void CheckForwarded(const game::GameAdapter &adapter,
   Check(payload == expected.payload, "request payload");
   Check(request_id == expected.request_id, "request identity");
   Check(serialized.empty() && failure.empty(), "outputs cleared before dispatch");
+}
+
+// Distinct readonly spies verify exact central domain selection and raw forwarding.
+[[maybe_unused]] bool ReadonlySpy(std::size_t index,
+    const game::GameAdapter &adapter, ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == readonly_steps[index], "readonly handler matches its exact selector");
+  ++readonly_calls[index];
+  serialized = readonly_outputs[index];
+  return true;
 }
 
 constexpr std::array<std::string_view, 4> gift_steps{
@@ -219,6 +251,181 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
   return true;
 }
 #endif
+
+// R3 readonly domain spies: production providers are deliberately not linked.
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+bool IsPlayerRiteGovernancePrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[0];
+}
+bool ExecutePlayerRiteGovernanceMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerRiteGovernancePrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(0, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+bool IsPlayerClergyAppointmentPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[1];
+}
+bool ExecutePlayerClergyAppointmentMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerClergyAppointmentPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(1, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+bool IsPlayerReligionConversionTermsPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[2];
+}
+bool ExecutePlayerReligionConversionTermsMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionConversionTermsPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(2, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+bool IsPlayerReligionDoctrinesPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[3];
+}
+bool ExecutePlayerReligionDoctrinesMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionDoctrinesPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(3, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+bool IsPlayerReligionHostilityPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[4];
+}
+bool ExecutePlayerReligionHostilityMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionHostilityPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(4, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+bool IsPlayerReligionDoctrineKnowledgePrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[5];
+}
+bool ExecutePlayerReligionDoctrineKnowledgeMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionDoctrineKnowledgePrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(5, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+bool IsPlayerReligionTenetsPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[6];
+}
+bool ExecutePlayerReligionTenetsMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionTenetsPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(6, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+bool IsPlayerRiteMembersPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[7];
+}
+bool ExecutePlayerRiteMembersMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerRiteMembersPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(7, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+bool IsPlayerReligionConversionChoicesPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[8];
+}
+bool ExecutePlayerReligionConversionChoicesMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionConversionChoicesPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(8, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+bool IsPlayerReligionConversionInputsPrivateStep12002(std::string_view step) noexcept {
+  return step == readonly_steps[9];
+}
+bool ExecutePlayerReligionConversionInputsMailbox12002(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionConversionInputsPrivate12002(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(9, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+bool ExecuteSwayCompletionMailboxV1(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandleSwayCompletionV1(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  return ReadonlySpy(10, adapter, mailbox, published, revision, step, payload,
+                     request_id, serialized, failure);
+}
+#endif
+
 } // namespace xar::ck3_12002
 
 int main() {
@@ -278,6 +485,61 @@ int main() {
   Check(executors.sway_state == nullptr && executors.sway_action == nullptr,
         "default Sway callbacks absent");
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  Check(executors.rite_governance == &ExecutePlayerRiteGovernanceMailbox12002, "rite_governance callback registered");
+#else
+  Check(executors.rite_governance == nullptr, "disabled rite_governance callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  Check(executors.clergy == &ExecutePlayerClergyAppointmentMailbox12002, "clergy callback registered");
+#else
+  Check(executors.clergy == nullptr, "disabled clergy callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(executors.religion_conversion == &ExecutePlayerReligionConversionTermsMailbox12002, "religion_conversion callback registered");
+#else
+  Check(executors.religion_conversion == nullptr, "disabled religion_conversion callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  Check(executors.religion_doctrines == &ExecutePlayerReligionDoctrinesMailbox12002, "religion_doctrines callback registered");
+#else
+  Check(executors.religion_doctrines == nullptr, "disabled religion_doctrines callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  Check(executors.religion_hostility == &ExecutePlayerReligionHostilityMailbox12002, "religion_hostility callback registered");
+#else
+  Check(executors.religion_hostility == nullptr, "disabled religion_hostility callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  Check(executors.religion_doctrine_knowledge == &ExecutePlayerReligionDoctrineKnowledgeMailbox12002, "religion_doctrine_knowledge callback registered");
+#else
+  Check(executors.religion_doctrine_knowledge == nullptr, "disabled religion_doctrine_knowledge callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  Check(executors.religion_tenets == &ExecutePlayerReligionTenetsMailbox12002, "religion_tenets callback registered");
+#else
+  Check(executors.religion_tenets == nullptr, "disabled religion_tenets callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  Check(executors.rite_members == &ExecutePlayerRiteMembersMailbox12002, "rite_members callback registered");
+#else
+  Check(executors.rite_members == nullptr, "disabled rite_members callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(executors.religion_conversion_choices == &ExecutePlayerReligionConversionChoicesMailbox12002, "religion_conversion_choices callback registered");
+#else
+  Check(executors.religion_conversion_choices == nullptr, "disabled religion_conversion_choices callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  Check(executors.religion_conversion_inputs == &ExecutePlayerReligionConversionInputsMailbox12002, "religion_conversion_inputs callback registered");
+#else
+  Check(executors.religion_conversion_inputs == nullptr, "disabled religion_conversion_inputs callback absent");
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  Check(executors.sway_completion == &ExecuteSwayCompletionMailboxV1, "sway_completion callback registered");
+#else
+  Check(executors.sway_completion == nullptr, "disabled sway_completion callback absent");
+#endif
   Check(executors.council == nullptr && executors.law_action == nullptr &&
         executors.feast_open == nullptr && executors.factions == nullptr &&
         executors.government == nullptr, "unselected domain callbacks absent");
@@ -288,9 +550,9 @@ int main() {
         "gift callers use production constants");
 
   const auto exercise = [&](std::string_view step, bool enabled,
-                            std::string_view expected_output) {
+                            std::string_view expected_output,
+                            std::string_view payload = "{\"persistent_action_id\":\"already-pending\"}") {
     Check(IsNonwarPrivateStep12002(step) == enabled, "canonical selector visibility");
-    const std::string payload = "{\"persistent_action_id\":\"already-pending\"}";
     const std::string request_id = "router-request-" + std::to_string(checks);
     expected = {&adapter, &mailbox, &published, &state, 916, step, payload, request_id};
     std::string serialized = "stale-output", failure = "stale-failure";
@@ -340,6 +602,83 @@ int main() {
 #else
   exercise("query-player-religion-context-v1", false, "");
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[0], true, readonly_outputs[0], R"json({"expected_snapshot_revision":916,"expected_revision":916})json");
+#else
+  exercise(readonly_steps[0], false, "", R"json({"expected_snapshot_revision":916,"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[0]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[1], true, readonly_outputs[1], R"json({"candidate_character_id":50331653,"expected_revision":916})json");
+#else
+  exercise(readonly_steps[1], false, "", R"json({"candidate_character_id":50331653,"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[1]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[2], true, readonly_outputs[2], R"json({"target_rite_id":0,"expected_revision":916})json");
+#else
+  exercise(readonly_steps[2], false, "", R"json({"target_rite_id":0,"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[2]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[3], true, readonly_outputs[3], R"json({"expected_revision":916})json");
+#else
+  exercise(readonly_steps[3], false, "", R"json({"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[3]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[4], true, readonly_outputs[4], R"json({"target_rite_id":4294967295,"expected_revision":916})json");
+#else
+  exercise(readonly_steps[4], false, "", R"json({"target_rite_id":4294967295,"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[4]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[5], true, readonly_outputs[5], R"json({"doctrine_key":"fixture-doctrine","expected_revision":916})json");
+#else
+  exercise(readonly_steps[5], false, "", R"json({"doctrine_key":"fixture-doctrine","expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[5]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[6], true, readonly_outputs[6], R"json({})json");
+#else
+  exercise(readonly_steps[6], false, "", R"json({})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[6]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[7], true, readonly_outputs[7], R"json({"expected_snapshot_revision":916})json");
+#else
+  exercise(readonly_steps[7], false, "", R"json({"expected_snapshot_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[7]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[8], true, readonly_outputs[8], R"json({"expected_revision":916})json");
+#else
+  exercise(readonly_steps[8], false, "", R"json({"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[8]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  exercise(readonly_steps[9], true, readonly_outputs[9], R"json({"target_rite_id":0,"expected_revision":916})json");
+#else
+  exercise(readonly_steps[9], false, "", R"json({"target_rite_id":0,"expected_revision":916})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[9]) + "-unregistered"),
+        "readonly selector requires an exact match");
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  exercise(readonly_steps[10], true, readonly_outputs[10], R"json({"expected_revision":916,"actor_character_id":29829,"target_character_id":43699,"scheme_instance_id":0})json");
+#else
+  exercise(readonly_steps[10], false, "", R"json({"expected_revision":916,"actor_character_id":29829,"target_character_id":43699,"scheme_instance_id":0})json");
+#endif
+  Check(!IsNonwarPrivateStep12002(std::string(readonly_steps[10]) + "-unregistered"),
+        "readonly selector requires an exact match");
   exercise("query-unregistered-router-fixture", false, "");
   Check(!IsNonwarPrivateStep12002("query-active-scheme-sway-v1-private-43699"),
         "obsolete Sway query prefix not selected");
@@ -364,11 +703,91 @@ int main() {
         0,
 #endif
         "religion selector obeys the selected build flag");
+  Check(readonly_calls[0] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "rite_governance selector obeys the selected build flag");
+  Check(readonly_calls[1] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "clergy selector obeys the selected build flag");
+  Check(readonly_calls[2] ==
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_conversion selector obeys the selected build flag");
+  Check(readonly_calls[3] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_doctrines selector obeys the selected build flag");
+  Check(readonly_calls[4] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_hostility selector obeys the selected build flag");
+  Check(readonly_calls[5] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_doctrine_knowledge selector obeys the selected build flag");
+  Check(readonly_calls[6] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_tenets selector obeys the selected build flag");
+  Check(readonly_calls[7] ==
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "rite_members selector obeys the selected build flag");
+  Check(readonly_calls[8] ==
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_conversion_choices selector obeys the selected build flag");
+  Check(readonly_calls[9] ==
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+        1,
+#else
+        0,
+#endif
+        "religion_conversion_inputs selector obeys the selected build flag");
+  Check(readonly_calls[10] ==
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+        1,
+#else
+        0,
+#endif
+        "sway_completion selector obeys the selected build flag");
+  std::size_t readonly_total = 0;
+  for (const auto value : readonly_calls) readonly_total += value;
   std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
             << ",\"gift_selectors_forwarded\":" << gift_calls
             << ",\"sway_selectors_forwarded\":" << sway_calls
             << ",\"prisoner_selectors_forwarded\":" << prisoner_calls
             << ",\"religion_selectors_forwarded\":" << religion_calls
+            << ",\"new_readonly_selectors_forwarded\":" << readonly_total
             << ",\"fallback_calls\":" << fallback_calls
             << ",\"live_verified\":false,\"ck3_touched\":false}\n";
 }

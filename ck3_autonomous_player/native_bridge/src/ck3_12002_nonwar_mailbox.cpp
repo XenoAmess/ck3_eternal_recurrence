@@ -99,6 +99,39 @@ void RegisterNonwarMailboxExecutorsV1(
 #endif
   (void)environment;
   (void)executors;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  environment.permitted_executor_rite_governance12002 = executors.rite_governance;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  environment.permitted_executor_clergy12002 = executors.clergy;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_conversion12002 = executors.religion_conversion;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_doctrines12002 = executors.religion_doctrines;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_rite_members12002 = executors.rite_members;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_conversion_choices12002 = executors.religion_conversion_choices;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_conversion_inputs12002 = executors.religion_conversion_inputs;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  environment.permitted_executor_sway_completion12002 = executors.sway_completion;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_hostility12002 = executors.religion_hostility;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_doctrine_knowledge12002 = executors.religion_doctrine_knowledge;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  environment.permitted_executor_religion_tenets12002 = executors.religion_tenets;
+#endif
 }
 
 } // namespace xar::ck3_12002

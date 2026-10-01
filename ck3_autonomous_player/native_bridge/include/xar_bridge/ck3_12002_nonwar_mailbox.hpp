@@ -38,6 +38,17 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 prewar = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 government = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 rite_governance = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 clergy = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_conversion = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_doctrines = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 rite_members = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_conversion_choices = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_conversion_inputs = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 sway_completion = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_hostility = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_doctrine_knowledge = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_tenets = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_collection = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_ransom = nullptr;
 };
