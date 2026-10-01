@@ -103,3 +103,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 迁移原生囚犯集合、final赎金terms、拥有型SubmitCommandCopy与独立custody；9种原版选项含current_herd、normal_ransom_cost_value。复用停止战争研究前已完成且赎金必需的release-pair判断，不开展新的战争工作。Od/O2 collection各8案例、ransom各463断言、既有retention各13案例、实际Cpp wire各3份通过。slot53/54不变，纯serializer拆分便于真实wire验收。付款/custody/live/cold仍待验证。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\prisoner\package-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:40:07 Government actual caller packet and SDK metadata repair
+
+实际Prepare/Submit→原生owner pump→Wait/Reclaim→CommandResult caller补齐accepted/private_build/read_only/advertised四字段，修复确定可复现的SDK BridgeUnavailable。Od/O2实际caller与新增1项SDK通过，既有6项SDK证据复用。首次User32链接harness失败及缺字段包保留。fixture进程没有游戏roots的unavailable只表示测试情形，不冒充live。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\government\caller-final-v2\receipt.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

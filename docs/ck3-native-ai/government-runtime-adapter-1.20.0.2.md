@@ -70,13 +70,55 @@ independent public observations.
 identities, copied government flags, selected family and
 `readiness.core_adapter_ready`. That flag means the observed current identity
 selects an existing core adapter; it does not qualify every core government or
-complete M7. Noncore families remain spec-only. Religious governments publish
+complete M7. DLC families remain spec-only. Religious governments publish
 opaque identity/deferred status without a flag or mechanics projection.
 
 The candidate caller uses `query-government-runtime-adapter-v1` and the fixed
 `ExecuteGovernmentRuntimeAdapterPrivateOperationV1` mailbox executor. Its
 registration and Python/MCP integration are tracked separately by the shared
 bridge owners; this native package does not enable the shipping default.
+
+The implemented `ck3_12002_government_mailbox` caller unwraps the worker's
+owner-published snapshot adapter, binds the native image of the current host
+process after exact-build admission, and supplies snapshot/frame and memory
+callbacks owned by the query. Current full snapshot reads and native memory
+copies run only during the existing application-main executor. The worker
+keeps the binder and operation alive until completion and reclaim, including
+an already-running execution after the initial wait. A typed source
+unavailable is a completed query with its requested revision, observed date,
+current build provenance and reason; it is not a successful government read.
+This caller's in-process queue/drain fixture is separate from the positive
+native-provider fixture.
+
+The actual caller fixture passes `/Od` and `/O2` with `/W4 /WX`. It exercises
+the real predicate and admission, submission, deterministic pump/drain,
+provider executor, waiting, serialization and reclaim. Unsupported/disabled
+adapters and a zero revision do not queue. The owned fixture process has no
+CK3 native roots, so its completed `campaign_collector_unavailable` response
+is the expected harness condition, not a capability failure. Its actual
+standard `command_result` envelope is retained at
+`artifacts/g2-offline-2026-10-01/government/caller-final-v2/Od/wire/caller-unavailable.json`
+(also under `O2`), SHA-256
+`90817a4d4fb8f5f4521e5938af824c2779a44b0d72c9e07808474c2470213811`.
+The receipt is `government/caller-final-v2/receipt.json`, SHA-256
+`3af2875e89d204350c5775084075ad4ff6a9be59a15a9252662034dceaf49b27`.
+The standalone uses the production unwrap function's bare-adapter identity
+branch as a disclosed stand-in; the full bridge links the real unwrap function.
+The first caller harness link lacked `User32.lib`; only the runner link was
+fixed, and the failed attempt remains under `government/caller-link-red-001`.
+The first native caller packet also exposed a real Python interoperability
+failure: the standard private-query `accepted`, `private_build`, `read_only`
+and `advertised` metadata was missing. The caller now emits the existing
+contract values, and its focused fixture asserts them. Only the changed caller
+fixture was rebuilt for this fix; the earlier packet and receipt remain under
+`government/caller/`, while the positive provider and legacy proofs are reused.
+The corrected actual native envelope subsequently passes the real Python
+driver query and MCP SDK in one additional focused case (1.23 seconds), with
+no metadata inserted by the test. Its unavailable reason and false core
+readiness survive the transport. Together with the already-passed six native
+payload/driver/SDK/default-off cases, seven transport checks are recorded at
+`artifacts/g2-offline-2026-10-01/python-routes/government-actual-caller-sdk.json`
+and `government-python-wire-result.json`; the earlier six were reused.
 
 Focused source acceptance is reproducible with:
 
