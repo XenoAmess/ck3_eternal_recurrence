@@ -128,7 +128,7 @@ Workshop 上传、fresh-cache 签核与公开远端终验均已完成。
 - 逐号实现清单：`docs/361-mechanism-implementation-manifest.md`
 - 当前批量实机报告与证据边界：`docs/testing-report-2026-08-30.md`
 - 目标内静态校验：`py mod_zhongguo_style/tools/validate_local.py`
-- 隔离 CK3 实机验收：`& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py"`
+- 隔离 CK3 实机验收：`tools\.venv\Scripts\python.exe tools\run_zhongguo_acceptance.py`
 - release builder 单元测试：`py tools/test_build_mod_zhongguo_style_release.py`
 - release 可复现检查：`py tools/build_mod_zhongguo_style_release.py --check`
 - 正式构建：在干净、已提交且带 `zhongguo-361-v<版本>` tag 的候选上运行
