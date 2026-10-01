@@ -21,6 +21,21 @@ import ck3_native_profile_mcp as native
 SCHEMA = "ck3.clock-pause-profile-receipt.v1"
 
 
+class _SpaceKeyboardInput(ctypes.Structure):
+    _fields_ = [("virtual_key", ctypes.c_uint16), ("scan_code", ctypes.c_uint16),
+                ("flags", ctypes.c_uint32), ("time", ctypes.c_uint32), ("extra_info", ctypes.c_size_t)]
+
+
+class _SpaceInputUnion(ctypes.Union):
+    # INPUT's union also contains a 32-byte x64 MOUSEINPUT. Preserve that ABI
+    # extent without exposing a mouse or arbitrary-key driver.
+    _fields_ = [("keyboard", _SpaceKeyboardInput), ("abi_extent", ctypes.c_byte * 32)]
+
+
+class _SpaceInput(ctypes.Structure):
+    _fields_ = [("type", ctypes.c_uint32), ("payload", _SpaceInputUnion)]
+
+
 def shortcut_contract(profile: dict) -> dict:
     executable = Path(profile["guard"]["target"]["executable"])
     if executable.name.lower() != "ck3.exe" or executable.parent.name.lower() != "binaries":
@@ -49,19 +64,50 @@ def load_profile(path: Path) -> dict:
 
 class ClockPauseBackend(native.NativeProfileBackend):
     def __init__(self) -> None:
-        import pyautogui
-        self._press = pyautogui.press
+        if ctypes.sizeof(ctypes.c_void_p) != 8 or ctypes.sizeof(_SpaceInput) != 40:
+            raise RuntimeError("fixed SPACE input requires the qualified Windows x64 INPUT ABI")
+        self._user = ctypes.WinDLL("user32", use_last_error=True)
+        self._user.GetAsyncKeyState.argtypes = [ctypes.c_int]
+        self._user.GetAsyncKeyState.restype = ctypes.c_short
+        self._user.SendInput.argtypes = [ctypes.c_uint32, ctypes.POINTER(_SpaceInput), ctypes.c_int]
+        self._user.SendInput.restype = ctypes.c_uint32
+        self._user.GetWindowThreadProcessId.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_uint32)]
+        self._user.GetWindowThreadProcessId.restype = ctypes.c_uint32
+        self._user.GetKeyboardLayout.argtypes = [ctypes.c_uint32]
+        self._user.GetKeyboardLayout.restype = ctypes.c_void_p
 
     def key_state(self) -> dict:
-        user = ctypes.WinDLL("user32", use_last_error=True)
-        user.GetAsyncKeyState.argtypes = [ctypes.c_int]
-        user.GetAsyncKeyState.restype = ctypes.c_short
-        return {name: bool(user.GetAsyncKeyState(code) & 0x8000) for name, code in (
+        return {name: bool(self._user.GetAsyncKeyState(code) & 0x8000) for name, code in (
             ("shift", 0x10), ("control", 0x11), ("alt", 0x12),
             ("left_windows", 0x5B), ("right_windows", 0x5C), ("space", 0x20))}
 
-    def press_pause(self) -> None:
-        self._press("space", presses=1)
+    def keyboard_langid(self, profile: dict) -> int:
+        target = profile["guard"]["target"]
+        pid = ctypes.c_uint32()
+        thread = int(self._user.GetWindowThreadProcessId(target["hwnd"], ctypes.byref(pid)))
+        if not thread or pid.value != target["pid"]:
+            raise RuntimeError("pause keyboard layout target thread is unavailable or mismatched")
+        layout = self._user.GetKeyboardLayout(thread)
+        if not layout:
+            raise RuntimeError("pause keyboard layout is unknown")
+        return int(layout) & 0xFFFF
+
+    def press_pause(self) -> dict:
+        def send_space(key_up: bool) -> int:
+            event = _SpaceInput(type=1, payload=_SpaceInputUnion(keyboard=_SpaceKeyboardInput(
+                virtual_key=0, scan_code=0x39, flags=0x0008 | (0x0002 if key_up else 0), time=0, extra_info=0)))
+            sent = int(self._user.SendInput(1, ctypes.byref(event), ctypes.sizeof(event)))
+            if sent != 1:
+                raise RuntimeError(f"fixed SPACE {'key-up' if key_up else 'key-down'} SendInput ACK failed: sent={sent}; no retry")
+            return sent
+        down = send_space(False)
+        try:
+            time.sleep(0.05)
+        finally:
+            up = send_space(True)  # One paired release even if the pulse wait fails.
+        return {"input_method": "fixed-windows-scan-code", "scan_code": 0x39,
+                "key_down_ack_count": down, "key_up_ack_count": up, "pulse_seconds": 0.05,
+                "ack_is_business_postcondition": False}
 
     def capture(self, path: Path) -> dict:
         return native.desktop.NativeDesktopBackend().capture(path)
@@ -138,6 +184,7 @@ class ClockPauseProfileService(native.NativeClockProfileService):
             if self._failed_dispatch is not None:
                 return self._failed_dispatch  # Preserve the first unresolved input; never redispatch.
             attempts = 0
+            input_ack = None
             before = after = None
             captures = {}
             try:
@@ -157,6 +204,8 @@ class ClockPauseProfileService(native.NativeClockProfileService):
                     shortcut = shortcut_contract(self.profile)
                     if not before["paused"]:
                         self._keys_released()
+                        if self.backend.keyboard_langid(self.profile) != 0x0409:
+                            raise RuntimeError("pause requires confirmed target English keyboard LANGID=0x0409")
                         self.guard()
                         attempts = 1
                         # Consume this dispatch before calling the driver or
@@ -165,7 +214,7 @@ class ClockPauseProfileService(native.NativeClockProfileService):
                             "profile_sha256": self.profile["profile_sha256"], "target_identity": self._target(),
                             "status": "RED", "desired_paused": True, "input_dispatch_attempts": 1,
                             "reason": "fixed pause dispatch unresolved; no receipt committed"}
-                        self.backend.press_pause()
+                        input_ack = self.backend.press_pause()
                 deadline = time.monotonic() + self.pause_timeout_seconds
                 while True:
                     after, observation = self._clock()
@@ -185,6 +234,7 @@ class ClockPauseProfileService(native.NativeClockProfileService):
                 result = self._receipt("pause", {"status": "gameplay_pause_verified", "desired_paused": True,
                     "clock_before": before, "clock_after": after, "observation_after": observation,
                     "shortcut_contract": shortcut, "captures": captures, "input_dispatch_attempts": attempts,
+                    "input_driver_ack": input_ack,
                     "uses_desktop_input": bool(attempts), "uses_injection": False,
                     "writes_process_memory": False, "uses_ocr": False})
                 self._failed_dispatch = None
@@ -193,6 +243,7 @@ class ClockPauseProfileService(native.NativeClockProfileService):
                 value = {"status": "RED", "desired_paused": True,
                     "clock_before": before, "clock_after": after, "captures": captures,
                     "input_dispatch_attempts": attempts, "reason": f"{type(error).__name__}: {error}",
+                    "input_driver_ack": input_ack,
                     "uses_desktop_input": bool(attempts), "uses_injection": False,
                     "writes_process_memory": False, "uses_ocr": False}
                 if attempts:

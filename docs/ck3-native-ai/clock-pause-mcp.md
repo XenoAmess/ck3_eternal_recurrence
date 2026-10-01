@@ -54,10 +54,20 @@ positive raw date, Boolean paused state and ordinary speed. Its source evidence
 must identify the exact executable and the existing read-only `0x410` process
 access. Source identities remain fixed during this controller session.
 
-Already paused means zero input. Running means at most one fixed SPACE, with
-before/after labeled screenshots and released SPACE/modifier checks. After the
-last key-state check, a complete guard runs immediately before dispatch. Input
-delivery alone is an ACK. Success requires guarded independent reads observing
+Already paused means zero input. Running means at most one fixed SPACE gesture, with
+before/after labeled screenshots and released SPACE/modifier checks. The bound
+window thread must report English keyboard `LANGID=0x0409`; unknown, mismatched
+or other layouts reject with zero input. The root operator establishes this
+layout through its existing controlled setup; this controller never changes it.
+After the last key/layout checks, a complete guard runs immediately before dispatch. Input
+uses qualified Windows x64 `SendInput`: `INPUT_KEYBOARD`, virtual key zero,
+scan code `0x39` (57), scan-code flag `0x0008` for key-down, a fixed 50 ms pulse,
+then scan-code/key-up flags `0x000A`. Each event must return ACK count 1. A
+key-down rejection stops before key-up; a pulse exception still attempts the
+single paired release. Key-up rejection is retained without any repeat.
+`input_driver_ack` reports the completed pair when available; an interrupted
+driver does not manufacture a completed pair. These ACKs confirm Windows
+accepted events, not that CK3 handled them. Success requires guarded independent reads observing
 `paused=true`, nondecreasing raw date and the same local player, including after
 the evidence capture. The wait is bounded to five seconds and retries only
 reads. SPACE is an engine toggle; observations before dispatch do not make it
@@ -118,14 +128,39 @@ accepting arbitrary processes or commands.
 
 ## Qualification boundary
 
-The package passed 48 offline tests:
+The initial controller package passed 48 offline tests. Its first live R8
+policy08 pause retained RED: one old `pyautogui.press` attempt, raw date
+`77652576` to `77653200`, and `paused=false` throughout the bounded readback.
+The original receipt remains at
+`C-damengsan-core-R8/clock-pause-controller-08/dceb9a51860542fb9af7f3c616e9b673/0002-pause.json`
+in the suite's ignored acceptance directory. Its failed dispatch was never
+reopened or replayed by this package.
+
+The old Windows driver used `keybd_event(vkCode, scan=0, flags=0/2)` and lacked
+the successful suite path's 50 ms scan-code pulse. The suite also establishes
+an English layout. This identifies concrete driver differences, not a proven
+unique cause of policy08's ignored input. The generic repair uses the fixed
+scan-code/pulse path without changing keyboard layout, the campaign, DLL or
+native client. A new controller/session is required for the next live attempt;
+the old failure remains immutable.
+
+The scan-code repair passed 54 offline tests:
 `python -m unittest test_ck3_clock_pause_mcp test_native_campaign_autoplay test_ck3_native_clock_reader`
 from `tools`. They cover a real official MCP controller client consumed by the
 policy, zero-input already-paused/guard rejection, delayed true state, unknown
 clock/key state, source ambiguity/mismatch, one-input timeout, crash after
 input, final-key-check foreground change, failed receipt writes without replay,
 target/session mismatch, distinct receipts and default native compatibility.
-The production fixed driver is tested to call only `press("space", presses=1)`.
+The production ctypes driver is tested against exact 40-byte x64 INPUT fields,
+one down/up pair, ACK rejection, paired release during a pulse exception, and
+target-thread keyboard-layout qualification, and both ACKs accepted while the independent clock stays running. The latter still
+returns RED and cannot redispatch. These fixtures do not establish a successful
+live pause; only the next actual guarded-clock result can do that.
+
+Post-rebase qualification exposed an overly short wall-clock deadline in the
+delayed-readback fixture. Its RED output was preserved. That fixture now uses
+an injected monotonic clock so host scheduling cannot consume its artificial
+deadline; production's five-second limit is unchanged.
 
 A separate read-only source qualification read the installed 29,312 shortcut
 bytes, SHA-256

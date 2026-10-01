@@ -3,10 +3,11 @@ from __future__ import annotations
 
 import asyncio
 import copy
+import ctypes
 import json
 from pathlib import Path
-import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
@@ -49,9 +50,13 @@ class PauseBackend(Backend):
         self.materialize_after = 1
         self.input_error = False
         self.after_input = None
+        self.langid = 0x0409
 
     def key_state(self):
         return copy.deepcopy(self.keys)
+
+    def keyboard_langid(self, profile):
+        return self.langid
 
     def capture(self, path):
         return self.desktop.capture(path)
@@ -98,8 +103,13 @@ class PauseTests(unittest.TestCase):
             service, backend, _, _ = self.make_service(Path(temporary))
             backend.clock["paused"] = False
             backend.materialize_after = 3
-            result = service.pause()
-            self.assertEqual(result["status"], "gameplay_pause_verified")
+            elapsed = [0.0]
+            def advance(seconds):
+                elapsed[0] += seconds
+            clock = SimpleNamespace(monotonic=lambda: elapsed[0], sleep=advance)
+            with patch.object(pause, "time", clock):
+                result = service.pause()
+            self.assertEqual(result["status"], "gameplay_pause_verified", result)
             self.assertEqual(backend.inputs, 1)
             self.assertGreaterEqual(backend.after_reads, 3)
             self.assertFalse(result["clock_before"]["paused"])
@@ -191,11 +201,108 @@ class PauseTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "crash artifact"):
                 service.clock()
 
-    def test_effective_fixed_driver_calls_only_space_once(self):
-        driver = Mock()
-        with patch.dict(sys.modules, {"pyautogui": driver}):
-            pause.ClockPauseBackend().press_pause()
-        driver.press.assert_called_once_with("space", presses=1)
+    def scan_driver(self, acknowledgements):
+        events = []
+        user = Mock()
+        counts = iter(acknowledgements)
+        def send(count, pointer, size):
+            event = ctypes.cast(pointer, ctypes.POINTER(pause._SpaceInput)).contents
+            keyboard = event.payload.keyboard
+            events.append((count, size, event.type, keyboard.virtual_key, keyboard.scan_code,
+                keyboard.flags, keyboard.time, keyboard.extra_info))
+            return next(counts)
+        user.SendInput.side_effect = send
+        with patch.object(pause.ctypes, "WinDLL", return_value=user):
+            backend = pause.ClockPauseBackend()
+        return backend, events
+
+    def test_effective_fixed_driver_uses_only_space_scan_and_one_paired_release(self):
+        backend, events = self.scan_driver([1, 1])
+        with patch.object(pause.time, "sleep") as wait:
+            ack = backend.press_pause()
+        self.assertEqual(events, [(1, 40, 1, 0, 57, 8, 0, 0), (1, 40, 1, 0, 57, 10, 0, 0)])
+        wait.assert_called_once_with(.05)
+        self.assertEqual(ack["input_method"], "fixed-windows-scan-code")
+        self.assertFalse(ack["ack_is_business_postcondition"])
+
+    def test_production_keyboard_layout_is_read_from_the_bound_target_thread(self):
+        backend, events = self.scan_driver([])
+        def target_thread(hwnd, pid):
+            self.assertEqual(hwnd, 101)
+            ctypes.cast(pid, ctypes.POINTER(ctypes.c_uint32)).contents.value = 202
+            return 303
+        backend._user.GetWindowThreadProcessId.side_effect = target_thread
+        backend._user.GetKeyboardLayout.return_value = 0x04090409
+        profile = {"guard": {"target": {"hwnd": 101, "pid": 202}}}
+        self.assertEqual(backend.keyboard_langid(profile), 0x0409)
+        backend._user.GetKeyboardLayout.assert_called_once_with(303)
+        backend._user.GetKeyboardLayout.return_value = None
+        with self.assertRaisesRegex(RuntimeError, "unknown"):
+            backend.keyboard_langid(profile)
+        profile["guard"]["target"]["pid"] = 999
+        with self.assertRaisesRegex(RuntimeError, "mismatched"):
+            backend.keyboard_langid(profile)
+        self.assertEqual(events, [])
+
+    def test_unknown_or_non_english_layout_rejects_without_input(self):
+        for langid in (None, 0, 0x0804):
+            with self.subTest(langid=langid), tempfile.TemporaryDirectory() as temporary:
+                service, backend, _, _ = self.make_service(Path(temporary))
+                backend.clock["paused"] = False
+                backend.langid = langid
+                self.assertEqual(service.pause()["status"], "RED")
+                self.assertEqual(backend.inputs, 0)
+
+    def test_scan_driver_ack_rejection_never_retries_a_key_event(self):
+        for counts, phase in (([0], "key-down"), ([1, 0], "key-up")):
+            with self.subTest(phase=phase):
+                backend, events = self.scan_driver(counts)
+                with patch.object(pause.time, "sleep"), self.assertRaisesRegex(RuntimeError, phase):
+                    backend.press_pause()
+                self.assertEqual(len(events), len(counts))
+                self.assertTrue(all(event[4] == 57 for event in events))
+
+    def test_scan_driver_releases_once_if_the_pulse_wait_raises(self):
+        backend, events = self.scan_driver([1, 1])
+        with patch.object(pause.time, "sleep", side_effect=RuntimeError("pulse interrupted")):
+            with self.assertRaisesRegex(RuntimeError, "pulse interrupted"):
+                backend.press_pause()
+        self.assertEqual([event[5] for event in events], [8, 10])
+
+    def test_real_scan_driver_ack_is_not_a_pause_postcondition(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            service, backend, _, _ = self.make_service(Path(temporary))
+            backend.clock["paused"] = False
+            backend.materialize_after = None
+            driver, events = self.scan_driver([1, 1])
+            def dispatch():
+                backend.inputs += 1
+                return driver.press_pause()
+            backend.press_pause = dispatch
+            result = service.pause()
+            self.assertEqual(result["status"], "RED")
+            self.assertFalse(result["clock_after"]["paused"])
+            self.assertEqual(result["input_driver_ack"]["key_down_ack_count"], 1)
+            self.assertEqual(result["input_driver_ack"]["key_up_ack_count"], 1)
+            self.assertEqual(len(events), 2)
+            self.assertIs(service.pause(), result)
+            self.assertEqual(len(events), 2)
+
+    def test_real_scan_driver_partial_ack_is_latched_by_service(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            service, backend, _, _ = self.make_service(Path(temporary))
+            backend.clock["paused"] = False
+            driver, events = self.scan_driver([1, 0])
+            def dispatch():
+                backend.inputs += 1
+                return driver.press_pause()
+            backend.press_pause = dispatch
+            result = service.pause()
+            self.assertEqual(result["status"], "RED")
+            self.assertIn("key-up", result["reason"])
+            self.assertEqual(result["input_dispatch_attempts"], 1)
+            self.assertIs(service.pause(), result)
+            self.assertEqual(len(events), 2)
 
     def test_final_key_state_guard_change_rejects_before_input(self):
         with tempfile.TemporaryDirectory() as temporary:
