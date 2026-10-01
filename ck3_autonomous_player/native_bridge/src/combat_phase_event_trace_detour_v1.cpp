@@ -280,6 +280,7 @@ bool RestoreTarget(CombatPhaseEventTraceDetourStateV1 &state,
 }
 
 void FreeTrampolines(CombatPhaseEventTraceDetourStateV1 &state) noexcept {
+  if (state.retain_trampolines_until_process_exit) return;
   if (state.virtual_free != nullptr) {
     if (state.schedule_trampoline != nullptr) {
       (void)state.virtual_free(state.memory_context,
@@ -592,6 +593,8 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       environment.post_counter_target_override,
       environment.module_base, kCombatPostCounterAttackCaptureRva);
   state.memory_context = environment.memory_context;
+  state.retain_trampolines_until_process_exit =
+      environment.retain_trampolines_until_process_exit;
   state.virtual_free = environment.virtual_free_override != nullptr
                            ? environment.virtual_free_override
                            : &DefaultVirtualFree;

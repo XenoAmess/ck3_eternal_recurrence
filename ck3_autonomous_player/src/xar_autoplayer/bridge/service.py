@@ -3161,6 +3161,8 @@ class GameplayBridgeService:
             raise UnsupportedStepError(
                 "title-map navigation requires its typed MCP facade"
             )
+        if step in {"navigate-ingame-ui-v1", "query-ingame-ui-window-v1"}:
+            raise UnsupportedStepError("ingame UI requires its explicit typed MCP facade")
         return self.driver.execute_step(step, expected_revision=expected_revision)
 
     def save_checkpoint(
@@ -8963,6 +8965,53 @@ class GameplayBridgeService:
                 "queried_connection_generation"
             ],
         }
+
+    def _typed_ingame_ui_v1(self, operation: str, kind: str, subject_id: int, expected_revision: int) -> dict[str, object]:
+        from .ingame_ui_contract import QUERY_CAPABILITY, NAVIGATE_CAPABILITY, validate_ui_request
+        validate_ui_request(operation, kind, subject_id, expected_revision)
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
+            raise BridgeUnavailableError("typed UI requires a paused map-ready snapshot")
+        if snapshot.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("typed UI public revision differs")
+        capability = QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY
+        if capability not in self.capabilities().get("bridge_capabilities", []):
+            raise UnsupportedStepError("capability_not_available: typed UI has no desktop fallback")
+        method_name = {"query": "query_ingame_ui_window_v1", "open_character": "open_character_window_v1",
+            "select_army": "select_army_ui_v1", "open_combat": "open_combat_window_v1", "open_knights": "open_knights_window_v1",
+            "hover_left_knights":"hover_combat_knights_v1", "hover_right_knights":"hover_combat_knights_v1",
+            "fit_combat_window":"fit_combat_window_v1"}[operation]
+        method = getattr(self.driver, method_name, None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks this typed UI method")
+        if operation == "open_knights":
+            return method(expected_revision=expected_revision)
+        if operation in {"hover_left_knights", "hover_right_knights"}:
+            return method(subject_id, ui_side=operation.split("_")[1], expected_revision=expected_revision)
+        return method(kind if operation == "query" else subject_id, expected_revision=expected_revision)
+
+    def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_character", "character", character_id, expected_revision)
+
+    def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("select_army", "army", subject_army_id, expected_revision)
+
+    def open_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_combat", "combat", combat_id, expected_revision)
+
+    def fit_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("fit_combat_window", "combat", combat_id, expected_revision)
+
+    def open_knights_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_knights", "knights", 0, expected_revision)
+
+    def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("query", window_kind, 0, expected_revision)
+
+    def hover_combat_knights_v1(self, combat_id: int, ui_side: str, *, expected_revision: int) -> dict[str, object]:
+        if ui_side not in {"left", "right"}:
+            raise ValueError("ui_side must be left or right in the original CombatWindow")
+        return self._typed_ingame_ui_v1(f"hover_{ui_side}_knights", "combat", combat_id, expected_revision)
 
     def center_map_on_landed_title_v1(
         self,

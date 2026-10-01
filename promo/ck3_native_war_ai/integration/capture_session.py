@@ -558,6 +558,33 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
     """Forward only the bounded private trace fields to the native driver."""
     require(enabled, "Private phase trace requires explicit capture opt-in")
     step = request.get("step")
+    if step in {
+        "experimental-scoped-character-variable-monitor-begin-v1",
+        "experimental-scoped-character-variable-monitor-finish-v1",
+    }:
+        revision = request.get("expected_revision")
+        token = request.get("monitor_sequence_token")
+        require(type(revision) is int and 0 < revision < 2**64,
+                "Passive monitor needs a positive uint64 revision")
+        require(type(token) is int and 0 < token < 2**64,
+                "Passive monitor needs its independent positive uint64 token")
+        fields = {"monitor_sequence_token": token}
+        allowed = {"action", "step", "expected_revision", "monitor_sequence_token"}
+        if step.endswith("-begin-v1"):
+            first = request.get("scoped_character_id")
+            second = request.get("scoped_related_character_id")
+            require(type(first) is int and 0 < first < 2**31 and
+                    type(second) is int and 0 < second < 2**31 and first != second,
+                    "Passive monitor needs two distinct positive full CharacterIDs")
+            fields.update(scoped_character_id=first, scoped_related_character_id=second)
+            allowed.update({"scoped_character_id", "scoped_related_character_id"})
+        require(set(request) == allowed,
+                "Passive monitor request fields differ from the closed contract")
+        return driver._execute_primitive_step(
+            step, expected_revision=revision,
+            required_capability="game.command.experimental-combat-phase-event-trace-managed-v1",
+            request_fields=fields, timeout_seconds=90,
+        )
     require(step in {
         "experimental-combat-phase-event-trace-begin-v1",
         "experimental-combat-phase-event-trace-finish-v1",
@@ -622,6 +649,27 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
                     "Runtime advantage-component capture flag must be bool")
             fields["capture_runtime_advantage_components"] = capture_advantage
             allowed.add("capture_runtime_advantage_components")
+        if "capture_runtime_scoped_chain" in request:
+            capture_scoped = request["capture_runtime_scoped_chain"]
+            require(type(capture_scoped) is bool,
+                    "Runtime scoped-chain capture flag must be bool")
+            fields["capture_runtime_scoped_chain"] = capture_scoped
+            allowed.add("capture_runtime_scoped_chain")
+            if capture_scoped:
+                character_id = request.get("scoped_character_id")
+                related_id = request.get("scoped_related_character_id")
+                event_index = request.get("scoped_event_load_index")
+                require(type(character_id) is int and 0 < character_id < 2**31 and
+                        type(related_id) is int and 0 < related_id < 2**31 and
+                        character_id != related_id,
+                        "Scoped chain needs two distinct positive full CharacterIDs")
+                require(type(event_index) is int and 0 <= event_index < 13,
+                        "Scoped chain needs an exact native event load index")
+                for name, value in (("scoped_character_id", character_id),
+                                    ("scoped_related_character_id", related_id),
+                                    ("scoped_event_load_index", event_index)):
+                    fields[name] = value
+                    allowed.add(name)
     require(set(request) == allowed,
             "Private phase trace request fields differ from the bounded contract")
     return driver._execute_primitive_step(

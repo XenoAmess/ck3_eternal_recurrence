@@ -1,0 +1,451 @@
+{
+  "schema": "ck3.knight-selector-death-static-abi.v1",
+  "game_version": "1.19.0.6",
+  "steam_build_id": "23530548",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "executable": {
+    "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "bytes": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "reviewed_disassembly_sources": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\death-selector-disassembly-a01.json",
+      "bytes": 66136,
+      "sha256": "81AE8DDDA79118312239E375BD79A7CC02D835AA8FD1D26452A636EEEE4CD3A8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\materializer-filter-full-spans-a01.json",
+      "bytes": 23439,
+      "sha256": "3465950579C129EEC9036C668A3DEC68DAE524A07991A3F49D1079BA4EE6C151"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\death-enqueue-disassembly-a01.json",
+      "bytes": 31706,
+      "sha256": "A89E4307D3C480F3A30554CE202ADB3EC159AEF11B802A681424E4E0CBBD455D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\death-layout-commit-disassembly-a01.json",
+      "bytes": 26689,
+      "sha256": "FBEDD83CF31E86F47FDD8624DAA59461F901AAA14AC39BE8DFF6C25201896F54"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\death-fields-full-disassembly-a01.json",
+      "bytes": 23326,
+      "sha256": "EE03D2959F24E3B4DB8A3EB27FD02CBBA00AB3D1047695488B18248CDB0C7516"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\deferred-commit-executor-a01.json",
+      "bytes": 30537,
+      "sha256": "BB6FC76B258D278D39197CAD09BD1F0CB70139F00E1BEAB338FC2EBCC1EE5B22"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\traits-enqueue-disassembly-a02.json",
+      "bytes": 24190,
+      "sha256": "330C5EAA6A6718AE64AC0CC72F491107FB849B017C6616FE0397A37B64A9920F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\traits-materializer-disassembly-a02.json",
+      "bytes": 14769,
+      "sha256": "A51E36E8D19CFE7A36D8FA192A887B0ED83E2A2C176EED533BA572CC52CAD616"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\reason-ctor-key-full-a01.json",
+      "bytes": 48989,
+      "sha256": "C6E3741055704239D41203235AABD81933E5797BD4A8282F13AA3BF5A69AF72A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\reason-key-base-constructor-a01.json",
+      "bytes": 6571,
+      "sha256": "ADD48C3F781144B72FE1F6AD4492E22CBDB37DBFCEA99BEE4978C4F7C1A57E90"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\enqueue-return-detail-a01.json",
+      "bytes": 7420,
+      "sha256": "A6E79357206C448A20798281ABF7C60EEF65CE643B07DB23DF65B084D4F3B0C3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\death-queue-disassembly-a01.json",
+      "bytes": 20221,
+      "sha256": "A7A95BA67B268D6343956A7DF2967071A6E47FDEBD626CF4C900978423E0C435"
+    }
+  ],
+  "byte_spans": [
+    {
+      "start": "0x2ee8e30",
+      "end": "0x2ee90f4",
+      "sha256": "C89C6EC337A14168E771A7082E4162278B907A2067D2051C44553AB7463D79CE"
+    },
+    {
+      "start": "0x2ee9100",
+      "end": "0x2ee917a",
+      "sha256": "837332E5E5371F720882A175B3DFBB3BD4B8E96275FBF4052CD14D39B6C929F6"
+    },
+    {
+      "start": "0x19dd670",
+      "end": "0x19dd6b4",
+      "sha256": "EE86DB76A4DB7D887E7B3173A0613C630C458F63941A4846238A370A47BD05C7"
+    },
+    {
+      "start": "0x19f4760",
+      "end": "0x19f47a4",
+      "sha256": "66E63A6FF3459A8979E006BAF7FAD145B3D8D7746A0312547AD12F37AB127438"
+    },
+    {
+      "start": "0x33e8d40",
+      "end": "0x33e9048",
+      "sha256": "D0B5C11610DD687D654CE849B7742F6CD605A9FC2ACB8B552F2FE3EE8713F02B"
+    },
+    {
+      "start": "0x19dd670",
+      "end": "0x19dd780",
+      "sha256": "E8A50A94252AB4540E0F33FF9633670DB52DAEE55EDE1459BA867776D8615BCC"
+    },
+    {
+      "start": "0x19f4760",
+      "end": "0x19f4880",
+      "sha256": "3F08C1B91F424E0468BCF5353C13CBA2E8D88C9C5F490B315EDB7C24B924B43A"
+    },
+    {
+      "start": "0x264bcb0",
+      "end": "0x264c06c",
+      "sha256": "8A329190041A619541ED571386ED06A6E8E6B256E4B7F9579818F8D27E89F83D"
+    },
+    {
+      "start": "0x2609210",
+      "end": "0x260926e",
+      "sha256": "D0070D74B8586FC13E02CE9E739ECF93F1AFEC2B91ADC02A2EFFB90AA8DA059C"
+    },
+    {
+      "start": "0x26862b0",
+      "end": "0x2686399",
+      "sha256": "B877B8D94BF08B26F7A46CE5F21A213DC4843AF6E1C5233AF2C592D5A2775B74"
+    },
+    {
+      "start": "0x264a230",
+      "end": "0x264a399",
+      "sha256": "083B26D0D5A718D19084CD177BA6964C2F091ECD983C51F1DBAFB8FCE4159EFB"
+    },
+    {
+      "start": "0x264a080",
+      "end": "0x264a0d9",
+      "sha256": "DEE41ABEBC1A8146BCB8F137B453A3E0301446270A4264A0646417BD81CC6E89"
+    },
+    {
+      "start": "0x2609210",
+      "end": "0x26093a0",
+      "sha256": "4934CBC3426F2F37507A90474721300BBE53D0DE9D72B310BBD5784EE15CA804"
+    },
+    {
+      "start": "0x3b8b090",
+      "end": "0x3b8b10b",
+      "sha256": "0696E249FD545306AAE846E892A892E442AF912E652B9BBFDC753F4B1C16EEB4"
+    },
+    {
+      "start": "0x82ceb0",
+      "end": "0x82ced1",
+      "sha256": "D4F8FE489AE32E8E06762FFB4258ABB9423D1CE4B577584424C5B2D75EE234FB"
+    },
+    {
+      "start": "0x264c070",
+      "end": "0x264c127",
+      "sha256": "26CEF01913EE2724F84A2FE49E75934EB478F89B3CBAF4DE202C6B9AF01BF832"
+    },
+    {
+      "start": "0x264d750",
+      "end": "0x264da08",
+      "sha256": "0F113BE3B1899B30F27E74F29238ED83BCFCB99AB481DA1E85FEB55DC878E014"
+    },
+    {
+      "start": "0x198b560",
+      "end": "0x198b6f0",
+      "sha256": "3ACAED7D0E714E7D1293D70FBDF2E22B819573C9BB81F37618E51874B5C5DBB7"
+    },
+    {
+      "start": "0x198b4f0",
+      "end": "0x198b560",
+      "sha256": "1B39ED350C66948BAE2C372E69B440D9021601F641BCBA2EE191E33585869675"
+    },
+    {
+      "start": "0x2654960",
+      "end": "0x2654997",
+      "sha256": "58BC374CB2288623C1368C8A22C796DBC996DC9D258335059A8B1A829095ED61"
+    },
+    {
+      "start": "0x19909a0",
+      "end": "0x1990ac0",
+      "sha256": "D1559EA1DE24E8139071E2208BFD1BB6E49EE85CD158820B2A0CF217AB391B9A"
+    },
+    {
+      "start": "0x1990ac0",
+      "end": "0x1990ae0",
+      "sha256": "7B56DABB5F958316524FB2458DE2F377B54D809F6174EF771F6B846346F00DA9"
+    },
+    {
+      "start": "0x2e36c00",
+      "end": "0x2e36d02",
+      "sha256": "50136A8A8856004CB6ABDACC754E96D525E4DBB33576C86D5303664E0213DAE9"
+    },
+    {
+      "start": "0x2e37040",
+      "end": "0x2e37540",
+      "sha256": "D66ABDA525A8714A52F2ECFBA7978DA659E9C6A1853C5AB39073F7BC476A520E"
+    },
+    {
+      "start": "0x345e620",
+      "end": "0x345e684",
+      "sha256": "14DCA9C293CC17FE35B18781D0ACFC861CC3487CDF4E55E2E030C3A8D2B79F61"
+    },
+    {
+      "start": "0x2654af5",
+      "end": "0x2654b1a",
+      "sha256": "DF6BE7BAA3498B0631B525B3348F928C3C1B774304590F0F73051D40EC6E86D2"
+    },
+    {
+      "start": "0x2654aae",
+      "end": "0x2654b3e",
+      "sha256": "2A69B6A4EFF4AD2BD570C1A244D7910D0B28326F91ACD5FB22DF30B96D54E315"
+    },
+    {
+      "start": "0x264bc00",
+      "end": "0x264bca9",
+      "sha256": "58661346C3C87ABFAD4780E83EF59ACAC87E87D06044C0CF2FCE8295EA299400"
+    },
+    {
+      "start": "0x2ee8870",
+      "end": "0x2ee88a5",
+      "sha256": "9F4BEBB69E067032BE9CD5FA416BB8995723A10B1BF4A7EAC27142D4AD2ED170"
+    },
+    {
+      "start": "0x2ee8990",
+      "end": "0x2ee8b0c",
+      "sha256": "A0320C6ADE1CB085B4B8F1E70C14B557154042889D3DED1E7DA75643EFA65D13"
+    }
+  ],
+  "semantic_anchors": [
+    {
+      "rva": "0x19f482d",
+      "bytes": "0F1044C1F0",
+      "op": "movups",
+      "args": "xmm0, xmmword ptr [rcx + rax*8 - 0x10]",
+      "meaning": "failed predicate selects last candidate; not stable erase"
+    },
+    {
+      "rva": "0x19f4832",
+      "bytes": "0F11040B",
+      "op": "movups",
+      "args": "xmmword ptr [rbx + rcx], xmm0",
+      "meaning": "failed candidate slot overwritten by 16-byte last candidate"
+    },
+    {
+      "rva": "0x198b5d4",
+      "bytes": "8BB7FC000000",
+      "op": "mov",
+      "args": "esi, dword ptr [rdi + 0xfc]",
+      "meaning": "character traits signed count at +FC"
+    },
+    {
+      "rva": "0x198b5ec",
+      "bytes": "488B8FF0000000",
+      "op": "mov",
+      "args": "rcx, qword ptr [rdi + 0xf0]",
+      "meaning": "character traits data pointer at +F0"
+    },
+    {
+      "rva": "0x198b5fe",
+      "bytes": "8B1491",
+      "op": "mov",
+      "args": "edx, dword ptr [rcx + rdx*4]",
+      "meaning": "trait vector entry is integer ID stride4"
+    },
+    {
+      "rva": "0x2ee9046",
+      "bytes": "E8B52B76FF",
+      "op": "call",
+      "args": "0x264bc00",
+      "meaning": "CCharacterDeathEffect calls native death request with six inputs"
+    },
+    {
+      "rva": "0x264bf76",
+      "bytes": "48899EC8010000",
+      "op": "mov",
+      "args": "qword ptr [rsi + 0x1c8], rbx",
+      "meaning": "native commit installs death_data at character +1C8"
+    },
+    {
+      "rva": "0x264bf85",
+      "bytes": "48894B04",
+      "op": "mov",
+      "args": "qword ptr [rbx + 4], rcx",
+      "meaning": "native commit copies date into death_data +04"
+    },
+    {
+      "rva": "0x2609370",
+      "bytes": "4C897010",
+      "op": "mov",
+      "args": "qword ptr [rax + 0x10], r14",
+      "meaning": "native reason setter writes death reason pointer"
+    },
+    {
+      "rva": "0x260937b",
+      "bytes": "897818",
+      "op": "mov",
+      "args": "dword ptr [rax + 0x18], edi",
+      "meaning": "native reason setter writes killer ID"
+    },
+    {
+      "rva": "0x2609385",
+      "bytes": "89581C",
+      "op": "mov",
+      "args": "dword ptr [rax + 0x1c], ebx",
+      "meaning": "native reason setter writes artifact ID"
+    },
+    {
+      "rva": "0x264c0d5",
+      "bytes": "E8D6FBFFFF",
+      "op": "call",
+      "args": "0x264bcb0",
+      "meaning": "deferred queue flush calls same typed commit"
+    },
+    {
+      "rva": "0x345e667",
+      "bytes": "488D4B18",
+      "op": "lea",
+      "args": "rcx, [rbx + 0x18]",
+      "meaning": "SDeathReason base ctor forms stable key string address +18"
+    },
+    {
+      "rva": "0x2654afa",
+      "bytes": "418D46FF",
+      "op": "lea",
+      "args": "eax, [r14 - 1]",
+      "meaning": "enqueue result indexes newly appended command"
+    },
+    {
+      "rva": "0x2654b09",
+      "bytes": "4803C5",
+      "op": "add",
+      "args": "rax, rbp",
+      "meaning": "enqueue returns pointer to inserted command row"
+    }
+  ],
+  "selector": {
+    "materializer_rva": "0x19DD670",
+    "filter_rva": "0x19F4760",
+    "selector_rva": "0x33E8D40",
+    "vtable_rva": "0x41DE5C0",
+    "source_order": "CCombatSide+40/+4C stride60; row+08 RegimentID -> CRegiment+148 CharacterID",
+    "shared_then_source_predicates": true,
+    "remove_mode": "tail-swap 16-byte entry then recheck same slot",
+    "candidate_scope_words": [
+      "kind at +00",
+      "full generation character ID at +08 when kind4"
+    ],
+    "rng": "context+28; counter uint32 +00; salt uint32 +04; exactly one selector draw when nonempty; empty original return never fabricated",
+    "uniform": "draw31 % positive_count",
+    "weighted": "ceil positive/trunc negative rawQ100000; signed32 wrap total; positive sum ordered subtract, nonpositive sum uniform; no invented zero/negative clamp"
+  },
+  "death": {
+    "type": "CCharacterDeathEffect",
+    "type_descriptor_rva": "0x55DB390",
+    "vtable_rva": "0x4468B28",
+    "execute_rva": "0x2EE8E30",
+    "request_rva": "0x264BC00",
+    "commit_rva": "0x264BCB0",
+    "enqueue_rva": "0x2654960",
+    "flush_rva": "0x264C070",
+    "request_commit_windows_x64_abi": {
+      "RCX": "death manager global manager+29E80",
+      "RDX": "victim CCharacter*",
+      "R8": "SDeathReason*",
+      "R9": "date object pointer",
+      "entry_rsp+28": "killer CCharacter* nullable",
+      "entry_rsp+30": "artifact pointer nullable",
+      "return": "caller does not consume a typed business result; do not claim a success bool"
+    },
+    "enqueue_windows_x64_abi": {
+      "RCX": "array header",
+      "RDX": "const command* 30B",
+      "return": "uintptr_t exact new row pointer; wrapper preserves original RAX"
+    },
+    "queued_command": {
+      "stride_hex": "30",
+      "vtable_rva": "0x4327540",
+      "victim_pointer_hex": "08",
+      "reason_pointer_hex": "10",
+      "date_qword_hex": "18",
+      "killer_pointer_hex": "20",
+      "artifact_pointer_hex": "28"
+    },
+    "array_header_hex": {
+      "data": "00",
+      "capacity": "08",
+      "count": "0C",
+      "allocator": "10"
+    },
+    "death_data_hex": {
+      "character_death_data_pointer": "1C8",
+      "date_qword": "04",
+      "reason_pointer": "10",
+      "killer_full_character_id": "18",
+      "artifact_full_id": "1C"
+    },
+    "reason_hex": {
+      "stable_key_msvc_string": "18",
+      "definition_id": "10",
+      "definition_hash": "14"
+    },
+    "typed_life_policy": "identity-valid live character with null death marker is native ALIVE; marker absent is not a readable death detail. Save ALIVE/DEAD requires exactly one alive_data or dead_data block. Invalid memory or generation -> UNKNOWN, never default."
+  },
+  "character_hex": {
+    "full_generation_id": "18",
+    "extension_pointer": "1A8",
+    "current_regiment_pointer": "1B0",
+    "traits_pointer": "F0",
+    "traits_signed_count": "FC",
+    "trait_stride": "04",
+    "effective_martial": "D8",
+    "effective_learning": "E4",
+    "effective_prowess": "E8",
+    "extension_prestige_currency": "130",
+    "extension_prestige_experience": "138"
+  },
+  "prestige_semantics": {
+    "scale": 100000,
+    "currency_layout_existing_provider": true,
+    "experience_equals_saved_accumulated": "UNPROVEN_BY_THIS_FIXTURE; require native write/read/serialization anchor and same-run parity",
+    "absent_extension": "UNKNOWN; never default to zero in evidence"
+  },
+  "detour_admission": [
+    {
+      "rva": "0x264BC00",
+      "patch_bytes": 18,
+      "expected_hex": "4883EC68488B055D240C0380B8C100000000",
+      "rip_relative": true,
+      "requires_relocation": true,
+      "policy": "4B sub +7B RIP load +7B cmp; relocate RIP load before absolute return to +18; no memcpy-only generic trampoline"
+    },
+    {
+      "rva": "0x264BCB0",
+      "patch_bytes": 15,
+      "expected_hex": "48895C24084C894C24204C89442418",
+      "rip_relative": false,
+      "requires_relocation": false
+    },
+    {
+      "rva": "0x2654960",
+      "patch_bytes": 17,
+      "expected_hex": "48895C2418555641564883EC204863410C",
+      "rip_relative": false,
+      "requires_relocation": false
+    }
+  ],
+  "scope_limits": {
+    "static_layout_only": true,
+    "live_death_request_commit_observed": false,
+    "case_sole_cause_proven": false,
+    "all_game_mutable_bundle_complete": false,
+    "old_a02_unknown_closed": false
+  }
+}

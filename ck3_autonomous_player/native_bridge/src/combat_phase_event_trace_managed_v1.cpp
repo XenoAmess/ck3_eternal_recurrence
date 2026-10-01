@@ -1,4 +1,5 @@
 #include "xar_bridge/combat_phase_event_trace_managed_v1.hpp"
+#include "xar_bridge/scoped_observer_lifetime_v1.hpp"
 
 #include <windows.h>
 
@@ -719,6 +720,26 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
         query->capture_runtime_join_full_entries;
     session.plan.capture_runtime_counter_output =
         query->capture_runtime_counter_output;
+    session.capture_runtime_scoped_chain = query->capture_runtime_scoped_chain;
+    if (session.capture_runtime_scoped_chain &&
+        (query->scoped_character_id <= 0 || query->scoped_related_character_id <= 0 ||
+         query->scoped_character_id == query->scoped_related_character_id ||
+         query->scoped_event_load_index < 0 || query->scoped_event_load_index >= 13)) {
+      session.stage = CombatPhaseEventTraceManagedStageV1::failed;
+      query->completion = CombatPhaseEventTraceManagedCompletionV1::trace_unavailable;
+      return true;
+    }
+    if (session.capture_runtime_scoped_chain) {
+      if (!PinScopedObserverModuleUntilProcessExitV1(
+              reinterpret_cast<const void *>(&ExecuteCombatPhaseEventTraceBeginV1))) {
+        session.stage = CombatPhaseEventTraceManagedStageV1::failed;
+        query->completion = CombatPhaseEventTraceManagedCompletionV1::trace_unavailable;
+        return true;
+      }
+      // Allocate the bounded journal before any patch is installed. A failed
+      // allocation cannot strand an armed ring or an original trampoline.
+      session.scoped_chain = std::make_unique<CombatScopedChainV1>();
+    }
     session.capture_runtime_advantage_components =
         query->capture_runtime_advantage_components;
     session.plan.candidate_joining_army_id =
@@ -735,6 +756,8 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
     }
 
     auto detour_environment = query->detour_environment;
+    detour_environment.retain_trampolines_until_process_exit =
+        session.capture_runtime_scoped_chain;
     detour_environment.managed_paused_quiescence_proven = true;
     detour_environment.capture_runtime_random_list_weights =
         session.plan.capture_runtime_random_list_weights;
@@ -838,6 +861,34 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
                                     infrastructure_rejected;
       return uninstalled;
     }
+    if (session.capture_runtime_scoped_chain) {
+      const bool installed = InstallCombatScopedDetoursV1(
+          session.scoped_detours, session.plan.module_base,
+          detour_environment.exact_build_admitted, true);
+      const bool armed = installed && ArmCombatScopedChainV1(
+          *session.scoped_chain, session.plan, query->scoped_character_id,
+          query->scoped_related_character_id, query->scoped_event_load_index);
+      if (!armed) {
+        CancelCombatScopedChainV1(*session.scoped_chain);
+        CancelCombatPhaseEventTraceRingV1(session.ring);
+        const bool scoped_uninstalled = UninstallCombatScopedDetoursV1(session.scoped_detours);
+        const bool observer_uninstalled = !session.capture_runtime_advantage_components ||
+            UninstallAdvantageComponentObserverV1(session.advantage_component_detours,
+                                                session.advantage_components);
+        const bool counter_uninstalled = !session.plan.capture_runtime_counter_output ||
+            UninstallCombatCounterOutputDetourV1(session.counter_output_detour);
+        const bool join_uninstalled = !session.plan.capture_runtime_join_width ||
+            UninstallCombatJoinWrapperDetourV1(session.join_width_detour);
+        const bool base_uninstalled = UninstallCombatPhaseEventTraceDetoursV1(session.detours);
+        session.detours_uninstalled = scoped_uninstalled && observer_uninstalled &&
+            counter_uninstalled && join_uninstalled && base_uninstalled;
+        session.stage = CombatPhaseEventTraceManagedStageV1::failed;
+        query->completion = session.detours_uninstalled
+            ? CombatPhaseEventTraceManagedCompletionV1::trace_unavailable
+            : CombatPhaseEventTraceManagedCompletionV1::infrastructure_rejected;
+        return session.detours_uninstalled;
+      }
+    }
     session.before = MakeCheckpoint(stamp, query->combat_id,
                                     query->managed_daily_sequence_token);
     session.stage =
@@ -898,11 +949,14 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
         session.drain.records[4].native_date_raw == session.after.date_raw &&
         session.drain.records[5].native_date_raw == session.after.date_raw &&
         session.drain.records[6].native_date_raw == session.after.date_raw;
-    const bool observer_uninstalled =
+    if (session.scoped_chain) FinishCombatScopedChainV1(*session.scoped_chain);
+    const bool scoped_uninstalled = !session.capture_runtime_scoped_chain ||
+        UninstallCombatScopedDetoursV1(session.scoped_detours);
+    const bool observer_uninstalled = scoped_uninstalled && (
         !session.capture_runtime_advantage_components ||
         UninstallAdvantageComponentObserverV1(
             session.advantage_component_detours,
-            session.advantage_components);
+            session.advantage_components));
     const bool counter_uninstalled = observer_uninstalled && (
         !session.plan.capture_runtime_counter_output ||
         UninstallCombatCounterOutputDetourV1(
@@ -922,6 +976,9 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
     if (session.exact_one_day_observed &&
         session.boundary_dates_match_checkpoint &&
         session.drain.bounded_capture_complete &&
+        (!session.capture_runtime_scoped_chain ||
+         (session.scoped_chain && session.scoped_chain->failure_flags.load() == 0 &&
+          session.scoped_chain->count.load() >= 2)) &&
         !session.serialized_drain.empty() &&
         (!session.capture_runtime_advantage_components ||
          AdvantageComponentObserverCompleteV1(
@@ -966,6 +1023,12 @@ std::string SerializeCombatPhaseEventTraceManagedResultV1(
     output += ",\"advantage_components\":";
     output += SerializeAdvantageComponentObserverV1(
         session.advantage_components);
+  }
+  if (session.capture_runtime_scoped_chain && session.scoped_chain) {
+    const auto scoped = SerializeCombatScopedChainV1(*session.scoped_chain);
+    if (scoped.empty()) return {};
+    output += ",\"scoped_transition_chain\":";
+    output += scoped;
   }
   output.push_back('}');
   return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1

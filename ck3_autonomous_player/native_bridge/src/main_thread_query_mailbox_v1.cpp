@@ -544,6 +544,7 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_octosexagintary == nullptr &&
       environment.permitted_executor_novemsexagintary == nullptr &&
       environment.permitted_actor_army_role_executor == nullptr &&
+      environment.permitted_scoped_variable_monitor_executor == nullptr &&
       environment.permitted_frontend_executor == nullptr &&
        environment.permitted_executor_semantic12002 == nullptr &&
        environment.permitted_executor_factions12002 == nullptr &&
@@ -880,6 +881,7 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_novemsexagintary;
   mailbox.permitted_actor_army_role_executor =
       environment.permitted_actor_army_role_executor;
+  mailbox.permitted_scoped_variable_monitor_executor = environment.permitted_scoped_variable_monitor_executor;
   mailbox.permitted_frontend_executor =
       environment.permitted_frontend_executor;
   mailbox.permitted_executor_semantic12002 =
@@ -1236,6 +1238,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_octosexagintary != nullptr ||
        mailbox.permitted_executor_novemsexagintary != nullptr ||
        mailbox.permitted_actor_army_role_executor != nullptr ||
+       mailbox.permitted_scoped_variable_monitor_executor != nullptr ||
        mailbox.permitted_frontend_executor != nullptr ||
         mailbox.permitted_executor_semantic12002 != nullptr ||
         mailbox.permitted_executor_factions12002 != nullptr ||
@@ -1342,6 +1345,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_octosexagintary &&
       executor != mailbox.permitted_executor_novemsexagintary &&
       executor != mailbox.permitted_actor_army_role_executor &&
+      executor != mailbox.permitted_scoped_variable_monitor_executor &&
       executor != mailbox.permitted_frontend_executor &&
        executor != mailbox.permitted_executor_semantic12002 &&
        executor != mailbox.permitted_executor_factions12002 &&

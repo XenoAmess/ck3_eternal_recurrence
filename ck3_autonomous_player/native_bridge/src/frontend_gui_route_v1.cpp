@@ -657,6 +657,28 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return false;
   }
   query->result = {};
+  if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {
+    game::Snapshot before{};
+    if (!stamp.paused || !stamp.jomini_state || !stamp.game_state ||
+        !stamp.rng_wrapper || !stamp.rng_state || stamp.rng_owner_thread_id != stamp.thread_id ||
+        query->mailbox->paused_owner_verified_pump_epochs.load(std::memory_order_acquire) <
+            kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs ||
+        !ReadSnapshot(query->ingame_bindings, before) ||
+        before != query->ingame_expected_snapshot || !before.paused ||
+        !before.map_ready || before.date_raw != stamp.date_raw) {
+      query->ingame_result.unavailable_reason = "owner_fresh_snapshot_admission_failed";
+      return true;
+    }
+    const bool ran = ExecuteIngameUiNavigationV1(query->environment,
+        query->ingame_request, before, stamp, query->ingame_result);
+    game::Snapshot after{};
+    if (!ran || !ReadSnapshot(query->ingame_bindings, after) || after != before) {
+      query->ingame_result.available = false;
+      query->ingame_result.status = "unavailable";
+      query->ingame_result.unavailable_reason = "owner_post_navigation_snapshot_changed";
+    }
+    return true;
+  }
   if (query->operation == FrontendGuiRouteOperationV1::inspect_tree) {
     return InspectActiveRouteTree(*query);
   }
