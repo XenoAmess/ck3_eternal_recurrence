@@ -1,0 +1,204 @@
+[
+  {
+    "key": "knights-k025",
+    "old_fact_count": 1,
+    "appended_facts": [
+      {
+        "claim": "独立R0127前档33437唯一存活、保存态兵团65",
+        "source_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+        "source_field_or_line": [
+          "/states/0/state/character_id",
+          "/states/0/state/alive_data_present",
+          "/states/0/state/dead_data_present",
+          "/states/0/state/regiment_id"
+        ],
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+          "bytes": 6984,
+          "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+        },
+        "evidence_layer": "strict-save-readback",
+        "confidence": "verified",
+        "scope": "independent R0127; saved state/date evidence, not 020 continuation or selector/sole-cause proof"
+      },
+      {
+        "claim": "独立R0127后档33437唯一死亡、前后基础勇武2→2",
+        "source_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+        "source_field_or_line": [
+          "/states/0/state/base_skill_values/5",
+          "/states/1/state/base_skill_values/5",
+          "/states/1/state/alive_data_present",
+          "/states/1/state/dead_data_present"
+        ],
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+          "bytes": 6984,
+          "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+        },
+        "evidence_layer": "strict-save-readback",
+        "confidence": "verified",
+        "scope": "independent R0127; saved state/date evidence, not 020 continuation or selector/sole-cause proof"
+      },
+      {
+        "claim": "独立R0127后档明确死亡日期1066.12.30、death_battle及killer34120",
+        "source_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+        "source_field_or_line": [
+          "/states/1/state/death_date",
+          "/states/1/state/death_reason",
+          "/states/1/state/killer_character_id"
+        ],
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+          "bytes": 6984,
+          "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+        },
+        "evidence_layer": "strict-save-readback",
+        "confidence": "verified",
+        "scope": "independent R0127; saved state/date evidence, not 020 continuation or selector/sole-cause proof"
+      },
+      {
+        "claim": "独立R0127源前后日历1066.12.29→1066.12.30；raw53146848→53146872",
+        "source_path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-live-R0127-verification.json",
+        "source_field_or_line": [
+          "/actual_saved_and_ui_dates",
+          "/native_raw_date_pair",
+          "/original_ui_review"
+        ],
+        "source_binding": {
+          "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-live-R0127-verification.json",
+          "bytes": 78106,
+          "sha256": "47FB04B5EE2FCB3C637EB151940D658E62D439EF5CFBEF38EA9A22862084F549"
+        },
+        "evidence_layer": "same-run-native-plus-save-meta-date-plus-original-map-UI",
+        "confidence": "verified",
+        "scope": "independent R0127; saved state/date evidence, not 020 continuation or selector/sole-cause proof"
+      }
+    ]
+  },
+  {
+    "key": "reinforcement-r022",
+    "old_fact_count": 2,
+    "appended_facts": [
+      {
+        "claim": "独立R0138 before暂停原版相对军力tooltip战线宽度1480",
+        "source_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+        "source_field_or_line": "/actual_visual_review/visible_values/battle_width",
+        "source_binding": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+          "bytes": 17251,
+          "sha256": "22637EF5AC6D8316A933DC856EE5B7072CC51852A897754767ED44732A24E0CB"
+        },
+        "original_PNG": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+          "bytes": 4723967,
+          "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+        },
+        "evidence_layer": "direct-original-paused-UI-review",
+        "confidence": "verified",
+        "scope": "R0138 paused UI; not historical A01 hook instant; not full G2",
+        "capture_identity": {
+          "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+          "capture_report": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+            "bytes": 9229,
+            "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+          },
+          "controller_result": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+            "bytes": 72914,
+            "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+          }
+        }
+      },
+      {
+        "claim": "同一R0138 before暂停原生control最终战宽1480",
+        "source_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-hover-review-control.json",
+        "source_field_or_line": "/body/battle_control_snapshot/final_combat_width",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-hover-review-control.json",
+          "bytes": 111534,
+          "sha256": "CEEB32F70FDA9C70F88670D111B69BD97DBBCF0725C01A54845579E939D55DC4"
+        },
+        "evidence_layer": "same-paused-native-control",
+        "confidence": "verified",
+        "scope": "native current paused state; not A01 entry/return/damage hook proof",
+        "capture_identity": {
+          "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+          "capture_report": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+            "bytes": 9229,
+            "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+          },
+          "controller_result": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+            "bytes": 72914,
+            "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "key": "reinforcement-r029",
+    "old_fact_count": 1,
+    "appended_facts": [
+      {
+        "claim": "独立R0138 after暂停原版相对军力tooltip战线宽度2220",
+        "source_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-sample.json",
+        "source_field_or_line": "/actual_visual_review/visible_values/battle_width",
+        "source_binding": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-sample.json",
+          "bytes": 17208,
+          "sha256": "0FDF85253DC4F5E7F068ADC54F7DB5144002A47730F28D26841DCC36DB5CCD04"
+        },
+        "original_PNG": {
+          "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+          "bytes": 4795457,
+          "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+        },
+        "evidence_layer": "direct-original-paused-UI-review",
+        "confidence": "verified",
+        "scope": "R0138 paused UI; not historical A01 hook instant; not full G2",
+        "capture_identity": {
+          "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+          "capture_report": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+            "bytes": 9229,
+            "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+          },
+          "controller_result": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+            "bytes": 72914,
+            "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+          }
+        }
+      },
+      {
+        "claim": "同一R0138 after暂停原生control最终战宽2220",
+        "source_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-post-hover-review-control.json",
+        "source_field_or_line": "/body/battle_control_snapshot/final_combat_width",
+        "source_binding": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-post-hover-review-control.json",
+          "bytes": 131621,
+          "sha256": "60636D98EEE26E41A3E563259C51E15A0FCEFCF8A7ADA8A3E2BFA5905C2A7FAC"
+        },
+        "evidence_layer": "same-paused-native-control",
+        "confidence": "verified",
+        "scope": "native current paused state; not A01 entry/return/damage hook proof",
+        "capture_identity": {
+          "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+          "capture_report": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+            "bytes": 9229,
+            "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+          },
+          "controller_result": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+            "bytes": 72914,
+            "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+          }
+        }
+      }
+    ]
+  }
+]

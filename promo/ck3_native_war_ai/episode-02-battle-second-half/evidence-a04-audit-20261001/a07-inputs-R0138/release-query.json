@@ -1,0 +1,60 @@
+{
+  "queried_at_utc": "2026-10-01T03:16:46.008635+00:00",
+  "release": {
+    "assets": [
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/540761476",
+        "contentType": "application/octet-stream",
+        "createdAt": "2026-09-02T06:57:14Z",
+        "digest": "sha256:776f6ec5ec03a306e1bcb8f95d0be55c2a39cc89a46a5faf085966876722b5a7",
+        "downloadCount": 5,
+        "id": "RA_kwDOULD9e84gO12E",
+        "label": "",
+        "name": "SHA256SUMS",
+        "size": 208,
+        "state": "uploaded",
+        "updatedAt": "2026-09-02T06:57:14Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/SHA256SUMS"
+      },
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/540761475",
+        "contentType": "application/octet-stream",
+        "createdAt": "2026-09-02T06:57:14Z",
+        "digest": "sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+        "downloadCount": 6710,
+        "id": "RA_kwDOULD9e84gO12D",
+        "label": "",
+        "name": "xar_promo_toolchain-0.2.1-py3-none-any.whl",
+        "size": 190405,
+        "state": "uploaded",
+        "updatedAt": "2026-09-02T06:57:14Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+      },
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/540761477",
+        "contentType": "application/x-gtar",
+        "createdAt": "2026-09-02T06:57:14Z",
+        "digest": "sha256:56a712c03078a67a856f861d8c619dcdbd17967a4f26645c9c6e1643d14e4ad5",
+        "downloadCount": 2,
+        "id": "RA_kwDOULD9e84gO12F",
+        "label": "",
+        "name": "xar_promo_toolchain-0.2.1.tar.gz",
+        "size": 13281238,
+        "state": "uploaded",
+        "updatedAt": "2026-09-02T06:57:15Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1.tar.gz"
+      }
+    ],
+    "isDraft": false,
+    "isPrerelease": false,
+    "name": "XAR Promo Toolchain v0.2.1",
+    "publishedAt": "2026-09-02T06:57:15Z",
+    "tagName": "v0.2.1",
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1"
+  },
+  "wheel": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\inputs\\xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "bytes": 190405,
+    "sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621"
+  }
+}

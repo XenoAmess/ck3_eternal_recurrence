@@ -1,0 +1,13 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-R0138-readonly-validation-attempt-01\\final-verification-process-a01\\stdout.bin",
+    "bytes": 34236,
+    "sha256": "481C04DF7E1FFFDBEBDC95DC561D85E639BB8FF4AED7EB1F265B16C8AF300969"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-R0138-readonly-validation-attempt-01\\final-verification-process-a01\\stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

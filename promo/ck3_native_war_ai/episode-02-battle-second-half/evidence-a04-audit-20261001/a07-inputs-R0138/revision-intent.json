@@ -1,0 +1,61 @@
+{
+  "at_utc": "2026-10-01T03:16:50.445390+00:00",
+  "target_keys": [
+    "knights-k025",
+    "reinforcement-r022",
+    "reinforcement-r029"
+  ],
+  "recompiled_chunks": 3,
+  "exact_copy_chunks": 21,
+  "output_name": "CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+  "R0127_scope": "independent saved-state card; not 020 continuation; selector and sole cause unverified",
+  "capture_run_id": "R0138",
+  "capture_identity": {
+    "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0138",
+    "capture_report": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+      "bytes": 9229,
+      "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+    },
+    "controller_result": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+      "bytes": 72914,
+      "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+    }
+  },
+  "paused_pair_scope": "same cleaned run before/after original paused UI and native control; dates +24; historical A01 hook remains separate",
+  "actual_paused_widths": {
+    "before": 1480,
+    "after": 2220
+  },
+  "actual_paused_dates": {
+    "before": {
+      "visible_date": "公元1066年12月14日",
+      "native_date_raw": 53146488,
+      "sample": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+        "bytes": 17251,
+        "sha256": "22637EF5AC6D8316A933DC856EE5B7072CC51852A897754767ED44732A24E0CB"
+      }
+    },
+    "after": {
+      "visible_date": "公元1066年12月15日",
+      "native_date_raw": 53146512,
+      "sample": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-sample.json",
+        "bytes": 17208,
+        "sha256": "0FDF85253DC4F5E7F068ADC54F7DB5144002A47730F28D26841DCC36DB5CCD04"
+      }
+    }
+  },
+  "cleanup_receipt": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\session-result.json",
+    "bytes": 14096,
+    "sha256": "2629D37248A253A0B58EBE44DC07B70B6E4D26200425DEA778F11C161102AAEE"
+  },
+  "narration_subtitle_timing_AAC_unchanged": true,
+  "old_fact_objects_unchanged": true,
+  "timed_k035_notice_chunk_exact_copy": true,
+  "human_signoff": "not-provided",
+  "production_clean_admission": false
+}

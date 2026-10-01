@@ -1,0 +1,206 @@
+[
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\project-config.json",
+      "bytes": 1804,
+      "sha256": "41E9DD915860FB79092C933ACEA19E44B9D16F8B2F93B9F47BF3FEA2A10040FF"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a07-project.json",
+      "bytes": 1804,
+      "sha256": "41E9DD915860FB79092C933ACEA19E44B9D16F8B2F93B9F47BF3FEA2A10040FF"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\a07-R0138-actual-bindings-a01.json",
+      "bytes": 5317,
+      "sha256": "1EA579969B923150C85D27FB26C4EB515123504FBA0DD4A744946A0CB27F66E5"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a07-bindings-R0138.json",
+      "bytes": 5317,
+      "sha256": "1EA579969B923150C85D27FB26C4EB515123504FBA0DD4A744946A0CB27F66E5"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\R0138-root-crop-reviews-a01.json",
+      "bytes": 3769,
+      "sha256": "AB622B1A6C3B99572D928F1A965CDBD151128564FF5A26EBDDCD281B2FA51B6A"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\root-crop-reviews.json",
+      "bytes": 3769,
+      "sha256": "AB622B1A6C3B99572D928F1A965CDBD151128564FF5A26EBDDCD281B2FA51B6A"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\a07-R0138-actual-bindings-a01-plan.json",
+      "bytes": 4911,
+      "sha256": "04446837DDE58DC033F155B5DFDE1C9AA804A73F89D2D770E0E20268F05E2501"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\actual-plan.json",
+      "bytes": 4911,
+      "sha256": "04446837DDE58DC033F155B5DFDE1C9AA804A73F89D2D770E0E20268F05E2501"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-04\\composer-handoff.json",
+      "bytes": 5344,
+      "sha256": "CE89A11FE22DB6B82D93D7746A71602C9545BE6346ACBA26CAB7F31A8E1DD6FA"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\composer-handoff.json",
+      "bytes": 5344,
+      "sha256": "CE89A11FE22DB6B82D93D7746A71602C9545BE6346ACBA26CAB7F31A8E1DD6FA"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-composer-independent-review-other-a03\\independent-composer-review.json",
+      "bytes": 15305,
+      "sha256": "180F2F10122B21AA5B84207964BF6CCA62B3E97661E53F812F33E2E8EB57A70B"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\independent-composer-44cases.json",
+      "bytes": 15305,
+      "sha256": "180F2F10122B21AA5B84207964BF6CCA62B3E97661E53F812F33E2E8EB57A70B"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\a07-root-keyframe-observations-a01.json",
+      "bytes": 3976,
+      "sha256": "9EC91801057325F9D2C6BDB10002788B6A2CA703D0045BB4C0A471C7B1DF29B7"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\root-five-keyframe-observations.json",
+      "bytes": 3976,
+      "sha256": "9EC91801057325F9D2C6BDB10002788B6A2CA703D0045BB4C0A471C7B1DF29B7"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\final-artifact.json",
+      "bytes": 1191,
+      "sha256": "DAAD75C16FCC31F7A5277A6F72DC82CE9DCCCCC6FE86042CF1E64135FFEAE047"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\final-artifact.json",
+      "bytes": 1191,
+      "sha256": "DAAD75C16FCC31F7A5277A6F72DC82CE9DCCCCC6FE86042CF1E64135FFEAE047"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\final-brown-gold-artifact.json",
+      "bytes": 1191,
+      "sha256": "DAAD75C16FCC31F7A5277A6F72DC82CE9DCCCCC6FE86042CF1E64135FFEAE047"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\final-brown-gold-artifact.json",
+      "bytes": 1191,
+      "sha256": "DAAD75C16FCC31F7A5277A6F72DC82CE9DCCCCC6FE86042CF1E64135FFEAE047"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\release-query.json",
+      "bytes": 2590,
+      "sha256": "755828A1E8B6F4D47F5E17F8BBB3CCFD87EAB4B6D94803A45348A7F16063C8EF"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\release-query.json",
+      "bytes": 2590,
+      "sha256": "755828A1E8B6F4D47F5E17F8BBB3CCFD87EAB4B6D94803A45348A7F16063C8EF"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\input-freeze.json",
+      "bytes": 15277,
+      "sha256": "869BDD65419153131195931999B928F729BD7286376EC591F166162BCB004EE3"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\input-freeze.json",
+      "bytes": 15277,
+      "sha256": "869BDD65419153131195931999B928F729BD7286376EC591F166162BCB004EE3"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\edit-input-freeze.json",
+      "bytes": 171410,
+      "sha256": "7097813A91539F2E9DD826D2CE5DFBAA7A32102C7546B42A155F09C67D7C4B79"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\edit-input-freeze.json",
+      "bytes": 171410,
+      "sha256": "7097813A91539F2E9DD826D2CE5DFBAA7A32102C7546B42A155F09C67D7C4B79"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\revision-intent.json",
+      "bytes": 2642,
+      "sha256": "2814968501832429C009076239FB612189FA8928578DF0E1C7F52C80B2E1F560"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\revision-intent.json",
+      "bytes": 2642,
+      "sha256": "2814968501832429C009076239FB612189FA8928578DF0E1C7F52C80B2E1F560"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\claim-additions.json",
+      "bytes": 11694,
+      "sha256": "298D35A317211B719C0B49E374C5683C370EF3DC7263BF8BA317442092154689"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\claim-additions.json",
+      "bytes": 11694,
+      "sha256": "298D35A317211B719C0B49E374C5683C370EF3DC7263BF8BA317442092154689"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\a06-to-a07-chunk-diff.json",
+      "bytes": 27730,
+      "sha256": "155541C48F09AE4F368D58D8A5E1FA65E66C2A9863566D53BC90BA312DFE33E1"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\a06-to-a07-chunk-diff.json",
+      "bytes": 27730,
+      "sha256": "155541C48F09AE4F368D58D8A5E1FA65E66C2A9863566D53BC90BA312DFE33E1"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\card-pixel-checks.json",
+      "bytes": 4187,
+      "sha256": "7DDC11E17D4DF29A66D1313B7D19C340E9FBC4A1DAB8825DB00A4A48F1478B8C"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\card-pixel-checks.json",
+      "bytes": 4187,
+      "sha256": "7DDC11E17D4DF29A66D1313B7D19C340E9FBC4A1DAB8825DB00A4A48F1478B8C"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\native-preservation-complete.json",
+      "bytes": 203885,
+      "sha256": "C715BD5980F91ADDFB1DE9F59FD1BCE35EC5511031557DD529485080F7051F33"
+    },
+    "exact_copy": {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\a07-inputs-R0138\\native-preservation-complete.json",
+      "bytes": 203885,
+      "sha256": "C715BD5980F91ADDFB1DE9F59FD1BCE35EC5511031557DD529485080F7051F33"
+    }
+  }
+]

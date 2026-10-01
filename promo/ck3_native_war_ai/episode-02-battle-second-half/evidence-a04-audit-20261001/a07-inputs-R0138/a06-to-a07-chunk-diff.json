@@ -1,0 +1,775 @@
+[
+  {
+    "chapter": "opening",
+    "chunk_index": 1,
+    "keys": [
+      "opening-o001",
+      "opening-o002",
+      "opening-o003",
+      "opening-o004",
+      "opening-o005",
+      "opening-o006",
+      "opening-o007",
+      "opening-o008"
+    ],
+    "duration_expected": 85.0,
+    "global_start": 0,
+    "local_start": 0,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\opening\\chunk-01\\chunk.mp4",
+      "bytes": 7461717,
+      "sha256": "3841E3847F045542E805D7F017A1540109F29889979C7AB23DA3AF399B97AB07",
+      "duration_expected": 85.0
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\opening\\chunk-01\\chunk.mp4",
+      "bytes": 7461717,
+      "sha256": "3841E3847F045542E805D7F017A1540109F29889979C7AB23DA3AF399B97AB07",
+      "duration_expected": 85.0
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "opening",
+    "chunk_index": 2,
+    "keys": [
+      "opening-o009",
+      "opening-o010"
+    ],
+    "duration_expected": 20.700000000000003,
+    "global_start": 85.0,
+    "local_start": 85.0,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\opening\\chunk-02\\chunk.mp4",
+      "bytes": 1960799,
+      "sha256": "F67004515DDD540D503139F18BCA8104F692457A3DF8231F6CB44B6EECEA6BA4",
+      "duration_expected": 20.700000000000003
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\opening\\chunk-02\\chunk.mp4",
+      "bytes": 1960799,
+      "sha256": "F67004515DDD540D503139F18BCA8104F692457A3DF8231F6CB44B6EECEA6BA4",
+      "duration_expected": 20.700000000000003
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "pursuit",
+    "chunk_index": 1,
+    "keys": [
+      "pursuit-p001",
+      "pursuit-p002",
+      "pursuit-p003",
+      "pursuit-p004",
+      "pursuit-p005",
+      "pursuit-p006",
+      "pursuit-p007",
+      "pursuit-p008"
+    ],
+    "duration_expected": 93.63333333333333,
+    "global_start": 105.7,
+    "local_start": 0,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\pursuit\\chunk-01\\chunk.mp4",
+      "bytes": 12728185,
+      "sha256": "D944E34BC7792358751AA84D648FFF76AAAC5DC529D0B5BF89291CC8B054E935",
+      "duration_expected": 93.63333333333333
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\pursuit\\chunk-01\\chunk.mp4",
+      "bytes": 12728185,
+      "sha256": "D944E34BC7792358751AA84D648FFF76AAAC5DC529D0B5BF89291CC8B054E935",
+      "duration_expected": 93.63333333333333
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "pursuit",
+    "chunk_index": 2,
+    "keys": [
+      "pursuit-p009",
+      "pursuit-p010",
+      "pursuit-p011",
+      "pursuit-p012",
+      "pursuit-p013",
+      "pursuit-p014",
+      "pursuit-p015",
+      "pursuit-p016"
+    ],
+    "duration_expected": 96.66666666666667,
+    "global_start": 199.33333333333331,
+    "local_start": 93.63333333333333,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\pursuit\\chunk-02\\chunk.mp4",
+      "bytes": 7319852,
+      "sha256": "D21785B9366C0DE45436D4721A41D5BA21FEBDAA4C0CCC6BBD2675EBD9B6E8E5",
+      "duration_expected": 96.66666666666667
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\pursuit\\chunk-02\\chunk.mp4",
+      "bytes": 7319852,
+      "sha256": "D21785B9366C0DE45436D4721A41D5BA21FEBDAA4C0CCC6BBD2675EBD9B6E8E5",
+      "duration_expected": 96.66666666666667
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "pursuit",
+    "chunk_index": 3,
+    "keys": [
+      "pursuit-p017",
+      "pursuit-p018",
+      "pursuit-p019",
+      "pursuit-p020",
+      "pursuit-p021",
+      "pursuit-p022",
+      "pursuit-p023",
+      "pursuit-p024"
+    ],
+    "duration_expected": 98.9,
+    "global_start": 296.00000000000006,
+    "local_start": 190.30000000000004,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\pursuit\\chunk-03\\chunk.mp4",
+      "bytes": 23393242,
+      "sha256": "9E4B6125F334C8D9EA7FE7144A41EA7DFE7C6016DA09B5A5DDE6FA9D96257AE8",
+      "duration_expected": 98.9
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\pursuit\\chunk-03\\chunk.mp4",
+      "bytes": 23393242,
+      "sha256": "9E4B6125F334C8D9EA7FE7144A41EA7DFE7C6016DA09B5A5DDE6FA9D96257AE8",
+      "duration_expected": 98.9
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "pursuit",
+    "chunk_index": 4,
+    "keys": [
+      "pursuit-p025",
+      "pursuit-p026",
+      "pursuit-p027",
+      "pursuit-p028",
+      "pursuit-p029",
+      "pursuit-p030"
+    ],
+    "duration_expected": 76.0,
+    "global_start": 394.9000000000001,
+    "local_start": 289.2000000000001,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\pursuit\\chunk-04\\chunk.mp4",
+      "bytes": 6420996,
+      "sha256": "E5CF34E383E874FDDAEEE3EFE7754EDE54CFA68CBC12BF293FBF681BB66DC854",
+      "duration_expected": 76.0
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\pursuit\\chunk-04\\chunk.mp4",
+      "bytes": 6420996,
+      "sha256": "E5CF34E383E874FDDAEEE3EFE7754EDE54CFA68CBC12BF293FBF681BB66DC854",
+      "duration_expected": 76.0
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "knights",
+    "chunk_index": 1,
+    "keys": [
+      "knights-k001",
+      "knights-k002",
+      "knights-k003",
+      "knights-k004",
+      "knights-k005",
+      "knights-k006",
+      "knights-k007",
+      "knights-k008"
+    ],
+    "duration_expected": 85.43333333333334,
+    "global_start": 470.90000000000015,
+    "local_start": 0,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\knights\\chunk-01\\chunk.mp4",
+      "bytes": 6573728,
+      "sha256": "A03F08C2EE88BDB5B88EC82B5CB5A7FCDB6605BE9BDB5EFC1FF63CD8E760D999",
+      "duration_expected": 85.43333333333334
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\knights\\chunk-01\\chunk.mp4",
+      "bytes": 6573728,
+      "sha256": "A03F08C2EE88BDB5B88EC82B5CB5A7FCDB6605BE9BDB5EFC1FF63CD8E760D999",
+      "duration_expected": 85.43333333333334
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "knights",
+    "chunk_index": 2,
+    "keys": [
+      "knights-k009",
+      "knights-k010",
+      "knights-k011",
+      "knights-k012",
+      "knights-k013",
+      "knights-k014",
+      "knights-k015",
+      "knights-k016"
+    ],
+    "duration_expected": 83.93333333333334,
+    "global_start": 556.3333333333335,
+    "local_start": 85.43333333333334,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\knights\\chunk-02\\chunk.mp4",
+      "bytes": 6250125,
+      "sha256": "D5BDFE0482C12E2B3B9BEA9F6637EB38CA26E4ED37776F50BE33551425AEB999",
+      "duration_expected": 83.93333333333334
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\knights\\chunk-02\\chunk.mp4",
+      "bytes": 6250125,
+      "sha256": "D5BDFE0482C12E2B3B9BEA9F6637EB38CA26E4ED37776F50BE33551425AEB999",
+      "duration_expected": 83.93333333333334
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "knights",
+    "chunk_index": 3,
+    "keys": [
+      "knights-k017",
+      "knights-k018",
+      "knights-k019",
+      "knights-k020",
+      "knights-k021",
+      "knights-k022",
+      "knights-k023",
+      "knights-k024"
+    ],
+    "duration_expected": 90.0,
+    "global_start": 640.2666666666669,
+    "local_start": 169.36666666666667,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\knights\\chunk-03\\chunk.mp4",
+      "bytes": 6564993,
+      "sha256": "691823679BB8F9F7491DC25EE9F4C46C0F5407FA4DED1C09E07E12794AAEC392",
+      "duration_expected": 90.0
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\knights\\chunk-03\\chunk.mp4",
+      "bytes": 6564993,
+      "sha256": "691823679BB8F9F7491DC25EE9F4C46C0F5407FA4DED1C09E07E12794AAEC392",
+      "duration_expected": 90.0
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "knights",
+    "chunk_index": 4,
+    "keys": [
+      "knights-k025",
+      "knights-k026",
+      "knights-k027",
+      "knights-k028",
+      "knights-k029",
+      "knights-k030",
+      "knights-k031",
+      "knights-k032"
+    ],
+    "duration_expected": 88.9,
+    "global_start": 730.2666666666669,
+    "local_start": 259.3666666666667,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\knights\\chunk-04\\chunk.mp4",
+      "bytes": 6586831,
+      "sha256": "7E47D7A8149955DF875EA329C2E09DC45E154C8C80B2BB251B53EA67C1637956",
+      "duration_expected": 88.9
+    },
+    "affected_keys": [
+      "knights-k025"
+    ],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\knights\\chunk-04\\chunk.mp4",
+      "bytes": 6686278,
+      "sha256": "929C06F4828F3F98C83061A4942C20C8D3E3950A807712417DFE78E5B6F05297",
+      "duration_expected": 88.9
+    },
+    "subtitle_bytes_identical": true,
+    "action": "recompiled-authorized-left-evidence",
+    "chunk_bytes_identical": false
+  },
+  {
+    "chapter": "knights",
+    "chunk_index": 5,
+    "keys": [
+      "knights-k033",
+      "knights-k034",
+      "knights-k035",
+      "knights-k036",
+      "knights-k037",
+      "knights-k038"
+    ],
+    "duration_expected": 67.3,
+    "global_start": 819.1666666666667,
+    "local_start": 348.26666666666665,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\knights\\chunk-05\\chunk.mp4",
+      "bytes": 26914058,
+      "sha256": "29071353D441A8E662BC62E212B4EBB767386F9D5599AECEF4B4E7345D734D91",
+      "duration_expected": 67.3
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\knights\\chunk-05\\chunk.mp4",
+      "bytes": 26914058,
+      "sha256": "29071353D441A8E662BC62E212B4EBB767386F9D5599AECEF4B4E7345D734D91",
+      "duration_expected": 67.3
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "reinforcement",
+    "chunk_index": 1,
+    "keys": [
+      "reinforcement-r001",
+      "reinforcement-r002",
+      "reinforcement-r003",
+      "reinforcement-r004",
+      "reinforcement-r005",
+      "reinforcement-r006",
+      "reinforcement-r007",
+      "reinforcement-r008"
+    ],
+    "duration_expected": 84.2,
+    "global_start": 886.4666666666668,
+    "local_start": 0,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-01\\chunk.mp4",
+      "bytes": 30501030,
+      "sha256": "F54B14D4C1D19E52129DF884CC2CDEA78809564BAD745F13DEE8B40DE498D052",
+      "duration_expected": 84.2
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\reinforcement\\chunk-01\\chunk.mp4",
+      "bytes": 30501030,
+      "sha256": "F54B14D4C1D19E52129DF884CC2CDEA78809564BAD745F13DEE8B40DE498D052",
+      "duration_expected": 84.2
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "reinforcement",
+    "chunk_index": 2,
+    "keys": [
+      "reinforcement-r009",
+      "reinforcement-r010",
+      "reinforcement-r011",
+      "reinforcement-r012",
+      "reinforcement-r013",
+      "reinforcement-r014",
+      "reinforcement-r015",
+      "reinforcement-r016"
+    ],
+    "duration_expected": 87.66666666666667,
+    "global_start": 970.6666666666669,
+    "local_start": 84.2,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-02\\chunk.mp4",
+      "bytes": 6996706,
+      "sha256": "3D48B1F4E9DC7B0F7694F0FB1C30C038A4E6B3826B64CF23E0663D3A12090BC0",
+      "duration_expected": 87.66666666666667
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\reinforcement\\chunk-02\\chunk.mp4",
+      "bytes": 6996706,
+      "sha256": "3D48B1F4E9DC7B0F7694F0FB1C30C038A4E6B3826B64CF23E0663D3A12090BC0",
+      "duration_expected": 87.66666666666667
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "reinforcement",
+    "chunk_index": 3,
+    "keys": [
+      "reinforcement-r017",
+      "reinforcement-r018",
+      "reinforcement-r019",
+      "reinforcement-r020",
+      "reinforcement-r021",
+      "reinforcement-r022",
+      "reinforcement-r023",
+      "reinforcement-r024"
+    ],
+    "duration_expected": 88.46666666666667,
+    "global_start": 1058.3333333333335,
+    "local_start": 171.86666666666667,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-03\\chunk.mp4",
+      "bytes": 7138096,
+      "sha256": "3AFFF93D1D0BD8B641D007A838B63B637798D17DC87BE219186C4AFBC188BC4E",
+      "duration_expected": 88.46666666666667
+    },
+    "affected_keys": [
+      "reinforcement-r022"
+    ],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\reinforcement\\chunk-03\\chunk.mp4",
+      "bytes": 7411135,
+      "sha256": "C74F72CF77BDB15A42B8F5258A69338B31FC1E32A82894B018CB95A9B599CC3E",
+      "duration_expected": 88.46666666666667
+    },
+    "subtitle_bytes_identical": true,
+    "action": "recompiled-authorized-left-evidence",
+    "chunk_bytes_identical": false
+  },
+  {
+    "chapter": "reinforcement",
+    "chunk_index": 4,
+    "keys": [
+      "reinforcement-r025",
+      "reinforcement-r026",
+      "reinforcement-r027",
+      "reinforcement-r028",
+      "reinforcement-r029",
+      "reinforcement-r030",
+      "reinforcement-r031",
+      "reinforcement-r032"
+    ],
+    "duration_expected": 91.3,
+    "global_start": 1146.8000000000002,
+    "local_start": 260.3333333333333,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-04\\chunk.mp4",
+      "bytes": 7196178,
+      "sha256": "1F21FFFE74EC1C40AA437AECD449D0C8F8AFB5CA4EA0614F5306F87CC3A3D004",
+      "duration_expected": 91.3
+    },
+    "affected_keys": [
+      "reinforcement-r029"
+    ],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\reinforcement\\chunk-04\\chunk.mp4",
+      "bytes": 7384990,
+      "sha256": "214D7E77853945C3EAF3D4B7DDED5B2EA5B04413F960926179CBFD38C69B07D5",
+      "duration_expected": 91.3
+    },
+    "subtitle_bytes_identical": true,
+    "action": "recompiled-authorized-left-evidence",
+    "chunk_bytes_identical": false
+  },
+  {
+    "chapter": "reinforcement",
+    "chunk_index": 5,
+    "keys": [
+      "reinforcement-r033",
+      "reinforcement-r034",
+      "reinforcement-r035",
+      "reinforcement-r036",
+      "reinforcement-r037",
+      "reinforcement-r038",
+      "reinforcement-r039",
+      "reinforcement-r040"
+    ],
+    "duration_expected": 88.6,
+    "global_start": 1238.1000000000001,
+    "local_start": 351.63333333333327,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-05\\chunk.mp4",
+      "bytes": 17880708,
+      "sha256": "A8411C74FB920D6469965479C4CE5488C667F17957F2A74EED83F74D4296610F",
+      "duration_expected": 88.6
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\reinforcement\\chunk-05\\chunk.mp4",
+      "bytes": 17880708,
+      "sha256": "A8411C74FB920D6469965479C4CE5488C667F17957F2A74EED83F74D4296610F",
+      "duration_expected": 88.6
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "reinforcement",
+    "chunk_index": 6,
+    "keys": [
+      "reinforcement-r041",
+      "reinforcement-r042"
+    ],
+    "duration_expected": 21.833333333333332,
+    "global_start": 1326.7,
+    "local_start": 440.2333333333333,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\reinforcement\\chunk-06\\chunk.mp4",
+      "bytes": 2095495,
+      "sha256": "908585DFE97D467748A3DF74DF02F833BAB35CEE131420C573BA0A2BF6129791",
+      "duration_expected": 21.833333333333332
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\reinforcement\\chunk-06\\chunk.mp4",
+      "bytes": 2095495,
+      "sha256": "908585DFE97D467748A3DF74DF02F833BAB35CEE131420C573BA0A2BF6129791",
+      "duration_expected": 21.833333333333332
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "terminal",
+    "chunk_index": 1,
+    "keys": [
+      "terminal-t001",
+      "terminal-t002",
+      "terminal-t003",
+      "terminal-t004",
+      "terminal-t005",
+      "terminal-t006",
+      "terminal-t007",
+      "terminal-t008"
+    ],
+    "duration_expected": 76.36666666666667,
+    "global_start": 1348.5333333333335,
+    "local_start": 0,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\terminal\\chunk-01\\chunk.mp4",
+      "bytes": 14526896,
+      "sha256": "CB4473FE64AE57F566C045DD80949D252A6CBB0E0A90684C19665850961F286A",
+      "duration_expected": 76.36666666666667
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\terminal\\chunk-01\\chunk.mp4",
+      "bytes": 14526896,
+      "sha256": "CB4473FE64AE57F566C045DD80949D252A6CBB0E0A90684C19665850961F286A",
+      "duration_expected": 76.36666666666667
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "terminal",
+    "chunk_index": 2,
+    "keys": [
+      "terminal-t009",
+      "terminal-t010",
+      "terminal-t011",
+      "terminal-t012",
+      "terminal-t013",
+      "terminal-t014",
+      "terminal-t015",
+      "terminal-t016"
+    ],
+    "duration_expected": 79.13333333333333,
+    "global_start": 1424.9,
+    "local_start": 76.36666666666667,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\terminal\\chunk-02\\chunk.mp4",
+      "bytes": 5793725,
+      "sha256": "38E4009429CBE2A78B9B709CC57CE03B297AEA852B2A349ACC31B4D2F1A6F95C",
+      "duration_expected": 79.13333333333333
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\terminal\\chunk-02\\chunk.mp4",
+      "bytes": 5793725,
+      "sha256": "38E4009429CBE2A78B9B709CC57CE03B297AEA852B2A349ACC31B4D2F1A6F95C",
+      "duration_expected": 79.13333333333333
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "terminal",
+    "chunk_index": 3,
+    "keys": [
+      "terminal-t017",
+      "terminal-t018",
+      "terminal-t019",
+      "terminal-t020",
+      "terminal-t021",
+      "terminal-t022",
+      "terminal-t023",
+      "terminal-t024"
+    ],
+    "duration_expected": 79.96666666666667,
+    "global_start": 1504.0333333333335,
+    "local_start": 155.5,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\terminal\\chunk-03\\chunk.mp4",
+      "bytes": 6070453,
+      "sha256": "E9FD60EBA02808E41C9FAD487CC1DAF1FC81ABC111F3FA42FB449684197C3B37",
+      "duration_expected": 79.96666666666667
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\terminal\\chunk-03\\chunk.mp4",
+      "bytes": 6070453,
+      "sha256": "E9FD60EBA02808E41C9FAD487CC1DAF1FC81ABC111F3FA42FB449684197C3B37",
+      "duration_expected": 79.96666666666667
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "terminal",
+    "chunk_index": 4,
+    "keys": [
+      "terminal-t025",
+      "terminal-t026",
+      "terminal-t027",
+      "terminal-t028",
+      "terminal-t029",
+      "terminal-t030",
+      "terminal-t031",
+      "terminal-t032"
+    ],
+    "duration_expected": 82.16666666666666,
+    "global_start": 1584.0000000000002,
+    "local_start": 235.46666666666667,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\terminal\\chunk-04\\chunk.mp4",
+      "bytes": 6162789,
+      "sha256": "51F1446FB76B901716DF5FD64DDE3DC3C2E32640E12F6C6B7405DE740631069F",
+      "duration_expected": 82.16666666666666
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\terminal\\chunk-04\\chunk.mp4",
+      "bytes": 6162789,
+      "sha256": "51F1446FB76B901716DF5FD64DDE3DC3C2E32640E12F6C6B7405DE740631069F",
+      "duration_expected": 82.16666666666666
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "terminal",
+    "chunk_index": 5,
+    "keys": [
+      "terminal-t033",
+      "terminal-t034",
+      "terminal-t035",
+      "terminal-t036",
+      "terminal-t037"
+    ],
+    "duration_expected": 51.63333333333333,
+    "global_start": 1666.166666666667,
+    "local_start": 317.6333333333334,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\terminal\\chunk-05\\chunk.mp4",
+      "bytes": 4078103,
+      "sha256": "5CBC1309914A627482DFF10AD208491C884C20F492EF3C5B4EBDD4696BE0C7AE",
+      "duration_expected": 51.63333333333333
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\terminal\\chunk-05\\chunk.mp4",
+      "bytes": 4078103,
+      "sha256": "5CBC1309914A627482DFF10AD208491C884C20F492EF3C5B4EBDD4696BE0C7AE",
+      "duration_expected": 51.63333333333333
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "closing",
+    "chunk_index": 1,
+    "keys": [
+      "closing-c001",
+      "closing-c002",
+      "closing-c003",
+      "closing-c004",
+      "closing-c005",
+      "closing-c006",
+      "closing-c007",
+      "closing-c008"
+    ],
+    "duration_expected": 78.1,
+    "global_start": 1717.8000000000002,
+    "local_start": 0,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\closing\\chunk-01\\chunk.mp4",
+      "bytes": 17095049,
+      "sha256": "CB822F31A5479B586E9BD3F14EA6D2479C5266228B1C5AE6B520477C32D62802",
+      "duration_expected": 78.1
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\closing\\chunk-01\\chunk.mp4",
+      "bytes": 17095049,
+      "sha256": "CB822F31A5479B586E9BD3F14EA6D2479C5266228B1C5AE6B520477C32D62802",
+      "duration_expected": 78.1
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  },
+  {
+    "chapter": "closing",
+    "chunk_index": 2,
+    "keys": [
+      "closing-c009",
+      "closing-c010"
+    ],
+    "duration_expected": 22.733333333333334,
+    "global_start": 1795.9,
+    "local_start": 78.10000000000001,
+    "previous_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters\\closing\\chunk-02\\chunk.mp4",
+      "bytes": 1971808,
+      "sha256": "EFBE767E3F92655C21F3D23B52963FD4419AC530F6B3B8C95303001A00CDA70E",
+      "duration_expected": 22.733333333333334
+    },
+    "affected_keys": [],
+    "new_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\chapters\\closing\\chunk-02\\chunk.mp4",
+      "bytes": 1971808,
+      "sha256": "EFBE767E3F92655C21F3D23B52963FD4419AC530F6B3B8C95303001A00CDA70E",
+      "duration_expected": 22.733333333333334
+    },
+    "subtitle_bytes_identical": true,
+    "action": "exact-byte-copy",
+    "chunk_bytes_identical": true
+  }
+]

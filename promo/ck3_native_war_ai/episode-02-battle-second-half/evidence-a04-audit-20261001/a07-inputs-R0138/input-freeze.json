@@ -1,0 +1,264 @@
+{
+  "at_utc": "2026-10-01T03:16:50.373793+00:00",
+  "previous_final": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+    "bytes": 239659692,
+    "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+  },
+  "binding": {
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05\\a07-R0138-actual-bindings-a01.json",
+    "bytes": 5317,
+    "sha256": "1EA579969B923150C85D27FB26C4EB515123504FBA0DD4A744946A0CB27F66E5"
+  },
+  "wheel": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\inputs\\xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "bytes": 190405,
+    "sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621"
+  },
+  "project_sources": [
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\compose_evidence_a07.py",
+      "bytes": 68592,
+      "sha256": "F7001557BB8F18E6C2BCFCC93121012B440E4F73F41AED6A72A0E51FCC65C0A6"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\compose_review_boards_a04.py",
+      "bytes": 5757,
+      "sha256": "E4A03AF3728D2DC5F9BE85831F29790FA7110920CCAA6715833105D058010593"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\review_story_a04.py",
+      "bytes": 21181,
+      "sha256": "08525C7AD0F9C4D1F212885DC4731C53215F166A0AA40524E068B5FD5E4A4E73"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\integration\\src\\war_ai_promo\\series_palette.py",
+      "bytes": 583,
+      "sha256": "DF63962C4CE3260E4B864A46B652631FB99CD17A306515AD5078AF9BC57B465B"
+    }
+  ],
+  "verified_evidence_refs": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+      "bytes": 239659692,
+      "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-20261001-a01\\boards\\visuals\\knights-k025.png",
+      "bytes": 497284,
+      "sha256": "D11F51C284A7889053DF36F49AB0CAF475F5934F7B25413D0E0A9DD9C920DD20"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-20261001-a01\\boards\\visuals\\reinforcement-r022.png",
+      "bytes": 571511,
+      "sha256": "033EAFBB161051B691B017A550118C37EF028D3B62A4E6531A1CF342F3C92D5E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-20261001-a01\\boards\\visuals\\reinforcement-r029.png",
+      "bytes": 566361,
+      "sha256": "9C23164C3207D2333019FCCEE7E95EE5AC893503148F9B8F42300DFBDFD001B8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-03\\k025-left-card-contract.json",
+      "bytes": 9598,
+      "sha256": "AE1AC10E27629F7AEA43827409D533FA6156CD13283CD5EDCE28A59DD84F58A9"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-nextday-live-20261001-a03\\strict-save-check-attempt-01\\saved-status-receipt.json",
+      "bytes": 6984,
+      "sha256": "44663063AAA1E99D3C7959EBB45B17DA180B88707841BFA74432BCEC35A47722"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\nextday-live-R0127-verification.json",
+      "bytes": 78106,
+      "sha256": "47FB04B5EE2FCB3C637EB151940D658E62D439EF5CFBEF38EA9A22862084F549"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-sample.json",
+      "bytes": 17251,
+      "sha256": "22637EF5AC6D8316A933DC856EE5B7072CC51852A897754767ED44732A24E0CB"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-hover-review-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-hover-review-snapshot.json",
+      "bytes": 483378,
+      "sha256": "7D48EC3D5ED912DABCBBE7D28CC0ED1B0A8F3DEE63AC25A7F0E9CDC23AA0B560"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-hover-review-control.json",
+      "bytes": 148,
+      "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-hover-review-control.json",
+      "bytes": 111534,
+      "sha256": "CEEB32F70FDA9C70F88670D111B69BD97DBBCF0725C01A54845579E939D55DC4"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-after-pixels.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-after-pixels.json",
+      "bytes": 715270,
+      "sha256": "614E1889D3BCDED9F28A0C247BB162AC614567092FC11C7FE8E1FD034CBCDC6D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-visible-review-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-visible-review-snapshot.json",
+      "bytes": 599333,
+      "sha256": "1F682BC01A5EBB1027CDE152C9808A9ED6F011BB2E77EC42CB47E279E61B8925"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-before-post-visible-review-control.json",
+      "bytes": 148,
+      "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-before-post-visible-review-control.json",
+      "bytes": 111536,
+      "sha256": "BB2C2428B4091C76B47E0CC1C1A210AD660F391B2FD3EA14AFB7E247189E4644"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-post-hover-review-scoped-native-context.json",
+      "bytes": 3120,
+      "sha256": "D4B6B56ADEA9F99CC9150DCE2D0032E6BBF6180E32C4FD5158BE6A65E7953BA2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-panel.png",
+      "bytes": 4933281,
+      "sha256": "2B7E214C488B52479B263BD7B83E79C9982067D9908FDCE3138F711A65D24750"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+      "bytes": 4723967,
+      "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-sample.json",
+      "bytes": 17208,
+      "sha256": "0FDF85253DC4F5E7F068ADC54F7DB5144002A47730F28D26841DCC36DB5CCD04"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-after-post-hover-review-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-post-hover-review-snapshot.json",
+      "bytes": 1003440,
+      "sha256": "D2A4D3DF63950C3D52FFD54129B4C12219225DAE3747CD95491C850F7296B27A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-after-post-hover-review-control.json",
+      "bytes": 148,
+      "sha256": "AD723073044D80F2DF5E9BDF21E29C677883CA22C552547B54B88D37A97F5980"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-post-hover-review-control.json",
+      "bytes": 131621,
+      "sha256": "60636D98EEE26E41A3E563259C51E15A0FCEFCF8A7ADA8A3E2BFA5905C2A7FAC"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-after-after-pixels.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-after-pixels.json",
+      "bytes": 1281292,
+      "sha256": "0DF55E3810837EABE7A3CCC2140CD03D34D63AA70AEE202ECFB2927EC31F2EB8"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-after-post-visible-review-snapshot.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-post-visible-review-snapshot.json",
+      "bytes": 1142376,
+      "sha256": "1F1AE0A86050522C5B8BA2DCA4A7BF0AD82A825E4E1D876C0284CCA52E51D8F8"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-after-post-visible-review-control.json",
+      "bytes": 148,
+      "sha256": "AD723073044D80F2DF5E9BDF21E29C677883CA22C552547B54B88D37A97F5980"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-after-post-visible-review-control.json",
+      "bytes": 131626,
+      "sha256": "B24DDE42D0CDBB38CC98ADC1E3FAA68C8F95FB3F9B31AFF0CF22302A346845C8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-post-hover-review-scoped-native-context.json",
+      "bytes": 3117,
+      "sha256": "D0630E8196611471F6151C2FE64D31FC56716696281D96289D2FAD09548C48BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-panel.png",
+      "bytes": 4649841,
+      "sha256": "81E99F8160CD8E52DFEFBDA3AA0BE425011A7B3B860569DF36089BD5671B64BB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+      "bytes": 4795457,
+      "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\capture-report.json",
+      "bytes": 9229,
+      "sha256": "3AF8EE0AC2CF20B8C850EA1023FA4AE786857FE9C4A58A84E3FA4219E085C222"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\controller-result.json",
+      "bytes": 72914,
+      "sha256": "96DB9F28E5E3B64126D9A682A2A343B45C997C409A78EE34797838DD43AC9791"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-4513d5d7d0e8-one-day.json",
+      "bytes": 129,
+      "sha256": "2CBD90297A8C9AC01B09D8A27E46D1204C45D6C366EB06820E4902E640DB608D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-4513d5d7d0e8-one-day.json",
+      "bytes": 20186,
+      "sha256": "D938CD353664DBA45C30CF64F92A0D70CC9F476D436EFA472B692AD27F7AC147"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\session-result.json",
+      "bytes": 14096,
+      "sha256": "2629D37248A253A0B58EBE44DC07B70B6E4D26200425DEA778F11C161102AAEE"
+    }
+  ],
+  "previous_documents": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\timeline.json",
+      "bytes": 417243,
+      "sha256": "90474357BE68FE98EBC74E3D2BADC2531122B85364BEDDE270CBD933578CF1DA"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\edit.json",
+      "bytes": 341380,
+      "sha256": "42B0697BAF66C4F1DEA50CC64312B8FEA367ADC1B728BB49CEDDFD21EF01ED26"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\claim-catalog.json",
+      "bytes": 256417,
+      "sha256": "F1D62CCF8D141D6CE41508D108B32CC52C2572A5B11E8BEC46A9F0E337A9851B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\chapters.ffmetadata",
+      "bytes": 571,
+      "sha256": "AFF1AD24398233FF08A1568C2FB78919EC00691E775B5FB23CB74A07EB9FF594"
+    }
+  ]
+}

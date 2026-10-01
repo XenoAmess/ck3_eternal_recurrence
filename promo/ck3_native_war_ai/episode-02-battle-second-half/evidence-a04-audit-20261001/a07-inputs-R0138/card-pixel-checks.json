@@ -1,0 +1,146 @@
+[
+  {
+    "key": "knights-k025",
+    "allowed_rectangles_xyxy": [
+      [
+        40,
+        164,
+        970,
+        815
+      ]
+    ],
+    "difference_bbox": [
+      40,
+      169,
+      966,
+      776
+    ],
+    "all_other_pixels_identical": true,
+    "original_board": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-20261001-a01\\boards\\visuals\\knights-k025.png",
+      "bytes": 497284,
+      "sha256": "D11F51C284A7889053DF36F49AB0CAF475F5934F7B25413D0E0A9DD9C920DD20"
+    },
+    "revised_board": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\boards\\visuals\\knights-k025.png",
+      "bytes": 131531,
+      "sha256": "452CBEC65FC977187D8EB68440948EE5FFAEEBF8B4A82AFBE8BFA73B99D5A3A7"
+    }
+  },
+  {
+    "key": "reinforcement-r022",
+    "difference_bbox": [
+      40,
+      169,
+      1004,
+      860
+    ],
+    "allowed_rectangles_xyxy": [
+      [
+        40,
+        164,
+        970,
+        815
+      ],
+      [
+        40,
+        825,
+        1880,
+        895
+      ]
+    ],
+    "all_other_pixels_identical": true,
+    "original_board": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-20261001-a01\\boards\\visuals\\reinforcement-r022.png",
+      "bytes": 571511,
+      "sha256": "033EAFBB161051B691B017A550118C37EF028D3B62A4E6531A1CF342F3C92D5E"
+    },
+    "revised_board": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\boards\\visuals\\reinforcement-r022.png",
+      "bytes": 540945,
+      "sha256": "5BB0F73A835FAC643C25DC3BCE7F2A657CF325430FFE42AB3F0CB0E2CA4408DD"
+    },
+    "original_PNG": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+      "bytes": 4723967,
+      "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+    },
+    "crop_xyxy": [
+      1040,
+      980,
+      1540,
+      1265
+    ],
+    "root_crop_review": {
+      "reviewer": "Codex /root (direct original-pixel crop inspection)",
+      "reviewed_at": "2026-10-01T03:16:20.499218+00:00",
+      "direct_original_pixel_review": true,
+      "contains_width_tooltip": true,
+      "source_sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33",
+      "crop_xyxy": [
+        1040,
+        980,
+        1540,
+        1265
+      ]
+    }
+  },
+  {
+    "key": "reinforcement-r029",
+    "difference_bbox": [
+      40,
+      169,
+      1004,
+      860
+    ],
+    "allowed_rectangles_xyxy": [
+      [
+        40,
+        164,
+        970,
+        815
+      ],
+      [
+        40,
+        825,
+        1880,
+        895
+      ]
+    ],
+    "all_other_pixels_identical": true,
+    "original_board": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-20261001-a01\\boards\\visuals\\reinforcement-r029.png",
+      "bytes": 566361,
+      "sha256": "9C23164C3207D2333019FCCEE7E95EE5AC893503148F9B8F42300DFBDFD001B8"
+    },
+    "revised_board": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\boards\\visuals\\reinforcement-r029.png",
+      "bytes": 537057,
+      "sha256": "FC593673F81FD4BDB49660AB609A1FD9BB2F961ABF3234AEE7A7BA7D1E342173"
+    },
+    "original_PNG": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+      "bytes": 4795457,
+      "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+    },
+    "crop_xyxy": [
+      1040,
+      980,
+      1540,
+      1265
+    ],
+    "root_crop_review": {
+      "reviewer": "Codex /root (direct original-pixel crop inspection)",
+      "reviewed_at": "2026-10-01T03:16:20.667780+00:00",
+      "direct_original_pixel_review": true,
+      "contains_width_tooltip": true,
+      "source_sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA",
+      "crop_xyxy": [
+        1040,
+        980,
+        1540,
+        1265
+      ]
+    }
+  }
+]

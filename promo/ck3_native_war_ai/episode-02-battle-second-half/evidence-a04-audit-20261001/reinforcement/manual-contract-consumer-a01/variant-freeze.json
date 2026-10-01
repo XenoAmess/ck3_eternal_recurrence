@@ -1,0 +1,143 @@
+{
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "source_checkout": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\ui-controller-config.frozen-manual-contract-a01.json",
+    "bytes": 14640,
+    "sha256": "84BF2A5198AEF951BDA32A60CB55CCB0404F588528DECD6608B54DB95660DE82"
+  },
+  "consumer_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer\\hwnd_wgc_frame.py",
+      "bytes": 9830,
+      "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer\\native_locale_probe.py",
+      "bytes": 1428,
+      "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer\\paused_join_pair.py",
+      "bytes": 62322,
+      "sha256": "5C8C5914FD292C4FD53577B5515F1A785E67467B48497CC07CE9A9717C3EAA41"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer\\README.md",
+      "bytes": 9444,
+      "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer\\run_paused_join_sdk.py",
+      "bytes": 7042,
+      "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer\\verify_offline_entry.py",
+      "bytes": 19267,
+      "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+    }
+  ],
+  "helper_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+      "bytes": 29587,
+      "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+      "bytes": 13247,
+      "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+      "bytes": 21461,
+      "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\ui-controller-config.frozen-center-diag-a01.json",
+      "bytes": 10178,
+      "sha256": "04EBDB33D779442075B1F7018078F25648B38459C99B17AEAB48F786CF8757E4"
+    }
+  ],
+  "no_launch_runner": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\run_no_launch_candidate.py",
+    "bytes": 12713,
+    "sha256": "6BF74425A81F9954A64912AB173E21C965E272665C3910B6AABF290767E6C75B"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\bootstrap_profile.py",
+    "bytes": 6524,
+    "sha256": "FF54B67B5EA83DADC6B69713C4A247CC4B042491FED40EB22CEE4B47EA2A5237"
+  },
+  "runtime_entry": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  "runtime_bindings": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\runtime-input-bindings.json",
+    "bytes": 2385,
+    "sha256": "2F76E3536C0CE13D59B4DF761FABCCA45E3EF4AF7CE65C78F113AC49A94DA159"
+  },
+  "layout_consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer\\paused_join_pair.py",
+    "bytes": 62322,
+    "sha256": "5C8C5914FD292C4FD53577B5515F1A785E67467B48497CC07CE9A9717C3EAA41"
+  },
+  "scope_contract": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\scoped-review-contract-a01.json",
+    "bytes": 3099,
+    "sha256": "9934E7DA095FA043CD476E0B0AFCA085FF108D1BE90C6A899C3A9958D9CF1550"
+  },
+  "native_candidate_manifest": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+    "bytes": 7243,
+    "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+  },
+  "native_pair": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+    "bytes": 851,
+    "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+  },
+  "targeted_review_wait_offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\review-wait-offline-verification-a02.json",
+    "bytes": 6778,
+    "sha256": "360733A455566E4E674B17A419CC3B6FD5269C6C1D37D0394BA3C531EB7D79F4"
+  },
+  "historical_scope_predecessor": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\variant-freeze.json",
+    "bytes": 6691,
+    "sha256": "64DF92153E3C410E05EC51C2B5544659BBB99BAFA13C8C4CAA75306C761376AF"
+  },
+  "source_DLL_or_stock_GUI_changed": false,
+  "change_scope": "six consumer files and runtime wrapper exact bytes; only external run/config/contract/seal paths changed",
+  "exception_cleanup_reporting_tail_AST_unchanged": true,
+  "native_query_budget_seconds": 90,
+  "mapper_operation_budget_seconds": 30,
+  "manual_root_review_wait_seconds_per_stage": 600,
+  "day_or_finish_retry_allowed": false,
+  "actual_new_scoped_pair_width_evidence": "NOT_OBSERVED",
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "numeric_UI_actor_army_identity_claimed": false,
+  "new_native_game_screen_inputs_by_freezer": false,
+  "exact_byte_equality": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-36-manual-contract\\consumer-byte-equality-a01.json",
+    "bytes": 3763,
+    "sha256": "5E1E2B240C169261146F53E4107E6DA81CE396DF120E0167494BB3A0F37D4047"
+  },
+  "consumer_logic_changed": false,
+  "previous_offline_verification_reused_without_rerun": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\review-wait-offline-verification-a02.json",
+    "bytes": 6778,
+    "sha256": "360733A455566E4E674B17A419CC3B6FD5269C6C1D37D0394BA3C531EB7D79F4"
+  },
+  "previous_independent_23_checks_reused_without_rerun": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-independent-review-other-a01\\independent-review.json",
+    "bytes": 13622,
+    "sha256": "B3EAAF17D9941C3B816803C5F4B7F193E0A215B52677B82425931F80663ACD23"
+  },
+  "root_focus_request_ttl_seconds_unchanged": 60,
+  "root_semantic_focus_watcher_implementation_in_this_clone": false
+}

@@ -1,0 +1,76 @@
+{
+  "actual_focus": {
+    "foreground_hwnd": 19925112,
+    "foreground_pid": 16428,
+    "foreground_thread_id": 6912,
+    "focus_hwnd": 19925112,
+    "title": "Crusader Kings III"
+  },
+  "actual_desktop_size": [
+    2560,
+    1440
+  ],
+  "actual_pointer": [
+    1280,
+    900
+  ],
+  "mapper_receipt_status": "pointer-move-readback-matched",
+  "no_click_or_keyboard_requested": true,
+  "edge_pan_cause_proven": false,
+  "source_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+    "bytes": 5228882,
+    "sha256": "6A25F6A3BF2E8A60491090E1B81653963F78DB7AD23E7853FC83FF733C4CDAA9"
+  },
+  "safe_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-pre-center-pointer-safe.png",
+    "bytes": 5243528,
+    "sha256": "5C3C17D5F94D224356291DA4A17590F1FF2D481EB3DE7EE270C0590B6C11881B"
+  },
+  "mapper_receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png.json",
+    "bytes": 2086,
+    "sha256": "EDC57572E5D6E9BA06582F9338B8AB74AB47E9FB5192C1D3EFE717AD2DF6A976"
+  },
+  "root_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "00-pre-center-pointer",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T03:01:21.398236+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 16428,
+    "expected_foreground_hwnd": 19925112,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\00-pre-center-pointer.png",
+        "bytes": 5228882,
+        "sha256": "6A25F6A3BF2E8A60491090E1B81653963F78DB7AD23E7853FC83FF733C4CDAA9"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "pointer_safe_for_native_center": true,
+    "observed_point": {
+      "x": 640,
+      "y": 450
+    },
+    "preview_content_rect": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    },
+    "reviewed_safe_region": {
+      "left": 550,
+      "top": 420,
+      "width": 200,
+      "height": 100
+    },
+    "root_visible_evidence": {
+      "original_binding": "Original6A25F6A3BF2E8A60491090E1B81653963F78DB7AD23E7853FC83FF733C4CDAA9 2560x1440; bound1280x720 full-preview25912029 and rawcalendar crop directly viewed.",
+      "actual": "Paused map of Italy; selected640,450 lies in interior clear map below the transient province tooltip. Steam toast currently partly obscures calendar, so this pointer review makes no full date-visibility claim.",
+      "action": "One formal mapper move from independently measured1280x720 preview rectangle before single native center; no keyboard."
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "action": "private_phase_trace",
+  "step": "experimental-combat-phase-event-trace-begin-v1",
+  "expected_revision": 5,
+  "combat_id": 16777218,
+  "managed_daily_sequence_token": 748078035,
+  "checkpoint_sequence": 1,
+  "candidate_joining_army_id": 22,
+  "capture_runtime_join_width": true,
+  "capture_runtime_join_full_entries": true
+}

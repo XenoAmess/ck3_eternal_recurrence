@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 19925112,
+    "foreground_hwnd": 19925112,
+    "foreground_pid": 16428,
+    "foreground_thread_id": 6912,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 19925112,
+    "foreground_hwnd": 19925112,
+    "foreground_pid": 16428,
+    "foreground_thread_id": 6912,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    640.0,
+    589.0
+  ],
+  "pointer_after": [
+    1280,
+    1178
+  ],
+  "pointer_before": [
+    1280,
+    1178
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1280,
+    720
+  ],
+  "receipt_image_size": [
+    2560,
+    1440
+  ],
+  "receipt_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width-hover-receipt.png",
+  "receipt_sha256": "2E3EBB5B33C69A95F91077E1D8C75A5A7E33BEAC9468C8F9A1727E6EF2CC55A1",
+  "reviewed_bounds": [
+    600.0,
+    583.0,
+    100,
+    13
+  ],
+  "screen_point": [
+    1280,
+    1178
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width-hover-receipt.png.json",
+  "source_image": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-panel.png",
+    "sha256": "2B7E214C488B52479B263BD7B83E79C9982067D9908FDCE3138F711A65D24750"
+  },
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "pointer-move-readback-matched"
+}

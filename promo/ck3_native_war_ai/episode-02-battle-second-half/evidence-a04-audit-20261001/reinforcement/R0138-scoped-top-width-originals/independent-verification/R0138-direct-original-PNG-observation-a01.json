@@ -1,0 +1,148 @@
+{
+  "schema": "xar.jd11.R0138.independent-original-PNG-observation/v1",
+  "observed_at": "2026-10-01T03:18:12.950521+00:00",
+  "observer": "Codex /root/a04_reinforcement_evidence",
+  "method": "Direct view_image original of before-width.png and after-width.png; also after-panel.png viewed. No screenshots created or input sent.",
+  "observations": [
+    {
+      "label": "before",
+      "date_text": "公元1066年12月14日",
+      "paused": true,
+      "battle_title": "墨西拿之战",
+      "top_counts": [
+        893,
+        1603
+      ],
+      "tooltip_title": "相对军力",
+      "tooltip_counts": [
+        827,
+        1546
+      ],
+      "battle_width": 1480,
+      "base_width": 1645,
+      "forest_percent": 90,
+      "unlabelled_small_numeric_row": [
+        294,
+        312
+      ],
+      "exact_original_image": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\before-width.png",
+        "bytes": 4723967,
+        "sha256": "E365641DB953F2085BEAC8603A077F61FE8AF794146DE7DAC2196202D5CA9B33"
+      },
+      "actual_native_snapshot_body_values": {
+        "date_raw": 53146488,
+        "paused": true,
+        "actor": 29829,
+        "revision": 4,
+        "native_revision": 3,
+        "snapshot_id": "native:3",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat"
+      },
+      "actual_after_pixels_body_values": {
+        "date_raw": 53146488,
+        "paused": true,
+        "actor": 29829,
+        "revision": 4,
+        "native_revision": 3,
+        "snapshot_id": "native:3",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat"
+      }
+    },
+    {
+      "label": "after",
+      "date_text": "公元1066年12月15日",
+      "paused": true,
+      "battle_title": "墨西拿之战",
+      "top_counts": [
+        827,
+        4106
+      ],
+      "tooltip_title": "相对军力",
+      "tooltip_counts": [
+        740,
+        4047
+      ],
+      "battle_width": 2220,
+      "base_width": 2467,
+      "forest_percent": 90,
+      "unlabelled_small_numeric_row": [
+        350,
+        353
+      ],
+      "exact_original_image": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\after-width.png",
+        "bytes": 4795457,
+        "sha256": "5CA1401509CA7108509524EA952FD509547EA1F06D64767AA297E581FAF898EA"
+      },
+      "actual_native_snapshot_body_values": {
+        "date_raw": 53146512,
+        "paused": true,
+        "actor": 29829,
+        "revision": 8,
+        "native_revision": 7,
+        "snapshot_id": "native:7",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat"
+      },
+      "actual_after_pixels_body_values": {
+        "date_raw": 53146512,
+        "paused": true,
+        "actor": 29829,
+        "revision": 8,
+        "native_revision": 7,
+        "snapshot_id": "native:7",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat"
+      }
+    }
+  ],
+  "body_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-R0138-readonly-validation-attempt-01\\R0138-readonly-facts-verification-a02.json",
+    "bytes": 502282,
+    "sha256": "30ACB193768029AD329EC5547A3CA99ED3B42A830593235632A84B4BC9361057"
+  },
+  "trace_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-R0138-readonly-validation-attempt-01\\R0138-independent-trace-facts-a01.json",
+    "bytes": 435110,
+    "sha256": "0F4451CAB32179344E2E3F7A926B94AA54B7A26CC140CFECBEC5FD1C1D380942"
+  },
+  "checks_passed": 47,
+  "scope": "current paused date/title/topcounts/coats and real relative-soldiers width tooltip only",
+  "coat_context": {
+    "left": "蓝底红白菱形家徽",
+    "right": "绿底金色城堡家徽"
+  },
+  "unlabelled_small_numeric_row_is_not_width": true,
+  "historic_350_365_numbers_substituted": false,
+  "full_battle_panel": false,
+  "lower_composition_clipped": true,
+  "UI_actor_or_army_numeric_ID_visible_claimed": false,
+  "hook_instant_UI_same_frame_claimed": false,
+  "whole_G2_complete": false,
+  "phase_full_mutable_bundle_complete_each": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "root_action_approval_or_human_1x_video_signoff": false,
+  "native_game_screen_bus_steam_todesk_display_git_inputs": false
+}

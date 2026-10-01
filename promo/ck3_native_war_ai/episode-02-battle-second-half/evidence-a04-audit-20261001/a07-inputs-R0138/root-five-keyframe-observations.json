@@ -1,0 +1,72 @@
+{
+  "schema": "ck3.a07.root-scoped-keyframe-observations/v1",
+  "recorded_at": "2026-10-01T03:27:50.089285+00:00",
+  "reviewer": "Codex /root (direct decoded-PNG inspection)",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342"
+  },
+  "extraction": {
+    "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\keyframe-extraction.json",
+    "bytes": 3926,
+    "sha256": "105CDEDF2E5B4A5FB7C118BAE6C11747D55899047DC44A1CCFDFB96BA5387666"
+  },
+  "observations": [
+    {
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k025.png",
+        "bytes": 384558,
+        "sha256": "D9FD9F6F66EF8BD16892EB19A9F0274A723F979FCF3BFE47A55515F443582174"
+      },
+      "global_seconds": 731.2666666666669,
+      "root_actually_viewed_this_decoded_PNG": true,
+      "observation": "k025: consistent brown/gold background and pale text; leftR0127 explicitlyindependent save-state card1066.12.29alive→12.30battledeath,33437baseprowess2→2,killer34120,selector/solecauseunproven. Historical020right remainsdistinct; visibleChinese/Englishsubtitle stays legible andinsideframe."
+    },
+    {
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\reinforcement-r022.png",
+        "bytes": 658420,
+        "sha256": "4549286A7A5FADEBFE42E17B3972964C1B834B8E53CBD60A0F90F1117EBF4A19"
+      },
+      "global_seconds": 1113.9,
+      "root_actually_viewed_this_decoded_PNG": true,
+      "observation": "r022: currentR0138 pausedbefore UI fullframe andgoldboxed originaltooltipcrop; tooltip1480/base1645/forest90%,battle8931603,tooltip8271546. Currentleftcaption vs historicalA01right/footnote clearlydistinguished; brown/gold andbothsubtitlelines legible."
+    },
+    {
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\reinforcement-r029.png",
+        "bytes": 643035,
+        "sha256": "16C26FCEFBC43649BB84F336CCCF6859728EB2B6F9A0C77FD22F51E7FC4E8C33"
+      },
+      "global_seconds": 1193.4,
+      "root_actually_viewed_this_decoded_PNG": true,
+      "observation": "r029: currentR0138 pausedafter UI fullframe andoriginaltooltipcrop width2220/base2467/forest90%,battle8274106,tooltip7404047. HistoricalA01rightformula2467x0.9=2220.3/truncate2220 retained; no claim ofsameinstantA01hook."
+    },
+    {
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k035-inset-on.png",
+        "bytes": 1531486,
+        "sha256": "13A0C36AC66BE57BA6C46725917361506C395C315EA92A5F2C33D55F34F3FCBF"
+      },
+      "global_seconds": 842.9000000000001,
+      "root_actually_viewed_this_decoded_PNG": true,
+      "observation": "k035on: actualdecoded842.9s retainsreadable Chineseknightdeathnotice enlargedgoldframedinset,originnotice stillvisible,tenknights and1066.12.30 lowerHUD,originalsubtitle."
+    },
+    {
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k035-inset-off.png",
+        "bytes": 1582745,
+        "sha256": "8D5872152B57A217777F3E8C5E4FEA050832FEE7EDF207AD65070E236746295A"
+      },
+      "global_seconds": 844.9000000000001,
+      "root_actually_viewed_this_decoded_PNG": true,
+      "observation": "k035off: actualdecoded844.9s insetgone whileoriginaldeathnotice/tenknights/date remain; corresponds to preservedtimedzoom,not staticoverlaythroughwholecue."
+    }
+  ],
+  "coverage": "Fiveisolatedkeyframesonly; fullviewing/listening pending",
+  "human_1x_full_watch": false,
+  "human_full_listen": false,
+  "signoff_created": false,
+  "original_media_modified": false
+}

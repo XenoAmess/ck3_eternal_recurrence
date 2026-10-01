@@ -1,0 +1,13 @@
+{
+  "request": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-3a3c3c621e774498ace589734c6a1d70.json",
+    "bytes": 25,
+    "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+  },
+  "response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-manual-contract-live-20261001-a01\\ck3-output\\interactive-requests-responses\\999-root-a15-stop-3a3c3c621e774498ace589734c6a1d70.json",
+    "bytes": 11559,
+    "sha256": "B158D65EEF49C30DF22088B6E4A2D5D8F765548BC12601BDFF1FD260F26133C0"
+  },
+  "channel": "interactive-requests"
+}

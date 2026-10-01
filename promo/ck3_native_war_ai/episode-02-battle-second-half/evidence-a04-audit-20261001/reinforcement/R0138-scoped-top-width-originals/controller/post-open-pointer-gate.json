@@ -1,0 +1,78 @@
+{
+  "actual_focus": {
+    "foreground_hwnd": 19925112,
+    "foreground_pid": 16428,
+    "foreground_thread_id": 6912,
+    "focus_hwnd": 19925112,
+    "title": "Crusader Kings III"
+  },
+  "actual_desktop_size": [
+    2560,
+    1440
+  ],
+  "actual_pointer": [
+    1280,
+    1178
+  ],
+  "mapper_receipt_status": "pointer-move-readback-matched",
+  "no_click_or_keyboard_requested": true,
+  "edge_pan_cause_proven": false,
+  "source_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\02-post-open-pointer.png",
+    "bytes": 4884953,
+    "sha256": "7E261AECEF568259DC3117D0C19578284F09AAF6A7E27FA8065534BA386DD1BB"
+  },
+  "pointer_after_frame": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\02-post-open-pointer-safe.png",
+    "bytes": 4957934,
+    "sha256": "390A6BE82CAF6B66D11349148838EB73505F0AA8AC631D50BBDB8FA472083AED"
+  },
+  "mapper_receipt": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\02-post-open-pointer-receipt.png.json",
+    "bytes": 2084,
+    "sha256": "5EDB1A1C260E37307CB2902412501FAE609351D4D4BBEB0595F56A6CE7F4AFB3"
+  },
+  "root_review": {
+    "schema": "xar.jd11.a15.root-ui-review/v1",
+    "stage": "02-post-open-pointer",
+    "source_head": "1901473429deb1297be7d5d4451169082629858b",
+    "reviewer": "Codex /root (direct original PNG inspection)",
+    "observed_at": "2026-10-01T03:02:42.909761+00:00",
+    "root_actually_viewed": true,
+    "approved_for_current_action": true,
+    "expected_ck3_pid": 16428,
+    "expected_foreground_hwnd": 19925112,
+    "frames": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-38-manual-contract-sdk\\paused-pair-controller\\02-post-open-pointer.png",
+        "bytes": 4884953,
+        "sha256": "7E261AECEF568259DC3117D0C19578284F09AAF6A7E27FA8065534BA386DD1BB"
+      }
+    ],
+    "current_ui_region_reviewed": true,
+    "pointer_safe_to_clear_battle_tooltip": true,
+    "observed_point": {
+      "x": 640,
+      "y": 589
+    },
+    "preview_content_rect": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    },
+    "reviewed_safe_region": {
+      "left": 600,
+      "top": 583,
+      "width": 100,
+      "height": 13
+    },
+    "root_visible_evidence": {
+      "original_binding": "Original7E261AECEF568259DC3117D0C19578284F09AAF6A7E27FA8065534BA386DD1BB; full-preview1280x7206113FB66 and original1:1 panel crop directly viewed.",
+      "actual": "Opened 墨西拿之战; top893/1603, checkered defender coat and green-tower attacker coat. Preview640,589 is within original relative-soldiers bar. Lower composition clipped. Map battle-label tooltip remains and this move will clear it.",
+      "action": "One formal mapper move with receipt from actual preview geometry; no keyboard or day."
+    }
+  },
+  "tooltip_absent_claimed_by_move_ack": false,
+  "overlay_free_requires_fresh_final_layout_review": true
+}

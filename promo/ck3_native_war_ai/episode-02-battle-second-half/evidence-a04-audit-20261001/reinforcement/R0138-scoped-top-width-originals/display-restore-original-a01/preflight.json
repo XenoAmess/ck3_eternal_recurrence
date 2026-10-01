@@ -1,0 +1,45 @@
+{
+  "at": "2026-10-01T03:14:28.018964+00:00",
+  "screen_owner": {
+    "git": {
+      "branch": "codex/jd11-center-diagnostic-20261001",
+      "dirty_entries": 0,
+      "head": "1901473429deb1297be7d5d4451169082629858b"
+    },
+    "last_sequence": 3350,
+    "next_step": "fresh_offline_then_same_run_pair",
+    "pid": 10724,
+    "repo": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "R0138_manual_contract_corrected",
+    "task_id": "war-reinforcement-screen-20261001-a16",
+    "updated_at_utc": "2026-10-01T03:12:25.330257+00:00"
+  },
+  "busy_inventory": [],
+  "original_alignment_receipt_sha256": "40E8EA2054540646EC50AB94A48E7077067B50C732F83BD393249E952E2DA78F",
+  "before_mode": {
+    "PelsWidth": 2560,
+    "PelsHeight": 1440,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "restore_target": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "registry_update_requested": false
+}
