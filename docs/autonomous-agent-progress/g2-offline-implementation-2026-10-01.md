@@ -909,3 +909,9 @@ One topic records actual R8 root targeting factioncount0,pausedactor29829/raw531
 Eleven frozen central files, explicit60ON4OFF and readonly AI named query. Actual native emptyTenet,finite construction quote capacity and faction-alert existing-envelope fixes included in unique jobs64 default/candidate builds. New registration/router/named and necessary three leaf fixes GREEN; previous matrices reused. Actual Git compiler-input freeze and paused qualification follow root commit. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r9\central-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 22:04:40 Verify named religious AI input observation
+
+Three frozen test and topic files. One new O2/W4/WX owning queue scene with two commands and11checks passed; exact namedcallback only, otherpermits/generic null. Two complete packets match existing generic outputs. No prior matrices repeated or actual game calls. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\ai-inputs-named\final-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
