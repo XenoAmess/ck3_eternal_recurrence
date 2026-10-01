@@ -1,0 +1,166 @@
+{
+  "schema": "xar.ck3.religion-clergy-appointment-abi/v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "live_verified": false,
+  "spans": [
+    {
+      "name": "CanReassign_registration",
+      "start_rva": "0x15ca30",
+      "end_rva": "0x15cb17",
+      "sha256": "EBAF6AE73394EB326340F01CDFA076CD26E569EE1FE51A39D291BB165EB3EB30"
+    },
+    {
+      "name": "CanReassign_reflection",
+      "start_rva": "0x11616e0",
+      "end_rva": "0x1161756",
+      "sha256": "F6F1A70C18876CFF35C630257846E059959993F279B209A7075B40CBE9BA59C1"
+    },
+    {
+      "name": "CanReassign_final",
+      "start_rva": "0x31b4980",
+      "end_rva": "0x31b4a25",
+      "sha256": "C1F58E9BE78925968BB259A4EA0DED76EEE9DF21AA5CD26224F91EDCCEB77FB4"
+    },
+    {
+      "name": "auto_fill_vacancy",
+      "start_rva": "0x31b4830",
+      "end_rva": "0x31b497c",
+      "sha256": "E0C26161653704582E56B47F00602D06D07FB3972EF698FD2FAD2FCBDFED0987"
+    },
+    {
+      "name": "compiled_appointment_predicate",
+      "start_rva": "0x31bdeb0",
+      "end_rva": "0x31be12b",
+      "sha256": "CD3F839B03F99F33E0FE2044D2A92FE9D219DB28B3265CDDB837C808492F4460"
+    },
+    {
+      "name": "once_and_time_final",
+      "start_rva": "0x31bd1c0",
+      "end_rva": "0x31bd622",
+      "sha256": "946DFF8E2982086AEEAEC031CB0702E31B6CDF166B0314C0C111E10FA8B98235"
+    },
+    {
+      "name": "valid_position_reused",
+      "start_rva": "0x31bced0",
+      "end_rva": "0x31bcf8c",
+      "sha256": "E67928C9766B1707B92F82AEAA556967A9D5CEB2CE0A95E5400CDA2123F7EF52"
+    },
+    {
+      "name": "valid_character_reused",
+      "start_rva": "0x31bcf90",
+      "end_rva": "0x31bd04c",
+      "sha256": "96A59C457528D7E26141F5EC44C3962947649F7713BA1C40D1A58A292913C614"
+    }
+  ],
+  "edges": [
+    {
+      "name": "registration_callback",
+      "rva": "0x15cac4",
+      "size": 7,
+      "displacement_offset": 3,
+      "target": "0x11616e0"
+    },
+    {
+      "name": "reflection_final",
+      "rva": "0x1161730",
+      "size": 5,
+      "displacement_offset": 1,
+      "target": "0x31b4980"
+    },
+    {
+      "name": "auto_fill_vacancy",
+      "rva": "0x31b4990",
+      "size": 5,
+      "displacement_offset": 1,
+      "target": "0x31b4830"
+    },
+    {
+      "name": "compiled_can_reassign",
+      "rva": "0x31b49e0",
+      "size": 5,
+      "displacement_offset": 1,
+      "target": "0x31bdeb0"
+    },
+    {
+      "name": "once_and_time",
+      "rva": "0x31b4a06",
+      "size": 5,
+      "displacement_offset": 1,
+      "target": "0x31bd1c0"
+    }
+  ],
+  "literal": {
+    "rva": "0x452B7A0",
+    "value": "CanReassignCouncillor"
+  },
+  "stock": [
+    {
+      "path": "common/council_positions/00_council_positions.txt",
+      "sha256": "31FA258DFBF35A07E9EE08D1D1DFDCD26712D3974CD65EC74255C284E4DF0A2A",
+      "size": 88435,
+      "ranges": [
+        [
+          554,
+          611
+        ],
+        [
+          808,
+          828
+        ]
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/00_councillor_triggers.txt",
+      "sha256": "350A5E375D73E38CDD659FC3221FE8395AD6650B3FD244E03EE2342AFC9A8F88",
+      "size": 39155,
+      "ranges": [
+        [
+          1,
+          36
+        ],
+        [
+          131,
+          186
+        ]
+      ]
+    },
+    {
+      "path": "common/religion/doctrine_types/20_doctrines.txt",
+      "sha256": "E5E4B38240F3382FF1C4EF159C8AB68A2A50FABD39C1B0293F3A047A3939387F",
+      "size": 54815,
+      "ranges": [
+        [
+          1261,
+          1383
+        ],
+        [
+          1430,
+          1649
+        ]
+      ]
+    }
+  ],
+  "reused_council_abi": [
+    "council_candidates12002_abi.json",
+    "council_gates12002_abi.json"
+  ],
+  "bindings": {
+    "valid_position": "0x31BCED0",
+    "valid_character": "0x31BCF90",
+    "can_reassign": "0x31B4980",
+    "court_owner": "0x28BFC70"
+  },
+  "layouts": {
+    "owner_landed": "0x1C0",
+    "owner_task_ids": "0x230",
+    "owner_task_count": "0x23C",
+    "task_identity": "0x10",
+    "task_type": "0x18",
+    "task_owner": "0x44",
+    "task_incumbent": "0x40",
+    "type_position": "0x40",
+    "position_key": "0x18",
+    "character_rite": "0xB4"
+  }
+}
