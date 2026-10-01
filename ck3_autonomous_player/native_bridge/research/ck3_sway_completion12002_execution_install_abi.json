@@ -1,0 +1,40 @@
+{
+  "schema": "xar.ck3.sway-completion12002-execution-install-abi.v1",
+  "build": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "source-static-ready",
+  "live_verified": false,
+  "function_prototype": "void (*)(const void* effect, const void* effect_context)",
+  "calling_convention": "Windows x64 native convention",
+  "arguments": ["RCX=effect definition this", "RDX=EffectContext*"],
+  "incoming_r8_r9": "not arguments consumed by any of the three complete Execute bodies; register uses are preceded by local writes",
+  "incoming_stack_arguments": "none; complete bodies use allocated-frame locals, home slots and saved nonvolatile registers only",
+  "return": "void: native dispatcher discards the call result and each implementation has no defined output return value",
+  "native_dispatcher_rva": "0x3765E70",
+  "native_virtual_call": {
+    "effect_vtable_load": "0x3766156 mov rax,[rsi]",
+    "context_argument": "0x3766159 lea rdx,[rbp-0x10]",
+    "effect_argument": "0x376615D mov rcx,rsi",
+    "call": "0x3766160 call qword ptr [rax+0xB0]",
+    "after_call": "0x3766166 unconditional jump to independent profiling/cleanup at0x3766263; no return value consumed"
+  },
+  "vtable_slot": 22,
+  "production_slots": [
+    {"vtable_rva": "0x4837280", "slot_rva": "0x4837330", "original_execute_rva": "0x2CC9440"},
+    {"vtable_rva": "0x4837428", "slot_rva": "0x48374D8", "original_execute_rva": "0x2CC8490"},
+    {"vtable_rva": "0x4837360", "slot_rva": "0x4837410", "original_execute_rva": "0x2CC71A0"}
+  ],
+  "evidence": {
+    "bounded_new_dispatcher_receipt": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/sway/completion-execution-install/execute-dispatch-abi.json",
+    "bounded_new_dispatcher_receipt_sha256": "ab633e887d6d8957d9174b087f560d8ed64f4fd88828d977214c362e7ea6ac4a",
+    "reused_complete_execute_proof": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/sway/completion-history/source-proof.json",
+    "reused_complete_execute_proof_sha256": "6a047d298f6ec92fba186c944fd002741935d39bb762bc62376de47430864c8b",
+    "complete_execute_functions": [
+      {"start": "0x2CC8490", "end": "0x2CC9434", "sha256": "db99cb797faaf8a7c1adc623bc91c56790c1d13071f7e249860c85a326ca6616"},
+      {"start": "0x2CC9440", "end": "0x2CCA3E4", "sha256": "b6a89797d3b32caac08f111280361d665b6b9e76d5519eddc6c2eedd083e2314"},
+      {"start": "0x2CC71A0", "end": "0x2CC8144", "sha256": "9c0001d267fdd2dc6e4c366b7258aa85a478cf09f04763446ec2d55bc83dfd9f"}
+    ]
+  },
+  "observer_boundary": "Capture actual input before calling original exactly once. Input receipt is not a message enqueue, material outcome, terminal proof or pre-attachment historical archive.",
+  "fixture_boundary": "Fixture-owned pointer slots and typed original callbacks replace production slot locations explicitly; capture uses actual production decoder and recorder; no loaded CK3 image or process is accessed."
+}

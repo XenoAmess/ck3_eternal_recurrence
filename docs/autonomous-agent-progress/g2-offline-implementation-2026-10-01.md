@@ -514,3 +514,9 @@ CE1 当前构建的治疗与恢复只读 Handle→真实 mailbox→owner callbac
 已完成原生 hidden Sway 执行源读取、上下文释放前复制的 recorder，以及按 actor/target/完整 SchemeID 查询的只读 owning-mailbox、handler 与 command_result formatter。状态 static-ready。复用已有 MSVC /Od 与 /O2 /W4 /WX 结果：reader/recorder/query 每模式 196 checks、8 bare wires；transport 每模式 11 checks、3 完整 command_result wires，handler 两模式编译通过。没有重跑旧矩阵。body schema 的最终 metadata 为 xar.ck3.sway-completion-execution.v1。仍需 root 完成精确 callback admission、共享 dispatch/SDK/Python 接线、实机自然 hidden phase paused artifact，以及独立 material/terminal 验证；installer 单独交付。owner 未有能力 RED；曾出现的外部 history metadata helper 路径拼写错误属 harness-only。 本轮仅准备外部交付清单：owner 11 项源文件逐 SHA 核对一次，排除已提交 L2 中相同内容 5 项，本次待提交 6 项。owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-completion\execution-query-delivery-result.json（SHA-256 b368e9e75127945bf91b637882afaa6236a44b6dbe6d92bd6005b818f95119b9）。无 CK3/进程/pipe/UI/Steam 操作，无 Git 执行或共享源码/报告写入，没有新增 live、游戏日或 G2 计分。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:50:31 CK3 1.20.0.2 Sway hidden execution installer
+
+已完成 exact-build 三个精确 virtual slots 的安装/卸载 helper：wrapper 在 typed original 执行前 CaptureAndRecord，原行为恰好透传一次，并恢复原指针与页保护。状态 static-ready。复用已有 MSVC /Od 与 /O2 /W4 /WX fixture，每模式 26 checks，覆盖 actual install/wrappers、成功/失败 query wires、toast/popup passthrough、detached unavailable 与 reinstall 生命周期。原 reader 的 196-check capture/recorder 矩阵没有重跑。仍需 root 的 shared/CMake/startstop 与 owned recorder 生命周期接线、DLL 构建、实机 paused source capture；独立 material/terminal 验证另行完成。owner 未报告失败 attempt。 本轮仅准备外部交付清单：owner 6 项源文件逐 SHA 核对一次，排除已提交 L2 中相同内容 0 项，本次待提交 6 项。owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-execution-install\delivery-result.json（SHA-256 09a8c363f31451edf5de7c57c8a652d8b1cb7c99f205f9af1cbe73589e39f2a9）。无 CK3/进程/pipe/UI/Steam 操作，无 Git 执行或共享源码/报告写入，没有新增 live、游戏日或 G2 计分。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
