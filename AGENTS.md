@@ -5,11 +5,11 @@
 - `XenoAmess_s_Eternal_Recurrence/` — CK3 mod 源目录；正式发布只使用 `build_release.py` 生成的 staging
 - `Eternal_Recurrence_Vivhite_Courtier/` — 白绮特供独立版源目录；正式发布只使用 `build_vivhite_release.py` 生成的 27 文件 staging
 - `mod_remove_mandala/` — “肃清曼荼罗伪信”独立版源目录；正式发布只使用 `build_remove_mandala_release.py` 生成的 15 文件 staging
-- `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 19 文件 staging
-- `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 28 文件 staging
+- `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 26 文件 staging
+- `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 36 文件 staging
 - `mod_tributary_expansion_directives/` — “驱策朝贡国 / Tributary Expansion Directives”独立版源目录；Workshop item id：**3801490405**；正式发布只使用 `build_tributary_expansion_directives_release.py` 生成的 16 文件 staging
 - `mod_celestial_commerce_corruption/` — “天朝制允许经商&贪腐框架（XenoAmess维护版）”源码；维护版 Workshop item id：**3804807463**；上游 **3596263413** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_celestial_commerce_corruption_release.py` 生成的 22 文件 staging；上游未携带许可证，仓库所有者已于 2026-09-20 明确确认取得原作者再分发与发布许可，授权原件待补档
-- `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 16 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
+- `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 17 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `coat_of_arms_editer_of_ck3/` — 独立 Vue 3 家徽编辑器；正式站点由 GitHub Pages Actions 构建，禁止把 CK3、MCP 或 Java 后端变成线上运行依赖
@@ -105,7 +105,7 @@ py tools/build_vivhite_release.py                           # 生成独立 stagi
 py tools/build_remove_mandala_release.py --check            # 肃清曼荼罗临时双构建
 py tools/build_remove_mandala_release.py                    # 生成 15 文件 staging、manifest 与 ZIP
 py tools/build_reclaim_the_motherland_release.py --check    # 重整河山临时双构建
-py tools/build_reclaim_the_motherland_release.py            # 生成 28 文件 staging、manifest 与 ZIP
+py tools/build_reclaim_the_motherland_release.py            # 生成 36 文件 staging、manifest 与 ZIP
 py tools/build_tributary_expansion_directives_release.py --check # 驱策朝贡国临时双构建
 py tools/build_tributary_expansion_directives_release.py    # 生成 16 文件 staging、manifest 与 ZIP
 py tools/run_tributary_expansion_directives_acceptance.py --preflight # 驱策朝贡国外置夹具与实机环境预检
@@ -113,9 +113,9 @@ py tools/build_celestial_commerce_corruption_release.py --check # 天朝经商�
 py tools/build_celestial_commerce_corruption_release.py     # 生成 22 文件 staging、manifest 与 ZIP
 py tools/run_celestial_commerce_corruption_acceptance.py --preflight # 天朝经商贪腐外置夹具与实机环境预检
 py tools/compose_celestial_commerce_corruption_workshop_media.py --artifacts <run> # GREEN 贪腐事件截图 → 一张低于 2 MB JPEG
-py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 43 条建筑链
+py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 165 条建筑链、605 条升级边
 py tools/build_auto_upgrade_buildings_release.py --check    # 自动升级建筑临时双构建
-py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 staging、manifest 与 ZIP
+py tools/build_auto_upgrade_buildings_release.py            # 生成 17 文件 staging、manifest 与 ZIP
 ```
 
 上述脚本生成器与素材投影工具中，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
@@ -129,10 +129,10 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 s
 契约原型、PB、图鉴、琉焰之视成长表和 28 个里程碑事件改 `tools/contracts_data.py`，再跑 `gen_contracts.py`；该生成器也产出 `common/traits/xar_traits.txt`。
 无继承人结算 widget 改 `gui/xar_no_heir_settlement.gui`；原生继承窗投影必须运行 `tools/gen_no_heir_gui.py`，不要手改 `gui/window_succession_event.gui`。
 长期平衡 wire 字段改 `tools/balance_wire_data.py`，再运行 `tools/gen_balance_wire.py`；两份生成结果仅供 development acceptance，release staging 必须整文件排除。
-廷臣 trait 元数据快照在 `tools/courtier_traits_1_19_0_6.json`。改动或升级游戏版本时，先更新
+廷臣 trait 元数据快照在 `tools/courtier_traits_1_20_0_2.json`。改动或升级游戏版本时，先更新
 `extract_courtier_traits.py` / `gen_courtier_creator.py` 内的版本、输出名和预期计数，再运行
 `py tools/extract_courtier_traits.py` 从当前原版 `00_traits.txt` 刷新快照；审阅 snapshot diff 后才运行
-`py tools/gen_courtier_creator.py`，并审阅生成的五类目录、224 项元数据与 95 组冲突。只运行生成器不会重新读取游戏文件。
+`py tools/gen_courtier_creator.py`，并审阅生成的五类目录、226 项元数据与 95 组冲突（当前原版快照为 306 个 trait）。只运行生成器不会重新读取游戏文件。
 三张决议源图位于 `images/decision_*.png`；修改后运行 `py tools/compose_decision_art.py`，不要手改
 `gfx/interface/illustrations/decisions/decision_xar_*.dds`。静态校验会逐字节重建并检查 DXT1 输出。
 自动升级建筑的决议源图为 `images/auto_upgrade_buildings_decision.png`；修改后运行
