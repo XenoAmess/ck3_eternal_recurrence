@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "read_only": true,
+  "local_ck3_access": false,
+  "source_chains": [
+    {
+      "name": "temporary_raise_constructor",
+      "rva": "0x298c130",
+      "size": 246,
+      "sha256": "583e547788e38b3e5720ec4273c6c7e223c6b0c8574246e05e0516bd7a2531b1",
+      "direct_calls": [],
+      "instruction_count": 62
+    },
+    {
+      "name": "final_raise_validator",
+      "rva": "0x298c2c0",
+      "size": 1060,
+      "sha256": "4d5b059683acb5cb1ccbdfc14b69b254b4da5690ef7e24d6674cb484f21549ed",
+      "direct_calls": [
+        "0x28b1cd0",
+        "0x4223bb4",
+        "0x37c66e0",
+        "0x1d64260",
+        "0x4223bb4",
+        "0x37c66e0",
+        "0x1d65b00",
+        "0x4223bb4",
+        "0x37c66e0",
+        "0x37eb190",
+        "0x37eb290",
+        "0x375dcc0",
+        "0x219fe20",
+        "0x4223f64",
+        "0x4223bb4",
+        "0x37c66e0",
+        "0x37eb190",
+        "0x37eb290",
+        "0x375dcc0",
+        "0x219fe20",
+        "0x4223f64",
+        "0x24a48b0",
+        "0x9d12c0",
+        "0x4226f30",
+        "0x8899e0",
+        "0x3e16640",
+        "0x889ad0",
+        "0x885fd0",
+        "0x856050"
+      ],
+      "instruction_count": 263
+    },
+    {
+      "name": "native_per_province_legality",
+      "rva": "0x24a48b0",
+      "size": 556,
+      "sha256": "b3fd9a6963f52e53ccb679cfd2a70be7bc1d2df908effc9e2fa8e8bc659cc3e5",
+      "direct_calls": [
+        "0x24a4540",
+        "0x28b2820",
+        "0x28bfc70",
+        "0x28b2820",
+        "0x28b1cd0",
+        "0x2917560",
+        "0x28b1cd0",
+        "0xb01f90"
+      ],
+      "instruction_count": 153
+    }
+  ],
+  "temporary_command_size": "0x50",
+  "temporary_command_primary_vtable": "0x45345c0",
+  "temporary_command_secondary_vtable": "0x4534658",
+  "execution_not_called": "0x2a9b5a0",
+  "readiness": {
+    "default_raise_legality_static_ready": true,
+    "default_raise_legality_live_ready": false,
+    "hypothetical_raised_roster_ready": false,
+    "muster_time_ready": false,
+    "future_supply_ready": false
+  }
+}

@@ -41,3 +41,9 @@ G2 仍 `3/8`，Robert `3153/36524`，新增游戏日为零。宗教/holy order �
 真实driver/service/planner已保存普通 `dynasty_continuity` 意图，沿persisted-v2与既有hot/cold消费者保留稳定campaign ID。fixture中actor100→200通过已有M3 estate核验，继承进度为1，后继实际下一正式计划选当前ruler婚配查询；同目录rogue历史war-first不会覆盖普通目标，rogue原分支仍保持war-first。native_auto_run报告投影同步加入 `campaign_goal_plan_used`，真实service已输出该字段。
 
 新4项与已有succession15项正常模式通过，组合19项 `-O`通过；没有重复已GREEN的全矩阵。结果[artifact](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/campaign-goal/result.json) SHA `e3e59ce40265ee4f68da9714efb800de7dc3b96944dc6c59c0889dc96aae45f1`，测试receipt SHA `1cf9874e42cc28d20f6698c257af09a498882cc0f638441f75e4a1143804ab8a`，初次fixture断言错误保留。源码与边界见[原生输入/消费专题](../ck3-native-ai/ordinary-campaign-goal-continuity.md)。状态仅static-ready；自然继承、游戏checkpoint/new PID、实际家庭结果和后继回合仍需live。其它12包继续后台，不因本包已到live边界停工。
+
+### 14:46:44 M5默认原生集结合法性源码交付
+
+新版默认集结点最终原生合法性已实现：validator `0x298C2C0` → final legality `0x24A48B0`，只构造临时上下文查询，不submit。实际x64 Release `/O2 /W4 /WX`编译和生产路径fixture PASS，三条exact call-chain ABI verifier PASS。专题：[默认集结](../ck3-native-ai/ck3-1.20.0.2-prewar-default-muster.md)；耐久输出 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/prewar/default-muster-wire.json` 与 `prewar/muster-build/build-receipt.json`。状态只为该原生provider的static-ready，公共query route由中央接线；完整future roster/muster/supply与强制参战provider继续并行实现，不把当前合法性冒充未来军力/补给。实际paused互证仍待live。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
