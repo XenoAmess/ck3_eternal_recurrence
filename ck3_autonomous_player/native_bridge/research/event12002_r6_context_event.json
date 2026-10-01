@@ -1,0 +1,188 @@
+{
+  "schema": "xar.ck3.event12002-r6-context-event-saved-review/v1",
+  "created_utc": "2026-10-01T12:08:11.792649+00:00",
+  "scope": "saved evidence and frozen source correspondence only; no CK3/process/pipe/UI/Git operation, VM_READ, new fixture, test, or production change",
+  "build": {
+    "version": "1.20.0.2",
+    "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "earlier_published_snapshot": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\construction-live-next\\root-r6-fresh-material-01\\snapshot-before.json",
+    "sha256": "ff70145067db482eab10b2a3d1b2a3353fdb69bb69d982e59297695ed76356b1",
+    "snapshot": {
+      "snapshot_id": "native:5",
+      "revision": 2,
+      "native_revision": 5,
+      "date_raw": 53169336,
+      "paused": true,
+      "map_ready": true,
+      "active_event": {
+        "source": "native",
+        "instance_id": 14,
+        "option_count": 1,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      }
+    },
+    "pid": 77216
+  },
+  "actual_sdk_snapshots": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\001-ck3_take_snapshot.json",
+      "sha256": "8f9f053bf96fdadf24d5d4a9360dd05c533c3e548cb5d8c8f7655ae3e0a22a31",
+      "tool": "ck3_take_snapshot",
+      "packet_is_error": false,
+      "snapshot": {
+        "snapshot_id": "native:8",
+        "revision": 2,
+        "native_revision": 8,
+        "date_raw": 53169336,
+        "paused": true,
+        "map_ready": true,
+        "active_event": null
+      }
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\002-ck3_take_snapshot.json",
+      "sha256": "d0885b3f19ebcae3a08fe840de8b59b1c0fb45abcd14c9927a69e68d456e9c69",
+      "tool": "ck3_take_snapshot",
+      "packet_is_error": false,
+      "snapshot": {
+        "snapshot_id": "native:8",
+        "revision": 2,
+        "native_revision": 8,
+        "date_raw": 53169336,
+        "paused": true,
+        "map_ready": true,
+        "active_event": null
+      }
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\004-ck3_take_snapshot.json",
+      "sha256": "d0885b3f19ebcae3a08fe840de8b59b1c0fb45abcd14c9927a69e68d456e9c69",
+      "tool": "ck3_take_snapshot",
+      "packet_is_error": false,
+      "snapshot": {
+        "snapshot_id": "native:8",
+        "revision": 2,
+        "native_revision": 8,
+        "date_raw": 53169336,
+        "paused": true,
+        "map_ready": true,
+        "active_event": null
+      }
+    }
+  ],
+  "rejected_query": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\003-ck3_query_current_event_window_context_v1.json",
+    "sha256": "06a543ecc9ec2fa1e13e202e1d47044d137c42f6a1a5fe271684151c688766ed",
+    "tool": "ck3_query_current_event_window_context_v1",
+    "arguments": {
+      "event_instance_id": 14,
+      "expected_revision": 2
+    },
+    "packet_is_error": true,
+    "message": "Error executing tool ck3_query_current_event_window_context_v1: event instance ID does not match the active event"
+  },
+  "later_saved_law_call": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-crown-action-readonly-20261001T120433Z\\result.json",
+    "sha256": "24a6b1329c8ccb483564a474e88881767581f23bfc61dca6e96a4d476d0b499f",
+    "status": "captured",
+    "initial_frame": {
+      "revision": 2,
+      "actor_character_id": 29829,
+      "date_raw": 53169336,
+      "native_revision": 11
+    },
+    "calls": [
+      {
+        "tool": "ck3_take_snapshot",
+        "isError": false,
+        "arguments": {}
+      },
+      {
+        "tool": "ck3_take_snapshot",
+        "isError": false,
+        "arguments": {}
+      },
+      {
+        "tool": "ck3_query_realm_law_crown_action_private_v1",
+        "isError": false,
+        "arguments": {
+          "expected_revision": 2
+        }
+      },
+      {
+        "tool": "ck3_take_snapshot",
+        "isError": false,
+        "arguments": {}
+      }
+    ]
+  },
+  "source_paths": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "sha256": "aedc46b91287d51bf98ccde73039bd77738617dac7a70e6c63a7f0a07503eb42",
+      "lines": "10290-10332; execute_step begins 10346",
+      "finding": "snapshot active-event admission rejects null before native query execution"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_adapter.cpp",
+      "sha256": "8f95f527a451682fd288d3fc3a31620446f3203cfc7cc53d63ee28cff697f97a",
+      "lines": "155-165",
+      "finding": "published Snapshot producer reads ReadEventsSnapshot into observed and moves observed to output"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_events.cpp",
+      "sha256": "eb58e7bf7e341e43425e7134f871680ab9531a01e3f5548cb125cb8afcb99859",
+      "lines": "43-73;170-188",
+      "finding": "events producer getter uses game_state+0xA0, embedded event manager+0x34480, event instance+0x1BC, definition+0x1B0, authored count+0x1AC"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_event_window_context.cpp",
+      "sha256": "82a9b2f05f47d47e2bc2c311af94f9380593969e8f76ed8f1b92dd73c5ede111",
+      "lines": "106-125;175-211;795-840",
+      "finding": "independent context prefixes reuse ReadEventsSnapshot; definition identity uses the same current-event getter and same instance offset"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_events.hpp",
+      "sha256": "70b85b30ed10d3b0a09a3e7b6209ddc38068cf4683702e636afd8d01e061e2db",
+      "lines": "13-15",
+      "finding": "current embedded event manager and getter constants"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_2_event_window_context.json",
+      "sha256": "d2c51ec340b08050a5e2a7b6c00d61f358647f914a75cb26b6eb4f74842a9e81",
+      "finding": "existing exact-build ABI reused, not rerun"
+    }
+  ],
+  "conclusion": {
+    "same_date_different_native_revisions": true,
+    "native_context_executed_by_rejected_sdk_query": false,
+    "earlier_event14_valid_for_later_sdk_snapshot": false,
+    "proven_native_event_window_abi_fault": false,
+    "proven_published_producer_fault": false,
+    "event_disappearance_cause": "not established by these saved artifacts; no new diagnosis requested after root fresh results",
+    "later_fresh_corroboration": {
+      "construction": "root-reported fresh02 material_source GREEN/native_revision 10",
+      "law": "saved result initial_frame native_revision 11; crown-action query isError=false"
+    },
+    "next_step": "root continues existing fresh paused nonwar queries; do not reuse event instance 14 unless the current native snapshot publishes it"
+  },
+  "readiness": "saved-evidence review only; no new live capability claim or G2 score",
+  "report_fields": {
+    "completed": "Frozen R6 event admission timeline and exact existing service/producer/reader paths",
+    "why": "Actual saved SDK error appeared to suggest instance mismatch; saved native revisions show active event disappeared before request",
+    "tests": "No new fixture/test; reused actual saved SDK packets and existing exact-build source/ABI",
+    "red": "Original SDK query remains preserved; it does not demonstrate native event-window ABI or producer failure",
+    "remaining": "No fix assigned or necessary on this evidence; root owns further current live work",
+    "commit_push": "Coordinator-owned; not performed by leaf"
+  }
+}

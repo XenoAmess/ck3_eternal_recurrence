@@ -1,0 +1,408 @@
+{
+  "schema": "event12002_r6_event_adapter_saved_review_v1",
+  "scope": "Saved evidence and source routes only; no live read or new test.",
+  "exact_game_build": {
+    "version": "1.20.0.2",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "artifacts": [
+    {
+      "relative_path": "construction-live-next/root-r6-fresh-material-01/snapshot-before.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\construction-live-next\\root-r6-fresh-material-01\\snapshot-before.json",
+      "sha256": "ff70145067db482eab10b2a3d1b2a3353fdb69bb69d982e59297695ed76356b1"
+    },
+    {
+      "relative_path": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/plan.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\plan.json",
+      "sha256": "4a8848a6ac419f176224da7a440a0d13168941fd6032a58c5d839990b460d938"
+    },
+    {
+      "relative_path": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/001-ck3_take_snapshot.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\001-ck3_take_snapshot.json",
+      "sha256": "8f9f053bf96fdadf24d5d4a9360dd05c533c3e548cb5d8c8f7655ae3e0a22a31"
+    },
+    {
+      "relative_path": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/002-ck3_take_snapshot.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\002-ck3_take_snapshot.json",
+      "sha256": "d0885b3f19ebcae3a08fe840de8b59b1c0fb45abcd14c9927a69e68d456e9c69"
+    },
+    {
+      "relative_path": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/003-ck3_query_current_event_window_context_v1.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\003-ck3_query_current_event_window_context_v1.json",
+      "sha256": "06a543ecc9ec2fa1e13e202e1d47044d137c42f6a1a5fe271684151c688766ed"
+    },
+    {
+      "relative_path": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/004-ck3_take_snapshot.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-current-event14-context-20261001T115859Z\\004-ck3_take_snapshot.json",
+      "sha256": "d0885b3f19ebcae3a08fe840de8b59b1c0fb45abcd14c9927a69e68d456e9c69"
+    },
+    {
+      "relative_path": "construction-live-next/root-r6-fresh-material-02/snapshot-before.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\construction-live-next\\root-r6-fresh-material-02\\snapshot-before.json",
+      "sha256": "ed4f11c70e0215dd289221c9beae6c348236b19ce72997b2398026b07b3a7996"
+    },
+    {
+      "relative_path": "construction-live-next/root-r6-fresh-material-02/snapshot-after.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\construction-live-next\\root-r6-fresh-material-02\\snapshot-after.json",
+      "sha256": "b15b74d702ca3b45c03ef5a52e890df0f50bff7cd7bebf0a27c900cc90e759fe"
+    },
+    {
+      "relative_path": "construction-live-next/root-r6-fresh-material-02/summary.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\construction-live-next\\root-r6-fresh-material-02\\summary.json",
+      "sha256": "10c33759e23b70fe625e201b49d9ad27a0081c3400be4a8fed9eb8f299b302b4"
+    },
+    {
+      "relative_path": "construction-live-next/root-r6-fresh-material-02/query-source.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\construction-live-next\\root-r6-fresh-material-02\\query-source.json",
+      "sha256": "c7e1b759a71e5677fc13264baf7c29fc9cb807b91e1c8a5f06858e18767775c6"
+    },
+    {
+      "relative_path": "targeted-sdk-r6/r6-crown-action-readonly-20261001T120433Z/result.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-crown-action-readonly-20261001T120433Z\\result.json",
+      "sha256": "24a6b1329c8ccb483564a474e88881767581f23bfc61dca6e96a4d476d0b499f"
+    }
+  ],
+  "observations": [
+    {
+      "artifact": "construction-live-next/root-r6-fresh-material-01/snapshot-before.json",
+      "snapshot": {
+        "snapshot_id": "native:5",
+        "revision": 2,
+        "native_revision": 5,
+        "date_raw": 53169336,
+        "paused": true,
+        "map_ready": true,
+        "played_character": {
+          "character_id": 29829,
+          "alive": true,
+          "source": "native",
+          "stress_points": 34,
+          "betrothed_id": null,
+          "primary_spouse_id": 34730,
+          "spouse_ids": [
+            34730
+          ]
+        },
+        "active_event": {
+          "source": "native",
+          "instance_id": 14,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe"
+      }
+    },
+    {
+      "artifact": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/001-ck3_take_snapshot.json",
+      "is_error": false,
+      "snapshot": {
+        "snapshot_id": "native:8",
+        "revision": 2,
+        "native_revision": 8,
+        "date_raw": 53169336,
+        "paused": true,
+        "map_ready": true,
+        "played_character": {
+          "character_id": 29829,
+          "alive": true,
+          "source": "native",
+          "stress_points": 34,
+          "betrothed_id": null,
+          "primary_spouse_id": 34730,
+          "spouse_ids": [
+            34730
+          ]
+        },
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe"
+      }
+    },
+    {
+      "artifact": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/002-ck3_take_snapshot.json",
+      "is_error": false,
+      "snapshot": {
+        "snapshot_id": "native:8",
+        "revision": 2,
+        "native_revision": 8,
+        "date_raw": 53169336,
+        "paused": true,
+        "map_ready": true,
+        "played_character": {
+          "character_id": 29829,
+          "alive": true,
+          "source": "native",
+          "stress_points": 34,
+          "betrothed_id": null,
+          "primary_spouse_id": 34730,
+          "spouse_ids": [
+            34730
+          ]
+        },
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe"
+      }
+    },
+    {
+      "artifact": "targeted-sdk-r6/r6-current-event14-context-20261001T115859Z/004-ck3_take_snapshot.json",
+      "is_error": false,
+      "snapshot": {
+        "snapshot_id": "native:8",
+        "revision": 2,
+        "native_revision": 8,
+        "date_raw": 53169336,
+        "paused": true,
+        "map_ready": true,
+        "played_character": {
+          "character_id": 29829,
+          "alive": true,
+          "source": "native",
+          "stress_points": 34,
+          "betrothed_id": null,
+          "primary_spouse_id": 34730,
+          "spouse_ids": [
+            34730
+          ]
+        },
+        "active_event": null,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe"
+      }
+    }
+  ],
+  "sdk_request": {
+    "arguments": {
+      "event_instance_id": 14,
+      "expected_revision": 2
+    },
+    "is_error": true,
+    "message": "Error executing tool ck3_query_current_event_window_context_v1: event instance ID does not match the active event",
+    "admission_location": "bridge/service.py:10327-10332",
+    "native_event_context_executed": false
+  },
+  "later_root_material": {
+    "construction_summary": {
+      "status": "material_source",
+      "root_executed": true,
+      "readonly_query": true,
+      "native_step": "g2_player_construction_view_probe_v1",
+      "actor_character_id": 29829,
+      "before_public_revision": 2,
+      "before_native_revision": 10,
+      "before_date_raw": 53169336,
+      "after_public_revision": 2,
+      "source_frame": {
+        "snapshot_id": "native:10",
+        "revision": 2,
+        "native_revision": 10,
+        "date_raw": 53169336,
+        "episode_run_id": "native-29829-3f80e147d033",
+        "actor_character_id": 29829
+      },
+      "candidate": null,
+      "game_launch_stop_reset_restore_called": false,
+      "output_dir": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\construction-live-next\\root-r6-fresh-material-02"
+    },
+    "construction_source_status": "material_source",
+    "law_sdk_result": {
+      "status": "captured",
+      "initial_frame": {
+        "revision": 2,
+        "actor_character_id": 29829,
+        "date_raw": 53169336,
+        "native_revision": 11
+      },
+      "calls": [
+        {
+          "tool": "ck3_take_snapshot",
+          "isError": false,
+          "arguments": {}
+        },
+        {
+          "tool": "ck3_take_snapshot",
+          "isError": false,
+          "arguments": {}
+        },
+        {
+          "tool": "ck3_query_realm_law_crown_action_private_v1",
+          "isError": false,
+          "arguments": {
+            "expected_revision": 2
+          }
+        },
+        {
+          "tool": "ck3_take_snapshot",
+          "isError": false,
+          "arguments": {}
+        }
+      ],
+      "artifacts": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r6\\r6-crown-action-readonly-20261001T120433Z"
+    }
+  },
+  "source_pins": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_adapter.cpp",
+      "r6_source_path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_adapter.cpp",
+      "r6_source_sha256": "8f95f527a451682fd288d3fc3a31620446f3203cfc7cc53d63ee28cff697f97a",
+      "candidate_source_sha256": "8f95f527a451682fd288d3fc3a31620446f3203cfc7cc53d63ee28cff697f97a",
+      "candidate_byte_identical": true,
+      "spans": [
+        {
+          "first_line": 95,
+          "last_line": 105,
+          "text": "    bindings_.military.submit_copy = ck3_12002::SubmitCommandCopyCompat;\n  }\n\n  const AdapterDescriptor &descriptor() const noexcept override {\n    return kDescriptor;\n  }\n  bool enabled() const noexcept override { return bindings_.core.enabled; }\n\n  bool read_snapshot(Snapshot &output) const noexcept override {\n    output = {};\n    ck3_12002::CoreSnapshotPrefix prefix{};"
+        },
+        {
+          "first_line": 107,
+          "last_line": 125,
+          "text": "    Snapshot observed{};\n    observed.date_raw = prefix.clock.date_raw;\n    observed.speed = prefix.clock.speed;\n    observed.paused = prefix.clock.paused;\n    observed.player_id = prefix.local_player_id;\n    observed.map_ready = prefix.map_ready;\n    observed.has_played_character = prefix.has_played_character;\n    observed.played_character_id = prefix.played_character_id;\n    observed.played_character_alive = prefix.played_character_alive;\n    if (!prefix.map_ready) {\n      // The local-player sentinel makes this a startup/menu prefix, before\n      // category registries are populated, as in the previous adapter.\n      output = std::move(observed);\n      return true;\n    }\n    if (prefix.has_played_character) {\n      std::int64_t treasury_raw = 0;\n      if (!ck3_12002::ReadWarCashTreasury(\n              bindings_.core, prefix.played_character_id, treasury_raw))"
+        },
+        {
+          "first_line": 153,
+          "last_line": 171,
+          "text": "          std::move(relationships.spouse_character_ids);\n    }\n    if (!ck3_12002::ReadEventsSnapshot(bindings_.events, observed) ||\n        ck3_12002::ReadWorldSnapshot(bindings_.world, bindings_.armies,\n                                    bindings_.provinces, prefix, observed) !=\n            ck3_12002::WorldReadResult::available)\n      return false;\n    const auto settlement = ck3_12002::ReadSettlement(\n        bindings_.settlement, bindings_.core, observed);\n    if (settlement != ck3_12002::SettlementReadResult::published &&\n        settlement != ck3_12002::SettlementReadResult::not_published)\n      return false;\n    output = std::move(observed);\n    return true;\n  }\n\n  PauseSubmitResult submit_pause_map(\n      Snapshot *observed_snapshot = nullptr) const noexcept override {\n    if (observed_snapshot == nullptr)"
+        },
+        {
+          "first_line": 412,
+          "last_line": 417,
+          "text": "Ck3_12002AdapterBindings BindCk3_12002AdapterImage(\n    std::uintptr_t image_base, std::string_view executable_sha256) noexcept {\n  Ck3_12002AdapterBindings bindings{};\n  bindings.core = ck3_12002::BindCoreImage(image_base, executable_sha256);\n  bindings.commands = ck3_12002::BindCommandImage(image_base, executable_sha256);\n  bindings.events = ck3_12002::BindEventsImage(image_base, executable_sha256);"
+        }
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "r6_source_path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "r6_source_sha256": "294c5699aa0f33f5f3fc5e1cdb2699242342523dc98bbf9f37e3163cede3f357",
+      "candidate_source_sha256": "910fb9c544dec3d3aa721e94b5c1341f8086c6e976766e865ed8e84390b8c69b",
+      "candidate_byte_identical": false,
+      "spans": [
+        {
+          "first_line": 4693,
+          "last_line": 4709,
+          "text": "  result += \",\\\"active_event\\\":\";\n  if (!snapshot.has_active_event) {\n    result += \"null\";\n  } else {\n    result += \"{\\\"instance_id\\\":\";\n    result += SignedNumber(snapshot.active_event_instance_id);\n    result += \",\\\"option_count\\\":\";\n    result += SignedNumber(snapshot.active_event_option_count);\n    result += \",\\\"option_indexes\\\":[\";\n    for (std::int32_t public_index = 1;\n         public_index <= snapshot.active_event_option_count; ++public_index) {\n      if (public_index != 1) {\n        result += ',';\n      }\n      result += SignedNumber(public_index);\n    }\n    result += \"]}\";"
+        },
+        {
+          "first_line": 9858,
+          "last_line": 9862,
+          "text": "    } else if constexpr (Kind == QueryKind12002::event_window) {\n      xar::ck3_12002::ReadEventWindowContextV1(\n          xar::ck3_12002::BindEventWindowImage(query.image_base, sha),\n          envelope->expected_snapshot_revision, query.event_instance_id, query.event);\n      query.typed_result = true;"
+        },
+        {
+          "first_line": 10289,
+          "last_line": 10332,
+          "text": "bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,\n                     std::optional<xar::game::Snapshot> &previous,\n                     std::uint64_t &revision,\n                     const CheckpointSubmission &checkpoint,\n                     std::uint64_t &published_checkpoint_sequence,\n                     WarEntryApplicationMainMailboxWorkerLifetime\n                          *mailbox_lifetime = nullptr,\n                     SnapshotPublishDiagnostics *diagnostics = nullptr,\n                     const xar::game::Snapshot *observed_snapshot = nullptr) {\n  const auto record = [diagnostics](std::string_view status,\n                                    std::uint64_t published_revision,\n                                    std::size_t payload_bytes) {\n    if (diagnostics != nullptr) {\n      diagnostics->status = status;\n      diagnostics->revision = published_revision;\n      diagnostics->payload_bytes = payload_bytes;\n    }\n  };\n  if (!bindings.supports_snapshot()) {\n    record(\"unsupported\", revision, 0);\n    return true;\n  }\n  xar::game::Snapshot snapshot{};\n  if (observed_snapshot != nullptr) {\n    snapshot = *observed_snapshot;\n  } else if (!xar::game::ReadSnapshot(bindings, snapshot)) {\n    record(\"read_failed\", revision, 0);\n    return true;\n  }\n  if (mailbox_lifetime != nullptr) {\n    mailbox_lifetime->MaybeInstall(snapshot);\n  }\n  if (previous.has_value() && previous.value() == snapshot &&\n      published_checkpoint_sequence == checkpoint.sequence) {\n    record(\"deduplicated\", revision, 0);\n    return true;\n  }\n  ++revision;\n  const auto frame = StateSnapshotFrame(snapshot, revision, checkpoint);\n  previous = snapshot;\n  published_checkpoint_sequence = checkpoint.sequence;\n  const bool written = xar::bridge::WriteFrame(pipe, frame);\n  record(written ? \"written\" : \"write_failed\", revision, frame.size());\n  return written;"
+        },
+        {
+          "first_line": 10440,
+          "last_line": 10445,
+          "text": "  std::uint64_t connection_generation = 0;\n  std::uint64_t sequence = 0;\n  std::uint64_t state_revision = 0;\n  CheckpointSubmission checkpoint_submission{};\n  std::uint64_t published_checkpoint_sequence = 0;\n  std::optional<xar::game::Snapshot> previous_snapshot;"
+        },
+        {
+          "first_line": 10868,
+          "last_line": 10875,
+          "text": "    return QueryKind12002::loaded_features;\n  if (step == xar::ck3_11906::kPendingCharacterInteractionContextV1Step)\n    return QueryKind12002::pending_interaction;\n  if (step == xar::ck3_11906::kEventWindowContextV1Step)\n    return QueryKind12002::event_window;\n  if (step == xar::ck3_11906::kTitleMapNavigationV1Step)\n    return QueryKind12002::title_map;\n  return std::nullopt;"
+        },
+        {
+          "first_line": 10926,
+          "last_line": 10928,
+          "text": "  case QueryKind12002::event_window:\n    return xar::ck3_11906::ParseEventWindowContextRequestV1(\n        payload, revision, query.event_instance_id);"
+        },
+        {
+          "first_line": 10939,
+          "last_line": 10971,
+          "text": "std::string RunTypedQuery12002(\n    const xar::game::GameAdapter &game, WorkerState &state,\n    std::string_view request_id, std::string_view step, std::string_view payload) {\n  TypedQuery12002 query{};\n  query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);\n  query.envelope.mailbox = &g_main_thread_query_mailbox_v1;\n  query.envelope.typed_context = &query;\n  query.envelope.expected_snapshot_revision = state.state_revision;\n  query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));\n  if (!ParseTypedQuery12002(step, payload, query)) {\n    return CommandResultFrame(request_id, step, false, \"typed query request is malformed\");\n  }\n  if (query.envelope.expected_snapshot_revision != state.state_revision ||\n      state.state_revision == 0 || !state.previous_snapshot.has_value() ||\n      !xar::game::ReadSnapshot(game, query.envelope.expected_snapshot) ||\n      query.envelope.expected_snapshot != *state.previous_snapshot) {\n    return CommandResultFrame(request_id, step, false, \"state_changed\");\n  }\n  const auto &snapshot = query.envelope.expected_snapshot;\n  if (!snapshot.paused) {\n    return CommandResultFrame(request_id, step, false, \"requires_paused\");\n  }\n  if (!snapshot.map_ready) {\n    return CommandResultFrame(request_id, step, false, \"map_not_ready\");\n  }\n  if (query.kind == QueryKind12002::route &&\n      !RouteHostileScopeMatchesSnapshot(snapshot, query.route_request)) {\n    return CommandResultFrame(request_id, step, false,\n                              \"route-contact hostile scope is incomplete or stale\");\n  }\n  if (query.kind == QueryKind12002::event_window &&\n      (!snapshot.has_active_event || snapshot.active_event_instance_id != query.event_instance_id)) {\n    return CommandResultFrame(request_id, step, false, \"state_changed\");"
+        },
+        {
+          "first_line": 11132,
+          "last_line": 11137,
+          "text": "  auto &sequence = state.sequence;\n  const auto connection_generation = state.connection_generation;\n  auto &state_revision = state.state_revision;\n  auto &checkpoint_submission = state.checkpoint_submission;\n  auto &published_checkpoint_sequence = state.published_checkpoint_sequence;\n  auto &previous_snapshot = state.previous_snapshot;"
+        },
+        {
+          "first_line": 11304,
+          "last_line": 11312,
+          "text": "      ++sequence;\n      connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence, game));\n      if (connected && game.supports_snapshot()) {\n        connected = PublishSnapshot(pipe, game, previous_snapshot,\n                                    state_revision, checkpoint_submission,\n                                    published_checkpoint_sequence,\n                                    &mailbox_lifetime);\n      }\n      next_heartbeat = now + kHeartbeatIntervalMs;"
+        },
+        {
+          "first_line": 11414,
+          "last_line": 11417,
+          "text": "        } else if (game.descriptor().adapter_id == \"ck3-1.20.0.2-msvc-x64\" &&\n                   TypedQueryKind12002(step).has_value()) {\n          connected = xar::bridge::WriteFrame(pipe, RunTypedQuery12002(\n              game, state, request_id, step, incoming.payload));"
+        }
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "r6_source_path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "r6_source_sha256": "09ee4f26a588c04cca4bfa257ae739f38a178a732a7d2db628946378adc2da19",
+      "candidate_source_sha256": "3083df9c93a90356667e24827fb6677bbba0b39e18d771750c96ffa01ab65ade",
+      "candidate_byte_identical": false,
+      "spans": [
+        {
+          "first_line": 863,
+          "last_line": 868,
+          "text": "                self._hello = dict(frame)\n                self._last_heartbeat = None\n                self._last_pong = None\n                self._semantic_snapshot = None\n                self._command_results.clear()\n                self._public_revision += 1"
+        },
+        {
+          "first_line": 882,
+          "last_line": 907,
+          "text": "            elif frame_type == \"state_snapshot\":\n                try:\n                    snapshot = _semantic_snapshot_from_frame(frame)\n                except ValueError as error:\n                    state = frame.get(\"state\")\n                    state_summary = state if isinstance(state, dict) else {}\n                    self._rejected_state_snapshot_count += 1\n                    self._last_rejected_state_snapshot = {\n                        \"snapshot_id\": frame.get(\"snapshot_id\"),\n                        \"revision\": frame.get(\"revision\"),\n                        \"date_raw\": state_summary.get(\"date_raw\"),\n                        \"speed\": state_summary.get(\"speed\"),\n                        \"paused\": state_summary.get(\"paused\"),\n                        \"map_ready\": state_summary.get(\"map_ready\"),\n                        \"error_type\": type(error).__name__,\n                        \"error\": str(error),\n                    }\n                    self._condition.notify_all()\n                    return \"state_snapshot_rejected\"\n                # Heartbeat-adjacent publishers may repeat the most recent\n                # semantic frame.  Repeated bytes are liveness, not a new game\n                # revision, so wait_for_change must keep waiting.\n                if snapshot != self._semantic_snapshot:\n                    self._semantic_snapshot = snapshot\n                    self._public_revision += 1\n            elif frame_type == \"command_result\":"
+        },
+        {
+          "first_line": 1007,
+          "last_line": 1034,
+          "text": "    def semantic_snapshot(self) -> dict[str, object]:\n        with self._condition:\n            if not self._connected:\n                raise BridgeUnavailableError(\n                    f\"native DLL is not connected to {self.pipe_name}\"\n                )\n            raw_capabilities = _string_list(self._hello.get(\"capabilities\"))\n            if self._semantic_snapshot is None:\n                if \"game.state.snapshot\" in raw_capabilities:\n                    raise BridgeUnavailableError(\n                        \"native game state is not available yet; CK3 may still be \"\n                        \"loading or may not have entered a map\"\n                    )\n                raise UnsupportedStepError(\n                    \"native DLL did not advertise game.state.snapshot\"\n                )\n            if \"game.state.snapshot\" not in raw_capabilities:\n                raise UnsupportedStepError(\n                    \"native DLL did not advertise game.state.snapshot\"\n                )\n            return {\n                **self._semantic_snapshot,\n                \"revision\": self._public_revision,\n                \"native_revision\": self._semantic_snapshot[\"revision\"],\n                \"backend_id\": \"native-headless\",\n                \"source\": \"injected-dll-named-pipe\",\n                \"diagnostics\": self._diagnostics_locked(),\n            }"
+        },
+        {
+          "first_line": 2426,
+          "last_line": 2439,
+          "text": "    def take_snapshot(self) -> dict[str, object]:\n        snapshot = self.take_internal_semantic_snapshot()\n        with self._driver_state_lock:\n            rollback_war_failures = copy.deepcopy(self._rollback_war_failures)\n            rollback_war_failure = (\n                copy.deepcopy(rollback_war_failures[0])\n                if rollback_war_failures\n                else None\n            )\n        return {\n            **snapshot,\n            \"native_command_history\": self._history_snapshot(),\n            \"native_rollback_war_failure\": rollback_war_failure,\n            \"native_rollback_war_failures\": rollback_war_failures,"
+        },
+        {
+          "first_line": 21987,
+          "last_line": 22009,
+          "text": "def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]:\n    state = frame.get(\"state\")\n    if not isinstance(state, dict):\n        raise ValueError(\"native state_snapshot lacks state\")\n    snapshot_id = frame.get(\"snapshot_id\")\n    revision = frame.get(\"revision\")\n    if not isinstance(snapshot_id, str) or not snapshot_id:\n        raise ValueError(\"native state_snapshot lacks snapshot_id\")\n    _validate_revision(revision, \"state_snapshot revision\")\n    history = state.get(\"history\")\n    active_wars = normalize_active_wars(state.get(\"active_wars\"))\n    player_armies = player_armies_from_state(\n        active_wars, state.get(\"player_armies\")\n    )\n    return {\n        **state,\n        \"format_version\": 1,\n        \"snapshot_id\": snapshot_id,\n        \"revision\": revision,\n        \"history\": history if isinstance(history, list) else [],\n        \"active_event\": normalize_active_event(\n            state.get(\"active_event\"), default_source=\"native\"\n        ),"
+        }
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "r6_source_path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2live6\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "r6_source_sha256": "aedc46b91287d51bf98ccde73039bd77738617dac7a70e6c63a7f0a07503eb42",
+      "candidate_source_sha256": "aedc46b91287d51bf98ccde73039bd77738617dac7a70e6c63a7f0a07503eb42",
+      "candidate_byte_identical": true,
+      "spans": [
+        {
+          "first_line": 10277,
+          "last_line": 10349,
+          "text": "    def query_current_event_window_context_v1(\n        self,\n        event_instance_id: int,\n        *,\n        expected_revision: int,\n    ) -> dict[str, object]:\n        \"\"\"Read exact identity, presentation, and lossy effect indicators.\"\"\"\n        if (\n            isinstance(event_instance_id, bool)\n            or not isinstance(event_instance_id, int)\n            or not 1 <= event_instance_id <= 2**31 - 1\n        ):\n            raise ValueError(\"event_instance_id must be a positive full int32\")\n        snapshot = self.snapshot()\n        revision = snapshot.get(\"revision\")\n        native_revision = snapshot.get(\"native_revision\")\n        date_raw = snapshot.get(\"date_raw\")\n        snapshot_id = snapshot.get(\"snapshot_id\")\n        active_event = snapshot.get(\"active_event\")\n        if snapshot.get(\"paused\") is not True:\n            raise BridgeUnavailableError(\n                \"event-window queries require a paused CK3 snapshot\"\n            )\n        if (\n            isinstance(revision, bool)\n            or not isinstance(revision, int)\n            or revision < 0\n            or isinstance(expected_revision, bool)\n            or not isinstance(expected_revision, int)\n            or expected_revision < 0\n        ):\n            raise ValueError(\"expected_revision must be a non-negative integer\")\n        if expected_revision != revision:\n            raise BridgeUnavailableError(\n                \"event-window revision mismatch: expected \"\n                f\"{expected_revision}, current {revision}\"\n            )\n        if (\n            isinstance(native_revision, bool)\n            or not isinstance(native_revision, int)\n            or not 1 <= native_revision <= 2**64 - 1\n            or isinstance(date_raw, bool)\n            or not isinstance(date_raw, int)\n            or not -(2**31) <= date_raw <= 2**31 - 1\n            or not isinstance(snapshot_id, str)\n            or not snapshot_id\n        ):\n            raise BridgeUnavailableError(\n                \"event-window query lacks a stable native snapshot binding\"\n            )\n        if (\n            not isinstance(active_event, dict)\n            or active_event.get(\"instance_id\") != event_instance_id\n        ):\n            raise BridgeUnavailableError(\n                \"event instance ID does not match the active event\"\n            )\n        capabilities = self.capabilities()\n        bridge_capabilities = capabilities.get(\"bridge_capabilities\")\n        if not (\n            isinstance(bridge_capabilities, list)\n            and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY\n            in bridge_capabilities\n            and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP\n            in action_step_set(capabilities)\n        ):\n            raise UnsupportedStepError(\n                \"selected backend cannot query the current event window\"\n            )\n        result = self.execute_step(\n            QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,\n            expected_revision=expected_revision,\n        )"
+        }
+      ]
+    }
+  ],
+  "conclusions": {
+    "verified": [
+      "Saved early native:5 has event 14; SDK snapshots native:8 have active_event=null at the same date_raw 53169336.",
+      "SDK request event 14 / public revision 2 is rejected before execute_step in the existing service admission.",
+      "Public revision is a Python client state counter; native_revision is copied from the received native frame revision.",
+      "The current adapter binds new EventsBindings and ReadEventsSnapshot; publication serializes Snapshot active-event fields directly.",
+      "The 1.20.0.2 typed route precedes the old event route; reuse of the old parser/step identity does not select the old native reader.",
+      "Root later saved construction source native:10 and law SDK native:11 success; the current blocker is cleared."
+    ],
+    "not_proved": [
+      "The precise cause of the early event-14 observation.",
+      "A defective cache implementation, native event ABI, or mixed-version callback.",
+      "Positive native event-window context execution in this failed SDK attempt."
+    ],
+    "production_changes": [],
+    "further_abi_or_vm_read": "Stopped by root steering; no new plan.",
+    "tests": "None added or run; only existing saved evidence extracted."
+  }
+}
