@@ -2,7 +2,7 @@
 
 日期：2026-10-01。产品：`mod_xenoamess_quality_of_life`，Workshop item `3798133925`。
 
-当前结论：代码兼容迁移和本产品 L0 已完成；新版实机验收尚未执行，不能据此宣称新版兼容或正式发布。源 descriptor 仍为 `version="1.1.0"`、`supported_version="1.19.0.6"`；旧 native ABI、真实 Workshop 缓存和发布历史未修改。
+当前结论：代码兼容迁移和本产品 L0 已完成。新版天朝场景已有严格继任、转封、死亡、关闭开关、改信门槛实际 UI、赎金和七组合释放证据；实机发现的足额牵制款报价与 recipient 上下文问题已修复，并由独立 R0004 付款场景验证。行政场景及下述未覆盖范围仍待验，不能据此宣称整个产品或正式发布完成。源 descriptor 仍为 `version="1.1.0"`、`supported_version="1.19.0.6"`；旧 native ABI、真实 Workshop 缓存和发布历史未修改。
 
 ## 精确输入
 
@@ -54,6 +54,20 @@ tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py 
 目前 `open_kaishek` 没有 CK3 1.20 semantic profile；本轮仅使用无版本语义的 parser，不用旧 1.19 profile 证明新版语义。互动引擎、GUI、异步 scope 生命周期、实际金钱/囚犯/改信/战争后果与 native ABI 均未由该离线结果证明。
 
 ## 待新版实机验证
+
+### 2026-10-01 实机增量与边界
+
+R0003（`4-8e1c2f1861--xenoamess-quality-of-life--R0003`）严格原版 baseline、最高合格非玩家候选、移除/死亡继任及关闭后原版候选/guard 清理均通过。后续原始 `payment_full_only` 失败保持原样；回调覆盖旧预期值后无法重建其具体失败条件，没有将其归为已证明的自然死亡、缓存或日收入问题。
+
+该场继续实际操作了门槛 50% 的改信事件、足额/有钱即赎回按钮和条件释放决议；新日志中的 `conversion_threshold_50_filtered`、`ransom_full_only`、`ransom_any_one_gold`、`release_priority_matrix`、`release_conversion_rite_matched` 均通过。角色搜索实际输入并全文读回 `ZQA`，应用名称筛选后显示两个控制样本；高接受度角色完整面板主行显示“禅宗”，低接受度角色主行仍为“罗马礼”，并非仅凭图标判断 Rite。对应原图为 live R0003 根目录的 `20261001T112130480976Z-actual-high-portrait-001-after.png` 与 `20261001T112222485164Z-actual-low-portrait-001-after.png`。这些证据证明该实际路径及矩阵后果，不能代替尚未执行的 head_of_rite、拒绝改信标记或其他 slider 边界样本。
+
+R0003 closeout：`C:/workspace/ck3-upgrade-20261001/audits/xqol-R0003-ui-closeout-02/report.json`，SHA-256 `62b160a22ab231350b6d1ca409323ce6acd6996227f4ddf9ddb1a3ea0b5fbd4d`。最终 error.log 50209 字节、136 条错误记录（其中 57 条明确处于 tooltip 构建）；不得称零错误。冻结投影中的 governor、改信和已通过的监狱 effect 块与当前修复后生产字节相同；仅足额牵制款块变化，故 R0004 只补受影响付款范围，没有机械重跑这些已通过块。
+
+R0004 在同一真实引擎事务完成弱牵制足额/现有款/一金币边界和强牵制钱包 74/76 的原版报价边界。钱包 74 的 uncapped 价为 75、原版 capped 价为 74，足额筛选拒绝并保留可用牵制；钱包 76 重新报价 75，原版实付 75。八个金额、计数、钱包与牵制条件全部通过。细节、原失败保全、27 文件修复投影及精确 error 归因见 [付款上下文实机证据](xqol-native-payment-context-2026-10-01.md)。该场最终 error.log 111712 字节、385 条记录，303 条为付款完成后的夹具错误调用改信 dispatcher 所产生的真实 runtime error；没有将其说成 tooltip 或改信通过。
+
+两场均使用 fresh Steam 离线画面、一次性 userdir、冻结 d19 新版候选与官方 1.20 harness，并在正常结束后证明进程树清理及实际 CK3 零进程。开局人物为 1066 罗贝尔·德·欧特维尔／阿普利亚；旧 operator 中“Robert of Normandy”的称呼是历史错误。d19 event normalization 默认补出的 `enabled=true` 不是原生选项门禁实证；实际选择另依可见按钮/业务文字、fresh instance/revision 和真实后果确认。
+
+下列原完整验收清单继续作为范围要求。其中天朝上述已执行部分已有有界证据，行政主场景、复杂免费防御关系/战争后果、其余 slider 边界及独立宗教负门禁仍未执行。旧 runner 的游戏版本、EXE 与旧 Kaishek/native 准入锁保持冻结；新版实机入口是 checked 1.20 准备器与精确冻结的官方 harness，不能仅换旧 runner 常量声称迁移完成。
 
 1. 三类政府的五种继任候选、开关与转封 guard 所有权清理。
 2. 免费防御关系矩阵、同人多关系去重及资源不扣减。
