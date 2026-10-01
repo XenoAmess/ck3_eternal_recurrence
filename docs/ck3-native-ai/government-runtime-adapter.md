@@ -1,5 +1,10 @@
 # CK3 1.19.0.6 government runtime identity and DLC adapter native tree
 
+The 1.20.0.2 migration is documented in
+[government-runtime-adapter-1.20.0.2.md](government-runtime-adapter-1.20.0.2.md).
+This page retains the legacy exact-build inputs and historical acceptance.
+The dual-build implementation preserves its legacy default profile.
+
 ## Status and scope
 
 - **[research / static-frozen]** This topic freezes the exact-build government identity reader, all 18 stock government definitions, their nonreligious native AI switches, and the runtime feature inputs needed to select a future G2 adapter.

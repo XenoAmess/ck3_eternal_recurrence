@@ -304,6 +304,236 @@ constexpr std::array<GovernmentDefinitionV1,
          "tgp_japan_feudal", kTgpRequired, kJapanFeudalProfile, false},
     }};
 
+// Frozen 1.20.0.2 stock key/flag identity rows; live flags remain complete.
+constexpr std::array kGovernmentFlags12002_0{
+    std::string_view{"government_is_feudal"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"may_elevate_co_monarch"},
+    std::string_view{"government_uses_crown_authority"},
+    std::string_view{"government_uses_domain_limit"},
+};
+constexpr std::array kGovernmentFlags12002_1{
+    std::string_view{"government_is_republic"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_domain_limit"},
+};
+constexpr std::array kGovernmentFlags12002_2{
+    std::string_view{"government_is_clan"},
+    std::string_view{"government_has_tax_slot"},
+    std::string_view{"may_appoint_viziers"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_crown_authority"},
+    std::string_view{"government_uses_domain_limit"},
+};
+constexpr std::array kGovernmentFlags12002_3{
+    std::string_view{"government_is_tribal"},
+    std::string_view{"government_is_tribal_excluding_wanua"},
+    std::string_view{"use_prestige_to_buy_maa"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_can_raid_rule"},
+    std::string_view{"may_elevate_co_monarch"},
+    std::string_view{"government_uses_domain_limit"},
+    std::string_view{"government_uses_tribal_authority"},
+};
+constexpr std::array kGovernmentFlags12002_4{
+    std::string_view{"government_is_tribal"},
+    std::string_view{"government_is_wanua"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_can_raid_rule"},
+    std::string_view{"government_use_barter_goods"},
+    std::string_view{"government_enables_naval_raiding"},
+    std::string_view{"government_enables_river_travel"},
+    std::string_view{"may_elevate_co_monarch"},
+    std::string_view{"government_uses_tribal_authority"},
+};
+constexpr std::array kGovernmentFlags12002_5{
+    std::string_view{"government_uses_crown_authority"},
+    std::string_view{"cannot_be_vassal_or_liege"},
+    std::string_view{"government_is_mercenary"},
+};
+constexpr std::array kGovernmentFlags12002_6{
+    std::string_view{"government_uses_crown_authority"},
+    std::string_view{"cannot_be_vassal_or_liege"},
+    std::string_view{"government_is_holy_order"},
+    std::string_view{"government_is_military_holy_order"},
+};
+constexpr std::array kGovernmentFlags12002_7{
+    std::string_view{"government_uses_crown_authority"},
+    std::string_view{"cannot_be_vassal_or_liege"},
+    std::string_view{"government_is_holy_order"},
+    std::string_view{"government_is_monastic_holy_order"},
+};
+constexpr std::array kGovernmentFlags12002_8{
+    std::string_view{"government_is_administrative"},
+    std::string_view{"government_has_influence"},
+    std::string_view{"government_has_treasury"},
+    std::string_view{"government_has_powerful_families"},
+    std::string_view{"government_uses_administrative_house_aspirations"},
+    std::string_view{"government_has_estate"},
+    std::string_view{"government_has_title_men_at_arms"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_domicile_but_not_adventurer"},
+    std::string_view{"government_uses_domain_limit"},
+    std::string_view{"government_uses_admin_province_obligations"},
+    std::string_view{"government_uses_imperial_bureaucracy"},
+    std::string_view{"government_uses_salary_budget"},
+    std::string_view{"government_uses_military_budget"},
+};
+constexpr std::array kGovernmentFlags12002_9{
+    std::string_view{"cannot_be_vassal_or_liege"},
+    std::string_view{"government_is_landless_adventurer"},
+    std::string_view{"government_has_camp"},
+    std::string_view{"has_unique_government_perks"},
+};
+constexpr std::array kGovernmentFlags12002_10{
+    std::string_view{"government_is_nomadic"},
+    std::string_view{"government_has_herd"},
+    std::string_view{"government_is_in_steppe"},
+    std::string_view{"government_has_obedience"},
+    std::string_view{"government_has_yurt"},
+    std::string_view{"government_can_raid_rule"},
+    std::string_view{"government_can_use_tributary_men_at_arms"},
+    std::string_view{"can_start_war_with_raised_troops"},
+    std::string_view{"ignores_faith_marriage_penalties"},
+    std::string_view{"no_hostile_attrition_in_steppe"},
+    std::string_view{"movement_speed_from_government"},
+    std::string_view{"land_raiding_movement_speed_from_government"},
+    std::string_view{"can_raze_holdings"},
+    std::string_view{"government_uses_domicile_but_not_adventurer"},
+    std::string_view{"government_uses_nomadic_authority"},
+};
+constexpr std::array kGovernmentFlags12002_11{
+    std::string_view{"government_is_herder"},
+    std::string_view{"government_has_herd"},
+    std::string_view{"government_is_in_steppe"},
+    std::string_view{"ignores_faith_marriage_penalties"},
+};
+constexpr std::array kGovernmentFlags12002_12{
+    std::string_view{"government_is_celestial"},
+    std::string_view{"government_has_merit"},
+    std::string_view{"government_has_influence"},
+    std::string_view{"government_has_treasury"},
+    std::string_view{"government_has_east_asian_estate"},
+    std::string_view{"government_has_title_men_at_arms"},
+    std::string_view{"government_has_powerful_families"},
+    std::string_view{"government_has_county_tier_noble_families"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_domicile_but_not_adventurer"},
+    std::string_view{"government_uses_domain_limit"},
+    std::string_view{"government_uses_admin_province_obligations"},
+    std::string_view{"government_uses_merit_family_aspirations"},
+    std::string_view{"has_special_house_aspirations"},
+    std::string_view{"government_uses_celestial_bureaucracy"},
+    std::string_view{"government_uses_salary_budget"},
+    std::string_view{"government_uses_military_budget"},
+    std::string_view{"government_uses_ministry_budget"},
+};
+constexpr std::array kGovernmentFlags12002_13{
+    std::string_view{"uses_mandala_aspects"},
+    std::string_view{"uses_mandala_decrees"},
+    std::string_view{"government_is_mandala"},
+    std::string_view{"has_coerce_tributary_scheme"},
+    std::string_view{"additional_piety_from_religious_buildings"},
+    std::string_view{"can_perform_ritual_contracts"},
+    std::string_view{"subjects_gain_piety_based_on_overlord_piety_level"},
+    std::string_view{"has_special_house_aspirations"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"has_unique_government_perks"},
+    std::string_view{"no_powerful_vassals"},
+};
+constexpr std::array kGovernmentFlags12002_14{
+    std::string_view{"government_is_steppe_admin"},
+    std::string_view{"government_can_raid_rule"},
+    std::string_view{"government_can_use_tributary_men_at_arms"},
+    std::string_view{"government_has_merit"},
+    std::string_view{"government_has_influence"},
+    std::string_view{"government_has_treasury"},
+    std::string_view{"government_has_title_men_at_arms"},
+    std::string_view{"government_has_powerful_families"},
+    std::string_view{"government_has_county_tier_noble_families"},
+    std::string_view{"government_has_obedience"},
+    std::string_view{"government_has_east_asian_estate"},
+    std::string_view{"ignores_faith_marriage_penalties"},
+    std::string_view{"land_raiding_movement_speed_from_government"},
+    std::string_view{"can_raze_holdings"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_domicile_but_not_adventurer"},
+    std::string_view{"government_uses_domain_limit"},
+    std::string_view{"government_uses_admin_province_obligations"},
+    std::string_view{"government_uses_merit_family_aspirations"},
+    std::string_view{"has_special_house_aspirations"},
+    std::string_view{"government_uses_meritocratic_bureaucracy"},
+    std::string_view{"government_uses_salary_budget"},
+    std::string_view{"government_uses_military_budget"},
+};
+constexpr std::array kGovernmentFlags12002_15{
+    std::string_view{"government_is_meritocratic"},
+    std::string_view{"government_has_merit"},
+    std::string_view{"government_has_influence"},
+    std::string_view{"government_has_treasury"},
+    std::string_view{"government_has_title_men_at_arms"},
+    std::string_view{"government_has_powerful_families"},
+    std::string_view{"government_has_county_tier_noble_families"},
+    std::string_view{"government_has_east_asian_estate"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_domicile_but_not_adventurer"},
+    std::string_view{"government_uses_domain_limit"},
+    std::string_view{"government_uses_admin_province_obligations"},
+    std::string_view{"government_uses_merit_family_aspirations"},
+    std::string_view{"has_special_house_aspirations"},
+    std::string_view{"government_uses_meritocratic_bureaucracy"},
+    std::string_view{"government_uses_salary_budget"},
+    std::string_view{"government_uses_military_budget"},
+};
+constexpr std::array kGovernmentFlags12002_16{
+    std::string_view{"government_is_japan_administrative"},
+    std::string_view{"government_has_influence"},
+    std::string_view{"government_has_title_men_at_arms"},
+    std::string_view{"government_has_powerful_families"},
+    std::string_view{"government_has_county_tier_noble_families"},
+    std::string_view{"has_special_house_aspirations"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_domicile_but_not_adventurer"},
+    std::string_view{"has_unique_government_perks"},
+    std::string_view{"government_uses_admin_province_obligations"},
+    std::string_view{"government_uses_japanese_family_aspirations"},
+    std::string_view{"government_has_house_blocs"},
+    std::string_view{"government_uses_japanese_bureaucracy"},
+};
+constexpr std::array kGovernmentFlags12002_17{
+    std::string_view{"may_elevate_co_monarch"},
+    std::string_view{"government_is_japan_feudal"},
+    std::string_view{"government_has_county_tier_noble_families"},
+    std::string_view{"has_special_house_aspirations"},
+    std::string_view{"government_is_settled"},
+    std::string_view{"government_uses_domicile_but_not_adventurer"},
+    std::string_view{"has_unique_government_perks"},
+    std::string_view{"government_uses_japanese_family_aspirations"},
+    std::string_view{"government_has_house_blocs"},
+    std::string_view{"government_uses_japanese_bureaucracy"},
+};
+constexpr std::array<GovernmentDefinitionV1, 18> kGovernmentDefinitions12002{{
+    {"feudal_government", kGovernmentFlags12002_0, SelectionStatus::core_supported, "core_landed", kNoNames, kNoNames, false},
+    {"republic_government", kGovernmentFlags12002_1, SelectionStatus::unsupported_nonplayer_identity, "", kNoNames, kNoNames, false},
+    {"clan_government", kGovernmentFlags12002_2, SelectionStatus::core_supported, "core_landed", kNoNames, kNoNames, false},
+    {"tribal_government", kGovernmentFlags12002_3, SelectionStatus::core_supported, "core_tribal", kNoNames, kNoNames, false},
+    {"wanua_government", kGovernmentFlags12002_4, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_wanua", kTgpRequired, kWanuaProfile, false},
+    {"mercenary_government", kGovernmentFlags12002_5, SelectionStatus::unsupported_nonplayer_identity, "", kNoNames, kNoNames, false},
+    {"holy_order_government", kGovernmentFlags12002_6, SelectionStatus::owner_deferred_religious, "", kNoNames, kNoNames, true},
+    {"monastic_holy_order_government", kGovernmentFlags12002_7, SelectionStatus::owner_deferred_religious, "", kNoNames, kNoNames, true},
+    {"administrative_government", kGovernmentFlags12002_8, SelectionStatus::adapter_spec_ready_not_implemented, "rtp_administrative", kAdminRequired, kAdminProfile, false},
+    {"landless_adventurer_government", kGovernmentFlags12002_9, SelectionStatus::adapter_spec_ready_not_implemented, "rtp_landless_adventurer", kLandlessRequired, kLandlessProfile, false},
+    {"nomad_government", kGovernmentFlags12002_10, SelectionStatus::adapter_spec_ready_not_implemented, "mpo_nomad", kNomadRequired, kNomadProfile, false},
+    {"herder_government", kGovernmentFlags12002_11, SelectionStatus::adapter_spec_ready_not_implemented, "mpo_herder", kNomadRequired, kHerderProfile, false},
+    {"celestial_government", kGovernmentFlags12002_12, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_celestial", kTgpRequired, kCelestialProfile, false},
+    {"mandala_government", kGovernmentFlags12002_13, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_mandala", kTgpRequired, kMandalaProfile, false},
+    {"steppe_admin_government", kGovernmentFlags12002_14, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_steppe_administrative", kTgpRequired, kCelestialProfile, false},
+    {"meritocratic_government", kGovernmentFlags12002_15, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_meritocratic", kTgpRequired, kCelestialProfile, false},
+    {"japan_administrative_government", kGovernmentFlags12002_16, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_japan_administrative", kTgpRequired, kJapanAdministrativeProfile, false},
+    {"japan_feudal_government", kGovernmentFlags12002_17, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_japan_feudal", kNoNames, kJapanFeudalProfile, false},
+}};
+static_assert(kGovernmentFlags12002_0.size() + kGovernmentFlags12002_1.size() + kGovernmentFlags12002_2.size() + kGovernmentFlags12002_3.size() + kGovernmentFlags12002_4.size() + kGovernmentFlags12002_5.size() + kGovernmentFlags12002_6.size() + kGovernmentFlags12002_7.size() + kGovernmentFlags12002_8.size() + kGovernmentFlags12002_9.size() + kGovernmentFlags12002_10.size() + kGovernmentFlags12002_11.size() + kGovernmentFlags12002_12.size() + kGovernmentFlags12002_13.size() + kGovernmentFlags12002_14.size() + kGovernmentFlags12002_15.size() + kGovernmentFlags12002_16.size() + kGovernmentFlags12002_17.size() == 171);
+
 constexpr std::array<std::string_view,
                      kGovernmentRuntimeAdapterFeatureCountV1>
     kFeatureKeys{{
@@ -353,6 +583,15 @@ constexpr std::array<std::string_view,
         "songs_of_the_realm",
     }};
 
+constexpr auto kFeatureKeys12002 = [] {
+  auto keys = kFeatureKeys;
+  for (std::size_t index = 36; index + 1 < keys.size(); ++index) {
+    keys[index] = kFeatureKeys[index + 1];
+  }
+  keys.back() = "by_god_alone";
+  return keys;
+}();
+
 constexpr std::array kRuntimeProductKeys{
     std::string_view{"Roads to Power"},
     std::string_view{"Khans of the Steppe"},
@@ -368,11 +607,14 @@ bool Utf8BytewiseLess(std::string_view left, std::string_view right) noexcept {
       });
 }
 
-const GovernmentDefinitionV1 *FindGovernment(std::string_view key) noexcept {
+const GovernmentDefinitionV1 *FindGovernment(
+    std::string_view key, GovernmentRuntimeAdapterBuildProfileV1 profile) noexcept {
+  const auto &definitions = profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002
+                                ? kGovernmentDefinitions12002 : kGovernmentDefinitions;
   const auto found = std::find_if(
-      kGovernmentDefinitions.begin(), kGovernmentDefinitions.end(),
+      definitions.begin(), definitions.end(),
       [key](const GovernmentDefinitionV1 &row) { return row.key == key; });
-  return found == kGovernmentDefinitions.end() ? nullptr : &*found;
+  return found == definitions.end() ? nullptr : &*found;
 }
 
 const GovernmentRuntimeFeatureIdentityV1 *FindFeature(
@@ -398,6 +640,7 @@ GovernmentRuntimeAdapterObserverResultV1 Fail(
   result.unavailable_reason = reason;
   result.frame = input.frame;
   result.player_character_id = input.player_character_id;
+  result.feature_profile = input.feature_profile;
   return result;
 }
 
@@ -408,9 +651,19 @@ GovernmentRuntimeAdapterExpectedFeatureKeysV1() noexcept {
   return kFeatureKeys;
 }
 
+std::span<const std::string_view> GovernmentRuntimeAdapterExpectedFeatureKeysV1(
+    GovernmentRuntimeAdapterBuildProfileV1 profile) noexcept {
+  if (profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002) {
+    return kFeatureKeys12002;
+  }
+  return kFeatureKeys;
+}
+
 GovernmentRuntimeAdapterObserverResultV1
 EvaluateGovernmentRuntimeAdapterObserverV1(
     const GovernmentRuntimeAdapterObserverInputV1 &input) {
+  const auto feature_keys =
+      GovernmentRuntimeAdapterExpectedFeatureKeysV1(input.feature_profile);
   if (!input.exact_build_admitted) {
     return Fail(input, ObservationStatus::unavailable,
                 UnavailableReason::unsupported_build);
@@ -443,8 +696,9 @@ EvaluateGovernmentRuntimeAdapterObserverV1(
   GovernmentRuntimeAdapterObserverResultV1 result{};
   result.frame = input.frame;
   result.player_character_id = input.player_character_id;
+  result.feature_profile = input.feature_profile;
   result.government.stable_key = input.effective_government_stable_key;
-  const auto *definition = FindGovernment(input.effective_government_stable_key);
+  const auto *definition = FindGovernment(input.effective_government_stable_key, input.feature_profile);
   result.government.recognized_stock_key = definition != nullptr;
   result.government.religious_identity_opaque =
       definition != nullptr && definition->religious_opaque;
@@ -474,16 +728,16 @@ EvaluateGovernmentRuntimeAdapterObserverV1(
     result.unavailable_reason = UnavailableReason::feature_root_unavailable;
     return result;
   }
-  if (input.effective_feature_flags.size() != kFeatureKeys.size()) {
+  if (input.effective_feature_flags.size() != feature_keys.size()) {
     result.unavailable_reason = UnavailableReason::feature_registry_drift;
     return result;
   }
   std::int32_t enabled_count = 0;
-  result.effective_feature_flags.reserve(kFeatureKeys.size());
-  for (std::size_t index = 0; index < kFeatureKeys.size(); ++index) {
+  result.effective_feature_flags.reserve(feature_keys.size());
+  for (std::size_t index = 0; index < feature_keys.size(); ++index) {
     const auto &input_feature = input.effective_feature_flags[index];
     if (input_feature.native_index != static_cast<std::int32_t>(index) ||
-        input_feature.key != kFeatureKeys[index]) {
+        input_feature.key != feature_keys[index]) {
       result.effective_feature_flags.clear();
       result.unavailable_reason = UnavailableReason::feature_registry_drift;
       return result;
@@ -542,6 +796,11 @@ EvaluateGovernmentRuntimeAdapterObserverV1(
     }
     bool requirements_met = true;
     for (const auto key : definition->profile_features) {
+      if (input.feature_profile ==
+              GovernmentRuntimeAdapterBuildProfileV1::ck3_12002 &&
+          key == "barter_troops") {
+        continue;
+      }
       const auto *feature = FindFeature(result.effective_feature_flags, key);
       if (feature == nullptr) {
         result.unavailable_reason = UnavailableReason::feature_registry_drift;

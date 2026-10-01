@@ -54,6 +54,11 @@ def compile_and_run(
         "government_runtime_adapter_source_adapter_v1.cpp",
         "campaign_root_context_v1.cpp",
         "loaded_feature_manifest_v1.cpp",
+        "ck3_12002_campaign.cpp",
+        "ck3_12002_features.cpp",
+        "ck3_12002_nonwar_metrics.cpp",
+        "ck3_12002_nonwar_council.cpp",
+        "ck3_12002_nonwar_realm.cpp",
         "government_runtime_adapter_bridge_binder_v1.cpp",
         "government_runtime_adapter_bridge_binder_v1_test.cpp",
     ]

@@ -51,6 +51,7 @@ void ResetDetachedBindingState(BindingState &state) noexcept {
   state.expected_revision = 0;
   state.execution_stamp = {};
   state.source_access = {};
+  state.feature_profile = GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
   state.last_failure = BindingFailure::none;
 }
 
@@ -281,9 +282,14 @@ bool CaptureProductionSample(
   state.government_object_identity = 0;
   auto *previous_campaign_binding = g_active_campaign_binding;
   g_active_campaign_binding = &state;
-  const auto campaign_result = xar::ck3_11906::ReadCampaignRootContextV1(
-      state.campaign_environment, campaign, {state.expected_revision},
-      output.campaign_root);
+  const auto campaign_result =
+      state.feature_profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002
+          ? xar::ck3_12002::ReadCampaignRootContextV1(
+                state.campaign_environment, campaign, {state.expected_revision},
+                output.campaign_root)
+          : xar::ck3_11906::ReadCampaignRootContextV1(
+                state.campaign_environment, campaign, {state.expected_revision},
+                output.campaign_root);
   g_active_campaign_binding = previous_campaign_binding;
 
   state.script_dlc_bucket_base_seen = false;
@@ -293,9 +299,14 @@ bool CaptureProductionSample(
   state.script_dlc_bucket_base_identity = 0;
   state.script_dlc_bucket_mask_identity = 0;
   state.script_dlc_maximum_spill_identity = 0;
-  const auto feature_result = xar::ck3_11906::ReadLoadedFeatureManifestV1(
-      state.feature_environment, feature, {state.expected_revision},
-      output.loaded_features);
+  const auto feature_result =
+      state.feature_profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002
+          ? xar::ck3_12002::ReadLoadedFeatureManifestV1(
+                state.feature_environment, feature, {state.expected_revision},
+                output.loaded_features)
+          : xar::ck3_11906::ReadLoadedFeatureManifestV1(
+                state.feature_environment, feature, {state.expected_revision},
+                output.loaded_features);
 
   const bool lifecycle_after =
       ReadPointer(campaign, state.campaign_environment.game_state_slot,
@@ -402,11 +413,17 @@ bool BindGovernmentRuntimeAdapterBridgeV1(
     state.last_failure = BindingFailure::binding_disabled;
     return false;
   }
-  if (!environment.exact_build_admitted ||
-      environment.admitted_game_version !=
-          kGovernmentRuntimeAdapterBridgeBinderV1GameVersion ||
-      environment.admitted_executable_sha256 !=
-          kGovernmentRuntimeAdapterBridgeBinderV1ExecutableSha256) {
+  const bool legacy_build =
+      environment.admitted_game_version ==
+          kGovernmentRuntimeAdapterBridgeBinderV1GameVersion &&
+      environment.admitted_executable_sha256 ==
+          kGovernmentRuntimeAdapterBridgeBinderV1ExecutableSha256;
+  const bool migrated_build =
+      environment.admitted_game_version ==
+          kGovernmentRuntimeAdapterBridgeBinder12002GameVersion &&
+      environment.admitted_executable_sha256 ==
+          kGovernmentRuntimeAdapterBridgeBinder12002ExecutableSha256;
+  if (!environment.exact_build_admitted || (!legacy_build && !migrated_build)) {
     state.last_failure = BindingFailure::unsupported_build;
     return false;
   }
@@ -435,12 +452,19 @@ bool BindGovernmentRuntimeAdapterBridgeV1(
     }
   }
 
+  state.feature_profile = migrated_build
+                              ? GovernmentRuntimeAdapterBuildProfileV1::ck3_12002
+                              : GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
   state.campaign_environment =
-      xar::ck3_11906::BindCampaignRootNativeEnvironmentV1(
-          environment.module_base, true);
+      migrated_build ? xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(
+                           environment.module_base, true)
+                     : xar::ck3_11906::BindCampaignRootNativeEnvironmentV1(
+                           environment.module_base, true);
   state.feature_environment =
-      xar::ck3_11906::BindLoadedFeatureManifestNativeEnvironmentV1(
-          environment.module_base, true);
+      migrated_build ? xar::ck3_12002::BindLoadedFeatureManifestNativeEnvironmentV1(
+                           environment.module_base, true)
+                     : xar::ck3_11906::BindLoadedFeatureManifestNativeEnvironmentV1(
+                           environment.module_base, true);
   if (!environment.offline_fixture) {
     state.upstream_government_resolver = state.campaign_environment.government;
     state.campaign_environment.government = &CampaignGovernmentResolverProxy;
@@ -454,7 +478,7 @@ bool BindGovernmentRuntimeAdapterBridgeV1(
   state.attached = true;
   state.last_failure = BindingFailure::none;
   state.source_access = {true, &state, &BindingIsApplicationMain,
-                         &BindingCapture};
+                         &BindingCapture, state.feature_profile};
   source_access = state.source_access;
   return true;
 }

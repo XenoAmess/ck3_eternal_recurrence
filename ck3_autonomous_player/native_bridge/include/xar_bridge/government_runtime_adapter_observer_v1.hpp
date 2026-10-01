@@ -10,6 +10,11 @@
 
 namespace xar::bridge::private_observer {
 
+enum class GovernmentRuntimeAdapterBuildProfileV1 : std::uint32_t {
+  ck3_11906 = 0,
+  ck3_12002 = 1,
+};
+
 enum class GovernmentRuntimeAdapterObservationStatusV1 : std::uint32_t {
   unavailable = 0,
   not_present = 1,
@@ -64,6 +69,8 @@ struct GovernmentRuntimeAdapterObserverInputV1 {
   std::int32_t enabled_feature_count = -1;
   bool script_dlc_set_available = false;
   std::span<const std::string_view> script_dlc_keys;
+  GovernmentRuntimeAdapterBuildProfileV1 feature_profile =
+      GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
 };
 
 struct GovernmentRuntimeFeatureIdentityV1 {
@@ -127,6 +134,8 @@ struct GovernmentRuntimeAdapterObserverResultV1 {
       GovernmentRuntimeAdapterUnavailableReasonV1::
           store_verdict_provenance_unclosed;
   GovernmentRuntimeAdapterSelectionV1 adapter;
+  GovernmentRuntimeAdapterBuildProfileV1 feature_profile =
+      GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
 
   friend bool operator==(const GovernmentRuntimeAdapterObserverResultV1 &,
                          const GovernmentRuntimeAdapterObserverResultV1 &) =
@@ -143,6 +152,9 @@ inline constexpr std::size_t kGovernmentRuntimeAdapterFeatureCountV1 = 44;
 
 std::span<const std::string_view>
 GovernmentRuntimeAdapterExpectedFeatureKeysV1() noexcept;
+
+std::span<const std::string_view> GovernmentRuntimeAdapterExpectedFeatureKeysV1(
+    GovernmentRuntimeAdapterBuildProfileV1 profile) noexcept;
 
 GovernmentRuntimeAdapterObserverResultV1
 EvaluateGovernmentRuntimeAdapterObserverV1(

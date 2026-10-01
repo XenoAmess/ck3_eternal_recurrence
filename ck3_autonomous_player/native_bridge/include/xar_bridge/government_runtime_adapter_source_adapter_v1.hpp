@@ -86,6 +86,8 @@ struct GovernmentRuntimeAdapterSourceAccessV1 {
   void *context = nullptr;
   IsGovernmentRuntimeAdapterApplicationMainV1 is_application_main = nullptr;
   CaptureGovernmentRuntimeAdapterCollectorSampleV1 capture = nullptr;
+  GovernmentRuntimeAdapterBuildProfileV1 feature_profile =
+      GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
 };
 
 struct GovernmentRuntimeAdapterOwnedInputV1 {
@@ -103,6 +105,8 @@ struct GovernmentRuntimeAdapterOwnedInputV1 {
   std::int32_t enabled_feature_count = -1;
   bool script_dlc_set_available = false;
   std::vector<std::string> script_dlc_keys;
+  GovernmentRuntimeAdapterBuildProfileV1 feature_profile =
+      GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
 
   GovernmentRuntimeAdapterObserverResultV1 Evaluate() const;
 
@@ -122,6 +126,7 @@ struct GovernmentRuntimeAdapterSourceResultV1 {
   std::uint64_t feature_lifecycle_identity = 0;
   GovernmentRuntimeAdapterOwnedInputV1 input;
   GovernmentRuntimeAdapterObserverResultV1 semantic_result;
+  std::int64_t date_raw = 0;
 
   friend bool
   operator==(const GovernmentRuntimeAdapterSourceResultV1 &,
@@ -141,5 +146,10 @@ bool CopyGovernmentRuntimeAdapterCollectorMemoryV1(
 GovernmentRuntimeAdapterSourceStatusV1 ReadGovernmentRuntimeAdapterSourceV1(
     const GovernmentRuntimeAdapterSourceAccessV1 &access,
     GovernmentRuntimeAdapterSourceResultV1 &output) noexcept;
+
+std::string SerializeGovernmentRuntimeAdapterSourceV1(
+    const GovernmentRuntimeAdapterSourceResultV1 &result,
+    GovernmentRuntimeAdapterBuildProfileV1 profile,
+    std::uint64_t expected_revision = 0);
 
 } // namespace xar::bridge::private_observer

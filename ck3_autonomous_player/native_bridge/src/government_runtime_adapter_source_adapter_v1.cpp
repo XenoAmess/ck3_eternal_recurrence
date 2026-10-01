@@ -165,6 +165,7 @@ GovernmentRuntimeAdapterOwnedInputV1::Evaluate() const {
   view.enabled_feature_count = enabled_feature_count;
   view.script_dlc_set_available = script_dlc_set_available;
   view.script_dlc_keys = dlc_views;
+  view.feature_profile = feature_profile;
   return EvaluateGovernmentRuntimeAdapterObserverV1(view);
 }
 
@@ -233,6 +234,7 @@ GovernmentRuntimeAdapterSourceStatusV1 ReadGovernmentRuntimeAdapterSourceV1(
 
     output.first_snapshot_revision = first.campaign_root.snapshot_revision;
     output.second_snapshot_revision = second.campaign_root.snapshot_revision;
+    output.date_raw = second.campaign_root.date_raw;
     output.campaign_lifecycle_identity = second.campaign_lifecycle_identity;
     output.feature_lifecycle_identity = second.feature_lifecycle_identity;
     const auto drift = CompareSamples(first, second);
@@ -241,6 +243,7 @@ GovernmentRuntimeAdapterSourceStatusV1 ReadGovernmentRuntimeAdapterSourceV1(
     }
 
     auto &owned = output.input;
+    owned.feature_profile = access.feature_profile;
     owned.exact_build_admitted = true;
     owned.application_main = true;
     owned.paused = true;
@@ -277,6 +280,181 @@ GovernmentRuntimeAdapterSourceStatusV1 ReadGovernmentRuntimeAdapterSourceV1(
   } catch (...) {
     return Fail(output, SourceFailure::semantic_input_rejected);
   }
+}
+
+namespace {
+
+void AppendGovernmentJsonString(std::string &output, std::string_view value) {
+  constexpr char hex[] = "0123456789abcdef";
+  output.push_back('"');
+  for (const unsigned char character : value) {
+    if (character == '"' || character == '\\') {
+      output.push_back('\\');
+      output.push_back(static_cast<char>(character));
+    } else if (character < 0x20U) {
+      output += "\\u00";
+      output.push_back(hex[character >> 4U]);
+      output.push_back(hex[character & 0xfU]);
+    } else {
+      output.push_back(static_cast<char>(character));
+    }
+  }
+  output.push_back('"');
+}
+
+std::string_view GovernmentSourceFailureKey(SourceFailure failure) noexcept {
+  switch (failure) {
+  case SourceFailure::none: return "none";
+  case SourceFailure::unsupported_build: return "unsupported_build";
+  case SourceFailure::access_incomplete: return "access_incomplete";
+  case SourceFailure::requires_application_main: return "requires_application_main";
+  case SourceFailure::first_capture_failed: return "first_capture_failed";
+  case SourceFailure::second_capture_failed: return "second_capture_failed";
+  case SourceFailure::requires_paused: return "requires_paused";
+  case SourceFailure::campaign_collector_unavailable: return "campaign_collector_unavailable";
+  case SourceFailure::feature_collector_unavailable: return "feature_collector_unavailable";
+  case SourceFailure::collector_readiness_unavailable: return "collector_readiness_unavailable";
+  case SourceFailure::collector_frame_mismatch: return "collector_frame_mismatch";
+  case SourceFailure::collector_lifecycle_unavailable: return "collector_lifecycle_unavailable";
+  case SourceFailure::collector_lifecycle_drift: return "collector_lifecycle_drift";
+  case SourceFailure::player_identity_drift: return "player_identity_drift";
+  case SourceFailure::government_identity_drift: return "government_identity_drift";
+  case SourceFailure::feature_identity_drift: return "feature_identity_drift";
+  case SourceFailure::script_dlc_identity_drift: return "script_dlc_identity_drift";
+  case SourceFailure::government_flag_count_mismatch: return "government_flag_count_mismatch";
+  case SourceFailure::feature_count_mismatch: return "feature_count_mismatch";
+  case SourceFailure::script_dlc_count_mismatch: return "script_dlc_count_mismatch";
+  case SourceFailure::semantic_input_rejected: return "semantic_input_rejected";
+  case SourceFailure::collector_provenance_unavailable: return "collector_provenance_unavailable";
+  case SourceFailure::government_object_identity_drift: return "government_object_identity_drift";
+  case SourceFailure::script_dlc_layout_identity_drift: return "script_dlc_layout_identity_drift";
+  }
+  return "unknown";
+}
+
+std::string_view GovernmentSelectionStatusKey(
+    GovernmentRuntimeAdapterSelectionStatusV1 status) noexcept {
+  using Status = GovernmentRuntimeAdapterSelectionStatusV1;
+  switch (status) {
+  case Status::unavailable: return "unavailable";
+  case Status::core_supported: return "core_supported";
+  case Status::adapter_spec_ready_not_implemented: return "adapter_spec_ready_not_implemented";
+  case Status::unsupported_nonplayer_identity: return "unsupported_nonplayer_identity";
+  case Status::owner_deferred_religious: return "owner_deferred_religious";
+  case Status::unavailable_feature_mismatch: return "unavailable_feature_mismatch";
+  case Status::unadapted_runtime_government: return "unadapted_runtime_government";
+  }
+  return "unavailable";
+}
+
+void AppendGovernmentJsonNames(std::string &output,
+                              const std::vector<std::string> &names) {
+  output.push_back('[');
+  bool first = true;
+  for (const auto &name : names) {
+    if (!first) output.push_back(',');
+    first = false;
+    AppendGovernmentJsonString(output, name);
+  }
+  output.push_back(']');
+}
+
+void AppendGovernmentJsonFeatures(
+    std::string &output,
+    const std::vector<GovernmentRuntimeFeatureIdentityV1> &features) {
+  output.push_back('[');
+  bool first = true;
+  for (const auto &feature : features) {
+    if (!first) output.push_back(',');
+    first = false;
+    output += "{\"native_index\":" + std::to_string(feature.native_index) +
+              ",\"key\":";
+    AppendGovernmentJsonString(output, feature.key);
+    output += feature.enabled ? ",\"enabled\":true}" : ",\"enabled\":false}";
+  }
+  output.push_back(']');
+}
+
+} // namespace
+
+std::string SerializeGovernmentRuntimeAdapterSourceV1(
+    const GovernmentRuntimeAdapterSourceResultV1 &result,
+    GovernmentRuntimeAdapterBuildProfileV1 profile,
+    std::uint64_t expected_revision) {
+  const auto &semantic = result.semantic_result;
+  const bool available = result.status == SourceStatus::available;
+  const bool migrated = profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002;
+  const auto revision = result.second_snapshot_revision != 0
+                            ? result.second_snapshot_revision
+                            : expected_revision;
+  std::string output =
+      "{\"schema\":\"government-runtime-adapter-v1\",\"schema_version\":1,\"status\":";
+  AppendGovernmentJsonString(
+      output, !available ? "unavailable"
+                         : semantic.status == ObservationStatus::not_present
+                               ? "not_present" : "available");
+  output += ",\"snapshot_revision\":" + std::to_string(revision) +
+            ",\"date_raw\":" + std::to_string(result.date_raw) +
+            ",\"build\":{\"version\":";
+  AppendGovernmentJsonString(output, migrated ? "1.20.0.2" : "1.19.0.6");
+  output += ",\"exe_sha256\":";
+  AppendGovernmentJsonString(
+      output, migrated
+                  ? "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+                  : "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86");
+  output += "},\"unavailable_reason\":";
+  if (available) output += "null";
+  else AppendGovernmentJsonString(output, GovernmentSourceFailureKey(result.failure));
+  output += ",\"player_character_id\":";
+  output += semantic.player_character_id.has_value()
+                ? std::to_string(semantic.player_character_id.value()) : "null";
+  output += ",\"government\":{\"key\":";
+  AppendGovernmentJsonString(output, semantic.government.stable_key);
+  output += semantic.government.recognized_stock_key
+                ? ",\"recognized_stock_key\":true" : ",\"recognized_stock_key\":false";
+  output += semantic.government.religious_identity_opaque
+                ? ",\"religious_identity_opaque\":true" : ",\"religious_identity_opaque\":false";
+  output += ",\"flags\":";
+  AppendGovernmentJsonNames(output, semantic.government.observed_flags);
+  output += "},\"effective_feature_flags\":{\"native_count\":";
+  output += available ? std::to_string(semantic.effective_feature_flags.size()) : "null";
+  output += ",\"items\":";
+  AppendGovernmentJsonFeatures(output, semantic.effective_feature_flags);
+  output += "},\"script_dlc_keys\":";
+  AppendGovernmentJsonNames(output, semantic.script_dlc_keys);
+  output += ",\"entitlements\":{\"status\":\"unavailable\","
+            "\"unavailable_reason\":\"store_verdict_provenance_unclosed\"},\"adapter\":{\"status\":";
+  AppendGovernmentJsonString(output, GovernmentSelectionStatusKey(semantic.adapter.status));
+  output += ",\"family\":";
+  if (semantic.adapter.family.has_value()) AppendGovernmentJsonString(output, semantic.adapter.family.value());
+  else output += "null";
+  output += semantic.adapter.requirements_met
+                ? ",\"requirements_met\":true" : ",\"requirements_met\":false";
+  output += ",\"required_effective_features\":";
+  AppendGovernmentJsonNames(output, semantic.adapter.required_effective_features);
+  output += ",\"capability_profile_features\":";
+  AppendGovernmentJsonFeatures(output, semantic.adapter.capability_profile_features);
+  const bool core_ready = available && semantic.status == ObservationStatus::available &&
+      semantic.adapter.status == GovernmentRuntimeAdapterSelectionStatusV1::core_supported &&
+      semantic.adapter.requirements_met;
+  output += "},\"readiness\":{\"same_frame_ready\":";
+  output += available ? "true" : "false";
+  output += ",\"core_adapter_ready\":";
+  output += core_ready ? "true" : "false";
+  output += "},\"provenance\":{\"backend_id\":";
+  AppendGovernmentJsonString(
+      output, migrated ? "ck3-1.20.0.2-private-government-runtime-adapter-v1"
+                       : "ck3-1.19.0.6-private-government-runtime-adapter-v1");
+  output += ",\"campaign_backend_id\":";
+  AppendGovernmentJsonString(
+      output, migrated ? "ck3-1.20.0.2-native-campaign-root-context-v1"
+                       : "ck3-1.19.0.6-native-campaign-root-context-v1");
+  output += ",\"feature_backend_id\":";
+  AppendGovernmentJsonString(
+      output, migrated ? "ck3-1.20.0.2-native-loaded-feature-manifest-v1"
+                       : "ck3-1.19.0.6-native-loaded-feature-manifest-v1");
+  output += "}}";
+  return output;
 }
 
 } // namespace xar::bridge::private_observer

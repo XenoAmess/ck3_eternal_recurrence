@@ -1,0 +1,738 @@
+{
+  "contract": "government-runtime-adapter-native-inputs-1.20.0.2",
+  "exact_build": {
+    "game_version": "1.20.0.2",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "government_registry": [
+    {
+      "key": "feudal_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_feudal",
+        "government_is_settled",
+        "may_elevate_co_monarch",
+        "government_uses_crown_authority",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": "feudal",
+      "mechanic_default": true,
+      "fallback_priority": 1,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "republic_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_republic",
+        "government_is_settled",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "clan_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_clan",
+        "government_has_tax_slot",
+        "may_appoint_viziers",
+        "government_is_settled",
+        "government_uses_crown_authority",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": "clan",
+      "mechanic_default": true,
+      "fallback_priority": 2,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "tribal_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_tribal",
+        "government_is_tribal_excluding_wanua",
+        "use_prestige_to_buy_maa",
+        "government_is_settled",
+        "government_can_raid_rule",
+        "may_elevate_co_monarch",
+        "government_uses_domain_limit",
+        "government_uses_tribal_authority"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "0.25"
+      }
+    },
+    {
+      "key": "wanua_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_tribal",
+        "government_is_wanua",
+        "government_is_settled",
+        "government_can_raid_rule",
+        "government_use_barter_goods",
+        "government_enables_naval_raiding",
+        "government_enables_river_travel",
+        "may_elevate_co_monarch",
+        "government_uses_tribal_authority"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "-0.5"
+      }
+    },
+    {
+      "key": "mercenary_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_uses_crown_authority",
+        "cannot_be_vassal_or_liege",
+        "government_is_mercenary"
+      ],
+      "mechanic_type": "mercenary",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "holy_order_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_uses_crown_authority",
+        "cannot_be_vassal_or_liege",
+        "government_is_holy_order",
+        "government_is_military_holy_order"
+      ],
+      "mechanic_type": "holy_order",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "monastic_holy_order_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_uses_crown_authority",
+        "cannot_be_vassal_or_liege",
+        "government_is_holy_order",
+        "government_is_monastic_holy_order"
+      ],
+      "mechanic_type": "holy_order",
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "administrative_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_administrative",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_powerful_families",
+        "government_uses_administrative_house_aspirations",
+        "government_has_estate",
+        "government_has_title_men_at_arms",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations",
+        "government_uses_imperial_bureaucracy",
+        "government_uses_salary_budget",
+        "government_uses_military_budget"
+      ],
+      "mechanic_type": "administrative",
+      "mechanic_default": true,
+      "fallback_priority": 3,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "landless_adventurer_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "cannot_be_vassal_or_liege",
+        "government_is_landless_adventurer",
+        "government_has_camp",
+        "has_unique_government_perks"
+      ],
+      "mechanic_type": "landless_adventurer",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "nomad_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_nomadic",
+        "government_has_herd",
+        "government_is_in_steppe",
+        "government_has_obedience",
+        "government_has_yurt",
+        "government_can_raid_rule",
+        "government_can_use_tributary_men_at_arms",
+        "can_start_war_with_raised_troops",
+        "ignores_faith_marriage_penalties",
+        "no_hostile_attrition_in_steppe",
+        "movement_speed_from_government",
+        "land_raiding_movement_speed_from_government",
+        "can_raze_holdings",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_nomadic_authority"
+      ],
+      "mechanic_type": "nomad",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "khans_of_the_steppe"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "2",
+        "ai_war_cooldown": "-0.5"
+      }
+    },
+    {
+      "key": "herder_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_herder",
+        "government_has_herd",
+        "government_is_in_steppe",
+        "ignores_faith_marriage_penalties"
+      ],
+      "mechanic_type": "herder",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_lifestyle": false,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": false,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": false,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "celestial_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_celestial",
+        "government_has_merit",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_east_asian_estate",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations",
+        "government_uses_merit_family_aspirations",
+        "has_special_house_aspirations",
+        "government_uses_celestial_bureaucracy",
+        "government_uses_salary_budget",
+        "government_uses_military_budget",
+        "government_uses_ministry_budget"
+      ],
+      "mechanic_type": "administrative",
+      "mechanic_default": false,
+      "fallback_priority": 3,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "scripted",
+        "ai_ruler_desired_empire_titles": "scripted",
+        "ai_can_reassign_council_positions": "scripted"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "mandala_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "uses_mandala_aspects",
+        "uses_mandala_decrees",
+        "government_is_mandala",
+        "has_coerce_tributary_scheme",
+        "additional_piety_from_religious_buildings",
+        "can_perform_ritual_contracts",
+        "subjects_gain_piety_based_on_overlord_piety_level",
+        "has_special_house_aspirations",
+        "government_is_settled",
+        "has_unique_government_perks",
+        "no_powerful_vassals"
+      ],
+      "mechanic_type": "mandala",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "steppe_admin_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_steppe_admin",
+        "government_can_raid_rule",
+        "government_can_use_tributary_men_at_arms",
+        "government_has_merit",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "government_has_obedience",
+        "government_has_east_asian_estate",
+        "ignores_faith_marriage_penalties",
+        "land_raiding_movement_speed_from_government",
+        "can_raze_holdings",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations",
+        "government_uses_merit_family_aspirations",
+        "has_special_house_aspirations",
+        "government_uses_meritocratic_bureaucracy",
+        "government_uses_salary_budget",
+        "government_uses_military_budget"
+      ],
+      "mechanic_type": "administrative",
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "scripted",
+        "ai_ruler_desired_empire_titles": "scripted",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "2",
+        "ai_war_cooldown": "-0.5"
+      }
+    },
+    {
+      "key": "meritocratic_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_meritocratic",
+        "government_has_merit",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "government_has_east_asian_estate",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations",
+        "government_uses_merit_family_aspirations",
+        "has_special_house_aspirations",
+        "government_uses_meritocratic_bureaucracy",
+        "government_uses_salary_budget",
+        "government_uses_military_budget"
+      ],
+      "mechanic_type": "administrative",
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "scripted",
+        "ai_ruler_desired_empire_titles": "scripted",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "japan_administrative_government",
+      "source": "common/governments/01_japan_government_types.txt",
+      "flags": [
+        "government_is_japan_administrative",
+        "government_has_influence",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "has_special_house_aspirations",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "has_unique_government_perks",
+        "government_uses_admin_province_obligations",
+        "government_uses_japanese_family_aspirations",
+        "government_has_house_blocs",
+        "government_uses_japanese_bureaucracy"
+      ],
+      "mechanic_type": "administrative",
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "japan_feudal_government",
+      "source": "common/governments/01_japan_government_types.txt",
+      "flags": [
+        "may_elevate_co_monarch",
+        "government_is_japan_feudal",
+        "government_has_county_tier_noble_families",
+        "has_special_house_aspirations",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "has_unique_government_perks",
+        "government_uses_japanese_family_aspirations",
+        "government_has_house_blocs",
+        "government_uses_japanese_bureaucracy"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    }
+  ],
+  "flag_declarations": 171,
+  "source_files": {
+    "game/common/governments/00_government_types.txt": {
+      "sha256": "F7F07123192EEBF4053F917D8458639126AB42E2A7EFA9176F43495A6275C86B",
+      "size": 34740
+    },
+    "game/common/governments/01_japan_government_types.txt": {
+      "sha256": "9BD238A1CCC491ACE5C5238557C926E728EA9B4DFC63A846556DF482A2BA19F0",
+      "size": 4964
+    }
+  },
+  "religion_status": "owner-deferred",
+  "religious_governments_identity_only": true
+}

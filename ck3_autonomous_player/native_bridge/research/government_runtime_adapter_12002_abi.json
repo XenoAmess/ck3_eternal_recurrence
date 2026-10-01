@@ -1,0 +1,95 @@
+{
+  "contract": "government_runtime_adapter_12002",
+  "schema_version": 1,
+  "status": "static-ready-private-government-runtime-adapter",
+  "exact_build": {
+    "game_version": "1.20.0.2",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "native_sources": {
+    "campaign": "src/ck3_12002_campaign.cpp",
+    "features": "src/ck3_12002_features.cpp",
+    "campaign_game_state_slot_rva": "0x5C68C50",
+    "feature_root_slot_rva": "0x5CB87F8",
+    "feature_enum_table_rva": "0x47334C0",
+    "script_dlc_set_rva": "0x5CC15E0",
+    "feature_count": 44,
+    "compiled_feature_identifiers": [
+      "0x3587", "0x3588", "0x34A7", "0x3538", "0x3539", "0x3270",
+      "0x366D", "0x34DC", "0x3773", "0x3608", "0x37CF", "0x37CE",
+      "0x36C4", "0x377A", "0x35E0", "0x394A", "0x3B0A", "0x3A5B",
+      "0x3A09", "0x3A08", "0x3953", "0x3A00", "0x3A02", "0x3A01",
+      "0x39DA", "0x3CBB", "0x3A07", "0x3C98", "0x3CA1", "0x3A06",
+      "0x39F7", "0x3D67", "0x39ED", "0x39EE", "0x39EF", "0x39F0",
+      "0x39DB", "0x39DC", "0x39DD", "0x39DE", "0x39DF", "0x4101",
+      "0x4102", "0x4169"
+    ]
+  },
+  "feature_profile_migration": {
+    "legacy_default": "ck3_11906",
+    "new_profile": "ck3_12002",
+    "removed_key": "barter_troops",
+    "removed_legacy_index": 36,
+    "shifted_old_indices": "37..43 become 36..42",
+    "added_key": "by_god_alone",
+    "added_index": 43,
+    "religious_feature_handling": "opaque identity only; no doctrine or policy"
+  },
+  "stock_identity_profile": {
+    "current_government_count": 18,
+    "current_flag_declaration_count": 171,
+    "legacy_government_count": 18,
+    "legacy_flag_declaration_count": 136,
+    "current_snapshot": "research/government_runtime_adapter_1_20_0_2.json",
+    "new_tribal_flag_test": "government_uses_tribal_authority",
+    "new_monastic_government": "opaque identity; owner_deferred_religious",
+    "legacy_theocracy": "unchanged opaque identity under legacy profile",
+    "japan_feudal_government": "new stock has no direct feature gate; disabled all_under_heaven remains a capability input and does not make the identity unavailable",
+    "japan_readiness": "adapter_spec_ready_not_implemented; requirements_met true; not core_supported"
+  },
+  "fixture_scope": {
+    "native_feature_reader": "actual production reader on callback-backed fixture memory",
+    "campaign_input": "retained valid feudal sample; prior exact-build campaign reader fixtures cover its native producer",
+    "source_adapter": "actual new-profile input copy and observer evaluation",
+    "binder": "actual selected-build environments and private main-thread mailbox executor",
+    "legacy": "existing observer, source-adapter and binder fixtures rerun only for modified shared sources",
+    "wrong_profile": "equal-sized old registry does not accept actual new producer rows",
+    "standalone_source": "src/government_runtime_adapter_12002_test.cpp",
+    "standalone_runner": "research/test_government_runtime_adapter_12002_standalone.py"
+  },
+  "acceptance": {
+    "normal_msvc_w4_wx": "green",
+    "optimized_msvc_w4_wx": "green",
+    "legacy_shared_fixture_receipt": {
+      "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/government/standalone/receipt.json",
+      "sha256": "843a3d06580cd9c2913ac719374617b5a563144990e898da976c5bf4bcddc5b5",
+      "completed_at_utc": "2026-10-01T06:37:38.765978+00:00",
+      "fixtures_per_mode": 4,
+      "scope": "legacy observer/source/binder plus initial new-profile fixture; preserved before new stock-table addition"
+    },
+    "initial_current_stock_profile_receipt": {
+      "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/government/stock-profile-final/receipt.json",
+      "sha256": "2a6e5ec1be083bf18c0ae0292f73574fc535f4f0cd2259186f5285625478e528",
+      "completed_at_utc": "2026-10-01T06:40:15.222677+00:00",
+      "fixtures_per_mode": 1,
+      "scope": "actual new feature producer/source/private mailbox, new tribal/opaque monastic identity, legacy profile selection",
+      "actual_available_json": "Od/wire/available.json",
+      "actual_unavailable_json": "Od/wire/unavailable.json"
+    },
+    "final_current_profile_receipt": {
+      "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/government/stock-profile-final-v2/receipt.json",
+      "sha256": "f08560ac3eb9155e2e21e079effdfa9abe994c5e0f3dc173021c7b46e5903169",
+      "completed_at_utc": "2026-10-01T06:43:09.333863+00:00",
+      "fixtures_per_mode": 1,
+      "scope": "final current source including Japan feudal no-direct-feature-gate correction; actual native feature producer/source/private mailbox, stock identities and legacy profile selection",
+      "actual_available_json": "Od/wire/available.json",
+      "actual_unavailable_json": "Od/wire/unavailable.json"
+    },
+    "ck3_launched": false,
+    "ck3_process_queried": false,
+    "ck3_pipe_opened": false,
+    "live_status": "not_run",
+    "readiness": "static-ready",
+    "live_boundary": "paused real process observation and feudal private transport qualification remain untested"
+  }
+}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/government_runtime_adapter_source_adapter_v1.hpp"
+#include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
@@ -14,6 +15,16 @@ inline constexpr std::string_view
 inline constexpr std::string_view
     kGovernmentRuntimeAdapterBridgeBinderV1ExecutableSha256 =
         "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
+
+inline constexpr std::string_view
+    kGovernmentRuntimeAdapterBridgeBinder12002GameVersion = "1.20.0.2";
+inline constexpr std::string_view
+    kGovernmentRuntimeAdapterBridgeBinder12002ExecutableSha256 =
+        "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D";
+inline constexpr std::string_view kGovernmentRuntimeAdapterV1Step =
+    "query-government-runtime-adapter-v1";
+inline constexpr std::string_view kGovernmentRuntimeAdapterV1Capability =
+    "game.command.query-government-runtime-adapter-v1";
 
 enum class GovernmentRuntimeAdapterBridgeBindingFailureV1 : std::uint32_t {
   none = 0,
@@ -80,6 +91,8 @@ struct GovernmentRuntimeAdapterBridgeBindingStateV1 {
   std::uint64_t expected_revision = 0;
   xar::ck3_11906::MainThreadExecutionStampV1 execution_stamp;
   GovernmentRuntimeAdapterSourceAccessV1 source_access;
+  GovernmentRuntimeAdapterBuildProfileV1 feature_profile =
+      GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
   GovernmentRuntimeAdapterBridgeBindingFailureV1 last_failure =
       GovernmentRuntimeAdapterBridgeBindingFailureV1::none;
 };

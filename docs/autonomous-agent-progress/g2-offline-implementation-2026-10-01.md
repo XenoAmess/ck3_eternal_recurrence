@@ -47,3 +47,9 @@ G2 仍 `3/8`，Robert `3153/36524`，新增游戏日为零。宗教/holy order �
 新版默认集结点最终原生合法性已实现：validator `0x298C2C0` → final legality `0x24A48B0`，只构造临时上下文查询，不submit。实际x64 Release `/O2 /W4 /WX`编译和生产路径fixture PASS，三条exact call-chain ABI verifier PASS。专题：[默认集结](../ck3-native-ai/ck3-1.20.0.2-prewar-default-muster.md)；耐久输出 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/prewar/default-muster-wire.json` 与 `prewar/muster-build/build-receipt.json`。状态只为该原生provider的static-ready，公共query route由中央接线；完整future roster/muster/supply与强制参战provider继续并行实现，不把当前合法性冒充未来军力/补给。实际paused互证仍待live。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 14:48:25 M7新版政府真实feature消费源码交付
+
+既有observer/source adapter/binder现已按双版本真实绑定：1.20 campaign/features原生producer→同帧sourceadapter→语义选择器→owned query serializer。新版44项feature实际含by_god_alone而移除barter_troops；旧版44项profile与136项stockflags继续保持，新版18 government rows/171 flags按冻结原版读取。宗教/holy-order身份仅opaque/deferred，其它政府仍为adapter_spec_ready_not_implemented，未外推18政府策略完成。旧3个fixture与实际new44producer在/Od及/O2/W4/WX通过；stock差异增量后只重建新fixture，最终receipt `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/government/stock-profile-final-v2/receipt.json` SHA `f08560ac3eb9155e2e21e079effdfa9abe994c5e0f3dc173021c7b46e5903169`。新版stock verifier18/171及旧sourcecontract4项GREEN；实际C++available/unavailable JSON→driver→官方MCP SDK list/call6项GREEN，Python/中央permit尚另包接回。专题[新版政府适配](../ck3-native-ai/government-runtime-adapter-1.20.0.2.md)。本包native/source消费static-ready，真实paused、封建正式效果、跨ruler/seed/government仍需live。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
