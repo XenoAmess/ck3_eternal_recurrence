@@ -7,6 +7,7 @@ namespace xar::ck3_12002 {
 
 inline constexpr std::uintptr_t kEventWindowIdlerGfxVtableRva = 0x44BC408;
 inline constexpr std::uintptr_t kEventWindowPrimaryVtableRva = 0x4597910;
+inline constexpr std::uintptr_t kEventSplashWindowPrimaryVtableRva = 0x4596D38;
 inline constexpr std::uintptr_t kEventIndicatorSchemeTypeVtableRva = 0x48B9F20;
 inline constexpr std::uintptr_t kEventIndicatorTraitDatabaseSlotRva = 0x5C67528;
 inline constexpr std::uintptr_t kEventIndicatorSchemeDatabaseSlotRva = 0x5C67108;
@@ -33,6 +34,7 @@ struct EventWindowBindings {
   EventsBindings events;
   std::uintptr_t ingame_interface_idler_vtable = 0;
   std::uintptr_t event_window_primary_vtable = 0;
+  std::uintptr_t splash_window_primary_vtable = 0;
   std::uintptr_t scheme_type_primary_vtable = 0;
   void **trait_database_slot = nullptr;
   void **scheme_type_database_slot = nullptr;

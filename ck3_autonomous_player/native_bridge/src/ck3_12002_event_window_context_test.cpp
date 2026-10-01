@@ -3,6 +3,7 @@
 
 
 
+#include "xar_bridge/ck3_12003.hpp"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -45,10 +46,13 @@ enum class EventIdentityDrift {
   definition_key,
   instance_id,
   scope_subtype,
+  splash_current_item,
+  splash_transition_item,
 };
 
 EventIdentityDrift g_event_identity_drift = EventIdentityDrift::none;
 std::uint32_t g_current_event_calls = 0;
+void *g_splash_window = nullptr;
 
 template <typename T> void Store(void *base, std::size_t offset, T value) {
   std::memcpy(static_cast<std::byte *>(base) + offset, &value, sizeof(value));
@@ -182,6 +186,12 @@ void *GetCurrentEvent(void *) {
     case EventIdentityDrift::scope_subtype:
       Store<std::uint16_t>(g_active_event, 0x02, 1);
       break;
+    case EventIdentityDrift::splash_current_item:
+      Store<void *>(g_splash_window, 0xD0, nullptr);
+      break;
+    case EventIdentityDrift::splash_transition_item:
+      Store<void *>(g_splash_window, 0xD8, g_active_event);
+      break;
     case EventIdentityDrift::none:
       break;
     }
@@ -206,6 +216,9 @@ struct Fixture {
   std::array<void *, 2> windows{};
   std::array<std::byte, 0x8F0> window{};
   std::array<std::byte, 0x8F0> secondary_window{};
+  std::array<std::byte, 0xE0> splash_window{};
+  std::array<std::byte, 0x20> splash_item{};
+  std::array<void *, 2> splash_items{};
   std::array<std::byte, 0x370> option_items{};
   std::array<std::byte, 0xC0> effect_rows{};
   std::array<std::byte, 0x80> trait_database{};
@@ -282,6 +295,7 @@ struct Fixture {
     g_script_identifier_text.emplace(201, "province_control");
     g_event_identity_drift = EventIdentityDrift::none;
     g_current_event_calls = 0;
+    g_splash_window = splash_window.data();
     Store<std::int32_t>(game_state.data(), 0x08, 741221);
     Store<std::int32_t>(game_state.data(), 0x70, 0);
     Store<void *>(game_state.data(), 0xA0, game_data.data());
@@ -359,6 +373,7 @@ struct Fixture {
     bindings.events.get_current_event = &GetCurrentEvent;
     bindings.ingame_interface_idler_vtable = 0x1844BC408;
     bindings.event_window_primary_vtable = 0x184597910;
+    bindings.splash_window_primary_vtable = 0x184596D38;
     bindings.scheme_type_primary_vtable = 0x1848B9F20;
     bindings.trait_database_slot = &trait_database_pointer;
     bindings.scheme_type_database_slot = &scheme_type_database_pointer;
@@ -451,6 +466,20 @@ struct Fixture {
     Store<std::uint8_t>(row, 0x15, 0xFF);
     Store<std::uint8_t>(row, 0x16, 0xFF);
   }
+
+  void UseSplash() {
+    Store<std::int32_t>(manager.data(), 0x24, 0);
+    Store<void *>(manager.data(), 0x10, splash_window.data());
+    Store<std::uintptr_t>(splash_window.data(), 0, bindings.splash_window_primary_vtable);
+    splash_items[0] = splash_item.data();
+    Store<void *>(splash_window.data(), 0xB8, splash_items.data());
+    Store<std::int32_t>(splash_window.data(), 0xC0, 2);
+    Store<std::int32_t>(splash_window.data(), 0xC4, 1);
+    Store<void *>(splash_window.data(), 0xD0, splash_item.data());
+    Store<void *>(splash_item.data(), 0, splash_window.data());
+    Store<void *>(splash_item.data(), 8, active_event.data());
+    Store<void *>(splash_item.data(), 0x10, window.data() + 0xB8);
+  }
 };
 
 bool TestMigration() {
@@ -516,7 +545,12 @@ bool TestMigration() {
   const auto binding = ck3_12002::BindEventWindowImage(0x180000000,
     ck3_12002::kExecutableSha256);
   const auto mismatched = ck3_12002::BindEventWindowImage(0x180000000, "old");
+  const auto patch3 = ck3_12002::BindEventWindowImage(0x180000000,
+    ck3_12003::kExecutableSha256);
   if (!binding.events.core.enabled || mismatched.events.core.enabled ||
+      binding.splash_window_primary_vtable != 0 ||
+      mismatched.splash_window_primary_vtable != 0 ||
+      !patch3.events.core.enabled || patch3.splash_window_primary_vtable != 0x184596D38 ||
       binding.ingame_interface_idler_vtable != 0x1844BC408 ||
       reinterpret_cast<std::uintptr_t>(binding.trait_database_slot) != 0x185C67528)
     return false;
@@ -525,9 +559,91 @@ bool TestMigration() {
       "{\"expected_revision\":17,\"event_instance_id\":42}", revision, id) &&
       revision == 17 && id == 42;
 }
+
+bool TestSplash() {
+  using namespace xar;
+  Fixture fixture;
+  fixture.UseSplash();
+  game::EventWindowContextV1 output{};
+  auto read = [&]() {
+    g_current_event_calls = 0;
+    return ck3_12002::ReadEventWindowContextV1(fixture.bindings, kRevision, kEventId, output) ==
+           game::ReadEventWindowContextResultV1::available;
+  };
+  // A materialized SplashWindow uses the same genuine rendered option data.
+  // Authored count is four; only native option index three is initially shown,
+  // and its enabled byte is false. No synthetic active-event slot is used.
+  if (!read() || output.window_match_count != 1 || output.options.size() != 1 ||
+      !output.options[0].shown || output.options[0].enabled ||
+      output.options[0].native_option_index != 3 ||
+      output.event_definition_key != "xar_test.0001" || output.saved_scopes.size() != 2 ||
+      output.root_scope->typed_identity.character_id != kCharacterId ||
+      !output.option_presentation_ready || output.effect_preview_ready) return false;
+  Store<std::int32_t>(fixture.window.data() + 0xB8, 0x1C, 2);
+  fixture.InitializeOption(1, 1, true, false);
+  if (!read() || output.options.size() != 2 || output.options[0].enabled ||
+      !output.options[1].enabled || output.options[1].native_option_index != 1) return false;
+  Store<std::int32_t>(fixture.window.data() + 0xB8, 0x1C, 1);
+  Store<void *>(fixture.splash_window.data(), 0xD0, nullptr);
+  if (read() || output.unavailable_reason != "event_window_not_materialized") return false;
+  Store<void *>(fixture.splash_window.data(), 0xD0, fixture.splash_item.data());
+  Store<void *>(fixture.splash_window.data(), 0xD8, fixture.splash_item.data());
+  if (read() || output.unavailable_reason != "event_splash_transition_in_progress" ||
+      !output.options.empty() || output.option_presentation_ready) return false;
+  Store<void *>(fixture.splash_window.data(), 0xD8, nullptr);
+  Store<std::uintptr_t>(fixture.splash_window.data(), 0, 0x184597910);
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<std::uintptr_t>(fixture.splash_window.data(), 0, fixture.bindings.splash_window_primary_vtable);
+  Store<std::int32_t>(fixture.splash_window.data(), 0xC4, 33);
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<std::int32_t>(fixture.splash_window.data(), 0xC4, 1);
+  Store<std::int32_t>(fixture.splash_window.data(), 0xC0, 0);
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<std::int32_t>(fixture.splash_window.data(), 0xC0, 2);
+  fixture.splash_items[0] = nullptr;
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  fixture.splash_items[0] = fixture.splash_item.data();
+  fixture.splash_items[1] = fixture.splash_item.data();
+  Store<std::int32_t>(fixture.splash_window.data(), 0xC4, 2);
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<std::int32_t>(fixture.splash_window.data(), 0xC4, 1);
+  Store<void *>(fixture.splash_item.data(), 0, fixture.manager.data());
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<void *>(fixture.splash_item.data(), 0, fixture.splash_window.data());
+  Store<void *>(fixture.splash_item.data(), 0x10, nullptr);
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<void *>(fixture.splash_item.data(), 0x10, fixture.window.data() + 0xB8);
+  Store<std::int32_t>(fixture.active_event.data(), 0x1BC, kEventId + 1);
+  if (read() || output.unavailable_reason != "state_changed") return false;
+  Store<std::int32_t>(fixture.active_event.data(), 0x1BC, kEventId);
+  Store<std::int32_t>(fixture.window.data() + 0xB8, 0, kEventId + 1);
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<std::int32_t>(fixture.window.data() + 0xB8, 0, kEventId);
+  Store<std::int32_t>(fixture.window.data() + 0xB8, 0x1C, 65);
+  if (read() || output.unavailable_reason != "event_splash_layout_invalid") return false;
+  Store<std::int32_t>(fixture.window.data() + 0xB8, 0x1C, 1);
+  Store<std::int32_t>(fixture.manager.data(), 0x24, 1);
+  if (read() || output.unavailable_reason != "event_window_ambiguous") return false;
+  Store<std::int32_t>(fixture.manager.data(), 0x24, 0);
+  g_event_identity_drift = EventIdentityDrift::splash_current_item;
+  if (read() || output.unavailable_reason != "event_splash_changed") return false;
+  g_event_identity_drift = EventIdentityDrift::none;
+  Store<void *>(fixture.splash_window.data(), 0xD0, fixture.splash_item.data());
+  g_event_identity_drift = EventIdentityDrift::splash_transition_item;
+  if (read() || output.unavailable_reason != "event_splash_changed") return false;
+  g_event_identity_drift = EventIdentityDrift::none;
+  Store<void *>(fixture.splash_window.data(), 0xD8, nullptr);
+  Store<std::int32_t>(fixture.character.data(), 0x18, kCharacterId | 0x01000000);
+  if (read() || output.unavailable_reason != "event_root_scope_invalid") return false;
+  Store<std::int32_t>(fixture.character.data(), 0x18, kCharacterId);
+  Store<std::int32_t>(fixture.game_state.data(), 0x70, 1);
+  Store<std::uint8_t>(fixture.jomini.data(), 0x20, 0);
+  if (read() || output.unavailable_reason != "state_changed") return false;
+  return true;
+}
 } // namespace
 int main() {
-  if (!TestMigration()) { std::cerr << "CK3 1.20.0.2 event-window fixture failed\n"; return 1; }
+  if (!TestMigration() || !TestSplash()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
   std::cout << "CK3 1.20.0.2 event-window offline fixture passed\n";
   return 0;
 }

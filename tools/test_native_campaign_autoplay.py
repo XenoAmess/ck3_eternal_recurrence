@@ -41,6 +41,11 @@ class FakeClient:
         self.running_reads = 0
         self.save_count = 0
         self.observation = None
+        self.context_sequence = []
+        self.context_delay = 0
+        self.event_after_transient = None
+        self.guard_after_transient = False
+        self.running_after_transient = False
 
     def envelope(self, value):
         return {"is_error": False, "structured_content": {"session_id": "owned-client-session", "profile_sha256": "a"*64, **value}, "content": []}
@@ -82,6 +87,19 @@ class FakeClient:
         if name == SNAPSHOT:
             return self.envelope({"status": "native_snapshot_verified", "snapshot": self.frame()})
         if name == QUERY_EVENT:
+            await asyncio.sleep(self.context_delay)
+            if self.context_sequence:
+                context = self.context_sequence.pop(0)
+                if context.get("status") == "unavailable":
+                    self.revision += 1
+                    if self.event_after_transient is not None:
+                        self.event = copy.deepcopy(self.event_after_transient)
+                    if self.guard_after_transient:
+                        self.guard_error = True
+                    if self.running_after_transient:
+                        self.paused = False
+                return self.envelope({"status": "native_event_query_verified", "result": {
+                    "current_event_window_context": copy.deepcopy(context)}})
             return self.envelope({"status": "native_event_query_verified", "result": {
                 "current_event_window_context": {"status": "available", "current_event_instance_id": self.event["instance_id"],
                     "event_definition_key": "native.example", "readiness": {"option_presentation_ready": True},
@@ -235,6 +253,90 @@ class CampaignTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["status"], "rejected")
         self.assertEqual(Counter(name for name,_ in self.client.calls)[PAUSE], 1)
         self.assertEqual(Counter(name for name,_ in self.client.calls)[SAVE], 0)
+
+    def transient_context(self, reason="event_window_not_materialized", instance=7):
+        return {"status": "unavailable", "current_event_instance_id": instance,
+                "unavailable_reason": reason, "readiness": {"option_presentation_ready": False},
+                "options": []}
+
+    async def test_presentation_transients_wait_then_select_real_option_once(self):
+        self.client.event = {"instance_id": 7, "option_count": 1}
+        self.client.context_options = [option(3)]
+        self.client.context_sequence = [self.transient_context(),
+            self.transient_context("event_splash_transition_in_progress")]
+        result = await run(self.client, self.config(postcondition_timeout_seconds=1))
+        self.assertEqual(result["status"], "completed")
+        selections = [args for name, args in self.client.calls if name == SELECT_EVENT]
+        self.assertEqual(selections, [{"option_number": 4, "event_instance_id": 7, "expected_revision": 3}])
+        self.assertEqual(len(self.receipts("event-presentation-wait")), 2)
+        self.assertTrue(all(not row["selection_dispatched"] for row in self.receipts("event-presentation-wait")))
+
+    async def test_presentation_wait_never_uses_synthetic_enabled(self):
+        self.client.event = {"instance_id": 7, "option_count": 1, "options": [{"enabled": True}]}
+        self.client.context_sequence = [self.transient_context()]
+        self.client.context_options = [option(0, enabled=False)]
+        result = await run(self.client, self.config(postcondition_timeout_seconds=1))
+        self.assertEqual(result["reason"], "event_has_no_shown_enabled_option")
+        self.assertFalse(any(name == SELECT_EVENT for name, _ in self.client.calls))
+
+    async def test_presentation_layout_identity_and_unknown_errors_do_not_wait(self):
+        cases = [(reason, 7) for reason in ("event_splash_layout_invalid", "event_splash_changed",
+            "event_scope_changed", "event_saved_scope_invalid", "event_root_scope_invalid", "unknown")]
+        cases += [("event_window_not_materialized", 8)]
+        for number, (reason, instance) in enumerate(cases):
+            with self.subTest(reason=reason, instance=instance):
+                client = FakeClient(self.saves)
+                client.event = {"instance_id": 7}
+                client.context_sequence = [self.transient_context(reason, instance)]
+                result = await run(client, self.config(evidence_directory=self.root/f"error-{number}"))
+                self.assertEqual(result["reason"], "event_context_unavailable")
+                self.assertEqual(Counter(name for name, _ in client.calls)[QUERY_EVENT], 1)
+                self.assertEqual(Counter(name for name, _ in client.calls)[SNAPSHOT], 1)
+                self.assertFalse(any(name == SELECT_EVENT for name, _ in client.calls))
+
+    async def test_presentation_wait_rebinds_new_instance_and_revision(self):
+        self.client.event = {"instance_id": 7}
+        self.client.event_after_transient = {"instance_id": 8}
+        self.client.context_sequence = [self.transient_context()]
+        self.client.context_options = [option(2)]
+        result = await run(self.client, self.config(postcondition_timeout_seconds=1))
+        self.assertEqual(result["status"], "completed")
+        queries = [args for name, args in self.client.calls if name == QUERY_EVENT]
+        self.assertEqual(queries, [{"event_instance_id": 7, "expected_revision": 1},
+                                  {"event_instance_id": 8, "expected_revision": 2}])
+        selections = [args for name, args in self.client.calls if name == SELECT_EVENT]
+        self.assertEqual(selections, [{"option_number": 3, "event_instance_id": 8, "expected_revision": 2}])
+
+    async def test_presentation_wait_guard_failure_has_no_input(self):
+        self.client.event = {"instance_id": 7}
+        self.client.context_sequence = [self.transient_context()]
+        self.client.guard_after_transient = True
+        result = await run(self.client, self.config(postcondition_timeout_seconds=1))
+        self.assertEqual(result["status"], "rejected")
+        self.assertFalse(any(name == SELECT_EVENT for name, _ in self.client.calls))
+
+    async def test_presentation_wait_lost_pause_has_no_input(self):
+        self.client.event = {"instance_id": 7}
+        self.client.context_sequence = [self.transient_context()]
+        self.client.running_after_transient = True
+        result = await run(self.client, self.config(postcondition_timeout_seconds=1))
+        self.assertEqual(result["reason"], "event_presentation_wait_requires_pause")
+        self.assertFalse(any(name == SELECT_EVENT for name, _ in self.client.calls))
+
+    async def test_presentation_timeout_bound_includes_delayed_readonly_call(self):
+        self.client.event = {"instance_id": 7}
+        self.client.context_delay = 0.2
+        result = await run(self.client, self.config(postcondition_timeout_seconds=0.01))
+        self.assertEqual(result["reason"], "event_presentation_timeout")
+        self.assertEqual(Counter(name for name, _ in self.client.calls)[QUERY_EVENT], 1)
+        self.assertFalse(any(name == SELECT_EVENT for name, _ in self.client.calls))
+
+    async def test_presentation_timeout_never_dispatches_selection(self):
+        self.client.event = {"instance_id": 7}
+        self.client.context_sequence = [self.transient_context()] * 100
+        result = await run(self.client, self.config(postcondition_timeout_seconds=0.01))
+        self.assertEqual(result["reason"], "event_presentation_timeout")
+        self.assertFalse(any(name == SELECT_EVENT for name, _ in self.client.calls))
 
     async def test_guard_error_prevents_all_actions(self):
         self.client.guard_error = True

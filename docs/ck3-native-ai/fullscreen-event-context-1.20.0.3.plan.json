@@ -1,0 +1,133 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "materialized-fullscreen-event-context",
+  "question": "Which genuine presented options belong to the selected fullscreen event on exact patch3?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "observation": {
+    "mode": "paused-snapshot",
+    "actor_kind": "engine",
+    "owner_scope": "current local player active event and selected event manager splash item",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "bound instance ID and definition pointer/key; recheck before and after read",
+    "producer_trigger": "paused-query",
+    "producer": "native GUI selector materializes cached EventWindowData through 0x1850D60; query reads this existing GUI cache without advancing simulation",
+    "caller": "existing guarded profile event-window query on owning native thread",
+    "consumer": "typed event context, then ordinary campaign real-option filtering and strict instance/revision selection",
+    "cache_lifetime": "selected item and pending transition slot must remain stable within the read; cached values are not complete scripted effect prediction",
+    "expected_signal": "one matching current item, actual rendered option rows and enabled bytes",
+    "zero_sample_meaning": "not materialized or not the selected item; no enabled inference from authored count",
+    "stop_condition": "any layout/type/identity/scope failure; non-null transition denies read; transient read-only wait is bounded",
+    "runtime_window_ref": "root-owned future cold run, pending; no live observation authorized by this plan itself"
+  },
+  "evidence": [
+    {
+      "id": "native-manifest",
+      "layer": "source-contract",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "path": "../../ck3_autonomous_player/native_bridge/research/ck3_1_20_0_3_fullscreen_event_context.json",
+      "sha256": "e09ca799e6f7ada354b6b32ab51bd974ba1e7d6ac3a4fc69fe089f54c84c52a7",
+      "supports": "exact native creation/selector/materializer and typed reader contract; no live confirmation"
+    },
+    {
+      "id": "reader-contract",
+      "layer": "source-contract",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "path": "../../ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context.cpp",
+      "sha256": "5ad729a2915ab30a41a2a03755e160b223bb41c82c9ab5180cf082febe384726",
+      "supports": "exact native creation/selector/materializer and typed reader contract; no live confirmation"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "creation",
+      "label": "Exact event creation"
+    },
+    {
+      "id": "selected",
+      "label": "Stable selected splash item"
+    },
+    {
+      "id": "data",
+      "label": "Materialized shared option data"
+    },
+    {
+      "id": "dto",
+      "label": "Typed genuine option context"
+    },
+    {
+      "id": "reflection",
+      "label": "Named GUI GetSplashItem reflection thunk"
+    },
+    {
+      "id": "live",
+      "label": "Live cold-run query and selection readback"
+    }
+  ],
+  "edges": [
+    {
+      "id": "select",
+      "from": "creation",
+      "to": "selected",
+      "label": "manager +10, selected +D0, transition +D8",
+      "status": "static-confirmed",
+      "evidence": [
+        "native-manifest",
+        "reader-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "materialize",
+      "from": "selected",
+      "to": "data",
+      "label": "item +10 and shared constructor/materializer",
+      "status": "static-confirmed",
+      "evidence": [
+        "native-manifest",
+        "reader-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "decode",
+      "from": "data",
+      "to": "dto",
+      "label": "rendered option index and actual enabled byte with scope guards",
+      "status": "static-confirmed",
+      "evidence": [
+        "reader-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "getter",
+      "from": "reflection",
+      "to": "selected",
+      "label": "named getter linkage",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Exact name registration to reflection callback not independently located; native selector/materializer layout is established separately."
+    },
+    {
+      "id": "runtime",
+      "from": "dto",
+      "to": "live",
+      "label": "future genuine cold-run readback",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does the new source-bound DLL observe actual popup options under the live profile guards?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "cold-popup",
+      "question": "Actual fullscreen current event has genuine shown/enabled options and strict selected-instance exit?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

@@ -133,3 +133,6 @@ SHA-256 values equal
 `8c35dd8ff296a49c578ef75ea2885880290b7e08741931f1440eb3a8b8ec71d4`.
 That check dispatched no game command and proves only those existing artifact
 bytes and dates, not the requested hundred-year campaign.
+# Event presentation rendering wait (2026-10-02)
+
+The policy bounds presentation-only read retries by `postcondition_timeout_seconds` (default 20 seconds, including calls). Only verified `event_window_not_materialized` and `event_splash_transition_in_progress` for the bound instance qualify. Each iteration reads a fresh guarded snapshot, requires paused state and binds the new revision; changed events return to the outer event loop for a new identity binding. Layout/scope/identity/unknown errors and guard failures stop immediately. No selection is dispatched until actual window options are ready; no input is replayed. Authored counts and synthetic `active_event.options[].enabled` do not qualify an option. See [the exact patch3 observation contract](fullscreen-event-context-1.20.0.3.md).

@@ -1,0 +1,1168 @@
+{
+  "schema_version": 1,
+  "contract": "ck3-1.20.0.3-fullscreen-event-context-v1",
+  "build": {
+    "version": "1.20.0.3",
+    "steam_build_id": "25652598",
+    "sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "file_size": 101039736,
+    "pe_timestamp": 1790852258,
+    "image_base": "0x140000000",
+    "size_of_image": 102518784
+  },
+  "exact_patch3_splash_gate": true,
+  "patch2_ordinary_window_preserved": true,
+  "read_only": true,
+  "live_verified": false,
+  "game_process_started": false,
+  "readiness": "static-ready pending scoped native fixtures and new live run",
+  "baseline_manifest": "ck3_1_20_0_2_event_window_context.json",
+  "baseline_manifest_sha256": "d2c51ec340b08050a5e2a7b6c00d61f358647f914a75cb26b6eb4f74842a9e81",
+  "vtable_prefixes": [
+    {
+      "name": "CIngameInterfaceIdlerGfx.primary",
+      "rva": "0x44bc408",
+      "function_rvas": [
+        "0xb1fdc0",
+        "0xb200d0",
+        "0xb22510",
+        "0xb20270"
+      ]
+    },
+    {
+      "name": "CEventWindow.primary",
+      "rva": "0x4597910",
+      "function_rvas": [
+        "0x182a080",
+        "0x182abb0",
+        "0x9dc6b0",
+        "0x8523c0"
+      ]
+    },
+    {
+      "name": "CSplashWindow.primary",
+      "rva": "0x4596D38",
+      "function_rvas": [
+        "0x1821A00",
+        "0x1821D10",
+        "0x9DC6B0",
+        "0x8523C0"
+      ]
+    }
+  ],
+  "instruction_checks": [
+    {
+      "purpose": "idler-root-slot",
+      "rva": "0xb20148",
+      "bytes": "48 8b 0d d1 a3 14 05",
+      "instruction": "mov rcx, qword ptr [rip + 0x514a3d1]",
+      "rip_targets": [
+        "0x5c6a520"
+      ]
+    },
+    {
+      "purpose": "idler-root-owner-child",
+      "rva": "0xb20158",
+      "bytes": "48 8b 49 10",
+      "instruction": "mov rcx, qword ptr [rcx + 0x10]"
+    },
+    {
+      "purpose": "idler-rtti-gfx-type",
+      "rva": "0xb2015c",
+      "bytes": "4c 8d 0d fd 42 9f 04",
+      "instruction": "lea r9, [rip + 0x49f42fd]",
+      "rip_targets": [
+        "0x5514460"
+      ]
+    },
+    {
+      "purpose": "idler-dynamic-cast",
+      "rva": "0xb20174",
+      "bytes": "e8 1b 0d 74 03",
+      "instruction": "call 0x4260e94"
+    },
+    {
+      "purpose": "idler-gfx-primary-vtable",
+      "rva": "0xb1fbfa",
+      "bytes": "48 8d 05 07 c8 99 03",
+      "instruction": "lea rax, [rip + 0x399c807]",
+      "rip_targets": [
+        "0x44bc408"
+      ]
+    },
+    {
+      "purpose": "idler-create-window-manager",
+      "rva": "0xb1fc97",
+      "bytes": "e8 24 58 12 00",
+      "instruction": "call 0xc454c0"
+    },
+    {
+      "purpose": "idler-manager-field",
+      "rva": "0xb1fc9d",
+      "bytes": "48 89 47 28",
+      "instruction": "mov qword ptr [rdi + 0x28], rax"
+    },
+    {
+      "purpose": "manager-single-popup-default",
+      "rva": "0xc454e0",
+      "bytes": "48 89 71 10",
+      "instruction": "mov qword ptr [rcx + 0x10], rsi"
+    },
+    {
+      "purpose": "manager-window-vector-data-default",
+      "rva": "0xc454e4",
+      "bytes": "48 89 71 18",
+      "instruction": "mov qword ptr [rcx + 0x18], rsi"
+    },
+    {
+      "purpose": "manager-window-vector-capacity-count-default",
+      "rva": "0xc454e8",
+      "bytes": "48 89 71 20",
+      "instruction": "mov qword ptr [rcx + 0x20], rsi"
+    },
+    {
+      "purpose": "manager-window-vector-data",
+      "rva": "0xc457fd",
+      "bytes": "48 8b 7b 18",
+      "instruction": "mov rdi, qword ptr [rbx + 0x18]"
+    },
+    {
+      "purpose": "manager-window-vector-count",
+      "rva": "0xc45801",
+      "bytes": "48 63 4b 24",
+      "instruction": "movsxd rcx, dword ptr [rbx + 0x24]"
+    },
+    {
+      "purpose": "manager-normal-event-window-allocate",
+      "rva": "0xc45cf5",
+      "bytes": "b9 f0 08 00 00",
+      "instruction": "mov ecx, 0x8f0"
+    },
+    {
+      "purpose": "manager-normal-event-window-constructor",
+      "rva": "0xc45d13",
+      "bytes": "e8 88 3f be 00",
+      "instruction": "call 0x1829ca0"
+    },
+    {
+      "purpose": "manager-normal-event-window-vector",
+      "rva": "0xc45d29",
+      "bytes": "48 8d 4e 18",
+      "instruction": "lea rcx, [rsi + 0x18]"
+    },
+    {
+      "purpose": "manager-normal-event-window-append",
+      "rva": "0xc45d2d",
+      "bytes": "e8 ae 01 00 00",
+      "instruction": "call 0xc45ee0"
+    },
+    {
+      "purpose": "manager-separate-popup-allocate",
+      "rva": "0xc45b95",
+      "bytes": "b9 e0 00 00 00",
+      "instruction": "mov ecx, 0xe0"
+    },
+    {
+      "purpose": "manager-separate-popup-primary-vtable",
+      "rva": "0xc45c1a",
+      "bytes": "48 8d 05 17 11 95 03",
+      "instruction": "lea rax, [rip + 0x3951117]",
+      "rip_targets": [
+        "0x4596d38"
+      ]
+    },
+    {
+      "purpose": "manager-separate-popup-field",
+      "rva": "0xc45ce0",
+      "bytes": "4c 89 76 10",
+      "instruction": "mov qword ptr [rsi + 0x10], r14"
+    },
+    {
+      "purpose": "event-window-primary-vtable",
+      "rva": "0x1829f67",
+      "bytes": "48 8d 05 a2 d9 d6 02",
+      "instruction": "lea rax, [rip + 0x2d6d9a2]",
+      "rip_targets": [
+        "0x4597910"
+      ]
+    },
+    {
+      "purpose": "event-window-inline-data-constructor",
+      "rva": "0x1829f95",
+      "bytes": "48 8d 8e b8 00 00 00",
+      "instruction": "lea rcx, [rsi + 0xb8]"
+    },
+    {
+      "purpose": "event-window-data-constructor-call",
+      "rva": "0x1829fba",
+      "bytes": "e8 31 63 02 00",
+      "instruction": "call 0x18502f0"
+    },
+    {
+      "purpose": "event-window-inline-data-destructor",
+      "rva": "0x182a0e2",
+      "bytes": "49 8d 8e b8 00 00 00",
+      "instruction": "lea rcx, [r14 + 0xb8]"
+    },
+    {
+      "purpose": "event-window-data-instance-id-source",
+      "rva": "0x1850317",
+      "bytes": "8b 82 bc 01 00 00",
+      "instruction": "mov eax, dword ptr [rdx + 0x1bc]"
+    },
+    {
+      "purpose": "event-window-data-instance-id",
+      "rva": "0x185031d",
+      "bytes": "89 01",
+      "instruction": "mov dword ptr [rcx], eax"
+    },
+    {
+      "purpose": "event-window-data-options-data",
+      "rva": "0x1850326",
+      "bytes": "4c 89 79 10",
+      "instruction": "mov qword ptr [rcx + 0x10], r15"
+    },
+    {
+      "purpose": "event-window-data-options-capacity-count",
+      "rva": "0x185032a",
+      "bytes": "4c 89 79 18",
+      "instruction": "mov qword ptr [rcx + 0x18], r15"
+    },
+    {
+      "purpose": "setup-active-event-definition-pointer",
+      "rva": "0x1852903",
+      "bytes": "48 8b 87 b0 01 00 00",
+      "instruction": "mov rax, qword ptr [rdi + 0x1b0]"
+    },
+    {
+      "purpose": "authored-option-vector-header",
+      "rva": "0x185290a",
+      "bytes": "48 05 a0 01 00 00",
+      "instruction": "add rax, 0x1a0"
+    },
+    {
+      "purpose": "authored-option-count",
+      "rva": "0x1852914",
+      "bytes": "8b 58 0c",
+      "instruction": "mov ebx, dword ptr [rax + 0xc]"
+    },
+    {
+      "purpose": "event-option-item-owner",
+      "rva": "0x1858760",
+      "bytes": "48 89 9f 60 01 00 00",
+      "instruction": "mov qword ptr [rdi + 0x160], rbx"
+    },
+    {
+      "purpose": "event-option-item-resolved-name",
+      "rva": "0x185876e",
+      "bytes": "48 8d 97 70 01 00 00",
+      "instruction": "lea rdx, [rdi + 0x170]"
+    },
+    {
+      "purpose": "event-option-item-unavailable-reason",
+      "rva": "0x1858927",
+      "bytes": "0f 11 87 90 01 00 00",
+      "instruction": "movups xmmword ptr [rdi + 0x190], xmm0"
+    },
+    {
+      "purpose": "event-option-item-native-index",
+      "rva": "0x18589e3",
+      "bytes": "44 89 bf b0 01 00 00",
+      "instruction": "mov dword ptr [rdi + 0x1b0], r15d"
+    },
+    {
+      "purpose": "event-option-item-enabled",
+      "rva": "0x18589ea",
+      "bytes": "44 88 b7 b4 01 00 00",
+      "instruction": "mov byte ptr [rdi + 0x1b4], r14b"
+    },
+    {
+      "purpose": "event-option-item-fallback",
+      "rva": "0x18589f1",
+      "bytes": "c6 87 b5 01 00 00 00",
+      "instruction": "mov byte ptr [rdi + 0x1b5], 0"
+    },
+    {
+      "purpose": "event-option-item-stride-multiply",
+      "rva": "0x185d0e6",
+      "bytes": "48 69 d0 b8 01 00 00",
+      "instruction": "imul rdx, rax, 0x1b8"
+    },
+    {
+      "purpose": "event-option-item-stride-advance",
+      "rva": "0x185d2af",
+      "bytes": "48 81 c6 b8 01 00 00",
+      "instruction": "add rsi, 0x1b8"
+    },
+    {
+      "purpose": "cancel-authored-vector",
+      "rva": "0x19d62d5",
+      "bytes": "49 8b 86 a0 01 00 00",
+      "instruction": "mov rax, qword ptr [r14 + 0x1a0]"
+    },
+    {
+      "purpose": "cancel-authored-option-pointer",
+      "rva": "0x19d62dc",
+      "bytes": "48 8b 0c f0",
+      "instruction": "mov rcx, qword ptr [rax + rsi*8]"
+    },
+    {
+      "purpose": "cancel-new-option-field",
+      "rva": "0x19d62e0",
+      "bytes": "80 b9 12 04 00 00 00",
+      "instruction": "cmp byte ptr [rcx + 0x412], 0"
+    },
+    {
+      "purpose": "indicator-materializer-collector",
+      "rva": "0x1859058",
+      "bytes": "e8 83 c5 f0 01",
+      "instruction": "call 0x37655e0"
+    },
+    {
+      "purpose": "indicator-combined-kind",
+      "rva": "0x18590a0",
+      "bytes": "c7 44 24 40 03 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x40], 3"
+    },
+    {
+      "purpose": "indicator-combined-primary-gain",
+      "rva": "0x18590aa",
+      "bytes": "0f 9f 44 24 44",
+      "instruction": "setg byte ptr [rsp + 0x44]"
+    },
+    {
+      "purpose": "indicator-combined-secondary-gain",
+      "rva": "0x18590b1",
+      "bytes": "0f 9f 44 24 45",
+      "instruction": "setg byte ptr [rsp + 0x45]"
+    },
+    {
+      "purpose": "indicator-stress-affected-trait",
+      "rva": "0x1859091",
+      "bytes": "88 44 24 46",
+      "instruction": "mov byte ptr [rsp + 0x46], al"
+    },
+    {
+      "purpose": "indicator-stress-critical",
+      "rva": "0x1859171",
+      "bytes": "88 44 24 47",
+      "instruction": "mov byte ptr [rsp + 0x47], al"
+    },
+    {
+      "purpose": "indicator-stress-kind",
+      "rva": "0x185917f",
+      "bytes": "bf 01 00 00 00",
+      "instruction": "mov edi, 1"
+    },
+    {
+      "purpose": "indicator-fulfillment-kind",
+      "rva": "0x1859286",
+      "bytes": "c7 44 24 40 02 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x40], 2"
+    },
+    {
+      "purpose": "indicator-death-kind",
+      "rva": "0x18592c9",
+      "bytes": "c7 44 24 40 04 00 00 00",
+      "instruction": "mov dword ptr [rsp + 0x40], 4"
+    },
+    {
+      "purpose": "indicator-scheme-payload",
+      "rva": "0x18584b6",
+      "bytes": "48 8b 43 70",
+      "instruction": "mov rax, qword ptr [rbx + 0x70]"
+    },
+    {
+      "purpose": "indicator-scheme-kind",
+      "rva": "0x18584c5",
+      "bytes": "c7 45 f0 05 00 00 00",
+      "instruction": "mov dword ptr [rbp - 0x10], 5"
+    },
+    {
+      "purpose": "indicator-scheme-append",
+      "rva": "0x18584ff",
+      "bytes": "e8 ec 19 00 00",
+      "instruction": "call 0x1859ef0"
+    },
+    {
+      "purpose": "indicator-vector-count",
+      "rva": "0x1859f00",
+      "bytes": "4c 63 b1 94 00 00 00",
+      "instruction": "movsxd r14, dword ptr [rcx + 0x94]"
+    },
+    {
+      "purpose": "indicator-vector-data",
+      "rva": "0x1859f0a",
+      "bytes": "4c 8b 89 88 00 00 00",
+      "instruction": "mov r9, qword ptr [rcx + 0x88]"
+    },
+    {
+      "purpose": "indicator-row-kind",
+      "rva": "0x1859f33",
+      "bytes": "8b 43 10",
+      "instruction": "mov eax, dword ptr [rbx + 0x10]"
+    },
+    {
+      "purpose": "indicator-row-primary-gain",
+      "rva": "0x1859f3c",
+      "bytes": "0f b6 43 14",
+      "instruction": "movzx eax, byte ptr [rbx + 0x14]"
+    },
+    {
+      "purpose": "indicator-row-affected-by-trait",
+      "rva": "0x1859f46",
+      "bytes": "0f b6 43 16",
+      "instruction": "movzx eax, byte ptr [rbx + 0x16]"
+    },
+    {
+      "purpose": "indicator-row-critical",
+      "rva": "0x1859f50",
+      "bytes": "0f b6 43 17",
+      "instruction": "movzx eax, byte ptr [rbx + 0x17]"
+    },
+    {
+      "purpose": "indicator-row-stride",
+      "rva": "0x1859f5a",
+      "bytes": "49 83 c1 18",
+      "instruction": "add r9, 0x18"
+    },
+    {
+      "purpose": "indicator-vector-capacity",
+      "rva": "0x1859f75",
+      "bytes": "8b 87 90 00 00 00",
+      "instruction": "mov eax, dword ptr [rdi + 0x90]"
+    },
+    {
+      "purpose": "indicator-row-last-eight-bytes-copy",
+      "rva": "0x1859fe8",
+      "bytes": "f2 0f 10 4b 10",
+      "instruction": "movsd xmm1, qword ptr [rbx + 0x10]"
+    },
+    {
+      "purpose": "trait-database-slot",
+      "rva": "0x89e5b4",
+      "bytes": "48 8b 05 6d 8f 3c 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53c8f6d]",
+      "rip_targets": [
+        "0x5c67528"
+      ]
+    },
+    {
+      "purpose": "trait-definition-count",
+      "rva": "0xc85f37",
+      "bytes": "3b 51 5c",
+      "instruction": "cmp edx, dword ptr [rcx + 0x5c]"
+    },
+    {
+      "purpose": "trait-definition-data",
+      "rva": "0xc85f3c",
+      "bytes": "48 8b 41 50",
+      "instruction": "mov rax, qword ptr [rcx + 0x50]"
+    },
+    {
+      "purpose": "trait-definition-array-stride",
+      "rva": "0xc85f43",
+      "bytes": "48 8b 04 d0",
+      "instruction": "mov rax, qword ptr [rax + rdx*8]"
+    },
+    {
+      "purpose": "trait-stable-key",
+      "rva": "0x324f3b2",
+      "bytes": "48 83 c0 18",
+      "instruction": "add rax, 0x18"
+    },
+    {
+      "purpose": "scheme-database-slot",
+      "rva": "0x8fd3c4",
+      "bytes": "48 8b 05 3d 9d 36 05",
+      "instruction": "mov rax, qword ptr [rip + 0x5369d3d]",
+      "rip_targets": [
+        "0x5c67108"
+      ]
+    },
+    {
+      "purpose": "scheme-lookup-key-hash",
+      "rva": "0xa99da1",
+      "bytes": "e8 9a 44 4e 03",
+      "instruction": "call 0x3f7e240"
+    },
+    {
+      "purpose": "scheme-lookup-hash-consumer",
+      "rva": "0xa99dab",
+      "bytes": "e8 f0 5d 02 00",
+      "instruction": "call 0xabfba0"
+    },
+    {
+      "purpose": "scheme-lookup-native-fallback",
+      "rva": "0xabfcaa",
+      "bytes": "48 8b 05 ef e5 25 05",
+      "instruction": "mov rax, qword ptr [rip + 0x525e5ef]",
+      "rip_targets": [
+        "0x5d1e2a0"
+      ]
+    },
+    {
+      "purpose": "scheme-type-primary-vtable",
+      "rva": "0x30cf9de",
+      "bytes": "48 8d 05 3b a5 7e 01",
+      "instruction": "lea rax, [rip + 0x17ea53b]",
+      "rip_targets": [
+        "0x48b9f20"
+      ]
+    },
+    {
+      "purpose": "active-event-zero-offset-scope-constructor",
+      "rva": "0x29c6c29",
+      "bytes": "e8 32 33 ec fd",
+      "instruction": "call 0x889f60"
+    },
+    {
+      "purpose": "active-event-data-pointer-default",
+      "rva": "0x29c6c5a",
+      "bytes": "48 89 8b b0 01 00 00",
+      "instruction": "mov qword ptr [rbx + 0x1b0], rcx"
+    },
+    {
+      "purpose": "scope-root-token-serializer",
+      "rva": "0x23330b3",
+      "bytes": "48 89 74 24 30",
+      "instruction": "mov qword ptr [rsp + 0x30], rsi"
+    },
+    {
+      "purpose": "scope-root-token-serializer-call",
+      "rva": "0x23330bb",
+      "bytes": "e8 b0 55 55 fe",
+      "instruction": "call 0x888670"
+    },
+    {
+      "purpose": "scope-saved-count",
+      "rva": "0x2333107",
+      "bytes": "83 7e 24 00",
+      "instruction": "cmp dword ptr [rsi + 0x24], 0"
+    },
+    {
+      "purpose": "scope-saved-header",
+      "rva": "0x233310d",
+      "bytes": "4c 8d 46 18",
+      "instruction": "lea r8, [rsi + 0x18]"
+    },
+    {
+      "purpose": "scope-saved-row-count",
+      "rva": "0x2613b62",
+      "bytes": "48 63 40 0c",
+      "instruction": "movsxd rax, dword ptr [rax + 0xc]"
+    },
+    {
+      "purpose": "scope-saved-row-stride-calculation",
+      "rva": "0x2613b66",
+      "bytes": "48 8d 0c 40",
+      "instruction": "lea rcx, [rax + rax*2]"
+    },
+    {
+      "purpose": "scope-saved-row-name-id",
+      "rva": "0x2613b80",
+      "bytes": "8b 1e",
+      "instruction": "mov ebx, dword ptr [rsi]"
+    },
+    {
+      "purpose": "scope-saved-row-name-table",
+      "rva": "0x2613b82",
+      "bytes": "e8 79 6c 97 01",
+      "instruction": "call 0x3f8a800"
+    },
+    {
+      "purpose": "scope-saved-row-name-resolver",
+      "rva": "0x2613b8c",
+      "bytes": "e8 5f 6b 97 01",
+      "instruction": "call 0x3f8a6f0"
+    },
+    {
+      "purpose": "scope-saved-row-token",
+      "rva": "0x2613c3d",
+      "bytes": "48 8d 46 08",
+      "instruction": "lea rax, [rsi + 8]"
+    },
+    {
+      "purpose": "scope-saved-row-stride",
+      "rva": "0x2613c60",
+      "bytes": "48 83 c6 18",
+      "instruction": "add rsi, 0x18"
+    },
+    {
+      "purpose": "generic-token-type-index",
+      "rva": "0x2253d88",
+      "bytes": "0f b7 3a",
+      "instruction": "movzx edi, word ptr [rdx]"
+    },
+    {
+      "purpose": "generic-registry-count",
+      "rva": "0x2253d90",
+      "bytes": "39 78 0c",
+      "instruction": "cmp dword ptr [rax + 0xc], edi"
+    },
+    {
+      "purpose": "generic-registry-stride-five",
+      "rva": "0x2253d9a",
+      "bytes": "48 8d 14 bf",
+      "instruction": "lea rdx, [rdi + rdi*4]"
+    },
+    {
+      "purpose": "generic-registry-stride-sixteen",
+      "rva": "0x2253d9e",
+      "bytes": "48 c1 e2 04",
+      "instruction": "shl rdx, 4"
+    },
+    {
+      "purpose": "generic-registry-data",
+      "rva": "0x2253da2",
+      "bytes": "48 03 10",
+      "instruction": "add rdx, qword ptr [rax]"
+    },
+    {
+      "purpose": "generic-registry-entry-name-identifier",
+      "rva": "0x2253dae",
+      "bytes": "8b 0a",
+      "instruction": "mov ecx, dword ptr [rdx]"
+    },
+    {
+      "purpose": "generic-registry-entry-name-resolver",
+      "rva": "0x2253db0",
+      "bytes": "e8 4b bb cf 01",
+      "instruction": "call 0x3f4f900"
+    },
+    {
+      "purpose": "generic-registry-exact-root",
+      "rva": "0x3795aa2",
+      "bytes": "48 8d 05 47 d0 d5 01",
+      "instruction": "lea rax, [rip + 0x1d5d047]",
+      "rip_targets": [
+        "0x54f2af0"
+      ]
+    },
+    {
+      "purpose": "generic-type-name-fallback",
+      "rva": "0x3f4f98f",
+      "bytes": "48 8d 05 92 17 e7 01",
+      "instruction": "lea rax, [rip + 0x1e71792]",
+      "rip_targets": [
+        "0x5dc1128"
+      ]
+    },
+    {
+      "purpose": "script-identifier-name-table",
+      "rva": "0x3f8a820",
+      "bytes": "48 8d 05 69 6b e3 01",
+      "instruction": "lea rax, [rip + 0x1e36b69]",
+      "rip_targets": [
+        "0x5dc1390"
+      ]
+    },
+    {
+      "purpose": "script-identifier-name-fallback",
+      "rva": "0x3f8a76f",
+      "bytes": "48 8d 05 f2 6b e3 01",
+      "instruction": "lea rax, [rip + 0x1e36bf2]",
+      "rip_targets": [
+        "0x5dc1368"
+      ]
+    },
+    {
+      "purpose": "character-type-four-registration",
+      "rva": "0x43fb3f",
+      "bytes": "ba 04 00 00 00",
+      "instruction": "mov edx, 4"
+    },
+    {
+      "purpose": "character-scope-native-resolver-registration",
+      "rva": "0x43fb83",
+      "bytes": "48 8d 05 76 e4 e1 01",
+      "instruction": "lea rax, [rip + 0x1e1e476]",
+      "rip_targets": [
+        "0x225e000"
+      ]
+    },
+    {
+      "purpose": "character-scope-native-type-four",
+      "rva": "0x225e000",
+      "bytes": "66 83 39 04",
+      "instruction": "cmp word ptr [rcx], 4"
+    },
+    {
+      "purpose": "character-scope-native-payload",
+      "rva": "0x225e006",
+      "bytes": "8b 51 08",
+      "instruction": "mov edx, dword ptr [rcx + 8]"
+    },
+    {
+      "purpose": "character-storage-slot",
+      "rva": "0x225e010",
+      "bytes": "48 8b 05 51 95 a0 03",
+      "instruction": "mov rax, qword ptr [rip + 0x3a09551]",
+      "rip_targets": [
+        "0x5c67568"
+      ]
+    },
+    {
+      "purpose": "character-storage-capacity",
+      "rva": "0x225e024",
+      "bytes": "3b 48 2c",
+      "instruction": "cmp ecx, dword ptr [rax + 0x2c]"
+    },
+    {
+      "purpose": "character-storage-slots",
+      "rva": "0x225e029",
+      "bytes": "48 8b 40 20",
+      "instruction": "mov rax, qword ptr [rax + 0x20]"
+    },
+    {
+      "purpose": "character-storage-item-stride",
+      "rva": "0x225e030",
+      "bytes": "48 8b 44 c8 08",
+      "instruction": "mov rax, qword ptr [rax + rcx*8 + 8]"
+    },
+    {
+      "purpose": "character-full-id-round-trip",
+      "rva": "0x225e03a",
+      "bytes": "39 50 18",
+      "instruction": "cmp dword ptr [rax + 0x18], edx"
+    },
+    {
+      "purpose": "character-new-inline-validity-tag",
+      "rva": "0x225e046",
+      "bytes": "81 78 1c 72 61 68 43",
+      "instruction": "cmp dword ptr [rax + 0x1c], 0x43686172"
+    },
+    {
+      "purpose": "event-calculated-id",
+      "rva": "0x37a126d",
+      "bytes": "8b 48 08",
+      "instruction": "mov ecx, dword ptr [rax + 8]"
+    },
+    {
+      "purpose": "event-calculated-id-comparison",
+      "rva": "0x37a1270",
+      "bytes": "39 4a 08",
+      "instruction": "cmp dword ptr [rdx + 8], ecx"
+    },
+    {
+      "purpose": "event-canonical-definition-key",
+      "rva": "0x37a12a9",
+      "bytes": "4c 8d 7a 10",
+      "instruction": "lea r15, [rdx + 0x10]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-loaded-vector",
+      "rva": "0x37a14b0",
+      "bytes": "49 8b 46 40",
+      "instruction": "mov rax, qword ptr [r14 + 0x40]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-definition-pointer",
+      "rva": "0x37a14b4",
+      "bytes": "48 8b 0c d8",
+      "instruction": "mov rcx, qword ptr [rax + rbx*8]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-calculated-id",
+      "rva": "0x37a14bf",
+      "bytes": "8b 51 08",
+      "instruction": "mov edx, dword ptr [rcx + 8]"
+    },
+    {
+      "purpose": "event-runtime-ordinal-loaded-id-array",
+      "rva": "0x37a14c6",
+      "bytes": "89 14 98",
+      "instruction": "mov dword ptr [rax + rbx*4], edx"
+    },
+    {
+      "purpose": "event-runtime-ordinal-producer",
+      "rva": "0x37a14d0",
+      "bytes": "89 78 0c",
+      "instruction": "mov dword ptr [rax + 0xc], edi"
+    },
+    {
+      "purpose": "event-runtime-ordinal-increment",
+      "rva": "0x37a179e",
+      "bytes": "ff c7",
+      "instruction": "inc edi"
+    },
+    {
+      "purpose": "splash-items-data",
+      "rva": "0x1821f4a",
+      "bytes": "48 8b 9e b8 00 00 00",
+      "instruction": "mov rbx, qword ptr [rsi + 0xb8]"
+    },
+    {
+      "purpose": "splash-items-count",
+      "rva": "0x1821f44",
+      "bytes": "8b be c4 00 00 00",
+      "instruction": "mov edi, dword ptr [rsi + 0xc4]"
+    },
+    {
+      "purpose": "splash-items-capacity",
+      "rva": "0x1821fc2",
+      "bytes": "44 89 a6 c0 00 00 00",
+      "instruction": "mov dword ptr [rsi + 0xc0], r12d"
+    },
+    {
+      "purpose": "splash-current-read",
+      "rva": "0x182223a",
+      "bytes": "48 8b 81 d0 00 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0xd0]"
+    },
+    {
+      "purpose": "splash-transition-clear",
+      "rva": "0x182229e",
+      "bytes": "48 c7 83 d8 00 00 00 00 00 00 00",
+      "instruction": "mov qword ptr [rbx + 0xd8], 0"
+    },
+    {
+      "purpose": "splash-transition-write",
+      "rva": "0x182260e",
+      "bytes": "48 89 88 d8 00 00 00",
+      "instruction": "mov qword ptr [rax + 0xd8], rcx"
+    },
+    {
+      "purpose": "splash-current-write",
+      "rva": "0x1822297",
+      "bytes": "48 89 bb d0 00 00 00",
+      "instruction": "mov qword ptr [rbx + 0xd0], rdi"
+    },
+    {
+      "purpose": "splash-current-data",
+      "rva": "0x18222c4",
+      "bytes": "48 8b 4f 10",
+      "instruction": "mov rcx, qword ptr [rdi + 0x10]"
+    },
+    {
+      "purpose": "splash-materialize-data",
+      "rva": "0x18222cc",
+      "bytes": "e8 8f ea 02 00",
+      "instruction": "call 0x1850d60"
+    },
+    {
+      "purpose": "splash-item-owner",
+      "rva": "0x1822afb",
+      "bytes": "48 89 10",
+      "instruction": "mov qword ptr [rax], rdx"
+    },
+    {
+      "purpose": "splash-item-event-field",
+      "rva": "0x1822afe",
+      "bytes": "48 8d 58 08",
+      "instruction": "lea rbx, [rax + 8]"
+    },
+    {
+      "purpose": "splash-item-copy-event",
+      "rva": "0x1822b22",
+      "bytes": "e8 29 01 00 00",
+      "instruction": "call 0x1822c50"
+    },
+    {
+      "purpose": "splash-item-data-field",
+      "rva": "0x1822b2b",
+      "bytes": "49 8d 5e 10",
+      "instruction": "lea rbx, [r14 + 0x10]"
+    },
+    {
+      "purpose": "splash-item-shared-constructor",
+      "rva": "0x1822b72",
+      "bytes": "e8 79 d7 02 00",
+      "instruction": "call 0x18502f0"
+    },
+    {
+      "purpose": "splash-item-data-getter",
+      "rva": "0x1822491",
+      "bytes": "48 8b 41 10",
+      "instruction": "mov rax, qword ptr [rcx + 0x10]"
+    }
+  ],
+  "logical_function_ranges": [
+    {
+      "name": "manager-create",
+      "start_rva": "0xc45b30",
+      "end_rva": "0xc45d75",
+      "sha256": "E7E37C3A82233616484CDB36CB0E3561AE89032ED0F6825DAF58301364DD43E0"
+    },
+    {
+      "name": "splash-append",
+      "start_rva": "0x1821e80",
+      "end_rva": "0x18221e7",
+      "sha256": "DE60D98F55A8073FE83EA93813BE2EB98BC1BC5F0B6DC1809F7A28433950FC18"
+    },
+    {
+      "name": "splash-select-materialize",
+      "start_rva": "0x1822230",
+      "end_rva": "0x18222dc",
+      "sha256": "2CA7D58971237FD38B945CBA027C1DDE4D15DE8D55F65128B748E5A85E171473"
+    },
+    {
+      "name": "splash-item-data-getter",
+      "start_rva": "0x1822480",
+      "end_rva": "0x18224b5",
+      "sha256": "F874BF116D78710BC3286991E3ADECD82366E58512DA2E06C1AE39BFA144D6E6"
+    },
+    {
+      "name": "splash-item-constructor",
+      "start_rva": "0x1822ac0",
+      "end_rva": "0x1822c4c",
+      "sha256": "33A48C5F6CB3C9AF31BFEB524347102507DB390DFE482D0D4C4E0A31CB025E60"
+    }
+  ],
+  "data_checks": [
+    {
+      "purpose": "CSplashWindow RTTI byte 0",
+      "rva": "0x57f2970",
+      "format": "B",
+      "value": 46
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 1",
+      "rva": "0x57f2971",
+      "format": "B",
+      "value": 63
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 2",
+      "rva": "0x57f2972",
+      "format": "B",
+      "value": 65
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 3",
+      "rva": "0x57f2973",
+      "format": "B",
+      "value": 86
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 4",
+      "rva": "0x57f2974",
+      "format": "B",
+      "value": 67
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 5",
+      "rva": "0x57f2975",
+      "format": "B",
+      "value": 83
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 6",
+      "rva": "0x57f2976",
+      "format": "B",
+      "value": 112
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 7",
+      "rva": "0x57f2977",
+      "format": "B",
+      "value": 108
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 8",
+      "rva": "0x57f2978",
+      "format": "B",
+      "value": 97
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 9",
+      "rva": "0x57f2979",
+      "format": "B",
+      "value": 115
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 10",
+      "rva": "0x57f297a",
+      "format": "B",
+      "value": 104
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 11",
+      "rva": "0x57f297b",
+      "format": "B",
+      "value": 87
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 12",
+      "rva": "0x57f297c",
+      "format": "B",
+      "value": 105
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 13",
+      "rva": "0x57f297d",
+      "format": "B",
+      "value": 110
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 14",
+      "rva": "0x57f297e",
+      "format": "B",
+      "value": 100
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 15",
+      "rva": "0x57f297f",
+      "format": "B",
+      "value": 111
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 16",
+      "rva": "0x57f2980",
+      "format": "B",
+      "value": 119
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 17",
+      "rva": "0x57f2981",
+      "format": "B",
+      "value": 64
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 18",
+      "rva": "0x57f2982",
+      "format": "B",
+      "value": 64
+    },
+    {
+      "purpose": "CSplashWindow RTTI byte 19",
+      "rva": "0x57f2983",
+      "format": "B",
+      "value": 0
+    }
+  ],
+  "source_files": {
+    "include/xar_bridge/ck3_12002_event_window_context.hpp": "CD21F1294D7CF6AF70F71EB8792A52E0955986C7602011E957AE9E8AC24AE5AA",
+    "src/ck3_12002_event_window_context.cpp": "5AD729A2915AB30A41A2A03755E160B223BB41C82C9AB5180CF082FEBE384726",
+    "src/ck3_12002_event_window_context_test.cpp": "CE1F4D29C3A1DEFCAB8D683BE9D102F851BE64A0D5377609AF6F578B58713222",
+    "src/bridge.cpp": "54EDA328F2A1E223678A99AEA2F6998F81F887EE588116DDE804E2FF595B743F"
+  },
+  "source_constants": {
+    "include/xar_bridge/ck3_12002_event_window_context.hpp": {
+      "kEventWindowIdlerGfxVtableRva": "0x44BC408",
+      "kEventWindowPrimaryVtableRva": "0x4597910",
+      "kEventIndicatorSchemeTypeVtableRva": "0x48B9F20",
+      "kEventIndicatorTraitDatabaseSlotRva": "0x5C67528",
+      "kEventIndicatorSchemeDatabaseSlotRva": "0x5C67108",
+      "kEventIndicatorSchemeFallbackSlotRva": "0x5D1E2A0",
+      "kEventIndicatorHashStableKeyRva": "0x3F7E240",
+      "kEventIndicatorLookupSchemeTypeRva": "0xABFBA0",
+      "kEventGenericTypeRegistryGetterRva": "0x3795A80",
+      "kEventGenericTypeRegistryRva": "0x54F2AF0",
+      "kEventGenericTypeNameResolverRva": "0x3F4F900",
+      "kEventGenericTypeNameFallbackRva": "0x5DC1128",
+      "kEventScriptIdentifierTableGetterRva": "0x3F8A800",
+      "kEventScriptIdentifierLookupRva": "0x3F8A680",
+      "kEventScriptIdentifierNameResolverRva": "0x3F8A6F0",
+      "kEventScriptIdentifierNameFallbackRva": "0x5DC1368",
+      "kEventSplashWindowPrimaryVtableRva": "0x4596D38"
+    },
+    "src/ck3_12002_event_window_context.cpp": {
+      "kIdlerFromOwnerOffset": "0x10",
+      "kGameStateGameDataOffset": "0xA0",
+      "kActiveEventDataOffset": "0x1B0",
+      "kActiveEventInstanceIdOffset": "0x1BC",
+      "kEventDataCalculatedIdOffset": "0x08",
+      "kEventDataRuntimeStatsOrdinalOffset": "0x0C",
+      "kEventDataDefinitionKeyOffset": "0x10",
+      "kEventDataAuthoredOptionDataOffset": "0x1A0",
+      "kEventDataAuthoredOptionCapacityOffset": "0x1A8",
+      "kEventDataAuthoredOptionCountOffset": "0x1AC",
+      "kEventScopeRootOffset": "0x00",
+      "kEventScopeNamedDataOffset": "0x18",
+      "kEventScopeNamedCapacityOffset": "0x20",
+      "kEventScopeNamedCountOffset": "0x24",
+      "kEventScopeTokenTypeIndexOffset": "0x00",
+      "kEventScopeTokenSubtypeOffset": "0x02",
+      "kEventScopeTokenPayloadOffset": "0x08",
+      "kEventScopeNamedRowStride": "0x18",
+      "kEventScopeNamedRowIdentifierOffset": "0x00",
+      "kEventScopeNamedRowTokenOffset": "0x08",
+      "kGenericValueTypeRegistryDataOffset": "0x00",
+      "kGenericValueTypeRegistryCountOffset": "0x0C",
+      "kGenericValueTypeRegistryEntryStride": "0x50",
+      "kGenericValueTypeRegistryEntryIdentifierOffset": "0x00",
+      "kComponentStorageSlotsOffset": "0x20",
+      "kComponentStorageCapacityOffset": "0x2C",
+      "kComponentStorageSlotStride": "0x10",
+      "kComponentStorageSlotObjectOffset": "0x08",
+      "kCharacterIdOffset": "0x18",
+      "kEventOptionDefinitionIsCancelOffset": "0x412",
+      "kManagerFromIdlerOffset": "0x28",
+      "kManagerWindowDataOffset": "0x18",
+      "kManagerWindowCountOffset": "0x24",
+      "kWindowDataOffset": "0xB8",
+      "kDataInstanceIdOffset": "0x00",
+      "kDataOptionDataOffset": "0x10",
+      "kDataOptionCapacityOffset": "0x18",
+      "kDataOptionCountOffset": "0x1C",
+      "kOptionStride": "0x1B8",
+      "kOptionEffectDataOffset": "0x88",
+      "kOptionEffectCapacityOffset": "0x90",
+      "kOptionEffectCountOffset": "0x94",
+      "kOptionOwnerOffset": "0x160",
+      "kOptionNameOffset": "0x170",
+      "kOptionReasonOffset": "0x190",
+      "kOptionNativeIndexOffset": "0x1B0",
+      "kOptionEnabledOffset": "0x1B4",
+      "kOptionFallbackOffset": "0x1B5",
+      "kEffectIndicatorStride": "0x18",
+      "kEffectIndicatorPayload0Offset": "0x00",
+      "kEffectIndicatorPayload1Offset": "0x08",
+      "kEffectIndicatorKindOffset": "0x10",
+      "kEffectIndicatorGainOffset": "0x14",
+      "kEffectIndicatorSecondaryGainOffset": "0x15",
+      "kEffectIndicatorAffectedByTraitOffset": "0x16",
+      "kEffectIndicatorCriticalOffset": "0x17",
+      "kTraitDatabaseDataOffset": "0x50",
+      "kTraitDatabaseCountOffset": "0x5C",
+      "kTraitNativeIdOffset": "0x10",
+      "kTraitStableKeyOffset": "0x18",
+      "kSchemeTypeStableKeyOffset": "0x18",
+      "kManagerSplashWindowOffset": "0x10",
+      "kSplashItemsOffset": "0xB8",
+      "kSplashItemCapacityOffset": "0xC0",
+      "kSplashItemCountOffset": "0xC4",
+      "kSplashCurrentItemOffset": "0xD0",
+      "kSplashTransitionItemOffset": "0xD8",
+      "kSplashItemOwnerOffset": "0x00",
+      "kSplashItemActiveEventOffset": "0x08",
+      "kSplashItemWindowDataOffset": "0x10"
+    }
+  },
+  "layouts": {
+    "manager_splash": "0x10",
+    "dynamic_type": "CSplashWindow",
+    "items": {
+      "data": "0xB8",
+      "capacity": "0xC0",
+      "count": "0xC4"
+    },
+    "current_item": "0xD0",
+    "transition_item": "0xD8",
+    "item": {
+      "size": "0x20",
+      "owner": "0x00",
+      "event_copy": "0x08",
+      "window_data": "0x10"
+    },
+    "data_constructor": "0x18502F0 shared with CEventWindow"
+  },
+  "gui_source": {
+    "path": "gui/event_windows/fullscreen_event.gui",
+    "sha256": "6bf3c22041c36c98a02de78ed80bf0a9e5defb8c2a5681b71209cfb71127f219",
+    "datacontext": [
+      "SplashWindow.GetSplashItem",
+      "SplashItem.GetEventData"
+    ],
+    "datamodel": "EventWindowData.GetOptions"
+  },
+  "evidence_boundary": {
+    "current_item": "native selector/materializer proves +0xD0; reflection-name-to-callback mapping pending live readback",
+    "transition": "+0xD8 must be null before and after capture; pending item is not presented choice",
+    "shown": "rendered vector in selected item; unrelated clipping/animation not inferred",
+    "enabled": "actual item byte +0x1B4, never legacy active_event defaults",
+    "R2": "fullscreen screenshot plus zero ordinary matches consistent with splash; pointer not sampled",
+    "complete_effect_preview": false
+  }
+}

@@ -9862,7 +9862,8 @@ bool ExecuteTypedQuery12002(
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::event_window) {
       xar::ck3_12002::ReadEventWindowContextV1(
-          xar::ck3_12002::BindEventWindowImage(query.image_base, sha),
+          xar::ck3_12002::BindEventWindowImage(
+              query.image_base, envelope->game->descriptor().executable_sha256),
           envelope->expected_snapshot_revision, query.event_instance_id, query.event);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::title_map) {

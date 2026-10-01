@@ -33,6 +33,9 @@ _LATE_POSTCONDITIONS = {
     "RuntimeError: native pause/resume postcondition did not materialize",
     "RuntimeError: current native pause postcondition did not materialize",
 }
+_TRANSIENT_EVENT_PRESENTATION = {
+    "event_window_not_materialized", "event_splash_transition_in_progress",
+}
 
 
 class AsyncClient(Protocol):
@@ -435,6 +438,56 @@ class CampaignPolicy:
         self.record("checkpoint-archived", {"checkpoint": saved})
         return current
 
+    async def event_presentation(self, frame: dict[str, Any], instance: int):
+        """Wait only for known presentation transients, using guarded reads."""
+        deadline = time.monotonic() + self.config.postcondition_timeout_seconds
+        while True:
+            if frame["paused"] is not True:
+                raise CampaignStop("event_presentation_wait_requires_pause")
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise CampaignStop("event_presentation_timeout")
+            try:
+                queried = await asyncio.wait_for(self.call(QUERY_EVENT, {
+                    "event_instance_id": instance, "expected_revision": frame["revision"],
+                }), remaining)
+            except TimeoutError as error:
+                raise CampaignStop("event_presentation_timeout") from error
+            if queried.get("status") != "native_event_query_verified":
+                raise CampaignStop("event_query_guard_or_revision_failed", rejected=True)
+            context = queried.get("result", {}).get("current_event_window_context", {})
+            if (not isinstance(context, dict) or context.get("current_event_instance_id") != instance):
+                raise CampaignStop("event_context_unavailable")
+            if (context.get("status") == "available"
+                    and context.get("readiness", {}).get("option_presentation_ready") is True):
+                return frame, context
+            reason = context.get("unavailable_reason")
+            if context.get("status") != "unavailable" or reason not in _TRANSIENT_EVENT_PRESENTATION:
+                raise CampaignStop("event_context_unavailable")
+            self.record("event-presentation-wait", {"instance_id": instance,
+                "unavailable_reason": reason, "revision": frame["revision"],
+                "date_raw": frame["date_raw"], "selection_dispatched": False})
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise CampaignStop("event_presentation_timeout")
+            await asyncio.sleep(min(self.config.poll_seconds, remaining))
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise CampaignStop("event_presentation_timeout")
+            try:
+                frame = await asyncio.wait_for(self.snapshot(policy_action_readback=True), remaining)
+            except TimeoutError as error:
+                raise CampaignStop("event_presentation_timeout") from error
+            if frame["paused"] is not True:
+                raise CampaignStop("event_presentation_wait_requires_pause")
+            active = frame.get("active_event")
+            current_instance = active.get("instance_id") if isinstance(active, dict) else None
+            if current_instance != instance:
+                self.record("event-presentation-instance-changed", {"before": instance,
+                    "after": current_instance, "revision": frame["revision"],
+                    "selection_dispatched": False})
+                return frame, None  # The outer event loop binds the new instance.
+
     async def events(self, frame: dict[str, Any]) -> dict[str, Any]:
         for _ in range(self.config.max_event_chain):
             active = frame.get("active_event")
@@ -443,13 +496,9 @@ class CampaignPolicy:
             instance = active.get("instance_id") if isinstance(active, dict) else None
             if type(instance) is not int or not 1 <= instance <= 2**31 - 1:
                 raise CampaignStop("event_instance_invalid", rejected=True)
-            queried = await self.call(QUERY_EVENT, {"event_instance_id": instance, "expected_revision": frame["revision"]})
-            if queried.get("status") != "native_event_query_verified":
-                raise CampaignStop("event_query_guard_or_revision_failed", rejected=True)
-            context = queried.get("result", {}).get("current_event_window_context", {})
-            if (context.get("status") != "available" or context.get("current_event_instance_id") != instance
-                    or context.get("readiness", {}).get("option_presentation_ready") is not True):
-                raise CampaignStop("event_context_unavailable")
+            frame, context = await self.event_presentation(frame, instance)
+            if context is None:
+                continue
             option = choose_option(context)
             self.record("event-choice", {"instance_id": instance, "event_definition_key": context.get("event_definition_key"),
                        "native_option_index": option["native_option_index"], "partial_indicators": option.get("effect_indicators"),

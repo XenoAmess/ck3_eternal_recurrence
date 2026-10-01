@@ -2,6 +2,7 @@
 
 
 
+#include "xar_bridge/ck3_12003.hpp"
 #include <algorithm>
 #include <charconv>
 #include <cstddef>
@@ -44,8 +45,17 @@ constexpr std::size_t kComponentStorageSlotObjectOffset = 0x08;
 constexpr std::size_t kCharacterIdOffset = 0x18;
 constexpr std::size_t kEventOptionDefinitionIsCancelOffset = 0x412;
 constexpr std::size_t kManagerFromIdlerOffset = 0x28;
+constexpr std::size_t kManagerSplashWindowOffset = 0x10;
 constexpr std::size_t kManagerWindowDataOffset = 0x18;
 constexpr std::size_t kManagerWindowCountOffset = 0x24;
+constexpr std::size_t kSplashItemsOffset = 0xB8;
+constexpr std::size_t kSplashItemCapacityOffset = 0xC0;
+constexpr std::size_t kSplashItemCountOffset = 0xC4;
+constexpr std::size_t kSplashCurrentItemOffset = 0xD0;
+constexpr std::size_t kSplashTransitionItemOffset = 0xD8;
+constexpr std::size_t kSplashItemOwnerOffset = 0x00;
+constexpr std::size_t kSplashItemActiveEventOffset = 0x08;
+constexpr std::size_t kSplashItemWindowDataOffset = 0x10;
 constexpr std::size_t kWindowDataOffset = 0xB8;
 constexpr std::size_t kDataInstanceIdOffset = 0x00;
 constexpr std::size_t kDataOptionDataOffset = 0x10;
@@ -639,16 +649,12 @@ bool ReadEffectIndicators(
   return true;
 }
 
-bool ReadMatchingWindow(const EventWindowBindings &bindings, const void *event_data,
-                        void *window,
-                        std::int32_t expected_event_id,
-                        game::EventWindowContextV1 &candidate) {
-  if (event_data == nullptr || window == nullptr ||
-      LoadAt<std::uintptr_t>(window, 0) !=
-          bindings.event_window_primary_vtable) {
+bool ReadMatchingData(const EventWindowBindings &bindings, const void *event_data,
+                      const void *data, std::int32_t expected_event_id,
+                      game::EventWindowContextV1 &candidate) {
+  if (event_data == nullptr || data == nullptr) {
     return false;
   }
-  auto *const data = static_cast<std::byte *>(window) + kWindowDataOffset;
   if (LoadAt<std::int32_t>(data, kDataInstanceIdOffset) !=
       expected_event_id) {
     return true;
@@ -736,6 +742,58 @@ bool ReadMatchingWindow(const EventWindowBindings &bindings, const void *event_d
   return true;
 }
 
+bool ReadMatchingWindow(const EventWindowBindings &bindings, const void *event_data,
+                        void *window, std::int32_t expected_event_id,
+                        game::EventWindowContextV1 &candidate) {
+  return window != nullptr &&
+         LoadAt<std::uintptr_t>(window, 0) == bindings.event_window_primary_vtable &&
+         ReadMatchingData(bindings, event_data,
+                          static_cast<std::byte *>(window) + kWindowDataOffset,
+                          expected_event_id, candidate);
+}
+
+struct SplashObservation {
+  void *window = nullptr;
+  void *transition = nullptr;
+  void *item = nullptr;
+  void *event = nullptr;
+  void *data = nullptr;
+  friend bool operator==(const SplashObservation &, const SplashObservation &) = default;
+};
+
+bool ReadSplashObservation(const EventWindowBindings &bindings, void *manager,
+                           SplashObservation &output) {
+  output = {};
+  if (bindings.splash_window_primary_vtable == 0) return true;
+  output.window = LoadAt<void *>(manager, kManagerSplashWindowOffset);
+  if (output.window == nullptr) return true;
+  if (LoadAt<std::uintptr_t>(output.window, 0) != bindings.splash_window_primary_vtable)
+    return false;
+  void *const items = LoadAt<void *>(output.window, kSplashItemsOffset);
+  const auto count = LoadAt<std::int32_t>(output.window, kSplashItemCountOffset);
+  const auto capacity = LoadAt<std::int32_t>(output.window, kSplashItemCapacityOffset);
+  if (!ValidVector(count, capacity, kMaximumWindows, items)) return false;
+  output.transition = LoadAt<void *>(output.window, kSplashTransitionItemOffset);
+  if (output.transition != nullptr) return true;
+  // The native selector/materializer uses only the selected item. Queued
+  // full-screen events are not materialized choices for the current event.
+  output.item = LoadAt<void *>(output.window, kSplashCurrentItemOffset);
+  if (output.item == nullptr) return true;
+  std::int32_t selected_matches = 0;
+  for (std::int32_t index = 0; index < count; ++index) {
+    void *const item = LoadAt<void *>(items, static_cast<std::size_t>(index) * sizeof(void *));
+    if (item == nullptr) return false;
+    if (item == output.item) ++selected_matches;
+  }
+  if (selected_matches != 1 ||
+      LoadAt<void *>(output.item, kSplashItemOwnerOffset) != output.window) return false;
+  output.event = LoadAt<void *>(output.item, kSplashItemActiveEventOffset);
+  output.data = LoadAt<void *>(output.item, kSplashItemWindowDataOffset);
+  return output.event != nullptr && output.data != nullptr &&
+         LoadAt<std::int32_t>(output.event, kActiveEventInstanceIdOffset) ==
+             LoadAt<std::int32_t>(output.data, kDataInstanceIdOffset);
+}
+
 template <typename T>
 bool ParsePositiveField(std::string_view json, std::string_view key,
                         T &output) noexcept {
@@ -771,10 +829,13 @@ bool ParsePositiveField(std::string_view json, std::string_view key,
 EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,
                                        std::string_view sha256) noexcept {
   EventWindowBindings result{};
-  result.events = BindEventsImage(image_base, sha256);
+  const bool patch3_splash = sha256 == ck3_12003::kExecutableSha256;
+  result.events = BindEventsImage(image_base, patch3_splash ? kExecutableSha256 : sha256);
   if (!result.events.core.enabled) { return result; }
   result.ingame_interface_idler_vtable = image_base + kEventWindowIdlerGfxVtableRva;
   result.event_window_primary_vtable = image_base + kEventWindowPrimaryVtableRva;
+  if (patch3_splash)
+    result.splash_window_primary_vtable = image_base + kEventSplashWindowPrimaryVtableRva;
   result.scheme_type_primary_vtable = image_base + kEventIndicatorSchemeTypeVtableRva;
   result.trait_database_slot = reinterpret_cast<void **>(image_base + kEventIndicatorTraitDatabaseSlotRva);
   result.scheme_type_database_slot = reinterpret_cast<void **>(image_base + kEventIndicatorSchemeDatabaseSlotRva);
@@ -882,6 +943,25 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
         return game::ReadEventWindowContextResultV1::unavailable;
       }
     }
+    SplashObservation splash_before{};
+    if (!ReadSplashObservation(bindings, manager, splash_before)) {
+      SetUnavailable(output, "event_splash_layout_invalid");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
+    if (splash_before.transition != nullptr) {
+      SetUnavailable(output, "event_splash_transition_in_progress");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
+    if (splash_before.data != nullptr &&
+         (!ReadMatchingData(bindings, identity_before.event_data, splash_before.data,
+                            expected_event_instance_id, candidate) ||
+          (LoadAt<std::int32_t>(splash_before.data, kDataInstanceIdOffset) ==
+               expected_event_instance_id &&
+           LoadAt<void *>(splash_before.event, kActiveEventDataOffset) !=
+                identity_before.event_data))) {
+      SetUnavailable(output, "event_splash_layout_invalid");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
     output.window_match_count = candidate.window_match_count;
     if (candidate.window_match_count != 1) {
       SetUnavailable(output, candidate.window_match_count == 0
@@ -904,6 +984,12 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     }
     if (scope_after != scope_before) {
       SetUnavailable(output, "event_scope_changed");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
+    SplashObservation splash_after{};
+    if (!ReadSplashObservation(bindings, manager, splash_after) ||
+        splash_after != splash_before) {
+      SetUnavailable(output, "event_splash_changed");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
     game::Snapshot after{};
