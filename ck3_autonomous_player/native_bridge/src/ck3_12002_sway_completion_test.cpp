@@ -27,10 +27,18 @@ void *local_player = nullptr;
 const void *expected_scheme = nullptr;
 std::int64_t chance_raw = 6'875'000;
 int chance_calls = 0;
+bool continue_result = true;
+int continue_calls = 0;
 void *LocalPlayer(void *) { return local_player; }
 std::int64_t *CurrentChance(const void *scheme, std::int64_t *out) {
   Check(scheme == expected_scheme && out != nullptr, "native current roll exact scheme/output ABI");
   ++chance_calls; *out = chance_raw; return out;
+}
+bool CurrentCanContinue(const void *scheme, std::int32_t mode,
+    std::int32_t validate_linked_activity) {
+  Check(scheme == expected_scheme && mode == 1 && validate_linked_activity == 1,
+      "native current final validity exact scheme, int32 mode1/activity1 ABI");
+  ++continue_calls; return continue_result;
 }
 
 struct Fixture {
@@ -55,6 +63,7 @@ struct Fixture {
   SwayCompletionRequestV1 request{revision, actor_id, target_id, scheme_id};
   Fixture() {
     local_player = local.data(); expected_scheme = scheme.data(); chance_calls = 0;
+    continue_result = true; continue_calls = 0;
     Put(state.data(), 8, date_raw); Put(state.data(), 0xA0, game.data());
     Put(jomini.data(), 0x18, players.data()); Put(jomini.data(), 0x20, std::uint8_t{1});
     Put(players.data(), 0x1F0, std::int32_t{0}); Put(local.data(), 0x70, std::int32_t{0});
@@ -85,6 +94,7 @@ struct Fixture {
     bindings.enabled = true; bindings.image_base = image_base;
     bindings.core = {true, &state_pointer, &jomini_pointer, &characters_pointer, &LocalPlayer};
     bindings.success_chance = &CurrentChance;
+    bindings.can_continue = &CurrentCanContinue;
   }
 };
 
@@ -167,7 +177,8 @@ void Save(const std::filesystem::path &dir, const char *filename, const SwayComp
 
 int main(int argc, char **argv) {
   try {
-    Check(argc == 2, "fixture output-directory argument");
+    Check(argc == 2 || (argc == 3 && std::strcmp(argv[2], "--can-continue-only") == 0),
+        "fixture output-directory and optional current-validity scope");
     const std::filesystem::path output{argv[1]};
     Fixture fixture; FrameAdapter adapter;
     adapter.frame.date_raw = date_raw; adapter.frame.paused = true; adapter.frame.speed = 1;
@@ -176,6 +187,36 @@ int main(int argc, char **argv) {
     adapter.frame.played_character_alive = true;
     xar::ck3_11906::MainThreadQueryMailboxV1 mailbox;
     SwayCompletionStateV1 row{};
+    if (argc == 3) {
+      Check(Execute(fixture, adapter, mailbox, 40, row) && row.available &&
+          row.exact_instance_join_ready && row.owner_matches_actor &&
+          row.native_status_raw == 0 && row.native_can_continue_observed &&
+          row.native_can_continue && continue_calls == 2 &&
+          !row.native_terminal_state_observed && !row.terminal_cause_observed,
+          "actual complete native current validity true through owning reader and exact SchemeID");
+      Save(output, "can-continue-true-wire.json", row);
+      continue_result = false;
+      Check(Execute(fixture, adapter, mailbox, 41, row) && row.available &&
+          row.native_can_continue_observed && !row.native_can_continue &&
+          continue_calls == 4 && row.native_status_raw == 0 &&
+          !row.native_terminal_state_observed && !row.terminal_cause_observed,
+          "actual current validity false remains observed and does not infer an ending or cause");
+      Save(output, "can-continue-false-wire.json", row);
+      Put(fixture.scheme.data(), 0x28, std::int32_t{1});
+      Put(fixture.scheme.data(), 0x2C, std::uint32_t{0xFFFFFFFFu});
+      Check(Execute(fixture, adapter, mailbox, 42, row) && row.available &&
+          row.native_terminal_state_observed && !row.native_can_continue_observed &&
+          continue_calls == 4,
+          "native current validity is not invoked for terminal owner-cleared row");
+      Save(output, "can-continue-not-applicable-terminal-wire.json", row);
+      const auto bound = BindSwayCompletionImage12002(image_base, kExecutableSha256);
+      Check(bound.enabled && reinterpret_cast<std::uintptr_t>(bound.can_continue) ==
+          image_base + 0x2A4FFA0,
+          "actual exact-build current validity address");
+      std::cout << "PASS current native CanContinue true/false/terminal-not-called; "
+                   "actual reader + owner QueryMailboxEnvelope + full command serializer\n";
+      return 0;
+    }
     Check(Execute(fixture, adapter, mailbox, 40, row) && row.available &&
         row.instance_source_observed && row.instance_present && row.exact_instance_join_ready &&
         row.scheme_instance_generation == 0 && row.owner_matches_actor && !row.owner_cleared &&

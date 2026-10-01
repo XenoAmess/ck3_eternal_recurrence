@@ -71,6 +71,14 @@ std::string SerializeSwayCompletion12002(const SwayCompletionStateV1 &output,
   }
   stream << ",\"native_success_chance_scale\":" << output.native_success_chance_scale
       << ",\"native_success_chance_unit\":\"percent\""
+      << ",\"native_can_continue_observed\":" << output.native_can_continue_observed
+      << ",\"native_can_continue\":";
+  if (output.native_can_continue_observed) {
+    stream << output.native_can_continue;
+  } else {
+    stream << "null";
+  }
+  stream
       << ",\"terminal_cause_observed\":" << output.terminal_cause_observed
       << ",\"terminal_cause\":" << Quoted(output.terminal_cause)
       << '}';

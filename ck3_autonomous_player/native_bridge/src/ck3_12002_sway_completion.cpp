@@ -27,6 +27,14 @@ bool Chance(SwayCompletionSuccessChance12002 getter,
     return getter(reinterpret_cast<const void *>(scheme), &output) == &output;
   } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
 }
+bool CanContinue(SwayCompletionCanContinue12002 getter,
+    std::uintptr_t scheme, bool &output) noexcept {
+  if (getter == nullptr) return false;
+  __try {
+    output = getter(reinterpret_cast<const void *>(scheme), 1, 1);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+}
 bool IsSway(std::uintptr_t type, std::uintptr_t base) noexcept {
   std::uintptr_t vtable{}, text{};
   std::uint64_t length{}, capacity{};
@@ -105,6 +113,9 @@ bool ReadOnce(const SwayCompletionBindings12002 &b,
         if (!Chance(b.success_chance, scheme, out.native_success_chance_raw))
           return Fail(out, "sway_completion_current_chance_unavailable");
         out.native_success_chance_observed = true;
+        if (!CanContinue(b.can_continue, scheme, out.native_can_continue))
+          return Fail(out, "sway_completion_current_validity_unavailable");
+        out.native_can_continue_observed = true;
       }
     }
   }
@@ -123,6 +134,8 @@ SwayCompletionBindings12002 BindSwayCompletionImage12002(
   b.enabled = true; b.image_base = base;
   b.success_chance = reinterpret_cast<SwayCompletionSuccessChance12002>(
       base + kSwayCompletionSuccessChanceRva12002);
+  b.can_continue = reinterpret_cast<SwayCompletionCanContinue12002>(
+      base + kSwayCompletionCanContinueRva12002);
   return b;
 }
 bool ReadSwayCompletion12002(const SwayCompletionBindings12002 &b,

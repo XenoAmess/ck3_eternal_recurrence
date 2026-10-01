@@ -12,12 +12,16 @@ using SwayCompletionSuccessChance12002 = std::int64_t *(*)(
     const void *scheme, std::int64_t *output);
 inline constexpr std::uintptr_t kSwayCompletionSuccessChanceRva12002 = 0x2A4A400;
 inline constexpr std::int64_t kSwayCompletionSuccessChanceScale12002 = 100000;
+using SwayCompletionCanContinue12002 = bool (*)(const void *scheme,
+    std::int32_t mode, std::int32_t validate_linked_activity);
+inline constexpr std::uintptr_t kSwayCompletionCanContinueRva12002 = 0x2A4FFA0;
 
 struct SwayCompletionBindings12002 {
   bool enabled = false;
   std::uintptr_t image_base = 0;
   CoreBindings core{};
   SwayCompletionSuccessChance12002 success_chance = nullptr;
+  SwayCompletionCanContinue12002 can_continue = nullptr;
 };
 
 SwayCompletionBindings12002 BindSwayCompletionImage12002(
@@ -56,6 +60,10 @@ struct SwayCompletionStateV1 {
   bool native_success_chance_observed = false;
   std::int64_t native_success_chance_raw = 0;
   std::int64_t native_success_chance_scale = kSwayCompletionSuccessChanceScale12002;
+  // Complete current native validity, with the same mode/activity arguments
+  // as manager PreUpdate. A false result is not a historical ending reason.
+  bool native_can_continue_observed = false;
+  bool native_can_continue = false;
   bool terminal_cause_observed = false;
   std::string terminal_cause = "unknown";
   friend bool operator==(const SwayCompletionStateV1 &,
