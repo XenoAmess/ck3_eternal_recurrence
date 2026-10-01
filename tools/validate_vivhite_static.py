@@ -44,7 +44,8 @@ OTHER_LANGUAGES = tuple(
     language for language in LANGUAGES if language not in {"english", "simp_chinese"}
 )
 LOCALIZATION_CONTRACT = ROOT / "tools/vivhite_localization_contract_1_20_0_2.json"
-LOCALIZATION_CONTRACT_SHA256 = "98115c51c0c7000c9b5a1ad4b9feeaacc277845ecdebea2d43e66342f4a56ed6"
+# Bind the committed LF bytes enforced by .gitattributes, not a pre-add CRLF file.
+LOCALIZATION_CONTRACT_SHA256 = "020089df7b12076e2860d7463273042ad989d067e542328357852de7b3514816"
 DESCRIPTOR_FIELDS = {
     "version": "1.0.1",
     "name": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
