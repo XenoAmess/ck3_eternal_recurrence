@@ -1,0 +1,35 @@
+flowchart TD
+    D["actual CCharacterInteraction RTTI / vtable"] --> P["virtual parse thunk 0x2FD9D60 → body 0x3145760"]
+    P --> AT["ai_targets 0x3335 → 0x314719D → actual target-block parser"]
+    AT --> ER["ai_recipients 0x330E → 57 native enum slots; clerical slots 51/52"]
+    P --> FT["ai_frequency_by_tier 0x3C29 → 0x3105390 → 7 rank int slots"]
+    ER -.-> ES["unknown: runtime recipient enumeration / sampling"]
+    FT -.-> S["unknown: native scheduling and frequency units"]
+    ES -.-> C["stock support_clerical_candidacy; capital clerical title only"]
+    S -.-> C
+    C --> CG["actor/puppet/friend/lover candidates; real appointment eligibility and accumulated score > 0"]
+    CG --> CR["secondary recipient → actor.faith.main_rite.head_of_rite"]
+    CR --> CW["actual piety option quotes; medium +100 / major +200 / outbid +300; rival ×0"]
+    CW -.-> SEND["unknown: native option selection / final CanSend / AI roll / send"]
+    SEND -.-> CE["stock on_accept: change appointment investment; not succession itself"]
+    ES -.-> A["stock appoint_cardinal; nonmilitary recipient lanes"]
+    S -.-> A
+    A --> AG["PAM / same Faith / College leader / investiture clergy / no cardinalate / count < 70 / availability / gender"]
+    AG --> AW["base20; family/traits/relations/culture/opinion; College count; treasury"]
+    AW -.-> SEND
+    SEND -.-> AE["stock accept: grant cardinal title; native final readback still required"]
+    ES -.-> R["stock request_court_chaplain_cardinalate; head_of_faith target lane"]
+    S -.-> R
+    R --> RG["actual chaplain / authority route / count < 70 / piety quote / cooldown / options"]
+    RG --> RW["sender intent base30; recipient acceptance base0 + petition/candidate/College inputs"]
+    RW --> RA["strong hook selected: stock auto_accept branch"]
+    RW -.-> SEND
+    RA -.-> SEND
+    SEND -.-> RE["stock accept: grant title AND fire chaplain; optional puppet; gratitude / pilgrimage"]
+    CE -.-> POST["pending: independent title/investment/resources/council/puppet/opinion; next turn / cold"]
+    AE -.-> POST
+    RE -.-> POST
+    ID["Character Rite / Faith main Rite / Faith head / title State Rite are distinct"] --> CR
+    ID --> AG
+    ID --> RG
+    ID -.-> STATE["State Rite is not used by these three score slices; no inferred extra gate"]

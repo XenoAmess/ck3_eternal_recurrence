@@ -1,0 +1,58 @@
+{
+  "schema": "ck3_12002_nonmilitary_clerical_ai_tree_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "research",
+  "scope": "Three stock clerical governance AI slices and exact native loading; no scheduler, final decision, provider, policy or action qualification",
+  "stock_file": "common/character_interactions/pam_interactions.txt",
+  "slices": [
+    {
+      "key": "support_clerical_candidacy_interaction",
+      "lines": [1528, 1847],
+      "candidate_lanes": ["self", "puppets", "scripted_relations max20"],
+      "target": "capital_county.clerical_region_title",
+      "redirect": "secondary_recipient retained; recipient=actor.faith.main_rite.head_of_rite",
+      "frequency_values": {"barony": 0, "county": 240, "duchy": 60, "kingdom": 12, "empire": 12, "hegemony": 12},
+      "intent": {"base": 0, "medium_affordable": 100, "major_affordable": 200, "outbid_affordable": 300, "rival_factor": 0},
+      "stock_result": "Appointment investment changes, not immediate succession or title ownership"
+    },
+    {
+      "key": "appoint_cardinal_interaction",
+      "lines": [4461, 4887],
+      "candidate_lanes_in_scope": ["family max5", "vassals", "clerical_region_rulers_in_realm", "rulers_in_clerical_region", "subordinates", "scripted_relations", "courtiers max5"],
+      "candidate_lane_excluded": "faith_holy_order_leaders",
+      "frequency_values": {"barony": 0, "county": 0, "duchy": 24, "kingdom": 6, "empire": 6, "hegemony": 6},
+      "intent_base": 20,
+      "final_script_capacity": "Faith clerical elector title count <70",
+      "low_count_intent_adds": {"count_lt20": 100, "count_lt10": 200},
+      "other_stock_intent_inputs": ["family", "traits", "relations", "opinion", "culture", "dynasty perk", "native head identity", "Christian situation phase", "count <40 or >=30 or >=40", "treasury <500"],
+      "auto_accept": "AI recipient branch",
+      "stock_result": "grant_cardinal_title_effect and actor piety; monastic-only optional branch excluded"
+    },
+    {
+      "key": "request_court_chaplain_cardinalate_interaction",
+      "lines": [4889, 5271],
+      "candidate_lanes": ["head_of_faith"],
+      "frequency_values": {"barony": 0, "county": 0, "duchy": 0, "kingdom": 24, "empire": 24, "hegemony": 24},
+      "intent_base": 30,
+      "acceptance_base": 0,
+      "auto_accept": "selected usable strong hook",
+      "stock_result": "Current court chaplain gets cardinalate and leaves council; when no external theological agent exists becomes clerical ruler puppet; gratitude +50 and fired-council modifier removed; selected pilgrimage effect invoked"
+    }
+  ],
+  "input_ledger": [
+    {"priority": "P0", "input": "actual actor, puppet-or-actor, Faith, adopted Rite, Faith main Rite and their distinct heads", "purpose": "Resolve the true recipient and clergy authority", "provider_owner": "religion context and rite-governance identities", "current_boundary": "Identity getter research/provider belongs to linked sibling packages; no live qualification in this tree"},
+    {"priority": "P0", "input": "capital clerical title, current heir, actual candidate eligibility and accumulated appointment score", "purpose": "Support-candidacy legal target and meaningful investment", "provider_owner": "rite-governance appointment package", "current_boundary": "Final target-bound evaluator and candidate rows required before policy"},
+    {"priority": "P0", "input": "actual Faith clerical elector title collection/count, recipient clerical elector title and real College leader predicate", "purpose": "Capacity gate and shortage weights", "provider_owner": "rite-governance organization package", "current_boundary": "Do not replace count with title names or assume every Faith head leads the College"},
+    {"priority": "P0", "input": "actual court chaplain, investiture clergy predicate, recipient clergy gender and availability", "purpose": "Correct candidate and vacancy consequence", "provider_owner": "rite-governance clergy package and existing council reader", "current_boundary": "is_clergy alone is insufficient"},
+    {"priority": "P0", "input": "target/option-bound native final CanSend, reason, piety/treasury quote, acceptance and selected send options", "purpose": "Make one legal and correctly priced action", "provider_owner": "future narrowly scoped interaction query", "current_boundary": "Current context/loader are not final interaction evaluators"},
+    {"priority": "P1", "input": "opinion, traits, virtues/sins, culture, family/dynasty, relation/hook, piety level and Christian situation phase", "purpose": "Explain actual sender intent and recipient acceptance", "provider_owner": "reuse existing queries; add missing target-bound read-only input after exact ABI", "current_boundary": "Script list is not an observed evaluated score"},
+    {"priority": "P0", "input": "independent before/after title, appointment investment, resources, chaplain position, puppet relationship, opinion and promised pilgrimage state", "purpose": "Verify material outcome and next-turn persistence", "provider_owner": "future receipt consumer using independent query", "current_boundary": "No action or ACK counts as material success"},
+    {"priority": "P2", "input": "title State Rite", "purpose": "Distinct realm identity for other governance branches", "provider_owner": "rite-governance identities", "current_boundary": "These three intent/acceptance slices do not read State Rite; no extra gate is inferred"}
+  ],
+  "unknown_native_branches": ["runtime recipient enumeration", "AI frequency units and scheduling", "send-option selection", "intention roll or ordering", "actual final send", "material readback"],
+  "excluded": ["war research", "holy order recipient/monastic effect branches", "generic conversion", "reform", "counter-policy", "宗教动作", "CK3 process or memory or pipe or UI or Steam"],
+  "live_verified": false,
+  "provider_implemented": false,
+  "counter_policy_changed": false
+}
