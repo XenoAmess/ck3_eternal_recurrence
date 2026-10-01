@@ -82,7 +82,7 @@ bool CaptureSourceFrame(void* opaque,
       context.candidates_access, current.played_character_id, owner) ||
       owner == nullptr) return false;
 
-  // The version provider resolves the active steward task in this same frame.
+  // The version provider resolves the requested active task in this same frame.
   // This callback supplies only the campaign-root source fields.
   std::copy(state->expected_snapshot_id.begin(),
       state->expected_snapshot_id.end(), output.snapshot_id.begin());
@@ -116,12 +116,14 @@ void PrepareOperation(CouncilTransportState12002& state,
 }
 
 void SnapshotRequest(CouncilTransportState12002& state,
-    const game::Snapshot& snapshot, std::uint64_t revision) {
+    const game::Snapshot& snapshot, std::uint64_t revision,
+    std::string_view position_key = kCouncilCandidatesStewardPosition12002) {
   state.expected_snapshot = snapshot;
   state.expected_snapshot_id = "native:" + std::to_string(revision);
   state.expected_revision = revision;
+  state.query_position_key.assign(position_key);
   state.context.query_request = {state.expected_snapshot_id, revision,
-      revision, snapshot.date_raw, snapshot.played_character_id};
+      revision, snapshot.date_raw, snapshot.played_character_id, state.query_position_key};
 }
 
 bool Queue(CouncilTransportState12002& state) noexcept {
@@ -251,7 +253,16 @@ bool HandleCouncilPrivate12002(const game::GameAdapter& adapter,
           !state.gate_query_enabled) {
         failure = "private_final_gate_query_not_admitted"; return false;
       }
-      SnapshotRequest(state, published, revision);
+      std::string position_key{kCouncilCandidatesStewardPosition12002};
+      if (payload.find("\"position_key\"") != std::string_view::npos &&
+          !bridge::JsonStringField(payload, "position_key", position_key,
+              game::kCouncilCompositionStewardPositionKeyCapacityV1 - 1)) {
+        failure = "private_position_key_invalid"; return false;
+      }
+      if (CouncilCandidatesProfile12002(position_key).position_key.empty()) {
+        failure = "private_position_outside_coverage"; return false;
+      }
+      SnapshotRequest(state, published, revision, position_key);
       PrepareOperation(state, step == bridge::kCouncilPrivateQueryStepV1 ?
           Operation::query_candidates : Operation::query_final_gates);
       if (!Queue(state)) {

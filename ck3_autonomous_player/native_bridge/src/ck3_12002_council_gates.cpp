@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_council_gates.hpp"
+#include "xar_bridge/ck3_12002_council_candidates.hpp"
 
 #include <array>
 #include <cstring>
@@ -140,7 +141,8 @@ bool EvaluateCouncilGates12002(
   if (!ExactEnvironment(e) || !frame.available || !frame.paused ||
       !frame.map_ready || !frame.owner_identity_round_trip ||
       !frame.active_task_identity_round_trip || frame.owner_character_id <= 0 ||
-      frame.active_task_id <= 0 || frame.position_key != "councillor_steward" ||
+      frame.active_task_id <= 0 ||
+      CouncilCandidatesProfile12002(frame.position_key).position_key.empty() ||
       candidate_character_id <= 0 || resolved_candidate == nullptr ||
       (frame.has_incumbent && (!frame.incumbent_identity_round_trip ||
                               frame.incumbent_character_id <= 0)) ||

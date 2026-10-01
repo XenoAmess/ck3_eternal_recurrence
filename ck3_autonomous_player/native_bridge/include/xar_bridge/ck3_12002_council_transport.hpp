@@ -19,6 +19,7 @@ struct CouncilTransportState12002 {
   CouncilMailboxContext12002 completed{};
   game::Snapshot expected_snapshot{};
   std::string expected_snapshot_id;
+  std::string query_position_key;
   std::uint64_t expected_revision = 0;
   bool configured = false;
   bool action_enabled = false;

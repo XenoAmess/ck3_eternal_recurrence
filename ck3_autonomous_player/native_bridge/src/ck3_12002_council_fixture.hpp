@@ -21,6 +21,7 @@ template <std::size_t Size> struct Blob {
 struct CouncilCandidatesFixture12002 {
   static constexpr std::int32_t kOwner = 0x01000001;
   static constexpr std::int32_t kIncumbent = 0x01000002;
+  static constexpr std::int32_t kChancellorIncumbent = 0x01000003;
   static constexpr std::int32_t kCandidate = 0x01000010;
   static constexpr std::int32_t kTask = 0x01000001;
   static constexpr std::size_t kCharacters = 24;
@@ -28,6 +29,7 @@ struct CouncilCandidatesFixture12002 {
   std::array<Blob<0x200>, kCharacters> characters{};
   Blob<0x300> owner_extension{};
   Blob<0x60> position{}, task_type{};
+  Blob<0x60> chancellor_position{}, chancellor_task_type{};
   std::array<Blob<0x80>, 4> tasks{};
   Blob<0x30> character_storage{}, task_storage{};
   std::array<Slot, 128> character_slots{}, task_slots{};
@@ -47,7 +49,9 @@ struct CouncilCandidatesFixture12002 {
   bool drift_revision_after_release = false, drift_date_after_release = false;
   bool drift_incumbent_after_release = false, unreadable_candidate_skill = false;
   bool allocator_shape_valid = true, producer_inputs_valid = true;
+  std::size_t expected_task_index = 0;
   static constexpr char kPosition[] = "councillor_steward";
+  static constexpr char kChancellorPosition[] = "councillor_chancellor";
 
   CouncilCandidatesFixture12002() noexcept {
     for (std::size_t i = 0; i < characters.size(); ++i) {
@@ -109,6 +113,23 @@ struct CouncilCandidatesFixture12002 {
   CouncilCandidatesFixture12002(const CouncilCandidatesFixture12002 &) = delete;
   CouncilCandidatesFixture12002 &operator=(const CouncilCandidatesFixture12002 &) = delete;
 
+  void EnableChancellor() noexcept {
+    const char *key = kChancellorPosition;
+    chancellor_position.Put(0x18, key);
+    chancellor_position.Put(0x28, std::size_t{sizeof(kChancellorPosition) - 1});
+    chancellor_position.Put(0x30, std::size_t{31});
+    chancellor_task_type.Put(0x40, chancellor_position.Data());
+    tasks[1].Put(0x18, chancellor_task_type.Data());
+    tasks[1].Put(0x40, kChancellorIncumbent);
+    task_ids[1] = kTask + 1;
+    owner_extension.Put(0x23C, std::int32_t{2});
+    characters[2].Put(0xD8, std::int32_t{14});
+    characters[15].Put(0xD8, std::int32_t{28});
+    characters[16].Put(0xD8, std::int32_t{19});
+    request.position_key = kChancellorPosition;
+    expected_task_index = 1;
+  }
+
   static bool MainThread(void *context) noexcept {
     return static_cast<CouncilCandidatesFixture12002 *>(context)->main_thread;
   }
@@ -133,11 +154,14 @@ struct CouncilCandidatesFixture12002 {
                      std::size_t size) noexcept {
     auto &f = *static_cast<CouncilCandidatesFixture12002 *>(context);
     if (f.unreadable_candidate_skill && address ==
-        static_cast<const std::byte *>(f.characters[15].Data()) + 0xE0) return false;
+        static_cast<const std::byte *>(f.characters[15].Data()) +
+            CouncilCandidatesProfile12002(f.request.position_key).main_skill_offset) return false;
     const bool valid = Span(f.characters.data(), sizeof(f.characters), address, size) ||
         Span(&f.owner_extension, sizeof(f.owner_extension), address, size) ||
         Span(&f.position, sizeof(f.position), address, size) ||
         Span(&f.task_type, sizeof(f.task_type), address, size) ||
+        Span(&f.chancellor_position, sizeof(f.chancellor_position), address, size) ||
+        Span(&f.chancellor_task_type, sizeof(f.chancellor_task_type), address, size) ||
         Span(f.tasks.data(), sizeof(f.tasks), address, size) ||
         Span(&f.character_storage, sizeof(f.character_storage), address, size) ||
         Span(&f.task_storage, sizeof(f.task_storage), address, size) ||
@@ -150,6 +174,7 @@ struct CouncilCandidatesFixture12002 {
         Span(&f.task_storage_pointer, sizeof(void *), address, size) ||
         Span(&f.task_fallback, sizeof(void *), address, size) ||
         Span(kPosition, sizeof(kPosition), address, size) ||
+        Span(kChancellorPosition, sizeof(kChancellorPosition), address, size) ||
         Span(f.allocator_address, f.allocator_size, address, size);
     if (!valid || output == nullptr) return false;
     std::memcpy(output, address, size);
@@ -176,7 +201,7 @@ struct CouncilCandidatesFixture12002 {
     auto &f = *static_cast<CouncilCandidatesFixture12002 *>(context);
     ++f.producer_calls;
     f.producer_inputs_valid = owner == f.characters[0].Data() &&
-        task == f.tasks[0].Data() && gui;
+        task == f.tasks[f.expected_task_index].Data() && gui;
     vector.count = f.count; vector.capacity = f.capacity;
     if (f.count > 64) vector.data_address = reinterpret_cast<std::uintptr_t>(f.rows.data());
     else if (f.count > 0)

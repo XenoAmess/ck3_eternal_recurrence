@@ -1,9 +1,11 @@
-"""Strict public contract for one paused steward-candidate frame.
+"""Strict contract for one paused Council candidate frame.
 
 The native producer owns CK3 legality and skill enrichment. Python validates
 the stable Council19 payload and keeps the planner bound to its exact paused
 frame. Native 1.19.0.6 and 1.20.0.2 adapters publish this same DTO; the separate
 Council22 action verifies appointment through a later incumbent receipt.
+The private read path can explicitly opt in to Chancellor diplomacy; public
+requests and formal Steward consumers retain their existing default coverage.
 """
 
 from __future__ import annotations
@@ -23,6 +25,12 @@ COUNCIL_COMPOSITION_CANDIDATES_V1_SCHEMA: Final = (
 ASSIGN_COUNCILLOR_V1_CAPABILITY: Final = "game.action.assign-councillor-v1"
 STEWARD_POSITION_KEY: Final = "councillor_steward"
 STEWARD_MAIN_SKILL_KEY: Final = "stewardship"
+CHANCELLOR_POSITION_KEY: Final = "councillor_chancellor"
+CHANCELLOR_MAIN_SKILL_KEY: Final = "diplomacy"
+_POSITION_MAIN_SKILL_KEYS: Final = {
+    STEWARD_POSITION_KEY: STEWARD_MAIN_SKILL_KEY,
+    CHANCELLOR_POSITION_KEY: CHANCELLOR_MAIN_SKILL_KEY,
+}
 
 _ROOT_FIELDS: Final = {
     "snapshot",
@@ -105,11 +113,18 @@ def build_council_composition_candidates_request_v1(
     date_raw: object,
     owner_character_id: object,
     position_key: object = STEWARD_POSITION_KEY,
+    allow_chancellor_read_only: bool = False,
 ) -> dict[str, object]:
     """Build the exact request fields accepted by the Council19 producer."""
 
-    if position_key != STEWARD_POSITION_KEY:
-        raise ValueError("position_key must be councillor_steward")
+    if position_key != STEWARD_POSITION_KEY and not (
+        allow_chancellor_read_only is True
+        and position_key == CHANCELLOR_POSITION_KEY
+    ):
+        raise ValueError(
+            "position_key must be councillor_steward or explicitly opted-in "
+            "readonly councillor_chancellor"
+        )
     return {
         "expected_snapshot_id": _expected_snapshot_id(expected_snapshot_id),
         "public_revision": _integer(
@@ -133,7 +148,7 @@ def build_council_composition_candidates_request_v1(
         "owner_character_id": _full_character_id(
             owner_character_id, "owner_character_id"
         ),
-        "position_key": STEWARD_POSITION_KEY,
+        "position_key": position_key,
     }
 
 
@@ -145,6 +160,7 @@ def normalize_council_composition_candidates_v1(
     expected_native_revision: object,
     expected_date_raw: object,
     expected_owner_character_id: object,
+    expected_position_key: object = STEWARD_POSITION_KEY,
 ) -> dict[str, object]:
     """Validate one complete, available, same-frame Council19 payload."""
 
@@ -154,7 +170,10 @@ def normalize_council_composition_candidates_v1(
         native_revision=expected_native_revision,
         date_raw=expected_date_raw,
         owner_character_id=expected_owner_character_id,
+        position_key=expected_position_key,
+        allow_chancellor_read_only=True,
     )
+    main_skill_key = _POSITION_MAIN_SKILL_KEYS[request["position_key"]]
     if not isinstance(value, dict) or set(value) != _ROOT_FIELDS:
         raise ValueError(
             "council composition candidates must contain exactly the v1 fields"
@@ -182,8 +201,8 @@ def normalize_council_composition_candidates_v1(
     position = value.get("position")
     if not isinstance(position, dict) or set(position) != _POSITION_FIELDS:
         raise ValueError("position must contain exactly the v1 fields")
-    if position.get("position_key") != STEWARD_POSITION_KEY:
-        raise ValueError("position_key must be councillor_steward")
+    if position.get("position_key") != request["position_key"]:
+        raise ValueError("position_key does not match the requested position")
     incumbent_raw = position.get("incumbent_character_id")
     incumbent_character_id = (
         None
@@ -198,10 +217,10 @@ def normalize_council_composition_candidates_v1(
     elif (
         isinstance(incumbent_skill_raw, dict)
         and set(incumbent_skill_raw) == _MAIN_SKILL_FIELDS
-        and incumbent_skill_raw.get("key") == STEWARD_MAIN_SKILL_KEY
+        and incumbent_skill_raw.get("key") == main_skill_key
     ):
         incumbent_main_skill = {
-            "key": STEWARD_MAIN_SKILL_KEY,
+            "key": main_skill_key,
             "value": _integer(
                 incumbent_skill_raw.get("value"),
                 "position.incumbent_main_skill.value",
@@ -261,8 +280,8 @@ def normalize_council_composition_candidates_v1(
         main_skill = candidate_raw.get("main_skill")
         if not isinstance(main_skill, dict) or set(main_skill) != _MAIN_SKILL_FIELDS:
             raise ValueError(f"{name}.main_skill must contain exactly the v1 fields")
-        if main_skill.get("key") != STEWARD_MAIN_SKILL_KEY:
-            raise ValueError(f"{name}.main_skill.key must be stewardship")
+        if main_skill.get("key") != main_skill_key:
+            raise ValueError(f"{name}.main_skill.key must be {main_skill_key}")
         skill_value = _integer(
             main_skill.get("value"),
             f"{name}.main_skill.value",
@@ -277,7 +296,7 @@ def normalize_council_composition_candidates_v1(
                 "character_id": character_id,
                 "native_collection_ordinal": ordinal,
                 "main_skill": {
-                    "key": STEWARD_MAIN_SKILL_KEY,
+                    "key": main_skill_key,
                     "value": skill_value,
                 },
             }

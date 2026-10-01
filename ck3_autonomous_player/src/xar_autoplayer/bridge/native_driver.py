@@ -2640,7 +2640,7 @@ class NativeHeadlessGameplayDriver:
         )
 
     def query_council_composition_candidates_private_v1(
-        self, *, expected_revision: int,
+        self, *, expected_revision: int, position_key: str = STEWARD_POSITION_KEY,
     ) -> dict[str, object]:
         """Consume the private council query's completed owner-thread result."""
         if getattr(self, "allow_private_council_query", False) is not True:
@@ -2650,14 +2650,14 @@ class NativeHeadlessGameplayDriver:
 
         source = private_native_build_identity(self.take_snapshot())
         return query_council_private_v1(
-            self, expected_revision=expected_revision,
+            self, expected_revision=expected_revision, position_key=position_key,
             timeout_seconds=self.command_timeout_seconds,
             expected_game_version=source.game_version,
             expected_executable_sha256=source.executable_sha256,
         )
 
     def query_council_final_gates_private_v1(
-        self, *, expected_revision: int,
+        self, *, expected_revision: int, position_key: str = STEWARD_POSITION_KEY,
     ) -> dict[str, object]:
         """Read every candidate's native assignment and incumbent firing gates."""
         if getattr(self, "allow_private_council_query", False) is not True:
@@ -2667,7 +2667,8 @@ class NativeHeadlessGameplayDriver:
 
         source = private_native_build_identity(self.take_snapshot())
         return query_council_private_v1(
-            self, expected_revision=expected_revision, query_step=PRIVATE_GATES_STEP,
+            self, expected_revision=expected_revision, position_key=position_key,
+            query_step=PRIVATE_GATES_STEP,
             timeout_seconds=self.command_timeout_seconds,
             expected_game_version=source.game_version,
             expected_executable_sha256=source.executable_sha256,

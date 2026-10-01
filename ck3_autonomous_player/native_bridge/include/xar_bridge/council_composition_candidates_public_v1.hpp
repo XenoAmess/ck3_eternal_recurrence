@@ -167,7 +167,9 @@ ProjectCouncilCompositionCandidatesPublicResultV1
 ProjectCouncilCompositionCandidatesPublicV1(
     const game::CouncilCompositionStewardCandidatesV1 &private_result,
     const CouncilCompositionCandidatesPublicEnrichmentV1 &enrichment,
-    game::CouncilCompositionCandidatesPublicV1 &output) noexcept;
+    game::CouncilCompositionCandidatesPublicV1 &output,
+    std::string_view position_key = kCouncilCompositionCandidatesPublicPositionKeyV1,
+    std::string_view main_skill_key = kCouncilCompositionCandidatesPublicMainSkillKeyV1) noexcept;
 
 std::string_view CouncilCompositionCandidatesPublicFailureKeyV1(
     game::CouncilCompositionCandidatesPublicFailureV1 reason) noexcept;
@@ -177,6 +179,8 @@ std::string_view CouncilCompositionCandidateActionRouteKeyV1(
     game::CouncilCompositionCandidateActionRouteV1 route) noexcept;
 
 std::string SerializeCouncilCompositionCandidatesPublicV1(
-    const game::CouncilCompositionCandidatesPublicV1 &value);
+    const game::CouncilCompositionCandidatesPublicV1 &value,
+    std::string_view position_key = kCouncilCompositionCandidatesPublicPositionKeyV1,
+    std::string_view main_skill_key = kCouncilCompositionCandidatesPublicMainSkillKeyV1);
 
 } // namespace xar::ck3_11906

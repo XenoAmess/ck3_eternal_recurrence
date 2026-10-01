@@ -37,15 +37,16 @@ void Unavailable(Output &output, Failure reason,
 }
 
 bool PrivateAvailableInvariant(
-    const game::CouncilCompositionStewardCandidatesV1 &value) noexcept {
-  return value.status == PrivateStatus::available &&
+    const game::CouncilCompositionStewardCandidatesV1 &value,
+    std::string_view position_key) noexcept {
+  return !position_key.empty() && value.status == PrivateStatus::available &&
          value.unavailable_reason ==
              game::CouncilCompositionStewardCandidatesFailureV1::none &&
          !FixedString(value.snapshot_id).empty() && value.public_revision != 0 &&
          value.native_revision != 0 && value.paused &&
          value.owner_character_id != -1 &&
          FixedString(value.position_key) ==
-             kCouncilCompositionCandidatesPublicPositionKeyV1 &&
+              position_key &&
          value.candidate_collection_complete &&
          value.candidate_count <=
              game::kCouncilCompositionStewardCandidatesMaximumRowsV1 &&
@@ -73,13 +74,14 @@ ProjectCouncilCompositionCandidatesPublicResultV1
 ProjectCouncilCompositionCandidatesPublicV1(
     const game::CouncilCompositionStewardCandidatesV1 &private_result,
     const CouncilCompositionCandidatesPublicEnrichmentV1 &enrichment,
-    game::CouncilCompositionCandidatesPublicV1 &output) noexcept {
+    game::CouncilCompositionCandidatesPublicV1 &output,
+    std::string_view position_key, std::string_view main_skill_key) noexcept {
   if (private_result.status != PrivateStatus::available) {
     Unavailable(output, Failure::private_reader_unavailable,
                 private_result.unavailable_reason);
     return Result::unavailable;
   }
-  if (!PrivateAvailableInvariant(private_result)) {
+  if (!PrivateAvailableInvariant(private_result, position_key)) {
     Unavailable(output, Failure::schema_invariant_failed);
     return Result::unavailable;
   }
@@ -148,7 +150,7 @@ ProjectCouncilCompositionCandidatesPublicV1(
   output.incumbent_character_id = enrichment.incumbent_character_id;
   if (!vacant) {
     if (!SetFixed(output.incumbent_main_skill.key,
-                  kCouncilCompositionCandidatesPublicMainSkillKeyV1)) {
+                  main_skill_key)) {
       Unavailable(output, Failure::schema_invariant_failed);
       return Result::unavailable;
     }
@@ -167,7 +169,7 @@ ProjectCouncilCompositionCandidatesPublicV1(
     candidate.eligible = true;
     candidate.eligibility_reason = fact.eligibility_reason;
     if (!SetFixed(candidate.main_skill.key,
-                  kCouncilCompositionCandidatesPublicMainSkillKeyV1)) {
+                  main_skill_key)) {
       Unavailable(output, Failure::schema_invariant_failed);
       return Result::unavailable;
     }

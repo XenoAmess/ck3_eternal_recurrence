@@ -13,11 +13,12 @@ template<std::size_t N> std::string_view Fixed(const std::array<char,N>& value) 
       std::string_view(value.data(), static_cast<std::size_t>(end-value.begin()));
 }
 bool ActionFrame(CouncilMailboxContext12002& context,
-    game::CouncilAssignCouncillorFrameV1& output) noexcept {
+    game::CouncilAssignCouncillorFrameV1& output,
+    std::string_view position_key = kCouncilCandidatesStewardPosition12002) noexcept {
   output = {};
   CouncilCandidatesFrameV1 source{};
   if (!CaptureCouncilCandidatesFrame12002(context.candidates_environment,
-      context.candidates_access, source)) return false;
+      context.candidates_access, source, position_key)) return false;
   std::int32_t incumbent = -1;
   if (!ReadCouncilMemory12002(context.candidates_access,
       reinterpret_cast<const void*>(source.active_task+kCouncilCandidatesTaskIncumbentOffset12002),
@@ -47,7 +48,7 @@ bool CaptureAction(void* raw, game::CouncilAssignCouncillorFrameV1& output) noex
 }
 CouncilCandidatesRequestV1 RequestFor(const game::CouncilAssignCouncillorFrameV1& frame) {
   return {frame.snapshot_id, frame.public_revision, frame.native_revision,
-      frame.date_raw, frame.owner_character_id};
+      frame.date_raw, frame.owner_character_id, frame.position_key};
 }
 bool GatesFor(CouncilMailboxContext12002& context,
     const game::CouncilAssignCouncillorFrameV1& frame, std::int32_t candidate,
@@ -130,9 +131,11 @@ bool ExecuteCouncilMailbox12002(void* raw,
       if (context.operation == Operation::query_candidates || !available) return true;
       game::CouncilAssignCouncillorFrameV1 frame{};
       const auto& candidates=context.wire.query_result;
-      if (!ActionFrame(context, frame) || frame.snapshot_id != Fixed(candidates.snapshot_id) ||
+      if (!ActionFrame(context, frame, context.query_request.position_key) ||
+          frame.snapshot_id != Fixed(candidates.snapshot_id) ||
           frame.public_revision != candidates.public_revision || frame.native_revision != candidates.native_revision ||
           frame.date_raw != candidates.date_raw || frame.owner_character_id != candidates.owner_character_id ||
+          frame.position_key != Fixed(candidates.position_key) ||
           frame.incumbent_character_id != candidates.incumbent_character_id) {
         context.wire.completion = Completion::query_unavailable;
         context.wire.failure_reason = "final_gate_frame_changed";
@@ -154,7 +157,7 @@ bool ExecuteCouncilMailbox12002(void* raw,
         ++context.wire.final_gate_row_count;
       }
       game::CouncilAssignCouncillorFrameV1 after{};
-      if (!ActionFrame(context, after) || after != frame) {
+      if (!ActionFrame(context, after, context.query_request.position_key) || after != frame) {
         context.wire.completion = Completion::query_unavailable;
         context.wire.failure_reason = "final_gate_frame_changed";
         context.wire.final_gate_row_count = 0;

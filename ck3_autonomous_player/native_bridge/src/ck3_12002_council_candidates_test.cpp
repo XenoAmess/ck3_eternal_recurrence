@@ -99,6 +99,58 @@ int main() {
         "complete native empty collection");
   }
   {
+    Fixture f; f.EnableChancellor();
+    game::CouncilCompositionCandidatesPublicV1 output{};
+    CouncilCandidatesFrameV1 frame{};
+    ok &= Check(CaptureCouncilCandidatesFrame12002(f.environment, f.access, frame,
+        f.request.position_key) && frame.active_task_id == Fixture::kTask + 1 &&
+        frame.active_task == reinterpret_cast<std::uintptr_t>(f.tasks[1].Data()),
+        "Chancellor task selected while Steward task remains present");
+    ok &= Check(ReadCouncilCandidates12002(f.environment, f.access, f.request, output) == Result::available &&
+        output.readiness.ready && std::string_view(output.position_key.data()) == Fixture::kChancellorPosition &&
+        output.incumbent_character_id == Fixture::kChancellorIncumbent &&
+        std::string_view(output.incumbent_main_skill.key.data()) == "diplomacy" &&
+        output.incumbent_main_skill.value == 14 && output.candidates[0].main_skill.value == 28 &&
+        output.candidates[1].main_skill.value == 19 &&
+        std::string_view(output.candidates[0].main_skill.key.data()) == "diplomacy" &&
+        f.producer_inputs_valid && f.release_calls == 1,
+        "Chancellor effective diplomacy differs from Steward skill fields");
+    const auto wire = SerializeCouncilCandidates12002(output);
+    ok &= Check(!wire.empty() && wire.find("councillor_chancellor") != std::string::npos &&
+        wire.find("\"key\":\"diplomacy\"") != std::string::npos &&
+        ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(output).empty(),
+        "new role codec with strict legacy default");
+  }
+  {
+    Fixture f; f.EnableChancellor();
+    f.request.position_key = kCouncilCandidatesStewardPosition12002;
+    f.expected_task_index = 0;
+    game::CouncilCompositionCandidatesPublicV1 output{};
+    ok &= Check(ReadCouncilCandidates12002(f.environment, f.access, f.request, output) == Result::available &&
+        output.incumbent_character_id == Fixture::kIncumbent &&
+        std::string_view(output.position_key.data()) == Fixture::kPosition &&
+        std::string_view(output.incumbent_main_skill.key.data()) == "stewardship" &&
+        output.incumbent_main_skill.value == 9 && output.candidates[0].main_skill.value == 22 &&
+        f.producer_inputs_valid, "default Steward profile remains distinct with both tasks");
+  }
+  {
+    Fixture f; f.request.position_key = "councillor_marshal";
+    ok &= Rejected(f, Failure::position_outside_coverage, 0, 0, "undelegated role is outside query coverage");
+  }
+  {
+    Fixture f; f.request.position_key = kCouncilCandidatesChancellorPosition12002;
+    ok &= Rejected(f, Failure::active_steward_task_unavailable, 0, 0,
+        "missing requested Chancellor task cannot reuse Steward task");
+  }
+  {
+    Fixture f; f.EnableChancellor(); f.unreadable_candidate_skill = true;
+    game::CouncilCompositionCandidatesPublicV1 output{};
+    ok &= Check(ReadCouncilCandidates12002(f.environment, f.access, f.request, output) == Result::unavailable &&
+        output.unavailable_reason == game::CouncilCompositionCandidatesPublicFailureV1::candidate_main_skill_unready &&
+        !output.readiness.ready && f.producer_calls == 1 && f.release_calls == 1,
+        "missing Chancellor diplomacy cannot use available stewardship");
+  }
+  {
     Fixture f;
     const void *resolved = nullptr;
     ok &= Check(ResolveCouncilCharacter12002(f.environment, f.access, Fixture::kCandidate, resolved) &&

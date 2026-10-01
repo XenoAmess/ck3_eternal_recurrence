@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_council_transport.hpp"
+#include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/council_application_main_private_transport_v1.hpp"
 #include "ck3_12002_council_fixture.hpp"
@@ -98,7 +99,9 @@ bool ActionMemory(void* context, const void* address, void* output,
   return ProviderFixture::Memory(action.provider, address, output, size);
 }
 bool ActionIsCouncillor(void* candidate) {
-  assert(active_action != nullptr && candidate == active_action->provider->characters[15].Data());
+  assert(active_action != nullptr &&
+      (candidate == active_action->provider->characters[15].Data() ||
+       candidate == active_action->provider->characters[16].Data()));
   ++active_action->native_gate_calls;
   return false;
 }
@@ -114,7 +117,8 @@ void ActionPendingSetup(void* window) {
   std::memcpy(bytes + kCouncilGatesPendingManagerOffset12002, &manager, sizeof(manager));
 }
 bool ActionHasPending(void* manager, std::int32_t candidate) {
-  assert(manager == active_action->pending_manager.Data() && candidate == ProviderFixture::kCandidate);
+  assert(manager == active_action->pending_manager.Data() &&
+      (candidate == ProviderFixture::kCandidate || candidate == ProviderFixture::kCandidate + 1));
   ++active_action->native_gate_calls;
   return false;
 }
@@ -123,7 +127,11 @@ bool ActionCanConfirm(void* confirmation) {
   std::int32_t incumbent = -1, candidate = -1;
   std::memcpy(&incumbent, bytes + kCouncilGatesConfirmationIncumbentOffset12002, sizeof(incumbent));
   std::memcpy(&candidate, bytes + kCouncilGatesConfirmationCandidateOffset12002, sizeof(candidate));
-  assert(incumbent == ProviderFixture::kIncumbent && candidate == ProviderFixture::kCandidate);
+  const auto expected_incumbent = provider_transport->context.query_request.position_key ==
+      kCouncilCandidatesChancellorPosition12002 ? ProviderFixture::kChancellorIncumbent :
+      ProviderFixture::kIncumbent;
+  assert(incumbent == expected_incumbent &&
+      (candidate == ProviderFixture::kCandidate || candidate == ProviderFixture::kCandidate + 1));
   ++active_action->confirm_calls;
   return true;
 }
@@ -143,11 +151,14 @@ void Put(std::span<std::byte> bytes, std::size_t offset, T value) {
 // to read a full snapshot or call gameplay through this adapter is counted.
 class FixtureAdapter final : public game::GameAdapter {
 public:
+  explicit FixtureAdapter(bool current_build = false) : current_build_(current_build) {}
   mutable unsigned full_snapshot_reads = 0;
   const game::AdapterDescriptor& descriptor() const noexcept override {
     static const game::AdapterDescriptor value{
         "ck3-1.20.0.2-msvc-x64", "1.20.0.2", kExecutableSha256, "fixture-only", {}};
-    return value;
+    static const game::AdapterDescriptor current{
+        "ck3-1.20.0.3-msvc-x64", "1.20.0.3", ck3_12003::kExecutableSha256, "fixture-only", {}};
+    return current_build_ ? current : value;
   }
   bool enabled() const noexcept override { return true; }
   bool read_snapshot(game::Snapshot&) const noexcept override {
@@ -181,6 +192,8 @@ public:
   game::ReadWarTerminationExitTermsResult read_war_termination_exit_terms(std::int32_t, game::WarTerminationExitTermsSnapshot&) const noexcept override { return {}; }
   game::SurrenderWarResult submit_surrender_war(std::int32_t) const noexcept override { return {}; }
   game::OfferWhitePeaceResult submit_offer_white_peace(std::int32_t) const noexcept override { return {}; }
+private:
+  bool current_build_ = false;
 };
 
 void WriteWire(const std::filesystem::path& directory,
@@ -528,6 +541,59 @@ void CheckSourceFrame(const std::filesystem::path& wire_directory) {
   assert(serialized.find("\"status\":\"idle\"") != std::string::npos &&
       mailbox.next_sequence.load() == receipt_sequence && adapter.full_snapshot_reads == 0);
   WriteWire(wire_directory, "status_receipt_idle.json", serialized);
+
+  // A current-build private query owns its role string after the incoming
+  // payload is gone and independently selects the Chancellor task/skill.
+  provider.EnableChancellor();
+  FixtureAdapter current_adapter{true};
+  std::string chancellor_payload = "{\"expected_revision\":14,\"position_key\":\"councillor_chancellor\"}";
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilPrivateQueryStepV1, chancellor_payload,
+      "chancellor-query-14", transport, serialized, failure));
+  chancellor_payload.clear();
+  assert(transport.query_position_key == ProviderFixture::kChancellorPosition &&
+      transport.context.query_request.position_key == transport.query_position_key);
+  assert(ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+      bridge::kCouncilPrivateStatusStepV1, "{}", "chancellor-query-result",
+      transport, serialized, failure));
+  assert(transport.context.wire.query_result.readiness.ready && provider.producer_inputs_valid &&
+      transport.context.wire.query_result.incumbent_character_id == ProviderFixture::kChancellorIncumbent &&
+      transport.context.wire.query_result.incumbent_main_skill.value == 14 &&
+      transport.context.wire.query_result.candidates[0].main_skill.value == 28 &&
+      serialized.find("councillor_chancellor") != std::string::npos &&
+      serialized.find("\"key\":\"diplomacy\"") != std::string::npos);
+  WriteWire(wire_directory, "chancellor_status_available.json", serialized);
+  const auto before_chancellor_assignment = mailbox.next_sequence.load();
+  const auto current_assign_payload = "{\"expected_revision\":14,\"candidate_character_id\":" +
+      std::to_string(ProviderFixture::kCandidate) + "}";
+  assert(!HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilPrivateAssignStepV1, current_assign_payload, "chancellor-not-an-action",
+      transport, serialized, failure));
+  assert(failure == "private_candidate_frame_changed" && action.helper_calls == 1 &&
+      !transport.shared.has_pending_ack && mailbox.next_sequence.load() == before_chancellor_assignment);
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilFinalGatesPrivateStepV1,
+      "{\"expected_revision\":14,\"position_key\":\"councillor_chancellor\"}",
+      "chancellor-gates-14", transport, serialized, failure));
+  assert(ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+      bridge::kCouncilPrivateStatusStepV1, "{}", "chancellor-gates-result",
+      transport, serialized, failure));
+  assert(transport.context.wire.completion == bridge::CouncilApplicationMainCompletionV1::query_available &&
+      transport.context.wire.final_gate_row_count == 2 &&
+      transport.context.wire.final_gate_rows[0].fireability_evaluated &&
+      action.helper_calls == 1 && current_adapter.full_snapshot_reads == 0);
+  WriteWire(wire_directory, "chancellor_status_gates.json", serialized);
+  const auto before_unknown_role = mailbox.next_sequence.load();
+  assert(!HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilPrivateQueryStepV1,
+      "{\"expected_revision\":14,\"position_key\":\"councillor_marshal\"}",
+      "unknown-role", transport, serialized, failure));
+  assert(failure == "private_position_outside_coverage" &&
+      mailbox.next_sequence.load() == before_unknown_role && !transport.in_flight);
   assert(ck3_11906::UninstallMainThreadQueryMailboxV1(mailbox, 10) ==
       ck3_11906::MainThreadQueryUninstallResultV1::uninstalled);
   assert(iat_slot == reinterpret_cast<void*>(&FixturePeek));

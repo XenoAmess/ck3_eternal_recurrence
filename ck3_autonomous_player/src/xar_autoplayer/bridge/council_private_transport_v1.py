@@ -14,6 +14,7 @@ from .council_composition_candidates_contract import (
     COUNCIL_COMPOSITION_CANDIDATES_V1_SCHEMA,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+    STEWARD_POSITION_KEY,
     build_council_composition_candidates_request_v1,
     normalize_council_composition_candidates_v1,
 )
@@ -111,6 +112,7 @@ def normalize_council_private_query_result_v1(
         expected_native_revision=expected_request["native_revision"],
         expected_date_raw=expected_request["date_raw"],
         expected_owner_character_id=expected_request["owner_character_id"],
+        expected_position_key=expected_request["position_key"],
     )
     result["council_composition_candidates"] = normalized
     if query_step == PRIVATE_GATES_STEP:
@@ -208,6 +210,7 @@ def _source_frame(snapshot: Mapping[str, object]) -> dict[str, object]:
 
 def query_council_private_v1(
     driver: object, *, expected_revision: int | None = None,
+    position_key: str = STEWARD_POSITION_KEY,
     query_step: str = PRIVATE_QUERY_STEP,
     timeout_seconds: float | None = None,
     expected_game_version: object = CK3_12002.game_version,
@@ -235,9 +238,13 @@ def query_council_private_v1(
         expected_snapshot_id=f"native:{native_revision}",
         public_revision=native_revision, native_revision=native_revision,
         date_raw=before.get("date_raw"), owner_character_id=player_id,
+        position_key=position_key, allow_chancellor_read_only=True,
     )
     result = _read_operation(
-        driver, query_step, {"expected_revision": native_revision},
+        driver, query_step, {
+            "expected_revision": native_revision,
+            "position_key": request["position_key"],
+        },
         timeout_seconds=timeout_seconds,
     )
     try:

@@ -21,7 +21,6 @@ using Public = game::CouncilCompositionCandidatesPublicV1;
 using PublicFailure = game::CouncilCompositionCandidatesPublicFailureV1;
 using Result = ck3_11906::ProjectCouncilCompositionCandidatesPublicResultV1;
 using Enrichment = ck3_11906::CouncilCompositionCandidatesPublicEnrichmentV1;
-constexpr std::string_view kPosition = "councillor_steward";
 
 template <std::size_t Size>
 std::string_view FixedString(const std::array<char, Size> &value) noexcept {
@@ -118,9 +117,10 @@ bool ReadKey(const CouncilCandidatesAccessV1 &access, const void *object,
              [](unsigned char c) { return c == 0 || c < 0x20U; });
 }
 
-bool ResolveStewardTask(const CouncilCandidatesEnvironmentV1 &environment,
-                        const CouncilCandidatesAccessV1 &access,
-                        CouncilCandidatesFrameV1 &frame) noexcept {
+bool ResolvePositionTask(const CouncilCandidatesEnvironmentV1 &environment,
+                         const CouncilCandidatesAccessV1 &access,
+                         CouncilCandidatesFrameV1 &frame,
+                         std::string_view position_key) noexcept {
   frame.active_task_id = -1;
   frame.active_task = 0;
   frame.active_task_identity_round_trip = false;
@@ -151,7 +151,7 @@ bool ResolveStewardTask(const CouncilCandidatesEnvironmentV1 &environment,
         !Read(access, type, 0x40, position) || position == nullptr ||
         !ReadKey(access, position, key) ||
         !Read(access, task, 0x44, task_owner)) return true;
-    if (FixedString(key) != kPosition) continue;
+    if (FixedString(key) != position_key) continue;
     if (task_owner != frame.played_character_id || matched != nullptr)
       return true;
     matched = task;
@@ -161,7 +161,7 @@ bool ResolveStewardTask(const CouncilCandidatesEnvironmentV1 &environment,
   frame.active_task_id = matched_id;
   frame.active_task = reinterpret_cast<std::uintptr_t>(matched);
   frame.active_task_identity_round_trip = true;
-  std::copy(kPosition.begin(), kPosition.end(), frame.position_key.begin());
+  std::copy(position_key.begin(), position_key.end(), frame.position_key.begin());
   return true;
 }
 
@@ -182,7 +182,7 @@ SourceFailure ValidateFrame(const CouncilCandidatesFrameV1 &frame,
   if (frame.active_task_id <= 0 || frame.active_task == 0 ||
       !frame.active_task_identity_round_trip)
     return SourceFailure::active_steward_task_unavailable;
-  if (FixedString(frame.position_key) != kPosition)
+  if (FixedString(frame.position_key) != request.position_key)
     return SourceFailure::position_outside_coverage;
   return SourceFailure::none;
 }
@@ -320,12 +320,13 @@ bool ResolveCouncilCharacter12002(const CouncilCandidatesEnvironmentV1 &environm
 bool CaptureCouncilCandidatesFrame12002(
     const CouncilCandidatesEnvironmentV1 &environment,
     const CouncilCandidatesAccessV1 &access,
-    CouncilCandidatesFrameV1 &output) noexcept {
+    CouncilCandidatesFrameV1 &output, std::string_view position_key) noexcept {
   output = {};
-  return EnvironmentExact(environment) && access.capture_frame != nullptr &&
+  return !CouncilCandidatesProfile12002(position_key).position_key.empty() &&
+          EnvironmentExact(environment) && access.capture_frame != nullptr &&
          access.is_main_thread != nullptr && access.is_main_thread(access.context) &&
          access.capture_frame(access.context, output) &&
-         ResolveStewardTask(environment, access, output);
+          ResolvePositionTask(environment, access, output, position_key);
 }
 
 ck3_11906::ProjectCouncilCompositionCandidatesPublicResultV1
@@ -340,6 +341,9 @@ ReadCouncilCandidates12002(const CouncilCandidatesEnvironmentV1 &environment,
       request.expected_public_revision == 0 || request.expected_native_revision == 0 ||
       request.expected_owner_character_id <= 0)
     return Unavailable(output, private_source, SourceFailure::invalid_request);
+  const auto profile = CouncilCandidatesProfile12002(request.position_key);
+  if (profile.position_key.empty())
+    return Unavailable(output, private_source, SourceFailure::position_outside_coverage);
   if (!environment.exact_build_admitted ||
       environment.admitted_executable_sha256 != kExecutableSha256)
     return Unavailable(output, private_source, SourceFailure::exact_build_not_admitted);
@@ -352,7 +356,7 @@ ReadCouncilCandidates12002(const CouncilCandidatesEnvironmentV1 &environment,
   if (!access.is_main_thread(access.context))
     return Unavailable(output, private_source, SourceFailure::application_main_thread_required);
   CouncilCandidatesFrameV1 before{};
-  if (!CaptureCouncilCandidatesFrame12002(environment, access, before))
+  if (!CaptureCouncilCandidatesFrame12002(environment, access, before, request.position_key))
     return Unavailable(output, private_source, SourceFailure::frame_capture_failed);
   const auto initial = ValidateFrame(before, request);
   if (initial != SourceFailure::none) return Unavailable(output, private_source, initial);
@@ -368,7 +372,7 @@ ReadCouncilCandidates12002(const CouncilCandidatesEnvironmentV1 &environment,
     if (!ResolveCouncilCharacter12002(environment, access, incumbent_id, incumbent))
       return Unavailable(output, private_source, SourceFailure::none, false,
           PublicFailure::incumbent_invalid);
-    if (!Read(access, incumbent, kCouncilCandidatesCharacterStewardshipOffset12002,
+    if (!Read(access, incumbent, profile.main_skill_offset,
         incumbent_skill) || incumbent_skill < 0)
       return Unavailable(output, private_source, SourceFailure::none, false,
           PublicFailure::incumbent_main_skill_unready);
@@ -416,7 +420,7 @@ ReadCouncilCandidates12002(const CouncilCandidatesEnvironmentV1 &environment,
           [id](const auto &row) { return row.character_id == id; })) {
         failure = SourceFailure::duplicate_candidate_id; break;
       }
-      if (!Read(access, candidate, kCouncilCandidatesCharacterStewardshipOffset12002, skill) || skill < 0) {
+      if (!Read(access, candidate, profile.main_skill_offset, skill) || skill < 0) {
         public_failure = PublicFailure::candidate_main_skill_unready;
         failure = SourceFailure::candidate_row_unreadable; break;
       }
@@ -432,7 +436,7 @@ ReadCouncilCandidates12002(const CouncilCandidatesEnvironmentV1 &environment,
   if (!access.is_main_thread(access.context))
     return Unavailable(output, private_source, SourceFailure::application_main_thread_required, true);
   CouncilCandidatesFrameV1 after{};
-  if (!CaptureCouncilCandidatesFrame12002(environment, access, after))
+  if (!CaptureCouncilCandidatesFrame12002(environment, access, after, request.position_key))
     return Unavailable(output, private_source, SourceFailure::frame_capture_failed, true);
   const auto drift = Drift(before, after);
   if (drift != SourceFailure::none) return Unavailable(output, private_source, drift, true);
@@ -476,7 +480,8 @@ ReadCouncilCandidates12002(const CouncilCandidatesEnvironmentV1 &environment,
   enrichment.incumbent_main_skill_ready = true;
   enrichment.candidate_count = pending.candidate_count;
   enrichment.same_frame_stable = true;
-  const auto result = ck3_11906::ProjectCouncilCompositionCandidatesPublicV1(pending, enrichment, output);
+  const auto result = ck3_11906::ProjectCouncilCompositionCandidatesPublicV1(
+      pending, enrichment, output, profile.position_key, profile.main_skill_key);
   if (result == Result::available && private_source != nullptr) *private_source = pending;
   return result;
 }
@@ -485,7 +490,9 @@ std::string SerializeCouncilCandidates12002(const game::CouncilCompositionCandid
   // The v1 codec validates and escapes the unchanged public DTO. Its result
   // supplies only the version-neutral status/payload suffix; this adapter owns
   // the complete schema/capability/build prefix. No old build is admitted.
-  const std::string payload = ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(value);
+  const auto profile = CouncilCandidatesProfile12002(FixedString(value.position_key));
+  const std::string payload = ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(
+      value, profile.position_key, profile.main_skill_key);
   const auto at = payload.find(",\"status\":");
   if (payload.empty() || at == std::string::npos) return {};
   std::string output = "{\"schema\":\"";

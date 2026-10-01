@@ -21,12 +21,38 @@ inline constexpr std::uintptr_t kCouncilCandidatesTaskFallbackSlotRva12002 = 0x5
 inline constexpr std::size_t kCouncilCandidatesAllocatorSize12002 = 0x210;
 inline constexpr std::size_t kCouncilCandidatesAllocatorFallbackOffset12002 = 0x208;
 inline constexpr std::size_t kCouncilCandidatesCharacterStewardshipOffset12002 = 0xE0;
+inline constexpr std::size_t kCouncilCandidatesCharacterDiplomacyOffset12002 = 0xD8;
 inline constexpr std::size_t kCouncilCandidatesTaskIncumbentOffset12002 = 0x40;
+inline constexpr std::string_view kCouncilCandidatesStewardPosition12002 =
+    "councillor_steward";
+inline constexpr std::string_view kCouncilCandidatesChancellorPosition12002 =
+    "councillor_chancellor";
+
+struct CouncilCandidatesPositionProfile12002 {
+  std::string_view position_key{};
+  std::string_view main_skill_key{};
+  std::size_t main_skill_offset = 0;
+};
+
+inline constexpr CouncilCandidatesPositionProfile12002 CouncilCandidatesProfile12002(
+    std::string_view position_key) noexcept {
+  if (position_key == kCouncilCandidatesStewardPosition12002)
+    return {position_key, "stewardship", kCouncilCandidatesCharacterStewardshipOffset12002};
+  if (position_key == kCouncilCandidatesChancellorPosition12002)
+    return {position_key, "diplomacy", kCouncilCandidatesCharacterDiplomacyOffset12002};
+  return {};
+}
 
 using CouncilCandidatesFrameV1 =
     ck3_11906::CouncilCompositionStewardCandidatesFrameV1;
-using CouncilCandidatesRequestV1 =
-    ck3_11906::CouncilCompositionStewardCandidatesRequestV1;
+struct CouncilCandidatesRequestV1 {
+  std::string_view expected_snapshot_id{};
+  std::uint64_t expected_public_revision = 0;
+  std::uint64_t expected_native_revision = 0;
+  std::int32_t expected_date_raw = 0;
+  std::int32_t expected_owner_character_id = -1;
+  std::string_view position_key = kCouncilCandidatesStewardPosition12002;
+};
 
 // The GUI producer owns no rows after this temporary vector is released.
 // A row is an eight-byte CCharacter pointer, never a public identity.
@@ -78,7 +104,7 @@ using CouncilCandidatesReleaseOverrideV1 = bool (*)(
 struct CouncilCandidatesAccessV1 {
   void *context = nullptr;
   // Source frame supplies snapshot/date/revisions/player. This reader resolves
-  // the steward task from the same frame, and does not trust a cached task.
+  // the requested task from the same frame, and does not trust a cached task.
   ck3_11906::CaptureCouncilCompositionStewardCandidatesFrameV1 capture_frame = nullptr;
   ck3_11906::IsCouncilCompositionStewardCandidatesMainThreadV1 is_main_thread = nullptr;
   CouncilCandidatesReadMemoryV1 read_memory = nullptr; // null = in-process read
@@ -101,7 +127,8 @@ bool ResolveCouncilCharacter12002(const CouncilCandidatesEnvironmentV1 &environm
 bool CaptureCouncilCandidatesFrame12002(
     const CouncilCandidatesEnvironmentV1 &environment,
     const CouncilCandidatesAccessV1 &access,
-    CouncilCandidatesFrameV1 &output) noexcept;
+    CouncilCandidatesFrameV1 &output,
+    std::string_view position_key = kCouncilCandidatesStewardPosition12002) noexcept;
 
 // One application-main paused transaction: resolve -> GUI-mode native producer
 // -> copy/round-trip IDs and native skill -> release -> recapture -> v1 projector.

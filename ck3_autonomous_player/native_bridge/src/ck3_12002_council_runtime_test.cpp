@@ -101,7 +101,10 @@ struct SourceChainFixture {
     std::int32_t incumbent = -1, candidate = -1;
     std::memcpy(&incumbent, bytes + 0x130, sizeof(incumbent));
     std::memcpy(&candidate, bytes + 0x134, sizeof(candidate));
-    Require(incumbent == SourceFixture::kIncumbent, "native incumbent payload");
+    const auto expected_incumbent = active->context.query_request.position_key ==
+        kCouncilCandidatesChancellorPosition12002 ? SourceFixture::kChancellorIncumbent :
+        SourceFixture::kIncumbent;
+    Require(incumbent == expected_incumbent, "native incumbent payload");
     Require((candidate == SourceFixture::kCandidate ||
         candidate == SourceFixture::kCandidate + 1) &&
         candidate != SourceFixture::kTask, "native candidate payload must differ from task");
@@ -252,6 +255,42 @@ int main(int argc, char **argv) {
         f.helper_calls == 0 && f.native_gate_calls == 0,
         "final candidate collection was not refreshed"); ++checks;
     WriteWire(directory, "reject-absent.json", f);
+  }
+  for (bool vacant : {false, true}) {
+    auto owned = std::make_unique<SourceChainFixture>();
+    auto &f = *owned;
+    f.source.EnableChancellor();
+    if (vacant) f.source.tasks[1].Put(0x40, std::int32_t{-1});
+    f.context.query_request = f.source.request;
+    f.Execute(Operation::query_final_gates);
+    const auto &result = f.context.wire.query_result;
+    Require(f.context.wire.completion == Completion::query_available &&
+        std::string_view(result.position_key.data()) == SourceFixture::kChancellorPosition &&
+        std::string_view(result.candidates[0].main_skill.key.data()) == "diplomacy" &&
+        result.candidates[0].main_skill.value == 28 &&
+        result.incumbent_character_id == (vacant ? -1 : SourceFixture::kChancellorIncumbent) &&
+        f.source.producer_inputs_valid && f.context.wire.final_gate_row_count == 2 &&
+        f.native_gate_calls == 6 && f.confirm_calls == (vacant ? 0U : 2U) &&
+        f.context.wire.final_gate_rows[0].available &&
+        f.context.wire.final_gate_rows[0].fireability_evaluated == !vacant &&
+        f.helper_calls == 0, "Chancellor readonly native gates bind the requested task"); ++checks;
+    WriteWire(directory, vacant ? "chancellor-vacant-gates.json" : "chancellor-gates.json", f);
+    game::CouncilAssignCouncillorActionRequestV1 request{};
+    Require(!ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(result,
+        SourceFixture::kCandidate, "chancellor-not-an-action", request) &&
+        f.helper_calls == 0 && !f.state.has_pending_ack,
+        "readonly Chancellor projection does not enable Steward assignment"); ++checks;
+  }
+  {
+    auto owned = std::make_unique<SourceChainFixture>();
+    auto &f = *owned;
+    f.source.EnableChancellor(); f.context.query_request = f.source.request;
+    f.drift_during_gate = true;
+    f.Execute(Operation::query_final_gates);
+    Require(f.context.wire.completion == Completion::query_unavailable &&
+        f.context.wire.failure_reason == "final_gate_frame_changed" &&
+        f.context.wire.final_gate_row_count == 0 && f.helper_calls == 0,
+        "Chancellor gate query independently recaptures the requested role frame"); ++checks;
   }
   std::cout << "{\"status\":\"GREEN\",\"checks\":" << checks
       << ",\"isolated_gate_rejections\":4,\"routes\":2,\"source_chain\":\"candidate_reader-native_gates-semantic_action-new_submit_adapter-independent_receipt-actual_serializer\",\"live_verified\":false}\n";

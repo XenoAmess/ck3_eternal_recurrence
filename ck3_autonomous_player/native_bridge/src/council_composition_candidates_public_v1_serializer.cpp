@@ -47,8 +47,9 @@ void AppendBool(std::string &output, bool value) {
 }
 
 bool ValidAvailable(
-    const game::CouncilCompositionCandidatesPublicV1 &value) noexcept {
-  if (value.status !=
+    const game::CouncilCompositionCandidatesPublicV1 &value,
+    std::string_view position_key, std::string_view main_skill_key) noexcept {
+  if (position_key.empty() || main_skill_key.empty() || value.status !=
           game::CouncilCompositionCandidatesPublicStatusV1::available ||
       value.unavailable_reason !=
           game::CouncilCompositionCandidatesPublicFailureV1::none ||
@@ -58,11 +59,11 @@ bool ValidAvailable(
       value.native_revision == 0 || !value.paused ||
       value.owner_character_id == -1 ||
       FixedString(value.position_key) !=
-          kCouncilCompositionCandidatesPublicPositionKeyV1 ||
+          position_key ||
       value.vacant != (value.incumbent_character_id == -1) ||
       (!value.vacant &&
        (FixedString(value.incumbent_main_skill.key) !=
-            kCouncilCompositionCandidatesPublicMainSkillKeyV1 ||
+            main_skill_key ||
         value.incumbent_main_skill.value < 0)) ||
       value.action_route !=
           (value.vacant
@@ -88,7 +89,7 @@ bool ValidAvailable(
             candidate.eligibility_reason)
             .empty() ||
         FixedString(candidate.main_skill.key) !=
-            kCouncilCompositionCandidatesPublicMainSkillKeyV1 ||
+            main_skill_key ||
         candidate.main_skill.value < 0 ||
         candidate.action_route != value.action_route) {
       return false;
@@ -156,10 +157,11 @@ void AppendReadiness(
 } // namespace
 
 std::string SerializeCouncilCompositionCandidatesPublicV1(
-    const game::CouncilCompositionCandidatesPublicV1 &value) {
+    const game::CouncilCompositionCandidatesPublicV1 &value,
+    std::string_view position_key, std::string_view main_skill_key) {
   const bool available =
       value.status == game::CouncilCompositionCandidatesPublicStatusV1::available;
-  if (available && !ValidAvailable(value)) return {};
+  if (available && !ValidAvailable(value, position_key, main_skill_key)) return {};
   if (!available &&
       value.unavailable_reason ==
           game::CouncilCompositionCandidatesPublicFailureV1::none) {

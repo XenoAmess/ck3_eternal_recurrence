@@ -1486,16 +1486,22 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_council_composition_candidates_private_v1(
             expected_revision: int,
+            position_key: str = "councillor_steward",
         ) -> dict[str, object]:
-            """Read completed native Steward candidates through the private mailbox."""
-            return driver.query_council_composition_candidates_private_v1(expected_revision=expected_revision)
+            """Read native Steward or Chancellor candidates through the private mailbox."""
+            return driver.query_council_composition_candidates_private_v1(
+                expected_revision=expected_revision, position_key=position_key,
+            )
 
         @server.tool(annotations=read_only_tool)
         def ck3_query_council_final_gates_private_v1(
             expected_revision: int,
+            position_key: str = "councillor_steward",
         ) -> dict[str, object]:
             """Read native candidate, pending interaction and incumbent final gates."""
-            return driver.query_council_final_gates_private_v1(expected_revision=expected_revision)
+            return driver.query_council_final_gates_private_v1(
+                expected_revision=expected_revision, position_key=position_key,
+            )
 
     if getattr(driver, "allow_private_council_action", False) is True:
         @server.tool()

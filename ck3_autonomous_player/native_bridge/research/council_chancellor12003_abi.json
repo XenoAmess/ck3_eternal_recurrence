@@ -1,0 +1,81 @@
+{
+  "contract": "council-chancellor-readonly-12003",
+  "schema_version": 1,
+  "evidence_level": "research",
+  "game_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "scope": "readonly ordinary Chancellor candidates, diplomacy and native final legality; no appointment or task change",
+  "reuse_manifest": "ck3_1_20_0_3_abi_reuse.json",
+  "reused_inputs": [
+    "council_candidates12002_abi.json",
+    "council_gates12002_abi.json",
+    "ck3_1_20_0_2_phase_character.json",
+    "council_composition_candidates_enrichment_v1_abi.json"
+  ],
+  "position_key": "councillor_chancellor",
+  "main_skill_key": "diplomacy",
+  "skill_enum": 0,
+  "effective_skill_array_offset": "0xD8",
+  "effective_skill_offset": "0xD8",
+  "exact_12003_instruction": {
+    "rva": "0x28B16F8",
+    "bytes": "8B8499D8000000",
+    "mnemonic": "mov eax, dword ptr [rcx + rbx*4 + 0xD8]",
+    "evidence": "direct disassembly of frozen exact 1.20.0.3 executable; reused getter span has unchanged SHA-256"
+  },
+  "effective_skill_span": {
+    "start": "0x28B16B0",
+    "end_inclusive": "0x28B170D",
+    "sha256": "B3C592A0D177A07D0BC5D04DD4A94558A539F6F543B73FAF5A748954F0AB42DA"
+  },
+  "native_functions": {
+    "candidate_producer": "0x2C47EC0",
+    "valid_position": "0x31BCED0",
+    "valid_character": "0x31BCF90",
+    "is_councillor": "0x2917560",
+    "is_guest": "0x1A8F780",
+    "pending_manager_setup": "0x115CA80",
+    "has_pending_interaction": "0x2A307B0",
+    "can_confirm": "0x11604A0"
+  },
+  "native_role_inputs": {
+    "active_task_type": "0x18",
+    "task_type_position_type": "0x40",
+    "active_task_incumbent": "0x40",
+    "active_task_owner": "0x44",
+    "confirmation_incumbent": "0x130",
+    "confirmation_candidate": "0x134"
+  },
+  "skill_enum_evidence": "existing frozen six-skill enrichment enum diplomacy=0, stewardship=2; current getter array and stock Chancellor skill reused together, not a new live observation",
+  "actual_source": {
+    "artifact": "artifacts/g2-maintainer-2026-10-02/resume-12003/readonly-c3cd08bc-01",
+    "owner_character_id": 29829,
+    "raw_date": 53170608,
+    "position_key": "councillor_chancellor",
+    "incumbent_character_id": 34867,
+    "task_key": "task_foreign_affairs",
+    "diplomacy": null,
+    "alternate_candidates": null,
+    "native_final_gates": null
+  },
+  "unknown_inputs": [
+    "current incumbent diplomacy and complete legal Chancellor alternatives: new paused query required",
+    "native composition utility, political preference, appointment scheduler and task-switch value: unchanged unknown ledger, not consumed by this readonly package"
+  ],
+  "live_calls": 0,
+  "actions": 0,
+  "g2_credit": 0,
+  "stock_inputs": [
+    {
+      "path_from_game_root": "common/council_positions/00_council_positions.txt",
+      "size": 88435,
+      "sha256": "31FA258DFBF35A07E9EE08D1D1DFDCD26712D3974CD65EC74255C284E4DF0A2A"
+    },
+    {
+      "path_from_game_root": "common/scripted_triggers/00_councillor_triggers.txt",
+      "size": 39155,
+      "sha256": "350A5E375D73E38CDD659FC3221FE8395AD6650B3FD244E03EE2342AFC9A8F88"
+    }
+  ]
+}
