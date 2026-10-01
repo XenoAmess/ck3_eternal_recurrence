@@ -712,3 +712,14 @@ Four frozen handwritten authoring data and documentation files. Two actual canon
 Eight exact source paths, identical five previously committed files filtered by HEAD; new necessary named wrapper/runner and updated umbrella doc committed. Single new O2/W4WX21checks actualinstalledtoast to secondarysink to namedownerqueue to complete response passed, prior13 fixture reused. Readonly selectedsource only, no futurestatus22 or actual live terminal inference. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-completion\invalidation-r6-increment-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+
+## 2026-10-01 19:41:20：R4实际结果与R6冻结
+
+为什么做：把1.20迁移的静态成功转为实际观察和独立结果，解除家族、宗教和经济观测阻点。R4脚本直接启动，宗教tag/catholic与christianity_religion、25 Doctrine/44 boolean、126 catalogue及family两槽/7children实际读回通过。现有full5质量策略只发一次订婚，十天后独立验证38822↔38718双向婚约；无联盟，未完婚/出生。正式保存h94/date53169336/save SHA d1c427908f587a9ac650dcbb20a63618de093417adeb28c3d594825ded22c300。
+
+RED与边界：第七次pause-map返回map unavailable，实际推进超过单日目标，错误保留并已重新暂停；不把ACK当婚约。CE1恢复首次缺参是harness RED。R6已双DLL GREEN/457实际编译输入提交，但fresh SDK和婚约冷恢复待做；Sway observer附加且0records不算终态。建设实测23slots/16occupants/7exactNull，旧farm slot1已有597，不能据旧机会开工；exactNull reader/LAW32/Doctrine stride48已静态修复。
+
+测试与artifact：[当前完整进度](../ck3-1.20.0.2-migration-progress-2026-10-01.md)，actual目录B/targeted-sdk-r4/cold-religion-family-sway-readonly-20261001T110102Z、B/family-live-next/root-first-heir-read-r4-02-after-day7、B/family-live-next/root-first-heir-checkpoint-r4-01、B/construction-live-next/root-r4-completed-slot-vm-read-02。官方1495与第27/32阶段真PASS；整体CI最后Python-only handover示例仍需修复后cloud completion。
+
+能力变化：新增production-live primitive读回与一次订婚结果，普通Robert3153/36524、G2 3/8不变，尚非完整OODA长局。Commit/push：source9ab836a5→master42d7467，后续实际增量5fff9356→b5c7c76；本正文随本次Git交付。下一步：由h94恢复R6、复核婚约与新增只读入口，再推进经济空槽与普通一代；宗教开放，战争研究停止，Steam焦点禁止，所有游戏启动直接脚本执行。
