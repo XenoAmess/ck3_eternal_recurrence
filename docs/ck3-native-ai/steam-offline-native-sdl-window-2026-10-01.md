@@ -1,10 +1,14 @@
-# Steam native SDL window and fresh offline evidence
+# Steam UI host compatibility and fresh offline evidence
 
-On 2026-10-01, the local operator preparing the external Damengsan core-only
-diagnostic observed Steam's visible main window hosted by `steam.exe`, with
-Windows class `SDL_app`. The existing freshness helper accepted only
-`steamwebhelper.exe`, so it could not enumerate this real Steam window. This
-was a desktop preflight compatibility problem, independent of CK3 mod content.
+Correction on 2026-10-01: the initial narrative attributed the external
+Damengsan diagnostic's Steam window to native `steam.exe`/`SDL_app`. Later
+read-only process metadata proved that the successful R1 receipt's PID 14140
+was `bin/cef/cef.win64/steamwebhelper.exe`, created at `1790591117.8362925`.
+The separate native client was PID 5808, `<steam-root>/steam.exe`, created at
+`1790591116.7471032`. The actual recovery therefore proves the CEF path; it
+does not prove a native SDL host. The native-host branch added to the generic
+helper has mocked coverage only in this work package. The setup RED in the
+first recovery attempt came from the task-bus directory argument.
 
 The authoritative fix remains in this repository's
 [`steam_offline_fresh_frame.py`](../../tools/steam_offline_fresh_frame.py).
@@ -64,9 +68,9 @@ The recovery outcome was `fresh_frame_needs_offline_visual_review`;
 The coordinating operator visually reviewed that new image and confirmed
 Steam offline before starting CK3. The receipts deliberately keep
 `offline_status_observed=null`: fresh pixels prove capture responsiveness,
-while the visual review proves the displayed mode. The SDL class/process
-identity came from the operator's earlier live window inventory; the recovery
-receipt itself records HWND/PID but does not claim to contain a class name.
+while the visual review proves the displayed mode. The later read-only
+process metadata identifies the receipt's UI process as CEF; the recovery
+receipt itself records HWND/PID but does not contain a class or executable.
 No screenshot, account data, or external mod source is copied into this repo.
 
 The screen remains owned by the suite's game diagnostic. This patch's author

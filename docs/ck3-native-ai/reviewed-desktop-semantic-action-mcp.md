@@ -68,6 +68,8 @@ identities or points.
     "root": "<absolute Steam root>",
     "pid": 789,
     "process_create_time": 1234567880.0,
+    "client_pid": 987,
+    "client_process_create_time": 1234567870.0,
     "offline_evidence": "<absolute steam-frame-freshness.json>",
     "offline_evidence_sha256": "<SHA-256>",
     "offline_visual_reviewed": true
@@ -106,8 +108,14 @@ CLI's SHA-256 and calls that entrypoint's read-only `list`, never arbitrary
 client commands.
 
 Steam checks combine a SHA-bound freshness receipt already visually reviewed
-as offline, its Steam PID, the same live Steam executable/process creation
-time, and current `WantsOfflineMode=1` file readback. This is a configuration
+as offline, its UI host PID, the same live UI host/process creation time, an
+independently bound native Steam client PID/process creation time, and current
+`WantsOfflineMode=1` file readback. The UI host executable must be exactly
+`<steam-root>/steam.exe` or
+`<steam-root>/bin/cef/cef.win64/steamwebhelper.exe`. The native client must be
+exactly `<steam-root>/steam.exe`; it can share the host PID in native mode but
+is distinct for a CEF-hosted window. A living helper does not substitute for
+the client after that client's death or restart. This is a configuration
 and session-continuity guard; it does not claim a new visual reading of Steam
 or infer mode from screenshot pixels. Source/reviewed and live whole-frame
 hash equality is deliberately unnecessary because CK3 portraits and scene
@@ -138,10 +146,20 @@ The focused test command is:
 <python> tools/test_desktop_semantic_action_mcp.py
 ```
 
-Eight tests passed, including official MCP closed schemas and rejection of
+Eleven tests passed, including official MCP closed schemas and rejection of
 extra coordinates/spoofed session IDs, allowlist names, independent-axis
 mapping, source/region bindings, fifteen pre-dispatch guard changes, a focus
 change after before-capture, preservation of after-input RED evidence, and
 native-backend mocked reads of the pinned bus/build/offline session/lease.
+Native and CEF hosts are both covered, with separate client continuity,
+unknown host/executable/PID rejection and a dead-client native-provider test
+that refuses input even while the configured CEF helper remains available.
 All desktop APIs and input are mocked. No live action was performed by this
 implementation package; the consuming suite owns its next controlled attempt.
+
+Correction on 2026-10-01: the first provider assumed the freshness receipt's
+UI host PID was the native client. Actual local metadata showed the receipt
+was emitted by CEF, so that assumption rejected a legitimate existing host.
+The two new required profile fields `client_pid` and
+`client_process_create_time` repair this real compatibility failure. Existing
+target-side profiles must be regenerated with both host and client identities.

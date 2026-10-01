@@ -32,6 +32,7 @@ def profile_fixture(root: Path) -> tuple[dict, Path]:
             "window_title": "Fixture CK3", "window_class": "SDL_app",
             "window_rect": [0, 0, 1920, 1080]},
         "steam": {"root": str(root), "pid": 15, "process_create_time": 120.0,
+            "client_pid": 15, "client_process_create_time": 120.0,
             "offline_evidence": str(offline), "offline_evidence_sha256": actions.sha256(offline),
             "offline_visual_reviewed": True},
         "task_bus_script": str(bus), "task_bus_sha256": actions.sha256(bus),
@@ -63,6 +64,9 @@ class FakeBackend:
             "steam_pid": profile["steam"]["pid"],
             "steam_create_time": profile["steam"]["process_create_time"],
             "steam_executable": str(Path(profile["steam"]["root"]) / "steam.exe"),
+            "steam_client_pid": profile["steam"]["client_pid"],
+            "steam_client_create_time": profile["steam"]["client_process_create_time"],
+            "steam_client_executable": str(Path(profile["steam"]["root"]) / "steam.exe"),
             "screen_lease_fresh": True, **copy.deepcopy(self.overrides)}
 
     def image_size(self, path: Path) -> tuple[int, int]:
@@ -79,6 +83,54 @@ class FakeBackend:
 
 
 class SemanticActionTests(unittest.TestCase):
+    def test_cef_ui_host_and_separate_native_client_are_supported(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            profile, _ = profile_fixture(Path(temporary))
+            profile["steam"].update(client_pid=16, client_process_create_time=119.0)
+            backend = FakeBackend(profile)
+            backend.overrides["steam_executable"] = str(Path(profile["steam"]["root"]) / "bin" / "cef" / "cef.win64" / "steamwebhelper.exe")
+            result = actions.SemanticActionService(profile, backend).execute("select_bookmark_ruler")
+            self.assertTrue(result["click_dispatched"])
+            self.assertEqual(result["status"], "dispatched_requires_business_readback")
+
+    def test_unknown_ui_host_path_and_dead_or_restarted_client_send_zero_input(self) -> None:
+        changes = [
+            {"steam_executable": "other/steamwebhelper.exe"},
+            {"steam_executable": "other/steam.exe"},
+            {"steam_pid": 999}, {"steam_client_pid": 999},
+            {"steam_client_create_time": 999.0},
+            {"steam_client_executable": "other/steam.exe"},
+        ]
+        for change in changes:
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as temporary:
+                profile, _ = profile_fixture(Path(temporary))
+                backend = FakeBackend(profile)
+                backend.overrides = change
+                with self.assertRaisesRegex(RuntimeError, "Steam"):
+                    actions.SemanticActionService(profile, backend).execute("select_bookmark_ruler")
+                self.assertEqual(backend.clicked, [])
+                self.assertEqual(backend.captured, [])
+
+    def test_live_cef_host_cannot_continue_when_bound_native_client_died(self) -> None:
+        import psutil
+        import pyautogui
+        with tempfile.TemporaryDirectory() as temporary:
+            profile, _ = profile_fixture(Path(temporary))
+            profile["steam"].update(client_pid=16, client_process_create_time=119.0)
+            game = Mock(pid=11)
+            host = Mock(pid=15)
+            def processes(pid):
+                if pid == 16:
+                    raise psutil.NoSuchProcess(pid)
+                return {11: game, 15: host}[pid]
+            with (patch.object(psutil, "Process", side_effect=processes),
+                  patch.object(pyautogui, "click") as click,
+                  patch.object(pyautogui, "screenshot") as screenshot):
+                with self.assertRaises(psutil.NoSuchProcess):
+                    actions.SemanticActionService(profile).execute("select_bookmark_ruler")
+                click.assert_not_called()
+                screenshot.assert_not_called()
+
     def test_native_backend_reads_pinned_cli_build_offline_session_and_fresh_lease(self) -> None:
         import psutil
         import pyautogui

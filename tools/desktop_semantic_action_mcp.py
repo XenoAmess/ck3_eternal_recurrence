@@ -56,7 +56,7 @@ def load_profile(path: Path) -> dict:
         raise ValueError("target executable_sha256 must be SHA-256")
     steam = exact_fields(profile["steam"], {
         "root", "pid", "process_create_time", "offline_evidence", "offline_evidence_sha256",
-        "offline_visual_reviewed",
+        "offline_visual_reviewed", "client_pid", "client_process_create_time",
     }, "steam")
     if steam["offline_visual_reviewed"] is not True:
         raise ValueError("Steam offline evidence must have been visually reviewed")
@@ -64,6 +64,10 @@ def load_profile(path: Path) -> dict:
         raise ValueError("Steam pid must be a positive integer")
     if isinstance(steam["process_create_time"], bool) or not isinstance(steam["process_create_time"], (float, int)) or not math.isfinite(steam["process_create_time"]) or steam["process_create_time"] <= 0:
         raise ValueError("Steam process_create_time must be positive")
+    if isinstance(steam["client_pid"], bool) or not isinstance(steam["client_pid"], int) or steam["client_pid"] <= 0:
+        raise ValueError("Steam client_pid must be a positive integer")
+    if isinstance(steam["client_process_create_time"], bool) or not isinstance(steam["client_process_create_time"], (float, int)) or not math.isfinite(steam["client_process_create_time"]) or steam["client_process_create_time"] <= 0:
+        raise ValueError("Steam client_process_create_time must be positive")
     for field in ("build_id", "window_title", "window_class"):
         if not isinstance(target[field], str) or not target[field]:
             raise ValueError(f"target {field} must be nonempty text")
@@ -114,6 +118,7 @@ class NativeDesktopBackend:
         _, window_pid = win32process.GetWindowThreadProcessId(hwnd)
         steam = profile["steam"]
         steam_process = psutil.Process(steam["pid"])
+        steam_client = psutil.Process(steam["client_pid"])
         loginusers = Path(steam["root"]) / "config" / "loginusers.vdf"
         login_bytes = loginusers.read_bytes()
         manifest = Path(target["app_manifest"])
@@ -147,7 +152,9 @@ class NativeDesktopBackend:
             "steam_offline_flags": _offline_flags(login_bytes.decode("utf-8-sig")),
             "steam_loginusers_sha256": hashlib.sha256(login_bytes).hexdigest(),
             "steam_pid": steam_process.pid, "steam_create_time": steam_process.create_time(),
-            "steam_executable": steam_process.exe(), "screen_lease_fresh": lease_fresh,
+            "steam_executable": steam_process.exe(),
+            "steam_client_pid": steam_client.pid, "steam_client_create_time": steam_client.create_time(),
+            "steam_client_executable": steam_client.exe(), "screen_lease_fresh": lease_fresh,
             "screen_owners": recovery.screen_owners(tasks),
         }
 
@@ -187,9 +194,16 @@ def validate_observation(profile: dict, observed: dict) -> None:
     if observed["steam_offline_flags"] != ["1"]:
         raise RuntimeError("Steam offline file readback is not confirmed")
     steam = profile["steam"]
+    steam_root = Path(steam["root"])
+    allowed_ui_hosts = {(steam_root / "steam.exe").resolve(),
+                        (steam_root / "bin" / "cef" / "cef.win64" / "steamwebhelper.exe").resolve()}
     if (observed["steam_pid"] != steam["pid"] or observed["steam_create_time"] != steam["process_create_time"]
-            or Path(observed["steam_executable"]).resolve() != (Path(steam["root"]) / "steam.exe").resolve()):
-        raise RuntimeError("reviewed Steam session changed")
+            or Path(observed["steam_executable"]).resolve() not in allowed_ui_hosts):
+        raise RuntimeError("reviewed Steam UI host changed")
+    if (observed["steam_client_pid"] != steam["client_pid"]
+            or observed["steam_client_create_time"] != steam["client_process_create_time"]
+            or Path(observed["steam_client_executable"]).resolve() != (steam_root / "steam.exe").resolve()):
+        raise RuntimeError("reviewed Steam client session changed")
     if observed["screen_owners"] != [profile["screen_task_id"]]:
         raise RuntimeError("exclusive task-bus screen lease missing or conflicted")
     if observed["screen_lease_fresh"] is not True:
