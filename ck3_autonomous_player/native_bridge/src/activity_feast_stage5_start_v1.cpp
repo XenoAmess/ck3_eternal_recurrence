@@ -54,7 +54,7 @@ bool Valid(const ActivityFeastStage5StartSnapshotV1 &snapshot,
       !snapshot.feast_type_verified || !snapshot.generic_option_verified ||
       !snapshot.final_can_start_observed || !snapshot.final_can_start ||
       !snapshot.four_costs_observed ||
-      !IsActivityFeastSelectedGuestRouteQualifiedV1(snapshot) ||
+      !IsActivityFeastGuestRouteQualifiedV1(snapshot) ||
       !snapshot.hosted_identities_observed ||
       snapshot.hosted_count > snapshot.hosted.size())
     return false;
@@ -97,6 +97,7 @@ bool Same(const ActivityFeastStage5StartSnapshotV1 &a,
       a.hosted_identities_observed != b.hosted_identities_observed ||
       a.hosted_count != b.hosted_count ||
       a.outcome_values != b.outcome_values ||
+      a.ordinary_guest != b.ordinary_guest ||
       a.selected_guests.status != b.selected_guests.status ||
       a.selected_guests.frame != b.selected_guests.frame ||
       a.selected_guests.normal_refresh_sequence !=
@@ -143,6 +144,46 @@ bool IsActivityFeastSelectedGuestRouteQualifiedV1(
              snapshot.normal_cost_refresh_sequence &&
          guests.arrival_time_observed && guests.selected_nonhost_count > 0 &&
          guests.timely_positive_join_count > 0;
+}
+
+bool IsActivityFeastOrdinaryGuestRouteObservedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept {
+  const auto &ordinary = snapshot.ordinary_guest;
+  const auto &candidate = ordinary.candidate;
+  const auto &frame = snapshot.frame;
+  const ActivityPlannerDiagFrameV1 expected{
+      frame.revision, frame.date_raw, frame.actor_character_id,
+      frame.application_main_thread, frame.paused, frame.map_ready,
+      frame.actor_alive};
+  return candidate.status == ActivityFeastGuestCandidateStatusV1::observed &&
+         candidate.frame == expected && candidate.native_filtered &&
+         candidate.character_id > 0 &&
+         candidate.character_id != frame.actor_character_id &&
+         snapshot.normal_cost_refresh_sequence != 0 &&
+         candidate.normal_refresh_sequence == snapshot.normal_cost_refresh_sequence &&
+         ordinary.authored_rule_key == "activity_invite_rule_close_family" &&
+         ordinary.rule_status == ActivityFeastGuestRuleStatusV1::observed_active &&
+         ordinary.rule_active &&
+         ordinary.provenance_status == ActivityGuestRuleProvenanceStatusV1::observed &&
+         ordinary.provenance_refresh_sequence != 0 &&
+         ordinary.native_key_hash == ordinary.provenance_key_hash;
+}
+
+bool IsActivityFeastOrdinaryGuestRouteQualifiedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept {
+  const auto &ordinary = snapshot.ordinary_guest;
+  return IsActivityFeastOrdinaryGuestRouteObservedV1(snapshot) &&
+         ordinary.candidate_membership &&
+         ordinary.filtered_rule_character_count > 0 &&
+         ordinary.candidate.planner_join_raw > 0 &&
+         ordinary.candidate.travel_days >= 0 &&
+         ordinary.candidate.arrival_raw <= ordinary.candidate.planned_start_raw;
+}
+
+bool IsActivityFeastGuestRouteQualifiedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept {
+  return IsActivityFeastSelectedGuestRouteQualifiedV1(snapshot) ||
+         IsActivityFeastOrdinaryGuestRouteQualifiedV1(snapshot);
 }
 
 bool InvokeActivityFeastNativeCommitV1(void *, std::uintptr_t module_base,

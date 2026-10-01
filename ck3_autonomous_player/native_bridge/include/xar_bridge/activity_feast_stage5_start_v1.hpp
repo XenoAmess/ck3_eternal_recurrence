@@ -3,12 +3,38 @@
 #include "xar_bridge/activity_feast_resource_balance_v1.hpp"
 #include "xar_bridge/activity_stage5_feast_full_cost_v1.hpp"
 #include "xar_bridge/activity_stage5_feast_guest_join_v1.hpp"
+#include "xar_bridge/activity_feast_guest_candidate_v1.hpp"
+#include "xar_bridge/activity_feast_guest_rule_toggle_v1.hpp"
+#include "xar_bridge/activity_feast_guest_rule_provenance_v1.hpp"
 #include "xar_bridge/ck3_12002_feast_outcome_values.hpp"
 
 #include <array>
 #include <cstdint>
 
 namespace xar::bridge {
+
+// One observed ordinary category route, kept separate from selected guest rows.
+// The source is the original natural rule effect intersected with its native
+// filter, paired with a current native candidate prediction. This is no claim
+// that an invitation was sent or that a guest accepted it.
+struct ActivityFeastOrdinaryGuestRouteV1 {
+  ActivityFeastGuestCandidateResultV1 candidate{};
+  ActivityFeastGuestRuleStatusV1 rule_status =
+      ActivityFeastGuestRuleStatusV1::exact_build_rejected;
+  ActivityGuestRuleProvenanceStatusV1 provenance_status =
+      ActivityGuestRuleProvenanceStatusV1::exact_build_rejected;
+  std::string_view authored_rule_key = "activity_invite_rule_close_family";
+  bool rule_active = false;
+  bool candidate_membership = false;
+  std::uint32_t native_key_hash = 0;
+  std::uint32_t provenance_key_hash = 0;
+  std::uint64_t provenance_refresh_sequence = 0;
+  std::uint32_t raw_rule_character_count = 0;
+  std::uint32_t filtered_rule_character_count = 0;
+
+  friend bool operator==(const ActivityFeastOrdinaryGuestRouteV1 &,
+                         const ActivityFeastOrdinaryGuestRouteV1 &) = default;
+};
 
 // The transport must build this from the native four-cost, final CanStart,
 // selected-option, balance, and hosted-identity readers in ONE paused frame.
@@ -28,10 +54,17 @@ struct ActivityFeastStage5StartSnapshotV1 {
   std::uint32_t hosted_count = 0;
   std::array<ActivityHostedIdentityV1, 64> hosted{};
   ActivityFeastGuestJoinResultV1 selected_guests{};
+  ActivityFeastOrdinaryGuestRouteV1 ordinary_guest{};
   FeastOutcomeValuesV1 outcome_values{};
 };
 
 bool IsActivityFeastSelectedGuestRouteQualifiedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept;
+bool IsActivityFeastOrdinaryGuestRouteObservedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept;
+bool IsActivityFeastOrdinaryGuestRouteQualifiedV1(
+    const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept;
+bool IsActivityFeastGuestRouteQualifiedV1(
     const ActivityFeastStage5StartSnapshotV1 &snapshot) noexcept;
 
 using ActivityFeastStage5CaptureV1 = bool (*)(

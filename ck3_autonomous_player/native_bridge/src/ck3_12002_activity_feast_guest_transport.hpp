@@ -95,6 +95,11 @@ struct ActivityFeastGuestRulePrivateQueryV1 : ActivityFeastGuestTransportSource1
 
 bool ExecuteActivityFeastGuestRulePrivateV1(
     void *context, const MainThreadExecutionStampV1 &stamp) noexcept;
+// Read the existing rule/provenance sources on an already owned application-
+// main execution. No mailbox submission, Toggle or scripted effect invocation.
+bool ReadActivityFeastGuestRuleSources12002V1(
+    ActivityFeastGuestRulePrivateQueryV1 &query,
+    std::uint32_t owner_thread_id) noexcept;
 std::string SerializeActivityFeastGuestRulePrivateV1(
     const ActivityFeastGuestRulePrivateQueryV1 &query);
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)

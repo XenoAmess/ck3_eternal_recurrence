@@ -65,8 +65,11 @@ bool ReadRaw(const FamilyBindings &b, std::int32_t id, Relationship &out) noexce
   if (!scalar(betrothed, out.betrothed_character_id) ||
       !scalar(primary, out.primary_spouse_character_id)) return false;
   for (std::int32_t index = 0; index < count; ++index) {
-    void *peer = nullptr;
-    if (!Alive(b, ids[index], peer)) return false;
+    // The native spouse array retains former deceased spouses. Its historical
+    // IDs remain untouched; this relationship result describes living peers.
+    void *peer = ResolveCoreCharacter(b.context.core, ids[index]);
+    if (ids[index] <= 0 || peer == nullptr) return false;
+    if (Load<void *>(peer, kCharacterDeathDataOffset) != nullptr) continue;
     out.spouse_character_ids.push_back(ids[index]);
   }
   return true;

@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / "src"))
 FIXTURES = ROOT / "native_bridge" / "research" / "fixtures"
 
 from xar_autoplayer.bridge.activity_feast_stage5_start_private_transport import (
-    POST_STEP, query_activity_feast_hosted_post_private_v1,
+    INPUT_STEP, POST_STEP, query_activity_feast_hosted_post_private_v1,
 )
 from xar_autoplayer.bridge.activity_feast_terminal_outcome_v1 import (
     normalize_activity_feast_terminal_outcome_v1,
@@ -65,6 +65,7 @@ class FixtureDriver:
         key = {
             COST_STEP: "activity_stage5_feast_full_cost",
             POST_STEP: "activity_feast_hosted_post",
+            INPUT_STEP: "activity_feast_stage5_start_inputs",
         }[step]
         # Only the endpoint's existing outer envelope is supplied here.
         # The payload is passed unchanged from the real C++ serializer output.

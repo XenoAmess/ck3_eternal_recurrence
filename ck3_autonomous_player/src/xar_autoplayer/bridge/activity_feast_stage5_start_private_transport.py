@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import uuid
+import re
 from collections.abc import Mapping
 from typing import cast
 
@@ -128,6 +129,98 @@ def _outcome_values(value: object) -> dict[str, object]:
     return dict(value)
 
 
+def _ordinary_guest_route(
+    value: object, *, native_revision: int, date_raw: int, actor_id: int,
+    normal_refresh_sequence: int,
+) -> dict[str, object]:
+    fields = {
+        "status", "authored_rule_key", "candidate_status", "rule_status",
+        "provenance_status", "rule_active", "native_key_hash", "provenance_key_hash",
+        "provenance_refresh_sequence", "raw_rule_character_count",
+        "filtered_rule_character_count", "candidate_membership", "candidate", "qualified",
+    }
+    if (not isinstance(value, dict) or set(value) != fields
+            or value["status"] not in {"observed", "unavailable"}
+            or value["authored_rule_key"] != "activity_invite_rule_close_family"
+            or value["candidate_status"] not in {
+                "observed", "no_qualified_candidate", "target_not_filtered",
+                "exact_build_rejected", "frame_changed", "planner_unavailable",
+                "no_normal_refresh", "candidate_source_unavailable",
+                "native_evaluation_failed", "arrival_unavailable", "configuration_changed"}
+            or value["rule_status"] not in {
+                "observed_active", "observed_inactive", "exact_build_rejected",
+                "frame_changed", "planner_unavailable", "window_unbound",
+                "rule_unavailable", "ambiguous_rule", "native_read_failed",
+                "native_action_failed", "postcondition_failed"}
+            or value["provenance_status"] not in {
+                "observed", "exact_build_rejected", "no_normal_refresh", "frame_changed",
+                "planner_unavailable", "rule_unavailable", "ambiguous_rule",
+                "capture_overflow", "native_read_failed"}
+            or type(value["qualified"]) is not bool):
+        raise BridgeUnavailableError("private feast ordinary guest source malformed")
+    rule_observed = value["rule_status"] in {"observed_active", "observed_inactive"}
+    if rule_observed:
+        if (value["rule_active"] is not (value["rule_status"] == "observed_active")
+                or type(value["native_key_hash"]) is not int
+                or not 0 <= value["native_key_hash"] <= 0xFFFFFFFF):
+            raise BridgeUnavailableError("private feast ordinary rule data malformed")
+    elif value["rule_active"] is not None or value["native_key_hash"] is not None:
+        raise BridgeUnavailableError("private feast ordinary rule unavailable data malformed")
+    provenance_fields = ("provenance_key_hash", "provenance_refresh_sequence",
+                         "raw_rule_character_count", "filtered_rule_character_count",
+                         "candidate_membership")
+    if value["provenance_status"] == "observed":
+        if (type(value["candidate_membership"]) is not bool
+                or type(value["provenance_key_hash"]) is not int
+                or not 0 <= value["provenance_key_hash"] <= 0xFFFFFFFF
+                or not _positive(value["provenance_refresh_sequence"], 2**64 - 1)
+                or type(value["raw_rule_character_count"]) is not int
+                or type(value["filtered_rule_character_count"]) is not int
+                or not 0 <= value["filtered_rule_character_count"] <= value["raw_rule_character_count"] <= 4096
+                or (value["candidate_membership"] and value["filtered_rule_character_count"] == 0)):
+            raise BridgeUnavailableError("private feast ordinary provenance malformed")
+    elif any(value[key] is not None for key in provenance_fields):
+        raise BridgeUnavailableError("private feast ordinary provenance unavailable data malformed")
+    candidate = value["candidate"]
+    if value["candidate_status"] == "observed":
+        if (not isinstance(candidate, dict) or set(candidate) != {
+                "character_id", "planner_join_raw", "travel_days", "arrival_raw",
+                "planned_start_raw", "snapshot_revision", "date_raw", "actor_character_id",
+                "normal_refresh_sequence", "source_fingerprint", "native_filtered"}
+                or not _positive(candidate["character_id"], 0xFFFFFFFF)
+                or candidate["character_id"] == actor_id
+                or any(type(candidate[key]) is not int for key in (
+                    "planner_join_raw", "travel_days", "arrival_raw", "planned_start_raw",
+                    "snapshot_revision", "date_raw", "actor_character_id"))
+                or not -(2**63) <= candidate["planner_join_raw"] < 2**63
+                or any(not -(2**31) <= candidate[key] < 2**31 for key in (
+                    "travel_days", "arrival_raw", "planned_start_raw"))
+                or candidate["snapshot_revision"] != native_revision
+                or candidate["date_raw"] != date_raw or candidate["actor_character_id"] != actor_id
+                or not _positive(candidate["normal_refresh_sequence"], 2**64 - 1)
+                or not isinstance(candidate["source_fingerprint"], str)
+                or re.fullmatch(r"0x[0-9a-f]{16}", candidate["source_fingerprint"]) is None
+                or type(candidate["native_filtered"]) is not bool):
+            raise BridgeUnavailableError("private feast ordinary candidate malformed")
+    elif candidate is not None:
+        raise BridgeUnavailableError("private feast ordinary candidate unavailable data malformed")
+    observed = bool(
+        candidate is not None and candidate["native_filtered"]
+        and candidate["normal_refresh_sequence"] == normal_refresh_sequence
+        and value["rule_status"] == "observed_active" and value["rule_active"] is True
+        and value["provenance_status"] == "observed"
+        and value["native_key_hash"] == value["provenance_key_hash"])
+    qualified = bool(
+        observed and value["candidate_membership"] is True
+        and value["filtered_rule_character_count"] > 0
+        and candidate["planner_join_raw"] > 0 and candidate["travel_days"] >= 0
+        and candidate["arrival_raw"] <= candidate["planned_start_raw"])
+    if (value["status"] != ("observed" if observed else "unavailable")
+            or value["qualified"] is not qualified):
+        raise BridgeUnavailableError("private feast ordinary qualification disagreed")
+    return {**value, "candidate": dict(candidate) if candidate is not None else None}
+
+
 def _parse_payload(
     value: object, *, step: str, native_revision: int,
     date_raw: int, actor_id: int,
@@ -145,7 +238,9 @@ def _parse_payload(
     }
     fields = common | (input_fields if step == INPUT_STEP else set())
     if (not isinstance(value, dict)
-            or set(value) not in (fields, fields | {"outcome_values"})
+            or not fields <= set(value)
+            or not set(value) <= fields | {"outcome_values"} | (
+                {"ordinary_guest_route"} if step == INPUT_STEP else set())
             or value["schema"] != (INPUT_SCHEMA if step == INPUT_STEP else POST_SCHEMA)
             or type(value["snapshot_revision"]) is not int
             or value["snapshot_revision"] != native_revision
@@ -215,6 +310,17 @@ def _parse_payload(
               or value["arrival_time_observed"] is not False):
             raise BridgeUnavailableError("private feast unavailable guest must remain unknown")
         result["resources"] = copied_resources
+    if step == INPUT_STEP and "ordinary_guest_route" in value:
+        result["ordinary_guest_route"] = _ordinary_guest_route(
+            value["ordinary_guest_route"], native_revision=native_revision,
+            date_raw=date_raw, actor_id=actor_id,
+            normal_refresh_sequence=value["normal_refresh_sequence"])
+        selected_qualified = bool(
+            value["guest_join_status"] == "observed" and value["arrival_time_observed"]
+            and value["selected_nonhost_count"] > 0 and value["timely_positive_join_count"] > 0)
+        if value["native_guest_route_qualified"] is not (
+                selected_qualified or result["ordinary_guest_route"]["qualified"]):
+            raise BridgeUnavailableError("private feast guest routes disagreed")
     return result
 
 

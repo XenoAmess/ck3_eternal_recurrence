@@ -20,6 +20,9 @@ struct ActivityFeastStage5Private12002QueryV1
   void *native_context = nullptr;
   FeastReadSnapshotV1 read_snapshot = nullptr;
   FeastResolveScriptIdentifierV1 resolve_script_identifier = nullptr;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+  bridge::ActivityGuestRuleProvenanceObserverV1 *provenance_observer = nullptr;
+#endif
 };
 
 bool ExecuteActivityFeastStage5Private12002V1(

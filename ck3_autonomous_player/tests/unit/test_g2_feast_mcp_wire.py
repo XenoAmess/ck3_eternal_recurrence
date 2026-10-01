@@ -6,6 +6,7 @@ import importlib.util
 from pathlib import Path
 import sys
 import unittest
+from copy import deepcopy
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
@@ -18,12 +19,16 @@ from test_activity_feast_guest_rule_provenance_private_transport import (
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.version_identity import CK3_12002, CK3_12003
+from xar_autoplayer.activity_feast_stage5_start_formal_consumer import (
+    assess_feast_start_private_v1,
+)
 
 
 COST_TOOL = "ck3_query_activity_stage5_feast_full_cost_private_v1"
 POST_TOOL = "ck3_query_activity_feast_hosted_post_private_v1"
 ROUTE_TOOL = "ck3_query_activity_feast_guest_route_proof_private_v1"
 PROVENANCE_TOOL = "ck3_query_activity_feast_guest_rule_provenance_private_v1"
+INPUT_TOOL = "ck3_query_activity_feast_stage5_start_inputs_private_v1"
 
 
 class NativeWrapperWireDriver(FixtureDriver):
@@ -57,6 +62,7 @@ class GuestRouteWireDriver(FixtureDriver):
             "expected_ck3_sha256": CK3_12003.executable_sha256,
         }
 
+
     def wait_for_command_result(self, request_id: str, _: float) -> dict[str, object]:
         return {
             "type": "command_result", "protocol_version": 1,
@@ -68,6 +74,22 @@ class GuestRouteWireDriver(FixtureDriver):
                 "backend_id": "native-headless",
                 "activity_feast_guest_route_proof": self.payload,
             },
+        }
+
+
+class OrdinaryInputWireDriver(FixtureDriver):
+    """Actual compiled serializer inputs, using the production .3 driver method."""
+
+    command_timeout_seconds = 1
+    query_activity_feast_stage5_start_inputs_private_v1 = (
+        NativeHeadlessGameplayDriver.query_activity_feast_stage5_start_inputs_private_v1
+    )
+
+    def __init__(self, payload):
+        super().__init__(payload)
+        self.snapshot["diagnostics"]["hello"] = {
+            "expected_ck3_version": CK3_12003.game_version,
+            "expected_ck3_sha256": CK3_12003.executable_sha256,
         }
 
 
@@ -85,6 +107,57 @@ class GuestProvenanceWireDriver(ProvenanceDriver):
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class FeastMcpWireTests(unittest.IsolatedAsyncioTestCase):
+    async def test_actual_ordinary_serializer_sdk_and_policy_keep_positive_negative_unavailable(self):
+        from mcp import Client
+
+        wires = actual_wire("ck3_12003_feast_ordinary_start_wire.json")
+        budget = {
+            "reserved_raw": {"gold": 0, "treasury": 0, "piety": 0, "barter_goods": 0},
+            "peaceful_spend_allowed": True, "gold_floor_raw": 20000000,
+            "active_war_count": 0, "war_cash_reserve_raw": None,
+        }
+        for index, wire in enumerate(wires):
+            with self.subTest(case=index):
+                driver = OrdinaryInputWireDriver(wire)
+                async with Client(create_server(driver)) as client:
+                    tools = {tool.name: tool for tool in (await client.list_tools()).tools}
+                    self.assertIs(tools[INPUT_TOOL].annotations.read_only_hint, True)
+                    reply = await client.call_tool(INPUT_TOOL, {"expected_revision": 5})
+                    self.assertFalse(reply.is_error)
+                    inputs = reply.structured_content
+                self.assertEqual(inputs["ordinary_guest_route"], wire["ordinary_guest_route"])
+                self.assertEqual(inputs["exact_ck3_build"], CK3_12003.game_version)
+                self.assertEqual(inputs["exe_sha256"], CK3_12003.executable_sha256)
+                self.assertEqual(inputs["selected_nonhost_count"], 0)
+                self.assertEqual(inputs["timely_positive_join_count"], 0)
+                self.assertEqual(driver.requests[0]["expected_revision"], 11)
+                self.assertEqual(len(driver.requests), 1)
+                self.assertNotIn("policy_positive", driver.requests[0])
+                assessment = assess_feast_start_private_v1(inputs, guest=None, budget=budget)
+                self.assertEqual(assessment["decision"], "start" if index == 0 else "hold")
+                if index == 0:
+                    self.assertEqual(assessment["submit_reserve_raw"], [20000000, 0, 0, 0])
+                    war_budget = {**budget, "active_war_count": 1}
+                    held = assess_feast_start_private_v1(inputs, guest=None, budget=war_budget)
+                    self.assertEqual(held["reason"], "war_cash_reserve_unobserved")
+                elif index == 1:
+                    self.assertEqual(inputs["ordinary_guest_route"]["status"], "observed")
+                    self.assertIs(inputs["ordinary_guest_route"]["candidate_membership"], False)
+                else:
+                    self.assertEqual(inputs["ordinary_guest_route"]["status"], "unavailable")
+                    self.assertIsNone(inputs["ordinary_guest_route"]["candidate_membership"])
+
+    async def test_ordinary_wire_frame_disagreement_is_reported_as_sdk_error(self):
+        from mcp import Client
+
+        wire = deepcopy(actual_wire("ck3_12003_feast_ordinary_start_wire.json")[0])
+        wire["ordinary_guest_route"]["candidate"]["date_raw"] += 24
+        driver = OrdinaryInputWireDriver(wire)
+        async with Client(create_server(driver)) as client:
+            reply = await client.call_tool(INPUT_TOOL, {"expected_revision": 5})
+        self.assertTrue(reply.is_error)
+        self.assertEqual(len(driver.requests), 1)
+
     async def test_sdk_named_provenance_reads_real_transport_positive_and_negative_membership(self):
         from mcp import Client
 

@@ -679,6 +679,9 @@ bool HandleActivityFeastPrivate12002(
       BindQuery(query, adapter, mailbox, current, revision);
       query.resolve_script_identifier = &ResolveScriptIdentifier;
       query.passive_cost = passive_cost;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+      query.provenance_observer = provenance_observer;
+#endif
       query.mode = post ? ck3_11906::ActivityFeastStage5PrivateModeV1::hosted_post
           : start ? ck3_11906::ActivityFeastStage5PrivateModeV1::start_attempt
                   : ck3_11906::ActivityFeastStage5PrivateModeV1::start_inputs;

@@ -464,6 +464,67 @@ void AppendOutcomeValues(std::string &payload,
   payload += "}";
 }
 
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+void AppendOrdinaryGuestRoute(
+    std::string &payload, const bridge::ActivityFeastStage5StartSnapshotV1 &input) {
+  const auto &route = input.ordinary_guest;
+  const auto &candidate = route.candidate;
+  const bool rule_observed =
+      route.rule_status == bridge::ActivityFeastGuestRuleStatusV1::observed_active ||
+      route.rule_status == bridge::ActivityFeastGuestRuleStatusV1::observed_inactive;
+  const bool provenance_observed =
+      route.provenance_status == bridge::ActivityGuestRuleProvenanceStatusV1::observed;
+  payload += ",\"ordinary_guest_route\":{\"status\":\"";
+  payload += bridge::IsActivityFeastOrdinaryGuestRouteObservedV1(input)
+                 ? "observed" : "unavailable";
+  payload += "\",\"authored_rule_key\":\"" + std::string(route.authored_rule_key) +
+             "\",\"candidate_status\":\"";
+  payload += bridge::ActivityFeastGuestCandidateStatusKeyV1(candidate.status);
+  payload += "\",\"rule_status\":\"";
+  payload += bridge::ActivityFeastGuestRuleStatusKeyV1(route.rule_status);
+  payload += "\",\"provenance_status\":\"";
+  payload += bridge::ActivityGuestRuleProvenanceStatusKeyV1(route.provenance_status);
+  payload += "\",\"rule_active\":";
+  payload += rule_observed ? route.rule_active ? "true" : "false" : "null";
+  payload += ",\"native_key_hash\":";
+  payload += rule_observed ? std::to_string(route.native_key_hash) : "null";
+  payload += ",\"provenance_key_hash\":";
+  payload += provenance_observed ? std::to_string(route.provenance_key_hash) : "null";
+  payload += ",\"provenance_refresh_sequence\":";
+  payload += provenance_observed ? std::to_string(route.provenance_refresh_sequence) : "null";
+  payload += ",\"raw_rule_character_count\":";
+  payload += provenance_observed ? std::to_string(route.raw_rule_character_count) : "null";
+  payload += ",\"filtered_rule_character_count\":";
+  payload += provenance_observed ? std::to_string(route.filtered_rule_character_count) : "null";
+  payload += ",\"candidate_membership\":";
+  payload += provenance_observed ? route.candidate_membership ? "true" : "false" : "null";
+  payload += ",\"candidate\":";
+  if (candidate.status == bridge::ActivityFeastGuestCandidateStatusV1::observed) {
+    std::string fingerprint = "0x0000000000000000";
+    constexpr char hex[] = "0123456789abcdef";
+    for (std::size_t index = 0; index < 16; ++index)
+      fingerprint[17 - index] = hex[(candidate.source_fingerprint >> (index * 4)) & 15];
+    payload += "{\"character_id\":" + std::to_string(candidate.character_id) +
+               ",\"planner_join_raw\":" + std::to_string(candidate.planner_join_raw) +
+               ",\"travel_days\":" + std::to_string(candidate.travel_days) +
+               ",\"arrival_raw\":" + std::to_string(candidate.arrival_raw) +
+               ",\"planned_start_raw\":" + std::to_string(candidate.planned_start_raw) +
+               ",\"snapshot_revision\":" + std::to_string(candidate.frame.revision) +
+               ",\"date_raw\":" + std::to_string(candidate.frame.date_raw) +
+               ",\"actor_character_id\":" + std::to_string(candidate.frame.actor_character_id) +
+               ",\"normal_refresh_sequence\":" + std::to_string(candidate.normal_refresh_sequence) +
+               ",\"source_fingerprint\":\"" + fingerprint + "\",\"native_filtered\":";
+    payload += candidate.native_filtered ? "true" : "false";
+    payload += "}";
+  } else {
+    payload += "null";
+  }
+  payload += ",\"qualified\":";
+  payload += bridge::IsActivityFeastOrdinaryGuestRouteQualifiedV1(input) ? "true" : "false";
+  payload += "}";
+}
+#endif
+
 } // namespace
 
 bool ExecuteActivityFeastStage5PrivateV1(
@@ -619,6 +680,9 @@ std::string SerializeActivityFeastStage5PrivateV1(
                      query.arrival_time_observed ? "true" : "false";
   payload += ",\"native_guest_route_qualified\":";
   payload += query.guest_route_qualified ? "true" : "false";
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+  AppendOrdinaryGuestRoute(payload, input);
+#endif
   payload += ",\"read_only\":";
   payload += query.mode == ActivityFeastStage5PrivateModeV1::start_inputs
                  ? "true" : "false";

@@ -26,6 +26,7 @@ struct Fake {
   int commit_count = 0;
   bool drift = false;
   bool guest_drift = false;
+  bool ordinary_drift = false;
   bool commit_return = true;
 
   template <typename T> void Put(std::uintptr_t at, T value) {
@@ -65,6 +66,8 @@ bool Capture(void *opaque, const ActivityHostedIdentityFrameV1 &expected,
   if (++fake.capture_count == 2 && fake.drift) output.planner += 8;
   if (fake.capture_count == 2 && fake.guest_drift)
     output.selected_guests.rows[0].character_id += 1;
+  if (fake.capture_count == 2 && fake.ordinary_drift)
+    output.ordinary_guest.candidate.source_fingerprint += 1;
   return true;
 }
 
@@ -132,9 +135,85 @@ ActivityFeastStage5StartEnvironmentV1 StartEnv(Fake &fake) {
           &Capture, &Commit};
 }
 
+void CheckOrdinaryRoute() {
+  Fake fake{};
+  Init(fake);
+  auto &snapshot = fake.snapshot;
+  snapshot.selected_guests.selected_nonhost_count = 0;
+  snapshot.selected_guests.positive_join_count = 0;
+  snapshot.selected_guests.timely_positive_join_count = 0;
+  snapshot.selected_guests.rows = {};
+  auto &ordinary = snapshot.ordinary_guest;
+  ordinary.candidate.status = ActivityFeastGuestCandidateStatusV1::observed;
+  ordinary.candidate.frame = snapshot.selected_guests.frame;
+  ordinary.candidate.normal_refresh_sequence = snapshot.normal_cost_refresh_sequence;
+  ordinary.candidate.source_fingerprint = 0x12345678;
+  ordinary.candidate.native_filtered = true;
+  ordinary.candidate.character_id = 37502;
+  ordinary.candidate.planner_join_raw = 200000;
+  ordinary.candidate.travel_days = 19;
+  ordinary.candidate.arrival_raw = static_cast<std::int32_t>(fake.frame.date_raw) + 19 * 24;
+  ordinary.candidate.planned_start_raw = static_cast<std::int32_t>(fake.frame.date_raw) + 156 * 24;
+  ordinary.rule_status = ActivityFeastGuestRuleStatusV1::observed_active;
+  ordinary.provenance_status = ActivityGuestRuleProvenanceStatusV1::observed;
+  ordinary.rule_active = true;
+  ordinary.candidate_membership = true;
+  ordinary.native_key_hash = ordinary.provenance_key_hash = 3893157043U;
+  ordinary.provenance_refresh_sequence = 9;
+  ordinary.raw_rule_character_count = 38;
+  ordinary.filtered_rule_character_count = 19;
+  ActivityFeastStage5StartRequestV1 request{};
+  request.expected = fake.frame;
+  request.policy_approved = true;
+  request.reserve_raw[0] = 50000000;
+  Check(!IsActivityFeastSelectedGuestRouteQualifiedV1(snapshot));
+  Check(IsActivityFeastOrdinaryGuestRouteObservedV1(snapshot));
+  Check(IsActivityFeastOrdinaryGuestRouteQualifiedV1(snapshot));
+  auto result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::submitted_pending &&
+        result.invoked && fake.commit_count == 1 && fake.capture_count == 2);
+  Check(result.before.selected_guests.selected_nonhost_count == 0 &&
+        result.before.ordinary_guest == ordinary);
+  const auto qualified = ordinary;
+  ordinary.candidate_membership = false;
+  Check(IsActivityFeastOrdinaryGuestRouteObservedV1(snapshot));
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected && fake.commit_count == 1);
+  ordinary = qualified;
+  ordinary.candidate.arrival_raw = ordinary.candidate.planned_start_raw + 1;
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected && fake.commit_count == 1);
+  ordinary = qualified;
+  ordinary.provenance_status = ActivityGuestRuleProvenanceStatusV1::no_normal_refresh;
+  Check(!IsActivityFeastOrdinaryGuestRouteObservedV1(snapshot));
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected && fake.commit_count == 1);
+  ordinary = qualified;
+  ordinary.candidate.normal_refresh_sequence++;
+  Check(!IsActivityFeastOrdinaryGuestRouteQualifiedV1(snapshot));
+  ordinary = qualified;
+  fake.capture_count = 0;
+  fake.ordinary_drift = true;
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected && fake.commit_count == 1);
+  fake.ordinary_drift = false;
+  snapshot.final_can_start = false;
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected && fake.commit_count == 1);
+  snapshot.final_can_start = true;
+  request.reserve_raw[0] = snapshot.balances.raw[0];
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected && fake.commit_count == 1);
+  request.reserve_raw[0] = 50000000;
+  request.previous_submit_pending = true;
+  result = StartActivityFeastStage5V1(StartEnv(fake), request);
+  Check(result.status == ActivityFeastStage5StartStatusV1::rejected && fake.commit_count == 1);
+}
+
 } // namespace
 
 int main() {
+  CheckOrdinaryRoute();
   Fake fake{};
   Init(fake);
   const ActivityHostedIdentityEnvironmentV1 balance_env{

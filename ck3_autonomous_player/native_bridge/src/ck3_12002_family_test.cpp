@@ -356,6 +356,58 @@ int main() {
     ++proposal.recipient_ai_accept_raw;
     Check(SubmitFamilyMarriageProposalV1(f.bindings, proposal) == Result::rejected && queue_calls == before_new + 2,
         "typed proposal rechecks final native acceptance operand");
+    {
+      // Actual .3 Murchad h1999: 31749 -> deceased 31596 and 47078 ->
+      // deceased 32513 remain in spouse/former_spouses, but final CanSend is
+      // legal. Reproduce those two historical arrays through the actual
+      // production rich reader, keeping all five independently read rows.
+      Fixture widow;
+      legal = true;
+      Put(widow.families[1].data(), 0x10, std::int32_t{-1});
+      Put(widow.families[2].data(), 0x10, std::int32_t{-1});
+      Put(widow.characters[1].data(), 0x68, std::int16_t{39});
+      const std::array<std::int16_t, 5> actual_ages{61, 52, 25, 28, 3};
+      const std::array<std::size_t, 5> candidate_slots{2, 4, 5, 6, 7};
+      for (std::size_t index = 0; index < candidate_slots.size(); ++index) {
+        auto *character = widow.characters[candidate_slots[index]].data();
+        Put(character, kCharacterDeathDataOffset, static_cast<void *>(nullptr));
+        Put(character, 0x68, actual_ages[index]);
+      }
+      std::array<std::array<std::byte, 0x1D8>, 2> deceased{};
+      const std::array<std::int32_t, 2> former_ids{0x03000009, 0x0300000A};
+      for (std::size_t index = 0; index < deceased.size(); ++index) {
+        Put(deceased[index].data(), 0x18, former_ids[index]);
+        Put(deceased[index].data(), kCharacterDeathDataOffset, std::uintptr_t{1});
+        Put(widow.slots.data(), (former_ids[index] & 0xFFFFFF) * 0x10 + 8, deceased[index].data());
+        auto *family = widow.families[candidate_slots[index]].data();
+        Put(family, 0x20, &former_ids[index]);
+        Put(family, 0x28, std::int32_t{1});
+        Put(family, 0x2C, std::int32_t{1});
+      }
+      std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> legal_widows;
+      Check(ReadArrangeMarriageFamilyCandidatesV1(widow.bindings, heir_id, legal_widows, diagnostics) ==
+          xar::game::ReadArrangeMarriageFamilyCandidatesResultV1::available,
+          "actual widow regression retains the native final-legal producer");
+      std::array<FamilyAllianceWireRowV1, 5> widow_wire{};
+      std::size_t widow_count = 0;
+      for (const auto &candidate : legal_widows) {
+        if (candidate.candidate_character_id == recipient_id) continue;
+        Check(widow_count < widow_wire.size(), "actual widow regression keeps exactly five rows");
+        auto read = ReadMarriageCandidateAlliancePrivateV1(
+            widow.bindings, candidate, widow.Projection(), false, true);
+        Check(read.failure == xar::ck3_11906::MarriageCandidateAlliancePrivateFailureV1::none &&
+            read.heir_relationship.spouse_character_ids.empty() &&
+            read.candidate_relationship.spouse_character_ids.empty(),
+            "actual deceased former spouse must not block the production five-row current relationship read");
+        widow_wire[widow_count++] = {candidate, read};
+      }
+      Check(widow_count == widow_wire.size() &&
+          Load<const std::int32_t *>(widow.families[2].data(), 0x20)[0] == former_ids[0] &&
+          Load<const std::int32_t *>(widow.families[4].data(), 0x20)[0] == former_ids[1],
+          "all five outcomes remain observed while raw historical spouse IDs remain intact");
+      std::cout << "XAR_FAMILY_OFFLINE_MURCHAD_WIDOW_FIVE " << SerializeFamilyAllianceFrameV1(
+          "offline-murchad-widow-five", 12, 8, widow_wire) << '\n';
+    }
     std::cout << "PASS CK3 1.20 family: bilateral/current pair, adult negative, roles/cost/answer, fulfillment, queue ownership, pending receipt\n";
     return 0;
   } catch (const std::exception &error) {

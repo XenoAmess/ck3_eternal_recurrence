@@ -648,6 +648,67 @@ bool RuleToggle(void *opaque, std::uintptr_t base, std::uintptr_t window,
 
 } // namespace
 
+bool ReadActivityFeastGuestRuleSources12002V1(
+    ActivityFeastGuestRulePrivateQueryV1 &query,
+    std::uint32_t owner_thread_id) noexcept {
+  if (query.activate || !query.enabled || query.module_base == 0 ||
+      query.executable_sha256 != bridge::kActivityPlanner12002ExeSha256V1 ||
+      query.read_snapshot == nullptr || query.passive_cost == nullptr ||
+      !query.passive_cost->installed || query.expected_revision == 0 ||
+      owner_thread_id == 0 || GetCurrentThreadId() != owner_thread_id)
+    return false;
+  game::Snapshot current{};
+  if (!query.read_snapshot(query.snapshot_context, current) ||
+      current != query.expected_snapshot || !current.paused ||
+      !current.map_ready || !current.has_played_character ||
+      !current.played_character_alive)
+    return false;
+  RuleContext context{&query, query.module_base, owner_thread_id};
+  bridge::ActivityPlannerDiagEnvironmentV1 diagnostic{
+      true, bridge::kActivityPlanner12002ExeSha256V1, query.module_base, &context,
+      &RuleReadMemory, &RuleReadFrame, &RuleCastIdler, &RuleInvokeVisibility};
+  bridge::ActivityFeastGuestRuleEnvironmentV1 environment{};
+  environment.enabled = true;
+  environment.diagnostic = diagnostic;
+  environment.passive_cost = query.passive_cost;
+  environment.context = &context;
+  environment.hash_key = &RuleHash;
+  environment.lookup_rule = &RuleLookup;
+  environment.read_active = &RuleActive;
+  const bridge::ActivityPlannerDiagFrameV1 expected{
+      query.expected_revision, current.date_raw,
+      current.played_character_id, true, true, true, true};
+  query.rule = bridge::ReadActivityFeastGuestRuleV1(
+      environment, expected, query.authored_rule_key);
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+  if (query.query_provenance && query.provenance_observer != nullptr &&
+      (query.rule.status == bridge::ActivityFeastGuestRuleStatusV1::observed_active ||
+       query.rule.status == bridge::ActivityFeastGuestRuleStatusV1::observed_inactive)) {
+    bridge::ActivityCostSlot12CaptureV1 cost{};
+    const bridge::ActivityCostSlot12FrameV1 frame{
+        static_cast<std::int32_t>(current.date_raw), current.played_character_id,
+        owner_thread_id, true};
+    const auto cost_status = bridge::ReadActivityCostSlot12PassiveV1(
+        *query.passive_cost, frame, cost);
+    if (cost_status == bridge::ActivityCostSlot12ReadStatusV1::observed) {
+      query.provenance = bridge::ReadActivityGuestRuleProvenanceV1(
+          *query.provenance_observer, frame, cost.planner,
+          query.rule.native_key_hash, query.candidate_character_id);
+      if (query.provenance.status ==
+          bridge::ActivityGuestRuleProvenanceStatusV1::no_normal_refresh)
+        query.failure = "activity feast guest provenance: " +
+            bridge::DescribeActivityGuestRuleRefreshDiagnosticsV1(*query.provenance_observer);
+    } else {
+      query.provenance.status = bridge::ActivityGuestRuleProvenanceStatusV1::no_normal_refresh;
+      query.failure = "activity feast guest provenance passive slot12: " +
+          std::string(RulePassiveCostStatusKey(cost_status));
+    }
+  }
+#endif
+  game::Snapshot after{};
+  return query.read_snapshot(query.snapshot_context, after) && after == current;
+}
+
 bool ExecuteActivityFeastGuestRulePrivateV1(
     void *opaque, const MainThreadExecutionStampV1 &stamp) noexcept {
   auto *query = static_cast<ActivityFeastGuestRulePrivateQueryV1 *>(opaque);
@@ -691,6 +752,14 @@ bool ExecuteActivityFeastGuestRulePrivateV1(
         query->executable_sha256 != bridge::kActivityPlanner12002ExeSha256V1 ||
         !query->passive_cost->installed) {
       query->failure = "exact_activity_feast_guest_rule_build_unavailable";
+      query->completed = true;
+      return true;
+    }
+    if (!query->activate) {
+      if (!ReadActivityFeastGuestRuleSources12002V1(*query, stamp.thread_id)) {
+        query->frame_changed = true;
+        query->failure = "published_frame_changed";
+      }
       query->completed = true;
       return true;
     }

@@ -59,6 +59,22 @@ def assess_feast_start_private_v1(
         return _hold("native_final_start_unavailable", status="not_actionable")
     if inputs.get("native_guest_route_qualified") is not True:
         return _hold("native_guest_route_unqualified")
+    ordinary = inputs.get("ordinary_guest_route")
+    if (guest is None and isinstance(ordinary, Mapping)
+            and ordinary.get("status") == "observed"
+            and ordinary.get("qualified") is True
+            and isinstance(ordinary.get("candidate"), Mapping)):
+        candidate = ordinary["candidate"]
+        # One current native-filtered member of an active authored category.
+        # Selected/special guest counts remain exactly as observed, including 0.
+        guest = {
+            "status": "observed", "arrival_time_observed": True,
+            "same_frame": True,
+            "snapshot_revision": candidate["snapshot_revision"],
+            "date_raw": candidate["date_raw"],
+            "actor_character_id": candidate["actor_character_id"],
+            "timely_positive_join_count": 1,
+        }
     if guest is None and "guest_join_status" in inputs:
         guest = {
             "status": inputs["guest_join_status"],
@@ -97,7 +113,7 @@ def assess_feast_start_private_v1(
     # Unknown balances remain unknown.  The value policy consults each balance
     # only when its corresponding native configured cost is positive.
     available = [balances[key]["available"] for key in RESOURCE_KEYS]
-    raw = [balances[key]["raw"] if available[i] else 0
+    raw = [balances[key]["raw"] if available[i] and costs[i] else 0
            for i, key in enumerate(RESOURCE_KEYS)]
     try:
         return assess_feast_stage5_start(
@@ -434,6 +450,7 @@ def consume_feast_start_private_v1(
         "pre_balances": inputs["balances"],
         "pre_hosted_activities": inputs["hosted_activities"],
         "pre_outcome_values": inputs.get("outcome_values"),
+        "ordinary_guest_route": inputs.get("ordinary_guest_route"),
         "reserved_raw": reserves, "stage": "submission_unresolved",
     }
     _write(state_dir, {**ledger, "pending": pending})

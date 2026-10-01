@@ -31,6 +31,19 @@ def main() -> int:
     join = (NATIVE / "src/activity_stage5_feast_guest_join_v1.cpp").read_text(encoding="utf-8-sig")
     status = join[join.index("std::string_view ActivityFeastGuestJoinStatusKeyV1("):
                   join.rindex("\n} // namespace xar::bridge")]
+    for filename, function in (
+        ("activity_feast_guest_candidate_v1.cpp", "ActivityFeastGuestCandidateStatusKeyV1"),
+        ("activity_feast_guest_rule_toggle_v1.cpp", "ActivityFeastGuestRuleStatusKeyV1"),
+        ("activity_feast_guest_rule_provenance_v1.cpp", "ActivityGuestRuleProvenanceStatusKeyV1"),
+    ):
+        body = (NATIVE / "src" / filename).read_text(encoding="utf-8-sig")
+        begin = body.index("std::string_view " + function + "(")
+        end = body.index("{", begin)
+        depth = 1
+        while depth:
+            end += 1
+            depth += (body[end] == "{") - (body[end] == "}")
+        status += "\n" + body[begin:end + 1]
     extracted = output / "production-serializer.cpp"
     extracted.write_text(
         '#include "activity_feast_stage5_start_private_transport_v1.hpp"\n'
@@ -45,8 +58,10 @@ def main() -> int:
     env, tools = module.initialize_msvc(installation, output, env)
     executable = output / "serializer-fixture.exe"
     command = [tools["cl"], "/nologo", "/std:c++20", "/EHsc", "/W4", "/WX", "/O2", "/utf-8",
+               "/DXAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1=1",
                f"/I{NATIVE / 'include'}", f"/I{NATIVE / 'src'}", f"/Fe:{executable}",
-               str(extracted), str(NATIVE / "src/ck3_12002_activity_feast_wire_test.cpp")]
+               str(extracted), str(NATIVE / "src/ck3_12002_activity_feast_wire_test.cpp"),
+               str(NATIVE / "src/activity_feast_stage5_start_v1.cpp")]
     compiled = subprocess.run(command, cwd=output, env=env, capture_output=True)
     (output / "compile.log").write_bytes(compiled.stdout + compiled.stderr)
     report = {"schema": "xar.ck3_12002.feast_cpp_wire_fixture.v1",
@@ -58,11 +73,15 @@ def main() -> int:
               "compile_exit": compiled.returncode}
     if compiled.returncode == 0:
         wire = output / "actual-hosted-post-wire.json"
-        executed = subprocess.run([str(executable), str(wire)], cwd=output, env=env, capture_output=True)
+        ordinary = output / "actual-ordinary-start-wire.json"
+        executed = subprocess.run([str(executable), str(wire), str(ordinary)], cwd=output, env=env, capture_output=True)
         report["run_exit"] = executed.returncode
         report["wire_path"] = str(wire)
         if wire.exists():
             report["wire_sha256"] = hashlib.sha256(wire.read_bytes()).hexdigest()
+        if ordinary.exists():
+            report["ordinary_wire_path"] = str(ordinary)
+            report["ordinary_wire_sha256"] = hashlib.sha256(ordinary.read_bytes()).hexdigest()
     report["passed"] = compiled.returncode == 0 and report.get("run_exit") == 0
     (output / "result.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))

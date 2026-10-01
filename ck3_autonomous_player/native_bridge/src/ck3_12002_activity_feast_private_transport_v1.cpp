@@ -1,4 +1,5 @@
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
+#include "ck3_12002_activity_feast_guest_transport.hpp"
 #include "xar_bridge/ck3_12002_feast_planner.hpp"
 #include "xar_bridge/ck3_12002_feast_guests_abi.hpp"
 
@@ -303,6 +304,46 @@ bool Capture(void *opaque,
     query.guest_status =
         bridge::ActivityFeastGuestJoinStatusV1::configuration_changed;
   }
+  bridge::ActivityFeastOrdinaryGuestRouteV1 ordinary{};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+  ordinary.candidate = bridge::ReadActivityFeastGuestCandidateV1(
+      guest_environment, planner_expected);
+  if (ordinary.candidate.status ==
+      bridge::ActivityFeastGuestCandidateStatusV1::observed) {
+    ActivityFeastGuestRulePrivateQueryV1 rule_query{};
+    rule_query.enabled = true;
+    rule_query.module_base = context.base;
+    rule_query.executable_sha256 = kFeastExecutableSha256;
+    rule_query.snapshot_context = query.native_context;
+    rule_query.read_snapshot = query.read_snapshot;
+    rule_query.expected_snapshot = query.expected_snapshot;
+    rule_query.expected_revision = query.expected_revision;
+    rule_query.passive_cost = query.passive_cost;
+    rule_query.authored_rule_key = ordinary.authored_rule_key;
+    rule_query.query_provenance = true;
+    rule_query.provenance_observer = query.provenance_observer;
+    rule_query.candidate_character_id =
+        static_cast<std::uint32_t>(ordinary.candidate.character_id);
+    if (ReadActivityFeastGuestRuleSources12002V1(rule_query, context.owner_thread_id)) {
+      ordinary.rule_status = rule_query.rule.status;
+      ordinary.rule_active = rule_query.rule.active;
+      ordinary.native_key_hash = rule_query.rule.native_key_hash;
+      ordinary.provenance_status = rule_query.provenance.status;
+      ordinary.provenance_key_hash = rule_query.provenance.native_key_hash;
+      ordinary.provenance_refresh_sequence = rule_query.provenance.normal_refresh_sequence;
+      ordinary.candidate_membership = rule_query.provenance.candidate_membership;
+      ordinary.raw_rule_character_count = rule_query.provenance.raw_rule_character_count;
+      ordinary.filtered_rule_character_count = rule_query.provenance.filtered_rule_character_count;
+    } else {
+      ordinary.rule_status = bridge::ActivityFeastGuestRuleStatusV1::frame_changed;
+      ordinary.provenance_status = bridge::ActivityGuestRuleProvenanceStatusV1::frame_changed;
+    }
+    const auto candidate_after = bridge::ReadActivityFeastGuestCandidateV1(
+        guest_environment, planner_expected);
+    if (candidate_after != ordinary.candidate)
+      ordinary.candidate.status = bridge::ActivityFeastGuestCandidateStatusV1::configuration_changed;
+  }
+#endif
   const auto hosted_environment = HostedEnvironment(context);
   const auto balances = bridge::ReadActivityFeastResourceBalancesV1(
       hosted_environment, expected);
@@ -337,6 +378,7 @@ bool Capture(void *opaque,
   output.hosted_count = identities.hosted_count;
   output.hosted = identities.hosted;
   output.selected_guests = guests;
+  output.ordinary_guest = ordinary;
   bridge::FeastOutcomeEnvironmentV1 outcome_environment{};
   outcome_environment.identity = hosted_environment;
   const auto outcomes = bridge::ReadFeastOutcomeValues12002(
@@ -345,7 +387,7 @@ bool Capture(void *opaque,
       outcomes.status == bridge::FeastOutcomeStatusV1::observed_partial)
     output.outcome_values = outcomes.value;
   query.guest_route_qualified =
-      bridge::IsActivityFeastSelectedGuestRouteQualifiedV1(output);
+      bridge::IsActivityFeastGuestRouteQualifiedV1(output);
   return true;
 }
 

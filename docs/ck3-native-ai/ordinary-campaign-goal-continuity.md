@@ -224,3 +224,102 @@ distinct from the retained Murchad episode; its code/scope remain unchanged.
 File preparation adds **0 seed days and 0 qualifications**; M7 stays
 `in_progress`, and natural inheritance and broader government coverage remain
 actual gameplay work.
+
+## Murchad actual restoration and retained first-query harness RED
+
+Root subsequently used frozen runtime
+`0b489e680b26d201547803de611d3d368e9bdc75` for the actual ordinary Murchad
+prepare/verify/stage/rebind. Those official operations were GREEN and retained
+the four paired files and original full1986 history before cold consumption.
+Managed GAME PID38316 reached a paused map at raw53327160 with actor31853.
+The existing consumer observed `dynasty_continuity` for the original
+`native-31853-af642d76cb41` campaign and progress0. This does not qualify a
+new natural inheritance or add gameplay days.
+
+The first direct attempt remains RED at
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/archive-root-review-0b489e68-v7-01/first-paused-01/result.json`.
+Its actual `046-bridge-diagnostics.json` has GAME PID38316, native hello
+`expected_ck3_version="1.20.0.3"`, exact EXE SHA
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`
+and `ck3_build_match=true`. The helper instead compared the native semantic
+version with packet label `1.20.0.3-steam25652598`, producing
+`Actual bridge CK3 version differs` before government/plan/checkpoint. This is
+a **harness RED**, not an observed game or ABI failure. The original RED,
+packet, Robert helper and runtime remain retained.
+
+The external Murchad template now compares only the version before `-steam`
+and retains the separate strict EXE SHA/build-match check. A file-only generated
+helper passed AST, both version-label cases and the retained SHA/actor checks.
+The root retry recipe is
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/version-label-template-fix-01/RETRY-RECIPE.json`,
+SHA-256 `3c04c285086778bb78cda4fb21646b0de8569ee2aec06e54988cd5bb218d0474`.
+It uses fresh `first-paused-02` and `cold-paused-02` outputs with
+`--compare-first first-paused-02/result.json`. Root owns the same-PID retry and
+subsequent normal stop/new GAME PID cold; file preparation did not restage,
+rebind or edit current state. The retained first RED is not overwritten by the
+successful attempts below.
+
+The corrected `first-paused-02` was actually GREEN in GAME PID38316 at the
+same raw53327160/actor31853. It observed and consumed the same ordinary
+`dynasty_continuity` goal, original campaign and progress0, with current
+`feudal_government` / `core_landed` and 44 effective features. Its selected
+`life-advance` step was observed only. The normal checkpoint materialized
+**full1987/saveh1987**, 104,905,248 bytes, SHA-256
+`3fb69354ffa33bc60c193000175ac4569ed625c77f42766a4a3bb446a85c8451`.
+Root normally stopped GAME38316 (tool-observed UTC23:01:26, supervisor exit0).
+The subsequent actual `cold-paused-02` was GREEN in new GAME PID98452:
+**full1989/saveh1987**, same date/actor, goal/progress, consumed next plan,
+government family and checkpoint source. Persisted-before PID38316 is source
+metadata, not the new game's PID.
+
+The root-produced results and necessary raw first/cold, original harness RED,
+official stage/rebind and available supervisor materials are frozen in
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/paused-cold-proof-0b489e68-v7-01/M7-MURCHAD-PAUSED-COLD-PROOF.json`,
+SHA-256 `59082c3e7f69d807f16eea329b8f0e4a2ff141d40f7cc30a0b789ab71011c103`.
+This is a **production-live primitive on a second existing feudal seed** for
+paused same-ruler ordinary goal/current-government/checkpoint/new-PID cold.
+Robert and Murchad sharing `core_landed` adds **0 new government families**.
+The bounded gameplay attempt below did not complete its 16 requested turns.
+Material goal-guided outcomes, natural inheritance and broader M7 completion
+remain unqualified.
+
+## Murchad bounded gameplay RED and genuine h1997 continuation pair
+
+Root ran the existing nonwar `native-auto-run` in GAME PID101276 from
+UTC23:05:08 to 23:06:11. The actual returned report is
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/actual-v7-nonwar-16turns-01/native-auto-run-report.json`:
+`status=blocked`, `outcome=failed`, `ok=false`. Its `auto_run` records
+**16 requested, 5 returned/attempted, 4 successful and 2 visible gameplay
+turns**. The raw class counts are query0/gameplay4/checkpoint1/recovery0/
+terminal1; the report's `terminal=null` and natural succession list is empty,
+so that raw counter is not a natural death or inheritance claim. The returned
+steps were lifestyle focus submit, lifestyle receipt, construction submit,
+construction receipt, then a blocked fifth planning turn. The actual blocker
+message is `one of five exact marriage outcome or lineage reads is unavailable`.
+This is an actual reader/planning blocker, distinct from the retained earlier
+version-label harness RED. Family owns the reader fix; Construction owns
+judgement of its receipt and pending postcondition.
+
+The stopped current pair was read and copied exactly to an external archive
+under root's freeze authorization: **full1999/saveh1997**, raw53327160,
+actor31853, original campaign `native-31853-af642d76cb41`,
+`dynasty_continuity` and progress0. The normal construction submission
+`construction-submit-f0ff9299cc8341af93cd62957c60ecbd` and existing pending
+sidecar remain retained. The opaque latest checkpoint is 105,030,436 bytes,
+SHA-256 `541e17b231a8eb19bf7473550a4cc76eb350e9a88607bef0899d4228dcd78263`.
+The archive keeps the complete driver including its post-checkpoint tail;
+the normal cold consumer remains responsible for its own saved prefix and
+physical restore lineage. No state/goal/history/episode was edited or
+truncated by the freezer.
+
+Proof and the stopped save/driver/pending files are at
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/nonwar-red-pair-proof-0b489e68-v7-01/M7-MURCHAD-NONWAR-RED-PROOF.json`,
+SHA-256 `942fa957128d8b9b3893c759b8ffb7cc784275f502c2d0e8a68087deb95c1343`.
+The paired paused/cold GREEN proof remains valid for its narrow scope; this
+RED attempt is not promoted to a successful 16-turn bundle or broad M7
+qualification. `date_advanced=false` and the last saved raw date equals the
+starting date, adding **0 seed/Robert/rogue days**, **0 government families**
+and **0 broad qualifications**. After the scoped reader fix, the useful M7
+continuation is root cold restore of this actual h1997 pair, ordinary goal
+and current-government consumption, existing pending action recovery without
+resubmission, then actual next-turn gameplay. M7 remains `in_progress`.
