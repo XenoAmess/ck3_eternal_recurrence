@@ -78,7 +78,7 @@ from ck3_native_profile_mcp import NativeProfileService, load_profile, create_se
 async def run(profile_path):
     service = NativeProfileService(load_profile(Path(profile_path)))
     try:
-        async with Client(create_server(service)) as client:
+        async with Client(create_server(service), cache=None) as client:
             preflight = await client.call_tool("ck3_query_native_profile_v1", {})
             attached = await client.call_tool("ck3_attach_profile_bridge_v1", {})
             snapshot = await client.call_tool("ck3_take_profile_native_snapshot_v1", {})
@@ -187,3 +187,8 @@ native byte/transport bindings; there is no Clausewitz script semantic change.
 DLL build qualification is a separate work package: a successful artifact link
 must not be described as a complete fresh-build/test pass. Preserve exact source,
 build log and artifact SHA-256 together, including failed fixture qualification.
+
+The exact 1.20.0.3 profile keeps this schema with its actual `.3` version and
+current guard/installation identity. Local scoped production DLL/injector
+qualification, independent pause-provider adaptation and source/artifact pins
+are in [the patch3 consumer handoff](native-campaign-patch3-local-qualification-2026-10-02.md).
