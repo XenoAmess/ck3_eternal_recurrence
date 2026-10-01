@@ -1,0 +1,335 @@
+{
+  "schema": "xar.ck3.sway-completion-phase-contract.v1",
+  "status": "GREEN",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "ck3_touched": false,
+  "stock": {
+    "sway": {
+      "relative_path": "common/schemes/scheme_types/sway_scheme.txt",
+      "line": 1,
+      "end_line": 578,
+      "file_sha256": "7D73696A96C28FF7DADDC6B6FA08C3C4365D53A2B69A9AA70DEF0F00D18720B3",
+      "block_sha256": "26A00C9E262357D3522AB37C57737E0A1CAD4D23B02EC35E19377324EF19BFB3",
+      "ordered_token_sha256": "698698A087FB67659DB9C13DDB6334B847157566BE285B27259AFFE9198CE678",
+      "token_count": 1436,
+      "source": "sway = {\n\t# Basic Setup\n\tskill = diplomacy\n\tdesc = sway_desc_general\n\tsuccess_desc = \"SWAY_SUCCESS_DESC\"\n\ticon = icon_scheme_sway\n\tillustration = \"gfx/interface/illustrations/event_scenes/corridor.dds\"\n\ttarget_type = character\n\tis_secret = no\n\tis_basic = yes\n\t\n\t# Parameters\n\tspeed_per_skill_point = -2.5\n\tspymaster_speed_per_skill_point = 0\t\n\tuses_resistance = no\n\tbase_progress_goal = 365\n\tbase_maximum_success = 95\n\tminimum_success = 20\n\t\n\t# Core Triggers\n\tallow = {\n\t\tage >= 12\n\t\tscope:target = {\n\t\t\tis_adult = yes\n\t\t\tis_imprisoned = no\n\t\t}\n\t\tis_imprisoned = no\n\t\t\n\t\t#Have I been blocked from targeting this character?\n\t\tcustom_description = { #Permanent\n\t\t\ttext = sway_blocked\n\t\t\tobject = scope:target\n\n\t\t\tNOT = {\n\t\t\t\tscope:target = {\n\t\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\t\tmodifier = sway_blocker_opinion\n\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t#AI blockers\n\t\ttrigger_if = {\n\t\t\tlimit = { is_ai = yes }\n\n\t\t\tscope:target = {\n\t\t\t\tOR = {\n\t\t\t\t\topinion = {\n\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t\tvalue <= 50\n\t\t\t\t\t}\n\t\t\t\t\tAND = {\n\t\t\t\t\t\tis_vassal_of = scope:owner\n\t\t\t\t\t\tis_a_faction_member = yes\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\ttrigger_if = { #So players don't get spammed by AI sway\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tis_ai = no\n\t\t\t\t\t}\n\t\t\t\t\tNOT = {\n\t\t\t\t\t\tany_targeting_scheme = {\n\t\t\t\t\t\t\tscheme_type = sway\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\tvalid = {\n\t\tis_incapable = no\n\t\tNOT = { is_at_war_with = scope:target }\n\t}\n\n\todds_prediction = {\n\t\tadd = base_odds_prediction_target_is_char_value\n\t\tadd = odds_skill_contribution_diplomacy_value\n\t\tadd = odds_sway_scheme_misc_value\n\t\tmin = 0\n\t}\n\n\t# Base Chances\n\tbase_success_chance = {\n\t\tbase = 30\n\t\tmodifier = {\n\t\t\tadd = {\n\t\t\t\tvalue = scope:owner.diplomacy\n\t\t\t\tmultiply = 2\n\t\t\t\tfloor = yes\n\t\t\t}\n\t\t\tdesc = SCHEME_YOUR_DIPLOMACY\n\t\t}\n\n\t\tdiplomacy_scheme_base_chance_modifier = yes\n\n\t\t#SCHEME OWNER#\n\t\tmodifier = {\n\t\t\tadd = 15\n\t\t\tdesc = tenet_harmonious_society_sway_boon\n\t\t\tscope:owner = { rite = { rite_has_parameter = sway_scheme_better } }\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = 15\n\t\t\tdesc = doctrine_parameter_tenet_mendicant_preachers_sway_acceptance\n\t\t\tscope:owner = {\n\t\t\t\thas_personal_tenet_flag = tenet_mendicant_preachers_sway_acceptance\n\t\t\t\tNOT = { faith = scope:target.faith }\n\t\t\t}\n\t\t}\n\t\t# Cancels sway_foreign_target below\n\t\tmodifier = {\n\t\t\tadd = 20\n\t\t\tdesc = tenet_love_thy_neighbour_boon_reason\n\t\t\tscope:owner = { has_personal_tenet_flag = tenet_love_thy_neighbour_foreign_sway }\n\t\t\tscope:target.top_liege != scope:owner.top_liege\n\t\t}\n\t\tmodifier = {\n\t\t\tdesc = SCHEME_TARGET_HEAD_OF_FAITH\n\t\t\tadd = -30\n\t\t\tscope:target = {\n\t\t\t\tfaith.religious_head ?= this\n\t\t\t}\n\t\t}\n\t\t#Language\n\t\tmodifier = {\n\t\t\tadd = 5\n\t\t\tdesc = YOU_SPEAK_THE_LANGUAGE\n\t\t\tscope:owner = { knows_language_of_culture = scope:target.culture }\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = 8\n\t\t\tscope:owner = { has_trait = diplomat }\n\t\t\tdesc = SCHEME_BEFRIEND_MY_LIFESTYLE\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -5\n\t\t\tscope:owner = { is_adult = no }\n\t\t\tdesc = I_AM_A_CHILD\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -10\n\t\t\tdesc = previously_swayed\n\t\t\tscope:target = {\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue >= 25\n\t\t\t\t}\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue < 40\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -20\n\t\t\tdesc = previously_swayed\n\t\t\tscope:target = {\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue >= 40\n\t\t\t\t}\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue < 55\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -30\n\t\t\tdesc = previously_swayed\n\t\t\tscope:target = {\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue >= 55\n\t\t\t\t}\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue < 70\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -40\n\t\t\tdesc = previously_swayed\n\t\t\tscope:target = {\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue >= 70\n\t\t\t\t}\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue < 85\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = -50\n\t\t\tdesc = previously_swayed\n\t\t\tscope:target = {\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\tvalue >= 85\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\t#Reduction of power against foreign rulers\n\t\tmodifier = {\n\t\t\tdesc = sway_foreign_target\n\t\t\tadd = -20\n\t\t\tscope:target.top_liege != scope:owner.top_liege\n\t\t}\n\n\t\t# Dynasty Kin Personal Scheme Success Chance on Dynasty Perk\n\t\tmodifier = {\n\t\t\tadd = kin_legacy_4_success_chance\n\t\t\tdesc = KIN_LEGACY_DESC\n\t\t\texists = scope:owner.dynasty\n\t\t\tscope:owner.dynasty = {\n\t\t\t\thas_dynasty_perk = kin_legacy_4\n\t\t\t}\n\t\t\tscope:target.dynasty = scope:owner.dynasty\n\t\t}\n\n\t\t# House Personal Scheme Success Chance on Cultural Parameter\n\t\tmodifier = {\n\t\t\tadd = cultural_house_personal_scheme_success_chance\n\t\t\tdesc = KIN_PARAMETER_DESC\n\t\t\texists = scope:owner.house\n\t\t\texists = scope:target.house\n\t\t\tscope:owner.culture = {\n\t\t\t\thas_cultural_parameter = cultural_house_personal_scheme_success_chance\n\t\t\t}\n\t\t\tscope:target.house = scope:owner.house\n\t\t}\n\n\t\t#Rival penalty\n\t\tmodifier = {\n\t\t\tadd = -30\n\t\t\tdesc = sway_my_rival\n\t\t\tscope:owner = { has_relation_rival = scope:target }\n\t\t}\n\n\t\t#Rank tier difference (landed target/target whose liege doesn't care)\n\t\tmodifier = { #3 or more higher rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = 50\n\t\t\tdesc = \"HIGHER_RANK_THAN_SCHEME_TARGET\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = no\n\t\t\t\tNOT = {\n\t\t\t\t\tis_theocratic_lessee = yes\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target\n\t\t\t\t\tvalue >= 3\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #2 higher rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = 25\n\t\t\tdesc = \"HIGHER_RANK_THAN_SCHEME_TARGET\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = no\n\t\t\t\tNOT = {\n\t\t\t\t\tis_theocratic_lessee = yes\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target\n\t\t\t\t\tvalue = 2\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #1 higher rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = 10\n\t\t\tdesc = \"HIGHER_RANK_THAN_SCHEME_TARGET\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = no\n\t\t\t\tNOT = {\n\t\t\t\t\tis_theocratic_lessee = yes\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target\n\t\t\t\t\tvalue = 1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #1 lower rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = -10\n\t\t\tdesc = \"LOWER_RANK_THAN_SCHEME_TARGET\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = no\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target\n\t\t\t\t\tvalue = -1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #2 lower rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = -25\n\t\t\tdesc = \"LOWER_RANK_THAN_SCHEME_TARGET\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = no\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target\n\t\t\t\t\tvalue = -2\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #3 or less lower rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = -50\n\t\t\tdesc = \"LOWER_RANK_THAN_SCHEME_TARGET\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = no\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target\n\t\t\t\t\tvalue <= -3\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\t#Rank tier difference (unlanded character)\n\t\tmodifier = { #3 or more higher rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = 15\n\t\t\tdesc = \"HIGHER_RANK_THAN_SCHEME_TARGET_LIEGE\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = yes\n\t\t\t\tNOT = {\n\t\t\t\t\tis_theocratic_lessee = yes\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target.liege\n\t\t\t\t\tvalue >= 3\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #2 higher rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = 10\n\t\t\tdesc = \"HIGHER_RANK_THAN_SCHEME_TARGET_LIEGE\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = yes\n\t\t\t\tNOT = {\n\t\t\t\t\tis_theocratic_lessee = yes\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target.liege\n\t\t\t\t\tvalue = 2\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #1 higher rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = 5\n\t\t\tdesc = \"HIGHER_RANK_THAN_SCHEME_TARGET_LIEGE\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = yes\n\t\t\t\tNOT = {\n\t\t\t\t\tis_theocratic_lessee = yes\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target.liege\n\t\t\t\t\tvalue = 1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #1 lower rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = -5\n\t\t\tdesc = \"LOWER_RANK_THAN_SCHEME_TARGET_LIEGE\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = yes\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target.liege\n\t\t\t\t\tvalue = -1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #2 lower rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = -10\n\t\t\tdesc = \"LOWER_RANK_THAN_SCHEME_TARGET_LIEGE\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = yes\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target.liege\n\t\t\t\t\tvalue = -2\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { #3 or less lower rank\n\t\t\ttrigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }\n\t\t\tadd = -15\n\t\t\tdesc = \"LOWER_RANK_THAN_SCHEME_TARGET_LIEGE\"\n\t\t\tscope:target = {\n\t\t\t\tpersonal_scheme_success_compare_target_liege_tier_trigger = yes\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:target.liege\n\t\t\t\t\tvalue <= -3\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tmodifier = { # Realm Priests care about Piety Level\n\t\t\tadd = {\n\t\t\t\tadd = 5\n\t\t\t\tmultiply = scope:owner.piety_level\n\t\t\t}\n\t\t\tdesc = \"I_AM_PIOUS\"\n\t\t\tscope:owner.piety_level > 1\n\t\t\tscope:target = {\n\t\t\t\tis_theocratic_lessee = yes\n\t\t\t}\n\t\t}\n\t\tmodifier = { # Realm Priests care about Piety Level\n\t\t\tadd = -50\n\t\t\tdesc = \"I_AM_PIOUS\"\n\t\t\tscope:owner.piety_level < 0\n\t\t\tscope:target = {\n\t\t\t\tis_theocratic_lessee = yes\n\t\t\t}\n\t\t}\n\n\t\t# Diarchs are better at schemes within their liege's realm\n\t\tdiarch_scheming_within_realm_bonus_modifier = yes\n\n\t\t# You heard them explain their plan to your camp followers\n\t\tmodifier = {\n\t\t\tadd = 50\n\t\t\tdesc = \"SCHEME_ET_TU_BRUTE\"\n\t\t\tscope:owner = {\n\t\t\t\texists = var:et_tu_brute_var\n\t\t\t\tvar:et_tu_brute_var = scope:target\n\t\t\t}\n\t\t}\n\n\t\t#Family Feud\n\t\thouse_feud_sway_scheme_success_modifier = yes\n\n\t\t#Mandala Serenity Aspect\n\t\tmodifier = {\n\t\t\tscope:owner = { \n\t\t\t\thouse ?= { has_house_head_parameter = improved_befriend_schemes }\n\t\t\t\tis_house_head = yes\n\t\t\t}\n\t\t\tdesc = has_aspect_of_serenity\n\t\t\tadd = 25\n\t\t}\n\n\t\t# Personal Scheme Shared\n\t\tpersonal_scheme_base_success_chance_modifiers = yes\n\t}\n\n\t# On Actions\n\ton_phase_completed = {\n\t\t# Grab our scopes.\n\t\tsave_scope_as = scheme\n\t\tscheme_target_character = { save_scope_as = target }\n\t\tscheme_owner = { save_scope_as = owner }\n\t\t# Roll our result.\n\t\trandom = {\n\t\t\tchance = scope:scheme.scheme_success_chance\n\t\t\tsave_scope_value_as = {\n\t\t\t\tname = scheme_successful\n\t\t\t\tvalue = yes\n\t\t\t}\n\t\t}\n\t\t# How'd we do?\n\t\tscope:owner = {\n\t\t\tif = {\n\t\t\t\tlimit = { exists = scope:scheme_successful }\n\t\t\t\ttrigger_event = { on_action = sway_success }\n\t\t\t}\n\t\t\telse = {\n\t\t\t\ttrigger_event = { on_action = sway_failure }\n\t\t\t}\n\t\t}\n\t}\n\n\ton_monthly = {\n\t\tsave_scope_as = scheme\n\t\tscheme_target_character = { save_scope_as = target }\n\t\tscheme_owner = {\n\t\t\tsave_scope_as = owner\n\t\t\ttrigger_event = { on_action = sway_ongoing }\n\t\t}\n\t}\n\ton_invalidated = {\n\t\tscheme_target_character = {\n\t\t\tsave_scope_as = target\n\t\t}\n\t\tscheme_owner = {\n\t\t\tsave_scope_as = owner\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tscope:target = { is_alive = no }\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\tsend_interface_toast = {\n\t\t\t\t\ttitle = sway_invalidated_title\n\t\t\t\t\tleft_icon = scope:target\n\t\t\t\t\tcustom_tooltip = sway_invalidated_dead\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\telse_if = {\t\n\t\t\tlimit = {\n\t\t\t\tscope:owner = {\n\t\t\t\t\tis_at_war_with = scope:target\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\tsend_interface_toast = {\n\t\t\t\t\ttitle = sway_invalidated_title\n\t\t\t\t\tleft_icon = scope:target\n\t\t\t\t\tcustom_tooltip = sway_invalidated_war\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tscope:target = { \n\t\t\t\t\tNOT = { in_diplomatic_range = scope:owner } \n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:owner = {\n\t\t\t\tsend_interface_toast = {\n\t\t\t\t\ttitle = sway_invalidated_title\n\t\t\t\t\tleft_icon = scope:target\n\t\t\t\t\tcustom_description_no_bullet = {\n\t\t\t\t\t\tobject = scope:target\n\t\t\t\t\t\ttext = scheme_target_not_in_diplomatic_range\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+    },
+    "sway_success": {
+      "relative_path": "common/on_action/schemes/sway_on_actions.txt",
+      "line": 1,
+      "end_line": 35,
+      "file_sha256": "C3C549E6DA41CE65043E712F44DD1DB3B22BB0B76DA89BC57198B6DC30A9AC46",
+      "block_sha256": "660C9BE9ADAD4C7A2E7C10DEE24C599397CEEB900B028DCF1B702F232EA72196",
+      "ordered_token_sha256": "F7BAF74BD84E71D6C715BABA48D9C873E0185C4477A5FB65A91B1DEA4224BAAC",
+      "token_count": 102,
+      "source": "sway_success = {\n\trandom_events = {\n\t\t100 = sway_outcome.0001 #Standard success\n\t\t2 = sway_outcome.1001 #Diplomacy duel for more opinion\n\t\t2 = sway_outcome.1002 #Learning duel for more opinion\n\t\t2 = sway_outcome.1003 #They're warming up to me, can I take it further?\n\t\t50 = sway_outcome.1004 #Only triggered from the Persian Struggle \n\t}\n\teffect = {\n\t\tnotify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_sway_success_puppeteer }\n\t\tscope:owner = {\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\thas_personal_tenet_flag = tenet_harmonious_society_sway_fulfillment\n\t\t\t\t\tOR = {\n\t\t\t\t\t\tliege ?= scope:target\n\t\t\t\t\t\ttarget_is_vassal_or_below = scope:target\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { is_ai = no }\n\t\t\t\t\tsend_interface_toast = {\n\t\t\t\t\t\ttype = event_generic_good\n\t\t\t\t\t\ttitle = harmonious_society_sway_fulfillment_toast\n\t\t\t\t\t\tleft_icon = scope:target\n\t\t\t\t\t\tchange_spiritual_fulfillment = minor_spiritual_fulfillment_value\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\telse = {\n\t\t\t\t\tchange_spiritual_fulfillment = minor_spiritual_fulfillment_value\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+    },
+    "sway_failure": {
+      "relative_path": "common/on_action/schemes/sway_on_actions.txt",
+      "line": 37,
+      "end_line": 46,
+      "file_sha256": "C3C549E6DA41CE65043E712F44DD1DB3B22BB0B76DA89BC57198B6DC30A9AC46",
+      "block_sha256": "B7FED7ED93D8DABAC96371F47E7A716EDDD0A246C4B448DDE51DA10907D41EA1",
+      "ordered_token_sha256": "E775995316AE2BD9C0629B6C0C3AD7AF0BAFB56520451987663F68197B8E26FC",
+      "token_count": 37,
+      "source": "sway_failure = {\n\trandom_events = {\n\t\t100 = sway_outcome.0002 #Standard failure\n\t\t2 = sway_outcome.2001 #Diplomatic misunderstanding\n\t\t2 = sway_outcome.2002 #They think you're plotting against them\n\t}\n\teffect = {\n\t\tnotify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_bad TITLE = scheme_outcome_sway_failure_puppeteer }\n\t}\n}"
+    },
+    "sway_end_effect": {
+      "relative_path": "common/scripted_effects/00_scheme_scripted_effects.txt",
+      "line": 15548,
+      "end_line": 15689,
+      "file_sha256": "57E30DA751F6FD4C4513D6FEC3E7AEC008FFCF621CA2C79C3AA472197B4D3456",
+      "block_sha256": "E20774725F6292923B1287E2B320CCFB1670E1183280B2A570FCF3DFA8C262B0",
+      "ordered_token_sha256": "B3405D6138BC1BAAD876DE9A44B41F6D5CFB8A43147BB7A1DDEF1FF032C39D7B",
+      "token_count": 294,
+      "source": "sway_end_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\tscope:target = {\n\t\t\t\tNOT = {\n\t\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t\tmodifier = scheme_sway_opinion\n\t\t\t\t\t\tvalue >= sway_max_value # 100 by default\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:scheme\n\t\t\t}\n\t\t\tscope:scheme = {\n\t\t\t\treset_failed_scheme_effect = yes\n\t\t\t}\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:scheme_successful\n\t\t\t}\n\t\t\tcustom_tooltip = sway_continue\n\t\t}\n\t\telse = {\n\t\t\tcustom_tooltip = sway_try_again\n\t\t}\n\t\t\n\t\tscope:owner = { # The AI never stops swaying unless we force it to, this makes them use a more even spread of schemes\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tis_ai = yes\n\t\t\t\t\tscope:target = {\n\t\t\t\t\t\tNAND = {\n\t\t\t\t\t\t\tis_vassal_of = scope:owner\n\t\t\t\t\t\t\tis_a_faction_member = yes\n\t\t\t\t\t\t\topinion = {\n\t\t\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t\t\t\tvalue < 100\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tif = { # Sway your realm priest for a long time\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tscope:target = {\n\t\t\t\t\t\t\tis_theocratic_lessee = yes\n\t\t\t\t\t\t\topinion = {\n\t\t\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t\t\t\tvalue <= 50\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\trandom = {\n\t\t\t\t\t\tchance = 10\n\t\t\t\t\t\tscope:scheme = {\n\t\t\t\t\t\t\tend_scheme = yes\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\telse_if = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tscope:target = {\n\t\t\t\t\t\t\topinion = {\n\t\t\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t\t\t\tvalue < -25\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\trandom = {\n\t\t\t\t\t\tchance = 10\n\t\t\t\t\t\tscope:scheme = {\n\t\t\t\t\t\t\tend_scheme = yes\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\telse_if = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tscope:target = {\n\t\t\t\t\t\t\topinion = {\n\t\t\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t\t\t\tvalue < 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\trandom = {\n\t\t\t\t\t\tchance = 30\n\t\t\t\t\t\tscope:scheme = {\n\t\t\t\t\t\t\tend_scheme = yes\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\telse_if = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tscope:target = {\n\t\t\t\t\t\t\topinion = {\n\t\t\t\t\t\t\t\ttarget = scope:owner\n\t\t\t\t\t\t\t\tvalue < 35\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\trandom = {\n\t\t\t\t\t\tchance = 50\n\t\t\t\t\t\tscope:scheme = {\n\t\t\t\t\t\t\tend_scheme = yes\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\telse = {\n\t\t\t\t\tscope:scheme = {\n\t\t\t\t\t\tend_scheme = yes\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\telse = {\n\t\t#hidden_effect = { # What was this ever supposed to achieve?\n\t\t#\tremove_opinion = {\n\t\t#\t\ttarget = scope:owner\n\t\t#\t\tmodifier = scheme_sway_opinion\n\t\t#\t}\n\t\t#\tadd_opinion = {\n\t\t#\t\ttarget = scope:owner\n\t\t#\t\tmodifier = scheme_sway_opinion\n\t\t#\t\topinion = 100\n\t\t#\t}\n\t\t#}\n\t\tscope:owner = {\n\t\t\tsend_interface_toast = {\n\t\t\t\ttitle = sway_complete\n\t\t\t\tleft_icon = scope:target\n\t\t\t\tscope:scheme = {\n\t\t\t\t\tend_scheme = yes\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+    },
+    "reset_failed_scheme_effect": {
+      "relative_path": "common/scripted_effects/00_scheme_scripted_effects.txt",
+      "line": 665,
+      "end_line": 685,
+      "file_sha256": "57E30DA751F6FD4C4513D6FEC3E7AEC008FFCF621CA2C79C3AA472197B4D3456",
+      "block_sha256": "F9E112F6771894A879339ABA7A12D008A13CE6267AC75A97DEDF81F72FC836BC",
+      "ordered_token_sha256": "B97D5797629B4EF2F3BFC2D580EDE04F566B33A8E68B6830412FD31D9E5B876D",
+      "token_count": 49,
+      "source": "reset_failed_scheme_effect = {\n\treset_scheme_progress = yes\n\tif = {\n\t\tlimit = {\n\t\t\thas_scheme_modifier = scheme_end_buff_t2_modifier\n\t\t}\n\t\tremove_scheme_modifier = scheme_end_buff_t2_modifier\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\thas_scheme_modifier = scheme_end_buff_t3_modifier\n\t\t}\n\t\tremove_scheme_modifier = scheme_end_buff_t3_modifier\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\thas_scheme_modifier = scheme_end_buff_t4_modifier\n\t\t}\n\t\tremove_scheme_modifier = scheme_end_buff_t4_modifier\n\t}\n}"
+    },
+    "sway_max_value": {
+      "relative_path": "common/script_values/00_scheme_values.txt",
+      "line": 352,
+      "end_line": 352,
+      "file_sha256": "9D3692D294C8310E9DF102397C1F59D73E181CDEA2686BDE4EEB67D4B38D0256",
+      "block_sha256": "670D58AC800C388938CE101CC5E7A3069961CCBA6897EE267D79F7EFFD727069",
+      "ordered_token_sha256": "2DCA79C71234DD052D5EFD5EAC824FCDE4A9D725C342477D7BC77C48D1F8B766",
+      "token_count": 3,
+      "source": "sway_max_value = 100"
+    },
+    "sway_opinion_increase_per_success": {
+      "relative_path": "common/script_values/00_scheme_values.txt",
+      "line": 351,
+      "end_line": 351,
+      "file_sha256": "9D3692D294C8310E9DF102397C1F59D73E181CDEA2686BDE4EEB67D4B38D0256",
+      "block_sha256": "BA98E592C23DBFDC2D4E52F1B89BE622467C35D17B4CE1301C5D72BF620BFF60",
+      "ordered_token_sha256": "590E6EE747E837668F1C778B1C40EE66EB16DF66D122E8B824DEECD2303F80F7",
+      "token_count": 3,
+      "source": "sway_opinion_increase_per_success = 25"
+    }
+  },
+  "anchors": [
+    {
+      "name": "script_value_registration",
+      "rva": "0x5975e1",
+      "bytes": "488d05d8fb1204",
+      "instruction": "lea rax, [rip + 0x412fbd8]"
+    },
+    {
+      "name": "script_value_factory_thunk",
+      "rva": "0x2b3ec50",
+      "bytes": "e9ab090000",
+      "instruction": "jmp 0x2b3f600"
+    },
+    {
+      "name": "script_value_factory_vtable",
+      "rva": "0x2b3f641",
+      "bytes": "488d0578b2c801",
+      "instruction": "lea rax, [rip + 0x1c8b278]"
+    },
+    {
+      "name": "script_value_typed_scheme",
+      "rva": "0x2b3c2dc",
+      "bytes": "66833809",
+      "instruction": "cmp word ptr [rax], 9"
+    },
+    {
+      "name": "script_value_full_scheme_id",
+      "rva": "0x2b3c319",
+      "bytes": "44394110",
+      "instruction": "cmp dword ptr [rcx + 0x10], r8d"
+    },
+    {
+      "name": "script_value_native_getter",
+      "rva": "0x2b3c326",
+      "bytes": "e8d5e0f0ff",
+      "instruction": "call 0x2a4a400"
+    },
+    {
+      "name": "chance_cached_max",
+      "rva": "0x2a4a42e",
+      "bytes": "488b8b48030000",
+      "instruction": "mov rcx, qword ptr [rbx + 0x348]"
+    },
+    {
+      "name": "chance_growth",
+      "rva": "0x2a4a435",
+      "bytes": "488b8388020000",
+      "instruction": "mov rax, qword ptr [rbx + 0x288]"
+    },
+    {
+      "name": "chance_cached_base",
+      "rva": "0x2a4a43c",
+      "bytes": "48038338030000",
+      "instruction": "add rax, qword ptr [rbx + 0x338]"
+    },
+    {
+      "name": "chance_signed_clamp",
+      "rva": "0x2a4a443",
+      "bytes": "483bc8",
+      "instruction": "cmp rcx, rax"
+    },
+    {
+      "name": "chance_signed_min",
+      "rva": "0x2a4a446",
+      "bytes": "480f4cc1",
+      "instruction": "cmovl rax, rcx"
+    },
+    {
+      "name": "chance_out",
+      "rva": "0x2a4a44a",
+      "bytes": "488907",
+      "instruction": "mov qword ptr [rdi], rax"
+    },
+    {
+      "name": "chance_recalculate",
+      "rva": "0x2a4a469",
+      "bytes": "e8520e0000",
+      "instruction": "call 0x2a4b2c0"
+    },
+    {
+      "name": "chance_recalculated_growth",
+      "rva": "0x2a4a46e",
+      "bytes": "488b9388020000",
+      "instruction": "mov rdx, qword ptr [rbx + 0x288]"
+    },
+    {
+      "name": "default_hundred_percent",
+      "rva": "0x2a49199",
+      "bytes": "48c7874803000080969800",
+      "instruction": "mov qword ptr [rdi + 0x348], 0x989680"
+    },
+    {
+      "name": "ui_hundred_percent_clamp",
+      "rva": "0x13cea81",
+      "bytes": "4981ff80969800",
+      "instruction": "cmp r15, 0x989680"
+    },
+    {
+      "name": "progress_advance_goal",
+      "rva": "0x2a4f2d2",
+      "bytes": "448b8150030000",
+      "instruction": "mov r8d, dword ptr [rcx + 0x350]"
+    },
+    {
+      "name": "progress_advance_value",
+      "rva": "0x2a4f2d9",
+      "bytes": "8b4978",
+      "instruction": "mov ecx, dword ptr [rcx + 0x78]"
+    },
+    {
+      "name": "progress_advance_delta",
+      "rva": "0x2a4f2de",
+      "bytes": "03ca",
+      "instruction": "add ecx, edx"
+    },
+    {
+      "name": "phase_pending_marker",
+      "rva": "0x2a4f2f4",
+      "bytes": "c6837002000001",
+      "instruction": "mov byte ptr [rbx + 0x270], 1"
+    },
+    {
+      "name": "phase_callback_field",
+      "rva": "0x2a4f377",
+      "bytes": "4881c198040000",
+      "instruction": "add rcx, 0x498"
+    },
+    {
+      "name": "phase_callback_execute",
+      "rva": "0x2a4f383",
+      "bytes": "e8f863d100",
+      "instruction": "call 0x3765780"
+    },
+    {
+      "name": "phase_progress_zero",
+      "rva": "0x2a4f3f1",
+      "bytes": "897378",
+      "instruction": "mov dword ptr [rbx + 0x78], esi"
+    },
+    {
+      "name": "opportunity_phase_counter",
+      "rva": "0x2a4f3f4",
+      "bytes": "ff8394020000",
+      "instruction": "inc dword ptr [rbx + 0x294]"
+    },
+    {
+      "name": "opportunity_period_compare",
+      "rva": "0x2a4f404",
+      "bytes": "3b88d0080000",
+      "instruction": "cmp ecx, dword ptr [rax + 0x8d0]"
+    },
+    {
+      "name": "opportunity_increment",
+      "rva": "0x2a4f414",
+      "bytes": "e8e7210000",
+      "instruction": "call 0x2a51600"
+    },
+    {
+      "name": "opportunity_phase_counter_zero",
+      "rva": "0x2a4f419",
+      "bytes": "89b394020000",
+      "instruction": "mov dword ptr [rbx + 0x294], esi"
+    },
+    {
+      "name": "opportunity_basic_gate",
+      "rva": "0x2a5162b",
+      "bytes": "80b84e0a000000",
+      "instruction": "cmp byte ptr [rax + 0xa4e], 0"
+    },
+    {
+      "name": "opportunity_basic_skip",
+      "rva": "0x2a51632",
+      "bytes": "0f85a2010000",
+      "instruction": "jne 0x2a517da"
+    },
+    {
+      "name": "reset_registration",
+      "rva": "0x5cfa01",
+      "bytes": "488d0520232804",
+      "instruction": "lea rax, [rip + 0x4282320]"
+    },
+    {
+      "name": "reset_growth_zero",
+      "rva": "0x2d10a6b",
+      "bytes": "48898888020000",
+      "instruction": "mov qword ptr [rax + 0x288], rcx"
+    },
+    {
+      "name": "reset_opportunities_zero",
+      "rva": "0x2d10a72",
+      "bytes": "898898020000",
+      "instruction": "mov dword ptr [rax + 0x298], ecx"
+    },
+    {
+      "name": "reset_progress_zero",
+      "rva": "0x2d10a78",
+      "bytes": "894878",
+      "instruction": "mov dword ptr [rax + 0x78], ecx"
+    }
+  ],
+  "native_spans": [
+    {
+      "start_rva": "0x2a4a400",
+      "end_rva": "0x2a4a496",
+      "sha256": "85d368505b896702fe3b6b6beeb7dad6bbc721365821c52d1e99c104131b32ab"
+    },
+    {
+      "start_rva": "0x2b3c2d0",
+      "end_rva": "0x2b3c334",
+      "sha256": "34904e6b683e15bfa9d2bb0ab607cdcd5b0d6ae7d341e69a7261355291d6b6d5"
+    },
+    {
+      "start_rva": "0x2a4f2b0",
+      "end_rva": "0x2a4f4b5",
+      "sha256": "74584c1af06d68f03bd81fa708e6a683b6c04be4a56476eb962321edb22cb291"
+    },
+    {
+      "start_rva": "0x2d10a20",
+      "end_rva": "0x2d10a7c",
+      "sha256": "bfb70837ceee60bf5f6f75c6ae0599c9b42ab573b5e10b971d3733542e435dd2"
+    }
+  ],
+  "virtual_edges": [
+    {
+      "vtable_rva": "0x47ca8c0",
+      "slot_offset": "0x100",
+      "function_rva": "0x2b3c2d0"
+    },
+    {
+      "vtable_rva": "0x48529c8",
+      "slot_offset": "0xc0",
+      "function_rva": "0x2d10a20"
+    }
+  ],
+  "provider_contract": {
+    "success_chance_getter_rva": "0x2a4a400",
+    "success_chance_signature": "int64_t* __fastcall(const CActiveScheme*, int64_t* out)",
+    "success_chance_return": "same out pointer",
+    "success_chance_scale": 100000,
+    "success_chance_unit": "percentage points",
+    "success_chance_input_only": true,
+    "phase_success_not_inferred": true,
+    "instance_terminal_not_inferred": true,
+    "native_progression_rva": "0x2a4f2b0",
+    "native_phase_callback_field": "+0x498 on scheme type; invoked at phase goal",
+    "reset_fields": {
+      "growth": "int64 +0x288",
+      "opportunities": "int32 +0x298",
+      "progress": "int32 +0x78"
+    },
+    "opportunity_cycle_counter": "int32 +0x294; increments and resets; not a Sway outcome/history counter",
+    "hidden_phase_result_dependency": "exact event/message result with actor, target and full SchemeID",
+    "end_dependency": "actual native terminal state plus exact branch/source and independent material readback"
+  }
+}

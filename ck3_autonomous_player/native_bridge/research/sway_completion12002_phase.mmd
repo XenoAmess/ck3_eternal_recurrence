@@ -1,0 +1,17 @@
+flowchart TD
+    N["Native progress reaches actual goal"] --> P["Phase callback: exact SchemeID context"]
+    P --> S["Save owner, target and scheme"]
+    S --> R{"Roll native success chance"}
+    R -->|success| A["Eligible sway_success outcome"]
+    R -->|failure| B["Eligible sway_failure outcome"]
+    A --> E["Authored sway_end_effect or direct end"]
+    B --> E
+    E --> T{"Dedicated Sway modifier at least 100?"}
+    T -->|no; player| C["Reset growth/opportunities/progress; continue same instance"]
+    C --> N
+    T -->|yes| K["sway_complete toast; end_scheme"]
+    K -. terminal-source readback required .-> D["Known instance end and branch"]
+    A -. hidden result/source join required .-> O["Exact actor/target/full SchemeID result"]
+    B -. hidden result/source join required .-> O
+    I["Native cancel or invalidation"] -. reason source remains separate .-> D
+    V["Get success chance: 0x2A4A400; Q100000 percentage points"] --> R
