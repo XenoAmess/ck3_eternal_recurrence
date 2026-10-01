@@ -121,3 +121,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 38个owned文件移植实际新manager/storage/full实例ID、进度/目标opinion、最终shown/valid/CanSend、拥有型send和新鲜实例receipt；真实owner-envelope与production source Od/O2通过，四份actual serializer wire进入Python。独立outcome材料观测可用，但hidden阶段history、cancel/invalidate终止原因未实现；ACK、实例出现、100opinion都不冒充phase或terminal。状态static-ready，实机与cold仍待。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:40:27 Religion research resumed and actual current context provider
+
+按用户明确解禁恢复宗教：先落新版stock及原生解析树，再实现真实只读Rite/Faith/Religion/mainRite refs、stable tags、fervor/精神满足度signed Q100000。Character+B4是Rite而不是Faith；实际getter处理原生fallback，保留nil/合法零与读取失败。Od/O2各20检查及实际wire parse通过，PE verifier19函数、25语义指令、14生产常量通过。当前独立library static-ready；中央/MCP/paused查询及通用转换最终判定尚未交付，不涉及战争。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

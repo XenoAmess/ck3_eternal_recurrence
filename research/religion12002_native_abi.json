@@ -1,0 +1,539 @@
+{
+  "schema": "ck3_12002_nonwar_religion_native_research_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "provider_implemented": true,
+  "mcp_registered": false,
+  "live_verified": false,
+  "provider_source_constants": {
+    "kCharacterRiteRva": "0x28d2f90",
+    "kCharacterFaithRva": "0x289e750",
+    "kRiteFaithRva": "0x24fc560",
+    "kFaithReligionRva": "0x2443d40",
+    "kFaithMainRiteRva": "0x2444360",
+    "kFaithFervorRva": "0x243ea90",
+    "kCharacterSpiritualFulfillmentRva": "0x28bce40",
+    "kFaithTagRva": "0xb801a0",
+    "kReligionTagRva": "0x247ca20",
+    "kCharacterRiteIdOffset": "0xb4",
+    "kRiteFaithIdOffset": "0x4b8",
+    "kFaithReligionIdOffset": "0x8c",
+    "kFaithMainRiteIdOffset": "0x98",
+    "kReferenceIdentityOffset": "0x8"
+  },
+  "native_spans": [
+    {
+      "name": "Character.GetFaith.core",
+      "start_rva": "0x289e750",
+      "end_exclusive_rva": "0x289e7cd",
+      "kind": "complete_function",
+      "abi": "Faith*(Character*)",
+      "sha256": "6dc48c6ada8cdb60362eb1d1dd7a616a5c7920ec0ed102962deebfd170ac71c4",
+      "bytes": "48 8b 05 a1 fb 47 03 48 85 c0 74 29 8b 91 b4 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 e4 8e 3c 03 48 8b 15 6d fb 47 03 48 85 d2 74 2d 44 8b 80 b8 04 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 08 74 07 48 8b 05 14 fb 47 03 c3"
+    },
+    {
+      "name": "Character.GetFaith.thunk",
+      "start_rva": "0x28d2f40",
+      "end_exclusive_rva": "0x28d2f45",
+      "kind": "complete_function",
+      "abi": "Faith*(Character*)",
+      "sha256": "87aafbba5b9597eea8495c9be2263a4f4e9bf64b6bc8014d3f0390b2a9d15119",
+      "bytes": "e9 0b b8 fc ff"
+    },
+    {
+      "name": "Character.GetRite.core",
+      "start_rva": "0x28d2f90",
+      "end_exclusive_rva": "0x28d2fcd",
+      "kind": "complete_function",
+      "abi": "Rite*(Character*)",
+      "sha256": "a070e31f68f01cc5795c8c49b50414a1168f35aacac1fbd8c1c4219017b99c2b",
+      "bytes": "48 8b 05 61 b3 44 03 48 85 c0 74 29 8b 91 b4 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 a4 46 39 03 c3"
+    },
+    {
+      "name": "Rite.GetFaith.core",
+      "start_rva": "0x24fc560",
+      "end_exclusive_rva": "0x24fc59d",
+      "kind": "complete_function",
+      "abi": "Faith*(Rite*)",
+      "sha256": "379361b0de2cf6947b56a6b8171082c7155ca948555b0e4706674fc1fa68587f",
+      "bytes": "48 8b 05 99 1d 82 03 48 85 c0 74 29 8b 91 b8 04 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 44 1d 82 03 c3"
+    },
+    {
+      "name": "Faith.GetReligion.core",
+      "start_rva": "0x2443d40",
+      "end_exclusive_rva": "0x2443d7d",
+      "kind": "complete_function",
+      "abi": "Religion*(Faith*)",
+      "sha256": "52b77bcf118f735e0bc260101d48dcc363cb5f9188387b6a01855004a0ed904f",
+      "bytes": "48 8b 05 41 a1 8d 03 48 85 c0 74 29 8b 91 8c 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 84 a0 8d 03 c3"
+    },
+    {
+      "name": "Faith.GetMainRite.core",
+      "start_rva": "0x2444360",
+      "end_exclusive_rva": "0x244439d",
+      "kind": "complete_function",
+      "abi": "Rite*(Faith*)",
+      "sha256": "3e4943fa3e2f996168b9b3f0846540c91a7f5ae61be9bfd85d9e9603bea52c32",
+      "bytes": "48 8b 05 91 9f 8d 03 48 85 c0 74 29 8b 91 98 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 d4 32 82 03 c3"
+    },
+    {
+      "name": "Faith.GetFervor.core",
+      "start_rva": "0x243ea90",
+      "end_exclusive_rva": "0x243ea9e",
+      "kind": "complete_function",
+      "abi": "int64_t*(Faith*,int64_t* out)",
+      "sha256": "278598f39b65381042a7a9e32bd0ca00924c46fff37d3535afa03f101142065b",
+      "bytes": "48 8b 81 f8 02 00 00 48 89 02 48 8b c2 c3"
+    },
+    {
+      "name": "Faith.GetFervor.thunk",
+      "start_rva": "0x2444490",
+      "end_exclusive_rva": "0x24444c7",
+      "kind": "complete_function",
+      "abi": "reflection wrapper",
+      "sha256": "c7aef88586f197b3f5b0bcee9d211eccf821d1e3c516e73aa7eb0f3ff989895a",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1d 48 8d 54 24 40 e8 e4 a5 ff ff 48 8b d0 48 8b cb e8 99 69 59 fe b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "Character.GetSpiritualFulfillment.core",
+      "start_rva": "0x28bce40",
+      "end_exclusive_rva": "0x28bce7c",
+      "kind": "complete_function",
+      "abi": "int64_t*(Character*,int64_t* out)",
+      "sha256": "a2e6d9916fc2c959407171dcedae7e762c6956352111809bcfe9494024339a62",
+      "bytes": "40 53 48 83 ec 20 48 8b 81 c8 01 00 00 48 8b da 48 85 c0 74 13 48 8b 80 a0 00 00 00 48 89 02 48 8b c2 48 83 c4 20 5b c3 48 8b d1 48 8b cb e8 4d e6 33 00 48 8b c3 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "Character.GetSpiritualFulfillment.thunk",
+      "start_rva": "0x28cfc20",
+      "end_exclusive_rva": "0x28cfc57",
+      "kind": "complete_function",
+      "abi": "reflection wrapper",
+      "sha256": "bf9da6fa4b3e651ec6b25f25c9983de91a95e7c8ab6f396c3229c7f21c0ee53a",
+      "bytes": "4c 89 44 24 18 53 48 83 ec 20 48 8b da 48 85 c9 74 1d 48 8d 54 24 40 e8 04 d2 fe ff 48 8b d0 48 8b cb e8 09 b2 10 fe b0 01 48 83 c4 20 5b c3 32 c0 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "Character.spiritual_fulfillment.default",
+      "start_rva": "0x2bfb4c0",
+      "end_exclusive_rva": "0x2bfb6e7",
+      "kind": "complete_function",
+      "abi": "int64_t*(int64_t* out,Character*)",
+      "sha256": "d7020bf3c15eddf658140a4dd5d31162b3014cefa93189ba054e2ab72cfd4d1d",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 18 48 89 7c 24 20 41 56 48 83 ec 70 48 8b ea 4c 8b f1 e8 eb 99 fe fd 48 89 44 24 48 33 db 48 89 5c 24 50 88 5c 24 58 f3 0f 10 05 43 ae df 01 f3 0f 11 44 24 5c 48 8d 05 b6 46 8e 02 48 89 44 24 60 8b 85 b4 00 00 00 4c 8b 05 dc 2d 12 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 74 d1 08 48 85 f6 74 05 39 46 08 74 07 48 8b 35 22 c1 06 03 48 8b cd e8 3a 1b cc ff c6 44 24 20 00 4c 8d 4c 24 40 4c 8d 85 f8 00 00 00 48 8b d0 48 8b ce e8 be f6 ff ff 48 8b cd e8 66 85 cc ff 4c 8b d8 4c 63 48 74 4c 8b 50 68 4b 8d 3c 4a 4d 8b c2 49 8b ca be 5d 02 00 00 4d 85 c9 7e 28 0f 1f 80 00 00 00 00 49 8b d1 48 d1 ea 4c 2b ca 4b 8d 0c 48 4c 8b ca 66 41 39 34 50 4c 0f 42 c1 49 8b c8 48 85 d2 75 df 48 3b cf 74 1d 66 3b 31 72 18 49 2b ca 48 d1 f9 85 c9 78 0e 48 63 c1 49 8b 9b d0 00 00 00 48 8b 1c c3 4c 8b 4c 24 48 49 8b c1 41 80 79 04 00 75 0a 48 83 c0 18 80 78 04 00 74 f6 0f b6 54 24 58 8b 4c 24 54 ff c1 03 d1 48 63 ca 48 8d 14 49 49 8d 0c d1 48 3b c1 74 1a 0f 1f 80 00 00 00 00 48 03 58 10 48 83 c0 18 80 78 04 00 74 f6 48 3b c1 75 ed 48 8b 05 be d7 06 03 48 8b 0d bf d7 06 03 48 3b d9 7c 0a 48 8b cb 48 3b d8 48 0f 4f c8 49 89 0e ba 10 00 00 00 65 48 8b 04 25 58 00 00 00 48 8b 08 8b 04 0a 39 05 53 39 12 03 7f 45 eb 05 4c 8b 4c 24 48 48 8d 05 4b 39 12 03 4c 3b c8 74 14 48 8b 4c 24 60 48 8b 01 41 b8 08 00 00 00 49 8b d1 ff 50 10 49 8b c6 4c 8d 5c 24 70 49 8b 5b 10 49 8b 6b 18 49 8b 73 20 49 8b 7b 28 49 8b e3 41 5e c3 48 8d 0d 05 39 12 03 e8 e4 83 62 01 83 3d f9 38 12 03 ff 75 a8 c6 05 fc 38 12 03 00 c6 05 0d 39 12 03 ff 48 8d 0d e2 38 12 03 e8 61 83 62 01 90 eb 8b cc"
+    },
+    {
+      "name": "Faith.GetTag.core",
+      "start_rva": "0xb801a0",
+      "end_exclusive_rva": "0xb801a8",
+      "kind": "complete_function",
+      "abi": "CString*(Faith*)",
+      "sha256": "920d7783517163670409d11e69824533eab2f64375e70567ec9a8c1c1b28b4d7",
+      "bytes": "48 8d 81 e0 00 00 00 c3"
+    },
+    {
+      "name": "Faith.GetTag.thunk",
+      "start_rva": "0x2443240",
+      "end_exclusive_rva": "0x2443283",
+      "kind": "complete_function",
+      "abi": "reflection wrapper; complete chained spans",
+      "sha256": "cb7175cf160f56cdbff977197f80a324494d869e9f00aea24130eaf0ced261f9",
+      "bytes": "40 57 48 83 ec 20 48 8b fa 48 85 c9 74 2d 48 89 5c 24 30 e8 48 cf 73 fe 48 8b d8 e8 b0 8b 43 fe 4c 8b c0 48 8b d3 48 8b cf e8 22 61 43 fe 48 8b 5c 24 30 b0 01 48 83 c4 20 5f c3 32 c0 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "Religion.GetTag.core",
+      "start_rva": "0x247ca20",
+      "end_exclusive_rva": "0x247ca29",
+      "kind": "complete_function",
+      "abi": "CString*(Religion*)",
+      "sha256": "9cd338268418b234b755c4346ed52265016ea977a64ef1249b900703685917cb",
+      "bytes": "48 8b 41 20 48 83 c0 28 c3"
+    },
+    {
+      "name": "Religion.GetTag.thunk",
+      "start_rva": "0x24819e0",
+      "end_exclusive_rva": "0x2481a23",
+      "kind": "complete_function",
+      "abi": "reflection wrapper; complete chained spans",
+      "sha256": "68b3d34ce9f139eb7658a7690287ec67ca999ed01347ff1e81706a1ed77b0d58",
+      "bytes": "40 57 48 83 ec 20 48 8b fa 48 85 c9 74 2d 48 89 5c 24 30 e8 28 b0 ff ff 48 8b d8 e8 10 a4 3f fe 4c 8b c0 48 8b d3 48 8b cf e8 82 79 3f fe 48 8b 5c 24 30 b0 01 48 83 c4 20 5f c3 32 c0 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "Religion.GetID.thunk",
+      "start_rva": "0x2481a30",
+      "end_exclusive_rva": "0x2481a63",
+      "kind": "complete_function",
+      "abi": "reflection integer from +0x10; not full ref",
+      "sha256": "103941dc6c12606ec8d6480bb330900447fc8b3be1b69164062de6138f1e7082",
+      "bytes": "4c 89 44 24 18 48 83 ec 28 4c 8b c2 48 85 c9 74 1b 8b 41 10 48 8d 54 24 40 49 8b c8 89 44 24 40 e8 5b 40 58 fe b0 01 48 83 c4 28 c3 32 c0 48 83 c4 28 c3"
+    },
+    {
+      "name": "Rite.GetTenets.collection_address",
+      "start_rva": "0x1cf98a0",
+      "end_exclusive_rva": "0x1cf98a8",
+      "kind": "complete_function",
+      "abi": "opaque collection*(Rite*); row layout unresolved",
+      "sha256": "b556ea18ba13705d560ab63bb63ec943db70e27c1775ca023f01de9a7a307740",
+      "bytes": "48 8d 81 58 07 00 00 c3"
+    },
+    {
+      "name": "Rite.GetTenets.thunk",
+      "start_rva": "0x24fc1b0",
+      "end_exclusive_rva": "0x24fc207",
+      "kind": "complete_function",
+      "abi": "reflection collection wrapper",
+      "sha256": "06ca996781184f59196963652fb087087ec1ba32afd2a0ac03068af93cf0181c",
+      "bytes": "40 53 48 83 ec 50 48 8b da 48 85 c9 74 42 e8 dd d6 7f ff 48 89 44 24 20 48 8d 54 24 30 48 8d 05 8c ea f3 01 c7 44 24 28 ff ff ff ff c6 44 24 2c 01 48 8b cb 0f 10 44 24 20 48 89 44 24 30 0f 11 44 24 38 e8 38 eb 4d fe b0 01 48 83 c4 50 5b c3 32 c0 48 83 c4 50 5b"
+    },
+    {
+      "name": "Rite.GetName.core",
+      "start_rva": "0x24f6e40",
+      "end_exclusive_rva": "0x24f6f01",
+      "kind": "complete_function",
+      "abi": "CString*(Rite*,CString* out); rendered name, not stable key",
+      "sha256": "cc2fc82ae624a12048b41b3a3ae7176612f64e898a0396e98ce94c5b58e54010",
+      "bytes": "48 89 5c 24 18 48 89 54 24 10 57 48 83 ec 70 48 8b fa 48 8b d9 48 8b 89 b0 04 00 00 81 79 38 4f 62 44 47 75 18 80 bb ea 04 00 00 00 75 0f 4c 8b c3 48 8d 54 24 50 e8 95 ef d7 00 eb 12 48 8d 93 40 05 00 00 48 8d 4c 24 50 e8 72 f0 35 fe 90 8b 43 08 89 84 24 88 00 00 00 89 84 24 80 00 00 00 48 8d 05 01 0e 24 02 48 89 44 24 40 c7 44 24 48 10 00 00 00 c6 44 24 4c 00 48 8d 44 24 50 48 89 44 24 38 48 8d 84 24 88 00 00 00 48 89 44 24 28 4c 8d 8c 24 80 00 00 00 48 8d 54 24 40 48 8b cf e8 eb 04 e0 ff 90 48 8d 4c 24 50 e8 60 f1 35 fe 48 8b c7 48 8b 9c 24 90 00 00 00 48 83 c4 70 5f c3"
+    },
+    {
+      "name": "Character.GetFaith.registration",
+      "start_rva": "0x568aa2",
+      "end_exclusive_rva": "0x568b31",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "6777b409a40f5fa0f215feda0efd906ef3352053d7abc1fa0e11134ab93c88b3",
+      "bytes": "48 c7 45 90 0f 00 00 00 48 c7 45 88 08 00 00 00 48 b8 47 65 74 46 61 69 74 68 48 89 44 24 78 40 88 7d 80 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 25 d4 2e 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 fd b7 30 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 19 a4 36 02 48 8d 4c 24 78 e8 5f ae 37 02"
+    },
+    {
+      "name": "Character.GetRite.registration",
+      "start_rva": "0x568c87",
+      "end_exclusive_rva": "0x568d29",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "17fffca798e5dbf3cacdde2f2810507bc21cdb9ffbfaee41a45ec8030d910044",
+      "bytes": "48 c7 45 90 0f 00 00 00 48 c7 45 88 07 00 00 00 8b 05 f3 5c f8 03 89 44 24 78 0f b7 05 ec 5c f8 03 66 89 44 24 7c 0f b6 05 e2 5c f8 03 88 44 24 7e 40 88 7c 24 7f 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 2d d2 2e 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 05 b6 30 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 71 a2 36 02 48 8d 4c 24 78 e8 67 f8 37 02"
+    },
+    {
+      "name": "Rite.GetFaith.registration",
+      "start_rva": "0x4ef972",
+      "end_exclusive_rva": "0x4efa01",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "cbd2cbe481735f5e018f7ed424d8434d8d6dd42d7a04e0806ea9ff7f8a00c0b4",
+      "bytes": "48 b8 47 65 74 46 61 69 74 68 48 89 44 24 78 40 88 7d 80 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 65 65 36 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 3d 49 38 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 79 cb 00 02 48 8d 4c 24 78 e8 7f fb 00 02 48 8d 45 d0 48 89 45 38 48 8d 54 24 40 48 8d 4d"
+    },
+    {
+      "name": "Faith.GetReligion.registration",
+      "start_rva": "0x4d49d2",
+      "end_exclusive_rva": "0x4d4a65",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "c83956704096e7698fa60a143261796804e39d832b41cc1f567fcd2ee760d72d",
+      "bytes": "f2 0f 10 05 26 9f 01 04 f2 0f 11 44 24 78 0f b7 05 21 9f 01 04 66 89 45 80 0f b6 05 18 9f 01 04 88 45 82 40 88 7d 83 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 f1 14 38 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 c9 f8 39 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 e5 f2 f6 01 48 8d 4c 24 78 e8 6b 40 f7 01"
+    },
+    {
+      "name": "Faith.GetMainRite.registration",
+      "start_rva": "0x4d51a2",
+      "end_exclusive_rva": "0x4d5235",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "1839eecb1a1fb171f20e86ca85a66bf037823922c7035f7c3b0c2f12d952fa0c",
+      "bytes": "f2 0f 10 05 06 a9 25 04 f2 0f 11 44 24 78 0f b7 05 01 a9 25 04 66 89 45 80 0f b6 05 f8 a8 25 04 88 45 82 40 88 7d 83 48 8d 45 98 48 89 45 38 48 8d 54 24 40 48 8d 4d 98 e8 21 0d 38 00 90 48 8d 45 b8 48 89 45 40 0f 57 c0 0f 11 45 b8 48 89 7d b8 48 89 7d c0 48 89 5d c8 4c 63 4c 24 6c 49 c1 e1 05 4c 8b 44 24 60 4d 03 c8 33 d2 48 8d 4d b8 e8 f9 f0 39 00 90 48 8d 45 98 48 89 44 24 20 45 33 c0 48 8d 15 35 f1 f6 01 48 8d 4c 24 78 e8 9b 5e f7 01"
+    },
+    {
+      "name": "Faith.GetFervor.registration",
+      "start_rva": "0x4d55d9",
+      "end_exclusive_rva": "0x4d5664",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "28fb368550d40d6251735e43b5a63d8f83c6d633cd0882219a96ffea305e0314",
+      "bytes": "f2 0f 10 05 97 a7 25 04 f2 0f 11 45 ef 0f b6 05 93 a7 25 04 88 45 f7 40 88 7d f8 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 f7 08 38 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 d1 ec 39 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 35 ee f6 01 48 8d 4d ef e8 8c 9e 78 00"
+    },
+    {
+      "name": "Character.GetSpiritualFulfillment.registration",
+      "start_rva": "0x55d2b3",
+      "end_exclusive_rva": "0x55d357",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "5b6c88759049acaa13f25818794d6269f674104ee940da41bb9d3965fc3ed049",
+      "bytes": "0f 10 05 7e 4e 20 04 0f 11 00 8b 0d 85 4e 20 04 89 48 10 0f b7 0d 7f 4e 20 04 66 89 48 14 0f b6 0d 76 4e 20 04 88 48 16 40 88 78 17 48 89 45 ef 48 8d 45 0f 48 89 45 67 48 8d 55 b7 48 8d 4d 0f e8 08 8c 2f 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 e2 6f 31 00 90 48 8d 45 0f 48 89 44 24 30 89 7c 24 28 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 d2 28 37 02 48 8d 4d ef e8 b9 4d 73 00"
+    },
+    {
+      "name": "Faith.GetTag.registration",
+      "start_rva": "0x4d201d",
+      "end_exclusive_rva": "0x4d20a8",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "e4bf91947851f3295fd147681701c24f02b3602b1002bc8d74d67d222d602cb9",
+      "bytes": "8b 05 61 dd 25 04 89 45 ef 0f b7 05 5b dd 25 04 66 89 45 f3 40 88 7d f5 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 b6 3e 38 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 90 22 3a 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 a4 11 f7 01 48 8d 4d ef e8 0b 57 f7 01 90 48 39"
+    },
+    {
+      "name": "Religion.GetTag.registration",
+      "start_rva": "0x4de53d",
+      "end_exclusive_rva": "0x4de5c8",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "453e73b832c2c57cb5f45fd38f64195ffc380d1d60d5c43e81a2e231a563f278",
+      "bytes": "8b 05 41 18 25 04 89 45 ef 0f b7 05 3b 18 25 04 66 89 45 f3 40 88 7d f5 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 96 79 37 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 70 5d 39 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 24 34 fa 01 48 8d 4d ef e8 8b 98 fa 01 90 48 39"
+    },
+    {
+      "name": "Rite.GetTenets.registration",
+      "start_rva": "0x4eedc9",
+      "end_exclusive_rva": "0x4eee54",
+      "kind": "registration_slice",
+      "abi": null,
+      "sha256": "fa79f9ddbb3f40ce5da83f10a18bcbd1992ce69464729d42a284b6ac2bf113c9",
+      "bytes": "f2 0f 10 05 b7 22 01 04 f2 0f 11 45 ef 0f b6 05 b3 22 01 04 88 45 f7 40 88 7d f8 48 8d 45 0f 48 89 45 6f 48 8d 55 b7 48 8d 4d 0f e8 07 71 36 00 90 48 8d 45 2f 48 89 45 77 0f 57 c0 0f 11 45 2f 48 89 7d 2f 48 89 7d 37 48 89 5d 3f 4c 63 4d e3 49 c1 e1 05 4c 8b 45 d7 4d 03 c8 33 d2 48 8d 4d 2f e8 e1 54 38 00 90 48 8d 45 0f 48 89 44 24 30 48 89 7c 24 20 45 33 c9 45 33 c0 48 8d 15 65 d3 00 02 48 8d 4d ef e8 7c fd 00 02"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "character_rite_full_ref",
+      "rva": "0x28d2f9c",
+      "bytes": "8b 91 b4 00 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0xb4]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "character_faith_rite_full_ref",
+      "rva": "0x289e75c",
+      "bytes": "8b 91 b4 00 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0xb4]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_faith_full_ref",
+      "rva": "0x289e798",
+      "bytes": "44 8b 80 b8 04 00 00",
+      "instruction": "mov r8d, dword ptr [rax + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_faith_direct_full_ref",
+      "rva": "0x24fc56c",
+      "bytes": "8b 91 b8 04 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x4b8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_religion_full_ref",
+      "rva": "0x2443d4c",
+      "bytes": "8b 91 8c 00 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x8c]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_main_rite_full_ref",
+      "rva": "0x244436c",
+      "bytes": "8b 91 98 00 00 00",
+      "instruction": "mov edx, dword ptr [rcx + 0x98]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_fervor_signed_fixed_point",
+      "rva": "0x243ea90",
+      "bytes": "48 8b 81 f8 02 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x2f8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_fervor_core_call",
+      "rva": "0x24444a7",
+      "bytes": "e8 e4 a5 ff ff",
+      "instruction": "call 0x243ea90",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x243ea90"
+      ]
+    },
+    {
+      "name": "character_spiritual_extension",
+      "rva": "0x28bce46",
+      "bytes": "48 8b 81 c8 01 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0x1c8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "character_spiritual_cached_fixed_point",
+      "rva": "0x28bce55",
+      "bytes": "48 8b 80 a0 00 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0xa0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "character_spiritual_native_default_call",
+      "rva": "0x28bce6e",
+      "bytes": "e8 4d e6 33 00",
+      "instruction": "call 0x2bfb4c0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bfb4c0"
+      ]
+    },
+    {
+      "name": "character_spiritual_core_call",
+      "rva": "0x28cfc37",
+      "bytes": "e8 04 d2 fe ff",
+      "instruction": "call 0x28bce40",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x28bce40"
+      ]
+    },
+    {
+      "name": "faith_tag_address",
+      "rva": "0xb801a0",
+      "bytes": "48 8d 81 e0 00 00 00",
+      "instruction": "lea rax, [rcx + 0xe0]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "religion_tag_definition_pointer",
+      "rva": "0x247ca20",
+      "bytes": "48 8b 41 20",
+      "instruction": "mov rax, qword ptr [rcx + 0x20]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "religion_tag_definition_string_address",
+      "rva": "0x247ca24",
+      "bytes": "48 83 c0 28",
+      "instruction": "add rax, 0x28",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "religion_reflection_integer_identity",
+      "rva": "0x2481a41",
+      "bytes": "8b 41 10",
+      "instruction": "mov eax, dword ptr [rcx + 0x10]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_tenets_collection_address",
+      "rva": "0x1cf98a0",
+      "bytes": "48 8d 81 58 07 00 00",
+      "instruction": "lea rax, [rcx + 0x758]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_tenets_collection_core_call",
+      "rva": "0x24fc1be",
+      "bytes": "e8 dd d6 7f ff",
+      "instruction": "call 0x1cf98a0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x1cf98a0"
+      ]
+    },
+    {
+      "name": "character_faith_registration_callback",
+      "rva": "0x568b20",
+      "bytes": "48 8d 15 19 a4 36 02",
+      "instruction": "lea rdx, [rip + 0x236a419]",
+      "rip_targets": [
+        "0x28d2f40"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "character_rite_registration_callback",
+      "rva": "0x568d18",
+      "bytes": "48 8d 15 71 a2 36 02",
+      "instruction": "lea rdx, [rip + 0x236a271]",
+      "rip_targets": [
+        "0x28d2f90"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_faith_registration_callback",
+      "rva": "0x4ef9e0",
+      "bytes": "48 8d 15 79 cb 00 02",
+      "instruction": "lea rdx, [rip + 0x200cb79]",
+      "rip_targets": [
+        "0x24fc560"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_religion_registration_callback",
+      "rva": "0x4d4a54",
+      "bytes": "48 8d 15 e5 f2 f6 01",
+      "instruction": "lea rdx, [rip + 0x1f6f2e5]",
+      "rip_targets": [
+        "0x2443d40"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_main_rite_registration_callback",
+      "rva": "0x4d5224",
+      "bytes": "48 8d 15 35 f1 f6 01",
+      "instruction": "lea rdx, [rip + 0x1f6f135]",
+      "rip_targets": [
+        "0x2444360"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "faith_fervor_registration_callback",
+      "rva": "0x4d5654",
+      "bytes": "48 8d 15 35 ee f6 01",
+      "instruction": "lea rdx, [rip + 0x1f6ee35]",
+      "rip_targets": [
+        "0x2444490"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "spiritual_fulfillment_registration_callback",
+      "rva": "0x55d347",
+      "bytes": "48 8d 15 d2 28 37 02",
+      "instruction": "lea rdx, [rip + 0x23728d2]",
+      "rip_targets": [
+        "0x28cfc20"
+      ],
+      "direct_targets": []
+    }
+  ],
+  "exact_class_rtti": [
+    {
+      "class": "CFaith",
+      "type_descriptor_rva": "0x59d3660",
+      "name": ".?AVCFaith@@"
+    },
+    {
+      "class": "CRite",
+      "type_descriptor_rva": "0x59d9488",
+      "name": ".?AVCRite@@"
+    },
+    {
+      "class": "CReligion",
+      "type_descriptor_rva": "0x59f1b80",
+      "name": ".?AVCReligion@@"
+    }
+  ],
+  "unresolved": [
+    "effective doctrine collection and merging ABI",
+    "personal tenet collection row ABI",
+    "faith knowledge native getter",
+    "conversion final gates/cost ABI",
+    "Rite stable authored key getter",
+    "native AI selection branches"
+  ]
+}
