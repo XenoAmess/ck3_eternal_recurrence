@@ -14,11 +14,16 @@ from .bridge.activity_feast_stage5_start_private_transport import (
     submit_activity_feast_stage5_start_private_v1,
 )
 from .bridge.driver import BridgeUnavailableError
+from .bridge.activity_feast_terminal_outcome_v1 import (
+    normalize_activity_feast_terminal_outcome_v1,
+)
 from .environment import write_json_atomic
 
 
 LEDGER_FILE = "activity-feast-stage5-start-private-v1.json"
 LEDGER_SCHEMA = "xar.ck3.activity-feast-stage5-start-private.v1"
+_TERMINAL_STATUSES = {"completed", "invalidated", "completed_and_invalidated"}
+_OUTCOME_COUNTER_KEYS = ("prestige_raw", "stress_points", "reveler_present", "reveler_xp_raw")
 
 
 def read_feast_start_ledger(state_dir: Path) -> dict[str, object]:
@@ -152,6 +157,116 @@ def _material_post(pending: Mapping[str, object], post: Mapping[str, object]) ->
     return True
 
 
+def _record_lifecycle_observation(
+    state_dir: Path, ledger: Mapping[str, object], resolved: Mapping[str, object],
+    post: Mapping[str, object],
+) -> dict[str, object]:
+    """Retain an explicit terminal result without assigning the Feast a gain."""
+    current_outcome = normalize_activity_feast_terminal_outcome_v1(
+        post, activity_id=resolved["activity_id"],
+        actor_character_id=resolved["actor_character_id"],
+    )
+    previous = resolved.get("lifecycle")
+    outcome = (previous["outcome"]
+               if (isinstance(previous, Mapping)
+                   and previous.get("terminal_observed") is True
+                   and current_outcome["status"] not in _TERMINAL_STATUSES)
+               else current_outcome)
+    baseline = resolved["post"]["balances"]
+    changes = {
+        key: (post["balances"][key]["raw"] - baseline[key]["raw"]
+              if (baseline[key].get("available") is True
+                  and post["balances"][key].get("available") is True)
+              else None)
+        for key in RESOURCE_KEYS
+    }
+    lifecycle = {
+        "activity_id": resolved["activity_id"],
+        "actor_character_id": resolved["actor_character_id"],
+        "activity_type_key": "activity_feast",
+        "outcome": outcome,
+        "latest_identity_observation": current_outcome,
+        "terminal_observed": outcome["status"] in _TERMINAL_STATUSES,
+        "balances": post["balances"],
+        "value_observation": {
+            "status": "unobserved", "benefit_verified": False,
+            "resource_changes_raw": changes,
+            "resource_changes_attributed_to_feast": False,
+            "opinion_change_raw": None,
+        },
+    }
+    before_values = resolved["source_pending"].get("pre_outcome_values")
+    after_values = post.get("outcome_values")
+    before_values = before_values if isinstance(before_values, Mapping) else {}
+    after_values = after_values if isinstance(after_values, Mapping) else {}
+    changes = {
+        key: (after_values[key] - before_values[key]
+              if (type(before_values.get(key)) is int
+                  and type(after_values.get(key)) is int) else None)
+        for key in ("prestige_raw", "stress_points", "reveler_xp_raw")
+    }
+    before_reveler = before_values.get("reveler_present")
+    after_reveler = after_values.get("reveler_present")
+    presence_observed = type(before_reveler) is bool and type(after_reveler) is bool
+    post_terminal_counters_observed = bool(
+        lifecycle["terminal_observed"]
+        and post["date_raw"] >= outcome["date_raw"]
+        and type(after_values.get("prestige_raw")) is int
+        and type(after_values.get("stress_points")) is int
+    )
+    lifecycle["value_observation"].update({
+        "status": "observed_counters" if post_terminal_counters_observed else "unobserved",
+        "pre_start_outcome_values": {key: before_values.get(key) for key in _OUTCOME_COUNTER_KEYS},
+        "outcome_values": {key: after_values.get(key) for key in _OUTCOME_COUNTER_KEYS},
+        "counter_changes": changes,
+        "reveler_presence_transition": (
+            {"before": before_reveler, "after": after_reveler} if presence_observed else None),
+        "counter_values_observed": {key: after_values.get(key) is not None
+                                    for key in _OUTCOME_COUNTER_KEYS},
+        "post_terminal_counters_observed": post_terminal_counters_observed,
+        "counter_changes_attributed_to_feast": False,
+        "counter_snapshot_revision": post["snapshot_revision"],
+        "counter_date_raw": post["date_raw"],
+        "counter_native_provenance": {
+            key: post[key] for key in ("exact_ck3_build", "exe_sha256", "queried_snapshot_id")
+            if key in post},
+    })
+    # Completion callbacks, conclusion-event choices, income and other effects
+    # are separate sources. These balance differences are observations only.
+    updated = {**resolved, "lifecycle": lifecycle}
+    _write(state_dir, {**ledger, "resolved": updated})
+    return updated
+
+
+def _terminal_counter_read_pending(resolved: Mapping[str, object]) -> bool:
+    """A new-profile receipt needs one independent post-terminal counter read."""
+    pending = resolved.get("source_pending")
+    lifecycle = resolved.get("lifecycle")
+    if not isinstance(pending, Mapping) or not isinstance(lifecycle, Mapping):
+        return False
+    value = lifecycle.get("value_observation")
+    return (isinstance(pending.get("pre_outcome_values"), Mapping)
+            and isinstance(value, Mapping)
+            and value.get("post_terminal_counters_observed") is not True)
+
+
+def _lifecycle_result(resolved: Mapping[str, object], *, recorded: bool = False) -> dict[str, object]:
+    lifecycle = resolved["lifecycle"]
+    outcome = lifecycle["outcome"]
+    return {
+        "status": "lifecycle_terminal_recorded" if recorded else "lifecycle_observed",
+        "activity_id": resolved["activity_id"],
+        "actor_character_id": resolved["actor_character_id"],
+        "start_postcondition_verified": resolved["postcondition_verified"],
+        "lifecycle_status": outcome["status"],
+        "lifecycle_terminal_observed": lifecycle["terminal_observed"],
+        "lifecycle_completed": outcome["native_completed"],
+        "lifecycle_invalidated": outcome["native_invalidated"],
+        "value_observation": lifecycle["value_observation"],
+        "observation": lifecycle,
+    }
+
+
 def reconcile_feast_start_private_v1(driver: object) -> dict[str, object]:
     """Read a new native poststate; an unresolved intent never resubmits."""
     state_dir = driver.state_dir
@@ -187,8 +302,60 @@ def reconcile_feast_start_private_v1(driver: object) -> dict[str, object]:
                 "source_pending": pending,
                 "native_ack": pending.get("native_ack"),
                 "post": post}
-    _write(state_dir, {**ledger, "pending": None, "resolved": resolved})
+    resolved = _record_lifecycle_observation(
+        state_dir, {**ledger, "pending": None}, resolved, post)
     return resolved
+
+
+def reconcile_feast_lifecycle_private_v1(
+    driver: object, *, snapshot: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    """Follow the material Start identity across turns and a restored process.
+
+    The caller owns the existing default-off observation switch. This helper
+    performs no submit, does not infer a terminal outcome from absence, and
+    continues after the existing following-turn receipt has been consumed.
+    """
+    state_dir = driver.state_dir
+    if not isinstance(state_dir, Path):
+        raise ValueError("private feast lifecycle requires managed state_dir")
+    ledger = read_feast_start_ledger(state_dir)
+    resolved = ledger["resolved"]
+    if isinstance(ledger["pending"], dict):
+        result = reconcile_feast_start_private_v1(driver)
+        if result.get("status") != "applied":
+            return {"status": "start_pending", "start_observation": result,
+                    "lifecycle_terminal_observed": False}
+        return _lifecycle_result(result)
+    if not isinstance(resolved, dict):
+        return {"status": "no_tracking", "lifecycle_terminal_observed": False}
+    if snapshot is None:
+        snapshot = driver.take_snapshot()
+    actor = snapshot.get("played_character")
+    if (not isinstance(actor, Mapping)
+            or actor.get("character_id") != resolved.get("actor_character_id")
+            or snapshot.get("paused") is not True):
+        return {"status": "lifecycle_other_actor_or_frame",
+                "lifecycle_terminal_observed": False,
+                "activity_id": resolved.get("activity_id")}
+    lifecycle = resolved.get("lifecycle")
+    if (isinstance(lifecycle, Mapping) and lifecycle.get("terminal_observed") is True
+            and not _terminal_counter_read_pending(resolved)):
+        # The exact retained terminal source survives subsequent object release
+        # and cold restoration. It is a historical observation, not a new read.
+        return _lifecycle_result(resolved, recorded=True)
+    try:
+        post = query_activity_feast_hosted_post_private_v1(
+            driver, expected_revision=snapshot["revision"])
+    except BridgeUnavailableError as exc:
+        if isinstance(lifecycle, Mapping) and lifecycle.get("terminal_observed") is True:
+            return {**_lifecycle_result(resolved, recorded=True),
+                    "counter_read_status": "post_read_red", "error": str(exc)}
+        return {"status": "lifecycle_post_read_red",
+                "lifecycle_terminal_observed": False,
+                "activity_id": resolved.get("activity_id"), "error": str(exc)}
+    resolved = _record_lifecycle_observation(state_dir, ledger, resolved, post)
+    return _lifecycle_result(resolved)
 
 
 def read_feast_start_resolved_private_v1(driver: object) -> dict[str, object]:
@@ -203,22 +370,38 @@ def read_feast_start_resolved_private_v1(driver: object) -> dict[str, object]:
             or actor.get("character_id") != resolved.get("actor_character_id")
             or snapshot.get("paused") is not True):
         return {"status": "resolved_other_actor_or_frame", "postcondition_verified": False}
+    lifecycle = resolved.get("lifecycle")
+    if (isinstance(lifecycle, Mapping) and lifecycle.get("terminal_observed") is True
+            and not _terminal_counter_read_pending(resolved)):
+        return {"status": "already_applied", "postcondition_verified": True,
+                "restored_activity_observed": False,
+                "lifecycle_observation": _lifecycle_result(resolved, recorded=True),
+                "resolved": resolved}
     try:
         post = query_activity_feast_hosted_post_private_v1(
             driver, expected_revision=snapshot["revision"])
     except BridgeUnavailableError as exc:
+        if isinstance(lifecycle, Mapping) and lifecycle.get("terminal_observed") is True:
+            return {"status": "already_applied", "postcondition_verified": True,
+                    "restored_activity_observed": False,
+                    "lifecycle_observation": _lifecycle_result(resolved, recorded=True),
+                    "counter_read_status": "post_read_red", "error": str(exc),
+                    "resolved": resolved}
         return {"status": "resolved_post_read_red", "postcondition_verified": False,
                 "error": str(exc)}
     activity_id = resolved.get("activity_id")
-    if (type(activity_id) is not int or not any(
+    if (not (isinstance(lifecycle, Mapping) and lifecycle.get("terminal_observed") is True)
+            and (type(activity_id) is not int or not any(
             row["activity_id"] == activity_id
             and row["host_character_id"] == resolved["actor_character_id"]
             and row["activity_type_key"] == "activity_feast"
-            for row in post["hosted_activities"])):
+            for row in post["hosted_activities"]))):
         return {"status": "resolved_activity_unobserved", "postcondition_verified": False,
                 "post": post, "resolved": resolved}
+    resolved = _record_lifecycle_observation(driver.state_dir, ledger, resolved, post)
     return {"status": "already_applied", "postcondition_verified": True,
             "restored_activity_observed": True, "restored_post": post,
+            "lifecycle_observation": _lifecycle_result(resolved),
             "resolved": resolved}
 
 
@@ -250,6 +433,7 @@ def consume_feast_start_private_v1(
             for key in RESOURCE_KEYS},
         "pre_balances": inputs["balances"],
         "pre_hosted_activities": inputs["hosted_activities"],
+        "pre_outcome_values": inputs.get("outcome_values"),
         "reserved_raw": reserves, "stage": "submission_unresolved",
     }
     _write(state_dir, {**ledger, "pending": pending})

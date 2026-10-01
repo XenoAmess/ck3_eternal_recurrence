@@ -111,6 +111,23 @@ def _hosted(value: object) -> list[dict[str, object]]:
     return copied
 
 
+def _outcome_values(value: object) -> dict[str, object]:
+    """Copy native actor counters; absent reads remain None, not zero."""
+    fields = {"prestige_raw", "stress_points", "reveler_present", "reveler_xp_raw"}
+    if not isinstance(value, dict) or set(value) != fields:
+        raise BridgeUnavailableError("private feast outcome counters malformed")
+    for key in ("prestige_raw", "reveler_xp_raw"):
+        if value[key] is not None and not _signed(value[key]):
+            raise BridgeUnavailableError("private feast fixed-point outcome counter malformed")
+    stress = value["stress_points"]
+    if stress is not None and (type(stress) is not int or not -(2**31) <= stress < 2**31):
+        raise BridgeUnavailableError("private feast integer stress counter malformed")
+    present = value["reveler_present"]
+    if present is not None and type(present) is not bool:
+        raise BridgeUnavailableError("private feast reveler presence malformed")
+    return dict(value)
+
+
 def _parse_payload(
     value: object, *, step: str, native_revision: int,
     date_raw: int, actor_id: int,
@@ -126,8 +143,9 @@ def _parse_payload(
         "selected_nonhost_count", "positive_join_count",
         "timely_positive_join_count", "arrival_time_observed",
     }
+    fields = common | (input_fields if step == INPUT_STEP else set())
     if (not isinstance(value, dict)
-            or set(value) != common | (input_fields if step == INPUT_STEP else set())
+            or set(value) not in (fields, fields | {"outcome_values"})
             or value["schema"] != (INPUT_SCHEMA if step == INPUT_STEP else POST_SCHEMA)
             or type(value["snapshot_revision"]) is not int
             or value["snapshot_revision"] != native_revision
@@ -141,6 +159,8 @@ def _parse_payload(
     balances = _balances(value["balances"])
     hosted = _hosted(value["hosted_activities"])
     result = {**value, "balances": balances, "hosted_activities": hosted}
+    if "outcome_values" in value:
+        result["outcome_values"] = _outcome_values(value["outcome_values"])
     if step == INPUT_STEP:
         resources = value["resources"]
         if not isinstance(resources, dict) or set(resources) != set(RESOURCE_KEYS):
