@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.2",
+    "steam_build_id": "25588574",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "executable_size": 101039736
+  },
+  "readiness": "static-ready",
+  "live_verified": false,
+  "process_access": false,
+  "native_spans": [
+    {
+      "name": "method_registration",
+      "rva_start": "0x1db770",
+      "rva_end_exclusive": "0x1db80d",
+      "sha256": "964907eaf814d027f7d4901bf82babeff27853298fb5f3d6a026acb48723bbfe"
+    },
+    {
+      "name": "reflection_callback",
+      "rva_start": "0x137a820",
+      "rva_end_exclusive": "0x137a85f",
+      "sha256": "a78f412b7e35580d94ea624969217956db432414dd1211e2cf248f55dc29488c"
+    },
+    {
+      "name": "formatter_parent_source",
+      "rva_start": "0x13746c0",
+      "rva_end_exclusive": "0x137473f",
+      "sha256": "e5c6bdc077e8cd938e856a260c646834f139662f337f4b28b12a6717dd7f7c6f"
+    },
+    {
+      "name": "native_parent_getter",
+      "rva_start": "0x13753a0",
+      "rva_end_exclusive": "0x1375476",
+      "sha256": "e1131695f5a48120d8ba40d5e1799d40fe86a0dc2fb7afce9fd543eb42651688"
+    },
+    {
+      "name": "offer_secondary_identity_copy",
+      "rva_start": "0x13732f0",
+      "rva_end_exclusive": "0x1373329",
+      "sha256": "ec8e5d51e68c5e3ee5bcdba4ef2db61349345406f94208f220bbbc1280c77b37"
+    },
+    {
+      "name": "option_cache",
+      "rva_start": "0x1373c27",
+      "rva_end_exclusive": "0x1373c4a",
+      "sha256": "a41650fc54ddd57f0e2fd24e167e274b9be2f6663c2d1bbf2a8dc83b6a42697f"
+    },
+    {
+      "name": "offer_constructor",
+      "rva_start": "0x13788e0",
+      "rva_end_exclusive": "0x137897a",
+      "sha256": "3b84f0c62447d1ccc2f82b38884676a5a67e1697aa3629d44c1b8371a2f035ed"
+    }
+  ],
+  "semantic_checks": [
+    {
+      "name": "registered_callback",
+      "rva": "0x1db7fb",
+      "bytes": "4C 8D 05 1E F0 19 01",
+      "instruction": "lea r8, [rip + 0x119f01e]",
+      "rip_targets": [
+        "0x137a820"
+      ],
+      "immediates": []
+    },
+    {
+      "name": "callback_formatter",
+      "rva": "0x137a833",
+      "bytes": "E8 88 9E FF FF",
+      "instruction": "call 0x13746c0",
+      "rip_targets": [],
+      "immediates": [
+        "0x13746c0"
+      ]
+    },
+    {
+      "name": "formatter_parent_virtual",
+      "rva": "0x13746e8",
+      "bytes": "FF 50 10",
+      "instruction": "call qword ptr [rax + 0x10]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "formatter_house",
+      "rva": "0x13746ee",
+      "bytes": "8B 88 58 01 00 00",
+      "instruction": "mov ecx, dword ptr [rax + 0x158]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "initializer_subject_context",
+      "rva": "0x1373307",
+      "bytes": "44 8B 8A E0 02 00 00",
+      "instruction": "mov r9d, dword ptr [rdx + 0x2e0]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "initializer_subject_offer",
+      "rva": "0x1373318",
+      "bytes": "44 89 49 28",
+      "instruction": "mov dword ptr [rcx + 0x28], r9d",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "initializer_candidate_context",
+      "rva": "0x137331c",
+      "bytes": "44 8B 92 E4 02 00 00",
+      "instruction": "mov r10d, dword ptr [rdx + 0x2e4]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "initializer_candidate_offer",
+      "rva": "0x1373323",
+      "bytes": "44 89 51 2C",
+      "instruction": "mov dword ptr [rcx + 0x2c], r10d",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "option_native_read",
+      "rva": "0x1373c3e",
+      "bytes": "E8 3D 4C D0 01",
+      "instruction": "call 0x3078880",
+      "rip_targets": [],
+      "immediates": [
+        "0x3078880"
+      ]
+    },
+    {
+      "name": "option_native_cache",
+      "rva": "0x1373c43",
+      "bytes": "41 88 85 80 00 00 00",
+      "instruction": "mov byte ptr [r13 + 0x80], al",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "constructor_size",
+      "rva": "0x1378905",
+      "bytes": "B9 88 00 00 00",
+      "instruction": "mov ecx, 0x88",
+      "rip_targets": [],
+      "immediates": [
+        "0x88"
+      ]
+    },
+    {
+      "name": "constructor_offer_vtable",
+      "rva": "0x1378945",
+      "bytes": "48 8D 0D 14 5B 1D 03",
+      "instruction": "lea rcx, [rip + 0x31d5b14]",
+      "rip_targets": [
+        "0x454e460"
+      ],
+      "immediates": []
+    },
+    {
+      "name": "getter_subject_id",
+      "rva": "0x13753ca",
+      "bytes": "8B 51 28",
+      "instruction": "mov edx, dword ptr [rcx + 0x28]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "getter_window_owner",
+      "rva": "0x13753f4",
+      "bytes": "48 8B 4D 08",
+      "instruction": "mov rcx, qword ptr [rbp + 8]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "getter_selected_option",
+      "rva": "0x1375418",
+      "bytes": "0F B6 85 80 00 00 00",
+      "instruction": "movzx eax, byte ptr [rbp + 0x80]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "getter_subject_selector",
+      "rva": "0x137541f",
+      "bytes": "3A 87 A1 01 00 00",
+      "instruction": "cmp al, byte ptr [rdi + 0x1a1]",
+      "rip_targets": [],
+      "immediates": []
+    },
+    {
+      "name": "getter_candidate_id",
+      "rva": "0x1375431",
+      "bytes": "44 8B 45 2C",
+      "instruction": "mov r8d, dword ptr [rbp + 0x2c]",
+      "rip_targets": [],
+      "immediates": []
+    }
+  ],
+  "vtable": {
+    "rva": "0x454e460",
+    "entries": [
+      "0x137a060",
+      "0x1373c00",
+      "0x13753a0"
+    ]
+  },
+  "source_constants": {
+    "kNativeChildHousePreviewParentRva": "0x13753A0",
+    "kNativeMarriageMatchOfferVtableRva": "0x454E460"
+  },
+  "offer_layout": {
+    "size": "0x88",
+    "window_owner": "0x8",
+    "subject_id": "0x28",
+    "candidate_id": "0x2C",
+    "cached_matrilineal_option": "0x80"
+  },
+  "semantic_boundary": "actual native prospective house preview; no birth or dynasty-continuation reward"
+}

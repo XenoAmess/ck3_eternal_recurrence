@@ -109,3 +109,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 实际Prepare/Submit→原生owner pump→Wait/Reclaim→CommandResult caller补齐accepted/private_build/read_only/advertised四字段，修复确定可复现的SDK BridgeUnavailable。Od/O2实际caller与新增1项SDK通过，既有6项SDK证据复用。首次User32链接harness失败及缺字段包保留。fixture进程没有游戏roots的unavailable只表示测试情形，不冒充live。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\government\caller-final-v2\receipt.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:40:14 Family lineage preview and betrothal break terms
+
+33个非战争文件实现实际UI子女house预览、父母full House/Dynasty与解约final CanSend/费用/原生条件；不把预览当作出生结果。Od/O2生产wire各4案例和实际SDK6案例通过。另7文件仅归档用户停止战争研究前已验证的联盟历史源，候选未注册战争reader，MCP不提供ally参数，停止继续开发。当前非战争暂停观测、真实解约及cold仍待验收。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\family-obligations\final-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

@@ -1,0 +1,29 @@
+{
+  "kind": "offline-native-wire-fixture-v1",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "war_reader_executed": false,
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "native_wire_sha256": "976bdcab97490b0eba91e704d146af87bc85221bbb75511b2a9d7366d90a3ce2",
+  "source": "serializer contract fixture with explicitly constructed DTO rows; no native penalty computation claimed",
+  "fixture_source": "src/ck3_12002_family_obligations_wire_test.cpp",
+  "receipt_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\family-obligations\\wire\\build-release-ready\\result.json",
+  "receipt_sha256": "f78fb3763042684a8a01780e724aad4dac35d10a6b10b24618597e7419569290",
+  "source_sha256": {
+    "ck3_12002_family_obligations_break.cpp": "6dc7552bb9ab9f0171bd710175d75927cd97bbc9eb452e41a7b290f59de118ff",
+    "ck3_12002_family_obligations_break_penalty.cpp": "5fcf9dd12dc9b1b52d985254ed7493ba72efaab8dce86c7402475deb3ec9f486",
+    "ck3_12002_family_obligations_lineage.cpp": "2448462e8b949a264dc6f5e1212987a74e8a0b2774d2866931610a38bfc27929",
+    "ck3_12002_family_obligations_mailbox.cpp": "4537dfb23d047c32f742a7d5b1efffeda7bd95f5caa6b5c0a965230ed5541a08",
+    "ck3_12002_family_obligations_mailbox_test.cpp": "63605ef5c7c202568c075490aa96d0e8b649f29effc36b91c6d3d75aa6f59291",
+    "ck3_12002_family_obligations_wire.cpp": "b10190d7f6698e5f07066d647beaed311d08148d2cd60ecc635495054fb55543",
+    "ck3_12002_family_obligations_wire_test.cpp": "d5c39a9b34d285b0ff257576c4e7649a10649dc627bafcdedea6be95426bf1c8",
+    "ck3_12002_family_value.cpp": "422dbb3da539ecaff5a54ab40a376c7069bc2a501cc2e709bb5c24f557f46259",
+    "ck3_12002_phase_character.cpp": "81200e3850d2ee320600d74b18ecc343df14a7b4a92f8dff8474a599d5be055a",
+    "ck3_12002_phase_definitions.cpp": "f3ca2432c958e00b109154338be7e0fcc886b100bcf744b10e90730f79948b5d",
+    "ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "main_thread_query_mailbox_v1.cpp": "36b297e7d3891a709c94225ec7ee08478986009cc3f1bd056d8484c0d67aa30e",
+    "protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708"
+  }
+}

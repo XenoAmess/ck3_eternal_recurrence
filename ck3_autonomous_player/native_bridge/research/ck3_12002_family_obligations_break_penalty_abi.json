@@ -1,0 +1,234 @@
+{
+  "schema": "ck3_12002_family_break_penalty_abi_v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "readiness": "static-ready",
+  "local_ck3_touched": false,
+  "native_methods": [
+    {
+      "name": "kHighestTierRva",
+      "rva": "0x28ac6b0",
+      "end_rva": "0x28ac73c",
+      "abi": "int32(Character*)",
+      "prefix_bytes": "48 8B 81 C0 01 00 00 48 85 C0 75 5E 48 8B 81 D0 01 00 00 48 85 C0 74 51 83 78 74 00 74 08 48 8B 40 68 8B 10 EB 05 BA FF FF FF FF 48 8B 05 16 14",
+      "prefix_occurrences": 1,
+      "function_sha256": "36d515a2643515bc264052d0c428c7c2ecf51277bd95519852fd51caea68221f"
+    },
+    {
+      "name": "kMatchmakerRva",
+      "rva": "0x2b94d10",
+      "end_rva": "0x2b94dd4",
+      "abi": "Character*(Character*)",
+      "prefix_bytes": "40 53 48 83 EC 20 81 79 1C 72 61 68 43 48 8B D9 0F 85 A1 00 00 00 83 79 18 FF 0F 84 97 00 00 00 48 83 B9 C0 01 00 00 00 0F 85 80 00 00 00 E8 2D",
+      "prefix_occurrences": 1,
+      "function_sha256": "72829c7fb2ab10d1fd2221eb6c553567fdcb0303c82a9533af2224aa4ccd11a1"
+    },
+    {
+      "name": "kCloseFamilyRva",
+      "rva": "0x29120a0",
+      "end_rva": "0x291222b",
+      "abi": "bool(Character*,Character*)",
+      "prefix_bytes": "48 89 5C 24 08 48 89 6C 24 18 48 89 74 24 20 57 48 83 EC 20 81 7A 1C 72 61 68 43 48 8B DA 48 8B E9 0F 85 4D 01 00 00 83 7A 18 FF 0F 84 43 01 00",
+      "prefix_occurrences": 1,
+      "function_sha256": "c76f9193664d349b6919ee9ae363c995d4aee6278b09d2e9a9278da3e7c3fecc"
+    },
+    {
+      "name": "kCloseOrExtendedFamilyRva",
+      "rva": "0x2912290",
+      "end_rva": "0x29122ee",
+      "abi": "bool(Character*,Character*)",
+      "prefix_bytes": "48 89 5C 24 08 57 48 83 EC 20 48 8B DA 48 8B F9 E8 FB FD FF FF 84 C0 75 38 48 8B D7 48 8B CB E8 7C 19 FA FF 84 C0 75 29 48 8B D3 48 8B CF E8 6D",
+      "prefix_occurrences": 1,
+      "function_sha256": "1187421ddca297547424e5f77944d37154b380c56f7099c18576ce394fdaa2a8"
+    },
+    {
+      "name": "kTraitFlagRva",
+      "rva": "0x2bb0eb0",
+      "end_rva": "0x2bb1065",
+      "abi": "bool(Character*,const int32* interned_flag)",
+      "prefix_bytes": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 40 48 8B 99 F8 00 00 00 48 8B EA 48 63 81 04 01 00 00 48 8D 34 83 48",
+      "prefix_occurrences": 1,
+      "function_sha256": "7f06f841e5716296e08b4a12cb7f42fa2020f24f1fff674601aa302a84b06a06"
+    },
+    {
+      "name": "kYieldsAllianceRva",
+      "rva": "0x2c7c650",
+      "end_rva": "0x2c7c6e2",
+      "abi": "bool(current,target,candidate,target_candidate)",
+      "prefix_bytes": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 49 8B F1 49 8B E8 48 8B DA 48 8B F9 48 3B CA 74 56 49 8B D0 E8 13 FF FF FF 84 C0 74",
+      "prefix_occurrences": 1,
+      "function_sha256": "40ad4d41272023e912114e21ff7e5307b5c362d4816cc860554b72fecfa6a7a5"
+    },
+    {
+      "name": "kCharacterRiteRva",
+      "rva": "0x28d2f90",
+      "end_rva": "0x28d2fcd",
+      "abi": "opaque_rite*(Character*)",
+      "prefix_bytes": "48 8B 05 61 B3 44 03 48 85 C0 74 29 8B 91 B4 00 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 05",
+      "prefix_occurrences": 1,
+      "function_sha256": "a070e31f68f01cc5795c8c49b50414a1168f35aacac1fbd8c1c4219017b99c2b"
+    },
+    {
+      "name": "kRiteParameterSetContainsRva",
+      "rva": "0xb9de80",
+      "end_rva": "0xb9de91",
+      "abi": "bool(opaque_parameter_set*,const int32* parameter)",
+      "prefix_bytes": "48 83 EC 08 4C 8B 11 4C 8B DA 4C 63 49 0C 4D 8B C2",
+      "prefix_occurrences": 4,
+      "function_sha256": "8e640eca4c250e646173b63a96f33c0d19ef7d5f781687c47e78862ea8d77a7c"
+    }
+  ],
+  "semantic_checks": [
+    {
+      "name": "trait_flag_native_tailcall",
+      "rva": "0x2b69c70",
+      "bytes": "E9 3B 72 04 00",
+      "instruction": "jmp 0x2bb0eb0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2bb0eb0"
+      ]
+    },
+    {
+      "name": "trait_flag_argument_address",
+      "rva": "0x2b69c6c",
+      "bytes": "49 8D 50 40",
+      "instruction": "lea rdx, [r8 + 0x40]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_parameter_identifier",
+      "rva": "0x2ae9fc0",
+      "bytes": "41 8B 40 40",
+      "instruction": "mov eax, dword ptr [r8 + 0x40]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_parameter_set_address",
+      "rva": "0x2ae9fc9",
+      "bytes": "48 81 C1 B8 07 00 00",
+      "instruction": "add rcx, 0x7b8",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "rite_parameter_native_contains",
+      "rva": "0x2ae9fd4",
+      "bytes": "E8 A7 3E 0B FE",
+      "instruction": "call 0xb9de80",
+      "rip_targets": [],
+      "direct_targets": [
+        "0xb9de80"
+      ]
+    },
+    {
+      "name": "game_rule_selected_service",
+      "rva": "0x36670ad",
+      "bytes": "48 8B 0D C4 CC 64 02",
+      "instruction": "mov rcx, qword ptr [rip + 0x264ccc4]",
+      "rip_targets": [
+        "0x5cb3d78"
+      ],
+      "direct_targets": []
+    },
+    {
+      "name": "game_rule_service_final_vector",
+      "rva": "0x36670bc",
+      "bytes": "FF 50 10",
+      "instruction": "call qword ptr [rax + 0x10]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "game_rule_selected_count",
+      "rva": "0x36670d0",
+      "bytes": "48 63 50 14",
+      "instruction": "movsxd rdx, dword ptr [rax + 0x14]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "game_rule_selected_data",
+      "rva": "0x36670d9",
+      "bytes": "48 8B 48 08",
+      "instruction": "mov rcx, qword ptr [rax + 8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "highest_tier_title_template",
+      "rva": "0x28ac711",
+      "bytes": "48 8B 40 48",
+      "instruction": "mov rax, qword ptr [rax + 0x48]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "highest_tier_template_raw",
+      "rva": "0x28ac715",
+      "bytes": "8B 40 64",
+      "instruction": "mov eax, dword ptr [rax + 0x64]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "name": "yields_alliance_native_final",
+      "rva": "0x2b72a16",
+      "bytes": "E8 35 9C 10 00",
+      "instruction": "call 0x2c7c650",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x2c7c650"
+      ]
+    }
+  ],
+  "stock_files": [
+    {
+      "path": "common/character_interactions/00_marriage_interactions.txt",
+      "sha256": "9481fd44a078f2d06034dd4a2107fe183f231d2b49d8b90f106c1d54f7a501f0"
+    },
+    {
+      "path": "common/scripted_triggers/00_marriage_triggers.txt",
+      "sha256": "fdf17646126567ef399b9ac0cc2579b3dd80ba09f080d118bb147ef061a99c8b"
+    },
+    {
+      "path": "common/scripted_effects/00_marriage_interaction_effects.txt",
+      "sha256": "7d42c1ad0dca12f91e40d0260a0b57db9f4ff2f1d2bb819a817d4e3d0f2ec30f"
+    },
+    {
+      "path": "common/script_values/00_basic_values.txt",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    },
+    {
+      "path": "common/scripted_triggers/04_ep2_wedding_triggers.txt",
+      "sha256": "d7401921e36171f45b6e4175077c89548494057c84005cb6aa2e0e8a5ef79093"
+    },
+    {
+      "path": "common/scripted_triggers/00_available_for_events_triggers.txt",
+      "sha256": "fb94b3c340b0374ace5a90017e0e986941771510853bd6afa6fcb0a28d185f05"
+    }
+  ],
+  "stock_prestige_values": [
+    35,
+    75,
+    150,
+    350,
+    750,
+    1500
+  ],
+  "tier_mapping": {
+    "0": "none",
+    "1": "barony",
+    "2": "county",
+    "3": "duchy",
+    "4": "kingdom",
+    "5": "empire",
+    "6": "hegemony"
+  },
+  "tier_mapping_reused_source": "src/ck3_12002_campaign.cpp::TierKey and existing 1.20.0.2 title-map/construction receipts",
+  "grand_promise_source": "04_ep2_wedding_triggers.txt:12\u201314 has_variable=promised_grand_wedding_by; same existing native variable context layout as phase_misc",
+  "effects_complete": false,
+  "external_predicate_evidence_sha256": "cfb23dc6ad097250e69c86df1b733645fefbcbf327cfd1d1355387cda5a5ccb2"
+}

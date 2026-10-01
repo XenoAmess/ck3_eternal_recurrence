@@ -1,0 +1,308 @@
+{
+  "schema": "xar.ck3-1.20.0.2.family-break-terms-abi.v1",
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": 1790629985,
+    "image_base": "0x140000000",
+    "size_of_image": 102518784
+  },
+  "signature_anchors": [
+    {
+      "name": "database_getter",
+      "rva": "0x89da60",
+      "pattern": "48 83 EC 38 48 8B 05 CD 9A 3C 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 89 F5 BE 03 48",
+      "confidence": "exact-build production caller/callee"
+    },
+    {
+      "name": "stable_key_hash",
+      "rva": "0x3f7e240",
+      "pattern": "89 4C 24 08 53 48 83 EC 20 33 C0 48 8D 4C 24 30 41 8B D8 89 44 24 30 45 8B C8 89 44 24 40 4C 8B C2 48 8D 54 24 40 E8 95 FE FF FF 8B 54 24 40 44 8B C2 8B 4C 24 30 44 8B C9 41 83 E0 03 74 1F B9",
+      "confidence": "exact-build production caller/callee"
+    },
+    {
+      "name": "loaded_lookup",
+      "rva": "0xa055e0",
+      "pattern": "48 89 5C 24 08 45 33 C0 48 63 DA 44 38 81 E0 0E 00 00 45 8B C8 41 0F 94 C1 45 8D 58 FE 45 85 C9 0F 84 8D 00 00 00 41 83 E9 01 74 3B 41 83 F9 01 0F 85 7D 00 00 00 F0 0F BA A9 A0 0E 00 00 00 73 0F F3 90 F0 0F BA A9 A0 0E 00 00 00 72 F3 66 90 8B 81 A0 0E 00 00 83 F8 01 76 04 F3 90 EB F1 41 B8 02 00 00 00 EB 4C 41 B8 02 00 00 00 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 74 31 0F 1F 40 00 41 8B C3 F0 0F C1 81 A0 0E 00 00 0F 1F 44 00 00 8B 81 A0 0E 00 00 A8 01 74 04 F3 90 EB F2 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 75 D3 41 B8 01 00 00 00 4C 63 89 8C 01 00 00 4C 8B 91 80 01 00 00 49 8B D1 48 23 D3 48 8D 04 52 B2 01 41 38 54 C2 04 49 8D 04 C2 72 10 3B 58 08 74 21 48 83 C0 18 FE C2 3A 50 04 76 F0 0F B6 81 90 01 00 00 FF C0 41 03 C1 48 98 48 8D 14 40 49 8D 04 D2 80 78 04 FF 74 06 48 8B 40 10 EB 07 48 8B 05 37 86 31 05 41 83 E8 01 74 14 41 83 F8 01 75 17 F0 44 21 99 A0 0E 00 00 48 8B 5C 24 08 C3 F0 44 0F C1 99 A0 0E",
+      "confidence": "exact-build production caller/callee"
+    },
+    {
+      "name": "lookup_return_missing",
+      "rva": "0xa056de",
+      "pattern": "80 78 04 FF 74 06 48 8B 40 10 EB 07 48 8B 05 37 86 31 05 41 83 E8 01 74 14 41 83",
+      "confidence": "exact-build production caller/callee"
+    },
+    {
+      "name": "definition_identity_producer",
+      "rva": "0x3144a05",
+      "pattern": "44 89 56 10 66 0F 6F C6 66 0F 73 D8 08 66 41 0F 7E C0 66 48 0F 7E F2 E8 1F 98 E3 00 89 46 14 48 8D 4E 18 66 0F 6F C6 66 0F 73 D8 08 66 0F 7E C0 4C 63 C0 45 33 F6 4C 89 31 4C 89 71 10 48 C7 41 18 0F 00 00 00 44 88 31 66 48 0F 7E F2 E8 59 13 71 FD C7",
+      "confidence": "exact-build production caller/callee"
+    },
+    {
+      "name": "native_lookup_caller",
+      "rva": "0xa81191",
+      "pattern": "E8 CA C8 E1 FF 48 8B F0 48 8B D7 48 83 7F 18 10 72 03 48 8B 17 45 33 FF 48 85 D2 75 05 41 8B CF EB 16 48 C7 C1 FF FF FF FF 66 0F 1F 44 00 00 48 FF C1 44 38 3C 0A 75 F7 44 8B C1 E8 6F D0 4F 03 8B D0 48 8B CE E8 05 44 F8 FF 4C 8B D0 81 78 38 4F 62 44 47",
+      "confidence": "exact-build production caller/callee"
+    },
+    {
+      "name": "all_roles_context",
+      "rva": "0x3076e50",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 4C 24 08 56 57 41 56 48 83 EC 20 41 8B D9 41 8B F8 48 8B EA 48 8B F1 48 89 11 48 83 C1 08 E8 E1 30 81 FD 90 48 8D 8E 70 01 00 00 E8 D4 30 81 FD 90 89 BE D8 02 00 00 89 9E DC 02 00 00 8B 44 24 60 89 86 E0 02 00 00 8B 44 24 68 89 86 E4 02 00 00 8B 44 24 70 89 86 E8 02 00 00 89 BE EC 02 00 00 33 DB 89 9E F0 02 00 00 48 89 9E",
+      "confidence": "exact-build production caller/callee"
+    },
+    {
+      "name": "redirect_roles",
+      "rva": "0x3148de0",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 60 FF FF FF 48 81 EC A0 01 00 00 49 8B F1 49 8B D8 4C 8B F2 48 8B F9 83 B9 14 18 00 00 00 0F 84 59 03 00 00",
+      "confidence": "exact-build production caller/callee"
+    }
+  ],
+  "vtable_prefixes": [],
+  "semantic_checks": [
+    {
+      "purpose": "database_getter_call",
+      "rva": "0xa81191",
+      "bytes": "E8 CA C8 E1 FF",
+      "instruction": "call 0x89da60",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x89da60"
+      ]
+    },
+    {
+      "purpose": "native_stable_hash_call",
+      "rva": "0xa811cc",
+      "bytes": "E8 6F D0 4F 03",
+      "instruction": "call 0x3f7e240",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3f7e240"
+      ]
+    },
+    {
+      "purpose": "loaded_definition_lookup_call",
+      "rva": "0xa811d6",
+      "bytes": "E8 05 44 F8 FF",
+      "instruction": "call 0xa055e0",
+      "rip_targets": [],
+      "direct_targets": [
+        "0xa055e0"
+      ]
+    },
+    {
+      "purpose": "missing_definition_slot",
+      "rva": "0xa056ea",
+      "bytes": "48 8B 05 37 86 31 05",
+      "instruction": "mov rax, qword ptr [rip + 0x5318637]",
+      "rip_targets": [
+        "0x5d1dd28"
+      ],
+      "direct_targets": []
+    },
+    {
+      "purpose": "definition_ordinal",
+      "rva": "0x3144a05",
+      "bytes": "44 89 56 10",
+      "instruction": "mov dword ptr [rsi + 0x10], r10d",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "definition_stable_hash",
+      "rva": "0x3144a21",
+      "bytes": "89 46 14",
+      "instruction": "mov dword ptr [rsi + 0x14], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "definition_key_string",
+      "rva": "0x3144a24",
+      "bytes": "48 8D 4E 18",
+      "instruction": "lea rcx, [rsi + 0x18]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "definition_kind",
+      "rva": "0x3144a57",
+      "bytes": "C7 46 38 4F 62 44 47",
+      "instruction": "mov dword ptr [rsi + 0x38], 0x4744624f",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "definition_kind_value",
+      "rva": "0x3144a57",
+      "bytes": "C7 46 38 4F 62 44 47",
+      "instruction": "mov dword ptr [rsi + 0x38], 0x4744624f",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "loaded_database_slot",
+      "rva": "0x89da64",
+      "bytes": "48 8B 05 CD 9A 3C 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53c9acd]",
+      "rip_targets": [
+        "0x5c67538"
+      ],
+      "direct_targets": []
+    },
+    {
+      "purpose": "context_actor",
+      "rva": "0x3076e8d",
+      "bytes": "89 BE D8 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2d8], edi",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "context_recipient",
+      "rva": "0x3076e93",
+      "bytes": "89 9E DC 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2dc], ebx",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "context_secondary_actor",
+      "rva": "0x3076e9d",
+      "bytes": "89 86 E0 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2e0], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "context_secondary_recipient",
+      "rva": "0x3076ea7",
+      "bytes": "89 86 E4 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2e4], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "context_intermediary",
+      "rva": "0x3076eb1",
+      "bytes": "89 86 E8 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2e8], eax",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "loaded_redirect_effect_count",
+      "rva": "0x3148e13",
+      "bytes": "83 B9 14 18 00 00 00",
+      "instruction": "cmp dword ptr [rcx + 0x1814], 0",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "loaded_redirect_effect_block",
+      "rva": "0x3148f30",
+      "bytes": "48 8D 8F D8 17 00 00",
+      "instruction": "lea rcx, [rdi + 0x17d8]",
+      "rip_targets": [],
+      "direct_targets": []
+    },
+    {
+      "purpose": "execute_native_scope_redirection",
+      "rva": "0x3148f3c",
+      "bytes": "E8 4F CA 61 00",
+      "instruction": "call 0x3765990",
+      "rip_targets": [],
+      "direct_targets": [
+        "0x3765990"
+      ]
+    },
+    {
+      "purpose": "lookup_kind_validation",
+      "rva": "0xa811de",
+      "bytes": "81 78 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rax + 0x38], 0x4744624f",
+      "rip_targets": [],
+      "direct_targets": []
+    }
+  ],
+  "source_constants": {
+    "kFamilyBreakDatabaseGetterRvaV1": "0x89da60",
+    "kFamilyBreakStableHashRvaV1": "0x3f7e240",
+    "kFamilyBreakLookupDefinitionRvaV1": "0xa055e0",
+    "kFamilyBreakMissingDefinitionSlotRvaV1": "0x5d1dd28",
+    "kFamilyBreakDefinitionOrdinalOffsetV1": "0x10",
+    "kFamilyBreakDefinitionHashOffsetV1": "0x14",
+    "kFamilyBreakDefinitionKeyOffsetV1": "0x18",
+    "kFamilyBreakDefinitionKindOffsetV1": "0x38",
+    "kFamilyBreakDefinitionKindV1": "0x4744624f"
+  },
+  "native_constant_bindings": [
+    {
+      "purpose": "database_getter_call",
+      "constant": "kFamilyBreakDatabaseGetterRvaV1",
+      "kind": "direct"
+    },
+    {
+      "purpose": "native_stable_hash_call",
+      "constant": "kFamilyBreakStableHashRvaV1",
+      "kind": "direct"
+    },
+    {
+      "purpose": "loaded_definition_lookup_call",
+      "constant": "kFamilyBreakLookupDefinitionRvaV1",
+      "kind": "direct"
+    },
+    {
+      "purpose": "missing_definition_slot",
+      "constant": "kFamilyBreakMissingDefinitionSlotRvaV1",
+      "kind": "rip"
+    },
+    {
+      "purpose": "definition_ordinal",
+      "constant": "kFamilyBreakDefinitionOrdinalOffsetV1",
+      "kind": "displacement"
+    },
+    {
+      "purpose": "definition_stable_hash",
+      "constant": "kFamilyBreakDefinitionHashOffsetV1",
+      "kind": "displacement"
+    },
+    {
+      "purpose": "definition_key_string",
+      "constant": "kFamilyBreakDefinitionKeyOffsetV1",
+      "kind": "displacement"
+    },
+    {
+      "purpose": "definition_kind",
+      "constant": "kFamilyBreakDefinitionKindOffsetV1",
+      "kind": "displacement"
+    },
+    {
+      "purpose": "definition_kind_value",
+      "constant": "kFamilyBreakDefinitionKindV1",
+      "kind": "immediate"
+    }
+  ],
+  "stock_evidence": [
+    {
+      "path": "common/character_interactions/00_marriage_interactions.txt",
+      "sha256": "9481fd44a078f2d06034dd4a2107fe183f231d2b49d8b90f106c1d54f7a501f0"
+    },
+    {
+      "path": "common/scripted_triggers/00_marriage_triggers.txt",
+      "sha256": "fdf17646126567ef399b9ac0cc2579b3dd80ba09f080d118bb147ef061a99c8b"
+    },
+    {
+      "path": "common/scripted_effects/00_marriage_interaction_effects.txt",
+      "sha256": "7d42c1ad0dca12f91e40d0260a0b57db9f4ff2f1d2bb819a817d4e3d0f2ec30f"
+    },
+    {
+      "path": "common/script_values/00_basic_values.txt",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    }
+  ],
+  "known_gaps": [
+    "1.20 paused live native roles and CanSend not yet observed",
+    "Generic send costs do not include conditional on_accept prestige/opinion/Grand Wedding effect losses"
+  ]
+}

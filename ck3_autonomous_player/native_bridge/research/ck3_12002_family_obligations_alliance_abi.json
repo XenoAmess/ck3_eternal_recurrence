@@ -1,0 +1,267 @@
+{
+  "schema": "xar.ck3.12002.family-alliance-war-abi.v1",
+  "exact_build": {
+    "version": "1.20.0.2",
+    "steam_build": "25588574",
+    "executable_size": 101039736,
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "native_spans": [
+    {
+      "name": "character_war_vector_ui",
+      "rva_start": "0x1398d60",
+      "rva_end_exclusive": "0x1398f23",
+      "raw_hex": "40535741574883ec40488b15f8e78c04488bd9c781dc000000000000004885d27434488b81c8000000448b80a0030000418bc025ffffff003b422c73198bc8488b42204803c9488b44c8084885c07406443940187407488b05b3e78c04488b80c00100004885c07408480518030000eb07488d05600f0c04488b384863400c4c8d3c87493bff0f842e01000048897424688bb3dc0000000f29742430f30f1035fcd5650348896c24604c8974247066908b07894424208b83d800000048895c24283bf00f85ae000000488b8be0000000ffc6660f6ec0448bf60f5bc041b808000000f30f59c6f30f2cc03bf0440f4cf0488b01418bd648c1e204ff500848638bdc000000488be80f104424204803c90f1104c8448b83dc0000004585c07e28488b8bd0000000488bd00f1f80000000000f100141ffc8488d5210488d49100f1142f04585c07fe9488b8be000000041b808000000488b93d0000000488b01ff50104889abd000000089b3dc0000004489b3d8000000eb22488b83d00000000f104424204863ce4803c90f1104c8ff83dc0000008bb3dc0000004883c704493bff0f850affffff0f287424304c8b742470488b742468488b6c24604883c440415f5f5bc3",
+      "sha256": "4a8adfe08acc7c9570073daae1e4e76060a17b8ec2698562ec9f9a03694ab455"
+    },
+    {
+      "name": "call_target_ui",
+      "rva_start": "0x1398930",
+      "rva_end_exclusive": "0x1398a2b",
+      "raw_hex": "48895c2408574883ec30488b81a0000000488bd9488bb8f00000004885ff7539b98e2b0000e8a66fbb0248837818107203488b0048894424284c8d0d9453980433d2488d050f8a100333c94889442420448d4201e80722be024889bbc8000000488bcf488b07ff9088000000488bcbe8bc03000083bbdc00000001753b488b8bd0000000e87705000084c0742b488b83d0000000b910000000488b93c80000008b008983e800000066898ab8030000488982c0030000eb25488b83c8000000baffffffff8993e8000000b910000000668988b8030000488990c0030000488b8bc8000000e8f7edd4ff488bcb488b5c24404883c4305fe94526d7ff",
+      "sha256": "f72b89d54c24f041327117f3ea00d201661e304c0a99abd2c7281fa6f3f94838"
+    },
+    {
+      "name": "call_target_row_predicate",
+      "rva_start": "0x1398f30",
+      "rva_end_exclusive": "0x1399045",
+      "raw_hex": "48895c2408574883ec30488b15174f9804488bd94885d27429448b01418bc025ffffff003b422c73198bc8488b42204803c9488b7cc8084885ff7406443947087407488b3dc74e98048b4708488b4b084889442428c744242010000000e8fe5fdeff4533c0488d542420488d88c8000000e8ea16ce0184c00f848a000000488b15b3e58c044885d27438488b4308488b88c8000000448b81a4030000418bc025ffffff003b422c73198bc8488b42204803c9488b44c8084885c07406443940187407488b0577e58c048b5818488d4f208bd3e859bb0f0184c0752d488d8f800000008bd3e847bb0f0184c0751b8bd3488bcfe849e70f0184c0750db001488b5c24404883c4305fc3488b5c244032c04883c4305fc3",
+      "sha256": "969105c0d68e73888f463b973bbd7d9eb7cd54f71ec1f7e5633a07af477d10e8"
+    },
+    {
+      "name": "window_finalization",
+      "rva_start": "0x10e7810",
+      "rva_end_exclusive": "0x10e7897",
+      "raw_hex": "48895c2408574883ec20488db9c8000000488bd9488b0780b8fa260000007508e8eb0a0000488b0780b8fa260000017508488bcbe847020000b201488bcfe80d12f901488bcfe83514f901488b078178384f6244477517488d8b00040000488bd7e89aea6601488bcbe842000000488b83a0000000488b5c2430c680806a0100014883c4205fc3",
+      "sha256": "0d0583dd0be67080dd5d472836770b73b17339a88f385c840bacca7a863122b4"
+    },
+    {
+      "name": "is_allied",
+      "rva_start": "0x2911df0",
+      "rva_end_exclusive": "0x2911ef2",
+      "raw_hex": "48895c24104889742418574883ec20488bb9a8010000488bf2488bd94885ff74064883c720eb07488d3d6a77b4028b42184c8d442430488b0f894424304863470c488d1481e8f6e5f6fd488b0f4863570c4c8d049133c9493bc0480f44c14885c00f8589000000488b83a80100004885c07436488b15fe5635034885d2742a448b4010418bc025ffffff003b422c73198bc8488b42204803c9488b44c8084885c07406443940187407488b05d0563503483bc6743b488bd6488bcbe8c0a3faff81b81002000052746341751280b8a901000000750983b89400000000751232c0488b5c2438488b7424404883c4205fc3488b5c2438b001488b7424404883c4205fc3",
+      "sha256": "4584b6e154d01dc6aba278da6d8a4cb81b8279dfb2cba1af24969484013c5a7e"
+    },
+    {
+      "name": "target_can_be_picked",
+      "rva_start": "0x307a690",
+      "rva_end_exclusive": "0x307a76e",
+      "raw_hex": "48895c24084889742410574881ec90010000498bf0488bda488bf9488d5108488d4c2420e857066c00904c8bc38b159516cd02488d4c2438e843fa6b00488b0f4881c1c80f00004c8bc6488d542420e80cf271000fb6d8488d8c2438010000e80cf080fd33ff4839bc24200100007437488d8c2420010000e873f080fd488b8c24300100004c8b09448d4708488b94242001000041ff51104889bc242001000089bc2428010000488b5424384885d27415897c2444488b4c2448488b0141b808000000ff50100fb6c34c8d9c2490010000498b5b10498b7318498be35fc3",
+      "sha256": "ec83f24499268eb461dae2226c59e4e5eb841ed9bbba4357d684f7832bccd799"
+    },
+    {
+      "name": "war_was_called",
+      "rva_start": "0x2497770",
+      "rva_end_exclusive": "0x24977bf",
+      "raw_hex": "89542410534883ec20488bd94c8d442438488b89200300004863832c030000488d1481e8988c3efe488b8b200300004863932c0300004c8d049133c9493bc0480f44c14885c00f95c04883c4205bc3",
+      "sha256": "5a2fc0641a81738c9bb14b7c12aa1b30ad36f02656c3f9a9c9546b5848ec9a7a"
+    },
+    {
+      "name": "participant_identity",
+      "rva_start": "0x2494b50",
+      "rva_end_exclusive": "0x2494b57",
+      "raw_hex": "3951080f94c0c3",
+      "sha256": "c2af87302b715b8acec91c68c48b58474b6ce6118d12c0b71d2dc16bc8140b04"
+    },
+    {
+      "name": "contains_participant",
+      "rva_start": "0x2494b60",
+      "rva_end_exclusive": "0x2494be2",
+      "raw_hex": "48895c240848896c2410488974241848897c242041564883ec20488b79084c8d35cbffffff486341148bda488be9488d34c7483bfe7415488b0f8bd341ffd684c075094883c708483bfe75eb488b450848634d14488b5c2430488b6c2438488b742440488d14c833c0483bfa480f44f84885ff488b7c24480f95c04883c420415ec3",
+      "sha256": "d3f63a0875e33bdffc3f058809e0c4e4c24224e378813e78ea3cbc72b55acaff"
+    },
+    {
+      "name": "ordinary_context_constructor",
+      "rva_start": "0x3076c90",
+      "rva_end_exclusive": "0x3076e4c",
+      "raw_hex": "48895c241048896c2418488974242048894c24085741544155415641574883ec40418bd9418bf84c8bf2488bf14889114883c108e8973281fd90488d8e70010000e88a3281fd9089bed8020000899edc02000048c786e0020000ffffffffc786e8020000ffffffff89beec02000033db899ef002000048899ef8020000488d8e00030000e8b765fefd9048899e30030000389c24980000007441488d86ec0200004889442430488d86e80200004889442428488d86e402000048894424204c8d8ee00200004c8d86dc020000488d96d8020000488b0ee875200d00488b9424900000004885d27419488d4e08e85f416c00488d5608488d8e70010000e84f416c00410fb6bef82600004080ff27742de8bcc948ff8bcf48c1e106488b4c01384885c97418488b01488d942490000000ff5010488bbc2490000000eb03488bfb48899c2490000000488b8e300300004885c97412488b01ba01000000ff10488b9c24900000004889be300300004885db740d488b03ba01000000488bcbff10488bcee83a180000488bcee85239000084c07409488bcee8661e000090488bc64c8d5c2440498b5b38498b6b40498b7348498be3415f415e415d415c5fc3",
+      "sha256": "90643b72db4c4700bf89f9f0d8d9c697155c5105315e0154e33202dc147a0f2c"
+    },
+    {
+      "name": "complete_can_send",
+      "rva_start": "0x307c040",
+      "rva_end_exclusive": "0x307c1b0",
+      "raw_hex": "48895c2408574881ec90000000488bfa488bd94c8bca41b001410fb6d0e80eebffff84c00f84c9000000488b0380b81a270000000f85cc00000048c7442420000000004533c94533c033d2488bcbe8edfbffff3c020f85ab0000004885ff0f848f000000488bcfe8145295fd4533c94c8bc3488d542470488b0be8e1d60c0090488d05d19583014889442440c744244831000000c644244c00488d83dc020000488d4c247048894c24304889442420488d542440488d4c2450e8b221000090488d54245048837c246810480f435424504c8b442460488bcfe8b39e80fd90488d4c2450e8289f7dfd90488d4c2470e81d9f7dfd32c0488b9c24a00000004881c4900000005fc34c8b13488b1518b4be024885d2742d448b8bd8020000418bc125ffffff003b422c73198bc84803c9488b42204c8b44c8084d85c074064539481874074c8b05e7b3be02488d5308498d4a404c8bcfe817f2080084c07496b001488b9c24a00000004881c4900000005fc3",
+      "sha256": "ff9344c7fa4860880eb1eb32f4b58ac51619303852c8749a0fac931552f0ae57"
+    },
+    {
+      "name": "stable_key_hash",
+      "rva_start": "0x3f7e240",
+      "rva_end_exclusive": "0x3f7e2c7",
+      "raw_hex": "894c2408534883ec2033c0488d4c2430418bd889442430458bc8894424404c8bc2488d542440e895feffff8b542440448bc28b4c2430448bc94183e003741fb904000000412bc8c1e103d3ea69c2512d9eccc1c00f69c89335871b4133c933cb8bc1c1e81033c169c86bcaeb858bc1c1e80d33c169c835aeb2c28bc1c1e81033c14883c4205bc3",
+      "sha256": "e42410bf40cbe818fed8b771988e102ae129bce08cd7f975eb7a1eb2e5cd70dd"
+    },
+    {
+      "name": "stable_definition_lookup",
+      "rva_start": "0xa055e0",
+      "rva_end_exclusive": "0xa0571a",
+      "raw_hex": "48895c24084533c04863da443881e00e0000458bc8410f94c1458d58fe4585c90f848d0000004183e901743b4183f9010f857d000000f00fbaa9a00e000000730ff390f00fbaa9a00e00000072f366908b81a00e000083f8017604f390ebf141b802000000eb4c41b802000000418bc0f00fc181a00e0000a80174310f1f4000418bc3f00fc181a00e00000f1f4400008b81a00e0000a8017404f390ebf2418bc0f00fc181a00e0000a80175d341b8010000004c63898c0100004c8b9180010000498bd14823d3488d0452b201413854c204498d04c272103b580874214883c018fec23a500476f00fb68190010000ffc04103c14898488d1440498d04d2807804ff7406488b4010eb07488b05378631054183e80174144183f8017517f0442199a00e0000488b5c2408c3f0440fc199a00e0000488b5c2408c3",
+      "sha256": "5e890424254c7428bafffbbed1d325721c10cde3582376e82c221e2441ad5565"
+    }
+  ],
+  "source_constants": {
+    "kIsAlliedRva": "0x2911DF0",
+    "kWarStorageSlotRva": "0x5D1DE58",
+    "kWarFallbackSlotRva": "0x5D1DE40",
+    "kInteractionMissingSlotRva": "0x5D1DD28",
+    "kDefinitionKeyHashRva": "0x3F7E240",
+    "kDefinitionLookupRva": "0xA055E0",
+    "kCanPickWarTargetRva": "0x307A690",
+    "kWasCalledRva": "0x2497770",
+    "kContainsParticipantRva": "0x2494B60",
+    "kCharacterRealmOffset": "0x1C0",
+    "kRealmWarIdsOffset": "0x318",
+    "kContextActorOffset": "0x2D8",
+    "kContextRecipientOffset": "0x2DC",
+    "kContextTargetOffset": "0x2F0",
+    "kContextTargetTokenOffset": "0x2F8",
+    "kContextSpecialInstanceOffset": "0x330",
+    "kWarTargetType": "16"
+  },
+  "native_operand_bindings": [
+    {
+      "constant": "kWarStorageSlotRva",
+      "rva": "0x1398f3a",
+      "kind": "rip",
+      "bytes": "488b15174f9804",
+      "instruction": "mov rdx, qword ptr [rip + 0x4984f17]"
+    },
+    {
+      "constant": "kWarFallbackSlotRva",
+      "rva": "0x1398f72",
+      "kind": "rip",
+      "bytes": "488b3dc74e9804",
+      "instruction": "mov rdi, qword ptr [rip + 0x4984ec7]"
+    },
+    {
+      "constant": "kInteractionMissingSlotRva",
+      "rva": "0xa056ea",
+      "kind": "rip",
+      "bytes": "488b0537863105",
+      "instruction": "mov rax, qword ptr [rip + 0x5318637]"
+    },
+    {
+      "constant": "kCanPickWarTargetRva",
+      "rva": "0x1398fa1",
+      "kind": "immediate",
+      "bytes": "e8ea16ce01",
+      "instruction": "call 0x307a690"
+    },
+    {
+      "constant": "kWasCalledRva",
+      "rva": "0x1399022",
+      "kind": "immediate",
+      "bytes": "e849e70f01",
+      "instruction": "call 0x2497770"
+    },
+    {
+      "constant": "kContainsParticipantRva",
+      "rva": "0x1399002",
+      "kind": "immediate",
+      "bytes": "e859bb0f01",
+      "instruction": "call 0x2494b60"
+    },
+    {
+      "constant": "kCharacterRealmOffset",
+      "rva": "0x1398dbd",
+      "kind": "displacement",
+      "bytes": "488b80c0010000",
+      "instruction": "mov rax, qword ptr [rax + 0x1c0]"
+    },
+    {
+      "constant": "kRealmWarIdsOffset",
+      "rva": "0x1398dc9",
+      "kind": "immediate",
+      "bytes": "480518030000",
+      "instruction": "add rax, 0x318"
+    },
+    {
+      "constant": "kContextActorOffset",
+      "rva": "0x3076cd7",
+      "kind": "displacement",
+      "bytes": "89bed8020000",
+      "instruction": "mov dword ptr [rsi + 0x2d8], edi"
+    },
+    {
+      "constant": "kContextRecipientOffset",
+      "rva": "0x3076cdd",
+      "kind": "displacement",
+      "bytes": "899edc020000",
+      "instruction": "mov dword ptr [rsi + 0x2dc], ebx"
+    },
+    {
+      "constant": "kContextTargetOffset",
+      "rva": "0x3076d00",
+      "kind": "displacement",
+      "bytes": "899ef0020000",
+      "instruction": "mov dword ptr [rsi + 0x2f0], ebx"
+    },
+    {
+      "constant": "kContextTargetTokenOffset",
+      "rva": "0x3076d06",
+      "kind": "displacement",
+      "bytes": "48899ef8020000",
+      "instruction": "mov qword ptr [rsi + 0x2f8], rbx"
+    },
+    {
+      "constant": "kContextSpecialInstanceOffset",
+      "rva": "0x3076df5",
+      "kind": "displacement",
+      "bytes": "4889be30030000",
+      "instruction": "mov qword ptr [rsi + 0x330], rdi"
+    },
+    {
+      "constant": "kWarTargetType",
+      "rva": "0x1398f85",
+      "kind": "immediate",
+      "bytes": "c744242010000000",
+      "instruction": "mov dword ptr [rsp + 0x20], 0x10"
+    }
+  ],
+  "direct_calls": [
+    {
+      "site": "0x1398fa1",
+      "target": "0x307a690"
+    },
+    {
+      "site": "0x1399002",
+      "target": "0x2494b60"
+    },
+    {
+      "site": "0x1399014",
+      "target": "0x2494b60"
+    },
+    {
+      "site": "0x1399022",
+      "target": "0x2497770"
+    },
+    {
+      "site": "0x10e784e",
+      "target": "0x3078a60"
+    },
+    {
+      "site": "0x10e7856",
+      "target": "0x3078c90"
+    },
+    {
+      "site": "0x1398926",
+      "target": "0x307c040"
+    }
+  ],
+  "stock_source": {
+    "relative_path": "common/character_interactions/00_alliance.txt",
+    "file_sha256": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4",
+    "call_ally_interaction_sha256": "dc0afc1701cbc865058d9e1730b71174adc65ed742ab133f9a92cef32caac96b",
+    "script_line_count": 1018
+  },
+  "semantics": {
+    "target_type_index": 16,
+    "target_bytes": 16,
+    "context_bytes": 824,
+    "cost_count": 10,
+    "raw_scale": 100000,
+    "current_war_reader_only": true,
+    "formal_submit": false,
+    "future_war_probability_or_maintenance": false
+  }
+}
