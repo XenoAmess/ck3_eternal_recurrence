@@ -873,3 +873,9 @@ Twelve frozen native research and topic sources combine current actor lookup, ac
 Nine frozen Python and topic sources. One new official SDK case consumes two native whole packets via realState and Driver, preserving exact fields and no-AI known absence. Default off and readonly; previous leaf test reused and cleanup pause fix preserved. Actual paused pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\AI-INPUTS-R9-SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 22:01:47 Record actual complete draft Doctrine source observation
+
+One topic records actual paused29slots94source rows49finalSelectable and doctrineGatesComplete true. Only readonly primitive; source scope is current selected groups, no option/action/OODA/global G2 increment. Hidden-window attempt retained separately. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\fullchoices\root-live-doc-source.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
