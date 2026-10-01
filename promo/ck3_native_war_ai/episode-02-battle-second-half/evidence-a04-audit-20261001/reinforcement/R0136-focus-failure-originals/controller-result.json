@@ -1,0 +1,101 @@
+{
+  "schema": "xar.jd11.scoped-top-width.controller-result/v1",
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "full_battle_panel": false,
+  "whole_G2_complete": false,
+  "actor_army_numeric_UI_identity_claimed": false,
+  "independent_open_gap": "whole lower composition panel remains unverified",
+  "started_at": "2026-10-01T02:09:28.680394+00:00",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "maximum_native_days": 1,
+  "recorder_requested": false,
+  "date_advance_requested": false,
+  "human_video_1x_review": false,
+  "screen_claimed_by_controller": false,
+  "samples_completed": 0,
+  "ui_frame_backend": "desktop-gdi",
+  "locale_environment_overrides": {
+    "PYTHONUTF8": "0",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "binding": {
+    "track": "e2-06-d11",
+    "spec": {
+      "save": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "receipt": "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5",
+      "dll": "ED537BEF5EE53271F0563A7FBAA0DC8BA572F37A6F859EE73F12C292D3E73A23",
+      "injector": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F",
+      "date": 53146488,
+      "control": true
+    },
+    "preflight": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\preflight.json",
+      "bytes": 24442,
+      "sha256": "3391722608F3C0EC40B40D0285EB3739086C78E23091541895857BC454B5BE6E"
+    },
+    "loaded": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\native-start-readback.json",
+      "bytes": 31318,
+      "sha256": "3CA80AAF11ACE3C3BDD0DB47A0946E75D9DD17109E69A349C7B1C120868DC7DF"
+    },
+    "command": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\command.json",
+      "bytes": 2808,
+      "sha256": "D264A0BEC277CEE92E8C65500C6D61F41B3A423D6DAD8B7E9762E3D41CC8FB5A"
+    },
+    "admission": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\seal\\admission-lock.json",
+      "bytes": 7858,
+      "sha256": "36E564C8A9ACB0E1F34BF5C3955F143584E162C92319A67D469BBE1EFBE2DF4A"
+    },
+    "helper": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    "request_primitive": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    }
+  },
+  "read_only_layout_review_budget_seconds": 600,
+  "manual_root_review_wait_seconds": 600,
+  "native_query_budget_seconds": 90,
+  "mapper_operation_budget_seconds": 30,
+  "review_wait_is_independent_of_native_operation_budget": true,
+  "actual_viewport_binding": [
+    2560,
+    1440
+  ],
+  "error": "ValueError('STOP_ROOT_FOCUS_NOT_ADMITTED')",
+  "finish": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-d01ad244ca704a8d86cb7b4f8b9dbfcf.json",
+      "bytes": 25,
+      "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\interactive-requests-responses\\999-root-a15-stop-d01ad244ca704a8d86cb7b4f8b9dbfcf.json",
+      "bytes": 11333,
+      "sha256": "13F26EBF5306D642299CB2D9BFD0062430C017B7633A9D9A038EEB1ECB30F904"
+    },
+    "channel": "interactive-requests"
+  },
+  "capture_report": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\capture-report.json",
+    "bytes": 9236,
+    "sha256": "350163E80E9AACDE468C2CBA7C8EFF3D8D2A31D71C96261295E74FF7425E2936"
+  },
+  "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0136",
+  "cleanup_inventory": {
+    "tasklist_returncode": 0,
+    "tasklist_pids": [],
+    "wmi_pids": [],
+    "native_pids": [],
+    "inventory_backend": "tasklist+toolhelp32",
+    "processes": []
+  },
+  "cleanup_inventory_empty": true,
+  "result": "RED_PRESERVED_CLEANUP_REPORTED"
+}

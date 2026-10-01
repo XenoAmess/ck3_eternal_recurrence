@@ -1,0 +1,52 @@
+{
+  "schema": "ck3.root.one-shot-semantic-focus/v1",
+  "at": "2026-10-01T02:37:24.352331+00:00",
+  "request": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-root-focus-request.json",
+    "bytes": 8332,
+    "sha256": "8AD496158DEAC6C1627CDE8A1139C6B0B9D8D6BBDD1D53CA353ACD2F42DE04C2"
+  },
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+    "bytes": 21461,
+    "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+    "--request",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-root-focus-request.json",
+    "--hwnd",
+    "25954428",
+    "--focus",
+    "--receipt",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-root-focus-result.json",
+    "--evidence-dir",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-root-focus-evidence"
+  ],
+  "lease": {
+    "git": {
+      "branch": "codex/jd11-center-diagnostic-20261001",
+      "dirty_entries": 0,
+      "head": "1901473429deb1297be7d5d4451169082629858b"
+    },
+    "last_sequence": 3328,
+    "next_step": "fresh_offline_then_same_run_pair",
+    "pid": 15144,
+    "repo": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "R0137_one_shot_semantic_focus_root_visual_review",
+    "task_id": "war-reinforcement-screen-20261001-a15",
+    "updated_at_utc": "2026-10-01T02:34:34.300274+00:00"
+  },
+  "one_shot": true,
+  "manual_review_created": false,
+  "mouse_or_gameplay_action_by_watcher": false
+}

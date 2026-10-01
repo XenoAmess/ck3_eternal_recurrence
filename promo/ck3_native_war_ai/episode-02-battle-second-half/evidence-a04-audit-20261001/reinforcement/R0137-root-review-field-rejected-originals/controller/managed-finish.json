@@ -1,0 +1,13 @@
+{
+  "request": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-c8993fcb5cf24cb28766f25c9a01602e.json",
+    "bytes": 25,
+    "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+  },
+  "response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\999-root-a15-stop-c8993fcb5cf24cb28766f25c9a01602e.json",
+    "bytes": 11337,
+    "sha256": "E6316C56F18501229FE1CF145FB7346A0D9F577960299E51B2BD7AEC3A177BC9"
+  },
+  "channel": "interactive-requests"
+}

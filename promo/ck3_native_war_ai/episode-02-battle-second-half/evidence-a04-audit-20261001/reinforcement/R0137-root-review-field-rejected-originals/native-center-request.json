@@ -1,0 +1,8 @@
+{
+  "action": "mcp",
+  "tool": "ck3_center_map_on_landed_title_v1",
+  "arguments": {
+    "title_key": "b_messina",
+    "expected_revision": 4
+  }
+}

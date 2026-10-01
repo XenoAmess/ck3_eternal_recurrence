@@ -1,0 +1,21 @@
+{
+  "actual_focus": {
+    "foreground_hwnd": 25954428,
+    "foreground_pid": 11572,
+    "foreground_thread_id": 4908,
+    "focus_hwnd": 25954428,
+    "title": "Crusader Kings III"
+  },
+  "actual_desktop_size": [
+    2560,
+    1440
+  ],
+  "actual_pointer": [
+    1280,
+    700
+  ],
+  "mapper_receipt_status": "pointer-move-readback-matched",
+  "no_click_or_keyboard_requested": true,
+  "edge_pan_cause_proven": false,
+  "observed_at": "2026-10-01T02:39:17.115946+00:00"
+}

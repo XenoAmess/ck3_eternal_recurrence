@@ -1,0 +1,457 @@
+{
+  "schema": "xar.jd11.R0137.readonly-failure-facts/v1",
+  "result": "VERIFIED_RED_ZERO_DAY_ZERO_SAMPLE_ROOT_REVIEW_FIELD_MISMATCH",
+  "writer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-R0137-readonly-validation-attempt-01\\write_failure_facts.py",
+    "bytes": 9879,
+    "sha256": "EB6617AC04E9CFA140569727B29C86CEAB8EC92D4AC49F3140D3A97F573F909B"
+  },
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\controller-result.json",
+    "bytes": 17486,
+    "sha256": "C560A15F99B7088C40D8B13D3933A72FBB9BF978DD719C9A9C1FD5B2C7F49F01"
+  },
+  "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0137",
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\consumer\\paused_join_pair.py",
+    "bytes": 62322,
+    "sha256": "5C8C5914FD292C4FD53577B5515F1A785E67467B48497CC07CE9A9717C3EAA41"
+  },
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "native_candidate_manifest": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+    "bytes": 7243,
+    "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+  },
+  "actual_failure": {
+    "error": "ValueError('current original safe region to clear battle tooltip not reviewed')",
+    "stage": "02-post-open-pointer",
+    "required_key": "pointer_safe_to_clear_battle_tooltip",
+    "required_value": true,
+    "actual_required_key_present": false,
+    "actual_unrelated_key": "pointer_safe_for_width_tooltip",
+    "actual_unrelated_value": true,
+    "predicate_line": 565,
+    "mapper_call_line": 567,
+    "root_review": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\02-post-open-pointer-review.json",
+      "bytes": 1649,
+      "sha256": "748FD7FE528504A6FDB1896EA42C4AB20C3749C7AD1171C969F8C21EBB74CFBF"
+    },
+    "root_review_request": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\02-post-open-pointer-review-request.json",
+      "bytes": 2230,
+      "sha256": "B672E2C71F2DB348595B00DFF9C91E00B1C07061E32881A91D5E2EAAE5B6A169"
+    },
+    "guard_before_mapper": true,
+    "actual_post_open_mapper_executed": false,
+    "pure_AST_actual_review_reproduction": {
+      "mapper_calls": 0,
+      "error": "ValueError('current original safe region to clear battle tooltip not reviewed')"
+    },
+    "not_native_or_camera_failure": true,
+    "manual_review_timeout_claimed": false
+  },
+  "actual_prior_success": {
+    "semantic_focus": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-root-focus-result.json",
+      "bytes": 17193,
+      "sha256": "62E948BC05AC505EF98AC958F816AE43AA21E439EA68D4604C40017D8954AEC0"
+    },
+    "focus_status": "FOREGROUND_MATCHED_CURRENT_CK3",
+    "owned_PID": 11572,
+    "owned_HWND": 25954428,
+    "pre_center_mapper_receipt": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-35-semantic-focus-watched-sdk\\paused-pair-controller\\00-pre-center-pointer-receipt.png.json",
+      "bytes": 2108,
+      "sha256": "FDF6DC1F9A284571AB7A876A9299EEFAABB6AF65F931625BC7E2E367FCD2A223"
+    },
+    "post_pointer_snapshot": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-290373962405-post-pointer-snapshot.json",
+        "bytes": 72,
+        "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-290373962405-post-pointer-snapshot.json",
+        "bytes": 249329,
+        "sha256": "CD11C430BBF22C767E17572836A0AAF2B6857FB04979F7A35273770BFB28CCD9"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "post_pointer_control": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-290373962405-post-pointer-control.json",
+        "bytes": 148,
+        "sha256": "1E6C8080AC3CEF9451DF369A041FE3FD939D08B75B4AF721B8BF30AA1B5B01C5"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-290373962405-post-pointer-control.json",
+        "bytes": 111524,
+        "sha256": "60614F1E7308BDCA9EEF81ADBE671F4BF3E79AE164C00E3E7C05D9DBB6FC9B95"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "values_from_actual_snapshot_body": {
+      "date_raw": 53146488,
+      "paused": true,
+      "actor": 29829,
+      "revision": 4,
+      "native_revision": 3,
+      "snapshot_id": "native:3",
+      "war_ids": [
+        4
+      ],
+      "army_id": 18,
+      "army_state": "combat"
+    },
+    "values_from_actual_control_body": {
+      "accepted": true,
+      "status": "available",
+      "root_native_revision": 3,
+      "snapshot_native_revision": 3,
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "queried_snapshot_id": "native:3",
+      "source_revision": 4,
+      "source_native_revision": 3,
+      "source_snapshot_id": "native:3",
+      "source_date_raw": 53146488,
+      "source_paused": true,
+      "observed_date_raw": 53146488,
+      "subject_army_id": 18,
+      "native_army_id": 18,
+      "owner_character_id": 29829,
+      "combat_id": 16777218,
+      "combat_province_id": 2633,
+      "battle_control_ready": true
+    },
+    "native_final_width_before": 1480,
+    "center": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\p1-paused-290373962405-center.json",
+        "bytes": 148,
+        "sha256": "8E8AC94876DBF674B3376689FFE55A5F7835B966113C3998AFFE39EBA3A6BB72"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\p1-paused-290373962405-center.json",
+        "bytes": 12925,
+        "sha256": "78203EA3130F19A2FB0D82A69BF2F9FE6E40B688DD7D51F49EB76587156C4639"
+      },
+      "result": "CALL_COMPLETED",
+      "error": null
+    },
+    "center_response_body_keys": [
+      "accepted",
+      "source",
+      "step",
+      "schema_version",
+      "native_action_ack",
+      "camera_center",
+      "title",
+      "status",
+      "binding"
+    ]
+  },
+  "scope": {
+    "date_advance_requested": false,
+    "native_day_requests": 0,
+    "trace_start_requests": 0,
+    "trace_finish_requests": 0,
+    "samples_completed": 0,
+    "actual_after_state_exists": false,
+    "native_command_history_used_as_after": false,
+    "trace_fix_path_exercised": false,
+    "paired_top_width_supplement_completed": false,
+    "whole_G2_complete": false,
+    "full_battle_panel": false,
+    "numeric_UI_actor_army_identity_claimed": false
+  },
+  "final_cleanup": {
+    "inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "inventory_empty": true,
+    "capture_report": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\capture-report.json",
+      "bytes": 9234,
+      "sha256": "8306C61FAAC5888A19ED55A8B6768D1220EB11BA604BD3D3604FFB3E83576488"
+    },
+    "managed_stop": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-c8993fcb5cf24cb28766f25c9a01602e.json",
+        "bytes": 25,
+        "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests-responses\\999-root-a15-stop-c8993fcb5cf24cb28766f25c9a01602e.json",
+        "bytes": 11337,
+        "sha256": "E6316C56F18501229FE1CF145FB7346A0D9F577960299E51B2BD7AEC3A177BC9"
+      },
+      "channel": "interactive-requests"
+    },
+    "stop_original_envelope": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-semantic-focus-watched-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-c8993fcb5cf24cb28766f25c9a01602e.json",
+        "bytes": 25,
+        "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+      },
+      "at": "2026-10-01T02:48:22.732057+00:00",
+      "result": "SERVICE_FINISHED",
+      "driver_state": {
+        "protocol_version": 1,
+        "pipe_name": "\\\\.\\pipe\\xar_ck3_jd11_paused_80e55f39c1204b99b3c719a1dabc360c",
+        "connected": true,
+        "connection_generation": 1,
+        "bridge_pid": 11572,
+        "bridge_version": "0.1.0",
+        "hello": {
+          "type": "hello",
+          "protocol_version": 1,
+          "bridge_version": "0.1.0",
+          "pid": 11572,
+          "session_generation": 0,
+          "connection_generation": 1,
+          "architecture": "x86_64-windows-msvc",
+          "expected_ck3_version": "1.19.0.6",
+          "expected_ck3_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+          "game_adapter_status": "ready",
+          "ck3_build_match": true,
+          "capabilities": [
+            "bridge.identity",
+            "bridge.heartbeat",
+            "bridge.ping",
+            "game.state.snapshot",
+            "game.state.xar-one-life-settlement",
+            "game.state.map-ready",
+            "game.state.played-character",
+            "game.state.active-event",
+            "game.state.pending-character-interaction",
+            "game.state.active-wars",
+            "game.state.war-primary-opponent",
+            "game.state.war-objectives",
+            "game.state.war-objective-occupation",
+            "game.state.war-objective-fort-level",
+            "game.state.war-objective-garrison",
+            "game.state.war-objective-siege-progress",
+            "game.state.war-objective-assault",
+            "game.state.player-armies",
+            "game.state.army-routes",
+            "game.command.pause-map",
+            "game.command.resume-map",
+            "game.command.set-speed-1",
+            "game.command.set-speed-2",
+            "game.command.set-speed-3",
+            "game.command.set-speed-4",
+            "game.command.set-speed-5",
+            "game.command.research-arm-tactical-daily-sentinel-v1-N",
+            "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+            "game.command.research-query-tactical-daily-sentinel-v1",
+            "game.command.select-event-option-N",
+            "game.command.save-checkpoint",
+            "game.command.accept-pending-character-interaction",
+            "game.command.reject-pending-character-interaction",
+            "game.command.acknowledge-pending-character-interaction",
+            "game.command.raise-troops-default",
+            "game.command.preview-move-army-N-to-N",
+            "game.command.query-route-contact-horizon-v1-N",
+            "game.command.query-actual-contact-scope-v1-N",
+            "game.command.query-battle-control-snapshot-v1-N",
+            "game.command.query-battle-transition-v1-N",
+            "game.command.query-battle-terminal-transition-v1",
+            "game.command.query-battle-reinforcement-assignment-v1-N",
+            "game.command.move-army-N-to-N",
+            "game.command.disband-army-N",
+            "game.command.split-army-half-N",
+            "game.command.merge-armies-N-with-N",
+            "game.command.start-assault-N",
+            "game.command.stop-assault-N",
+            "game.command.query-declarable-wars",
+            "game.command.query-war-entry-assessments-v1-N",
+            "game.command.declare-war-N",
+            "game.command.enforce-demands-N",
+            "game.command.query-army-strengths-v1",
+            "game.command.query-campaign-root-context-v1",
+            "game.command.query-player-faction-alerts-v1",
+            "game.command.query-steward-develop-county-candidates-v1",
+            "game.command.query-zhongguo-case-snapshot-v1",
+            "game.command.query-zhongguo-b1-cycle-snapshot-v1",
+            "game.command.query-zhongguo-result-case-snapshot-v1",
+            "game.command.query-zhongguo-b2-pip-snapshot-v1",
+            "game.command.query-zhongguo-incident-snapshot-v1",
+            "game.command.query-zhongguo-manager-governance-snapshot-v1",
+            "game.command.query-zhongguo-manager-subordinate-selector-v1",
+            "game.command.query-zhongguo-scoreboard-state-v1",
+            "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+            "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+            "game.contract.zhongguo-review-now-action-v1-fail-closed",
+            "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+            "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
+            "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+            "game.command.query-loaded-feature-manifest-v1",
+            "game.command.query-pending-character-interaction-context-v1",
+            "game.command.query-current-event-window-context-v1",
+            "game.command.probe-coat-of-arms-source-v1",
+            "game.command.export-coat-of-arms-source-v1",
+            "game.command.query-frontend-gui-route-v1",
+            "game.command.inspect-frontend-gui-tree-v1",
+            "game.command.inspect-frontend-coat-of-arms-tree-v1",
+            "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1",
+            "game.command.activate-frontend-new-game-v1",
+            "game.command.activate-frontend-pick-any-character-v1",
+            "game.command.activate-frontend-select-random-playable-v1",
+            "game.command.activate-frontend-ruler-designer-v1",
+            "game.command.activate-frontend-coat-of-arms-designer-v1",
+            "game.command.commit-frontend-dynasty-coat-of-arms-v1",
+            "game.command.activate-frontend-coat-of-arms-custom-mode-v1",
+            "game.command.activate-frontend-randomize-ruler-first-name-v1",
+            "game.command.activate-frontend-finalize-custom-ruler-v1",
+            "game.command.activate-frontend-confirm-custom-ruler-v1",
+            "game.command.activate-frontend-start-lobby-selected-character-v1",
+            "game.command.center-map-on-landed-title-v1",
+            "game.command.set-played-character-v1-N",
+            "game.command.query-combat-simulation-inputs-v2-N",
+            "game.command.query-combat-simulation-inputs-v3-N",
+            "game.command.query-combat-phase-event-trace-v1-N",
+            "game.command.experimental-combat-phase-event-trace-managed-v1",
+            "game.command.query-war-termination-options-N",
+            "game.command.query-war-prisoner-release-pairs-v1-N",
+            "game.command.query-outbound-war-white-peace-status-v1-N",
+            "game.command.query-war-termination-terms-v1-N",
+            "game.command.surrender-war-N",
+            "game.command.offer-white-peace-N",
+            "game.command.query-arrange-marriage-choices",
+            "game.command.arrange-marriage-N",
+            "game.adapter.exact-build",
+            "game.adapter.minimized-headless"
+          ]
+        },
+        "last_heartbeat": {
+          "type": "heartbeat",
+          "protocol_version": 1,
+          "sequence": 3721,
+          "pid": 11572,
+          "monotonic_ms": 46008531,
+          "startup_failure_containment_enabled": false,
+          "startup_particle2_stage_recorder_enabled": false,
+          "startup_widget_null_flag_call_guard_enabled": false,
+          "startup_rbx_null_call_guard_enabled": false,
+          "cold_map_vfs_observer_enabled": false,
+          "named_path_583_root_observer_enabled": false,
+          "pdx_paths_583_producer_observer_enabled": false,
+          "vfs_mount_lifecycle_observer_enabled": false,
+          "physfs_mounted_data_observer_enabled": false,
+          "g2_truce_preview_entry_observer_enabled": true,
+          "zhongguo_scoreboard_production_candidate_enabled": false,
+          "zhongguo_scoreboard_production_capability_advertised": false,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": true,
+            "observed_sdl_poll_event_target": 140700204480304,
+            "stop": false,
+            "failure": 0,
+            "pump_epochs": 93277,
+            "owner_verified_pump_epochs": 93277,
+            "consecutive_verified": 81824,
+            "published_sequence": 93,
+            "completed_sequence": 93,
+            "executor_started_requests": 93,
+            "executor_started_sequence": 93,
+            "executor_started_pump_epoch": 28268,
+            "owner_tid": 4908,
+            "current_tid": 4908,
+            "rng_owner_tid": 0,
+            "tls_global": 1,
+            "tls_context": 2419315339200,
+            "tls_marker": 1,
+            "jomini_state": 2421741745456,
+            "game_state": 2428750859392,
+            "date_raw": 53146488,
+            "paused": true,
+            "stamp_read_success": true,
+            "executed_requests": 93,
+            "executor_submission_enabled": true,
+            "application_main_observed": true,
+            "paused_main_thread_observed": true,
+            "ready": true
+          },
+          "coat_of_arms_designer_probe_v1": {
+            "installed": true,
+            "failure": 0,
+            "observed_calls": 0,
+            "executed_requests": 0
+          },
+          "startup_particle2_null_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0,
+            "suppressed_index_mask": 0,
+            "last_suppressed_index": 4294967295
+          },
+          "startup_particle2_consumer_null_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0,
+            "missing_slot_mask": 0
+          },
+          "startup_particle2_stage_recorder_v1": {
+            "installed": false,
+            "patch_mask": 0,
+            "failure": 0,
+            "source_lookup_null_count": 0,
+            "variant_lookup_null_count": 0,
+            "backend_creation_null_count": 0
+          },
+          "startup_dx11_render_context_draw_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0
+          },
+          "startup_localize_current_root_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "native_miss_count": 0
+          },
+          "startup_widget_null_flag_call_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0
+          },
+          "startup_rbx_null_call_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0
+          }
+        },
+        "private_observers": {},
+        "last_pong": {
+          "type": "pong",
+          "protocol_version": 1,
+          "request_id": "python-1-53e9b0a124bf",
+          "pid": 11572
+        },
+        "last_error": null,
+        "semantic_state_available": true,
+        "rejected_state_snapshot_count": 0,
+        "last_rejected_state_snapshot": null,
+        "snapshot_publish_diagnostic_count": 0,
+        "last_snapshot_publish_diagnostic": null,
+        "transport_fatal_error": null,
+        "pending_declaration_query": null
+      }
+    }
+  },
+  "old_R0136_or_attempt33_inputs_modified": false,
+  "screen_game_steam_display_bus_or_native_requests_by_reader": false,
+  "smallest_next_change": "Root review writer must emit the actual stage-specific pointer_safe_to_clear_battle_tooltip only after a fresh current original safe-region review; preserve this failed review/run. Frozen consumer/native guards need no change."
+}

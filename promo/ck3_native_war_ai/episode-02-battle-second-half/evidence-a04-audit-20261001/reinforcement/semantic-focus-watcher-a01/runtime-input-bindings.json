@@ -1,0 +1,49 @@
+{
+  "schema": "xar.jd11.root-review-reentry.runtime-input-bindings/v1",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "source_checkout": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\consumer\\paused_join_pair.py",
+    "bytes": 62322,
+    "sha256": "5C8C5914FD292C4FD53577B5515F1A785E67467B48497CC07CE9A9717C3EAA41"
+  },
+  "sdk": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\consumer\\run_paused_join_sdk.py",
+    "bytes": 7042,
+    "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+  },
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\ui-controller-config.frozen-semantic-focus-watched-a01.json",
+    "bytes": 14654,
+    "sha256": "F5A016358307A85A7223DC03E2F440C1E6D6AC3E36D165712D3133B8ED428BC7"
+  },
+  "seal_path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\seal",
+  "allowed_module_path_overrides": [
+    "CONFIG",
+    "SEAL"
+  ],
+  "native_candidate_manifest": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+    "bytes": 7243,
+    "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+  },
+  "native_pair": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+    "bytes": 851,
+    "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+  },
+  "old_variant": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\variant-freeze.json",
+    "bytes": 6691,
+    "sha256": "64DF92153E3C410E05EC51C2B5544659BBB99BAFA13C8C4CAA75306C761376AF"
+  },
+  "config_changes": [
+    "unique external run/config/contract/seal identities only"
+  ],
+  "consumer_changed": true,
+  "native_changed": false,
+  "gameplay_behavior_or_guard_override": false,
+  "consumer_change_scope": [
+    "EXACT_BYTES_EQUAL_TO_FROZEN_ATTEMPT30_NO_LOGIC_CHANGE"
+  ]
+}

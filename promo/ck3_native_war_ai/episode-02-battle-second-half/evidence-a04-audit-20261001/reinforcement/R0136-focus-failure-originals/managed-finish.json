@@ -1,0 +1,13 @@
+{
+  "request": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-d01ad244ca704a8d86cb7b4f8b9dbfcf.json",
+    "bytes": 25,
+    "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+  },
+  "response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-review-wait-separated-live-20261001-a01\\ck3-output\\interactive-requests-responses\\999-root-a15-stop-d01ad244ca704a8d86cb7b4f8b9dbfcf.json",
+    "bytes": 11333,
+    "sha256": "13F26EBF5306D642299CB2D9BFD0062430C017B7633A9D9A038EEB1ECB30F904"
+  },
+  "channel": "interactive-requests"
+}

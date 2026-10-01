@@ -1,0 +1,448 @@
+{
+  "schema": "ck3.root.focus-watcher.independent-offline-review/v1",
+  "created_at_utc": "2026-10-01T02:29:13.171733+00:00",
+  "reviewer": "/root/a04_other_mechanisms",
+  "result": "PASS_OFFLINE_ONE_SHOT_ROUTING_AND_UNCHANGED_TTL_ONLY",
+  "reviewed_inputs": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\watch_R0137_semantic_focus_a01.py",
+      "bytes": 4456,
+      "sha256": "9203084FDA24FD516DA866E2488C47501D282D7E209CE4E51103F78CC44857A4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-33-semantic-focus-watched\\ui-controller-config.frozen-semantic-focus-watched-a01.json",
+      "bytes": 14654,
+      "sha256": "F5A016358307A85A7223DC03E2F440C1E6D6AC3E36D165712D3133B8ED428BC7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+      "bytes": 21461,
+      "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+    }
+  ],
+  "offline_case_count": 46,
+  "offline_cases": [
+    {
+      "name": "routing_request_age_0",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_request_age_59.999",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_request_age_60",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_request_age_60.001",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Current focus request outside unchanged60-second freshness",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_request_age_63.849",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Current focus request outside unchanged60-second freshness",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_request_age_-0.001",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Current focus request outside unchanged60-second freshness",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_wrong_pid_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Focus target not uniquely request-bound visible CK3",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_wrong_title_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Focus target not uniquely request-bound visible CK3",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_hidden_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Focus target not uniquely request-bound visible CK3",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_minimized_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Focus target not uniquely request-bound visible CK3",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_duplicate_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Focus target not uniquely request-bound visible CK3",
+      "offline_stub_only": true
+    },
+    {
+      "name": "routing_no_windows_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Focus target not uniquely request-bound visible CK3",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_positive_fresh_exclusive",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_600s_boundary_positive",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_600s_plus_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Fresh exclusive screen lease absent",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_future_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Fresh exclusive screen lease absent",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_not_running_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Fresh exclusive screen lease absent",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_not_acquired_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Fresh exclusive screen lease absent",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_extra_resource_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Fresh exclusive screen lease absent",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_changed_source_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Screen source changed",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_other_fresh_screen_owner_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Another fresh screen owner exists",
+      "offline_stub_only": true
+    },
+    {
+      "name": "lease_stale_other_owner_ignored",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_age_60",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_age_60.001",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_OFFLINE_TEST_STALE_OR_FUTURE",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_age_63.849",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_OFFLINE_TEST_STALE_OR_FUTURE",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_age_-0.001",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_OFFLINE_TEST_STALE_OR_FUTURE",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_naive_timestamp_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_OFFLINE_TEST_TIMESTAMP_NOT_UTC",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_same_creation_target_positive",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_creation_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_CURRENT_PID_CREATION_IDENTITY_CHANGED",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_exe_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_CURRENT_PID_CREATION_IDENTITY_CHANGED",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_desktop_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_CURRENT_DESKTOP_DIMENSIONS_CHANGED",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_mouse_held_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_MOUSE_BUTTON_HELD_FOCUS_REFUSED",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_hwnd_pid_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_CURRENT_TARGET_HWND_PID_CHANGED",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_thread_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_CURRENT_TARGET_WINDOW_IDENTITY_CHANGED",
+      "offline_stub_only": true
+    },
+    {
+      "name": "original_helper_title_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "STOP_CURRENT_TARGET_WINDOW_IDENTITY_CHANGED",
+      "offline_stub_only": true
+    },
+    {
+      "name": "main_positive_unique_stub_invocation",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true,
+      "helper_stub_calls": 1,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_existing_receipt_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Existing focus receipt; never overwrite or repeat",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_old_request_63_849_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Current focus request outside unchanged60-second freshness",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_ambiguous_candidate_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Focus target not uniquely request-bound visible CK3",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_wrong_live_process_name_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Request-owned process is not CK3",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_live_HWND_pid_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Current HWND differs from request",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_live_window_title_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Current HWND differs from request",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_live_window_hidden_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Current HWND differs from request",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_frozen_helper_hash_changed_refused",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "Frozen semantic focus helper changed",
+      "offline_stub_only": true,
+      "helper_stub_calls": 0,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_helper_RED_retained_and_never_retried",
+      "accepted": true,
+      "expected": true,
+      "pass": true,
+      "error": null,
+      "offline_stub_only": true,
+      "helper_stub_calls": 1,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    },
+    {
+      "name": "main_helper_timeout_never_retried",
+      "accepted": false,
+      "expected": false,
+      "pass": true,
+      "error": "OFFLINE subprocess timeout after unique invocation; no retry",
+      "offline_stub_only": true,
+      "helper_stub_calls": 1,
+      "real_helper_never_executed": true,
+      "all_desktop_and_process_apis_stubbed": true
+    }
+  ],
+  "scope": {
+    "request_TTL": 60,
+    "lease_TTL": 600,
+    "helper_request_and_frame_TTL": 60,
+    "routing": "one unique request PID/title/visible/not-minimized candidate; current process name/HWND PID/title/visibility; frozen helper exact bytes; fresh exclusive source-bound lease",
+    "one_shot": "new output directory and no preexisting focus receipt; one subprocess call; RED or timeout never retries",
+    "original_helper_guards": "schema/source, original file identities, request and both frame timestamps, PID creation/exe, original frame dimensions, native bridge PID, live-tree binding, GUI/mouse/target thread identity and request bytes rechecked before SetForegroundWindow",
+    "manual_UI_review": "watcher creates no manual review or crop approval; helper receipt is machine readback only",
+    "mouse_keyboard_native_day": "no mouse/keyboard/native/day action in watcher; frozen helper uses only ShowWindow/SetForegroundWindow and actual readback",
+    "LANGID": "focus helper has no LANGID check or keyboard-layout mutation; no keyboard operation is performed, so this review does not claim a language-layout gate",
+    "subprocess_timeout": "45 seconds, stdin DEVNULL, hidden creation; invocation and partial stdout/stderr remain if timeout raises",
+    "historical_R0136": "63.849-second rejection preserved; watcher does not modify freshness or old request/receipt"
+  },
+  "limitations": [
+    "No watcher main was actually launched; all main calls were AST-isolated with stub Win32/process/subprocess and isolated local fixtures.",
+    "No actual live lease or request was read by this review.",
+    "This is not a live focus success, UI evidence capture, mechanism proof or human signoff.",
+    "Original helper complete desktop execution was read-only reviewed; only its pure TTL/creation/target checks were executed."
+  ],
+  "create_only_writes_under": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-focus-watcher-independent-review-other-a01",
+  "game_screen_Steam_master_source_edits": false
+}

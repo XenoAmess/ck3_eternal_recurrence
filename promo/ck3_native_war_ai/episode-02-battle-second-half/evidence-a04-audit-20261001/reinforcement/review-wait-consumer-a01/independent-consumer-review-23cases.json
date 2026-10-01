@@ -1,0 +1,428 @@
+{
+  "schema": "xar.jd11.manual-wait-separated.independent-offline-review/v1",
+  "created_at_utc": "2026-10-01T02:09:06.067141+00:00",
+  "reviewer": "/root/a04_other_mechanisms",
+  "result": "PASS_OFFLINE_BOUNDED_WAIT_AND_FRESH_BINDING_ONLY",
+  "inputs": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\consumer\\paused_join_pair.py",
+      "bytes": 62322,
+      "sha256": "5C8C5914FD292C4FD53577B5515F1A785E67467B48497CC07CE9A9717C3EAA41"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\paused_join_pair.py",
+      "bytes": 59070,
+      "sha256": "D1AE62A3258CE99AAA187B935EC679EF0D727A151AEE2AC584AC7E14783C20F3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-30-review-wait-separated\\variant-freeze.json",
+      "bytes": 6691,
+      "sha256": "64DF92153E3C410E05EC51C2B5544659BBB99BAFA13C8C4CAA75306C761376AF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+      "bytes": 29587,
+      "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+    }
+  ],
+  "unchanged_guard_sources": [
+    {
+      "function": "call",
+      "source_equal_vs_attempt27": true,
+      "sha256": "F8AE950A2C936CF66A4EFBC9D90EF230622DEBB16CD445AAB870C01316C0DD30"
+    },
+    {
+      "function": "paused",
+      "source_equal_vs_attempt27": true,
+      "sha256": "59BDBDFF56D55C6491E52E52DE0B8C14397A9FEB7EF93C671CA06B28396C5757"
+    },
+    {
+      "function": "probe_after",
+      "source_equal_vs_attempt27": true,
+      "sha256": "135F48120F44B908F7024FB3EFB35FC376BCD6E2B2D8AD73D9A3C5A4FEBF41D4"
+    },
+    {
+      "function": "finish_trace",
+      "source_equal_vs_attempt27": true,
+      "sha256": "62EBED5F69658DBBC117988C6589E172ABF504042D0A3C2B2C9FC4622D60CCB5"
+    },
+    {
+      "function": "recover_finish",
+      "source_equal_vs_attempt27": true,
+      "sha256": "9E0424C90C8C69984B0F554C8CAAB7DDAFAB075A95508A50A1E73936905075C4"
+    },
+    {
+      "function": "same_paused_frame",
+      "source_equal_vs_attempt27": true,
+      "sha256": "263B234D68F0D76F1A670E0E3DF8ABC14AB863E5B287160550C9C45D77373441"
+    },
+    {
+      "function": "trace_contract",
+      "source_equal_vs_attempt27": true,
+      "sha256": "148152BC2D18669099F746A619348295DAC1835FC2477AA8F207FABB5711C2FE"
+    },
+    {
+      "function": "trace_observation",
+      "source_equal_vs_attempt27": true,
+      "sha256": "B10D4A3790CC561A9A74399AB8A369B637C455C1AD4A8503249D7D1405FF14F7"
+    },
+    {
+      "function": "collect_after_independent_of_trace",
+      "source_equal_vs_attempt27": true,
+      "sha256": "49723BA2B4AD5B937A4F44A3DAA1AEAEB8004D37BC7D789762EA3EA595E82BA8"
+    },
+    {
+      "function": "verify_pointer_ready",
+      "source_equal_vs_attempt27": true,
+      "sha256": "7411AC52BF0712117A922B90D7DCBA1BBF49688137B9AF094E03A05737293070"
+    },
+    {
+      "function": "validate_scoped_review",
+      "source_equal_vs_attempt27": true,
+      "sha256": "E5F01046E0FC734DA52769005FA07998844CF3F73992FFAE98390CDF557AD1FF"
+    },
+    {
+      "region": "same_owner_cleanup_reporting_tail",
+      "source_equal_vs_attempt27": true
+    }
+  ],
+  "offline_cases": [
+    {
+      "case": "manual_231.5_approval_True",
+      "pass": true,
+      "accepted": true,
+      "error": null,
+      "timeout_context": []
+    },
+    {
+      "case": "manual_599_approval_True",
+      "pass": true,
+      "accepted": true,
+      "error": null,
+      "timeout_context": []
+    },
+    {
+      "case": "manual_601_approval_True",
+      "pass": true,
+      "accepted": false,
+      "error": "manual root review wait expired; configured budget=600 seconds; original frozen exception=TimeoutError('a15 setup exceeded 180 seconds; managed stop is required')",
+      "timeout_context": [
+        {
+          "schema": "xar.jd11.manual-review-timeout-context/v1",
+          "stage": "case",
+          "configured_manual_root_review_wait_seconds": 600,
+          "remaining_seconds_at_entry": 600,
+          "elapsed_wait_seconds": 600,
+          "original_exception": "TimeoutError('a15 setup exceeded 180 seconds; managed stop is required')",
+          "legacy_frozen_helper_timeout_text_preserved": true,
+          "native_query_budget_seconds_unchanged": 90,
+          "mapper_budget_seconds_unchanged": 30,
+          "review_wait_is_not_approval": true
+        }
+      ]
+    },
+    {
+      "case": "manual_240_approval_False",
+      "pass": true,
+      "accepted": false,
+      "error": "ROOT_CURRENT_ACTION_REFUSED",
+      "timeout_context": []
+    },
+    {
+      "case": "sample_long_manual_wait_drift_None_None",
+      "pass": true,
+      "accepted": true,
+      "error": null,
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review",
+        "before-after-pixels"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_revision",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_native_revision",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_snapshot_id",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_date_raw",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_paused",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_actor",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_army_id",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_hover_army_state",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual width-hover review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_revision",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_native_revision",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_snapshot_id",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_date_raw",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_paused",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_actor",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_army_id",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_army_state",
+      "pass": true,
+      "accepted": false,
+      "error": "paused frame changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_visible_width",
+      "pass": true,
+      "accepted": false,
+      "error": "native width changed during manual visible-width review",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review"
+      ]
+    },
+    {
+      "case": "sample_long_manual_wait_drift_pixels_revision",
+      "pass": true,
+      "accepted": false,
+      "error": "pause/revision changed around original UI pixels",
+      "events": [
+        "before",
+        "before-panel",
+        "before-width-hover",
+        "before-post-hover-review",
+        "mapper",
+        "before-width",
+        "before-readback",
+        "before-post-visible-review",
+        "before-after-pixels"
+      ]
+    }
+  ],
+  "case_count": 23,
+  "budgets": {
+    "manual_each_stage_seconds": 600,
+    "native_query_seconds": 90,
+    "mapper_seconds": 30,
+    "stability_operation_seconds": 180,
+    "stability_observation_seconds": 10,
+    "managed_interactive_seconds": 1200
+  },
+  "findings": [
+    "600 only changes independently bounded manual root review. Frozen helper still enforces fresh actual root approval, original-frame hash, PID/HWND and review age <=60 seconds.",
+    "Hover review is followed by fresh paused snapshot/control matching all eight identity/revision fields before the mapper action; visible review is followed by fresh pause/control and unchanged native width, then after-pixels snapshot equality.",
+    "231.5 and 599 second explicit approvals are accepted, 601 second timeout and explicit refusal do not become approval. Original legacy180 exception is retained with truthful600 context.",
+    "Native90, mapper30, one-day/FINISH once/no ambiguous resend and same-owner cleanup source guards remain unchanged; no new actual capture proof is created by these tests."
+  ],
+  "full_battle_panel": false,
+  "numeric_UI_actor_army_identity": false,
+  "whole_G2_complete": false,
+  "actual_new_pair_width_evidence": "NOT_OBSERVED_BY_THIS_REVIEW",
+  "all_callbacks_and_pixels_are_explicit_offline_fixtures": true,
+  "no_actual_wait_native_mapper_game_screen_Steam_cloud": true,
+  "writes_create_only_in_this_review_directory": true
+}

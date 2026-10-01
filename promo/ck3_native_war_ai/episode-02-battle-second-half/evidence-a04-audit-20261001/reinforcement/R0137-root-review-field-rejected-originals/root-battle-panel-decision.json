@@ -1,0 +1,10 @@
+{
+ "battle_panel_already_open":false,
+ "observed_point":{"x":603,"y":321},
+ "preview_content_rect":{"left":0,"top":0,"width":1280,"height":720},
+ "root_visible_evidence":{
+  "original_binding":"92339A5FB6EB6987E34EF231BAFD62AD7FB1074B3F3E9B95A1AA157AB7C4C8DD original2560x1440, bound full-preview1280x720 B4D43732 and raw1:1 map-battle crop directly viewed.",
+  "actual":"Paused1066.12.14; actual swords at603,321 in reviewed full preview, between1603 and893. No battle panel open. HWND25954428 PID11572.",
+  "action":"One formal mapper click from measured preview rectangle to current original screen, followed by real new panel inspection."
+ }
+}
