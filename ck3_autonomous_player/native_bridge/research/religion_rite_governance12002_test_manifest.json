@@ -1,0 +1,113 @@
+{
+  "schema": "xar.religion_rite_governance12002_combined_runtime_test_manifest.v1",
+  "status": "GREEN",
+  "readiness": "static-ready",
+  "live_status": "not_run",
+  "recorded_at_utc": "2026-10-01T08:40:56.316332+00:00",
+  "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe ck3_autonomous_player\\native_bridge\\research\\religion_rite_governance12002_run_tests.py --artifacts <Z-output>",
+  "production_pipeline": "fixture-owned callbacks -> actual Core/component/aggregate reader -> worker TrySubmit -> owning ObservePumpDrain -> Wait/Reclaim -> native command_result serializer -> Python json decoder",
+  "build_modes": [
+    "Od",
+    "O2"
+  ],
+  "compiler": "MSVC x64 C++20 /W4 /WX",
+  "results": [
+    {
+      "mode": "Od",
+      "compile": "GREEN_W4_WX",
+      "results": [
+        {
+          "fixture": "religion_rite_governance12002_context_test.cpp",
+          "stdout": "PASS checks=16 cases=5 actual_combined_provider=true actual_serializer=true live=false",
+          "executable_sha256": "ba35aae9c3d7a42068538ca518acf06cb45e3a4f1a84c1b20f30da683a6790a5",
+          "actual_wire_sha256": {
+            "distinct-zero.json": "aab1228fd4b4a6f471f9feef2875f2bd58d599ff485e9ba5f7f07266cccf45fd",
+            "legal-absent.json": "6f2cda92ddce710b8923f8d747c7533e322222b16e4b2c734cc4689df4d7d752",
+            "heads-unavailable.json": "d698ccd0f8d69d8bff38ee12b9ac60d6baa5113af0e2d53da60c78766b765e2f",
+            "components-unavailable.json": "e9f049f3cb8ee177f9b0778703b375f9c4d827abeccf0d90777789d007120711"
+          }
+        },
+        {
+          "fixture": "religion_rite_governance12002_mailbox_test.cpp",
+          "stdout": "PASS checks=46 cases=6 actual_combined_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true dedicated_registration=false live=false",
+          "executable_sha256": "19e18fef7c56328233939f635fb37d6ff64958715ccecfad1cd872aa90df93ca",
+          "actual_wire_sha256": {
+            "distinct-zero.json": "67e17a0da8adb70b7877fe7f20732827446f33eb109e55d7209c28c40b50c676",
+            "legal-absent.json": "83da8b795ad8c086138fcc63db431a411ff27be6b19f748e172b7c0b6531732e",
+            "heads-unavailable.json": "49231deda5ec01ed211e512f2fbfa1c31b01d91cd573a61bed598c7c7d5195b4",
+            "components-unavailable.json": "fd64721094f2104be64f25dce1e2226ab6e5eb25f3ffcf8dd508296b5c07b3ae"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "O2",
+      "compile": "GREEN_W4_WX",
+      "results": [
+        {
+          "fixture": "religion_rite_governance12002_context_test.cpp",
+          "stdout": "PASS checks=16 cases=5 actual_combined_provider=true actual_serializer=true live=false",
+          "executable_sha256": "8a759269744fbe59240c95487a5fc0f4faa1cbf2d1e6ccd2818a5ff6d7a5e055",
+          "actual_wire_sha256": {
+            "distinct-zero.json": "aab1228fd4b4a6f471f9feef2875f2bd58d599ff485e9ba5f7f07266cccf45fd",
+            "legal-absent.json": "6f2cda92ddce710b8923f8d747c7533e322222b16e4b2c734cc4689df4d7d752",
+            "heads-unavailable.json": "d698ccd0f8d69d8bff38ee12b9ac60d6baa5113af0e2d53da60c78766b765e2f",
+            "components-unavailable.json": "e9f049f3cb8ee177f9b0778703b375f9c4d827abeccf0d90777789d007120711"
+          }
+        },
+        {
+          "fixture": "religion_rite_governance12002_mailbox_test.cpp",
+          "stdout": "PASS checks=46 cases=6 actual_combined_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true dedicated_registration=false live=false",
+          "executable_sha256": "b576d4acc67efce463c1bac40477e5c4d5f8b73e9a216696574b95bfeb36828b",
+          "actual_wire_sha256": {
+            "distinct-zero.json": "67e17a0da8adb70b7877fe7f20732827446f33eb109e55d7209c28c40b50c676",
+            "legal-absent.json": "83da8b795ad8c086138fcc63db431a411ff27be6b19f748e172b7c0b6531732e",
+            "heads-unavailable.json": "49231deda5ec01ed211e512f2fbfa1c31b01d91cd573a61bed598c7c7d5195b4",
+            "components-unavailable.json": "fd64721094f2104be64f25dce1e2226ab6e5eb25f3ffcf8dd508296b5c07b3ae"
+          }
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_religion_context.cpp": "1f9f487f1fba7c74bc75ccf72747acd56dc466cf7073d0b1ca112204cfcd6eb5",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_state_rite.cpp": "c84c2b6dac2a9b7e8dabec25e69ff144e2febf0db21d3a64cb7d5ab1d091cdb1",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_head.cpp": "197410f2d84100b86b80df5a8325204ecec1cd2309f6210ab3b7829990ba4006",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_organization.cpp": "a05ef92d556f5c33354669a7be3f97630e0a027e3bc7ba931484b2e5db52ef85",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_context.cpp": "44bf5daaeafb8f0bf7ae62841a506cac266bcec1e3ba566f0fff5b7dc375d9d5",
+    "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp": "32dc6f894db6c9cd94aa9d8cb56490b412459cb6adae8f3760448ed33ef53b6c",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player/native_bridge/src/protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_mailbox.cpp": "9905804a13cffa437120f7fb775c196b2d41534bb04b8f047766de70b60aa81f",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_context_test.cpp": "6ee15b6e348ce6baa2ffa17fe0a8667c6eef6c39b52a465c0baa774fb547d4cf",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_mailbox_test.cpp": "7c70b2a298f45ab4674b9c33a61c56920353952c0b1fecdbace3ec5b30129c0d"
+  },
+  "header_sha256": {
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_context.hpp": "fa88125e066930acec6d570f1cdbd8a37aef20f4dc8e8aa6e8f3c8ef124c4d9c",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_mailbox.hpp": "213ac7de5d761d3e63ae66ab6a7ccb9d77533554f4ecc0c3ddc60fa10f554529",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_state_rite.hpp": "e04e2d8cb3a096789d73453fb540a8920138ed0caaa49eaa4d8115e83843b441",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_head.hpp": "65558752afd05da41b7e9f5be763e788ab8e90b90dd6f8f28d520fbd888d8f31",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_organization.hpp": "f5d88dcc3b6410aebfef4272f4a6d4ae7f92629e6ae96466b5c8e37d20002b51",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_religion_context.hpp": "620c7d0508d78035c9c1b189ebf5e12bde0b2ab19cf80a0167d4e068e4f2bc63",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_query_mailbox.hpp": "c3ff170ce4811f9f0a08c6cf1b81aa76e7601272b1b8ca46c37e699e9ac11df5",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp": "4d229a57785152f29655c52fc90997461d9a1644358bbb0659722d70fc3e7d86"
+  },
+  "test_script_sha256": "70ac16f848eaa424f587b6b51ff629d15fc64f283b163177ac403c0721c40559",
+  "artifact_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\rite-governance\\runtime\\attempt-002\\result.json",
+  "artifact_result_sha256": "e0317d206ede0e00ae2498bf761d5b31683f66a068c2977a496d4f681b12882c",
+  "preserved_failed_attempts": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion\\rite-governance\\runtime\\attempts.json",
+  "preserved_failed_attempts_sha256": "c98043070123172dfe03ddb5219ff5f3bc38b617fdd41e2895d767b5b1ee5e88",
+  "component_matrices_repeated": false,
+  "scope": "Actual aggregate/component source readers and serialization with fixture-owned native objects/callbacks; real worker submit/main-owner drain/wait/reclaim. Existing primary offline permit only.",
+  "remaining": [
+    "Dedicated central native permit registration/full DLL build.",
+    "Actual wire driver/MCP SDK consumer test.",
+    "Paused CK3 observation acceptance."
+  ],
+  "ck3_launched": false,
+  "ck3_process_queried": false,
+  "ck3_pipe_opened": false,
+  "desktop_accessed": false,
+  "war_research_performed": false
+}
