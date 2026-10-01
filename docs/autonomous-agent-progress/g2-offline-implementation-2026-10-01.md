@@ -424,3 +424,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 实际Faith/currentFaith Rite候选读取经完整owning readonly mailbox，Od/O2各41checks7cases5完整packet通过；fullIDs/complete列表保持真实语义。不猜stock目标ID、不同步转换动作，复用已过reader；同MCP SDK/paused后续完成。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\choices\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:07:56 Native conversion knowledge and predicted input mailbox
+
+实际knowledge/recency/stateRite与baseFulfillment target/current输入经完整owned readonly mailbox，Od/O2各51checks6实际完整packet通过；两fixture harness RED保存，原reader矩阵不重跑。不把预测base差值冒充actualgain/finalAI desire。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\inputs\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
