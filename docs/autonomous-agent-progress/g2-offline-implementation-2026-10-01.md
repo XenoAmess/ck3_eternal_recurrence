@@ -562,3 +562,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 官方CI同修复ancestor1495 tests由53问题降剩8 failures：4个CN按钮长度导致5fail、两slice排序前移2、readiness旧快照1。11精确delta源缩中文labels到12/11/14/14，保留真实后果且width14合同不改；两scope连续范围和当前628/5206 source/readiness实证同步。只4 affected方法覆盖8失败+ledger--check GREEN，54首receipt不覆盖，不重跑1495；LIVE及发布翻译仍pending，需此次push officialCI真正通过。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-361-eight-failure-delta\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:24:15 Current draft reform native runtime and mailbox
+
+拆原23的native8精确source，Python15已由最终SDK16/三query42发布，唯一历史docpin差异不改nativeproof；原23历史凭证保留。新readonlyruntime+owningmailbox actualOd/O2各12cases66checks11完整包+拒绝GREEN，实际当前draft/cost/finalgates及Doctrinefinalchoices独立语义保真。未创建虚假窗口、Tenet未闭合保持unknown；R4全DLL已编译这些相同CPP，原compileinput未提交RED待本commit关闭，非重编或额外测试。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\query-native-source-only8.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
