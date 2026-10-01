@@ -2722,6 +2722,20 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_active_scheme_sway_outcome_opinion_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+    ) -> dict[str, object]:
+        """Read the target's current opinion and actual Sway modifier values."""
+        from .active_scheme_sway_outcome_opinion_private_transport import (
+            query_active_scheme_sway_outcome_opinion_private_v1,
+        )
+
+        return query_active_scheme_sway_outcome_opinion_private_v1(
+            self, expected_revision=expected_revision,
+            target_character_id=target_character_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_religion_context_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

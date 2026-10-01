@@ -7333,52 +7333,8 @@ def consume_one_life_lifestyle_private_trial(
     )
 
 
-def _choose_one_life_turn_core(
-    commands: list[dict[str, object]],
-    *,
-    snapshot: dict[str, object] | None = None,
-    action_steps: Iterable[str] | None = None,
-    bridge_capabilities: Iterable[str] | None = None,
-    next_run_plan: dict[str, object] | None = None,
-    battle_speed_readiness: dict[str, object] | None = None,
-) -> dict[str, object]:
-    """Choose one useful, inspectable action for the current life.
-
-    This is deliberately a one-step planner.  The caller records the result,
-    then invokes it again; failures and newly visible events therefore change
-    the next choice instead of being hidden inside a long macro.
-    """
-    rows = _expanded_command_rows(commands)
-    available_steps = {
-        step for step in (action_steps or ()) if isinstance(step, str) and step
-    }
-    available_capabilities = {
-        capability
-        for capability in (bridge_capabilities or ())
-        if isinstance(capability, str) and capability
-    }
-    battle_speed_gates = {
-        name: bool(
-            isinstance(battle_speed_readiness, dict)
-            and battle_speed_readiness.get(name) is True
-        )
-        for name in (
-            "decision_sentinel_live_ready",
-            "stationary_objective_hold_sentinel_live_ready",
-            "stationary_objective_hold_sentinel_canary_ready",
-            "stationary_objective_hold_sentinel_speed_4_live_ready",
-            "stationary_objective_hold_sentinel_speed_5_live_ready",
-            "terminal_sentinel_live_ready",
-            "overwhelming_matrix_live_ready",
-        )
-    }
-    stationary_objective_hold_sentinel_speed = (
-        _noncombat_sentinel_timeline_speed(
-            battle_speed_readiness,
-            sentinel_scope="stationary_objective_hold",
-        )
-    )
-    cross_run_focus = _cross_run_focus(next_run_plan)
+def _plan_one_life_terminal_v1(rows, snapshot, available_steps):
+    """Shared existing death, settlement and successor decision."""
     played_character = (
         snapshot.get("played_character")
         if isinstance(snapshot, dict)
@@ -7645,6 +7601,117 @@ def _choose_one_life_turn_core(
                 else None
             ),
         }
+    return None
+
+
+def choose_nonwar_turn_v1(
+    commands: list[dict[str, object]], *, snapshot: dict[str, object],
+    action_steps: Iterable[str] | None = None,
+    bridge_capabilities: Iterable[str] | None = None,
+) -> dict[str, object]:
+    """Handle mandatory lifecycle/modal work, then offer ordinary time advance."""
+    rows = _expanded_command_rows(commands)
+    available = {step for step in (action_steps or ()) if isinstance(step, str)}
+    caps = set(bridge_capabilities or ())
+    terminal = _plan_one_life_terminal_v1(rows, snapshot, available)
+    if terminal is not None:
+        return terminal
+    event = normalize_active_event(snapshot.get("active_event", snapshot.get("current_event")),
+                                   default_source=str(snapshot.get("source") or "planner"))
+    if event is not None:
+        context = _same_frame_event_window_context(rows, snapshot)
+        query_ready = (context is None and snapshot.get("paused") is True
+                       and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY in caps
+                       and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP in available)
+        return {"policy": "nonwar-turn-v1", "phase": "active_event_window_query" if query_ready else "active_event_operator_choice",
+                "selected_step": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP if query_ready else None,
+                "active_event": event, "event_window_context": context,
+                "reason": "observe the current event before the operator's explicit choice"}
+    pending = snapshot.get("pending_character_interaction")
+    if isinstance(pending, dict):
+        if pending.get("auto_accept_notification") is True:
+            step = ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP
+            return {"policy": "nonwar-turn-v1", "phase": "pending_character_interaction_acknowledge",
+                    "selected_step": step if step in available else None,
+                    "pending_character_interaction": pending,
+                    "reason": "acknowledge the already resolved native interaction notification"}
+        context = _same_frame_pending_interaction_context(rows, snapshot)
+        query_ready = context is None and QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP in available
+        return {"policy": "nonwar-turn-v1", "phase": "pending_character_interaction_query" if query_ready else "pending_character_interaction_operator_reply",
+                "selected_step": QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP if query_ready else None,
+                "pending_character_interaction": pending, "pending_interaction_context": context,
+                "reason": "observe the pending interaction before the operator's explicit reply"}
+    return {"policy": "nonwar-turn-v1", "phase": "ordinary_nonwar_opportunity",
+            "selected_step": "life-advance" if "life-advance" in available else None,
+            "reason": "consider permitted nonwar opportunities before normal engine time advance",
+            "active_wars": snapshot.get("active_wars", [])}
+
+
+def _choose_one_life_turn_core(
+    commands: list[dict[str, object]],
+    *,
+    snapshot: dict[str, object] | None = None,
+    action_steps: Iterable[str] | None = None,
+    bridge_capabilities: Iterable[str] | None = None,
+    next_run_plan: dict[str, object] | None = None,
+    battle_speed_readiness: dict[str, object] | None = None,
+) -> dict[str, object]:
+    """Choose one useful, inspectable action for the current life.
+
+    This is deliberately a one-step planner.  The caller records the result,
+    then invokes it again; failures and newly visible events therefore change
+    the next choice instead of being hidden inside a long macro.
+    """
+    rows = _expanded_command_rows(commands)
+    available_steps = {
+        step for step in (action_steps or ()) if isinstance(step, str) and step
+    }
+    available_capabilities = {
+        capability
+        for capability in (bridge_capabilities or ())
+        if isinstance(capability, str) and capability
+    }
+    battle_speed_gates = {
+        name: bool(
+            isinstance(battle_speed_readiness, dict)
+            and battle_speed_readiness.get(name) is True
+        )
+        for name in (
+            "decision_sentinel_live_ready",
+            "stationary_objective_hold_sentinel_live_ready",
+            "stationary_objective_hold_sentinel_canary_ready",
+            "stationary_objective_hold_sentinel_speed_4_live_ready",
+            "stationary_objective_hold_sentinel_speed_5_live_ready",
+            "terminal_sentinel_live_ready",
+            "overwhelming_matrix_live_ready",
+        )
+    }
+    stationary_objective_hold_sentinel_speed = (
+        _noncombat_sentinel_timeline_speed(
+            battle_speed_readiness,
+            sentinel_scope="stationary_objective_hold",
+        )
+    )
+    cross_run_focus = _cross_run_focus(next_run_plan)
+    played_character = (
+        snapshot.get("played_character")
+        if isinstance(snapshot, dict)
+        else None
+    )
+    terminal_reason = (
+        snapshot.get("one_life_terminal_reason")
+        if isinstance(snapshot, dict)
+        and isinstance(snapshot.get("one_life_terminal_reason"), str)
+        else (
+            "played_character_dead"
+            if isinstance(played_character, dict)
+            and played_character.get("alive") is False
+            else None
+        )
+    )
+    terminal_plan = _plan_one_life_terminal_v1(rows, snapshot, available_steps)
+    if terminal_plan is not None:
+        return terminal_plan
     raw_active_event = (
         snapshot.get("active_event", snapshot.get("current_event"))
         if isinstance(snapshot, dict)

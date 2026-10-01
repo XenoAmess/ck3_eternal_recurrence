@@ -624,6 +624,112 @@ class GameplayBridgeService:
             return refreshed() if callable(refreshed) else self.snapshot()
         return snapshot
 
+    def _ordinary_government_context_v1(self, snapshot: dict[str, object]) -> dict[str, object]:
+        from ..ordinary_campaign_government_context_v1 import build_ordinary_campaign_government_context_v1
+
+        permitted = getattr(self.driver, "allow_private_government_runtime_adapter_query", False) is True
+        lifecycle = snapshot.get("succession_lifecycle")
+        observation = None
+        query_error = None
+        if (permitted and isinstance(lifecycle, dict)
+                and lifecycle.get("lifecycle") == "ordinary_campaign_succession"
+                and isinstance(snapshot.get("campaign_goal"), dict)
+                and snapshot.get("paused") is True and snapshot.get("map_ready") is True
+                and snapshot.get("active_event") is None
+                and snapshot.get("pending_character_interaction") is None
+                and snapshot.get("one_life_terminal_reason") is None):
+            try:
+                observation = self.driver.query_government_runtime_adapter_private_v1(
+                    expected_revision=int(snapshot["revision"]),
+                )
+            except (BridgeUnavailableError, UnsupportedStepError, ValueError) as error:
+                query_error = {"type": type(error).__name__, "message": str(error)}
+        context = build_ordinary_campaign_government_context_v1(
+            snapshot, government_observation=observation, query_permitted=permitted,
+        )
+        if query_error is not None:
+            context["government_query_error"] = query_error
+        return context
+
+    def plan_nonwar_turn(self) -> dict[str, object]:
+        """Plan lifecycle work and permitted nonwar opportunities on the actual frame."""
+        from ..strategy import (
+            _same_frame_campaign_root_context, choose_nonwar_turn_v1,
+            ordinary_campaign_goal_plan_v1,
+        )
+        from ..private_council_formal_consumer_v1 import plan_council_private
+
+        internal = getattr(self.driver, "take_internal_semantic_snapshot", None)
+        snapshot = internal() if callable(internal) else self.snapshot()
+        caps = self.capabilities()
+        available = action_step_set(caps)
+        snapshot = self._prepare_succession_transition_v1(snapshot, available)
+        caps = self.capabilities()
+        available = action_step_set(caps)
+        planning_view = getattr(self.driver, "_with_internal_planning_view", None)
+
+        def seed(view, native_history):
+            history = [row for row in view.get("history", []) if isinstance(row, dict)]
+            history.extend(row for row in native_history if isinstance(row, dict))
+            plan = choose_nonwar_turn_v1(history, snapshot=view, action_steps=available,
+                                        bridge_capabilities=caps.get("bridge_capabilities", []))
+            if (plan.get("selected_step") == "life-advance"
+                    and QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP in available
+                    and _same_frame_campaign_root_context(history, view) is None):
+                plan = {**plan, "selected_step": QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+                        "phase": "nonwar_campaign_root_query",
+                        "reason": "read the current campaign root before nonwar opportunities"}
+            goal = view.get("campaign_goal")
+            if isinstance(goal, dict):
+                plan["campaign_goal_plan_used"] = ordinary_campaign_goal_plan_v1(goal)
+            return {"snapshot_id": view["snapshot_id"], "revision": view["revision"],
+                    "plan": plan, "_nonwar_history": history}
+
+        planned = (planning_view(snapshot, seed) if callable(planning_view)
+                   else seed(snapshot, snapshot.get("native_command_history", [])))
+        history = planned.pop("_nonwar_history")
+        planned["plan"]["campaign_government_context_used"] = self._ordinary_government_context_v1(snapshot)
+        if planned["plan"].get("selected_step") != "life-advance":
+            return planned
+        if getattr(self.driver, "require_initial_lifestyle_focus_before_date_advance", False) is True:
+            return self._plan_initial_lifestyle_focus_first_v1(planned, available)
+
+        planned = plan_council_private(self.driver, planned, snapshot, history, available,
+                                       state_dir=self._strategy_state_dir())
+        council = planned["plan"]
+        if (council.get("phase") == "council_pending_later_frame"
+                and isinstance(council.get("council_pending_action"), dict)
+                and council["council_pending_action"].get("stage") == "receipt_pending"):
+            return {**planned, "plan": {**council, "selected_step": "life-advance",
+                    "reason": "advance to an independent frame for the pending council receipt"}}
+        if council.get("selected_step") != "life-advance":
+            return planned
+        if getattr(self.driver, "allow_private_lifestyle_formal_trial", False) is True:
+            applied = latest_lifestyle_applied_receipt(snapshot, history)
+            if applied is not None:
+                planned["plan"]["lifestyle_receipt_consumed"] = applied
+            planned["_private_lifestyle_scope_v1"] = same_frame_feudal_lifestyle_scope(snapshot, history)
+            planned["_private_lifestyle_pending_v1"] = unresolved_lifestyle_perk_action(snapshot, history)
+            planned = self._plan_private_lifestyle_trial_v1(planned, available)
+        if planned["plan"].get("selected_step") != "life-advance":
+            return planned
+        if getattr(self.driver, "allow_private_construction_formal_trial", False) is True:
+            planned = plan_construction_private(self.driver, planned, snapshot, history, available)
+        if planned["plan"].get("selected_step") != "life-advance":
+            return planned
+        if getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True:
+            planned = self._plan_private_family_opportunity_v1(
+                planned, snapshot, wartime_arbitration=bool(snapshot.get("active_wars")),
+            )
+        target = getattr(self.driver, "child_matrilineal_target_v1", None)
+        if (getattr(self.driver, "allow_private_player_child_matrilineal_action", False) is True
+                and isinstance(target, tuple) and len(target) == 2):
+            planned = plan_child_matrilineal_private(self.driver, planned, snapshot,
+                subject_character_id=target[0], candidate_character_id=target[1])
+        if getattr(self.driver, "allow_private_guy_default_formal_trial", False) is True:
+            planned = plan_child_default_private(self.driver, planned, snapshot)
+        return planned
+
     def plan_turn(self) -> dict[str, object]:
         internal_snapshot = getattr(
             self.driver, "take_internal_semantic_snapshot", None
@@ -2186,7 +2292,18 @@ class GameplayBridgeService:
         | None = None,
     ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
-        planned = self.plan_turn()
+        return self._execute_planned_turn(self.plan_turn(), before_submit=before_submit)
+
+    def auto_nonwar_turn(
+        self, *, before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
+    ) -> dict[str, object]:
+        """Execute one planned nonwar action through the existing typed dispatch."""
+        return self._execute_planned_turn(self.plan_nonwar_turn(), before_submit=before_submit)
+
+    def _execute_planned_turn(
+        self, planned: dict[str, object], *,
+        before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
+    ) -> dict[str, object]:
         plan = planned.get("plan")
         selected_step = plan.get("selected_step") if isinstance(plan, dict) else None
         if not isinstance(selected_step, str) or not selected_step:
@@ -2269,6 +2386,19 @@ class GameplayBridgeService:
                     event_instance_id=planned_event_id,
                     expected_revision=int(planned["revision"]),
                 )
+            elif selected_step == "private-assign-councillor-v1":
+                from ..private_council_formal_consumer_v1 import submit_council_private
+
+                result = submit_council_private(self.driver, plan=plan,
+                                               expected_revision=int(planned["revision"]))
+            elif selected_step == "private-query-assign-councillor-receipt-v1":
+                from ..private_council_formal_consumer_v1 import read_council_receipt_private
+
+                pending = plan.get("council_pending_action")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError("private council receipt lacks its pending assignment")
+                result = read_council_receipt_private(self.driver, pending=pending,
+                                                     expected_revision=int(planned["revision"]))
             elif selected_step == ASSIGN_COUNCILLOR_V1_STEP:
                 assignment = (
                     plan.get("council_assignment")

@@ -953,3 +953,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 3精确源，event-only registry推荐→authored typed选项→压力或县恢复独立材料；新增route/health/recovery必要用例GREEN。无全域战争planner，未遇自然事件不计M2；旧失败与fixture/live边界保留。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m2-natural-live-next\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 23:56:46 Integrate formal nonwar turns and actual observation consumers
+
+11精确源（6shared、4新test、1专题），14必要新case全GREEN：nonwar8/Gov3/CLI2/Sway SDK1，另实际Feast原始8-key wire→旧消费者修复单case GREEN；默认路径不变，显式nonwar mode执行正式Council/LIFE/ECON/FAMILY与currentGov，不调用战争planner。首次误收旧feast测试14RED保留，未扩旧矩阵。静态就绪，root继续R11实际next/cold。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\NONWAR-SERVICE-R11-SHARED-READY.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

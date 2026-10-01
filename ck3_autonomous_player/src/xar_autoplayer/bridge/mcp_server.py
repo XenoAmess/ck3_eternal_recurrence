@@ -1526,6 +1526,17 @@ def create_server(
                 expected_revision=expected_revision,
             )
 
+    if getattr(driver, "allow_private_active_scheme_sway_outcome_opinion_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_active_scheme_sway_outcome_opinion_private_v1(
+            expected_revision: int, target_character_id: int,
+        ) -> dict[str, object]:
+            """Read current target opinion and native Sway modifiers without an event."""
+            return driver.query_active_scheme_sway_outcome_opinion_private_v1(
+                expected_revision=expected_revision,
+                target_character_id=target_character_id,
+            )
+
     if getattr(driver, "allow_private_family_obligations_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_family_obligations_private_v1(
@@ -1982,12 +1993,12 @@ def create_server(
     @server.tool()
     def ck3_plan_turn() -> dict[str, object]:
         """Choose the next one-life gameplay step from the shared planner."""
-        return service.plan_turn()
+        return service.plan_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.plan_turn()
 
     @server.tool()
     def ck3_auto_turn() -> dict[str, object]:
         """Plan and execute exactly one supported one-life gameplay turn."""
-        return service.auto_turn()
+        return service.auto_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.auto_turn()
 
     @server.tool()
     def ck3_execute_step(
@@ -3496,6 +3507,10 @@ def create_server(
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(prog="xar-ck3-mcp")
     result.add_argument(
+        "--nonwar-only", action="store_true",
+        help="plan nonwar opportunities, receipts and normal time advance through the public turn tools",
+    )
+    result.add_argument(
         "--driver",
         default=os.environ.get("XAR_CK3_BRIDGE_DRIVER", "vision-report"),
         help=(
@@ -3716,6 +3731,10 @@ def parser() -> argparse.ArgumentParser:
         "--private-player-religion-ai-reform-inputs-query", action="store_true",
         help="enable native reform AI input and controller schedule observations",
     )
+    result.add_argument(
+        "--private-active-scheme-sway-outcome-opinion-query", action="store_true",
+        help="enable independent native Sway modifier and current target opinion observations",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3820,6 +3839,7 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_religion_draft_tenet_choices_query
             or args.private_player_religion_draft_resource_costs_query
             or args.private_player_religion_ai_reform_inputs_query
+            or args.private_active_scheme_sway_outcome_opinion_query
             ) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -3833,6 +3853,7 @@ def main(argv: list[str] | None = None) -> int:
         war31_one_shot_surrender_gate=war31_gate,
         succession_lifecycle_binding=succession_lifecycle_binding,
     )
+    driver.nonwar_only = args.nonwar_only
     if args.private_current_first_heir_relationship_query:
         driver.allow_private_current_first_heir_relationship_query = True
     if args.private_player_child_marriage_subject_query:
@@ -3930,6 +3951,8 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_player_religion_draft_resource_costs_query = True
     if args.private_player_religion_ai_reform_inputs_query:
         driver.allow_private_player_religion_ai_reform_inputs_query = True
+    if args.private_active_scheme_sway_outcome_opinion_query:
+        driver.allow_private_active_scheme_sway_outcome_opinion_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

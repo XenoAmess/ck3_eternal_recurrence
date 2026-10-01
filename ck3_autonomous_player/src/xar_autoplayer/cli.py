@@ -313,6 +313,14 @@ def parser() -> argparse.ArgumentParser:
         help="maximum number of planner turns",
     )
     native_auto_run_parser.add_argument("--exact-war-move-stop-contract", type=Path)
+    native_auto_run_parser.add_argument(
+        "--nonwar-only", action="store_true",
+        help="use nonwar opportunity and lifecycle planning with normal engine time advance",
+    )
+    native_auto_run_parser.add_argument(
+        "--allow-private-government-runtime-adapter-query", action="store_true",
+        help="read the actual current government profile for ordinary campaign goals",
+    )
     native_auto_run_parser.add_argument("--exact-war-move-stop-sha256")
     native_auto_run_parser.add_argument("--timeout", type=float, default=21600)
     native_auto_run_parser.add_argument(
@@ -1146,6 +1154,9 @@ def main(argv: list[str] | None = None) -> int:
                     **private_guy_default_options,
                     **private_m5_options,
                     **private_lifestyle_options,
+                    **({"nonwar_only": True} if args.nonwar_only else {}),
+                    **({"allow_private_government_runtime_adapter_query": True}
+                       if args.allow_private_government_runtime_adapter_query else {}),
                     **private_epidemic_options,
                     **private_prisoner_options,
                     **private_scheme_options,

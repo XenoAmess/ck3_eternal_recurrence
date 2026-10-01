@@ -436,6 +436,8 @@ def native_auto_run(
     ),
     allow_route_contact_high_speed_ab: bool = False,
     allow_stationary_objective_hold_sentinel_canary: bool = False,
+    nonwar_only: bool = False,
+    allow_private_government_runtime_adapter_query: bool = False,
     allow_private_lifestyle_formal_trial: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     allow_private_construction_formal_trial: bool = False,
@@ -1146,6 +1148,10 @@ def native_auto_run(
         )
         # This controlled, private Python route does not change the native
         # driver's public action registration or capability advertisement.
+        driver.nonwar_only = nonwar_only is True
+        driver.allow_private_government_runtime_adapter_query = (
+            allow_private_government_runtime_adapter_query is True
+        )
         driver.allow_private_construction_formal_trial = (
             allow_private_construction_formal_trial is True
         )
@@ -2013,10 +2019,11 @@ def native_auto_run(
             # canonical checkpoint path.
             current_attempt["stage"] = "opaque_auto_turn"
             pre_submission_revision_replans = 0
+            planned_auto_turn = service.auto_nonwar_turn if nonwar_only is True else service.auto_turn
             while True:
                 try:
                     outcome = (
-                        service.auto_turn(before_submit=opening_guard_before_submit)
+                        planned_auto_turn(before_submit=opening_guard_before_submit)
                         if (
                             opening_focus_gate is not None
                             or private_child_matrilineal_pending_recovery_only is True
@@ -2024,7 +2031,7 @@ def native_auto_run(
                             or exact_move_contract is not None
                             or allow_private_epidemic_recovery_near_pair is True
                         )
-                        else service.auto_turn()
+                        else planned_auto_turn()
                     )
                     break
                 except PreSubmissionRevisionMismatchError as error:
@@ -4544,6 +4551,8 @@ def native_auto_run(
             else {}
         ),
         "fixed_seed": fixed_seed,
+        "nonwar_only": nonwar_only is True,
+        "private_government_runtime_adapter_query_enabled": allow_private_government_runtime_adapter_query is True,
         "bounds": {
             "requested_turns": turn_count,
             "max_wall_seconds": timeout,
@@ -6526,25 +6535,33 @@ def _open_private_activity_feast_planner_once(
         and (native.get("native_dispatch_invoked") is
              (native.get("open_status") == "opened"))
     )
+    envelope_keys = {
+        "step", "accepted", "status", "private_build", "read_only",
+        "advertised", "activity_feast_planner_open", "backend_id",
+    }
+    envelope_shape = bool(
+        isinstance(envelope, dict)
+        and (
+            (set(envelope) == envelope_keys | {"same_frame"}
+             and envelope.get("same_frame") is True)
+            or (before.get("executable_sha256")
+                == "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+                and set(envelope) == envelope_keys)
+        )
+    )
     accepted = bool(
         isinstance(frame, dict)
         and frame.get("type") == "command_result"
         and frame.get("protocol_version") == 1
         and frame.get("request_id") == request_id
         and frame.get("ok") is True
-        and isinstance(envelope, dict)
-        and set(envelope) == {
-            "step", "accepted", "status", "private_build", "read_only",
-            "advertised", "same_frame", "activity_feast_planner_open",
-            "backend_id",
-        }
+        and envelope_shape
         and envelope.get("step") == _PRIVATE_ACTIVITY_FEAST_OPEN_STEP
         and envelope.get("accepted") is True
         and envelope.get("status") == "available"
         and envelope.get("private_build") is True
         and envelope.get("read_only") is False
         and envelope.get("advertised") is False
-        and envelope.get("same_frame") is True
         and envelope.get("backend_id") == "native-headless"
         and native_shape and same_frame
     )
