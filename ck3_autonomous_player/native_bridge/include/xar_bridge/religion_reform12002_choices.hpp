@@ -8,7 +8,7 @@ namespace xar::ck3_12002::religion_reform {
 inline constexpr std::size_t kDraftTopScopeOffset = 0xD0;
 inline constexpr std::size_t kDraftDoctrineCategoryOffset = 0x888;
 inline constexpr std::size_t kCategoryDoctrineArrayOffset = 0x20;
-inline constexpr std::size_t kDoctrineItemStride = 0x50;
+inline constexpr std::size_t kDoctrineItemStride = 0x48;
 inline constexpr std::size_t kDraftTenetGroupArrayOffset = 0x7A8;
 inline constexpr std::size_t kTenetGroupStride = 0x20;
 inline constexpr std::size_t kGroupTenetArrayOffset = 8;

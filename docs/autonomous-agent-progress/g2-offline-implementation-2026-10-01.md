@@ -664,3 +664,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 One test file, two actually failing methods. Explicit legacy_full_tree_coverage opt-in in three calls, preserving production default P1 and all actual gates. Two affected methods passed; prior official1495 content suite PASS reused. Await official CI completion after push, no live state change. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-focused-b2-current-fix\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:12:07 Fix actual multirow Doctrine candidate stride
+
+One existing header constant 0x50 to0x48 fixes both production choice and final selection consumers, plus one necessary multirow fixture. Four actual rows reproduce old reader failure; candidate Od/O2 each3checks passed. Applied tested bytes only, no old matrix repeated or game draft action. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\group-model\stride-candidate\header-apply-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
