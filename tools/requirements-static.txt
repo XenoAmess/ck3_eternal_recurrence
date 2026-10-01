@@ -1,3 +1,6 @@
 Pillow==12.3.0
 edge-tts==7.2.8
 pefile==2024.8.26
+# Existing offline runner tests import these packages without operating the desktop.
+PyAutoGUI==0.9.54
+jsonschema==4.26.0
