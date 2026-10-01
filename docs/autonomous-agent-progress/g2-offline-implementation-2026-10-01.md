@@ -382,3 +382,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 60文件冻结Faith mainRite/actorRite effective doctrine/参数/tenet/hostility/知识模型，实际currentDoctrine mailbox Od/O2各26checks4pack、hostility5pack，准确区分同名TenetItem与DoctrineItem CanPick反射；反证修正已落最终源，旧provider测试复用。新增knowledge/tenet mailbox另包，不含partial源；所有当前最高static-ready，暂无paused宗教真值。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\READY-SOURCE-PACKAGE.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:07:13 Native full instance Sway completion query
+
+15路径（phase5已提交不重复测试）提供full SchemeID真实当前/已终止且未purge实例读取，native status0continue/1invalidated不当终止cause，owned QueryMailboxEnvelope/serializer实际Od/O2每mode7完整frame通过。首identity失落实际consumer问题最小修复；hidden消息execution observer仍独立施工，purge后历史尚未完成。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-completion\current-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
