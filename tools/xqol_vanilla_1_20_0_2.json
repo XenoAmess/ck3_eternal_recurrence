@@ -21,6 +21,7 @@
     "common/scripted_modifiers/00_religion_scripted_modifiers.txt": "0d3fbd5d6740212f9acd318aa400560f2572f81f4562c3984c9d158e382fbc71",
     "common/script_values/pam_values.txt": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
     "common/script_values/07_appointment_values.txt": "04e1eb472d255fbf26e4fcf910a9220f43517907bb3bdf1f61bbe4cbf1ca78ec",
-    "common/governments/00_government_types.txt": "f7f07123192eebf4053f917d8458639126ab42e2a7efa9176f43495a6275c86b"
+    "common/governments/00_government_types.txt": "f7f07123192eebf4053f917d8458639126ab42e2a7efa9176f43495a6275c86b",
+    "common/script_values/00_interaction_values.txt": "52a7cf8ef212c835bfc5bc5ce049af2e33d7586eb9d477343e8eedacf58ebd66"
   }
 }

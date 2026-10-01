@@ -1,0 +1,27 @@
+﻿# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.
+
+xqol_full_golden_obligation_value = {
+	if = {
+		limit = {
+			normal_ransom_cost_value < minor_gold_value 
+		}
+		value = minor_gold_value
+	}
+	else_if = {
+		limit = { 
+			normal_ransom_cost_value < medium_gold_value 
+		}
+		value = normal_ransom_cost_value
+	}
+	else = {
+		value = medium_gold_value
+	}
+	if = {
+		limit = {
+			scope:actor ?= {
+				has_strong_hook = prev
+			}
+		}
+		multiply = 1.5
+	}
+}

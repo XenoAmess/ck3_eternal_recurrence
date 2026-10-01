@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from xqol_vanilla_contract import native_conversion_acceptance, require_sources
+from xqol_vanilla_contract import native_conversion_acceptance, native_full_golden_obligation, require_sources
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -18,6 +18,7 @@ OUTPUTS = {
     "common/scripted_effects/xqol_generated_conversion_dispatch.txt",
     "common/scripted_guis/xqol_generated_conversion_threshold_guis.txt",
     "gui/event_window_widgets/xqol_conversion_threshold_slider.gui",
+    "common/script_values/xqol_generated_payment_values.txt",
 }
 
 TERMS = (
@@ -360,6 +361,7 @@ def generated_payloads() -> dict[str, str]:
         "common/scripted_effects/xqol_generated_conversion_dispatch.txt": render_conversion_dispatch(),
         "common/scripted_guis/xqol_generated_conversion_threshold_guis.txt": render_threshold_guis(),
         "gui/event_window_widgets/xqol_conversion_threshold_slider.gui": render_slider_widget(),
+        "common/script_values/xqol_generated_payment_values.txt": "# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.\n\n" + native_full_golden_obligation() + "\n",
     }
 
 

@@ -250,6 +250,10 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("exact-build vanilla grant-vassal AI guard contract is missing")
 
     generated = gen_xqol_phase2.generated_payloads()
+    if "gold >= xqol_full_golden_obligation_value" not in effects:
+        errors.append("full hook payments must require the native uncapped obligation")
+    if "gold >= golden_obligation_value" in effects:
+        errors.append("native wallet-capped obligation cannot filter full hook payments")
     for relative, text in generated.items():
         expected = b"\xef\xbb\xbf" + text.replace("\r\n", "\n").encode("utf-8")
         if (MOD / relative).read_bytes() != expected:

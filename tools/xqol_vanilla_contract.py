@@ -101,3 +101,15 @@ def native_conversion_acceptance(kind: str) -> str:
         "\t\treligion_demand_conversion_default_modifier = yes\n"
         "\t\treligion_demand_conversion_christian_situation_modifier = yes"
     )
+
+
+def native_full_golden_obligation() -> str:
+    """Keep the 1.20 native quote, excluding its available-wallet cap.
+
+    The native capped value answers what can be collected now. XQOL's full
+    payment mode instead requires the entire quote before consuming a hook.
+    """
+    definition = native_definition("common/script_values/00_interaction_values.txt", "golden_obligation_value")
+    if definition.count("\tmax = gold\n") != 1:
+        raise ValueError("native golden obligation wallet cap changed")
+    return definition.replace("golden_obligation_value =", "xqol_full_golden_obligation_value =", 1).replace("\tmax = gold\n", "")

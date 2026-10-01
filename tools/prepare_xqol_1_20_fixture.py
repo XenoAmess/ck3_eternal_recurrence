@@ -73,12 +73,15 @@ def event(name: str, body: str) -> str:
 
 
 def events(governors_only: bool) -> str:
-    initialize = '''        add_character_flag = zqa_initialize_pending
+    initialize = '''        if = {
+        limit = { NOT = { has_character_flag = zqa_fixture_initialized } }
+        add_character_flag = zqa_initialize_pending
         zqa_initialize_effect = yes
         random_player = {
             set_variable = { name = zqa120_stage value = 1 }
             set_variable = { name = zqa120_ticks value = 0 }
             trigger_event = { id = zqa120.2 days = 1 }
+        }
         }'''
     after_disable = ('''                    debug_log = "ZQA120: TEST DONE governor_core"
                     set_variable = { name = zqa120_stage value = 99 }''' if governors_only else
@@ -183,6 +186,11 @@ def prepare(repo: Path, output: Path, scenario: str) -> dict:
     prep.copy_files(source, output, files)
     base_path = output / "common/scripted_effects/zqa_effects.txt"
     base = base_path.read_text(encoding="utf-8-sig")
+    # This fixture excludes the legacy defense GUI/decisions; their separate
+    # initializer is unreachable here and must not leave orphan flag contracts.
+    defense_init = prep.balanced_excerpt(base, r"^zqa_defense_initialize_effect\s*=\s*\{")
+    base = prep.replace_once(base, defense_init, "# Legacy defense initializer excluded from this core fixture.")
+    base = base.replace("golden_obligation_value", "xqol_full_golden_obligation_value")
     # The driver invokes the next setup once; the original callback had chained it.
     base = prep.replace_once(base, "\tzqa_setup_payment_matrix_effect = yes\n", "\t# The 1.20 hidden driver chooses the next matrix.\n")
     if scenario == "administrative":

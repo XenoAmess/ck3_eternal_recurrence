@@ -36,6 +36,7 @@ RUNTIME_FILES = frozenset(
         "common/scripted_effects/xqol_generated_conversion_dispatch.txt",
         "common/scripted_guis/xqol_generated_conversion_threshold_guis.txt",
         "common/scripted_triggers/xqol_triggers.txt",
+        "common/script_values/xqol_generated_payment_values.txt",
         "common/succession_appointment/admin_governor.txt",
         "common/succession_appointment/celestial_governor.txt",
         "common/succession_appointment/meritocratic_governor.txt",

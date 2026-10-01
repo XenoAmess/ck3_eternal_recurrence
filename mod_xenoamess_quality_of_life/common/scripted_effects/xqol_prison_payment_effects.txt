@@ -6,7 +6,7 @@ xqol_bulk_demand_payment_full_effect = {
 	set_variable = { name = xqol_last_bulk_payment_count value = 0 }
 	every_hooked_character = {
 		limit = {
-			gold >= golden_obligation_value
+			gold >= xqol_full_golden_obligation_value
 			scope:actor = {
 				is_character_interaction_potentially_accepted = {
 					recipient = prev
