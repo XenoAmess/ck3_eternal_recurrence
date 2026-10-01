@@ -394,3 +394,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 真实state/head/organization三provider→组合context→拥有型readonly mailbox/fullresponse，Od/O2各16context/46mailbox检查，4actualwire通过；首signedzero夹具RED保留。独立query不混clergy/members新参数，保持已冻source稳定；无live宗教动作。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion\rite-governance\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:07:25 Native candidate clergy query mailbox
+
+真实int32 fullcandidate参数与当前playedstamp owner→原chaplain三个独立finalbool，经actualmailbox Od/O2各57checks7pack一次GREEN。原23组件检查复用，不把三bool合并任命action资格；同MCP中央/SDK/paused待完成。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-governance\clergy-mailbox\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
