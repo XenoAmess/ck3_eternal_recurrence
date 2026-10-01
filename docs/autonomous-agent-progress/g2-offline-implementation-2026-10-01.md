@@ -418,3 +418,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 首36包不改，仅8文件补实际Doctrine/Tenet popup、复用已闭合KnowsDoctrine/prophet，Od/O2各10checks6JSON及PE22spans20anchors3stock通过，首计数夹具RED保留。最终delivery树/依赖明确，仍library static-ready，MCP及可见真实draft后验待完成。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\final-delta-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:07:50 Native complete conversion candidate query mailbox
+
+实际Faith/currentFaith Rite候选读取经完整owning readonly mailbox，Od/O2各41checks7cases5完整packet通过；fullIDs/complete列表保持真实语义。不猜stock目标ID、不同步转换动作，复用已过reader；同MCP SDK/paused后续完成。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\choices\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
