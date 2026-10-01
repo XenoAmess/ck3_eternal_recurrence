@@ -1,0 +1,11 @@
+{
+  "status": "SOURCE_SHA256_VERIFIED",
+  "at_utc": "2026-10-01T03:37:58.952293+00:00",
+  "label": "series-video",
+  "source": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+  "bytes": 240220990,
+  "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342",
+  "source_mtime_ns": 1790824738266138200,
+  "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe"
+}

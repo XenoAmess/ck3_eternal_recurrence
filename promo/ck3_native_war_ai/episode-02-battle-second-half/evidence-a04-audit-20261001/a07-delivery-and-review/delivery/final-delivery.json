@@ -1,0 +1,83 @@
+{
+  "at_utc": "2026-10-01T03:39:52.943769+00:00",
+  "status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+  "final_artifact": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342",
+    "duration_expected": 1818.6333333333334,
+    "previous": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-evidence-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Evidence-20261001-a06.mp4",
+      "bytes": 239659692,
+      "sha256": "F716D9F4FA79F3471941FF7FC4860A2D8F3D8EA103B73502D5C724609DB598D2"
+    },
+    "original_aac_source": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\CK3-War-AI-Episode02-Review-20260930-a04.mp4",
+      "bytes": 240710781,
+      "sha256": "CB141C63966D86BDC8E267B4D958A79C1BB06A8EF69814DC0D6788F0345B8C7E"
+    },
+    "recompiled_chunks": 3,
+    "copied_chunks": 21,
+    "timeline_unchanged": true,
+    "subtitle_bytes_identical_in_all_chunks": true,
+    "final_aac_stream_copied": true,
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "status": "pending-independent-machine-and-frame-review"
+  },
+  "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+  "files_transferred": 1,
+  "local_copy": {
+    "status": "LOCAL_COPY_VERIFIED_CLOUD_PENDING",
+    "at_utc": "2026-10-01T03:38:00.675489+00:00",
+    "label": "series-video",
+    "source": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342",
+    "copy_stream_sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342",
+    "source_mtime_ns": 1790824738266138200,
+    "cloud_confirmation": null
+  },
+  "last_client_sample": {
+    "at_utc": "2026-10-01T03:39:52.942778+00:00",
+    "raw": {
+      "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+      "sample_utc": "2026-10-01T03:39:52.912251+00:00",
+      "size": 240220990,
+      "mtime_ns": 1790825879726776400,
+      "attributes_hex": "0x00000020",
+      "sync_root_hresult": "0x00000000",
+      "handle_attributes_hex": "0x00000020",
+      "reparse_tag_hex": "0x00000000",
+      "cf_placeholder_state_hex": "0x00000000",
+      "cf_placeholder_state_flags": [],
+      "placeholder_hresult": "0x00000000",
+      "placeholder_returned_bytes": 412,
+      "in_sync_state": 1,
+      "on_disk": 240220990,
+      "validated": 240220990,
+      "modified": 0,
+      "pin_state": 0,
+      "file_id": 281474978368681,
+      "sync_root_file_id": 5910974510929700,
+      "stable_size_mtime": true
+    },
+    "checks": {
+      "exact_path": true,
+      "exact_size": true,
+      "stable_size_mtime": true,
+      "sync_root_success": true,
+      "placeholder_success": true,
+      "sync_root_id": true,
+      "in_sync": true,
+      "validated_full_size": true,
+      "modified_zero": true
+    }
+  },
+  "sample_count": 12,
+  "remote_independent_readback_performed": false,
+  "human_signoff": "not-provided",
+  "other_cloud_files_downloaded": false,
+  "old_outputs_changed": false
+}

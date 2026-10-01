@@ -1,0 +1,135 @@
+{
+  "schema": "ck3.a07.independent-media-audit/v1",
+  "at_utc": "2026-10-01T03:34:18.225327+00:00",
+  "machine_condition_status": "PASS",
+  "final_artifact": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342"
+  },
+  "actual_run": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01",
+  "independent_audit_directory": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01",
+  "summary": {
+    "chapters": 6,
+    "unchanged_narration_cues": 167,
+    "unchanged_raw_speed_excerpt_contracts": 13,
+    "new_left_cards": 3,
+    "recompiled_chunks": 3,
+    "exact_copy_chunks": 21,
+    "exact_subtitle_files": 24,
+    "exact_ASS_dialogue_events": 347,
+    "new_claim_facts_only": 8,
+    "original_claim_catalog_restorable_exactly": true,
+    "complete_AV_decode_count_for_exact_a07": 1,
+    "decoded_video_frames": 54559,
+    "AAC_packets_exactly_equal_original_a04": 85284,
+    "AAC_data_pts_dts_duration_flags_side_data_equal": true,
+    "video_duration_seconds": 1818.633333,
+    "source_frozen_composer_sha256": "F7001557BB8F18E6C2BCFCC93121012B440E4F73F41AED6A72A0E51FCC65C0A6",
+    "formal_toolchain_version": "0.2.1",
+    "actual_native_pair_caption": "R0138",
+    "paused_UI_width_pair": [
+      1480,
+      2220
+    ],
+    "paused_native_raw_date_pair": [
+      53146488,
+      53146512
+    ],
+    "new_UI_crop_pixels_exact_after_declared_LANCZOS_resize": true,
+    "historical_right_panel_pixels_exact": true,
+    "k035_final_decoded_frames_exact_to_a06": true,
+    "structure_and_pixel_checks": 210
+  },
+  "evidence": {
+    "AV": {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\AV-phase-report.json",
+      "bytes": 7129,
+      "sha256": "3070628F8115839138FB870250A50F0F85A93CFAEFD640EC8E933246B7A7EEAE"
+    },
+    "AAC_packet_equivalence": {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\a04-to-a07-AAC-packet-equivalence.json",
+      "bytes": 1454,
+      "sha256": "F99E577D01205E1CF2C69D9A49BB542E979AE63EFF42A75570C8BAE1B4522ED1"
+    },
+    "structure_pixels": {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\structure-pixel-report.json",
+      "bytes": 108695,
+      "sha256": "840A8654224CB286586EF819A93FDEF91A9B8A178E84805F726F27ED6166CB8A"
+    },
+    "keyframes": {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\keyframe-extraction.json",
+      "bytes": 3926,
+      "sha256": "105CDEDF2E5B4A5FB7C118BAE6C11747D55899047DC44A1CCFDFB96BA5387666"
+    },
+    "limited_quality": {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\quality-report.json",
+      "bytes": 6138,
+      "sha256": "7D25E234A150E88836CBF575F29B0E24B98DC28802B0C71C038D1BF6F19CA097"
+    },
+    "inherited_unchanged_a06_report": {
+      "path": "C:\\Users\\1\\ck3-a06-evidence-media-audit-20261001\\attempt-01\\report.json",
+      "bytes": 102810,
+      "sha256": "C57CF4AC93A403ED8AE22B086F9F0F4EB065A31670177D4257CABEE3B5183038"
+    },
+    "composer_44_case_independent_offline_review": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-composer-independent-review-other-a03\\independent-composer-review.json",
+      "bytes": 15305,
+      "sha256": "180F2F10122B21AA5B84207964BF6CCA62B3E97661E53F812F33E2E8EB57A70B"
+    },
+    "actual_binding": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\evidence-bindings.json",
+      "bytes": 5317,
+      "sha256": "1EA579969B923150C85D27FB26C4EB515123504FBA0DD4A744946A0CB27F66E5"
+    },
+    "freeze": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\input-freeze.json",
+      "bytes": 15277,
+      "sha256": "869BDD65419153131195931999B928F729BD7286376EC591F166162BCB004EE3"
+    },
+    "render_diff": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\a06-to-a07-diff.json",
+      "bytes": 46869,
+      "sha256": "2B4FA6DA267BD9FC9AC087A3440A2CEE33BFBC3AA35AD0494AE770ACECC33875"
+    },
+    "retained_initial_harness_failures": [
+      {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\initial-harness-failure.json",
+        "bytes": 552,
+        "sha256": "7CA70DCD6C5D64B26B714DE3B2EEDFC5853007B79ED96A56430B96E74FCFD1ED"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\cache-schema-harness-failure.json",
+        "bytes": 460,
+        "sha256": "66FF91195EDD8EA98A70E6752C23DCC1749A41BAD77DCCF0C0BE7F0E12A49692"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\structure-schema-harness-failure.json",
+        "bytes": 618,
+        "sha256": "5451D7C4515D0764BCFBAB833765D16A2B942E2E59827A3798886F249C132909"
+      }
+    ],
+    "original_independent_report": {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\report.json",
+      "bytes": 6023,
+      "sha256": "9F351DCF00FB99A95136B84552168732CB852F019FDABFA2556AACCF92CF4DE1"
+    },
+    "root_limited_five_keyframe_observations": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\a07-root-keyframe-observations-a01.json",
+      "bytes": 3976,
+      "sha256": "9EC91801057325F9D2C6BDB10002788B6A2CA703D0045BB4C0A471C7B1DF29B7"
+    }
+  },
+  "raw_hash_policy": "All 13 raw contracts and current sizes verified; no repeated complete raw-file hashing. Immutable previous hashes and completed a06 audit remain referenced.",
+  "audit_harness_corrections": "Three schema assumptions failed before their affected checks and were corrected in new files. All original scripts/failure notes remain; the actual a07 media was unchanged. Packet query and complete AV decode each executed once.",
+  "human_signoff": "not-provided",
+  "full_1x_visual_review": false,
+  "full_listening_review": false,
+  "production_clean_admission": false,
+  "quality_verdict": "PASS_PENDING_HUMAN_REVIEW",
+  "scope_limit": "Machine results only establish listed conditions for these exact a07 bytes. No approval or upload claim.",
+  "supplemented_at_utc": "2026-10-01T03:35:45.202956+00:00",
+  "root_human_1x_full_watch": false,
+  "root_human_full_listen": false,
+  "root_signoff_created": false
+}

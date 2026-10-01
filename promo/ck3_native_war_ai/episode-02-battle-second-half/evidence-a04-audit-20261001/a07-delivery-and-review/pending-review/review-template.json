@@ -1,0 +1,570 @@
+{
+  "approval_granted": false,
+  "artifact": {
+    "audio_tracks": [
+      {
+        "channels": 2,
+        "codec": "aac",
+        "index": 1,
+        "sample_rate": 48000
+      }
+    ],
+    "bytes": 240220990,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration_seconds": "1818.654687",
+    "path": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "resolution": {
+      "height": 1080,
+      "width": 1920
+    },
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342",
+    "subtitle_tracks": [],
+    "video_tracks": [
+      {
+        "average_frame_rate": "30/1",
+        "codec": "h264",
+        "height": 1080,
+        "index": 0,
+        "width": 1920
+      }
+    ]
+  },
+  "format_version": 1,
+  "frame_evidence": [
+    {
+      "chapter_ids": [
+        "opening"
+      ],
+      "id": "frame-000001",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000001.png",
+      "roles": [
+        "artifact-first",
+        "chapter-start"
+      ],
+      "timestamp_seconds": "0.000000"
+    },
+    {
+      "chapter_ids": [
+        "opening"
+      ],
+      "id": "frame-000002",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000002.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "timestamp_seconds": "105.666667"
+    },
+    {
+      "chapter_ids": [
+        "pursuit"
+      ],
+      "id": "frame-000003",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000003.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "timestamp_seconds": "105.700000"
+    },
+    {
+      "chapter_ids": [
+        "pursuit"
+      ],
+      "id": "frame-000004",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000004.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "timestamp_seconds": "470.866667"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000005",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000005.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "timestamp_seconds": "470.900000"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000006",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000006.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "730.233334"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000007",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000007.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "730.266667"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000008",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000008.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "736.083334"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000009",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000009.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "736.116667"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000010",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000010.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "741.933334"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000011",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000011.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "741.966667"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000012",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000012.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "842.366667"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000013",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000013.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "842.400000"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000014",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000014.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "847.800000"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000015",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000015.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "847.833333"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000016",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000016.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "853.233334"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000017",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000017.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "853.266667"
+    },
+    {
+      "chapter_ids": [
+        "knights"
+      ],
+      "id": "frame-000018",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000018.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "timestamp_seconds": "886.433334"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000019",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000019.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "timestamp_seconds": "886.466667"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000020",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000020.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "1112.866667"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000021",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000021.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "1112.900000"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000022",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000022.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "1118.466667"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000023",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000023.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "1118.500000"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000024",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000024.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "1124.066667"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000025",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000025.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "1124.100000"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000026",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000026.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "1192.366667"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000027",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000027.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "1192.400000"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000028",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000028.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "1198.016667"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000029",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000029.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "1198.050000"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000030",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000030.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "timestamp_seconds": "1203.666667"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000031",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000031.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "timestamp_seconds": "1203.700000"
+    },
+    {
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "id": "frame-000032",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000032.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "timestamp_seconds": "1348.500000"
+    },
+    {
+      "chapter_ids": [
+        "terminal"
+      ],
+      "id": "frame-000033",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000033.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "timestamp_seconds": "1348.533333"
+    },
+    {
+      "chapter_ids": [
+        "terminal"
+      ],
+      "id": "frame-000034",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000034.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "timestamp_seconds": "1717.766667"
+    },
+    {
+      "chapter_ids": [
+        "closing"
+      ],
+      "id": "frame-000035",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000035.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "timestamp_seconds": "1717.800000"
+    },
+    {
+      "chapter_ids": [
+        "closing"
+      ],
+      "id": "frame-000036",
+      "path": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/frame-000036.png",
+      "roles": [
+        "artifact-final",
+        "chapter-end"
+      ],
+      "timestamp_seconds": "1818.600000"
+    }
+  ],
+  "full_watch": {
+    "checklist": [
+      {
+        "id": "watch-complete-at-1x",
+        "instruction": "Watch continuously at exactly 1.0x from 0.000000 through 1818.654687 without skipping, scrubbing, or fast playback.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "id": "verify-picture-and-sound",
+        "instruction": "Confirm picture and sound remain present, synchronized, and free of unexpected interruption for the complete viewing.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "id": "verify-subtitles-and-on-screen-text",
+        "instruction": "Confirm intended subtitles and on-screen text are readable, timed, and inside the visible frame.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "id": "verify-first-and-final-frame",
+        "instruction": "Inspect the extracted first and final frames for clean entry and exit.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "opening",
+        "id": "verify-chapter-0001",
+        "instruction": "Inspect chapter 'opening' continuously and compare its start, end, and declared boundary frames with the storyboard.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "pursuit",
+        "id": "verify-chapter-0002",
+        "instruction": "Inspect chapter 'pursuit' continuously and compare its start, end, and declared boundary frames with the storyboard.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "knights",
+        "id": "verify-chapter-0003",
+        "instruction": "Inspect chapter 'knights' continuously and compare its start, end, and declared boundary frames with the storyboard.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "reinforcement",
+        "id": "verify-chapter-0004",
+        "instruction": "Inspect chapter 'reinforcement' continuously and compare its start, end, and declared boundary frames with the storyboard.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "terminal",
+        "id": "verify-chapter-0005",
+        "instruction": "Inspect chapter 'terminal' continuously and compare its start, end, and declared boundary frames with the storyboard.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "closing",
+        "id": "verify-chapter-0006",
+        "instruction": "Inspect chapter 'closing' continuously and compare its start, end, and declared boundary frames with the storyboard.",
+        "required": true,
+        "state": "pending"
+      }
+    ],
+    "no_skipping": true,
+    "required_playback_speed": 1.0
+  },
+  "human_response": {
+    "checklist_results": {},
+    "decision": null,
+    "notes": null,
+    "reviewed_at": null,
+    "reviewer": null
+  },
+  "is_signoff": false,
+  "kind": "xar-promo-human-review-template",
+  "state": "pending-human-review",
+  "template_only": true,
+  "timeline": {
+    "chapters": [
+      {
+        "boundary_seconds": [],
+        "end_seconds": "105.700000",
+        "id": "opening",
+        "start_seconds": "0.000000"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "470.900000",
+        "id": "pursuit",
+        "start_seconds": "105.700000"
+      },
+      {
+        "boundary_seconds": [
+          "730.266667",
+          "736.116667",
+          "741.966667",
+          "842.400000",
+          "847.833333",
+          "853.266667"
+        ],
+        "end_seconds": "886.466667",
+        "id": "knights",
+        "start_seconds": "470.900000"
+      },
+      {
+        "boundary_seconds": [
+          "1112.900000",
+          "1118.500000",
+          "1124.100000",
+          "1192.400000",
+          "1198.050000",
+          "1203.700000"
+        ],
+        "end_seconds": "1348.533333",
+        "id": "reinforcement",
+        "start_seconds": "886.466667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1717.800000",
+        "id": "terminal",
+        "start_seconds": "1348.533333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1818.633333",
+        "id": "closing",
+        "start_seconds": "1717.800000"
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "at_utc": "2026-10-01T03:26:16.720927+00:00",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342"
+  },
+  "original_a04": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a04-a04\\CK3-War-AI-Episode02-Review-20260930-a04.mp4",
+    "bytes": 240710781,
+    "sha256": "CB141C63966D86BDC8E267B4D958A79C1BB06A8EF69814DC0D6788F0345B8C7E"
+  },
+  "original_cached_packets": {
+    "path": "C:\\Users\\1\\ck3-a05-palette-media-audit-20261001\\attempt-02\\logs\\old-AAC-packet-hashes.stdout.txt",
+    "bytes": 41955456,
+    "sha256": "C27351DD0B61949788CEC59AF33E096DEC9EA57A895FFF92BAF610959788FE50"
+  },
+  "new_packets": {
+    "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-AAC-packet-hashes.stdout.txt",
+    "bytes": 41955439,
+    "sha256": "1DA2BD84F3E47DE9270744A184909B23901AE618683D2EE1AA1CAA3017312FC7"
+  },
+  "packet_count": 85284,
+  "data_and_timestamps_sha256": "A77D192D6462648CA8D9D3C2444E7AFDA3B7448385AFA123AD21234FE901FDED",
+  "every_packet_data_pts_dts_duration_flags_side_data_equal": true,
+  "excluded_fields": [
+    "pos: container offset changes during remux"
+  ],
+  "audio_decode_or_listening_claim": false
+}

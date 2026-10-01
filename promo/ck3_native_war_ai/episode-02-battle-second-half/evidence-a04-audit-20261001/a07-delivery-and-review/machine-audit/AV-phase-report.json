@@ -1,0 +1,260 @@
+{
+  "at_utc": "2026-10-01T03:26:37.002806+00:00",
+  "machine_condition_status": "PASS",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342"
+  },
+  "independent_probe": {
+    "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-independent-probe.stdout.txt",
+    "bytes": 8096,
+    "sha256": "8E5A709D536F75FFC982F1B0F11806D73F56461195FFCC5F05FB9632B0261C4E"
+  },
+  "streams": {
+    "video": {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "Constrained Baseline",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "mime_codec_string": "avc1.42c028",
+      "width": 1920,
+      "height": 1080,
+      "coded_width": 1920,
+      "coded_height": 1080,
+      "has_b_frames": 0,
+      "sample_aspect_ratio": "1:1",
+      "display_aspect_ratio": "16:9",
+      "pix_fmt": "yuv420p",
+      "level": 40,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "30/1",
+      "avg_frame_rate": "30/1",
+      "time_base": "1/15360",
+      "start_pts": 328,
+      "start_time": "0.021354",
+      "duration_ts": 27934208,
+      "duration": "1818.633333",
+      "bit_rate": "893829",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "54559",
+      "extradata_size": 40,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "encoder": "Lavc63.1.101 libx264"
+      }
+    },
+    "audio": {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "mime_codec_string": "mp4a.40.2",
+      "sample_fmt": "fltp",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/48000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 87295424,
+      "duration": "1818.654667",
+      "bit_rate": "155958",
+      "nb_frames": "85284",
+      "extradata_size": 5,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "SoundHandler"
+      }
+    },
+    "data": {
+      "index": 2,
+      "codec_name": "bin_data",
+      "codec_long_name": "binary data",
+      "codec_type": "data",
+      "codec_tag_string": "text",
+      "codec_tag": "0x74786574",
+      "id": "0x3",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/384000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 698355072,
+      "duration": "1818.633000",
+      "bit_rate": "1",
+      "nb_frames": "6",
+      "extradata_size": 63,
+      "disposition": {
+        "default": 0,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "eng",
+        "handler_name": "SubtitleHandler"
+      }
+    }
+  },
+  "chapters": [
+    {
+      "id": 0,
+      "time_base": "1/384000",
+      "start": 0,
+      "start_time": "0.000000",
+      "end": 40588800,
+      "end_time": "105.700000",
+      "tags": {
+        "title": "开场与前情：接近四比一，足够判断吗？"
+      }
+    },
+    {
+      "id": 1,
+      "time_base": "1/384000",
+      "start": 40588800,
+      "start_time": "105.700000",
+      "end": 180825600,
+      "end_time": "470.900000",
+      "tags": {
+        "title": "追击三日"
+      }
+    },
+    {
+      "id": 2,
+      "time_base": "1/384000",
+      "start": 180825600,
+      "start_time": "470.900000",
+      "end": 340403328,
+      "end_time": "886.467000",
+      "tags": {
+        "title": "骑士事件：名单、属性与死亡写回"
+      }
+    },
+    {
+      "id": 3,
+      "time_base": "1/384000",
+      "start": 340403328,
+      "start_time": "886.467000",
+      "end": 517836672,
+      "end_time": "1348.533000",
+      "tags": {
+        "title": "增援入账：当前人数、旧缓存与新战宽"
+      }
+    },
+    {
+      "id": 4,
+      "time_base": "1/384000",
+      "start": 517836672,
+      "start_time": "1348.533000",
+      "end": 659635200,
+      "end_time": "1717.800000",
+      "tags": {
+        "title": "终局与战争账本"
+      }
+    },
+    {
+      "id": 5,
+      "time_base": "1/384000",
+      "start": 659635200,
+      "start_time": "1717.800000",
+      "end": 698355072,
+      "end_time": "1818.633000",
+      "tags": {
+        "title": "结语：下一场战斗怎样看"
+      }
+    }
+  ],
+  "AAC_packet_equivalence": {
+    "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\a04-to-a07-AAC-packet-equivalence.json",
+    "bytes": 1454,
+    "sha256": "F99E577D01205E1CF2C69D9A49BB542E979AE63EFF42A75570C8BAE1B4522ED1"
+  },
+  "full_AV_decode": {
+    "status": "PASS",
+    "decoded_video_frames": 54559,
+    "process_receipt": {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-full-AV-decode.receipt.json",
+      "bytes": 1152,
+      "sha256": "4D9F9106C73C5A3FD02ADFFA017396D9B967DA22E7746C660C98880A93D18502"
+    },
+    "one_full_decode_for_this_exact_a07": true,
+    "progress_end": true,
+    "stderr_empty": true
+  },
+  "human_signoff": "not-provided",
+  "full_1x_visual_or_listening_review": false
+}

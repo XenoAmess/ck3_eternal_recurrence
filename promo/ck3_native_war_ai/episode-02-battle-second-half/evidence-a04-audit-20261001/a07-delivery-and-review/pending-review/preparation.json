@@ -1,0 +1,46 @@
+{
+  "approval_granted": false,
+  "artifact": {
+    "audio_tracks": [
+      {
+        "channels": 2,
+        "codec": "aac",
+        "index": 1,
+        "sample_rate": 48000
+      }
+    ],
+    "bytes": 240220990,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration_seconds": "1818.654687",
+    "path": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "resolution": {
+      "height": 1080,
+      "width": 1920
+    },
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342",
+    "subtitle_tracks": [],
+    "video_tracks": [
+      {
+        "average_frame_rate": "30/1",
+        "codec": "h264",
+        "height": 1080,
+        "index": 0,
+        "width": 1920
+      }
+    ]
+  },
+  "bound_probe": {
+    "bytes": 5339,
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\bound-media-probe-v1.json",
+    "sha256": "C54EFCC8543C8DB6A74087E51A75A4356C6BF027E32EE566D36853E04689DA01"
+  },
+  "chapter_count": 6,
+  "frame_count": 36,
+  "is_signoff": false,
+  "state": "pending-human-review",
+  "storyboard": {
+    "bytes": 8045,
+    "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\storyboard-derived.json",
+    "sha256": "05659926682AADF8083BE39BE5523EEB65B074CAA51B16B928F52C4E0874BBED"
+  }
+}

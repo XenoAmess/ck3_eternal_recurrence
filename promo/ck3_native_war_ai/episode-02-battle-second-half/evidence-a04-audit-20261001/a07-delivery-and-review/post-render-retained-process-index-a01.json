@@ -1,0 +1,1443 @@
+{
+  "schema": "ck3.a07.retained-post-render-assets/v1",
+  "at": "2026-10-01T03:45:24.477936+00:00",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342"
+  },
+  "files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\a04-to-a07-AAC-packet-equivalence.json",
+      "bytes": 1454,
+      "sha256": "F99E577D01205E1CF2C69D9A49BB542E979AE63EFF42A75570C8BAE1B4522ED1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\audit_common.py",
+      "bytes": 2323,
+      "sha256": "AC1D4131CC15473CB0625B771ECE6C02D8A89CAC77E9B1B03C46CA4B49DBA79D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\audit_structure_pixels.py",
+      "bytes": 17042,
+      "sha256": "7D8E37635C98B077656D4EAEC64BECD0B2E5CE61E71B4A726F46591DA756346D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\audit_structure_pixels_v2.py",
+      "bytes": 17200,
+      "sha256": "D670E081A9EB40E0E0C39A89B2C095915FC850A782F927C8E20EA94327C1B5CA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\AV-phase-report.json",
+      "bytes": 7129,
+      "sha256": "3070628F8115839138FB870250A50F0F85A93CFAEFD640EC8E933246B7A7EEAE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\bind_root_observations.py",
+      "bytes": 1958,
+      "sha256": "17441D5B1B13945E71843660B2B4C051C59F675FBC27A1208079C0DC599A02D6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\cache-schema-harness-failure.json",
+      "bytes": 460,
+      "sha256": "66FF91195EDD8EA98A70E6752C23DCC1749A41BAD77DCCF0C0BE7F0E12A49692"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\delivery-gate-report-a01.json",
+      "bytes": 6725,
+      "sha256": "CC591D0E0AF5AB3E166801357591D930A6ABACB31DFBCD9D83295402CFD83EC9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\delivery-quality-report-a01.json",
+      "bytes": 6832,
+      "sha256": "2B8A6529AEC37B139E89BDFA203AE72778D80AB306747D94F4F61B328161337A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\extract_keyframes.py",
+      "bytes": 1489,
+      "sha256": "7F2CD1D7AEFA8402069C2E88903313A2220F9FBFB02F342CBAA27E56058C7C45"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\finalize_reports.py",
+      "bytes": 6411,
+      "sha256": "5CB16383BED39B91CE87AA612DA8064C6B971CF45DB5C35550A8742E1A026C99"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k025.png",
+      "bytes": 384558,
+      "sha256": "D9FD9F6F66EF8BD16892EB19A9F0274A723F979FCF3BFE47A55515F443582174"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k035-inset-off.png",
+      "bytes": 1582745,
+      "sha256": "8D5872152B57A217777F3E8C5E4FEA050832FEE7EDF207AD65070E236746295A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k035-inset-on.png",
+      "bytes": 1531486,
+      "sha256": "13A0C36AC66BE57BA6C46725917361506C395C315EA92A5F2C33D55F34F3FCBF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\reinforcement-r022.png",
+      "bytes": 658420,
+      "sha256": "4549286A7A5FADEBFE42E17B3972964C1B834B8E53CBD60A0F90F1117EBF4A19"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\reinforcement-r029.png",
+      "bytes": 643035,
+      "sha256": "16C26FCEFBC43649BB84F336CCCF6859728EB2B6F9A0C77FD22F51E7FC4E8C33"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\initial-harness-failure.json",
+      "bytes": 552,
+      "sha256": "7CA70DCD6C5D64B26B714DE3B2EEDFC5853007B79ED96A56430B96E74FCFD1ED"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\inspect_contract_shapes.py",
+      "bytes": 1494,
+      "sha256": "0057F46EA8182791F6B01815CB6B2174E3C97790EA8793F6065340B5B70D6025"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\inspect_run.py",
+      "bytes": 1123,
+      "sha256": "A38BD93E212A7323C72772B5AA33AAF02EB4DB5DEB9798BB9DFF2F4C034402D1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\keyframe-extraction.json",
+      "bytes": 3926,
+      "sha256": "105CDEDF2E5B4A5FB7C118BAE6C11747D55899047DC44A1CCFDFB96BA5387666"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-AAC-packet-hashes.argv.json",
+      "bytes": 446,
+      "sha256": "77C5A3BCAC56F74FA749FCC0CE7024E2266A9C66BA5291021BFE92DFC32E1031"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-AAC-packet-hashes.receipt.json",
+      "bytes": 1086,
+      "sha256": "CDB05920A9A339C358210237FBC29FE9526D88DA4DB4987D1708FE4C062B2190"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-AAC-packet-hashes.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-AAC-packet-hashes.stdout.txt",
+      "bytes": 41955439,
+      "sha256": "1DA2BD84F3E47DE9270744A184909B23901AE618683D2EE1AA1CAA3017312FC7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-full-AV-decode.argv.json",
+      "bytes": 507,
+      "sha256": "A6C06E07817BBCB7E5E94B191B2671CAFA94F20D47CF24E3ACE75774720BF6A1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-full-AV-decode.receipt.json",
+      "bytes": 1152,
+      "sha256": "4D9F9106C73C5A3FD02ADFFA017396D9B967DA22E7746C660C98880A93D18502"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-full-AV-decode.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-full-AV-decode.stdout.txt",
+      "bytes": 7819,
+      "sha256": "13D64F9AF7BC486116F26F846CEADB84292D623ED237D7C836D7DB28ACCD82C2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-independent-probe.argv.json",
+      "bytes": 421,
+      "sha256": "F29910EF073595CD2500B60E38065458348C58D31C908F883C2C3035FE87345C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-independent-probe.receipt.json",
+      "bytes": 1055,
+      "sha256": "B193F370D3CF071F41AE9F97F963A5D734D6AAF9E95BB3B59ECDCDDBF4C12FF5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-independent-probe.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\a07-independent-probe.stdout.txt",
+      "bytes": 8096,
+      "sha256": "8E5A709D536F75FFC982F1B0F11806D73F56461195FFCC5F05FB9632B0261C4E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k025-frame.argv.json",
+      "bytes": 568,
+      "sha256": "A1DA166E2CAFAF91443BC7B2B4AECC43E1C651BF874F28DE2A4E48379A83396A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k025-frame.receipt.json",
+      "bytes": 1208,
+      "sha256": "949F04012A0884EEF686DA96DC8E41C7EC83EF81871C1242ADC5BB2E1095DBE4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k025-frame.stderr.txt",
+      "bytes": 3182,
+      "sha256": "C775345DFA7E1DB5441F89A485716E48367BA866621854C36037997764A81E37"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k025-frame.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-off-frame.argv.json",
+      "bytes": 578,
+      "sha256": "D53F6FC1235894E9003AFE635A6E853983AA045DB9020158259DB9363336BC39"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-off-frame.receipt.json",
+      "bytes": 1238,
+      "sha256": "B885FC7955D54815B5E6EE2941AC6DD6CD1BFF693F997A5361D80DBBEED00DB4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-off-frame.stderr.txt",
+      "bytes": 3191,
+      "sha256": "18724D82C6DD3CC1035672829A21114940A393DC5B1F3E788F04F77C5DE229E8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-off-frame.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-on-frame.argv.json",
+      "bytes": 577,
+      "sha256": "C418281C1841B51F50973212AB03B504FDD9963C3453CFD4125D8AFEC82C1F33"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-on-frame.receipt.json",
+      "bytes": 1235,
+      "sha256": "CE1190760350C99B1F2D01A4CEC303A31F5587F9BB12D0BFCFA0C1C1DFB59ADF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-on-frame.stderr.txt",
+      "bytes": 3190,
+      "sha256": "3537439B871969CD3DFBE298C1570E9B156CF46B459CCA46F2AB01DC0A9D6504"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-on-frame.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r022-frame.argv.json",
+      "bytes": 575,
+      "sha256": "5E41A87A70BD5015B203FFB474C73EC67990603417D207A74914AC1E43D83267"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r022-frame.receipt.json",
+      "bytes": 1227,
+      "sha256": "D8B99640B6545508AA9CF5AF61C0B826B145BDCA10CD812C655B5A31532B3FFF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r022-frame.stderr.txt",
+      "bytes": 3046,
+      "sha256": "0A591E9489E181B8E4D4C7E307FF90343E654D64A82B8901459E665CA0247D8E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r022-frame.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r029-frame.argv.json",
+      "bytes": 575,
+      "sha256": "6201D870989FFAE066C784B82194BD162B2B818A414E48167EA13D6ADE79A48F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r029-frame.receipt.json",
+      "bytes": 1226,
+      "sha256": "2E3C716083BCD201D8D2BA1D747C04D77F457120B307CBA1965AD28598856CCC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r029-frame.stderr.txt",
+      "bytes": 3046,
+      "sha256": "666B5170FA7B84A87AA33D2417E0DE32E3B3B48719291D5526BBA54DF5DFE546"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r029-frame.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\quality-report.json",
+      "bytes": 6138,
+      "sha256": "7D25E234A150E88836CBF575F29B0E24B98DC28802B0C71C038D1BF6F19CA097"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\repair_cache_receipt_schema.py",
+      "bytes": 580,
+      "sha256": "7FC1751C2FC96584FB116CB31D2E01CBF818757E498FBAF21F85CF54137C37DB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\repair_probe_assumption.py",
+      "bytes": 1206,
+      "sha256": "D7EBF24C3F393AC76F6824D4809B27C07EBC1E415500F8ADC29DD0AD073505E6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\repair_structure_actual_schema.py",
+      "bytes": 972,
+      "sha256": "87CFD5C612E8D479A766724E43BEB5AC42A303CE63DCB9FEFFD9095AC4BA2B4C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\report.json",
+      "bytes": 6023,
+      "sha256": "9F351DCF00FB99A95136B84552168732CB852F019FDABFA2556AACCF92CF4DE1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\run_media_checks.py",
+      "bytes": 4243,
+      "sha256": "AAD864669D5CDD2007E324DA17EEAF412D3BCF0896E5234CCD8240E1780D0516"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\run_media_checks_v2.py",
+      "bytes": 4322,
+      "sha256": "302389ED6C383F6AE085DB26B149C325970BBBACF869AE137A704F93F8588CE0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\run_media_checks_v3.py",
+      "bytes": 4321,
+      "sha256": "18A337662B5343C4C04E439EA6F2FB9F9E0F5F248E2CCB26DFC3A3143488C5E9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\structure-pixel-report.json",
+      "bytes": 108695,
+      "sha256": "840A8654224CB286586EF819A93FDEF91A9B8A178E84805F726F27ED6166CB8A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\structure-schema-harness-failure.json",
+      "bytes": 618,
+      "sha256": "5451D7C4515D0764BCFBAB833765D16A2B942E2E59827A3798886F249C132909"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-01.json",
+      "bytes": 919,
+      "sha256": "D20844531676A0D40F5878977DC5EF9C0154FE7952D7931EE7E545F5A4CFE84D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-02.json",
+      "bytes": 919,
+      "sha256": "41E2721974DA3F0FE51CF8A6DFA37BD9C1F824B643E9B01AC34004DBD763DA75"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-03.json",
+      "bytes": 919,
+      "sha256": "8EE6CC6A25A873A57EF1E776A2BC9E8735995100A3C63D79C83FBB1B0BE6F3B4"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-04.json",
+      "bytes": 919,
+      "sha256": "96924564FA5CB2DD578350A18332FC7496BF0953CE28C5638DB116508CF44C21"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-05.json",
+      "bytes": 919,
+      "sha256": "E0AF054594EAE335A146DFC9FC4174DFF788E65DF55BA9873B5E1D599611BF66"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-06.json",
+      "bytes": 919,
+      "sha256": "8ED2D811F4956429E80DE8F2FED3E695EA8F23610B903D21DCBEB241EE968640"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-07.json",
+      "bytes": 919,
+      "sha256": "D8CF810DAC236E899CC84E3535D1416E160C9F46163373B24A536DA3D2C6BDFF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-08.json",
+      "bytes": 919,
+      "sha256": "A0499B1F1DDFE145197CA20B7D4D71E2BB31D1E7C88C8A047C9C8748602DE655"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-09.json",
+      "bytes": 919,
+      "sha256": "1AC197F40D165356755E7F2E39A50FDA9979AC7C92A6C9BCD06CABCDD4920835"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-10.json",
+      "bytes": 919,
+      "sha256": "A6E9F262459FAAB939898674D9D3E0D7829B093A61AED18EC64A8380B8A60BDC"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-11.json",
+      "bytes": 919,
+      "sha256": "2FEF54223237E12A7CCDAB46E6B2D14C45C7B08CD9FC70B6BE56D4A6C23C08F6"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\client-sample-12.json",
+      "bytes": 1108,
+      "sha256": "1014FABE91B61325B4324162F6C2147EE4A33C9497879BE391B6D80E7A1556E0"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\copy-execution.json",
+      "bytes": 780,
+      "sha256": "11847060E00644C2829A4AFBF5B125D70275F36F161D922B87518B8AC78FECB1"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\file-01-series-video\\01-source-verified.json",
+      "bytes": 643,
+      "sha256": "488B6A843C46BD0CC73BE9123B4251143522AF5CABB5F523884BD990367325D3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\file-01-series-video\\02-target-absent.json",
+      "bytes": 211,
+      "sha256": "54B7F60DEB326A5EF76A9E572687954FAE099669B69849C4E789A4403C36493F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\file-01-series-video\\03-copy-start.json",
+      "bytes": 374,
+      "sha256": "9D66C793E11D5BB40633CCCD65BA07DF3871507F4EA811BCFD91995B9E8782D2"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\file-01-series-video\\04-local-copy-verified.json",
+      "bytes": 688,
+      "sha256": "9E06C1301FEB7C5E1BE191877D196FF70DDA69DA0ED732980603DC9678993901"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\final-delivery.json",
+      "bytes": 3622,
+      "sha256": "A97AF51658F5DF8BC5220520D5AD3AA00CDEF21939E4806C237EBD93ACE04CB7"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\input.json",
+      "bytes": 2557,
+      "sha256": "28FEBEEEB15AEE2A11CCDE397AFB51B96F30F6103127A68281779DF0961D4343"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\bound-media-probe-v1.json",
+      "bytes": 5339,
+      "sha256": "C54EFCC8543C8DB6A74087E51A75A4356C6BF027E32EE566D36853E04689DA01"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\completion.json",
+      "bytes": 49365,
+      "sha256": "3C782B1DD59193D4F2E3D7D8460D18B5732AB08C73F617F882DF9B78DC1C21BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000001\\command.json",
+      "bytes": 957,
+      "sha256": "DD3C088C43D83C3C2633ACB8008512509281A6166C105C3FEFDA414F71F93510"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000001\\result.json",
+      "bytes": 360,
+      "sha256": "541CA437431FFF4515B6B3F6E22724AA96CF13FD2738FEF88F7465F857E197AF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000001\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000001\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000002\\command.json",
+      "bytes": 959,
+      "sha256": "6F8DE78355475109142F6E587CE617A5F7A174673851D5BE692B436594942103"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000002\\result.json",
+      "bytes": 360,
+      "sha256": "23DBFC84DA0800CA596ED13D75599A51A83822FC2E97C049F6F2D69F18786B80"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000002\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000002\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000003\\command.json",
+      "bytes": 959,
+      "sha256": "06D3F71F99CFB56FE5D8C20B5CA46E6758D99A869194B5FD24C93EBE810F4A32"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000003\\result.json",
+      "bytes": 360,
+      "sha256": "0ECB552EF429A28C9E3C02936BF50DCA006697F13C2CB889E441446307F233B6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000003\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000003\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000004\\command.json",
+      "bytes": 959,
+      "sha256": "65CE934B6A1F8C3E96DCFC43B9052630E94D688A8FE938BB8B486FF6B25834DA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000004\\result.json",
+      "bytes": 360,
+      "sha256": "DF03C784D3AB365F5C11648566A675DAABD08189C18FC5D6F09696E3FF62E337"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000004\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000004\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000005\\command.json",
+      "bytes": 959,
+      "sha256": "5360A0253C8AA510A8AA6A154763659E0EA7F7ADF529A31D85B7BAD3BF943A78"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000005\\result.json",
+      "bytes": 360,
+      "sha256": "797C7764838EF8290D149A49CFD59C28889D46FED45B96B3E48A98D5429067A0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000005\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000005\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000006\\command.json",
+      "bytes": 959,
+      "sha256": "43A042007E48409B97B6AEA6E6019F1D9BC6824398147C1F2A8201490B7EAD2E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000006\\result.json",
+      "bytes": 360,
+      "sha256": "79BA51F27AC7A82BFD7394FEE5746B20D0E9E20B679658FB6C6E5732446A676C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000006\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000006\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000007\\command.json",
+      "bytes": 959,
+      "sha256": "B49153BBECD342C708EB074AAD6E69E549FD6B1FA427360C341B0BB91C9F1A59"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000007\\result.json",
+      "bytes": 360,
+      "sha256": "04E7C674E46DB151E9880484DAF8F4A17D150901BC99B39891DA0FB23F8D8B8C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000007\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000007\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000008\\command.json",
+      "bytes": 959,
+      "sha256": "681D39BF90EA62664842CDF766709B05146AA272100218B4F6D5E29FC083F0D0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000008\\result.json",
+      "bytes": 360,
+      "sha256": "4A43131589B50D479A100459F91CAED22F5C049CDB7CC595F085A3D141A5EFE0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000008\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000008\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000009\\command.json",
+      "bytes": 959,
+      "sha256": "0F9812A085EBDC0B57EEC71867B60B31F46A73238F5CFE435717AECE5C4C0A25"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000009\\result.json",
+      "bytes": 360,
+      "sha256": "CC8B9AC7EEA778A70F219BA8560936721FD69A947B1069020DE7987167AF8A74"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000009\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000009\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000010\\command.json",
+      "bytes": 959,
+      "sha256": "B85C496A5556ECC31A4CD6412F4B0C94EF0FF8BA733B7D9A1D6E13ED1944707C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000010\\result.json",
+      "bytes": 360,
+      "sha256": "A83B433831DA893F9C297A1864C41122F4A2160D8F915478C739AE3FE82DC920"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000010\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000010\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000011\\command.json",
+      "bytes": 959,
+      "sha256": "9271D7E53FE254FAE4490A590F3932375C224A6CAA1472B5199EA7A65CA6443D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000011\\result.json",
+      "bytes": 360,
+      "sha256": "0C445004359852625CE3288BB0BEFFCB777BCC4153EC4486B1F52A2E6553CEA9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000011\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000011\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000012\\command.json",
+      "bytes": 959,
+      "sha256": "5A56D776E9071298267DE77C4B194B6444A06F966332D385A80552B70BE245DF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000012\\result.json",
+      "bytes": 361,
+      "sha256": "E0D4A436205F33621CF2B6ADA18344034DDDEA17CF18DF77FA877740C8D5B686"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000012\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000012\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000013\\command.json",
+      "bytes": 959,
+      "sha256": "833F3311954F72AA04C9087E761114080EE05EA02884BD8D24119E9712F6BBC4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000013\\result.json",
+      "bytes": 361,
+      "sha256": "E632940199F648BA213FDAF173C4D71FD5CA5C12F437899ECF0B32DDA1AFD8EB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000013\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000013\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000014\\command.json",
+      "bytes": 959,
+      "sha256": "08CEB807643F9451EA2895FE3FF3742E791CFF6F927DC685C7E2D8C4502F6F8B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000014\\result.json",
+      "bytes": 361,
+      "sha256": "A7DB03F706C024438147061903587D266873187C9A7774DB07F798B9918E0750"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000014\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000014\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000015\\command.json",
+      "bytes": 959,
+      "sha256": "28D767F2DBA8C8D42643506244FE020FC527BAF22F445606E3C86AAC0CD4D3C7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000015\\result.json",
+      "bytes": 361,
+      "sha256": "08E9C7B1A1C3463CAF385057DEF92FF98A2B824396866D5130D96D16C83FD8E6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000015\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000015\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000016\\command.json",
+      "bytes": 959,
+      "sha256": "39625EEDBB57B4E076766FDED3B83F1A95B9A18F451E6A15ECC7B3A01A2C3E09"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000016\\result.json",
+      "bytes": 361,
+      "sha256": "3D8ACF918F1575AA144AAC3697714E7CE310B203953463F0BA98FBC4DCA44D70"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000016\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000016\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000017\\command.json",
+      "bytes": 959,
+      "sha256": "07D4ECD694B931A6E701D13BC6BB8E5210DD224862ACB641ACDB5E6FA667D42C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000017\\result.json",
+      "bytes": 360,
+      "sha256": "8F178094FFD05401E5BF94070947B225FD1007F4F9294790765770F9D95B7F4E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000017\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000017\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000018\\command.json",
+      "bytes": 959,
+      "sha256": "82141801EDC01AA7B132DCDA19564A8F9B2835A5DBD22CB6CABAD4A48EA48CF2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000018\\result.json",
+      "bytes": 360,
+      "sha256": "77DDF511C9E7844FEDC106EAE5F467E417F64BCEAEC7F75EFDE995DC456CF5C3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000018\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000018\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000019\\command.json",
+      "bytes": 959,
+      "sha256": "4D2CFB3F7C02D457CD36A88C8A421EB95BD1CD7161E8EA9E83E70938919F0C62"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000019\\result.json",
+      "bytes": 361,
+      "sha256": "50B7F4DDDC80496408A9F7E677BA0265182752C6A193CC8FDB9C6B33392A1701"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000019\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000019\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000020\\command.json",
+      "bytes": 960,
+      "sha256": "F921E1EE2F8DEC250388BAD1C993FC706B717E3E16D008BF33F166AD2CD6CD6E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000020\\result.json",
+      "bytes": 360,
+      "sha256": "872A8049D8E146B43F22E22CEA978B47301B9619509C7BFB7D6AEEBBF5C9FBDE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000020\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000020\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000021\\command.json",
+      "bytes": 960,
+      "sha256": "A2AF7092A7097C928B4EF2A32647F6298BEF15F8D42416465F14B31903307B07"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000021\\result.json",
+      "bytes": 360,
+      "sha256": "7EA92A95BEF8E80724A7B723786BDF9B96E425EBAA6E93635D6DA20749BA2A71"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000021\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000021\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000022\\command.json",
+      "bytes": 960,
+      "sha256": "5FE1560B959816A61A54E7FE82A1CFEB2859CB755C3108D1D62B5ED6DCD25C65"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000022\\result.json",
+      "bytes": 360,
+      "sha256": "15AA2B5754A2F66222D3082810E4C31F9106B8D9DD6321DA00603C105C528EEE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000022\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000022\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000023\\command.json",
+      "bytes": 960,
+      "sha256": "2660977C45CE2BC62AC7C78DF62B6C34F2B9FADFD7FADE15D194EF0C7DDA9977"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000023\\result.json",
+      "bytes": 360,
+      "sha256": "88EABDE7323FA398459C5C8C5EA115283BA0F03A8D1D6A9EC6490CC2F4C1DB28"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000023\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000023\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000024\\command.json",
+      "bytes": 960,
+      "sha256": "B4C5C721EB74513BEAD9E16A9FC7CDE0C24A38374862304539147177358D5C67"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000024\\result.json",
+      "bytes": 360,
+      "sha256": "CB7516FA0908356230510DC5C5C71FBC9A2217C6967186DC96A22251BB853781"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000024\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000024\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000025\\command.json",
+      "bytes": 960,
+      "sha256": "2A2202D0FC95B44DC14DF8B23B56F41631F20CF60CFFE3E5CD1E3E8410F3D095"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000025\\result.json",
+      "bytes": 360,
+      "sha256": "3264479D3827E4FD7DB24E2CD78A8D73DAEAD6907C7E5025C6E674997D8E12D7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000025\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000025\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000026\\command.json",
+      "bytes": 960,
+      "sha256": "9A74E44CC382B831221145146BD42C3A0E692CE5D17B049BDE15A5D03315C552"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000026\\result.json",
+      "bytes": 360,
+      "sha256": "3E822D23F7D71020F7B5C111E485F3E1A2546FFCAEF75B302456131BF772CDC0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000026\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000026\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000027\\command.json",
+      "bytes": 960,
+      "sha256": "78510C999C0A2AD646B2EECD9C9E67BFA41D87074B8C6D2831C2971DB732B935"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000027\\result.json",
+      "bytes": 360,
+      "sha256": "2C727FA8E2787B03F6BD695AFD8D8CFB2A171B3E7AF1396A5D2F291C3FE987B6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000027\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000027\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000028\\command.json",
+      "bytes": 960,
+      "sha256": "8E2DDE1D32A4152094816DEF72F0BF8E4FA143D3B6007CF191C6E572D785D06D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000028\\result.json",
+      "bytes": 360,
+      "sha256": "6165C9A17D242DD930ECD6246A40C94004CC0E902EEE99BC50E4D9E4CAC04D01"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000028\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000028\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000029\\command.json",
+      "bytes": 960,
+      "sha256": "DB04A6E40267B5D9144DCED924D0259FF950843B9F4E2A27521D87F926EFC0B8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000029\\result.json",
+      "bytes": 360,
+      "sha256": "492C504AAEEF75217C2B17886A7FBC8992F05CB5AF80083AE94590D3866207CA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000029\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000029\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000030\\command.json",
+      "bytes": 960,
+      "sha256": "96947D847597B54F55B91EA775ABDE1AF9B2BBC375B3D32BDCA58E40AE0E2A82"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000030\\result.json",
+      "bytes": 360,
+      "sha256": "2D12CD5794D5E9B49F6A252D362B1B3874FA1D95C8FD31DD2934F3336DC59627"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000030\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000030\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000031\\command.json",
+      "bytes": 960,
+      "sha256": "6BA91212776C09C0FADAD124E7AC70E0897E06E7E1BF0BA9ACEE9BA92A7A0A4A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000031\\result.json",
+      "bytes": 360,
+      "sha256": "7475F8AAB2D4DDEABAE94C0FFEC96C7B8D8C3B9D034CD5BF3C75A7334C67E591"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000031\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000031\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000032\\command.json",
+      "bytes": 960,
+      "sha256": "5BADD4F82324A4762268D96F07B3B4FCC9168F4B48A7636646C90DBB2A241F39"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000032\\result.json",
+      "bytes": 360,
+      "sha256": "10088E12625AD2B72974BFCABB0985D3574728AC65F9344196FCB6026BFC7061"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000032\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000032\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000033\\command.json",
+      "bytes": 960,
+      "sha256": "77C87FC3E43FE0C21290CB83ED4107065FB2E68622687F3D47980ECD3E1CE2D7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000033\\result.json",
+      "bytes": 361,
+      "sha256": "860BB3ED5E3D1BB9D0F0033DB22F90610A41F6B52491FCF761456E1AB79DB406"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000033\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000033\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000034\\command.json",
+      "bytes": 960,
+      "sha256": "AFFD0C9BF1217D5CB9BCE3840B119E418CBBDEBA23B8ACEED21D97FD1B51C8F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000034\\result.json",
+      "bytes": 360,
+      "sha256": "CA96606E57036AEE58AEB1E3188AA8DFF40AB8CC1114B86E66B02CEC7E95453C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000034\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000034\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000035\\command.json",
+      "bytes": 960,
+      "sha256": "210A1BD5EE07C39190F9900F66B2227FEA5E20A65B5B6A1C9624102B5351F3EE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000035\\result.json",
+      "bytes": 360,
+      "sha256": "19874D5B69A88340419A48254746C67D2D7656E8380CC70670F7148714D570C5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000035\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000035\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000036\\command.json",
+      "bytes": 960,
+      "sha256": "DDB950EE3263CCE8933C9077E18F8C9C73930D2FAC00723974008F77FE158E47"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000036\\result.json",
+      "bytes": 360,
+      "sha256": "1D7F7895809067A1931BCE9CDFCC20218A7C96EA0CD764D8AB98160C2A0B3958"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000036\\stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\ffmpeg-command-audit\\frames\\frame-000036\\stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\final-probe.source-exact.json",
+      "bytes": 4774,
+      "sha256": "7588FD2A46BC9D76179E2789A4C1335450D94C02927A9B8E0BE5B985CE874276"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\frame-plans-and-seek-delta.json",
+      "bytes": 90219,
+      "sha256": "824A80FED661B8D53157A54DF8A1E6692D8EE146F251070A31EB14D9FADBE606"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\invocation.json",
+      "bytes": 1116,
+      "sha256": "C95B59B8B4AD93AC54F1F828C810CD19D36A5E22DEF28C78038B03F40A0BBB66"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000001.png",
+      "bytes": 463063,
+      "sha256": "8E2D01FE92228828827EE113BA6A193445F0A3BB766551DF64CC7F48A457410D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000002.png",
+      "bytes": 644916,
+      "sha256": "27C89B4AD08C9B3485EDABF6A864DD32EEF07BF6A30071C9688395B649D161E3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000003.png",
+      "bytes": 604676,
+      "sha256": "923766D7426EEC4ABC0EA48EBA0380A3DA769C95BD9B832A7051FA8A11E403CD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000004.png",
+      "bytes": 691680,
+      "sha256": "AD7AA57442A588F02DFFF47F8A456566CE42133CFFAE7835A326FCB9FA708550"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000005.png",
+      "bytes": 596074,
+      "sha256": "92A2ED051A58E8E7E95FFA4455C6B2ECFCAA86C06EEF0B040B9E8574FBF093CD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000006.png",
+      "bytes": 627925,
+      "sha256": "F984339E45EA1628B9CD52E243AFDDA49135CD535F6E45E0F494A84FE6E802D8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000007.png",
+      "bytes": 390734,
+      "sha256": "0D29C0E62C92E6B709D277B99BA33A78658F2E7E3235A02DE9AECF95B9BD4A6A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000008.png",
+      "bytes": 384558,
+      "sha256": "D9FD9F6F66EF8BD16892EB19A9F0274A723F979FCF3BFE47A55515F443582174"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000009.png",
+      "bytes": 384494,
+      "sha256": "3B759E17F518FEC589A08649917C3AA2B2450F7C370B02CD661D3C6EBEF38C9D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000010.png",
+      "bytes": 363466,
+      "sha256": "05F4828E5CC93606EFB808CA93B74B473673A727AC108714DA7E63C2DB289694"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000011.png",
+      "bytes": 589935,
+      "sha256": "D6FCAEFE9A2172854C6E580C20D8AB26AF9E7487940E7E4BB34F42EE27ADECB0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000012.png",
+      "bytes": 1666628,
+      "sha256": "FA3F40FCCBB76ADC99B87B69EC3254D7E952878767C9A9895610A4DAA5BDF256"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000013.png",
+      "bytes": 1404810,
+      "sha256": "5E381A4054EBA47E86D20DF83ECD7E0CAF60657C525AC48703980C7221358408"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000014.png",
+      "bytes": 1632203,
+      "sha256": "C270F4F9AF452D9BC251BE7C14029EAF8EF5324CB6AF6CD800FB9D113BD128D8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000015.png",
+      "bytes": 1631837,
+      "sha256": "D1D77741342850249C830AD082CF42DF843F3D979B27805F3C34C0221A7BD2F4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000016.png",
+      "bytes": 1639839,
+      "sha256": "A68967196E400A231EF763197B99B73D0D1D6003537C2DB635620E1B57554A70"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000017.png",
+      "bytes": 579736,
+      "sha256": "083F0AD9E12BC4F25B2E5D98348C13A953F1464CF15541FD3220DD0551FCB3A5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000018.png",
+      "bytes": 639532,
+      "sha256": "EB1940CCA659EFE8C26DC931A66340F3C1528B2A489BA4402E665100DD5BFA40"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000019.png",
+      "bytes": 1362291,
+      "sha256": "B5E865C5E07FC160927CD9D68F6093CA12944E4D17E04C9C6EBCF0BB77110333"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000020.png",
+      "bytes": 690704,
+      "sha256": "3076E887291219147D02B26EC2A4BD280C3A3B358779D674067CD9D5EE65317B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000021.png",
+      "bytes": 620058,
+      "sha256": "5C0B77F457205147EC351E8EC153DE76A9AFE2D6938BF74BE1890A3D64E13F9A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000022.png",
+      "bytes": 649805,
+      "sha256": "1D4ACBD0A88FF3159ECAB764BABB8499A4479F3288C556B83FD12644D47E9D15"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000023.png",
+      "bytes": 649813,
+      "sha256": "03424B265349A07FF024A2E38C87E79B02BED592C5226DDEF1C6D65EEA0E3E6A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000024.png",
+      "bytes": 649805,
+      "sha256": "1D4ACBD0A88FF3159ECAB764BABB8499A4479F3288C556B83FD12644D47E9D15"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000025.png",
+      "bytes": 618824,
+      "sha256": "F8C8614CA7D4F0616859475512664E7EE5A947F0519F74F0E23950A3CFA84A32"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000026.png",
+      "bytes": 713428,
+      "sha256": "1FDA27E081075D8CD9774C6B1CA320A6BE9A9AC8C0C2D95FDEC402A0146A143B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000027.png",
+      "bytes": 628532,
+      "sha256": "2F90CEA467D51D5A8AB8CDFA03A65F01545535680DDEE3C0AD63DD08CC2F78D5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000028.png",
+      "bytes": 635342,
+      "sha256": "7881AB26A718F2D95373F22E0CE2B126F4208BFA011574A6B7BD0A5DB22CE5E2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000029.png",
+      "bytes": 635428,
+      "sha256": "5F59F20D4932571F73B4187A277E2702EDFDDBDCF0944AF03FA5A0727D540BF3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000030.png",
+      "bytes": 635342,
+      "sha256": "7881AB26A718F2D95373F22E0CE2B126F4208BFA011574A6B7BD0A5DB22CE5E2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000031.png",
+      "bytes": 607909,
+      "sha256": "16C63F21E87A511008ACE8D95C545CF131A8BFEC7B5CB1A2D76E086BFD283861"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000032.png",
+      "bytes": 688073,
+      "sha256": "1B84C16DD08595D8BA89E65FB9561CE798DC2084CDABE1C39B8A2700D7437143"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000033.png",
+      "bytes": 1382017,
+      "sha256": "2ACD0F08ABFFEDC5F8905F379EF958974C0E8E515A707E692D856AD7F94031F3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000034.png",
+      "bytes": 620780,
+      "sha256": "593706B8FC95317D7E7F445294404C4B7367925B167A8B2A0A836E978281050A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000035.png",
+      "bytes": 643621,
+      "sha256": "A243BC07C6053E4225BC641A96BFF948A3D12EC72565A5BA00F32A8EB7E4FA0A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\frame-000036.png",
+      "bytes": 565545,
+      "sha256": "BB8F47265988751EFC5C50EC83B11CDCA418EFF3C978203F0B1B45BD4FA352DE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\review-package.json",
+      "bytes": 24802,
+      "sha256": "751F50D4157951DA2094073BB446A35FFFBC6BD3C63E75971B6071AB0907EBDE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\review-template.json",
+      "bytes": 16773,
+      "sha256": "0C2FFA073A5E97BF37DA7052943D5D89EAEC8C2134A121BA67C2E349789AF28D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\preparation.json",
+      "bytes": 1407,
+      "sha256": "CBB7E1B25074B26F87FA18E12FF8D5F932BF8661697AAB6AC719D24F050657B2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\storyboard-derived.json",
+      "bytes": 8045,
+      "sha256": "05659926682AADF8083BE39BE5523EEB65B074CAA51B16B928F52C4E0874BBED"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\timeline.source-exact.json",
+      "bytes": 417243,
+      "sha256": "90474357BE68FE98EBC74E3D2BADC2531122B85364BEDDE270CBD933578CF1DA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\__pycache__\\make_pending_review.cpython-314.pyc",
+      "bytes": 24334,
+      "sha256": "E9DE641BBD2C53CA057ECD16D1B75E6EBF15B996A0234272D8A4EA939953F71A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\audit-help.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\audit-help.stdout.bin",
+      "bytes": 621,
+      "sha256": "A627DD85599A7409615F697051CF02CE90C23FA532985231741B6F6288496B26"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\bootstrap_attempt.py",
+      "bytes": 1182,
+      "sha256": "E5E3AF29D00917949699AE5260A2F36AFA70AB650C389E9AF686B26934B41E27"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\helper-help.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\helper-help.stdout.bin",
+      "bytes": 1144,
+      "sha256": "1F31C7DD0A7E54F493E5AA008024C74FEB0655A76FE31BF743922530C01A9A9C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\helper-input-freeze.json",
+      "bytes": 5438,
+      "sha256": "4F98DBDDD831949EFB152577E44955F2F2A415DBA9A8682398159C83CA5BDF66"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\helper-ready.json",
+      "bytes": 9685,
+      "sha256": "DC1F6159F7425E3239281F3BB2B722BB42AF5C8B4C8DF762FE47106B1A56D54F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\make_pending_review.py",
+      "bytes": 12923,
+      "sha256": "FBC000509FAEB8B55D73528B8C77A98DA98F0AB330434716B2615DA91CA58762"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\native-audit-contract.json",
+      "bytes": 7251,
+      "sha256": "56EDE3EDBB06EFF16875E7FC82E7F61443B1238A0066FB8B88A3B7345D51BC24"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\prepare_and_verify_helper.py",
+      "bytes": 13445,
+      "sha256": "27699A81671FF0A9596770892D296F2045F89C4A9863598159EA08E1F80BE3CB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\review-help.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\review-help.stdout.bin",
+      "bytes": 922,
+      "sha256": "38FFB21427E60EE3F75369E31854B2B5CC30A9C981C3D31A8627A95AEEAE8660"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\version.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\version.stdout.bin",
+      "bytes": 17,
+      "sha256": "87A7F345D832E733239A23ED568CB0E95D6C34AF34CA5B3D55B76A3781C8993C"
+    }
+  ],
+  "old_assets_deleted_or_overwritten": false,
+  "human_signoff": "not-provided"
+}
