@@ -741,3 +741,9 @@ Thirteen frozen native and research sources. Actual current selected slots, comp
 Eleven frozen Python SDK and documentation sources. One new official SDK case passed with four actual native packets, existing leaf results reused. Default-off readonly query; no live claim. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\DRAFT-GROUPS-R7-SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:06:01 Verify religion draft groups named query
+
+New single O2 actual named callback case seven checks passed; default generic callbacks null, one exact DraftGroups owner callback. Four old query cases not repeated, no game or live claim. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\query-group-named\final-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
