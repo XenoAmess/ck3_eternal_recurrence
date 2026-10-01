@@ -10,11 +10,17 @@
 
 `natural_event_adapter.py` 默认只读。root 的当前 stdio plan 必须含 `argv`，使用当前 source tree、state、pipe 和已有 lifecycle 配置：
 
-```powershell
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe `
-  Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m2-natural-live-next\natural_event_adapter.py `
-  --source-tree <current-root-source-tree> --server-plan <current-MCP-plan.json> `
-  --output <new-attempt-directory> --mode observe --expected-actor 29829
+```python
+import subprocess
+
+subprocess.run([
+    r"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe",
+    r"Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\m2-natural-live-next\natural_event_adapter.py",
+    "--source-tree", "<current-root-source-tree>",
+    "--server-plan", "<current-MCP-plan.json>",
+    "--output", "<new-attempt-directory>",
+    "--mode", "observe", "--expected-actor", "29829",
+], check=True)
 ```
 
 只读链为当前 paused snapshot → exact current-event context → 当前 build 的 registry knowledge / 原有 recommendation → exact advertised typed route。没有 modal 时保存 `no_natural_event_observed` 并返回，root 随即继续现有普通 LIFE advance；这不表示 unsupported、RED 或 M2 已完成。
@@ -40,11 +46,17 @@ result = await consume_natural_event_service(
 
 root 的 nonwar dispatcher 已提供 `run_nonwar_turn(driver,service,domains,allow_submit=...,allow_advance=...)` 和 `run_normal_advance_turn(driver,service,allow_advance=...)`。独立 SDK 会话需要先退出，再执行其一回合 CLI：
 
-```powershell
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe `
-  Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\root-nonwar-live-next\run_nonwar_ooda.py `
-  --mcp-plan <current-MCP-plan.json> --output-dir <new-next-turn-directory> `
-  --mode run --advance-only --max-turns 1 --max-advance-calls 1
+```python
+import subprocess
+
+subprocess.run([
+    r"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe",
+    r"Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\root-nonwar-live-next\run_nonwar_ooda.py",
+    "--mcp-plan", "<current-MCP-plan.json>",
+    "--output-dir", "<new-next-turn-directory>",
+    "--mode", "run", "--advance-only",
+    "--max-turns", "1", "--max-advance-calls", "1",
+], check=True)
 ```
 
 这是一回合现有 adaptive LIFE advance，实际可能推进 1/7/30 天，不能称为固定推进一天。它保留正式 checkpoint/full history。事件模块的 `--next-turn` 只记录这份交接，不调用会重新规划全域动作的 `ck3_auto_turn`。下一回合及 cold artifact 要确认旧 instance 没有再选择；ACK 或文件存在不能替代这些结果。
