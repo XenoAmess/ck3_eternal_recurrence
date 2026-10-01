@@ -442,3 +442,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 基础60保持冻结，仅13新增源把Doctrine knowledge（Od/O2各43checks6fullpack）与Tenet rows（各29checks4fullpack）接实际完整readonly mailbox及portablewires。旧provider不重测，三种test-helper/link/binding初始化harness RED保留；四域共享接线说明精确，不声称完整choices finalgate或paused值。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\READY-KNOWLEDGE-TENETS-MAILBOX.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:16:02 Capture actual Sway interface execution input records
+
+5源真实native execution input复制128条bounded记录、full Scheme/character IDs与序列查询serializer，Od/O2各196checks8barewire通过。原生入口尚未安装明确library static-ready，不能冒hidden live history；新的完整query与observer安装下一必要增量。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-execution\package-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
