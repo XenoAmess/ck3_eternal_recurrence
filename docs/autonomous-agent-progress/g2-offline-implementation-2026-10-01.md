@@ -616,3 +616,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 3 frozen files. Single O2/W4/WX production named queue case, 8 checks and one complete response passed. Current and main Rite same epoch full identities and native final30. Reused all prior leaf results; no CK3. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\numeric\named-permit-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:54:12 Verify named Sway termination query execution
+
+2 frozen sources. Single O2/W4/WX named owner queue case, 18 checks and one complete protocol response passed. Actual fixture typed original changes 0 to1 then copied result retained; static-ready only, no game execution. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-termination-named\package-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
