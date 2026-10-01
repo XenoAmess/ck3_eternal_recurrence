@@ -1,0 +1,30 @@
+{
+  "schema": "xar.religion_doctrine12002_catalogue.actual_cpp_packets.v1",
+  "origin": "Actual C++ production serializer through real offline submit/drain/wait/reclaim",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "fixture_executor_permit": "Existing offline primary permit; new central named slot separate",
+  "source_sha256": {
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_intrinsic.cpp": "2c79488a5a5e665c7fba6a2dc8db761f9ae7ce5ee298e617778d2ee12c2a8bb1",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_catalogue.cpp": "68792fe251dacac24e8830688fe4ecfcf0a1b95df591f61459cddbfafcb9c235",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1.cpp": "fbb79700dca06dcbb8aa9fb9057681ba12529a5cdf9d068e35e560f2b94502ab",
+    "ck3_autonomous_player\\native_bridge\\src\\protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_catalogue_mailbox.cpp": "ba2315912e58c1d0813c6d9a68eb4f462dc1d58c318e2d13c19ccbfc1a2198cc",
+    "ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_catalogue_mailbox_test.cpp": "03cd4ef6b7c0488ca3268b8c24869ba78b3e54e86a87cf9261b01c25e01e46a8",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\religion_doctrine12002_catalogue.hpp": "1753064d329eca4dc61f8f8764cd3988c673e5232cd76f4a375f234029ad39c5",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\religion_doctrine12002_catalogue_mailbox.hpp": "8344c085c3a53f021f290edab8a6eee9278b7dbf980224942305fb629d83e337",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp": "1d0b339a60867c77b5297e08f754d2f48479361a0600b2ab77dddbdc0ec8ddbf",
+    "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_query_mailbox.hpp": "c3ff170ce4811f9f0a08c6cf1b81aa76e7601272b1b8ca46c37e699e9ac11df5"
+  },
+  "wire_sha256": {
+    "loaded-catalogue.json": "0583d6d7a83ae7545cad15338d0a50e5a4bdee834e09a31719ab778ebf580252",
+    "known-empty.json": "8de09b35f21f9d5f4d7c3e4ce4493a18470818b04fb20c398ada83059c4a4c96",
+    "database-unavailable.json": "c2527e05859f03a02817a19174a1cda31a62da06a0c4fd26acb289bf6976161b"
+  },
+  "actual_external_receipt_sha256": "555a2fd4240c9e50624173aa1fbd7219c559cc28b0dd0d289aca1b4eaf9655b9"
+}

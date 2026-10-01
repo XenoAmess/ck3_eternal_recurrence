@@ -544,3 +544,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 11中央source冻结53ON4OFF；six readonly routes/seven requests、49mappings/4default50candidate actualregistration与default211/selected510 router GREEN。实际globalrecorder startup/install/stop由root生命周期持有。双DLL等context实际Tag修复与Sway globalcommand decoder必要fix；不冒fullbuild/live。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\nonwar-integration-r4\central-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:15:31 Current draft selection registry and numeric doctrine sources
+
+44精确源含currentpopup最终selection8、loadedcatalogue5+9、numericcache8+finalgetter7+组合完整mailbox6及专题1。各新actualprovider/queue首轮GREEN并复用旧证据；minimum=-1 nativeunset、observedzero不当authoredabsence、finalthreshold真实getter非我方计算。已提交相同catalogue5按HEAD排除，旧73不重复；personalparameterconsumer仍有明确实际依赖，不冒完整religionloop。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\READY-NATIVE-FOLLOWUP.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

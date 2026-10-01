@@ -1,0 +1,33 @@
+{
+  "schema": "xar.ck3_12002.religion.numeric-final.abi.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "signature": "int64_t* GetFaithHeresyThreshold(const Faith*, int64_t* out)",
+  "getter_rva": "0x2440920",
+  "native_define_rva": "0x5C68D88",
+  "faith_main_rite_id_offset": "0x98",
+  "main_rite_adjustment_offset": "0x7F8",
+  "storage": "signed int64 Q100000",
+  "scale": 100000,
+  "semantics": "Native final comparison value from actual Faith main Rite adjustment plus native base define; actor current Rite adjustment is not the source.",
+  "native_span_reused": {
+    "name": "Faith.final_heresy_threshold",
+    "rva": "0x2440920",
+    "end_rva_exclusive": "0x2440974",
+    "kind": "complete-native-function",
+    "sha256": "5c045506b1e4d3263ea2043af2bf7194a29121ebe7338460bce27491ce403273",
+    "bytes": "488b05d1d98d034c8bc24885c074298b91980000008bca81e1ffffff003b482c7316488b40204803c9488b4cc8084885c974053951087407488b0d116d8203488b89f8070000498bc048030d18848203498908c3"
+  },
+  "existing_abi": {
+    "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\research\\religion_doctrine12002_numeric_abi.json",
+    "sha256": "2ea56a32739c4cda92c252e90828856227e277fcfac982156fcb4d89c11198da"
+  },
+  "existing_verification": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\numeric\\native\\native-verification.json",
+    "sha256": "71ec000f558e4966e6501d0421ebb74aaa9d86c1b1b1b210e57d3d2add9ee08d"
+  },
+  "verification_not_repeated": true
+}

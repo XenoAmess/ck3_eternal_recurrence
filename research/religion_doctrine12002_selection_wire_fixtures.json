@@ -1,0 +1,208 @@
+{
+  "schema": "xar.ck3_12002.current_draft_doctrine_selection_actual_wire_fixtures.v1",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "provider_receipt_sha256": "f52b38708007871abee1ec12ee013e083dc0d05800782be4a6bd31b7289de0a0",
+  "packets": {
+    "changed-selection.json": {
+      "schema": "ck3_12002_current_draft_doctrine_selection_v1",
+      "game_version": "1.20.0.2",
+      "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "scope": "already_materialized_current_popup_candidates",
+      "available": false,
+      "unavailable_reason": "state_changed",
+      "popup_observed": false,
+      "selection_ready": false,
+      "capture_epoch": 3,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "source_rite_id": 2197815299,
+      "rows": [],
+      "selectable_doctrine_keys": []
+    },
+    "closed-selection.json": {
+      "schema": "ck3_12002_current_draft_doctrine_selection_v1",
+      "game_version": "1.20.0.2",
+      "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "scope": "already_materialized_current_popup_candidates",
+      "available": false,
+      "unavailable_reason": "current_draft_not_visible",
+      "popup_observed": false,
+      "selection_ready": false,
+      "capture_epoch": 5,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "source_rite_id": null,
+      "rows": [],
+      "selectable_doctrine_keys": []
+    },
+    "current-selection.json": {
+      "schema": "ck3_12002_current_draft_doctrine_selection_v1",
+      "game_version": "1.20.0.2",
+      "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "scope": "already_materialized_current_popup_candidates",
+      "available": true,
+      "unavailable_reason": null,
+      "popup_observed": true,
+      "selection_ready": true,
+      "capture_epoch": 1,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "source_rite_id": 2197815299,
+      "rows": [
+        {
+          "doctrine_key": "known_\"信",
+          "group_key": "group_a",
+          "popup_index": 0,
+          "native_should_display": true,
+          "native_can_pick": true,
+          "native_knows_doctrine": true,
+          "native_has_prophet": null,
+          "button_enabled": true,
+          "selectable": true,
+          "selection_blocker": "none"
+        },
+        {
+          "doctrine_key": "unknown_a",
+          "group_key": "group_a",
+          "popup_index": 1,
+          "native_should_display": true,
+          "native_can_pick": true,
+          "native_knows_doctrine": false,
+          "native_has_prophet": false,
+          "button_enabled": false,
+          "selectable": false,
+          "selection_blocker": "doctrine_not_known_and_no_prophet"
+        },
+        {
+          "doctrine_key": "hidden_a",
+          "group_key": "group_a",
+          "popup_index": 2,
+          "native_should_display": false,
+          "native_can_pick": false,
+          "native_knows_doctrine": null,
+          "native_has_prophet": null,
+          "button_enabled": false,
+          "selectable": false,
+          "selection_blocker": "hidden_by_native_should_display"
+        },
+        {
+          "doctrine_key": "blocked_a",
+          "group_key": "group_a",
+          "popup_index": 3,
+          "native_should_display": true,
+          "native_can_pick": false,
+          "native_knows_doctrine": null,
+          "native_has_prophet": null,
+          "button_enabled": false,
+          "selectable": false,
+          "selection_blocker": "blocked_by_native_can_pick"
+        }
+      ],
+      "selectable_doctrine_keys": [
+        "known_\"信"
+      ]
+    },
+    "empty-selection.json": {
+      "schema": "ck3_12002_current_draft_doctrine_selection_v1",
+      "game_version": "1.20.0.2",
+      "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "scope": "already_materialized_current_popup_candidates",
+      "available": true,
+      "unavailable_reason": null,
+      "popup_observed": true,
+      "selection_ready": true,
+      "capture_epoch": 6,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "source_rite_id": 2197815299,
+      "rows": [],
+      "selectable_doctrine_keys": []
+    },
+    "missing-prophet-selection.json": {
+      "schema": "ck3_12002_current_draft_doctrine_selection_v1",
+      "game_version": "1.20.0.2",
+      "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "scope": "already_materialized_current_popup_candidates",
+      "available": false,
+      "unavailable_reason": "prophet_definition_unavailable",
+      "popup_observed": false,
+      "selection_ready": false,
+      "capture_epoch": 7,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "source_rite_id": null,
+      "rows": [],
+      "selectable_doctrine_keys": []
+    },
+    "prophet-selection.json": {
+      "schema": "ck3_12002_current_draft_doctrine_selection_v1",
+      "game_version": "1.20.0.2",
+      "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "scope": "already_materialized_current_popup_candidates",
+      "available": true,
+      "unavailable_reason": null,
+      "popup_observed": true,
+      "selection_ready": true,
+      "capture_epoch": 2,
+      "date_raw": 53175816,
+      "played_character_id": 50331652,
+      "source_rite_id": 2197815299,
+      "rows": [
+        {
+          "doctrine_key": "known_\"信",
+          "group_key": "group_a",
+          "popup_index": 0,
+          "native_should_display": true,
+          "native_can_pick": true,
+          "native_knows_doctrine": true,
+          "native_has_prophet": null,
+          "button_enabled": true,
+          "selectable": true,
+          "selection_blocker": "none"
+        },
+        {
+          "doctrine_key": "unknown_a",
+          "group_key": "group_a",
+          "popup_index": 1,
+          "native_should_display": true,
+          "native_can_pick": true,
+          "native_knows_doctrine": false,
+          "native_has_prophet": true,
+          "button_enabled": true,
+          "selectable": true,
+          "selection_blocker": "none"
+        },
+        {
+          "doctrine_key": "hidden_a",
+          "group_key": "group_a",
+          "popup_index": 2,
+          "native_should_display": false,
+          "native_can_pick": false,
+          "native_knows_doctrine": null,
+          "native_has_prophet": null,
+          "button_enabled": false,
+          "selectable": false,
+          "selection_blocker": "hidden_by_native_should_display"
+        },
+        {
+          "doctrine_key": "blocked_a",
+          "group_key": "group_a",
+          "popup_index": 3,
+          "native_should_display": true,
+          "native_can_pick": false,
+          "native_knows_doctrine": null,
+          "native_has_prophet": null,
+          "button_enabled": false,
+          "selectable": false,
+          "selection_blocker": "blocked_by_native_can_pick"
+        }
+      ],
+      "selectable_doctrine_keys": [
+        "known_\"信",
+        "unknown_a"
+      ]
+    }
+  }
+}

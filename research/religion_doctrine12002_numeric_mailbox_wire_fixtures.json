@@ -1,0 +1,834 @@
+{
+  "schema": "xar.ck3_12002.numeric-special-parameters.actual-native-command-result-fixtures.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "producer": "Actual played five-cache and native final providers, owner mailbox and complete C++ command_result serializer",
+  "actual_mailbox_receipt_sha256": "2da31e8a4ab3b4ecc9c9220f44c14dfa6d7489f3f0cea18c07955fbc54dd3a8e",
+  "cases": {
+    "current-versus-main": {
+      "sha256": "f49a1d62a9489239a606b3f68fb6bc3167ef2cc06d80fbce65635db8611fddcc",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-numeric-special-parameters-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_numeric_special_parameters_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-numeric-special-parameters-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_numeric_special_parameters": {
+            "schema": "ck3_12002_rite_numeric_special_parameters_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": 2197815299,
+            "faith_numeric_consumer_source": "faith_main_rite",
+            "authored_presence_provenance_observed": false,
+            "supported_key_count": 5,
+            "current_rite": {
+              "rite_id": 0,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": 0,
+                  "scale": 1,
+                  "value": 0,
+                  "state": "value",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 5000,
+                  "scale": 100000,
+                  "value": 0.05,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 50000,
+                  "scale": 100000,
+                  "value": 0.5,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 1,
+                  "scale": 1,
+                  "value": 1,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": -500000,
+                  "scale": 100000,
+                  "value": -5.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            },
+            "faith_main_rite": {
+              "rite_id": 2181038082,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": 45,
+                  "scale": 1,
+                  "value": 45,
+                  "state": "value",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 75000,
+                  "scale": 100000,
+                  "value": 0.75,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 2,
+                  "scale": 1,
+                  "value": 2,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 500000,
+                  "scale": 100000,
+                  "value": 5.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            }
+          },
+          "faith_numeric_final": {
+            "schema": "ck3_12002_faith_numeric_final_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "current_rite_id": 0,
+            "faith_id": 2197815299,
+            "main_rite_id": 2181038082,
+            "value_state": "value",
+            "main_rite_adjustment_raw": 500000,
+            "native_define_raw": 2500000,
+            "final_heresy_threshold_raw": 3000000,
+            "final_heresy_threshold": 30.0,
+            "scale": 100000,
+            "unit": "fervor_points",
+            "source": "faith_main_rite",
+            "native_getter_rva": "0x2440920",
+            "native_define_rva": "0x5C68D88"
+          }
+        }
+      }
+    },
+    "known-zero-final": {
+      "sha256": "4306acc2c4fc5b943979150a4f94d8d3c9e860602294bd8da3ad573c0df6fcaa",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-numeric-special-parameters-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_numeric_special_parameters_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-numeric-special-parameters-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_numeric_special_parameters": {
+            "schema": "ck3_12002_rite_numeric_special_parameters_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": 2197815299,
+            "faith_numeric_consumer_source": "faith_main_rite",
+            "authored_presence_provenance_observed": false,
+            "supported_key_count": 5,
+            "current_rite": {
+              "rite_id": 0,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": 0,
+                  "scale": 1,
+                  "value": 0,
+                  "state": "value",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 5000,
+                  "scale": 100000,
+                  "value": 0.05,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 50000,
+                  "scale": 100000,
+                  "value": 0.5,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 1,
+                  "scale": 1,
+                  "value": 1,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": -500000,
+                  "scale": 100000,
+                  "value": -5.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            },
+            "faith_main_rite": {
+              "rite_id": 2181038082,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": 45,
+                  "scale": 1,
+                  "value": 45,
+                  "state": "value",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 75000,
+                  "scale": 100000,
+                  "value": 0.75,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 2,
+                  "scale": 1,
+                  "value": 2,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 500000,
+                  "scale": 100000,
+                  "value": 5.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            }
+          },
+          "faith_numeric_final": {
+            "schema": "ck3_12002_faith_numeric_final_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "current_rite_id": 0,
+            "faith_id": 2197815299,
+            "main_rite_id": 2181038082,
+            "value_state": "value",
+            "main_rite_adjustment_raw": 500000,
+            "native_define_raw": -500000,
+            "final_heresy_threshold_raw": 0,
+            "final_heresy_threshold": 0.0,
+            "scale": 100000,
+            "unit": "fervor_points",
+            "source": "faith_main_rite",
+            "native_getter_rva": "0x2440920",
+            "native_define_rva": "0x5C68D88"
+          }
+        }
+      }
+    },
+    "minimum-unset": {
+      "sha256": "9c5a40f56240c655bb792e3f1e398e503ab99cef6b07b024cb121c0130e6da7a",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-numeric-special-parameters-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_numeric_special_parameters_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-numeric-special-parameters-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_numeric_special_parameters": {
+            "schema": "ck3_12002_rite_numeric_special_parameters_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": 2197815299,
+            "faith_numeric_consumer_source": "faith_main_rite",
+            "authored_presence_provenance_observed": false,
+            "supported_key_count": 5,
+            "current_rite": {
+              "rite_id": 0,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": -1,
+                  "scale": 1,
+                  "value": null,
+                  "state": "unset",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 0,
+                  "scale": 1,
+                  "value": 0,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            },
+            "faith_main_rite": {
+              "rite_id": 2181038082,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": 45,
+                  "scale": 1,
+                  "value": 45,
+                  "state": "value",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 75000,
+                  "scale": 100000,
+                  "value": 0.75,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 2,
+                  "scale": 1,
+                  "value": 2,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 500000,
+                  "scale": 100000,
+                  "value": 5.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            }
+          },
+          "faith_numeric_final": {
+            "schema": "ck3_12002_faith_numeric_final_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "current_rite_id": 0,
+            "faith_id": 2197815299,
+            "main_rite_id": 2181038082,
+            "value_state": "value",
+            "main_rite_adjustment_raw": 500000,
+            "native_define_raw": 2500000,
+            "final_heresy_threshold_raw": 3000000,
+            "final_heresy_threshold": 30.0,
+            "scale": 100000,
+            "unit": "fervor_points",
+            "source": "faith_main_rite",
+            "native_getter_rva": "0x2440920",
+            "native_define_rva": "0x5C68D88"
+          }
+        }
+      }
+    },
+    "legal-absent-faith": {
+      "sha256": "159b84d9cf23f40096d66fe4c92ac39e9da8db7416dd5788af688f12bcca1e32",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-numeric-special-parameters-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_numeric_special_parameters_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-numeric-special-parameters-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_numeric_special_parameters": {
+            "schema": "ck3_12002_rite_numeric_special_parameters_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": null,
+            "faith_numeric_consumer_source": "faith_main_rite",
+            "authored_presence_provenance_observed": false,
+            "supported_key_count": 5,
+            "current_rite": {
+              "rite_id": 0,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": -1,
+                  "scale": 1,
+                  "value": null,
+                  "state": "unset",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 0,
+                  "scale": 1,
+                  "value": 0,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            },
+            "faith_main_rite": null
+          },
+          "faith_numeric_final": {
+            "schema": "ck3_12002_faith_numeric_final_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "current_rite_id": 0,
+            "faith_id": null,
+            "main_rite_id": null,
+            "value_state": "legal_absent_faith",
+            "main_rite_adjustment_raw": null,
+            "native_define_raw": null,
+            "final_heresy_threshold_raw": null,
+            "final_heresy_threshold": null,
+            "scale": 100000,
+            "unit": "fervor_points",
+            "source": "faith_main_rite",
+            "native_getter_rva": "0x2440920",
+            "native_define_rva": "0x5C68D88"
+          }
+        }
+      }
+    },
+    "legal-absent-main-rite": {
+      "sha256": "4e0c8cfeaddae67a722ccd5db280ba2e79a816fd69195dc8b7762b83dc87b057",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-numeric-special-parameters-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_numeric_special_parameters_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-numeric-special-parameters-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_numeric_special_parameters": {
+            "schema": "ck3_12002_rite_numeric_special_parameters_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": 2197815299,
+            "faith_numeric_consumer_source": "faith_main_rite",
+            "authored_presence_provenance_observed": false,
+            "supported_key_count": 5,
+            "current_rite": {
+              "rite_id": 0,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": -1,
+                  "scale": 1,
+                  "value": null,
+                  "state": "unset",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 0,
+                  "scale": 1,
+                  "value": 0,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            },
+            "faith_main_rite": null
+          },
+          "faith_numeric_final": {
+            "schema": "ck3_12002_faith_numeric_final_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "current_rite_id": 0,
+            "faith_id": 2197815299,
+            "main_rite_id": null,
+            "value_state": "legal_absent_main_rite",
+            "main_rite_adjustment_raw": null,
+            "native_define_raw": null,
+            "final_heresy_threshold_raw": null,
+            "final_heresy_threshold": null,
+            "scale": 100000,
+            "unit": "fervor_points",
+            "source": "faith_main_rite",
+            "native_getter_rva": "0x2440920",
+            "native_define_rva": "0x5C68D88"
+          }
+        }
+      }
+    },
+    "native-threshold-unavailable": {
+      "sha256": "de323ec0a49c230a53e3226abf49a98f8fefdbe328ab76ad4c40adf8ba32b3e1",
+      "command_result": {
+        "type": "command_result",
+        "protocol_version": 1,
+        "request_id": "religion\"mailbox-fixture",
+        "ok": true,
+        "result": {
+          "step": "query-player-religion-numeric-special-parameters-v1",
+          "accepted": true,
+          "status": "observed",
+          "private_build": true,
+          "read_only": true,
+          "advertised": false,
+          "game_version": "1.20.0.2",
+          "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+          "domain_key": "player_religion_numeric_special_parameters_v1",
+          "backend_id": "ck3-1.20.0.2-native-player-religion-numeric-special-parameters-v1",
+          "snapshot_revision": 701,
+          "date_raw": 53175816,
+          "player_religion_numeric_special_parameters": {
+            "schema": "ck3_12002_rite_numeric_special_parameters_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": true,
+            "unavailable_reason": null,
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "faith_id": 2197815299,
+            "faith_numeric_consumer_source": "faith_main_rite",
+            "authored_presence_provenance_observed": false,
+            "supported_key_count": 5,
+            "current_rite": {
+              "rite_id": 0,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": -1,
+                  "scale": 1,
+                  "value": null,
+                  "state": "unset",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 0,
+                  "scale": 1,
+                  "value": 0,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            },
+            "faith_main_rite": {
+              "rite_id": 2181038082,
+              "observed_special_parameters_complete": true,
+              "parameters": [
+                {
+                  "key": "minimum_fervor",
+                  "raw": 45,
+                  "scale": 1,
+                  "value": 45,
+                  "state": "value",
+                  "unit": "fervor_points"
+                },
+                {
+                  "key": "fervor_per_holy_site",
+                  "raw": 0,
+                  "scale": 100000,
+                  "value": 0.0,
+                  "state": "value",
+                  "unit": "yearly_fervor_per_controlled_holy_site"
+                },
+                {
+                  "key": "bonus_fervor_gain",
+                  "raw": 75000,
+                  "scale": 100000,
+                  "value": 0.75,
+                  "state": "value",
+                  "unit": "yearly_fervor_gain_bonus"
+                },
+                {
+                  "key": "bonus_heresy_protection",
+                  "raw": 2,
+                  "scale": 1,
+                  "value": 2,
+                  "state": "value",
+                  "unit": "heresy_protection_count_bonus"
+                },
+                {
+                  "key": "heresy_threshold",
+                  "raw": 500000,
+                  "scale": 100000,
+                  "value": 5.0,
+                  "state": "value",
+                  "unit": "fervor_threshold_adjustment"
+                }
+              ]
+            }
+          },
+          "faith_numeric_final": {
+            "schema": "ck3_12002_faith_numeric_final_v1",
+            "game_version": "1.20.0.2",
+            "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+            "available": false,
+            "unavailable_reason": "native_threshold_unavailable",
+            "capture_epoch": 3,
+            "date_raw": 53175816,
+            "played_character_id": 50331652,
+            "current_rite_id": null,
+            "faith_id": null,
+            "main_rite_id": null,
+            "value_state": "unavailable",
+            "main_rite_adjustment_raw": null,
+            "native_define_raw": null,
+            "final_heresy_threshold_raw": null,
+            "final_heresy_threshold": null,
+            "scale": 100000,
+            "unit": "fervor_points",
+            "source": "faith_main_rite",
+            "native_getter_rva": "0x2440920",
+            "native_define_rva": "0x5C68D88"
+          }
+        }
+      }
+    }
+  }
+}
