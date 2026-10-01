@@ -15,7 +15,7 @@ from fixture_engine_prepare import BUILD, EXE_SHA256, VERSION, checked_output
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "tools/fixtures/vivhite_acceptance"
-SCENARIOS = ("main-ui", "vivhite-ui", "dual-original-first", "dual-vivhite-first", "main-writer", "main-reader")
+SCENARIOS = ("main-ui", "vivhite-ui", "dual-original-first", "dual-vivhite-first", "main-writer", "main-reader", "main-no-heir")
 STANDALONE_MARKERS = ["ERVA: TEST BEGIN standalone", "ERVA: TEST PASS ai_fixture_ready", "ERVA: TEST PASS ai_guard", "ERVA: TEST PASS cancel_zero_side_effect", "ERVA: TEST PASS insufficient_119_blocked", "ERVA: TEST PASS default_120_one_delivery_one_charge", "ERVA: TEST PASS selected_faith_aluk", "ERVA: TEST PASS custom_348_ready", "ERVA: TEST PASS custom_configuration_retained", "ERVA: TEST PASS custom_configuration_reopened", "ERVA: TEST PASS custom_348_one_delivery_one_charge", "ERVA: TEST DONE standalone"]
 DUAL_MARKERS = ["ERVA: TEST BEGIN dual", "ERVA: TEST PASS ai_fixture_ready", "ERVA: TEST PASS ai_guard", "ERVA: TEST PASS ervc_custom_348_staged", "ERVA: TEST PASS ervc_configuration_retained", "ERVA: TEST PASS xar_default_isolated_from_ervc", "ERVA: TEST PASS xar_configuration_retained", "ERVA: TEST PASS ervc_state_retained_after_xar", "ERVA: TEST PASS ervc_348_one_delivery_one_charge", "ERVA: TEST PASS xar_state_retained_after_ervc", "ERVA: TEST PASS xar_120_one_delivery_one_charge", "ERVA: TEST DONE dual"]
 
@@ -177,12 +177,36 @@ def prepare(args: argparse.Namespace) -> dict:
 ''')
     else:
         write(fixture / "descriptor.mod", 'name="CCA120 production persistence observer"\nversion="1"\nsupported_version="1.20.0.2"\n', bom=False)
-        if args.scenario == "main-writer":
+        if args.scenario in {"main-writer", "main-no-heir"}:
             setup = 'debug_log = "CCA120: READY real_pact_and_death_ui"'
             write(fixture / "common/on_action/cca120_death.txt", '''on_death = { on_actions = { cca120_observe_actual_death } }
 cca120_observe_actual_death = { effect = { if = { limit = { has_character_flag = cca120_death_armed } debug_log = "CCA120: OBSERVED actual_player_death" } } }
 ''')
-            write(fixture / "common/decisions/cca120_decisions.txt", make_decision("cca120_arm_death", 'add_prestige = 5000 add_character_flag = cca120_death_armed debug_log = "CCA120: READY actual_death_after_score_growth"', "has_character_flag = xa_enabled", "gfx/interface/illustrations/decisions/decision_xar_courtier.dds"))
+            picture = "gfx/interface/illustrations/decisions/decision_xar_courtier.dds"
+            decisions = make_decision("cca120_arm_death", 'add_prestige = 5000 add_character_flag = cca120_death_armed debug_log = "CCA120: READY actual_death_after_score_growth"', "has_character_flag = xa_enabled", picture)
+            death_guard = "has_character_flag = xa_enabled has_character_flag = cca120_death_armed"
+            if args.scenario == "main-no-heir":
+                death_guard += " NOT = { exists = player_heir }"
+                decisions += make_decision("cca120_prepare_no_heir", 'set_variable = { name = cca120_heir_waits value = 0 } trigger_event = cca120.2', "has_character_flag = xa_enabled", picture)
+                # Fixture actor data only. Each heir is disinherited through the real
+                # engine, with a day boundary for succession to recalculate.
+                write(fixture / "events/cca120_no_heir_events.txt", '''namespace = cca120
+cca120.2 = { hidden = yes trigger = { is_ai = no } immediate = {
+    if = { limit = { exists = player_heir var:cca120_heir_waits < 30 }
+        player_heir = { add_trait = disinherited }
+        change_variable = { name = cca120_heir_waits add = 1 }
+        trigger_event = { id = cca120.2 days = 1 }
+    }
+    else_if = { limit = { NOT = { exists = player_heir } }
+        debug_log = "CCA120: PASS no_heir_precondition"
+    }
+    else = { debug_log = "CCA120: FAIL no_heir_precondition" }
+} }
+''')
+            # This decision invokes only vanilla death. Production scoring,
+            # settlement and tutorial writes must come from the engine on_death.
+            decisions += make_decision("cca120_actual_death", 'debug_log = "CCA120: UI requested actual_engine_death" death = { death_reason = death_old_age }', death_guard, picture)
+            write(fixture / "common/decisions/cca120_decisions.txt", decisions)
             write(fixture / "common/decision_group_types/cca120_groups.txt", "cca120 = { sort_order = 151 gui_tags = { big_button } }\n")
             for language in ("english", "simp_chinese"):
                 write(fixture / f"localization/{language}/cca120_l_{language}.yml", f'''l_{language}:
@@ -191,6 +215,14 @@ cca120_observe_actual_death = { effect = { if = { limit = { has_character_flag =
  cca120_arm_death_desc:0 "Adds prestige; does not call scoring or death effects. Use the actual engine death path afterward."
  cca120_arm_death_tooltip:0 "Add the prestige fixture and observe the next actual engine death."
  cca120_arm_death_confirm:0 "Arm"
+ cca120_actual_death:0 "Trigger actual engine death"
+ cca120_actual_death_desc:0 "Fixture UI invokes only vanilla death. The production on_death, succession, settlement and tutorial persistence must run normally."
+ cca120_actual_death_tooltip:0 "Cause the armed player's actual engine death; never call a mod scoring or settlement effect."
+ cca120_actual_death_confirm:0 "Die through the engine"
+ cca120_prepare_no_heir:0 "Prepare actual no-heir succession"
+ cca120_prepare_no_heir_desc:0 "Fixture actor data: disinherit each current player heir across real day boundaries. Wait for the no-heir precondition marker before death."
+ cca120_prepare_no_heir_tooltip:0 "Remove eligibility of current player heirs without calling production scoring or settlement."
+ cca120_prepare_no_heir_confirm:0 "Prepare no heir"
 ''')
         else:
             setup = assertion(f"global_var:xa_import_consumed = 1 global_var:xa_global_record_imported = {args.expected_record} global_var:xa_inheritance_percent = 100", "actual_process_restart_import")
@@ -228,7 +260,7 @@ cca120.1 = {{ hidden = yes immediate = {{ if = {{ limit = {{ is_ai = no NOT = {{
                "preparer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                "entry": "on_game_start_after_lobby -> day 1 cca120.1; UI remains operator work",
                "coverage": "fixture setup and existing UI-state observers; actual GUI clicks/death/restart are required",
-               "required_markers": ([f"CCA120: BEGIN {args.scenario}", "CCA120: PASS new_trait_catalog", "CCA120: PASS legacy_same_faith_rite", "CCA120: PASS legacy_other_faith_main_rite"] + (DUAL_MARKERS if dual else STANDALONE_MARKERS) if ui else ["CCA120: BEGIN main-writer", "CCA120: READY real_pact_and_death_ui", "CCA120: READY actual_death_after_score_growth", "CCA120: OBSERVED actual_player_death", "XAR: computing score on death", "XAR: new record, writing bit", "XAR: score event fired"] if args.scenario == "main-writer" else ["CCA120: BEGIN main-reader", "CCA120: PASS actual_process_restart_import"]),
+               "required_markers": ([f"CCA120: BEGIN {args.scenario}", "CCA120: PASS new_trait_catalog", "CCA120: PASS legacy_same_faith_rite", "CCA120: PASS legacy_other_faith_main_rite"] + (DUAL_MARKERS if dual else STANDALONE_MARKERS) if ui else [f"CCA120: BEGIN {args.scenario}", "CCA120: READY real_pact_and_death_ui", "CCA120: READY actual_death_after_score_growth", "CCA120: UI requested actual_engine_death", "CCA120: OBSERVED actual_player_death", "XAR: computing score on death", "XAR: new record, writing bit", "XAR: score event fired"] + (["CCA120: PASS no_heir_precondition"] if args.scenario == "main-no-heir" else []) if args.scenario in {"main-writer", "main-no-heir"} else ["CCA120: BEGIN main-reader", "CCA120: PASS actual_process_restart_import"]),
                "optional_branch_markers": ["CCA120: READY nondefault_rite_retained_design", "CCA120: PASS nondefault_rite_one_delivery_one_charge"] if ui else [],
                "branch_uncovered_marker": "CCA120: SKIP no_existing_nondefault_rite" if ui else None,
                "read_only_production_input_sha256": {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in SOURCE.rglob("*") if p.is_file()},
