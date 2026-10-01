@@ -604,3 +604,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 5 frozen sources. Exact EventData+210 dispatch executes with empty Env32 and inherited Script24; native373B540 lookup resolves the three real scope identifiers. One necessary actual capture and complete wire case passed 7 checks each Od/O2. R4 immutable and no game contact; R5 paused validation remains. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-scope-overlay\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:54:00 Add native Sway termination observation
+
+15 frozen sources observe actual typed pre/original/post full instance and native status. New source and transport fixtures passed; absent or reused post identity is not a terminal claim. R5 live remains root owned. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-completion\termination-query-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

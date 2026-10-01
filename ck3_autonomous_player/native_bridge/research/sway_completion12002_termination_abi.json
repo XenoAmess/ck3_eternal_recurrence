@@ -1,0 +1,158 @@
+{
+  "schema": "xar.ck3.sway.termination-execution-source-abi.v1",
+  "version": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "exe_size": 101039736,
+  "previous_abi": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\research\\sway_completion12002_cancel_abi.json",
+  "previous_abi_sha256": "a763ff1bf30cdbb088f6f02e62b3a9284a6152568a9eb0fe1ac8f359778fb9e9",
+  "previous_proof_sha256": "ae5b89474ca7c67398eb765b8dea9945a57722d1b60c8b44ff5466f4e3805e6e",
+  "previous_matrix_repeated": false,
+  "live_verified": false,
+  "execution_sources": [
+    {
+      "class": "end_scheme_command_execute",
+      "vtable_rva": "0x476eb70",
+      "slot_index": 1,
+      "slot_rva": "0x476eb78",
+      "execute_rva": "0x299c340",
+      "used_input_pins": [
+        {
+          "rva": "0x299c34c",
+          "bytes": "448b4108",
+          "asm": "mov r8d, dword ptr [rcx + 8]"
+        },
+        {
+          "rva": "0x299c36f",
+          "bytes": "44394210",
+          "asm": "cmp dword ptr [rdx + 0x10], r8d"
+        },
+        {
+          "rva": "0x299c37c",
+          "bytes": "41b001",
+          "asm": "mov r8b, 1"
+        },
+        {
+          "rva": "0x299c37f",
+          "bytes": "e9fcc20a00",
+          "asm": "jmp 0x2a48680"
+        }
+      ],
+      "inputs": {
+        "rcx": "CEndSchemeCommand secondary this",
+        "full_scheme_id": "secondary this+8 (primary+0x20)",
+        "consumed_argument_abi": "void(const void* secondary_this)",
+        "rdx": "not consumed before native resolution replaces it; not a reason output"
+      },
+      "previous_bounded_span": {
+        "first": "0x299c340",
+        "last": "0x299c384",
+        "sha256": "c2b0272aa984f4b13c263cbf568d45127aa43afa2b94ed181560b88ae5a85245"
+      }
+    },
+    {
+      "class": "authored_end_scheme_false_execute",
+      "vtable_rva": "0x48521b0",
+      "slot_index": 24,
+      "slot_rva": "0x4852270",
+      "execute_rva": "0x2d11b50",
+      "used_input_pins": [
+        {
+          "rva": "0x2d11b53",
+          "bytes": "66833809",
+          "asm": "cmp word ptr [rax], 9"
+        },
+        {
+          "rva": "0x2d11b59",
+          "bytes": "448b4008",
+          "asm": "mov r8d, dword ptr [rax + 8]"
+        },
+        {
+          "rva": "0x2d11b90",
+          "bytes": "44394210",
+          "asm": "cmp dword ptr [rdx + 0x10], r8d"
+        },
+        {
+          "rva": "0x2d11b9d",
+          "bytes": "4533c0",
+          "asm": "xor r8d, r8d"
+        },
+        {
+          "rva": "0x2d11ba0",
+          "bytes": "e9db6ad3ff",
+          "asm": "jmp 0x2a48680"
+        }
+      ],
+      "inputs": {
+        "rcx": "CEndSchemeEffect<false> this",
+        "rdx": "EffectContext*",
+        "full_scheme_id": "context root pointer+0 -> Scope kind9, payload+8",
+        "consumed_argument_abi": "void(const void* effect,const void* effect_context)"
+      },
+      "previous_bounded_span": {
+        "first": "0x2d11b50",
+        "last": "0x2d11ba5",
+        "sha256": "dbd3af19534b4326ccd6dc1604db5c762c6cccc26875ad237e8f66e9998a6219"
+      }
+    },
+    {
+      "class": "authored_end_scheme_true_execute",
+      "vtable_rva": "0x4852b68",
+      "slot_index": 24,
+      "slot_rva": "0x4852c28",
+      "execute_rva": "0x2d11af0",
+      "used_input_pins": [
+        {
+          "rva": "0x2d11b3d",
+          "bytes": "41b001",
+          "asm": "mov r8b, 1"
+        },
+        {
+          "rva": "0x2d11b40",
+          "bytes": "e93b6bd3ff",
+          "asm": "jmp 0x2a48680"
+        }
+      ],
+      "inputs": {
+        "rcx": "CEndSchemeEffect<true> this",
+        "rdx": "EffectContext*",
+        "full_scheme_id": "context root pointer+0 -> Scope kind9, payload+8",
+        "consumed_argument_abi": "void(const void* effect,const void* effect_context)"
+      },
+      "previous_bounded_span": {
+        "first": "0x2d11af0",
+        "last": "0x2d11b45",
+        "sha256": "fa7139cbccbe56caa9708a46f3ddc2323cd19c2aa3423d3cb83678179a088624"
+      }
+    }
+  ],
+  "capture_contract": {
+    "before": "actual Execute entry; full ID resolves to exact sway type, target and current played owner, native status0",
+    "original": "forward each typed original exactly once, including ignored/unavailable input",
+    "after": "same full-ID/type/target resolve independent native status; owner may be cleared to 0xffffffff",
+    "terminal_state": "post exact-instance status1 only",
+    "terminal_transition": "pre status0 -> post exact-instance status1 only",
+    "missing_or_reused_post": "source remains observed but terminal state and transition false",
+    "retention": "128 copied session records; no engine pointers persist; query joins actor,target,full SchemeID",
+    "human_sender": "unknown; command class is used by manual cancel UI but no human attribution for every Execute",
+    "specific_invalidation_reason": "separate actual notification tuple/context source; not inferred from fire boolean or current predicates"
+  },
+  "natural_invalidation": {
+    "source_chain": [
+      "0x2a46fa0 final-validity false enqueues full ID",
+      "0x2a47790 resolves exact queued ID",
+      "0x2a48b30 invokes termination true before destroying",
+      "0x2a4ae10 status1 guard skips repeated callback; otherwise callback then owner clear"
+    ],
+    "natural_vs_cleanup": "purge source alone cannot distinguish newly invalid status0 from already ended status1",
+    "generic_code_detour_installed": false,
+    "actual_reason_source": "independent invalidation_context research family; no nullable reason field presented as complete"
+  },
+  "api": {
+    "header": "include/xar_bridge/ck3_12002_sway_completion_termination.hpp",
+    "record_query": "SwayTerminationRecorder12002::Query",
+    "bare_body": "SerializeSwayCompletionTermination12002",
+    "installer": "InstallSwayCompletionTermination12002",
+    "selector": "query-sway-completion-termination-v1-private",
+    "schema": "xar.ck3.sway-completion-termination.v1"
+  }
+}

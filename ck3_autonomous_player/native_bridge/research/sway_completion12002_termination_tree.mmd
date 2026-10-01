@@ -1,0 +1,20 @@
+flowchart TD
+  M[Cancel confirmation queues CEndSchemeCommand] --> C[Actual secondary Execute slot1 at 0x476EB78: 0x299C340]
+  C --> ID[Copy secondary-this+8 full SchemeID before original]
+  F[Authored end_scheme false effect] --> E0[Actual primary Execute slot24 at 0x4852270: 0x2D11B50]
+  T[Authored true end effect] --> E1[Actual primary Execute slot24 at 0x4852C28: 0x2D11AF0]
+  E0 --> CT[Copy context root Scheme token kind9 payload+8]
+  E1 --> CT
+  ID --> J[Resolve exact full ID / Sway type / target / current played owner]
+  CT --> J
+  J --> B[Copy native pre-status and identities]
+  B --> O[Forward original native callback exactly once]
+  O --> A[Resolve same full ID and copy native post-status]
+  A --> R[Session record: execution source separate from observed terminal transition]
+  N[PreUpdate final validity false] --> Q[Queue full SchemeID]
+  Q --> U[Native Update resolves queued full ID]
+  U --> P[Purge calls termination true before destruction]
+  P --> S{Previous status already1?}
+  S -->|Yes| D[Prior termination: callback is skipped]
+  S -->|No| I[New invalidation callback before owner clear]
+  I -. independently researched Execute tuple and inherited full-ID context .-> V[Actual notification reason source]
