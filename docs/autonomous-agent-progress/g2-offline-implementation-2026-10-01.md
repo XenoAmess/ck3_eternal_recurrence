@@ -139,3 +139,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 28个native/research/docs文件迁移实际新候选生产、full-ID角色/task解析、四最终gates及拥有型任命helper，slot41五步private transport复用原语义交易与serializer。Od/O2候选各35、gates各25、实际源链各18，32份真实Cpp wire与后续独立receipt通过。保留首stack overflow和缺route宏/链接harness尝试。paused候选/自然negative/任命postcondition/next/cold仍待验证；没有G2 credit。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\council\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:40:45 Government family and prisoner Python actual-wire routes
+
+19个leaf文件绑定新版government/family非战争/prisoner实际wire及exact-build provenance；GOV7、family6、prisoner4及受影响legacy32通过。保留缺字段/quote epoch/旧driver默认签名的真实失败证据及最小修复。family只是UI预览；prisoner集合fixture正向quote为constructed DTO，不冒充final原生getter。共享driver/MCP仍等其它包最终冻结，本包不含战争新入口或live声明。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\CORE-READY.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

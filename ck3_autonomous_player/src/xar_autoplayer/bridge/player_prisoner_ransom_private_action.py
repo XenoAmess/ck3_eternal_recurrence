@@ -6,6 +6,7 @@ import uuid
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 
 
 STEP = "submit-player-prisoner-ransom-private-v1"
@@ -92,6 +93,7 @@ def submit_player_prisoner_ransom_private_v1(
                           "status": "submitted_verification_pending"}):
         raise BridgeUnavailableError("private ransom ACK is not a material result")
     return {
+        **private_native_provenance(before),
         "schema": "xar.ck3.prisoner-ransom-private-action.v1",
         "status": "submitted_verification_pending",
         "material_result": False,

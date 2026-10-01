@@ -1,0 +1,22 @@
+{
+  "source": "actual 1.20 native collection getter + production collection serializer with isolated exact-layout memory",
+  "quote_scope": "First available ransom quote is a synthetic shared quote DTO; this proves Python wire consumption, not native quote getter or live readiness.",
+  "local_ck3_operations": [],
+  "fixtures": [
+    {
+      "file": "ck3_12002_prisoner_two-prisoners.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\prisoner\\wire-build\\wire-Release\\two-prisoners.json",
+      "sha256": "88511c7b559ee612e85811b7371ad163ed0e4ae904fd1102ecc6dd9b13b9b2a5"
+    },
+    {
+      "file": "ck3_12002_prisoner_empty.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\prisoner\\wire-build\\wire-Release\\empty.json",
+      "sha256": "23784e6e30f66426abc92b985d6127652859d170ca59631619a540167753cf85"
+    },
+    {
+      "file": "ck3_12002_prisoner_old-executable-unavailable.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\prisoner\\wire-build\\wire-Release\\old-executable-unavailable.json",
+      "sha256": "f312ab97a1bba4d2dd29ff328c6b9891068b21bc9931af74c794dce41b1e0d6a"
+    }
+  ]
+}

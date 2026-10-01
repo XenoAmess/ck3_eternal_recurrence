@@ -6,6 +6,7 @@ import uuid
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .nonwar_private_build import private_native_provenance
 from .timeline_blocker_private_transport import _binding
 
 
@@ -327,6 +328,7 @@ def query_player_prisoner_collection_private_v1(
         raise BridgeUnavailableError("private prisoner collection status is malformed")
     if _binding(driver.take_snapshot()) != _binding(before):
         raise BridgeUnavailableError("private prisoner collection crossed its paused frame")
-    return {**envelope, "queried_snapshot_id": before.get("snapshot_id"),
+    return {**envelope, **private_native_provenance(before),
+            "queried_snapshot_id": before.get("snapshot_id"),
             "queried_revision": before.get("revision"),
             "queried_native_revision": native_revision}

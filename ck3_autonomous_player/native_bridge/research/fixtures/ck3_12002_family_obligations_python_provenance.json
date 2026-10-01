@@ -1,0 +1,19 @@
+{
+  "source": "actual 1.20 family provider -> application-main mailbox -> production serializer with isolated memory/callbacks",
+  "local_ck3_operations": [],
+  "war_obligation_source": "deferred by owner; this active consumer exposes only nonwar lineage and break terms",
+  "fixtures": [
+    {
+      "file": "ck3_12002_family_obligations_mailbox.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\family-obligations\\wire\\build-final3\\mailbox\\O2\\mailbox-native-wire.json",
+      "sha256": "57efb23b0fc41ab3b7f5964e9c213394c10c9c9012bb68065e81c3467363f773",
+      "scope": "actual lineage provider -> owning mailbox -> production serializer"
+    },
+    {
+      "file": "ck3_12002_family_obligations_terms.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\family-obligations\\wire\\build-final3\\wire\\O2\\wire-native-wire.json",
+      "sha256": "976bdcab97490b0eba91e704d146af87bc85221bbb75511b2a9d7366d90a3ce2",
+      "scope": "constructed DTO -> production serializer; cost/penalty wire contract only"
+    }
+  ]
+}

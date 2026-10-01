@@ -1,0 +1,22 @@
+{
+  "source": "actual native government runtime adapter C++ fixture serializer",
+  "local_ck3_operations": [],
+  "fixtures": [
+    {
+      "file": "ck3_12002_government_adapter_available.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\government\\standalone\\Od\\wire\\available.json",
+      "sha256": "3f6b66beb8543389cad766245a29f31879d35d778048c71f542c228a1da8b90e"
+    },
+    {
+      "file": "ck3_12002_government_adapter_unavailable.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\government\\standalone\\Od\\wire\\unavailable.json",
+      "sha256": "a6bf96866f51599e3e2fe1bf20a5aa7c448b728026d1d17cd715b0675a6f68de"
+    },
+    {
+      "file": "ck3_12002_government_adapter_actual_caller_unavailable.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\government\\caller-final-v2\\Od\\wire\\caller-unavailable.json",
+      "sha256": "90817a4d4fb8f5f4521e5938af824c2779a44b0d72c9e07808474c2470213811",
+      "scope": "Actual application-main caller complete protocol envelope; isolated fixture process has no CK3 roots."
+    }
+  ]
+}
