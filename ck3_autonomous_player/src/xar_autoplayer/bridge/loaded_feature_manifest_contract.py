@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
+from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_build
 
 
 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY: Final = (
@@ -75,6 +75,10 @@ _FEATURE_DEFINITIONS_BY_BUILD: Final = {
         (0x4169, "by_god_alone"),
     ),
 }
+_FEATURE_DEFINITIONS_BY_BUILD[CK3_12003.game_version] = (
+    _FEATURE_DEFINITIONS_BY_BUILD[CK3_12002.game_version]
+)
+
 
 _FIELDS: Final = {
     "schema",
@@ -134,6 +138,11 @@ _PROVENANCE_BY_BUILD: Final = {
         "backend_id": CK3_12002.backend_id("loaded-feature-manifest-v1"),
     },
 }
+_PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
+    **_PROVENANCE_BY_BUILD[CK3_12002.game_version],
+    "backend_id": CK3_12003.backend_id("loaded-feature-manifest-v1"),
+}
+
 _UNAVAILABLE_REASONS: Final = {
     "unsupported_build",
     "requires_application_main",

@@ -7,7 +7,7 @@ this module must never synthesize strategic power from snapshot soldier totals.
 
 from __future__ import annotations
 
-from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
+from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_build
 
 from .event_window_context_contract import (
     normalize_current_event_window_context_v1,
@@ -68,6 +68,12 @@ _PROVENANCE_BY_BUILD = {
         "fixed_point_scale": FIXED_POINT_SCALE,
     },
 }
+_PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
+    **_PROVENANCE_BY_BUILD[CK3_12002.game_version],
+    "game_version": CK3_12003.game_version,
+    "executable_sha256": CK3_12003.executable_sha256,
+}
+
 _ASSESSMENT_KEYS = {
     "target_character_id",
     "effective_target_character_id",

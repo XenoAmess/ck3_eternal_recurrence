@@ -35,6 +35,6 @@ def authored_monthly_income_hundredths(
     building_key: object, *, exact_ck3_build: str = "1.19.0.6",
 ) -> int | None:
     if (not isinstance(building_key, str)
-            or exact_ck3_build not in {"1.19.0.6", "1.20.0.2"}):
+            or exact_ck3_build not in {"1.19.0.6", "1.20.0.2", "1.20.0.3"}):
         return None
     return _AUTHOR_MONTHLY_INCOME_HUNDREDTHS.get(building_key)

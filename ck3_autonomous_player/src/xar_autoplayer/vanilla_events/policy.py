@@ -14,7 +14,7 @@ from .registry import (
     query_vanilla_event_knowledge_v1,
 )
 from .source_index import query_vanilla_event_source_v1
-from .builds import CURRENT_CK3_BUILD, SUPPORTED_CK3_EXE_SHA256, event_context_build
+from .builds import MIGRATED_CK3_BUILDS, SUPPORTED_CK3_EXE_SHA256, event_context_build
 
 
 def _has_stress_indicator_facet(row: object, build: str) -> bool:
@@ -22,7 +22,7 @@ def _has_stress_indicator_facet(row: object, build: str) -> bool:
     return isinstance(row, Mapping) and (
         row.get("kind") == "stress"
         or (
-            build == CURRENT_CK3_BUILD
+            build in MIGRATED_CK3_BUILDS
             and row.get("kind") == "stress_and_fulfillment"
         )
     )
@@ -294,7 +294,7 @@ def _epidemic_5007_stress_effect_profile(
     """Bind only the source-backed R0092 positive stress indicator branch."""
 
     analysis = knowledge.get("analysis")
-    if knowledge.get("ck3_build") == CURRENT_CK3_BUILD:
+    if knowledge.get("ck3_build") in MIGRATED_CK3_BUILDS:
         migration = analysis.get("migration_1_20_0_2") if isinstance(analysis, Mapping) else None
         review = migration.get("definition_review") if isinstance(migration, Mapping) else None
         if not isinstance(review, Mapping) or "dynamic_stress_indicator_profile" not in review.get("reviewed_profile_keys", ()):
@@ -305,8 +305,8 @@ def _epidemic_5007_stress_effect_profile(
         indicators.get("rows")
         if isinstance(indicators, Mapping) else None
     )
-    if knowledge.get("ck3_build") == CURRENT_CK3_BUILD and isinstance(rows, list):
-        rows = [row for row in rows if _has_stress_indicator_facet(row, CURRENT_CK3_BUILD)]
+    if knowledge.get("ck3_build") in MIGRATED_CK3_BUILDS and isinstance(rows, list):
+        rows = [row for row in rows if _has_stress_indicator_facet(row, knowledge["ck3_build"])]
     if not (
         native_index == 2
         and isinstance(source_hashes, Mapping)
@@ -352,7 +352,7 @@ def _epidemic_5007_stress_effect_profile(
         },
         "source_anchors": ["events/dlc/ce1/epidemic_events.txt:6928-6962"],
     }
-    if knowledge.get("ck3_build") == CURRENT_CK3_BUILD:
+    if knowledge.get("ck3_build") in MIGRATED_CK3_BUILDS:
         profile["completeness"] = "selected-option-stress-facet-only"
         profile["selected_option_effects"][0]["source"] = "stress_and_fulfillment_impact"
         profile["unobserved_effect_domains"] = ["spiritual_fulfillment", "opinion", "relationship"]
@@ -375,15 +375,15 @@ def _current_selected_stress_observable_profile(
         ("death_management.1007", 0): ("increase", "non_decreasing"),
         ("tgp_travel_events.0030", 1): ("decrease", "non_increasing"),
     }.get((knowledge.get("event_definition_key"), native_index))
-    if knowledge.get("ck3_build") != CURRENT_CK3_BUILD or expected is None or profile is None:
+    if knowledge.get("ck3_build") not in MIGRATED_CK3_BUILDS or expected is None or profile is None:
         return profile
     indicators = selected_option.get("effect_indicators")
     rows = indicators.get("rows") if isinstance(indicators, Mapping) else None
-    facets = [row for row in rows if _has_stress_indicator_facet(row, CURRENT_CK3_BUILD)] if isinstance(rows, list) else []
+    facets = [row for row in rows if _has_stress_indicator_facet(row, knowledge["ck3_build"])] if isinstance(rows, list) else []
     if not (
         isinstance(indicators, Mapping)
         and indicators.get("status") == "available"
-        and indicators.get("coverage") == "played-character-event-icon-indicators-1.20.0.2-v1"
+        and indicators.get("coverage") == f"played-character-event-icon-indicators-{knowledge['ck3_build']}-v1"
         and indicators.get("complete_effect_set") is False
         and len(facets) == 1
         and facets[0].get("direction") == expected[0]
@@ -1225,7 +1225,7 @@ def recommend_registered_vanilla_event_option_v1(
             )
         contract = resolved_scope
     current_relational_contract = (
-        build == CURRENT_CK3_BUILD and isinstance(analysis, Mapping)
+        build in MIGRATED_CK3_BUILDS and isinstance(analysis, Mapping)
         and any(_current_contract_update(analysis, field) for field in (
             "scope_variants", "character_scopes", "character_scope_matches_any", "character_scope_differs_from",
         ))
@@ -1424,7 +1424,7 @@ def recommend_registered_vanilla_event_option_v1(
             if isinstance(selected, Mapping) else None
         )
         rows = indicators.get("rows") if isinstance(indicators, Mapping) else None
-        if build == CURRENT_CK3_BUILD and isinstance(rows, list):
+        if build in MIGRATED_CK3_BUILDS and isinstance(rows, list):
             rows = [row for row in rows if _has_stress_indicator_facet(row, build)]
         stress = rows[0] if isinstance(rows, list) and len(rows) == 1 else None
         checks["r0100_exact_source"] = bool(
@@ -1462,7 +1462,7 @@ def recommend_registered_vanilla_event_option_v1(
             )
             == "768CBA7DB6270BB2FE25D9EEE37D2F24483EE309A2496DD9A539673EF094F709"
             and (
-                build == CURRENT_CK3_BUILD
+                build in MIGRATED_CK3_BUILDS
                 or (
                     event_context.get("calculated_event_id") == 3_121_001
                     and event_context.get("runtime_stats_ordinal") == 4_333

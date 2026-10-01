@@ -10,10 +10,11 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import (
+    private_native_schema,
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -59,10 +60,10 @@ def normalize_player_religion_tenets_v1(
     value: object, *, snapshot: Mapping[str, object],
 ) -> dict[str, object]:
     """Preserve source collections, zero states, absent Rite and native failure."""
-    if not isinstance(value, dict) or set(value) != _TENET_KEYS or value.get("schema") != SCHEMA:
+    if not isinstance(value, dict) or set(value) != _TENET_KEYS or value.get("schema") != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion Tenets schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12002 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
         raise ValueError("native player religion Tenets belongs to another build")
     if (type(value["available"]) is not bool
             or type(value["capture_epoch"]) is not int
@@ -106,7 +107,7 @@ def query_player_religion_tenets_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-tenets-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

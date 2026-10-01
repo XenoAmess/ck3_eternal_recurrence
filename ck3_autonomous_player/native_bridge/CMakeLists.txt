@@ -986,6 +986,8 @@ endif()
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
+  src/ck3_12003_adapter.cpp
+  src/ck3_12003_abi_profile.cpp
   research/ck3_12002_construction_submit_binding.cpp
   src/player_lifestyle_window_candidates_v1.cpp
   src/main_thread_query_mailbox_v1.cpp)
@@ -2121,6 +2123,10 @@ if(BUILD_TESTING)
     else()
       add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target})
     endif()
+    if(fixture_name STREQUAL "ck3_12002_semantic_adapter_test")
+      add_test(NAME xar_ck3_12003_semantic_worker_test
+        COMMAND ${fixture_target} --patch3)
+    endif()
   endforeach()
 
   # Dispatcher spies cover only the production routing seam; they deliberately
@@ -2129,6 +2135,7 @@ if(BUILD_TESTING)
     set(router_target "xar_ck3_12002_nonwar_router_${router_variant}_test")
     add_executable(${router_target}
       src/ck3_12002_nonwar_router.cpp
+      src/ck3_12003_abi_profile.cpp
       src/ck3_12002_nonwar_router_test.cpp)
     target_link_libraries(${router_target} PRIVATE xar_bridge_protocol)
     target_include_directories(${router_target} PRIVATE include src)
@@ -2173,6 +2180,7 @@ if(BUILD_TESTING)
       src/ck3_12002.cpp
       src/ck3_12002_religion_context.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_mailbox.cpp
       src/ck3_12002_religion_mailbox_test.cpp)
@@ -2198,6 +2206,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_rite_governance_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_context.cpp
       src/religion_rite_governance12002_state_rite.cpp
@@ -2224,6 +2233,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_clergy_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/religion_rite_governance12002_clergy.cpp
       src/religion_rite_governance12002_clergy_mailbox.cpp
@@ -2246,6 +2256,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_rite_members_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/religion_rite_governance12002_organization_members.cpp
       src/religion_rite_governance12002_members_mailbox.cpp
@@ -2268,6 +2279,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_religion_doctrines_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_context.cpp
       src/religion_doctrine12002_intrinsic.cpp
@@ -2293,6 +2305,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_religion_hostility_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_context.cpp
       src/religion_doctrine12002_hostility.cpp
@@ -2316,6 +2329,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_religion_doctrine_knowledge_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_context.cpp
       src/religion_doctrine12002_intrinsic.cpp
@@ -2340,6 +2354,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_religion_tenets_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_context.cpp
       src/religion_doctrine12002_tenet_rows.cpp
@@ -2363,6 +2378,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_religion_conversion_terms_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_conversion_rite.cpp
       src/ck3_12002_religion_conversion_cost.cpp
@@ -2387,6 +2403,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_religion_conversion_choices_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_conversion_faith.cpp
       src/ck3_12002_religion_conversion_rite.cpp
@@ -2410,6 +2427,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_religion_conversion_inputs_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_context.cpp
       src/religion_rite_governance12002_state_rite.cpp
@@ -2435,6 +2453,7 @@ if(BUILD_TESTING)
     add_executable(xar_r3_sway_completion_named_test
       src/ck3_12002.cpp
       src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_sway_completion.cpp
       src/ck3_12002_sway_completion_mailbox.cpp

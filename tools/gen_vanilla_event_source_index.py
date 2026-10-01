@@ -35,7 +35,7 @@ from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
     compute_source_index_dataset_sha256,
 )
 from xar_autoplayer.vanilla_events.builds import (  # noqa: E402
-    CURRENT_CK3_BUILD, NONWAR_MIGRATION_DEFERRED_EVENT_KEYS, SUPPORTED_CK3_EXE_SHA256,
+    MIGRATED_CK3_BUILDS, NONWAR_MIGRATION_DEFERRED_EVENT_KEYS, SUPPORTED_CK3_EXE_SHA256,
 )
 
 
@@ -168,7 +168,7 @@ def build_source_index(
     _, game_data_dir = validate_exact_game_dir(game_dir, build=build)
     default_keys = (
         set(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS) - NONWAR_MIGRATION_DEFERRED_EVENT_KEYS
-        if build == CURRENT_CK3_BUILD else DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
+        if build in MIGRATED_CK3_BUILDS else DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
     )
     keys = tuple(
         sorted(

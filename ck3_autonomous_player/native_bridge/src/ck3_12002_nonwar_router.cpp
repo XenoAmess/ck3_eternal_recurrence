@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -533,7 +534,7 @@ bool HandleNonwarPrivate12002(
       if (!state.council.configured && !ConfigureCouncilTransport12002(
           state.council, mailbox,
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-          native.descriptor().executable_sha256,
+          xar::game::ReviewedCrozierAbiSha256(native.descriptor()),
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1)
           true,
 #else

@@ -1,0 +1,65 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12002_query_mailbox.hpp"
+#include <windows.h>
+#include <utility>
+
+namespace xar::game {
+namespace {
+void ReplaceAll(std::string &value, std::string_view from, std::string_view to) {
+  std::size_t at = 0;
+  while ((at = value.find(from, at)) != std::string::npos) {
+    value.replace(at, from.size(), to);
+    at += to.size();
+  }
+}
+} // namespace
+
+const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
+  static const AdapterDescriptor descriptor{
+      ck3_12003::kAdapterId, ck3_12003::kGameVersion, ck3_12003::kExecutableSha256,
+      ck3_12002::kCheckpointSaveName, Ck3_12002AdapterDescriptor().capabilities};
+  return descriptor;
+}
+
+Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
+    std::uintptr_t image_base, std::string_view executable_sha256) noexcept {
+  // core-comparison.json proves every production binding against this exact
+  // .3 EXE. Reuse the reviewed layout without changing any .2 binder's gate.
+  return BindCk3_12002AdapterImage(image_base,
+      executable_sha256 == ck3_12003::kExecutableSha256
+          ? std::string_view(ck3_12002::kExecutableSha256) : std::string_view{});
+}
+
+std::unique_ptr<GameAdapter> CreateCk3_12003Adapter(
+    std::string_view executable_sha256) noexcept {
+  return CreateCk3_12003AdapterFromBindings(BindCk3_12003AdapterImage(
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), executable_sha256));
+}
+
+std::string RenderCrozierBuildIdentity(
+    std::string serialized, const AdapterDescriptor &descriptor) {
+  if (IsCk3_12003Descriptor(descriptor)) {
+    serialized = ck3_12002::RenderQueryBuildIdentity(std::move(serialized));
+    // Includes typed DTO version fields, backend IDs, and versioned evidence
+    // labels. Actual implementation source paths (ck3_12002*.cpp) stay true.
+    for (const auto key : {"game_version", "exact_ck3_build", "exact_build",
+                           "version", "build_version", "build"}) {
+      ReplaceAll(serialized, std::string("\"") + key + "\":\"1.20.0.2\"",
+                 std::string("\"") + key + "\":\"1.20.0.3\"");
+    }
+    ReplaceAll(serialized, "\"backend_id\":\"ck3-1.20.0.2-native-",
+                          "\"backend_id\":\"ck3-1.20.0.3-native-");
+    ReplaceAll(serialized, "\"adapter_id\":\"ck3-1.20.0.2-msvc-x64\"",
+                          "\"adapter_id\":\"ck3-1.20.0.3-msvc-x64\"");
+    ReplaceAll(serialized, "\"schema\":\"ck3_12002_", "\"schema\":\"ck3_12003_");
+    ReplaceAll(serialized, "\"played-character-event-icon-indicators-1.20.0.2-v1\"",
+                          "\"played-character-event-icon-indicators-1.20.0.3-v1\"");
+    ReplaceAll(serialized, std::string("\"") + ck3_12002::kExecutableSha256 + "\"",
+                          std::string("\"") + ck3_12003::kExecutableSha256 + "\"");
+    ReplaceAll(serialized,
+        "\"ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d\"",
+        "\"94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6\"");
+  }
+  return serialized;
+}
+} // namespace xar::game

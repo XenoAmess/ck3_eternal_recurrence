@@ -9,7 +9,7 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, require_exact_native_build
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_build
 
 
 STEP = "query-sway-completion-invalidation-reason-v1-private"
@@ -120,7 +120,7 @@ def query_active_scheme_sway_completion_invalidation_reason_private_v1(
     )
     try:
         build = require_exact_native_build(result.get("build_version"), result.get("executable_sha256"))
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("backend_id") != "native-headless"
                 or not _integer(result.get("snapshot_revision"), 1, 0xFFFFFFFFFFFFFFFF)
                 or not _integer(result.get("date_raw"), -(1 << 31), (1 << 31) - 1)

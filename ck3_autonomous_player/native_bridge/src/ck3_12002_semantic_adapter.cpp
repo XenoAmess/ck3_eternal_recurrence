@@ -1,6 +1,7 @@
 ﻿#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_marriage_probe.hpp"
 #include <atomic>
 #include <utility>
@@ -61,7 +62,7 @@ WorkerAdapter::WorkerAdapter(const game::GameAdapter &native_adapter,
     : WorkerAdapter(native_adapter, mailbox,
           BindConsoleFixtureImage(
               reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-              native_adapter.descriptor().executable_sha256)) {}
+              game::ReviewedCrozierAbiSha256(native_adapter.descriptor()))) {}
 WorkerAdapter::WorkerAdapter(const game::GameAdapter &native_adapter,
                              ck3_11906::MainThreadQueryMailboxV1 &mailbox,
                              const ConsoleFixtureBindings &console_fixture) noexcept
@@ -101,7 +102,7 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
 
 bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   try {
-    if (!enabled() || descriptor().executable_sha256 != kExecutableSha256 ||
+    if (!enabled() || !game::IsReviewedCrozierAdapter(*this) ||
         GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
         stamp.tls_main_thread_marker != 1) return false;
     {

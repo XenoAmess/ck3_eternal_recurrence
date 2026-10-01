@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_11906_adapter.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/game_adapter.hpp"
 
@@ -830,27 +831,56 @@ int main() {
     return Fail("empty adapter registry did not return null");
   }
 
-  const auto &new_known = xar::game::Ck3_12002AdapterDescriptor();
-  if (new_known.adapter_id != "ck3-1.20.0.2-msvc-x64" ||
-      new_known.game_version != "1.20.0.2" ||
-      new_known.executable_sha256 != xar::ck3_12002::kExecutableSha256 ||
+  const auto &old_crozier = xar::game::Ck3_12002AdapterDescriptor();
+  const auto &new_known = xar::game::Ck3_12003AdapterDescriptor();
+  if (new_known.adapter_id != "ck3-1.20.0.3-msvc-x64" ||
+      new_known.game_version != "1.20.0.3" ||
+      new_known.executable_sha256 != xar::ck3_12003::kExecutableSha256 ||
       new_known.checkpoint_save_name != "xar_checkpoint" ||
       &xar::game::PreferredAdapterDescriptor() != &new_known) {
     return Fail("new preferred exact-build descriptor drifted");
   }
-  constexpr std::array<xar::game::AdapterFactory, 2> real_builds{
+  constexpr std::array<xar::game::AdapterFactory, 3> real_builds{
+      &xar::game::CreateCk3_12003Adapter,
       &xar::game::CreateCk3_12002Adapter,
       &xar::game::CreateCk3_11906Adapter,
   };
-  for (const auto *descriptor : {&new_known, &known}) {
+  for (const auto *descriptor : {&new_known, &old_crozier, &known}) {
     selected = xar::game::SelectAdapter(descriptor->executable_sha256, real_builds);
     if (selected == nullptr || !selected->enabled() ||
         selected->descriptor().adapter_id != descriptor->adapter_id ||
         !selected->supports_snapshot() ||
         !selected->supports_step("query-army-strengths-v1") ||
         selected->supports_step("query-war-termination-exit-terms-v2-16777290")) {
-      return Fail("two-build registry selected the wrong native implementation");
+      return Fail("three-build registry selected the wrong native implementation");
     }
+  }
+  if (!xar::game::BindCk3_12003AdapterImage(
+          0x140000000ULL, new_known.executable_sha256).core.enabled ||
+      xar::game::BindCk3_12003AdapterImage(
+          0x140000000ULL, old_crozier.executable_sha256).core.enabled ||
+      xar::game::BindCk3_12002AdapterImage(
+          0x140000000ULL, new_known.executable_sha256).core.enabled ||
+      xar::game::ReviewedCrozierAbiSha256(new_known) != old_crozier.executable_sha256 ||
+      xar::game::ReviewedCrozierAbiVersion(new_known) != old_crozier.game_version) {
+    return Fail("reviewed patch ABI selection widened an exact-build gate");
+  }
+  const std::string external =
+      "\"title\":\"user says \\\"version\\\":\\\"1.20.0.2\\\"\"";
+  const std::string wire = "{\"game_version\":\"1.20.0.2\",\"build\":{\"version\":\"1.20.0.2\","
+      "\"exe_sha256\":\"" + std::string(old_crozier.executable_sha256) + "\"},"
+      "\"backend_id\":\"ck3-1.20.0.2-native-campaign-root-v1\","
+      "\"schema\":\"ck3_12002_religion_context_v1\","
+      "\"native_reader\":\"src/ck3_12002_campaign.cpp\"," + external + "}";
+  const auto rendered = xar::game::RenderCrozierBuildIdentity(wire, new_known);
+  if (rendered.find("\"game_version\":\"1.20.0.3\"") == std::string::npos ||
+      rendered.find(new_known.executable_sha256) == std::string::npos ||
+      rendered.find("ck3-1.20.0.3-native-campaign-root-v1") == std::string::npos ||
+      rendered.find("ck3_12003_religion_context_v1") == std::string::npos ||
+      rendered.find("src/ck3_12002_campaign.cpp") == std::string::npos ||
+      rendered.find(external) == std::string::npos ||
+      xar::game::RenderCrozierBuildIdentity(wire, old_crozier) != wire) {
+    return Fail("actual patch wire identity or preserved old-build rendering failed");
   }
   selected = xar::game::SelectAdapter("unknown-fixture-hash", real_builds);
   if (selected == nullptr || selected->enabled() ||

@@ -6,7 +6,7 @@ from importlib import resources
 import json
 from typing import Mapping
 
-from .builds import CURRENT_CK3_BUILD, CURRENT_CK3_EXE_SHA256
+from .builds import CURRENT_CK3_BUILD, SUPPORTED_CK3_EXE_SHA256
 
 
 @lru_cache(maxsize=1)
@@ -54,8 +54,8 @@ def migrate_event_knowledge(
     current_sources = row.get("source_file_sha256", {})
     updated = deepcopy(legacy)
     updated["exact_build"] = {
-        "game_version": CURRENT_CK3_BUILD,
-        "ck3_executable_sha256": CURRENT_CK3_EXE_SHA256,
+        "game_version": "1.20.0.2",
+        "ck3_executable_sha256": SUPPORTED_CK3_EXE_SHA256["1.20.0.2"],
         "steam_build_id": 25588574,
     }
     updated["source_sha256"] = {
@@ -117,13 +117,13 @@ def migrate_event_knowledge(
     }
 
 
-def current_migrated_catalogs() -> tuple[dict, dict, dict]:
+def current_migrated_catalogs(build: str = CURRENT_CK3_BUILD) -> tuple[dict, dict, dict]:
     from . import DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
     from .registry import query_vanilla_event_knowledge_v1
 
     contracts, analysis, observations = {}, {}, {}
     for key in DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS:
-        knowledge = query_vanilla_event_knowledge_v1(key, CURRENT_CK3_BUILD)
+        knowledge = query_vanilla_event_knowledge_v1(key, build)
         if knowledge["status"] == "available":
             contracts[key] = knowledge["contract"]
             analysis[key] = knowledge["analysis"]

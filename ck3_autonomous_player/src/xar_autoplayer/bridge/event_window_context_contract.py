@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Any
 
-from .version_identity import CK3_11906, CK3_12002
+from .version_identity import CK3_11906, CK3_12002, CK3_12003
 
 
 QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY = (
@@ -88,9 +88,14 @@ _EVENT_PROVENANCE_BY_BACKEND = {
         "backend_id": CK3_12002.backend_id("event-window-v1"),
     },
 }
+_EVENT_PROVENANCE_BY_BACKEND[CK3_12003.backend_id("event-window-v1")] = {
+    **_EVENT_PROVENANCE_BY_BACKEND[CK3_12002.backend_id("event-window-v1")],
+    "backend_id": CK3_12003.backend_id("event-window-v1"),
+}
+
 _EVENT_BUILD_BY_BACKEND = {
     build.backend_id("event-window-v1"): build
-    for build in (CK3_11906, CK3_12002)
+    for build in (CK3_11906, CK3_12002, CK3_12003)
 }
 
 
@@ -152,7 +157,7 @@ def _effect_indicator(value: Any, label: str, *, game_version: str) -> None:
             raise ValueError(f"{label}.trait status is invalid")
         return
     if kind in {"stress", "fulfillment", "stress_and_fulfillment"}:
-        if kind != "stress" and game_version != CK3_12002.game_version:
+        if kind != "stress" and game_version not in (CK3_12002.game_version, CK3_12003.game_version):
             raise ValueError(f"{label}.kind does not belong to this exact build")
         fields = {
             "kind", "direction", "magnitude", "affected_by_trait", "critical",
@@ -231,7 +236,7 @@ def _effect_indicator(value: Any, label: str, *, game_version: str) -> None:
             row["raw_kind"], f"{label}.raw_kind", -(2**31), 2**31 - 1
         )
         known_kinds = (
-            {0, 1, 2, 3, 4, 5} if game_version == CK3_12002.game_version
+            {0, 1, 2, 3, 4, 5} if game_version in (CK3_12002.game_version, CK3_12003.game_version)
             else {0, 1, 2, 3}
         )
         if raw_kind in known_kinds:

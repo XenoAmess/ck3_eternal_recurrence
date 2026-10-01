@@ -1,6 +1,7 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
 #include "xar_bridge/ck3_12002_family_projection.hpp"
@@ -1715,7 +1716,7 @@ void AppendVfsSettingsLookup(
 
 std::string RenderNativePrivateFrameV1(const xar::game::GameAdapter &game,
     std::string frame) {
-  return game.descriptor().game_version == "1.20.0.2"
+  return xar::game::IsReviewedCrozierAdapter(game)
       ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(frame)) : frame;
 }
 
@@ -5804,7 +5805,7 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
     }
   }
 
-  const bool crozier = game.descriptor().game_version == "1.20.0.2";
+  const bool crozier = xar::game::IsReviewedCrozierAdapter(game);
   std::unique_ptr<PlayerLifestyleFormalWireContextV1> legacy_context;
   std::unique_ptr<xar::ck3_12002::lifestyle::PlayerLifestyleFormalWireContext12002V1>
       context12002;
@@ -5841,7 +5842,7 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
       ? xar::ck3_12002::lifestyle::InitializePlayerLifestyleFormalWireContext12002V1(
             *context12002, xar::ck3_12002::BindCoreImage(
                 reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-                game.descriptor().executable_sha256),
+                xar::game::ReviewedCrozierAbiSha256(game.descriptor())),
             current, revision, episode_run_id, mode)
       : InitializePlayerLifestyleFormalWireContextV1(
             *context, BindCurrentProcess(true), current, revision,
@@ -8821,12 +8822,12 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
 void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
     const xar::game::GameAdapter &game, const xar::game::Snapshot &expected) {
   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
-  query.subject_bindings12002 = xar::ck3_12002::BindFamilySubjectImage(base, game.descriptor().executable_sha256);
-  query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
-  query.outbound_bindings12002 = xar::ck3_12002::BindFamilyOutboundImage(base, game.descriptor().executable_sha256);
+  query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+  query.subject_bindings12002 = xar::ck3_12002::BindFamilySubjectImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+  query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+  query.outbound_bindings12002 = xar::ck3_12002::BindFamilyOutboundImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
   query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
-      xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+      xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
   query.expected_snapshot = expected;
 }
 
@@ -8878,7 +8879,7 @@ ReadPlayerChildOnApplicationMain12002(const xar::game::GameAdapter &game,
 
 xar::ck3_11906::PlayerChildMarriageSubjectReadV1
 ReadPlayerChildForAdapterV1(const xar::game::GameAdapter &game, std::int32_t subject) {
-  if (game.descriptor().game_version != "1.20.0.2") {
+  if (!xar::game::IsReviewedCrozierAdapter(game)) {
     return xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
         xar::ck3_11906::BindCurrentProcess(true), subject);
   }
@@ -8891,7 +8892,7 @@ xar::bridge::MarriageProposalNativeReadbackResultV1
 ReadMarriageBilateralForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected, std::uint32_t subject,
     std::uint32_t candidate, xar::bridge::MarriageProposalBilateralRelationshipV1 &output) {
-  if (game.descriptor().game_version != "1.20.0.2") {
+  if (!xar::game::IsReviewedCrozierAdapter(game)) {
     return xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
         g_marriage_shared_glue_v1.binder, subject, candidate, output);
   }
@@ -8905,7 +8906,7 @@ xar::bridge::MarriageProposalNativeReadbackResultV1
 ReadMarriageAllianceForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected, std::uint32_t first, std::uint32_t second,
     bool &forward, bool &reverse) {
-  if (game.descriptor().game_version != "1.20.0.2") {
+  if (!xar::game::IsReviewedCrozierAdapter(game)) {
     return xar::bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
         g_marriage_shared_glue_v1.binder, first, second, forward, reverse);
   }
@@ -8926,7 +8927,7 @@ bool ReadMarriageOutboundForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected, std::int32_t actor, std::int32_t recipient,
     std::int32_t subject, std::int32_t candidate,
     xar::bridge::MarriageOutboundPendingSnapshotV1 &output) {
-  if (game.descriptor().game_version != "1.20.0.2") {
+  if (!xar::game::IsReviewedCrozierAdapter(game)) {
     return xar::bridge::ReadMarriageOutboundPendingSnapshotV1(
         g_marriage_shared_glue_v1.resolution, actor, recipient, subject, candidate, output);
   }
@@ -8999,7 +9000,7 @@ xar::bridge::MarriageProposalNativeSubmitResultV1
 SubmitMarriageForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected,
     const xar::bridge::MarriageProposalSubmissionV1 &submission) {
-  if (game.descriptor().game_version != "1.20.0.2") {
+  if (!xar::game::IsReviewedCrozierAdapter(game)) {
     return xar::bridge::SubmitMarriageProposalFromNativeBinderV1(
         &g_marriage_shared_glue_v1.binder, submission);
   }
@@ -9740,7 +9741,7 @@ bool ResolvePendingWar12002(void *opaque, std::int32_t id, void *&output) noexce
   }
   auto *query = static_cast<TypedQuery12002 *>(envelope->typed_context);
   const auto bindings = xar::ck3_12002::BindWorldImage(
-      query->image_base, envelope->game->descriptor().executable_sha256);
+      query->image_base, xar::game::ReviewedCrozierAbiSha256(envelope->game->descriptor()));
   output = xar::ck3_12002::ResolveWar(bindings, id);
   return output != nullptr;
 }
@@ -9759,7 +9760,7 @@ bool ExecuteTypedQuery12002(
     return false;
   }
   try {
-    const auto sha = envelope->game->descriptor().executable_sha256;
+    const auto sha = xar::game::ReviewedCrozierAbiSha256(envelope->game->descriptor());
     const auto &snapshot = envelope->expected_snapshot;
     if constexpr (Kind == QueryKind12002::war_entry) {
       xar::ck3_12002::WarEntryAssessmentAccessV1 access{};
@@ -9912,7 +9913,7 @@ public:
 
   void InstallNewAdapter() noexcept {
     if (installed_ || attempted_ || game_ == nullptr || observer_ == nullptr ||
-        !game_->enabled() || game_->descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64") {
+        !game_->enabled() || !xar::game::IsReviewedCrozierAdapter(*game_)) {
       return;
     }
     attempted_ = true;
@@ -9921,7 +9922,7 @@ public:
     executors.back() = &xar::ck3_12002::ExecuteSemanticAdapter12002;
     auto environment = xar::ck3_12002::BindThreadRuntimeImage(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        game_->descriptor().executable_sha256, executors);
+        xar::game::ReviewedCrozierAbiSha256(game_->descriptor()), executors);
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
     nonwar.lifestyle = &xar::ck3_12002::lifestyle::ExecutePlayerLifestyleFormalWireMailbox12002V1;
@@ -11117,6 +11118,10 @@ std::string RunTypedQuery12002(
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
+  const auto write_frame = [&game](HANDLE output_pipe, std::string frame) {
+    return xar::bridge::WriteFrame(output_pipe,
+        xar::game::RenderCrozierBuildIdentity(std::move(frame), game.descriptor()));
+  };
   if (state.connection_generation ==
       std::numeric_limits<std::uint64_t>::max()) {
     return;
@@ -11124,7 +11129,7 @@ void RunConnectedSession(
   ++state.connection_generation;
   state.checkpoint_submission.save_name =
       game.descriptor().checkpoint_save_name;
-  if (!xar::bridge::WriteFrame(
+  if (!write_frame(
           pipe, HelloFrame(game, state.connection_generation))) {
     return;
   }
@@ -11266,7 +11271,7 @@ void RunConnectedSession(
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     const ULONGLONG now = GetTickCount64();
     if (now >= next_heartbeat) {
-      if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64")
+      if (xar::game::IsReviewedCrozierAdapter(game))
         xar::ck3_12002::PollNonwarPrivateState12002(state.nonwar_private12002);
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
       xar::bridge::PollCouncilApplicationMainPrivateTransportV1(
@@ -11302,7 +11307,7 @@ void RunConnectedSession(
           state_revision, state_revision);
 #endif
       ++sequence;
-      connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence, game));
+      connected = write_frame(pipe, HeartbeatFrame(sequence, game));
       if (connected && game.supports_snapshot()) {
         connected = PublishSnapshot(pipe, game, previous_snapshot,
                                     state_revision, checkpoint_submission,
@@ -11337,7 +11342,7 @@ void RunConnectedSession(
         pong += "\",\"pid\":";
         pong += Number(GetCurrentProcessId());
         pong += "}";
-        connected = xar::bridge::WriteFrame(pipe, pong);
+        connected = write_frame(pipe, pong);
       } else if (type == "execute_step" &&
                  xar::bridge::JsonStringField(
                      incoming.payload, "request_id", request_id,
@@ -11347,7 +11352,7 @@ void RunConnectedSession(
         if (!xar::bridge::JsonStringField(
                 incoming.payload, "step", step,
                 xar::ck3_11906::kTacticalDailySentinelMaximumArmStepBytesV1)) {
-          connected = xar::bridge::WriteFrame(
+          connected = write_frame(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
@@ -11359,24 +11364,24 @@ void RunConnectedSession(
                                kCombatPhaseEventTraceManagedFinishStepV1 &&
                    step != "resume-map" && step != "pause-map" &&
                    step != "set-speed-1") {
-          connected = xar::bridge::WriteFrame(
+          connected = write_frame(
               pipe, CommandResultFrame(request_id, step, false,
                                        "experimental trace permits only exact-day timeline controls and finish"));
 #endif
-        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+        } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    step == "fixture-run-inbox-v1") {
           std::uint64_t expected_revision = 0;
           auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game);
           if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
                   incoming.payload, expected_revision) ||
               expected_revision != state_revision || worker == nullptr) {
-            connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+            connected = write_frame(pipe, CommandResultFrame(
                 request_id, step, false, "fixture inbox snapshot revision is stale or malformed"));
           } else {
             std::string fixture_json;
             const bool executed = worker->run_inbox_fixture(fixture_json);
             if (fixture_json.empty()) {
-              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+              connected = write_frame(pipe, CommandResultFrame(
                   request_id, step, false, "application-main fixture inbox executor unavailable"));
             } else {
               std::string response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
@@ -11387,10 +11392,10 @@ void RunConnectedSession(
               response += ",\"private_fixture\":true,\"fixture_inbox\":";
               response += fixture_json;
               response += "}}";
-              connected = xar::bridge::WriteFrame(pipe, response);
+              connected = write_frame(pipe, response);
             }
           }
-        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+        } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    step == "query-marriage-native-diagnostic-v1") {
           std::uint64_t expected_revision = 0;
           auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game);
@@ -11399,7 +11404,7 @@ void RunConnectedSession(
                   incoming.payload, expected_revision) ||
               expected_revision != state_revision || worker == nullptr ||
               !worker->read_marriage_diagnostic(diagnostic)) {
-            connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+            connected = write_frame(pipe, CommandResultFrame(
                 request_id, step, false, "application-main marriage diagnostic unavailable"));
           } else {
             std::string response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
@@ -11409,13 +11414,13 @@ void RunConnectedSession(
             response += ",\"private_diagnostic\":true,\"marriage_native_diagnostic\":";
             response += diagnostic;
             response += "}}";
-            connected = xar::bridge::WriteFrame(pipe, response);
+            connected = write_frame(pipe, response);
           }
-        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+        } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    TypedQueryKind12002(step).has_value()) {
-          connected = xar::bridge::WriteFrame(pipe, RunTypedQuery12002(
+          connected = write_frame(pipe, RunTypedQuery12002(
               game, state, request_id, step, incoming.payload));
-        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+        } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    xar::ck3_12002::IsNonwarPrivateStep12002(step)) {
           std::uint64_t expected_revision = 0;
           xar::game::Snapshot current{};
@@ -11602,7 +11607,7 @@ void RunConnectedSession(
           if (response.empty()) response = CommandResultFrame(
               request_id, step, false,
               failure.empty() ? "nonwar private query unavailable" : failure);
-          connected = xar::bridge::WriteFrame(pipe, response);
+          connected = write_frame(pipe, response);
         } else if (!game.supports_step(step)
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
                    && step != xar::ck3_11906::
@@ -11818,7 +11823,7 @@ void RunConnectedSession(
                    }()
 #endif
         ) {
-          connected = xar::bridge::WriteFrame(
+          connected = write_frame(
               pipe, CommandResultFrame(request_id, step, false,
                                        "unsupported native gameplay step"));
         } else {
@@ -11830,7 +11835,7 @@ void RunConnectedSession(
                           kCombatPhaseEventTraceManagedBeginStepV1 ||
               step == xar::ck3_11906::
                           kCombatPhaseEventTraceManagedFinishStepV1) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, ExecuteExperimentalCombatPhaseTraceV1(
                           request_id, step, incoming.payload, game, state));
           } else
@@ -11842,12 +11847,12 @@ void RunConnectedSession(
               step == xar::ck3_11906::
                           kFactionGiftPrivateColdRecoveryStepV1) {
             if (!previous_snapshot.has_value()) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "private faction published snapshot unavailable"));
             } else {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   step == xar::ck3_11906::
                               kFactionGiftPrivateColdRecoveryStepV1
@@ -11873,7 +11878,7 @@ void RunConnectedSession(
                 !current.map_ready || !current.has_played_character ||
                 !current.played_character_alive ||
                 current.played_character_id <= 0) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "activity feast open private frame or request invalid"));
             } else {
@@ -11888,7 +11893,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "activity feast open private executor unavailable"));
@@ -11950,7 +11955,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity feast open private reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -11968,7 +11973,7 @@ void RunConnectedSession(
                 !current.map_ready || !current.has_played_character ||
                 !current.played_character_alive ||
                 current.played_character_id <= 0) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "activity planner private frame or request invalid"));
             } else {
@@ -11983,7 +11988,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "activity planner private executor unavailable"));
@@ -12033,7 +12038,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity planner private reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12050,7 +12055,7 @@ void RunConnectedSession(
                 current != *previous_snapshot || !current.paused ||
                 !current.map_ready || !current.has_played_character ||
                 !current.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "activity cost paused frame or request invalid"));
             } else {
@@ -12074,7 +12079,7 @@ void RunConnectedSession(
                 else if (status == xar::bridge::ActivityCostSlot12ReadStatusV1::
                                        exact_build_rejected)
                   reason = "activity cost exact build unavailable";
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, reason));
               } else {
                 std::string native =
@@ -12108,7 +12113,7 @@ void RunConnectedSession(
                     "\"private_build\":true,\"read_only\":true,"
                     "\"advertised\":false,\"activity_cost_slot12_raw\":" +
                     native + ",\"backend_id\":\"native-headless\"}}";
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12197,7 +12202,7 @@ void RunConnectedSession(
                       current.played_character_id) ||
                   expected_date_raw != static_cast<std::uint64_t>(
                       current.date_raw)))) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "activity stage-1 option frame or request invalid"));
             } else {
@@ -12218,7 +12223,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "activity stage-1 option executor unavailable"));
@@ -12309,7 +12314,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity stage-1 option reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12350,7 +12355,7 @@ void RunConnectedSession(
                     current.played_character_id) ||
                 expected_date_raw != static_cast<std::uint64_t>(
                     current.date_raw)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "activity stage-2 destination frame or request invalid"));
             } else {
@@ -12366,7 +12371,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "activity stage-2 destination executor unavailable"));
               } else {
@@ -12435,7 +12440,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "activity stage-2 destination reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12474,7 +12479,7 @@ void RunConnectedSession(
                     current.played_character_id) ||
                 expected_date_raw != static_cast<std::uint64_t>(
                     current.date_raw)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "activity stage-5 frame or request invalid"));
             } else {
@@ -12489,7 +12494,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "activity stage-5 executor unavailable"));
@@ -12539,7 +12544,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity stage-5 reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12578,7 +12583,7 @@ void RunConnectedSession(
                     current.played_character_id) ||
                 expected_date_raw != static_cast<std::uint64_t>(
                     current.date_raw)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "activity stage-5 Gold frame or request invalid"));
             } else {
@@ -12594,7 +12599,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "activity stage-5 Gold executor unavailable"));
@@ -12644,7 +12649,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity stage-5 Gold reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12684,7 +12689,7 @@ void RunConnectedSession(
                     current.played_character_id) ||
                 expected_date_raw != static_cast<std::uint64_t>(
                     current.date_raw)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "activity stage-5 feast cost frame or request invalid"));
             } else {
@@ -12700,7 +12705,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "activity stage-5 feast cost executor unavailable"));
@@ -12750,7 +12755,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity stage-5 feast cost reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12800,7 +12805,7 @@ void RunConnectedSession(
                     current.played_character_id) ||
                 expected_date_raw != static_cast<std::uint64_t>(
                     current.date_raw)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "activity feast guest candidate frame or request invalid"));
             } else {
@@ -12822,7 +12827,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                         "activity feast guest candidate executor unavailable"));
               } else {
@@ -12893,7 +12898,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                       "activity feast guest candidate reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -12925,7 +12930,7 @@ void RunConnectedSession(
                     current.played_character_id) ||
                 expected_date_raw != static_cast<std::uint64_t>(
                     current.date_raw)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "activity feast guest opinion frame or request invalid"));
             } else {
@@ -12941,7 +12946,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                         "activity feast guest opinion executor unavailable"));
               } else {
@@ -12993,7 +12998,7 @@ void RunConnectedSession(
                                      MainThreadQueryReclaimResultV1::reclaimed)
                   response = CommandResultFrame(request_id, step, false,
                       "activity feast guest opinion reclaim red");
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -13060,7 +13065,7 @@ void RunConnectedSession(
                     current.played_character_id) ||
                 expected_date_raw != static_cast<std::uint64_t>(
                     current.date_raw)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "activity feast guest rule frame or request invalid"));
             } else {
@@ -13088,7 +13093,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                         "activity feast guest rule executor unavailable"));
               } else {
@@ -13169,7 +13174,7 @@ void RunConnectedSession(
                                      MainThreadQueryReclaimResultV1::reclaimed)
                   response = CommandResultFrame(request_id, step, false,
                       "activity feast guest rule reclaim red");
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -13230,7 +13235,7 @@ void RunConnectedSession(
                         (std::numeric_limits<std::int64_t>::max)());
             }
             if (!valid) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "activity feast Stage-5 frame or request invalid"));
             } else {
@@ -13255,7 +13260,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                         "activity feast Stage-5 executor unavailable"));
               } else {
@@ -13347,7 +13352,7 @@ void RunConnectedSession(
                         "activity feast Stage-5 mailbox reclaim red");
                   }
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -13365,7 +13370,7 @@ void RunConnectedSession(
                 !current.map_ready || !current.has_played_character ||
                 !current.played_character_alive ||
                 current.played_character_id <= 0) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "realm-law private frame or request invalid"));
             } else {
@@ -13380,7 +13385,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "realm-law private executor unavailable"));
               } else {
@@ -13430,7 +13435,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "realm-law private reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -13499,7 +13504,7 @@ void RunConnectedSession(
                       target_id ||
                   g_active_scheme_sway_pending_ack_v1->actor_character_id !=
                       current.played_character_id))) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "sway formal frame, ledger or request invalid"));
             } else {
@@ -13528,7 +13533,7 @@ void RunConnectedSession(
                 if (is_submit) {
                   g_active_scheme_sway_may_have_submitted_v1 = false;
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "sway formal executor unavailable"));
               } else {
@@ -13588,7 +13593,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "sway formal reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -13615,7 +13620,7 @@ void RunConnectedSession(
                 current.played_character_id <= 0 ||
                 static_cast<std::uint32_t>(current.played_character_id) ==
                     target_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "sway private frame or request invalid"));
             } else {
@@ -13631,7 +13636,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "sway private executor unavailable"));
               } else {
@@ -13682,7 +13687,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "sway private reclaim red");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else
@@ -13690,7 +13695,7 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
           if (xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)) {
             if (!previous_snapshot.has_value()) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "private Council snapshot unavailable"));
             } else {
@@ -13699,7 +13704,7 @@ void RunConnectedSession(
                       g_council_application_main_private_transport_v1,
                       step, incoming.payload, request_id,
                       *previous_snapshot, state_revision);
-              connected = xar::bridge::WriteFrame(pipe, response);
+              connected = write_frame(pipe, response);
             }
           } else
 #endif
@@ -13723,7 +13728,7 @@ void RunConnectedSession(
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateReceiptStepV1) {
             if (!previous_snapshot.has_value()) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "private lifestyle published snapshot unavailable"));
@@ -13731,7 +13736,7 @@ void RunConnectedSession(
               const auto response = ExecutePlayerLifestyleFormalPrivateStepV1(
                   request_id, step, incoming.payload, game,
                   *previous_snapshot, state_revision);
-              connected = xar::bridge::WriteFrame(pipe, response);
+              connected = write_frame(pipe, response);
               if (connected &&
                   (step == xar::ck3_11906::
                                kPlayerLifestyleFormalPrivateSubmitStepV1 ||
@@ -13793,7 +13798,7 @@ void RunConnectedSession(
                     incoming.payload, "expected_revision",
                     expected_revision) ||
                 expected_revision != 0) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "frontend GUI route revision is stale"));
@@ -13903,7 +13908,7 @@ void RunConnectedSession(
                                     "application-main frontend executor is busy"}
                               : std::string_view{
                                     "application-main frontend executor is unavailable"};
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -13977,7 +13982,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main frontend result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           } else if (xar::ck3_11906::ParseTacticalDailySentinelArmStepV1(
@@ -13987,7 +13992,7 @@ void RunConnectedSession(
                     tactical_sentinel_request);
             if (result == xar::ck3_11906::
                               TacticalDailySentinelArmStatusV1::armed) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, TacticalDailySentinelResultFrame(
                             request_id, step,
                             xar::ck3_11906::
@@ -14010,7 +14015,7 @@ void RunConnectedSession(
               } else if (result == ArmStatus::already_armed) {
                 error = "tactical daily sentinel is already armed";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           } else if (xar::ck3_11906::ParseTacticalDailySentinelCancelStepV1(
@@ -14021,7 +14026,7 @@ void RunConnectedSession(
             using CancelStatus = xar::ck3_11906::
                 TacticalDailySentinelCancelStatusV1;
             if (result == CancelStatus::canceled) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, true,
                                            "canceled"));
             } else {
@@ -14036,12 +14041,12 @@ void RunConnectedSession(
               } else if (result == CancelStatus::not_armed) {
                 error = "tactical daily sentinel cancel requires an armed generation";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           } else if (step == xar::ck3_11906::
                                       kTacticalDailySentinelStatusStepV1) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, TacticalDailySentinelResultFrame(
                           request_id, step,
                           xar::ck3_11906::
@@ -14052,11 +14057,11 @@ void RunConnectedSession(
           std::uint64_t expected_revision = 0;
           if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "invalid_request"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "state_changed"));
           } else {
@@ -14066,15 +14071,15 @@ void RunConnectedSession(
                 xar::game::ReadSnapshot(game, current_snapshot) &&
                 current_snapshot == previous_snapshot.value();
             if (!snapshot_read) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "state_changed"));
             } else if (!current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "requires_paused"));
             } else if (!current_snapshot.map_ready) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "map_not_ready"));
             } else {
@@ -14098,7 +14103,7 @@ void RunConnectedSession(
                                  xar::game::SetPlayedCharacterResult::switched) {
                 previous_snapshot.reset();
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, success,
                                            ran ? status : "submission_failed"));
             }
@@ -14107,11 +14112,11 @@ void RunConnectedSession(
           xar::ck3_11906::TitleMapNavigationRequestV1 request{};
           if (!xar::ck3_11906::ParseTitleMapNavigationRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "internal_error"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "state_changed"));
           } else {
@@ -14121,15 +14126,15 @@ void RunConnectedSession(
                 xar::game::ReadSnapshot(game, current_snapshot) &&
                 current_snapshot == previous_snapshot.value();
             if (!snapshot_read) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "state_changed"));
             } else if (!current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "requires_paused"));
             } else if (!current_snapshot.map_ready) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "map_not_ready"));
             } else {
@@ -14186,7 +14191,7 @@ void RunConnectedSession(
                 response =
                     CommandResultFrame(request_id, step, false, error);
               }
-              connected = xar::bridge::WriteFrame(pipe, response);
+              connected = write_frame(pipe, response);
             }
           }
           } else if (step == "pause-map") {
@@ -14194,7 +14199,7 @@ void RunConnectedSession(
           const auto result =
               xar::game::SubmitPauseMap(game, &command_observation);
           if (result == xar::game::PauseSubmitResult::unavailable) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "CK3 map state is unavailable"));
           } else {
@@ -14202,7 +14207,7 @@ void RunConnectedSession(
                 result == xar::game::PauseSubmitResult::submitted
                     ? "submitted"
                     : "already_paused";
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
               // Timeline postconditions must be observable even when the
@@ -14225,7 +14230,7 @@ void RunConnectedSession(
           const auto result =
               xar::game::SubmitResumeMap(game, &command_observation);
           if (result == xar::game::ResumeSubmitResult::unavailable) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "CK3 map state is unavailable"));
           } else {
@@ -14233,7 +14238,7 @@ void RunConnectedSession(
                 result == xar::game::ResumeSubmitResult::submitted
                     ? "submitted"
                     : "already_running";
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
               // Symmetric with pause-map: already_running forces one fresh
@@ -14256,7 +14261,7 @@ void RunConnectedSession(
               xar::game::SaveCheckpointStatus::submitted) {
             ++checkpoint_submission.sequence;
             checkpoint_submission.date_raw = result.date_raw;
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 SaveCheckpointResultFrame(request_id, checkpoint_submission));
             if (connected) {
@@ -14270,7 +14275,7 @@ void RunConnectedSession(
                         xar::game::SaveCheckpointStatus::map_not_ready
                     ? "CK3 map is not ready"
                     : "CK3 save state is unavailable";
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false, error));
           }
         } else if (step == "accept-pending-character-interaction" ||
@@ -14283,7 +14288,7 @@ void RunConnectedSession(
               xar::game::SubmitReplyToPendingInteraction(game, reply);
           if (result ==
               xar::game::ReplyPendingInteractionResult::submitted) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
             std::string_view error =
@@ -14295,7 +14300,7 @@ void RunConnectedSession(
                                      acknowledgement_required) {
               error = "pending CK3 interaction requires acknowledgement";
             }
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false, error));
           }
           if (connected) {
@@ -14312,12 +14317,12 @@ void RunConnectedSession(
                   ParseZhongguoProjectsMetricsPostconditionRequestV1(
                       incoming.payload, request,
                       requested_owner_character_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo projects/metrics request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo projects/metrics revision is stale"));
@@ -14334,7 +14339,7 @@ void RunConnectedSession(
                      requested_owner_character_id &&
                  current_snapshot.played_character_id !=
                      request.subject_character_id)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo projects/metrics snapshot changed "
@@ -14373,7 +14378,7 @@ void RunConnectedSession(
                   error =
                       "application-main projects/metrics executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -14424,7 +14429,7 @@ void RunConnectedSession(
                       "application-main projects/metrics result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -14437,12 +14442,12 @@ void RunConnectedSession(
                   ParseZhongguoCareerHcWorkforcePostconditionRequestV1(
                       incoming.payload, request,
                       requested_owner_character_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo career-HC/workforce request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo career-HC/workforce revision is stale"));
@@ -14456,7 +14461,7 @@ void RunConnectedSession(
                 !current_snapshot.played_character_alive ||
                 current_snapshot.played_character_id ==
                     requested_owner_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo career-HC/workforce snapshot changed "
@@ -14495,7 +14500,7 @@ void RunConnectedSession(
                   error =
                       "application-main career-HC/workforce executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -14546,7 +14551,7 @@ void RunConnectedSession(
                       "application-main career-HC/workforce result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -14558,13 +14563,13 @@ void RunConnectedSession(
                   ParsePendingCharacterInteractionContextRequestV1(
                       incoming.payload, expected_revision,
                       pending_interaction_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ACK requires expected_revision and a valid signed "
                           "full pending_interaction_id"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "pending interaction ACK snapshot revision mismatch"));
@@ -14574,7 +14579,7 @@ void RunConnectedSession(
                     game, pending_interaction_id);
             if (result == xar::game::AcknowledgePendingInteractionResult::
                               submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
@@ -14609,7 +14614,7 @@ void RunConnectedSession(
                                 queue_rejected) {
                 error = "CK3 rejected the pending interaction ACK queue entry";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -14625,7 +14630,7 @@ void RunConnectedSession(
           if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) ||
               expected_revision == 0 || expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                          "observed-heir marriage requires current native revision"));
           } else {
@@ -14635,7 +14640,7 @@ void RunConnectedSession(
                 before != *previous_snapshot || !before.paused ||
                 !before.map_ready || !before.has_played_character ||
                 !before.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                            "observed-heir marriage admission frame changed"));
             } else {
@@ -14664,7 +14669,7 @@ void RunConnectedSession(
               }
               xar::game::Snapshot after{};
               if (!xar::game::ReadSnapshot(game, after) || after != before) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                              "observed-heir marriage frame changed during read"));
               } else {
@@ -14687,7 +14692,7 @@ void RunConnectedSession(
                   state.marriage_family_action_heir_id = subject_id;
                 }
 #endif
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriagePrivateResultFrameV1(
                               request_id, step,
                               state.marriage_family_private_query_sequence,
@@ -14706,7 +14711,7 @@ void RunConnectedSession(
           if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) ||
               expected_revision == 0 || expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                     "current first-heir relationship needs current native revision"));
           } else {
@@ -14716,7 +14721,7 @@ void RunConnectedSession(
                 before != *previous_snapshot || !before.paused ||
                 !before.map_ready || !before.has_played_character ||
                 !before.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "current first-heir relationship frame changed"));
             } else {
@@ -14737,11 +14742,11 @@ void RunConnectedSession(
                     "public_campaign_root_primary_first_heir_absent";
               } else {
                 CurrentFirstHeirBetrothalMailboxQueryV1 query{};
-                if (game.descriptor().game_version == "1.20.0.2") {
+                if (xar::game::IsReviewedCrozierAdapter(game)) {
                   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-                  query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
+                  query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
                   query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
-                      xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+                      xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
                 } else {
                   query.bindings = xar::ck3_11906::BindCurrentProcess(true);
                 }
@@ -14820,7 +14825,7 @@ void RunConnectedSession(
               if (!xar::game::ReadSnapshot(game, after) || after != before ||
                   read.failure == xar::ck3_11906::
                       CurrentFirstHeirRelationshipFailureV1::frame_changed) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                         "current first-heir relationship frame changed during read"));
               } else {
@@ -14832,10 +14837,10 @@ void RunConnectedSession(
                   state.current_first_heir_betrothal_connection_generation = connection_generation;
                 }
 #endif
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CurrentFirstHeirRelationshipResultFrameV1(
                         request_id, state_revision, heir_id, read,
-                        unavailable_reason, game.descriptor().game_version == "1.20.0.2"));
+                        unavailable_reason, xar::game::IsReviewedCrozierAdapter(game)));
               }
             }
           }
@@ -14851,7 +14856,7 @@ void RunConnectedSession(
               requested_subject_id == 0 ||
               requested_subject_id > static_cast<std::uint64_t>(
                   (std::numeric_limits<std::int32_t>::max)())) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                     "player-child marriage subject needs current revision and ID"));
           } else {
@@ -14861,7 +14866,7 @@ void RunConnectedSession(
                 before != *previous_snapshot || !before.paused ||
                 !before.map_ready || !before.has_played_character ||
                 !before.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "player-child marriage subject admission frame changed"));
             } else {
@@ -14874,7 +14879,7 @@ void RunConnectedSession(
                   diagnose_family_arrays);
               std::optional<xar::ck3_11906::PlayerFamilyArrayProbeV1>
                   family_probe;
-              if (game.descriptor().game_version == "1.20.0.2") {
+              if (xar::game::IsReviewedCrozierAdapter(game)) {
                 if (diagnose_family_arrays) family_probe.emplace();
                 child = ReadPlayerChildOnApplicationMain12002(game, before, subject_id,
                     family_probe ? &*family_probe : nullptr);
@@ -14915,12 +14920,12 @@ void RunConnectedSession(
               xar::game::Snapshot after{};
               if (!xar::game::ReadSnapshot(game, after) || after != before ||
                   child.failure == Failure::frame_changed) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                         "player-child marriage subject changed during read"));
               } else {
                 ++state.marriage_family_private_query_sequence;
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriagePrivateResultFrameV1(
                         request_id, step,
                         state.marriage_family_private_query_sequence,
@@ -14940,8 +14945,8 @@ void RunConnectedSession(
           std::uint64_t candidate_id = 0;
           const bool request_valid =
               game.enabled() &&
-              (game.descriptor().executable_sha256 == xar::ck3_11906::kExecutableSha256 ||
-               game.descriptor().executable_sha256 == xar::ck3_12002::kExecutableSha256) &&
+              (xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_11906::kExecutableSha256 ||
+               xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_12002::kExecutableSha256) &&
               xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) &&
               xar::bridge::JsonUnsignedField(
@@ -15009,17 +15014,17 @@ void RunConnectedSession(
             if (selected_ready) query.observed[0] = *matching;
           }
           if (!selected_ready) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                     "specified child and candidate need fresh same-frame native legality"));
           } else {
             query.expected_snapshot = before;
-            if (game.descriptor().game_version == "1.20.0.2") {
+            if (xar::game::IsReviewedCrozierAdapter(game)) {
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
-              query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+              query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+              query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
               query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
-                  xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+                  xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
             } else {
               query.bindings = xar::ck3_11906::BindCurrentProcess(true);
             }
@@ -15040,7 +15045,7 @@ void RunConnectedSession(
                 &query, query.ticket);
             if (submit != xar::ck3_11906::
                               MainThreadQuerySubmitResultV1::submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       std::string("paused child marriage value query unavailable: ") +
                       std::string(MarriageCandidateAllianceSubmitFailureKeyV1(submit))));
@@ -15097,7 +15102,7 @@ void RunConnectedSession(
                 }
 #endif
               }
-              connected = xar::bridge::WriteFrame(pipe, response);
+              connected = write_frame(pipe, response);
             }
           }
         } else if (step == kMarriageCandidateAllianceProjectionStepV1) {
@@ -15107,8 +15112,8 @@ void RunConnectedSession(
                      kMarriageCandidateAllianceProjectionRowsV1> ids{};
           bool request_valid =
               game.enabled() &&
-              (game.descriptor().executable_sha256 == xar::ck3_11906::kExecutableSha256 ||
-               game.descriptor().executable_sha256 == xar::ck3_12002::kExecutableSha256) &&
+              (xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_11906::kExecutableSha256 ||
+               xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_12002::kExecutableSha256) &&
               xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) &&
               xar::bridge::JsonUnsignedField(
@@ -15173,18 +15178,18 @@ void RunConnectedSession(
             }
           }
           if (!request_valid) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "five distinct current final-legal candidates and same paused revision required"));
           } else {
             query.expected_snapshot = before;
-            if (game.descriptor().game_version == "1.20.0.2") {
+            if (xar::game::IsReviewedCrozierAdapter(game)) {
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
-              query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+              query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+              query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
               query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
-                  xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+                  xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
             } else {
               query.bindings = xar::ck3_11906::BindCurrentProcess(true);
             }
@@ -15205,7 +15210,7 @@ void RunConnectedSession(
                 &query, query.ticket);
             if (submit != xar::ck3_11906::
                               MainThreadQuerySubmitResultV1::submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             std::string("paused application-main marriage query unavailable: ") +
@@ -15239,7 +15244,7 @@ void RunConnectedSession(
                     request_id, step, false,
                     "application-main marriage projection ticket was not reclaimable");
               }
-              connected = xar::bridge::WriteFrame(pipe, response);
+              connected = write_frame(pipe, response);
             }
           }
 #endif
@@ -15286,7 +15291,7 @@ void RunConnectedSession(
               before.played_character_id ==
                   state.child_selected_proof->observed.played_character_id;
           if (!frame_ready) {
-            connected = xar::bridge::WriteFrame(pipe,
+            connected = write_frame(pipe,
                 CommandResultFrame(request_id, step, false,
                     "selected player-child proposal needs same paused proof"));
           } else {
@@ -15409,7 +15414,7 @@ void RunConnectedSession(
                     baseline, state_revision, submission, pending) &&
                 xar::game::ReadSnapshot(game, checked) && checked == before;
             if (!prepared) {
-              connected = xar::bridge::WriteFrame(pipe,
+              connected = write_frame(pipe,
                   CommandResultFrame(request_id, step, false,
                       "selected player-child native legality or lineage changed"));
             } else {
@@ -15426,12 +15431,12 @@ void RunConnectedSession(
                   SubmitMarriageForAdapterV1(game, before, submission);
               if (submitted != xar::bridge::
                                    MarriageProposalNativeSubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(pipe,
+                connected = write_frame(pipe,
                     CommandResultFrame(request_id, step, false,
                         "selected player-child native submit did not complete"));
               } else {
                 state.child_matrilineal_pending_submission = pending;
-                connected = xar::bridge::WriteFrame(pipe,
+                connected = write_frame(pipe,
                     RenderNativePrivateFrameV1(game, ObservedHeirMarriageSubmitFrameV1(request_id, pending,
                         step)));
                 if (connected) connected = PublishSnapshot(
@@ -15474,15 +15479,15 @@ void RunConnectedSession(
               xar::game::ReadSnapshot(game, before) && before == *previous_snapshot &&
               before.paused && before.map_ready && before.has_played_character && before.played_character_alive;
           if (!frame_ready) {
-            connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+            connected = write_frame(pipe, CommandResultFrame(
                 request_id, step, false, "current betrothal fulfillment needs same-frame current pair observation"));
           } else {
             CurrentFirstHeirBetrothalFulfillmentMailboxV1 action{};
-            if (game.descriptor().game_version == "1.20.0.2") {
+            if (xar::game::IsReviewedCrozierAdapter(game)) {
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              action.query.family12002 = xar::ck3_12002::BindFamilyImage(base, game.descriptor().executable_sha256);
+              action.query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
               action.query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
-                  xar::game::BindCk3_12002AdapterImage(base, game.descriptor().executable_sha256));
+                  xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
             } else {
               action.query.bindings = xar::ck3_11906::BindCurrentProcess(true);
             }
@@ -15514,12 +15519,12 @@ void RunConnectedSession(
             }
             state.marriage_family_action_may_have_submitted = action.submit_attempted;
             if (!completed || action.submitted != xar::bridge::MarriageProposalNativeSubmitResultV1::submitted) {
-              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+              connected = write_frame(pipe, CommandResultFrame(
                   request_id, step, false, "current betrothal fulfillment source changed or native submit did not complete"));
             } else {
               state.marriage_family_pending_submission = action.pending;
               state.current_first_heir_betrothal_observed.reset();
-              connected = xar::bridge::WriteFrame(pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageSubmitFrameV1(
+              connected = write_frame(pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageSubmitFrameV1(
                   request_id, action.pending, step)));
               if (connected) connected = PublishSnapshot(pipe, game, previous_snapshot,
                   state_revision, checkpoint_submission, published_checkpoint_sequence);
@@ -15581,7 +15586,7 @@ void RunConnectedSession(
                               return row.candidate_character_id ==
                                      static_cast<std::int32_t>(candidate_id);
                             }) != 1) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "observed-heir marriage candidate is missing, stale or unresolved"));
@@ -15616,7 +15621,7 @@ void RunConnectedSession(
                     baseline, state_revision, submission, pending) &&
                 xar::game::ReadSnapshot(game, checked) && checked == before;
             if (!prepared) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "observed-heir marriage source or pre-relationship changed"));
@@ -15627,13 +15632,13 @@ void RunConnectedSession(
                   SubmitMarriageForAdapterV1(game, before, submission);
               if (submitted != xar::bridge::
                                    MarriageProposalNativeSubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "observed-heir marriage native submit did not complete"));
               } else {
                 state.marriage_family_pending_submission = pending;
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageSubmitFrameV1(request_id,
                                                               pending)));
                 if (connected) {
@@ -15683,7 +15688,7 @@ void RunConnectedSession(
               before != *previous_snapshot || !before.paused ||
               !before.map_ready ||
               before.played_character_id != static_cast<std::int32_t>(played_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                     "observed-heir alliance result needs a bound paused frame"));
           } else {
@@ -15703,7 +15708,7 @@ void RunConnectedSession(
                     relation.candidate_has_subject_as_spouse ||
                 relation.subject_has_candidate_as_betrothed !=
                     relation.candidate_has_subject_as_betrothed) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "observed-heir alliance result relationship RED"));
             } else {
@@ -15711,7 +15716,7 @@ void RunConnectedSession(
               const bool betrothed =
                   relation.subject_has_candidate_as_betrothed;
               if (married && betrothed) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                         "observed-heir alliance result relationship RED"));
               } else {
@@ -15724,7 +15729,7 @@ void RunConnectedSession(
                     : xar::bridge::MarriageProposalNativeReadbackResultV1::blocked;
                 xar::game::Snapshot after{};
                 if (!xar::game::ReadSnapshot(game, after) || after != before) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(request_id, step, false,
                           "observed-heir alliance result frame changed"));
                 } else {
@@ -15734,7 +15739,7 @@ void RunConnectedSession(
                       first_has_second == second_has_first) {
                     alliance_status = first_has_second ? "allied" : "not_allied";
                   }
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageAllianceResultFrameV1(
                           request_id, state_revision,
                           static_cast<std::int32_t>(played_id),
@@ -15840,7 +15845,7 @@ void RunConnectedSession(
                           : (!state.marriage_family_pending_submission.has_value() ||
                              expected_revision <= state.marriage_family_pending_submission
                                                       ->pre_native_revision)))) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "observed-heir marriage result needs a later paused frame"));
@@ -15876,7 +15881,7 @@ void RunConnectedSession(
                 xar::game::ReadSnapshot(game, after) && after == before;
             xar::bridge::MarriageProposalNativeResolutionV1 resolution =
                 xar::bridge::MarriageProposalNativeResolutionV1::pending;
-            if (!cold_recovery && game.descriptor().game_version != "1.20.0.2") {
+            if (!cold_recovery && !xar::game::IsReviewedCrozierAdapter(game)) {
               (void)xar::bridge::ReadMarriageProposalResolutionJournalV1(
                   &g_marriage_shared_glue_v1.resolution,
                   static_cast<std::uint32_t>(pending.heir_character_id),
@@ -15905,12 +15910,12 @@ void RunConnectedSession(
             if (!stable || material == xar::bridge::
                                 ObservedHeirMarriageMaterialStatusV1::
                                     inconsistent) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "observed-heir marriage bilateral result RED"));
             } else {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, RenderNativePrivateFrameV1(game, ObservedHeirMarriageMaterialFrameV1(
                             request_id, pending, state_revision, material,
                             cold_recovery,
@@ -15924,7 +15929,7 @@ void RunConnectedSession(
           if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) ||
               expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ranked marriage query requires the current native "
@@ -15936,7 +15941,7 @@ void RunConnectedSession(
                 xar::game::ReadSnapshot(game, admission_snapshot) &&
                 admission_snapshot == *previous_snapshot;
             if (!same_published_frame_before) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ranked marriage admission frame changed before "
@@ -15944,7 +15949,7 @@ void RunConnectedSession(
             } else {
               xar::bridge::MarriageCandidateInternalQueryV1 query{};
               xar::bridge::MarriageCandidateWorkerReadResultV1 read{};
-              if (game.descriptor().game_version == "1.20.0.2") {
+              if (xar::game::IsReviewedCrozierAdapter(game)) {
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
                 read = xar::ck3_12002::ReadFamilyRankedOnApplicationMainV1(
                             game, g_main_thread_query_mailbox_v1,
@@ -15970,7 +15975,7 @@ void RunConnectedSession(
                                        available &&
                   same_frame_after) {
                 ++ranked_marriage_private_query_sequence;
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, RenderNativePrivateFrameV1(game, RankedMarriagePrivateResultFrame(
                               request_id,
                               ranked_marriage_private_query_sequence,
@@ -15979,11 +15984,11 @@ void RunConnectedSession(
                                           MarriageCandidateWorkerReadStatusV1::
                                               unavailable &&
                        same_frame_after) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, RenderNativePrivateFrameV1(game,
                         RankedMarriagePrivateUnavailableFrame(request_id, read)));
               } else {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               RankedMarriagePrivateFailureMessage(
@@ -16000,7 +16005,7 @@ void RunConnectedSession(
           if (result == xar::game::
                             ReadArrangeMarriageChoicesResult::available) {
             ++marriage_query_sequence;
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, ArrangeMarriageChoicesResultFrame(
                           request_id, marriage_query_sequence,
                           marriage_choices, diagnostics));
@@ -16011,7 +16016,7 @@ void RunConnectedSession(
                                   no_played_character
                     ? "no living played CK3 character"
                     : "CK3 arrange-marriage query is unavailable";
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false, error));
           }
         } else if (step.starts_with("arrange-marriage-")) {
@@ -16023,7 +16028,7 @@ void RunConnectedSession(
             }
           }
           if (selected == nullptr) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "arrange-marriage choice is missing or stale; "
@@ -16033,7 +16038,7 @@ void RunConnectedSession(
                 xar::game::SubmitArrangeMarriage(game, *selected);
             if (result ==
                 xar::game::ArrangeMarriageResult::submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
               marriage_choices.clear();
@@ -16054,7 +16059,7 @@ void RunConnectedSession(
                 error = "CK3 arrange-marriage choice changed; query again";
                 marriage_choices.clear();
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -16067,12 +16072,12 @@ void RunConnectedSession(
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "campaign-root expected revision is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "campaign-root snapshot revision is stale"));
@@ -16083,7 +16088,7 @@ void RunConnectedSession(
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "campaign-root snapshot changed or is not ready"));
@@ -16122,7 +16127,7 @@ void RunConnectedSession(
                                              mailbox_busy) {
                   error = "application-main campaign-root executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -16199,7 +16204,7 @@ void RunConnectedSession(
                       "application-main campaign-root result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -16222,17 +16227,17 @@ void RunConnectedSession(
 #endif
           std::uint64_t expected_revision = 0;
           if (prior_action_unresolved) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                      "prior private building command material state unresolved"));
           } else if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) ||
               expected_revision == 0) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "private construction probe request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "private construction probe revision is stale"));
           } else {
@@ -16243,18 +16248,18 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "private construction probe paused frame unavailable"));
             } else {
-              const bool crozier = game.descriptor().game_version == "1.20.0.2";
+              const bool crozier = xar::game::IsReviewedCrozierAdapter(game);
               xar::ck3_11906::PlayerConstructionViewProbeMailboxContextV1 legacy_query{};
               xar::ck3_12002::ConstructionMailboxContextV1 query12002{};
               auto &query = crozier ? query12002.query : legacy_query;
               if (crozier) {
                 query12002.core = xar::ck3_12002::BindCoreImage(
                     reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-                    game.descriptor().executable_sha256);
+                    xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
               }
               query.mailbox = &g_main_thread_query_mailbox_v1;
               if (!crozier) query.bindings = xar::ck3_11906::BindCurrentProcess(true);
@@ -16271,7 +16276,7 @@ void RunConnectedSession(
                           : static_cast<void *>(&query), query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "private construction probe executor unavailable"));
               } else {
@@ -16367,7 +16372,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "private construction probe result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -16379,13 +16384,13 @@ void RunConnectedSession(
           if (!xar::ck3_11906::
                    ParsePlayerFactionAlertsExpectedRevisionV1(
                        incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "player faction-alert expected revision is "
                           "malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "player faction-alert snapshot revision is stale"));
@@ -16396,7 +16401,7 @@ void RunConnectedSession(
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "player faction-alert snapshot changed or is "
@@ -16441,7 +16446,7 @@ void RunConnectedSession(
                       "application-main player faction-alert executor is "
                       "busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -16497,7 +16502,7 @@ void RunConnectedSession(
                       "application-main player faction-alert result was "
                       "not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -16507,13 +16512,13 @@ void RunConnectedSession(
           if (!xar::ck3_11906::
                    ParseStewardDevelopCountyCandidatesExpectedRevisionV1(
                        incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "steward develop-county expected revision is "
                           "malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "steward develop-county snapshot revision is stale"));
@@ -16524,7 +16529,7 @@ void RunConnectedSession(
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "steward develop-county snapshot changed or is "
@@ -16564,7 +16569,7 @@ void RunConnectedSession(
                       "application-main steward develop-county executor is "
                       "busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -16620,7 +16625,7 @@ void RunConnectedSession(
                       "application-main steward develop-county result was "
                       "not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -16628,12 +16633,12 @@ void RunConnectedSession(
           xar::ck3_11906::ZhongguoCaseSnapshotRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoCaseSnapshotRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo case snapshot request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo case snapshot revision is stale"));
@@ -16645,7 +16650,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo case snapshot changed or is not ready"));
@@ -16681,7 +16686,7 @@ void RunConnectedSession(
                   error =
                       "application-main ZhongGuo case executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -16738,7 +16743,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo case result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -16747,11 +16752,11 @@ void RunConnectedSession(
           xar::ck3_11906::ZhongguoB1CycleSnapshotRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoB1CycleSnapshotRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                     "ZhongGuo B1-cycle snapshot request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                     "ZhongGuo B1-cycle snapshot revision is stale"));
           } else {
@@ -16762,7 +16767,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                       "ZhongGuo B1-cycle snapshot changed or is not ready"));
             } else {
@@ -16789,7 +16794,7 @@ void RunConnectedSession(
                 else if (submit == xar::ck3_11906::MainThreadQuerySubmitResultV1::
                                            mailbox_busy)
                   error = "application-main ZhongGuo B1-cycle executor is busy";
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -16834,7 +16839,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main ZhongGuo B1-cycle result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -16843,12 +16848,12 @@ void RunConnectedSession(
           xar::ck3_11906::ZhongguoResultCaseSnapshotRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoResultCaseSnapshotRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo result-case snapshot request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo result-case snapshot revision is stale"));
@@ -16860,7 +16865,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo result-case snapshot changed or is not ready"));
@@ -16897,7 +16902,7 @@ void RunConnectedSession(
                   error =
                       "application-main ZhongGuo result-case executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -16954,7 +16959,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo result-case result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -16963,12 +16968,12 @@ void RunConnectedSession(
           xar::ck3_11906::ZhongguoB2PipSnapshotRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoB2PipSnapshotRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo B2 PIP snapshot request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo B2 PIP snapshot revision is stale"));
@@ -16980,7 +16985,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo B2 PIP snapshot changed or is not ready"));
@@ -17016,7 +17021,7 @@ void RunConnectedSession(
                   error =
                       "application-main ZhongGuo B2 PIP executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -17072,7 +17077,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo B2 PIP result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17085,12 +17090,12 @@ void RunConnectedSession(
                   ParseZhongguoPromotionCompensationPostconditionRequestV1(
                       incoming.payload, request,
                       requested_owner_character_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo promotion/compensation request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo promotion/compensation revision is stale"));
@@ -17104,7 +17109,7 @@ void RunConnectedSession(
                 !current_snapshot.played_character_alive ||
                 current_snapshot.played_character_id !=
                     requested_owner_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo promotion/compensation snapshot changed "
@@ -17143,7 +17148,7 @@ void RunConnectedSession(
                   error =
                       "application-main promotion/compensation executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -17194,7 +17199,7 @@ void RunConnectedSession(
                       "application-main promotion/compensation result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17207,12 +17212,12 @@ void RunConnectedSession(
                   ParseZhongguoCompensationAf5SnapshotRequestV1(
                       incoming.payload, request,
                       requested_owner_character_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo compensation AF5 request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo compensation AF5 revision is stale"));
@@ -17226,7 +17231,7 @@ void RunConnectedSession(
                 !current_snapshot.played_character_alive ||
                 current_snapshot.played_character_id !=
                     requested_owner_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo compensation AF5 snapshot changed "
@@ -17265,7 +17270,7 @@ void RunConnectedSession(
                   error =
                       "application-main compensation AF5 executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -17316,7 +17321,7 @@ void RunConnectedSession(
                       "application-main compensation AF5 result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17329,12 +17334,12 @@ void RunConnectedSession(
                   ParseZhongguoWorkforceOwnerSnapshotRequestV1(
                       incoming.payload, request,
                       requested_owner_character_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo workforce owner request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo workforce owner revision is stale"));
@@ -17348,7 +17353,7 @@ void RunConnectedSession(
                 !current_snapshot.played_character_alive ||
                 current_snapshot.played_character_id !=
                     requested_owner_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo workforce owner snapshot changed "
@@ -17387,7 +17392,7 @@ void RunConnectedSession(
                   error =
                       "application-main workforce owner executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -17438,7 +17443,7 @@ void RunConnectedSession(
                       "application-main workforce owner result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17448,12 +17453,12 @@ void RunConnectedSession(
           std::int32_t requested_owner_character_id = -1;
           if (!xar::ck3_11906::ParseZhongguoPromotionSourceProgressRequestV1(
                   incoming.payload, request, requested_owner_character_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo promotion source progress request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo promotion source progress revision is stale"));
@@ -17467,7 +17472,7 @@ void RunConnectedSession(
                 !current_snapshot.played_character_alive ||
                 current_snapshot.played_character_id !=
                     requested_owner_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo promotion source progress binding changed or is not ready"));
@@ -17490,7 +17495,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit !=
                   xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "application-main promotion source progress executor is unavailable"));
@@ -17541,7 +17546,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main promotion source progress result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17550,12 +17555,12 @@ void RunConnectedSession(
           xar::ck3_11906::ZhongguoIncidentSnapshotRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoIncidentSnapshotRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo incident snapshot request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo incident snapshot revision is stale"));
@@ -17567,7 +17572,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo incident snapshot changed or is not "
@@ -17605,7 +17610,7 @@ void RunConnectedSession(
                   error =
                       "application-main ZhongGuo incident executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -17661,7 +17666,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo incident result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17672,13 +17677,13 @@ void RunConnectedSession(
           if (!xar::ck3_11906::
                   ParseZhongguoManagerSubordinateSelectorRequestV1(
                       incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo manager/subordinate selector request is "
                           "malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo manager/subordinate selector revision is "
@@ -17691,7 +17696,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo manager/subordinate selector snapshot "
@@ -17733,7 +17738,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo manager/subordinate selector "
                       "executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -17787,7 +17792,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo manager/subordinate selector "
                       "result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17798,13 +17803,13 @@ void RunConnectedSession(
           if (!xar::ck3_11906::
                   ParseZhongguoManagerGovernanceSnapshotRequestV1(
                       incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo manager-governance snapshot request is "
                           "malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo manager-governance snapshot revision is "
@@ -17817,7 +17822,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo manager-governance snapshot changed or "
@@ -17864,7 +17869,7 @@ void RunConnectedSession(
                   error = "application-main ZhongGuo manager-governance "
                           "executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -17919,7 +17924,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo manager-governance result "
                       "was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -17928,18 +17933,18 @@ void RunConnectedSession(
           xar::ck3_11906::ZhongguoScoreboardStateRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoScoreboardStateRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo scoreboard state request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo scoreboard state revision is stale"));
           } else if (request.connection_generation !=
                      connection_generation) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo scoreboard state connection generation "
@@ -17952,7 +17957,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo scoreboard state changed or is not "
@@ -18002,7 +18007,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo scoreboard state executor "
                       "is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -18058,7 +18063,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo scoreboard state result was "
                       "not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18067,18 +18072,18 @@ void RunConnectedSession(
           xar::game::ZhongguoScoreboardActionRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoScoreboardActionRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo scoreboard action request is malformed"));
           } else if (request.expected_native_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo scoreboard action revision is stale"));
           } else if (request.expected_connection_generation !=
                      connection_generation) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo scoreboard action connection generation "
@@ -18093,7 +18098,7 @@ void RunConnectedSession(
                 !current_snapshot.played_character_alive ||
                 current_snapshot.played_character_id !=
                     request.expected_player_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo scoreboard action binding changed or "
@@ -18149,7 +18154,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo scoreboard action executor "
                       "is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -18209,7 +18214,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo scoreboard action result "
                       "was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18218,20 +18223,20 @@ void RunConnectedSession(
           xar::game::ZhongguoReviewNowActionRequestV1 request{};
           if (!xar::ck3_11906::ParseZhongguoReviewNowActionRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo review-now action request is malformed"));
           } else if (request.expected_native_revision != state_revision ||
                      request.expected_revision !=
                          zhongguo_promotion_source_progress_query_sequence) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo review-now action source revision is stale"));
           } else if (request.expected_connection_generation !=
                      connection_generation) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "ZhongGuo review-now action connection generation is stale"));
@@ -18245,7 +18250,7 @@ void RunConnectedSession(
                 !current_snapshot.played_character_alive ||
                 current_snapshot.played_character_id !=
                     request.expected_player_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "ZhongGuo review-now action binding changed or is not ready"));
@@ -18275,7 +18280,7 @@ void RunConnectedSession(
                   &action, action.ticket);
               if (submit !=
                   xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "application-main review-now action executor is unavailable"));
@@ -18324,7 +18329,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main review-now action result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18336,14 +18341,14 @@ void RunConnectedSession(
           if (!xar::ck3_11906::
                   ParseZhongguoWorkforceCollectiveSnapshotRequestV1(
                       incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(
                     request_id, step, false,
                     "ZhongGuo Workforce collective snapshot request is "
                     "malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(
                     request_id, step, false,
@@ -18357,7 +18362,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(
                       request_id, step, false,
@@ -18398,7 +18403,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo Workforce collective "
                       "executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -18455,7 +18460,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo Workforce collective result "
                       "was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18467,14 +18472,14 @@ void RunConnectedSession(
           if (!xar::ck3_11906::
                   ParseZhongguoWorkforceNormalExitSnapshotRequestV1(
                       incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(
                     request_id, step, false,
                     "ZhongGuo Workforce normal-exit snapshot request is "
                     "malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(
                     request_id, step, false,
@@ -18488,7 +18493,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(
                       request_id, step, false,
@@ -18529,7 +18534,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo Workforce normal-exit "
                       "executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -18586,7 +18591,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo Workforce normal-exit "
                       "result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18597,13 +18602,13 @@ void RunConnectedSession(
           if (!xar::ck3_11906::
                   ParseZhongguoAiOwnedCaseSnapshotRequestV1(
                       incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(
                     request_id, step, false,
                     "ZhongGuo AI-owned case snapshot request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(
                     request_id, step, false,
@@ -18616,7 +18621,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(
                       request_id, step, false,
@@ -18657,7 +18662,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo AI-owned case executor is "
                       "busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -18713,7 +18718,7 @@ void RunConnectedSession(
                       "application-main ZhongGuo AI-owned case result was "
                       "not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18721,12 +18726,12 @@ void RunConnectedSession(
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseLoadedFeatureManifestExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "loaded-feature expected revision is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "loaded-feature snapshot revision is stale"));
@@ -18737,7 +18742,7 @@ void RunConnectedSession(
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "loaded-feature snapshot changed or is not ready"));
@@ -18772,7 +18777,7 @@ void RunConnectedSession(
                                              mailbox_busy) {
                   error = "application-main loaded-feature executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -18828,7 +18833,7 @@ void RunConnectedSession(
                       "application-main loaded-feature result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18841,12 +18846,12 @@ void RunConnectedSession(
                   ParsePendingCharacterInteractionContextRequestV1(
                       incoming.payload, expected_revision,
                       pending_interaction_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "pending-interaction context request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "pending-interaction context snapshot revision is "
@@ -18862,7 +18867,7 @@ void RunConnectedSession(
                 !current_snapshot.has_pending_character_interaction ||
                 current_snapshot.pending_character_interaction_id !=
                     pending_interaction_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "pending-interaction context snapshot changed or "
@@ -18926,7 +18931,7 @@ void RunConnectedSession(
                       "application-main pending-interaction context executor "
                       "is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -18984,7 +18989,7 @@ void RunConnectedSession(
                       "application-main pending-interaction context result "
                       "was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -18994,12 +18999,12 @@ void RunConnectedSession(
           const bool request_valid = xar::bridge::JsonUnsignedField(
               incoming.payload, "expected_revision", expected_revision);
           if (!request_valid) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "coat-of-arms export request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "coat-of-arms export snapshot revision is stale"));
@@ -19013,7 +19018,7 @@ void RunConnectedSession(
                           current_snapshot == previous_snapshot.value()
                     : !previous_snapshot.has_value();
             if (!starting_binding_stable) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "coat-of-arms export snapshot changed"));
@@ -19039,7 +19044,7 @@ void RunConnectedSession(
                                              invalid_request) {
                   error = "coat-of-arms designer export request is invalid";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait =
@@ -19086,7 +19091,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "coat-of-arms designer export was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19116,12 +19121,12 @@ void RunConnectedSession(
                 return static_cast<unsigned char>(byte) >= 0x80U;
               });
           if (!request_valid) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "coat-of-arms source request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "coat-of-arms source snapshot revision is stale"));
@@ -19135,7 +19140,7 @@ void RunConnectedSession(
                           current_snapshot == previous_snapshot.value()
                     : !previous_snapshot.has_value();
             if (!starting_binding_stable) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "coat-of-arms source snapshot changed"));
@@ -19161,7 +19166,7 @@ void RunConnectedSession(
                                              invalid_request) {
                   error = "coat-of-arms designer probe request is invalid";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait =
@@ -19208,7 +19213,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "coat-of-arms designer result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19218,12 +19223,12 @@ void RunConnectedSession(
           if (!xar::ck3_11906::ParseEventWindowContextRequestV1(
                   incoming.payload, expected_revision,
                   event_instance_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "event-window context request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "event-window context snapshot revision is stale"));
@@ -19238,7 +19243,7 @@ void RunConnectedSession(
                 !current_snapshot.has_active_event ||
                 current_snapshot.active_event_instance_id !=
                     event_instance_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "event-window context snapshot changed or is not "
@@ -19270,7 +19275,7 @@ void RunConnectedSession(
                                              mailbox_busy) {
                   error = "application-main event-window executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -19325,7 +19330,7 @@ void RunConnectedSession(
                       "application-main event-window result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19341,11 +19346,11 @@ void RunConnectedSession(
                   incoming.payload, expected_revision) ||
               !xar::ck3_11906::ParsePlayerEpidemicRecoveryStepV1(
                   step, requested_title_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "epidemic recovery request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "epidemic recovery revision is stale"));
           } else {
@@ -19356,7 +19361,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "epidemic recovery frame is not ready"));
             } else {
@@ -19376,7 +19381,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "epidemic recovery executor unavailable"));
               } else {
@@ -19417,7 +19422,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "epidemic recovery result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19435,11 +19440,11 @@ void RunConnectedSession(
               step, requested_ransom_ordinal);
           if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "prisoner collection request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "prisoner collection revision is stale"));
           } else {
@@ -19450,7 +19455,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "prisoner collection frame is not ready"));
             } else {
@@ -19469,7 +19474,7 @@ void RunConnectedSession(
                   &query, query.ticket, &queued_wake_trace);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "prisoner collection executor unavailable"));
               } else {
@@ -19567,7 +19572,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "prisoner collection result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19616,7 +19621,7 @@ void RunConnectedSession(
               before.has_played_character && before.played_character_alive &&
               before.played_character_id == quote->jailer_character_id;
           if (!frame_ready) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "private ransom quote or frame is stale"));
           } else {
@@ -19635,7 +19640,7 @@ void RunConnectedSession(
             if (submit != xar::ck3_11906::
                               MainThreadQuerySubmitResultV1::submitted) {
               state.player_prisoner_ransom_may_have_submitted = false;
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "private ransom executor unavailable"));
             } else {
@@ -19663,7 +19668,7 @@ void RunConnectedSession(
               const bool reclaim_ok =
                   reclaimed == xar::ck3_11906::
                                    MainThreadQueryReclaimResultV1::reclaimed;
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, pending && reclaim_ok
                             ? CommandResultFrame(
                                   request_id, step, true,
@@ -19681,11 +19686,11 @@ void RunConnectedSession(
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "epidemic treatment presence request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "epidemic treatment presence revision is stale"));
           } else {
@@ -19696,7 +19701,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "epidemic treatment presence frame is not ready"));
             } else {
@@ -19716,7 +19721,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "epidemic treatment presence executor unavailable"));
               } else {
@@ -19761,7 +19766,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "epidemic treatment presence result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19772,12 +19777,12 @@ void RunConnectedSession(
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "timeline-blocker context request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "timeline-blocker context snapshot revision is stale"));
@@ -19789,7 +19794,7 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "timeline-blocker context snapshot changed or is "
@@ -19832,7 +19837,7 @@ void RunConnectedSession(
                   error =
                       "application-main timeline-blocker executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -19890,7 +19895,7 @@ void RunConnectedSession(
                       "application-main timeline-blocker result was not "
                       "reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19899,12 +19904,12 @@ void RunConnectedSession(
           xar::ck3_11906::DeathSuccessionModalContinueRequestV1 request{};
           if (!xar::ck3_11906::ParseDeathSuccessionModalContinueRequestV1(
                   incoming.payload, request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "death-succession modal continue request is malformed"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "death-succession modal continue snapshot revision is stale"));
@@ -19919,7 +19924,7 @@ void RunConnectedSession(
                 current_snapshot.date_raw != request.expected_date_raw ||
                 current_snapshot.played_character_id !=
                     request.expected_played_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "death-succession modal continue frame changed or is not ready"));
@@ -19943,7 +19948,7 @@ void RunConnectedSession(
                       &action, action.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "application-main death-succession modal continue executor is unavailable"));
@@ -19989,7 +19994,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main death-succession modal continue result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -19997,13 +20002,13 @@ void RunConnectedSession(
         } else if (step == "query-declarable-wars") {
           declarable_wars.clear();
           if (!xar::game::ReadDeclarableWars(game, declarable_wars)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "CK3 declarable-war query is unavailable"));
           } else {
             ++declaration_query_sequence;
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, DeclarableWarsResultFrame(
                           request_id, declaration_query_sequence,
                           declarable_wars));
@@ -20022,7 +20027,7 @@ void RunConnectedSession(
                           step, m5_target_character_id)
                     : xar::ck3_11906::ParseM5WarPrimaryPrivateStepV1(
                           step, m5_target_character_id))) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "M5 current-primary target is malformed"));
           } else {
@@ -20037,7 +20042,7 @@ void RunConnectedSession(
                     game, m5_target_character_id, legal) !=
                     xar::game::ReadDeclarableWarsResult::available ||
                 legal.empty()) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "M5 current-primary paused legal frame is unavailable"));
@@ -20082,7 +20087,7 @@ void RunConnectedSession(
                   &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "M5 current-primary application-main boundary is unavailable"));
@@ -20124,7 +20129,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "M5 current-primary result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -20141,7 +20146,7 @@ void RunConnectedSession(
                   step, actor_character_id, war_id, public_army_id) ||
               !xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "actor army role IDs are malformed"));
           } else {
@@ -20153,7 +20158,7 @@ void RunConnectedSession(
                 !before.map_ready || !before.has_played_character ||
                 !before.played_character_alive ||
                 before.played_character_id != actor_character_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "actor army role paused actor frame unavailable"));
@@ -20178,7 +20183,7 @@ void RunConnectedSession(
                   &query, query.ticket, &wake_trace);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, ActorArmyRolePrivateFailureFrameV1(
                               request_id, step,
                               "actor army role application-main boundary unavailable",
@@ -20235,7 +20240,7 @@ void RunConnectedSession(
                       "actor army role result was not reclaimable",
                       reclaim_diagnostics, static_cast<int>(reclaim));
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -20247,7 +20252,7 @@ void RunConnectedSession(
           std::int32_t minor_target_character_id = -1;
           if (!xar::ck3_11906::ParseMinorReligiousWarDefendersPrivateStepV1(
                   step, minor_target_character_id)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "minor religious war target is malformed"));
           } else {
@@ -20261,7 +20266,7 @@ void RunConnectedSession(
                 xar::game::ReadDeclarableWarsForTarget(
                     game, minor_target_character_id, legal) !=
                     xar::game::ReadDeclarableWarsResult::available) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "minor religious war paused legal frame is unavailable"));
@@ -20272,7 +20277,7 @@ void RunConnectedSession(
                   matching.push_back(row);
               }
               if (matching.size() != 1) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "exactly one final-legal minor_religious_war row is required"));
@@ -20302,7 +20307,7 @@ void RunConnectedSession(
                         &query, query.ticket);
                 if (submit != xar::ck3_11906::
                                   MainThreadQuerySubmitResultV1::submitted) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "minor religious war application-main boundary is unavailable"));
@@ -20344,7 +20349,7 @@ void RunConnectedSession(
                         request_id, step, false,
                         "minor religious war defenders result was not reclaimable");
                   }
-                  connected = xar::bridge::WriteFrame(pipe, response);
+                  connected = write_frame(pipe, response);
                 }
               }
             }
@@ -20356,14 +20361,14 @@ void RunConnectedSession(
           std::vector<std::int32_t> target_character_ids;
           if (!xar::ck3_11906::ParseWarEntryAssessmentsV1Step(
                   step, target_character_ids)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "war-entry assessment request is malformed"));
           } else if (target_character_ids.size() !=
                      static_cast<std::size_t>(xar::ck3_11906::
                          kWarEntryAssessmentsV1FirstLiveMaximumTargets)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "first-live war-entry query requires one target"));
@@ -20374,7 +20379,7 @@ void RunConnectedSession(
             if (!previous_snapshot.has_value() || state_revision == 0 ||
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value()) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "war-entry snapshot changed; retry after heartbeat"));
@@ -20382,7 +20387,7 @@ void RunConnectedSession(
                            game, target_character_ids.front(),
                            current_declarations) !=
                        xar::game::ReadDeclarableWarsResult::available) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "war-entry declarations are unavailable"));
@@ -20442,7 +20447,7 @@ void RunConnectedSession(
                                              mailbox_busy) {
                   error = "application-main war-entry executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -20490,7 +20495,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main war-entry result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -20503,7 +20508,7 @@ void RunConnectedSession(
               query_result ==
                   xar::game::ReadArmyStrengthsResult::partial) {
             ++army_strength_query_sequence;
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, ArmyStrengthsResultFrame(
                           request_id, army_strength_query_sequence,
                           query_result, strengths));
@@ -20518,7 +20523,7 @@ void RunConnectedSession(
                            no_played_character) {
               error = "no living played CK3 character";
             }
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false, error));
           }
         } else if (step.starts_with(
@@ -20530,13 +20535,13 @@ void RunConnectedSession(
               !xar::ck3_11906::
                   ParseCombatSimulationInputsV3ExpectedRevision(
                       incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "combat phase-event step or revision is not canonical"));
           } else if (expected_revision != state_revision ||
                      !previous_snapshot.has_value() || state_revision == 0) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "combat phase-event expected revision is stale"));
@@ -20545,7 +20550,7 @@ void RunConnectedSession(
             if (!xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "combat phase-event snapshot changed"));
@@ -20564,7 +20569,7 @@ void RunConnectedSession(
                       &query, query.ticket);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "application-main combat phase-event executor is unavailable"));
@@ -20608,7 +20613,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "combat phase-event application-main result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -20621,12 +20626,12 @@ void RunConnectedSession(
               !xar::ck3_11906::
                   ParseCombatSimulationInputsV3ExpectedRevision(
                       incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "combat-input v3 query step is not canonical"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "combat-input v3 expected revision is stale"));
@@ -20636,7 +20641,7 @@ void RunConnectedSession(
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "combat-input v3 snapshot changed; retry after heartbeat"));
@@ -20669,7 +20674,7 @@ void RunConnectedSession(
                                              mailbox_busy) {
                   error = "application-main combat-input v3 executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -20731,7 +20736,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main combat-input v3 result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -20740,7 +20745,7 @@ void RunConnectedSession(
           xar::game::CombatSimulationInputsRequest combat_request{};
           if (!xar::game::ParseCombatSimulationInputsStep(step,
                                                           combat_request)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "combat-input query step is not canonical"));
@@ -20754,7 +20759,7 @@ void RunConnectedSession(
                 query_result ==
                     xar::game::ReadCombatSimulationInputsResult::partial) {
               ++combat_inputs_query_sequence;
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CombatSimulationInputsResultFrame(
                             request_id, step, combat_inputs_query_sequence,
                             query_result, snapshot));
@@ -20791,7 +20796,7 @@ void RunConnectedSession(
               case xar::game::ReadCombatSimulationInputsResult::unavailable:
                 break;
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -20804,7 +20809,7 @@ void RunConnectedSession(
             }
           }
           if (selected == nullptr) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "declare-war choice is missing or stale; query first"));
@@ -20812,7 +20817,7 @@ void RunConnectedSession(
             const auto result =
                 xar::game::SubmitDeclareWar(game, *selected);
             if (result == xar::game::DeclareWarResult::submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
               declarable_wars.clear();
@@ -20832,7 +20837,7 @@ void RunConnectedSession(
                          xar::game::DeclareWarResult::validation_failed) {
                 error = "CK3 rejected declare-war validation";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -20845,7 +20850,7 @@ void RunConnectedSession(
                        "query-outbound-war-white-peace-status-v1-")) {
           const auto war_id = OutboundWarWhitePeaceStatusQueryStep(step);
           if (!war_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid query-outbound-war-white-peace-status-v1-"
@@ -20855,20 +20860,20 @@ void RunConnectedSession(
             if (!xar::ck3_11906::
                     ParseCampaignRootContextExpectedRevisionV1(
                         incoming.payload, expected_revision)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "outbound white-peace status expected revision "
                             "is malformed"));
             } else if (expected_revision != state_revision) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "outbound white-peace status snapshot revision "
                             "is stale"));
             } else if (!previous_snapshot.has_value() ||
                        state_revision == 0) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "outbound white-peace status admission snapshot "
@@ -20876,7 +20881,7 @@ void RunConnectedSession(
             } else {
               xar::game::Snapshot admission_snapshot{};
               if (!xar::game::ReadSnapshot(game, admission_snapshot)) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "outbound white-peace status admission "
@@ -20886,7 +20891,7 @@ void RunConnectedSession(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
                 if (connected) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "outbound white-peace status admission "
@@ -20896,7 +20901,7 @@ void RunConnectedSession(
                          !admission_snapshot.map_ready ||
                          !admission_snapshot.has_played_character ||
                          !admission_snapshot.played_character_alive) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "outbound white-peace status query requires a "
@@ -20908,7 +20913,7 @@ void RunConnectedSession(
                         game, war_id.value(), status);
                 xar::game::Snapshot completion_snapshot{};
                 if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "outbound white-peace status completion "
@@ -20918,7 +20923,7 @@ void RunConnectedSession(
                       pipe, game, previous_snapshot, state_revision,
                       checkpoint_submission, published_checkpoint_sequence);
                   if (connected) {
-                    connected = xar::bridge::WriteFrame(
+                    connected = write_frame(
                         pipe, CommandResultFrame(
                                   request_id, step, false,
                                   "outbound white-peace status completion "
@@ -20930,7 +20935,7 @@ void RunConnectedSession(
                         available) {
                   const auto next_query_sequence =
                       outbound_war_white_peace_status_query_sequence + 1;
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, OutboundWarWhitePeaceStatusResultFrame(
                                 request_id, step, next_query_sequence,
                                 status));
@@ -20973,7 +20978,7 @@ void RunConnectedSession(
                     error = "outbound white-peace status changed during the "
                             "paused query; retry after heartbeat";
                   }
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe,
                       CommandResultFrame(request_id, step, false, error));
                 }
@@ -20984,7 +20989,7 @@ void RunConnectedSession(
                        "query-war-termination-options-")) {
           const auto war_id = WarTerminationQueryStep(step);
           if (!war_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid query-war-termination-options-<war_id> "
@@ -20994,18 +20999,18 @@ void RunConnectedSession(
             if (!xar::ck3_11906::
                     ParseCampaignRootContextExpectedRevisionV1(
                         incoming.payload, expected_revision)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "war-termination expected revision is malformed"));
             } else if (expected_revision != state_revision) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "war-termination snapshot revision is stale"));
             } else if (!previous_snapshot.has_value() ||
                        state_revision == 0) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "war-termination admission snapshot is "
@@ -21013,7 +21018,7 @@ void RunConnectedSession(
             } else {
               xar::game::Snapshot admission_snapshot{};
               if (!xar::game::ReadSnapshot(game, admission_snapshot)) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "war-termination admission snapshot read "
@@ -21023,7 +21028,7 @@ void RunConnectedSession(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
                 if (connected) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "war-termination admission snapshot changed; "
@@ -21033,7 +21038,7 @@ void RunConnectedSession(
                          !admission_snapshot.map_ready ||
                          !admission_snapshot.has_played_character ||
                          !admission_snapshot.played_character_alive) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "war-termination query requires a ready paused "
@@ -21045,7 +21050,7 @@ void RunConnectedSession(
                         game, war_id.value(), options);
                 xar::game::Snapshot completion_snapshot{};
                 if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "war-termination completion snapshot read "
@@ -21055,7 +21060,7 @@ void RunConnectedSession(
                       pipe, game, previous_snapshot, state_revision,
                       checkpoint_submission, published_checkpoint_sequence);
                   if (connected) {
-                    connected = xar::bridge::WriteFrame(
+                    connected = write_frame(
                         pipe, CommandResultFrame(
                                   request_id, step, false,
                                   "war-termination completion snapshot "
@@ -21066,7 +21071,7 @@ void RunConnectedSession(
                     xar::game::ReadWarTerminationOptionsResult::available) {
                   const auto next_query_sequence =
                       war_termination_query_sequence + 1;
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, WarTerminationOptionsResultFrame(
                                 request_id, step, next_query_sequence,
                                 options));
@@ -21095,7 +21100,7 @@ void RunConnectedSession(
                     error =
                         "played CK3 character is not a war participant";
                   }
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe,
                       CommandResultFrame(request_id, step, false, error));
                 }
@@ -21111,7 +21116,7 @@ void RunConnectedSession(
                   incoming.payload, expected_revision) ||
               expected_revision != state_revision ||
               !previous_snapshot.has_value() || state_revision == 0) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "war prisoner release query identity or revision is invalid"));
@@ -21122,7 +21127,7 @@ void RunConnectedSession(
                 !admission.paused || !admission.map_ready ||
                 !admission.has_played_character ||
                 !admission.played_character_alive) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "war prisoner release query requires a stable paused map"));
@@ -21138,7 +21143,7 @@ void RunConnectedSession(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
                 if (connected) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "war prisoner release query frame changed"));
@@ -21151,7 +21156,7 @@ void RunConnectedSession(
                          value.primary_and_first_three_successors_scanned) {
                 const auto next_prisoner_query_sequence =
                     war_prisoner_release_pairs_query_sequence + 1;
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, WarPrisonerReleasePairsResultFrameV1(
                               request_id, step, next_prisoner_query_sequence, state_revision,
                               value));
@@ -21159,7 +21164,7 @@ void RunConnectedSession(
                   war_prisoner_release_pairs_query_sequence =
                       next_prisoner_query_sequence;
               } else {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "war prisoner release source scan is unavailable"));
@@ -21173,7 +21178,7 @@ void RunConnectedSession(
                          kRaiktorWarBoundLossCleanupV1StepPrefix)) {
           const auto war_id = RaiktorWarBoundLossCleanupQueryStep(step);
           if (!war_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid query-raiktor-war-bound-loss-cleanup-v1-"
@@ -21181,13 +21186,13 @@ void RunConnectedSession(
           } else if (!raiktor_war_bound_loss_baseline.has_value() ||
                      raiktor_war_bound_loss_baseline->frozen_active.war_id !=
                          war_id.value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "no same-connection frozen war-bound baseline for "
                           "requested WarID"));
           } else if (!raiktor_war_bound_loss_termination_submitted) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "same-connection termination ACK is required before "
@@ -21201,7 +21206,7 @@ void RunConnectedSession(
                   pipe, game, previous_snapshot, state_revision,
                   checkpoint_submission, published_checkpoint_sequence);
               if (connected) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "war-bound cleanup admission snapshot changed; "
@@ -21221,7 +21226,7 @@ void RunConnectedSession(
                   !admission_snapshot.played_character_alive ||
                   admission_snapshot.played_character_id !=
                       baseline.frozen_active.owner_character_id) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               !frozen_war_absent
@@ -21248,7 +21253,7 @@ void RunConnectedSession(
                       pipe, game, previous_snapshot, state_revision,
                       checkpoint_submission, published_checkpoint_sequence);
                   if (connected) {
-                    connected = xar::bridge::WriteFrame(
+                    connected = write_frame(
                         pipe, CommandResultFrame(
                                   request_id, step, false,
                                   "war-bound cleanup completion snapshot "
@@ -21257,7 +21262,7 @@ void RunConnectedSession(
                 } else if (read) {
                   const auto next_sequence =
                       raiktor_war_bound_loss_cleanup_query_sequence + 1;
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, RaiktorWarBoundLossCleanupResultFrame(
                                 request_id, step, next_sequence, cleanup));
                   if (connected) {
@@ -21281,7 +21286,7 @@ void RunConnectedSession(
                     error = "war-bound cleanup identity/state contract was "
                             "rejected";
                   }
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe,
                       CommandResultFrame(request_id, step, false, error));
                 }
@@ -21297,7 +21302,7 @@ void RunConnectedSession(
           const auto toward_character_id =
               RaiktorActualTruceExpiryQueryStep(step);
           if (!toward_character_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid query-raiktor-actual-truce-expiry-v1-"
@@ -21311,7 +21316,7 @@ void RunConnectedSession(
                   pipe, game, previous_snapshot, state_revision,
                   checkpoint_submission, published_checkpoint_sequence);
               if (connected) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "actual truce-expiry admission snapshot "
@@ -21329,7 +21334,7 @@ void RunConnectedSession(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
                 if (connected) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "actual truce-expiry completion snapshot "
@@ -21345,7 +21350,7 @@ void RunConnectedSession(
                 expiry.snapshot_revision = state_revision;
                 const auto next_sequence =
                     raiktor_actual_truce_expiry_query_sequence + 1;
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, RaiktorActualTruceExpiryResultFrame(
                               request_id, step, next_sequence, expiry));
                 if (connected) {
@@ -21375,7 +21380,7 @@ void RunConnectedSession(
                                             unstable_snapshot) {
                   error = "CK3 actual truce state changed during query";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe,
                     CommandResultFrame(request_id, step, false, error));
               }
@@ -21387,7 +21392,7 @@ void RunConnectedSession(
                        "query-war-termination-terms-v1-")) {
           const auto war_id = WarTerminationTermsQueryStep(step);
           if (!war_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid query-war-termination-terms-v1-<war_id> "
@@ -21401,7 +21406,7 @@ void RunConnectedSession(
                   pipe, game, previous_snapshot, state_revision,
                   checkpoint_submission, published_checkpoint_sequence);
               if (connected) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "war-termination terms admission snapshot "
@@ -21413,7 +21418,7 @@ void RunConnectedSession(
                   game, war_id.value(), terms);
               xar::game::Snapshot completion_snapshot{};
               if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "war-termination terms completion snapshot "
@@ -21423,7 +21428,7 @@ void RunConnectedSession(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
                 if (connected) {
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe, CommandResultFrame(
                                 request_id, step, false,
                                 "war-termination terms completion snapshot "
@@ -21436,14 +21441,14 @@ void RunConnectedSession(
                       xar::game::ReadWarTerminationTermsResult::
                           unsupported_casus_belli) {
                 ++war_termination_terms_query_sequence;
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, WarTerminationTermsResultFrame(
                               request_id, step,
                               war_termination_terms_query_sequence, terms,
                               query_result ==
                                   xar::game::ReadWarTerminationTermsResult::
                                       available,
-                              state_revision, game.descriptor().game_version == "1.20.0.2"));
+                              state_revision, xar::game::IsReviewedCrozierAdapter(game)));
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
                 if (connected &&
                     query_result ==
@@ -21488,7 +21493,7 @@ void RunConnectedSession(
                                player_not_participant) {
                   error = "played CK3 character is not a war participant";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe,
                     CommandResultFrame(request_id, step, false, error));
               }
@@ -21497,7 +21502,7 @@ void RunConnectedSession(
         } else if (step.starts_with("offer-white-peace-")) {
           const auto war_id = OfferWhitePeaceStep(step);
           if (!war_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid offer-white-peace-<war_id> step"));
@@ -21512,7 +21517,7 @@ void RunConnectedSession(
                   raiktor_war_bound_loss_baseline->frozen_active.war_id ==
                       war_id.value();
 #endif
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
@@ -21556,7 +21561,7 @@ void RunConnectedSession(
                              validation_failed) {
                 error = "CK3 rejected offer-white-peace validation";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, false, error));
             }
@@ -21570,7 +21575,7 @@ void RunConnectedSession(
         } else if (step.starts_with("surrender-war-")) {
           const auto war_id = SurrenderWarStep(step);
           if (!war_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid surrender-war-<war_id> step"));
@@ -21585,7 +21590,7 @@ void RunConnectedSession(
                   raiktor_war_bound_loss_baseline->frozen_active.war_id ==
                       war_id.value();
 #endif
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
@@ -21620,7 +21625,7 @@ void RunConnectedSession(
                          xar::game::SurrenderWarResult::validation_failed) {
                 error = "CK3 rejected surrender-war validation";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, false, error));
             }
@@ -21634,7 +21639,7 @@ void RunConnectedSession(
         } else if (step.starts_with("enforce-demands-")) {
           const auto war_id = EnforceDemandsStep(step);
           if (!war_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid enforce-demands-<war_id> step"));
@@ -21642,7 +21647,7 @@ void RunConnectedSession(
             const auto result = xar::game::SubmitEnforceDemands(
                 game, war_id.value());
             if (result == xar::game::EnforceDemandsResult::submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
@@ -21668,7 +21673,7 @@ void RunConnectedSession(
                              validation_failed) {
                 error = "CK3 rejected enforce-demands validation";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -21680,7 +21685,7 @@ void RunConnectedSession(
         } else if (step == "raise-troops-default") {
           const auto result = xar::game::SubmitRaiseTroopsDefault(game);
           if (result == xar::game::RaiseTroopsResult::submitted) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
             std::string_view error = "CK3 raise-troops state is unavailable";
@@ -21694,7 +21699,7 @@ void RunConnectedSession(
                        xar::game::RaiseTroopsResult::validation_failed) {
               error = "CK3 rejected raise-troops validation";
             }
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false, error));
           }
           if (connected) {
@@ -21714,12 +21719,12 @@ void RunConnectedSession(
               !xar::ck3_11906::
                    ParseBattleReinforcementAssignmentExpectedRevisionV1(
                        incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-reinforcement request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-reinforcement expected revision is stale"));
@@ -21729,7 +21734,7 @@ void RunConnectedSession(
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "battle-reinforcement snapshot changed; retry after heartbeat"));
@@ -21762,7 +21767,7 @@ void RunConnectedSession(
                   error =
                       "application-main battle-reinforcement executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe,
                     CommandResultFrame(request_id, step, false, error));
               } else {
@@ -21821,7 +21826,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main battle-reinforcement result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -21836,7 +21841,7 @@ void RunConnectedSession(
               !xar::game::ReadSnapshot(game, current_snapshot) ||
               current_snapshot != previous_snapshot.value() ||
               !current_snapshot.paused) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                     "AI reentry observer requires a stable paused frame"));
           } else {
@@ -21966,7 +21971,7 @@ void RunConnectedSession(
             response += '}';
           }
           response += "]}}}";
-          connected = xar::bridge::WriteFrame(pipe, response);
+          connected = write_frame(pipe, response);
           }
 #endif
         } else if (step.starts_with(
@@ -21979,12 +21984,12 @@ void RunConnectedSession(
               !xar::ck3_11906::
                    ParseBattleTerminalTransitionExpectedRevisionV1(
                        incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-terminal-transition request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-terminal-transition expected revision is stale"));
@@ -21994,7 +21999,7 @@ void RunConnectedSession(
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "battle-terminal-transition snapshot changed; retry after heartbeat"));
@@ -22027,7 +22032,7 @@ void RunConnectedSession(
                   error =
                       "application-main battle-terminal-transition executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe,
                     CommandResultFrame(request_id, step, false, error));
               } else {
@@ -22086,7 +22091,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main battle-terminal-transition result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -22098,12 +22103,12 @@ void RunConnectedSession(
                   step, transition_request) ||
               !xar::ck3_11906::ParseBattleTransitionExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-transition request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-transition expected revision is stale"));
@@ -22113,7 +22118,7 @@ void RunConnectedSession(
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "battle-transition snapshot changed; retry after heartbeat"));
@@ -22145,7 +22150,7 @@ void RunConnectedSession(
                   error =
                       "application-main battle-transition executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe,
                     CommandResultFrame(request_id, step, false, error));
               } else {
@@ -22203,7 +22208,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main battle-transition result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -22216,12 +22221,12 @@ void RunConnectedSession(
                   step, battle_request) ||
               !xar::ck3_11906::ParseBattleControlExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-control-snapshot request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "battle-control expected revision is stale"));
@@ -22231,7 +22236,7 @@ void RunConnectedSession(
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
                 !current_snapshot.paused) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "battle-control snapshot changed; retry after heartbeat"));
@@ -22246,7 +22251,7 @@ void RunConnectedSession(
               if (subject == current_snapshot.player_armies.end() ||
                   !subject->controllable || !subject->in_combat ||
                   subject->retreating) {
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(
                               request_id, step, false,
                               "battle-control subject is outside the active controllable battle scope"));
@@ -22280,7 +22285,7 @@ void RunConnectedSession(
                     error =
                         "application-main battle-control executor is busy";
                   }
-                  connected = xar::bridge::WriteFrame(
+                  connected = write_frame(
                       pipe,
                       CommandResultFrame(request_id, step, false, error));
                 } else {
@@ -22367,7 +22372,7 @@ void RunConnectedSession(
                         request_id, step, false,
                         "application-main battle-control result was not reclaimable");
                   }
-                  connected = xar::bridge::WriteFrame(pipe, response);
+                  connected = write_frame(pipe, response);
                 }
               }
             }
@@ -22380,12 +22385,12 @@ void RunConnectedSession(
                   step, contact_request) ||
               !xar::ck3_11906::ParseActualContactExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "actual-contact-scope request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "actual-contact expected revision is stale"));
@@ -22410,7 +22415,7 @@ void RunConnectedSession(
                 !subject->has_current_province ||
                 subject->current_province_id !=
                     contact_request.target_province_id) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "actual-contact snapshot or subject scope changed"));
@@ -22438,7 +22443,7 @@ void RunConnectedSession(
                                              mailbox_busy) {
                   error = "application-main actual-contact executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -22492,7 +22497,7 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main actual-contact result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
@@ -22504,12 +22509,12 @@ void RunConnectedSession(
                   step, route_request) ||
               !xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "route-contact-horizon request is malformed"));
           } else if (expected_revision != state_revision) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "route-contact expected revision is stale"));
@@ -22518,13 +22523,13 @@ void RunConnectedSession(
             if (!previous_snapshot.has_value() || state_revision == 0 ||
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value()) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "route-contact snapshot changed; retry after heartbeat"));
             } else if (!RouteHostileScopeMatchesSnapshot(
                            current_snapshot, route_request)) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "route-contact hostile scope is incomplete or stale"));
@@ -22552,7 +22557,7 @@ void RunConnectedSession(
                                              mailbox_busy) {
                   error = "application-main route-contact executor is busy";
                 }
-                connected = xar::bridge::WriteFrame(
+                connected = write_frame(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -22610,14 +22615,14 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main route-contact result was not reclaimable");
                 }
-                connected = xar::bridge::WriteFrame(pipe, response);
+                connected = write_frame(pipe, response);
               }
             }
           }
         } else if (step.starts_with("preview-move-army-")) {
           const auto ids = PreviewMoveArmyStep(step);
           if (!ids.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid preview-move-army-<army_id>-to-<province_id> step"));
@@ -22626,7 +22631,7 @@ void RunConnectedSession(
                 game, ids->army_id, ids->province_id);
             if (preview.status ==
                 xar::game::PreviewMoveArmyStatus::available) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, RoutePreviewResultFrame(request_id, step, preview));
             } else {
               std::string_view error =
@@ -22670,14 +22675,14 @@ void RunConnectedSession(
                              route_unavailable) {
                 error = "CK3 could not build a complete move route";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
         } else if (step.starts_with("move-army-")) {
           const auto ids = MoveArmyStep(step);
           if (!ids.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid move-army-<army_id>-to-<province_id> step"));
@@ -22685,7 +22690,7 @@ void RunConnectedSession(
             const auto result = xar::game::SubmitMoveArmy(
                 game, ids->army_id, ids->province_id);
             if (result == xar::game::MoveArmyResult::submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
@@ -22711,7 +22716,7 @@ void RunConnectedSession(
                          xar::game::MoveArmyResult::validation_failed) {
                 error = "CK3 move-army command validation failed";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -22723,7 +22728,7 @@ void RunConnectedSession(
         } else if (step.starts_with("disband-army-")) {
           const auto army_id = DisbandArmyStep(step);
           if (!army_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(request_id, step, false,
                                    "invalid disband-army-<army_id> step"));
@@ -22731,7 +22736,7 @@ void RunConnectedSession(
             const auto result =
                 xar::game::SubmitDisbandArmy(game, army_id.value());
             if (result == xar::game::DisbandArmyResult::submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
             } else {
@@ -22742,7 +22747,7 @@ void RunConnectedSession(
                                        army_not_controllable) {
                 error = "CK3 army is not player-controllable";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -22754,7 +22759,7 @@ void RunConnectedSession(
         } else if (step.starts_with("split-army-half-")) {
           const auto army_id = SplitArmyHalfStep(step);
           if (!army_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe,
                 CommandResultFrame(request_id, step, false,
                                    "invalid split-army-half-<army_id> step"));
@@ -22763,7 +22768,7 @@ void RunConnectedSession(
                 xar::game::SubmitSplitArmyHalf(game, army_id.value());
             if (result ==
                 xar::game::SplitArmyHalfResult::split_submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, true,
                                            "split_submitted"));
             } else {
@@ -22787,7 +22792,7 @@ void RunConnectedSession(
                                        submission_failed) {
                 error = "CK3 rejected split-army-half queue submission";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -22799,7 +22804,7 @@ void RunConnectedSession(
         } else if (step.starts_with("merge-armies-")) {
           const auto army_ids = MergeArmiesStep(step);
           if (!army_ids.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid merge-armies-<destination_army_id>-with-"
@@ -22809,7 +22814,7 @@ void RunConnectedSession(
                 game, army_ids->destination_army_id,
                 army_ids->source_army_id);
             if (result == xar::game::MergeArmiesResult::merge_submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, true,
                                            "merge_submitted"));
             } else {
@@ -22840,7 +22845,7 @@ void RunConnectedSession(
                                        submission_failed) {
                 error = "CK3 rejected merge-armies queue submission";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -22852,7 +22857,7 @@ void RunConnectedSession(
         } else if (step.starts_with("start-assault-")) {
           const auto siege_id = AssaultStep(step, "start-assault-");
           if (!siege_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid start-assault-<siege_id> step"));
@@ -22860,7 +22865,7 @@ void RunConnectedSession(
             const auto result =
                 xar::game::SubmitStartAssault(game, siege_id.value());
             if (result == xar::game::StartAssaultResult::start_submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, true,
                                            "start_submitted"));
             } else {
@@ -22882,7 +22887,7 @@ void RunConnectedSession(
                                        submission_failed) {
                 error = "CK3 rejected start-assault queue submission";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -22894,7 +22899,7 @@ void RunConnectedSession(
         } else if (step.starts_with("stop-assault-")) {
           const auto siege_id = AssaultStep(step, "stop-assault-");
           if (!siege_id.has_value()) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "invalid stop-assault-<siege_id> step"));
@@ -22902,7 +22907,7 @@ void RunConnectedSession(
             const auto result =
                 xar::game::SubmitStopAssault(game, siege_id.value());
             if (result == xar::game::StopAssaultResult::stop_submitted) {
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, true,
                                            "stop_submitted"));
             } else {
@@ -22924,7 +22929,7 @@ void RunConnectedSession(
                                        submission_failed) {
                 error = "CK3 rejected stop-assault queue submission";
               }
-              connected = xar::bridge::WriteFrame(
+              connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
             }
           }
@@ -22938,7 +22943,7 @@ void RunConnectedSession(
           const auto result = xar::game::SubmitSelectEventOption(
               game, option_index.value());
           if (result == xar::game::SelectEventOptionResult::submitted) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
           } else {
             std::string_view error = "CK3 event state is unavailable";
@@ -22949,7 +22954,7 @@ void RunConnectedSession(
                                      option_out_of_range) {
               error = "event option index is out of range";
             }
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false, error));
           }
           if (connected) {
@@ -22961,7 +22966,7 @@ void RunConnectedSession(
           const std::int32_t requested_speed = FixedSpeedStep(step);
           if (requested_speed >= 1 &&
               xar::game::SubmitSetSpeed(game, requested_speed)) {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, true, "submitted"));
             if (connected) {
               connected = PublishSnapshot(pipe, game, previous_snapshot,
@@ -22969,7 +22974,7 @@ void RunConnectedSession(
                                           published_checkpoint_sequence);
             }
           } else {
-            connected = xar::bridge::WriteFrame(
+            connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "unsupported native gameplay step"));
           }
@@ -23013,7 +23018,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
       exact_ck3_build);
   xar::ck3_12002::WorkerAdapter new_worker_adapter(*game, g_main_thread_query_mailbox_v1);
   const bool new_build = game->enabled() &&
-      game->descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64";
+      xar::game::IsReviewedCrozierAdapter(*game);
   const xar::game::GameAdapter &session_game = new_build
       ? static_cast<const xar::game::GameAdapter &>(new_worker_adapter) : *game;
   WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(
@@ -23128,15 +23133,15 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (!game->enabled()) {
     return TRUE;
   }
-  if (game->descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64") {
+  if (xar::game::IsReviewedCrozierAdapter(*game)) {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
     g_sway_invalidation_reason_sink12002.bindings =
         xar::ck3_12002::BindSwayInvalidationReasonImage12002(
             reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-            game->descriptor().executable_sha256);
+            xar::game::ReviewedCrozierAbiSha256(game->descriptor()));
     if (!xar::ck3_12002::InstallSwayCompletionExecutionWithSecondarySink12002(
             reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-            game->descriptor().executable_sha256,
+            xar::game::ReviewedCrozierAbiSha256(game->descriptor()),
             g_sway_completion_execution_recorder12002,
             g_sway_completion_execution_install12002,
             &CaptureSwayInvalidationReasonSink12002,
@@ -23144,7 +23149,7 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       return FALSE;
     if (!xar::ck3_12002::InstallSwayCompletionTermination12002(
             reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-            game->descriptor().executable_sha256,
+            xar::game::ReviewedCrozierAbiSha256(game->descriptor()),
             g_sway_completion_termination_recorder12002,
             g_sway_completion_termination_install12002))
       return FALSE;
@@ -23153,11 +23158,11 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
     const auto cost_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     g_activity_cost_slot12_bindings12002 = xar::ck3_12002::BindCoreImage(
-        cost_base, game->descriptor().executable_sha256);
+        cost_base, xar::game::ReviewedCrozierAbiSha256(game->descriptor()));
     xar::bridge::ActivityCostSlot12EnvironmentV1 cost_environment{};
     cost_environment.enabled = g_activity_cost_slot12_bindings12002.enabled;
     cost_environment.primary_thread_suspended = true;
-    cost_environment.executable_sha256 = game->descriptor().executable_sha256;
+    cost_environment.executable_sha256 = xar::game::ReviewedCrozierAbiSha256(game->descriptor());
     cost_environment.module_base = cost_base;
     cost_environment.read_memory = &ReadActivityCostSlot12MemoryV1;
     cost_environment.read_frame = &ReadActivityCostSlot12FrameV1;
@@ -23175,7 +23180,7 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     environment.primary_thread_suspended_proven = true;
     environment.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     environment.bindings = xar::ck3_12002::BindBattleImage(
-        environment.module_base, game->descriptor().executable_sha256);
+        environment.module_base, xar::game::ReviewedCrozierAbiSha256(game->descriptor()));
     return xar::ck3_12002::InstallBattleTerminalJournalV1(
         g_battle_terminal_journal_12002_v1, environment) ? TRUE : FALSE;
   }

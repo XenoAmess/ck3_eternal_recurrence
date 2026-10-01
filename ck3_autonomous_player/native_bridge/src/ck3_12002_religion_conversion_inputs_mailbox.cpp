@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_religion_conversion_inputs_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
@@ -153,8 +154,8 @@ bool HandlePlayerReligionConversionInputsPrivate12002(const game::GameAdapter &a
   if (!ParsePlayerReligionConversionInputsRequest12002(payload, target, expected)) {
     failure = "player_religion_conversion_inputs_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected && expected != revision)) {
     failure = "player_religion_conversion_inputs_current_frame_unavailable"; return false;
   }
@@ -164,8 +165,8 @@ bool HandlePlayerReligionConversionInputsPrivate12002(const game::GameAdapter &a
     q.envelope.expected_snapshot = published; q.envelope.expected_snapshot_revision = revision;
     q.target_rite_id = target;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    q.gates_bindings = religion::conversion_gates::BindReligionConversionGatesImage12002(base, adapter.descriptor().executable_sha256);
-    q.prediction_bindings = religion_conversion_ai_inputs::BindConversionAIInputsImage12002(base, adapter.descriptor().executable_sha256);
+    q.gates_bindings = religion::conversion_gates::BindReligionConversionGatesImage12002(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    q.prediction_bindings = religion_conversion_ai_inputs::BindConversionAIInputsImage12002(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionConversionInputsMailbox12002(q, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_conversion_inputs_handler_exception"; return false; }
 }

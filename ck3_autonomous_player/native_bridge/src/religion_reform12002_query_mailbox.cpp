@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_reform12002_query_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
@@ -150,8 +151,8 @@ bool HandlePlayerReligionReformPrivate12002(const game::GameAdapter &adapter,
   if (!ParsePlayerReligionReformRevision12002(payload, expected)) {
     failure = "player_religion_reform_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_reform_current_frame_unavailable"; return false;
   }
@@ -163,7 +164,7 @@ bool HandlePlayerReligionReformPrivate12002(const game::GameAdapter &adapter,
     query.envelope.expected_snapshot_revision = revision;
     query.bindings = religion_reform::query::BindReformQueryImage12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        adapter.descriptor().executable_sha256);
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionReformMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_reform_handler_exception"; return false; }
 }

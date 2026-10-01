@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_prisoner_mailbox.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -181,14 +182,14 @@ bool HandlePlayerPrisonerPrivate12002(const game::GameAdapter &adapter,
   serialized.clear(); failure.clear();
   std::uint64_t expected = 0;
   if (!bridge::JsonUnsignedField(payload, "expected_revision", expected) ||
-      expected == 0 || expected != revision || adapter.descriptor().game_version != "1.20.0.2" ||
+      expected == 0 || expected != revision || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
       !published.paused || !published.map_ready || !published.has_played_character ||
       !published.played_character_alive || published.played_character_id <= 0) {
     failure = "prisoner request revision or paused player frame is stale";
     return true;
   }
   const auto module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  const auto bindings = BindPrisonerRansomImage(module, adapter.descriptor().executable_sha256);
+  const auto bindings = BindPrisonerRansomImage(module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
   if (is_war) {
     const auto war_id = ParsePrisonerWarRetentionStep12002(step);
     if (!war_id) { failure = "war prisoner release query identity is invalid"; return true; }
@@ -197,7 +198,7 @@ bool HandlePlayerPrisonerPrivate12002(const game::GameAdapter &adapter,
     query.war_retention = true;
     query.war_id = *war_id;
     query.war_bindings = BindPrisonerWarRetentionImage(module,
-        adapter.descriptor().executable_sha256);
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (!RunMailbox(mailbox, query.envelope, &ExecutePlayerPrisonerCollection12002, failure)) return true;
     if (!query.completed) { failure = "war prisoner release source scan is unavailable"; return true; }
     const auto value = SerializePrisonerWarRetentionV1(query.war_observation);

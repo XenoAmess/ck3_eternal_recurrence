@@ -12,9 +12,9 @@ import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import (
-    private_native_provenance, private_native_readback_matches,
+    private_native_build_identity, private_native_provenance, private_native_readback_matches,
 )
-from .version_identity import CK3_12002
+from .version_identity import CK3_12002, CK3_12003
 
 
 QUERY_STEP = "query-realm-law-crown-action-v1-private"
@@ -50,7 +50,7 @@ def _paused(driver: object, *, public_revision: int | None = None,
             or type(before.get("date_raw")) is not int
             or (public_revision is not None and before.get("revision") != public_revision)
             or (native_revision is not None and before.get("native_revision") != native_revision)
-            or private_native_provenance(before)["exact_ck3_build"] != CK3_12002.game_version):
+            or private_native_build_identity(before) not in (CK3_12002, CK3_12003)):
         raise BridgeUnavailableError("private crown-law action requires its exact paused 1.20 frame")
     return before
 
@@ -75,13 +75,14 @@ def _send(driver: object, before: Mapping[str, object], *, step: str,
     if frame.get("ok") is not True:
         raise BridgeUnavailableError("private crown-law native RED: " + str(frame.get("error", "unknown")))
     envelope = frame.get("result")
+    build = private_native_build_identity(before)
     if (not isinstance(envelope, dict) or envelope.get("step") != step
             or envelope.get("accepted") is not True
             or envelope.get("private_build") is not True
             or envelope.get("advertised") is not False
             or envelope.get("backend_id") != "native-headless"
-            or envelope.get("game_version") != CK3_12002.game_version
-            or envelope.get("executable_sha256") != CK3_12002.executable_sha256
+            or envelope.get("game_version") != build.game_version
+            or envelope.get("executable_sha256") != build.executable_sha256
             or envelope.get("read_only") is not (step != SUBMIT_STEP)):
         raise BridgeUnavailableError("private crown-law envelope malformed")
     after = driver.take_snapshot()

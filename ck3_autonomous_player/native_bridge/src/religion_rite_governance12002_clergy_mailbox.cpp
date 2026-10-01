@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_rite_governance12002_clergy_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
@@ -151,8 +152,8 @@ bool HandlePlayerClergyAppointmentPrivate12002(
   if (!ParsePlayerClergyAppointmentRequest12002(payload,request)) {
     failure = "player_clergy_appointment_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 || !ValidFrame(published,revision) ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 || !ValidFrame(published,revision) ||
       (request.expected_revision && request.expected_revision != revision)) {
     failure = "player_clergy_appointment_current_frame_unavailable"; return false;
   }
@@ -164,7 +165,7 @@ bool HandlePlayerClergyAppointmentPrivate12002(
     query.envelope.expected_snapshot_revision = revision;
     query.request = request;
     query.bindings = religion::clergy::BindClergyAppointmentImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),adapter.descriptor().executable_sha256);
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerClergyAppointmentMailbox12002(query,request_id,serialized,failure);
   } catch (...) { failure = "player_clergy_appointment_handler_exception"; return false; }
 }

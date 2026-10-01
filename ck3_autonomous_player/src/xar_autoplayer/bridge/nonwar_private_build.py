@@ -10,7 +10,14 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
-from .version_identity import CK3_11906, NativeBuildIdentity, require_exact_native_build
+from .version_identity import CK3_11906, CK3_12003, NativeBuildIdentity, require_exact_native_build
+
+
+def private_native_schema(schema: str, snapshot: Mapping[str, object]) -> str:
+    """Select the adapter's schema label while retaining its reviewed DTO layout."""
+    if private_native_build_identity(snapshot) == CK3_12003 and schema.startswith("ck3_12002_"):
+        return "ck3_12003_" + schema[len("ck3_12002_"):]
+    return schema
 
 
 def private_native_build_identity(snapshot: Mapping[str, object]) -> NativeBuildIdentity:

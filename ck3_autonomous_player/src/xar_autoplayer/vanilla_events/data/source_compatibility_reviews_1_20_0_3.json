@@ -1,0 +1,44 @@
+{
+  "ck3_build": "1.20.0.3",
+  "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "events": {
+    "epidemic_events.1100": {
+      "manual_review": {
+        "called_block": {
+          "1.20.0.2": {
+            "block_bytes": 536,
+            "block_sha256": "AE744245F90E71B65C1EA507911BA0140955A7DD7853B8AA8DDD637A356248BF",
+            "end_line": 12214,
+            "file_sha256": "50B0EBEEAB835B98FC2A159BAA5806078D706B3F988ECB5A6C1E025C86465161",
+            "line": 12202
+          },
+          "1.20.0.3": {
+            "block_bytes": 536,
+            "block_sha256": "AE744245F90E71B65C1EA507911BA0140955A7DD7853B8AA8DDD637A356248BF",
+            "end_line": 12238,
+            "file_sha256": "FC4C77974A7844C31C1271DCC2ACE24B17906620A832658919AA281E42A2B94F",
+            "line": 12226
+          }
+        },
+        "called_block_key": "pam_epidemic_arrival_spiritual_fulfillment_loss_effect",
+        "classification": "unchanged-direct-called-effect-in-changed-file",
+        "live_acceptance_performed": false,
+        "reason": "The complete pam_effects file changed outside pam_epidemic_arrival_spiritual_fulfillment_loss_effect; that called block is byte-identical. Existing bounded continuation and fulfillment limitations are retained.",
+        "status": "current-source-reviewed-bounded-continuation"
+      },
+      "policy_contract_compatible": true,
+      "source_file_sha256": {
+        "common/scripted_effects/pam_effects.txt": "FC4C77974A7844C31C1271DCC2ACE24B17906620A832658919AA281E42A2B94F"
+      }
+    }
+  },
+  "inherited_review_ledger": {
+    "file_sha256": "CCA1A1763E6E7C92CF37F1C75105FD386CF211C0A1EBFD90503C04C8F9DAACFC",
+    "relative_path": "data/source_compatibility_reviews_1_20_0_2.json"
+  },
+  "live_acceptance_performed": false,
+  "old_ck3_build": "1.20.0.2",
+  "review_scope": "Patch source comparison and the one changed registered direct dependency; previous .2 bounded contracts and readiness limits remain.",
+  "schema": "xar.ck3.nonwar-event-source-review-ledger",
+  "schema_version": 1
+}

@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_sway_completion_termination_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -42,7 +43,7 @@ bool HandleSwayCompletionTerminationV1(
     std::uint64_t expected_revision{};
     if (step != kSwayCompletionTerminationStepV1 || !Parse(payload, expected_revision, query.request) ||
         expected_revision != revision || !adapter.enabled() ||
-        adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
         !published.paused || !published.map_ready || !published.has_played_character ||
         !published.played_character_alive ||
         static_cast<std::uint32_t>(published.played_character_id) != query.request.actor_character_id) {

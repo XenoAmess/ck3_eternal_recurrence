@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_doctrine12002_hostility_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
@@ -152,8 +153,8 @@ bool HandlePlayerReligionHostilityPrivate12002(const game::GameAdapter &adapter,
   if (!ParsePlayerReligionHostilityRequest12002(payload, target_rite_id, expected)) {
     failure = "player_religion_hostility_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_hostility_current_frame_unavailable"; return false;
   }
@@ -166,7 +167,7 @@ bool HandlePlayerReligionHostilityPrivate12002(const game::GameAdapter &adapter,
     query.envelope.expected_snapshot_revision = revision;
     query.bindings = religion::doctrine12002::BindHostilityImage12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        adapter.descriptor().executable_sha256);
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionHostilityMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_hostility_handler_exception"; return false; }
 }

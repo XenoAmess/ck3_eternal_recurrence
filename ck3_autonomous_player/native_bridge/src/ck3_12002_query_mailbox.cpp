@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 
 #include <atomic>
 #include <string_view>
@@ -54,8 +55,7 @@ bool OwnsSlot(const QueryMailboxEnvelope &query) noexcept {
       query.executor == nullptr || query.ticket.sequence == 0 ||
       query.expected_snapshot_revision == 0 || !query.entered ||
       !query.game->enabled() ||
-      query.game->descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64" ||
-      query.game->descriptor().executable_sha256 != kExecutableSha256 ||
+      !game::IsReviewedCrozierAdapter(*query.game) ||
       GetCurrentThreadId() != query.execution_stamp.thread_id) {
     return false;
   }

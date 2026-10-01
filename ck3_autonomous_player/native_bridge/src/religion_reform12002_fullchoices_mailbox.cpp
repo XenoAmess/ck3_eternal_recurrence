@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_reform12002_fullchoices_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
@@ -151,8 +152,8 @@ bool HandlePlayerReligionDraftDoctrineChoicesPrivate12002(const game::GameAdapte
   if (!ParsePlayerReligionDraftDoctrineChoicesRevision12002(payload, expected)) {
     failure = "player_religion_draft_doctrine_choices_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_draft_doctrine_choices_current_frame_unavailable"; return false;
   }
@@ -164,7 +165,7 @@ bool HandlePlayerReligionDraftDoctrineChoicesPrivate12002(const game::GameAdapte
     query.envelope.expected_snapshot_revision = revision;
     query.bindings = religion_reform::BindCurrentDraftChoices12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        adapter.descriptor().executable_sha256);
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionDraftDoctrineChoicesMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_draft_doctrine_choices_handler_exception"; return false; }
 }

@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_sway_completion_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -39,7 +40,7 @@ bool HandleSwayCompletionV1(
     SwayCompletionMailboxContextV1 query{};
     if (step != kSwayCompletionStepV1 || !Parse(payload, query.request) ||
         query.request.expected_revision != revision ||
-        !adapter.enabled() || adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+        !adapter.enabled() || xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
         !published.paused || !published.map_ready || !published.has_played_character ||
         !published.played_character_alive ||
         published.played_character_id != query.request.actor_character_id) {
@@ -53,7 +54,7 @@ bool HandleSwayCompletionV1(
     query.envelope.typed_context = &query;
     query.bindings = BindSwayCompletionImage12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        adapter.descriptor().executable_sha256);
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (TrySubmitMainThreadQueryV1(mailbox, &ExecuteSwayCompletionMailboxV1,
                                   &query.envelope, query.envelope.ticket) !=
         MainThreadQuerySubmitResultV1::submitted) {

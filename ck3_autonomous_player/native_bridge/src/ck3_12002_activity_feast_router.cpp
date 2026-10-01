@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "ck3_12002_activity_feast_router.hpp"
 
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
@@ -80,7 +81,7 @@ void AppendString(std::string &output, std::string_view value) {
   output = {};
   const auto *adapter = static_cast<const game::GameAdapter *>(context);
   if (adapter == nullptr || !adapter->enabled() || identifier < 0 ||
-      adapter->descriptor().executable_sha256 != kExecutableSha256)
+      xar::game::ReviewedCrozierAbiSha256(adapter->descriptor()) != kExecutableSha256)
     return false;
   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   if (base == 0) return false;
@@ -104,7 +105,7 @@ void BindQuery(Query &query, const game::GameAdapter &adapter,
   query.enabled = adapter.enabled();
   query.module_base =
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  query.executable_sha256 = adapter.descriptor().executable_sha256;
+  query.executable_sha256 = xar::game::ReviewedCrozierAbiSha256(adapter.descriptor());
   if constexpr (requires { query.native_context; })
     query.native_context = const_cast<game::GameAdapter *>(&adapter);
   else
@@ -285,7 +286,7 @@ bool HandleActivityFeastPrivate12002(
     std::uint64_t requested_revision = 0;
     game::Snapshot current{};
     if (!adapter.enabled() ||
-        adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
         !bridge::JsonUnsignedField(payload, "expected_revision", requested_revision) ||
         revision == 0 || requested_revision != revision ||
         !adapter.read_snapshot(current) || current != published ||

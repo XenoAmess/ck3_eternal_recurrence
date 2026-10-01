@@ -9,8 +9,8 @@ from .driver import BridgeUnavailableError
 from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
-from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, require_exact_native_backend, require_exact_native_build
+from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-rite-members-v1"
@@ -35,11 +35,11 @@ def normalize_player_rite_members_v1(
     value: object, *, snapshot: Mapping[str, object],
 ) -> dict[str, object]:
     """Preserve full native lists, their distinct scope and known-empty/unavailable."""
-    if (not isinstance(value, dict) or set(value) != _KEYS or value["schema"] != SCHEMA
+    if (not isinstance(value, dict) or set(value) != _KEYS or value["schema"] != private_native_schema(SCHEMA, snapshot)
             or value["scope"] != "current_player_rite_and_its_faith"):
         raise ValueError("native player Rite members schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12002 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
         raise ValueError("native player Rite members belong to another build")
     if (type(value["available"]) is not bool or type(value["capture_epoch"]) is not int
             or not 0 <= value["capture_epoch"] < (1 << 64)):
@@ -81,7 +81,7 @@ def query_player_rite_members_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-rite-members-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

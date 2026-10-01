@@ -10,10 +10,11 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import (
+    private_native_schema,
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -56,10 +57,10 @@ def _component(
     value: object, *, schema: str, fields: set[str], snapshot: Mapping[str, object],
     epoch: int, unsigned_actor: bool = False,
 ) -> dict[str, object]:
-    if not isinstance(value, dict) or set(value) != _COMMON_KEYS | fields or value["schema"] != schema:
+    if not isinstance(value, dict) or set(value) != _COMMON_KEYS | fields or value["schema"] != private_native_schema(schema, snapshot):
         raise ValueError(f"native Rite governance component schema is malformed: {schema}")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12002 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
         raise ValueError("native Rite governance component belongs to another build")
     if type(value["available"]) is not bool:
         raise ValueError("native Rite governance component availability is malformed")
@@ -86,7 +87,7 @@ def normalize_player_rite_governance_v1(
     value: object, *, snapshot: Mapping[str, object],
 ) -> dict[str, object]:
     """Preserve native full references, legal absence, zero counts and partial reads."""
-    if not isinstance(value, dict) or set(value) != _TOP_KEYS or value["schema"] != SCHEMA:
+    if not isinstance(value, dict) or set(value) != _TOP_KEYS or value["schema"] != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player Rite governance schema is malformed")
     if (type(value["available"]) is not bool
             or type(value["frame_available"]) is not bool
@@ -106,7 +107,7 @@ def normalize_player_rite_governance_v1(
                 or value["capture_epoch"] == 0):
             raise ValueError("native player Rite governance differs from its queried player frame")
     state = _component(
-        value["state_rite"], schema="ck3_12002_religion_state_rite_v1",
+        value["state_rite"], schema=private_native_schema("ck3_12002_religion_state_rite_v1", snapshot),
         fields=set(_STATE_REFERENCES) | {"player_primary_title", "realm_primary_title"},
         snapshot=snapshot, epoch=value["capture_epoch"], unsigned_actor=True,
     )
@@ -119,13 +120,13 @@ def normalize_player_rite_governance_v1(
         for field in _TITLE_KEYS:
             _nullable_integer(title[field], 0, 0xFFFFFFFF, field)
     heads = _component(
-        value["heads"], schema="ck3_12002_religion_rite_heads_v1",
+        value["heads"], schema=private_native_schema("ck3_12002_religion_rite_heads_v1", snapshot),
         fields=set(_HEAD_REFERENCES), snapshot=snapshot, epoch=value["capture_epoch"],
     )
     for key in _HEAD_REFERENCES:
         _nullable_integer(heads[key], 0, 0xFFFFFFFF, key)
     organization = _component(
-        value["organization"], schema="ck3_12002_rite_organization_counts_v1",
+        value["organization"], schema=private_native_schema("ck3_12002_rite_organization_counts_v1", snapshot),
         fields={"scope", "values", "rite_id", "county_count", "character_follower_count"},
         snapshot=snapshot, epoch=value["capture_epoch"],
     )
@@ -157,7 +158,7 @@ def query_player_rite_governance_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-rite-governance-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .version_identity import CK3_11906, CK3_12002, require_exact_native_backend
+from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_backend
 
 
 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY: Final = (
@@ -202,6 +202,16 @@ _BASELINE_12002_PROVENANCE: Final = {
     "government_rva": "0x28C2E10",
     "selected_game_rule_service_slot_rva": "0x5CB3D78",
 }
+_BASELINE_PROVENANCE_BY_BUILD = {
+    CK3_12002.game_version: _BASELINE_12002_PROVENANCE,
+    CK3_12003.game_version: {
+        **_BASELINE_12002_PROVENANCE,
+        "game_version": CK3_12003.game_version,
+        "executable_sha256": CK3_12003.executable_sha256,
+        "backend_id": CK3_12003.backend_id("campaign-root-context-v1"),
+    },
+}
+
 _PROVENANCE_BY_BUILD: Final = {
     CK3_11906.game_version: _PROVENANCE_VALUES,
     CK3_12002.game_version: {
@@ -221,6 +231,13 @@ _PROVENANCE_BY_BUILD: Final = {
         "province_holder_character_id_rva": "0x247D030",
     },
 }
+_PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
+    **_PROVENANCE_BY_BUILD[CK3_12002.game_version],
+    "game_version": CK3_12003.game_version,
+    "executable_sha256": CK3_12003.executable_sha256,
+    "backend_id": CK3_12003.backend_id("campaign-root-context-v1"),
+}
+
 _UNAVAILABLE_REASONS: Final = {
     "unsupported_build",
     "requires_application_main",
@@ -796,7 +813,7 @@ def _normalize_baseline_12002(
         provenance.get("game_version"), provenance.get("executable_sha256"),
         provenance.get("backend_id"), suffix="campaign-root-context-v1",
     )
-    if build != CK3_12002 or provenance != _BASELINE_12002_PROVENANCE:
+    if provenance != _BASELINE_PROVENANCE_BY_BUILD.get(build.game_version):
         raise ValueError("baseline campaign provenance does not match 1.20")
     if frame.get("schema_version") != 1:
         raise ValueError("campaign_root_context.schema_version must be 1")

@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_council_transport.hpp"
 
 #include "xar_bridge/council_application_main_private_transport_v1.hpp"
@@ -214,8 +215,8 @@ bool HandleCouncilPrivate12002(const game::GameAdapter& adapter,
     if (!IsCouncilPrivate12002(step)) {
       failure = "private_step_unknown"; return false;
     }
-    if (adapter.descriptor().game_version != "1.20.0.2" ||
-        adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+    if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
         !state.configured || state.mailbox != &mailbox) {
       failure = "private_transport_not_configured_for_exact_build";
       return false;

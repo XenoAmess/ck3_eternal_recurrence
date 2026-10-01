@@ -13,7 +13,7 @@ import json
 from typing import Final
 
 from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256, JsonValue
-from .builds import CURRENT_CK3_BUILD, SUPPORTED_CK3_EXE_SHA256
+from .builds import MIGRATED_CK3_BUILDS, SUPPORTED_CK3_EXE_SHA256
 
 
 VANILLA_EVENT_KNOWLEDGE_INDEX_SCHEMA: Final = (
@@ -287,10 +287,10 @@ def ck3_list_vanilla_event_knowledge_v1(
 
     if contracts is None or analysis is None or observations is None:
         default_contracts, default_analysis, default_observations = _default_catalogs()
-        if build == CURRENT_CK3_BUILD:
+        if build in MIGRATED_CK3_BUILDS:
             from .migration_1_20_0_2 import current_migrated_catalogs
 
-            default_contracts, default_analysis, default_observations = current_migrated_catalogs()
+            default_contracts, default_analysis, default_observations = current_migrated_catalogs(build)
         contracts = default_contracts if contracts is None else contracts
         analysis = default_analysis if analysis is None else analysis
         observations = default_observations if observations is None else observations

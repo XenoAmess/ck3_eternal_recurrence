@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_reform12002_ai_inputs_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
@@ -332,8 +333,8 @@ bool HandlePlayerReligionAIReformInputsPrivate12002(const game::GameAdapter &ada
   if (!ParsePlayerReligionAIReformInputsRevision12002(payload, expected)) {
     failure = "player_religion_ai_reform_inputs_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_ai_reform_inputs_current_frame_unavailable"; return false;
   }
@@ -344,7 +345,7 @@ bool HandlePlayerReligionAIReformInputsPrivate12002(const game::GameAdapter &ada
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    const auto sha = adapter.descriptor().executable_sha256;
+    const auto sha = xar::game::ReviewedCrozierAbiSha256(adapter.descriptor());
     query.bindings.core = BindCoreImage(base, sha);
     query.bindings.context = religion_reform::BindReformAIContextImage12002(base, sha);
     query.bindings.schedule = religion_reform::BindReformScheduleImage12002(base, sha);

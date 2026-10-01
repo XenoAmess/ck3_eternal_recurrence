@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from .version_identity import (
-    CK3_11906, CK3_12002, NativeBuildIdentity, require_exact_native_build,
+    CK3_11906, CK3_12002, CK3_12003, NativeBuildIdentity, require_exact_native_build,
 )
 
 from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (
@@ -3461,7 +3461,7 @@ def _normalize_war_termination_terms_provenance(
         "executable_sha256": build.executable_sha256,
         "native_reader": (
             "CWar+0x270/+0x290;0x2B9ECD0"
-            if build == CK3_12002 else _TERMINATION_TERMS_NATIVE_READER
+            if build in (CK3_12002, CK3_12003) else _TERMINATION_TERMS_NATIVE_READER
         ),
         "present_claim_lifecycle": _TERMINATION_TERMS_CLAIM_LIFECYCLE,
     }
@@ -3470,7 +3470,7 @@ def _normalize_war_termination_terms_provenance(
             **common,
             "claim_script_sha256": (
                 "887BF0197401CB17CB4588978ADD556AB6B429BF55CB482E3E5F2D0E8351CFD4"
-                if build == CK3_12002 else _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256
+                if build in (CK3_12002, CK3_12003) else _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256
             ),
         }
     elif supported_slice == _TERMINATION_TERMS_RAIKTOR_SLICE:
@@ -3716,19 +3716,19 @@ def normalize_war_termination_options(
             raw_options.get("surrender"),
             name="surrender",
             expected_outcome=surrender_outcome,
-            legacy_recipient_unavailable=source_build == CK3_12002,
+            legacy_recipient_unavailable=source_build in (CK3_12002, CK3_12003),
         ),
         "white_peace": _normalize_war_termination_option(
             raw_options.get("white_peace"),
             name="white_peace",
             expected_outcome="white_peace",
-            legacy_recipient_unavailable=source_build == CK3_12002,
+            legacy_recipient_unavailable=source_build in (CK3_12002, CK3_12003),
         ),
         "victory": _normalize_war_termination_option(
             raw_options.get("victory"),
             name="victory",
             expected_outcome=victory_outcome,
-            legacy_recipient_unavailable=source_build == CK3_12002,
+            legacy_recipient_unavailable=source_build in (CK3_12002, CK3_12003),
         ),
     }
     if not is_primary and any(

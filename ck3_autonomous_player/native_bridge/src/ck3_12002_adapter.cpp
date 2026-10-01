@@ -1,6 +1,7 @@
 ﻿#include "xar_bridge/ck3_12002_adapter.hpp"
 
 #include <windows.h>
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_war_cash_treasury.hpp"
 #include "xar_bridge/ck3_12002_actor_resources.hpp"
 
@@ -86,8 +87,9 @@ const AdapterDescriptor kDescriptor{
 
 class Ck3_12002Adapter final : public GameAdapter {
 public:
-  explicit Ck3_12002Adapter(Ck3_12002AdapterBindings bindings) noexcept
-      : bindings_(std::move(bindings)) {
+  explicit Ck3_12002Adapter(Ck3_12002AdapterBindings bindings,
+      const AdapterDescriptor &descriptor = kDescriptor) noexcept
+      : bindings_(std::move(bindings)), descriptor_(&descriptor) {
     // Both callbacks borrow this member, never the temporary binding bundle.
     bindings_.events.submit_context = &bindings_.commands;
     bindings_.events.submit_command = ck3_12002::SubmitCommandCopyCompat;
@@ -96,7 +98,7 @@ public:
   }
 
   const AdapterDescriptor &descriptor() const noexcept override {
-    return kDescriptor;
+    return *descriptor_;
   }
   bool enabled() const noexcept override { return bindings_.core.enabled; }
 
@@ -405,6 +407,7 @@ private:
             ResolveCharacter, ResolveUnit, ResolveProvince, ResolveSiege};
   }
   Ck3_12002AdapterBindings bindings_;
+  const AdapterDescriptor *descriptor_;
 };
 
 } // namespace
@@ -453,6 +456,12 @@ ResumeSubmitResult SubmitCk3_12002ResumeMapObserved(
 std::unique_ptr<GameAdapter> CreateCk3_12002AdapterFromBindings(
     Ck3_12002AdapterBindings bindings) noexcept {
   return std::make_unique<Ck3_12002Adapter>(std::move(bindings));
+}
+
+std::unique_ptr<GameAdapter> CreateCk3_12003AdapterFromBindings(
+    Ck3_12003AdapterBindings bindings) noexcept {
+  return std::make_unique<Ck3_12002Adapter>(
+      std::move(bindings), Ck3_12003AdapterDescriptor());
 }
 
 std::unique_ptr<GameAdapter> CreateCk3_12002Adapter(

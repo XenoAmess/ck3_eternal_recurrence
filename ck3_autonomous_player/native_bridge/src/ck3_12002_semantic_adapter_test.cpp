@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 
 #include <array>
 #include <atomic>
@@ -75,6 +76,7 @@ public:
   bool reader_available = true;
   bool declarations_available = true;
   bool family_available = true;
+  bool patch3 = false;
 
   FixtureAdapter() {
     frame.date_raw = 123456;
@@ -97,6 +99,7 @@ public:
   }
 
   const game::AdapterDescriptor &descriptor() const noexcept override {
+    if (patch3) return game::Ck3_12003AdapterDescriptor();
     static const game::AdapterDescriptor value{
       "ck3-1.20.0.2-msvc-x64", "1.20.0.2", build::kExecutableSha256,
       "fixture-only", {}};
@@ -450,8 +453,9 @@ bool WorkerQueryWithFrameChange(api::MainThreadQueryMailboxV1 &mailbox,
   return queued && succeeded;
 }
 
-bool TestWorkerAdapter() {
+bool TestWorkerAdapter(bool patch3) {
   FixtureAdapter native;
+  native.patch3 = patch3;
   MemoryFixture memory;
   g_memory = &memory;
   memory.iat = reinterpret_cast<void *>(&FakePeek);
@@ -472,7 +476,7 @@ bool TestWorkerAdapter() {
   executors[12] = &ExecuteTyped;
   executors[13] = &build::ExecuteSemanticAdapter12002;
   auto environment = build::BindThreadRuntimeImage(
-      0x140000000ULL, build::kExecutableSha256, executors);
+      0x140000000ULL, game::ReviewedCrozierAbiSha256(native.descriptor()), executors);
   environment.offline_fixture = true;
   environment.peek_message_iat_slot_override = &memory.iat;
   environment.resolved_peek_message_override = &FakePeek;
@@ -489,6 +493,7 @@ bool TestWorkerAdapter() {
   environment.snapshot_observer_context = &proxy;
   CHECK(api::InstallMainThreadQueryMailboxV1(mailbox, environment));
   CHECK(&build::NativeAdapter12002(proxy) == &native);
+  CHECK(proxy.descriptor().executable_sha256 == native.descriptor().executable_sha256);
   CHECK(&build::NativeAdapter12002(native) == &native);
   CHECK(WorkerOnly([&] { game::Snapshot output{}; output.date_raw = 99;
     return !proxy.read_snapshot(output) && output.date_raw == 0; }));
@@ -810,8 +815,9 @@ bool TestWorkerAdapter() {
 }
 } // namespace
 
-int main() {
-  if (!TestWorkerAdapter()) return 1;
+int main(int argc, char **argv) {
+  const bool patch3 = argc == 2 && std::strcmp(argv[1], "--patch3") == 0;
+  if (!TestWorkerAdapter(patch3)) return 1;
   std::puts("PASS: owner-only raw snapshots, worker cache, nine-second queued owner delay, war-options route update, war-score rejection, unchanged write scope, fixed inbox owner execution/allocation/release/RNG owner-scope restoration/JSON/world mutation/player-date-paused scope, typed actor coexistence, observation failure recovery; no live CK3 access");
   return 0;
 }

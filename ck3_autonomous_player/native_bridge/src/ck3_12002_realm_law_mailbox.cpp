@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_realm_law.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -45,8 +46,8 @@ bool ReadRealmLawOnApplicationMain12002(
     const game::Snapshot &published, std::uint64_t revision,
     std::string &serialized, std::string &failure) noexcept {
   serialized.clear(); failure.clear();
-  if (adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != private_law::kRealmLawFinalTermsExecutableSha256 ||
+  if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != private_law::kRealmLawFinalTermsExecutableSha256 ||
       revision == 0 || !published.paused || !published.map_ready ||
       !published.has_played_character || !published.played_character_alive) {
     failure = "native_law_paused_actor_unavailable"; return false;
@@ -59,7 +60,7 @@ bool ReadRealmLawOnApplicationMain12002(
     query.envelope.expected_snapshot_revision = revision;
     query.envelope.typed_context = &query;
     query.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    query.bindings = BindCoreImage(query.module_base, adapter.descriptor().executable_sha256);
+    query.bindings = BindCoreImage(query.module_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (!query.bindings.enabled || ck3_11906::TrySubmitMainThreadQueryV1(mailbox,
         &ExecuteRealmLawPausedPrivateQuery12002, &query.envelope,
         query.envelope.ticket) != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {

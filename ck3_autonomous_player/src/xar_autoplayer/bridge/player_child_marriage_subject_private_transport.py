@@ -86,7 +86,7 @@ def query_player_child_marriage_subject_private_v1(
     probe = result.get("family_array_diagnostic")
     if diagnose_family_arrays:
         probe_offsets = (
-            [0x20, 0x38] if base["exact_ck3_build"] == "1.20.0.2"
+            [0x20, 0x38] if base["exact_ck3_build"] in {"1.20.0.2", "1.20.0.3"}
             else [0x20, 0x30, 0x40, 0x50, 0x60, 0x70]
         )
         if (

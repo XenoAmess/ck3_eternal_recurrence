@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
+from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_build
 
 
 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY: Final = (
@@ -216,6 +216,11 @@ _PROVENANCE_BY_BUILD: Final = {
         "war_defeat_special_vtable_rva": "0x46C3B80",
     },
 }
+_PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
+    **_PROVENANCE_BY_BUILD[CK3_12002.game_version],
+    "backend_id": CK3_12003.backend_id("pending-character-interaction-context-v1"),
+}
+
 _SPECIAL_WAR_UNAVAILABLE_REASONS: Final = {
     "special_war_binding_not_applicable",
     "special_interaction_subtype_opaque",

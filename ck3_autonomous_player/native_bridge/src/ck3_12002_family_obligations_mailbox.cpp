@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_family_obligations_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -88,8 +89,8 @@ bool HandleFamilyObligationsPrivate12002(
   if (!ParseFamilyObligationsPrivateRequest12002(payload, request)) {
     failure = "family_obligations_request_invalid"; return false;
   }
-  if (adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 || !adapter.enabled() ||
+  if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 || !adapter.enabled() ||
       revision == 0 || (request.expected_snapshot_revision != 0 &&
                        request.expected_snapshot_revision != revision) ||
       !published.paused || !published.map_ready || !published.has_played_character ||
@@ -105,9 +106,9 @@ bool HandleFamilyObligationsPrivate12002(
     query.envelope.typed_context = &query;
     query.observation.request = request;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    query.lineage_bindings = family_obligations_lineage::BindImage(base, adapter.descriptor().executable_sha256);
+    query.lineage_bindings = family_obligations_lineage::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (request.break_recipient_character_id > 0)
-      query.break_bindings = BindFamilyObligationsBreakImageV1(base, adapter.descriptor().executable_sha256);
+      query.break_bindings = BindFamilyObligationsBreakImageV1(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (ck3_11906::TrySubmitMainThreadQueryV1(mailbox, &ExecuteFamilyObligationsMailbox12002,
         &query.envelope, query.envelope.ticket) != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
       failure = "family_obligations_mailbox_submit_unavailable"; return false;

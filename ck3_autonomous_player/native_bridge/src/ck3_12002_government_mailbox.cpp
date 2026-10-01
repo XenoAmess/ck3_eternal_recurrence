@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_government_mailbox.hpp"
 
 #include "xar_bridge/ck3_12002.hpp"
@@ -116,8 +117,8 @@ bool ReadGovernmentRuntimeAdapterOnApplicationMain12002(
   try {
     const auto &native = NativeAdapter12002(adapter);
     if (!native.enabled() ||
-        native.descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64" ||
-        native.descriptor().executable_sha256 != kExecutableSha256) {
+        (native.descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64" && !xar::game::IsCk3_12003Descriptor(native.descriptor())) ||
+        xar::game::ReviewedCrozierAbiSha256(native.descriptor()) != kExecutableSha256) {
       failure = "government runtime adapter exact build is unavailable";
       return false;
     }
@@ -133,8 +134,8 @@ bool ReadGovernmentRuntimeAdapterOnApplicationMain12002(
     GovernmentRuntimeAdapterBridgeBindingEnvironmentV1 environment{};
     environment.binding_enabled = true;
     environment.exact_build_admitted = true;
-    environment.admitted_game_version = native.descriptor().game_version;
-    environment.admitted_executable_sha256 = native.descriptor().executable_sha256;
+    environment.admitted_game_version = xar::game::ReviewedCrozierAbiVersion(native.descriptor());
+    environment.admitted_executable_sha256 = xar::game::ReviewedCrozierAbiSha256(native.descriptor());
     environment.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     environment.campaign_access.context = &context;
     environment.campaign_access.capture_frame = &CallerCaptureCampaignFrame;

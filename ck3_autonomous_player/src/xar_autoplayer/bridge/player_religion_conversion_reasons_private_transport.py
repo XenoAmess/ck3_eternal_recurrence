@@ -10,12 +10,13 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import (
+    private_native_schema,
     private_native_build_identity, private_native_provenance,
 )
 from .player_religion_conversion_terms_private_transport import (
     _build, _common, _full_rite_id, _integer,
 )
-from .version_identity import CK3_12002, require_exact_native_backend
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend
 
 
 STEP = "query-player-religion-conversion-reasons-v1"
@@ -36,7 +37,7 @@ def normalize_player_religion_conversion_reasons_v1(
 ) -> dict[str, object]:
     """Keep native verdict/text, including legitimate empty text and null reads."""
     target = _full_rite_id(target_rite_id)
-    reasons = _common(value, SCHEMA, _REASONS_KEYS)
+    reasons = _common(value, private_native_schema(SCHEMA, snapshot), _REASONS_KEYS)
     _build(reasons, snapshot)
     if (reasons["capture_epoch"] == 0 or reasons["target_rite_id"] != target
             or not _integer(reasons["current_rite_id"], 0, 0xFFFFFFFF)
@@ -78,7 +79,7 @@ def query_player_religion_conversion_reasons_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-conversion-reasons-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

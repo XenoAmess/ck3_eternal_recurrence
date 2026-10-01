@@ -10,10 +10,11 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import (
+    private_native_schema,
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -68,7 +69,7 @@ def _common(value: object, schema: str, keys: set[str]) -> dict[str, object]:
 
 def _build(value: Mapping[str, object], snapshot: Mapping[str, object]) -> None:
     observed = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if (observed != CK3_12002 or observed != private_native_build_identity(snapshot)
+    if (observed not in (CK3_12002, CK3_12003) or observed != private_native_build_identity(snapshot)
             or value["read_only"] is not True):
         raise ValueError("native conversion terms belong to another connected build")
 
@@ -78,14 +79,14 @@ def normalize_player_religion_conversion_terms_v1(
 ) -> dict[str, object]:
     """Preserve the native verdict, quoted costs and unavailable sub-read values."""
     target = _full_rite_id(target_rite_id)
-    terms = _common(value, SCHEMA, _TERMS_KEYS)
+    terms = _common(value, private_native_schema(SCHEMA, snapshot), _TERMS_KEYS)
     _build(terms, snapshot)
     if (terms["capture_epoch"] == 0 or terms["target_rite_id"] != target
             or terms["native_blocker_text_available"] is not False
             or (terms["can_convert"] is not None and type(terms["can_convert"]) is not bool)):
         raise ValueError("native conversion terms target or verdict is malformed")
 
-    gate = _common(terms["final_gate"], "ck3_12002_religion_conversion_rite_preview_v1", _GATE_KEYS)
+    gate = _common(terms["final_gate"], private_native_schema("ck3_12002_religion_conversion_rite_preview_v1", snapshot), _GATE_KEYS)
     _build(gate, snapshot)
     if (gate["target_rite_id"] != target
             or gate["capture_epoch"] != terms["capture_epoch"]
@@ -97,7 +98,7 @@ def normalize_player_religion_conversion_terms_v1(
                 "validator_without_payment", "validator_with_payment"))):
         raise ValueError("native conversion final gate is malformed")
 
-    cost = _common(terms["cost"], "ck3_12002_religion_conversion_cost_v1", _COST_KEYS)
+    cost = _common(terms["cost"], private_native_schema("ck3_12002_religion_conversion_cost_v1", snapshot), _COST_KEYS)
     if (cost["target_faith_id"] is not None and not _integer(cost["target_faith_id"], 0, 0xFFFFFFFF)
             or any(cost[key] is not None and type(cost[key]) is not bool for key in (
                 "same_faith", "can_afford_piety"))
@@ -151,7 +152,7 @@ def query_player_religion_conversion_terms_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-conversion-terms-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

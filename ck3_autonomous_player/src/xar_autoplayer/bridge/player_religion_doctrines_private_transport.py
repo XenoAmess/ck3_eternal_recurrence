@@ -10,10 +10,11 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import (
+    private_native_schema,
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -45,15 +46,15 @@ def _availability(value: Mapping[str, object], *, allow_zero_epoch: bool) -> Non
         raise ValueError("native player religion doctrines lost its availability reason")
 
 
-def _doctrine_rows(value: object, *, main_rite: bool) -> Mapping[str, object]:
+def _doctrine_rows(value: object, *, main_rite: bool, snapshot: Mapping[str, object]) -> Mapping[str, object]:
     fields = _COMMON_KEYS | {"rite_id", "faith_id", "rows"}
-    schema = "ck3_12002_player_rite_doctrines_v1"
+    schema = private_native_schema("ck3_12002_player_rite_doctrines_v1", snapshot)
     source = "rite_effective"
     if main_rite:
         fields = fields | {"main_rite_id"}
-        schema = "ck3_12002_faith_main_rite_doctrines_v1"
+        schema = private_native_schema("ck3_12002_faith_main_rite_doctrines_v1", snapshot)
         source = "faith_main_rite"
-    if not isinstance(value, Mapping) or set(value) != fields or value.get("schema") != schema:
+    if not isinstance(value, Mapping) or set(value) != fields or value.get("schema") != private_native_schema(schema, snapshot):
         raise ValueError("native player religion doctrine scope is malformed")
     _availability(value, allow_zero_epoch=True)
     for key in ("rite_id", "faith_id", "main_rite_id") if main_rite else ("rite_id", "faith_id"):
@@ -90,18 +91,18 @@ def normalize_player_religion_doctrines_v1(
 ) -> dict[str, object]:
     """Keep the producer's two scopes, complete empty bags and typed failures."""
     fields = _COMMON_KEYS | _BUILD_KEYS | {"current_rite", "faith_main_rite", "boolean_parameters"}
-    if not isinstance(value, dict) or set(value) != fields or value.get("schema") != SCHEMA:
+    if not isinstance(value, dict) or set(value) != fields or value.get("schema") != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion doctrines schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12002 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
         raise ValueError("native player religion doctrines belongs to another build")
     _availability(value, allow_zero_epoch=False)
-    current = _doctrine_rows(value["current_rite"], main_rite=False)
-    main = _doctrine_rows(value["faith_main_rite"], main_rite=True)
+    current = _doctrine_rows(value["current_rite"], main_rite=False, snapshot=snapshot)
+    main = _doctrine_rows(value["faith_main_rite"], main_rite=True, snapshot=snapshot)
     parameters = value["boolean_parameters"]
     parameter_fields = _COMMON_KEYS | _BUILD_KEYS | {"faith_id", "current_rite", "faith_main_rite"}
     if (not isinstance(parameters, Mapping) or set(parameters) != parameter_fields
-            or parameters.get("schema") != "ck3_12002_rite_boolean_parameters_v1"
+            or parameters.get("schema") != private_native_schema("ck3_12002_rite_boolean_parameters_v1", snapshot)
             or require_exact_native_build(parameters.get("game_version"),
                                           parameters.get("executable_sha256")) != build
             or not _full_reference(parameters.get("faith_id"))):
@@ -145,7 +146,7 @@ def query_player_religion_doctrines_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-doctrines-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

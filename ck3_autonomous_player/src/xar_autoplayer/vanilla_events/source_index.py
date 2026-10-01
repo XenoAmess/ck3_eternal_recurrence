@@ -21,6 +21,7 @@ SOURCE_INDEX_RESOURCE: Final = "data/source_index_1_19_0_6.json"
 SOURCE_INDEX_RESOURCE_BY_BUILD: Final = {
     EXACT_CK3_BUILD: SOURCE_INDEX_RESOURCE,
     "1.20.0.2": "data/source_index_1_20_0_2.json",
+    "1.20.0.3": "data/source_index_1_20_0_3.json",
 }
 _SHA256_PATTERN: Final = re.compile(r"^[0-9A-F]{64}$")
 

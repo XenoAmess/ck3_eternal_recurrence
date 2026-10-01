@@ -45,6 +45,7 @@
 
 #include "xar_bridge/ck3_11906_adapter.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 
 #include <windows.h>
 #include <bcrypt.h>
@@ -607,7 +608,7 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 }
 
 const AdapterDescriptor &PreferredAdapterDescriptor() noexcept {
-  return Ck3_12002AdapterDescriptor();
+  return Ck3_12003AdapterDescriptor();
 }
 
 std::unique_ptr<GameAdapter>
@@ -632,7 +633,8 @@ SelectAdapter(std::string_view executable_sha256,
 std::unique_ptr<GameAdapter> SelectCurrentProcessAdapter() noexcept {
   // Add one factory for each exact CK3 build. Order controls the preferred
   // diagnostic descriptor only; the first exact enabled match always wins.
-  constexpr std::array<AdapterFactory, 2> factories{
+  constexpr std::array<AdapterFactory, 3> factories{
+      &CreateCk3_12003Adapter,
       &CreateCk3_12002Adapter,
       &CreateCk3_11906Adapter,
   };

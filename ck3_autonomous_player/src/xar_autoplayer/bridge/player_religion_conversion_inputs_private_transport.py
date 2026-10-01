@@ -7,8 +7,8 @@ from copy import deepcopy
 
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
-from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, require_exact_native_backend, require_exact_native_build
+from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-religion-conversion-inputs-v1"
@@ -55,11 +55,11 @@ def normalize_player_religion_conversion_inputs_v1(
     value: object, *, snapshot: Mapping[str, object], target_rite_id: object,
 ) -> dict[str, object]:
     target = _target(target_rite_id)
-    top = _source(value, SCHEMA, _TOP)
-    gates = _source(top["conversion_gates"], "ck3_12002_religion_conversion_gates_v1", _GATES)
-    prediction = _source(top["predicted_base_fulfillment"], "ck3_12002_expected_rite_base_fulfillment_v1", _PREDICTION)
+    top = _source(value, private_native_schema(SCHEMA, snapshot), _TOP)
+    gates = _source(top["conversion_gates"], private_native_schema("ck3_12002_religion_conversion_gates_v1", snapshot), _GATES)
+    prediction = _source(top["predicted_base_fulfillment"], private_native_schema("ck3_12002_expected_rite_base_fulfillment_v1", snapshot), _PREDICTION)
     build = require_exact_native_build(prediction["game_version"], prediction["executable_sha256"])
-    if (build != CK3_12002 or build != private_native_build_identity(snapshot)
+    if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot)
             or prediction["read_only"] is not True or top["target_rite_id"] != target
             or gates["requested_target_rite_id"] != target
             or prediction["target_rite_id"] != target):
@@ -103,7 +103,7 @@ def query_player_religion_conversion_inputs_private_v1(
     try:
         build = require_exact_native_backend(result.get("game_version"), result.get("executable_sha256"),
                                            result.get("backend_id"), suffix="player-religion-conversion-inputs-v1")
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

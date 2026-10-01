@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_doctrine12002_choices_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
@@ -157,8 +158,8 @@ bool HandlePlayerReligionDoctrineKnowledgePrivate12002(const game::GameAdapter &
   if (!ParsePlayerReligionDoctrineKnowledgeRequest12002(payload, expected, key)) {
     failure = "player_religion_doctrine_knowledge_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 || !ValidFrame(published, revision) ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 || !ValidFrame(published, revision) ||
       (expected != 0 && expected != revision)) {
     failure = "player_religion_doctrine_knowledge_current_frame_unavailable"; return false;
   }
@@ -167,7 +168,7 @@ bool HandlePlayerReligionDoctrineKnowledgePrivate12002(const game::GameAdapter &
     query.envelope.game = &NativeAdapter12002(adapter); query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published; query.envelope.expected_snapshot_revision = revision;
     query.bindings = religion::doctrine12002::BindDoctrineKnowledgeImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), adapter.descriptor().executable_sha256);
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     query.doctrine_key = std::move(key);
     return RunPlayerReligionDoctrineKnowledgeMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_doctrine_knowledge_handler_exception"; return false; }

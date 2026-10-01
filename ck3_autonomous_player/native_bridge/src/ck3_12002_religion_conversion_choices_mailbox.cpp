@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_religion_conversion_choices_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
@@ -169,8 +170,8 @@ bool HandlePlayerReligionConversionChoicesPrivate12002(const game::GameAdapter &
   if (!ParsePlayerReligionConversionChoicesRequest12002(payload, expected)) {
     failure = "player_religion_conversion_choices_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_conversion_choices_current_frame_unavailable"; return false;
   }
@@ -181,7 +182,7 @@ bool HandlePlayerReligionConversionChoicesPrivate12002(const game::GameAdapter &
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    const auto sha = adapter.descriptor().executable_sha256;
+    const auto sha = xar::game::ReviewedCrozierAbiSha256(adapter.descriptor());
     query.faith_bindings = religion_conversion::faith::BindFaithConversionImage12002(base, sha);
     query.rite_bindings = religion_conversion_rite::BindRiteConversionImage12002(base, sha);
     return RunPlayerReligionConversionChoicesMailbox12002(query, request_id, serialized, failure);

@@ -7,8 +7,8 @@ from copy import deepcopy
 
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
-from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, require_exact_native_backend, require_exact_native_build
+from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-religion-conversion-choices-v1"
@@ -28,10 +28,10 @@ def _reference(value: object, *, nullable: bool = False) -> bool:
 
 
 def _source(value: object, schema: str, keys: set[str], snapshot: Mapping[str, object]) -> dict[str, object]:
-    if not isinstance(value, dict) or set(value) != keys or value["schema"] != schema:
+    if not isinstance(value, dict) or set(value) != keys or value["schema"] != private_native_schema(schema, snapshot):
         raise ValueError("native conversion choices schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12002 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
         raise ValueError("native conversion choices belong to another connected build")
     if (type(value["available"]) is not bool
             or type(value["capture_epoch"]) is not int or not 0 < value["capture_epoch"] <= 0xFFFFFFFFFFFFFFFF
@@ -48,9 +48,9 @@ def _source(value: object, schema: str, keys: set[str], snapshot: Mapping[str, o
 
 
 def normalize_player_religion_conversion_choices_v1(value: object, *, snapshot: Mapping[str, object]) -> dict[str, object]:
-    top = _source(value, SCHEMA, _TOP, snapshot)
-    faith = _source(top["faith_choices"], "ck3_12002_faith_conversion_choices_v1", _FAITH, snapshot)
-    rites = _source(top["current_faith_rites"], "ck3_12002_current_faith_rites_v1", _RITES, snapshot)
+    top = _source(value, private_native_schema(SCHEMA, snapshot), _TOP, snapshot)
+    faith = _source(top["faith_choices"], private_native_schema("ck3_12002_faith_conversion_choices_v1", snapshot), _FAITH, snapshot)
+    rites = _source(top["current_faith_rites"], private_native_schema("ck3_12002_current_faith_rites_v1", snapshot), _RITES, snapshot)
     if (top["read_only"] is not True or top["membership_is_legality"] is not False
             or rites["read_only"] is not True or rites["membership_is_legality"] is not False
             or faith["rule_only"] is not True or faith["candidate_source"] != "native_world_faith_registry"
@@ -84,7 +84,7 @@ def query_player_religion_conversion_choices_private_v1(
     try:
         build = require_exact_native_backend(result.get("game_version"), result.get("executable_sha256"),
                                            result.get("backend_id"), suffix="player-religion-conversion-choices-v1")
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

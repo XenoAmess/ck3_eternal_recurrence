@@ -340,8 +340,11 @@ def query_vanilla_event_knowledge_v1(
             observations=None,
             unavailable_reason="event_definition_key_not_registered",
         )
-    if ck3_build == CURRENT_CK3_BUILD:
-        from .migration_1_20_0_2 import migrate_event_knowledge
+    if ck3_build in {"1.20.0.2", "1.20.0.3"}:
+        if ck3_build == "1.20.0.3":
+            from .migration_1_20_0_3 import migrate_event_knowledge
+        else:
+            from .migration_1_20_0_2 import migrate_event_knowledge
 
         migrated = migrate_event_knowledge(
             event_definition_key,

@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_realm_law_action_mailbox.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -344,8 +345,8 @@ bool HandleRealmLawPrivateWithState12002(
     const RealmLawActionMailboxFixture12002 *fixture) noexcept {
   serialized.clear(); failure.clear();
   if (!IsRealmLawPrivateActionStep12002(step) ||
-      adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+      xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       request_id.empty() || !published.paused || !published.map_ready ||
       !published.has_played_character || !published.played_character_alive ||
       !ReadFrameRequest(payload, published, revision)) {

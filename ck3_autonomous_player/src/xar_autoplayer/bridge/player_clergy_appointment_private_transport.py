@@ -10,7 +10,7 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, require_exact_native_backend, require_exact_native_build
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-clergy-appointment-v1"
@@ -53,7 +53,7 @@ def normalize_player_clergy_appointment_v1(
     if not isinstance(exact, dict) or set(exact) != {"game_version", "executable_sha256"}:
         raise ValueError("native clergy appointment exact build is malformed")
     build = require_exact_native_build(exact["game_version"], exact["executable_sha256"])
-    if build != CK3_12002 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
         raise ValueError("native clergy appointment belongs to another build")
     if (value["status"] not in ("available", "unavailable")
             or not isinstance(value["failure"], str) or not value["failure"]
@@ -104,7 +104,7 @@ def query_player_clergy_appointment_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-clergy-appointment-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

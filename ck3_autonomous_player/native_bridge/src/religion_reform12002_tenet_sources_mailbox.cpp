@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_reform12002_tenet_sources_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1)
@@ -151,8 +152,8 @@ bool HandlePlayerReligionDraftTenetChoicesPrivate12002(const game::GameAdapter &
   if (!ParsePlayerReligionDraftTenetChoicesRevision12002(payload, expected)) {
     failure = "player_religion_draft_tenet_choices_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_draft_tenet_choices_current_frame_unavailable"; return false;
   }
@@ -164,7 +165,7 @@ bool HandlePlayerReligionDraftTenetChoicesPrivate12002(const game::GameAdapter &
     query.envelope.expected_snapshot_revision = revision;
     query.bindings = religion_reform::BindCurrentDraftTenetSources12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        adapter.descriptor().executable_sha256);
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionDraftTenetChoicesMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_draft_tenet_choices_handler_exception"; return false; }
 }

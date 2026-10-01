@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import re
 
-from .version_identity import CK3_11906, CK3_12002, require_exact_native_build
+from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_build
 
 
 PREWAR_SCOPE_V1_CAPABILITY_CANDIDATE = "game.command.query-prewar-scope-v1-N"
@@ -69,6 +69,12 @@ _PROVENANCE_BY_BUILD = {
         "unit_storage_slot_rva": "0x5D1E380",
     },
 }
+_PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
+    **_PROVENANCE_BY_BUILD[CK3_12002.game_version],
+    "game_version": CK3_12003.game_version,
+    "executable_sha256": CK3_12003.executable_sha256,
+}
+
 
 
 def query_prewar_scope_v1_step(declaration_id: object) -> str:

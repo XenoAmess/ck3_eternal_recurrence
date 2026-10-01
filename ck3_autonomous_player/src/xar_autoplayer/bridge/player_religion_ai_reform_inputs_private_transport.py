@@ -7,8 +7,8 @@ from copy import deepcopy
 
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
-from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, require_exact_native_backend
+from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend
 
 STEP = "query-player-religion-ai-reform-inputs-v1"
 DOMAIN_KEY = "player_religion_ai_reform_inputs_v1"
@@ -91,7 +91,7 @@ def normalize_player_religion_ai_reform_inputs_v1(
 ) -> dict[str, object]:
     """Preserve known absence, every controller, actual false/zero and nulls."""
     row = _mapping(value, _KEYS, "observation")
-    if row["schema"] != SCHEMA or row["context_status"] not in _CONTEXT_STATUSES:
+    if row["schema"] != private_native_schema(SCHEMA, snapshot) or row["context_status"] not in _CONTEXT_STATUSES:
         raise ValueError("native player AI reform inputs schema/status is malformed")
     for key in ("available", "gate_inputs_observation_complete"):
         _boolean(row[key], key)
@@ -111,7 +111,7 @@ def normalize_player_religion_ai_reform_inputs_v1(
     if row["controller_absence"] not in {None, "no_actual_controller"}:
         raise ValueError("native AI controller absence is malformed")
     context = _mapping(row["context"], {"schema", "status", "available", "actor_id", "actual_holder_count", "controllers"}, "context")
-    if context["schema"] != "ck3_12002_reform_ai_context_v1" or context["status"] != row["context_status"]:
+    if context["schema"] != private_native_schema("ck3_12002_reform_ai_context_v1", snapshot) or context["status"] != row["context_status"]:
         raise ValueError("native AI context schema/status is malformed")
     _boolean(context["available"], "context.available")
     _integer(context["actor_id"], 0, 0xFFFFFFFF, "context.actor_id", nullable=True)
@@ -139,7 +139,7 @@ def query_player_religion_ai_reform_inputs_private_v1(
     try:
         build = require_exact_native_backend(result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-ai-reform-inputs-v1")
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

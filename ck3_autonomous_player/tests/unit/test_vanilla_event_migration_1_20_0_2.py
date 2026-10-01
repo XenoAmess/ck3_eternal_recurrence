@@ -16,9 +16,12 @@ sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 sys.path.insert(0, str(ROOT))
 
 from xar_autoplayer.vanilla_events import (
-    CURRENT_CK3_BUILD, CURRENT_CK3_EXE_SHA256,
     ck3_list_vanilla_event_knowledge_v1, query_vanilla_event_knowledge_v1,
 )
+from xar_autoplayer.vanilla_events.builds import SUPPORTED_CK3_EXE_SHA256
+
+CURRENT_CK3_BUILD = "1.20.0.2"
+CURRENT_CK3_EXE_SHA256 = SUPPORTED_CK3_EXE_SHA256[CURRENT_CK3_BUILD]
 from xar_autoplayer.vanilla_events.policy import recommend_registered_vanilla_event_option_v1
 from xar_autoplayer.vanilla_events.source_index import (
     load_vanilla_event_source_index, query_vanilla_event_source_provenance_v1,

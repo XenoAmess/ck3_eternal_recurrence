@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_reform12002_resource_costs_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
@@ -177,8 +178,8 @@ bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter 
   if (!ParsePlayerReligionDraftResourceCostsRevision12002(payload, expected)) {
     failure = "player_religion_draft_resource_costs_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.2" ||
-      adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_draft_resource_costs_current_frame_unavailable"; return false;
   }
@@ -190,9 +191,9 @@ bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter 
     query.envelope.expected_snapshot_revision = revision;
     const auto module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     query.window_bindings = religion_reform::BindCurrentRiteCreationWindow12002(
-        module, adapter.descriptor().executable_sha256);
+        module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     query.cost_bindings = religion_reform::BindRiteCreationCostsImage12002(
-        module, adapter.descriptor().executable_sha256);
+        module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionDraftResourceCostsMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_draft_resource_costs_handler_exception"; return false; }
 }

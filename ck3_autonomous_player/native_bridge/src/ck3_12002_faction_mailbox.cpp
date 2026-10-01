@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_faction_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 
@@ -44,7 +45,7 @@ bool ReadPlayerFactionAlertsOnApplicationMain12002(
   failure.clear();
   try {
     if (!adapter.enabled() ||
-        adapter.descriptor().executable_sha256 != kPlayerFactionAlertsV1ExecutableSha256 ||
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kPlayerFactionAlertsV1ExecutableSha256 ||
         !revision || !published.paused || !published.map_ready ||
         !published.has_played_character || !published.played_character_alive) {
       failure = "requires_paused";

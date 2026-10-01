@@ -10,8 +10,8 @@ from .driver import BridgeUnavailableError
 from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
-from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, require_exact_native_backend, require_exact_native_build
+from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-religion-numeric-special-parameters-v1"
@@ -46,7 +46,7 @@ def _number(value: object) -> bool:
 
 def _native_frame(value: Mapping[str, object], *, snapshot: Mapping[str, object]) -> None:
     build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
-    if build != CK3_12002 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
         raise ValueError("native religion numeric observation belongs to another build")
     if (type(value.get("available")) is not bool
             or type(value.get("capture_epoch")) is not int
@@ -98,7 +98,7 @@ def normalize_player_religion_numeric_special_parameters_v1(
         "faith_id", "faith_numeric_consumer_source", "authored_presence_provenance_observed",
         "supported_key_count", "current_rite", "faith_main_rite",
     }
-    if not isinstance(value, dict) or set(value) != keys or value.get("schema") != SCHEMA:
+    if not isinstance(value, dict) or set(value) != keys or value.get("schema") != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native numeric special cache schema is malformed")
     _native_frame(value, snapshot=snapshot)
     if (not _reference(value["faith_id"])
@@ -119,7 +119,7 @@ def normalize_faith_numeric_final_v1(
         "main_rite_adjustment_raw", "native_define_raw", "final_heresy_threshold_raw",
         "final_heresy_threshold", "scale", "unit", "source", "native_getter_rva", "native_define_rva",
     }
-    if not isinstance(value, dict) or set(value) != keys or value.get("schema") != FINAL_SCHEMA:
+    if not isinstance(value, dict) or set(value) != keys or value.get("schema") != private_native_schema(FINAL_SCHEMA, snapshot):
         raise ValueError("native Faith final numeric schema is malformed")
     _native_frame(value, snapshot=snapshot)
     if (any(not _reference(value[key]) for key in ("current_rite_id", "faith_id", "main_rite_id"))
@@ -156,7 +156,7 @@ def query_player_religion_numeric_special_parameters_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-numeric-special-parameters-v1",
         )
-        if (build != CK3_12002 or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

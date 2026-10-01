@@ -6545,7 +6545,10 @@ def _open_private_activity_feast_planner_once(
 
         exact_build_envelope = (
             private_native_provenance(after).get("exe_sha256")
-            == "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+            in {
+                "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+                "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+            }
         )
     envelope_shape = bool(
         isinstance(envelope, dict)

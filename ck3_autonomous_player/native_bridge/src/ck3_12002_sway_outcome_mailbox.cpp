@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_sway_outcome_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -72,7 +73,7 @@ bool HandleSwayOutcomeEventV1(
     query.opinion_only = step == kSwayOutcomeOpinionStepV1;
     if ((step != kSwayOutcomeEventStepV1 && !query.opinion_only) || !Parse(payload, query.opinion_only, query.request) ||
         query.request.expected_revision != revision ||
-        !adapter.enabled() || adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+        !adapter.enabled() || xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
         !published.paused || !published.map_ready || !published.has_played_character ||
         !published.played_character_alive ||
         published.played_character_id != query.request.actor_character_id) {
@@ -86,7 +87,7 @@ bool HandleSwayOutcomeEventV1(
     query.envelope.typed_context = &query;
     query.bindings = BindSwayOutcomeImage(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        adapter.descriptor().executable_sha256);
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (TrySubmitMainThreadQueryV1(mailbox, &ExecuteSwayOutcomeMailboxV1,
                                   &query.envelope, query.envelope.ticket) !=
         MainThreadQuerySubmitResultV1::submitted) {

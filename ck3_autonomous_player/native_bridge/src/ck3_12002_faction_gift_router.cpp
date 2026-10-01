@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_faction_gift_router.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -392,8 +393,8 @@ bool HandleFactionGiftPrivate12002(const game::GameAdapter &adapter,
     else if (step == kFactionGiftPrivateReceiptStepV1) query.mode = Mode::receipt;
     else if (step == kFactionGiftPrivateColdRecoveryStepV1) query.mode = Mode::cold;
     else { failure = "private_faction_step_unsupported"; return false; }
-    if (adapter.descriptor().game_version != "1.20.0.2" ||
-        adapter.descriptor().executable_sha256 != kExecutableSha256 ||
+    if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
         !ReadFrameRequest(payload, published, revision)) {
       failure = "private_faction_frame_invalid"; return false;
     }
@@ -425,7 +426,7 @@ bool HandleFactionGiftPrivate12002(const game::GameAdapter &adapter,
     query.factions = fixture_bindings != nullptr ? fixture_bindings->factions
         : ck3_12002::BindPlayerFactionAlertsNativeEnvironmentV1(base, true);
     query.gift = fixture_bindings != nullptr ? fixture_bindings->gift
-        : BindFactionGiftImageV1(base, adapter.descriptor().executable_sha256);
+        : BindFactionGiftImageV1(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (!query.gift.enabled || TrySubmitMainThreadQueryV1(mailbox,
         &ExecuteFactionGiftPrivateMailbox12002, &query.envelope,
         query.envelope.ticket) != MainThreadQuerySubmitResultV1::submitted) {

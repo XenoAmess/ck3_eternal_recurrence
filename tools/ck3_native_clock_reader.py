@@ -19,12 +19,24 @@ def _one(pattern: str, text: str) -> str:
     return matches[0]
 
 
-def source_contract() -> dict:
+def source_contract(game_version: str = "1.20.0.2") -> dict:
+    if game_version not in {"1.20.0.2", "1.20.0.3"}:
+        raise RuntimeError("read-only clock requires an exact authoritative 1.20 build")
     header_path = NATIVE_ROOT / "include/xar_bridge/ck3_12002.hpp"
     source_path = NATIVE_ROOT / "src/ck3_12002.cpp"
+    identity_header_path = NATIVE_ROOT / (
+        "include/xar_bridge/ck3_12003.hpp" if game_version == "1.20.0.3"
+        else "include/xar_bridge/ck3_12002.hpp"
+    )
     header_bytes, source_bytes = header_path.read_bytes(), source_path.read_bytes()
+    identity_header_bytes = identity_header_path.read_bytes()
     header, source = header_bytes.decode("utf-8-sig"), source_bytes.decode("utf-8-sig")
-    contract = {"executable_sha256": _one(r'kExecutableSha256\[\]\s*=\s*"([A-F0-9]{64})"', header),
+    contract = {"executable_sha256": _one(r'kExecutableSha256\[\]\s*=\s*"([A-F0-9]{64})"', identity_header_bytes.decode("utf-8-sig")),
+                "game_version": game_version,
+                "identity_header_path": identity_header_path.relative_to(NATIVE_ROOT).as_posix(),
+                "identity_header_sha256": hashlib.sha256(identity_header_bytes).hexdigest(),
+                "layout_header_path": header_path.relative_to(NATIVE_ROOT).as_posix(),
+                "layout_source_path": source_path.relative_to(NATIVE_ROOT).as_posix(),
                 "header_sha256": hashlib.sha256(header_bytes).hexdigest(),
                 "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
                 "reader_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
@@ -140,9 +152,9 @@ class WindowsReadOnlyMemory:
 
 
 def read_live_clock(pid: int, executable: str, executable_sha256: str, game_version: str) -> dict:
-    contract = source_contract()
-    if game_version != "1.20.0.2" or executable_sha256.upper() != contract["executable_sha256"]:
-        raise RuntimeError("read-only clock requires the exact authoritative 1.20.0.2 build")
+    contract = source_contract(game_version)
+    if executable_sha256.upper() != contract["executable_sha256"]:
+        raise RuntimeError("read-only clock requires the exact authoritative native build")
     reader = WindowsReadOnlyMemory(pid, executable)
     try:
         return read_bound_clock(reader, contract)
