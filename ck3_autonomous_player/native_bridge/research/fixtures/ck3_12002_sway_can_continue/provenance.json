@@ -1,0 +1,62 @@
+{
+  "schema": "xar.ck3_12002_sway_can_continue_fixture_provenance.v1",
+  "producer": "actual current CanContinue getter true/false/terminal-not-called production reader + owner envelope + full serializer",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "synthetic_memory_and_calls": true,
+  "actual_full_command_result": true,
+  "ck3_process_access": false,
+  "paused_live": false,
+  "shared_worker_dispatch_included": false,
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion.cpp": "732de3307bf29836b845855e1aa8c2ae9cfd8af42ed9e421b09a70334e7ac08c",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_mailbox.cpp": "478b2741cbc515381da2b4bab43cc609052ff0459c660a5c0a0fdc148832619f",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_serializer.cpp": "46ff816f12e737966f0cac51b9bb6c7283c6c228f80f26af27e70c0b4bef4bd0",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_test.cpp": "729e2bf9fc28815363e8e8e8db44fd1e75820da22a26261973ab6928fc478336",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_handler.cpp": "4573beea4461ecce6664cc17ecc1407da59e0edfb474a016df698362df8fd629",
+    "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_fixture.py": "d1e4915d29a9f6b24a4daefc81f091280f436d569c1417db89b822a1fb3e3091",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002.hpp": "3a6a701735402a75dd4c99deb6aa1027aff7283d1a636784ebb8efb68d41308c",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_state.hpp": "ded51e4942944f02627463c3e8fc4562e1cc6dbfee2ae19331bf4bfbedaf47b2",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion.hpp": "8621c351cd2b32c3eb7cd61f0c5bbb05622869aadcf52ce8974e68f646e380ce",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_mailbox.hpp": "6f2b69707b497090a29dab2e6f822f60b714f60d2932b4d766029fd8b5972879"
+  },
+  "payload_sha256": {
+    "can-continue-false-wire.json": "859e422beeb865ce00e00e71a2961fd2b8ab6282a1522b81402218e5c6977902",
+    "can-continue-not-applicable-terminal-wire.json": "ed69c951b8c7a45a420afefd696993e324895efad06690872eb1279dc730453b",
+    "can-continue-true-wire.json": "00c5d1c585e6299c0595e803375ee38390bfe3891da666e85d9952ebaf51c278"
+  },
+  "native_suites": [
+    {
+      "mode": "Debug",
+      "status": "GREEN",
+      "compiler": "MSVC /W4 /WX",
+      "optimization": "/Od",
+      "exe_sha256": "08d182100832f875eb8a1b389b078f69da848a3b6d185a8ec180f43f040837cb",
+      "wires_sha256": {
+        "can-continue-false-wire.json": "859e422beeb865ce00e00e71a2961fd2b8ab6282a1522b81402218e5c6977902",
+        "can-continue-not-applicable-terminal-wire.json": "ed69c951b8c7a45a420afefd696993e324895efad06690872eb1279dc730453b",
+        "can-continue-true-wire.json": "00c5d1c585e6299c0595e803375ee38390bfe3891da666e85d9952ebaf51c278"
+      },
+      "output": "PASS current native CanContinue true/false/terminal-not-called; actual reader + owner QueryMailboxEnvelope + full command serializer"
+    },
+    {
+      "mode": "Release",
+      "status": "GREEN",
+      "compiler": "MSVC /W4 /WX",
+      "optimization": "/O2",
+      "exe_sha256": "aa1f9361537bd97e6436ac46d2e3c6620f24a8cb52a85af9f87fce32991db36c",
+      "wires_sha256": {
+        "can-continue-false-wire.json": "859e422beeb865ce00e00e71a2961fd2b8ab6282a1522b81402218e5c6977902",
+        "can-continue-not-applicable-terminal-wire.json": "ed69c951b8c7a45a420afefd696993e324895efad06690872eb1279dc730453b",
+        "can-continue-true-wire.json": "00c5d1c585e6299c0595e803375ee38390bfe3891da666e85d9952ebaf51c278"
+      },
+      "output": "PASS current native CanContinue true/false/terminal-not-called; actual reader + owner QueryMailboxEnvelope + full command serializer"
+    }
+  ],
+  "native_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-provider\\can-continue-increment-001\\result.json",
+  "copied_native_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\python-sway-can-continue-next\\native-increment-receipt.json",
+  "native_result_sha256": "315d0233d3aca48b16429b05a9c91122feb8e90d9482111ef725b89b170e0b93",
+  "consumer_boundary": "Native response unchanged except dynamic request_id correlation. Real protocol state ingest/wait with declared synthetic hello/paused state, no live or durable cause qualification."
+}

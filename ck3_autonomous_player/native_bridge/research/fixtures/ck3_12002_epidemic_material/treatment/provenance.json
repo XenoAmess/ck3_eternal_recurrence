@@ -1,0 +1,113 @@
+{
+  "schema": "xar.ck3_12002_ce1_material_payload_provenance.v1",
+  "domain": "treatment",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "actual_production_provider": true,
+  "actual_production_v1_serializer": true,
+  "payload_only": true,
+  "actual_command_result": false,
+  "paused_live": false,
+  "ck3_process_access": false,
+  "fixture_native_memory_and_calls": "fixture-owned objects/native callbacks; not CK3 EXE functions",
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_epidemic_treatment_presence.cpp": "09b9ea15c2a84c6a1b82f4a830c587d0d1be4f905149d6c7575d2c9600bad821",
+    "ck3_autonomous_player/native_bridge/src/player_epidemic_treatment_presence_v1.cpp": "3e6fbdcd156abdb78448e07ac983474b11c8da58fbc478ddbc5541fb3a90fefd",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_epidemic_treatment_presence_test.cpp": "a86cbac870bc71b4eeb94d425af06fb6919e9651cd7428abbb4adfbaaa5dd4ee",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_epidemic_treatment_presence.hpp": "9ec8e069d8630019518c76f7becc7cb43ca927dce9e494244591bacd7eac6f58",
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_epidemic_treatment_presence_fixture.py": "a1f2653131ee2b0376432a31c6109ac04a25a21e7da7507ac9d8df315edaccf6",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/player_epidemic_treatment_presence_v1.hpp": "93e731d5a8f4928a4731594879a88f979a058dea74330e764c4e84f99319101b"
+  },
+  "payload_sha256": {
+    "present.json": "1777288189c780579c1313af80515992bdd7425bbc2e833add08e731a38cb540",
+    "absent.json": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c",
+    "empty-extension.json": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c",
+    "empty-rows.json": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c",
+    "rows-unavailable.json": "be989771384886e23c58da4db71d5c7a2614928a39e752babb5e366cbef1b9a3",
+    "definition-unavailable.json": "feb69458dd818d2323be5db7a3ade772690d2fc8ab59254e224cc19624efc561"
+  },
+  "native_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\result.json",
+  "native_result_sha256": "29a14a4c6a71722a7c65be357dad07c83c454efecc02ad7c77f47b08da3307d5",
+  "native_runs": [
+    {
+      "configuration": "Debug",
+      "status": "GREEN",
+      "checks": 26,
+      "executable": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Debug\\treatment-presence-fixture.exe",
+      "executable_sha256": "4f70bddba89113d2e09441ea2c5935dbf2a05253703af17cb0349e295c06915d",
+      "wire": [
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Debug\\wire\\present.json",
+          "name": "present.json",
+          "sha256": "1777288189c780579c1313af80515992bdd7425bbc2e833add08e731a38cb540"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Debug\\wire\\absent.json",
+          "name": "absent.json",
+          "sha256": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Debug\\wire\\empty-extension.json",
+          "name": "empty-extension.json",
+          "sha256": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Debug\\wire\\empty-rows.json",
+          "name": "empty-rows.json",
+          "sha256": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Debug\\wire\\rows-unavailable.json",
+          "name": "rows-unavailable.json",
+          "sha256": "be989771384886e23c58da4db71d5c7a2614928a39e752babb5e366cbef1b9a3"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Debug\\wire\\definition-unavailable.json",
+          "name": "definition-unavailable.json",
+          "sha256": "feb69458dd818d2323be5db7a3ade772690d2fc8ab59254e224cc19624efc561"
+        }
+      ]
+    },
+    {
+      "configuration": "Release",
+      "status": "GREEN",
+      "checks": 26,
+      "executable": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Release\\treatment-presence-fixture.exe",
+      "executable_sha256": "14ff17f704a4a831a146f731dbdae09e0782448d1683dd771a779f9a9e54d037",
+      "wire": [
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Release\\wire\\present.json",
+          "name": "present.json",
+          "sha256": "1777288189c780579c1313af80515992bdd7425bbc2e833add08e731a38cb540"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Release\\wire\\absent.json",
+          "name": "absent.json",
+          "sha256": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Release\\wire\\empty-extension.json",
+          "name": "empty-extension.json",
+          "sha256": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Release\\wire\\empty-rows.json",
+          "name": "empty-rows.json",
+          "sha256": "948c0051dcc029ffaf6f9ec86e11c74ff10267e599efbfc863d037774235d84c"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Release\\wire\\rows-unavailable.json",
+          "name": "rows-unavailable.json",
+          "sha256": "be989771384886e23c58da4db71d5c7a2614928a39e752babb5e366cbef1b9a3"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-provider\\fixture-final\\Release\\wire\\definition-unavailable.json",
+          "name": "definition-unavailable.json",
+          "sha256": "feb69458dd818d2323be5db7a3ade772690d2fc8ab59254e224cc19624efc561"
+        }
+      ]
+    }
+  ],
+  "consumer_boundary": "Actual C++ DTO payload bytes; Python transport/envelope/context metadata are explicitly synthetic harness scaffolding. No actual caller, native cache, SDK or live completion is claimed."
+}

@@ -2775,6 +2775,94 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_clergy_appointment_private_v1(
+        self, *, expected_revision: int, candidate_character_id: int,
+    ) -> dict[str, object]:
+        """Read native candidate appointment and reassignment observations."""
+        from .player_clergy_appointment_private_transport import query_player_clergy_appointment_private_v1
+
+        return query_player_clergy_appointment_private_v1(
+            self, expected_revision=expected_revision, candidate_character_id=candidate_character_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_rite_members_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the current Rite and Faith member lists in native order."""
+        from .player_rite_members_private_transport import query_player_rite_members_private_v1
+
+        return query_player_rite_members_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_hostility_private_v1(
+        self, *, expected_revision: int, target_rite_id: int,
+    ) -> dict[str, object]:
+        """Read native hostility values for an explicitly selected Rite."""
+        from .player_religion_hostility_private_transport import query_player_religion_hostility_private_v1
+
+        return query_player_religion_hostility_private_v1(
+            self, expected_revision=expected_revision, target_rite_id=target_rite_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_doctrine_knowledge_private_v1(
+        self, *, expected_revision: int, doctrine_key: str | None = None,
+    ) -> dict[str, object]:
+        """Read learned doctrines or the native lookup for one doctrine key."""
+        from .player_religion_doctrine_knowledge_private_transport import query_player_religion_doctrine_knowledge_private_v1
+
+        return query_player_religion_doctrine_knowledge_private_v1(
+            self, expected_revision=expected_revision, doctrine_key=doctrine_key,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_tenets_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the current player's native tenet rows."""
+        from .player_religion_tenets_private_transport import query_player_religion_tenets_private_v1
+
+        return query_player_religion_tenets_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_conversion_choices_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read native conversion choices and current Faith Rite membership."""
+        from .player_religion_conversion_choices_private_transport import query_player_religion_conversion_choices_private_v1
+
+        return query_player_religion_conversion_choices_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_conversion_inputs_private_v1(
+        self, *, expected_revision: int, target_rite_id: int,
+    ) -> dict[str, object]:
+        """Read native conversion knowledge and predicted fulfillment inputs."""
+        from .player_religion_conversion_inputs_private_transport import query_player_religion_conversion_inputs_private_v1
+
+        return query_player_religion_conversion_inputs_private_v1(
+            self, expected_revision=expected_revision, target_rite_id=target_rite_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_conversion_reasons_private_v1(
+        self, *, expected_revision: int, target_rite_id: int,
+    ) -> dict[str, object]:
+        """Read the native conversion reason inputs for a selected Rite."""
+        from .player_religion_conversion_reasons_private_transport import query_player_religion_conversion_reasons_private_v1
+
+        return query_player_religion_conversion_reasons_private_v1(
+            self, expected_revision=expected_revision, target_rite_id=target_rite_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_family_obligations_private_v1(
         self, *, expected_revision: int, subject_character_id: int,
         candidate_character_id: int, request_matrilineal_option: bool = False,

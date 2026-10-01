@@ -1,0 +1,54 @@
+{
+  "schema": "xar.ck3.religion-clergy-appointment-mailbox-fixture/v1",
+  "status": "GREEN",
+  "time_utc": "2026-10-01T08:48:36.194646+00:00",
+  "results": [
+    {
+      "mode": "Od",
+      "compile": "GREEN_W4_WX",
+      "stdout": "PASS checks=57 actual_worker_owner_pipeline=true actual_provider=true actual_wrapper=true live=false",
+      "executable_sha256": "5d9870bfcc115e9f51ae5a0d1b3f3f3b7a899afba951b17a1bfd16445fee4dd8",
+      "actual_wire_sha256": {
+        "vacant-valid.json": "ce0e4e92c077d77ce065d140ded5d02bccb6d4f9d67d72666967b032620ae49b",
+        "incumbent-reassign-denied.json": "2ac884120b91eb8b8c0d7c0d615e700a048152b60526a76829e3afd6ab95c385",
+        "candidate-native-denied.json": "4beb19b9e5718c094222cdc53abf742f8b6aa05800cb02a846fb5273f50d9431",
+        "foreign-context.json": "07ef2e9452354de61cf548118da1408ecdd4c0ce5a08dd1643a29da562eb9114",
+        "position-absent.json": "7201d6c2d8abe2c688e8bcb7706326602f45ed9c8f011e0511209f1baa9982ca",
+        "candidate-unavailable.json": "619a8eaccf4f4a256cec9ac60fc6d10f7bfa916e713acec9b4604755a1d1d142",
+        "context-unavailable.json": "5476e47dbb6ece75c03fa84a582b8385ad888c123493cb2585ef31959e8849c8"
+      }
+    },
+    {
+      "mode": "O2",
+      "compile": "GREEN_W4_WX",
+      "stdout": "PASS checks=57 actual_worker_owner_pipeline=true actual_provider=true actual_wrapper=true live=false",
+      "executable_sha256": "a065c84b41d5843b8a6cb7510a5442b443a5a4f028e6856e56e5b6d8d9ae3f83",
+      "actual_wire_sha256": {
+        "vacant-valid.json": "ce0e4e92c077d77ce065d140ded5d02bccb6d4f9d67d72666967b032620ae49b",
+        "incumbent-reassign-denied.json": "2ac884120b91eb8b8c0d7c0d615e700a048152b60526a76829e3afd6ab95c385",
+        "candidate-native-denied.json": "4beb19b9e5718c094222cdc53abf742f8b6aa05800cb02a846fb5273f50d9431",
+        "foreign-context.json": "07ef2e9452354de61cf548118da1408ecdd4c0ce5a08dd1643a29da562eb9114",
+        "position-absent.json": "7201d6c2d8abe2c688e8bcb7706326602f45ed9c8f011e0511209f1baa9982ca",
+        "candidate-unavailable.json": "619a8eaccf4f4a256cec9ac60fc6d10f7bfa916e713acec9b4604755a1d1d142",
+        "context-unavailable.json": "5476e47dbb6ece75c03fa84a582b8385ad888c123493cb2585ef31959e8849c8"
+      }
+    }
+  ],
+  "source_sha256": {
+    "ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "religion_rite_governance12002_clergy.cpp": "3e52102faa97e178a7a484567f41e7d66a20e64e7d539c47456a81d9d4bb0522",
+    "main_thread_query_mailbox_v1.cpp": "32dc6f894db6c9cd94aa9d8cb56490b412459cb6adae8f3760448ed33ef53b6c",
+    "ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "religion_rite_governance12002_clergy_mailbox.cpp": "9a8570631497be024e81a39462679f80c6bcfa5d5eb9d6965a68e59a7d7eb350",
+    "religion_rite_governance12002_clergy_mailbox_test.cpp": "6c8f3de3d10c53c704a9d65769e8462cd12dfb2e2e09154602cff9cff2a98187"
+  },
+  "first_component_matrix_repeated": false,
+  "native_api": "real explicit candidate full CharacterID; current owner only",
+  "actual_pipeline": "worker TrySubmit -> owning ObservePumpDrain -> actual Core/Clergy reader -> Wait/Reclaim -> native command_result serializer -> Python json decoder",
+  "mailbox_permit": "existing primary offline permitted_executor; central permitted_executor_clergy12002 pending",
+  "dedicated_production_registration_tested": false,
+  "ck3_accessed": false,
+  "live_verified": false,
+  "readiness": "static-ready"
+}

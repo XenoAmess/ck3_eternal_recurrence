@@ -1601,6 +1601,82 @@ def create_server(
                 scheme_instance_id=scheme_instance_id,
             )
 
+    if getattr(driver, "allow_private_player_clergy_appointment_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_clergy_appointment_v1(
+            expected_revision: int, candidate_character_id: int,
+        ) -> dict[str, object]:
+            """Read native candidate appointment and reassignment observations."""
+            return driver.query_player_clergy_appointment_private_v1(expected_revision=expected_revision, candidate_character_id=candidate_character_id)
+
+    if getattr(driver, "allow_private_player_rite_members_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_rite_members_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the current Rite and Faith member lists in native order."""
+            return driver.query_player_rite_members_private_v1(expected_revision=expected_revision)
+
+    if getattr(driver, "allow_private_player_religion_hostility_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_hostility_v1(
+            expected_revision: int, target_rite_id: int,
+        ) -> dict[str, object]:
+            """Read native hostility values for an explicitly selected Rite."""
+            return driver.query_player_religion_hostility_private_v1(expected_revision=expected_revision, target_rite_id=target_rite_id)
+
+    if getattr(driver, "allow_private_player_religion_doctrine_knowledge_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_doctrine_knowledge_v1(
+            expected_revision: int, doctrine_key: str | None = None,
+        ) -> dict[str, object]:
+            """Read learned doctrines or the native lookup for one doctrine key."""
+            return driver.query_player_religion_doctrine_knowledge_private_v1(expected_revision=expected_revision, doctrine_key=doctrine_key)
+
+    if getattr(driver, "allow_private_player_religion_tenets_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_tenets_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the current player's native tenet rows."""
+            return driver.query_player_religion_tenets_private_v1(expected_revision=expected_revision)
+
+    if getattr(driver, "allow_private_player_religion_conversion_choices_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_conversion_choices_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native conversion choices and current Faith Rite membership."""
+            return driver.query_player_religion_conversion_choices_private_v1(expected_revision=expected_revision)
+
+    if getattr(driver, "allow_private_player_religion_conversion_inputs_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_conversion_inputs_v1(
+            expected_revision: int, target_rite_id: int,
+        ) -> dict[str, object]:
+            """Read native conversion knowledge and predicted fulfillment inputs."""
+            return driver.query_player_religion_conversion_inputs_private_v1(expected_revision=expected_revision, target_rite_id=target_rite_id)
+
+    if getattr(driver, "allow_private_epidemic_treatment_presence_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_epidemic_treatment_presence_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read actual player treatment variables and modifier presence."""
+            return driver.query_player_epidemic_treatment_presence_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_player_religion_conversion_reasons_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_conversion_reasons_v1(
+            expected_revision: int, target_rite_id: int,
+        ) -> dict[str, object]:
+            """Read native conversion reason inputs for the selected Rite."""
+            return driver.query_player_religion_conversion_reasons_private_v1(
+                expected_revision=expected_revision, target_rite_id=target_rite_id,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3400,6 +3476,42 @@ def parser() -> argparse.ArgumentParser:
         "--private-active-scheme-sway-completion-query", action="store_true",
         help="enable the private exact Sway instance terminal-state observation",
     )
+    result.add_argument(
+        "--private-player-clergy-appointment-query", action="store_true",
+        help="Read native candidate appointment and reassignment observations.",
+    )
+    result.add_argument(
+        "--private-player-rite-members-query", action="store_true",
+        help="Read the current Rite and Faith member lists in native order.",
+    )
+    result.add_argument(
+        "--private-player-religion-hostility-query", action="store_true",
+        help="Read native hostility values for an explicitly selected Rite.",
+    )
+    result.add_argument(
+        "--private-player-religion-doctrine-knowledge-query", action="store_true",
+        help="Read learned doctrines or the native lookup for one doctrine key.",
+    )
+    result.add_argument(
+        "--private-player-religion-tenets-query", action="store_true",
+        help="Read the current player's native tenet rows.",
+    )
+    result.add_argument(
+        "--private-player-religion-conversion-choices-query", action="store_true",
+        help="Read native conversion choices and current Faith Rite membership.",
+    )
+    result.add_argument(
+        "--private-player-religion-conversion-inputs-query", action="store_true",
+        help="Read native conversion knowledge and predicted fulfillment inputs.",
+    )
+    result.add_argument(
+        "--private-player-epidemic-treatment-presence-query", action="store_true",
+        help="enable the existing native player treatment presence observation",
+    )
+    result.add_argument(
+        "--private-player-religion-conversion-reasons-query", action="store_true",
+        help="enable the native conversion reason observation for a selected Rite",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3480,7 +3592,17 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_religion_doctrines_query
             or args.private_player_rite_governance_query
             or args.private_player_religion_conversion_terms_query
-            or args.private_active_scheme_sway_completion_query) and (
+            or args.private_active_scheme_sway_completion_query
+            or args.private_player_clergy_appointment_query
+            or args.private_player_rite_members_query
+            or args.private_player_religion_hostility_query
+            or args.private_player_religion_doctrine_knowledge_query
+            or args.private_player_religion_tenets_query
+            or args.private_player_religion_conversion_choices_query
+            or args.private_player_religion_conversion_inputs_query
+            or args.private_player_epidemic_treatment_presence_query
+            or args.private_player_religion_conversion_reasons_query
+            ) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
         raise ValueError("private nonwar MCP queries require native-headless stdio")
@@ -3544,6 +3666,24 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_player_religion_conversion_terms_query = True
     if args.private_active_scheme_sway_completion_query:
         driver.allow_private_active_scheme_sway_completion_query = True
+    if args.private_player_clergy_appointment_query:
+        driver.allow_private_player_clergy_appointment_query = True
+    if args.private_player_rite_members_query:
+        driver.allow_private_player_rite_members_query = True
+    if args.private_player_religion_hostility_query:
+        driver.allow_private_player_religion_hostility_query = True
+    if args.private_player_religion_doctrine_knowledge_query:
+        driver.allow_private_player_religion_doctrine_knowledge_query = True
+    if args.private_player_religion_tenets_query:
+        driver.allow_private_player_religion_tenets_query = True
+    if args.private_player_religion_conversion_choices_query:
+        driver.allow_private_player_religion_conversion_choices_query = True
+    if args.private_player_religion_conversion_inputs_query:
+        driver.allow_private_player_religion_conversion_inputs_query = True
+    if args.private_player_epidemic_treatment_presence_query:
+        driver.allow_private_epidemic_treatment_presence_query = True
+    if args.private_player_religion_conversion_reasons_query:
+        driver.allow_private_player_religion_conversion_reasons_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

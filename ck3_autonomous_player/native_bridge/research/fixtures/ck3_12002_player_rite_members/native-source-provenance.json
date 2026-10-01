@@ -1,0 +1,117 @@
+{
+  "schema": "xar.ck3.religion-rite-members-mailbox-delivery/v1",
+  "status": "READY",
+  "readiness": "static-ready",
+  "source_root": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src",
+  "owned_paths": [
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_members_mailbox.hpp",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_members_mailbox.cpp",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_members_mailbox_test.cpp",
+    "research/religion_rite_governance12002_members_mailbox_tests.py",
+    "research/religion_rite_governance12002_members_mailbox_contract.json",
+    "docs/ck3-native-ai/ck3-1.20.0.2-religion-rite-members-transport.md"
+  ],
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_members_mailbox.hpp": "c4f142e2cdb67d5bf89b50ef9967ce01679bf9b118ffd85290b5582d12bfe9f2",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_members_mailbox.cpp": "1739a2734d8401d57681b407c6d81273178da706d6520384fcdaad4b5f2a1abb",
+    "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_members_mailbox_test.cpp": "346eef7a9f2b57fbe3404a600f2c0d9dd3fdfa674d38cb3b9f48f9c70bb6ff14",
+    "research/religion_rite_governance12002_members_mailbox_tests.py": "9126b1c6168351eecdc3c7d631e19b7f182f11beea8e05509994e6b8b500b556",
+    "research/religion_rite_governance12002_members_mailbox_contract.json": "9dccedbb661c8e68ac5a479341d42ac001a9dbf0df23c1a4ed6be6c190c59159",
+    "docs/ck3-native-ai/ck3-1.20.0.2-religion-rite-members-transport.md": "7de9ecae373deccc15cdf47d0caccb6ede27ed7e78857d7b6e653b471585b8c2"
+  },
+  "runtime": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-rite-governance\\members-mailbox\\runtime\\result.json",
+    "sha256": "fd411712d67df7933861443d13f8129fb97ad99c4c8369108d809828bb9a8d46",
+    "status": "GREEN",
+    "runs": [
+      {
+        "mode": "Od",
+        "compile": "GREEN_W4_WX",
+        "stdout": "PASS checks=36 cases=5 actual_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true component_matrix_repeated=false dedicated_registration=false live=false",
+        "executable_sha256": "e88a8eb9cdab6f60316b62f639de77acff2e7cf9ced0ac981dc16de959da6d3c",
+        "actual_wire_sha256": {
+          "current-members.json": "e9075ecb7a081b9f6ac6a865d6da5d9fce25f05fcffe1d605887120fbd98e629",
+          "known-empty.json": "2a92e977931ed939edd0bd534b13af40b2516f23b5a253fa9427e78838ecc957",
+          "title-unavailable.json": "820af7ae77330d66d04b7b200bb26be84349b69260f37a61ec0b2df218999e53",
+          "legal-no-rite.json": "09b4ab67a37969f6461de8c6e2fbc3ac31446766bee3760a8b3ec99eb866ec86",
+          "frame-changed-rejection.json": "757348cb7667a0f0e097e9c51a62b8225108bed315f734caf83f1648c7c7c3ec"
+        }
+      },
+      {
+        "mode": "O2",
+        "compile": "GREEN_W4_WX",
+        "stdout": "PASS checks=36 cases=5 actual_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true component_matrix_repeated=false dedicated_registration=false live=false",
+        "executable_sha256": "dd9de8f78e737482759ef77b4175b81061acb360005d6ba606d3172224e2974e",
+        "actual_wire_sha256": {
+          "current-members.json": "e9075ecb7a081b9f6ac6a865d6da5d9fce25f05fcffe1d605887120fbd98e629",
+          "known-empty.json": "2a92e977931ed939edd0bd534b13af40b2516f23b5a253fa9427e78838ecc957",
+          "title-unavailable.json": "820af7ae77330d66d04b7b200bb26be84349b69260f37a61ec0b2df218999e53",
+          "legal-no-rite.json": "09b4ab67a37969f6461de8c6e2fbc3ac31446766bee3760a8b3ec99eb866ec86",
+          "frame-changed-rejection.json": "757348cb7667a0f0e097e9c51a62b8225108bed315f734caf83f1648c7c7c3ec"
+        }
+      }
+    ],
+    "actual_wire_sha256": {
+      "runtime/O2/wire/current-members.json": "e9075ecb7a081b9f6ac6a865d6da5d9fce25f05fcffe1d605887120fbd98e629",
+      "runtime/O2/wire/frame-changed-rejection.json": "757348cb7667a0f0e097e9c51a62b8225108bed315f734caf83f1648c7c7c3ec",
+      "runtime/O2/wire/known-empty.json": "2a92e977931ed939edd0bd534b13af40b2516f23b5a253fa9427e78838ecc957",
+      "runtime/O2/wire/legal-no-rite.json": "09b4ab67a37969f6461de8c6e2fbc3ac31446766bee3760a8b3ec99eb866ec86",
+      "runtime/O2/wire/title-unavailable.json": "820af7ae77330d66d04b7b200bb26be84349b69260f37a61ec0b2df218999e53",
+      "runtime/Od/wire/current-members.json": "e9075ecb7a081b9f6ac6a865d6da5d9fce25f05fcffe1d605887120fbd98e629",
+      "runtime/Od/wire/frame-changed-rejection.json": "757348cb7667a0f0e097e9c51a62b8225108bed315f734caf83f1648c7c7c3ec",
+      "runtime/Od/wire/known-empty.json": "2a92e977931ed939edd0bd534b13af40b2516f23b5a253fa9427e78838ecc957",
+      "runtime/Od/wire/legal-no-rite.json": "09b4ab67a37969f6461de8c6e2fbc3ac31446766bee3760a8b3ec99eb866ec86",
+      "runtime/Od/wire/title-unavailable.json": "820af7ae77330d66d04b7b200bb26be84349b69260f37a61ec0b2df218999e53"
+    }
+  },
+  "exact_game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "selector": "query-player-rite-members-v1",
+  "domain_key": "player_rite_members_v1",
+  "backend_id": "ck3-1.20.0.2-native-player-rite-members-v1",
+  "result_field": "result.player_rite_members",
+  "handler": "xar::ck3_12002::HandlePlayerRiteMembersPrivate12002",
+  "executor": "xar::ck3_12002::ExecutePlayerRiteMembersMailbox12002",
+  "flag": "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1",
+  "flag_default": "OFF",
+  "suggested_named_permit": "permitted_executor_rite_members12002",
+  "shared_cmake_driver_report_git_changed": false,
+  "first_counter_7_and_members_7_changed": false,
+  "first_component_15_checks_repeated": false,
+  "request_actor": "actual current played only; optional expected revision; no arbitrary actor/action",
+  "actual_pipeline": "worker TrySubmit -> owner ObservePumpDrain -> actual Core/member provider -> Wait/Reclaim -> command_result serializer -> Python JSON decoder",
+  "native_proof_reused": {
+    "abi_path": "research/religion_rite_governance12002_organization_members_abi.json",
+    "abi_sha256": "02cc6b68f5dba5a323803eb0ea4e7128da14a0788d58e4c11b14b6da25a97ad3",
+    "provider_delivery": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-rite-governance\\organization-members\\delivery-result.json",
+    "provider_delivery_sha256": "4f2813e0ff9fec20c83fbea3a9bc447684b9a26d2fbd6a0319508a6846a3baf2"
+  },
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "g2_completion_credit": 0,
+  "red_attempts": [],
+  "remaining": [
+    "central named permitted_executor_rite_members12002/private flag/handler registration",
+    "Python/MCP integration consuming actual native command_result packets",
+    "exact-build paused live member snapshot and evidence; current delivery is not live"
+  ],
+  "report_fields": {
+    "daily_date": "2026-10-01",
+    "iso_week": "2026-W40",
+    "completed": "Rite member readonly transport isolated increment: fixed player_rite_members_v1 selector, exact-build handler, actual worker/owner mailbox/native provider/serializers and full command_result wire.",
+    "why": "Expose independently useful actual Faith/Rite characters and Rite counties to the same MCP using existing proven native collectors.",
+    "capability_readiness": "static-ready only; component and owner transport fixtures are offline; no G2 completion credit, production actions or OODA.",
+    "tests": "MSVC /W4 /WX Od/O2 parallel: each 36 checks / 5 actual runtime cases; original 15 component checks not rerun.",
+    "live_artifact": null,
+    "offline_artifacts": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-rite-governance\\members-mailbox",
+    "red_blockers": "No harness RED in this increment; dedicated production permit and paused live snapshot remain central work.",
+    "next": [
+      "central named permitted_executor_rite_members12002/private flag/handler registration",
+      "Python/MCP integration consuming actual native command_result packets",
+      "exact-build paused live member snapshot and evidence; current delivery is not live"
+    ],
+    "commit_push": "Shared Git owned by coordinator; this leaf changed no Git state.",
+    "native_topic": "docs/ck3-native-ai/ck3-1.20.0.2-religion-rite-members-transport.md",
+    "scope": "Nonwar religion readonly members only; Faith and Rite character lists remain separately named; legal no Rite/known empty/unavailable preserved."
+  }
+}

@@ -460,3 +460,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 实际完整h82旧配对在matching新profilebytes下复现生产preflight因旧environmentSHA拒绝；正式新leaf API迁移后同生产路径GREEN。2必要unit tests通过。JSON递归diff只有三处环境SHA，save/sourcepair/82history/episode/lifecycle/campaigngoal保留。profile/process inventory为明确matching fixture，不冒实际R2准备或实机；root新L2/实际profile调用同API后冷恢复。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\lifecycle-environment-rebind\result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:45:21 Nine additional readonly SDK queries and actual caller consumers
+
+97精确源，shared2与九只读宗教/治疗入口、Sway37field兼容、CE1payload消费者。46 focused tests通过，其中10新增actual cache→productionDriver→officialSDK cases；旧leaf/native不重跑。所有状态最高static-ready，实际paused/cold由root验收。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\NEXT-NINE-QUERY-SHARED-READY.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

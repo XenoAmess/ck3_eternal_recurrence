@@ -1,0 +1,39 @@
+{
+  "schema": "ck3-12002-player-religion-tenets-python-fixtures-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "portable_fixture": {
+    "path": "research/religion_doctrine12002_tenet_rows_mailbox_wire_fixtures.json",
+    "sha256": "489a430bbd919f059219792d7374d642df4f9087a44171f9391762fdf669ee1d",
+    "evidence_scope": "Actual owned native Tenet rows reader, domain mailbox and complete command-result serializer; no CK3 live process"
+  },
+  "original_wire_sources": {
+    "current-main-personal": {
+      "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/tenet/rows-mailbox-final-v3/O2/current-main-personal.json",
+      "sha256": "2b9de767353ea5f5919af8b47d2118b134b3b29793f78be33cca76fd56d7435a"
+    },
+    "known-empty-personal": {
+      "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/tenet/rows-mailbox-final-v3/O2/known-empty-personal.json",
+      "sha256": "922bad31a1b361bc4254c264f4cbbefa6c2e6ef3268423920e73ccdb2dbbbe9f"
+    },
+    "personal-without-rite": {
+      "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/tenet/rows-mailbox-final-v3/O2/personal-without-rite.json",
+      "sha256": "a1dcfb5cccb529db6fb22610f979464cc3bb0885b56fa205058f5497687ffc06"
+    },
+    "tenet-state-unavailable": {
+      "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/tenet/rows-mailbox-final-v3/O2/tenet-state-unavailable.json",
+      "sha256": "b6d5be2d166234cfa88e10c4f9b4b082c4a0c8b4350c005bfad5f8ffd79d0724"
+    }
+  },
+  "native_receipt": {
+    "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/tenet/rows-mailbox-final-v3/result.json",
+    "sha256": "e07fc90027cdf39b9c05ff9c4b416204d7053701292cbf88aba72bdb9d0c7852"
+  },
+  "native_delivery_manifest": {
+    "path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/tenet/rows-mailbox-delivery-result.json",
+    "sha256": "51d8123f93fa7e8dc5f4b1277ed96b53df57814c1d173eb1b1d8f56af0e39284"
+  },
+  "live": false,
+  "local_ck3_operations": [],
+  "packet_preservation": "Portable fixture retains all native fields; only generated request_id is correlated in memory before production NativeProtocolState.ingest and wait_for_command_result"
+}

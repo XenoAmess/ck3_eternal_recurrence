@@ -28,6 +28,7 @@ _CONTEXT_KEYS = {
     "native_success_chance_scale", "native_success_chance_unit",
     "terminal_cause_observed", "terminal_cause",
 }
+_CAN_CONTINUE_KEYS = {"native_can_continue_observed", "native_can_continue"}
 _BOOL_KEYS = (
     "private_build", "read_only", "advertised", "available", "instance_source_observed",
     "instance_present", "storage_slot_reused", "exact_instance_join_ready",
@@ -50,7 +51,9 @@ def normalize_active_scheme_sway_completion_v1(
     target_character_id: int, scheme_instance_id: int,
 ) -> dict[str, object]:
     """Copy actual terminal/absence/chance facts without assigning a cause."""
-    if not isinstance(value, dict) or set(value) != _CONTEXT_KEYS or value["schema"] != SCHEMA:
+    if (not isinstance(value, dict)
+            or set(value) not in (_CONTEXT_KEYS, _CONTEXT_KEYS | _CAN_CONTINUE_KEYS)
+            or value["schema"] != SCHEMA):
         raise ValueError("native sway completion schema is malformed")
     build = require_exact_native_build(value["build_version"], value["executable_sha256"])
     if (build != CK3_12002 or build != private_native_build_identity(snapshot)
@@ -78,6 +81,13 @@ def normalize_active_scheme_sway_completion_v1(
     ):
         if value[key] is not None and not _integer(value[key], minimum, maximum):
             raise ValueError(f"native sway completion nullable native value is malformed: {key}")
+    if "native_can_continue_observed" in value:
+        observed = value["native_can_continue_observed"]
+        can_continue = value["native_can_continue"]
+        if (type(observed) is not bool
+                or (observed and type(can_continue) is not bool)
+                or (not observed and can_continue is not None)):
+            raise ValueError("native sway completion continue observation is malformed")
     actor = snapshot.get("played_character")
     if (not isinstance(actor, Mapping)
             or value["actor_character_id"] != actor.get("character_id")

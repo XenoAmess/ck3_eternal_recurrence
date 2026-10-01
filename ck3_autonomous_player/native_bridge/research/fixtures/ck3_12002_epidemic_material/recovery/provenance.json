@@ -1,0 +1,202 @@
+{
+  "schema": "xar.ck3_12002_ce1_material_payload_provenance.v1",
+  "domain": "recovery",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "actual_production_provider": true,
+  "actual_production_v1_serializer": true,
+  "payload_only": true,
+  "actual_command_result": false,
+  "paused_live": false,
+  "ck3_process_access": false,
+  "fixture_native_memory_and_calls": "fixture-owned objects/native callbacks; not CK3 EXE functions",
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_epidemic_recovery.cpp": "ACB4C53DA4A117045BEE3D7C838B022EFEEE57D6ACADC0F30FC95B54981FA190",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_epidemic_recovery_test.cpp": "F5A5CD7728C310E0C682814E1B7DFC4B33F861B64418D27BE46E78F49B307294",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "A5C1411C5C7DB9838477A77209735D3AA47E18A291C9D7EBAF33E14885C23E6E",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_phase_definitions.cpp": "F3CA2432C958E00B109154338BE7E0FCC886B100BCF744B10E90730F79948B5D",
+    "ck3_autonomous_player/native_bridge/src/player_epidemic_recovery_v1.cpp": "F6C6949D6685D4C34775540C2DD77397F1E59170AE1B9D13809BA4CC0315EC61"
+  },
+  "payload_sha256": {
+    "both-absent.json": "0051716f117e76b953bd01cd51923a60a6ff8625d9e58e60903902c2f5e2c133",
+    "definition-unavailable.json": "3043238fa5e16c4bf4de3bbe4655ae50830b2d55b0a8c629e612b4f3bc9c7878",
+    "empty-list.json": "6248c8ebbb158519e6c6fb5a5ca475a4845f0cede5c0cd7693c132e434ed36a4",
+    "explicit-title-after.json": "09dca6c66058d64a80c7310f07f5225034bf5def785bc7fa06e57e5520589bc0",
+    "explicit-title-b-after.json": "eb529e40403de8e2f9af1bf3205e8bf10ad31f0ea047b048e4abd876faa29d13",
+    "list-unavailable.json": "efcca0074d70e0fd8a3417c46e9d128112984e6ec4cf4139812a7672ccb4ebff",
+    "presence-unavailable.json": "bed3e5ad847ecf9974b3dfab552fd70cbc5f7ccdfd1d898ea50342a07c9f951c",
+    "two-counties.json": "e9ab37b0640f9fef4a649537c4dd53b74844529a1acfdd40a750f289f4d51c8b",
+    "version-unavailable.json": "df449753af9ebc33f78fb96da18da50223fdec5df9ae4f949178462fade98d9d"
+  },
+  "native_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\result.json",
+  "native_result_sha256": "616aece8cdcc6470a03438b07e8cd63f7c2d3299377d0950155b31e154099f2f",
+  "native_runs": [
+    {
+      "mode": "Od",
+      "compile_returncode": 0,
+      "compile_command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/utf-8",
+        "/permissive-",
+        "/DNOMINMAX",
+        "/Od",
+        "/IZ:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\include",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_epidemic_recovery.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_epidemic_recovery_test.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_phase_definitions.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\player_epidemic_recovery_v1.cpp",
+        "/Fe:Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\epidemic-recovery-fixture.exe"
+      ],
+      "fixture_returncode": 0,
+      "stdout": "PASS checks=22 actual_provider=true actual_serializer=true live=false\n",
+      "stderr": "",
+      "executable_sha256": "A4A7DC13299A2DCF883886DB5C58116307B7E1A88E8A7B6F3C79A560C6323193",
+      "wire": [
+        {
+          "name": "both-absent.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\both-absent.json",
+          "sha256": "0051716F117E76B953BD01CD51923A60A6FF8625D9E58E60903902C2F5E2C133",
+          "status": "available"
+        },
+        {
+          "name": "definition-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\definition-unavailable.json",
+          "sha256": "3043238FA5E16C4BF4DE3BBE4655AE50830B2D55B0A8C629E612B4F3BC9C7878",
+          "status": "unavailable"
+        },
+        {
+          "name": "empty-list.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\empty-list.json",
+          "sha256": "6248C8EBBB158519E6C6FB5A5CA475A4845F0CEDE5C0CD7693C132E434ED36A4",
+          "status": "available"
+        },
+        {
+          "name": "explicit-title-after.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\explicit-title-after.json",
+          "sha256": "09DCA6C66058D64A80C7310F07F5225034BF5DEF785BC7FA06E57E5520589BC0",
+          "status": "available"
+        },
+        {
+          "name": "explicit-title-b-after.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\explicit-title-b-after.json",
+          "sha256": "EB529E40403DE8E2F9AF1BF3205E8BF10AD31F0EA047B048E4ABD876FAA29D13",
+          "status": "available"
+        },
+        {
+          "name": "list-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\list-unavailable.json",
+          "sha256": "EFCCA0074D70E0FD8A3417C46E9D128112984E6EC4CF4139812A7672CCB4EBFF",
+          "status": "unavailable"
+        },
+        {
+          "name": "presence-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\presence-unavailable.json",
+          "sha256": "BED3E5AD847ECF9974B3DFAB552FD70CBC5F7CCDFD1D898EA50342A07C9F951C",
+          "status": "unavailable"
+        },
+        {
+          "name": "two-counties.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\two-counties.json",
+          "sha256": "E9AB37B0640F9FEF4A649537C4DD53B74844529A1ACFDD40A750F289F4D51C8B",
+          "status": "available"
+        },
+        {
+          "name": "version-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\Od\\wire\\version-unavailable.json",
+          "sha256": "DF449753AF9EBC33F78FB96DA18DA50223FDEC5DF9AE4F949178462FADE98D9D",
+          "status": "unavailable"
+        }
+      ]
+    },
+    {
+      "mode": "O2",
+      "compile_returncode": 0,
+      "compile_command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/utf-8",
+        "/permissive-",
+        "/DNOMINMAX",
+        "/O2",
+        "/IZ:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\include",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_epidemic_recovery.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_epidemic_recovery_test.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_phase_definitions.cpp",
+        "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\player_epidemic_recovery_v1.cpp",
+        "/Fe:Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\epidemic-recovery-fixture.exe"
+      ],
+      "fixture_returncode": 0,
+      "stdout": "PASS checks=22 actual_provider=true actual_serializer=true live=false\n",
+      "stderr": "",
+      "executable_sha256": "DF877E7EA26CC3CB09E9B4143131F3DBCB36A30AFB552FD51869D5B0F1056D22",
+      "wire": [
+        {
+          "name": "both-absent.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\both-absent.json",
+          "sha256": "0051716F117E76B953BD01CD51923A60A6FF8625D9E58E60903902C2F5E2C133",
+          "status": "available"
+        },
+        {
+          "name": "definition-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\definition-unavailable.json",
+          "sha256": "3043238FA5E16C4BF4DE3BBE4655AE50830B2D55B0A8C629E612B4F3BC9C7878",
+          "status": "unavailable"
+        },
+        {
+          "name": "empty-list.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\empty-list.json",
+          "sha256": "6248C8EBBB158519E6C6FB5A5CA475A4845F0CEDE5C0CD7693C132E434ED36A4",
+          "status": "available"
+        },
+        {
+          "name": "explicit-title-after.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\explicit-title-after.json",
+          "sha256": "09DCA6C66058D64A80C7310F07F5225034BF5DEF785BC7FA06E57E5520589BC0",
+          "status": "available"
+        },
+        {
+          "name": "explicit-title-b-after.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\explicit-title-b-after.json",
+          "sha256": "EB529E40403DE8E2F9AF1BF3205E8BF10AD31F0EA047B048E4ABD876FAA29D13",
+          "status": "available"
+        },
+        {
+          "name": "list-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\list-unavailable.json",
+          "sha256": "EFCCA0074D70E0FD8A3417C46E9D128112984E6EC4CF4139812A7672CCB4EBFF",
+          "status": "unavailable"
+        },
+        {
+          "name": "presence-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\presence-unavailable.json",
+          "sha256": "BED3E5AD847ECF9974B3DFAB552FD70CBC5F7CCDFD1D898EA50342A07C9F951C",
+          "status": "unavailable"
+        },
+        {
+          "name": "two-counties.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\two-counties.json",
+          "sha256": "E9AB37B0640F9FEF4A649537C4DD53B74844529A1ACFDD40A750F289F4D51C8B",
+          "status": "available"
+        },
+        {
+          "name": "version-unavailable.json",
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\recovery-provider\\attempt-003-same-day-wire\\O2\\wire\\version-unavailable.json",
+          "sha256": "DF449753AF9EBC33F78FB96DA18DA50223FDEC5DF9AE4F949178462FADE98D9D",
+          "status": "unavailable"
+        }
+      ]
+    }
+  ],
+  "consumer_boundary": "Actual C++ DTO payload bytes; Python transport/envelope/context metadata are explicitly synthetic harness scaffolding. No actual caller, native cache, SDK or live completion is claimed."
+}

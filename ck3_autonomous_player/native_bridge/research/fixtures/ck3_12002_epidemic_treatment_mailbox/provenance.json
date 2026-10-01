@@ -1,0 +1,66 @@
+{
+  "schema": "xar.ck3.12002.ce1-treatment-python-mailbox-provenance.v1",
+  "evidence_scope": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-mailbox\\attempt-003\\result.json",
+  "actual_complete_command_result": true,
+  "production_handle_queue_owner_provider_serializer": true,
+  "fixture_owned_native_memory_and_bindings": true,
+  "synthetic_hello_and_paused_context": true,
+  "only_packet_substitution": "request_id correlation",
+  "local_ck3_contacted": false,
+  "bindings": {
+    "game_build": "1.20.0.2",
+    "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "snapshot_revision": 123,
+    "date_raw": 53350560,
+    "full_actor_id": 50331652,
+    "query_sequence": 1,
+    "observation_revision": 3,
+    "selector": "query-player-epidemic-treatment-presence-v1",
+    "modifier_key": "ce1_unorthodox_epidemic_treatment"
+  },
+  "producer_delivery": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-mailbox\\delivery-result.json",
+    "sha256": "60e91d0386744be3d8e280ad4f2557ba63d4df42c5ee26580fe37602c45369e9"
+  },
+  "producer_proof": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-mailbox\\attempt-003\\result.json",
+    "sha256": "21d41c0c3855407bea03f372b79a45d84c262a08400d8da0baeebf7e1d3adba8"
+  },
+  "producer_source_pins": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_epidemic_treatment_presence.cpp": "09b9ea15c2a84c6a1b82f4a830c587d0d1be4f905149d6c7575d2c9600bad821",
+    "ck3_autonomous_player/native_bridge/src/player_epidemic_treatment_presence_v1.cpp": "3e6fbdcd156abdb78448e07ac983474b11c8da58fbc478ddbc5541fb3a90fefd",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp": "fbb79700dca06dcbb8aa9fb9057681ba12529a5cdf9d068e35e560f2b94502ab",
+    "ck3_autonomous_player/native_bridge/src/protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_epidemic_treatment_mailbox.cpp": "337d840294fb89ab4ee13070c87ca2884455b41d01adb5db554c0cc830953992",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_epidemic_treatment_mailbox_test.cpp": "a5ff81ba71968f44a855720d00c2e6cc1257f56b63bc429e9cd004ca4a96d8c6",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_epidemic_treatment_mailbox.hpp": "d1891bfff388902b8d6676c227cf7f23e9c9da008f1aafa33529e9b6543c0964",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp": "1d0b339a60867c77b5297e08f754d2f48479361a0600b2ab77dddbdc0ec8ddbf",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_query_mailbox.hpp": "c3ff170ce4811f9f0a08c6cf1b81aa76e7601272b1b8ca46c37e699e9ac11df5",
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_epidemic_treatment_mailbox_fixture.py": "523df1bd36b1092bb07be153ad2d5bd840b859cee863f36c68335423a258af49"
+  },
+  "wire": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-mailbox\\attempt-003\\Release\\wire\\present.json",
+      "name": "present.json",
+      "sha256": "6b764492ab15557d600b0caebfbd8c127f1b20aa76ad882003d6d0bc2a9d6826",
+      "query_sequence": 1,
+      "observation_revision": 3
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-mailbox\\attempt-003\\Release\\wire\\absent.json",
+      "name": "absent.json",
+      "sha256": "2081ecd555783d757f4c1b88b766df612a18550de97366e90ae9c68d0b02a535",
+      "query_sequence": 1,
+      "observation_revision": 3
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\events12002\\treatment-mailbox\\attempt-003\\Release\\wire\\definition-unavailable.json",
+      "name": "definition-unavailable.json",
+      "sha256": "c3bea03f5c306008a0f728390283e5eafbcf354b97eca4a99d79dcf01766ee27",
+      "query_sequence": 1,
+      "observation_revision": 3
+    }
+  ]
+}

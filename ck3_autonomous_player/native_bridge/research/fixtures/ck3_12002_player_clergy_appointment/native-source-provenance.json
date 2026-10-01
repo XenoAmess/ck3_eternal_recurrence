@@ -1,0 +1,84 @@
+{
+  "schema": "xar.ck3.religion-clergy-appointment-mailbox-delivery/v1",
+  "time_utc": "2026-10-01T08:52:14.447812+00:00",
+  "status": "static-ready",
+  "live_verified": false,
+  "component_files_unchanged": true,
+  "component_matrix_repeated": false,
+  "files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_rite_governance12002_clergy_mailbox.hpp",
+      "sha256": "45403405a30ad8acfbf3b6fb95f675582e8b5d24f80e9f3e99349e99a0bb6299",
+      "size": 1937
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_clergy_mailbox.cpp",
+      "sha256": "9a8570631497be024e81a39462679f80c6bcfa5d5eb9d6965a68e59a7d7eb350",
+      "size": 8951
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/religion_rite_governance12002_clergy_mailbox_test.cpp",
+      "sha256": "6c8f3de3d10c53c704a9d65769e8462cd12dfb2e2e09154602cff9cff2a98187",
+      "size": 17850
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/religion_rite_governance12002_clergy_mailbox_tests.py",
+      "sha256": "22997561e9d8ec2f1434e7a27e5aded19d875849651366199f0865fc7ced1fd0",
+      "size": 7677
+    },
+    {
+      "path": "docs/ck3-native-ai/ck3-1.20.0.2-religion-clergy-transport.md",
+      "sha256": "c6046c5bdaa579233725acc834f9acc5814326d3eb6a738588cd5a9a1b9116a5",
+      "size": 5989
+    }
+  ],
+  "component_manifest": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-governance\\clergy\\delivery-result.json",
+    "sha256": "0aba36036e20f4e353a4bb8f5154c9da5ef713bbc22a70bc093c2602328ce153",
+    "size": 4631
+  },
+  "evidence": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-governance\\clergy-mailbox\\attempt-001\\result.json",
+      "sha256": "56e59c91bbf1dab76b7e8121ad1489b1b5f6ff32887bb426e308b63e72699258",
+      "size": 3629
+    }
+  ],
+  "tests": {
+    "Od_checks": 57,
+    "O2_checks": 57,
+    "W4_WX": true,
+    "wire_per_configuration": 7,
+    "attempts": 1
+  },
+  "interface": {
+    "selector": "query-player-clergy-appointment-v1",
+    "domain": "player_clergy_appointment_v1",
+    "backend": "ck3-1.20.0.2-native-player-clergy-appointment-v1",
+    "flag": "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1",
+    "default": false,
+    "result": "result.player_clergy_appointment",
+    "required": "candidate_character_id positive int32 full native ID",
+    "optional_revision_aliases": [
+      "expected_snapshot_revision",
+      "expected_revision"
+    ],
+    "owner": "current played character only",
+    "central_permit": "permitted_executor_clergy12002"
+  },
+  "actual_wire_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-governance\\clergy-mailbox\\attempt-001\\O2\\wire",
+  "remaining": [
+    "central CMake default OFF option + named executor + worker Handle registration",
+    "Python/MCP actual wire consumer and single SDK validation (assigned g2_python_routes)",
+    "root exact-build paused live validation"
+  ],
+  "report_fields": {
+    "completed": "Clergy dedicated readonly request parser, real owning callback and worker wait/reclaim path, complete protocol metadata and actual provider wire implemented",
+    "why": "Expose true candidate clergy qualification through the same MCP rather than stopping at a component-only API",
+    "capability": "static-ready; three native results remain independent; action_eligibility_complete=false; no new live/G2 count",
+    "tests": "Od/O2 W4 WX each57 checks; actual seven JSON per mode consumed by Python json decoder; primary offline permit; no repeated first23 component cases",
+    "red": "No new mailbox harness/capability RED; prior component harness RED preserved unchanged",
+    "next": "Parallel Python SDK receipt then central registration and root paused evidence; no appointment action/policy",
+    "commit": "root-owned commit and push pending"
+  }
+}

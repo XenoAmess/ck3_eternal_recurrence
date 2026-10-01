@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-12002-player-religion-doctrine-knowledge-python-fixture-provenance-v1",
+  "fixture_path": "research/religion_doctrine12002_choices_mailbox_wire_fixtures.json",
+  "fixture_sha256": "7e27beef0dba6a2ab16bb24e06ce31740006d971c94d3ea752b14d103edd2949",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "producer": "Actual C++ mailbox and command-result serializer",
+  "actual_wire_sha256": {
+    "learned-current.json": "0b61e64a9eb6354c7a9cc529e1f6ce4fe181867ac9c6c954344c6fceafd98c57",
+    "lookup-known.json": "cb1d894899ebe41666a47a772eca5ca4b06e43f9cca71e8488d537f48a1905c2",
+    "lookup-not-known.json": "e3d01387cd687d7af745ba3240c5dc9fc21e378ddf6563d267d69203c398702a",
+    "lookup-absent.json": "79ae1031c800662591af05c720eb789e42b25bacf9c98d58774937974a10bb38",
+    "lookup-registry-unavailable.json": "abb4ecaa9de57db21a85a1273cc5a6392ba1200f61da8c6b6fb4d45e24356573",
+    "learned-empty.json": "9fc6d09deacb0d8c5198322e3eb5e4143245aac206d8e494d5c6088113be7326"
+  },
+  "native_receipt": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\choices\\mailbox\\result.json",
+    "sha256": "7ed73d71c4fb25d62e3a21c4eb5ac573ade571b9a35c9e631ae7c4e165248fe0"
+  },
+  "native_checks": [
+    "PASS checks=43 actual_core=true actual_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true live=false",
+    "PASS checks=43 actual_core=true actual_provider=true actual_mailbox_submit_drain_wait_reclaim=true actual_wrapper=true live=false"
+  ],
+  "fixture_executor_permit": "Existing primary fixture permit; central named knowledge permit pending",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "local_ck3_touched": false,
+  "test_transport": "Actual full command_result packet -> NativeProtocolState.ingest -> production wait_for_command_result",
+  "only_wire_field_replaced": "request_id",
+  "consumer_sdk": {
+    "status": "GREEN",
+    "tests": 1,
+    "sdk_calls": 6,
+    "transport": "Actual full C++ packet -> NativeProtocolState.ingest -> production wait -> NativeHeadlessGameplayDriver method -> official mcp.Client",
+    "receipt": {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\python-religion-knowledge-next\\sdk-focused.json",
+      "sha256": "b3220455f9333eb23f7fdf9b1b7e44160c3be85a4015eaa9415c1a7f325223ef"
+    },
+    "python_version": "3.13.2 (tags/v3.13.2:4f8bb39, Feb  4 2025, 15:23:48) [MSC v.1942 64 bit (AMD64)]",
+    "mcp_package_version": "2.0.0",
+    "production_dependency_sha256": {
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "fed457fc030ed14059c5baf85045c5e5746c3ca18dc9a82c9fbd4a433927ad86",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": "56099f0aeecac15f32a33df33a8b7b0cfa06b77b352255a1e565e945a99fc581",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/g2_private_query_transport.py": "173747a618501cf273422444a507196fb2d03a7805edf1a2b163139e5cc56067",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/nonwar_private_build.py": "50a554c9a24e30134019d78d855e34641d449281fce6c1083a82da623e8b8ebc",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py": "c677ea1964531a7b69df2f85934688a2977eee8cdc39095134c37bfa16ef69f9",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/timeline_blocker_private_transport.py": "9a97a8f7b88bc6e2c4d26ce7fc9799900cc00d8fcc6868350bc4791b3f6429d7",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/driver.py": "571c3776ac958d38d15906412f7f7af24cc6be098d62341a479ec905f48a9c31"
+    },
+    "local_ck3_touched": false,
+    "real_pipe_initialized": false
+  }
+}

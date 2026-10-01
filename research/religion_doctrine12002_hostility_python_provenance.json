@@ -1,0 +1,61 @@
+{
+  "schema": "ck3_12002_player_religion_hostility_python_leaf_provenance_v1",
+  "readiness": "static-ready",
+  "offline_verified": true,
+  "live_verified": false,
+  "source_aggregate": {
+    "path": "research/religion_doctrine12002_hostility_mailbox_wire_fixtures.json",
+    "sha256": "b2fead0bbdd066844ba4450dbe864c935e10bf201645db9a6b48e301ad792094"
+  },
+  "actual_full_producer_packets": [
+    {
+      "case": "asymmetric.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\hostility\\mailbox\\O2\\asymmetric.json",
+      "sha256": "cd61a8e5bbfd40f2d0617136608c95211d1b68da29c211f55e78f2425a19516a"
+    },
+    {
+      "case": "same-faith.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\hostility\\mailbox\\O2\\same-faith.json",
+      "sha256": "6e10ced48f095bd7654d03f5b99e5e44bf355e3e1db9edca33d7660cd592a24e"
+    },
+    {
+      "case": "zero-target-id.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\hostility\\mailbox\\O2\\zero-target-id.json",
+      "sha256": "29ed0fdadfd442034fe9fabd26f9a188358513d237068657a26a19264317db44"
+    },
+    {
+      "case": "target-unavailable.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\hostility\\mailbox\\O2\\target-unavailable.json",
+      "sha256": "0c2e2b0d488517e21d70923ee2a8ee5bd41e289698d8b6e5af7a3802f2e776d3"
+    },
+    {
+      "case": "native-sentinel.json",
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\hostility\\mailbox\\O2\\native-sentinel.json",
+      "sha256": "7754566a55bca739b98f7b495ec6f5d8514f65fbd406d97d02aae6d4773ae236"
+    }
+  ],
+  "producer_delivery": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\hostility\\mailbox-delivery-result.json",
+    "sha256": "ef70593cf38a5fab6733de87dc64137c194a9f5a62f2957e6c1473b3d441af47"
+  },
+  "transport": "NativeProtocolState.ingest -> production wait_for_command_result; request_id only correlated",
+  "expected_sdk_tool": "ck3_query_player_religion_hostility_v1",
+  "sdk_verified": true,
+  "remaining": [
+    "root-only paused live qualification"
+  ],
+  "sdk_tests": {
+    "command": [
+      "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\tests\\unit\\test_g2_player_religion_hostility_mcp_wire.py",
+      "-v"
+    ],
+    "returncode": 0,
+    "receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\python-religion-hostility-next\\sdk-tests.log",
+    "receipt_sha256": "c2451bea4ad544ed2fece5643c0d30f8c6679fcb5e2083a2ef0f8c4d2fcce010",
+    "test_methods": 1,
+    "actual_full_packets": 5,
+    "previous_focused_tests_reused": true
+  }
+}
