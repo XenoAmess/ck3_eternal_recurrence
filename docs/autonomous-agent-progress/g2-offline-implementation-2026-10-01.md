@@ -729,3 +729,9 @@ RED与边界：第七次pause-map返回map unavailable，实际推进超过单�
 Official CI steps27 and32 passed; step36 identified one handover shell fence. The single document now uses the existing Python API and exact validator passed. No example execution or game action. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-python-handover-current-fix\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:53:13 Add readonly religion draft group native observation
+
+Thirteen frozen native and research sources. Actual current selected slots, complete source definitions and materialized cache remain distinct from final legal choices. New actual O2 mailbox four cases21 checks passed; paused validation awaits R7. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\group-query-native-source-only13.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

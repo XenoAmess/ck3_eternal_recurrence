@@ -1,0 +1,219 @@
+{
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "spans": {
+    "inline_category_construction": {
+      "start_rva": "0x14f244e",
+      "end_rva": "0x14f24ad",
+      "sha256": "0c3bad1862c85fc5ebb663b50bde47b74e6f2a073e0b1127eb28ce0edda3585c"
+    },
+    "show_window_materialize": {
+      "start_rva": "0x14f1950",
+      "end_rva": "0x14f1e52",
+      "sha256": "7ef6a9030cd28e9978862bba4fe93fe25b660bf67403716df28cc6f0b24b0307"
+    },
+    "show_window_sort": {
+      "start_rva": "0x14f1e60",
+      "end_rva": "0x14f2030",
+      "sha256": "7edc42c5665d8dcde63235169223887ea820e5f7bfb7576a2a71afeb2b1e6a32"
+    },
+    "show_window_gui_wrapper": {
+      "start_rva": "0x14faa20",
+      "end_rva": "0x14faab4",
+      "sha256": "8768cfe8f7192fdf297fa7eeff888e1770b7ffccab1e55aa3d8f6cab92ce6de7"
+    },
+    "show_window_sort_gui_wrapper": {
+      "start_rva": "0x14fabb0",
+      "end_rva": "0x14fac44",
+      "sha256": "d4ed7d2e5eb300bec5bd1a742ecaabdf89d90335de87727df6fd64543671040f"
+    },
+    "actual_doctrine_array_index48": {
+      "start_rva": "0x1510920",
+      "end_rva": "0x1510985",
+      "sha256": "61db936ad6ad9fe656bdcc3b249379575f1ea58941fccade1702e6f24a4eece4"
+    },
+    "actual_doctrine_item_constructor": {
+      "start_rva": "0xee1e80",
+      "end_rva": "0xee1fd4",
+      "sha256": "daf79299f2ff9cae6553739c773a59fc1373dbbd4e575b4b767a8099f0015d6b"
+    },
+    "rebuild_current_tenet_status_groups": {
+      "start_rva": "0x14f3e60",
+      "end_rva": "0x14f4338",
+      "sha256": "7d89076e3cbf1950529b3ac05c10dd51a6e59b7ce4f2dfda0b51c5617086bc74"
+    },
+    "founder_registration": {
+      "start_rva": "0x22c060",
+      "end_rva": "0x22c242",
+      "sha256": "20481ce40815c5f9f73a6821f6751ae2810d4e5446c77f46b761140c7cb168a2"
+    },
+    "founder_typed_getter": {
+      "start_rva": "0x14fbbb0",
+      "end_rva": "0x14fbc12",
+      "sha256": "eb959f817ecfff0327cfb66d3f847f90d85c0a64601b8776c3ff7245d0e3034c"
+    },
+    "founder_full_id_leaf": {
+      "start_rva": "0x14f0e70",
+      "end_rva": "0x14f0e7c",
+      "sha256": "6497e62ebdaa040d44456c3b0ab48ced5c87498cd20f7839675d6a427a910b03"
+    },
+    "selected_slots_array_leaf": {
+      "start_rva": "0x14f0e90",
+      "end_rva": "0x14f0e98",
+      "sha256": "67caa6a38c52a34c71b4894aa81b49ca79032289ddfb004878bf4c694bab484c"
+    }
+  },
+  "anchors": {
+    "0x14f244e": {
+      "bytes": "4d89b688080000",
+      "mnemonic": "mov",
+      "operands": "qword ptr [r14 + 0x888], r14"
+    },
+    "0x14f24a2": {
+      "bytes": "41c786d8080000ffffffff",
+      "mnemonic": "mov",
+      "operands": "dword ptr [r14 + 0x8d8], 0xffffffff"
+    },
+    "0x14f19cf": {
+      "bytes": "45895650",
+      "mnemonic": "mov",
+      "operands": "dword ptr [r14 + 0x50], r10d"
+    },
+    "0x14f19d3": {
+      "bytes": "4b8d0cd2",
+      "mnemonic": "lea",
+      "operands": "rcx, [r10 + r10*8]"
+    },
+    "0x14f19d7": {
+      "bytes": "498b8190070000",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [r9 + 0x790]"
+    },
+    "0x14f19de": {
+      "bytes": "488b44c828",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rax + rcx*8 + 0x28]"
+    },
+    "0x14f19e7": {
+      "bytes": "488b80080b0000",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rax + 0xb08]"
+    },
+    "0x14f19f6": {
+      "bytes": "e8451c9fff",
+      "mnemonic": "call",
+      "operands": "0xee3640"
+    },
+    "0x14f1a02": {
+      "bytes": "e8c91b9fff",
+      "mnemonic": "call",
+      "operands": "0xee35d0"
+    },
+    "0x14f1a0b": {
+      "bytes": "4c8bb840010000",
+      "mnemonic": "mov",
+      "operands": "r15, qword ptr [rax + 0x140]"
+    },
+    "0x14f1a12": {
+      "bytes": "4863804c010000",
+      "mnemonic": "movsxd",
+      "operands": "rax, dword ptr [rax + 0x14c]"
+    },
+    "0x14f1a6d": {
+      "bytes": "4883c248",
+      "mnemonic": "add",
+      "operands": "rdx, 0x48"
+    },
+    "0x14f1a97": {
+      "bytes": "e894c42302",
+      "mnemonic": "call",
+      "operands": "0x372df30"
+    },
+    "0x14f1b12": {
+      "bytes": "e869039fff",
+      "mnemonic": "call",
+      "operands": "0xee1e80"
+    },
+    "0x14f1b91": {
+      "bytes": "488d4948",
+      "mnemonic": "lea",
+      "operands": "rcx, [rcx + 0x48]"
+    },
+    "0x1510953": {
+      "bytes": "488d0cdb",
+      "mnemonic": "lea",
+      "operands": "rcx, [rbx + rbx*8]"
+    },
+    "0x151095c": {
+      "bytes": "498d04c8",
+      "mnemonic": "lea",
+      "operands": "rax, [r8 + rcx*8]"
+    },
+    "0x14f1e4d": {
+      "bytes": "e90e200000",
+      "mnemonic": "jmp",
+      "operands": "0x14f3e60"
+    },
+    "0x14f3ea0": {
+      "bytes": "e8eb539fff",
+      "mnemonic": "call",
+      "operands": "0xee9290"
+    },
+    "0x14f3ea7": {
+      "bytes": "41897c240c",
+      "mnemonic": "mov",
+      "operands": "dword ptr [r12 + 0xc], edi"
+    },
+    "0x14fbbbe": {
+      "bytes": "e8ad52ffff",
+      "mnemonic": "call",
+      "operands": "0x14f0e70"
+    },
+    "0x14f0e70": {
+      "bytes": "8b81cc000000",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [rcx + 0xcc]"
+    },
+    "0x14f0e90": {
+      "bytes": "488d8190070000",
+      "mnemonic": "lea",
+      "operands": "rax, [rcx + 0x790]"
+    },
+    "0x14fa982": {
+      "bytes": "488d059fa7f302",
+      "target_rva": "0x4435128"
+    },
+    "0x22c13a": {
+      "bytes": "488d156ffa2c01",
+      "target_rva": "0x14fbbb0"
+    }
+  },
+  "layout": {
+    "selected_slots": 1936,
+    "actual_item_stride": 72,
+    "definition": 40,
+    "group": 2824,
+    "group_definition_sources": 320,
+    "category": 2184,
+    "category_selected_slot": 80,
+    "category_doctrines": 32,
+    "category_tenets": 56,
+    "tenet_groups": 1960,
+    "founder_full_id": 204
+  },
+  "scope": "actual_selected_slot_group_definition_sources and current materialized category caches",
+  "corrected_array_descriptor": {
+    "descriptor_rva": "0x4435128",
+    "vtable_rva": "0x45657b8",
+    "index_getter_rva": "0x1510920",
+    "stride": 72,
+    "historical_wrong_index_rva": "0x1514980",
+    "historical_wrong_stride": 80
+  },
+  "status": "GREEN",
+  "local_ck3_touched": false,
+  "readiness": "static-ready",
+  "producer_api": "xar::ck3_12002::religion_reform::ReadCurrentDraftGroupModel12002",
+  "tenet_final_gate": "existing EE0AD0 with actual founder resolved from window+CC; GUI only enabled gate",
+  "all_group_choices_complete": false,
+  "readonly_model_complete": true
+}
