@@ -1,5 +1,18 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-10-01 13:00：非战争后台 blocker 的最终闭合与实机剩余
+
+本节追加 11:56 之后的实际结果，历史 pending/RED 原文保留。provider source `adb19c92` 已冻结；当前生产合同修复 source `6878392841ed93328159a839999e0c9df44185ee` 的 [exact 官方 CI #36817339144](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36817339144) **SUCCESS**。adb 的 Vivhite frozen localization CRLF/LF 字节身份 RED 经最小修复闭合，JSON 内容未改，不抹去原失败。完整 native/profile/pair pins 与实际回执见[原生索引](../ck3-native-ai/README.md)及[runner 接手](../handover/2026-10-01-nonwar-12002-offline-runner.md)。
+
+| 原后台待办 | 后来真实闭合 | 仍须实机取得的最小证据 |
+| --- | --- | --- |
+| LIFE/ECON/FAMILY 的共享接线和 native 联编 | candidate/default 两 Release build 成功；LIFE43、ECON42、ranked38、rich48、关系/outbound68、proposal/fulfill69 owner-mailbox 接回；中央 12 个 actual EXE 全 exit0 | 新版 paused 原生字段及合法 typed 操作的独立物质后置，next turn/规定 cold；旧35不冒充新版 submit |
+| 完整非战争 campaign 和 FAMILY 正式 Python 消费 | campaign 15 组 reader/serializer 与实际 wire normalization GREEN；FAMILY 17/17 实际 C++→Python GREEN，包含合法 null 王朝身份和原生 ranked 排序；不与 Worker17次请求混算 | 同帧真实 campaign/候选/当前婚约/联盟/child 状态，成年负例或合法兑现按原生最终结果解释 |
+| JOINT 实际生产路径故障 | 无关 faction unavailable 不再挡合法和平建设，submit OFF 仍保留既有 first-heir pending 角色承诺；111 普通/111 `-O` GREEN | 实际同日选择、一次资源占用与物质收益；缺失战争现金/长期家庭价值和 M5 完整门保留 |
+| 新 profile/canonical 文件配对 | adb manifest 绑定的新独立 Z profile/pair PASS，七编译 private ON、formal consumers OFF；ordinary plan-only | official exact zero-process preflight、新 PID cold/readiness 与代表 paused 查询；文件配对不是实机恢复 |
+
+组合最高为 **`static-ready`**，没有新增 paused/live/gameplay；旧研究和 primitive 不因离线 fixture 晋级。新 seed actor29829/h74/raw53169072 不延续 Robert，故 G2 **3/8**、Robert **3153/36524**、长期门 **0/1、0/1、0/2** 无增量；h4025 输出未再次 cold-tested、既有战争 hold、一般宗教/holy order 暂缓与窄例外保留。自然事件和完整一代人/整局门继续按实际机会与持久谱系验证。最终 docs-only commit 的官方 CI另待实际终态，不预填。
+
 ## 2026-10-01 11:56：非战争 1.20 provider 与正式消费接入
 
 该条目记录用户要求的无本地 CK3 后台工作，冻结 `1.20.0.2 / Steam25588574`、EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。源码与各包状态回链[离线执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)；历史条目继续保留原构建、seed 与原始失败证据。

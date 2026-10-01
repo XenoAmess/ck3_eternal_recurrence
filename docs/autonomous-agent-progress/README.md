@@ -19,6 +19,14 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 现行 G2 使用固定八项可见 OODA 分母，当前为 `3/8`；G2-M0 的三路战争退出、G2-M1 的实体发现/core turn bundle，以及 R0077 自然继承与真实继承人续玩（G2-M3）已完成。需求、状态和施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读 JSON 为准。
 
+## 2026-10-01 13:00：非战争 1.20 后台组合 `static-ready`
+
+11:56 所记中央 FAMILY/route、双 native 构建与候选冻结待办已由后续回执闭合，历史段落保留。provider 源码 `adb19c92` 的最终 manifest、实际 **12 个中央测试 EXE**、campaign **15 组** fixture、FAMILY **17/17 实际 C++→Python** 和 JOINT **111 普通 / 111 `-O`** 全 GREEN；[原生索引](../ck3-native-ai/README.md)汇总完整 source/EXE/binary/profile 身份。当前生产合同修复 commit `6878392841ed93328159a839999e0c9df44185ee` 的 [exact 官方 CI #36817339144](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36817339144) **SUCCESS**；adb 的 Vivhite CRLF/LF frozen-hash CI RED 与实际最小修复继续保留，不回写为成功。
+
+[后台 runner](../handover/2026-10-01-nonwar-12002-offline-runner.md)已实际准备新 Z profile 与 canonical 文件配对，绑定 adb native manifest；七项编译 private ON、formal consumers OFF，ordinary 仅 plan。这是 actor29829/h74/raw53169072 的独立 1.20 migration seed，**不是 Robert 延续**，也没有运行游戏或完成真实 cold restore。组合最高资格为 **`static-ready`**；旧版研究、fixture-live/production primitive 与基础迁移 live 均保留原范围，新高级 provider 没有新版 paused artifact。
+
+接下来确需本机实机的最小入口为正式 exact preflight、新 PID cold/paused 同帧观测，以及合法 typed 操作后的独立物质状态、next turn/checkpoint/规定 cold；自然事件及长期整局门按实际材料继续。G2 **3/8**、Robert **3153/36524** 与 **0/1、0/1、0/2** 长期门不变，h4025 与战争 hold 的既有边界不因新独立 seed 消失。宗教暂缓与窄例外保持；最终 docs-only commit 的官方 CI另按实际终态归档。
+
 ## 2026-10-01 11:56：非战争 1.20 后台施工增量
 
 用户要求结合[09-30 非战争交接](../handover/2026-09-30-nonwar-maintainer-vacation-handoff.md)继续并发，全部可离线工作完成前不占用本地 CK3。新版绑定 `1.20.0.2 / Steam25588574`、EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`；源码、provider、消费者与集成事实以[执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)和[原生专题入口](../ck3-native-ai/README.md)回链。

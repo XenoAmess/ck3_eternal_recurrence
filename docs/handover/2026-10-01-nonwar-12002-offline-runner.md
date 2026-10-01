@@ -1,6 +1,6 @@
 # 2026-10-01 非战争 1.20 runner 离线准备
 
-本包接续 [09-30 休假交接](2026-09-30-nonwar-maintainer-vacation-handoff.md)，交付 **static-ready 的命令准备器及显式 file-only profile 模式**。默认只生成 metadata；显式模式复用生产准备核心，只写全新的隔离 profile。两种模式均不运行 operator、CK3、named pipe、桌面、进程查询或 live allocator。工具实际实现于 [run_nonwar_12002_offline.py](../../tools/run_nonwar_12002_offline.py)，配置为 [ck3-1.20.0.2-nonwar-runner.json](../../ck3_autonomous_player/configs/ck3-1.20.0.2-nonwar-runner.json)。
+本包接续 [09-30 休假交接](2026-09-30-nonwar-maintainer-vacation-handoff.md)，交付 **static-ready 的命令准备器、实际新 Z 盘 production profile 与原样复制的真实 1.20 save/full-driver pair**。最终 file-only 准备于 2026-10-01 12:50（Asia/Shanghai）完成，绑定已提交源码和已冻结 DLL；具体 receipt 与下一阶段入口见文末。默认工具只生成 metadata；显式模式复用生产准备核心，只写全新的隔离 profile。两种模式均不运行 operator、CK3、named pipe、桌面、进程查询或 live allocator。工具实际实现于 [run_nonwar_12002_offline.py](../../tools/run_nonwar_12002_offline.py)，配置为 [ck3-1.20.0.2-nonwar-runner.json](../../ck3_autonomous_player/configs/ck3-1.20.0.2-nonwar-runner.json)。
 
 ## 保留的身份与资格
 
@@ -121,6 +121,37 @@ python -B tools/test_run_nonwar_12002_offline.py
 
 ## 何时才需要 CK3
 
-当前代码、配置、两条真实 CLI 参数的 offline 接线及 file-only profile mode 已完成。后续先在后台完成 selected source/native bundle 的 freeze、公开/私有 capability 匹配和独立 profile 文件准备；不为这些步骤占用游戏。本文初始 metadata artifact 没有实际 profile prepare；实际准备后另存新 receipt，不能倒填初始结果。
+当前代码、配置、两条真实 CLI 参数的 offline 接线及实际 file-only profile/pair 准备均已完成。本文初始 metadata artifact 保留原始含义，最终准备另存下面的新 receipt；没有倒填初始结果。
 
-拿到游戏时段以后，最小顺序为：official prepare/rebind 与 exact no-launch preflight → 本机 owner、Steam 离线证据与 run ID → 一次新 PID cold 恢复、短正式循环与匹配 checkpoint → 实际 LIFE/ECON/FAMILY consumer 后置、下一 turn、规定 cold。自然合法婚配、建设完工收入、Council 阳性、完整一代人/百年及新 seed 资格，都仍只在实际 production outcome 后升级。本包没有新增日期、typed gameplay、profile/save mutation 或 G2 完成数。
+拿到游戏时段以后，该已准备的独立 rogue pair 先执行 official exact zero-process preflight，再绑定本机 owner、Steam 离线证据与正式 run ID，完成新 PID cold 恢复、短正式循环与匹配 checkpoint，验证实际 LIFE/ECON/FAMILY consumer 后置、下一 turn及规定 cold。普通 G2 lane 仍只有参数计划，正式 prepare/rebind 留到该 lane 自己的合法输入与实机窗口。自然合法婚配、建设完工收入、Council 阳性、完整一代人/百年及新 seed 资格，都仍只在实际 production outcome 后升级。本包仅写新的 Z 盘 profile 与复制 pair；没有新增游戏日期、typed gameplay 或 G2 完成数。
+
+## 最终实际 file-only 交付（12:50）
+
+源码已提交并推送为 `adb19c92cb16a458aeaef7381201d0e9ce762885`。最终集成 manifest 为 `Z:/ck3_mod_rewrite/artifacts/offline-nonwar-2026-10-01/integration-final-manifest.json`，SHA-256 **`5f17b6515e34427ed6ee7626fbf6f185753c0c0daf6cb732e30294462dec0222`**。本次准备先验证该 manifest 的完整 SHA，再消费它绑定的最终 binary；没有重用初始计划里声明的旧 bundle。
+
+| 最终 bundle | DLL SHA-256 / bytes | injector SHA-256 / bytes |
+| --- | --- | --- |
+| `artifacts/offline-nonwar-2026-10-01/build-native-msvc`，selected-private | `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e` / `4,926,464` | `e402b569c6677dc7072ff70455564f3b2ce7f4a67c8710bd682e98e5c2f5239b` / `39,936` |
+| `artifacts/offline-nonwar-2026-10-01/build-native-msvc-default`，shipping default-OFF | `aa26ddb30d9f044d66fc9307ba65c32a1218acd7f2bd189981ac479892f4855a` / `4,051,968` | `23c39b1f247e75ec539484495ba4851cb3b037e0238cbf9a24715f66a6e254ec` / `39,936` |
+
+selected-private 构建启用 LIFE_FORMAL、CONSTRUCTION_VIEW、WORLD_BUILDING_ACTION、RANKED_MARRIAGE、ALLIANCE_PROJECTION、HEIR_MARRIAGE、CHILD_MATRILINEAL 七项私有 native 编译选项；shipping 七项均为 OFF。**正式 Python consumer trialflags 仍为 OFF**，编译资格没有升级为 live 或正式 gameplay 资格。
+
+实际新 state 为 **`Z:/ck3_mod_rewrite_process_assets/nonwar-12002-canonical-independent-20261001/state`**。按顺序实际运行 `run_nonwar_12002_offline.py --lane rogue --prepare-profile-files`，再通过 `stage_nonwar_12002_pair_files.py --into-prepared-profile` 从上述 Z 盘 frozen canonical pair 复制两份实体及身份 sidecar。实际 production projection 为 **86 文件**，准备核心与 `verify_profile` 均通过，EXE SHA 仍为 `ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d`。
+
+| 实际 profile 绑定 | SHA-256 |
+| --- | --- |
+| environment contract | `1b2b79023a481537d929051e6e51c05f9b75f6674eaf2570dea02558b40b4bb5` |
+| agent runtime | `96d24800f57017edfdbdd2ab79806e2988548b27bb83a064d2836c7570014a77` |
+| production tree | `2c000fa0f6d30aa3c9dd58f4471aace2c408d73a0e8c7bed6509dbbe17d5cda2` |
+| `state/profile/xar-autoplayer-environment.json` | `e05a568dfa9593c307f11c79802fdcd25f3f85e077a7f4157eaddce9be527f36` |
+| `state/PAIR-FILES-QUALIFICATION.json` | `ce5b5460207932365bc3b93a6fe88e4c5feed8401ecd9491bac8c8718eab42aa` |
+
+新 state 的 save/full driver 分别保持 `15fec60d…827825`、`7eba0a48…bbaa7`，actor **29829**、raw date **53169072**、完整 history **74**、episode `native-29829-3f80e147d033` 与原 pipe 全部保留。`SEED-IDENTITY.json` SHA 仍为 `0e4d144fc71ae446d293bfb7c75a078a8e515cd16199ac8a7760027e3fe4b196`。这是独立 legacy rogue pair，**ordinary state 未准备、历史 Robert 延续未成立、G2 与 Robert 增量均为零**。最终操作只读取 Z 盘 frozen pair，没有再次读取或写入原 P profile，也没有改写 frozen seed。
+
+最终 receipt 为 **`Z:/ck3_mod_rewrite/artifacts/offline-nonwar-2026-10-01/runner-files-adb19c9/FINAL-FILE-PROFILE-PAIR-RECEIPT.json`**，SHA-256 **`da05c04bddb9228426290c38e495572a61c714cc9fe1e32d238afb977abc26d4`**，生成时间 `2026-10-01T04:50:27.837945+00:00`，结果 **`PASS_STATIC_PROFILE_AND_FILE_PAIR` / `static-ready`**。同目录保存：
+
+- `rogue/operator-manifest.json`、`rogue/OFFLINE-RUNNER-PLAN.json`：最终 selected-private 源码/binary/profile/pair 绑定。
+- `ordinary-plan-only/operator-manifest.json`、`ordinary-plan-only/OFFLINE-RUNNER-PLAN.json`：shipping bundle 的普通 lane 参数计划，未执行 prepare/operator/rebind。
+- `NEXT-LIVE-PHASES.json`：SHA-256 `e083c4178362c179fdb17fea91f280fccf3e9aaf8f371049dea9400e0e02ecbd`，保留实际 CLI 的 exact preflight、lifetime allocator/lifetime 与 next allocator/next 分阶段 argv。已移除被本次真实 file-only 准备替代的 prepare 阶段，避免后续覆盖该已冻结 profile；next 仍必须等待 verified terminal settlement，不能在 max-turns incomplete 后自动执行。
+
+此次实际准备没有调用任何 CK3/process inventory/pipe/desktop/Steam/allocator 入口，未启动或占用本地游戏。`official_zero_process_preflight_completed=false`、`real_game_cold_restore_completed=false` 保持不变。剩余最小实机工作为：**正式零进程 preflight → 新 PID cold restore/readiness → 代表性 paused 非战争读口及材料/下一 turn/checkpoint 后置 → 自然完整 lifetime/next**；普通 G2 的 durable lineage 另按真实生产结果记账。

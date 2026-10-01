@@ -1,5 +1,19 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-01 13:00：1.20.0.2 非战争组合离线收口
+
+11:56 历史截点中的 FAMILY/共享接线、native 联编和候选冻结 pending 已由后续实际回执闭合。provider 组合源码冻结于 master `adb19c92cb16a458aeaef7381201d0e9ce762885`；当前生产合同修复源码 `6878392841ed93328159a839999e0c9df44185ee` 的 [exact 官方 CI #36817339144](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36817339144) 于 12:59:27（Asia/Shanghai）**SUCCESS**。此前 adb 的 [CI #36816670532 RED](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36816670532) 保留：Vivhite 合同记录了 pre-add CRLF 哈希，修复绑定已提交 LF 原件，JSON 内容没有改动；不是游戏内 Rite 或文案机制变化。
+
+[最终 native manifest](Z:/ck3_mod_rewrite/artifacts/offline-nonwar-2026-10-01/integration-final-manifest.json) SHA-256 `5f17b6515e34427ed6ee7626fbf6f185753c0c0daf6cb732e30294462dec0222` 绑定上述 adb provider source 与 exact EXE `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。candidate/default 两个 Release 构建、64 jobs、514/501 个实际 source/header pins 成功，最新中央 **12 个实际测试 EXE 全 returncode 0**，由 target-specific runner 执行，不能写成 CTest。实际 owner-mailbox 路由为 LIFE43、ECON42、ranked38、rich48、关系/child/alliance/outbound68、proposal/fulfill69；旧 ECON35 保留 opaque 身份。
+
+candidate DLL `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e` / injector `e402b569c6677dc7072ff70455564f3b2ce7f4a67c8710bd682e98e5c2f5239b`，default DLL `aa26ddb30d9f044d66fc9307ba65c32a1218acd7f2bd189981ac479892f4855a` / injector `23c39b1f247e75ec539484495ba4851cb3b037e0238cbf9a24715f66a6e254ec` 的完整路径、大小与构建记录在 manifest。完整 campaign **15 组** reader/serializer fixture 与实际 wire→Python GREEN；[FAMILY 实际 C++→Python](ck3-1.20.0.2-family-python-wire-fixtures.md) **17/17 GREEN**，与 semantic Worker 的 **17 次请求**分别计数；JOINT 两个实际生产修复维持 **111 普通 / 111 `-O` GREEN**。
+
+[新 profile/canonical pair 实际纯文件 receipt](Z:/ck3_mod_rewrite/artifacts/offline-nonwar-2026-10-01/runner-files-adb19c9/FINAL-FILE-PROFILE-PAIR-RECEIPT.json) SHA-256 `da05c04bddb9228426290c38e495572a61c714cc9fe1e32d238afb977abc26d4` 绑定 adb source、manifest 与 `Z:/ck3_mod_rewrite_process_assets/nonwar-12002-canonical-independent-20261001/state`；environment SHA-256 `1b2b79023a481537d929051e6e51c05f9b75f6674eaf2570dea02558b40b4bb5`、86-file production tree SHA-256 `2c000fa0f6d30aa3c9dd58f4471aace2c408d73a0e8c7bed6509dbbe17d5cda2`。七项编译 private ON，formal consumers 仍 OFF；ordinary 只有 plan，未准备配对。
+
+该 pair 是独立旧 1.20 migration seed：actor29829 / episode `native-29829-3f80e147d033` / h74/raw53169072，save SHA-256 `15fec60d3ec284161f135b095402181be9f64de966c002e1282e9bd2e5827825`，driver SHA-256 `7eba0a48b78c06d6ee31bef47ecaf7f8408bc24702bf88a5966dd1ab94dbbaa7`。它没有继续 Robert；文件准备不等于真实 cold restore。新版 LIFE、ECON、FAMILY、campaign、JOINT/transport/event 组合最高为 **`static-ready`**，本轮无 paused/live/gameplay；旧研究、fixture-live 与 production primitive 资格保持原 exact-build 范围。
+
+最小实机接手见[后台 runner](../handover/2026-10-01-nonwar-12002-offline-runner.md)：official exact zero-process preflight → new-PID cold/paused 读回 → 真实合法 typed 操作、独立物质后置、next-turn/checkpoint 与规定 cold。自然 CE1 与长期联合价值只按实际出现的材料验收，原缺失战争现金/长期家庭价值不被夹具补成已观测。G2 **3/8**、Robert **3153/36524**、百年/首整局/独立种子 **0/1、0/1、0/2**、h4025 输出未再次 cold-tested 与原宗教/holy order 暂缓边界保持。最终 docs-only 提交的 exact 官方 CI另按真实终态记录。
+
 ## 2026-10-01 11:56：1.20.0.2 非战争 provider 后台接入
 
 新版 exact build 是 CK3 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。本轮从 master 非战争正式消费者接回初次迁移的新版 adapter，按 LIFE → ECON → FAMILY、JOINT 并行施工；[交接入口](../ck3-1.20.0.2-nonwar-handoff-intake.md)与[执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)记录范围和集成状态。用户当前要求全程后台，不占用本地 CK3。

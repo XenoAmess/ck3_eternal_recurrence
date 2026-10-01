@@ -1,5 +1,13 @@
 ﻿# CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 2026-10-01 13:00：1.20 非战争离线集成待办已闭合
+
+11:56 的 FAMILY 最终接线、中央 native 联编与候选冻结已由后来的真实回执完成；旧截点保留。LIFE 当前观测与 typed 命令、ECON held/cost/state/submit、FAMILY ranked38/rich48/query68/fulfill69/child/alliance/outbound、完整 campaign 与正式 Python 消费组合均为 **`static-ready`**。实际中央 **12 个测试 EXE**、campaign **15 组** fixture、FAMILY **17/17 C++→Python**、JOINT **111 普通 / 111 `-O`** 分别 GREEN，完整 source/EXE/双 binary pins 与[新 profile/pair](../handover/2026-10-01-nonwar-12002-offline-runner.md)回链[原生索引](../ck3-native-ai/README.md)。provider manifest 冻结 adb source；当前生产合同修复 source `6878392841ed93328159a839999e0c9df44185ee` 的 [exact 官方 CI #36817339144](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36817339144) **SUCCESS**，原 adb Vivhite 字节合同 RED 保留。
+
+路线图的下一门槛已缩至实机：正式 exact preflight → 新 PID cold/paused 同帧读取 → 真实合法 LIFE/建设/婚配 typed 操作及独立后置、next-turn/checkpoint/规定 cold；自然 CE1 与同日 JOINT/长期家庭价值按真实机会验收。文件准备没有替代这些证据，缺失战争现金和长期义务仍保留 typed 缺口，formal consumers 仍 OFF。
+
+独立新版 migration seed actor29829/h74/raw53169072 不是 Robert 配对；0 游戏日/G2 增量。旧基础迁移及 BA5 primitive 不倒算新 provider 已 live，G2 **3/8**、Robert **3153/36524**、百年/首整局/独立种子 **0/1、0/1、0/2**、h4025 未再次 cold-tested、战争 hold 与宗教暂缓边界不变。最终 docs-only 提交官方 CI仍以其真实终态单独记录。
+
 ## 2026-10-01 11:56：1.20 非战争接入的当前能力边界
 
 本轮执行用户要求的后台并发迁移，不占用本地 CK3。新构建绑定 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`；master 上现有正式消费者与新版 provider 的连接以[交接 intake](../ck3-1.20.0.2-nonwar-handoff-intake.md)、[执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)及各[原生专题](../ck3-native-ai/README.md)为准。下方累计能力仍保留其原始 exact build、seed 与证据范围。
