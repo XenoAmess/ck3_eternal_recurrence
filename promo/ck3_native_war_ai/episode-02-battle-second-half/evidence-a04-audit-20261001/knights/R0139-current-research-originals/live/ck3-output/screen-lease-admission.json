@@ -1,0 +1,14 @@
+{
+  "schema": "xar.promo.screen-lease-cas/v1",
+  "task_id": "war-e2-six-gap-screen-20261001-a01",
+  "expected_sequence": 3357,
+  "sequence": 3358,
+  "event_id": "4f651a7c21104b7ab6b05871b495a719",
+  "updated_at_utc": "2026-10-01T04:12:38.404938+00:00",
+  "repo": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+  "checkout_head": "1901473429deb1297be7d5d4451169082629858b",
+  "source_cli": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\tools\\codex_task_bus.py",
+  "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+  "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+  "screen_resource": "ck3-screen:acquired"
+}

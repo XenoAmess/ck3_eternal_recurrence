@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-01T04:30:40.294540+00:00",
+  "actual_mode": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "desktop_size": [
+    1024,
+    768
+  ],
+  "original_image_size": [
+    1024,
+    768
+  ],
+  "verified": true,
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\display-restore-original-a01\\original-desktop-after-restore.png",
+    "bytes": 599022,
+    "sha256": "11FE4BD2969BE02E6AE467993D0EB707216FACE6EFC0E995CA67CBDA23CC6B58"
+  },
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-01T04:12:33.100849+00:00",
+  "arguments": {},
+  "reply": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_version\": \"1.2.0\",\n  \"server_instance_id\": \"b60a1709-a7e4-49ee-bcff-0a88844379a3\",\n  \"target_id\": \"ck3-six-gap-ui-20261001-a02\",\n  \"display_name\": \"Episode02 character/roster/full-battle UI research\",\n  \"profile_sha256\": \"DB18B88C7B5C1C9F476A5933EC7FA31469C2734B972B7047FE66F8ECBB50C2F7\",\n  \"endpoint\": {\n    \"transport\": \"stdio\",\n    \"host\": \"127.0.0.1\",\n    \"port\": 8766\n  },\n  \"jobs\": [\n    \"six-gap-ui-capture\"\n  ],\n  \"job_controls\": {\n    \"six-gap-ui-capture\": []\n  },\n  \"tools\": [\n    \"operator_get_capabilities\",\n    \"operator_get_status\",\n    \"operator_preflight_job\",\n    \"operator_handoff_job\",\n    \"operator_control_job\",\n    \"operator_query_steam_workshop_status_v1\"\n  ],\n  \"steam_workshop_status_configured\": false,\n  \"caller_supplied_commands\": false,\n  \"operator_bootstrap_required\": true\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_version": "1.2.0",
+      "server_instance_id": "b60a1709-a7e4-49ee-bcff-0a88844379a3",
+      "target_id": "ck3-six-gap-ui-20261001-a02",
+      "display_name": "Episode02 character/roster/full-battle UI research",
+      "profile_sha256": "DB18B88C7B5C1C9F476A5933EC7FA31469C2734B972B7047FE66F8ECBB50C2F7",
+      "endpoint": {
+        "transport": "stdio",
+        "host": "127.0.0.1",
+        "port": 8766
+      },
+      "jobs": [
+        "six-gap-ui-capture"
+      ],
+      "job_controls": {
+        "six-gap-ui-capture": []
+      },
+      "tools": [
+        "operator_get_capabilities",
+        "operator_get_status",
+        "operator_preflight_job",
+        "operator_handoff_job",
+        "operator_control_job",
+        "operator_query_steam_workshop_status_v1"
+      ],
+      "steam_workshop_status_configured": false,
+      "caller_supplied_commands": false,
+      "operator_bootstrap_required": true
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

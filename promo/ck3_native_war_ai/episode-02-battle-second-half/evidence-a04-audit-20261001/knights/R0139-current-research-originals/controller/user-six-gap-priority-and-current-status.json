@@ -1,0 +1,64 @@
+{
+  "at_utc": "2026-10-01T04:18:46.344109+00:00",
+  "user_order": "先研究全部六项，再使用研究成果优化视频",
+  "items": [
+    {
+      "item": "骑士次日角色界面",
+      "status": "未完成：同次实机的角色窗原图待采"
+    },
+    {
+      "item": "名单变化",
+      "status": "未完成：原版名单界面与有序原生名单同身份对拍待采"
+    },
+    {
+      "item": "完整战斗窗",
+      "status": "未完成：完整下半部构成和必要滚动画面待采"
+    },
+    {
+      "item": "骑士选择器",
+      "status": "研究中：候选构造、过滤、顺序、随机返回与新trace闭环"
+    },
+    {
+      "item": "唯一死因",
+      "status": "研究中：本案death effect请求、延后commit与实际归因闭环"
+    },
+    {
+      "item": "完整可变状态链",
+      "status": "研究中：本期具体事件/加入案例的事件写回、伤亡和下一暂停帧；不能用局部观测翻转全局complete标志"
+    }
+  ],
+  "a07_status": "existing intermediate review artifact; no new video revision started",
+  "research_branch": "codex/war-e2-mechanism-closure-20261001",
+  "research_base": "1901473429deb1297be7d5d4451169082629858b",
+  "research_worktree": "C:/w/e2research1001",
+  "master_intake_allowed": false,
+  "first_launch": "operator accepted; entry refused mismatched screen checkout; CK3 never launched and no live run ID",
+  "second_launch": "R0139 warmup and final isolated CK3 process created; source is still loading; no successful mechanism sample yet",
+  "pins": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\ui-launch-plan.json",
+      "bytes": 3722,
+      "sha256": "00392ADEC555A85AFCDA3B7EBACC85CA529CB87A024642EE239B95FC68770F32"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\native-research-plan.json",
+      "bytes": 4510,
+      "sha256": "3999682B407713AAFCBAED1D86865120826CA49032542E00CB06AB19F1EDDD28"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\native-research-plan-check.json",
+      "bytes": 925,
+      "sha256": "31CE58E9E0AD03CB4268B2736E003028982A0D2DF6568565E708423145ED2677"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-01\\operator-profile-a01.json",
+      "bytes": 7429,
+      "sha256": "99B4AE016100E54E7C893DA7E8DC444149D0716BD9FA3B5A8DC508CF203F4514"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a01\\ck3-output\\entry-failure.json",
+      "bytes": 240,
+      "sha256": "5EBC6BCB0AD56A11F741A87ACFD0E2734FAD1BE625EFB73531B21E94F0DAF98E"
+    }
+  ]
+}

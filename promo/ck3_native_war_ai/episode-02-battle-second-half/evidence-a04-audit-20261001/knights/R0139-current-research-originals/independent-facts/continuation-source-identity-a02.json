@@ -1,0 +1,11 @@
+{
+  "a01_original": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0139-readonly-verification-attempt-01\\verify_originals.py",
+    "sha256": "466D0153932395ED38F4B90BAAA233822354ED0A486294733268D7E064D32B23"
+  },
+  "a02_created": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-R0139-readonly-verification-attempt-01\\verify_originals_a02.py",
+    "sha256": "CCDF4AE42AAC209384C835128EFEB0322C5B481EE522949535AFECE56667F2C2"
+  },
+  "a01_result": "Packaging KeyError path occurred at pair.save wrapper, after 19 checks; not game RED and no melt yet. Original file and result retained."
+}

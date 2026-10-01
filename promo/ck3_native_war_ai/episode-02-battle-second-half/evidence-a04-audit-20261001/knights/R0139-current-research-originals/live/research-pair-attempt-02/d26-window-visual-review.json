@@ -1,0 +1,18 @@
+{
+  "at_utc": "2026-10-01T04:25:13.094479+00:00",
+  "reviewer": "root direct inspection of exact original WGC frame",
+  "image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\research-pair-attempt-02\\d26-before-window.png",
+    "bytes": 6409462,
+    "sha256": "004E515594A27C425E578FE00CA9229F9C308C1B761B68F0F2AF47D75B772D62"
+  },
+  "actual_paused_d26_ui_observed": true,
+  "actual_ui_date": "1066.12.29",
+  "source_day_index": 26,
+  "observation": "Original HUD visibly shows 暂停 and 公元1066年12月29日; map/battle badge present.",
+  "character_UI_observed": false,
+  "full_battle_panel_observed": false,
+  "scope": "research native day/selector/final-lifecycle verification",
+  "human_video_signoff": false,
+  "film_clean_span": false
+}

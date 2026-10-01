@@ -1,0 +1,4879 @@
+{
+  "request": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\interactive-requests\\six-gap-current-gui-tree.json",
+    "bytes": 87,
+    "sha256": "F34282DBAA2CFC2BD71B3C3540A87394EB6FD83BB043DBE8B4E122A506EEC541"
+  },
+  "at": "2026-10-01T04:19:39.268675+00:00",
+  "result": "CALL_COMPLETED",
+  "body": {
+    "schema": "ck3-frontend-gui-tree-inspection-v1",
+    "schema_version": 1,
+    "step": "inspect-frontend-gui-tree-v1",
+    "accepted": true,
+    "status": "available",
+    "scope_root_name": "_root_",
+    "root_available": true,
+    "truncated": true,
+    "widget_count": 512,
+    "widgets": [
+      {
+        "runtime_name": "_root_",
+        "child_path": "",
+        "depth": 0,
+        "child_count": 17,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "_layer_",
+        "child_path": "0",
+        "depth": 1,
+        "child_count": 10,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "bottom_bottom",
+        "child_path": "1",
+        "depth": 1,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "bottom",
+        "child_path": "2",
+        "depth": 1,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "windows_layer",
+        "child_path": "3",
+        "depth": 1,
+        "child_count": 34,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "hud_layer",
+        "child_path": "4",
+        "depth": 1,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "royal_court",
+        "child_path": "5",
+        "depth": 1,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "middle",
+        "child_path": "6",
+        "depth": 1,
+        "child_count": 114,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "events",
+        "child_path": "7",
+        "depth": 1,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "top",
+        "child_path": "8",
+        "depth": 1,
+        "child_count": 14,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tutorial",
+        "child_path": "9",
+        "depth": 1,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "frontend",
+        "child_path": "10",
+        "depth": 1,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "confirmation",
+        "child_path": "11",
+        "depth": 1,
+        "child_count": 15,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "debug",
+        "child_path": "12",
+        "depth": 1,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tools_layer",
+        "child_path": "13",
+        "depth": 1,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "gui_editor_layer",
+        "child_path": "14",
+        "depth": 1,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "console_layer",
+        "child_path": "15",
+        "depth": 1,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "cursor_layer",
+        "child_path": "16",
+        "depth": 1,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "layer_hbox",
+        "child_path": "0/0",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72469912,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "JominiMultiplayerEndPreparationConfirmation",
+        "child_path": "0/1",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "lobbyview",
+        "child_path": "0/2",
+        "depth": 2,
+        "child_count": 7,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "place_rally_point_window",
+        "child_path": "0/3",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "potential_task_location_window",
+        "child_path": "0/4",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "select_men_at_arms_origin_window",
+        "child_path": "0/5",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "select_title_troop_assignment_window",
+        "child_path": "0/6",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "TitleTroopsTooltip",
+        "child_path": "0/7",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_select_raise_troops_at_location",
+        "child_path": "0/8",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "potential_plan_location_window",
+        "child_path": "0/9",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "hud_bottom",
+        "child_path": "1/0",
+        "depth": 2,
+        "child_count": 12,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "hud_sidebars",
+        "child_path": "1/1",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "message_feed_widget",
+        "child_path": "2/0",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72461384,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "meta_info",
+        "child_path": "2/1",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "bottom_bar",
+        "child_path": "2/2",
+        "depth": 2,
+        "child_count": 10,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "achievement_popup_window",
+        "child_path": "3/0",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "JominiMultiplayerSetupWindow",
+        "child_path": "3/1",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "military_view",
+        "child_path": "3/2",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_lobby_helper",
+        "child_path": "3/3",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "holding_type_selection_view",
+        "child_path": "3/4",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "holding_view",
+        "child_path": "3/5",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "struggle_window",
+        "child_path": "3/6",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "intrigue_window",
+        "child_path": "3/7",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "decisions_view",
+        "child_path": "3/8",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "council_window",
+        "child_path": "3/9",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "factions_window",
+        "child_path": "3/10",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "succession_select_destiny_window",
+        "child_path": "3/11",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "succession_select_destiny_window",
+        "child_path": "3/12",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "add_tradition_window",
+        "child_path": "3/13",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "replace_pillar_window",
+        "child_path": "3/14",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "lease_out_baronies_window",
+        "child_path": "3/15",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "outliner_window",
+        "child_path": "3/16",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "my_realm_window",
+        "child_path": "3/17",
+        "depth": 2,
+        "child_count": 6,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "court_window",
+        "child_path": "3/18",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "ruler_designer",
+        "child_path": "3/19",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_list",
+        "child_path": "3/20",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "travel_route_edit_window",
+        "child_path": "3/21",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_manage_tax_slots",
+        "child_path": "3/22",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "epidemics_window",
+        "child_path": "3/23",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "legends_window",
+        "child_path": "3/24",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "legend_chronicle",
+        "child_path": "3/25",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "government_administration_window",
+        "child_path": "3/26",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "title_appointment",
+        "child_path": "3/27",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_migration",
+        "child_path": "3/28",
+        "depth": 2,
+        "child_count": 7,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_situation_list",
+        "child_path": "3/29",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_situation",
+        "child_path": "3/30",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_the_great_steppe",
+        "child_path": "3/31",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_silk_road",
+        "child_path": "3/32",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_tgp_dynastic_cycle",
+        "child_path": "3/33",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "ingame_topbar",
+        "child_path": "4/0",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "hud_ruler_objective",
+        "child_path": "4/1",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "action_items",
+        "child_path": "4/2",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "royal_court_window",
+        "child_path": "5/0",
+        "depth": 2,
+        "child_count": 7,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "toast_container_widget",
+        "child_path": "6/0",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "menatarms_view",
+        "child_path": "6/1",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "knight_view",
+        "child_path": "6/2",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "levy_view",
+        "child_path": "6/3",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "menatarmstype_view",
+        "child_path": "6/4",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "find_vassal_list_window",
+        "child_path": "6/5",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "army_window",
+        "child_path": "6/6",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_window",
+        "child_path": "6/7",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_interaction_confirmation_window",
+        "child_path": "6/8",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_interaction_notification_window",
+        "child_path": "6/9",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "marriage_interaction_window",
+        "child_path": "6/10",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "marriage_interaction_notification_window",
+        "child_path": "6/11",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "declare_war_window",
+        "child_path": "6/12",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "call_ally_interaction_window",
+        "child_path": "6/13",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "call_ally_interaction_notification_window",
+        "child_path": "6/14",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "interfere_in_war_interaction_window",
+        "child_path": "6/15",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "interfere_in_war_interaction_notification_window",
+        "child_path": "6/16",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "blackmail_interaction_window",
+        "child_path": "6/17",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "create_claimant_faction_against_interaction_window",
+        "child_path": "6/18",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "modify_vassal_contract_interaction_window",
+        "child_path": "6/19",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "council_task_interaction_window",
+        "child_path": "6/20",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_finder_window",
+        "child_path": "6/21",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "war_overview_window",
+        "child_path": "6/22",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "struggle_involvement_window",
+        "child_path": "6/23",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "potential_agent_window",
+        "child_path": "6/24",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "battle_summary",
+        "child_path": "6/25",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "siege_window",
+        "child_path": "6/26",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "raid_window",
+        "child_path": "6/27",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "rally_point_window",
+        "child_path": "6/28",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "find_title_view",
+        "child_path": "6/29",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_focus_window",
+        "child_path": "6/30",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_lifestyle_window",
+        "child_path": "6/31",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "decisiondetail_view",
+        "child_path": "6/32",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "grant_titles_interaction_window",
+        "child_path": "6/33",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "revoke_titles_interaction_window",
+        "child_path": "6/34",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "claimants_window",
+        "child_path": "6/35",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "find_vassal_list_window",
+        "child_path": "6/36",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "title_view_window",
+        "child_path": "6/37",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "confederation_window",
+        "child_path": "6/38",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "select_commander_window",
+        "child_path": "6/39",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "potential_councillor_window",
+        "child_path": "6/40",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynasty_house_members_view",
+        "child_path": "6/41",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynasty_house_view",
+        "child_path": "6/42",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynasty_house_customization_window",
+        "child_path": "6/43",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynasty_tree_view",
+        "child_path": "6/44",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynasty_legacy_window",
+        "child_path": "6/45",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynasty_customization_window",
+        "child_path": "6/46",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "potential_faction_member_window",
+        "child_path": "6/47",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "faith_window",
+        "child_path": "6/48",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "faith_creation_window",
+        "child_path": "6/49",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "faith_conversion_window",
+        "child_path": "6/50",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "culture_window",
+        "child_path": "6/51",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "hybridize_culture_window",
+        "child_path": "6/52",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "diverge_culture_window",
+        "child_path": "6/53",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "great_holy_war_window",
+        "child_path": "6/54",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "hired_troop_detail_view",
+        "child_path": "6/55",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "succession_law_change_window",
+        "child_path": "6/56",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "war_declared_overview",
+        "child_path": "6/57",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "war_results",
+        "child_path": "6/58",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "designate_heir",
+        "child_path": "6/59",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "change_ghw_target_window",
+        "child_path": "6/60",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_barbershop",
+        "child_path": "6/61",
+        "depth": 2,
+        "child_count": 14,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_message_settings",
+        "child_path": "6/62",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_message_popup",
+        "child_path": "6/63",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_house_aspiration",
+        "child_path": "6/64",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_house_relation_history",
+        "child_path": "6/65",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "concubine_interaction_window",
+        "child_path": "6/66",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "title_history_window",
+        "child_path": "6/67",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "title_add_law_window",
+        "child_path": "6/68",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "title_customization_window",
+        "child_path": "6/69",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "kill_list",
+        "child_path": "6/70",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "artifact_kill_list",
+        "child_path": "6/71",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "transfer_vassal_interaction_window",
+        "child_path": "6/72",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "title_election",
+        "child_path": "6/73",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_court_visuals",
+        "child_path": "6/74",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "inventory_view",
+        "child_path": "6/75",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "reforge_artifact_window",
+        "child_path": "6/76",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "appoint_court_position_view",
+        "child_path": "6/77",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "artifact_details_view",
+        "child_path": "6/78",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "animation_test_window",
+        "child_path": "6/79",
+        "depth": 2,
+        "child_count": 6,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "languages_window",
+        "child_path": "6/80",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_planner",
+        "child_path": "6/81",
+        "depth": 2,
+        "child_count": 9,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_window",
+        "child_path": "6/82",
+        "depth": 2,
+        "child_count": 11,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_list_detail_host",
+        "child_path": "6/83",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_list_detail_invite",
+        "child_path": "6/84",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_locale_window",
+        "child_path": "6/85",
+        "depth": 2,
+        "child_count": 13,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_guest_list",
+        "child_path": "6/86",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_intent_selection",
+        "child_path": "6/87",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "travel_planner_window",
+        "child_path": "6/88",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "travel_option_selection_window",
+        "child_path": "6/89",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "accolade_view",
+        "child_path": "6/90",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "create_accolade_view",
+        "child_path": "6/91",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "accolade_attribute_selection_view",
+        "child_path": "6/92",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "diarchy_window",
+        "child_path": "6/93",
+        "depth": 2,
+        "child_count": 7,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_appoint_tax_collector",
+        "child_path": "6/94",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_tax_slot_vassals",
+        "child_path": "6/95",
+        "depth": 2,
+        "child_count": 6,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_tax_slot_obligations",
+        "child_path": "6/96",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_tax_slot_assign_vassal",
+        "child_path": "6/97",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "legend_creation",
+        "child_path": "6/98",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "domicile_window",
+        "child_path": "6/99",
+        "depth": 2,
+        "child_count": 17,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "task_contract",
+        "child_path": "6/100",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_move_domicile",
+        "child_path": "6/101",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "admin_vassal_detail_view",
+        "child_path": "6/102",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "raid_intent_selection_window",
+        "child_path": "6/103",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "potential_great_project_contributors_window",
+        "child_path": "6/104",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "great_project",
+        "child_path": "6/105",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "plan_great_project",
+        "child_path": "6/106",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "army_automation_options_view",
+        "child_path": "6/107",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_situation_participation",
+        "child_path": "6/108",
+        "depth": 2,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "court_task_interaction_window",
+        "child_path": "6/109",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "situation_sub_region_window",
+        "child_path": "6/110",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "barter_window",
+        "child_path": "6/111",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_treasury_budget_change",
+        "child_path": "6/112",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "ledger_window",
+        "child_path": "6/113",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "jomini_encyclopedia",
+        "child_path": "8/0",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "timeline_widget",
+        "child_path": "8/1",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462928,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "JominiMusicPlayerView",
+        "child_path": "8/2",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "unit_watch_window",
+        "child_path": "8/3",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "ai_war_coordinator_watch_window",
+        "child_path": "8/4",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "holding_tracks_view",
+        "child_path": "8/5",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "army_reorganization_window",
+        "child_path": "8/6",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "attach_to_army_window",
+        "child_path": "8/7",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_interaction_menu_window",
+        "child_path": "8/8",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "combat_window",
+        "child_path": "8/9",
+        "depth": 2,
+        "child_count": 10,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "lineage_window",
+        "child_path": "8/10",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "change_court_type_window",
+        "child_path": "8/11",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "activity_log",
+        "child_path": "8/12",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "memories_window",
+        "child_path": "8/13",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tutorial_window",
+        "child_path": "9/0",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "ingame_pausemenu",
+        "child_path": "10/0",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "screenshot_map_window",
+        "child_path": "11/0",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "screenshotutils_window",
+        "child_path": "11/1",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "achievements_window",
+        "child_path": "11/2",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "game_rules",
+        "child_path": "11/3",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dlc_info",
+        "child_path": "11/4",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "multiplayer_oos_message",
+        "child_path": "11/5",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "multiplayer_join_request_dialog",
+        "child_path": "11/6",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "login_window",
+        "child_path": "11/7",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "jomini_settings_window",
+        "child_path": "11/8",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "ingame_load_ingame",
+        "child_path": "11/9",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "save_game_window",
+        "child_path": "11/10",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "ingame_resign_confirmation",
+        "child_path": "11/11",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "succession_event_window",
+        "child_path": "11/12",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "save_ruler_window",
+        "child_path": "11/13",
+        "depth": 2,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "load_ruler_window",
+        "child_path": "11/14",
+        "depth": 2,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "search",
+        "child_path": "13/0",
+        "depth": 2,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "console_window",
+        "child_path": "15/0",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "software_cursor",
+        "child_path": "16/0",
+        "depth": 2,
+        "child_count": 4,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "layer_window",
+        "child_path": "0/0/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72462416,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "info",
+        "child_path": "0/1/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72465552,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/1/1",
+        "depth": 3,
+        "child_count": 6,
+        "vtable_rva": 72376352,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/1/2",
+        "depth": 3,
+        "child_count": 6,
+        "vtable_rva": 72376352,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/2/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/2/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/2/2",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72469912,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/2/3",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/2/4",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dlc_list_overlay",
+        "child_path": "0/2/5",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "debug_info_horse",
+        "child_path": "0/2/6",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/3/0",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "close_assignment_window",
+        "child_path": "0/3/1",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72376352,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/3/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/4/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/4/1",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/4/2",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/5/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "close_assignment_window",
+        "child_path": "0/5/1",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72376352,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/6/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "close_assignment_window",
+        "child_path": "0/6/1",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72376352,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/7/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/8/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "close_assignment_window",
+        "child_path": "0/8/1",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72376352,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/9/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "0/9/1",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/3",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/4",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/5",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "paused_by_player_text_used_by_tutorial",
+        "child_path": "1/0/6",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72465552,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/7",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72465552,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "multiplayer_paused_by_player",
+        "child_path": "1/0/8",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "1/0/9",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "pause_border_strong",
+        "child_path": "1/0/10",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "pause_border_weak",
+        "child_path": "1/0/11",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "sidebar_background_right",
+        "child_path": "1/1/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/0/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72461384,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "push_left",
+        "child_path": "2/0/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "adjust_left",
+        "child_path": "2/0/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "observer_status",
+        "child_path": "2/1/0",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "build_version_text",
+        "child_path": "2/1/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72465552,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "beta_warning_text",
+        "child_path": "2/1/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72465552,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/1/3",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/1",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/2",
+        "depth": 3,
+        "child_count": 6,
+        "vtable_rva": 72447904,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72447904,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/4",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72461384,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "side_bottom_left_tabs",
+        "child_path": "2/2/5",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72461384,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "bottom_left_bar",
+        "child_path": "2/2/6",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72461384,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/7",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/8",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "2/2/9",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72461384,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/0/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72470432,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "3/1/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "3/1/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "3/1/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/1/3",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/2/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "sort_options",
+        "child_path": "3/3/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72389496,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/4/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/5/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/6/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/6/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/6/2",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/7/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/8/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/9/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/10/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/11/0",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/12/0",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "3/13/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "3/13/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "3/13/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/13/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "3/14/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "3/14/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "3/14/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/14/3",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "3/15/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "3/15/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "3/15/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/15/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/16/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/17/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/17/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/17/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/17/3",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/17/4",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/17/5",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/18/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "court_character_filter_window",
+        "child_path": "3/18/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "3/18/2",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/19/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "header",
+        "child_path": "3/19/1",
+        "depth": 3,
+        "child_count": 6,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/20/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "3/21/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "3/21/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "3/21/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/21/3",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/22/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/23/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/24/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/25/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72469912,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/25/1",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/26/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "merit_pool_characters_window",
+        "child_path": "3/26/1",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/27/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "3/27/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "location_selection_guide",
+        "child_path": "3/28/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_migration_target",
+        "child_path": "3/28/1",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "migration_involved_character_list_window",
+        "child_path": "3/28/2",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/28/3",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/28/4",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "debug_info_horse",
+        "child_path": "3/28/5",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "player_character_migration_view",
+        "child_path": "3/28/6",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/29/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/30/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_situation_participant_groups",
+        "child_path": "3/30/1",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/31/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/31/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "herd_leaderboard_window",
+        "child_path": "3/31/2",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/32/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_situation_participant_groups",
+        "child_path": "3/32/1",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "silk_road_catalysts_window",
+        "child_path": "3/32/2",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "3/33/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynastic_cycle_participant_groups",
+        "child_path": "3/33/1",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "situation_catalysts_window",
+        "child_path": "3/33/2",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "dynastic_cycle_phases_list_window",
+        "child_path": "3/33/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "situation_catalysts_history_window",
+        "child_path": "3/33/4",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "4/0/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "4/0/1",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72447904,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "main_tabs",
+        "child_path": "4/0/2",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "4/0/3",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "4/0/4",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72371872,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "4/1/0",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "suggestions_button",
+        "child_path": "4/2/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72376352,
+        "effective_visible": true,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "4/2/1",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "royal_court_window_tutorial_uses_this",
+        "child_path": "5/0/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "5/0/1",
+        "depth": 3,
+        "child_count": 15,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "court_scene_editor_window",
+        "child_path": "5/0/2",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "5/0/3",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "debug_buttons",
+        "child_path": "5/0/4",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "fade_to_black_overlay",
+        "child_path": "5/0/5",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "debug_info_horse",
+        "child_path": "5/0/6",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72447904,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "toast_content",
+        "child_path": "6/0/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "toast_background_contest",
+        "child_path": "6/0/1",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "toast_background_contract",
+        "child_path": "6/0/2",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/1/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/2/0",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "knight_permissions",
+        "child_path": "6/2/1",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/3/0",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/4/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/4/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/4/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/4/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/4/4",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72375824,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/5/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/5/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/5/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/5/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/5/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/6/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "hundred",
+        "child_path": "6/6/1",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "expanded_armies_window",
+        "child_path": "6/6/2",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "main_content",
+        "child_path": "6/7/0",
+        "depth": 3,
+        "child_count": 10,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "court_character_filter_window",
+        "child_path": "6/7/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "vassal_filter_window",
+        "child_path": "6/7/2",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/8/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/8/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/8/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/8/3",
+        "depth": 3,
+        "child_count": 14,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/8/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/9/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/9/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/9/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/9/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/10/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/10/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/10/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/10/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "filter_window",
+        "child_path": "6/10/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/11/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/11/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/11/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/11/3",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "declare_war_window",
+        "child_path": "6/12/0",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_ally_list_subview",
+        "child_path": "6/12/1",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/13/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/13/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/13/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/13/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/14/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/14/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/14/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/14/3",
+        "depth": 3,
+        "child_count": 6,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/15/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/15/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/15/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/15/3",
+        "depth": 3,
+        "child_count": 9,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/16/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/16/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/16/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/16/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/17/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/17/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/17/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/17/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/18/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/18/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/18/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/18/3",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/19/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/19/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/19/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_content",
+        "child_path": "6/19/3",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/20/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/20/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/20/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/20/3",
+        "depth": 3,
+        "child_count": 8,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/21/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/21/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/21/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/21/3",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/21/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/22/0",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_exchange_hostages",
+        "child_path": "6/22/1",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "allies_list_left",
+        "child_path": "6/22/2",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "allies_list_right",
+        "child_path": "6/22/3",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/23/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/23/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/23/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/23/3",
+        "depth": 3,
+        "child_count": 6,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/23/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/24/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/24/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/25/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/25/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/25/2",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/25/3",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_content",
+        "child_path": "6/26/0",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "window_content",
+        "child_path": "6/27/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/28/0",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/29/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/29/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/29/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/29/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/30/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/30/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/30/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/30/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "lifestyle_selection",
+        "child_path": "6/31/0",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/31/1",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72469912,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/31/2",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72371872,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "focus_view",
+        "child_path": "6/31/3",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/31/4",
+        "depth": 3,
+        "child_count": 5,
+        "vtable_rva": 72461384,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/32/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/32/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/32/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/32/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/33/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/33/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/33/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/33/3",
+        "depth": 3,
+        "child_count": 6,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/34/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/34/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/34/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/34/3",
+        "depth": 3,
+        "child_count": 7,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/35/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/35/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/35/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/35/3",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/36/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/36/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/36/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/36/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/36/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/37/0",
+        "depth": 3,
+        "child_count": 1,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/38/0",
+        "depth": 3,
+        "child_count": 8,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/39/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/39/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/39/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/39/3",
+        "depth": 3,
+        "child_count": 3,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/39/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/40/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_bottom",
+        "child_path": "6/40/1",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top_center_part",
+        "child_path": "6/40/2",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "",
+        "child_path": "6/40/3",
+        "depth": 3,
+        "child_count": 4,
+        "vtable_rva": 72470432,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "character_filter_window",
+        "child_path": "6/40/4",
+        "depth": 3,
+        "child_count": 2,
+        "vtable_rva": 72462416,
+        "effective_visible": false,
+        "enabled": true
+      },
+      {
+        "runtime_name": "tile_frame_top",
+        "child_path": "6/41/0",
+        "depth": 3,
+        "child_count": 0,
+        "vtable_rva": 72462928,
+        "effective_visible": false,
+        "enabled": true
+      }
+    ],
+    "backend_id": "native-headless",
+    "read_only": true,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "driver_state": {
+    "protocol_version": 1,
+    "pipe_name": "\\\\.\\pipe\\xar_ck3_e2_six_gap_ui_0422ea253aad440a865e083ab117e81a",
+    "connected": true,
+    "connection_generation": 1,
+    "bridge_pid": 3852,
+    "bridge_version": "0.1.0",
+    "hello": {
+      "type": "hello",
+      "protocol_version": 1,
+      "bridge_version": "0.1.0",
+      "pid": 3852,
+      "session_generation": 0,
+      "connection_generation": 1,
+      "architecture": "x86_64-windows-msvc",
+      "expected_ck3_version": "1.19.0.6",
+      "expected_ck3_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+      "game_adapter_status": "ready",
+      "ck3_build_match": true,
+      "capabilities": [
+        "bridge.identity",
+        "bridge.heartbeat",
+        "bridge.ping",
+        "game.state.snapshot",
+        "game.state.xar-one-life-settlement",
+        "game.state.map-ready",
+        "game.state.played-character",
+        "game.state.active-event",
+        "game.state.pending-character-interaction",
+        "game.state.active-wars",
+        "game.state.war-primary-opponent",
+        "game.state.war-objectives",
+        "game.state.war-objective-occupation",
+        "game.state.war-objective-fort-level",
+        "game.state.war-objective-garrison",
+        "game.state.war-objective-siege-progress",
+        "game.state.war-objective-assault",
+        "game.state.player-armies",
+        "game.state.army-routes",
+        "game.command.pause-map",
+        "game.command.resume-map",
+        "game.command.set-speed-1",
+        "game.command.set-speed-2",
+        "game.command.set-speed-3",
+        "game.command.set-speed-4",
+        "game.command.set-speed-5",
+        "game.command.research-arm-tactical-daily-sentinel-v1-N",
+        "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+        "game.command.research-query-tactical-daily-sentinel-v1",
+        "game.command.select-event-option-N",
+        "game.command.save-checkpoint",
+        "game.command.accept-pending-character-interaction",
+        "game.command.reject-pending-character-interaction",
+        "game.command.acknowledge-pending-character-interaction",
+        "game.command.raise-troops-default",
+        "game.command.preview-move-army-N-to-N",
+        "game.command.query-route-contact-horizon-v1-N",
+        "game.command.query-actual-contact-scope-v1-N",
+        "game.command.query-battle-control-snapshot-v1-N",
+        "game.command.query-battle-transition-v1-N",
+        "game.command.query-battle-terminal-transition-v1",
+        "game.command.query-battle-reinforcement-assignment-v1-N",
+        "game.command.move-army-N-to-N",
+        "game.command.disband-army-N",
+        "game.command.split-army-half-N",
+        "game.command.merge-armies-N-with-N",
+        "game.command.start-assault-N",
+        "game.command.stop-assault-N",
+        "game.command.query-declarable-wars",
+        "game.command.query-war-entry-assessments-v1-N",
+        "game.command.declare-war-N",
+        "game.command.enforce-demands-N",
+        "game.command.query-army-strengths-v1",
+        "game.command.query-campaign-root-context-v1",
+        "game.command.query-player-faction-alerts-v1",
+        "game.command.query-steward-develop-county-candidates-v1",
+        "game.command.query-zhongguo-case-snapshot-v1",
+        "game.command.query-zhongguo-b1-cycle-snapshot-v1",
+        "game.command.query-zhongguo-result-case-snapshot-v1",
+        "game.command.query-zhongguo-b2-pip-snapshot-v1",
+        "game.command.query-zhongguo-incident-snapshot-v1",
+        "game.command.query-zhongguo-manager-governance-snapshot-v1",
+        "game.command.query-zhongguo-manager-subordinate-selector-v1",
+        "game.command.query-zhongguo-scoreboard-state-v1",
+        "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+        "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+        "game.contract.zhongguo-review-now-action-v1-fail-closed",
+        "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+        "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
+        "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+        "game.command.query-loaded-feature-manifest-v1",
+        "game.command.query-pending-character-interaction-context-v1",
+        "game.command.query-current-event-window-context-v1",
+        "game.command.probe-coat-of-arms-source-v1",
+        "game.command.export-coat-of-arms-source-v1",
+        "game.command.query-frontend-gui-route-v1",
+        "game.command.inspect-frontend-gui-tree-v1",
+        "game.command.inspect-frontend-coat-of-arms-tree-v1",
+        "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1",
+        "game.command.activate-frontend-new-game-v1",
+        "game.command.activate-frontend-pick-any-character-v1",
+        "game.command.activate-frontend-select-random-playable-v1",
+        "game.command.activate-frontend-ruler-designer-v1",
+        "game.command.activate-frontend-coat-of-arms-designer-v1",
+        "game.command.commit-frontend-dynasty-coat-of-arms-v1",
+        "game.command.activate-frontend-coat-of-arms-custom-mode-v1",
+        "game.command.activate-frontend-randomize-ruler-first-name-v1",
+        "game.command.activate-frontend-finalize-custom-ruler-v1",
+        "game.command.activate-frontend-confirm-custom-ruler-v1",
+        "game.command.activate-frontend-start-lobby-selected-character-v1",
+        "game.command.center-map-on-landed-title-v1",
+        "game.command.set-played-character-v1-N",
+        "game.command.query-combat-simulation-inputs-v2-N",
+        "game.command.query-combat-simulation-inputs-v3-N",
+        "game.command.query-combat-phase-event-trace-v1-N",
+        "game.command.experimental-combat-phase-event-trace-managed-v1",
+        "game.command.query-war-termination-options-N",
+        "game.command.query-war-prisoner-release-pairs-v1-N",
+        "game.command.query-outbound-war-white-peace-status-v1-N",
+        "game.command.query-war-termination-terms-v1-N",
+        "game.command.surrender-war-N",
+        "game.command.offer-white-peace-N",
+        "game.command.query-arrange-marriage-choices",
+        "game.command.arrange-marriage-N",
+        "game.adapter.exact-build",
+        "game.adapter.minimized-headless"
+      ]
+    },
+    "last_heartbeat": {
+      "type": "heartbeat",
+      "protocol_version": 1,
+      "sequence": 1352,
+      "pid": 3852,
+      "monotonic_ms": 51485140,
+      "startup_failure_containment_enabled": false,
+      "startup_particle2_stage_recorder_enabled": false,
+      "startup_widget_null_flag_call_guard_enabled": false,
+      "startup_rbx_null_call_guard_enabled": false,
+      "cold_map_vfs_observer_enabled": false,
+      "named_path_583_root_observer_enabled": false,
+      "pdx_paths_583_producer_observer_enabled": false,
+      "vfs_mount_lifecycle_observer_enabled": false,
+      "physfs_mounted_data_observer_enabled": false,
+      "g2_truce_preview_entry_observer_enabled": true,
+      "zhongguo_scoreboard_production_candidate_enabled": false,
+      "zhongguo_scoreboard_production_capability_advertised": false,
+      "main_thread_query_mailbox_v1": {
+        "candidate_id": "application_main_thread_war_entry_v1",
+        "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+        "installed": true,
+        "sdl_poll_event_hook_installed": true,
+        "observed_sdl_poll_event_target": 140700204480304,
+        "stop": false,
+        "failure": 0,
+        "pump_epochs": 18609,
+        "owner_verified_pump_epochs": 18609,
+        "consecutive_verified": 3912,
+        "published_sequence": 0,
+        "completed_sequence": 0,
+        "executor_started_requests": 0,
+        "executor_started_sequence": 0,
+        "executor_started_pump_epoch": 0,
+        "owner_tid": 17352,
+        "current_tid": 17352,
+        "rng_owner_tid": 0,
+        "tls_global": 1,
+        "tls_context": 1964966375328,
+        "tls_marker": 1,
+        "jomini_state": 1976585113936,
+        "game_state": 1967507866960,
+        "date_raw": 53146848,
+        "paused": true,
+        "stamp_read_success": true,
+        "executed_requests": 0,
+        "executor_submission_enabled": true,
+        "application_main_observed": true,
+        "paused_main_thread_observed": true,
+        "ready": true
+      },
+      "coat_of_arms_designer_probe_v1": {
+        "installed": true,
+        "failure": 0,
+        "observed_calls": 0,
+        "executed_requests": 0
+      },
+      "startup_particle2_null_guard_v1": {
+        "installed": false,
+        "failure": 0,
+        "suppressed_count": 0,
+        "suppressed_index_mask": 0,
+        "last_suppressed_index": 4294967295
+      },
+      "startup_particle2_consumer_null_guard_v1": {
+        "installed": false,
+        "failure": 0,
+        "suppressed_count": 0,
+        "missing_slot_mask": 0
+      },
+      "startup_particle2_stage_recorder_v1": {
+        "installed": false,
+        "patch_mask": 0,
+        "failure": 0,
+        "source_lookup_null_count": 0,
+        "variant_lookup_null_count": 0,
+        "backend_creation_null_count": 0
+      },
+      "startup_dx11_render_context_draw_guard_v1": {
+        "installed": false,
+        "failure": 0,
+        "suppressed_count": 0
+      },
+      "startup_localize_current_root_guard_v1": {
+        "installed": false,
+        "failure": 0,
+        "native_miss_count": 0
+      },
+      "startup_widget_null_flag_call_guard_v1": {
+        "installed": false,
+        "failure": 0,
+        "suppressed_count": 0
+      },
+      "startup_rbx_null_call_guard_v1": {
+        "installed": false,
+        "failure": 0,
+        "suppressed_count": 0
+      }
+    },
+    "private_observers": {},
+    "last_pong": {
+      "type": "pong",
+      "protocol_version": 1,
+      "request_id": "python-1-a8132bbfff01",
+      "pid": 3852
+    },
+    "last_error": null,
+    "semantic_state_available": true,
+    "rejected_state_snapshot_count": 0,
+    "last_rejected_state_snapshot": null,
+    "snapshot_publish_diagnostic_count": 0,
+    "last_snapshot_publish_diagnostic": null,
+    "transport_fatal_error": null,
+    "pending_declaration_query": null
+  }
+}

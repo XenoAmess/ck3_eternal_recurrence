@@ -1,0 +1,22 @@
+{
+  "reason": "Historical film controller pins EB643 DLL; current research explicitly pins ED537 source190 pair and current R0139. No historical guard or source is modified.",
+  "previous_consumer": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\knight_saved_pair.py",
+    "bytes": 10599,
+    "sha256": "22DAF4719922F0594B6FF37D138D8B1FA0BF59D55FD4C664AF2311E2DB208578"
+  },
+  "current_consumer": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-02\\knight_research_pair_a02.py",
+    "bytes": 12833,
+    "sha256": "033517A2A31FC8672AA477A164910DA8A2F44C5A17C592CD5C6148EC51423298"
+  },
+  "changes": [
+    "new explicit current source/replay binding",
+    "new research-only evidence workdir"
+  ],
+  "preflight": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\preflight.json",
+    "bytes": 21144,
+    "sha256": "B46A48466904D11D6AADAEC1C2AD1E8285E77135ADD93CB416277721A80ED254"
+  }
+}

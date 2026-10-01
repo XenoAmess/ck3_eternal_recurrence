@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "heartbeat",
+    "--task",
+    "war-e2-six-gap-screen-20261001-a01",
+    "--expected-sequence",
+    "3356",
+    "--repo",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source"
+  ],
+  "returncode": 0,
+  "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"task_id\": \"war-e2-six-gap-screen-20261001-a01\",\n    \"state\": \"running\",\n    \"summary\": \"six_gap_mechanism_research_capture\",\n    \"next_step\": \"fresh_offline_UI\",\n    \"resources\": [\n      \"ck3-screen:acquired\"\n    ],\n    \"updated_at_utc\": \"2026-10-01T04:12:25.416170+00:00\",\n    \"pid\": 18408,\n    \"repo\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\reinforcement-attempt-12-R0129-native-center-diagnostic\\\\source\",\n    \"git\": {\n      \"head\": \"1901473429deb1297be7d5d4451169082629858b\",\n      \"branch\": \"codex/jd11-center-diagnostic-20261001\",\n      \"dirty_entries\": 0\n    },\n    \"last_sequence\": 3357\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 3357,\n    \"event_id\": \"a66dd5f965724df2846ac7a018139800\",\n    \"timestamp_utc\": \"2026-10-01T04:12:25.417388+00:00\",\n    \"kind\": \"heartbeat\",\n    \"task_id\": \"war-e2-six-gap-screen-20261001-a01\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"running\",\n    \"summary\": \"six_gap_mechanism_research_capture\",\n    \"next_step\": \"fresh_offline_UI\",\n    \"resources\": [\n      \"ck3-screen:acquired\"\n    ],\n    \"repo\": \"C:\\\\Users\\\\1\\\\ck3-a04-mechanism-evidence-20261001\\\\reinforcement-attempt-12-R0129-native-center-diagnostic\\\\source\",\n    \"git\": {\n      \"head\": \"1901473429deb1297be7d5d4451169082629858b\",\n      \"branch\": \"codex/jd11-center-diagnostic-20261001\",\n      \"dirty_entries\": 0\n    }\n  }\n}\n",
+  "stderr": ""
+}

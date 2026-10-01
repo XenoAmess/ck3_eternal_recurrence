@@ -1,0 +1,50 @@
+[
+  {
+    "tool": "ck3_take_snapshot",
+    "arguments": {},
+    "at": "2026-10-01T04:17:27.691355+00:00",
+    "seconds": 287.94066929999826,
+    "is_error": true,
+    "body": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "Error executing tool ck3_take_snapshot: native game state is not available yet; CK3 may still be loading or may not have entered a map",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "tool": "ck3_take_snapshot",
+    "arguments": {},
+    "at": "2026-10-01T04:17:28.697642+00:00",
+    "seconds": 288.9469509999981,
+    "is_error": true,
+    "body": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "Error executing tool ck3_take_snapshot: native game state is not available yet; CK3 may still be loading or may not have entered a map",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "tool": "ck3_take_snapshot",
+    "arguments": {},
+    "at": "2026-10-01T04:17:29.705876+00:00",
+    "seconds": 289.95519019999483,
+    "is_error": true,
+    "body": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "Error executing tool ck3_take_snapshot: native game state is not available yet; CK3 may still be loading or may not have entered a map",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  }
+]

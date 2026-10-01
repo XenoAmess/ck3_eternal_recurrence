@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+    "3852",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge.dll"
+  ],
+  "complete_process_tree_proven": true,
+  "creation_utc": "2026-10-01T04:13:54.481000+00:00",
+  "executable_sha256": "091CECEF5617251085A3CACE07213B63BD391B40444C9F5E918B61C286D4E88F",
+  "injector_root_reaped": true,
+  "job_active_final": 0,
+  "job_limit_flags": 8200,
+  "job_pids_final": [],
+  "output_limit_bytes": 8388608,
+  "pid": 18356,
+  "pinned_executable": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+  "pre_resume_job_pids": [
+    18356
+  ],
+  "resume_previous_count": 1,
+  "returncode": 0,
+  "schema": "xar.ck3.contained-injector-job.v1",
+  "status": "EXIT",
+  "stderr_bytes": 0,
+  "stderr_complete": true,
+  "stderr_overflow": false,
+  "stderr_reader_error": null,
+  "stderr_retained_bytes": 0,
+  "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+  "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+  "stdout_bytes": 80,
+  "stdout_complete": true,
+  "stdout_overflow": false,
+  "stdout_reader_error": null,
+  "stdout_retained_bytes": 80,
+  "stdout_retained_sha256": "828694BA8C91B43EA420E306359E8B416D9DD5A67A8E058EDEF157B4742DA1B5",
+  "stdout_sha256": "828694BA8C91B43EA420E306359E8B416D9DD5A67A8E058EDEF157B4742DA1B5"
+}

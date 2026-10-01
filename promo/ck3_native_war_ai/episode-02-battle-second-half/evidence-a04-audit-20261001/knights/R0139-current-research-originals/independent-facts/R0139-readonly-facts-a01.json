@@ -1,0 +1,1664 @@
+{
+  "schema": "ck3.R0139.knight-readonly-facts.v1",
+  "created_at_utc": "2026-10-01T04:28:59.864590+00:00",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "ck3_launches": 0,
+  "desktop_inputs": 0,
+  "master_intake": false,
+  "status": "UNKNOWN",
+  "limits": {
+    "old_a02_closed": false,
+    "sole_cause_proven": false,
+    "full_mutable_bundle_proven": false,
+    "character_ui_proven": false,
+    "full_battle_panel_proven": false
+  },
+  "episode_run_id": "native-29829-c36d778f8938",
+  "pair_originals": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\research-pair-attempt-02\\before-pair.json",
+      "bytes": 42774,
+      "sha256": "0A1E8E50BEFE0DBFB81AFBD64931FE00444B669A45C4C0BE3016F65A37BB8F43"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\research-pair-attempt-02\\after-pair.json",
+      "bytes": 473553,
+      "sha256": "5CB60E8814C0ECEED6A33118D61BAEC0A9676F78001743279B7887E85A8222DD"
+    }
+  ],
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0139",
+  "trace_original": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\interactive-requests-responses\\knight-new-trace-finish.json",
+    "bytes": 468133,
+    "sha256": "AB6FEEE5316286BF3BD86921EC2D52CA5F1A3AB92BBC85FBB470DBD934BAC31D"
+  },
+  "managed_checkpoint": {
+    "recoverable_checkpoint_created": true,
+    "exact_one_day_observed": true,
+    "boundary_dates_match_checkpoint": true,
+    "detours_uninstalled": true,
+    "before": {
+      "managed_daily_sequence_token": 6100103,
+      "pump_epoch": 58632,
+      "thread_id": 17352,
+      "date_raw": 53146848,
+      "combat_id": 16777218,
+      "paused": true
+    },
+    "after": {
+      "managed_daily_sequence_token": 6100103,
+      "pump_epoch": 58992,
+      "thread_id": 17352,
+      "date_raw": 53146872,
+      "combat_id": 16777218,
+      "paused": true
+    }
+  },
+  "trace_readiness": {
+    "exact_boundary_sequence": true,
+    "same_full_generation_combat": true,
+    "same_native_date": false,
+    "expected_one_day_date_split": true,
+    "same_loaded_event_table": true,
+    "loaded_event_row_identity_map_available": true,
+    "side_and_return_site_identity": true,
+    "schedule_phase_day_then_single_increment": true,
+    "bounded_capture_complete": true,
+    "outgoing_damage_pair_complete": true,
+    "post_counter_attack_pair_complete": true,
+    "full_mutable_transition_bundle_complete": false,
+    "original_trace_ready": false
+  },
+  "native_trace_nonrecord_fields": {
+    "schema_version": 1,
+    "status": "captured",
+    "failure_flags": 0,
+    "record_count": 7,
+    "outgoing_damage": {
+      "source": "native_main_tick_before_casualty",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 115960812,
+      "side1_raw": 10738068
+    },
+    "post_counter_attack": {
+      "source": "native_r14_after_0x23cae70_before_damage_scaling",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 8041665253,
+      "side1_raw": 223709762
+    },
+    "effect_roots": [
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "node_identity_token": "process-local-0x1CB273CAB30",
+        "node_hash": 3689483501,
+        "counter_before": 2708350930,
+        "salt_before": 0,
+        "counter_after": 2708350931,
+        "salt_after": 0
+      }
+    ],
+    "effect_node_call_count": 41,
+    "effect_node_draws": [
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 0,
+        "depth": 1,
+        "node_identity_token": "process-local-0x1CA0E802A50",
+        "parent_node_identity_token": "process-local-0x1CB273CAB30",
+        "node_hash": 1807568892,
+        "node_vtable_rva": 72163640,
+        "counter_before": 612212889,
+        "salt_before": 0,
+        "counter_after": 612212890,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 1,
+        "depth": 1,
+        "node_identity_token": "process-local-0x1CA38D595D0",
+        "parent_node_identity_token": "process-local-0x1CB273CAB30",
+        "node_hash": 2066842319,
+        "node_vtable_rva": 72162840,
+        "counter_before": 612212890,
+        "salt_before": 0,
+        "counter_after": 612212891,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 4,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1CBA47A7470",
+        "parent_node_identity_token": "process-local-0x1C9E5E9DF60",
+        "node_hash": 1297849806,
+        "node_vtable_rva": 72161712,
+        "counter_before": 182184587,
+        "salt_before": 0,
+        "counter_after": 182184588,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 5,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1CBA47A78D0",
+        "parent_node_identity_token": "process-local-0x1C9E5E9DF60",
+        "node_hash": 168466802,
+        "node_vtable_rva": 72161712,
+        "counter_before": 182184588,
+        "salt_before": 0,
+        "counter_after": 182184589,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 6,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1CBA47A1CF0",
+        "parent_node_identity_token": "process-local-0x1C9E5E9DF60",
+        "node_hash": 3488982086,
+        "node_vtable_rva": 72161712,
+        "counter_before": 182184589,
+        "salt_before": 0,
+        "counter_after": 182184590,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 3,
+        "depth": 2,
+        "node_identity_token": "process-local-0x1C9E5E9DF60",
+        "parent_node_identity_token": "process-local-0x1CA10DB2A30",
+        "node_hash": 993875465,
+        "node_vtable_rva": 72151088,
+        "counter_before": 3592691105,
+        "salt_before": 0,
+        "counter_after": 3592691106,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 2,
+        "depth": 1,
+        "node_identity_token": "process-local-0x1CA10DB2A30",
+        "parent_node_identity_token": "process-local-0x1CB273CAB30",
+        "node_hash": 2957914923,
+        "node_vtable_rva": 72151288,
+        "counter_before": 612212891,
+        "salt_before": 0,
+        "counter_after": 612212892,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 10,
+        "depth": 4,
+        "node_identity_token": "process-local-0x1CA0E802CF0",
+        "parent_node_identity_token": "process-local-0x1C9F51302E0",
+        "node_hash": 1116169797,
+        "node_vtable_rva": 72163848,
+        "counter_before": 1117324860,
+        "salt_before": 0,
+        "counter_after": 1117324861,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 11,
+        "depth": 4,
+        "node_identity_token": "process-local-0x1CA1A439BF0",
+        "parent_node_identity_token": "process-local-0x1C9F51302E0",
+        "node_hash": 2460655956,
+        "node_vtable_rva": 71747504,
+        "counter_before": 1117324861,
+        "salt_before": 0,
+        "counter_after": 1117324862,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 15,
+        "depth": 7,
+        "node_identity_token": "process-local-0x1CB9F3EF270",
+        "parent_node_identity_token": "process-local-0x1CAB91B1230",
+        "node_hash": 2052508844,
+        "node_vtable_rva": 71795592,
+        "counter_before": 1462316486,
+        "salt_before": 0,
+        "counter_after": 1462316487,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 14,
+        "depth": 6,
+        "node_identity_token": "process-local-0x1CAB91B1230",
+        "parent_node_identity_token": "process-local-0x1CA1478E6F0",
+        "node_hash": 1775997395,
+        "node_vtable_rva": 71795376,
+        "counter_before": 1645259625,
+        "salt_before": 0,
+        "counter_after": 1645259626,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 16,
+        "depth": 6,
+        "node_identity_token": "process-local-0x1CBB1312090",
+        "parent_node_identity_token": "process-local-0x1CA1478E6F0",
+        "node_hash": 2207248896,
+        "node_vtable_rva": 72162840,
+        "counter_before": 1645259626,
+        "salt_before": 0,
+        "counter_after": 1645259627,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 13,
+        "depth": 5,
+        "node_identity_token": "process-local-0x1CA1478E6F0",
+        "parent_node_identity_token": "process-local-0x1CA10DB21F0",
+        "node_hash": 3652080322,
+        "node_vtable_rva": 72151088,
+        "counter_before": 3131155898,
+        "salt_before": 0,
+        "counter_after": 3131155899,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 12,
+        "depth": 4,
+        "node_identity_token": "process-local-0x1CA10DB21F0",
+        "parent_node_identity_token": "process-local-0x1C9F51302E0",
+        "node_hash": 3794790311,
+        "node_vtable_rva": 72151288,
+        "counter_before": 1117324862,
+        "salt_before": 0,
+        "counter_after": 1117324863,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 18,
+        "depth": 5,
+        "node_identity_token": "process-local-0x1CA38D5E160",
+        "parent_node_identity_token": "process-local-0x1CA5ED94850",
+        "node_hash": 741328704,
+        "node_vtable_rva": 72162840,
+        "counter_before": 3334450150,
+        "salt_before": 0,
+        "counter_after": 3334450151,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 17,
+        "depth": 4,
+        "node_identity_token": "process-local-0x1CA5ED94850",
+        "parent_node_identity_token": "process-local-0x1C9F51302E0",
+        "node_hash": 2619049905,
+        "node_vtable_rva": 72165304,
+        "counter_before": 1117324863,
+        "salt_before": 0,
+        "counter_after": 1117324864,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 9,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1C9F51302E0",
+        "parent_node_identity_token": "process-local-0x1CA5ED92A90",
+        "node_hash": 535137337,
+        "node_vtable_rva": 69068224,
+        "counter_before": 3534778769,
+        "salt_before": 0,
+        "counter_after": 3534778770,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 8,
+        "depth": 2,
+        "node_identity_token": "process-local-0x1CA5ED92A90",
+        "parent_node_identity_token": "process-local-0x1CA38D5A200",
+        "node_hash": 2357674342,
+        "node_vtable_rva": 72165304,
+        "counter_before": 181944797,
+        "salt_before": 0,
+        "counter_after": 181944798,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 21,
+        "depth": 4,
+        "node_identity_token": "process-local-0x1C9F45E2310",
+        "parent_node_identity_token": "process-local-0x1CA5ED92430",
+        "node_hash": 736350640,
+        "node_vtable_rva": 71627928,
+        "counter_before": 3028080099,
+        "salt_before": 0,
+        "counter_after": 3028080100,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 22,
+        "depth": 4,
+        "node_identity_token": "process-local-0x1CA685123C0",
+        "parent_node_identity_token": "process-local-0x1CA5ED92430",
+        "node_hash": 1891288422,
+        "node_vtable_rva": 72169312,
+        "counter_before": 3028080100,
+        "salt_before": 0,
+        "counter_after": 3028080101,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 20,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1CA5ED92430",
+        "parent_node_identity_token": "process-local-0x1CA38D5E640",
+        "node_hash": 2615121569,
+        "node_vtable_rva": 72165304,
+        "counter_before": 2635764851,
+        "salt_before": 0,
+        "counter_after": 2635764852,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 28,
+        "depth": 8,
+        "node_identity_token": "process-local-0x1CBE13C7F70",
+        "parent_node_identity_token": "process-local-0x1CBE23A8F60",
+        "node_hash": 2827598956,
+        "node_vtable_rva": 72163640,
+        "counter_before": 25378534,
+        "salt_before": 0,
+        "counter_after": 25378535,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 27,
+        "depth": 7,
+        "node_identity_token": "process-local-0x1CBE23A8F60",
+        "parent_node_identity_token": "process-local-0x1CBE13C1280",
+        "node_hash": 2827598956,
+        "node_vtable_rva": 72165304,
+        "counter_before": 2589773607,
+        "salt_before": 0,
+        "counter_after": 2589773608,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 30,
+        "depth": 8,
+        "node_identity_token": "process-local-0x1CBE13C72C0",
+        "parent_node_identity_token": "process-local-0x1CBE23AC040",
+        "node_hash": 4172643199,
+        "node_vtable_rva": 72163640,
+        "counter_before": 4187907378,
+        "salt_before": 0,
+        "counter_after": 4187907379,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 29,
+        "depth": 7,
+        "node_identity_token": "process-local-0x1CBE23AC040",
+        "parent_node_identity_token": "process-local-0x1CBE13C1280",
+        "node_hash": 4172643199,
+        "node_vtable_rva": 72165304,
+        "counter_before": 2589773608,
+        "salt_before": 0,
+        "counter_after": 2589773609,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 32,
+        "depth": 8,
+        "node_identity_token": "process-local-0x1CBE13C79C0",
+        "parent_node_identity_token": "process-local-0x1CBE23A9180",
+        "node_hash": 1234187914,
+        "node_vtable_rva": 72163640,
+        "counter_before": 1362925010,
+        "salt_before": 0,
+        "counter_after": 1362925011,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 31,
+        "depth": 7,
+        "node_identity_token": "process-local-0x1CBE23A9180",
+        "parent_node_identity_token": "process-local-0x1CBE13C1280",
+        "node_hash": 1234187914,
+        "node_vtable_rva": 72165304,
+        "counter_before": 2589773609,
+        "salt_before": 0,
+        "counter_after": 2589773610,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 33,
+        "depth": 7,
+        "node_identity_token": "process-local-0x1CBE23A8A10",
+        "parent_node_identity_token": "process-local-0x1CBE13C1280",
+        "node_hash": 3863213541,
+        "node_vtable_rva": 72165304,
+        "counter_before": 2589773610,
+        "salt_before": 0,
+        "counter_after": 2589773611,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 34,
+        "depth": 7,
+        "node_identity_token": "process-local-0x1CBE24563F0",
+        "parent_node_identity_token": "process-local-0x1CBE13C1280",
+        "node_hash": 971274171,
+        "node_vtable_rva": 71796424,
+        "counter_before": 2589773611,
+        "salt_before": 0,
+        "counter_after": 2589773612,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 36,
+        "depth": 8,
+        "node_identity_token": "process-local-0x1CBE2573670",
+        "parent_node_identity_token": "process-local-0x1CBE071C460",
+        "node_hash": 3087433523,
+        "node_vtable_rva": 71784176,
+        "counter_before": 2867943772,
+        "salt_before": 0,
+        "counter_after": 2867943773,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 35,
+        "depth": 7,
+        "node_identity_token": "process-local-0x1CBE071C460",
+        "parent_node_identity_token": "process-local-0x1CBE13C1280",
+        "node_hash": 2077713143,
+        "node_vtable_rva": 72162840,
+        "counter_before": 2589773612,
+        "salt_before": 0,
+        "counter_after": 2589773613,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 26,
+        "depth": 6,
+        "node_identity_token": "process-local-0x1CBE13C1280",
+        "parent_node_identity_token": "process-local-0x1CA10DB1FE0",
+        "node_hash": 157366862,
+        "node_vtable_rva": 72151088,
+        "counter_before": 3624289920,
+        "salt_before": 0,
+        "counter_after": 3624289921,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 25,
+        "depth": 5,
+        "node_identity_token": "process-local-0x1CA10DB1FE0",
+        "parent_node_identity_token": "process-local-0x1CA5ED91330",
+        "node_hash": 681361677,
+        "node_vtable_rva": 72151288,
+        "counter_before": 3316826022,
+        "salt_before": 0,
+        "counter_after": 3316826023,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 24,
+        "depth": 4,
+        "node_identity_token": "process-local-0x1CA5ED91330",
+        "parent_node_identity_token": "process-local-0x1CA38D5EB20",
+        "node_hash": 291590712,
+        "node_vtable_rva": 72165304,
+        "counter_before": 3068550778,
+        "salt_before": 0,
+        "counter_after": 3068550779,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 23,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1CA38D5EB20",
+        "parent_node_identity_token": "process-local-0x1CA38D5E640",
+        "node_hash": 1210402671,
+        "node_vtable_rva": 72162840,
+        "counter_before": 2635764852,
+        "salt_before": 0,
+        "counter_after": 2635764853,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 37,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1CA38D5ABC0",
+        "parent_node_identity_token": "process-local-0x1CA38D5E640",
+        "node_hash": 2012829279,
+        "node_vtable_rva": 72162840,
+        "counter_before": 2635764853,
+        "salt_before": 0,
+        "counter_after": 2635764854,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 38,
+        "depth": 3,
+        "node_identity_token": "process-local-0x1CB0F5F8D90",
+        "parent_node_identity_token": "process-local-0x1CA38D5E640",
+        "node_hash": 2639963296,
+        "node_vtable_rva": 71732008,
+        "counter_before": 2635764854,
+        "salt_before": 0,
+        "counter_after": 2635764855,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 19,
+        "depth": 2,
+        "node_identity_token": "process-local-0x1CA38D5E640",
+        "parent_node_identity_token": "process-local-0x1CA38D5A200",
+        "node_hash": 4087364338,
+        "node_vtable_rva": 72162840,
+        "counter_before": 181944798,
+        "salt_before": 0,
+        "counter_after": 181944799,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 7,
+        "depth": 1,
+        "node_identity_token": "process-local-0x1CA38D5A200",
+        "parent_node_identity_token": "process-local-0x1CB273CAB30",
+        "node_hash": 241256942,
+        "node_vtable_rva": 72162840,
+        "counter_before": 612212892,
+        "salt_before": 0,
+        "counter_after": 612212893,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 39,
+        "depth": 1,
+        "node_identity_token": "process-local-0x1CA38D5F000",
+        "parent_node_identity_token": "process-local-0x1CB273CAB30",
+        "node_hash": 2348143019,
+        "node_vtable_rva": 72162840,
+        "counter_before": 612212893,
+        "salt_before": 0,
+        "counter_after": 612212894,
+        "salt_after": 0
+      },
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "call_index": 40,
+        "depth": 1,
+        "node_identity_token": "process-local-0x1CA38D5BF40",
+        "parent_node_identity_token": "process-local-0x1CB273CAB30",
+        "node_hash": 3992133376,
+        "node_vtable_rva": 72162840,
+        "counter_before": 612212894,
+        "salt_before": 0,
+        "counter_after": 612212895,
+        "salt_after": 0
+      }
+    ],
+    "knight_selects": [
+      {
+        "side_index": 1,
+        "native_event_load_index": 11,
+        "candidate_count": 14,
+        "selected_index": 8,
+        "selected_candidate_word0_token": "process-local-0x4",
+        "selected_candidate_word1_token": "process-local-0x8548",
+        "counter_before": 1117324859,
+        "salt_before": 0,
+        "counter_after": 1117324860,
+        "salt_after": 0
+      }
+    ],
+    "readiness": {
+      "exact_boundary_sequence": true,
+      "same_full_generation_combat": true,
+      "same_native_date": false,
+      "expected_one_day_date_split": true,
+      "same_loaded_event_table": true,
+      "loaded_event_row_identity_map_available": true,
+      "side_and_return_site_identity": true,
+      "schedule_phase_day_then_single_increment": true,
+      "bounded_capture_complete": true,
+      "outgoing_damage_pair_complete": true,
+      "post_counter_attack_pair_complete": true,
+      "full_mutable_transition_bundle_complete": false,
+      "original_trace_ready": false
+    }
+  },
+  "boundaries": [
+    {
+      "boundary": "native_capture_before_side0_schedule_call_0x27FB58F",
+      "capture_failure_flags": 0,
+      "date_raw": 53146848,
+      "phase_day": 22,
+      "characters": [
+        {
+          "character_id": 33437,
+          "death_marker_present": false,
+          "martial": 4,
+          "learning": 9,
+          "prowess": 4,
+          "current_regiment_id": 65,
+          "current_regiment_back_reference_matches": true
+        },
+        {
+          "character_id": 34120,
+          "death_marker_present": false,
+          "martial": 9,
+          "learning": 10,
+          "prowess": 7,
+          "current_regiment_id": 115,
+          "current_regiment_back_reference_matches": true
+        }
+      ],
+      "side1_knights": [
+        {
+          "regiment_id": 51,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 52,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 53,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 57,
+          "army_id": 18,
+          "character_id": 33435
+        },
+        {
+          "regiment_id": 58,
+          "army_id": 18,
+          "character_id": 36077
+        },
+        {
+          "regiment_id": 59,
+          "army_id": 18,
+          "character_id": 32716
+        },
+        {
+          "regiment_id": 60,
+          "army_id": 18,
+          "character_id": 32440
+        },
+        {
+          "regiment_id": 61,
+          "army_id": 18,
+          "character_id": 34333
+        },
+        {
+          "regiment_id": 62,
+          "army_id": 18,
+          "character_id": 34867
+        },
+        {
+          "regiment_id": 63,
+          "army_id": 18,
+          "character_id": 43706
+        },
+        {
+          "regiment_id": 64,
+          "army_id": 18,
+          "character_id": 43712
+        },
+        {
+          "regiment_id": 65,
+          "army_id": 18,
+          "character_id": 33437
+        },
+        {
+          "regiment_id": 66,
+          "army_id": 18,
+          "character_id": 35637
+        },
+        {
+          "regiment_id": 67,
+          "army_id": 18,
+          "character_id": 30784
+        }
+      ],
+      "side1_scheduled_knights": [],
+      "battle_events": [
+        {
+          "left_character_id": 47029,
+          "right_character_id": 33435,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33884,
+          "right_character_id": 32440,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "boundary": "native_capture_after_side1_schedule_return_0x27FB5AC",
+      "capture_failure_flags": 0,
+      "date_raw": 53146848,
+      "phase_day": 22,
+      "characters": [
+        {
+          "character_id": 33437,
+          "death_marker_present": false,
+          "martial": 4,
+          "learning": 9,
+          "prowess": 4,
+          "current_regiment_id": 65,
+          "current_regiment_back_reference_matches": true
+        },
+        {
+          "character_id": 34120,
+          "death_marker_present": false,
+          "martial": 9,
+          "learning": 10,
+          "prowess": 7,
+          "current_regiment_id": 115,
+          "current_regiment_back_reference_matches": true
+        }
+      ],
+      "side1_knights": [
+        {
+          "regiment_id": 51,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 52,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 53,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 57,
+          "army_id": 18,
+          "character_id": 33435
+        },
+        {
+          "regiment_id": 58,
+          "army_id": 18,
+          "character_id": 36077
+        },
+        {
+          "regiment_id": 59,
+          "army_id": 18,
+          "character_id": 32716
+        },
+        {
+          "regiment_id": 60,
+          "army_id": 18,
+          "character_id": 32440
+        },
+        {
+          "regiment_id": 61,
+          "army_id": 18,
+          "character_id": 34333
+        },
+        {
+          "regiment_id": 62,
+          "army_id": 18,
+          "character_id": 34867
+        },
+        {
+          "regiment_id": 63,
+          "army_id": 18,
+          "character_id": 43706
+        },
+        {
+          "regiment_id": 64,
+          "army_id": 18,
+          "character_id": 43712
+        },
+        {
+          "regiment_id": 65,
+          "army_id": 18,
+          "character_id": 33437
+        },
+        {
+          "regiment_id": 66,
+          "army_id": 18,
+          "character_id": 35637
+        },
+        {
+          "regiment_id": 67,
+          "army_id": 18,
+          "character_id": 30784
+        }
+      ],
+      "side1_scheduled_knights": [
+        {
+          "event_identity_token": "process-local-0x1CB273CA9B8",
+          "native_event_load_index": 11,
+          "regiment_id": 65,
+          "current_character_id": 33437
+        }
+      ],
+      "battle_events": [
+        {
+          "left_character_id": 47029,
+          "right_character_id": 33435,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33884,
+          "right_character_id": 32440,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "boundary": "native_capture_before_side0_phase_fire_entry_0x23C9900",
+      "capture_failure_flags": 0,
+      "date_raw": 53146872,
+      "phase_day": 23,
+      "characters": [
+        {
+          "character_id": 33437,
+          "death_marker_present": false,
+          "martial": 4,
+          "learning": 9,
+          "prowess": 4,
+          "current_regiment_id": 65,
+          "current_regiment_back_reference_matches": true
+        },
+        {
+          "character_id": 34120,
+          "death_marker_present": false,
+          "martial": 9,
+          "learning": 10,
+          "prowess": 7,
+          "current_regiment_id": 115,
+          "current_regiment_back_reference_matches": true
+        }
+      ],
+      "side1_knights": [
+        {
+          "regiment_id": 51,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 52,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 53,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 57,
+          "army_id": 18,
+          "character_id": 33435
+        },
+        {
+          "regiment_id": 58,
+          "army_id": 18,
+          "character_id": 36077
+        },
+        {
+          "regiment_id": 59,
+          "army_id": 18,
+          "character_id": 32716
+        },
+        {
+          "regiment_id": 60,
+          "army_id": 18,
+          "character_id": 32440
+        },
+        {
+          "regiment_id": 61,
+          "army_id": 18,
+          "character_id": 34333
+        },
+        {
+          "regiment_id": 62,
+          "army_id": 18,
+          "character_id": 34867
+        },
+        {
+          "regiment_id": 63,
+          "army_id": 18,
+          "character_id": 43706
+        },
+        {
+          "regiment_id": 64,
+          "army_id": 18,
+          "character_id": 43712
+        },
+        {
+          "regiment_id": 65,
+          "army_id": 18,
+          "character_id": 33437
+        },
+        {
+          "regiment_id": 66,
+          "army_id": 18,
+          "character_id": 35637
+        },
+        {
+          "regiment_id": 67,
+          "army_id": 18,
+          "character_id": 30784
+        }
+      ],
+      "side1_scheduled_knights": [
+        {
+          "event_identity_token": "process-local-0x1CB273CA9B8",
+          "native_event_load_index": 11,
+          "regiment_id": 65,
+          "current_character_id": 33437
+        }
+      ],
+      "battle_events": [
+        {
+          "left_character_id": 47029,
+          "right_character_id": 33435,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33884,
+          "right_character_id": 32440,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "boundary": "native_capture_after_side0_phase_fire_return_0x2309EF7",
+      "capture_failure_flags": 0,
+      "date_raw": 53146872,
+      "phase_day": 23,
+      "characters": [
+        {
+          "character_id": 33437,
+          "death_marker_present": false,
+          "martial": 4,
+          "learning": 9,
+          "prowess": 4,
+          "current_regiment_id": 65,
+          "current_regiment_back_reference_matches": true
+        },
+        {
+          "character_id": 34120,
+          "death_marker_present": false,
+          "martial": 9,
+          "learning": 10,
+          "prowess": 7,
+          "current_regiment_id": 115,
+          "current_regiment_back_reference_matches": true
+        }
+      ],
+      "side1_knights": [
+        {
+          "regiment_id": 51,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 52,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 53,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 57,
+          "army_id": 18,
+          "character_id": 33435
+        },
+        {
+          "regiment_id": 58,
+          "army_id": 18,
+          "character_id": 36077
+        },
+        {
+          "regiment_id": 59,
+          "army_id": 18,
+          "character_id": 32716
+        },
+        {
+          "regiment_id": 60,
+          "army_id": 18,
+          "character_id": 32440
+        },
+        {
+          "regiment_id": 61,
+          "army_id": 18,
+          "character_id": 34333
+        },
+        {
+          "regiment_id": 62,
+          "army_id": 18,
+          "character_id": 34867
+        },
+        {
+          "regiment_id": 63,
+          "army_id": 18,
+          "character_id": 43706
+        },
+        {
+          "regiment_id": 64,
+          "army_id": 18,
+          "character_id": 43712
+        },
+        {
+          "regiment_id": 65,
+          "army_id": 18,
+          "character_id": 33437
+        },
+        {
+          "regiment_id": 66,
+          "army_id": 18,
+          "character_id": 35637
+        },
+        {
+          "regiment_id": 67,
+          "army_id": 18,
+          "character_id": 30784
+        }
+      ],
+      "side1_scheduled_knights": [
+        {
+          "event_identity_token": "process-local-0x1CB273CA9B8",
+          "native_event_load_index": 11,
+          "regiment_id": 65,
+          "current_character_id": 33437
+        }
+      ],
+      "battle_events": [
+        {
+          "left_character_id": 47029,
+          "right_character_id": 33435,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33884,
+          "right_character_id": 32440,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "boundary": "native_capture_before_side1_phase_fire_entry_0x23C9900",
+      "capture_failure_flags": 0,
+      "date_raw": 53146872,
+      "phase_day": 23,
+      "characters": [
+        {
+          "character_id": 33437,
+          "death_marker_present": false,
+          "martial": 4,
+          "learning": 9,
+          "prowess": 4,
+          "current_regiment_id": 65,
+          "current_regiment_back_reference_matches": true
+        },
+        {
+          "character_id": 34120,
+          "death_marker_present": false,
+          "martial": 9,
+          "learning": 10,
+          "prowess": 7,
+          "current_regiment_id": 115,
+          "current_regiment_back_reference_matches": true
+        }
+      ],
+      "side1_knights": [
+        {
+          "regiment_id": 51,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 52,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 53,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 57,
+          "army_id": 18,
+          "character_id": 33435
+        },
+        {
+          "regiment_id": 58,
+          "army_id": 18,
+          "character_id": 36077
+        },
+        {
+          "regiment_id": 59,
+          "army_id": 18,
+          "character_id": 32716
+        },
+        {
+          "regiment_id": 60,
+          "army_id": 18,
+          "character_id": 32440
+        },
+        {
+          "regiment_id": 61,
+          "army_id": 18,
+          "character_id": 34333
+        },
+        {
+          "regiment_id": 62,
+          "army_id": 18,
+          "character_id": 34867
+        },
+        {
+          "regiment_id": 63,
+          "army_id": 18,
+          "character_id": 43706
+        },
+        {
+          "regiment_id": 64,
+          "army_id": 18,
+          "character_id": 43712
+        },
+        {
+          "regiment_id": 65,
+          "army_id": 18,
+          "character_id": 33437
+        },
+        {
+          "regiment_id": 66,
+          "army_id": 18,
+          "character_id": 35637
+        },
+        {
+          "regiment_id": 67,
+          "army_id": 18,
+          "character_id": 30784
+        }
+      ],
+      "side1_scheduled_knights": [
+        {
+          "event_identity_token": "process-local-0x1CB273CA9B8",
+          "native_event_load_index": 11,
+          "regiment_id": 65,
+          "current_character_id": 33437
+        }
+      ],
+      "battle_events": [
+        {
+          "left_character_id": 47029,
+          "right_character_id": 33435,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33884,
+          "right_character_id": 32440,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "boundary": "native_capture_after_side1_phase_fire_return_0x2309EFF",
+      "capture_failure_flags": 0,
+      "date_raw": 53146872,
+      "phase_day": 23,
+      "characters": [
+        {
+          "character_id": 33437,
+          "death_marker_present": false,
+          "martial": 4,
+          "learning": 9,
+          "prowess": 4,
+          "current_regiment_id": 65,
+          "current_regiment_back_reference_matches": true
+        },
+        {
+          "character_id": 34120,
+          "death_marker_present": false,
+          "martial": 9,
+          "learning": 10,
+          "prowess": 7,
+          "current_regiment_id": 115,
+          "current_regiment_back_reference_matches": true
+        }
+      ],
+      "side1_knights": [
+        {
+          "regiment_id": 51,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 52,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 53,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 57,
+          "army_id": 18,
+          "character_id": 33435
+        },
+        {
+          "regiment_id": 58,
+          "army_id": 18,
+          "character_id": 36077
+        },
+        {
+          "regiment_id": 59,
+          "army_id": 18,
+          "character_id": 32716
+        },
+        {
+          "regiment_id": 60,
+          "army_id": 18,
+          "character_id": 32440
+        },
+        {
+          "regiment_id": 61,
+          "army_id": 18,
+          "character_id": 34333
+        },
+        {
+          "regiment_id": 62,
+          "army_id": 18,
+          "character_id": 34867
+        },
+        {
+          "regiment_id": 63,
+          "army_id": 18,
+          "character_id": 43706
+        },
+        {
+          "regiment_id": 64,
+          "army_id": 18,
+          "character_id": 43712
+        },
+        {
+          "regiment_id": 65,
+          "army_id": 18,
+          "character_id": 33437
+        },
+        {
+          "regiment_id": 66,
+          "army_id": 18,
+          "character_id": 35637
+        },
+        {
+          "regiment_id": 67,
+          "army_id": 18,
+          "character_id": 30784
+        }
+      ],
+      "side1_scheduled_knights": [
+        {
+          "event_identity_token": "process-local-0x1CB273CA9B8",
+          "native_event_load_index": 11,
+          "regiment_id": 65,
+          "current_character_id": 33437
+        }
+      ],
+      "battle_events": [
+        {
+          "left_character_id": 47029,
+          "right_character_id": 33435,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33884,
+          "right_character_id": 32440,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33437,
+          "right_character_id": 34120,
+          "stable_key": "knight_killed_by_enemy",
+          "type_raw": 3,
+          "side_index": 1,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "boundary": "paused_next_day_stable_query",
+      "capture_failure_flags": 0,
+      "date_raw": 53146872,
+      "phase_day": 23,
+      "characters": [
+        {
+          "character_id": 33437,
+          "death_marker_present": true,
+          "martial": 4,
+          "learning": 9,
+          "prowess": 2,
+          "current_regiment_id": 0,
+          "current_regiment_back_reference_matches": true
+        },
+        {
+          "character_id": 34120,
+          "death_marker_present": false,
+          "martial": 9,
+          "learning": 10,
+          "prowess": 7,
+          "current_regiment_id": 115,
+          "current_regiment_back_reference_matches": true
+        }
+      ],
+      "side1_knights": [
+        {
+          "regiment_id": 51,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 52,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 53,
+          "army_id": 18,
+          "character_id": -1
+        },
+        {
+          "regiment_id": 57,
+          "army_id": 18,
+          "character_id": 33435
+        },
+        {
+          "regiment_id": 58,
+          "army_id": 18,
+          "character_id": 36077
+        },
+        {
+          "regiment_id": 59,
+          "army_id": 18,
+          "character_id": 32716
+        },
+        {
+          "regiment_id": 60,
+          "army_id": 18,
+          "character_id": 32440
+        },
+        {
+          "regiment_id": 61,
+          "army_id": 18,
+          "character_id": 34333
+        },
+        {
+          "regiment_id": 62,
+          "army_id": 18,
+          "character_id": 34867
+        },
+        {
+          "regiment_id": 63,
+          "army_id": 18,
+          "character_id": 43706
+        },
+        {
+          "regiment_id": 64,
+          "army_id": 18,
+          "character_id": 43712
+        },
+        {
+          "regiment_id": 66,
+          "army_id": 18,
+          "character_id": 35637
+        },
+        {
+          "regiment_id": 67,
+          "army_id": 18,
+          "character_id": 30784
+        }
+      ],
+      "side1_scheduled_knights": [
+        {
+          "event_identity_token": "process-local-0x1CB273CA9B8",
+          "native_event_load_index": 11,
+          "regiment_id": 65,
+          "current_character_id": -1
+        }
+      ],
+      "battle_events": [
+        {
+          "left_character_id": 47029,
+          "right_character_id": 33435,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33884,
+          "right_character_id": 32440,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        },
+        {
+          "left_character_id": 33437,
+          "right_character_id": 34120,
+          "stable_key": "knight_killed_by_enemy",
+          "type_raw": 3,
+          "side_index": 1,
+          "target_right": false
+        }
+      ]
+    }
+  ],
+  "saved_states": [],
+  "error": "KeyError: 'path'",
+  "checks": [
+    {
+      "name": "same new episode run",
+      "pass": true
+    },
+    {
+      "name": "source exact head190",
+      "pass": true
+    },
+    {
+      "name": "exact bytes C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge.dll",
+      "pass": true
+    },
+    {
+      "name": "exact bytes C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "pass": true
+    },
+    {
+      "name": "exact bytes C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+      "pass": true
+    },
+    {
+      "name": "exact bytes D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+      "pass": true
+    },
+    {
+      "name": "exact bytes C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\preflight.json",
+      "pass": true
+    },
+    {
+      "name": "exact bytes C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\ck3-output\\native-start-readback.json",
+      "pass": true
+    },
+    {
+      "name": "new live R0139",
+      "pass": true
+    },
+    {
+      "name": "native trace call completed",
+      "pass": true
+    },
+    {
+      "name": "trace status captured flags0",
+      "pass": true
+    },
+    {
+      "name": "all seven boundary flags0",
+      "pass": true
+    },
+    {
+      "name": "native exactly one day",
+      "pass": true
+    },
+    {
+      "name": "same token thread combat",
+      "pass": true
+    },
+    {
+      "name": "paused checkpoint+uninstalled",
+      "pass": true
+    },
+    {
+      "name": "global full bundle stays false",
+      "pass": true
+    },
+    {
+      "name": "pinned Rakaly",
+      "pass": true
+    },
+    {
+      "name": "pinned source parser",
+      "pass": true
+    },
+    {
+      "name": "exact bytes C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\research-pair-attempt-02\\d26-immutable.ck3",
+      "pass": true
+    }
+  ]
+}

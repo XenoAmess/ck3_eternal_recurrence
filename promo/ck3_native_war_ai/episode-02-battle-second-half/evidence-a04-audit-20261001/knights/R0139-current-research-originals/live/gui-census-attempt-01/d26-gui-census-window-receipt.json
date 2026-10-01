@@ -1,0 +1,27 @@
+{
+  "kind": "original WGC HWND frame, not desktop composite",
+  "pid": 3852,
+  "creation_time": 1790828032.5075397,
+  "hwnd": 26413180,
+  "title": "Crusader Kings III",
+  "rect": [
+    0,
+    0,
+    2560,
+    1440
+  ],
+  "events": [
+    {
+      "at_utc": "2026-10-01T04:19:41.038408+00:00",
+      "width": 2560,
+      "height": 1440
+    }
+  ],
+  "image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a02\\gui-census-attempt-01\\d26-gui-census-window.png",
+    "bytes": 6433824,
+    "sha256": "EAB42055146D9F2ECDD3FE8284419A86FBD50D7493BC3260CB37A233BCBAE065"
+  },
+  "visual_review": "pending root original-pixel inspection",
+  "mouse_inputs": 0
+}

@@ -1,0 +1,8 @@
+{
+  "action": "private_phase_trace",
+  "step": "experimental-combat-phase-event-trace-begin-v1",
+  "expected_revision": 5,
+  "combat_id": 16777218,
+  "managed_daily_sequence_token": 6100103,
+  "checkpoint_sequence": 1
+}

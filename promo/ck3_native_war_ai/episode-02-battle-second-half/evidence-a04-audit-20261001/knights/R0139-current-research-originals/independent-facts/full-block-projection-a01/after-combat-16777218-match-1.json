@@ -1,0 +1,1754 @@
+{
+  "path": "/combats[0]/16777218[0]",
+  "entries": [
+    {
+      "key": "attacker",
+      "value": [
+        {
+          "key": "armies",
+          "value": [
+            {
+              "key": null,
+              "value": "16777221"
+            },
+            {
+              "key": null,
+              "value": "16777231"
+            },
+            {
+              "key": null,
+              "value": "27"
+            },
+            {
+              "key": null,
+              "value": "22"
+            },
+            {
+              "key": null,
+              "value": "28"
+            }
+          ]
+        },
+        {
+          "key": "men_at_arms",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "87"
+                },
+                {
+                  "key": "starting",
+                  "value": "100"
+                },
+                {
+                  "key": "current",
+                  "value": "82.97082"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "11.66509"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "90"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.95677"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.02971"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "91"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.95207"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.03294"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "92"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.81673"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.12564"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "104"
+                },
+                {
+                  "key": "starting",
+                  "value": "300"
+                },
+                {
+                  "key": "current",
+                  "value": "215.53735"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "57.85704"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "105"
+                },
+                {
+                  "key": "starting",
+                  "value": "10"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "106"
+                },
+                {
+                  "key": "starting",
+                  "value": "100"
+                },
+                {
+                  "key": "current",
+                  "value": "74.00837"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "17.8044"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "110"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.96064"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.02708"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "111"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.95207"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.03294"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "112"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.94058"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.0408"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "113"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.9462"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.03696"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "114"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.93872"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.04209"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "115"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.93872"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.04209"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "217"
+                },
+                {
+                  "key": "starting",
+                  "value": "100"
+                },
+                {
+                  "key": "current",
+                  "value": "83.26283"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "11.46507"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "219"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.96772"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.02223"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "220"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.93633"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.04372"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "221"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.91591"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.0577"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "222"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.8763"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.08486"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "176"
+                },
+                {
+                  "key": "starting",
+                  "value": "400"
+                },
+                {
+                  "key": "current",
+                  "value": "377.01328"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "15.74597"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "177"
+                },
+                {
+                  "key": "starting",
+                  "value": "10"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "179"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.99391"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.00425"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "180"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.98678"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.00914"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "181"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.97365"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.01813"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "182"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.92273"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.05301"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "223"
+                },
+                {
+                  "key": "starting",
+                  "value": "100"
+                },
+                {
+                  "key": "current",
+                  "value": "98.74973"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.85648"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "225"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.99781"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.00154"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "226"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0.99343"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.00453"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "levies",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "88"
+                },
+                {
+                  "key": "starting",
+                  "value": "219"
+                },
+                {
+                  "key": "current",
+                  "value": "133.41435"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "58.62629"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "89"
+                },
+                {
+                  "key": "starting",
+                  "value": "8"
+                },
+                {
+                  "key": "current",
+                  "value": "4.87367"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "2.14165"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "102"
+                },
+                {
+                  "key": "starting",
+                  "value": "341"
+                },
+                {
+                  "key": "current",
+                  "value": "207.73649"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "91.2856"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "103"
+                },
+                {
+                  "key": "starting",
+                  "value": "7"
+                },
+                {
+                  "key": "current",
+                  "value": "4.26449"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "1.87393"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "107"
+                },
+                {
+                  "key": "starting",
+                  "value": "352"
+                },
+                {
+                  "key": "current",
+                  "value": "214.43765"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "94.23033"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "108"
+                },
+                {
+                  "key": "starting",
+                  "value": "7"
+                },
+                {
+                  "key": "current",
+                  "value": "4.26449"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "1.87393"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "109"
+                },
+                {
+                  "key": "starting",
+                  "value": "8"
+                },
+                {
+                  "key": "current",
+                  "value": "4.87367"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "2.14165"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "140"
+                },
+                {
+                  "key": "starting",
+                  "value": "41"
+                },
+                {
+                  "key": "current",
+                  "value": "24.9772"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "10.97574"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "218"
+                },
+                {
+                  "key": "starting",
+                  "value": "407"
+                },
+                {
+                  "key": "current",
+                  "value": "247.94351"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "108.95382"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "175"
+                },
+                {
+                  "key": "starting",
+                  "value": "750"
+                },
+                {
+                  "key": "current",
+                  "value": "640.81354"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "74.79279"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "178"
+                },
+                {
+                  "key": "starting",
+                  "value": "776"
+                },
+                {
+                  "key": "current",
+                  "value": "663.0284"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "77.38562"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "191"
+                },
+                {
+                  "key": "starting",
+                  "value": "402"
+                },
+                {
+                  "key": "current",
+                  "value": "343.4761"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "40.08896"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "192"
+                },
+                {
+                  "key": "starting",
+                  "value": "87"
+                },
+                {
+                  "key": "current",
+                  "value": "74.33442"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "8.67602"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "197"
+                },
+                {
+                  "key": "starting",
+                  "value": "26"
+                },
+                {
+                  "key": "current",
+                  "value": "22.21493"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "2.59284"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "198"
+                },
+                {
+                  "key": "starting",
+                  "value": "58"
+                },
+                {
+                  "key": "current",
+                  "value": "49.55631"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "5.784"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "204"
+                },
+                {
+                  "key": "starting",
+                  "value": "57"
+                },
+                {
+                  "key": "current",
+                  "value": "48.70191"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "5.68429"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "224"
+                },
+                {
+                  "key": "starting",
+                  "value": "425"
+                },
+                {
+                  "key": "current",
+                  "value": "411.69598"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "9.11328"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "16777387"
+                },
+                {
+                  "key": "starting",
+                  "value": "531"
+                },
+                {
+                  "key": "current",
+                  "value": "514.37779"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "11.38624"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "commander",
+          "value": "34320"
+        },
+        {
+          "key": "leader",
+          "value": "31549"
+        },
+        {
+          "key": "total_fighting_men",
+          "value": "4573.99992"
+        },
+        {
+          "key": "total_levy_men",
+          "value": "3623.46373"
+        },
+        {
+          "key": "initial_men",
+          "value": "5641"
+        },
+        {
+          "key": "initial_levies",
+          "value": "4502"
+        },
+        {
+          "key": "character",
+          "value": [
+            {
+              "key": "character",
+              "value": "31549"
+            },
+            {
+              "key": "contribution",
+              "value": "294317"
+            },
+            {
+              "key": "casualties",
+              "value": "33.39427"
+            }
+          ]
+        },
+        {
+          "key": "character",
+          "value": [
+            {
+              "key": "character",
+              "value": "32725"
+            },
+            {
+              "key": "contribution",
+              "value": "755221"
+            },
+            {
+              "key": "casualties",
+              "value": "127.95878"
+            }
+          ]
+        },
+        {
+          "key": "character",
+          "value": [
+            {
+              "key": "character",
+              "value": "34320"
+            },
+            {
+              "key": "contribution",
+              "value": "380966"
+            },
+            {
+              "key": "casualties",
+              "value": "55.47"
+            }
+          ]
+        },
+        {
+          "key": "character",
+          "value": [
+            {
+              "key": "character",
+              "value": "32231"
+            },
+            {
+              "key": "contribution",
+              "value": "1105800"
+            },
+            {
+              "key": "casualties",
+              "value": "106.14902"
+            }
+          ]
+        },
+        {
+          "key": "character",
+          "value": [
+            {
+              "key": "character",
+              "value": "34474"
+            },
+            {
+              "key": "contribution",
+              "value": "136205"
+            },
+            {
+              "key": "casualties",
+              "value": "9.82319"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "defender",
+      "value": [
+        {
+          "key": "armies",
+          "value": [
+            {
+              "key": null,
+              "value": "18"
+            }
+          ]
+        },
+        {
+          "key": "men_at_arms",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "51"
+                },
+                {
+                  "key": "starting",
+                  "value": "200"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "128.0001"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "52"
+                },
+                {
+                  "key": "starting",
+                  "value": "100"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "64.00012"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "53"
+                },
+                {
+                  "key": "starting",
+                  "value": "10"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "57"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64012"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "58"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64012"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "59"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.6401"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "60"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64012"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "61"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64012"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "62"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64011"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "63"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64013"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "64"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64011"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "66"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.6401"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "67"
+                },
+                {
+                  "key": "starting",
+                  "value": "1"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "0.64009"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "levies",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "50"
+                },
+                {
+                  "key": "starting",
+                  "value": "67"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "42.8801"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "54"
+                },
+                {
+                  "key": "starting",
+                  "value": "347"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "222.0801"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "55"
+                },
+                {
+                  "key": "starting",
+                  "value": "224"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "143.3601"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "56"
+                },
+                {
+                  "key": "starting",
+                  "value": "11"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "7.04011"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "72"
+                },
+                {
+                  "key": "starting",
+                  "value": "87"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "55.68007"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "73"
+                },
+                {
+                  "key": "starting",
+                  "value": "27"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "17.28008"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "131"
+                },
+                {
+                  "key": "starting",
+                  "value": "38"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "24.32009"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "132"
+                },
+                {
+                  "key": "starting",
+                  "value": "57"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "36.48009"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "133"
+                },
+                {
+                  "key": "starting",
+                  "value": "9"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "5.76006"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "regiment",
+                  "value": "144"
+                },
+                {
+                  "key": "starting",
+                  "value": "110"
+                },
+                {
+                  "key": "current",
+                  "value": "0"
+                },
+                {
+                  "key": "soft_casualties",
+                  "value": "70.4001"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "commander",
+          "value": "29829"
+        },
+        {
+          "key": "leader",
+          "value": "29829"
+        },
+        {
+          "key": "combat_effects",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "combat_effect",
+                  "value": "\"defender_forest\""
+                },
+                {
+                  "key": "advantage_change",
+                  "value": "3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "total_fighting_men",
+          "value": "2.08116"
+        },
+        {
+          "key": "total_levy_men",
+          "value": "0"
+        },
+        {
+          "key": "initial_men",
+          "value": "1298"
+        },
+        {
+          "key": "initial_levies",
+          "value": "977"
+        },
+        {
+          "key": "variables",
+          "value": [
+            {
+              "key": "list",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "name",
+                      "value": "\"slain_side_knights\""
+                    },
+                    {
+                      "key": "item",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "char"
+                        },
+                        {
+                          "key": "identity",
+                          "value": "33437"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "duration",
+                      "value": [
+                        {
+                          "key": null,
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "character",
+          "value": [
+            {
+              "key": "character",
+              "value": "29829"
+            },
+            {
+              "key": "contribution",
+              "value": "1019653"
+            },
+            {
+              "key": "casualties",
+              "value": "463.67764"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "phase",
+      "value": "main"
+    },
+    {
+      "key": "combat_results",
+      "value": "16777218"
+    },
+    {
+      "key": "province",
+      "value": "2633"
+    },
+    {
+      "key": "combat_width",
+      "value": "2199"
+    },
+    {
+      "key": "base_combat_width",
+      "value": "2444"
+    },
+    {
+      "key": "days_since_last_action",
+      "value": "2"
+    },
+    {
+      "key": "advantage",
+      "value": "-3"
+    },
+    {
+      "key": "attacker_roll",
+      "value": "6"
+    },
+    {
+      "key": "defender_roll",
+      "value": "8"
+    },
+    {
+      "key": "advantage_damage_factor",
+      "value": "1.6"
+    },
+    {
+      "key": "days",
+      "value": "23"
+    },
+    {
+      "key": "defender_advantage",
+      "value": "yes"
+    }
+  ]
+}
