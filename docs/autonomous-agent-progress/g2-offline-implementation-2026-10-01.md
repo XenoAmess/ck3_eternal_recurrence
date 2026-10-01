@@ -610,3 +610,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 15 frozen sources observe actual typed pre/original/post full instance and native status. New source and transport fixtures passed; absent or reused post identity is not a terminal claim. R5 live remains root owned. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-completion\termination-query-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:54:06 Verify named religion numeric query execution
+
+3 frozen files. Single O2/W4/WX production named queue case, 8 checks and one complete response passed. Current and main Rite same epoch full identities and native final30. Reused all prior leaf results; no CK3. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\numeric\named-permit-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
