@@ -1,0 +1,78 @@
+# Research plan: sway-state12002
+
+GENERATED from the supplied research plan; no native semantics are inferred.
+
+Question: Which exact new Sway instances and native start terms belong to the paused played actor, and did one typed send create a fresh matching instance?
+
+```mermaid
+flowchart TD
+    n0["Paused actual new Core frame"]
+    n1["Native Sway instances and complete CanSend"]
+    n2["Fresh created instance proves start"]
+    n3["Phase/material/end outcomes require separate source"]
+    n0 -->|"native-read [static-confirmed] actual version-bound native reader"| n1
+    n1 -->|"fresh-start [static-confirmed] typed send and independent fresh instance"| n2
+    n2 -. "live-end [unknown] standard hidden lifecycle remains pending" .-> n3
+```
+
+| Edge | Declared status | Evidence IDs | Open question |
+|---|---|---|---|
+| native-read | static-confirmed | contract |  |
+| fresh-start | static-confirmed | contract |  |
+| live-end | unknown |  | new-build hidden standard phase history and actual terminal cause not yet published |
+
+| Observation design | Value |
+|---|---|
+| mode | offline-only |
+| actor_kind | human |
+| owner_scope | currently played character |
+| identity_kind | generation-id |
+| identity_lifetime | full native instance ID until instance deletion; generation zero is valid |
+| producer_trigger | paused-query |
+| producer | CSchemeManager actual new-build storage plus native interaction context |
+| caller | ExecuteActiveSwayMailbox12002 in QueryMailboxEnvelope |
+| consumer | exact-build Python Sway query and pending/start receipt |
+| cache_lifetime | one paused owning-thread pump; request does not retain native pointers |
+| expected_signal | actual rows and complete CanSend; later pump creates a unique new matching instance |
+| zero_sample_meaning | enumerated owner has no active native instance; no terminal or phase-result claim |
+| stop_condition | offline ABI and actual provider/serializer fixture complete; real paused evidence remains separately required |
+| runtime_window_ref | none: file-only offline migration, no live operation authorized in this package |
+
+| Evidence ID | Declared layer | File | SHA-256 | Supports |
+|---|---|---|---|---|
+| contract | source-contract | ../../../docs/ck3-native-ai/ck3-1.20.0.2-sway-state.md | f8fe27cd727ed9a3fbe5bb22ff7cea22004416240fef431fbf0ba2c0dc39d323 | new exact native manager/storage/serializer/getter chain and copied start contract |
+
+Check result (file integrity and declarations only):
+
+```json
+{
+  "schema": "xar.native-research-plan-check.v1",
+  "result": "plan-consistent",
+  "proof_layer": "record-structure-and-file-integrity",
+  "semantic_correctness_verified": false,
+  "live_execution_performed": false,
+  "observation_plan_issues": [
+    "offline-only plan does not define a live observation window"
+  ],
+  "declared_edges_by_status": {
+    "counter-policy": 0,
+    "inference": 0,
+    "live-confirmed": 0,
+    "static-confirmed": 2,
+    "unknown": 1
+  },
+  "enumerated_native_edges": 3,
+  "declared_cases_by_status": {
+    "pending": 0,
+    "observed": 0,
+    "not-applicable": 0
+  },
+  "checked_evidence_files": 1,
+  "limitations": [
+    "Evidence layers and conclusions are author declarations; hashes bind bytes, not their truth.",
+    "Counts cover this enumerated graph only, not all CK3 branches.",
+    "A consistent observation plan is not authorization to run or manipulate CK3."
+  ],
+  "plan_sha256": "43c2df8a4483c04ebff7f94aa2e74b97755e6c4c1854d9eb7755fad36c622737"
+}
+```

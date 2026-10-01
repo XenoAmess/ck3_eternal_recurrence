@@ -1,0 +1,249 @@
+{
+  "schema": "xar.ck3.sway-outcome-abi.v1",
+  "build": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "readiness": "static-ready",
+  "live_verified": false,
+  "native_spans": [
+    {
+      "name": "scheme_scope_type_getter",
+      "start_rva": "0x1b9d650",
+      "end_rva": "0x1b9d656",
+      "sha256": "491FD347216C9BBAE36837EA422DC8D4D5BD6A8C889EE1B18A90650DD7DBB1B6"
+    },
+    {
+      "name": "scheme_scope_native_resolver",
+      "start_rva": "0x1b9d670",
+      "end_rva": "0x1b9d72e",
+      "sha256": "A2FA1F0708FD5DF1FE82588B197DB12AA0CEAEE02CA526ECD6F4DA0DBCBB3579"
+    },
+    {
+      "name": "recipient_total_opinion",
+      "start_rva": "0x28bc490",
+      "end_rva": "0x28bc4f9",
+      "sha256": "6594307325C64CB7366CCDBBDA7F70AF28AEF56F2A11FC407B6C24D7BE681DB0",
+      "provenance": "ck3_12002_gift_opinion_abi.json"
+    },
+    {
+      "name": "find_active_opinion_group",
+      "start_rva": "0x2949aa0",
+      "end_rva": "0x2949b2a",
+      "sha256": "A61D4F9A10F1362F865155F8F7FF8E09416CDBD754FBB0226373EA7AD13FC586",
+      "provenance": "ck3_12002_gift_opinion_abi.json"
+    },
+    {
+      "name": "sum_active_modifier",
+      "start_rva": "0x25962b0",
+      "end_rva": "0x2596315",
+      "sha256": "09C60B9D9BE9FEE62E5370450E6D4D09FF47D54A97859BD215F62E2C8BA0DFB4",
+      "provenance": "ck3_12002_gift_opinion_abi.json"
+    },
+    {
+      "name": "opinion_modifier_lookup",
+      "start_rva": "0x25a2f00",
+      "end_rva": "0x25a303a",
+      "sha256": "B7656288CC560E3DAA9F0076786E3AD319775AAE08E8800B055FB3C976D2C67B",
+      "provenance": "ck3_12002_gift_opinion_abi.json"
+    }
+  ],
+  "stock_blocks": [
+    {
+      "relative_path": "common/schemes/scheme_types/sway_scheme.txt",
+      "line": 1,
+      "end_line": 578,
+      "file_sha256": "7D73696A96C28FF7DADDC6B6FA08C3C4365D53A2B69A9AA70DEF0F00D18720B3",
+      "block_sha256": "26A00C9E262357D3522AB37C57737E0A1CAD4D23B02EC35E19377324EF19BFB3",
+      "ordered_token_sha256": "698698A087FB67659DB9C13DDB6334B847157566BE285B27259AFFE9198CE678",
+      "token_count": 1436
+    },
+    {
+      "relative_path": "common/on_action/schemes/sway_on_actions.txt",
+      "line": 1,
+      "end_line": 35,
+      "file_sha256": "C3C549E6DA41CE65043E712F44DD1DB3B22BB0B76DA89BC57198B6DC30A9AC46",
+      "block_sha256": "660C9BE9ADAD4C7A2E7C10DEE24C599397CEEB900B028DCF1B702F232EA72196",
+      "ordered_token_sha256": "F7BAF74BD84E71D6C715BABA48D9C873E0185C4477A5FB65A91B1DEA4224BAAC",
+      "token_count": 102
+    },
+    {
+      "relative_path": "common/on_action/schemes/sway_on_actions.txt",
+      "line": 37,
+      "end_line": 46,
+      "file_sha256": "C3C549E6DA41CE65043E712F44DD1DB3B22BB0B76DA89BC57198B6DC30A9AC46",
+      "block_sha256": "B7FED7ED93D8DABAC96371F47E7A716EDDD0A246C4B448DDE51DA10907D41EA1",
+      "ordered_token_sha256": "E775995316AE2BD9C0629B6C0C3AD7AF0BAFB56520451987663F68197B8E26FC",
+      "token_count": 37
+    },
+    {
+      "relative_path": "common/scripted_effects/00_scheme_scripted_effects.txt",
+      "line": 15548,
+      "end_line": 15689,
+      "file_sha256": "57E30DA751F6FD4C4513D6FEC3E7AEC008FFCF621CA2C79C3AA472197B4D3456",
+      "block_sha256": "E20774725F6292923B1287E2B320CCFB1670E1183280B2A570FCF3DFA8C262B0",
+      "ordered_token_sha256": "B3405D6138BC1BAAD876DE9A44B41F6D5CFB8A43147BB7A1DDEF1FF032C39D7B",
+      "token_count": 294
+    },
+    {
+      "relative_path": "common/script_values/00_scheme_values.txt",
+      "line": 351,
+      "end_line": 351,
+      "file_sha256": "9D3692D294C8310E9DF102397C1F59D73E181CDEA2686BDE4EEB67D4B38D0256",
+      "block_sha256": "BA98E592C23DBFDC2D4E52F1B89BE622467C35D17B4CE1301C5D72BF620BFF60",
+      "ordered_token_sha256": "590E6EE747E837668F1C778B1C40EE66EB16DF66D122E8B824DEECD2303F80F7",
+      "token_count": 3
+    },
+    {
+      "relative_path": "common/script_values/00_scheme_values.txt",
+      "line": 352,
+      "end_line": 352,
+      "file_sha256": "9D3692D294C8310E9DF102397C1F59D73E181CDEA2686BDE4EEB67D4B38D0256",
+      "block_sha256": "670D58AC800C388938CE101CC5E7A3069961CCBA6897EE267D79F7EFFD727069",
+      "ordered_token_sha256": "2DCA79C71234DD052D5EFD5EAC824FCDE4A9D725C342477D7BC77C48D1F8B766",
+      "token_count": 3
+    },
+    {
+      "relative_path": "common/scripted_effects/00_scheme_scripted_effects.txt",
+      "line": 665,
+      "end_line": 685,
+      "file_sha256": "57E30DA751F6FD4C4513D6FEC3E7AEC008FFCF621CA2C79C3AA472197B4D3456",
+      "block_sha256": "F9E112F6771894A879339ABA7A12D008A13CE6267AC75A97DEDF81F72FC836BC",
+      "ordered_token_sha256": "B97D5797629B4EF2F3BFC2D580EDE04F566B33A8E68B6830412FD31D9E5B876D",
+      "token_count": 49
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 14,
+      "end_line": 72,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "1D017B7BA5BF1691995325A2412543370025EC44D4ADECBCD24E02CFCF566A7D",
+      "ordered_token_sha256": "843B1FFBD783D574871176E69B790AB7601E7033D484B52D0847BFCA9811F84F",
+      "token_count": 146
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 76,
+      "end_line": 90,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "16A5CF18555001D03DA0E5535C850543B9BF6330AF3C3E271D7315E8F58B91AD",
+      "ordered_token_sha256": "67CBCC186CE5994507A0992BFADDFD1007537142A68284AA065FB06B90510432",
+      "token_count": 34
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 100,
+      "end_line": 226,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "41FBD739997C4AC33D48ABBC3740C7AF476B838D450C852CC38C60B24CAED829",
+      "ordered_token_sha256": "832C0BBF2A105AD2D4AE8F77F505AA3235A8432335862510DB8226AC14B52419",
+      "token_count": 302
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 230,
+      "end_line": 379,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "4C8091B11D30D8DD15252D1FF0E9522E3D0034D49B522CBF3D4A78B00D741889",
+      "ordered_token_sha256": "C42E1E54A742C97CBC3301AD7BFE60A87556B157756882A5335291E7AF10FF01",
+      "token_count": 360
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 384,
+      "end_line": 632,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "89B23FC8D3C20195DE759CCFB7B30A2A029DEF17D8934DF67B1147754BF83D60",
+      "ordered_token_sha256": "7901F2CDE3C9BF96A1BDD3A66B870AEA86D13A9EE7605BEDC66544E4E3F93FA7",
+      "token_count": 573
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 637,
+      "end_line": 815,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "F3ADDBE46AAC8B897B4F44D66A5ECFDC4D1141C5F4D62B39B0A88801F0151477",
+      "ordered_token_sha256": "0F6EECB5E82C8711887CFE214DD2DA8BD35AE78EBB1DE551490FC132460EC5FA",
+      "token_count": 423
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 825,
+      "end_line": 924,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "C66675D90C9C58549ECF71F2B1FE45A9247F38B18A3E91E0942F4C16A0A663D4",
+      "ordered_token_sha256": "DC52C033A6B468690F43DB80A1CE6C47B876ACD861B5A5D51C287663757FEE79",
+      "token_count": 235
+    },
+    {
+      "relative_path": "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+      "line": 929,
+      "end_line": 987,
+      "file_sha256": "4157D683FF0E21B032BFEA070B96C04D6A7AB647D5B9302ABF05E2EECD8067F0",
+      "block_sha256": "27C35DB45A11457203AED50F61BA6350B8F671A831A1AC6EA50600D5AB1BD7E5",
+      "ordered_token_sha256": "43C64A6F11C5754F2075BC758548ED8D68EE26275752110CD4E966AC2779CCDF",
+      "token_count": 140
+    }
+  ],
+  "supplemental_stock_files": [
+    {
+      "relative_path": "common/messages/01_scheme_messages.txt",
+      "file_sha256": "AEF41479C74D04F98C053D5D362E04A35F4944423275946BA871F9CC0C371FDF",
+      "source_origin": "installed stock supplemental; missing in frozen partial game copy"
+    },
+    {
+      "relative_path": "common/opinion_modifiers/00_scheme_sway_opinions.txt",
+      "file_sha256": "843817798A51476537C50D732152A928AA3D69283BBE09E971530A19B76744EA",
+      "source_origin": "installed stock supplemental; missing in frozen partial game copy"
+    },
+    {
+      "relative_path": "gui/event_window_widgets/event_window_widget_scheme.gui",
+      "file_sha256": "05BF32F6F116FD3E4AB54E92487D8158ED7714FD894DF42EE1F5E5D688F486C2",
+      "source_origin": "installed stock supplemental; missing in frozen partial game copy"
+    }
+  ],
+  "scheme_scope": {
+    "type_descriptor_rva": "0x59F3E80",
+    "primary_col_rva": "0x4DFA410",
+    "primary_vtable_rva": "0x4753CE0",
+    "generic_type_index": 9,
+    "payload_offset": "0x08",
+    "storage_slot_rva": "0x5D1FC58",
+    "storage_rows_offset": "0x20",
+    "storage_count_offset": "0x2C",
+    "storage_row_stride": "0x10",
+    "storage_object_offset": "0x08",
+    "scheme_full_id_offset": "0x10",
+    "fallback_accepted": false
+  },
+  "native_scheme_join": {
+    "layout_provenance": "ck3_12002_sway_state.cpp and sway_state12002_plan.json",
+    "instance_vtable_rva": "0x47794E8",
+    "type_pointer_offset": "0x20",
+    "type_vtable_rva": "0x48B9F20",
+    "owner_id_offset": "0x2C",
+    "target_kind_offset": "0x30",
+    "character_target_kind": 0,
+    "target_id_offset": "0x34",
+    "canonical_type_key": "sway"
+  },
+  "current_event_layout_provenance": "existing ck3_12002_event_window_context reader and ABI",
+  "opinion_layout_provenance": "ck3_12002_gift_opinion_abi.json; dedicated scheme_sway_opinion and sway_blocker_opinion keys",
+  "interface": {
+    "step": "query-sway-outcome-event-v1-private",
+    "payload_fields": [
+      "expected_revision",
+      "event_instance_id",
+      "actor_character_id",
+      "target_character_id",
+      "scheme_instance_id"
+    ],
+    "result_field": "result.sway_outcome_event",
+    "opinion_step": "query-sway-outcome-opinion-v1-private",
+    "opinion_payload_fields": [
+      "expected_revision",
+      "actor_character_id",
+      "target_character_id"
+    ],
+    "opinion_result_field": "result.sway_outcome_opinion"
+  },
+  "terminal_boundary": "presented outcome precedes selection; phase/source projections and modifier measurements never prove instance end or cancel"
+}

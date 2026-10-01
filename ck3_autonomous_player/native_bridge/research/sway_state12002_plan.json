@@ -1,0 +1,88 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "sway-state12002",
+  "question": "Which exact new Sway instances and native start terms belong to the paused played actor, and did one typed send create a fresh matching instance?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.2",
+    "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "human",
+    "owner_scope": "currently played character",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "full native instance ID until instance deletion; generation zero is valid",
+    "producer_trigger": "paused-query",
+    "producer": "CSchemeManager actual new-build storage plus native interaction context",
+    "caller": "ExecuteActiveSwayMailbox12002 in QueryMailboxEnvelope",
+    "consumer": "exact-build Python Sway query and pending/start receipt",
+    "cache_lifetime": "one paused owning-thread pump; request does not retain native pointers",
+    "expected_signal": "actual rows and complete CanSend; later pump creates a unique new matching instance",
+    "zero_sample_meaning": "enumerated owner has no active native instance; no terminal or phase-result claim",
+    "stop_condition": "offline ABI and actual provider/serializer fixture complete; real paused evidence remains separately required",
+    "runtime_window_ref": "none: file-only offline migration, no live operation authorized in this package"
+  },
+  "evidence": [
+    {
+      "id": "contract",
+      "layer": "source-contract",
+      "path": "../../../docs/ck3-native-ai/ck3-1.20.0.2-sway-state.md",
+      "sha256": "01b7d42aad1511e1ea31e424a3801c7a24056c11855eb7fee23159541fc4bf78",
+      "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "supports": "new exact native manager/storage/serializer/getter chain and copied start contract"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "label": "Paused actual new Core frame"
+    },
+    {
+      "id": "state",
+      "label": "Native Sway instances and complete CanSend"
+    },
+    {
+      "id": "receipt",
+      "label": "Fresh created instance proves start"
+    },
+    {
+      "id": "terminal",
+      "label": "Phase/material/end outcomes require separate source"
+    }
+  ],
+  "edges": [
+    {
+      "id": "native-read",
+      "from": "entry",
+      "to": "state",
+      "label": "actual version-bound native reader",
+      "status": "static-confirmed",
+      "evidence": [
+        "contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "fresh-start",
+      "from": "state",
+      "to": "receipt",
+      "label": "typed send and independent fresh instance",
+      "status": "static-confirmed",
+      "evidence": [
+        "contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "live-end",
+      "from": "receipt",
+      "to": "terminal",
+      "label": "standard hidden lifecycle remains pending",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "new-build hidden standard phase history and actual terminal cause not yet published"
+    }
+  ],
+  "cases": []
+}

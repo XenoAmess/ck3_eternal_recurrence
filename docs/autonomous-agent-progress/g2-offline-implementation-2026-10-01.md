@@ -115,3 +115,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 33个非战争文件实现实际UI子女house预览、父母full House/Dynasty与解约final CanSend/费用/原生条件；不把预览当作出生结果。Od/O2生产wire各4案例和实际SDK6案例通过。另7文件仅归档用户停止战争研究前已验证的联盟历史源，候选未注册战争reader，MCP不提供ally参数，停止继续开发。当前非战争暂停观测、真实解约及cold仍待验收。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\family-obligations\final-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:40:20 Sway exact-build state, command and material outcome query
+
+38个owned文件移植实际新manager/storage/full实例ID、进度/目标opinion、最终shown/valid/CanSend、拥有型send和新鲜实例receipt；真实owner-envelope与production source Od/O2通过，四份actual serializer wire进入Python。独立outcome材料观测可用，但hidden阶段history、cancel/invalidate终止原因未实现；ACK、实例出现、100opinion都不冒充phase或terminal。状态static-ready，实机与cold仍待。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
