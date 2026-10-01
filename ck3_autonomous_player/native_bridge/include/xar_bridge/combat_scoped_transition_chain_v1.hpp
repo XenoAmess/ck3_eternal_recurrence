@@ -242,7 +242,18 @@ void ObserveCombatScopedPhaseV1(CombatPhaseEventTraceBoundaryV1 boundary,
 void ObserveCombatScopedSelectorV1(bool before, std::int32_t side,
                                  std::int32_t event, void *candidates,
                                  std::int32_t selected_index = -1) noexcept;
-std::string SerializeCombatScopedChainV1(const CombatScopedChainV1 &chain);
+// Optional serialization-only attribution. It never changes capture validity.
+struct CombatScopedWireDiagnosticV1 {
+  const char *failure_gate = "none";
+  const char *field = "none";
+  std::int32_t record_index = -1, character_index = -1, side_index = -1;
+  std::int32_t element_index = -1, byte_index = -1;
+  std::uint32_t sequence = 0, invocation = 0, boundary = 0;
+  std::uint64_t observed = 0, limit = 0, output_bytes = 0;
+};
+std::string SerializeCombatScopedChainV1(
+    const CombatScopedChainV1 &chain,
+    CombatScopedWireDiagnosticV1 *diagnostic = nullptr);
 
 struct CombatScopedDetourV1 {
   std::uintptr_t target = 0;

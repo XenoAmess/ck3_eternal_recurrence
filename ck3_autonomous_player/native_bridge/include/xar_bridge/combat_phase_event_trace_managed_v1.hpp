@@ -178,10 +178,27 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
     void *opaque_context,
     const MainThreadExecutionStampV1 &stamp) noexcept;
 
+struct CombatPhaseEventTracePublishDiagnosticV1 {
+  const char *failure_gate = "none";
+  std::uint32_t session_stage = 0, drain_failure_flags = 0, drain_record_count = 0;
+  std::uint32_t scoped_failure_flags = 0, scoped_record_count = 0;
+  bool scoped_present = false, scoped_serialization_attempted = false;
+  std::uint64_t ring_serialized_bytes = 0, scoped_serialized_bytes = 0;
+  std::uint64_t assembled_output_bytes = 0, managed_cap_bytes = 0;
+  bool exact_one_day_observed = false, boundary_dates_match_checkpoint = false;
+  bool detours_uninstalled = false;
+  CombatPhaseEventTraceManagedCheckpointV1 before{}, after{};
+  CombatScopedWireDiagnosticV1 scoped{};
+};
+// Small failed-return diagnostic; it never replaces or approves a trace DTO.
+std::string SerializeCombatPhaseEventTracePublishDiagnosticV1(
+    const CombatPhaseEventTracePublishDiagnosticV1 &diagnostic);
+
 // Wraps the bounded drain fragment with the two managed checkpoints.  Empty
 // means the session has not reached a terminal drain or exceeded the wire cap.
 std::string SerializeCombatPhaseEventTraceManagedResultV1(
-    const CombatPhaseEventTraceManagedSessionV1 &session);
+    const CombatPhaseEventTraceManagedSessionV1 &session,
+    CombatPhaseEventTracePublishDiagnosticV1 *diagnostic = nullptr);
 
 static_assert(std::is_same_v<decltype(&ExecuteCombatPhaseEventTraceBeginV1),
                              MainThreadQueryExecutorV1>);

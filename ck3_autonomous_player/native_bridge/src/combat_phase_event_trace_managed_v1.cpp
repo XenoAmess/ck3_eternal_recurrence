@@ -997,9 +997,30 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
 }
 
 std::string SerializeCombatPhaseEventTraceManagedResultV1(
-    const CombatPhaseEventTraceManagedSessionV1 &session) {
-  if (session.stage != CombatPhaseEventTraceManagedStageV1::drained ||
-      session.serialized_drain.empty()) {
+    const CombatPhaseEventTraceManagedSessionV1 &session,
+    CombatPhaseEventTracePublishDiagnosticV1 *diagnostic) {
+  if (diagnostic) {
+    *diagnostic={};diagnostic->session_stage=static_cast<std::uint32_t>(session.stage);
+    diagnostic->ring_serialized_bytes=session.serialized_drain.size();
+    diagnostic->managed_cap_bytes=kCombatPhaseEventTraceWireMaximumBytesV1;
+    diagnostic->drain_failure_flags=session.drain.failure_flags;
+    diagnostic->drain_record_count=session.drain.record_count;
+    diagnostic->scoped_present=static_cast<bool>(session.scoped_chain);
+    if (session.scoped_chain) {
+      diagnostic->scoped_failure_flags=session.scoped_chain->failure_flags.load();
+      diagnostic->scoped_record_count=session.scoped_chain->count.load();
+    }
+    diagnostic->exact_one_day_observed=session.exact_one_day_observed;
+    diagnostic->boundary_dates_match_checkpoint=session.boundary_dates_match_checkpoint;
+    diagnostic->detours_uninstalled=session.detours_uninstalled;
+    diagnostic->before=session.before;diagnostic->after=session.after;
+  }
+  if (session.stage != CombatPhaseEventTraceManagedStageV1::drained) {
+    if (diagnostic) diagnostic->failure_gate="session_not_drained";
+    return {};
+  }
+  if (session.serialized_drain.empty()) {
+    if (diagnostic) diagnostic->failure_gate="ring_dto_empty";
     return {};
   }
   std::string output;
@@ -1014,9 +1035,15 @@ std::string SerializeCombatPhaseEventTraceManagedResultV1(
   output += ",\"detours_uninstalled\":";
   output += session.detours_uninstalled ? "true" : "false";
   output += ",\"before\":";
-  if (!AppendCheckpoint(output, session.before)) return {};
+  if (!AppendCheckpoint(output, session.before)) {
+    if (diagnostic) {diagnostic->failure_gate="before_checkpoint_encoding_failed";diagnostic->assembled_output_bytes=output.size();}
+    return {};
+  }
   output += ",\"after\":";
-  if (!AppendCheckpoint(output, session.after)) return {};
+  if (!AppendCheckpoint(output, session.after)) {
+    if (diagnostic) {diagnostic->failure_gate="after_checkpoint_encoding_failed";diagnostic->assembled_output_bytes=output.size();}
+    return {};
+  }
   output += "},\"trace\":";
   output += session.serialized_drain;
   if (session.capture_runtime_advantage_components) {
@@ -1025,15 +1052,61 @@ std::string SerializeCombatPhaseEventTraceManagedResultV1(
         session.advantage_components);
   }
   if (session.capture_runtime_scoped_chain && session.scoped_chain) {
-    const auto scoped = SerializeCombatScopedChainV1(*session.scoped_chain);
-    if (scoped.empty()) return {};
+    if (diagnostic) diagnostic->scoped_serialization_attempted=true;
+    const auto scoped = SerializeCombatScopedChainV1(*session.scoped_chain,
+        diagnostic ? &diagnostic->scoped : nullptr);
+    if (diagnostic) diagnostic->scoped_serialized_bytes=scoped.size();
+    if (scoped.empty()) {
+      if (diagnostic) {diagnostic->failure_gate="scoped_dto_empty";diagnostic->assembled_output_bytes=output.size();}
+      return {};
+    }
     output += ",\"scoped_transition_chain\":";
     output += scoped;
   }
   output.push_back('}');
+  if (diagnostic) {
+    diagnostic->assembled_output_bytes=output.size();
+    if(output.size()>kCombatPhaseEventTraceWireMaximumBytesV1)diagnostic->failure_gate="managed_wire_cap";
+  }
   return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1
              ? output
              : std::string{};
+}
+
+std::string SerializeCombatPhaseEventTracePublishDiagnosticV1(
+    const CombatPhaseEventTracePublishDiagnosticV1 &d) {
+  std::string out="{\"schema_version\":1,\"kind\":\"serialization_failure_observation\",\"failure_gate\":\"";
+  out+=d.failure_gate;out+="\",\"session_stage\":"+std::to_string(d.session_stage);
+  out+=",\"ring_serialized_bytes\":"+std::to_string(d.ring_serialized_bytes);
+  out+=",\"scoped_serialization_attempted\":";out+=d.scoped_serialization_attempted?"true":"false";
+  out+=",\"scoped_serialized_bytes\":"+std::to_string(d.scoped_serialized_bytes);
+  out+=",\"assembled_output_bytes\":"+std::to_string(d.assembled_output_bytes);
+  out+=",\"managed_cap_bytes\":"+std::to_string(d.managed_cap_bytes);
+  out+=",\"drain_failure_flags\":"+std::to_string(d.drain_failure_flags);
+  out+=",\"drain_record_count\":"+std::to_string(d.drain_record_count);
+  out+=",\"scoped_present\":";out+=d.scoped_present?"true":"false";
+  out+=",\"scoped_failure_flags\":"+std::to_string(d.scoped_failure_flags);
+  out+=",\"scoped_record_count\":"+std::to_string(d.scoped_record_count);
+  out+=",\"exact_one_day_observed\":";out+=d.exact_one_day_observed?"true":"false";
+  out+=",\"boundary_dates_match_checkpoint\":";out+=d.boundary_dates_match_checkpoint?"true":"false";
+  out+=",\"detours_uninstalled\":";out+=d.detours_uninstalled?"true":"false";
+  out+=",\"before\":";if(!AppendCheckpoint(out,d.before))return {};
+  out+=",\"after\":";if(!AppendCheckpoint(out,d.after))return {};
+  out+=",\"scoped_first_failure\":{\"gate\":\"";out+=d.scoped.failure_gate;
+  out+="\",\"field\":\"";out+=d.scoped.field;
+  out+="\",\"record_index\":"+std::to_string(d.scoped.record_index);
+  out+=",\"sequence\":"+std::to_string(d.scoped.sequence);
+  out+=",\"invocation\":"+std::to_string(d.scoped.invocation);
+  out+=",\"boundary\":"+std::to_string(d.scoped.boundary);
+  out+=",\"character_index\":"+std::to_string(d.scoped.character_index);
+  out+=",\"side_index\":"+std::to_string(d.scoped.side_index);
+  out+=",\"element_index\":"+std::to_string(d.scoped.element_index);
+  out+=",\"byte_index\":"+std::to_string(d.scoped.byte_index);
+  out+=",\"observed\":"+std::to_string(d.scoped.observed);
+  out+=",\"limit\":"+std::to_string(d.scoped.limit);
+  out+=",\"output_bytes\":"+std::to_string(d.scoped.output_bytes);
+  out+="},\"native_validity_flags_changed\":false,\"complete_trace_dto_published\":false}";
+  return out;
 }
 
 } // namespace xar::ck3_11906

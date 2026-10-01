@@ -23,12 +23,27 @@ void Token(std::string &out, std::uintptr_t value) {
   out.append(text.data(), result.ptr);
   out += '"';
 }
-bool Key(std::string &out, const CombatScopedStableKeyV1 &key) {
-  if (key.size >= key.bytes.size()) return false;
+bool Reject(CombatScopedWireDiagnosticV1 *diagnostic, const char *gate,
+            const char *field, std::uint64_t observed, std::uint64_t limit,
+            std::size_t bytes) {
+  if (diagnostic != nullptr) {
+    diagnostic->failure_gate = gate; diagnostic->field = field;
+    diagnostic->observed = observed; diagnostic->limit = limit;
+    diagnostic->output_bytes = bytes;
+  }
+  return false;
+}
+bool Key(std::string &out, const CombatScopedStableKeyV1 &key,
+         CombatScopedWireDiagnosticV1 *diagnostic, const char *field) {
+  if (key.size >= key.bytes.size())
+    return Reject(diagnostic,"stable_key_size",field,key.size,key.bytes.size(),out.size());
   out += '"';
   for (std::uint32_t i = 0; i < key.size; ++i) {
     const auto c = key.bytes[i];
-    if (c <= 0x20 || c == '"' || c == '\\') return false;
+    if (c <= 0x20 || c == '"' || c == '\\') {
+      if (diagnostic) diagnostic->byte_index=static_cast<std::int32_t>(i);
+      return Reject(diagnostic,"stable_key_byte",field,static_cast<unsigned char>(c),0,out.size());
+    }
     out += c;
   }
   out += '"';
@@ -65,8 +80,10 @@ const char *Name(CombatScopedChainBoundaryV1 boundary) {
   return "invalid";
 }
 
-bool Character(std::string &out, const CombatScopedCharacterV1 &row) {
-  if (row.trait_count > row.trait_ids.size()) return false;
+bool Character(std::string &out, const CombatScopedCharacterV1 &row,
+               CombatScopedWireDiagnosticV1 *diagnostic) {
+  if (row.trait_count > row.trait_ids.size())
+    return Reject(diagnostic,"count_bound","character.trait_count",row.trait_count,row.trait_ids.size(),out.size());
   out += "{\"character_id\":"; Number(out, row.character_id);
   out += ",\"observed_character_id\":"; Number(out, row.observed_character_id);
   out += ",\"identity_matches\":"; Bool(out, row.identity_matches);
@@ -84,7 +101,7 @@ bool Character(std::string &out, const CombatScopedCharacterV1 &row) {
   out += ",\"death_details_read\":"; Bool(out, row.death_details_read);
   out += ",\"death_date_raw\":"; Number(out, row.death_date_raw);
   out += ",\"death_reason_token\":"; Token(out, row.death_reason);
-  out += ",\"death_reason_key\":"; if (!Key(out, row.death_reason_key)) return false;
+  out += ",\"death_reason_key\":"; if (!Key(out, row.death_reason_key,diagnostic,"character.death_reason_key")) return false;
   out += ",\"death_killer_character_id\":"; Number(out, row.death_killer_character_id);
   out += ",\"death_artifact_id\":"; Number(out, row.death_artifact_id);
   out += ",\"traits_read\":"; Bool(out, row.traits_read);
@@ -93,7 +110,10 @@ bool Character(std::string &out, const CombatScopedCharacterV1 &row) {
     if (i) out += ',';
     Number(out, row.trait_ids[i]);
   }
-  if(row.trait_track_raw_count>row.trait_track_raw_values.size()||row.kill_count>row.kill_character_ids.size())return false;
+  if(row.trait_track_raw_count>row.trait_track_raw_values.size())
+    return Reject(diagnostic,"count_bound","character.trait_track_raw_count",row.trait_track_raw_count,row.trait_track_raw_values.size(),out.size());
+  if(row.kill_count>row.kill_character_ids.size())
+    return Reject(diagnostic,"count_bound","character.kill_count",row.kill_count,row.kill_character_ids.size(),out.size());
   out += "],\"trait_tracks_read\":";Bool(out,row.trait_tracks_read);
   out += ",\"trait_track_raw_values\":[";
   for(std::uint32_t i=0;i<row.trait_track_raw_count;++i){if(i)out+=',';Number(out,row.trait_track_raw_values[i]);}
@@ -105,7 +125,7 @@ bool Character(std::string &out, const CombatScopedCharacterV1 &row) {
 }
 
 bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
-            const CombatScopedChainV1 &chain) {
+            const CombatScopedChainV1 &chain, CombatScopedWireDiagnosticV1 *diagnostic) {
   out += "{\"sequence\":"; Number(out, row.sequence);
   out += ",\"invocation\":"; Number(out, row.invocation);
   out += ",\"parent_invocation\":"; Number(out, row.parent_invocation);
@@ -124,7 +144,8 @@ bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
   out += ",\"caller_return_token\":"; Token(out, row.caller_return_address);
   out += ",\"casualty_damage_raw\":"; Number(out, row.casualty_damage_raw);
   out += ",\"selected_candidate_index\":"; Number(out, row.selected_candidate_index);
-  if (row.selector_candidate_count > row.selector_candidates.size()) return false;
+  if (row.selector_candidate_count > row.selector_candidates.size())
+    return Reject(diagnostic,"count_bound","selector_candidate_count",row.selector_candidate_count,row.selector_candidates.size(),out.size());
   out += ",\"selector_candidates\":[";
   for (std::uint32_t i = 0; i < row.selector_candidate_count; ++i) {
     if (i) out += ',';
@@ -161,20 +182,24 @@ bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
   out += ",\"variable_owner_scope_words\":[";Number(out,row.variable_owner_scope_words[0]);out+=',';Number(out,row.variable_owner_scope_words[1]);out+=']';
   out += ",\"requested_character_full_identity_matches\":";Bool(out,row.requested_character_full_identity_matches);
   out += ",\"variable_key_id\":";Number(out,row.variable_key_id);
-  out += ",\"variable_key\":";if(!Key(out,row.variable_key))return false;
+  out += ",\"variable_key\":";if(!Key(out,row.variable_key,diagnostic,"variable_key"))return false;
   out += ",\"requested_expiry\":";Number(out,row.requested_expiry);
   out += ",\"requested_scope_words\":[";Number(out,row.requested_scope_words[0]);out+=',';Number(out,row.requested_scope_words[1]);out+=']';
   out += ",\"variable_list_read\":";Bool(out,row.variable_list_read);
   out += ",\"variable_list_present\":";Bool(out,row.variable_list_present);
   out += ",\"list_elapsed_offset\":";Number(out,row.list_elapsed_offset);
-  if(row.variable_list_count>row.variable_list_values.size())return false;
+  if(row.variable_list_count>row.variable_list_values.size())
+    return Reject(diagnostic,"count_bound","variable_list_count",row.variable_list_count,row.variable_list_values.size(),out.size());
   out += ",\"variable_list_values\":[";
   for(std::uint32_t i=0;i<row.variable_list_count;++i){if(i)out+=',';out+="{\"scope_word0\":";Number(out,row.variable_list_values[i][0]);out+=",\"scope_word1\":";Number(out,row.variable_list_values[i][1]);out+=",\"expiration_raw\":";Number(out,row.variable_list_expirations[i]);out+='}';}
   out += ']';
   out += ",\"characters\":[";
-  if (!Character(out, row.characters[0])) return false;
+  if (diagnostic) diagnostic->character_index=0;
+  if (!Character(out, row.characters[0],diagnostic)) return false;
   out += ',';
-  if (!Character(out, row.characters[1])) return false;
+  if (diagnostic) diagnostic->character_index=1;
+  if (!Character(out, row.characters[1],diagnostic)) return false;
+  if (diagnostic) diagnostic->character_index=-1;
   out += "]";
   out += ",\"death_victim_id\":"; Number(out, row.death_victim_id);
   out += ",\"death_killer_id\":"; Number(out, row.death_killer_id);
@@ -189,12 +214,17 @@ bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
   out += ",\"battle_events_read\":";Bool(out,row.battle_events_read);
   out += ",\"battle_event_snapshot_index\":";Number(out,row.battle_event_snapshot_index);
   out += ",\"battle_events\":[";
-  if(row.battle_event_snapshot_index>=static_cast<std::int32_t>(chain.battle_event_snapshots.size()))return false;
-  if(row.battle_event_snapshot_index>=0){const auto &snapshot=chain.battle_event_snapshots[row.battle_event_snapshot_index];if(snapshot.count>snapshot.rows.size())return false;
+  if(row.battle_event_snapshot_index>=static_cast<std::int32_t>(chain.battle_event_snapshots.size()))
+    return Reject(diagnostic,"snapshot_index_bound","battle_event_snapshot_index",row.battle_event_snapshot_index,chain.battle_event_snapshots.size(),out.size());
+  if(row.battle_event_snapshot_index>=0){const auto &snapshot=chain.battle_event_snapshots[row.battle_event_snapshot_index];if(snapshot.count>snapshot.rows.size())
+    return Reject(diagnostic,"count_bound","battle_event_snapshot.count",snapshot.count,snapshot.rows.size(),out.size());
     for(std::uint32_t i=0;i<snapshot.count;++i){if(i)out+=',';const auto &v=snapshot.rows[i];
+      if (diagnostic) diagnostic->element_index=static_cast<std::int32_t>(i);
       out+="{\"left_character_id\":";Number(out,v.left_character_id);out+=",\"right_character_id\":";Number(out,v.right_character_id);out+=",\"type_raw\":";Number(out,v.type_raw);
       out+=",\"side_index\":";Number(out,v.side_index);out+=",\"target_right\":";Bool(out,v.target_right);out+=",\"key\":";
-      CombatScopedStableKeyV1 key{};key.size=v.stable_key_size;if(key.size>=key.bytes.size())return false;std::copy(v.stable_key.begin(),v.stable_key.begin()+key.size,key.bytes.begin());if(!Key(out,key))return false;out+='}';
+      CombatScopedStableKeyV1 key{};key.size=v.stable_key_size;if(key.size>=key.bytes.size())
+        return Reject(diagnostic,"stable_key_size","battle_event.key",key.size,key.bytes.size(),out.size());
+      std::copy(v.stable_key.begin(),v.stable_key.begin()+key.size,key.bytes.begin());if(!Key(out,key,diagnostic,"battle_event.key"))return false;out+='}';
     }
   }
   out += ']';
@@ -203,11 +233,15 @@ bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
   Bool(out, row.scoped_regiment_in_side[0]); out += ',';
   Bool(out, row.scoped_regiment_in_side[1]); out += ']';
   out += ",\"sides\":[";
-  if (row.entry_snapshot_index >= static_cast<std::int32_t>(chain.entry_snapshots.size())) return false;
+  if (row.entry_snapshot_index >= static_cast<std::int32_t>(chain.entry_snapshots.size()))
+    return Reject(diagnostic,"snapshot_index_bound","entry_snapshot_index",row.entry_snapshot_index,chain.entry_snapshots.size(),out.size());
   for (std::uint32_t side = 0; side < 2 && row.entry_snapshot_index >= 0; ++side) {
     const auto &snapshot = chain.entry_snapshots[static_cast<std::size_t>(row.entry_snapshot_index)];
-    if (snapshot.entry_count[side] > snapshot.entries[side].size() ||
-        snapshot.owner_hard_count[side] > snapshot.owner_hard[side].size()) return false;
+    if (diagnostic) diagnostic->side_index=static_cast<std::int32_t>(side);
+    if (snapshot.entry_count[side] > snapshot.entries[side].size())
+      return Reject(diagnostic,"count_bound","entry_snapshot.entry_count",snapshot.entry_count[side],snapshot.entries[side].size(),out.size());
+    if (snapshot.owner_hard_count[side] > snapshot.owner_hard[side].size())
+      return Reject(diagnostic,"count_bound","entry_snapshot.owner_hard_count",snapshot.owner_hard_count[side],snapshot.owner_hard[side].size(),out.size());
     if (side) out += ',';
     out += "{\"side_index\":"; Number(out, side);
     out += ",\"cached_fighting_total_raw\":"; Number(out, row.side_cache_raw[side]);
@@ -238,12 +272,15 @@ bool Record(std::string &out, const CombatScopedChainRecordV1 &row,
     out += "]}";
   }
   out += "]}";
+  if (diagnostic) diagnostic->side_index=-1;
   return true;
 }
 
 } // namespace
 
-std::string SerializeCombatScopedChainV1(const CombatScopedChainV1 &chain) {
+std::string SerializeCombatScopedChainV1(const CombatScopedChainV1 &chain,
+                                       CombatScopedWireDiagnosticV1 *diagnostic) {
+  if (diagnostic) *diagnostic={};
   // A truncated capture is preserved as RED evidence; never report its list
   // as complete. Individual failed reads also remain visible in the journal.
   const auto count = std::min<std::uint32_t>(chain.count.load(),
@@ -257,12 +294,15 @@ std::string SerializeCombatScopedChainV1(const CombatScopedChainV1 &chain) {
   out += ",\"combat_id\":"; Number(out, chain.plan != nullptr ? chain.plan->combat_id : -1);
   out += ",\"managed_daily_sequence_token\":";
   Number(out, chain.plan != nullptr ? chain.plan->managed_daily_sequence_token : 0);
-  if (chain.trait_definition_count > chain.trait_definitions.size()) return {};
+  if (chain.trait_definition_count > chain.trait_definitions.size()) {
+    Reject(diagnostic,"count_bound","trait_definition_count",chain.trait_definition_count,chain.trait_definitions.size(),out.size());return {};
+  }
   out += ",\"prearmed_trait_definitions\":[";
   for (std::uint32_t i = 0; i < chain.trait_definition_count; ++i) {
+    if (diagnostic) diagnostic->element_index=static_cast<std::int32_t>(i);
     if (i) out += ',';
     out += "{\"trait_id\":"; Number(out, chain.trait_definitions[i].trait_id);
-    out += ",\"key\":"; if (!Key(out, chain.trait_definitions[i].key)) return {};
+    out += ",\"key\":"; if (!Key(out, chain.trait_definitions[i].key,diagnostic,"trait_definition.key")) return {};
     out += '}';
   }
   out += ']';
@@ -292,10 +332,21 @@ std::string SerializeCombatScopedChainV1(const CombatScopedChainV1 &chain) {
   // Emitting a journal alone is never evidence that all those domains closed.
   out += ",\"live_scoped_write_set_verified\":false,\"records\":[";
   for (std::uint32_t i = 0; i < count; ++i) {
+    if (diagnostic) {
+      diagnostic->record_index=static_cast<std::int32_t>(i);
+      diagnostic->sequence=chain.records[i].sequence;diagnostic->invocation=chain.records[i].invocation;
+      diagnostic->boundary=static_cast<std::uint32_t>(chain.records[i].boundary);
+      diagnostic->character_index=-1;diagnostic->side_index=-1;
+      diagnostic->element_index=-1;diagnostic->byte_index=-1;
+    }
     if (i) out += ',';
-    if (!Record(out, chain.records[i], chain) || out.size() > 16 * 1024 * 1024) return {};
+    if (!Record(out, chain.records[i], chain,diagnostic)) return {};
+    if (out.size() > 16 * 1024 * 1024) {
+      Reject(diagnostic,"scoped_wire_cap","output_bytes",out.size(),16*1024*1024,out.size());return {};
+    }
   }
   out += "]}";
+  if (diagnostic) diagnostic->output_bytes=out.size();
   return out;
 }
 

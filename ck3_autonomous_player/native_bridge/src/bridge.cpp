@@ -10961,16 +10961,22 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     return CommandResultFrame(request_id, step, false,
                               "experimental trace finish requires controlled stop");
   }
+  xar::ck3_11906::CombatPhaseEventTracePublishDiagnosticV1 publish_diagnostic{};
   const auto wire =
-      xar::ck3_11906::SerializeCombatPhaseEventTraceManagedResultV1(*session);
+      xar::ck3_11906::SerializeCombatPhaseEventTraceManagedResultV1(*session,&publish_diagnostic);
   const auto completion = query.completion;
   if (session->capture_runtime_scoped_chain)
     xar::ck3_11906::RetainScopedObserverParentUntilProcessExitV1(session, true);
   else
     session.reset();
   if (wire.empty()) {
-    return CommandResultFrame(request_id, step, false,
-                              "experimental trace managed DTO unavailable");
+    auto failed=CommandResultFrame(request_id, step, false,
+                                   "experimental trace managed DTO unavailable");
+    const auto diagnostic=xar::ck3_11906::SerializeCombatPhaseEventTracePublishDiagnosticV1(publish_diagnostic);
+    if (!diagnostic.empty()) {
+      failed.pop_back();failed+=",\"trace_publish_diagnostic\":";failed+=diagnostic;failed+='}';
+    }
+    return failed;
   }
   return ExperimentalCombatPhaseTraceResultFrameV1(
       request_id, step,
