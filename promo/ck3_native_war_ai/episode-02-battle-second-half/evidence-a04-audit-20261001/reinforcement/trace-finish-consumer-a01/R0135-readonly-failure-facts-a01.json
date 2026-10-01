@@ -1,0 +1,76 @@
+{
+  "schema": "xar.jd11.R0135.readonly-failure-facts/v1",
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-29-trace-finish-first-sdk\\paused-pair-controller\\controller-result.json",
+    "bytes": 23898,
+    "sha256": "7A43FD7F87A63BA5877A7C7B91E8AA9DA09116D2F5BF10C606592758ADF319ED"
+  },
+  "result": "RED_PRESERVED_CLEANUP_REPORTED",
+  "error": "TimeoutError('a15 setup exceeded 180 seconds; managed stop is required')",
+  "date_advance_requested": false,
+  "samples_completed": 0,
+  "trace_repair_path_actual_execution": "NOT_RUN",
+  "one_day_request_count": 0,
+  "before_width_original_exists": false,
+  "review_artifacts": {
+    "before-width-hover-review-request.json": {
+      "identity": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-29-trace-finish-first-sdk\\paused-pair-controller\\before-width-hover-review-request.json",
+        "bytes": 2215,
+        "sha256": "6AE938B0D6B2B5FB76F4E3B0FEB1AC2D6DA248177209D2EC5C9B21CA38DA59B6"
+      },
+      "filesystem_mtime_utc": "2026-10-01T01:42:28.320421+00:00",
+      "remaining_seconds": 179.99992829999974,
+      "observed_at": null,
+      "stage": "before-width-hover",
+      "root_actually_viewed": null
+    },
+    "before-width-hover-review.json": {
+      "identity": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-29-trace-finish-first-sdk\\paused-pair-controller\\before-width-hover-review.json",
+        "bytes": 1591,
+        "sha256": "1A095091E678676E39120B1351BF53CB45167E4B6B8C0E836F5605DFAE5620C1"
+      },
+      "filesystem_mtime_utc": "2026-10-01T01:46:19.826042+00:00",
+      "remaining_seconds": null,
+      "observed_at": "2026-10-01T01:46:19.824994+00:00",
+      "stage": "before-width-hover",
+      "root_actually_viewed": true
+    }
+  },
+  "precise_source_failure": "Frozen helper root_review waits on caller deadline and throws hardcoded 180-second wording; sample supplies a fresh monotonic()+180 separately to hover/readback reviews",
+  "native_query_budget_seconds": 90,
+  "mapped_action_subprocess_budget_seconds": 30,
+  "native_budget_shared_with_review_wait": false,
+  "cleanup_summary": {
+    "managed_cleanup_completed": null,
+    "cleanup_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "cleanup_processes": null,
+    "capture_report": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-trace-finish-first-live-20261001-a01\\ck3-output\\capture-report.json",
+      "bytes": 9233,
+      "sha256": "3035E216FF0854E51BB09D69726558663856BBC1D4665962771D98D2EDF4F006"
+    },
+    "finish": {
+      "request": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-trace-finish-first-live-20261001-a01\\ck3-output\\interactive-requests\\999-root-a15-stop-ad7ef6f8a583467a9a5b2ae122ee04f5.json",
+        "bytes": 25,
+        "sha256": "87F3027B2DA8ACB2671F5102DEF82BA5158F1C106BD62276987FC955A9829A1F"
+      },
+      "response": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-trace-finish-first-live-20261001-a01\\ck3-output\\interactive-requests-responses\\999-root-a15-stop-ad7ef6f8a583467a9a5b2ae122ee04f5.json",
+        "bytes": 11335,
+        "sha256": "8DB78F3465D83DECBF85CEF87527AC93317AFF45946213EAC68876BEDDA363AA"
+      },
+      "channel": "interactive-requests"
+    }
+  },
+  "new_native_game_screen_bus_inputs": false
+}

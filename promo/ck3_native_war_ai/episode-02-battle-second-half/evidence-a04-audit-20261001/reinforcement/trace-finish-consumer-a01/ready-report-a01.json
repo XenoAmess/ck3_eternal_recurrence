@@ -1,0 +1,135 @@
+{
+  "result": "READY_NOT_LAUNCHED",
+  "scope_mode": "paused-battle-top-counts-and-width-tooltip",
+  "freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\variant-freeze.json",
+    "bytes": 6694,
+    "sha256": "4674FD1C25F81C9A713500C738038AF3DE1B041C5A141D6BCA0052FE1947CBED"
+  },
+  "contract": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\scoped-review-contract-a01.json",
+    "bytes": 2461,
+    "sha256": "FA8E90AB85F262ACEAD640548F3E4CA3BBE5EB399B1E2462298959DF2837FD74"
+  },
+  "runtime_entry": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry_reentry.py",
+    "bytes": 3431,
+    "sha256": "1C2FA217363B067AF9F7D939FAD367339610DDAB73D72894C74086497C08311B"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\bootstrap_profile.py",
+    "bytes": 6530,
+    "sha256": "5A79EF05563372E754C0649BA6C7B140675F0FC340CD46C323DB6D653F56316B"
+  },
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\paused_join_pair.py",
+    "bytes": 59070,
+    "sha256": "D1AE62A3258CE99AAA187B935EC679EF0D727A151AEE2AC584AC7E14783C20F3"
+  },
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\ui-controller-config.frozen-trace-finish-first-a01.json",
+    "bytes": 14351,
+    "sha256": "DCAB11C4B54C9A5F061381C903DF519DAFDBEB0DB127C027F900AE1F85FB33F3"
+  },
+  "runtime_bindings": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\runtime-input-bindings.json",
+    "bytes": 2657,
+    "sha256": "91DB26AC7EAC3295CAB7687DE8A30FAA6DC0EDB2C14D0DEFF3D47C8D2398D643"
+  },
+  "targeted_offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\finish-first-offline-verification-a01.json",
+    "bytes": 9469,
+    "sha256": "37758B013D02736DA428CB3BAF0B88AA1B712A311E53CF62CD6E3205BE531027"
+  },
+  "entry_probes": [
+    {
+      "label": "runtime-bindings",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\runtime-bindings-stdout.bin",
+        "bytes": 875,
+        "sha256": "CAD9498C50CEE065FB03C2DAEC90CA7D018843BB910DC0993F33CA9AD3E6DAEC"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\runtime-bindings-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "prepare-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\prepare-help-stdout.bin",
+        "bytes": 1005,
+        "sha256": "963715951B904D4CF3890B6619E19EE6C1FF74CA0D6E423FD6D1091EB02F2A42"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\prepare-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "sdk-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\sdk-help-stdout.bin",
+        "bytes": 566,
+        "sha256": "3DA5A2E18A8DDB9991242603BB28182A6FE56676A46E8D6534C02E976C3E17BE"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\sdk-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    },
+    {
+      "label": "bootstrap-help",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\bootstrap-help-stdout.bin",
+        "bytes": 751,
+        "sha256": "8A95325B409437315FD0649076498C21F534ADB15756A8F6B08CA80316DDAB53"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\entry-probes-a01\\bootstrap-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_live_input": true
+    }
+  ],
+  "required_actual_original_viewport": [
+    2560,
+    1440
+  ],
+  "readonly_UI_layout_budget_seconds": 600,
+  "scope_admission": "unchanged scoped title/date/pause/topcounts/visible coats/real relative-strength width; required regions unobscured",
+  "numeric_actor_army_identity": "native snapshot/control only",
+  "full_battle_panel": false,
+  "full_panel_lower_composition_gap_open": true,
+  "whole_G2_complete": false,
+  "real_width_native_match_and_after_pixels_same_paused_snapshot_required": true,
+  "order": [
+    "strict +24 paused snapshot only",
+    "single finish with same actual current revision",
+    "unchanged sample(after): fresh snapshot/control",
+    "original UI/width tooltip",
+    "same-paused snapshot after pixels"
+  ],
+  "trace_failed_and_after_pixels_separate": true,
+  "finish_retries": 0,
+  "day_retries": 0,
+  "native_finish_controlled_stop_or_still_armed": "fresh snapshot/control refuses; preserve failure and cleanup, never bypass guard",
+  "run_controller_AST_except_probe_after_exactly_unchanged": true,
+  "maximum_native_days": 1,
+  "original_capture_service_scope_seconds": 1200,
+  "new_day_game_screen_bus_steam_todesk_inputs_by_subagent": false,
+  "actual_scoped_supplement_or_live_width": "NOT_RUN",
+  "old_attempts_modified": false,
+  "old_generator_help_probe": "historical generator lacks help parser; exact-byte guard rejected before mutation; all old freeze identities reverified"
+}

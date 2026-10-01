@@ -1,0 +1,787 @@
+{
+  "schema": "xar.jd11.trace-finish-first.independent-offline-source-review/v1",
+  "created_at_utc": "2026-10-01T01:30:39.621202+00:00",
+  "reviewer": "/root/a04_other_mechanisms",
+  "result": "PASS_OFFLINE_CONSUMER_ORDER_ONLY",
+  "reviewed_inputs": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-24-scoped-supplement\\consumer\\paused_join_pair.py",
+      "bytes": 58432,
+      "sha256": "1756F8DA0C45CE98EF70E0D370A7A2252B8287909821DF8E032EBBF5B97D1D94"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\consumer\\paused_join_pair.py",
+      "bytes": 59070,
+      "sha256": "D1AE62A3258CE99AAA187B935EC679EF0D727A151AEE2AC584AC7E14783C20F3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-27-R0134-active-trace-control-diagnosis\\variant-freeze.json",
+      "bytes": 6694,
+      "sha256": "4674FD1C25F81C9A713500C738038AF3DE1B041C5A141D6BCA0052FE1947CBED"
+    }
+  ],
+  "source_scope": {
+    "whole_consumer_AST_equivalent_outside_probe_and_docstring": true,
+    "native_source_or_DLL_changed_by_reviewer": false,
+    "old_attempts_modified": false
+  },
+  "unchanged_guards": [
+    {
+      "function": "paused",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "59BDBDFF56D55C6491E52E52DE0B8C14397A9FEB7EF93C671CA06B28396C5757",
+      "new_lines": [
+        667,
+        675
+      ]
+    },
+    {
+      "function": "sample",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "C17F03699190224C8EFF53974D334F66DEB4467B04DEDF71883CEC8AC62E6E3E",
+      "new_lines": [
+        726,
+        761
+      ]
+    },
+    {
+      "function": "same_paused_frame",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "263B234D68F0D76F1A670E0E3DF8ABC14AB863E5B287160550C9C45D77373441",
+      "new_lines": [
+        316,
+        318
+      ]
+    },
+    {
+      "function": "finish_trace",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "62EBED5F69658DBBC117988C6589E172ABF504042D0A3C2B2C9FC4622D60CCB5",
+      "new_lines": [
+        810,
+        814
+      ]
+    },
+    {
+      "function": "recover_finish",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "9E0424C90C8C69984B0F554C8CAAB7DDAFAB075A95508A50A1E73936905075C4",
+      "new_lines": [
+        816,
+        825
+      ]
+    },
+    {
+      "function": "trace_contract",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "148152BC2D18669099F746A619348295DAC1835FC2477AA8F207FABB5711C2FE",
+      "new_lines": [
+        321,
+        348
+      ]
+    },
+    {
+      "function": "trace_observation",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "B10D4A3790CC561A9A74399AB8A369B637C455C1AD4A8503249D7D1405FF14F7",
+      "new_lines": [
+        351,
+        398
+      ]
+    },
+    {
+      "function": "verify_pointer_ready",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "7411AC52BF0712117A922B90D7DCBA1BBF49688137B9AF094E03A05737293070",
+      "new_lines": [
+        453,
+        483
+      ]
+    },
+    {
+      "function": "center_once_after_pointer",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "010699E50B7E8504E89C8AE808928921C924023C79C2205CF578B473188DEBB3",
+      "new_lines": [
+        510,
+        519
+      ]
+    },
+    {
+      "function": "validate_scoped_review",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "E5F01046E0FC734DA52769005FA07998844CF3F73992FFAE98390CDF557AD1FF",
+      "new_lines": [
+        573,
+        609
+      ]
+    },
+    {
+      "function": "scoped_native_context",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "9C58B0A09EA3F40A06C5738F0330715B78F6589D93B34EBF99F8EC6FF54A13B7",
+      "new_lines": [
+        556,
+        564
+      ]
+    },
+    {
+      "function": "scoped_root_review",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "4F7797A2BEC5774AEA51D7D42EAD28B1D9EA6DA97239E658E98551A6A07C6CE2",
+      "new_lines": [
+        567,
+        570
+      ]
+    },
+    {
+      "region": "unique_day_request_ambiguous_reply_no_resubmit",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "F1451936A941F3F1EE42AE39A2B8528FC538CFCE2AF47333C68205A87FD59DC9"
+    },
+    {
+      "region": "same_owner_cleanup_inventory",
+      "exact_source_equal_vs_attempt24": true,
+      "sha256": "8D21A9F19D67F68DF4AF1395AE59F8DBAFE40258DB4FD866BC93A34A435E11EF"
+    }
+  ],
+  "offline_case_count": 16,
+  "offline_cases": [
+    {
+      "name": "finish_before_first_control_then_fresh_snapshot_control_pixels",
+      "pass": true,
+      "error": null,
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control",
+        "original_pixels:after-panel",
+        "offline_root_pixel_review",
+        "ck3_take_snapshot:after-after-pixels"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        },
+        {
+          "label": "after-after-pixels",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": true,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "finish_timeout_but_released_after_pixels_still_collected",
+      "pass": true,
+      "error": null,
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "read_preserved_finish_reply_only",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control",
+        "original_pixels:after-panel",
+        "offline_root_pixel_review",
+        "ck3_take_snapshot:after-after-pixels"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        },
+        {
+          "label": "after-after-pixels",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": true,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "finish_timeout_and_recovery_failure_still_collects_after_when_released",
+      "pass": true,
+      "error": null,
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "read_preserved_finish_reply_only",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control",
+        "original_pixels:after-panel",
+        "offline_root_pixel_review",
+        "ck3_take_snapshot:after-after-pixels"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        },
+        {
+          "label": "after-after-pixels",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": true,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "finish_ambiguous_and_still_armed_control_refused_no_resend",
+      "pass": true,
+      "error": "OFFLINE actual armed guard: experimental trace permits only exact-day timeline controls and finish",
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "read_preserved_finish_reply_only",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "wrong_next_day_date_stops_before_finish",
+      "pass": true,
+      "error": "wrong paused actor/war/army/+24 date before single trace finish",
+      "finish_call_count": 0,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "unpaused_next_day_stops_before_finish",
+      "pass": true,
+      "error": "wrong paused actor/war/army/+24 date before single trace finish",
+      "finish_call_count": 0,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "wrong_actor_stops_before_finish",
+      "pass": true,
+      "error": "wrong paused actor/war/army/+24 date before single trace finish",
+      "finish_call_count": 0,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "missing_war_stops_before_finish",
+      "pass": true,
+      "error": "wrong paused actor/war/army/+24 date before single trace finish",
+      "finish_call_count": 0,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "wrong_army_stops_before_finish",
+      "pass": true,
+      "error": "wrong paused actor/war/army/+24 date before single trace finish",
+      "finish_call_count": 0,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "army_out_of_combat_stops_before_finish",
+      "pass": true,
+      "error": "wrong paused actor/war/army/+24 date before single trace finish",
+      "finish_call_count": 0,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "missing_revision_stops_before_finish",
+      "pass": true,
+      "error": "wrong paused actor/war/army/+24 date before single trace finish",
+      "finish_call_count": 0,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "fresh_control_wrong_revision_stops_before_pixels",
+      "pass": true,
+      "error": "unbound paused battle control at after",
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "fresh_control_wrong_combat_stops_before_pixels",
+      "pass": true,
+      "error": "unbound paused battle control at after",
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "pixels_revision_drift_refused",
+      "pass": true,
+      "error": "pause/revision changed around original UI pixels",
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control",
+        "original_pixels:after-panel",
+        "offline_root_pixel_review",
+        "ck3_take_snapshot:after-after-pixels"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        },
+        {
+          "label": "after-after-pixels",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "pixels_native_revision_drift_refused",
+      "pass": true,
+      "error": "pause/revision changed around original UI pixels",
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control",
+        "original_pixels:after-panel",
+        "offline_root_pixel_review",
+        "ck3_take_snapshot:after-after-pixels"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        },
+        {
+          "label": "after-after-pixels",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    },
+    {
+      "name": "pixels_date_drift_refused",
+      "pass": true,
+      "error": "pause/revision changed around original UI pixels",
+      "finish_call_count": 1,
+      "native_day_action_count": 0,
+      "event_order": [
+        "ck3_take_snapshot:after-day-readback-snapshot-only",
+        "private_trace_finish",
+        "ck3_take_snapshot:after-snapshot",
+        "ck3_query_battle_control_snapshot_v1:after-control",
+        "original_pixels:after-panel",
+        "offline_root_pixel_review",
+        "ck3_take_snapshot:after-after-pixels"
+      ],
+      "native_requests": [
+        {
+          "label": "after-day-readback-snapshot-only",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "OFFLINE_ONLY-trace-finish",
+          "tool": "private_trace_finish",
+          "arguments": {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-finish-v1",
+            "expected_revision": 8,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 123
+          }
+        },
+        {
+          "label": "after-snapshot",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        },
+        {
+          "label": "after-control",
+          "tool": "ck3_query_battle_control_snapshot_v1",
+          "arguments": {
+            "subject_army_id": 18,
+            "expected_revision": 9
+          }
+        },
+        {
+          "label": "after-after-pixels",
+          "tool": "ck3_take_snapshot",
+          "arguments": {}
+        }
+      ],
+      "after_pixels_collected_and_bound": false,
+      "trace_promoted_complete": false,
+      "offline_only_fixtures": true
+    }
+  ],
+  "conclusions": [
+    "After +24 paused actor/war/Army18/combat snapshot, exactly one FINISH uses that current revision; no battle-control request precedes FINISH.",
+    "Actual after sample still obtains a new snapshot and revision-bound control, original pixels and an after-pixels snapshot with identical paused state/revisions.",
+    "Missing or ambiguous day and FINISH replies never resubmit the day or FINISH. Trace completeness is assessed only after independent after sampling.",
+    "If FINISH times out but releases the trace, after can still be collected and the trace remains incomplete. If FINISH did not release it, subsequent control remains refused and the attempt stays RED; there is no blind retry.",
+    "One-day, actor/date/army/revision/tooltip width and same-owner cleanup guards are unchanged. Existing R0134 failure remains RED and gains no after UI claim."
+  ],
+  "permanent_open_gaps": {
+    "full_battle_panel": false,
+    "numeric_UI_actor_army_identity": false,
+    "whole_G2_complete": false
+  },
+  "actual_new_after_UI_or_join_trace_proven": false,
+  "actual_live_inputs": false,
+  "Steam_desktop_display_operations": false,
+  "human_video_1x_review_or_signoff": false,
+  "writes_create_only_in_this_review_directory": true
+}

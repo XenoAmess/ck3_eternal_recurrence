@@ -1,0 +1,127 @@
+{
+  "schema": "xar.jd11.R0134.precise-active-trace-diagnosis/v1",
+  "read_only_analysis": true,
+  "original_inputs": {
+    "controller": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/reinforcement-attempt-26-scoped-supplement-sdk/paused-pair-controller/controller-result.json",
+      "bytes": 44673,
+      "sha256": "B571914810A34254326E1AEB47AA5E1FC5BA5A3E8298A58352CFE859FB6B59C9"
+    },
+    "mcp_journal": {
+      "path": "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-06-d11-scoped-supplement-live-20261001-a01/ck3-output/mcp-calls.jsonl",
+      "bytes": 6256259,
+      "sha256": "84DADCD3FD97222C96D53E15A85F3B6CAE1C6DF7A8D0A8376F64ACF95768ED88"
+    },
+    "after_snapshot": {
+      "path": "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-06-d11-scoped-supplement-live-20261001-a01/ck3-output/interactive-requests-responses/p1-paused-879a8cf606bd-after-day-readback-snapshot.json",
+      "bytes": 514291,
+      "sha256": "2F532D1D6A08E488FE8185A81ED7062FAC97FA31FC9767EB16787E136803E4B2"
+    },
+    "after_control_red": {
+      "path": "C:/Users/1/AppData/Local/ck3-capture-preparation/episode02-e2-06-d11-scoped-supplement-live-20261001-a01/ck3-output/interactive-requests-responses/p1-paused-879a8cf606bd-after-day-readback-control.json",
+      "bytes": 11641,
+      "sha256": "0777FC329D6DD478DF937898A827A69CE29FF21B4F48358F782C40A852220D8B"
+    }
+  },
+  "actual_one_day": {
+    "request_count": 1,
+    "start_date_raw": 53146488,
+    "ending_date_raw": 53146512,
+    "paused": true,
+    "actor": 29829,
+    "public_revision": 8,
+    "native_revision": 7
+  },
+  "actual_before_UI": {
+    "battle_title": "墨西拿之战",
+    "date_text": "公元1066年12月14日",
+    "paused": true,
+    "left_coat_context": "蓝边白红橙斜格盾牌，左893，防御方",
+    "right_coat_context": "绿底金色城堡盾牌，右1603，进攻方",
+    "player_soldiers": 893,
+    "opponent_soldiers": 1603,
+    "tooltip_title": "相对军力",
+    "width_label_text": "战线宽度：1480",
+    "battle_width": 1480,
+    "tooltip_soldier_counts": {
+      "player": 827,
+      "opponent": 1546
+    },
+    "base_width": 1645,
+    "forest_percent": 90
+  },
+  "actual_after_UI_samples": 0,
+  "control_error": {
+    "mcp_journal_line": 405,
+    "tool": "ck3_query_battle_control_snapshot_v1",
+    "arguments": {
+      "subject_army_id": 18,
+      "expected_revision": 8
+    },
+    "is_error": true,
+    "exact_text": "Error executing tool ck3_query_battle_control_snapshot_v1: native gameplay step failed: experimental trace permits only exact-day timeline controls and finish",
+    "native_battle_control_read_status": "NOT_RETURNED: command admission rejected before query route",
+    "cached_driver_state_control_is_not_after_readback": true
+  },
+  "source_guard": {
+    "identity": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/reinforcement-attempt-12-R0129-native-center-diagnostic/source/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1079726,
+      "sha256": "8F8CB2B0D227ABEDCABAD10449123BB58644883F3074AC136AE5430014C67ADC"
+    },
+    "lines": [
+      10465,
+      10476
+    ],
+    "predicate": "experimental session exists AND stage armed_waiting_for_one_day AND step is not FINISH/resume-map/pause-map/set-speed-1",
+    "stale_revision_predicate_observed": false
+  },
+  "trace_finish": {
+    "request_exists": false,
+    "response_exists": false,
+    "actual_status": "NOT_OBSERVED",
+    "no_failed_status_or_failure_flags_invented": true,
+    "release_semantics": "managed execute unloads detours, sets drained, then classifies complete/unavailable; bridge resets session after drain"
+  },
+  "old_consumer_defect": {
+    "identity": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/reinforcement-attempt-24-scoped-supplement/consumer/paused_join_pair.py",
+      "bytes": 58432,
+      "sha256": "1756F8DA0C45CE98EF70E0D370A7A2252B8287909821DF8E032EBBF5B97D1D94"
+    },
+    "probe_after_lines": [
+      798,
+      800
+    ],
+    "description": "paused() queried control before unique finish; exact observed native admission guard rejects this ordering"
+  },
+  "minimal_repair": {
+    "consumer": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/reinforcement-attempt-27-R0134-active-trace-control-diagnosis/consumer/paused_join_pair.py",
+      "bytes": 59070,
+      "sha256": "D1AE62A3258CE99AAA187B935EC679EF0D727A151AEE2AC584AC7E14783C20F3"
+    },
+    "order": [
+      "snapshot-only strict +24 paused actor/war/army proof",
+      "single finish using current public revision/token/combat",
+      "fresh snapshot/control with original bindings",
+      "scoped real UI/width and pixels-after samepaused",
+      "independent phase/join completeness outcome"
+    ],
+    "no_day_or_finish_retries": true,
+    "source_DLL_changed": false,
+    "actual_new_run": "NOT_RUN",
+    "ready": {
+      "path": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/reinforcement-attempt-27-R0134-active-trace-control-diagnosis/ready-report-a01.json",
+      "bytes": 6677,
+      "sha256": "5BB15DEECB1D6AD977DDD7EC5D3071DE7B10BB8CD901FBD8C326B335A00289BE"
+    }
+  },
+  "checkpoint_route": {
+    "only_explicit_checkpoint_before_day_proven": true,
+    "post_day_recoverable_checkpoint_not_proven": true,
+    "independent_after_load_would_be_new_epoch_not_old_same_frame": true
+  },
+  "full_battle_panel_gap_open": true,
+  "whole_G2_complete": false
+}
