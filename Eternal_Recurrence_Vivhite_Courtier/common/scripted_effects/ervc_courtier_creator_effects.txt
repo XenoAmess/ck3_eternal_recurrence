@@ -13,6 +13,7 @@ ervc_cc_initialize_effect = {
 		set_variable = { name = ervc_cc_same_house value = 0 }
 		set_variable = { name = ervc_cc_selected_culture value = root.culture }
 		set_variable = { name = ervc_cc_selected_faith value = root.faith }
+		set_variable = { name = ervc_cc_selected_rite value = root.rite }
 
 		clear_variable_list = ervc_cc_selected_education
 		clear_variable_list = ervc_cc_selected_commander
@@ -27,6 +28,29 @@ ervc_cc_initialize_effect = {
 		set_variable = { name = ervc_cc_commander_count value = 0 }
 		set_variable = { name = ervc_cc_personality_count value = 0 }
 		add_character_flag = ervc_cc_v2_initialized
+	}
+}
+
+# Retain a valid commissioned Rite; migrate saved pre-1.20 Faith-only designs.
+ervc_cc_resolve_selected_rite_effect = {
+	if = {
+		limit = { exists = var:ervc_cc_selected_rite }
+		if = {
+			limit = { NOT = { var:ervc_cc_selected_rite.faith = var:ervc_cc_selected_faith } }
+			remove_variable = ervc_cc_selected_rite
+		}
+	}
+	if = {
+		limit = {
+			NOT = { exists = var:ervc_cc_selected_rite }
+		}
+		if = {
+			limit = { faith = var:ervc_cc_selected_faith }
+			set_variable = { name = ervc_cc_selected_rite value = root.rite }
+		}
+		else = {
+			set_variable = { name = ervc_cc_selected_rite value = var:ervc_cc_selected_faith.main_rite }
+		}
 	}
 }
 
@@ -98,6 +122,7 @@ ervc_cc_rebuild_culture_faith_catalogs_effect = {
 			}
 			set_variable = { name = ervc_cc_selected_faith value = root.faith }
 		}
+		ervc_cc_resolve_selected_rite_effect = yes
 	}
 }
 
@@ -218,6 +243,8 @@ ervc_cc_complete_purchase_effect = {
 			gold >= ervc_courtier_creator_cost
 			exists = var:ervc_cc_selected_culture
 			exists = var:ervc_cc_selected_faith
+			exists = var:ervc_cc_selected_rite
+			var:ervc_cc_selected_rite.faith = var:ervc_cc_selected_faith
 			is_target_in_global_variable_list = {
 				name = ervc_cc_catalog_cultures
 				target = var:ervc_cc_selected_culture
@@ -239,6 +266,7 @@ ervc_cc_complete_purchase_effect = {
 			employer = root
 			culture = root.var:ervc_cc_selected_culture
 			faith = root.var:ervc_cc_selected_faith
+			rite = root.var:ervc_cc_selected_rite
 			dynasty = none
 			age = root.var:ervc_cc_age
 			gender_female_chance = {
@@ -269,7 +297,12 @@ ervc_cc_complete_purchase_effect = {
 			}
 			if = {
 				limit = {
-					scope:ervc_cc_created_courtier = { is_courtier_of = root }
+					scope:ervc_cc_created_courtier = {
+						is_courtier_of = root
+						culture = root.var:ervc_cc_selected_culture
+						faith = root.var:ervc_cc_selected_faith
+						rite = root.var:ervc_cc_selected_rite
+					}
 				}
 				scope:ervc_cc_created_courtier = {
 					add_diplomacy_skill = scope:ervc_cc_purchase_diplomacy

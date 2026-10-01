@@ -30,7 +30,7 @@
  ervc.cc.commander.help:0 "Wymieniono wszystkie 17 cech dowódcy z gry podstawowej. Wybierz do dwóch; każda zaczyna od bazowego mistrzostwa z zerowym PD. Wybrano: [GetPlayer.MakeScope.Var('ervc_cc_commander_count').GetValue|0]/2."
  ervc.cc.physical.help:0 "Wymieniono wszystkie 38 cech fizycznych z gry podstawowej, w tym normalnie ukrytą $trait_impotent$. Zgodne wybory można łączyć."
  ervc.cc.personality.help:0 "Wymieniono wszystkie 36 cech osobowości z gry podstawowej. Wybierz do trzech; wybór przeciwnej zastępuje jej odpowiednik. Wybrano: [GetPlayer.MakeScope.Var('ervc_cc_personality_count').GetValue|0]/3."
- ervc.cc.other.help:0 "Wymieniono tutaj pozostałe 108 cech z gry podstawowej widocznych w kreatorze władcy. Obejmują one potężne statusy, zdrowie i inne istotne wybory."
+ ervc.cc.other.help:0 "Wymieniono tutaj pozostałe 110 cech z gry podstawowej widocznych w kreatorze władcy. Obejmują one potężne statusy, zdrowie i inne istotne wybory."
  ervc.cc.origin.help:0 "Wybierz spośród wszystkich wczytanych kultur i wiar, a następnie pozostaw duszę niskiego urodzenia lub umieść ją w swojej dynastii i rodzie. To drugie jest niedostępne, jeśli nie masz rodu."
  ervc.cc.culture:0 "Kultura"
  ervc.cc.faith:0 "Wiara"

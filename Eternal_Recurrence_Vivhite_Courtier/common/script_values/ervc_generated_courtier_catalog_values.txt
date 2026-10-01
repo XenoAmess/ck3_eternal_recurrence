@@ -168,7 +168,7 @@ ervc_cc_selected_trait_cost = {
 		add = 75
 	}
 	if = {
-		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:scholar } }
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:erudite } }
 		add = 50
 	}
 	if = {
@@ -764,6 +764,10 @@ ervc_cc_selected_trait_cost = {
 		add = 50
 	}
 	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:herald } }
+		add = 100
+	}
+	if = {
 		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:peasant_leader } }
 		add = 100
 	}
@@ -898,5 +902,9 @@ ervc_cc_selected_trait_cost = {
 	if = {
 		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:burdened } }
 		add = -10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_scholar } }
+		add = 15
 	}
 }

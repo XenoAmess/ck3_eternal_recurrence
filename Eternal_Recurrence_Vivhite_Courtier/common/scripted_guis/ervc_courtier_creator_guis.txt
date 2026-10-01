@@ -522,14 +522,17 @@ ervc_cc_select_faith_gui = {
 	is_valid = {
 		ervc_cc_ui_access_trigger = yes
 		exists = scope:ervc_faith
+		is_target_in_variable_list = { name = ervc_cc_catalog_faiths target = scope:ervc_faith }
 	}
 	effect = {
 		if = {
 			limit = {
 				ervc_cc_ui_access_trigger = yes
 				exists = scope:ervc_faith
+				is_target_in_variable_list = { name = ervc_cc_catalog_faiths target = scope:ervc_faith }
 			}
 			set_variable = { name = ervc_cc_selected_faith value = scope:ervc_faith }
+			ervc_cc_resolve_selected_rite_effect = yes
 		}
 	}
 }

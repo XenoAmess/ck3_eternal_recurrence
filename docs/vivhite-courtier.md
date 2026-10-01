@@ -6,6 +6,7 @@
 - Chinese title: 【琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版】
 - English title: **Eternal Recurrence: Glassfire Courtier Creator - Vivhite Edition**
 - Version: `1.0.1`; tested baseline: CK3 `1.19.0.6`
+- Current migration target: CK3 `1.20.0.2`; updated catalogs and existing creator Rite compatibility are `static-ready`, with their live UI validation pending.
 - Repository tag namespace: `vivhite-v<version>`; it must never reuse the original mod's `v1.0.0` tag.
 - Workshop identity: item `3787304042`. The original item `3784706360` is forbidden in the standalone runtime and is not a default in its tooling.
 
@@ -33,9 +34,9 @@ rejects any custom `xar`, `xa_`, `XAR:`, original Workshop ID, forbidden subsyst
 ## Generation
 
 `tools/gen_vivhite_courtier.py` reads only the independently pinned
-`tools/vivhite_courtier_traits_1_19_0_6.json`. Ordinary generation never reads the ignored game installation. The
-snapshot records CK3 `1.19.0.6`, source `00_traits.txt` SHA-256
-`079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042`, 301 source traits, 224 catalog traits and
+`tools/vivhite_courtier_traits_1_20_0_2.json`. Ordinary generation never reads the ignored game installation. The
+snapshot records CK3 `1.20.0.2`, source `00_traits.txt` SHA-256
+`93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa`, 306 source traits, 226 catalog traits and
 95 conflict pairs. It emits three generated ERVC catalog files and supports `--check` parity.
 
 `tools/compose_vivhite_key_art.py` renders the owner-supplied
@@ -60,6 +61,18 @@ manually normalized to each language's existing Eternal Recurrence, Glassfire an
 inventories, protected tokens, numeric literals, BOM and the absence of English group-title placeholders. Release review
 therefore covers only the two branding deltas; it does not repeat the original mod's completed creator-window language
 sign-off.
+
+On 2026-10-01, the existing creator inherited the main product's CK3 1.20
+compatibility for commissioned characters: retain a valid selected Rite; migrate
+older Faith-only designs to the player's Rite for their Faith or another Faith's
+main Rite; supply that same Rite to native trait preview, creation and delivery
+verification. This adds no arbitrary Rite selector or autonomous religion policy.
+The Chinese and English origin help now describes those actual paths. All nine
+`other.help` values received only the numeric catalog update 108 → 110; the seven
+other origin descriptions remain their existing text pending release translation.
+Static inheritance comparison allows that precise numeric metadata substitution
+when the unchanged main translation still carries 108. This is not a completed
+release localization or live Rite compatibility claim.
 
 ## Build And Static Gates
 

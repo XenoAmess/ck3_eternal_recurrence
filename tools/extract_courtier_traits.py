@@ -9,11 +9,13 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+from ck3_installation import configured_game_dir
+
 
 ROOT = Path(__file__).resolve().parent.parent
 GAME_VERSION = "1.20.0.2"
 DEFAULT_SOURCE = (
-    ROOT / "Crusader Kings III" / "game" / "common" / "traits" / "00_traits.txt"
+    configured_game_dir(ROOT) / "game" / "common" / "traits" / "00_traits.txt"
 )
 DEFAULT_OUTPUT = Path(__file__).resolve().with_name("courtier_traits_1_20_0_2.json")
 
@@ -264,7 +266,8 @@ def extract_traits(text: str) -> list[dict[str, object]]:
 
 def source_label(path: Path) -> str:
     resolved = path.resolve()
-    if resolved == DEFAULT_SOURCE.resolve():
+    if (resolved == DEFAULT_SOURCE.resolve()
+            or resolved.parts[-4:] == ("game", "common", "traits", "00_traits.txt")):
         # A local junction may point outside the checkout. Snapshot identity
         # uses the logical game path, independent of the installation directory.
         return "Crusader Kings III/game/common/traits/00_traits.txt"

@@ -70,6 +70,7 @@ types ervc_courtier_creator_types {
 						icon_trait = {
 							blockoverride "faith_context" {
 								datacontext = "[GetPlayer.MakeScope.Var('ervc_cc_selected_faith').Faith]"
+								datacontext = "[GetPlayer.MakeScope.Var('ervc_cc_selected_rite').Rite]"
 							}
 						}
 
@@ -670,6 +671,12 @@ window = {
 								text = "[Localize('ervc.cc.faith')]"
 								default_format = "#T"
 								align = center|nobaseline
+							}
+							text_single = {
+								text = "[GetPlayer.MakeScope.Var('ervc_cc_selected_rite').Rite.GetName]"
+								align = center|nobaseline
+								default_format = "#high"
+								scissor = yes
 							}
 
 							scrollbox = {

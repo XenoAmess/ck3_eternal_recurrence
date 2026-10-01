@@ -30,7 +30,7 @@
  ervc.cc.commander.help:0 "Alle 17 Befehlshabereigenschaften des Grundspiels sind aufgelistet. Wähle bis zu zwei; jede beginnt mit Grundbeherrschung und null EP. Gewählt: [GetPlayer.MakeScope.Var('ervc_cc_commander_count').GetValue|0]/2."
  ervc.cc.physical.help:0 "Alle 38 körperlichen Eigenschaften des Grundspiels sind aufgelistet, einschließlich der normalerweise verborgenen $trait_impotent$. Verträgliche Wahlen können kombiniert werden."
  ervc.cc.personality.help:0 "Alle 36 Persönlichkeitseigenschaften des Grundspiels sind aufgelistet. Wähle bis zu drei; die Wahl eines Gegenteils ersetzt sein Gegenstück. Gewählt: [GetPlayer.MakeScope.Var('ervc_cc_personality_count').GetValue|0]/3."
- ervc.cc.other.help:0 "Die übrigen 108 im Herrscher-Designer sichtbaren Eigenschaften des Grundspiels sind hier aufgelistet. Sie umfassen mächtige Status-, Gesundheits- und andere folgenschwere Wahlen."
+ ervc.cc.other.help:0 "Die übrigen 110 im Herrscher-Designer sichtbaren Eigenschaften des Grundspiels sind hier aufgelistet. Sie umfassen mächtige Status-, Gesundheits- und andere folgenschwere Wahlen."
  ervc.cc.origin.help:0 "Wähle aus allen geladenen Kulturen und Glauben, dann gib der Seele eine niedrige Geburt oder füge sie deiner Dynastie und deinem Haus hinzu. Letzteres ist nicht verfügbar, wenn du kein Haus hast."
  ervc.cc.culture:0 "Kultur"
  ervc.cc.faith:0 "Glaube"

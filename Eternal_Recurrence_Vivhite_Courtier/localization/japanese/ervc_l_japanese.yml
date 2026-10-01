@@ -30,7 +30,7 @@
  ervc.cc.commander.help:0 "ゲーム本体の指揮官特性17種をすべて掲載している。最大2つまで選択でき、それぞれ熟練度0の基礎段階から始まる。選択数：[GetPlayer.MakeScope.Var('ervc_cc_commander_count').GetValue|0]/2。"
  ervc.cc.physical.help:0 "通常は隠されている$trait_impotent$を含む、ゲーム本体の身体特性38種をすべて掲載している。互換性のある選択は組み合わせられる。"
  ervc.cc.personality.help:0 "ゲーム本体の性格特性36種をすべて掲載している。最大3つまで選択でき、対立する特性を選ぶと既存の反対側が置き換わる。選択数：[GetPlayer.MakeScope.Var('ervc_cc_personality_count').GetValue|0]/3。"
- ervc.cc.other.help:0 "統治者デザイナーに表示される、ゲーム本体の残り108種の特性を掲載している。強力な地位、健康、その他の重大な選択も含まれる。"
+ ervc.cc.other.help:0 "統治者デザイナーに表示される、ゲーム本体の残り110種の特性を掲載している。強力な地位、健康、その他の重大な選択も含まれる。"
  ervc.cc.origin.help:0 "読み込まれたすべての文化と宗派から選び、その魂を庶民にするか、あなたの王朝と家門に加える。家門がなければ後者は選べない。"
  ervc.cc.culture:0 "文化"
  ervc.cc.faith:0 "宗派"

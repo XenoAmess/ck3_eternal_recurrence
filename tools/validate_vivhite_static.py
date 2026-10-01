@@ -45,7 +45,7 @@ DESCRIPTOR_FIELDS = {
     "version": "1.0.1",
     "name": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
     "picture": "thumbnail.png",
-    "supported_version": "1.19.0.6",
+    "supported_version": "1.20.0.2",
 }
 GROUP_KEY = "decision_group_type_ervc_courtier_creator"
 DECISION_TITLE_KEY = "ervc_courtier_creator_decision"
@@ -402,8 +402,8 @@ def generator_checks(errors: list[str], report: dict[str, object]) -> None:
             f"catalog counts drifted: API={actual_counts}, render={counts}, "
             f"expected={generator.EXPECTED_COUNTS}"
         )
-    if len(union) != 224:
-        errors.append(f"trait catalog union is {len(union)}, expected 224")
+    if len(union) != generator.EXPECTED_UNION_COUNT:
+        errors.append(f"trait catalog union is {len(union)}, expected {generator.EXPECTED_UNION_COUNT}")
     if len(pairs) != 95 or rendered_pair_count != 95:
         errors.append(
             f"trait conflict count drifted: API={len(pairs)}, render={rendered_pair_count}, expected=95"
@@ -525,6 +525,10 @@ def localization_checks(errors: list[str], report: dict[str, object]) -> None:
                 )
                 continue
             expected = expected.replace("xar_cc_", "ervc_cc_")
+            if key == "ervc.cc.other.help":
+                # The seven unchanged main translations still carry the old
+                # catalog count. This is a numeric metadata update, not translation.
+                expected = expected.replace("108", str(generator.EXPECTED_COUNTS["other"]))
             if standalone.get(key) != expected:
                 errors.append(
                     f"standalone localization drifted from frozen original for "
@@ -826,6 +830,7 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
             "name = ervc_cc_same_house value = 0",
             "name = ervc_cc_selected_culture value = root.culture",
             "name = ervc_cc_selected_faith value = root.faith",
+            "name = ervc_cc_selected_rite value = root.rite",
             "trait:education_martial_3",
             "name = ervc_cc_selected_education",
             "name = ervc_cc_commander_count value = 0",
@@ -848,8 +853,34 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
             "every_religion_global = {",
             "every_faith = {",
             "name = ervc_cc_catalog_faiths",
+            "ervc_cc_resolve_selected_rite_effect = yes",
         ),
         "culture and faith catalog rebuild",
+    )
+
+    rite_resolver = extract_block(effects, "ervc_cc_resolve_selected_rite_effect")
+    require_tokens(
+        errors,
+        rite_resolver,
+        (
+            "exists = var:ervc_cc_selected_rite",
+            "var:ervc_cc_selected_rite.faith = var:ervc_cc_selected_faith",
+            "remove_variable = ervc_cc_selected_rite",
+            "faith = var:ervc_cc_selected_faith",
+            "name = ervc_cc_selected_rite value = root.rite",
+            "name = ervc_cc_selected_rite value = var:ervc_cc_selected_faith.main_rite",
+        ),
+        "retained commissioned Rite and pre-1.20 design migration",
+    )
+    faith_selection = extract_block(scripted_guis, "ervc_cc_select_faith_gui")
+    require_tokens(
+        errors,
+        faith_selection,
+        (
+            "ervc_cc_resolve_selected_rite_effect = yes",
+            "name = ervc_cc_catalog_faiths target = scope:ervc_faith",
+        ),
+        "catalog-backed Faith selection and Rite resolution",
     )
 
     configuration = extract_block(triggers, "ervc_cc_valid_configuration_trigger")
@@ -866,6 +897,8 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
             "var:ervc_cc_age <= 120",
             "exists = var:ervc_cc_selected_culture",
             "exists = var:ervc_cc_selected_faith",
+            "exists = var:ervc_cc_selected_rite",
+            "var:ervc_cc_selected_rite.faith = var:ervc_cc_selected_faith",
             "name = ervc_cc_catalog_cultures",
             "name = ervc_cc_catalog_faiths",
             "var:ervc_cc_same_house = 0",
@@ -938,10 +971,10 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
     trait_cost_entries = generated_values.count(
         "ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:"
     )
-    if trait_cost_entries != 224:
-        errors.append(f"generated selected-trait price wiring has {trait_cost_entries} entries, expected 224")
-    if generated_effects.count("add_to_variable_list = {") != 224:
-        errors.append("generated trait catalogs do not contain exactly 224 additions")
+    if trait_cost_entries != generator.EXPECTED_UNION_COUNT:
+        errors.append(f"generated selected-trait price wiring has {trait_cost_entries} entries, expected {generator.EXPECTED_UNION_COUNT}")
+    if generated_effects.count("add_to_variable_list = {") != generator.EXPECTED_UNION_COUNT:
+        errors.append(f"generated trait catalogs do not contain exactly {generator.EXPECTED_UNION_COUNT} additions")
     if "ervc_cc_selected_traits_compatible_trigger" not in generated_triggers:
         errors.append("generated conflict compatibility trigger is missing")
 
@@ -967,9 +1000,19 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
             "gold >= ervc_courtier_creator_cost",
             "exists = var:ervc_cc_selected_culture",
             "exists = var:ervc_cc_selected_faith",
+            "exists = var:ervc_cc_selected_rite",
+            "var:ervc_cc_selected_rite.faith = var:ervc_cc_selected_faith",
         ),
         "final transaction revalidation",
     )
+    delivery_identity = (
+        "scope:ervc_cc_created_courtier = { is_courtier_of = root "
+        "culture = root.var:ervc_cc_selected_culture "
+        "faith = root.var:ervc_cc_selected_faith "
+        "rite = root.var:ervc_cc_selected_rite }"
+    )
+    if compact(delivery_identity) not in compact(purchase):
+        errors.append("standalone charge does not verify delivered Culture, Faith and Rite")
     transaction_order = [
         purchase.find("remove_character_flag = ervc_cc_open"),
         purchase.find("create_character = {"),
@@ -1004,6 +1047,7 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
             "employer = root",
             "culture = root.var:ervc_cc_selected_culture",
             "faith = root.var:ervc_cc_selected_faith",
+            "rite = root.var:ervc_cc_selected_rite",
             "dynasty = none",
             "age = root.var:ervc_cc_age",
             "random_traits = no",
@@ -1161,6 +1205,8 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
             "Trait.MakeScope",
             'blockoverride "faith_context"',
             "GetPlayer.MakeScope.Var('ervc_cc_selected_faith').Faith",
+            "GetPlayer.MakeScope.Var('ervc_cc_selected_rite').Rite",
+            "GetPlayer.MakeScope.Var('ervc_cc_selected_rite').Rite.GetName",
             "Scope.Culture.GetHeritage",
             "CulturePillar.GetCulturesWithPillar",
             "Culture.GetTemplate",

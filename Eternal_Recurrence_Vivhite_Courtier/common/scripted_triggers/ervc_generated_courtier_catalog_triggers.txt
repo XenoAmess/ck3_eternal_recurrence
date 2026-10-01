@@ -119,7 +119,7 @@ ervc_cc_candidate_trait_metadata_valid_trigger = {
 		scope:ervc_cc_candidate_trait = trait:seducer
 		scope:ervc_cc_candidate_trait = trait:torturer
 		scope:ervc_cc_candidate_trait = trait:whole_of_body
-		scope:ervc_cc_candidate_trait = trait:scholar
+		scope:ervc_cc_candidate_trait = trait:erudite
 		scope:ervc_cc_candidate_trait = trait:theologian
 		scope:ervc_cc_candidate_trait = trait:lifestyle_mystic
 		scope:ervc_cc_candidate_trait = trait:lifestyle_physician
@@ -294,6 +294,7 @@ ervc_cc_candidate_trait_metadata_valid_trigger = {
 		scope:ervc_cc_candidate_trait = trait:adventurer
 		scope:ervc_cc_candidate_trait = trait:adventurer_follower
 		scope:ervc_cc_candidate_trait = trait:heresiarch
+		scope:ervc_cc_candidate_trait = trait:herald
 		scope:ervc_cc_candidate_trait = trait:peasant_leader
 		scope:ervc_cc_candidate_trait = trait:populist_leader
 		scope:ervc_cc_candidate_trait = trait:witch
@@ -331,6 +332,10 @@ ervc_cc_candidate_trait_metadata_valid_trigger = {
 			var:ervc_cc_age >= 16
 		}
 		scope:ervc_cc_candidate_trait = trait:burdened
+		AND = {
+			scope:ervc_cc_candidate_trait = trait:lifestyle_scholar
+			var:ervc_cc_age >= 16
+		}
 	}
 }
 
