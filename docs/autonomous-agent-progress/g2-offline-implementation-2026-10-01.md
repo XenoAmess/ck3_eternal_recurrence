@@ -246,3 +246,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 新增default-off ck3_query_player_religion_context_v1和真实Cpp→Driver→官方MCP SDK链，新1案例通过，旧leaf3+11/native41×2复用。19精确文件闭合当前宗教identity/resources查询，不宣称转换资格。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-religion-next\SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:41:37 Religion actual readonly mailbox
+
+真实当前宗教context原生mailbox与complete command_result接通；旧protocol_version缺失的真实SDK RED已修复并保留，Od/O2各41检查6wire通过。新增namedpermit fixture源由中央单次O2收口，不重复旧矩阵。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion\mailbox-delivery.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
