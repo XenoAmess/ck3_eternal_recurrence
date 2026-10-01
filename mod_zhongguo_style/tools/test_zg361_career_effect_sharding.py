@@ -33,7 +33,9 @@ class CareerEffectShardingTests(unittest.TestCase):
         self.assertEqual(tuple(actual), expected)
 
     def test_career_hc_effect_boundaries(self) -> None:
-        self.assert_family(career_hc, 271)
+        # a56d6559 expanded the portfolio from 22 to all 44 background rulings,
+        # adding 22 apply effects while retaining the original case chains.
+        self.assert_family(career_hc, 293)
 
     def test_career_learning_effect_boundaries(self) -> None:
         self.assert_family(career_learning, 126)

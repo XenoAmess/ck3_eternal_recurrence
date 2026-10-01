@@ -52,8 +52,8 @@ class CopyAuditLedgerTest(unittest.TestCase):
             "zg361mg.250",
         }
         self.assertTrue(all(by_key[key].hidden for key in inline_hidden))
-        self.assertEqual(self.index["summary"]["visible_events"], 626)
-        self.assertEqual(self.index["summary"]["hidden_events"], 384)
+        self.assertEqual(self.index["summary"]["visible_events"], 628)
+        self.assertEqual(self.index["summary"]["hidden_events"], 385)
 
     def test_human_semantic_judgment_requires_exact_review_manifest(self) -> None:
         self.assertEqual(self.index["ledger_status"], "pass")

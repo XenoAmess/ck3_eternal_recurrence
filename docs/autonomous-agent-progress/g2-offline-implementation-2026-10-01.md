@@ -466,3 +466,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 97精确源，shared2与九只读宗教/治疗入口、Sway37field兼容、CE1payload消费者。46 focused tests通过，其中10新增actual cache→productionDriver→officialSDK cases；旧leaf/native不重跑。所有状态最高static-ready，实际paused/cold由root验收。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\NEXT-NINE-QUERY-SHARED-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:46:19 Fix actual ZhongGuo361 content CI failures
+
+实际官方CI step27失败52failures/1error已定位，54精确源最小修复旧effect计数合同与中文实际后果文案，统一生成628visible/385hidden/5206keys账本含缺loc029。只亲审6卡及12source增量并延续原review；四受影响模块33tests和ledger--check通过，两旧exactcopy单方法通过，不重跑1495。发布级翻译与live render未完成，尚待此次push官方CI。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-361-current-fix\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

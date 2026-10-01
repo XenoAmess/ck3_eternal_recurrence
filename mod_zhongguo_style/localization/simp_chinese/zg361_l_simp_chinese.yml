@@ -20,7 +20,7 @@
  # 决议组与决议
  decision_group_type_zg361:0 "绩效考核"
  zg361_review_now_decision:0 "提前启动本年度考核"
- zg361_review_now_decision_desc:0 "不等下一次京察召集，现在就提前启动本年度考核并冻结直属官员名册。本决议只开启与京察共用的考核流程，不举办“京察大计”，也不视为完成京察履责。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。"
+ zg361_review_now_decision_desc:0 "不等下一次京察召集，考功司现在便会冻结直属官员名册，开启本年的考绩程序。本决议只开启与京察共用的考核流程，不举办“京察大计”，也不视为完成京察履责。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。"
  zg361_review_now_decision_tooltip:0 "提前开启考核季并冻结至少一名直属在任官员；不举办京察，也不视为完成京察履责。"
  zg361_review_now_decision_confirm:0 "提前开考"
  zg361_ratio_policy_decision:0 "调整末位比例"
@@ -33,7 +33,7 @@
  zg361_ratio_policy_decision_confirm:0 "召集廷议"
  zg361_ratio_policy_current_strict:0 "现行口径：刚性361（10%）。考核池达到五人时，至少一人进入3.25。"
  zg361_ratio_policy_current_relaxed:0 "现行口径：松绑（5%）。末位名额向下取整且不保底，不足二十人时为零。"
- zg361_ratio_policy_current_off:0 "现行口径：不设强制末位（0%）。考核、排名与其他档位照常进行。"
+ zg361_ratio_policy_current_off:0 "现行口径的末位配额为零，不会强制划出3.25名额。考核、排名与其他档位照常进行。"
  zg361_ratio_policy_already_current:0 "此项已是现行口径。"
  zg361.54.t:0 "厘定末位比例"
  zg361.54.desc:0 "考功司呈上三份定额草案。你选定的口径从下一次配额计算起施行；本期已经冻结的案卷不作倒改。"

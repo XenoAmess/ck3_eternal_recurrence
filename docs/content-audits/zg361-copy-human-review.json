@@ -3,89 +3,89 @@
   "status": "pass",
   "language": "simp_chinese",
   "review_completed_at": "2026-09-06T19:39:49+08:00",
-  "source_input_digest_sha256": "86af08746f5c9a2861ededa9177b97fbed23caa7f6b850892cb8e58c6998a561",
-  "reviewed_visible_events": 626,
+  "source_input_digest_sha256": "028a946e1e4132a66c3b4fd8b592e5addf649fdeea83e76964d9dace18781960",
+  "reviewed_visible_events": 628,
   "review_method": "Every visible event card was reread against its final title, body, bound options, tooltips, event script, and authoritative effect or business-ledger consumer. A second hash-bound reread followed the first repair pass.",
   "reviewed_event_shards": [
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-001.json",
       "records": 40,
-      "sha256": "290e33d611164219da236ce887bf996a3d27d51df92d8fa227e5a7ace495eb29"
+      "sha256": "c2ee034bfa6f0f3bcf7a6110ed6fbc2fc6a4e4a42a360c683f173554552a742a"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-002.json",
       "records": 40,
-      "sha256": "334454f4f8ddbb4a7f674ac4df76d79db91472fe56d9ce51b9f2d5bce05808ab"
+      "sha256": "294551600acc63e28b0783c9f4173355ada0895c5c728b529f0d732014a5681c"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-003.json",
       "records": 40,
-      "sha256": "5d647588c133ea8594a6a147ba2036145afe1347d4a75f074f160b4fb3796698"
+      "sha256": "43d83e3e64ef4cc2faca69045f2b6f163bfa9214d178b4fd29f7901022d3016a"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-004.json",
       "records": 40,
-      "sha256": "1f3adddd9a8fe55bf1c63c24ef922fb933175f69b63928be367a9d76e8b07d94"
+      "sha256": "483962f72f60172bf4e768dbae6d60f29f1c44773e5d8e36eb2aa81f21d42bc7"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-005.json",
       "records": 40,
-      "sha256": "7e21844aa73405013c9e4c02681d3c3cddb9354b056c41d392938d649a1f51e7"
+      "sha256": "1367c69956ab89abe30e898429e19e4b9b6c852f2224e264055f83a1d3aa55a6"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-006.json",
       "records": 40,
-      "sha256": "2585a151bd818afb44f49e99504b231ab2e4d8834786679ce315b00904fcd64a"
+      "sha256": "bca34657a1276a3703bcf217a16dca2a0f9b034cd6c40d1cb344f982b4fb96d3"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-007.json",
       "records": 40,
-      "sha256": "712b12c58aa28f10f1ed6c3ebc9151c1f46beed5165ff2f677961fbab90b71ab"
+      "sha256": "45dc41cfde8e95ad49528dbac12056a44fa7d03c87f2945fb48dd04c9add85ce"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-008.json",
       "records": 40,
-      "sha256": "3e6b733d6ee7d022a412e2223e9d0345e500d457e34dadd9dfffba89b900b3f0"
+      "sha256": "496699abd1b339534b6658de257560c8447b878d570400cb0bed50a373c5c486"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-009.json",
       "records": 40,
-      "sha256": "b950090fb1abf3b121fa9fff9963b3c203a958d76203e377cc8494d5ac1ae4cf"
+      "sha256": "703ea699c67f709b56a3da967013a771e5531efc98a4638f51caf11a649bafcd"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-010.json",
       "records": 40,
-      "sha256": "57907e456f02fe33c33163eca0db90c7f96a0f794a1096bf34192bee09c417e3"
+      "sha256": "e9e107634c2307be9d2a3a18e1adf0832e58ef3ce7da0368f496ecd77d886b19"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-011.json",
       "records": 40,
-      "sha256": "ad31715719b8c54d78398bff3d3a8ba141a1a7d9447b318ff3b5fc18d97a293c"
+      "sha256": "e41c7a59320a015d738a457c12a0efcf8b7098199b514a43b26a8bf4b20620cd"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-012.json",
       "records": 40,
-      "sha256": "efe84798a26de486c3e2f6535c7098708cff00b3aff0d47a166b0c7f6cfe94f4"
+      "sha256": "cfe3a21ed6a2565297ea303652d10b195bf8543107124cd4c3c7eb8a4ea1d47d"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-013.json",
       "records": 40,
-      "sha256": "fdd12e8f993fa2ee556f2ba61b587e542ba5965391bdcf7faf0f217e7d7af67d"
+      "sha256": "2ab35f18975055301979b4d21e7fab5ed5cc843ac2e634b3dc25deb2147323a0"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-014.json",
       "records": 40,
-      "sha256": "5bbad16f39cca12dae33f01b5e398f314d6c7787ecab9a6e114529d691dbe864"
+      "sha256": "a44825e5d3fada43d862165b427a692e46bfb7676368ec107dedfa31438bce2a"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-015.json",
       "records": 40,
-      "sha256": "bec43dd7bce0f3c83107a308ca43765eb0ab31081d0e40466a371357ab6b64a9"
+      "sha256": "9dc8afe06065a59bb25122faecc4ad368291d8be7a841b93878bde8d38287807"
     },
     {
       "path": "docs/content-audits/zg361-copy-ledger/events/events-016.json",
-      "records": 26,
-      "sha256": "03da335cf099d52c40e8d0ee44b994a2919854d6f4644ca3eea4070a846413fd"
+      "records": 28,
+      "sha256": "c78193664d63ce4645e09044eaa772f31035809af3ebd6df96f8d0c30a63ebf2"
     }
   ],
   "final_reread_closure": [
@@ -149,6 +149,89 @@
     "evidence_commit": "690727253a099a19c9ff1e69ed0c957239499c4f"
   },
   "latest_review_binding": {
+    "reviewed_at": "2026-10-01T17:38:29+08:00",
+    "reviewer": "Codex ci_361_current_fix/copy_ledger_source; compensation effect cross-check by copy_sources",
+    "source_base_commit": "b995fad1f25838c3b31e82086da9c116b2d77b80",
+    "previous_review_manifest_sha256": "b6688656bd9a9e1fbcb4a01426beccd8e37402182165ce48aa001076ad19fa4f",
+    "previous_source_input_digest_sha256": "86af08746f5c9a2861ededa9177b97fbed23caa7f6b850892cb8e58c6998a561",
+    "baseline_review_evidence_commit": "4974324fece6ba152bada6069f8a12718e4da8f6",
+    "method": "Incremental semantic reread against the retained 626-card review. Reuse unchanged reviewed content; reread the two added visible events, four changed primary event bindings, all new Career/HC and compensation option tooltips, revised player decision surfaces, and event-source deltas. Rebind source locations and generated shard hashes after the source changes; no full 628-card reread is claimed.",
+    "added_visible_event_keys": [
+      "zg361ch.949",
+      "zg361.54"
+    ],
+    "changed_primary_event_keys": [
+      "zg361ch.950",
+      "zg361ch.906",
+      "zg361cl.390",
+      "zg361comp.1"
+    ],
+    "retained_primary_event_bindings": 622,
+    "career_hc_option_tooltip_reread": "132/132: three options for mechanisms 019-025 and 092-128",
+    "compensation_option_tooltip_reread": "42/42: L1-L4, AE1-AE5 and AF1-AF5",
+    "compensation_short_label_effect_crosscheck": "16/16 corrected labels checked against actual special_payload, finance_apply, bonus_path and stage route dispatch by copy_sources; remaining 26 labels retain their reviewed effects in the bound tooltip.",
+    "source_delta_review": [
+      {
+        "path": "mod_zhongguo_style/events/zg361_career_hc_runtime_events.txt",
+        "result": "949 stores/removes only the persistent owner preference; each new portfolio copies it into its own frozen route. 950 applies all 44 numbered guarded original consumers, falls back to the exact card for failed conditions, and retains the detailed route. 906 now describes closure of all six domains; intermediate receipts are suppressed and existing delayed obligations remain."
+      },
+      {
+        "path": "mod_zhongguo_style/events/zg361_events.txt",
+        "result": "54 is player gated and writes only the 10/5/0 ratio override. The existing bottom-slots script value floors cohort x 10%/5%, preserves the strict five-person minimum, and uses zero for off. The event does not reopen a frozen quota."
+      },
+      {
+        "path": "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
+        "result": "All 42 options bind their stage-specific .tt; amounts, payer accounts, deferred dates, rights and share treatment agree with the real route effects. Visible names summarize the action; tooltip carries the detailed terms."
+      },
+      {
+        "path": "mod_zhongguo_style/events/zg361_manager_governance_runtime_events.txt",
+        "result": "90 is a newly hidden player-originated publication callback and increases the hidden count only. Existing visible manager cards retain their wording."
+      },
+      {
+        "path": "mod_zhongguo_style/events/zg361_b1_runtime_events.txt",
+        "result": "The two hidden polling callbacks gain the empty-cycle recovery call; no visible card wording changes."
+      },
+      {
+        "path": "mod_zhongguo_style/events/zg361_jingcha_events.txt",
+        "result": "42 adds the same polling recovery before its existing progression; no visible card wording changes."
+      },
+      {
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml",
+        "result": "Persistent custody, one-portfolio choice, final receipt and 132 option tooltip additions match the 44-mechanism authority, original consumers, seven dual-account costs, domain-majority prestige/stress outcomes, and M116 bounded release/defer semantics."
+      },
+      {
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_compensation_runtime_l_simp_chinese.yml",
+        "result": "Reread all 42 action names and detailed tooltips; the 16 shortened names now preserve immediate payment versus debt, total compensation versus bonus, authority versus salary, and existing versus newly converted shares."
+      },
+      {
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
+        "result": "New ratio entry and current-policy text match existing values. Early review starts the shared assessment, does not claim Jingcha responsibility, preserves roster freezing and existing 330-day/year limits, and no longer repeats the title at the opening."
+      },
+      {
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
+        "result": "The next-mechanism decision readiness message describes an outstanding queued ruling, without changing a business effect."
+      },
+      {
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_004_ac_mechanisms_stage04_06_events.txt",
+        "result": "Actual-byte inventory differs but Git text delta is empty; retained visible copy is unchanged."
+      },
+      {
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_learning_l_simp_chinese.yml",
+        "result": "The digest counters use the .GetValue accessor already described by the retained September 9 review binding; prose and authoritative portfolio-digest effect are unchanged."
+      }
+    ],
+    "findings_fixed": 18,
+    "findings_fixed_description": "Two duplicate title/body readings and 16 compensation action labels corrected by copy_sources.",
+    "unfixed": 0,
+    "copy_sources_review_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\ci-361-current-fix\\copy-sources\\render-receipt.json",
+    "copy_sources_review_artifact_sha256": "b30d3cf590957e31e0df4cccafabd72218e644f792b80d30d2b4d033bbc0db35",
+    "live_render_validation_status": "pending",
+    "copy_sources_delivery_manifest": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\ci-361-current-fix\\copy-sources\\delivery-manifest.json",
+    "copy_sources_delivery_manifest_sha256": "5c4df8bcc8ad1778703fb52dfd27a4fd22875abf9fffa021a80f033b09ff7a09"
+  },
+  "live_render_validation_status": "pending",
+  "boundary": "Static semantic review is complete through the recorded October 1 incremental review; the retained 626-card baseline was not repeated. Dynamic scope interpolation, rendered layout, and in-game context remain CK3 live acceptance work and are not claimed by this manifest.",
+  "prior_latest_review_binding": {
     "reviewed_at": "2026-09-09T20:56:57+08:00",
     "evidence_commit": "4974324fece6ba152bada6069f8a12718e4da8f6",
     "event_shards": [
@@ -164,6 +247,5 @@
     "unfixed": 0,
     "reason": "Rebind zg361cl.390 after its two numeric counters gained the CK3-supported .GetValue accessor; the Chinese wording, bound option and authoritative portfolio-digest effect are unchanged."
   },
-  "live_render_validation_status": "pending",
-  "boundary": "Static human semantic review is complete. Dynamic scope interpolation, rendered layout, and in-game context remain CK3 live acceptance work and are not claimed by this manifest."
+  "baseline_reviewed_visible_events": 626
 }

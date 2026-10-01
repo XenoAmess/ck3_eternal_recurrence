@@ -1235,7 +1235,7 @@ class ReleaseLocalizationTests(unittest.TestCase):
                 "Start the review season early and freeze at least one direct incumbent official; this neither hosts Jingcha nor fulfills its duty.",
             ),
             "simp_chinese": (
-                "不等下一次京察召集，现在就提前启动本年度考核并冻结直属官员名册。本决议只开启与京察共用的考核流程，不举办“京察大计”，也不视为完成京察履责。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。",
+                "不等下一次京察召集，考功司现在便会冻结直属官员名册，开启本年的考绩程序。本决议只开启与京察共用的考核流程，不举办“京察大计”，也不视为完成京察履责。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。",
                 "提前开启考核季并冻结至少一名直属在任官员；不举办京察，也不视为完成京察履责。",
             ),
             "french": (

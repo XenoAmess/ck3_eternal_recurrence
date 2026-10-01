@@ -1769,7 +1769,7 @@ class CompensationRuntimeTests(unittest.TestCase):
         }
         expected_chinese_labels = {
             "zg361comp.1.l3.r2": "授予权责，维持现俸",
-            "zg361comp.1.ae4.r3": "批准薪带例外",
+            "zg361comp.1.ae4.r3": "批准薪带例外一轮，不补付",
             "zg361comp.1.af4.r1": "服务与绩效份额均衡分账",
         }
 
