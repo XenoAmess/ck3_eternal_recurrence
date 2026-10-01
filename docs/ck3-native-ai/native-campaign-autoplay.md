@@ -43,6 +43,14 @@ messages for delayed pause/resume or current-pause postconditions. Event/save
 RED, unknown RED, guard failures, timeouts and unresolved dispatches are never
 blindly replayed.
 
+An optional `pause_provider` passed to `run(client, config, pause_provider=...)`
+uses the independent [qualified clock pause MCP](clock-pause-mcp.md). Default
+native behavior is preserved. Controller target/build/session verification and
+separate original receipts are mandatory; a successful independent pause still
+requires the original native client's paused/date readback. Resume, event, save
+and speed contracts stay with that existing native client. The controller path
+never retries a failed native pause or fabricates its status.
+
 Only context options with `shown=true` and `enabled=true` are candidates. Rank
 noncritical options first, then options without observed stress increase, then
 native index. Send `native_option_index + 1`; rendered order and synthetic

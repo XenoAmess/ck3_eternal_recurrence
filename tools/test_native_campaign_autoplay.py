@@ -12,7 +12,7 @@ import unittest
 
 from native_campaign_autoplay import (
     CampaignConfig, INSPECT, PAUSE, QUERY_EVENT, SAVE, SELECT_EVENT, SIMULATION,
-    SNAPSHOT, TOOLS, choose_option, read_plaintext_save, run,
+    SNAPSHOT, TOOLS, PAUSE_CONTROLLER, PAUSE_CONTROLLER_INSPECT, choose_option, read_plaintext_save, run,
 )
 
 
@@ -40,6 +40,7 @@ class FakeClient:
         self.identity_change = False
         self.running_reads = 0
         self.save_count = 0
+        self.observation = None
 
     def envelope(self, value):
         return {"is_error": False, "structured_content": {"session_id": "owned-client-session", "profile_sha256": "a"*64, **value}, "content": []}
@@ -76,7 +77,8 @@ class FakeClient:
         if self.guard_error and name == SNAPSHOT:
             return {"is_error": True, "structured_content": None, "content": [{"type": "text", "text": "offline/lease/crash guard rejected"}]}
         if name == INSPECT:
-            return self.envelope({"status": "profile_bound", "attached": True})
+            return self.envelope({"status": "profile_bound", "attached": True,
+                **({"observation": copy.deepcopy(self.observation)} if self.observation is not None else {})})
         if name == SNAPSHOT:
             return self.envelope({"status": "native_snapshot_verified", "snapshot": self.frame()})
         if name == QUERY_EVENT:
@@ -118,6 +120,48 @@ class FakeClient:
                 "sha256": hashlib.sha256(raw).hexdigest(), "date_raw": self.raw,
                 "succession_lifecycle": {"legacy_only": True}}}})
         raise AssertionError(f"unexpected capability: {name}")
+
+
+class FakePauseProvider:
+    def __init__(self, native):
+        self.native = native
+        self.calls = []
+        self.inputs = 0
+        self.session_id = "separate-controller-session"
+        self.status = "gameplay_pause_verified"
+        self.paused_after = True
+        self.delayed_native = False
+        self.target = {"pid": 50, "hwnd": 22, "process_create_time": 123.0,
+            "executable": str(native.directory.parent/"installation/binaries/ck3.exe"),
+            "executable_sha256": "b"*64, "build_id": "fixture-build", "game_version": "1.20.0.2",
+            "userdir": str(native.directory.parent/"userdir")}
+        native.observation = {**{key: self.target[key] for key in ("pid", "hwnd", "process_create_time",
+            "executable", "executable_sha256", "build_id")}, "command_line": [self.target["executable"], f'-userdir={self.target["userdir"]}']}
+
+    async def call_tool(self, name, arguments):
+        await asyncio.sleep(0)
+        self.calls.append((name, copy.deepcopy(arguments)))
+        self.assert_closed(name, arguments)
+        raw = {"schema": "ck3.clock-pause-profile-receipt.v1", "session_id": self.session_id,
+            "profile_sha256": "c"*64, "target_identity": copy.deepcopy(self.target), "receipt_path": "actual-controller-receipt.json"}
+        if name == PAUSE_CONTROLLER_INSPECT:
+            raw["status"] = "clock_pause_profile_verified"
+        else:
+            if not self.native.paused:
+                self.inputs += 1
+                if self.delayed_native:
+                    self.native.pending = (2, True)
+                else:
+                    self.native.paused = True
+                    self.native.revision += 1
+            raw.update(status=self.status, desired_paused=True, input_dispatch_attempts=1,
+                clock_after={"paused": self.paused_after, "date_raw": self.native.raw})
+        return {"is_error": False, "structured_content": raw, "content": []}
+
+    @staticmethod
+    def assert_closed(name, arguments):
+        if name not in {PAUSE_CONTROLLER, PAUSE_CONTROLLER_INSPECT} or arguments != {}:
+            raise AssertionError("controller accepts only the two fixed no-argument tools")
 
 
 def option(index, *, shown=True, enabled=True, rows=()):
@@ -352,6 +396,90 @@ class CampaignTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["status"], "rejected")
         self.assertEqual(result["reason"], "checkpoint_declared_bytes_or_native_date_disagree")
         self.assertEqual(self.client.save_count, 1)
+
+    async def test_optional_controller_has_separate_identity_and_receipts(self):
+        provider = FakePauseProvider(self.client)
+        result = await run(self.client, self.config(), pause_provider=provider)
+        self.assertEqual(result["status"], "completed")
+        self.assertGreater(provider.inputs, 0)
+        self.assertFalse(any(name == PAUSE for name, _ in self.client.calls))
+        self.assertTrue(all(args == {} for _, args in provider.calls))
+        receipts = self.receipts("pause-controller-receipt")
+        self.assertTrue(receipts)
+        self.assertTrue(all(row["response"]["structured_content"]["session_id"] == provider.session_id for row in receipts))
+        confirmations = self.receipts("pause-controller-confirmed")
+        self.assertTrue(all(row["native_session_id"] == "owned-client-session" and row["controller_session_id"] == provider.session_id for row in confirmations))
+
+    async def test_controller_target_mismatch_rejects_before_input(self):
+        for field, value in (("pid", 99), ("hwnd", 99), ("process_create_time", 999.0),
+                             ("build_id", "wrong"), ("game_version", "1.19.0.6"),
+                             ("executable_sha256", "0"*64), ("executable", str(self.root/"other.exe")),
+                             ("userdir", str(self.root/"other-userdir"))):
+            with self.subTest(field=field):
+                client = FakeClient(self.saves)
+                provider = FakePauseProvider(client)
+                provider.target[field] = value
+                result = await run(client, self.config(evidence_directory=self.root/field), pause_provider=provider)
+                self.assertEqual(result["status"], "rejected")
+                self.assertEqual(result["reason"], "pause_controller_target_does_not_match_native_campaign")
+                self.assertEqual(provider.inputs, 0)
+                self.assertTrue(all(name in {INSPECT, SNAPSHOT} for name, _ in client.calls))
+
+    async def test_controller_cannot_reuse_native_session_identity(self):
+        provider = FakePauseProvider(self.client)
+        provider.session_id = "owned-client-session"
+        result = await run(self.client, self.config(), pause_provider=provider)
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["reason"], "pause_controller_identity_invalid")
+        self.assertEqual(provider.inputs, 0)
+
+    async def test_controller_red_is_retained_without_native_fallback_or_input_replay(self):
+        provider = FakePauseProvider(self.client)
+        provider.status = "RED"
+        result = await run(self.client, self.config(), pause_provider=provider)
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["reason"], "pause_controller_rejected_or_unconfirmed")
+        self.assertEqual(provider.inputs, 1)
+        self.assertEqual(sum(name == PAUSE_CONTROLLER for name, _ in provider.calls), 1)
+        self.assertFalse(any(name == PAUSE for name, _ in self.client.calls))
+        self.assertEqual(self.receipts("pause-controller-receipt")[-1]["response"]["structured_content"]["status"], "RED")
+
+    async def test_controller_ack_requires_true_pause_and_native_readback(self):
+        for status, paused in (("gameplay_pause_verified", False), ("native_gameplay_postcondition_verified", True)):
+            with self.subTest(status=status, paused=paused):
+                client = FakeClient(self.saves)
+                provider = FakePauseProvider(client)
+                provider.status, provider.paused_after = status, paused
+                result = await run(client, self.config(evidence_directory=self.root/status), pause_provider=provider)
+                self.assertEqual(result["status"], "rejected")
+                self.assertEqual(provider.inputs, 1)
+                self.assertFalse(any(name == PAUSE for name, _ in client.calls))
+
+    async def test_controller_success_waits_only_reads_for_late_native_frame(self):
+        self.client.paused = False
+        provider = FakePauseProvider(self.client)
+        provider.delayed_native = True
+        result = await run(self.client, self.config(), pause_provider=provider)
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(provider.inputs, 1)
+        self.assertEqual(sum(name == PAUSE_CONTROLLER for name, _ in provider.calls), 1)
+        self.assertFalse(any(name == PAUSE for name, _ in self.client.calls))
+
+    async def test_controller_timeout_is_not_replayed(self):
+        self.client.paused = False
+        provider = FakePauseProvider(self.client)
+        original = provider.call_tool
+        async def delayed(name, arguments):
+            result = await original(name, arguments)
+            if name == PAUSE_CONTROLLER:
+                await asyncio.sleep(.1)
+            return result
+        provider.call_tool = delayed
+        result = await run(self.client, self.config(tool_timeout_seconds=.01), pause_provider=provider)
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["reason"], "pause_controller_request_failed_or_unresolved")
+        self.assertEqual(provider.inputs, 1)
+        self.assertFalse(any(name == PAUSE for name, _ in self.client.calls))
 
 
 class SaveAndOptionTests(unittest.TestCase):

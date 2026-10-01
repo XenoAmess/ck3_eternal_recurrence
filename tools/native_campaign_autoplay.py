@@ -21,6 +21,8 @@ from typing import Any, Protocol
 SNAPSHOT = "ck3_take_profile_native_snapshot_v1"
 INSPECT = "ck3_query_native_profile_v1"
 PAUSE = "ck3_pause_profile_simulation_v1"
+PAUSE_CONTROLLER_INSPECT = "ck3_query_clock_pause_profile_v1"
+PAUSE_CONTROLLER = "ck3_pause_profile_gameplay_v1"
 SIMULATION = "ck3_set_profile_simulation_v1"
 QUERY_EVENT = "ck3_query_profile_event_window_v1"
 SELECT_EVENT = "ck3_select_profile_event_option_v1"
@@ -180,9 +182,12 @@ def _body(raw: dict[str, Any]) -> dict[str, Any]:
 
 
 class CampaignPolicy:
-    def __init__(self, client: AsyncClient, config: CampaignConfig):
+    def __init__(self, client: AsyncClient, config: CampaignConfig, *, pause_provider: AsyncClient | None = None):
         config.validate()
         self.client, self.config = client, config
+        self.pause_provider = pause_provider
+        self.pause_controller_binding = None
+        self.native_observation = None
         self.directory = Path(config.evidence_directory).resolve()
         self.directory.mkdir(parents=True, exist_ok=True)
         if any(self.directory.iterdir()):
@@ -297,9 +302,69 @@ class CampaignPolicy:
     async def pause(self, frame: dict[str, Any]) -> dict[str, Any]:
         if frame["paused"]:
             return frame
+        if self.pause_provider is not None:
+            receipt = await self.call_pause_controller(PAUSE_CONTROLLER, frame)
+            if (receipt.get("status") != "gameplay_pause_verified" or receipt.get("desired_paused") is not True
+                    or type(receipt.get("input_dispatch_attempts")) is not int or receipt["input_dispatch_attempts"] not in (0, 1)
+                    or receipt.get("clock_after", {}).get("paused") is not True
+                    or type(receipt.get("clock_after", {}).get("date_raw")) is not int
+                    or receipt["clock_after"]["date_raw"] < frame["date_raw"]):
+                raise CampaignStop("pause_controller_rejected_or_unconfirmed", rejected=True)
+            deadline = time.monotonic() + self.config.postcondition_timeout_seconds
+            while True:
+                current = await self.snapshot(policy_action_readback=True)
+                if current["paused"] and current["date_raw"] >= receipt["clock_after"]["date_raw"]:
+                    self.record("pause-controller-confirmed", {"controller_session_id": receipt["session_id"],
+                        "controller_profile_sha256": receipt["profile_sha256"], "controller_receipt_path": receipt.get("receipt_path"),
+                        "native_session_id": self.binding[0], "date_raw": current["date_raw"], "revision": current["revision"]})
+                    return current
+                if time.monotonic() >= deadline:
+                    raise CampaignStop("pause_controller_native_readback_not_observed")
+                await asyncio.sleep(self.config.poll_seconds)
         async def paused(current, receipt):
             return current["paused"] is True
         return await self.action(PAUSE, {}, paused)
+
+    async def call_pause_controller(self, tool: str, frame: dict[str, Any]) -> dict[str, Any]:
+        if tool not in {PAUSE_CONTROLLER_INSPECT, PAUSE_CONTROLLER} or self.pause_provider is None:
+            raise CampaignStop("pause_controller_tool_not_allowlisted", rejected=True)
+        request = self.record("pause-controller-request", {"tool": tool, "arguments": {}})
+        try:
+            response = await asyncio.wait_for(self.pause_provider.call_tool(tool, {}), self.config.tool_timeout_seconds)
+            raw = _serialized(response)
+            self.record("pause-controller-receipt", {"request": str(request), "tool": tool, "response": raw})
+            body = _body(raw)
+        except CampaignStop:
+            raise
+        except Exception as error:
+            self.record("pause-controller-error", {"request": str(request), "type": type(error).__name__, "reason": str(error)})
+            raise CampaignStop("pause_controller_request_failed_or_unresolved", rejected=True) from error
+        identity = (body.get("session_id"), body.get("profile_sha256"))
+        if (body.get("schema") != "ck3.clock-pause-profile-receipt.v1"
+                or not isinstance(identity[0], str) or not identity[0] or identity[0] == self.binding[0]
+                or not isinstance(identity[1], str) or not re.fullmatch(r"[0-9a-fA-F]{64}", identity[1])):
+            raise CampaignStop("pause_controller_identity_invalid", rejected=True)
+        if self.pause_controller_binding is None:
+            self.pause_controller_binding = identity
+        elif self.pause_controller_binding != identity:
+            raise CampaignStop("pause_controller_identity_changed", rejected=True)
+        observed = self.native_observation
+        target = body.get("target_identity")
+        fields = {"pid", "hwnd", "process_create_time", "executable", "executable_sha256", "build_id", "game_version", "userdir"}
+        if not isinstance(observed, dict) or not isinstance(target, dict) or set(target) != fields:
+            raise CampaignStop("pause_controller_target_identity_missing", rejected=True)
+        userdirs = [arg.split("=", 1)[1] for arg in observed.get("command_line", [])
+                    if isinstance(arg, str) and arg.startswith("-userdir=")]
+        hello = frame["diagnostics"]["hello"]
+        if (len(userdirs) != 1 or target["pid"] != frame["diagnostics"]["bridge_pid"]
+                or target["game_version"] != hello["expected_ck3_version"]
+                or str(target["executable_sha256"]).lower() != str(hello["expected_ck3_sha256"]).lower()
+                or any(target[key] != observed.get(key) for key in ("pid", "hwnd", "process_create_time", "build_id"))
+                or Path(target["executable"]).resolve() != Path(observed.get("executable", "")).resolve()
+                or str(target["executable_sha256"]).lower() != str(observed.get("executable_sha256", "")).lower()
+                or Path(target["userdir"]).resolve() != Path(userdirs[0]).resolve()):
+            raise CampaignStop("pause_controller_target_does_not_match_native_campaign", rejected=True)
+        return body
 
     async def resume(self, frame: dict[str, Any]) -> dict[str, Any]:
         if frame.get("active_event") is not None:
@@ -404,7 +469,13 @@ class CampaignPolicy:
             inspected = await self.call(INSPECT, {})
             if inspected.get("status") != "profile_bound" or inspected.get("attached") is not True:
                 raise CampaignStop("existing_profile_not_attached", rejected=True)
-            frame = await self.pause(await self.snapshot())
+            self.native_observation = inspected.get("observation")
+            frame = await self.snapshot()
+            if self.pause_provider is not None:
+                controller = await self.call_pause_controller(PAUSE_CONTROLLER_INSPECT, frame)
+                if controller.get("status") != "clock_pause_profile_verified":
+                    raise CampaignStop("pause_controller_profile_not_verified", rejected=True)
+            frame = await self.pause(frame)
             frame = await self.events(frame)
             frame = await self.checkpoint(frame)
             interval = self.config.checkpoint_days * RAW_UNITS_PER_DAY
@@ -447,6 +518,6 @@ class CampaignPolicy:
         return result
 
 
-async def run(client: AsyncClient, config: CampaignConfig) -> dict[str, Any]:
+async def run(client: AsyncClient, config: CampaignConfig, *, pause_provider: AsyncClient | None = None) -> dict[str, Any]:
     """Use only the caller's existing official/queued MCP client and frozen baseline."""
-    return await CampaignPolicy(client, config).run()
+    return await CampaignPolicy(client, config, pause_provider=pause_provider).run()
