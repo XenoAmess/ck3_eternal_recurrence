@@ -1,0 +1,18 @@
+{
+  "source": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\native-preservation-complete.json",
+    "bytes": 832,
+    "sha256": "36FAB1500BD6BF219892CB52447F302077E88E36BFA12D98F1FA8A53D87B8C33"
+  },
+  "copy": {
+    "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\native-preservation-complete.json",
+    "bytes": 832,
+    "sha256": "36FAB1500BD6BF219892CB52447F302077E88E36BFA12D98F1FA8A53D87B8C33"
+  },
+  "complete_process_index": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\retained-process-index-a02.json",
+    "bytes": 335059,
+    "sha256": "9D967E6E5ED3DE727BC9630AD5C0A3B461ABBE42C98A866A9589540FCD70D771"
+  },
+  "originals_modified": false
+}
