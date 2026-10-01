@@ -352,3 +352,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 真实2BFC270读取target/current baseFulfillment Q100000与差值，Od/O2各14checks5actualwire、ABI6body17ins2vt通过。它是base输入，非finalAI desire/scheduler/实际gain；首C4389 harnessRED保留。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\ai\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 16:54:34 Native Rite character and county membership
+
+真实Faith alive collector1C610E0→currentRite精确投影及countycollector1D2B6F0，完整generation IDs；非猜扫。ABI5spans33指令14constants及Od/O2各15checks4wire通过。后续独立mailbox/MCP/paused名单验收待完成，缓存count不是枚举替代。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-rite-governance\organization-members\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
