@@ -7,6 +7,8 @@
 
 ## 导航
 
+- [CK3 1.20.0.2 迁移交付与最终实机证据](../ck3-1.20.0.2-migration-completion.md)
+- [2026-10-01 日报](daily/2026-10-01.md) / [2026-W40 滚动周报](weekly/2026-W40.md)
 - [终极目标、当前能力与完整路线图](goal-and-roadmap.md)
 - [2026-W35 一代人自治 blocker / 能力债账本](one-generation-blocker-ledger.md)
 - [日/周计划会制度与模板](meetings/README.md)
@@ -64,9 +66,10 @@
 
 ## CK3 1.20.0.2 迁移入口（2026-10-01）
 
-新版 exact adapter、完整快照、主线程与各能力族的后台迁移见 [执行记录](../ck3-1.20.0.2-migration.md)，
-ABI、合成 fixture 和实际候选构建证据分别回链其中的原生专题与本机 artifact。新版状态最多为 `static-ready`，
-旧版 live 等级不自动继承；R1/R2/R3、命令后置效果和有界 OODA 仍须新版实机证据。
+新版已完成静态适配、R1、窄 R2、R3 已验能力家族回归和正式登记生产入口实机，见[交付记录](../ck3-1.20.0.2-migration-completion.md)。
+基础查询／时间／保存／冷恢复为 `production-live primitive`，20回合有界自治为窄 `production-live loop`；
+外部领域矩阵与正分持久化／技术换局保持 `fixture-live`。原生专题和冻结artifact从交付页逐项回链，
+全寿命自治、完整combat v3与其他既有能力债保持原边界；[日报](daily/2026-10-01.md)和[周报](weekly/2026-W40.md)记录本次增量。
 
 - [10 月 1 日日报](daily/2026-10-01.md)
 - [2026-W40 滚动周报](weekly/2026-W40.md)

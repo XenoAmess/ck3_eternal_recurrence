@@ -17,9 +17,22 @@ flowchart LR
 中断、并发目标、资源预算和不确定性；从开局选择开始，跨和平、战争、事件、家庭、统治与继承，完成自然统治者生命周期，
 并在普通 campaign 模式跨继承继续。
 
-## 冻结边界与本页口径
+## 2026-10-01 当前构建与迁移结果
 
-- 当前 exact build：CK3 `1.19.0.6`。
+当前 exact build 为 **CK3 1.20.0.2 Crozier / Steam build25588574**；EXE SHA-256
+`AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。
+[迁移交付](../ck3-1.20.0.2-migration-completion.md)已完成R1基础查询／时间／保存／冷恢复、R2的20回合有界自治、
+R3旧已验能力家族回归与正式登记47工具单production mod实机。终极目标保持不变。
+
+新版等级以[R3逐族账本](../ck3-native-ai/ck3-1.20.0.2-r3-capability-comparison.md)为准：基础控制为
+`production-live primitive`，20回合为窄 `production-live loop`；领域外部夹具、三战斗结果与正分结算后继为
+`fixture-live`，没有自然全寿命或fresh-newgame结论。完整combat v3、通用宗教与holy order仍按所有者暂缓。
+日常启动改用[已实测的新版生产入口](../ck3-1.20.0.2-production-activation-prepared.md)；下文旧版checkpoint、runner和
+能力表是历史盘点，不作为新版启动参数或新版live等级来源。最新增量见[10月1日日报](daily/2026-10-01.md)及[W40周报](weekly/2026-W40.md)。
+
+## 旧版冻结边界与历史盘点口径
+
+- 历史 exact build：CK3 `1.19.0.6`。
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - 本页盘点日期：2026-08-27；实现与验收合同盘点基线：`9e9ebbad6475`。
 - 能力明细以
