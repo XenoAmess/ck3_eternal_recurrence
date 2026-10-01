@@ -915,3 +915,11 @@ Eleven frozen central files, explicit60ON4OFF and readonly AI named query. Actua
 Three frozen test and topic files. One new O2/W4/WX owning queue scene with two commands and11checks passed; exact namedcallback only, otherpermits/generic null. Two complete packets match existing generic outputs. No prior matrices repeated or actual game calls. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\ai-inputs-named\final-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 2026-10-01T22:41:24+08:00 Root R9 actual paused migration qualification
+
+Root directly launched CK3 PID101408 and restored h98. Official SDK Tenet, AI inputs/schedule and faction-alert queries succeeded; finite construction quote coverage succeeded, including the previously omitted last empty-slot quote. These are production-live readonly primitives in the actual frame. No formal action, time advancement or Steam focus. G2 remains3/8 and Robert3153/36524. Native/Python minimal proof results and code CI e60a9e7/run36873544705 reused. Owned stop ACK and supervisor exit0 retained.
+
+Full actual details, preserved RED attempts, limitations and next work are in [migration progress](../ck3-1.20.0.2-migration-progress-2026-10-01.md). Five exact owned topic sources, launch preference and daily/weekly text are committed together; no production source or old matrices are changed in this closeout.
+
+R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-nonwar-r9-20261001/state`：driver 399579B、SHA `a9412115299c9adb321cfca432a6c76d46b57cb29cb4310fcfe811028d03e672`，完整history101，latest entry为query-player-faction-alerts-v1；save anchor98及family账本4660B/SHA `efa66451bc784e810e981fd8f7eb482f568364525f930f41ea44a61b0709a9ae`保留。下一轮使用该实际driver，不能使用pre-live prepared ff5e63身份。记录见 `artifacts/g2-offline-2026-10-01/r9-file-only/FINAL-CONTINUATION-RECEIPT.json`，SHA `c77faa3b4db2941248d6436f41643e00e491ebee65c92db4ea58c9199165ead4`。

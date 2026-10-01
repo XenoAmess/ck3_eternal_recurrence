@@ -2803,3 +2803,9 @@ R0123 进一步证实 `_wait_for_readiness` 返回顶层 `played_character_id`�
 将 readiness 字段直接套在 semantic snapshot 上会在无游戏故障时误判 RED。
 修正后的 [R0124 只读 runner](../ck3_autonomous_player/native_bridge/research/run_r0124_h1566_reroute_probe.py)
 先完成 no-launch 配对检查，再用后者的嵌套角色 ID 与存活值核对首帧。
+
+## 直接脚本启动 CK3，不抢 Steam 焦点（2026-10-01）
+
+按用户明确要求，实机 runner 直接启动游戏 `binaries/ck3.exe`，不把 Steam 窗口置前，不点击 Steam 启动按钮。已准备的 native-session 启动计划继续负责 profile、checkpoint、DLL/injector 与所属进程生命周期；不要额外加入 Steam 界面步骤。
+
+R9 已按此方式直接冷启动 PID101408，恢复 h98 后完成暂停只读验收，并通过所属队列正常退出。实际启动 argv 和结果见 `artifacts/g2-offline-2026-10-01/live-run-09/session-attempt-01-result.json`；执行计划见 `artifacts/g2-offline-2026-10-01/r9-file-only/prepared/NEXT-LIVE-PHASES.json`。只读管道查询不需要切换窗口；必须打开原生草案预览时，只由 root 操作该次验收所属的 CK3 窗口。
