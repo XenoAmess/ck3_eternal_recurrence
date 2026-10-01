@@ -105,8 +105,10 @@ tea_setup_and_execute_effect = {
 						}
 					}
 					if = {
-						limit = { NOT = { exists = scope:target } }
-						save_scope_as = target
+						# Vanilla startup can leave a non-title scope named target.
+						# Keep selection private until a legal county/defender pair exists.
+						limit = { NOT = { exists = scope:tea_selected_target } }
+						save_scope_as = tea_selected_target
 						holder = {
 							top_liege = { save_scope_as = secondary_recipient }
 						}
@@ -114,6 +116,11 @@ tea_setup_and_execute_effect = {
 				}
 				remove_character_flag = ted_directed_expansion_authorized
 			}
+		}
+
+		if = {
+			limit = { exists = scope:tea_selected_target }
+			scope:tea_selected_target = { save_scope_as = target }
 		}
 
 		if = {
