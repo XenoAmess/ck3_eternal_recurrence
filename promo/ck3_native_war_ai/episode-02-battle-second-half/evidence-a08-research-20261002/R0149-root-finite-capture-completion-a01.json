@@ -1,0 +1,126 @@
+{
+  "at_utc": "2026-10-01T22:58:37.989992+00:00",
+  "status": "R0149_FINITE_JOIN_AND_COMPLETE_ORIGINAL_UI_CAPTURE_FINISHED",
+  "process_completion_actual_exit_zero": true,
+  "actual_game_and_injector_stopped": true,
+  "actual_original_prior_display_restored": [
+    1024,
+    768
+  ],
+  "fresh_original_steam_offline_pixels_reviewed": true,
+  "screen_resources_released": true,
+  "screen_CAS_original_retirement": "expired-own-claim-released; business_status unresolved_red retained separately from actual completed capture",
+  "same_frame_scope": "Each original PNG separately contains complete stock battle window, relative-force width tooltip, date, pause and all bottom rows; native hook boundaries are distinct instants.",
+  "snapshot_scope": "Before save rev4/native3 versus before frame rev5/native4 are distinct snapshots on the same date; endpoint reconciliation is explicit. After pair rev8/native7.",
+  "original_global_bundle_complete": false,
+  "original_trace_ready": false,
+  "full_game_all_future_states_proven": false,
+  "human_movie_signoff": "not-provided",
+  "exact_inputs": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\current-run-bindings.json",
+      "bytes": 6644,
+      "sha256": "ECF7E94291E4A48695CA2D094A60E370135E7C8F8547DD76567435905366307B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\native-sdk-attempt-01\\completion.json",
+      "bytes": 1229,
+      "sha256": "FDBF09122B7A9B0D544069114C61B6599BF44B796B9F6DFC9DD856F05939A4F8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\cleanup-release-stdout-a01.bin",
+      "bytes": 1601,
+      "sha256": "CC795B0C8EB1022ED4E8A4EC00EDDF8CE2282159696475D977FB829A8722EB42"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\cleanup-release-process-a01.json",
+      "bytes": 686,
+      "sha256": "F13D124181595D994620702F72A287D8BD3C6872D4A6535AD12040F32056D8C4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\display-actual-prior-restoration-a01.json",
+      "bytes": 784,
+      "sha256": "24069C4568EDADF865B8B86CB4A3A348E267045FD3E9391FBDF09C20FEDFC187"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\display-restore-actual-prior-attempt-01\\readback.json",
+      "bytes": 1192,
+      "sha256": "5F9295A996F85554015DC22FDB232D1536FFE76D64CAB72C8535209EFBF6446C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\cleanup-steam-offline-root-review-a01.json",
+      "bytes": 2062,
+      "sha256": "F61A6EF07508EEDC44E878D61C2DB672EE3840CFD7E26B2BBB08C15EEAF57B8B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\R0149-finite-reinforcement-facts-a01.json",
+      "bytes": 21669,
+      "sha256": "A91B333219864C161999FE74D4C6040B05A9EBCBA2D9BB3D9E8C1EC6C3D19819"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\R0149-finite-reinforcement-audit-seal-a01.json",
+      "bytes": 40502,
+      "sha256": "CB92CEF25B3D59C3BF4C658B6BB6C8B1AEFE2FB02300E9D20E1AACFB035D5E9D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-width-window.png",
+      "bytes": 6500669,
+      "sha256": "89C7F68014A58AE742C46C5DE36D60F7F0A3E8F0228C6D7DD8B7523886BCE18A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-width-full-frame-root-review.json",
+      "bytes": 2577,
+      "sha256": "007630A4A654FFA5832926BC224B099D5D66D8F2A0BD81F7B098A2D78CAD1381"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-width-verified-reviewed-frame-verification.json",
+      "bytes": 2373372,
+      "sha256": "0A80D57250EDB52D757CB8F95C3A9B951FFD659441E892DD26E0E022BFC998A5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+      "bytes": 52411731,
+      "sha256": "CE1DFEA972D4C5A2E48A9A3E8427501E3F7B1D5ED2E3A83CAC7759A28DAF819D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+      "bytes": 4486,
+      "sha256": "777F26AF0226D8B5D5FAE5FC35D7149801AF084B3A6CA67443188AA7FD9C86D3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-width-window.png",
+      "bytes": 6504125,
+      "sha256": "C7F9D9451DFC7DE03143C4AE74BBDA0EAD102C0EE0293B40C6E4FAE06CA0842F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-width-full-frame-root-review.json",
+      "bytes": 2576,
+      "sha256": "E1035CE39885F6269D5F0BBE7E1B018F3B73C7F95BCA206825F96190C6C8FCC0"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-width-verified-reviewed-frame-verification.json",
+      "bytes": 4867132,
+      "sha256": "11E8A898B7453ECFC468619F92F501462FE4749D3D2E309CE8823106342BE42A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+      "bytes": 52390330,
+      "sha256": "CB76F1D7DD338C510A684E6C75DAE8A72703373037A41E011FC277AFAA621F85"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+      "bytes": 4510,
+      "sha256": "08F4A0C50F0B881BCB737AC149D2C3FB70467AFC6DCC379DF1197DC4B53B28B1"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\one-day-finished.json",
+      "bytes": 440252,
+      "sha256": "BACAB03B76D000B6E7A461BABD580A03714987CD4F6B5E991E0115B2367FB2DB"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\ck3-output\\capture-report.json",
+      "bytes": 9239,
+      "sha256": "569E9363D0B57F019CAF1401278477A428ACC96F190556AB84DB21FB6274F66F"
+    }
+  ]
+}

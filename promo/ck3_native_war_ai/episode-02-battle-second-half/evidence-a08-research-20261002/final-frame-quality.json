@@ -1,0 +1,75 @@
+{
+  "at_utc": "2026-10-01T23:09:05.676125+00:00",
+  "reviewer": "/root",
+  "verdict": "PASS_PENDING_HUMAN_REVIEW",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\CK3-War-AI-Episode02-BrownGold-Research-20261002-a08.mp4",
+    "bytes": 232268593,
+    "sha256": "CFF09685022C148C7300D56DB636A75D45A4054416440FB05D5E4F641C3B3AD4",
+    "duration_expected": 1838.8,
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "whole_previous_AAC_reused": false,
+    "status": "pending-machine-check-and-human-full-review"
+  },
+  "reviewed_contact_sheets": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-01.jpg",
+      "bytes": 402384,
+      "sha256": "6C35AD2C1664CFAA40C395153B3DF1DA6F7960F2BD620A31B62969E998CDC22E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-02.jpg",
+      "bytes": 434933,
+      "sha256": "B5F38668D1C38335C9868187A74276E0627193CFE79CE40B50ADC91884320217"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-03.jpg",
+      "bytes": 440274,
+      "sha256": "F3792730C58AA57163EE2F977D2C2806015C95CFAD38B4B137F23248051BC51F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-04.jpg",
+      "bytes": 451895,
+      "sha256": "39728780AF4A70D1AD31692426EEC1A5784918B337E63BB4179DF0189F13AEA5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-05.jpg",
+      "bytes": 451064,
+      "sha256": "E6764E975E4BD5C97604DED38EC848EDCAAD68E6B9F8C679504AAD2A5FB2EE4A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-06.jpg",
+      "bytes": 431566,
+      "sha256": "89620967B3D75BE326D11FCC85A4D18B842C02D6E2C57D8D1B859155E8B7B99D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-07.jpg",
+      "bytes": 414021,
+      "sha256": "2C705FBFC95333802CF49F72AA01D0517E48561653497F685FE36437A4DB7DD0"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-08.jpg",
+      "bytes": 523271,
+      "sha256": "A55DBAD5F5B8F65F4AA09BFA6430004DA253317D3EFE658E49CF022354DC96E3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\contact-09.jpg",
+      "bytes": 312360,
+      "sha256": "AA4B4C45C6673E9A592D20D41E65CDD9061667E4CCD95E63CF5D82D98E922EFD"
+    }
+  ],
+  "reviewed_final_frame_count": 34,
+  "original_packaging_focus_frames_actually_viewed": true,
+  "brown_gold_matches_war_series": true,
+  "changed_diagram_text_and_bilingual_subtitles_visible": true,
+  "character_pages_and_four_complete_rosters_visible": true,
+  "R149_complete_battle_and_width_tooltip_visible": true,
+  "historical_A01_and_current_R149_transition_explicit": true,
+  "historical_a02_inset_visible_at_plus_0_5s_and_absent_at_plus_3s": true,
+  "full_1x_human_viewing": false,
+  "full_listening_performed": false,
+  "human_signoff": "not-provided",
+  "production_clean_admission": false,
+  "scope": "Root directly viewed 9 contact sheets covering 34 actual final frames; limited pixel/packaging check only."
+}

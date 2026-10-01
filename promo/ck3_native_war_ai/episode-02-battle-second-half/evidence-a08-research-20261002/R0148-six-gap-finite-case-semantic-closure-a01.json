@@ -1,0 +1,3058 @@
+{
+  "schema": "ck3.R0148.root-finite-six-gap-semantic-closure/v1",
+  "at_utc": "2026-10-01T21:25:46.801736+00:00",
+  "reviewer": "/root",
+  "status": "CLOSED_SIX_REQUESTED_GAPS_FOR_DECLARED_FINITE_CURRENT_CASE",
+  "scope": "R0148 controlled one-day event11 for victim33437/killer34120/combat16777218, relevant original branches and observed derived signature notification; original before/after UI.",
+  "runtime": {
+    "schema": "ck3.e2.explicit-current-research-binding/v1",
+    "created_at_utc": "2026-10-01T20:30:12.615869+00:00",
+    "source_root": "C:\\w\\e2cap1001i",
+    "source_commit": "431461d6841604ebd19e65670661ca2a732dbff8",
+    "live_root": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0148",
+    "native_session_binding": {
+      "episode_run_id": "native-29829-ecf54ba37d29",
+      "connection_generation": 1,
+      "bridge_pid": 13108,
+      "native_hello_session_generation": 0
+    },
+    "bridge_dll": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bridge_injector": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+    "before_date_raw": 53146848,
+    "after_date_raw": 53146872,
+    "actor_id": 29829,
+    "war_id": 4,
+    "public_unit_id": 18,
+    "combat_id": 16777218,
+    "victim_id": 33437,
+    "killer_id": 34120,
+    "event_load_index": 11,
+    "managed_daily_sequence_token": 458466972829638162,
+    "monitor_sequence_token": 458466972829656045,
+    "pins": [
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\new-build-observation-preparation-a01.json",
+        "bytes": 23894,
+        "sha256": "1D55B3F144BF32ACFEBD0D1E00D2DC6F0D27440721D26CA57DCC497C8C69F72B"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\run_mapped_pointer_move_a01.py",
+        "bytes": 3614,
+        "sha256": "CFEB8DC04F87998A77E228BE4EFCF1B1C999ACBE3BE7314CDA70A2442EAFDB6C"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\verify_closed_display_current_battle_a01.py",
+        "bytes": 2670,
+        "sha256": "199E2FBD7D8CB740BE7CCB4AD6F233A82AA5436DBDEA22CDF794AA6B2EAF6D39"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\focus_current_game_hwnd_a02.py",
+        "bytes": 2641,
+        "sha256": "CEF388D0B958B12375D2B914CE0E7A35FE9DEBE27A0ED44A38ACA6F27190070B"
+      },
+      {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\native-start-readback.json",
+        "bytes": 31344,
+        "sha256": "13E8032844CA9E5C8AA2E16970A1CAE1FED00C716932EDA5BF0DAB7CB7B59ABC"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\candidate-manifest.json",
+        "bytes": 3014,
+        "sha256": "C0D70ECDBB157670F35992F103A59790EBCBF741F3F48F36F76C46E4F1CF69AC"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\new-capture-launch-plan.json",
+        "bytes": 3509,
+        "sha256": "BE46A7951B34792BD80EC172CB464E8D7833FF2C762A08A354C7B1DB83FDEF63"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\scoped_ui_research_a09.py",
+        "bytes": 35122,
+        "sha256": "E51DC8EE492815EDB79A31FB1C84B70D8826D8FC1B3EEA3EC70582D7955D0F36"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\advance_and_drain_immediately_a16.py",
+        "bytes": 8472,
+        "sha256": "4852D11336A671BA7C5DE287CAB11FFADE39D196D715823C528A6E3A1136E632"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\run_required_core_ui_a13.py",
+        "bytes": 3685,
+        "sha256": "CFC326F983075003377B91710B2568A0B14F585A47477748629023A104F6D666"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\preserve_paused_ui_checkpoint_a08.py",
+        "bytes": 5242,
+        "sha256": "45C842A5A8052008112164E65481418C11DDC3DC4C93B4725B372D22621069B6"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\capture_desktop_hover_source_a02.py",
+        "bytes": 2799,
+        "sha256": "92F82E661D1BD0B58E7B2AD625DE73B39B637E823B512A75195266ECB0D6EB35"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\run_logged_mode_a02.py",
+        "bytes": 2028,
+        "sha256": "566B9D72C2B6AFB66B88D236483D07981FC82D5E97C1F91EE32C6B4E43D8595C"
+      },
+      {
+        "path": "C:\\w\\e2cap1001i\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+        "bytes": 122365,
+        "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+      },
+      {
+        "path": "C:\\w\\e2cap1001i\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+        "bytes": 32113,
+        "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+      },
+      {
+        "path": "C:\\w\\e2cap1001i\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+        "bytes": 15355,
+        "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+        "bytes": 3591168,
+        "sha256": "0189FA3C83B07379ED75467988C4394D02D457BAAA01DBB2ED646ADDE2730857"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "8E98613D32C06A69C023AD01C97D89526E86EF6167CB9209AA5AD9EB9EE31E7E"
+      },
+      {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\preflight.json",
+        "bytes": 21193,
+        "sha256": "EF04FF88CFFA39322C92885FB4AA3C0D64FE03890CD7FD4268E402F8E31AA6C9"
+      },
+      {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\live-run-identity.json",
+        "bytes": 553,
+        "sha256": "BDF9362621D838C6DE51B2F1E94C1CA40D651605CC4ED16F2464BE5D1506AC9B"
+      },
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+        "bytes": 52880496,
+        "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+      }
+    ],
+    "display_closed_observation_condition": "planned; actual hidden-state and mainbefore proof required before BEGIN",
+    "prior_R0139_is_provenance_only": true,
+    "no_prior_sample_fills_current_fields": true,
+    "video_revision_started": false,
+    "human_movie_signoff": false
+  },
+  "root_decision_is_separate_from_original_machine_flags": true,
+  "all_original_reports_preserved_unmodified": true,
+  "six_gap_items": [
+    {
+      "item": "knight_next_day_character_UI",
+      "status": "closed",
+      "evidence": [
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+            "bytes": 389917,
+            "sha256": "9A462FFC31009F2FDE4D2BCCA3FA58AC9B1EF31FED7C3720A4C7992B4899802A"
+          },
+          "actual_fields": [
+            "reviewed_images",
+            "source_values"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+            "bytes": 103481,
+            "sha256": "4FF3E94178DC880E31CC2E94D1771393403B35558DC80CE9B3DE94657DB5FB67"
+          },
+          "actual_fields": [
+            "reviewed_images",
+            "source_values"
+          ]
+        }
+      ]
+    },
+    {
+      "item": "full_roster_change_UI_and_native_identity",
+      "status": "closed",
+      "evidence": [
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+            "bytes": 389917,
+            "sha256": "9A462FFC31009F2FDE4D2BCCA3FA58AC9B1EF31FED7C3720A4C7992B4899802A"
+          },
+          "actual_fields": [
+            "reviewed_images"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+            "bytes": 103481,
+            "sha256": "4FF3E94178DC880E31CC2E94D1771393403B35558DC80CE9B3DE94657DB5FB67"
+          },
+          "actual_fields": [
+            "reviewed_images"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-finite-entry-domain-conclusion-a01.json",
+            "bytes": 8071,
+            "sha256": "DA3DDD1CC7C746E134D1BF992DB107AB64A7A8C7261823D3446E2E2D113D4757"
+          },
+          "actual_fields": [
+            "finite_entry_domain"
+          ]
+        }
+      ]
+    },
+    {
+      "item": "complete_original_battle_window",
+      "status": "closed",
+      "evidence": [
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+            "bytes": 389917,
+            "sha256": "9A462FFC31009F2FDE4D2BCCA3FA58AC9B1EF31FED7C3720A4C7992B4899802A"
+          },
+          "actual_fields": [
+            "full_panel_original_image",
+            "open_panel_original_binding"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+            "bytes": 103481,
+            "sha256": "4FF3E94178DC880E31CC2E94D1771393403B35558DC80CE9B3DE94657DB5FB67"
+          },
+          "actual_fields": [
+            "full_panel_original_image",
+            "current_native_combat_body"
+          ]
+        }
+      ]
+    },
+    {
+      "item": "full_original_knight_selector",
+      "status": "closed",
+      "evidence": [
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+            "bytes": 8495916,
+            "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+          },
+          "actual_fields": [
+            "scoped_journal_validation/selector_filter_replay",
+            "all_original_trace_nonrecord_fields/knight_selects"
+          ]
+        }
+      ],
+      "RNG_limit": "Raw counter/salt/index are original observations; draw1400813912 is exact-algorithm recomputation, not a published direct draw field."
+    },
+    {
+      "item": "unique_related_death_path_in_controlled_window",
+      "status": "closed",
+      "evidence": [
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+            "bytes": 8495916,
+            "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+          },
+          "actual_fields": [
+            "scoped_journal_validation"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\monitor-direct-named-additive-verification.json",
+            "bytes": 66723,
+            "sha256": "BC4B6950C2BFC5D6E89B3561AFCB5510817C78433D7B6FF0C447DCA4818ECD8C"
+          },
+          "actual_fields": [
+            "direct_chain_projection"
+          ]
+        }
+      ],
+      "scope_limit": "One captured related request/enqueue/commit for33437; not a claim that CK3 has only one death cause."
+    },
+    {
+      "item": "complete_declared_finite_13_domain_case_chain",
+      "status": "closed",
+      "evidence": [
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+            "bytes": 8495916,
+            "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+          },
+          "actual_fields": [
+            "entire independently reviewed finite projection"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\knight-variable-monitor-run-verification.json",
+            "bytes": 70549,
+            "sha256": "9628BF75FA12AA3E16A621FACBA091A09EEAAA2DF079086839FA5A983F821B5B"
+          },
+          "actual_fields": [
+            "entire independently reviewed finite projection"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\monitor-direct-named-additive-verification.json",
+            "bytes": 66723,
+            "sha256": "BC4B6950C2BFC5D6E89B3561AFCB5510817C78433D7B6FF0C447DCA4818ECD8C"
+          },
+          "actual_fields": [
+            "entire independently reviewed finite projection"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-finite-entry-domain-conclusion-a01.json",
+            "bytes": 8071,
+            "sha256": "DA3DDD1CC7C746E134D1BF992DB107AB64A7A8C7261823D3446E2E2D113D4757"
+          },
+          "actual_fields": [
+            "entire independently reviewed finite projection"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\current-finite-growth-accolade-projection.json",
+            "bytes": 1041397,
+            "sha256": "9BD969A03807AA2ED9549F136B5D9469457AA9326871676D47CF2BB22535084C"
+          },
+          "actual_fields": [
+            "entire independently reviewed finite projection"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\R0148-finite-growth-accolade-final-receipt-a12.json",
+            "bytes": 82174,
+            "sha256": "4FCEB6A29950E7E968A943743E051C124840040B556D7898CA1323AB6CA2C4E8"
+          },
+          "actual_fields": [
+            "entire independently reviewed finite projection"
+          ]
+        }
+      ],
+      "domains": [
+        {
+          "domain": "skills",
+          "status": "closed",
+          "time_resolution": "branch-no-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Selected growth entry56 is empty and followup57 does not dispatch; three raw character stats remain separate from six saved base skills and effective entry stats.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\current-finite-growth-accolade-projection.json",
+                "bytes": 1041397,
+                "sha256": "9BD969A03807AA2ED9549F136B5D9469457AA9326871676D47CF2BB22535084C"
+              },
+              "actual_fields": [
+                "actual_named_growth_role",
+                "four_saved_character_XP_skill_traits"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "original_scoped_transition_chain"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "trait_set",
+          "status": "closed",
+          "time_resolution": "branch-no-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Full stored trait order at all184 boundaries and four saves; actual growth/injury/death tree with exact writer inventory excludes a trait write in this finite event.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\current-finite-growth-accolade-projection.json",
+                "bytes": 1041397,
+                "sha256": "9BD969A03807AA2ED9549F136B5D9469457AA9326871676D47CF2BB22535084C"
+              },
+              "actual_fields": [
+                "all_actual_boundary_full_XP_mappings",
+                "four_saved_character_XP_skill_traits",
+                "source_pins"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "original_scoped_transition_chain"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "trait_tracks",
+          "status": "closed",
+          "time_resolution": "branch-no-write + operation-before-after + endpoint",
+          "root_semantic_reason": "301 current loaded definitions map both complete real one-element XP arrays[0]; no growth XP write on the selected actual branch.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\current-finite-growth-accolade-projection.json",
+                "bytes": 1041397,
+                "sha256": "9BD969A03807AA2ED9549F136B5D9469457AA9326871676D47CF2BB22535084C"
+              },
+              "actual_fields": [
+                "complete_loaded_XP_mapping_closed",
+                "all_actual_boundary_full_XP_mappings",
+                "actual_named_growth_role"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "death_date_reason_killer_artifact",
+          "status": "closed",
+          "time_resolution": "actual-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Direct six original parameters, one victim request/enqueue/commit, marker false to true and save date/reason/killer. Artifact pointer is nonnull with original invalid ID-1; no positive saved artifact field is invented.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "scoped_journal_validation",
+                "saved_states"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\monitor-direct-named-additive-verification.json",
+                "bytes": 66723,
+                "sha256": "BC4B6950C2BFC5D6E89B3561AFCB5510817C78433D7B6FF0C447DCA4818ECD8C"
+              },
+              "actual_fields": [
+                "direct_chain_projection"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "prestige_currency_and_accumulated",
+          "status": "closed",
+          "time_resolution": "actual-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Original prestige leaf52 targets34120, currency and accumulated extension values each increase15000000; exact execute/save anchors establish both meanings.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "original_scoped_transition_chain",
+                "saved_states",
+                "complete_character_deltas"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "regiment_link_and_membership",
+          "status": "closed",
+          "time_resolution": "operation-before-after + endpoint + original UI",
+          "root_semantic_reason": "Regiment65 is removed by deferred commit after casualties; complete active entries69 to68 and original visible side roster11 to10 are distinct denominators. Full-generation reciprocal unit/army/owner mappings agree.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-finite-entry-domain-conclusion-a01.json",
+                "bytes": 8071,
+                "sha256": "DA3DDD1CC7C746E134D1BF992DB107AB64A7A8C7261823D3446E2E2D113D4757"
+              },
+              "actual_fields": [
+                "finite_entry_domain",
+                "army_unit_owner_map"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+                "bytes": 389917,
+                "sha256": "9A462FFC31009F2FDE4D2BCCA3FA58AC9B1EF31FED7C3720A4C7992B4899802A"
+              },
+              "actual_fields": [
+                "reviewed_images"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+                "bytes": 103481,
+                "sha256": "4FF3E94178DC880E31CC2E94D1771393403B35558DC80CE9B3DE94657DB5FB67"
+              },
+              "actual_fields": [
+                "reviewed_images"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "entry_current_soft_stats_and_owner_hard",
+          "status": "closed",
+          "time_resolution": "operation-before-after + endpoint",
+          "root_semantic_reason": "Seven phase edges and12 complete entry/cache reads reconcile two casualty calls and six actual owners. Initial41 effective-stat refresh differences are retained outside this finite event11 write interval.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-finite-entry-domain-conclusion-a01.json",
+                "bytes": 8071,
+                "sha256": "DA3DDD1CC7C746E134D1BF992DB107AB64A7A8C7261823D3446E2E2D113D4757"
+              },
+              "actual_fields": [
+                "finite_entry_domain",
+                "casualty_operation_summary",
+                "phase_cross_read_checks"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-current-causal-entry-owner-audit-final-seal-a01.json",
+                "bytes": 87469,
+                "sha256": "80BEDE1705EF1DB064BFD8C883859C383B3DCBB013B70DEED4519D9C13ED98AF"
+              },
+              "actual_fields": [
+                "assets"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "battle_event_ledger",
+          "status": "closed",
+          "time_resolution": "actual-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Actual bound BattleEvent node/context appends type3/side1 row victim33437/killer34120; full ledger before/after and original save agree.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "original_scoped_transition_chain",
+                "all_original_phase_records",
+                "all_saved_case_combat_deltas"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "slain_side_knights",
+          "status": "closed",
+          "time_resolution": "actual-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Original side owner/key5786 requests typed[4,33437] expiry-1; full list absent to one item. Saved duration metadata1 is vector count rather than TTL.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "original_scoped_transition_chain",
+                "slain_side_knights_saved_list_validation"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "killer_kills",
+          "status": "closed",
+          "time_resolution": "operation-before-after + endpoint",
+          "root_semantic_reason": "Same death commit87 changes actual killer34120 kills vector from empty to[33437]; original setter/append static call anchor and complete saved block bind this transition.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "original_scoped_transition_chain",
+                "complete_character_deltas"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "signature_weapon",
+          "status": "closed",
+          "time_resolution": "actual-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Actual writer3 sets34120 signature_weapon to axe under death_management.1202. Four independent named dead_character reads resolve33437; receiver38574 stays distinct. Before/after UI checkpoint RNG deltas0; daily global RNG949 is retained.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\knight-variable-monitor-run-verification.json",
+                "bytes": 70549,
+                "sha256": "9628BF75FA12AA3E16A621FACBA091A09EEAAA2DF079086839FA5A983F821B5B"
+              },
+              "actual_fields": [
+                "actual_monitor_projection/actual_write_pairs",
+                "same_run_saved_endpoint_comparisons"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\monitor-direct-named-additive-verification.json",
+                "bytes": 66723,
+                "sha256": "BC4B6950C2BFC5D6E89B3561AFCB5510817C78433D7B6FF0C447DCA4818ECD8C"
+              },
+              "actual_fields": [
+                "original_monitor_projection/named_scope_projection"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-actual-operation-and-UI-boundary-addendum-a01.json",
+                "bytes": 29795,
+                "sha256": "C824F5B45162433E262C85BB17318D915F32E5D4E9370337C3EA8DDA8C86175A"
+              },
+              "actual_fields": [
+                "entire actual report"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\notification-script-anchors-a01\\source-anchor-receipt.json",
+                "bytes": 7127,
+                "sha256": "B07C3ADB64CD59FB134597952C79CF116AADA5AB0A57A846373F720DB2A4EEBB"
+              },
+              "actual_fields": [
+                "entire source anchor receipt"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "house_relation",
+          "status": "closed",
+          "time_resolution": "branch-no-write + operation-before-after + endpoint",
+          "root_semantic_reason": "Actual house[1105,1053] default_house_relation guard returns false. Exact complete tree/writer inventory and relevant pair endpoints exclude a create/write. Specific failed child predicate remains UNKNOWN.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\knight-variable-monitor-run-verification.json",
+                "bytes": 70549,
+                "sha256": "9628BF75FA12AA3E16A621FACBA091A09EEAAA2DF079086839FA5A983F821B5B"
+              },
+              "actual_fields": [
+                "actual_monitor_projection/original_house_predicate_pairs"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\current-finite-growth-accolade-projection.json",
+                "bytes": 1041397,
+                "sha256": "9BD969A03807AA2ED9549F136B5D9469457AA9326871676D47CF2BB22535084C"
+              },
+              "actual_fields": [
+                "actual_named_scripted_projection",
+                "source_pins"
+              ]
+            },
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+                "bytes": 8495916,
+                "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+              },
+              "actual_fields": [
+                "all_house_database_deltas"
+              ]
+            }
+          ]
+        },
+        {
+          "domain": "accolade_feedback_branch",
+          "status": "closed",
+          "time_resolution": "branch-no-write + endpoint",
+          "root_semantic_reason": "Actual inline59/83/84 do not dispatch, optional is genuinely null; relevant liege/employer29829/32725 and complete Accolade125/128 records agree in all four saves. Foreign146/323 ten real leaf changes are preserved.",
+          "evidence": [
+            {
+              "artifact": {
+                "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\current-finite-growth-accolade-projection.json",
+                "bytes": 1041397,
+                "sha256": "9BD969A03807AA2ED9549F136B5D9469457AA9326871676D47CF2BB22535084C"
+              },
+              "actual_fields": [
+                "actual_inline_accolade_liege_roles",
+                "outer_CIf_original_child_loop",
+                "four_complete_relevant_accolade_records",
+                "foreign_to_current_saved_accolade_set_deltas"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "closed_count": 6,
+  "total_count": 6,
+  "research_percentage_for_these_six_gaps": 100,
+  "finite_13_domain_case_chain_closed": true,
+  "unique_related_death_path_in_controlled_window_closed": true,
+  "global_mutable_bundle_complete": false,
+  "all_day_notification_growth_accolade_write_set_closed": false,
+  "all_CK3_death_causes_or_future_state_space_complete": false,
+  "house_guard_specific_child_failure": "UNKNOWN",
+  "initial_effective_stat_refresh_original_callee": "NOT_DIRECTLY_OBSERVED_OUTSIDE_THIS_FINITE_CASE_WRITE_SET",
+  "nonzero_save_XP_serializer_scale": "UNKNOWN",
+  "positive_death_artifact_save_key_ABI": "UNSUPPORTED_NOT_INFERRED",
+  "main_C05_post_snapshot": "NOT_PUBLISHED_NOT_BACKFILLED",
+  "reinforcement_full_same_frame_new_capture": "PENDING_SEPARATE_VIDEO_VISUAL_DELIVERABLE",
+  "video_optimized_with_this_new_research": false,
+  "human_movie_1x_review_or_signoff": false,
+  "master_intake_or_integration": false,
+  "all_exact_input_pins_verified_twice": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\current-run-bindings.json",
+      "bytes": 7003,
+      "sha256": "61910E0BC933FBDB20F44DB290075642EF93AE883CE593C96BFFAB0A0A2BD1C2"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\docs\\ck3-native-ai\\knight-killed-case-closure-contract-2026-10-01.md",
+      "bytes": 8429,
+      "sha256": "A25932FCCF3A4F7A8B2934E23C821759DB6051BC59BB3EC397EBD24DBACBC47B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\R0148-current-capture-root-stop-seal-a01.json",
+      "bytes": 8292,
+      "sha256": "ED456F2AFC4B9A5B14AFF922DFD9AE31B513CFE5BFEF2B3FF4CC08B8B4F98612"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+      "bytes": 389917,
+      "sha256": "9A462FFC31009F2FDE4D2BCCA3FA58AC9B1EF31FED7C3720A4C7992B4899802A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+      "bytes": 103481,
+      "sha256": "4FF3E94178DC880E31CC2E94D1771393403B35558DC80CE9B3DE94657DB5FB67"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\knight-causal-run-verification.json",
+      "bytes": 8495916,
+      "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\knight-variable-monitor-run-verification.json",
+      "bytes": 70549,
+      "sha256": "9628BF75FA12AA3E16A621FACBA091A09EEAAA2DF079086839FA5A983F821B5B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-finite-entry-domain-conclusion-a01.json",
+      "bytes": 8071,
+      "sha256": "DA3DDD1CC7C746E134D1BF992DB107AB64A7A8C7261823D3446E2E2D113D4757"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-current-causal-entry-owner-audit-final-seal-a01.json",
+      "bytes": 87469,
+      "sha256": "80BEDE1705EF1DB064BFD8C883859C383B3DCBB013B70DEED4519D9C13ED98AF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-actual-operation-and-UI-boundary-addendum-a01.json",
+      "bytes": 29795,
+      "sha256": "C824F5B45162433E262C85BB17318D915F32E5D4E9370337C3EA8DDA8C86175A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\monitor-direct-named-additive-verification.json",
+      "bytes": 66723,
+      "sha256": "BC4B6950C2BFC5D6E89B3561AFCB5510817C78433D7B6FF0C447DCA4818ECD8C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\current-finite-growth-accolade-projection.json",
+      "bytes": 1041397,
+      "sha256": "9BD969A03807AA2ED9549F136B5D9469457AA9326871676D47CF2BB22535084C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\current-finite-growth-accolade-projection.json",
+      "bytes": 1041420,
+      "sha256": "AFF478041BE16DEE089FC8FD82B6B139BC99AB8D376FB911194388A18CF5EFF3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\R0148-finite-growth-accolade-final-receipt-a12.json",
+      "bytes": 82174,
+      "sha256": "4FCEB6A29950E7E968A943743E051C124840040B556D7898CA1323AB6CA2C4E8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\notification-script-anchors-a01\\source-anchor-receipt.json",
+      "bytes": 7127,
+      "sha256": "B07C3ADB64CD59FB134597952C79CF116AADA5AB0A57A846373F720DB2A4EEBB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\new-build-observation-preparation-a01.json",
+      "bytes": 23894,
+      "sha256": "1D55B3F144BF32ACFEBD0D1E00D2DC6F0D27440721D26CA57DCC497C8C69F72B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\run_mapped_pointer_move_a01.py",
+      "bytes": 3614,
+      "sha256": "CFEB8DC04F87998A77E228BE4EFCF1B1C999ACBE3BE7314CDA70A2442EAFDB6C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\verify_closed_display_current_battle_a01.py",
+      "bytes": 2670,
+      "sha256": "199E2FBD7D8CB740BE7CCB4AD6F233A82AA5436DBDEA22CDF794AA6B2EAF6D39"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\focus_current_game_hwnd_a02.py",
+      "bytes": 2641,
+      "sha256": "CEF388D0B958B12375D2B914CE0E7A35FE9DEBE27A0ED44A38ACA6F27190070B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\native-start-readback.json",
+      "bytes": 31344,
+      "sha256": "13E8032844CA9E5C8AA2E16970A1CAE1FED00C716932EDA5BF0DAB7CB7B59ABC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\candidate-manifest.json",
+      "bytes": 3014,
+      "sha256": "C0D70ECDBB157670F35992F103A59790EBCBF741F3F48F36F76C46E4F1CF69AC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\new-capture-launch-plan.json",
+      "bytes": 3509,
+      "sha256": "BE46A7951B34792BD80EC172CB464E8D7833FF2C762A08A354C7B1DB83FDEF63"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\scoped_ui_research_a09.py",
+      "bytes": 35122,
+      "sha256": "E51DC8EE492815EDB79A31FB1C84B70D8826D8FC1B3EEA3EC70582D7955D0F36"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\advance_and_drain_immediately_a16.py",
+      "bytes": 8472,
+      "sha256": "4852D11336A671BA7C5DE287CAB11FFADE39D196D715823C528A6E3A1136E632"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\run_required_core_ui_a13.py",
+      "bytes": 3685,
+      "sha256": "CFC326F983075003377B91710B2568A0B14F585A47477748629023A104F6D666"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\preserve_paused_ui_checkpoint_a08.py",
+      "bytes": 5242,
+      "sha256": "45C842A5A8052008112164E65481418C11DDC3DC4C93B4725B372D22621069B6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\capture_desktop_hover_source_a02.py",
+      "bytes": 2799,
+      "sha256": "92F82E661D1BD0B58E7B2AD625DE73B39B637E823B512A75195266ECB0D6EB35"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\run_logged_mode_a02.py",
+      "bytes": 2028,
+      "sha256": "566B9D72C2B6AFB66B88D236483D07981FC82D5E97C1F91EE32C6B4E43D8595C"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+      "bytes": 122365,
+      "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+      "bytes": 3591168,
+      "sha256": "0189FA3C83B07379ED75467988C4394D02D457BAAA01DBB2ED646ADDE2730857"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "8E98613D32C06A69C023AD01C97D89526E86EF6167CB9209AA5AD9EB9EE31E7E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\preflight.json",
+      "bytes": 21193,
+      "sha256": "EF04FF88CFFA39322C92885FB4AA3C0D64FE03890CD7FD4268E402F8E31AA6C9"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\live-run-identity.json",
+      "bytes": 553,
+      "sha256": "BDF9362621D838C6DE51B2F1E94C1CA40D651605CC4ED16F2464BE5D1506AC9B"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+      "bytes": 52880496,
+      "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\actual-full-build-root-seal-a01.json",
+      "bytes": 6333,
+      "sha256": "58C8408F5FC5B20795E6D157D9F5CDA22803A6C15A7B793539A3ED21E746E54B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\native-sdk-attempt-01\\completion.json",
+      "bytes": 1188,
+      "sha256": "30B8F99A4D04F6C78F7A8AB386E5D87193668A6F35703F565C56C711E3A098BF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\one-day-finished.json",
+      "bytes": 2422479,
+      "sha256": "30A2654761CADEAAEFC2272D1ACE3E65FC896DFBD7F91848BCDFBE65CC671A01"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\variable-monitor-begin.json",
+      "bytes": 97058,
+      "sha256": "9410A2852A74D22CE8575D0624693C1F22DF08DB414A7F645EF55BB457A9B584"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\variable-monitor-finish.json",
+      "bytes": 338619,
+      "sha256": "BBC49B486FDD87BD5250B4BDFA7FD1504DD4CF90B2C26EBE85A417903C13CB3F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\scoped-a12-chain-finish-once.json",
+      "bytes": 2422164,
+      "sha256": "60B204FDB8E7BFC8ACE17BFFF7B6579904F6DD0DC32A5C19F95A75FCFDFC3589"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\restore-and-release-attempt-01\\display-restore-process.json",
+      "bytes": 1175,
+      "sha256": "4CE1CF62BBB75D8E3E2B468E135A7CC4D708F082357DD58128195BC903718CFE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\restore-and-release-attempt-01\\screen-release-CAS.json",
+      "bytes": 2143,
+      "sha256": "BA9027052E7343C731C69CB84092E069EF3CD99E349DC55C7585D157EE1A6499"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\restore-and-release-attempt-01\\display-restore\\readback.json",
+      "bytes": 1200,
+      "sha256": "6BC720F651E39857B1CB22A7EE092CD4EAFCB761A7E6793BAAFE4F9CD8B119E4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\restore-and-release-attempt-01\\display-restore\\original-desktop-after-mode.png",
+      "bytes": 597681,
+      "sha256": "4F7056368884017B285CF5E6C0E35B9727651CAD624D2301AC8183DB99231255"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-optional-recursive-live-root-a01\\collection.json",
+      "bytes": 29256,
+      "sha256": "1E6145E8AC1F0DD9DFA340D36390C0B40D24069F9AC9F95A700285CF1AA2A1FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-optional-recursive-live-root-a01\\post-verification.json",
+      "bytes": 1560,
+      "sha256": "3A5414B696E19ACBF965048A9FFEB93F1FCA3059FA3ACC931A02577E613F4578"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-saved-pair.json",
+      "bytes": 6043,
+      "sha256": "AA721CD6AC8F0643082A53B84CFAC770CD723F7B58376848821EC1BC307BA3FC"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+      "bytes": 4634,
+      "sha256": "AD0A71FE7242749EE3C4E86046F5684FC83771165ED563A21390167B369D6079"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-saved-pair.json",
+      "bytes": 6040,
+      "sha256": "1C2E157612F824F3D40F77821A388DF6EC463DC36C74F416B7A60AD21067E82B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+      "bytes": 4601,
+      "sha256": "E7529890CFC8462172FEA7D738981771AD4995B73FBBCF866CB7174B2BACC3D1"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52881742,
+      "sha256": "5B6C2747EAB0723C8BCC804CCFD9E7CEFA21CEF7422D57D09838D93D736EF742"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+      "bytes": 52888510,
+      "sha256": "0111DD4308BA945A55FFD324DBD7C9925D6F36C03F53C306B1DF7F0CEE968349"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52804634,
+      "sha256": "617898B0BA824D29139626A3E9F2CA1EA98182010F3D9A646DA6351D827E916E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+      "bytes": 52804634,
+      "sha256": "7FBDEB9450091DFD709D770BF4DEDA71CD7F2C0F12366FEA153E4892A4A19268"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-victim-character-window.png",
+      "bytes": 6135443,
+      "sha256": "56416C004CBF49F8B78F2A517362F445FC7479CE474DA4C5B43926A47F9B6DF9"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-killer-character-window.png",
+      "bytes": 6076786,
+      "sha256": "AC6D8685B898DC2D60CB6D063EC01717AE16206732333BBD359ADD058CC64F3E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-combat-fit-window.png",
+      "bytes": 6200698,
+      "sha256": "9835E6B57604952F201AB3CCC31B615702294DF941E80986F8204B5C3A268A8E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-left-roster-desktop-original.png",
+      "bytes": 5080415,
+      "sha256": "1AA58D2B4A7AFE19F1F13EFDE13E4CC550D05107F4354482A8C06216DAB8FCB8"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-right-roster-desktop-original.png",
+      "bytes": 5062457,
+      "sha256": "0B9C8E64977957F68341C4FF9FFA8822D7497AF280FC6AA5CF2F1FB074E9D340"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-character-closed-desktop-original.png",
+      "bytes": 5278298,
+      "sha256": "1A8E98F45A1A3AC2F6719B442FED0E13118790453F8844CB3991EC2ECC8B3D35"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-combat-closed-desktop-original.png",
+      "bytes": 5205822,
+      "sha256": "CCFC10CDFFA453A463D11AC01D053DB373E0C48C311D1D2183F09BADFA76DB41"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\before-safe-map-mapped-pointer-original.png",
+      "bytes": 5226438,
+      "sha256": "9AD56A534B46830E73907E8870690A2C8B30F838A1E42330244F8AA0463D911E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-combat-fit-full-combat-panel-binding.json",
+      "bytes": 603737,
+      "sha256": "2846CADCF5CCED4AE17368DD50E5DF0990DAB9C8CD6B07525BE9EA7A45909F7A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-closed-root-review-post-save-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-closed-root-review-post-save-source.json",
+      "bytes": 2289080,
+      "sha256": "4E87E25BB5B012FBE34D642544AAF35A28E7DBBA6077A071EAF35D532245494D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-state\\native-session\\ingame-ui-native-results\\native-ui-23bfc3a6c9744ab1b029f7d2d4d9f746.json",
+      "bytes": 2414769,
+      "sha256": "CE62C89E47F734C0E8E129BECB6F2D15AC2FA573599EEFAD69718057D5DE4879"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-closed-root-review-character.json",
+      "bytes": 146,
+      "sha256": "AF24A268AC11BF456171B7CBBD8D9C42BFE78EA0D595951D6491814CEA49862A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-closed-root-review-character.json",
+      "bytes": 139227,
+      "sha256": "88C36054B1BAD40F5DC9AB87D443990677CDAA915926F0762BC8EB9C854E8712"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-state\\native-session\\ingame-ui-native-results\\native-ui-1888e11df6ed4f00846e8f75418af877.json",
+      "bytes": 2529876,
+      "sha256": "F117CAA29718DFDD87DBEA9F02DD88BC4EAC572B75475CB199F331BC9E1BFB0A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-closed-root-review-combat.json",
+      "bytes": 143,
+      "sha256": "7B924FC1F66CA050A6A0D9854A3B35799C05099EDC3B149182F91F16E003447C"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-closed-root-review-combat.json",
+      "bytes": 100990,
+      "sha256": "6E92537037C0F4E9767D37602D90B4442FC91D67EDEB9A482E9DA3CE9300CE03"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-closed-root-review-full-battle.json",
+      "bytes": 148,
+      "sha256": "9C9170E965DBD0B68058C21741011AA4CD26ECD124356815EE108B816E047636"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-closed-root-review-full-battle.json",
+      "bytes": 140288,
+      "sha256": "4B4628761064C4802D64AD65CA6EDE6DBA88183263CE3850CB23ADD088B790A6"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\closed-display-current-battle-review.json",
+      "bytes": 383830,
+      "sha256": "8D4874679FEA835BA3DC4CB764EF28BEBD3F29F8B1CD16608A065F91A319BB1D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\before-left-roster-mapped-pointer-receipt.json",
+      "bytes": 3574,
+      "sha256": "B2490464325C49D736A157A15F1B32050573A1C79428F56A33FE018C0EDC7E5D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\before-right-roster-mapped-pointer-receipt.json",
+      "bytes": 3565,
+      "sha256": "021CA72D1A604EE8AA787F9788D427462C98ABEF5DCAA61F663389A6D3ED87F4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\before-character-close-map-receipt-a01.png",
+      "bytes": 5200615,
+      "sha256": "E10DF404B6ADD2940168A8972264E776E0D2B67ABD1EF61114DC43A4BB1403D2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\before-combat-close-map-receipt-a01.png",
+      "bytes": 5290629,
+      "sha256": "B64FB08ACB7F5DC80E425EBEB6530F6C9473E3950314E717DDB1E4B13009E48D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\before-safe-map-mapped-pointer-receipt.json",
+      "bytes": 3561,
+      "sha256": "30D0DF5C2372ED536BF517296B6D9AC85E356061CC440816D9F004712372D85B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\write_after_actual_ui_review_a05.py",
+      "bytes": 4078,
+      "sha256": "201242EE94829D57FB58D067A904B9A5FA0E2AB86F945EDE3C917F72B1E2CCA6"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-victim-character-window.png",
+      "bytes": 6051315,
+      "sha256": "D1CC1F4322B85F0A33E02A4E11CC78B0155C04F7AFE186F759238F4FD620627D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-killer-character-window.png",
+      "bytes": 6109171,
+      "sha256": "281DB3D0A4F2709ECA03B48170FBD1D0F0E80C9E5D260B646C84B078C77F2F59"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-combat-fit-window.png",
+      "bytes": 6187247,
+      "sha256": "E4436A030687485F38DBD2C5B460E033B4E879D6F9DAF9A0F85A571270A525E6"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-left-roster-desktop-original.png",
+      "bytes": 5096864,
+      "sha256": "E7055980E44606D18CCEEE84F13DA2DF0CDCE89C1471B9DDA75DDAFC3AD94F22"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-right-roster-desktop-original.png",
+      "bytes": 5088019,
+      "sha256": "0C5B0050D257008A373C4D55223EE9B26EF4D1FBD35F2AD2D254DC8DB177DB98"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\after-full-battle-final-desktop-original.png",
+      "bytes": 5085803,
+      "sha256": "A6AD0CEA1865750704B6C4A472CA309D81EDF81F6A728FF35FF2C5433A03B121"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\after-root-review-readonly-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\after-root-review-readonly-source.json",
+      "bytes": 4566809,
+      "sha256": "D6A5B28DCC2A3C5785EC142342B58ED4AD0E73C1B168973398C0D0491DFB667B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-state\\native-session\\ingame-ui-native-results\\native-ui-696df8b0c6bb4d25ae0bd7956fef109b.json",
+      "bytes": 4657022,
+      "sha256": "E3CE525093DB2AC7EAF26AEE80B1FF2835F513EF26D6118600EE4613569A894E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\after-root-review-combat-readonly.json",
+      "bytes": 144,
+      "sha256": "68C61FDE4471FE91311702EB2532AF62BBC6829410EA99477CFA2181BAE50C43"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\after-root-review-combat-readonly.json",
+      "bytes": 107090,
+      "sha256": "B69ED06533F890FBDE8001CAA26E89FA7E92B079DBFFA017E0B5B20E270B2F41"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\after-left-roster-mapped-pointer-receipt.json",
+      "bytes": 3568,
+      "sha256": "F0FC2C4E99BDF659D186821C23B2EE67EDB3659E135AEB2AC7391B298AF288FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\after-right-roster-mapped-pointer-receipt.json",
+      "bytes": 3559,
+      "sha256": "C9FD63FA2344251E48615FF3AA6DA14A80F26EC58E82415B25E72D39EF1E03F5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\after-blank-mapped-pointer-receipt.json",
+      "bytes": 3524,
+      "sha256": "402611152EB9542D8EB454029BC4FD97DC764534F405ABF779FAF03AD38425C9"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_causal_run.py",
+      "bytes": 22860,
+      "sha256": "F1134DF2810BD7B1B8EFF72EB399E448FF1A2E24DDC7AFD0F9F3362F6FA93BED"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\verifier-exact.py",
+      "bytes": 22860,
+      "sha256": "F1134DF2810BD7B1B8EFF72EB399E448FF1A2E24DDC7AFD0F9F3362F6FA93BED"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_causal_save_projection.py",
+      "bytes": 41961,
+      "sha256": "A7497C1BDBD00D6F55DDEE711532B38BF64125EFA2C26DE18553DD0F574F91AA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\pure-projection-exact.py",
+      "bytes": 41961,
+      "sha256": "A7497C1BDBD00D6F55DDEE711532B38BF64125EFA2C26DE18553DD0F574F91AA"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_selector_replay.py",
+      "bytes": 9299,
+      "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\pure-selector-replay-exact.py",
+      "bytes": 9299,
+      "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_historical_date_layout_v1.json",
+      "bytes": 3464,
+      "sha256": "053629C73E407AE906BAE406AB8AAF6147125177A79B6BE8A7F2C36D1D6226CC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\historical-date-source-contract-exact.json",
+      "bytes": 3464,
+      "sha256": "053629C73E407AE906BAE406AB8AAF6147125177A79B6BE8A7F2C36D1D6226CC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-pair-exact.json",
+      "bytes": 4634,
+      "sha256": "AD0A71FE7242749EE3C4E86046F5684FC83771165ED563A21390167B369D6079"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-pair-exact.json",
+      "bytes": 4601,
+      "sha256": "E7529890CFC8462172FEA7D738981771AD4995B73FBBCF866CB7174B2BACC3D1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\research-binding-exact.json",
+      "bytes": 7003,
+      "sha256": "61910E0BC933FBDB20F44DB290075642EF93AE883CE593C96BFFAB0A0A2BD1C2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\live-run-identity-exact.json",
+      "bytes": 553,
+      "sha256": "BDF9362621D838C6DE51B2F1E94C1CA40D651605CC4ED16F2464BE5D1506AC9B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\preflight-exact.json",
+      "bytes": 21193,
+      "sha256": "EF04FF88CFFA39322C92885FB4AA3C0D64FE03890CD7FD4268E402F8E31AA6C9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\one-day-finished-exact.json",
+      "bytes": 2422479,
+      "sha256": "30A2654761CADEAAEFC2272D1ACE3E65FC896DFBD7F91848BCDFBE65CC671A01"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\trace-exact.json",
+      "bytes": 2422164,
+      "sha256": "60B204FDB8E7BFC8ACE17BFFF7B6579904F6DD0DC32A5C19F95A75FCFDFC3589"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-melted.ck3",
+      "bytes": 81794016,
+      "sha256": "46BC76AAA7F0C3DAC48D3040CD8F81911D183E36E5B9A9876F8315A962E4C36D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-main-post-closed-ui-save.json",
+      "bytes": 13541,
+      "sha256": "226F1B45784F145063E533DEF634EA2C5FBB4D0F3209B41C2FBA7D6001175234"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-save-receipt-exact.json",
+      "bytes": 13541,
+      "sha256": "226F1B45784F145063E533DEF634EA2C5FBB4D0F3209B41C2FBA7D6001175234"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-main-post-closed-ui-save.json",
+      "bytes": 104,
+      "sha256": "C8EC32F0123C15F56ACC08952EA57EF99FFF14E83463F9CEFB2C0E7AB7E0E87C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-save-request-exact.json",
+      "bytes": 104,
+      "sha256": "C8EC32F0123C15F56ACC08952EA57EF99FFF14E83463F9CEFB2C0E7AB7E0E87C"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-main-post-closed-ui-save-source.json",
+      "bytes": 2413742,
+      "sha256": "768438DD81AE9B1FD5786DEE258DBF82D81A55933527ACB1017E073CA868A073"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-snapshot-exact.json",
+      "bytes": 2413742,
+      "sha256": "768438DD81AE9B1FD5786DEE258DBF82D81A55933527ACB1017E073CA868A073"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-character-33437-exact.txt",
+      "bytes": 1280,
+      "sha256": "1A6DD52436481E61C4768F5D8F1B7B7F3E249A6C473C0981E4A420FF796DD1F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-character-34120-exact.txt",
+      "bytes": 1183,
+      "sha256": "690D03CD47BD988F98275AA21A5F8A03967610AFD6F1A6798F6C69A06C69676A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-combats-exact.txt",
+      "bytes": 48494,
+      "sha256": "9FA1346EF7424EA79B926A720B5DCC7F41C1BED689D9DA1153E306C0EE5AD0EF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-house_relations-exact.txt",
+      "bytes": 290561,
+      "sha256": "ADCB3DA162D8563164F1D20C652B0D6EF24BF11FEECAE610E84D93875404A8F7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-accolades-exact.txt",
+      "bytes": 131317,
+      "sha256": "C4C855E1BFB913960B98F468ADB28EB2FCCA354BC873EE5CCD5BE0CFC231239C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-melted.ck3",
+      "bytes": 81666907,
+      "sha256": "219A8F31E3B8799E07B40153DACEE46E02A38A020D7211983EF697EE1A6C77C9"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\after-main-post-ui-save.json",
+      "bytes": 13756,
+      "sha256": "4100FF36B40FED9A727CE67B14D8EF3F43E7ED85EF48F82C2C6075E2C814BF5A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-save-receipt-exact.json",
+      "bytes": 13756,
+      "sha256": "4100FF36B40FED9A727CE67B14D8EF3F43E7ED85EF48F82C2C6075E2C814BF5A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\after-main-post-ui-save.json",
+      "bytes": 105,
+      "sha256": "795B6371AA27723E5EEBBD8AD4883AE1E9B50F2A38EF3D99D85D642ADCB78D51"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-save-request-exact.json",
+      "bytes": 105,
+      "sha256": "795B6371AA27723E5EEBBD8AD4883AE1E9B50F2A38EF3D99D85D642ADCB78D51"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\after-main-post-ui-save-source.json",
+      "bytes": 4564292,
+      "sha256": "67BAA97DD4D0446DEA7C687C0AE789370ED8AEA12349107C4F54C78B6A93A89C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-snapshot-exact.json",
+      "bytes": 4564292,
+      "sha256": "67BAA97DD4D0446DEA7C687C0AE789370ED8AEA12349107C4F54C78B6A93A89C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-character-33437-exact.txt",
+      "bytes": 960,
+      "sha256": "BCFFC16A0E51B301210C63D7C5587BADDF4C09474EE2A5875304AF4280DB2A3E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-character-34120-exact.txt",
+      "bytes": 1346,
+      "sha256": "49A743BD4D882E1AD283C70EF97F5CA5A20984BD98F52307A1CC87990B4880AC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-combats-exact.txt",
+      "bytes": 42980,
+      "sha256": "D2FAAD539B02B0ED8AB9294BBD2AC28FB90E9D564D5C36DFDBA7EF61412B01C8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-house_relations-exact.txt",
+      "bytes": 291860,
+      "sha256": "689D84D2290B7BDA44E08DAE9E76A0D0297589F923D0279C7374F76F8B47ADA8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-accolades-exact.txt",
+      "bytes": 131327,
+      "sha256": "FA56960F645542CD151F9306F3E1E1768EBC38B85CEDDDC9E17946317CA487FC"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\native_bridge\\research\\verify_knight_variable_monitor_run.py",
+      "bytes": 13443,
+      "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\monitor-verifier-exact.py",
+      "bytes": 13443,
+      "sha256": "C15E0BFBCF79A76ACAD13D729B26F417C35106E3EC7B973AAE8BF3DB2565A5D8"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_variable_monitor_projection.py",
+      "bytes": 22129,
+      "sha256": "3FD2004D0E2FD3690B589D10A80ADED580815929FF0226BCD23E4C0529AE3BF4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\pure-monitor-exact.py",
+      "bytes": 22129,
+      "sha256": "3FD2004D0E2FD3690B589D10A80ADED580815929FF0226BCD23E4C0529AE3BF4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\pure-save-exact.py",
+      "bytes": 41961,
+      "sha256": "A7497C1BDBD00D6F55DDEE711532B38BF64125EFA2C26DE18553DD0F574F91AA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\pure-selector-exact.py",
+      "bytes": 9299,
+      "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\causal-projection-exact.json",
+      "bytes": 8495916,
+      "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\binding-exact.json",
+      "bytes": 7003,
+      "sha256": "61910E0BC933FBDB20F44DB290075642EF93AE883CE593C96BFFAB0A0A2BD1C2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\begin-wrapper-exact.json",
+      "bytes": 97058,
+      "sha256": "9410A2852A74D22CE8575D0624693C1F22DF08DB414A7F645EF55BB457A9B584"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\variable-monitor-begin-once.json",
+      "bytes": 60253,
+      "sha256": "D79AF36DBAFF1A7265CED2067C1C14844F4CAD33AA81BB89E1D9D81BD8DD5D82"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\begin-native-response-exact.json",
+      "bytes": 60253,
+      "sha256": "D79AF36DBAFF1A7265CED2067C1C14844F4CAD33AA81BB89E1D9D81BD8DD5D82"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\variable-monitor-begin-once.json",
+      "bytes": 253,
+      "sha256": "BA2C3D0D637C5ADD75DF2F5F41D8E0ABAD96911675A52AEB2D404A068D9E80B5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\begin-native-request-exact.json",
+      "bytes": 253,
+      "sha256": "BA2C3D0D637C5ADD75DF2F5F41D8E0ABAD96911675A52AEB2D404A068D9E80B5"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\scoped-a12-day-source.json",
+      "bytes": 2830945,
+      "sha256": "23AFF667251499F662B9182B748CC68635FA4608D6AACF87FD74701D8429356C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\begin-snapshot-exact.json",
+      "bytes": 2830945,
+      "sha256": "23AFF667251499F662B9182B748CC68635FA4608D6AACF87FD74701D8429356C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\finish-wrapper-exact.json",
+      "bytes": 338619,
+      "sha256": "BBC49B486FDD87BD5250B4BDFA7FD1504DD4CF90B2C26EBE85A417903C13CB3F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\variable-monitor-finish-once.json",
+      "bytes": 184701,
+      "sha256": "7D2E5F125588C7AA5DBBBCE6C37C88BC0C01407E40083AC965DAC33023C3BEDE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\finish-native-response-exact.json",
+      "bytes": 184701,
+      "sha256": "7D2E5F125588C7AA5DBBBCE6C37C88BC0C01407E40083AC965DAC33023C3BEDE"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\variable-monitor-finish-once.json",
+      "bytes": 182,
+      "sha256": "2C51AE2DFD80D4E823E7621F393C9284C9E70A3F9FDD69B7D14B5E93191F2FBF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\finish-native-request-exact.json",
+      "bytes": 182,
+      "sha256": "2C51AE2DFD80D4E823E7621F393C9284C9E70A3F9FDD69B7D14B5E93191F2FBF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\scoped-a12-post-day-snapshot-only.json",
+      "bytes": 2714441,
+      "sha256": "4AF28D9DCED5A2178F81C7A97D033B1595712721E6167B4198997077F27D446E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01\\finish-snapshot-exact.json",
+      "bytes": 2714441,
+      "sha256": "4AF28D9DCED5A2178F81C7A97D033B1595712721E6167B4198997077F27D446E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\owner-entry-save-audit-output-a01\\owner-entry-save-accounting.json",
+      "bytes": 1111260,
+      "sha256": "4434AF1542E21FA75836EE2D3308EF8C06C2996F11C360A883F4C55F1261D5FA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-four-save-finite-entry-domain-facts-a01.json",
+      "bytes": 702045,
+      "sha256": "DD00507A619F64A355B03F5E00FD054820F0EC5D40019819F8C6023FBE17091F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-entry-stats-cache-interval-addendum-a01.json",
+      "bytes": 45638,
+      "sha256": "7C39041C9B229CADC262DAFFDA0BABE9EA1CFF171B2A17DBCF3E54B7670E1709"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\README-R0148-final-readonly-conclusions.txt",
+      "bytes": 4443,
+      "sha256": "1D9BC6D6E6B6052CE8871F56E2D30715DF7FAADEDA4D62042BFD58C6694C0376"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-monitor-and-four-save-claim-boundaries-a01.json",
+      "bytes": 195467,
+      "sha256": "E09A697EC3DE8374A883A6CD4189B781AC37681146899B36CA278BC60496ED72"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-four-save-endpoint-verification.json",
+      "bytes": 2596167,
+      "sha256": "1A4BFA305250F741EAA28BA0E8728C7258DA24BF0060B1F31544336607AAAD67"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-final-current-pin-and-bounded-claim-verification-a03.json",
+      "bytes": 659208,
+      "sha256": "2439F36228955E9A7BCAD4698FCAB142BAA4F4307B988619419C6DA349974DAF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-readonly-core-audits-execution-a01.json",
+      "bytes": 9549,
+      "sha256": "7E5C35C5574DEFBE317DE4A64A0F2B6181431461D2E284643B93B687B0EE98AF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-accolades-exact.txt",
+      "bytes": 131327,
+      "sha256": "FA56960F645542CD151F9306F3E1E1768EBC38B85CEDDDC9E17946317CA487FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-character-33437-exact.txt",
+      "bytes": 960,
+      "sha256": "BCFFC16A0E51B301210C63D7C5587BADDF4C09474EE2A5875304AF4280DB2A3E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-character-34120-exact.txt",
+      "bytes": 1346,
+      "sha256": "49A743BD4D882E1AD283C70EF97F5CA5A20984BD98F52307A1CC87990B4880AC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-combats-exact.txt",
+      "bytes": 42980,
+      "sha256": "D2FAAD539B02B0ED8AB9294BBD2AC28FB90E9D564D5C36DFDBA7EF61412B01C8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-decoder-binding.json",
+      "bytes": 1130,
+      "sha256": "B95F5F80BF5FBA3B784A1EE8C423AB999B157428288C92C452CFAC2A5C462143"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-full-selected-saved-projection.json",
+      "bytes": 2628574,
+      "sha256": "EF9F7BD9FC64696E045C86F950393687B7063F7E85575E66B57D72157CAF3E0B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-house_relations-exact.txt",
+      "bytes": 291860,
+      "sha256": "689D84D2290B7BDA44E08DAE9E76A0D0297589F923D0279C7374F76F8B47ADA8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-melt-argv.json",
+      "bytes": 603,
+      "sha256": "CE51769C53971CA782E612D18073B9C2E2390A1C1656606956525430C749780D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-melt-process.json",
+      "bytes": 1104,
+      "sha256": "4FF5FA9F093BC34C75C15E3FB209AD0BBA716FE1FBEE07BB195C3CCD1C51A072"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-melted.ck3",
+      "bytes": 81666907,
+      "sha256": "219A8F31E3B8799E07B40153DACEE46E02A38A020D7211983EF697EE1A6C77C9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-accolades-exact.txt",
+      "bytes": 131327,
+      "sha256": "FA56960F645542CD151F9306F3E1E1768EBC38B85CEDDDC9E17946317CA487FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-character-33437-exact.txt",
+      "bytes": 960,
+      "sha256": "BCFFC16A0E51B301210C63D7C5587BADDF4C09474EE2A5875304AF4280DB2A3E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-character-34120-exact.txt",
+      "bytes": 1346,
+      "sha256": "49A743BD4D882E1AD283C70EF97F5CA5A20984BD98F52307A1CC87990B4880AC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-combats-exact.txt",
+      "bytes": 42980,
+      "sha256": "D2FAAD539B02B0ED8AB9294BBD2AC28FB90E9D564D5C36DFDBA7EF61412B01C8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-decoder-binding.json",
+      "bytes": 1184,
+      "sha256": "454391A23C0991193077F8FD32367F24C18B7C030497C08E856F9FDE320DEE5B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-full-selected-saved-projection.json",
+      "bytes": 2628807,
+      "sha256": "67395EC17CC8B87DC3BEBD6120C197E41E253E1316D64F1BC1A10BD197B27163"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-house_relations-exact.txt",
+      "bytes": 291860,
+      "sha256": "689D84D2290B7BDA44E08DAE9E76A0D0297589F923D0279C7374F76F8B47ADA8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt-argv.json",
+      "bytes": 639,
+      "sha256": "B04A7E05F693A778572375229307568C07F3BFBE4A102EA1D95052639F6116C3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt-process.json",
+      "bytes": 1176,
+      "sha256": "DF1D00D42B11B0B3B0D6947E650F2056EAAF864A4A224ACA1E270074EABEA255"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-melted.ck3",
+      "bytes": 81666907,
+      "sha256": "D34A1706B7FACA52C02076C6329950745B51A52AAEC415831A78935836AEBD2B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-pre-ui-checkpoint-RNG-inventory.json",
+      "bytes": 962081,
+      "sha256": "77E0FC438C16FE84F8EDF4C38B5DC1DFB18116D1AC5034A6470F1A064E24277B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after-RNG-inventory.json",
+      "bytes": 962063,
+      "sha256": "23F802932587EB7329BC71EBBCA3481B36A1FF27635AD43311F2855BBFDB8AEF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\after_UI_saved_endpoints-complete-endpoint-deltas.json",
+      "bytes": 1586,
+      "sha256": "CF3ADA4AC2283C425006768AD9FEDBD18FA8E9854B77CF4A99581278FB5F0581"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-accolades-exact.txt",
+      "bytes": 131317,
+      "sha256": "C4C855E1BFB913960B98F468ADB28EB2FCCA354BC873EE5CCD5BE0CFC231239C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-character-33437-exact.txt",
+      "bytes": 1280,
+      "sha256": "1A6DD52436481E61C4768F5D8F1B7B7F3E249A6C473C0981E4A420FF796DD1F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-character-34120-exact.txt",
+      "bytes": 1183,
+      "sha256": "690D03CD47BD988F98275AA21A5F8A03967610AFD6F1A6798F6C69A06C69676A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-combats-exact.txt",
+      "bytes": 48494,
+      "sha256": "9FA1346EF7424EA79B926A720B5DCC7F41C1BED689D9DA1153E306C0EE5AD0EF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-decoder-binding.json",
+      "bytes": 1133,
+      "sha256": "36E59FD1215C544CDB8501DB419E6CC1D110E713156EF28D43A1188C9A5F3B38"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-full-selected-saved-projection.json",
+      "bytes": 2659127,
+      "sha256": "74C27DD7A0C9E2011C266DD7E1241B3C4D487E2895469E8A7E68F55B55AE191A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-house_relations-exact.txt",
+      "bytes": 290561,
+      "sha256": "ADCB3DA162D8563164F1D20C652B0D6EF24BF11FEECAE610E84D93875404A8F7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-melt-argv.json",
+      "bytes": 605,
+      "sha256": "4A8663A4D8E6C8F1AF9BEB8E2A6980B9F4B5903CC27581C007B8E4BD57C79513"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-melt-process.json",
+      "bytes": 1108,
+      "sha256": "9BFD9DFB3E76403ED75B788CC23B49FEE962614F193E337BABE4811860BC4584"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-melted.ck3",
+      "bytes": 81794016,
+      "sha256": "46BC76AAA7F0C3DAC48D3040CD8F81911D183E36E5B9A9876F8315A962E4C36D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-accolades-exact.txt",
+      "bytes": 131317,
+      "sha256": "C4C855E1BFB913960B98F468ADB28EB2FCCA354BC873EE5CCD5BE0CFC231239C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-character-33437-exact.txt",
+      "bytes": 715,
+      "sha256": "A212E176344DA71BE7AE221DE619EFE54482214C7F0F55E21B5694FE703794CB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-character-34120-exact.txt",
+      "bytes": 618,
+      "sha256": "6B9F7DC5E410FA5A1A4F29F01E98B137D5254DFDFD871F78FFBF02E85D38D301"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-combats-exact.txt",
+      "bytes": 48494,
+      "sha256": "9FA1346EF7424EA79B926A720B5DCC7F41C1BED689D9DA1153E306C0EE5AD0EF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-decoder-binding.json",
+      "bytes": 1187,
+      "sha256": "894C3FB9C0978C3E021EDBA677AA44ED40B649D11F8A771E93E4A673F7ACC338"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-full-selected-saved-projection.json",
+      "bytes": 2658105,
+      "sha256": "52D29EC64FBC42EA50C99CBF0E108F9ED1E548CEBA755D90282BD0D6A48B0160"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-house_relations-exact.txt",
+      "bytes": 290561,
+      "sha256": "ADCB3DA162D8563164F1D20C652B0D6EF24BF11FEECAE610E84D93875404A8F7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt-argv.json",
+      "bytes": 641,
+      "sha256": "56DF921935D774BADA01843C42204C30940C410499DBEC45FEA48563CD176B3C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt-process.json",
+      "bytes": 1180,
+      "sha256": "0E82BE1C6738DA330295C8A62729FA2E5C23BCB11AD20E5F75BA46BD9EB284DC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-melt.stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-melted.ck3",
+      "bytes": 81787236,
+      "sha256": "87BC6AF9C3CBD629D21A3EB2480D37CDC00835F287C1F9FD27C43E66DA564E8D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-pre-ui-checkpoint-RNG-inventory.json",
+      "bytes": 967444,
+      "sha256": "B2DB32646572B609E248EDB55D2A6E0CCEE84FDDA0995779DD8B0F9A8DA2AABF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before-RNG-inventory.json",
+      "bytes": 967426,
+      "sha256": "5C2C0004EFCB8882E06F2D2472019309B526FDAC198B9FC1BC9B8F1494067D78"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\before_UI_saved_endpoints-complete-endpoint-deltas.json",
+      "bytes": 3053,
+      "sha256": "76D5EC968A70C45F0F53EC0239102DC533A01906F6D0149A72BCFE55CE6E16C1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-immutable.ck3",
+      "bytes": 52804634,
+      "sha256": "7FBDEB9450091DFD709D770BF4DEDA71CD7F2C0F12366FEA153E4892A4A19268"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52804634,
+      "sha256": "617898B0BA824D29139626A3E9F2CA1EA98182010F3D9A646DA6351D827E916E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-post-snapshot-response.json",
+      "bytes": 2716960,
+      "sha256": "40C6B9E8526905AA1658E0604B92A9DE8A341E572CEDFC674A4AB2E45DBEA064"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-save-request.json",
+      "bytes": 104,
+      "sha256": "64BC1654B8B70622C08270A7F6341EC1E04FC5E36480E2E4C2618CC2714D012E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-save-response.json",
+      "bytes": 13758,
+      "sha256": "4C806029FBFC206DE86C15B3C160A3629E3F82EB4AB6B346EC03135948EBDA38"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-saved-pair.json",
+      "bytes": 6040,
+      "sha256": "1C2E157612F824F3D40F77821A388DF6EC463DC36C74F416B7A60AD21067E82B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-pre-ui-checkpoint-snapshot-response.json",
+      "bytes": 2714442,
+      "sha256": "87984680832F80436F07199CCBCCC538A4BA7FC08587233EE5088D2FCE73DB8B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-save-request.json",
+      "bytes": 105,
+      "sha256": "795B6371AA27723E5EEBBD8AD4883AE1E9B50F2A38EF3D99D85D642ADCB78D51"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-save-response.json",
+      "bytes": 13756,
+      "sha256": "4100FF36B40FED9A727CE67B14D8EF3F43E7ED85EF48F82C2C6075E2C814BF5A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-saved-pair.json",
+      "bytes": 4601,
+      "sha256": "E7529890CFC8462172FEA7D738981771AD4995B73FBBCF866CB7174B2BACC3D1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\after-snapshot-response.json",
+      "bytes": 4564292,
+      "sha256": "67BAA97DD4D0446DEA7C687C0AE789370ED8AEA12349107C4F54C78B6A93A89C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-immutable.ck3",
+      "bytes": 52888510,
+      "sha256": "0111DD4308BA945A55FFD324DBD7C9925D6F36C03F53C306B1DF7F0CEE968349"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-immutable.ck3",
+      "bytes": 52881742,
+      "sha256": "5B6C2747EAB0723C8BCC804CCFD9E7CEFA21CEF7422D57D09838D93D736EF742"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-post-snapshot-response.json",
+      "bytes": 37675,
+      "sha256": "1D94997D280E75894CA0A31257B4C06F448ECC3D4125E53EBB680DEB638626B3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-save-request.json",
+      "bytes": 104,
+      "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-save-response.json",
+      "bytes": 13530,
+      "sha256": "DC083BC5EE2AE3ED2FACC1D1343F44379BED933BF8BD04CB493854163CFF7A29"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-saved-pair.json",
+      "bytes": 6043,
+      "sha256": "AA721CD6AC8F0643082A53B84CFAC770CD723F7B58376848821EC1BC307BA3FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-pre-ui-checkpoint-snapshot-response.json",
+      "bytes": 35028,
+      "sha256": "4A666C4616298FFC5A6E74A5B387C8F2B5E780AB85402DD67131A491AD82BCD1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-save-request.json",
+      "bytes": 104,
+      "sha256": "C8EC32F0123C15F56ACC08952EA57EF99FFF14E83463F9CEFB2C0E7AB7E0E87C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-save-response.json",
+      "bytes": 13541,
+      "sha256": "226F1B45784F145063E533DEF634EA2C5FBB4D0F3209B41C2FBA7D6001175234"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-saved-pair.json",
+      "bytes": 4634,
+      "sha256": "AD0A71FE7242749EE3C4E86046F5684FC83771165ED563A21390167B369D6079"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-snapshot-request.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\before-snapshot-response.json",
+      "bytes": 2413742,
+      "sha256": "768438DD81AE9B1FD5786DEE258DBF82D81A55933527ACB1017E073CA868A073"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-after-ui-review-binding-original.json",
+      "bytes": 103481,
+      "sha256": "4FF3E94178DC880E31CC2E94D1771393403B35558DC80CE9B3DE94657DB5FB67"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-after-ui-root-review.json",
+      "bytes": 103481,
+      "sha256": "4FF3E94178DC880E31CC2E94D1771393403B35558DC80CE9B3DE94657DB5FB67"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-before-ui-review-binding-original.json",
+      "bytes": 389917,
+      "sha256": "9A462FFC31009F2FDE4D2BCCA3FA58AC9B1EF31FED7C3720A4C7992B4899802A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-binding-preflight-original.json",
+      "bytes": 7003,
+      "sha256": "61910E0BC933FBDB20F44DB290075642EF93AE883CE593C96BFFAB0A0A2BD1C2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-case-closure-contract.md",
+      "bytes": 8429,
+      "sha256": "A25932FCCF3A4F7A8B2934E23C821759DB6051BC59BB3EC397EBD24DBACBC47B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-knights-direct-named-additive-original-a03.json",
+      "bytes": 66723,
+      "sha256": "BC4B6950C2BFC5D6E89B3561AFCB5510817C78433D7B6FF0C447DCA4818ECD8C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-knights-direct-named-additive-original.json",
+      "bytes": 66723,
+      "sha256": "BC4B6950C2BFC5D6E89B3561AFCB5510817C78433D7B6FF0C447DCA4818ECD8C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-run-bindings.json",
+      "bytes": 7003,
+      "sha256": "61910E0BC933FBDB20F44DB290075642EF93AE883CE593C96BFFAB0A0A2BD1C2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-source-combat_phase_event_trace_ring_v1.cpp",
+      "bytes": 105268,
+      "sha256": "81E4FA16049FBC3358B655131D838EA70CB98E4752EA2274ED6AB6AFDF34D7D5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\current-source-combat_scoped_transition_chain_v1.cpp",
+      "bytes": 74084,
+      "sha256": "418DAC4A1EFE967DBD8A0EC77383EF08B064709118925A36CDCC0765BE453765"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\daily-full-trace-finish-once.json",
+      "bytes": 2422164,
+      "sha256": "60B204FDB8E7BFC8ACE17BFFF7B6579904F6DD0DC32A5C19F95A75FCFDFC3589"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\knight_causal_save_projection.py",
+      "bytes": 41961,
+      "sha256": "A7497C1BDBD00D6F55DDEE711532B38BF64125EFA2C26DE18553DD0F574F91AA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\knight_selector_replay.py",
+      "bytes": 9299,
+      "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\one-day-finished.json",
+      "bytes": 2422479,
+      "sha256": "30A2654761CADEAAEFC2272D1ACE3E65FC896DFBD7F91848BCDFBE65CC671A01"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\preparation-original.json",
+      "bytes": 23996,
+      "sha256": "B1472F9441C56214174F75318C7BC8F30EE50DC09DD0FF196CA595FBBC7870B0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\saved_rng_endpoint_inventory_a01.py",
+      "bytes": 6567,
+      "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\static-cache-source-contract.json",
+      "bytes": 122351,
+      "sha256": "EC5F6B672051A4EC94BE435C40C8BDB2BCBBBCF6FD3325CC50AAD5FBCAAFC391"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\exact-copies\\variable-monitor-finish-once.json",
+      "bytes": 184701,
+      "sha256": "7D2E5F125588C7AA5DBBBCE6C37C88BC0C01407E40083AC965DAC33023C3BEDE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\final-reverification-a01-to-a02-syntax-exact.diff",
+      "bytes": 2951,
+      "sha256": "9EE49F68426900748E2610CD4B0EF39BD3C401D26F7A23AE2D7A31097DDC484F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\final-reverification-a02-code-provenance.json",
+      "bytes": 1165,
+      "sha256": "0CE0AD4CB55DF608CEEEAC7039898392340C50DA34076E16E304B3E59E944DBF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\final-reverification-a02-to-a03-phase-schema-exact.diff",
+      "bytes": 4020,
+      "sha256": "CB45CA53F6513313E4AF389D081887C7E20D3FA1D9356873238984D9D01A00BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\final-reverification-a03-phase-schema-code-provenance.json",
+      "bytes": 1808,
+      "sha256": "8D8B1D1E772BD3B27776C29553607A39C652D0C037E5A14CC31BCE08F0BD09DF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a02.py",
+      "bytes": 24094,
+      "sha256": "43D0D7C84510E77E645129CCED8DEF7E5F994FC1199DEB7346534CCBDB6E6098"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\finalizer-a01-to-a02-current-PID-exact.diff",
+      "bytes": 1936,
+      "sha256": "8E29C202BA2B75BBC339EE9794706FDFEBC2C2A74CB3B38359DEEBA1412E436F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\finalizer-a02-current-PID-code-provenance.json",
+      "bytes": 1609,
+      "sha256": "4B719460834BE8594B801DEBB9A75CEDE82FF9E4A91FD252378BDA1D94BA3B98"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\finalizer-code-derivation-exact.diff",
+      "bytes": 24363,
+      "sha256": "140983EBB2ADDD57DFCEAF25B349F70A99F79AE0E77D131A04D9219DC3E709F6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\finalizer-current-derivation-a01.json",
+      "bytes": 2776,
+      "sha256": "3C56B21B9F4DFE7EC356B22C7756EE8CA820481D1EAB3BC3AE31B8D1A77CB162"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\four-save-decode-a01-intent.json",
+      "bytes": 541,
+      "sha256": "6BCEE7A4DA79DE00F69C8A927FDE94AC571239D6CCD3370DBF133A340105CBEA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\four-save-decode-a01-process.json",
+      "bytes": 880,
+      "sha256": "E80F19F41F894B05F6B9681CE918956CD420510FBC53DC7EE9B39E00F567EE92"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\four-save-decode-a01-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\four-save-decode-a01-stdout.bin",
+      "bytes": 557,
+      "sha256": "BEBA6AA05DD492308599B3B4CE90D2DC4AD421B0D0E6B1008A8AFC6EC3406497"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\frozen-audit_entry_owner_save.py",
+      "bytes": 10381,
+      "sha256": "B673F1BEEF87466C7E71ECA253F56CB0CCBC1FE1AF2720F99294DBEF9AB34954"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\monitor-original-schema-inspection.json",
+      "bytes": 37390,
+      "sha256": "70158D39A553C6B5C77B572EA3B76F7F6D03822CF3B999D5CD908758D2F036DD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\operation-monitor-code-derivation-exact.diff",
+      "bytes": 11872,
+      "sha256": "E3E092706B20AC84BBA2E3BACEE7FEB3A460936D2E5249FF26EB0D6C0190C5B0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\operation-monitor-current-derivation-a01.json",
+      "bytes": 1608,
+      "sha256": "F7B647E80A58951F160090CE4AEA22CA79CB892CB5F3BF23656D6FFE45B258B4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\owner-entry-audit-a01-intent.json",
+      "bytes": 858,
+      "sha256": "07D7C286EDFA851ACB39087FE7B451D935F659D7F01BE392EC9D0D343005D778"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\owner-entry-audit-a01-process.json",
+      "bytes": 1199,
+      "sha256": "E98ECD993AF354455D18B2C13B83A25328ACE58DAFA03B947A815EE5BE99EFFD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\owner-entry-audit-a01-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\owner-entry-audit-a01-stdout.bin",
+      "bytes": 383,
+      "sha256": "3445175E1349324A47740B62BB083480FA9CB840559617E59358E921DEA4FC5A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\owner-entry-save-audit-output-a01\\input-exact.json",
+      "bytes": 1980,
+      "sha256": "17A2B79395FFD7E633597BBEBD4BAFC9DD0B326CCFBEEE34F7726455C8EE3EE9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-actual-graph-shape-a01.json",
+      "bytes": 5867,
+      "sha256": "38B24F12DD89D7B87BE5DAF24607CEB5387CB55DBED554FB56BE8D6A0930D7B7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\R0148-actual-owner-entry-config-a01.json",
+      "bytes": 1980,
+      "sha256": "17A2B79395FFD7E633597BBEBD4BAFC9DD0B326CCFBEEE34F7726455C8EE3EE9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\README-current-R0148-finite-entry-a01.txt",
+      "bytes": 1198,
+      "sha256": "7F3CED9BC7B80087046F24E44D125F919D92A00D219B819E7863F0855FB68A39"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\run_R0148_readonly_audit_a01.py",
+      "bytes": 10983,
+      "sha256": "0D31F0B8D2C94BCDD9BDEEF10BC8AD6F984F3DFB7EC3D8A7BEDE741AB3A49037"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\single_day_saved_endpoints-complete-endpoint-deltas.json",
+      "bytes": 54266,
+      "sha256": "8FF3C1228A4978D73572EC781302A5634DDB6C57BCB12B913C944F43A1DE157A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-actual-argv-derivation-a01.json",
+      "bytes": 2687,
+      "sha256": "C173F9191435D8C11E609149FB41CF0B7846C72D4309E1605F127A481F44A888"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01-intent.json",
+      "bytes": 2209,
+      "sha256": "1BF2682DD854967DC993618A5889448DCF06652AE3C33DD2BE53DF4ED620E166"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01-process.json",
+      "bytes": 2619,
+      "sha256": "577C3A60017B9AEDFE7321016AC12ADBF9A179C7DA065728B855D3AAD14BD237"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01-stdout.bin",
+      "bytes": 394,
+      "sha256": "3EF886ED83B91F6458093787DB3915D6E1DD0FFEC5994F55BD3D2504BAE38EDB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-melt-command.json",
+      "bytes": 1153,
+      "sha256": "13329A9A89CE20699777F54D113AD133568C5B4FF4E66A7E751B0B15A7249DE9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-melt-process.json",
+      "bytes": 596,
+      "sha256": "663AC18290A991C52D94A8E95BF4B2F16A53EB236E15761CD4B324C4212B1A84"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-melt.stderr.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\after-melt.stdout.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-melt-command.json",
+      "bytes": 1156,
+      "sha256": "8F5066F98113A082292C6FE2082860A43C26E9F73761F57C243EFF744DAAD5D5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-melt-process.json",
+      "bytes": 598,
+      "sha256": "96ADC08C33C92C2B20642DCC3B9D53A023E44DBB5CBAD1D42B4DF66FCC7EA70B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-melt.stderr.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\before-melt.stdout.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\runtime-head-command.json",
+      "bytes": 110,
+      "sha256": "570E71F0466E87E73381FBABA467341C3EB77D7D4BBA34C538B52B9B633A2A7B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\runtime-head-process.json",
+      "bytes": 687,
+      "sha256": "80BC7004B495B3E64FD9595AC81A7788B56158E827E14D576BAC88B95F63C260"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\runtime-head-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-causal-run-a01\\runtime-head-stdout.bin",
+      "bytes": 41,
+      "sha256": "9C2AF2721016E8AB29524559DF3F1D47A73F7394934F6D3AEED32091D309B2D4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01-intent.json",
+      "bytes": 1182,
+      "sha256": "D4A781664FEF3D810CA9FA3BE84EFC391BCF85BCBBA72AA2F227942FDAE7B6C6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01-process.json",
+      "bytes": 1612,
+      "sha256": "4B402EAA776D716160B546BA3E97576888E562E81EF9A8390B0649430CB6706A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\strict-variable-monitor-run-a01-stdout.bin",
+      "bytes": 410,
+      "sha256": "B37EDEEFE6B11AE2428C6BA23F2D9E952D7F05EB4021F0C12B95E5FD0AEF61ED"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\verified-python-argv.json",
+      "bytes": 195,
+      "sha256": "F3F77D57C5FAF7BFFA4FAC097043FA735FFB0CBF17F53D103112E6ECAF31E678"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\verified-python-process.json",
+      "bytes": 707,
+      "sha256": "04C06948BF77803802BC9327C7851BFD4599D3F7DAF4017640F615062E49922F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\verified-python.stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-audit-reinforcement-a01\\verified-python.stdout.bin",
+      "bytes": 15,
+      "sha256": "9FC9968E3AE8D82284D7426A87E1426E07246027C7706B0803A1C8D9C60C7A4D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\add_current_R0148_UI_operation_monitor_boundaries_a01-argv.json",
+      "bytes": 281,
+      "sha256": "64D0D3AD2D998C6E3F762599BAFDE1A879E9DFD99FE45F36848ADEA4D22A863B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\add_current_R0148_UI_operation_monitor_boundaries_a01-process.json",
+      "bytes": 967,
+      "sha256": "07A8E5B98FB538676930F92C7CDEFCC536FC31124CFE884E9AAD80DA3DB47F85"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\add_current_R0148_UI_operation_monitor_boundaries_a01-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\add_current_R0148_UI_operation_monitor_boundaries_a01-stdout.bin",
+      "bytes": 3348,
+      "sha256": "F190BF44F35A0EDCE6D3C16DA02D67AB3026E64BA3E00160301AF604E62606FE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\add_current_R0148_UI_operation_monitor_boundaries_a01.py",
+      "bytes": 11626,
+      "sha256": "D6792239B5D2F83F3C62C49044A4476C7D29E697991138CCFDAB22136D11DF1E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\argv.json",
+      "bytes": 725,
+      "sha256": "B7F32A2808E34B07DDCE0BB7B06C8F898002B622FFFABE744AA517E36E8936EF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a01-argv.json",
+      "bytes": 272,
+      "sha256": "C199C4E398E2D105CCFD7396F19915DD3747E13F8824EE6C747174005760BCB6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a01-process.json",
+      "bytes": 940,
+      "sha256": "62960B1F9040BCD17DAE6310B69A9CB2EB27BD025AC9E080EA14CD7AEFCC5AB4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a01-stderr.bin",
+      "bytes": 1123,
+      "sha256": "0A37065D8F87CE00AF194A97571CCA5F1634E25AC816F52CE7A194DA2F569457"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a01-stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a01.py",
+      "bytes": 24093,
+      "sha256": "26AD1E6B228C2C0198DF755867A1360E29C0CC65229534FDEEE2DF71C1E7A81C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a02-argv.json",
+      "bytes": 272,
+      "sha256": "9C0155533E3A0EDC5187613627D0B5A8E28A0D6241A501BA83398E154E00F2C9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a02-process.json",
+      "bytes": 940,
+      "sha256": "FC17F034CF7055AA676182AFEA7407443BCDBCA12E7A23D7CDEEBC0670748171"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a02-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a02-stdout.bin",
+      "bytes": 2634,
+      "sha256": "279D64F304E7D71B968251A32998EBDD0A59C74FD6447A6CA37D4316CCFA5A33"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\finalize_current_R0148_entry_cache_facts_a02.py",
+      "bytes": 24094,
+      "sha256": "43D0D7C84510E77E645129CCED8DEF7E5F994FC1199DEB7346534CCBDB6E6098"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_actual_graph_and_current_identity_a01-argv.json",
+      "bytes": 273,
+      "sha256": "E68C98457528C957DAEB99F90EC69914DA2206BB93CE4B1E4BD0574218F64F33"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_actual_graph_and_current_identity_a01-process.json",
+      "bytes": 943,
+      "sha256": "093759DEA2FC8155A5849CAF41625A4C819ACE1DBBBB7CD1EDFCBB414AE64C07"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_actual_graph_and_current_identity_a01-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_actual_graph_and_current_identity_a01-stdout.bin",
+      "bytes": 2584,
+      "sha256": "948A6568A1C2560AA296AF9138E364D6E66F82AF42761D4067E09148C9E042F6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_actual_graph_and_current_identity_a01.py",
+      "bytes": 3964,
+      "sha256": "862D0DB5C13B933B372ABF6ACDE1E751245E45830E4B339BA7E08723978D8C3E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_additive_status_keys_a01-argv.json",
+      "bytes": 260,
+      "sha256": "A52BFD03860F9B4CA18D6F95E408F803C1D380F4416276ACB9AF4DDAC4762D73"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_additive_status_keys_a01-process.json",
+      "bytes": 904,
+      "sha256": "4FBB6043B6179651D43885BF058CC77D4B64CF0D92F9298388027A19FA6B168F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_additive_status_keys_a01-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_additive_status_keys_a01-stdout.bin",
+      "bytes": 4812,
+      "sha256": "274809FE8C9CD1B270954C1F6533CABD13A96C737E6572EB0800258306B3B7CB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\inspect_additive_status_keys_a01.py",
+      "bytes": 623,
+      "sha256": "45B39E8DCFD514576FB92654D9B216C23B17ABBC5684CFB609E5AB2BBD064A45"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_current_R0148_fact_adapters_a01-argv.json",
+      "bytes": 267,
+      "sha256": "276C44FA8B2D433EC2DAF810AB9CCCA040348749ECE65549BFD9F60CDDA15378"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_current_R0148_fact_adapters_a01-process.json",
+      "bytes": 927,
+      "sha256": "15C6C5A57A1F156DB23ABF4CC31DE2658D569A99B2B26152853DCA2DF5A5AF84"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_current_R0148_fact_adapters_a01-stderr.bin",
+      "bytes": 161,
+      "sha256": "B859453986E8CAC6FDC886BDF81343A4A41E5BC610A44487A37FFBBB637616FE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_current_R0148_fact_adapters_a01-stdout.bin",
+      "bytes": 4019,
+      "sha256": "4E1BEE14E9D89EEF22FF608D1A9AAB0397443DDD456063EAB028BF925C27ED46"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_current_R0148_fact_adapters_a01.py",
+      "bytes": 7142,
+      "sha256": "851A581449602EEBAB70E8DB865CD81E27A5DF7BCB4B67709550C9A2F5172675"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_phase_schema_a03-argv.json",
+      "bytes": 273,
+      "sha256": "9A9DB49484733B476E82D92E5FB29FE9A8E6BDF87988D7545060A5B7CD41BD20"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_phase_schema_a03-process.json",
+      "bytes": 943,
+      "sha256": "4A25685A83240611F4D5B3E17DAF704996BCB8E53698E02FC4C1541BEC0A91FF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_phase_schema_a03-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_phase_schema_a03-stdout.bin",
+      "bytes": 1730,
+      "sha256": "B92ACF3612A96CDE9FCA8437F83BE26EC5744A530D25D549EE70B7D0C1A546AE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_phase_schema_a03.py",
+      "bytes": 2886,
+      "sha256": "618BCAACEC876F2873FD500D11ECCCF0307FB57655DB75400F9AFF02A5797756"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_syntax_a02-argv.json",
+      "bytes": 267,
+      "sha256": "9D5B11A6E5CE6D8E79BC0EF6532E6BAB46594493E0FA3FCA43CFFCF7F20B1641"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_syntax_a02-process.json",
+      "bytes": 925,
+      "sha256": "1720D4D19DDE756F9D27E3486996CF62FF03EE629C57CE374376105AD42207E0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_syntax_a02-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_syntax_a02-stdout.bin",
+      "bytes": 1107,
+      "sha256": "DD5F332BB39EAF1A74EE697138952F5E7805100A632B09CA8A8324071B1B7BA8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_final_reverification_syntax_a02.py",
+      "bytes": 1435,
+      "sha256": "C91D69C91A225011002948B07886BE207AD9BFF32B57DC2E34656432DB549E8E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_finalizer_current_PID_adapter_a02-argv.json",
+      "bytes": 269,
+      "sha256": "D1E59F34FDA64E7983FDD647C0D6F372A7B415B884229464F974DDA1508F9210"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_finalizer_current_PID_adapter_a02-process.json",
+      "bytes": 931,
+      "sha256": "9F7E66D05AF06AB1308308D1FD52BEB0E12BA5B1BFB90FE3E790FDC7D32998BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_finalizer_current_PID_adapter_a02-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_finalizer_current_PID_adapter_a02-stdout.bin",
+      "bytes": 1529,
+      "sha256": "E11AAA590A1AF0039FA2574B6E0ADFF46133D1C6F5A01EB8218B51BC021C5A30"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\prepare_finalizer_current_PID_adapter_a02.py",
+      "bytes": 1829,
+      "sha256": "9DADC9CE0D2DD6FB8535D77EFBD90CF20CDE8BB45A51F3448E25D73A4C435862"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\process.json",
+      "bytes": 860,
+      "sha256": "CE59E317659221D32577C4114853A22B30DA1791DB179CE14F7ED74D6C1BAD87"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\run_current_frozen_entry_a01.py",
+      "bytes": 1593,
+      "sha256": "049DB4D00D9ECEA150D21F38179250F3A4790DCE77844B206E868F33E3B674D9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\run_logged_aux_a01.py",
+      "bytes": 878,
+      "sha256": "1681D2F79239E21EA0BD462EA6623E1E25BB831EF96343EBA5B8AA0A653028B5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\stdout.bin",
+      "bytes": 6299,
+      "sha256": "FA6A49168EBC7111591D58AC8FCA231DCF00A983C74CAD46CD5D62C5E7221663"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a01-argv.json",
+      "bytes": 282,
+      "sha256": "DD5230A0E84A6C4D0331EA8A02B9A205F9F16780F21B36EDFAC4615CD33F8962"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a01-process.json",
+      "bytes": 969,
+      "sha256": "CBC126F4B7BBAE5BF6296444649FE36B3C72E05DBD7DBAC5A9237D6D2531850F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a01-stderr.bin",
+      "bytes": 372,
+      "sha256": "B5737F6B14CB4594CE2764C84B4176ECDE387B10DE758598352A2E34924EB79A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a01-stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a01.py",
+      "bytes": 14076,
+      "sha256": "FBD059FC06097C29C0E000D09316DB3498B8C5C37344B0FA777CC750E6D9815D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a02-argv.json",
+      "bytes": 282,
+      "sha256": "24DA2B0F9CA8C31FC56F36F65BE0D16D4A406E4913EC607097AF963688484784"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a02-process.json",
+      "bytes": 970,
+      "sha256": "414D4965E70FEF03AF211BB4C17CFD2C84465A642594B2A11A58B88C3CF12A7C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a02-stderr.bin",
+      "bytes": 1291,
+      "sha256": "91EE27B958D392660303A8C42653FE259D9CAFE4257152455368DA8F0C280F99"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a02-stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a02.py",
+      "bytes": 14077,
+      "sha256": "72FD55407CC364598D106D328133B922F133D91762F03DCCEA1A3700F61DEF53"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a03-argv.json",
+      "bytes": 282,
+      "sha256": "DE1E043734F017620C23FBF1D0B71E889D3E49323DDABFA506F849FB097E8BD9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a03-process.json",
+      "bytes": 969,
+      "sha256": "552CD64C256D60DA36B2642C32BCEC1B4DE3D00D3B0EBCC9BA91C6A98C799F79"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a03-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a03-stdout.bin",
+      "bytes": 433,
+      "sha256": "C96846DCB82C2E5880B3F8099D44D20965B48223BF4CF1D4BBE0D0F3ED8E6E17"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-process-reinforcement-a01\\verify_final_R0148_current_pins_and_bounded_claims_a03.py",
+      "bytes": 14452,
+      "sha256": "E23ACCD433F7BD9E4639EF9882DBA4918833E9694FFE30D120AA0473BED8E7A5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-four-save-causal-entry-owner-final-seal-process-a01\\create_final_seal_a01.py",
+      "bytes": 5225,
+      "sha256": "6FEFBEB46B5E01109ECC9449912024CE54C5F04ECC1278F7109AA5201FF96C4F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-monitor-dynamic-runtime-verifier-preparation-knights-a01\\verify_monitor_direct_named_run_a02.py",
+      "bytes": 10326,
+      "sha256": "06DB16730C573A3727505583DF74969EF5F24278FB9CC22141DC099FF975B7EE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\verifier-00-exact.py",
+      "bytes": 10326,
+      "sha256": "06DB16730C573A3727505583DF74969EF5F24278FB9CC22141DC099FF975B7EE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-monitor-dynamic-runtime-verifier-preparation-knights-a01\\monitor_direct_named_projection_a02.py",
+      "bytes": 13191,
+      "sha256": "75202E4F3CEA310600B8DF55CEB00EE6DB66F37032ECB206F68EEB559925065C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\verifier-01-exact.py",
+      "bytes": 13191,
+      "sha256": "75202E4F3CEA310600B8DF55CEB00EE6DB66F37032ECB206F68EEB559925065C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-monitor-dynamic-runtime-verifier-preparation-knights-a01\\direct_six_parameter_chain_runtime_a02.py",
+      "bytes": 9677,
+      "sha256": "C4A51E5F28914E8D02D729A34B0065D1CF3FEAD278BCD4DDD5976F071D382041"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\verifier-02-exact.py",
+      "bytes": 9677,
+      "sha256": "C4A51E5F28914E8D02D729A34B0065D1CF3FEAD278BCD4DDD5976F071D382041"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0146-direct-commit-observer-repair-knights-a01\\verify_direct_commit_offline_a01.py",
+      "bytes": 8213,
+      "sha256": "1CA2A1FEC04A3B6B11B4BB8DACF2B2FBFF59D557E54C4B7CA0AD04D5F76D63FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\verifier-03-exact.py",
+      "bytes": 8213,
+      "sha256": "1CA2A1FEC04A3B6B11B4BB8DACF2B2FBFF59D557E54C4B7CA0AD04D5F76D63FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0146-notification-named-scope-repair-knights-a01\\verify_named_scope_fixture_a01.py",
+      "bytes": 9227,
+      "sha256": "5A2FA6C63E2EEE9F22D093090671C5AD8B584B57759F8968CE48F20C217C09C9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\verifier-04-exact.py",
+      "bytes": 9227,
+      "sha256": "5A2FA6C63E2EEE9F22D093090671C5AD8B584B57759F8968CE48F20C217C09C9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\verifier-05-exact.py",
+      "bytes": 22129,
+      "sha256": "3FD2004D0E2FD3690B589D10A80ADED580815929FF0226BCD23E4C0529AE3BF4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\verifier-06-exact.py",
+      "bytes": 41961,
+      "sha256": "A7497C1BDBD00D6F55DDEE711532B38BF64125EFA2C26DE18553DD0F574F91AA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\input-00-exact.json",
+      "bytes": 70549,
+      "sha256": "9628BF75FA12AA3E16A621FACBA091A09EEAAA2DF079086839FA5A983F821B5B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\input-01-exact.json",
+      "bytes": 8495916,
+      "sha256": "E3009571C5C1393755C28AC289513B28CF9F512F626A9A55EAFE8246D9216787"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\input-02-exact.json",
+      "bytes": 7003,
+      "sha256": "61910E0BC933FBDB20F44DB290075642EF93AE883CE593C96BFFAB0A0A2BD1C2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\input-03-exact.json",
+      "bytes": 338619,
+      "sha256": "BBC49B486FDD87BD5250B4BDFA7FD1504DD4CF90B2C26EBE85A417903C13CB3F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\input-04-exact.json",
+      "bytes": 184701,
+      "sha256": "7D2E5F125588C7AA5DBBBCE6C37C88BC0C01407E40083AC965DAC33023C3BEDE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-direct-named-audit-knights-a01\\strict-additive-run-a01\\input-05-exact.json",
+      "bytes": 2422479,
+      "sha256": "30A2654761CADEAAEFC2272D1ACE3E65FC896DFBD7F91848BCDFBE65CC671A01"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-source.json",
+      "bytes": 35028,
+      "sha256": "4A666C4616298FFC5A6E74A5B387C8F2B5E780AB85402DD67131A491AD82BCD1"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-save.json",
+      "bytes": 104,
+      "sha256": "113C59FC844E9E385621D3B161573D236B86D747FF1FCBF1877E7665158417F3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-save.json",
+      "bytes": 13530,
+      "sha256": "DC083BC5EE2AE3ED2FACC1D1343F44379BED933BF8BD04CB493854163CFF7A29"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-pre-ui-checkpoint-post-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\before-pre-ui-checkpoint-post-source.json",
+      "bytes": 37675,
+      "sha256": "1D94997D280E75894CA0A31257B4C06F448ECC3D4125E53EBB680DEB638626B3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\before-main-post-closed-ui-save-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\after-pre-ui-checkpoint-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-source.json",
+      "bytes": 2714442,
+      "sha256": "87984680832F80436F07199CCBCCC538A4BA7FC08587233EE5088D2FCE73DB8B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\after-pre-ui-checkpoint-save.json",
+      "bytes": 104,
+      "sha256": "64BC1654B8B70622C08270A7F6341EC1E04FC5E36480E2E4C2618CC2714D012E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-save.json",
+      "bytes": 13758,
+      "sha256": "4C806029FBFC206DE86C15B3C160A3629E3F82EB4AB6B346EC03135948EBDA38"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\after-pre-ui-checkpoint-post-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\after-pre-ui-checkpoint-post-source.json",
+      "bytes": 2716960,
+      "sha256": "40C6B9E8526905AA1658E0604B92A9DE8A341E572CEDFC674A4AB2E45DBEA064"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests\\after-main-post-ui-save-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\verify_current_finite_domains_a04.py",
+      "bytes": 31992,
+      "sha256": "49433C20720A75BD665189806980C2A7C7FBC30E419E788FFBE0E8BCB9F9034C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0145-trait-growth-coverage-preparation-other-a01\\verify_loaded_trait_branch_coverage_a01.py",
+      "bytes": 15698,
+      "sha256": "87889EA661895EB69D69BF8D80B553C322B377A5A059787A8A650C0F531DE89B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0147-named-growth-accolade-validation-plan-other-a01\\verify_named_effect_projection_a02.py",
+      "bytes": 16626,
+      "sha256": "0BE8ECF748F544941080CC0B7268778EAA1FEC293557FE8263D6A48219AB306D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0147-optional-recursive-readonly-preparation-other-a01\\read_optional_recursive_a04.py",
+      "bytes": 25022,
+      "sha256": "C7D3F32F037CAB4C9BBC8ABECC29F9CC79F0B7D04F8DABC6F37AC31869081836"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0147-named-growth-accolade-validation-plan-other-a01\\finite-growth-accolade-no-write-ABI-contract-READY-a14.json",
+      "bytes": 21588,
+      "sha256": "D43E4640B7B6922556765092F499D0039BEA9E90B4F600997774BF9A4A37F320"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\native_bridge\\src\\combat_scoped_transition_chain_v1.cpp",
+      "bytes": 74084,
+      "sha256": "418DAC4A1EFE967DBD8A0EC77383EF08B064709118925A36CDCC0765BE453765"
+    },
+    {
+      "path": "C:\\w\\e2cap1001i\\ck3_autonomous_player\\native_bridge\\src\\combat_phase_event_trace_ring_v1.cpp",
+      "bytes": 105268,
+      "sha256": "81E4FA16049FBC3358B655131D838EA70CB98E4752EA2274ED6AB6AFDF34D7D5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0147-named-growth-accolade-validation-plan-other-a01\\stock-exact\\common\\scripted_effects\\00_commander_effects.txt",
+      "bytes": 17072,
+      "sha256": "7999F7731F56A63A5E6E615EF1805F6382101D958A5AD4967F9C68CF3E8EE6F6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0147-named-growth-accolade-validation-plan-other-a01\\stock-writer-inventory-and-plan-a01.json",
+      "bytes": 41274,
+      "sha256": "42D380D9E3990A1DA3D8C3BE1B4CBD0AF143892A36BDEAB7522C3F152D602939"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\root-optional-post-a01-snapshot.json",
+      "bytes": 4953857,
+      "sha256": "1C91B1C5C4F7F939D13671D307231A8267ABC17D6163EB3853ADDDBA2889B18D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\ck3-output\\interactive-requests-responses\\root-optional-post-a01-control.json",
+      "bytes": 138432,
+      "sha256": "656E9F141DD2C451F4403C3CF13B7CD732CEB64363E6ED37B5C7F400936990A6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\before-pre-ui-checkpoint-actual-employer-liege-29829-exact.txt",
+      "bytes": 4150,
+      "sha256": "18032DE6AD04B6D37C1112FB1D83AFD09026FC78D082C047417AE939CD832086"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\before-pre-ui-checkpoint-actual-employer-liege-32725-exact.txt",
+      "bytes": 3797,
+      "sha256": "DF5BB284A1A0DD0498136AB2B66679C7A424632CFDEDFB704CF7CA008512C6F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\before-actual-employer-liege-29829-exact.txt",
+      "bytes": 4150,
+      "sha256": "18032DE6AD04B6D37C1112FB1D83AFD09026FC78D082C047417AE939CD832086"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\before-actual-employer-liege-32725-exact.txt",
+      "bytes": 4362,
+      "sha256": "23C96D4461870A5B82A997AC43CE1D956A3B1E5F560AAF2C273C01A90F1C2621"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\after-pre-ui-checkpoint-actual-employer-liege-29829-exact.txt",
+      "bytes": 4125,
+      "sha256": "1DDF1122CB6E1AB24EDFB5ED4C3999DCA4039386003CA49C678C5614669D93BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\after-pre-ui-checkpoint-actual-employer-liege-32725-exact.txt",
+      "bytes": 4362,
+      "sha256": "D62D4FD67FC69881079DD305E466E104284F7BFDA8A404F3C54EB49A36D6AA22"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\after-actual-employer-liege-29829-exact.txt",
+      "bytes": 4125,
+      "sha256": "1DDF1122CB6E1AB24EDFB5ED4C3999DCA4039386003CA49C678C5614669D93BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a04\\after-actual-employer-liege-32725-exact.txt",
+      "bytes": 4362,
+      "sha256": "D62D4FD67FC69881079DD305E466E104284F7BFDA8A404F3C54EB49A36D6AA22"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\before-pre-ui-checkpoint-actual-employer-liege-29829-exact.txt",
+      "bytes": 4150,
+      "sha256": "18032DE6AD04B6D37C1112FB1D83AFD09026FC78D082C047417AE939CD832086"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\before-pre-ui-checkpoint-actual-employer-liege-32725-exact.txt",
+      "bytes": 3797,
+      "sha256": "DF5BB284A1A0DD0498136AB2B66679C7A424632CFDEDFB704CF7CA008512C6F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\before-actual-employer-liege-29829-exact.txt",
+      "bytes": 4150,
+      "sha256": "18032DE6AD04B6D37C1112FB1D83AFD09026FC78D082C047417AE939CD832086"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\before-actual-employer-liege-32725-exact.txt",
+      "bytes": 4362,
+      "sha256": "23C96D4461870A5B82A997AC43CE1D956A3B1E5F560AAF2C273C01A90F1C2621"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\after-pre-ui-checkpoint-actual-employer-liege-29829-exact.txt",
+      "bytes": 4125,
+      "sha256": "1DDF1122CB6E1AB24EDFB5ED4C3999DCA4039386003CA49C678C5614669D93BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\after-pre-ui-checkpoint-actual-employer-liege-32725-exact.txt",
+      "bytes": 4362,
+      "sha256": "D62D4FD67FC69881079DD305E466E104284F7BFDA8A404F3C54EB49A36D6AA22"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\after-actual-employer-liege-29829-exact.txt",
+      "bytes": 4125,
+      "sha256": "1DDF1122CB6E1AB24EDFB5ED4C3999DCA4039386003CA49C678C5614669D93BC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-a04\\after-actual-employer-liege-32725-exact.txt",
+      "bytes": 4362,
+      "sha256": "D62D4FD67FC69881079DD305E466E104284F7BFDA8A404F3C54EB49A36D6AA22"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-process-a04.json",
+      "bytes": 7437,
+      "sha256": "6D7802DF3BA5A80585AADF9B1EFEF2BFD1E0232125C787AD9D7DA2FE4FE308CC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-process-a04.json",
+      "bytes": 7451,
+      "sha256": "809A51D9483D76384A175AED5D0F7C3EE0B143C288BBB8B7544235E38CDBC540"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-stderr-a04.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-optimized-stderr-a04.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\external-import-correction-a02.json",
+      "bytes": 805,
+      "sha256": "452CD5BDF111B50F1C6F2DF040311E3920B6A41992D53F09368FCBFA8104265C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-RPM-schema-correction-a03.json",
+      "bytes": 880,
+      "sha256": "9AD005F97AB9BE093F8826D165BD8CD3E348282A5FC51A8763389F2769618DD2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\original-saved-pair-schema-correction-a04.json",
+      "bytes": 1034,
+      "sha256": "082D85DD6C313212E3918AE2300A2F0A8608AD5D3A4D4EEDFE85ACFE5FB177FC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\all-downstream-actual-source-schema-preflight-a04.json",
+      "bytes": 16437,
+      "sha256": "C1014136982F5EF635D42E62562CA1EDDC2717E6D4209F28A5A6A67D768B75D8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\schema-test-normal-process-a03.json",
+      "bytes": 334,
+      "sha256": "0046453B7A947FE479638E13944E0E8A1680FA870A6511E6776CB7A322E4FEAD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\schema-test-optimized-process-a03.json",
+      "bytes": 345,
+      "sha256": "AE5D9BB5258A8D2F1413B20ED83DC04143D36C352CC3A01EA958150C2C722B34"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\schema-normal-process-a04.json",
+      "bytes": 1200,
+      "sha256": "C3E2FC82C56E598C30ECF083867A76E2215E66971A0A792420E301A46D517291"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\schema-optimized-process-a04.json",
+      "bytes": 1217,
+      "sha256": "50EEDF715396C175CC5D3E19A239245B83DF44FC457CAF269A0198E09F28BD07"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-help-process-a04.json",
+      "bytes": 1216,
+      "sha256": "9B142EC16146D2975A1DF3A8C0392AC8C04932CEC8C9BD1194223CED98A493B7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a01\\current-finite-growth-accolade-projection.json",
+      "bytes": 270,
+      "sha256": "E7B03186D8F10D20B492E9C49525F49388C8656F1377259801B92D8AF65A2E9A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a02\\current-finite-growth-accolade-projection.json",
+      "bytes": 255,
+      "sha256": "5ED3423189FF4353357DA3575F6C44AA011CC06D12F8B3F167FA0BF1F11B718E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0148-actual-finite-growth-accolade-audit-other-a01\\actual-finite-normal-a03\\current-finite-growth-accolade-projection.json",
+      "bytes": 228,
+      "sha256": "0D9CD9E6A919F4218E1006FD77CFF7E7E6FF046E6067C31BC3543136FA263B1B"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\death_events\\death_management_events.txt",
+      "bytes": 148121,
+      "sha256": "31591A2F2D3A61E65853CC43B9BEF4B001FEB75EA1502861D2FB9AC054AB1FB7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\notification-script-anchors-a01\\death_management_events-exact.txt",
+      "bytes": 148121,
+      "sha256": "31591A2F2D3A61E65853CC43B9BEF4B001FEB75EA1502861D2FB9AC054AB1FB7"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_personal_details_effects.txt",
+      "bytes": 31333,
+      "sha256": "368A499A04512FB3C9873199AA55CFC9A80E0FB0EF6C4EA0D26B6E4EE4CAAA7F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\notification-script-anchors-a01\\personal_details_effects-exact.txt",
+      "bytes": 31333,
+      "sha256": "368A499A04512FB3C9873199AA55CFC9A80E0FB0EF6C4EA0D26B6E4EE4CAAA7F"
+    }
+  ],
+  "semantic_reviewer_script": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\seal_r148_six_gap_semantic_a01.py",
+    "bytes": 17526,
+    "sha256": "2229A568B94359AAE2C02F3D7818772EAD96916DDCD9415048807911FA0C60A0"
+  }
+}
