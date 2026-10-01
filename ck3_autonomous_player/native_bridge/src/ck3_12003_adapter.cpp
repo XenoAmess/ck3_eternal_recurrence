@@ -47,8 +47,10 @@ std::string RenderCrozierBuildIdentity(
       ReplaceAll(serialized, std::string("\"") + key + "\":\"1.20.0.2\"",
                  std::string("\"") + key + "\":\"1.20.0.3\"");
     }
-    ReplaceAll(serialized, "\"backend_id\":\"ck3-1.20.0.2-native-",
-                          "\"backend_id\":\"ck3-1.20.0.3-native-");
+    for (const auto key : {"backend_id", "campaign_backend_id", "feature_backend_id"}) {
+      ReplaceAll(serialized, std::string("\"") + key + "\":\"ck3-1.20.0.2-",
+                 std::string("\"") + key + "\":\"ck3-1.20.0.3-");
+    }
     ReplaceAll(serialized, "\"adapter_id\":\"ck3-1.20.0.2-msvc-x64\"",
                           "\"adapter_id\":\"ck3-1.20.0.3-msvc-x64\"");
     ReplaceAll(serialized, "\"schema\":\"ck3_12002_", "\"schema\":\"ck3_12003_");

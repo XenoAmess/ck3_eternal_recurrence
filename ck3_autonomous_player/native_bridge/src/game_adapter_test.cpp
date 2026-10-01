@@ -9,7 +9,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <span>
 #include <string>
@@ -833,6 +836,31 @@ int main() {
 
   const auto &old_crozier = xar::game::Ck3_12002AdapterDescriptor();
   const auto &new_known = xar::game::Ck3_12003AdapterDescriptor();
+  // Use the existing producer's government DTO, including its private backend
+  // and both native source identities, through the production wire renderer.
+  const auto government_fixture_path = std::filesystem::path(__FILE__).parent_path()
+      .parent_path() / "research/fixtures/ck3_12002_government_adapter_available.json";
+  std::ifstream government_fixture(government_fixture_path, std::ios::binary);
+  if (!government_fixture) {
+    return Fail("government producer fixture could not be read");
+  }
+  const std::string government_wire{std::istreambuf_iterator<char>(government_fixture),
+                                    std::istreambuf_iterator<char>()};
+  const auto government_rendered =
+      xar::game::RenderCrozierBuildIdentity(government_wire, new_known);
+  for (const auto identity : {
+           "\"backend_id\":\"ck3-1.20.0.3-private-government-runtime-adapter-v1\"",
+           "\"campaign_backend_id\":\"ck3-1.20.0.3-native-campaign-root-context-v1\"",
+           "\"feature_backend_id\":\"ck3-1.20.0.3-native-loaded-feature-manifest-v1\""}) {
+    if (government_rendered.find(identity) == std::string::npos) {
+      return Fail("government DTO retained an older backend source identity");
+    }
+  }
+  if (government_rendered.find("\"version\":\"1.20.0.3\"") == std::string::npos ||
+      government_rendered.find(xar::ck3_12003::kExecutableSha256) == std::string::npos ||
+      xar::game::RenderCrozierBuildIdentity(government_wire, old_crozier) != government_wire) {
+    return Fail("government DTO build identity or old-build rendering drifted");
+  }
   if (new_known.adapter_id != "ck3-1.20.0.3-msvc-x64" ||
       new_known.game_version != "1.20.0.3" ||
       new_known.executable_sha256 != xar::ck3_12003::kExecutableSha256 ||
