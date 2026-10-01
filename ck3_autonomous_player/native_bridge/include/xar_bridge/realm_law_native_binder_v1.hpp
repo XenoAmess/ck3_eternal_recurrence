@@ -89,6 +89,8 @@ struct RealmLawNativeBinderEnvironmentV1 {
   std::string_view expected_signature_manifest_sha256{};
   void *native_context = nullptr;
   RealmLawNativeBinderOperationsV1 operations{};
+  std::string_view expected_executable_sha256 =
+      kRealmLawNativeBinderV1ExecutableSha256;
 };
 
 // This state contains one complete value-only LAW4 observation so the submit

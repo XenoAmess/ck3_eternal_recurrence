@@ -36,6 +36,7 @@ struct RealmLawGovernanceSourceGroupLeaseV1 {
   bool can_change_evaluated = false;
   bool can_change = false;
   std::size_t candidate_count = 0;
+  bool engine_final_permission_only = false;
 };
 
 enum class RealmLawGovernanceSourceAdapterFailureV1 : std::uint8_t {
@@ -97,6 +98,8 @@ struct RealmLawGovernanceSourceAccessV1 {
   ReadRealmLawGovernanceSourceGroupV1 read_group = nullptr;
   ReadRealmLawGovernanceSourceCandidateV1 read_candidate = nullptr;
   ReadRealmLawGovernanceSourceTitleBaselineV1 read_title_baseline = nullptr;
+  std::string_view expected_executable_sha256 =
+      kRealmLawGovernanceSnapshotV1ExecutableSha256;
 };
 
 struct RealmLawGovernanceSourceResultV1 {

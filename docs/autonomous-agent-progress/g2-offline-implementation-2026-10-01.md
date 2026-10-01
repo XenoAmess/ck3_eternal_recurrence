@@ -145,3 +145,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 19个leaf文件绑定新版government/family非战争/prisoner实际wire及exact-build provenance；GOV7、family6、prisoner4及受影响legacy32通过。保留缺字段/quote epoch/旧driver默认签名的真实失败证据及最小修复。family只是UI预览；prisoner集合fixture正向quote为constructed DTO，不冒充final原生getter。共享driver/MCP仍等其它包最终冻结，本包不含战争新入口或live声明。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\CORE-READY.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:41:29 Realm law production source, resources and action receipt
+
+续交LAW components/selectedsource/actionmailbox：实际CanHave/CanPass/CanKeep、succession枚举、active法案和真实资源/继承人读取闭合，slot37拥有型命令与独立法律/prestige/full-successor结果。components15 ABI跨度、8property及16enum/literal；Od/O2生产query/action/receipt通过，既有4夹具32案例复用。首次32文件43b262e已交付，本包补齐其余34；不是CA1强制策略。有意义法案选择、真实执行结果和cold仍待实机。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\law\ready-files.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

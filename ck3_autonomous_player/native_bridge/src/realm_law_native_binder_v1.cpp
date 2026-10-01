@@ -51,7 +51,7 @@ bool ProofMatchesEnvironment(
     std::string_view expected_signature_manifest) noexcept {
   return proof.exact_build_admitted &&
       FixedView(proof.executable_sha256) ==
-          kRealmLawNativeBinderV1ExecutableSha256 &&
+          environment.expected_executable_sha256 &&
       proof.module_base == environment.module_base &&
       proof.signatures_complete &&
       FixedView(proof.signature_manifest_sha256) ==
@@ -358,7 +358,10 @@ bool SubmissionMatchesStableTarget(
       previous_group->can_change_evaluated !=
           current_group->can_change_evaluated ||
       previous_group->can_change != current_group->can_change ||
-      !previous_group->can_change_evaluated || !previous_group->can_change) {
+      previous_group->engine_final_permission_only !=
+          current_group->engine_final_permission_only ||
+      (!previous_group->engine_final_permission_only &&
+       (!previous_group->can_change_evaluated || !previous_group->can_change))) {
     return false;
   }
   const auto *previous_candidate =
@@ -478,7 +481,7 @@ bool BindRealmLawNativeV1(
   if (state.attached || !environment.binding_enabled ||
       environment.module_base == 0 ||
       environment.admitted_executable_sha256 !=
-          kRealmLawNativeBinderV1ExecutableSha256 ||
+          environment.expected_executable_sha256 ||
       !ValidDigest(environment.expected_signature_manifest_sha256) ||
       !CompleteOperations(environment.operations)) {
     return false;
@@ -512,8 +515,8 @@ SourceAccess MakeRealmLawNativeSourceAccessV1(State &state) noexcept {
   SourceAccess output{};
   if (!state.attached || state.integrity_failed) return output;
   output.exact_build_admitted = true;
-  output.admitted_executable_sha256 =
-      kRealmLawNativeBinderV1ExecutableSha256;
+  output.expected_executable_sha256 = FixedView(state.executable_sha256);
+  output.admitted_executable_sha256 = FixedView(state.executable_sha256);
   output.current_thread_id = state.application_main_thread_id;
   output.application_main_thread_id = state.application_main_thread_id;
   output.context = &state;
@@ -531,8 +534,8 @@ RealmLawEnactActionAccessV1 MakeRealmLawNativeActionAccessV1(
   RealmLawEnactActionAccessV1 output{};
   if (!state.attached || state.integrity_failed) return output;
   output.exact_build_admitted = true;
-  output.admitted_executable_sha256 =
-      kRealmLawNativeBinderV1ExecutableSha256;
+  output.expected_executable_sha256 = FixedView(state.executable_sha256);
+  output.admitted_executable_sha256 = FixedView(state.executable_sha256);
   output.current_thread_id = state.application_main_thread_id;
   output.application_main_thread_id = state.application_main_thread_id;
   output.context = &state;

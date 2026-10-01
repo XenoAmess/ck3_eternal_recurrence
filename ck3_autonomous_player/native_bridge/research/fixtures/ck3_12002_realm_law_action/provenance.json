@@ -1,0 +1,25 @@
+{
+  "schema": "xar.realm-law-crown-action-wire-fixture.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "producer": "actual RealmLawCrownSource12002 + LAW4/LAW5 + action worker + wire serializers",
+  "native_input_kind": "synthetic exact-layout memory and typed native-call overrides",
+  "mailbox_scheduling": "fixture substitute with actual envelope ownership/frame checks",
+  "local_ck3_contacted": false,
+  "status": "static-ready",
+  "artifact_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\law\\action-mailbox\\result.json",
+  "wire_sha256": {
+    "wire-law-crown-query.json": "e1d17e5cb7b5ab34b59d3a17d2ffa825f0e3c0908b0965005fe53bbdbecc75a6",
+    "wire-law-crown-receipt-enacted.json": "267c16ba2cc31c8303b95a46a92eb7b987e351e06a800d99dd967a7963f9b9a9",
+    "wire-law-crown-receipt-unchanged.json": "3ae68d92057991aa3abedd1b0b688207c454eba63902f855b470c8c91d2199aa",
+    "wire-law-crown-submit-native-denied.json": "0755709cb331107f825af1a296da3180450dd827d4779b9fd7ddb245d78f3136",
+    "wire-law-crown-submit-pending.json": "ccd23b29c29b294c745bd38bd0ebd269d23d114ba40fb9db8e03a83c4623c92c"
+  },
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_realm_law_action_mailbox.hpp": "a6cb95e4461c762feebd30c09bf6c38340d2edf84aa4be2c11d9213602ba5364",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_realm_law_action_mailbox.cpp": "dcafd15db303ec006f8ca9849a3233696ba0f2837f6637c917e853986b968977",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_realm_law_action_mailbox_fixture.hpp": "f6de78cc24987dee7fe37f5b42d45edfb17ef31b820578ee6d8a39170c76db54",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_realm_law_action_mailbox_test.cpp": "aed67a2f0257d9b9f0fd843baf532cd3f61d15b83740c170070695992055369d",
+    "ck3_autonomous_player/native_bridge/tools/test_ck3_12002_realm_law_action_mailbox.py": "1a5d8b5f7aa363e81438220aeda4f4e8d9d751f2577755c4674a5d8587c42034"
+  }
+}

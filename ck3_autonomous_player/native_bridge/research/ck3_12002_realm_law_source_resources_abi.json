@@ -1,0 +1,87 @@
+{
+  "contract": "ck3_12002_realm_law_source_resources_abi",
+  "readiness": "static-ready",
+  "build": {
+    "version": "1.20.0.2",
+    "size": 101039736,
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "instruction_spans": [
+    {
+      "name": "affordability_switch",
+      "rva": "0x310e79e",
+      "end_rva": "0x310e7b7",
+      "sha256": "5E2CE8D28BC1A8EE6167A16239682F037AB3E159C0BA79CA19FB763852FE48EC"
+    },
+    {
+      "name": "gold_balance",
+      "rva": "0x310e7d6",
+      "end_rva": "0x310e802",
+      "sha256": "B48FD85896E58C67CE13593F869C17D0A40ED7EAC0C8BC6D8458CF6844036784"
+    },
+    {
+      "name": "prestige_balance",
+      "rva": "0x310e820",
+      "end_rva": "0x310e851",
+      "sha256": "4EEB976256592719B5B61C39B00981939B6E3C71B4E19B7E8ECCB206F89F2562"
+    },
+    {
+      "name": "piety_balance",
+      "rva": "0x310e867",
+      "end_rva": "0x310e896",
+      "sha256": "CF4F7A104281EAFDDF85111B9B45777AA6B6EE472F317D51955585CB0DB5CC27"
+    },
+    {
+      "name": "influence_balance",
+      "rva": "0x310eb27",
+      "end_rva": "0x310eb56",
+      "sha256": "E6C8F858BBB2E705D9262F04BB5464DB2B135323C80229503B82E9C6979D4426"
+    },
+    {
+      "name": "merit_balance",
+      "rva": "0x310ec11",
+      "end_rva": "0x310ec40",
+      "sha256": "3935C1DD33484E90EE13342DFE2D218FA9A10BFE831416D60ECFC6C62BAF219E"
+    },
+    {
+      "name": "cost_ordinal_jump_table",
+      "rva": "0x310edac",
+      "end_rva": "0x310edd4",
+      "sha256": "596F5FA0A148B57553D48C3D7BCD7A9857C9C5A4C59B8C335F3B660029302001"
+    }
+  ],
+  "resource_source": {
+    "character_extension_offset": "0x1B0",
+    "balance_scale": 100000,
+    "slots": [
+      {
+        "ordinal": 0,
+        "key": "gold",
+        "offset": "0x100"
+      },
+      {
+        "ordinal": 1,
+        "key": "prestige",
+        "offset": "0x130"
+      },
+      {
+        "ordinal": 2,
+        "key": "piety",
+        "offset": "0x110"
+      },
+      {
+        "ordinal": 4,
+        "key": "influence",
+        "offset": "0x150"
+      },
+      {
+        "ordinal": 8,
+        "key": "merit",
+        "offset": "0x170"
+      }
+    ],
+    "null_extension_semantics": "The native affordability branch supplies observed zero for null extension; a failed memory read remains unavailable."
+  },
+  "title_successor_abi_dependency": "ck3_1_20_0_2_nonwar_realm.json and verify_ck3_12002_nonwar_realm.py; native full vectors +0x150/+0x158/+0x15C, component storage full-ID round trip",
+  "boundary": "Source -> typed command -> independent receipt fixtures are offline. No paused live sample or value/policy gain is claimed. Other nonzero currencies require their actual balance source."
+}

@@ -127,12 +127,14 @@ Failure ValidateCandidate(
   if (!candidate.evaluation_complete) {
     return Failure::candidate_evaluation_incomplete;
   }
-  if ((candidate.can_enact &&
+  if (!candidate.engine_final_only && ((candidate.can_enact &&
        (!candidate.can_have || !candidate.can_pass || candidate.is_active)) ||
       (!candidate.can_have && candidate.can_pass) ||
-      (!candidate.can_pass && candidate.can_enact)) {
+      (!candidate.can_pass && candidate.can_enact))) {
     return Failure::candidate_legality_invariant_failed;
   }
+  if (candidate.engine_final_only && candidate.is_active && candidate.can_enact)
+    return Failure::candidate_legality_invariant_failed;
   if (!ValidReason(candidate.blocked_reason,
                    candidate.can_enact ? Presence::absent
                                        : Presence::present)) {
@@ -148,7 +150,7 @@ Failure ValidateGroup(const RealmLawGovernanceGroupV1 &group) noexcept {
   if (!ValidKey(group.active_law_key)) {
     return Failure::active_law_key_invalid;
   }
-  if (!group.can_change_evaluated) {
+  if (!group.can_change_evaluated && !group.engine_final_permission_only) {
     return Failure::candidate_evaluation_incomplete;
   }
   if (!group.candidates_complete) {
@@ -169,7 +171,7 @@ Failure ValidateGroup(const RealmLawGovernanceGroupV1 &group) noexcept {
         return Failure::active_law_mismatch;
       }
     }
-    if (!group.can_change && candidate.can_enact) {
+    if (!group.engine_final_permission_only && !group.can_change && candidate.can_enact) {
       return Failure::candidate_legality_invariant_failed;
     }
     for (std::uint32_t prior = 0; prior < index; ++prior) {
@@ -380,11 +382,12 @@ std::string_view RealmLawGovernanceReasonViewV1(
 
 bool ObserveRealmLawGovernanceSnapshotV1(
     const RealmLawGovernanceCaptureV1 &capture,
-    RealmLawGovernanceSnapshotV1 &output) noexcept {
+    RealmLawGovernanceSnapshotV1 &output,
+    std::string_view expected_executable_sha256) noexcept {
   SetUnavailable(output, Failure::source_adapter_unavailable);
   if (!capture.exact_build_admitted ||
       FixedView(capture.admitted_executable_sha256) !=
-          kRealmLawGovernanceSnapshotV1ExecutableSha256) {
+          expected_executable_sha256) {
     SetUnavailable(output, Failure::exact_build_mismatch);
     return false;
   }

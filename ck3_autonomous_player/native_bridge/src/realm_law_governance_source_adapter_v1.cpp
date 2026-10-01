@@ -176,6 +176,7 @@ bool ReadSample(
 
     auto &group = sample.groups[group_index];
     group.group_key = source_group.group_key;
+    group.engine_final_permission_only = source_group.engine_final_permission_only;
     group.active_law_key = source_group.active_law_key;
     group.can_change_evaluated = source_group.can_change_evaluated;
     group.can_change = source_group.can_change;
@@ -212,7 +213,7 @@ bool ObserveRealmLawGovernanceSourceV1(
   Fail(output, Failure::callbacks_unavailable);
   if (!access.exact_build_admitted ||
       access.admitted_executable_sha256 !=
-          kRealmLawGovernanceSnapshotV1ExecutableSha256) {
+          access.expected_executable_sha256) {
     Fail(output, Failure::exact_build_mismatch,
          CoreFailure::exact_build_mismatch);
     return false;
@@ -314,7 +315,8 @@ bool ObserveRealmLawGovernanceSourceV1(
     Fail(output, Failure::working_storage_unavailable);
     return false;
   }
-  if (!ObserveRealmLawGovernanceSnapshotV1(*capture, *snapshot)) {
+  if (!ObserveRealmLawGovernanceSnapshotV1(*capture, *snapshot,
+                                               access.expected_executable_sha256)) {
     const auto core_failure = snapshot->unavailable_reason;
     Fail(output,
          core_failure == CoreFailure::source_sample_drift

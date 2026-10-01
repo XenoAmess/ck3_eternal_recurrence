@@ -23,6 +23,7 @@ struct StableCandidateV1 {
   RealmLawGovernanceKeyV1 active_law_key{};
   bool authority_evaluated = false;
   bool authority_allows_change = false;
+  bool engine_final_permission_only = false;
   RealmLawGovernanceCandidateV1 candidate{};
   RealmLawGovernanceTitleBaselineV1 title_successors{};
   std::uint32_t resource_count = 0;
@@ -172,17 +173,20 @@ ActionFailure ExtractStableCandidate(
   output.active_law_key = group->active_law_key;
   output.authority_evaluated = group->can_change_evaluated;
   output.authority_allows_change = group->can_change;
+  output.engine_final_permission_only = group->engine_final_permission_only;
   output.candidate = *candidate;
   output.title_successors = snapshot.title_baseline;
   if (!NormalizeResources(observation, output.resource_count,
                           output.resources)) {
     return ActionFailure::resource_observation_invalid;
   }
-  if (!output.authority_evaluated || !output.authority_allows_change) {
+  if (!output.engine_final_permission_only &&
+      (!output.authority_evaluated || !output.authority_allows_change)) {
     return ActionFailure::authority_denied;
   }
   if (candidate->is_active || !candidate->evaluation_complete ||
-      !candidate->can_have || !candidate->can_pass ||
+      (!candidate->engine_final_only &&
+       (!candidate->can_have || !candidate->can_pass)) ||
       !candidate->can_enact || !candidate->costs_complete ||
       candidate->blocked_reason.presence != Presence::absent) {
     return ActionFailure::final_legality_denied;
@@ -291,7 +295,7 @@ AckStatus ExecuteRealmLawEnactActionV1(
     }
     if (!access.exact_build_admitted ||
         access.admitted_executable_sha256 !=
-            kRealmLawGovernanceSnapshotV1ExecutableSha256) {
+            access.expected_executable_sha256) {
       return Reject(request, ActionFailure::exact_build_mismatch, nullptr, ack);
     }
     if (access.current_thread_id == 0 ||

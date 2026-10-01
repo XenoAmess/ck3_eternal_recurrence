@@ -137,6 +137,10 @@ struct RealmLawGovernanceSuccessionShapeV1 {
 
 struct RealmLawGovernanceCandidateV1 {
   RealmLawGovernanceKeyV1 law_key{};
+  // Exact-build final evaluator may short-circuit component predicates.
+  // This marks a copied final result as sufficient submit permission even
+  // when separately observed component predicates are false.
+  bool engine_final_only = false;
   bool is_active = false;
   bool evaluation_complete = false;
   bool can_have = false;
@@ -156,6 +160,7 @@ struct RealmLawGovernanceCandidateV1 {
 
 struct RealmLawGovernanceGroupV1 {
   RealmLawGovernanceKeyV1 group_key{};
+  bool engine_final_permission_only = false;
   RealmLawGovernanceKeyV1 active_law_key{};
   bool can_change_evaluated = false;
   bool can_change = false;
@@ -289,7 +294,9 @@ std::string_view RealmLawGovernanceReasonViewV1(
 
 bool ObserveRealmLawGovernanceSnapshotV1(
     const RealmLawGovernanceCaptureV1 &capture,
-    RealmLawGovernanceSnapshotV1 &output) noexcept;
+    RealmLawGovernanceSnapshotV1 &output,
+    std::string_view expected_executable_sha256 =
+        kRealmLawGovernanceSnapshotV1ExecutableSha256) noexcept;
 
 std::string_view RealmLawGovernanceSnapshotV1FailureName(
     RealmLawGovernanceSnapshotV1Failure failure) noexcept;

@@ -185,6 +185,8 @@ struct RealmLawEnactActionAccessV1 {
   void *context = nullptr;
   CaptureRealmLawEnactActionObservationV1 capture_observation = nullptr;
   SubmitRealmLawEnactActionV1 submit = nullptr;
+  std::string_view expected_executable_sha256 =
+      kRealmLawGovernanceSnapshotV1ExecutableSha256;
 };
 
 RealmLawEnactActionAckStatusV1 ExecuteRealmLawEnactActionV1(

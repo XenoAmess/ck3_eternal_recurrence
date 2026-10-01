@@ -1,0 +1,243 @@
+{
+  "contract": "ck3_12002_realm_law_components_v1_abi",
+  "game_version": "1.20.0.2",
+  "exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "status": "exact-build static-ready; paused observed components and succession shape pending",
+  "instruction_and_data_spans": [
+    {
+      "name": "law_parser_can_pass",
+      "rva": "0x30aeb6d",
+      "size": "0x56",
+      "sha256": "9ACAB54ABEB2EF41176EC69B072636B80D32DB0305C59BAAA41ADD7395CE5BC4"
+    },
+    {
+      "name": "law_parser_can_have",
+      "rva": "0x30aec15",
+      "size": "0x62",
+      "sha256": "6B906BA38AA5DECF38BF12F3FCE70E8B4C7D8FB541978664381E218DBAB827A2"
+    },
+    {
+      "name": "law_parser_can_keep",
+      "rva": "0x30aedf7",
+      "size": "0x57",
+      "sha256": "1FE45B86E3FF5962D966C8F732AC4F01B2E388C71BF4C56FA3DF47B5DE5C41CC"
+    },
+    {
+      "name": "law_parser_secondary_this_rtti",
+      "rva": "0x4f78438",
+      "size": "0x18",
+      "sha256": "3EEE480B185059D70F6B559490B9CB7940E5217B3CC9604BF4881FE5BB4C13E7"
+    },
+    {
+      "name": "actor_scope_constructor",
+      "rva": "0xb17c70",
+      "size": "0xd6",
+      "sha256": "5A3BD88182C2911A68363F99E3B664644C46367C48413DA20E58C47E82DFFEDA"
+    },
+    {
+      "name": "compiled_trigger_no_reason_tailcall",
+      "rva": "0x37998f0",
+      "size": "0x2b",
+      "sha256": "3CEC7983C33C511E8CEF3E32C3FE453F27D553BE04F835946CBD3BD1905298FE"
+    },
+    {
+      "name": "compiled_trigger_evaluator",
+      "rva": "0x372df30",
+      "size": "0xe8",
+      "sha256": "8C530207D4F5059B08B945896D1182D9AA09E27EFED7F2FBAD67FF663712B19B"
+    },
+    {
+      "name": "native_law_scope_cleanup",
+      "rva": "0x30b1c51",
+      "size": "0x73",
+      "sha256": "A64E6FB1362B26CAAC15AC21BAFA94D3A43380428DF5CAE57B22A3241AFB7837"
+    },
+    {
+      "name": "succession_policy_defaults",
+      "rva": "0x253fa10",
+      "size": "0x5b",
+      "sha256": "6701E01F431B6CBDEF7CD72F3777415BAB5BB82F74E69C881E5717519618C1A6"
+    },
+    {
+      "name": "succession_policy_property_parser",
+      "rva": "0x253fa70",
+      "size": "0x5cf",
+      "sha256": "1E100D42F398145300DB9932F49AA644EDC7B0EEEEDA629A93C58C1A46313729"
+    },
+    {
+      "name": "law_constructs_succession_policy",
+      "rva": "0x30ae759",
+      "size": "0xc",
+      "sha256": "C52F44F40B764760AA0638BC4E68BD5904DC7ADCC80CB542424766565F870F3B"
+    },
+    {
+      "name": "order_enum",
+      "rva": "0x473b2e8",
+      "size": "0x24",
+      "sha256": "936DD06B204561FB15E751ECBD8E201781F03AE5D022105818E322FA64F6E66E"
+    },
+    {
+      "name": "traversal_enum",
+      "rva": "0x473b348",
+      "size": "0xc",
+      "sha256": "2320405C3A9F6D5AB9680075744C87818BFBD5F9BB7F1FCE5B31588D0F7A96C2"
+    },
+    {
+      "name": "rank_enum",
+      "rva": "0x473b2d8",
+      "size": "0x8",
+      "sha256": "EA288D18C7DCE7A6F01570B3FC225B514EA216194B108F8A3D314B678C334C2A"
+    },
+    {
+      "name": "division_enum",
+      "rva": "0x473b2e0",
+      "size": "0x8",
+      "sha256": "27D62F9025352F6EFC2CBE705D13D59145A1BFAC378C96D85293D89E4ABEA50B"
+    }
+  ],
+  "compiled_properties": {
+    "can_pass": {
+      "token": "0x2FF5",
+      "offset": "0x3A0"
+    },
+    "can_have": {
+      "token": "0x300F",
+      "offset": "0x540"
+    },
+    "can_keep": {
+      "token": "0x3454",
+      "offset": "0x610"
+    }
+  },
+  "succession": {
+    "policy_offset": "0xBD8",
+    "order_offset": 0,
+    "traversal_offset": 1,
+    "rank_offset": 3,
+    "division_offset": 4,
+    "minimum_share_offset": "0x60",
+    "scale": 100000,
+    "unset_sentinels": {
+      "order": 9,
+      "traversal": 3,
+      "rank": 2,
+      "division": 2
+    }
+  },
+  "native_tokens": [
+    {
+      "key": "can_pass",
+      "token": "0x2ff5",
+      "registry_rva": "0x46eee20",
+      "literal_rva": "0x46c6cf8"
+    },
+    {
+      "key": "can_have",
+      "token": "0x300f",
+      "registry_rva": "0x46eefa0",
+      "literal_rva": "0x46c6ae8"
+    },
+    {
+      "key": "can_keep",
+      "token": "0x3454",
+      "registry_rva": "0x46f2e30",
+      "literal_rva": "0x46cbbf0"
+    },
+    {
+      "key": "order_of_succession",
+      "token": "0x2d57",
+      "registry_rva": "0x46eccf0",
+      "literal_rva": "0x46c4288"
+    },
+    {
+      "key": "traversal_order",
+      "token": "0x2d58",
+      "registry_rva": "0x46ecd00",
+      "literal_rva": "0x46c42e8"
+    },
+    {
+      "key": "title_division",
+      "token": "0x2d62",
+      "registry_rva": "0x46ecda0",
+      "literal_rva": "0x46c4268"
+    },
+    {
+      "key": "rank",
+      "token": "0xdf",
+      "registry_rva": "0x46e2020",
+      "literal_rva": "0x470403c"
+    },
+    {
+      "key": "primary_heir_minimum_share",
+      "token": "0x3370",
+      "registry_rva": "0x46f2060",
+      "literal_rva": "0x46cb880"
+    }
+  ],
+  "native_canonical_keys": [
+    {
+      "key": "inheritance",
+      "literal_rva": "0x449e390"
+    },
+    {
+      "key": "election",
+      "literal_rva": "0x449e418"
+    },
+    {
+      "key": "appointment",
+      "literal_rva": "0x449e3a0"
+    },
+    {
+      "key": "theocratic",
+      "literal_rva": "0x46c7140"
+    },
+    {
+      "key": "company",
+      "literal_rva": "0x46c8348"
+    },
+    {
+      "key": "generate",
+      "literal_rva": "0x46c6820"
+    },
+    {
+      "key": "generate_from_template",
+      "literal_rva": "0x46d95d8"
+    },
+    {
+      "key": "player_heir",
+      "literal_rva": "0x449ee70"
+    },
+    {
+      "key": "noble_family",
+      "literal_rva": "0x45f4a20"
+    },
+    {
+      "key": "children",
+      "literal_rva": "0x46c42f8"
+    },
+    {
+      "key": "dynasty_house",
+      "literal_rva": "0x45b9c88"
+    },
+    {
+      "key": "dynasty",
+      "literal_rva": "0x449ecb8"
+    },
+    {
+      "key": "oldest",
+      "literal_rva": "0x46c4204"
+    },
+    {
+      "key": "youngest",
+      "literal_rva": "0x46c4258"
+    },
+    {
+      "key": "single_heir",
+      "literal_rva": "0x46c4238"
+    },
+    {
+      "key": "partition",
+      "literal_rva": "0x46c4248"
+    }
+  ]
+}
