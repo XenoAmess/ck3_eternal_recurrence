@@ -1,0 +1,254 @@
+{
+  "type": "state_snapshot",
+  "protocol_version": 1,
+  "snapshot_id": "native:3",
+  "revision": 3,
+  "state": {
+    "date_raw": 53169096,
+    "speed": 1,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "played_character": {
+      "character_id": 29829,
+      "alive": true,
+      "stress_points": 34,
+      "betrothed_id": null,
+      "primary_spouse_id": 34730,
+      "spouse_ids": [
+        34730
+      ]
+    },
+    "played_character_gold": {
+      "raw": 45790783,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "raw": 214250000,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 15550000,
+      "scale": 100000
+    },
+    "one_life_settlement": null,
+    "active_event": null,
+    "pending_character_interaction": null,
+    "active_wars": [
+      {
+        "war_id": 16777290,
+        "player_side": "attacker",
+        "primary_opponent_character_id": 36108,
+        "player_is_primary_war_leader": true,
+        "targeted_title_ids": [
+          2388
+        ],
+        "war_objective_province_ids": [
+          2585,
+          2568,
+          2596,
+          2604,
+          2600
+        ],
+        "objective_province_states": [
+          {
+            "province_id": 2585,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 4,
+            "garrison_size": 500,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          },
+          {
+            "province_id": 2568,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 3,
+            "garrison_size": 492,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          },
+          {
+            "province_id": 2596,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 5,
+            "garrison_size": 600,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          },
+          {
+            "province_id": 2604,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 4,
+            "garrison_size": 400,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          },
+          {
+            "province_id": 2600,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 5,
+            "garrison_size": 600,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          }
+        ],
+        "enemy_primary_default_raise_province_id": 2543,
+        "player_relative_war_score": 0,
+        "allied_armies": [
+          {
+            "army_id": 83886341,
+            "owner_character_id": 29829,
+            "current_province_id": 2609,
+            "route_province_ids": [
+              8756,
+              2606,
+              2593,
+              2592,
+              2591
+            ],
+            "move_target_province_id": 2591,
+            "move_target_observable": true,
+            "army_state_code": 7,
+            "army_state": "moving",
+            "in_combat": false,
+            "retreating": false,
+            "controllable": true,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "enemy_armies": [
+          {
+            "army_id": 33554493,
+            "owner_character_id": 36108,
+            "current_province_id": 2589,
+            "route_province_ids": [
+              2591,
+              2602,
+              8759,
+              2604
+            ],
+            "move_target_province_id": 2604,
+            "move_target_observable": true,
+            "army_state_code": 7,
+            "army_state": "moving",
+            "in_combat": false,
+            "retreating": false,
+            "controllable": false,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 33554657,
+            "owner_character_id": 28180,
+            "current_province_id": 2731,
+            "route_province_ids": [
+              2732,
+              2744,
+              2747,
+              2749,
+              2763,
+              2759,
+              2758,
+              2762,
+              2054,
+              2788,
+              2789,
+              2478,
+              2477,
+              2481,
+              2492,
+              2491,
+              2489,
+              2533,
+              2534,
+              2540,
+              2545,
+              2543,
+              2559,
+              2560,
+              2565,
+              2568,
+              2572,
+              2574,
+              2579,
+              2589,
+              2591
+            ],
+            "move_target_province_id": 2591,
+            "move_target_observable": true,
+            "army_state_code": 7,
+            "army_state": "moving",
+            "in_combat": false,
+            "retreating": false,
+            "controllable": false,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 357,
+            "owner_character_id": 36108,
+            "current_province_id": 2602,
+            "route_province_ids": [
+              2591
+            ],
+            "move_target_province_id": 2591,
+            "move_target_observable": true,
+            "army_state_code": 7,
+            "army_state": "moving",
+            "in_combat": false,
+            "retreating": false,
+            "controllable": false,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ]
+      }
+    ],
+    "player_armies": [
+      {
+        "army_id": 83886341,
+        "owner_character_id": 29829,
+        "current_province_id": 2609,
+        "route_province_ids": [
+          8756,
+          2606,
+          2593,
+          2592,
+          2591
+        ],
+        "move_target_province_id": 2591,
+        "move_target_observable": true,
+        "army_state_code": 7,
+        "army_state": "moving",
+        "in_combat": false,
+        "retreating": false,
+        "controllable": true,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "last_checkpoint_submission": null,
+    "history": []
+  }
+}

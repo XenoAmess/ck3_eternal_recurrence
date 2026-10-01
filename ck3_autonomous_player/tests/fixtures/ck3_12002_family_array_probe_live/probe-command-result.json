@@ -1,0 +1,108 @@
+{
+  "type": "command_result",
+  "protocol_version": 1,
+  "request_id": "family-child-37309a28bcf94e77b865deea68d0aa40",
+  "ok": true,
+  "result": {
+    "step": "query-player-child-marriage-subject-v1-private",
+    "accepted": true,
+    "private_build": true,
+    "read_only": true,
+    "advertised": false,
+    "status": "unavailable",
+    "query_sequence": 2,
+    "subject_source": "specified_player_child",
+    "subject_character_id": 29829,
+    "unavailable_reason": "subject_unavailable",
+    "family_candidates": [],
+    "arrange_marriage_diagnostics": {
+      "storage_capacity": 0,
+      "slots_scanned": 0,
+      "empty_slots": 0,
+      "live_candidates": 0,
+      "dead_candidates": 0,
+      "self_candidates": 0,
+      "generation_mismatch_candidates": 0,
+      "contexts_constructed": 0,
+      "context_construct_failures": 0,
+      "native_validate_true": 0,
+      "native_validate_false": 0,
+      "validation_false_samples": []
+    },
+    "family_subject_role_mismatches": 0,
+    "native_revision": 3,
+    "player_child_verified": false,
+    "adult_measure_raw": null,
+    "adult_threshold_raw": 16,
+    "adult": null,
+    "house_id": null,
+    "dynasty_id": null,
+    "employer_character_id": null,
+    "bilateral_verified": false,
+    "betrothed_character_id": null,
+    "primary_spouse_character_id": null,
+    "spouse_character_ids": null,
+    "family_array_diagnostic": {
+      "available": true,
+      "played_character_id": 29829,
+      "spouse_readable": true,
+      "primary_spouse_character_id": 34730,
+      "slots": [
+        {
+          "offset": 32,
+          "header_readable": true,
+          "data_pointer_present": true,
+          "capacity": 1,
+          "count": 1,
+          "native_int_array_shape": true,
+          "sample_readable": true,
+          "samples": [
+            {
+              "character_id": 34730,
+              "generation_valid": true
+            }
+          ]
+        },
+        {
+          "offset": 56,
+          "header_readable": true,
+          "data_pointer_present": true,
+          "capacity": 9,
+          "count": 7,
+          "native_int_array_shape": true,
+          "sample_readable": true,
+          "samples": [
+            {
+              "character_id": 37265,
+              "generation_valid": true
+            },
+            {
+              "character_id": 37675,
+              "generation_valid": true
+            },
+            {
+              "character_id": 38293,
+              "generation_valid": true
+            },
+            {
+              "character_id": 38822,
+              "generation_valid": true
+            },
+            {
+              "character_id": 38988,
+              "generation_valid": true
+            },
+            {
+              "character_id": 39131,
+              "generation_valid": true
+            },
+            {
+              "character_id": 39308,
+              "generation_valid": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

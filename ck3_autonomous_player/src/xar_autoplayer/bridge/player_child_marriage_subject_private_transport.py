@@ -85,6 +85,10 @@ def query_player_child_marriage_subject_private_v1(
     }
     probe = result.get("family_array_diagnostic")
     if diagnose_family_arrays:
+        probe_offsets = (
+            [0x20, 0x38] if base["exact_ck3_build"] == "1.20.0.2"
+            else [0x20, 0x30, 0x40, 0x50, 0x60, 0x70]
+        )
         if (
             not isinstance(probe, dict)
             or probe.get("available") is not True
@@ -92,10 +96,10 @@ def query_player_child_marriage_subject_private_v1(
             or type(probe.get("spouse_readable")) is not bool
             or type(probe.get("primary_spouse_character_id")) is not int
             or not isinstance(probe.get("slots"), list)
-            or len(probe["slots"]) != 6
+            or len(probe["slots"]) != len(probe_offsets)
             or any(not isinstance(slot, dict) for slot in probe["slots"])
             or [slot.get("offset") for slot in probe["slots"]]
-            != [0x20, 0x30, 0x40, 0x50, 0x60, 0x70]
+            != probe_offsets
         ):
             raise BridgeUnavailableError("player family array diagnostic malformed")
         for slot in probe["slots"]:

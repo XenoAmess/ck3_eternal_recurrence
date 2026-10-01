@@ -568,3 +568,9 @@ R2 actualSDK tag_unavailable阻所有宗教identity；root三次窄VM_READ实证
 拆原23的native8精确source，Python15已由最终SDK16/三query42发布，唯一历史docpin差异不改nativeproof；原23历史凭证保留。新readonlyruntime+owningmailbox actualOd/O2各12cases66checks11完整包+拒绝GREEN，实际当前draft/cost/finalgates及Doctrinefinalchoices独立语义保真。未创建虚假窗口、Tenet未闭合保持unknown；R4全DLL已编译这些相同CPP，原compileinput未提交RED待本commit关闭，非重编或额外测试。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\query-native-source-only8.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 18:34:32 Accept actual current player family array observations
+
+实际R2玩家family diagnostic20/38两槽被旧20/30/40/50/60/70 strictreader拒绝；root ingress真实packet/SDK RED保留，最小生产leaf支持当前两槽并保留旧六槽。实际NativeProtocolState.ingest→wait→realDriver→officialMCP确定性复现RED→修复同actualframeGREEN，两必要新旧cases2passed；原52/source/native矩阵不重跑。当前实际children7 fullIDs已采，L4freshSDK通过仍待root。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\family-live-next\production-two-slot-delta.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

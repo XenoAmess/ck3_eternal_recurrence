@@ -1,0 +1,24 @@
+{
+  "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\family-live-next\\raw-r2\\native-ingress.jsonl",
+  "source_sha256": "1b2351e231ecb717c51eec2a9a8a70623f45065a7841c216dde8d27f247c6d00",
+  "root_captured_actual_game_packet": true,
+  "migration_worker_local_game_operations": [],
+  "native_payload_reconstructed": false,
+  "fixtures": [
+    {
+      "file": "hello.json",
+      "sha256": "bf534129119ced0e860b094035dbe2a07aa925c6b6369a3eacc4d6bea1a6fcf0"
+    },
+    {
+      "file": "state-snapshot.json",
+      "sha256": "f25a982b46065aa61ddb495a7b21cf373ae6e7b176555beeb4697d7a0ad747b4"
+    },
+    {
+      "file": "probe-command-result.json",
+      "sha256": "c39ae0cecc556c92963391797443ffedf829d9de165550c370a47945ede21fa1"
+    }
+  ],
+  "native_revision": 3,
+  "actual_sdk_failure": "player family array diagnostic malformed",
+  "actual_sdk_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\targeted-sdk-r2\\actual-child-probe-ingress-20261001T095847Z"
+}
