@@ -5737,6 +5737,106 @@ def _forecast_required_war_entry_plan(
     }
 
 
+def new_ordinary_campaign_goal_v1(
+    campaign_id: str, character_id: int
+) -> dict[str, object]:
+    """Keep family continuity as one intent across ordinary ruler episodes."""
+    return normalize_ordinary_campaign_goal_v1({
+        "format_version": 1,
+        "goal_key": "dynasty_continuity",
+        "campaign_id": campaign_id,
+        "origin_character_id": character_id,
+        "current_character_id": character_id,
+        "progress": {"reconciled_successions": 0, "last_succession": None},
+    })
+
+
+def normalize_ordinary_campaign_goal_v1(value: object) -> dict[str, object]:
+    """Read the semantic intent carried by the existing driver checkpoint."""
+    if (
+        not isinstance(value, dict)
+        or value.get("format_version") != 1
+        or value.get("goal_key") != "dynasty_continuity"
+        or not isinstance(value.get("campaign_id"), str)
+        or not value["campaign_id"]
+    ):
+        raise ValueError("ordinary campaign goal is malformed")
+    for key in ("origin_character_id", "current_character_id"):
+        if (
+            isinstance(value.get(key), bool)
+            or not isinstance(value.get(key), int)
+            or value[key] <= 0
+        ):
+            raise ValueError(f"ordinary campaign goal {key} is malformed")
+    progress = value.get("progress")
+    if (
+        not isinstance(progress, dict)
+        or isinstance(progress.get("reconciled_successions"), bool)
+        or not isinstance(progress.get("reconciled_successions"), int)
+        or progress["reconciled_successions"] < 0
+        or (
+            progress.get("last_succession") is not None
+            and not isinstance(progress["last_succession"], dict)
+        )
+    ):
+        raise ValueError("ordinary campaign goal progress is malformed")
+    return copy.deepcopy(value)
+
+
+def continue_ordinary_campaign_goal_v1(
+    goal: dict[str, object], reconciliation: dict[str, object]
+) -> dict[str, object]:
+    """Record the already verified M3 estate transition without old targets."""
+    result = normalize_ordinary_campaign_goal_v1(goal)
+    if (
+        reconciliation.get("verdict") != "matched"
+        or reconciliation.get("predecessor_character_id")
+        != result["current_character_id"]
+    ):
+        raise ValueError("ordinary campaign goal requires the matched predecessor")
+    result["current_character_id"] = reconciliation[
+        "actual_successor_character_id"
+    ]
+    progress = result["progress"]
+    progress["reconciled_successions"] += 1
+    progress["last_succession"] = {
+        key: copy.deepcopy(reconciliation.get(key))
+        for key in (
+            "predecessor_character_id", "actual_successor_character_id",
+            "matched_inherited_title_ids", "expected_other_heir_title_ids",
+            "expected_without_heir_title_ids",
+        )
+    }
+    return normalize_ordinary_campaign_goal_v1(result)
+
+
+def ordinary_campaign_goal_plan_v1(
+    goal: dict[str, object]
+) -> dict[str, object]:
+    """Feed the current ruler's family work to the existing bounded policy."""
+    goal = normalize_ordinary_campaign_goal_v1(goal)
+    return {
+        "policy": "ordinary-campaign-goal-v1",
+        "goal_key": goal["goal_key"],
+        "campaign_id": goal["campaign_id"],
+        "current_character_id": goal["current_character_id"],
+        "progress": goal["progress"],
+        "focus": "marriage",
+        "priorities": [
+            {
+                "priority": 100,
+                "action": "seek_current_ruler_marriage_and_family_continuity",
+                "reason": "retain the campaign's family intent with fresh ruler candidates",
+            },
+            {
+                "priority": 60,
+                "action": "review_current_ruler_succession_and_partition",
+                "reason": "reuse the current native heir and estate observations",
+            },
+        ],
+    }
+
+
 def _cross_run_focus(plan: dict[str, object] | None) -> str | None:
     """Map the highest cross-run priority to one opening strategy family."""
     priorities = plan.get("priorities") if isinstance(plan, dict) else None

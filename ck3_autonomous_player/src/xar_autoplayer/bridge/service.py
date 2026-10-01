@@ -655,8 +655,14 @@ class GameplayBridgeService:
             else None
         )
         cross_run_plan = None
+        campaign_goal_plan = None
+        campaign_goal = snapshot.get("campaign_goal")
+        if isinstance(campaign_goal, dict):
+            from ..strategy import ordinary_campaign_goal_plan_v1
+
+            campaign_goal_plan = ordinary_campaign_goal_plan_v1(campaign_goal)
         state_dir = self._strategy_state_dir()
-        if state_dir is not None:
+        if state_dir is not None and campaign_goal_plan is None:
             strategy = read_one_life_strategy(state_dir)
             if strategy.get("episodes"):
                 candidate = strategy.get("next_run_plan")
@@ -694,7 +700,7 @@ class GameplayBridgeService:
                     snapshot=planning_snapshot,
                     action_steps=available_steps,
                     bridge_capabilities=bridge_capabilities,
-                    next_run_plan=cross_run_plan,
+                    next_run_plan=campaign_goal_plan or cross_run_plan,
                     battle_speed_readiness=battle_speed_readiness,
                 )
             )
@@ -725,6 +731,11 @@ class GameplayBridgeService:
                     plan = {**plan, "construction_receipt_consumed": applied_construction}
             if cross_run_plan is not None:
                 plan = {**plan, "cross_run_plan_used": cross_run_plan}
+            if campaign_goal_plan is not None:
+                plan = {
+                    **plan,
+                    "campaign_goal_plan_used": copy.deepcopy(campaign_goal_plan),
+                }
             routable_steps = set(available_steps)
             selected_step = plan.get("selected_step")
             if (

@@ -1398,6 +1398,11 @@ def load_native_driver_state_for_resume(
             legacy_rogue_one_life_binding_v1(),
         )
     )
+    campaign_goal = payload.get("campaign_goal")
+    if campaign_goal is not None:
+        from ..strategy import normalize_ordinary_campaign_goal_v1
+
+        campaign_goal = normalize_ordinary_campaign_goal_v1(campaign_goal)
     return {
         "format_version": format_version,
         "bridge_pid": persisted_bridge_pid,
@@ -1415,6 +1420,7 @@ def load_native_driver_state_for_resume(
         "managed_restore_transaction": managed_restore_transaction,
         "succession_expectation": succession_expectation,
         "succession_lifecycle": succession_lifecycle,
+        "campaign_goal": campaign_goal,
         "succession_lifecycle_migration_required": (
             lifecycle_migration_required
         ),
@@ -1632,6 +1638,7 @@ class NativeHeadlessGameplayDriver:
         self._managed_restore_transaction: dict[str, object] | None = None
         self._succession_expectation: dict[str, object] | None = None
         self._succession_reconciliation: dict[str, object] | None = None
+        self._campaign_goal: dict[str, object] | None = None
         self._episode_identity_lock = self._driver_state_lock
         self._episode_character_id: int | None = None
         self._episode_run_id: str | None = None
@@ -3167,6 +3174,20 @@ class NativeHeadlessGameplayDriver:
                 identity_changed = True
             episode_character_id = self._episode_character_id
             episode_run_id = self._episode_run_id
+            if (
+                self._campaign_goal is None
+                and self._succession_lifecycle["lifecycle"]
+                == ORDINARY_CAMPAIGN_SUCCESSION
+                and isinstance(episode_character_id, int)
+                and isinstance(episode_run_id, str)
+            ):
+                from ..strategy import new_ordinary_campaign_goal_v1
+
+                self._campaign_goal = new_ordinary_campaign_goal_v1(
+                    episode_run_id, episode_character_id
+                )
+                identity_changed = True
+            campaign_goal = copy.deepcopy(self._campaign_goal)
             arrange_marriage_choices = copy.deepcopy(
                 self._arrange_marriage_choices
             )
@@ -3291,6 +3312,7 @@ class NativeHeadlessGameplayDriver:
             "continue_as_heir_after_death": False,
             "succession_expectation": succession_expectation,
             "succession_reconciliation": succession_reconciliation,
+            "campaign_goal": campaign_goal,
             "army_routes_supported": (
                 ARMY_ROUTES_CAPABILITY in bridge_capabilities
             ),
@@ -7670,6 +7692,7 @@ class NativeHeadlessGameplayDriver:
             "succession_lifecycle": copy.deepcopy(
                 self._succession_lifecycle
             ),
+            "campaign_goal": copy.deepcopy(self._campaign_goal),
         }
         # Keep an old-state migration recognizable across a crash before the
         # first playable snapshot supplies the restored physical origin.
@@ -7697,6 +7720,7 @@ class NativeHeadlessGameplayDriver:
             "managed_restore_transaction": self._managed_restore_transaction,
             "succession_expectation": self._succession_expectation,
             "succession_lifecycle": self._succession_lifecycle,
+            "campaign_goal": self._campaign_goal,
         }
         # Keep an old-state migration recognizable across a crash before the
         # first playable snapshot supplies the restored physical origin.
@@ -7784,6 +7808,7 @@ class NativeHeadlessGameplayDriver:
                 self._succession_reconciliation = None
                 self._driver_state_restored = False
                 self._driver_state_restore_kind = None
+                self._campaign_goal = None
                 self._episode_binding_state = "unbound"
                 self._pending_cold_candidate = None
                 self._cold_candidate_rejection = None
@@ -7829,6 +7854,9 @@ class NativeHeadlessGameplayDriver:
                     )
                     self._succession_expectation = copy.deepcopy(
                         restored.get("succession_expectation")
+                    )
+                    self._campaign_goal = copy.deepcopy(
+                        restored.get("campaign_goal")
                     )
                     if (
                         isinstance(self._managed_restore_transaction, dict)
@@ -8128,6 +8156,7 @@ class NativeHeadlessGameplayDriver:
                     candidate["episode_character_id"]
                 )
                 self._episode_run_id = str(candidate["episode_run_id"])
+                self._campaign_goal = copy.deepcopy(candidate.get("campaign_goal"))
                 self._last_checkpoint = copy.deepcopy(checkpoint)
                 self._rollback_war_failures = _bounded_rollback_war_failures(
                     [rollback_war_failure],
@@ -8149,6 +8178,7 @@ class NativeHeadlessGameplayDriver:
                 self._episode_run_id = (
                     f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
                 )
+                self._campaign_goal = None
                 self._last_checkpoint = None
                 self._rollback_war_failures = []
                 self._rollback_war_failures_migration_required = False
@@ -17494,6 +17524,12 @@ class NativeHeadlessGameplayDriver:
             successor_run_id = (
                 f"native-{actual_successor_id}-{uuid.uuid4().hex[:12]}"
             )
+            if lifecycle == ORDINARY_CAMPAIGN_SUCCESSION:
+                from ..strategy import continue_ordinary_campaign_goal_v1
+
+                self._campaign_goal = continue_ordinary_campaign_goal_v1(
+                    self._campaign_goal, reconciliation
+                )
             # The just-completed life has already been written to the cross-run
             # strategy by death-terminal. The natural successor starts a new
             # life history in the same live campaign and current CK3 process.

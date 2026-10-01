@@ -8470,6 +8470,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "active_event",
         "pending_character_interaction",
         "cross_run_plan_used",
+        "campaign_goal_plan_used",
         "timeline_speed",
         "timeline_policy",
         "sentinel_mode",
