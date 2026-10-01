@@ -1,0 +1,139 @@
+{
+  "schema": "ck3.a07.limited-frame-quality-review/v1",
+  "at_utc": "2026-10-01T03:34:18.223152+00:00",
+  "verdict": "PASS_PENDING_HUMAN_REVIEW",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "bytes": 240220990,
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342"
+  },
+  "reviewer": "Codex /root/brown_gold_media_audit",
+  "review_kind": "Limited direct image inspection of five extracted a07 final frames plus independent board pixel tests.",
+  "frames": [
+    {
+      "key": "knights-k025",
+      "cue_start": 730.2666666666669,
+      "offset_seconds": 1.0,
+      "global_seconds": 731.2666666666669,
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k025.png",
+        "bytes": 384558,
+        "sha256": "D9FD9F6F66EF8BD16892EB19A9F0274A723F979FCF3BFE47A55515F443582174"
+      },
+      "process_receipt": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k025-frame.receipt.json",
+        "bytes": 1208,
+        "sha256": "949F04012A0884EEF686DA96DC8E41C7EC83EF81871C1242ADC5BB2E1095DBE4"
+      }
+    },
+    {
+      "key": "reinforcement-r022",
+      "cue_start": 1112.9,
+      "offset_seconds": 1.0,
+      "global_seconds": 1113.9,
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\reinforcement-r022.png",
+        "bytes": 658420,
+        "sha256": "4549286A7A5FADEBFE42E17B3972964C1B834B8E53CBD60A0F90F1117EBF4A19"
+      },
+      "process_receipt": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r022-frame.receipt.json",
+        "bytes": 1227,
+        "sha256": "D8B99640B6545508AA9CF5AF61C0B826B145BDCA10CD812C655B5A31532B3FFF"
+      }
+    },
+    {
+      "key": "reinforcement-r029",
+      "cue_start": 1192.4,
+      "offset_seconds": 1.0,
+      "global_seconds": 1193.4,
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\reinforcement-r029.png",
+        "bytes": 643035,
+        "sha256": "16C26FCEFBC43649BB84F336CCCF6859728EB2B6F9A0C77FD22F51E7FC4E8C33"
+      },
+      "process_receipt": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\reinforcement-r029-frame.receipt.json",
+        "bytes": 1226,
+        "sha256": "2E3C716083BCD201D8D2BA1D747C04D77F457120B307CBA1965AD28598856CCC"
+      }
+    },
+    {
+      "key": "knights-k035",
+      "cue_start": 842.4000000000001,
+      "offset_seconds": 0.5,
+      "global_seconds": 842.9000000000001,
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k035-inset-on.png",
+        "bytes": 1531486,
+        "sha256": "13A0C36AC66BE57BA6C46725917361506C395C315EA92A5F2C33D55F34F3FCBF"
+      },
+      "process_receipt": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-on-frame.receipt.json",
+        "bytes": 1235,
+        "sha256": "CE1190760350C99B1F2D01A4CEC303A31F5587F9BB12D0BFCFA0C1C1DFB59ADF"
+      }
+    },
+    {
+      "key": "knights-k035",
+      "cue_start": 842.4000000000001,
+      "offset_seconds": 2.5,
+      "global_seconds": 844.9000000000001,
+      "frame": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\frames\\knights-k035-inset-off.png",
+        "bytes": 1582745,
+        "sha256": "8D5872152B57A217777F3E8C5E4FEA050832FEE7EDF207AD65070E236746295A"
+      },
+      "process_receipt": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\logs\\knights-k035-inset-off-frame.receipt.json",
+        "bytes": 1238,
+        "sha256": "B885FC7955D54815B5E6EE2941AC6DD6CD1BFF693F997A5361D80DBBEED00DB4"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "key": "knights-k025",
+      "finding": "棕金双栏清楚。左栏明确独立R0127保存态、非020续帧，日期12.29→12.30、33437、基础勇武2→2、击杀者34120及选择器/唯一因果仍未证均可读。右栏历史020及+150记录保持原像素。"
+    },
+    {
+      "key": "reinforcement-r022",
+      "finding": "棕金包装，左栏明确R0138推进前暂停UI、战宽1480、非A01 hook帧；原图局部可读1480/1645/森林90%、827对阵1546、顶部893/1603。右历史A01记录保持原像素；底注显式分源。"
+    },
+    {
+      "key": "reinforcement-r029",
+      "finding": "棕金包装，左栏明确R0138推进后暂停UI、战宽2220、非A01 hook帧；原图局部可读2220/2467/森林90%、740对阵4047、顶部827/4106。右历史A01复算保持原像素；底注显式分源。"
+    },
+    {
+      "key": "knights-k035",
+      "finding": "0.5秒原通知动态放大及金框存在；2.5秒放大框移除，原整体继续显示。两张a07解码RGB逐像素等于已审a06同时间点，保留原中文死亡通知、10骑士与12月30日。"
+    }
+  ],
+  "pixel_evidence": {
+    "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\structure-pixel-report.json",
+    "bytes": 108695,
+    "sha256": "840A8654224CB286586EF819A93FDEF91A9B8A178E84805F726F27ED6166CB8A"
+  },
+  "limits": [
+    "Five isolated frames and three revised boards were directly inspected. This does not establish a complete 1x viewing or listening review.",
+    "Machine condition PASS, direct image inspection and earlier offline composer negative-case tests are not human signoff.",
+    "R0127 saved-state evidence does not prove selector or sole causation. R0138 paused UI/control is a separate run/scope from historical A01 hook; whole G2 remains incomplete.",
+    "No external upload, native run mutation, game/desktop action, git operation or source modification was performed by this audit."
+  ],
+  "human_signoff": "not-provided",
+  "production_clean_admission": false,
+  "supplemented_at_utc": "2026-10-01T03:35:45.203914+00:00",
+  "original_limited_quality_report": {
+    "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\quality-report.json",
+    "bytes": 6138,
+    "sha256": "7D25E234A150E88836CBF575F29B0E24B98DC28802B0C71C038D1BF6F19CA097"
+  },
+  "root_limited_five_keyframe_observations": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\root-attempt-03\\a07-root-keyframe-observations-a01.json",
+    "bytes": 3976,
+    "sha256": "9EC91801057325F9D2C6BDB10002788B6A2CA703D0045BB4C0A471C7B1DF29B7"
+  },
+  "root_human_1x_full_watch": false,
+  "root_human_full_listen": false,
+  "root_signoff_created": false
+}

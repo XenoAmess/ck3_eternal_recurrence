@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "C:/Users/1/ck3-a04-mechanism-evidence-20261001/a07-pending-review-helper-other-a02/make_pending_review.py",
+    "--output-attempt",
+    "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review",
+    "--execute"
+  ],
+  "at_utc": "2026-10-01T03:42:59.477368+00:00",
+  "freeze": {
+    "bytes": 5438,
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\helper-input-freeze.json",
+    "sha256": "4F98DBDDD831949EFB152577E44955F2F2A415DBA9A8682398159C83CA5BDF66"
+  },
+  "helper": {
+    "bytes": 12923,
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\a07-pending-review-helper-other-a02\\make_pending_review.py",
+    "sha256": "FBC000509FAEB8B55D73528B8C77A98DA98F0AB330434716B2615DA91CA58762"
+  },
+  "human_1x_or_approval_recorded": false,
+  "mode": "execute-bounded-PNG",
+  "no_full_AV_decode_requested": true,
+  "programmatic_project_helper_not_stock_review_CLI": true,
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "schema": "ck3.a07.pending-review-helper-invocation/v1"
+}

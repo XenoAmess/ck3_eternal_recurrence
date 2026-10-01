@@ -1,0 +1,784 @@
+{
+  "approval_granted": false,
+  "artifact": {
+    "audio_tracks": [
+      {
+        "channels": 2,
+        "codec": "aac",
+        "index": 1,
+        "sample_rate": 48000
+      }
+    ],
+    "bytes": 240220990,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration_seconds": "1818.654687",
+    "path": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "resolution": {
+      "height": 1080,
+      "width": 1920
+    },
+    "sha256": "634CFD093F17C8B027DA38AE6C3462362A485A4CDF6AC2B0FE14BED5CCC3C342",
+    "subtitle_tracks": [],
+    "video_tracks": [
+      {
+        "average_frame_rate": "30/1",
+        "codec": "h264",
+        "height": 1080,
+        "index": 0,
+        "width": 1920
+      }
+    ]
+  },
+  "format_version": 1,
+  "frames": [
+    {
+      "bytes": 463063,
+      "chapter_ids": [
+        "opening"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000001",
+        "label": "extract human-review frame frame-000001",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000001",
+      "path": "frames/frame-000001.png",
+      "roles": [
+        "artifact-first",
+        "chapter-start"
+      ],
+      "sha256": "8E2D01FE92228828827EE113BA6A193445F0A3BB766551DF64CC7F48A457410D",
+      "timestamp_seconds": "0.000000"
+    },
+    {
+      "bytes": 644916,
+      "chapter_ids": [
+        "opening"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000002",
+        "label": "extract human-review frame frame-000002",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000002",
+      "path": "frames/frame-000002.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "27C89B4AD08C9B3485EDABF6A864DD32EEF07BF6A30071C9688395B649D161E3",
+      "timestamp_seconds": "105.666667"
+    },
+    {
+      "bytes": 604676,
+      "chapter_ids": [
+        "pursuit"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000003",
+        "label": "extract human-review frame frame-000003",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000003",
+      "path": "frames/frame-000003.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "923766D7426EEC4ABC0EA48EBA0380A3DA769C95BD9B832A7051FA8A11E403CD",
+      "timestamp_seconds": "105.700000"
+    },
+    {
+      "bytes": 691680,
+      "chapter_ids": [
+        "pursuit"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000004",
+        "label": "extract human-review frame frame-000004",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000004",
+      "path": "frames/frame-000004.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "AD7AA57442A588F02DFFF47F8A456566CE42133CFFAE7835A326FCB9FA708550",
+      "timestamp_seconds": "470.866667"
+    },
+    {
+      "bytes": 596074,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000005",
+        "label": "extract human-review frame frame-000005",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000005",
+      "path": "frames/frame-000005.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "92A2ED051A58E8E7E95FFA4455C6B2ECFCAA86C06EEF0B040B9E8574FBF093CD",
+      "timestamp_seconds": "470.900000"
+    },
+    {
+      "bytes": 627925,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000006",
+        "label": "extract human-review frame frame-000006",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000006",
+      "path": "frames/frame-000006.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "F984339E45EA1628B9CD52E243AFDDA49135CD535F6E45E0F494A84FE6E802D8",
+      "timestamp_seconds": "730.233334"
+    },
+    {
+      "bytes": 390734,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000007",
+        "label": "extract human-review frame frame-000007",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000007",
+      "path": "frames/frame-000007.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "0D29C0E62C92E6B709D277B99BA33A78658F2E7E3235A02DE9AECF95B9BD4A6A",
+      "timestamp_seconds": "730.266667"
+    },
+    {
+      "bytes": 384558,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000008",
+        "label": "extract human-review frame frame-000008",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000008",
+      "path": "frames/frame-000008.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "D9FD9F6F66EF8BD16892EB19A9F0274A723F979FCF3BFE47A55515F443582174",
+      "timestamp_seconds": "736.083334"
+    },
+    {
+      "bytes": 384494,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000009",
+        "label": "extract human-review frame frame-000009",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000009",
+      "path": "frames/frame-000009.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "3B759E17F518FEC589A08649917C3AA2B2450F7C370B02CD661D3C6EBEF38C9D",
+      "timestamp_seconds": "736.116667"
+    },
+    {
+      "bytes": 363466,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000010",
+        "label": "extract human-review frame frame-000010",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000010",
+      "path": "frames/frame-000010.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "05F4828E5CC93606EFB808CA93B74B473673A727AC108714DA7E63C2DB289694",
+      "timestamp_seconds": "741.933334"
+    },
+    {
+      "bytes": 589935,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000011",
+        "label": "extract human-review frame frame-000011",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000011",
+      "path": "frames/frame-000011.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "D6FCAEFE9A2172854C6E580C20D8AB26AF9E7487940E7E4BB34F42EE27ADECB0",
+      "timestamp_seconds": "741.966667"
+    },
+    {
+      "bytes": 1666628,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000012",
+        "label": "extract human-review frame frame-000012",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000012",
+      "path": "frames/frame-000012.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "FA3F40FCCBB76ADC99B87B69EC3254D7E952878767C9A9895610A4DAA5BDF256",
+      "timestamp_seconds": "842.366667"
+    },
+    {
+      "bytes": 1404810,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000013",
+        "label": "extract human-review frame frame-000013",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000013",
+      "path": "frames/frame-000013.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "5E381A4054EBA47E86D20DF83ECD7E0CAF60657C525AC48703980C7221358408",
+      "timestamp_seconds": "842.400000"
+    },
+    {
+      "bytes": 1632203,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000014",
+        "label": "extract human-review frame frame-000014",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000014",
+      "path": "frames/frame-000014.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "C270F4F9AF452D9BC251BE7C14029EAF8EF5324CB6AF6CD800FB9D113BD128D8",
+      "timestamp_seconds": "847.800000"
+    },
+    {
+      "bytes": 1631837,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000015",
+        "label": "extract human-review frame frame-000015",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000015",
+      "path": "frames/frame-000015.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "D1D77741342850249C830AD082CF42DF843F3D979B27805F3C34C0221A7BD2F4",
+      "timestamp_seconds": "847.833333"
+    },
+    {
+      "bytes": 1639839,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000016",
+        "label": "extract human-review frame frame-000016",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000016",
+      "path": "frames/frame-000016.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "A68967196E400A231EF763197B99B73D0D1D6003537C2DB635620E1B57554A70",
+      "timestamp_seconds": "853.233334"
+    },
+    {
+      "bytes": 579736,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000017",
+        "label": "extract human-review frame frame-000017",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000017",
+      "path": "frames/frame-000017.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "083F0AD9E12BC4F25B2E5D98348C13A953F1464CF15541FD3220DD0551FCB3A5",
+      "timestamp_seconds": "853.266667"
+    },
+    {
+      "bytes": 639532,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000018",
+        "label": "extract human-review frame frame-000018",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000018",
+      "path": "frames/frame-000018.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "EB1940CCA659EFE8C26DC931A66340F3C1528B2A489BA4402E665100DD5BFA40",
+      "timestamp_seconds": "886.433334"
+    },
+    {
+      "bytes": 1362291,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000019",
+        "label": "extract human-review frame frame-000019",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000019",
+      "path": "frames/frame-000019.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "B5E865C5E07FC160927CD9D68F6093CA12944E4D17E04C9C6EBCF0BB77110333",
+      "timestamp_seconds": "886.466667"
+    },
+    {
+      "bytes": 690704,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000020",
+        "label": "extract human-review frame frame-000020",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000020",
+      "path": "frames/frame-000020.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "3076E887291219147D02B26EC2A4BD280C3A3B358779D674067CD9D5EE65317B",
+      "timestamp_seconds": "1112.866667"
+    },
+    {
+      "bytes": 620058,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000021",
+        "label": "extract human-review frame frame-000021",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000021",
+      "path": "frames/frame-000021.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "5C0B77F457205147EC351E8EC153DE76A9AFE2D6938BF74BE1890A3D64E13F9A",
+      "timestamp_seconds": "1112.900000"
+    },
+    {
+      "bytes": 649805,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000022",
+        "label": "extract human-review frame frame-000022",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000022",
+      "path": "frames/frame-000022.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "1D4ACBD0A88FF3159ECAB764BABB8499A4479F3288C556B83FD12644D47E9D15",
+      "timestamp_seconds": "1118.466667"
+    },
+    {
+      "bytes": 649813,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000023",
+        "label": "extract human-review frame frame-000023",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000023",
+      "path": "frames/frame-000023.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "03424B265349A07FF024A2E38C87E79B02BED592C5226DDEF1C6D65EEA0E3E6A",
+      "timestamp_seconds": "1118.500000"
+    },
+    {
+      "bytes": 649805,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000024",
+        "label": "extract human-review frame frame-000024",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000024",
+      "path": "frames/frame-000024.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "1D4ACBD0A88FF3159ECAB764BABB8499A4479F3288C556B83FD12644D47E9D15",
+      "timestamp_seconds": "1124.066667"
+    },
+    {
+      "bytes": 618824,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000025",
+        "label": "extract human-review frame frame-000025",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000025",
+      "path": "frames/frame-000025.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "F8C8614CA7D4F0616859475512664E7EE5A947F0519F74F0E23950A3CFA84A32",
+      "timestamp_seconds": "1124.100000"
+    },
+    {
+      "bytes": 713428,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000026",
+        "label": "extract human-review frame frame-000026",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000026",
+      "path": "frames/frame-000026.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "1FDA27E081075D8CD9774C6B1CA320A6BE9A9AC8C0C2D95FDEC402A0146A143B",
+      "timestamp_seconds": "1192.366667"
+    },
+    {
+      "bytes": 628532,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000027",
+        "label": "extract human-review frame frame-000027",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000027",
+      "path": "frames/frame-000027.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "2F90CEA467D51D5A8AB8CDFA03A65F01545535680DDEE3C0AD63DD08CC2F78D5",
+      "timestamp_seconds": "1192.400000"
+    },
+    {
+      "bytes": 635342,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000028",
+        "label": "extract human-review frame frame-000028",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000028",
+      "path": "frames/frame-000028.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "7881AB26A718F2D95373F22E0CE2B126F4208BFA011574A6B7BD0A5DB22CE5E2",
+      "timestamp_seconds": "1198.016667"
+    },
+    {
+      "bytes": 635428,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000029",
+        "label": "extract human-review frame frame-000029",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000029",
+      "path": "frames/frame-000029.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "5F59F20D4932571F73B4187A277E2702EDFDDBDCF0944AF03FA5A0727D540BF3",
+      "timestamp_seconds": "1198.050000"
+    },
+    {
+      "bytes": 635342,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000030",
+        "label": "extract human-review frame frame-000030",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000030",
+      "path": "frames/frame-000030.png",
+      "roles": [
+        "boundary-before"
+      ],
+      "sha256": "7881AB26A718F2D95373F22E0CE2B126F4208BFA011574A6B7BD0A5DB22CE5E2",
+      "timestamp_seconds": "1203.666667"
+    },
+    {
+      "bytes": 607909,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000031",
+        "label": "extract human-review frame frame-000031",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000031",
+      "path": "frames/frame-000031.png",
+      "roles": [
+        "boundary-after"
+      ],
+      "sha256": "16C63F21E87A511008ACE8D95C545CF131A8BFEC7B5CB1A2D76E086BFD283861",
+      "timestamp_seconds": "1203.700000"
+    },
+    {
+      "bytes": 688073,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000032",
+        "label": "extract human-review frame frame-000032",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000032",
+      "path": "frames/frame-000032.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "1B84C16DD08595D8BA89E65FB9561CE798DC2084CDABE1C39B8A2700D7437143",
+      "timestamp_seconds": "1348.500000"
+    },
+    {
+      "bytes": 1382017,
+      "chapter_ids": [
+        "terminal"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000033",
+        "label": "extract human-review frame frame-000033",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000033",
+      "path": "frames/frame-000033.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "2ACD0F08ABFFEDC5F8905F379EF958974C0E8E515A707E692D856AD7F94031F3",
+      "timestamp_seconds": "1348.533333"
+    },
+    {
+      "bytes": 620780,
+      "chapter_ids": [
+        "terminal"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000034",
+        "label": "extract human-review frame frame-000034",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000034",
+      "path": "frames/frame-000034.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "593706B8FC95317D7E7F445294404C4B7367925B167A8B2A0A836E978281050A",
+      "timestamp_seconds": "1717.766667"
+    },
+    {
+      "bytes": 643621,
+      "chapter_ids": [
+        "closing"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000035",
+        "label": "extract human-review frame frame-000035",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000035",
+      "path": "frames/frame-000035.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "A243BC07C6053E4225BC641A96BFF948A3D12EC72565A5BA00F32A8EB7E4FA0A",
+      "timestamp_seconds": "1717.800000"
+    },
+    {
+      "bytes": 565545,
+      "chapter_ids": [
+        "closing"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/ffmpeg-command-audit/frames/frame-000036",
+        "label": "extract human-review frame frame-000036",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000036",
+      "path": "frames/frame-000036.png",
+      "roles": [
+        "artifact-final",
+        "chapter-end"
+      ],
+      "sha256": "BB8F47265988751EFC5C50EC83B11CDCA418EFF3C978203F0B1B45BD4FA352DE",
+      "timestamp_seconds": "1818.600000"
+    }
+  ],
+  "is_signoff": false,
+  "kind": "xar-promo-review-package",
+  "review_template": {
+    "bytes": 16773,
+    "path": "review-template.json",
+    "sha256": "0C2FFA073A5E97BF37DA7052943D5D89EAEC8C2134A121BA67C2E349789AF28D"
+  },
+  "state": "pending-human-review",
+  "template_only": true,
+  "timeline": {
+    "chapters": [
+      {
+        "boundary_seconds": [],
+        "end_seconds": "105.700000",
+        "id": "opening",
+        "start_seconds": "0.000000"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "470.900000",
+        "id": "pursuit",
+        "start_seconds": "105.700000"
+      },
+      {
+        "boundary_seconds": [
+          "730.266667",
+          "736.116667",
+          "741.966667",
+          "842.400000",
+          "847.833333",
+          "853.266667"
+        ],
+        "end_seconds": "886.466667",
+        "id": "knights",
+        "start_seconds": "470.900000"
+      },
+      {
+        "boundary_seconds": [
+          "1112.900000",
+          "1118.500000",
+          "1124.100000",
+          "1192.400000",
+          "1198.050000",
+          "1203.700000"
+        ],
+        "end_seconds": "1348.533333",
+        "id": "reinforcement",
+        "start_seconds": "886.466667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1717.800000",
+        "id": "terminal",
+        "start_seconds": "1348.533333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1818.633333",
+        "id": "closing",
+        "start_seconds": "1717.800000"
+      }
+    ]
+  }
+}

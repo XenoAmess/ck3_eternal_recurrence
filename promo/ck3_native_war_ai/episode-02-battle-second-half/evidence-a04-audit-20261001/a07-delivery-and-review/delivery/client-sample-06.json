@@ -1,0 +1,29 @@
+{
+  "at_utc": "2026-10-01T03:38:51.835209+00:00",
+  "raw": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+    "sample_utc": "2026-10-01T03:38:51.798796+00:00",
+    "size": 240220990,
+    "mtime_ns": 1790825879726776400,
+    "attributes_hex": "0x00000020",
+    "sync_root_hresult": "0x00000000",
+    "handle_attributes_hex": "0x00000020",
+    "reparse_tag_hex": "0x00000000",
+    "cf_placeholder_state_hex": "0x00000000",
+    "cf_placeholder_state_flags": [],
+    "placeholder_hresult": "0x80070178",
+    "placeholder_returned_bytes": 0,
+    "stable_size_mtime": true
+  },
+  "checks": {
+    "exact_path": true,
+    "exact_size": true,
+    "stable_size_mtime": true,
+    "sync_root_success": true,
+    "placeholder_success": false,
+    "sync_root_id": false,
+    "in_sync": false,
+    "validated_full_size": false,
+    "modified_zero": false
+  }
+}

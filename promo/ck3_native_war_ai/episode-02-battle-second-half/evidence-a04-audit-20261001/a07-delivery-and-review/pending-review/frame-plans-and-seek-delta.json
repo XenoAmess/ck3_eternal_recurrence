@@ -1,0 +1,2094 @@
+{
+  "frame_count": 36,
+  "frames": [
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "0.000000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000001.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000001",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000001.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000001",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "0.000000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000001.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000001",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000001.partial.png"
+        ]
+      },
+      "timestamp_seconds": "0"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "105.666667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000002.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000002",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000002.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000002",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "105.666667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000002.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000002",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000002.partial.png"
+        ]
+      },
+      "timestamp_seconds": "105.6666666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "105.700000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000003.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000003",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000003.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000003",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "105.700000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000003.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000003",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000003.partial.png"
+        ]
+      },
+      "timestamp_seconds": "105.700000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "470.866667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000004.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000004",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000004.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000004",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "470.866667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000004.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000004",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000004.partial.png"
+        ]
+      },
+      "timestamp_seconds": "470.8666666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "470.900000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000005.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000005",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000005.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000005",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "470.900000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000005.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000005",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000005.partial.png"
+        ]
+      },
+      "timestamp_seconds": "470.900000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "730.233334",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000006.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000006",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000006.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000006",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "730.233334",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000006.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000006",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000006.partial.png"
+        ]
+      },
+      "timestamp_seconds": "730.2333336666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "730.266667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000007.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000007",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000007.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000007",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "730.266667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000007.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000007",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000007.partial.png"
+        ]
+      },
+      "timestamp_seconds": "730.266667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "736.083334",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000008.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000008",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000008.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000008",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "736.083334",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000008.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000008",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000008.partial.png"
+        ]
+      },
+      "timestamp_seconds": "736.0833336666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "736.116667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000009.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000009",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000009.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000009",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "736.116667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000009.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000009",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000009.partial.png"
+        ]
+      },
+      "timestamp_seconds": "736.116667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "741.933334",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000010.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000010",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000010.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000010",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "741.933334",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000010.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000010",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000010.partial.png"
+        ]
+      },
+      "timestamp_seconds": "741.9333336666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "741.966667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000011.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000011",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000011.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000011",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "741.966667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000011.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000011",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000011.partial.png"
+        ]
+      },
+      "timestamp_seconds": "741.966667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "842.366667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000012.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000012",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000012.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000012",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "842.366667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000012.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000012",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000012.partial.png"
+        ]
+      },
+      "timestamp_seconds": "842.3666666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "842.400000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000013.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000013",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000013.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000013",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "842.400000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000013.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000013",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000013.partial.png"
+        ]
+      },
+      "timestamp_seconds": "842.400000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "847.800000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000014.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000014",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000014.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000014",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "847.800000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000014.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000014",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000014.partial.png"
+        ]
+      },
+      "timestamp_seconds": "847.7999996666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "847.833333",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000015.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000015",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000015.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000015",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "847.833333",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000015.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000015",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000015.partial.png"
+        ]
+      },
+      "timestamp_seconds": "847.833333"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "853.233334",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000016.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000016",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000016.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000016",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "853.233334",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000016.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000016",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000016.partial.png"
+        ]
+      },
+      "timestamp_seconds": "853.2333336666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "853.266667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000017.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000017",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000017.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000017",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "853.266667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000017.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000017",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000017.partial.png"
+        ]
+      },
+      "timestamp_seconds": "853.266667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "886.433334",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000018.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000018",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000018.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000018",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "886.433334",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000018.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000018",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000018.partial.png"
+        ]
+      },
+      "timestamp_seconds": "886.4333336666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "886.466667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000019.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000019",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000019.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000019",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "886.466667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000019.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000019",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000019.partial.png"
+        ]
+      },
+      "timestamp_seconds": "886.466667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1112.866667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000020.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000020",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000020.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000020",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1112.866667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000020.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000020",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000020.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1112.866666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1112.900000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000021.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000021",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000021.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000021",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1112.900000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000021.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000021",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000021.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1112.900000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1118.466667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000022.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000022",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000022.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000022",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1118.466667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000022.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000022",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000022.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1118.466666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1118.500000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000023.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000023",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000023.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000023",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1118.500000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000023.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000023",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000023.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1118.500000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1124.066667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000024.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000024",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000024.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000024",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1124.066667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000024.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000024",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000024.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1124.066666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1124.100000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000025.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000025",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000025.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000025",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1124.100000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000025.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000025",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000025.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1124.100000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1192.366667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000026.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000026",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000026.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000026",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1192.366667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000026.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000026",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000026.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1192.366666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1192.400000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000027.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000027",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000027.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000027",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1192.400000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000027.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000027",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000027.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1192.400000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1198.016667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000028.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000028",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000028.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000028",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1198.016667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000028.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000028",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000028.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1198.016666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1198.050000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000029.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000029",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000029.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000029",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1198.050000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000029.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000029",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000029.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1198.050000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1203.666667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000030.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000030",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000030.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000030",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1203.666667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000030.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000030",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000030.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1203.666666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1203.700000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000031.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000031",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000031.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000031",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1203.700000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000031.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000031",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000031.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1203.700000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1348.500000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000032.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000032",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000032.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000032",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1348.500000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000032.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000032",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000032.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1348.499999666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1348.533333",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000033.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000033",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000033.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000033",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1348.533333",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000033.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000033",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000033.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1348.533333"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1717.766667",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000034.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000034",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000034.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000034",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1717.766667",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000034.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000034",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000034.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1717.766666666666666666666667"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1717.800000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000035.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000035",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000035.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000035",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1717.800000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000035.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000035",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000035.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1717.800000"
+    },
+    {
+      "actual_is_not_the_original_review_CLI_command": true,
+      "actual_project_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-ss",
+          "1818.600000",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000036.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000036",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000036.partial.png"
+        ]
+      },
+      "delta": "move the unchanged -ss/timestamp pair before -i; all other argv tokens, cwd, label and partial artifacts preserved",
+      "frame_id": "frame-000036",
+      "original_library_CommandSpec": {
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-n",
+          "-i",
+          "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-native-supplement-20261001-a01/CK3-War-AI-Episode02-BrownGold-Supplement-20261001-a07.mp4",
+          "-ss",
+          "1818.600000",
+          "-map",
+          "0:v:0",
+          "-frames:v",
+          "1",
+          "-f",
+          "image2",
+          "C:/Users/1/ck3-a07-evidence-plan-20261001/attempt-05-pending-human-review/pending-human-review/frames/.frame-000036.partial.png"
+        ],
+        "cwd": "C:\\w\\e2gold1001",
+        "label": "extract human-review frame frame-000036",
+        "partial_artifacts": [
+          "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\frames\\.frame-000036.partial.png"
+        ]
+      },
+      "timestamp_seconds": "1818.599999666666666666666667"
+    }
+  ],
+  "schema": "ck3.a07.programmatic-review-frame-specs/v1"
+}

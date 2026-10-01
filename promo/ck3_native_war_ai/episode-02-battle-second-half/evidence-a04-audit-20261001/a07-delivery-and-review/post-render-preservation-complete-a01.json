@@ -1,0 +1,88 @@
+{
+  "at": "2026-10-01T03:46:01.073615+00:00",
+  "result": "POST_RENDER_EVIDENCE_PRESERVED_PENDING_HUMAN_REVIEW",
+  "manifest": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\native-run\\run-manifest.json",
+    "bytes": 124142,
+    "sha256": "2CD4522811E79A24FB90359B48420FDBC0B289EE067AF1E2D3A73012521EBC15"
+  },
+  "before_artifacts": 253,
+  "after_artifacts": 261,
+  "native_integrity_audits": 0,
+  "signoffs": 0,
+  "saved": [
+    {
+      "artifact_id": "a07-post-media-audit",
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\delivery-gate-report-a01.json",
+        "bytes": 6725,
+        "sha256": "CC591D0E0AF5AB3E166801357591D930A6ABACB31DFBCD9D83295402CFD83EC9"
+      }
+    },
+    {
+      "artifact_id": "a07-post-limited-frame-quality",
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a07-native-supplement-media-audit-20261001\\attempt-01\\delivery-quality-report-a01.json",
+        "bytes": 6832,
+        "sha256": "2B8A6529AEC37B139E89BDFA203AE72778D80AB306747D94F4F61B328161337A"
+      }
+    },
+    {
+      "artifact_id": "a07-post-one-file-client-sync",
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\delivery\\final-delivery.json",
+        "bytes": 3622,
+        "sha256": "A97AF51658F5DF8BC5220520D5AD3AA00CDEF21939E4806C237EBD93ACE04CB7"
+      }
+    },
+    {
+      "artifact_id": "a07-post-pending-review-package",
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\review-package.json",
+        "bytes": 24802,
+        "sha256": "751F50D4157951DA2094073BB446A35FFFBC6BD3C63E75971B6071AB0907EBDE"
+      }
+    },
+    {
+      "artifact_id": "a07-post-pending-review-template",
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\pending-human-review\\review-template.json",
+        "bytes": 16773,
+        "sha256": "0C2FFA073A5E97BF37DA7052943D5D89EAEC8C2134A121BA67C2E349789AF28D"
+      }
+    },
+    {
+      "artifact_id": "a07-post-bound-media-probe",
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\bound-media-probe-v1.json",
+        "bytes": 5339,
+        "sha256": "C54EFCC8543C8DB6A74087E51A75A4356C6BF027E32EE566D36853E04689DA01"
+      }
+    },
+    {
+      "artifact_id": "a07-post-review-execution",
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a07-evidence-plan-20261001\\attempt-05-pending-human-review\\completion.json",
+        "bytes": 49365,
+        "sha256": "3C782B1DD59193D4F2E3D7D8460D18B5732AB08C73F617F882DF9B78DC1C21BC"
+      }
+    },
+    {
+      "artifact_id": "a07-post-retained-post-process-index",
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\post-render-retained-process-index-a01.json",
+        "bytes": 74587,
+        "sha256": "3DE88B1F715FCE81612A952EEC15EF1D67A7689FEBC7F8869FA6270591E3CC71"
+      }
+    }
+  ],
+  "retained_post_process_index": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\post-render-retained-process-index-a01.json",
+    "bytes": 74587,
+    "sha256": "3DE88B1F715FCE81612A952EEC15EF1D67A7689FEBC7F8869FA6270591E3CC71"
+  },
+  "client_sync_status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+  "human1x_full_watch": false,
+  "human_full_listen": false,
+  "remote_independent_readback": false
+}

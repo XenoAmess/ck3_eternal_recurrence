@@ -1,0 +1,247 @@
+{
+  "chapter_conversion_sources": [
+    {
+      "derived_end_seconds": "105.700000",
+      "derived_start_seconds": "0.000000",
+      "end_expression": "Decimal(str(global_start)) + Decimal(str(duration))",
+      "id": "opening",
+      "internal_boundary_sources": [],
+      "raw_duration": 105.7,
+      "raw_global_start": 0,
+      "source_pointer": "/chapters/0",
+      "start_expression": "global_start"
+    },
+    {
+      "derived_end_seconds": "470.900000",
+      "derived_start_seconds": "105.700000",
+      "end_expression": "Decimal(str(global_start)) + Decimal(str(duration))",
+      "id": "pursuit",
+      "internal_boundary_sources": [],
+      "raw_duration": 365.20000000000016,
+      "raw_global_start": 105.7,
+      "source_pointer": "/chapters/1",
+      "start_expression": "global_start"
+    },
+    {
+      "derived_end_seconds": "886.466667",
+      "derived_start_seconds": "470.900000",
+      "end_expression": "Decimal(str(global_start)) + Decimal(str(duration))",
+      "id": "knights",
+      "internal_boundary_sources": [
+        {
+          "derived_seconds": "730.266667",
+          "expression": "global_start",
+          "key": "knights-k025",
+          "raw_duration": 11.7,
+          "raw_global_start": 730.2666666666669,
+          "role": "start",
+          "source_pointer": "/chapters/2/utterances/24"
+        },
+        {
+          "derived_seconds": "736.116667",
+          "expression": "global_start + duration/2",
+          "key": "knights-k025",
+          "raw_duration": 11.7,
+          "raw_global_start": 730.2666666666669,
+          "role": "midpoint",
+          "source_pointer": "/chapters/2/utterances/24"
+        },
+        {
+          "derived_seconds": "741.966667",
+          "expression": "global_start + duration",
+          "key": "knights-k025",
+          "raw_duration": 11.7,
+          "raw_global_start": 730.2666666666669,
+          "role": "end",
+          "source_pointer": "/chapters/2/utterances/24"
+        },
+        {
+          "derived_seconds": "842.400000",
+          "expression": "global_start",
+          "key": "knights-k035",
+          "raw_duration": 10.866666666666667,
+          "raw_global_start": 842.4000000000001,
+          "role": "start",
+          "source_pointer": "/chapters/2/utterances/34"
+        },
+        {
+          "derived_seconds": "847.833333",
+          "expression": "global_start + duration/2",
+          "key": "knights-k035",
+          "raw_duration": 10.866666666666667,
+          "raw_global_start": 842.4000000000001,
+          "role": "midpoint",
+          "source_pointer": "/chapters/2/utterances/34"
+        },
+        {
+          "derived_seconds": "853.266667",
+          "expression": "global_start + duration",
+          "key": "knights-k035",
+          "raw_duration": 10.866666666666667,
+          "raw_global_start": 842.4000000000001,
+          "role": "end",
+          "source_pointer": "/chapters/2/utterances/34"
+        }
+      ],
+      "raw_duration": 415.56666666666666,
+      "raw_global_start": 470.90000000000015,
+      "source_pointer": "/chapters/2",
+      "start_expression": "global_start"
+    },
+    {
+      "derived_end_seconds": "1348.533333",
+      "derived_start_seconds": "886.466667",
+      "end_expression": "Decimal(str(global_start)) + Decimal(str(duration))",
+      "id": "reinforcement",
+      "internal_boundary_sources": [
+        {
+          "derived_seconds": "1112.900000",
+          "expression": "global_start",
+          "key": "reinforcement-r022",
+          "raw_duration": 11.2,
+          "raw_global_start": 1112.9,
+          "role": "start",
+          "source_pointer": "/chapters/3/utterances/21"
+        },
+        {
+          "derived_seconds": "1118.500000",
+          "expression": "global_start + duration/2",
+          "key": "reinforcement-r022",
+          "raw_duration": 11.2,
+          "raw_global_start": 1112.9,
+          "role": "midpoint",
+          "source_pointer": "/chapters/3/utterances/21"
+        },
+        {
+          "derived_seconds": "1124.100000",
+          "expression": "global_start + duration",
+          "key": "reinforcement-r022",
+          "raw_duration": 11.2,
+          "raw_global_start": 1112.9,
+          "role": "end",
+          "source_pointer": "/chapters/3/utterances/21"
+        },
+        {
+          "derived_seconds": "1192.400000",
+          "expression": "global_start",
+          "key": "reinforcement-r029",
+          "raw_duration": 11.3,
+          "raw_global_start": 1192.4,
+          "role": "start",
+          "source_pointer": "/chapters/3/utterances/28"
+        },
+        {
+          "derived_seconds": "1198.050000",
+          "expression": "global_start + duration/2",
+          "key": "reinforcement-r029",
+          "raw_duration": 11.3,
+          "raw_global_start": 1192.4,
+          "role": "midpoint",
+          "source_pointer": "/chapters/3/utterances/28"
+        },
+        {
+          "derived_seconds": "1203.700000",
+          "expression": "global_start + duration",
+          "key": "reinforcement-r029",
+          "raw_duration": 11.3,
+          "raw_global_start": 1192.4,
+          "role": "end",
+          "source_pointer": "/chapters/3/utterances/28"
+        }
+      ],
+      "raw_duration": 462.06666666666666,
+      "raw_global_start": 886.4666666666668,
+      "source_pointer": "/chapters/3",
+      "start_expression": "global_start"
+    },
+    {
+      "derived_end_seconds": "1717.800000",
+      "derived_start_seconds": "1348.533333",
+      "end_expression": "Decimal(str(global_start)) + Decimal(str(duration))",
+      "id": "terminal",
+      "internal_boundary_sources": [],
+      "raw_duration": 369.2666666666667,
+      "raw_global_start": 1348.5333333333335,
+      "source_pointer": "/chapters/4",
+      "start_expression": "global_start"
+    },
+    {
+      "derived_end_seconds": "1818.633333",
+      "derived_start_seconds": "1717.800000",
+      "end_expression": "Decimal(str(global_start)) + Decimal(str(duration))",
+      "id": "closing",
+      "internal_boundary_sources": [],
+      "raw_duration": 100.83333333333334,
+      "raw_global_start": 1717.8000000000002,
+      "source_pointer": "/chapters/5",
+      "start_expression": "global_start"
+    }
+  ],
+  "chapters": [
+    {
+      "boundary_seconds": [],
+      "end_seconds": "105.700000",
+      "id": "opening",
+      "start_seconds": "0.000000"
+    },
+    {
+      "boundary_seconds": [],
+      "end_seconds": "470.900000",
+      "id": "pursuit",
+      "start_seconds": "105.700000"
+    },
+    {
+      "boundary_seconds": [
+        "730.266667",
+        "736.116667",
+        "741.966667",
+        "842.400000",
+        "847.833333",
+        "853.266667"
+      ],
+      "end_seconds": "886.466667",
+      "id": "knights",
+      "start_seconds": "470.900000"
+    },
+    {
+      "boundary_seconds": [
+        "1112.900000",
+        "1118.500000",
+        "1124.100000",
+        "1192.400000",
+        "1198.050000",
+        "1203.700000"
+      ],
+      "end_seconds": "1348.533333",
+      "id": "reinforcement",
+      "start_seconds": "886.466667"
+    },
+    {
+      "boundary_seconds": [],
+      "end_seconds": "1717.800000",
+      "id": "terminal",
+      "start_seconds": "1348.533333"
+    },
+    {
+      "boundary_seconds": [],
+      "end_seconds": "1818.633333",
+      "id": "closing",
+      "start_seconds": "1717.800000"
+    }
+  ],
+  "conversion_contract": "Decimal(str(source value)), start=global_start, end=start+duration; decimal six places ROUND_HALF_UP; target cue start/midpoint/end internal boundaries only",
+  "human_signoff": "not-provided",
+  "kind": "ck3-a07-project-derived-storyboard",
+  "production_clean_admission": false,
+  "selected_internal_boundary_keys": [
+    "knights-k025",
+    "reinforcement-r022",
+    "reinforcement-r029",
+    "knights-k035"
+  ],
+  "source_timeline": {
+    "bytes": 417243,
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-native-supplement-20261001-a01\\timeline.json",
+    "sha256": "90474357BE68FE98EBC74E3D2BADC2531122B85364BEDDE270CBD933578CF1DA"
+  }
+}
