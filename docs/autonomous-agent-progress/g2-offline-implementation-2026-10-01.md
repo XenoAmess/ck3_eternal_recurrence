@@ -777,3 +777,9 @@ Two owned topics record actual R6 paused identity and complete readonly values: 
 One owned topic publishes actual current Rite152 identity, resources, knowledge, Fulfillment and registered flags. Identity equality is not evidence of conversion or gain; real paused readonly primitive only. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion-outcome\r6-current-observation\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:17:03 Record paused Sway query attachment evidence
+
+Two owned topics record actual new process read-only termination and invalidation queries, exact scheme50331723, attached observers with empty session history. No terminal, source notification, material effect or full Sway OODA proven. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway-completion\r6-paused-query-doc-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
