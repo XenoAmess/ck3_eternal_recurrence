@@ -891,3 +891,9 @@ One topic records actual paused native base quote ten slots with4500piety and434
 Actual R8 selected-definition failure traced by one597byte paused VMread to exact native default singleton at slot2. Two production leaf fixes preserve slotID and legitimate null selectedkey; one new production fixture and1span16anchors pass. Other source/final gates unchanged, old8cases not repeated. Six source/test/topic paths, R9 actual pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\tenet-sources-r9-blank-slot\source-apply-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 22:01:50 Consume legitimate empty Tenet selected keys
+
+Five owned source/test/fixture/topic files. Actual corrected provider DTO reproduces prior strictstr rejection; only selected_tenet_key permits None. One actualDTO normalizer case passes preserving three slots/eight source/final fields. Shared APIs and old SDK cases not repeated, actual paused pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\tenet-blank-slot-python-r9\final-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

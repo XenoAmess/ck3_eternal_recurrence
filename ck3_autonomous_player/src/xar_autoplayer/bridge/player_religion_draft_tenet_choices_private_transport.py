@@ -77,7 +77,8 @@ def normalize_player_religion_draft_tenet_choices_v1(
         raise ValueError("native final Tenet choices lost its actual slots/sources")
     for slot in value["slots"]:
         if (not isinstance(slot, dict) or set(slot) != _SLOT_KEYS
-                or not isinstance(slot["selected_tenet_key"], str)):
+                or (slot["selected_tenet_key"] is not None
+                    and not isinstance(slot["selected_tenet_key"], str))):
             raise ValueError("native final Tenet slot schema is malformed")
         _integer(slot["slot_index"], 0, 0xFFFFFFFF, "slot_index")
     for row in value["sources"]:

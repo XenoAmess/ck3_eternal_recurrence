@@ -1,0 +1,28 @@
+{
+  "schema": "xar.ck3.actual-native-tenet-blank-slot-python-fixture/v1",
+  "original_provider_dto": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\tenet-sources-r9-blank-slot\\fixture\\native-default-third-slot.json",
+  "sha256": "8bee8bc19398cf9006a68e5538492c779c7be26fcd45f2a408ade7c66899df84",
+  "provider_receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\tenet-sources-r9-blank-slot\\fixture\\result.json",
+  "provider_receipt_sha256": "aa7806718c8cb0458872194d0db617b2582d00a3baec54be3e79898f1ad68519",
+  "provider_candidate_files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\tenet-sources-r9-blank-slot\\candidate\\include\\xar_bridge\\religion_reform12002_tenet_sources.hpp",
+      "sha256": "75c12b1ed4a67336874d124ab51d23c30e21e014ca980e9557e4b0f79770df75"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\tenet-sources-r9-blank-slot\\candidate\\src\\religion_reform12002_tenet_sources.cpp",
+      "sha256": "6810caba63a90530c5e85c938cd9f67be503426ce2dd283d4a928b2ecad43a24"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\tenet-sources-r9-blank-slot\\fixture\\blank-slot-test.cpp",
+      "sha256": "b93d2a5bc048e23f8f35309120812bab7b9fa2102f1e41227450f381232d3711"
+    }
+  ],
+  "root_paused_default_identity_evidence": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\tenet-sources-r9-blank-slot\\actual-selected-slots.json",
+  "root_paused_default_identity_evidence_sha256": "86740aa5fd306987994c76122dc7d0756f4407b42bd7e2ff71d412ebeecbfa5f",
+  "packet_bytes_unchanged": true,
+  "wrapper_metadata_added": false,
+  "shape": "actual provider DTO, not a complete command_result",
+  "python_ck3_accessed": false,
+  "new_sdk_or_transport_verified": false
+}
