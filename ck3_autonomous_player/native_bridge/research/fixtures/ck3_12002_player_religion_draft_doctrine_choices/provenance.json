@@ -1,0 +1,17 @@
+{
+  "schema": "xar.ck3_12002.religion_draft_doctrine_choices.actual_cpp_wire.v1",
+  "created_at": "2026-10-01T12:37:00.580575+00:00",
+  "producer_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\fullchoices-caller\\attempt-001\\result.json",
+  "producer_result_sha256": "c1aecf03c27736466e5d7437bc71963f5a2d72eb557ea13d7e1de3b5d96aecc6",
+  "production_path": "TrySubmit -> owner Drain -> actual full Doctrine reader -> Finish -> Wait/Reclaim -> complete native command_result",
+  "callbacks": "fixture process only; no CK3, pipe, UI or Steam",
+  "packet_edits": "none; in-memory tests correlate only the request_id nonce",
+  "packets": {
+    "visible-four-slots": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\fullchoices-caller\\attempt-001\\wire\\visible-four-slots.json",
+      "source_sha256": "ced894ce0769bef6a56896aee92b77604c002d284af9c703bce1944e36878bd8",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_draft_doctrine_choices/visible-four-slots.json",
+      "sha256": "ced894ce0769bef6a56896aee92b77604c002d284af9c703bce1944e36878bd8"
+    }
+  }
+}

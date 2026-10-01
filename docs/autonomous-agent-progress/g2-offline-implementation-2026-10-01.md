@@ -813,3 +813,9 @@ One owned topic records actual preview-only Rite152 window,4500piety quote and43
 Thirty-seven frozen native, research and documentation sources. Actual source slots and native final gates, complete Tenet filtering, and ten-slot base resource quote stay distinct from actions and net outcomes. Three new owning caller cases passed 8/7/7 checks, prior providers reused. Native named integration and paused R8 remain pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\three-query-native-source-only37.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:59:56 Expose three religion draft queries through the official SDK
+
+Twenty frozen Python and documentation sources. Three new official SDK cases consume full actual native packets through production state and Driver; existing three leaf cases reused. Default off and readonly; prior cleanup pause fix preserved. Static-ready only until actual R8 paused validation. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\DRAFT-QUERIES-R8-SHARED-READY.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

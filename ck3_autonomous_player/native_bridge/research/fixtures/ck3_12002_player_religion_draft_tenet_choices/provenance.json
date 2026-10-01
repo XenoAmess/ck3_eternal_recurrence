@@ -1,0 +1,33 @@
+{
+  "schema": "xar.ck3.actual-native-query-python-fixture/v1",
+  "time_utc": "2026-10-01T12:43:08.211800+00:00",
+  "fixture": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_draft_tenet_choices/native-current-draft.json",
+  "sha256": "9f0adadd05c0b94a5b32043efc6ba5bb7f9fca32fe1664899f3fc68b32ba0a86",
+  "original_packet": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-tenet-sources-mailbox\\attempt-001\\wire\\actual-multiple-sources.json",
+  "original_packet_sha256": "9f0adadd05c0b94a5b32043efc6ba5bb7f9fca32fe1664899f3fc68b32ba0a86",
+  "native_caller_receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\query-tenet-sources-mailbox\\attempt-001\\result.json",
+  "native_caller_receipt_sha256": "0ca9b6505d609d9265d852fb4c888f5c18d13613b9c895740e6f3222d5cd2a7a",
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "ck3_autonomous_player/native_bridge/src/religion_reform12002_window.cpp": "d1826b4c5acf384133d9480b0453455906c4e2fd5c4fe0c3227977463494df49",
+    "ck3_autonomous_player/native_bridge/src/religion_doctrine12002_tenet_rows.cpp": "28a568e974f0b18c567ddadda69876719fb26dcb5ff63c964a264e4473a3e11f",
+    "ck3_autonomous_player/native_bridge/src/religion_reform12002_tenet_sources.cpp": "005217bde2305d77d3a9c9ac943221c36d36408136c3c9646e5b0708e6737cad",
+    "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp": "aca4ee3578d8a16bbd14b40ac5e2f8bf3f66db59175bb17bc8ce53ad1ccf0f3b",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "ck3_autonomous_player/native_bridge/src/protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "ck3_autonomous_player/native_bridge/src/religion_reform12002_tenet_sources_mailbox.cpp": "2375c480074d58176d58fd9669224232b3ce72b076dca786da308bbf7d8a3945",
+    "ck3_autonomous_player/native_bridge/src/religion_reform12002_tenet_sources_mailbox_test.cpp": "10e7d9df43b2a6c7d8316d62ba5959fef8abf486fd27a252111413a46671410c",
+    "ck3_autonomous_player/native_bridge/src/religion_reform12002_tenet_sources_test.cpp": "1162334072781567fb6fc822d35484cd24e2f472a0ccf822559d6a89cf101079",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp": "d8cfef28147ced40b766ad469c91edd1224b3920245fe4dabf98b39021f77620",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_query_mailbox.hpp": "c3ff170ce4811f9f0a08c6cf1b81aa76e7601272b1b8ca46c37e699e9ac11df5",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_reform12002_tenet_sources.hpp": "bf48e912647f0cee0817df9561da8ceed62e484b3f7402c8ad394dff5d43d077",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/religion_reform12002_tenet_sources_mailbox.hpp": "b34fcdf2346525bc799246f2bf6d4f0fe7b162e116f3c8c5c20ffbe78bc8c9ab",
+    "ck3_autonomous_player/native_bridge/research/religion_reform12002_tenet_sources_mailbox_tests.py": "e2e569922fca6b30cf66219713d8cbf7bfdab811bd09487f80e63d7a22dddedb"
+  },
+  "packet_bytes_unchanged": true,
+  "native_dto_fabricated": false,
+  "metadata_supplemented": false,
+  "ck3_accessed": false,
+  "live_verified": false,
+  "readiness": "static-ready actual packet consumer"
+}

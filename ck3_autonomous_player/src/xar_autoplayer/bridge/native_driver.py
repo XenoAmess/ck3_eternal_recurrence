@@ -2968,6 +2968,39 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_religion_draft_doctrine_choices_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read current draft Doctrine sources with their native final gates."""
+        from .player_religion_draft_doctrine_choices_private_transport import query_player_religion_draft_doctrine_choices_private_v1
+
+        return query_player_religion_draft_doctrine_choices_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_draft_tenet_choices_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read current draft Tenet sources with their native final gates."""
+        from .player_religion_draft_tenet_choices_private_transport import query_player_religion_draft_tenet_choices_private_v1
+
+        return query_player_religion_draft_tenet_choices_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_draft_resource_costs_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the native current draft base resource fee quote."""
+        from .player_religion_draft_resource_costs_private_transport import query_player_religion_draft_resource_costs_private_v1
+
+        return query_player_religion_draft_resource_costs_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_family_obligations_private_v1(
         self, *, expected_revision: int, subject_character_id: int,
         candidate_character_id: int, request_matrilineal_option: bool = False,

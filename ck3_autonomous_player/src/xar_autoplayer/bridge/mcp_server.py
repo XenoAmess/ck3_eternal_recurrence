@@ -1785,6 +1785,36 @@ def create_server(
                 expected_revision=expected_revision,
             )
 
+    if getattr(driver, "allow_private_player_religion_draft_doctrine_choices_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_draft_doctrine_choices_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read current draft Doctrine sources with their native final gates."""
+            return driver.query_player_religion_draft_doctrine_choices_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_player_religion_draft_tenet_choices_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_draft_tenet_choices_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read current draft Tenet sources with their native final gates."""
+            return driver.query_player_religion_draft_tenet_choices_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_player_religion_draft_resource_costs_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_draft_resource_costs_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the native current draft base resource fee quote."""
+            return driver.query_player_religion_draft_resource_costs_private_v1(
+                expected_revision=expected_revision,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3660,6 +3690,18 @@ def parser() -> argparse.ArgumentParser:
         "--private-player-religion-draft-groups-query", action="store_true",
         help="enable selected draft-group source and current native Tenet gate observations",
     )
+    result.add_argument(
+        "--private-player-religion-draft-doctrine-choices-query", action="store_true",
+        help="enable current draft Doctrine source and native final gate observations",
+    )
+    result.add_argument(
+        "--private-player-religion-draft-tenet-choices-query", action="store_true",
+        help="enable current draft Tenet source and native final gate observations",
+    )
+    result.add_argument(
+        "--private-player-religion-draft-resource-costs-query", action="store_true",
+        help="enable the native current draft base resource fee quote",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3760,6 +3802,9 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_religion_personal_parameters_query
             or args.private_active_scheme_sway_completion_invalidation_reason_query
             or args.private_player_religion_draft_groups_query
+            or args.private_player_religion_draft_doctrine_choices_query
+            or args.private_player_religion_draft_tenet_choices_query
+            or args.private_player_religion_draft_resource_costs_query
             ) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -3862,6 +3907,12 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_active_scheme_sway_completion_invalidation_reason_query = True
     if args.private_player_religion_draft_groups_query:
         driver.allow_private_player_religion_draft_groups_query = True
+    if args.private_player_religion_draft_doctrine_choices_query:
+        driver.allow_private_player_religion_draft_doctrine_choices_query = True
+    if args.private_player_religion_draft_tenet_choices_query:
+        driver.allow_private_player_religion_draft_tenet_choices_query = True
+    if args.private_player_religion_draft_resource_costs_query:
+        driver.allow_private_player_religion_draft_resource_costs_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",
