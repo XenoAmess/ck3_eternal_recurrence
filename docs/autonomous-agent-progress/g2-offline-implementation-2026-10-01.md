@@ -59,3 +59,9 @@ G2 仍 `3/8`，Robert `3153/36524`，新增游戏日为零。宗教/holy order �
 现有强制朝贡参战链已移植真实1.20 direct-slot source reader，读取完整ID并保留原生顺序与重复；实际新版land `+0x1C0`、DB `+0xF00`、default `+0x9F28`已落代码。Exact ABI核对6 spans/10 instructions/7 calls/7 RIP/2 literals及RTTI/stock SHA GREEN，MSVC `/Od`与`/O2 /W4 /WX`生产fixture各11 cases通过，真实serializer JSON已解析。耐久结果：`Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/prewar/participants/fixture-result.json`、`abi-verification.json`、`Od/forced-participants-wire.json`及`O2/forced-participants-wire.json`。专题[战前强制参与者](../ck3-native-ai/ck3-1.20.0.2-prewar-participants.md)。本包只提升这一来源static-ready，完整宣战参与者、自愿盟友、集结与未来补给不外推完成；其具体producer与中央MCP route仍并行施工，真实paused最终互证待live。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 14:54:45 M5同帧多战争共享资源聚合交付
+
+正式collector已消费同帧全部active WarID的资源聚合；按显式actor/army/resource身份去重，pending/未来费用/政策reserve分开、占用并集保留，只预留已选择的动作即时费。相同actor军费或共享军队不会每WarID重复计算；没有共同期限或真实输入时仍给具体incomplete。wartime诊断保留原selected_step、war owner与date hold，未修改意愿或解锁正式动作。四个受影响模块普通及`-O`各67/67 GREEN，包含两战争共享成本、缺第二战争和collector/dispatcher真实消费；synthetic fixture不作live。耐久manifest `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/war-cash/aggregation/manifest.json` SHA `4e3a557b45f765c6ccc5579d7a03af6394a74b3f82289ff7619d030bb46c92c6`。专题[多战聚合](../ck3-native-ai/m5-multiwar-resource-aggregation-v1.md)。本包聚合层static-ready；实际native现金生产者/来源适配继续施工，当前维护率不会被当作未来上界，完整战争预算与实际资源争用仍未证明。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

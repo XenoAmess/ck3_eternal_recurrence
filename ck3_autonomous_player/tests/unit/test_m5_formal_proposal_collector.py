@@ -19,7 +19,10 @@ from xar_autoplayer.m5_formal_proposal_collector import (
 )
 from xar_autoplayer.m5_joint_dispatch import M5FrameDispatcher
 from xar_autoplayer.native_auto_run import _compact_plan
-from xar_autoplayer.m5_war_cash_resource_v1 import observe_active_war_cash_resource_v1
+from xar_autoplayer.m5_war_cash_resource_v1 import (
+    observe_active_war_cash_resource_v1,
+    observe_aggregate_active_war_cash_resource_v1,
+)
 from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     COLD_RECOVERY_STEP as FACTION_GIFT_COLD_RECOVERY_STEP,
     RECEIPT_STEP as FACTION_GIFT_RECEIPT_STEP,
@@ -122,6 +125,48 @@ def _war_cash(
             "horizon_days": 1,
             "future_bound_assumptions": ["synthetic bounded test only"],
         },
+    )
+
+
+def _multiwar_snapshot() -> dict[str, object]:
+    result = _snapshot()
+    result["active_wars"].append({"war_id": 16777232})
+    return result
+
+
+def _multiwar_cash() -> dict[str, object]:
+    receipts = []
+    for war_id in (16777231, 16777232):
+        original = _war_cash(2_000_000)
+        inputs = {
+            "source_frame": dict(_FRAME), "war_id": war_id,
+            "horizon_days": 1,
+            "future_bound_assumptions": ["synthetic bounded test only"],
+            "resource_claims": {
+                "source": "test-observed-occupation", "source_frame": dict(_FRAME),
+                "war_id": war_id, "army_ids": [71], "ally_character_ids": [41003],
+                "character_ids": [29829], "commitment_keys": [f"active-war:{war_id}"],
+            },
+        }
+        for name, observation in original["amount_observations"].items():
+            row = deepcopy(observation)
+            row["war_id"] = war_id
+            shared = name in {"future_war_cost_upper_raw", "future_risk_budget_raw",
+                              "policy_minimum_gold_reserve_raw"}
+            row["resource_components"] = ([{
+                "resource_kind": "actor_war_reserve" if shared else "war_action",
+                "resource_id": name if shared else f"{war_id}:{name}",
+                "owner_character_id": 29829,
+                "war_ids": [16777231, 16777232] if shared else [war_id],
+                "raw": row["raw"], "scale": 100_000, "source": row["source"],
+                "source_frame": dict(_FRAME),
+            }] if row["raw"] else [])
+            inputs[name] = row
+        receipts.append(observe_active_war_cash_resource_v1(
+            snapshot=_multiwar_snapshot(), war_id=war_id, inputs=inputs,
+        ))
+    return observe_aggregate_active_war_cash_resource_v1(
+        snapshot=_multiwar_snapshot(), receipts=receipts,
     )
 
 
@@ -507,6 +552,45 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
             result["dispatch"]["reservation"]["commitments_after"]["gold_raw"],
             5_000_000,
         )
+
+    def test_multiwar_resource_budget_reaches_existing_analytic_dispatcher(self):
+        cash = _multiwar_cash()
+        sources = _sources(domains={"building": _building_source()})
+        sources["war_cash_resource"] = cash
+        sources["max_active_wars"] = 2
+        sources["existing_commitments"].update(
+            gold_raw=cash["existing_shared_gold_commitment_raw"],
+            **cash["existing_resource_claims"],
+        )
+        result = collect_m5_formal_proposals(
+            snapshot=_multiwar_snapshot(), sources=sources,
+        )
+        self.assertEqual(result["status"], "reserved_analytic")
+        self.assertEqual(result["war_cash_resource"]["war_ids"], [16777231, 16777232])
+        self.assertEqual(result["dispatch"]["reservation"][
+            "commitments_after"]["gold_raw"], 7_000_000)
+        self.assertIsNone(result["selected_step"])
+        self.assertFalse(result["formal_action_ready"])
+
+    def test_multiwar_omitted_cash_or_occupation_is_not_a_joint_budget(self):
+        cash = _multiwar_cash()
+        for field in ("gold_raw", "army_ids", "ally_character_ids", "character_ids",
+                      "commitment_keys"):
+            sources = _sources(domains={"building": _building_source()})
+            sources["war_cash_resource"] = cash
+            sources["existing_commitments"].update(
+                gold_raw=cash["existing_shared_gold_commitment_raw"],
+                **cash["existing_resource_claims"],
+            )
+            sources["existing_commitments"][field] = 0 if field == "gold_raw" else []
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "omits active-war"):
+                collect_m5_formal_proposals(snapshot=_multiwar_snapshot(), sources=sources)
+
+    def test_multiwar_single_cash_receipt_does_not_cover_all_wars(self):
+        with self.assertRaisesRegex(ValueError, "complete same-frame aggregate"):
+            collect_m5_formal_proposals(
+                snapshot=_multiwar_snapshot(), sources=_sources(domains={}),
+            )
 
     def test_marriage_inventory_is_not_an_admitted_source_domain(self) -> None:
         with self.assertRaisesRegex(ValueError, "marriage.plan is unavailable"):
@@ -899,6 +983,70 @@ class M5WartimeObservationTests(unittest.TestCase):
         self.assertEqual(observed["status"], "no_budgeted_building_observed")
         self.assertEqual(observed["missing"], [])
         self.assertIsNone(observed["candidate"])
+        self.assertFalse(observed["formal_action_ready"])
+
+    def test_multiwar_complete_cash_stays_diagnostic_and_keeps_formal_step(self):
+        construction = self._construction()
+        construction["observed_active_war_count"] = 2
+        original = self._plan(construction)
+        original["plan"]["war_cash_resource"] = _multiwar_cash()
+        original["plan"]["war_owner"] = "existing-war-owner"
+        original["plan"]["date_hold"] = True
+        result = plan_m5_wartime_query_only(
+            object(), original, snapshot=_multiwar_snapshot(), history=[],
+            available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "complete_war_cash_observed")
+        self.assertEqual(observed["missing"], [])
+        self.assertEqual(observed["war_ids"], [16777231, 16777232])
+        self.assertFalse(observed["formal_action_ready"])
+        for field in ("selected_step", "phase", "war_owner", "date_hold"):
+            self.assertEqual(result["plan"][field], original["plan"][field])
+
+    def test_multiwar_missing_cash_retains_building_and_per_war_unknowns(self):
+        construction = self._construction()
+        construction["observed_active_war_count"] = 2
+        result = plan_m5_wartime_query_only(
+            object(), self._plan(construction), snapshot=_multiwar_snapshot(),
+            history=[], available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "incomplete_war_cash")
+        self.assertEqual(observed["candidate"]["stock_gold_cost_raw"], 18_000_000)
+        self.assertIn("war:16777231:receipt", observed["missing"])
+        self.assertIn("war:16777232:receipt", observed["missing"])
+        self.assertIsNone(observed["war_cash_resource"]["joint_gold_reserve_raw"])
+        self.assertFalse(observed["formal_action_ready"])
+
+    def test_single_partial_cash_receipt_is_incomplete_observation(self):
+        original = self._plan(self._construction())
+        original["plan"]["war_cash_resource"] = observe_active_war_cash_resource_v1(
+            snapshot=_snapshot(), war_id=16777231,
+            inputs={"source_frame": _FRAME, "war_id": 16777231},
+        )
+        result = plan_m5_wartime_query_only(
+            object(), original, snapshot=_snapshot(), history=[], available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "incomplete_war_cash")
+        self.assertIn("future_war_cost_upper_raw", observed["missing"])
+        self.assertIsNone(observed["war_cash_error"])
+        self.assertFalse(observed["formal_action_ready"])
+
+    def test_multiwar_changed_cash_frame_is_diagnostic_red_without_changing_action(self):
+        construction = self._construction()
+        construction["observed_active_war_count"] = 2
+        original = self._plan(construction)
+        original["plan"]["war_cash_resource"] = _multiwar_cash()
+        original["plan"]["war_cash_resource"]["source_frame"]["revision"] += 1
+        result = plan_m5_wartime_query_only(
+            object(), original, snapshot=_multiwar_snapshot(),
+            history=[], available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "war_cash_resource_invalid")
+        self.assertEqual(result["plan"]["selected_step"], original["plan"]["selected_step"])
         self.assertFalse(observed["formal_action_ready"])
 
 

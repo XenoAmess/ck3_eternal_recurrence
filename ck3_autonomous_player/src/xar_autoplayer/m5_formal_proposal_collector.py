@@ -154,14 +154,28 @@ def collect_m5_formal_proposals(
     if not isinstance(active_wars, list):
         raise ValueError("M5 active wars are unavailable")
     if active_wars:
-        from .m5_war_cash_resource_v1 import require_complete_war_cash_resource_v1
-
-        if len(active_wars) != 1 or not isinstance(active_wars[0], Mapping):
-            raise ValueError("M5 active-war cash scope needs one observed war")
-        war_id = active_wars[0].get("war_id")
-        cash = require_complete_war_cash_resource_v1(
-            sources.get("war_cash_resource"), frame=frame, war_id=war_id,
+        from .m5_war_cash_resource_v1 import (
+            AGGREGATE_SCHEMA, require_complete_aggregate_war_cash_resource_v1,
+            require_complete_war_cash_resource_v1,
         )
+
+        war_ids = [row.get("war_id") for row in active_wars
+                   if isinstance(row, Mapping)]
+        if (len(war_ids) != len(active_wars)
+                or any(type(war_id) is not int or war_id <= 0 for war_id in war_ids)
+                or len(war_ids) != len(set(war_ids))):
+            raise ValueError("M5 active-war cash scope lacks exact distinct WarIDs")
+        receipt = sources.get("war_cash_resource")
+        aggregated = (isinstance(receipt, Mapping)
+                      and receipt.get("schema") == AGGREGATE_SCHEMA)
+        if len(war_ids) != 1 or aggregated:
+            cash = require_complete_aggregate_war_cash_resource_v1(
+                receipt, frame=frame, war_ids=war_ids,
+            )
+        else:
+            cash = require_complete_war_cash_resource_v1(
+                receipt, frame=frame, war_id=war_ids[0],
+            )
         treasury = snapshot.get("played_character_gold")
         if (not isinstance(treasury, Mapping)
                 or treasury.get("scale") != 100_000
@@ -172,11 +186,22 @@ def collect_m5_formal_proposals(
                 < cash["existing_shared_gold_commitment_raw"]
                 or gold_reserve_raw < cash["joint_gold_reserve_raw"]):
             raise ValueError("M5 shared budget omits active-war cash")
+        if aggregated:
+            for name, items in cash["existing_resource_claims"].items():
+                observed = commitments.get(name)
+                if not isinstance(observed, list) or not set(items) <= set(observed):
+                    raise ValueError("M5 shared budget omits active-war resource occupation")
         war_source = domains.get("war")
         if war_source is not None:
             observation = war_source.get("observation")
+            # The existing war adapter remains a single-war policy owner.
+            # An aggregate budgets every war, but does not widen its strategy.
+            expected_cash = cash
+            if aggregated and isinstance(observation, Mapping):
+                expected_cash = next((row for row in cash["war_receipts"]
+                                      if row["war_id"] == observation.get("war_id")), None)
             if (not isinstance(observation, Mapping)
-                    or observation.get("war_cash_resource") != cash):
+                    or observation.get("war_cash_resource") != expected_cash):
                 raise ValueError("M5 war proposal cash differs from shared budget")
 
     dispatcher = M5FrameDispatcher(
@@ -209,6 +234,8 @@ def collect_m5_formal_proposals(
         "selected_step": None,
         "formal_action_ready": False,
     }
+    if active_wars:
+        result["war_cash_resource"] = deepcopy(cash)
     producer = sources.get("producer")
     if isinstance(producer, Mapping):
         for domain in ("family", "faction"):
@@ -228,8 +255,7 @@ def plan_m5_wartime_query_only(
 ) -> dict[str, object]:
     """Classify an existing wartime building read without replacing war play.
 
-    The active-war cash contract has no runtime producer yet.  A native-legal
-    building observation alone cannot reserve shared gold or authorize a
+    A native-legal building observation alone cannot reserve shared gold or authorize a
     construction submit.  Keep the already selected war, lifestyle or receipt
     step and make the missing joint input visible in the formal turn report.
     """
@@ -248,16 +274,54 @@ def plan_m5_wartime_query_only(
                if isinstance(row, Mapping)]
     if (len(war_ids) != len(wars)
             or any(type(war_id) is not int or war_id <= 0
-                   for war_id in war_ids)):
+                   for war_id in war_ids)
+            or len(war_ids) != len(set(war_ids))):
         raise ValueError("M5 wartime observation lacks exact WarIDs")
+    from .m5_war_cash_resource_v1 import (
+        AGGREGATE_SCHEMA, observe_aggregate_active_war_cash_resource_v1,
+        require_complete_war_cash_resource_v1,
+    )
+
+    cash: dict[str, object] | None = None
+    cash_error: str | None = None
+    receipt = plan.get("war_cash_resource")
+    try:
+        if isinstance(receipt, Mapping) and receipt.get("schema") == AGGREGATE_SCHEMA:
+            cash = observe_aggregate_active_war_cash_resource_v1(
+                snapshot=snapshot, receipts=receipt.get("war_receipts"),
+            )
+            if cash != receipt:
+                raise ValueError("wartime aggregate differs from its sourced receipts")
+        elif receipt is not None and len(war_ids) == 1:
+            if isinstance(receipt, Mapping) and receipt.get("status") == "incomplete":
+                # Reconsume a normal partial receipt without calling its
+                # missing future sources malformed or substituting zeros.
+                partial = observe_aggregate_active_war_cash_resource_v1(
+                    snapshot=snapshot, receipts=[receipt],
+                )
+                cash = partial["war_receipts"][0]
+            else:
+                cash = require_complete_war_cash_resource_v1(
+                    receipt, frame=frame, war_id=war_ids[0],
+                )
+            if cash["observed_treasury_raw"] != snapshot.get(
+                "played_character_gold", {},
+            ).get("raw"):
+                raise ValueError("wartime cash treasury differs from snapshot")
+        elif len(war_ids) > 1 or "war_cash_receipts" in plan:
+            cash = observe_aggregate_active_war_cash_resource_v1(
+                snapshot=snapshot, receipts=plan.get(
+                    "war_cash_receipts", [] if receipt is None else [receipt],
+                ),
+            )
+    except (TypeError, ValueError) as error:
+        cash_error = str(error)
     construction = plan.get("construction_wartime_observation")
     status = "construction_observation_unavailable"
-    missing = ["same_frame_native_budgeted_building", *_MISSING_ACTIVE_WAR_CASH]
+    missing = ["same_frame_native_budgeted_building", *(
+        cash["missing"] if cash is not None else _MISSING_ACTIVE_WAR_CASH)]
     candidate: dict[str, object] | None = None
-    if len(war_ids) != 1:
-        status = "multiple_wars_cash_aggregation_unavailable"
-        missing.insert(0, "aggregate_active_war_cash_resource")
-    elif isinstance(construction, Mapping):
+    if isinstance(construction, Mapping):
         source = construction.get("source_frame")
         expected_source = {
             "snapshot_id": frame["snapshot_id"],
@@ -273,7 +337,7 @@ def plan_m5_wartime_query_only(
                 or treasury.get("scale") != 100_000
                 or construction.get("observed_player_gold_raw")
                 != treasury.get("raw")
-                or construction.get("observed_active_war_count") != 1):
+                or construction.get("observed_active_war_count") != len(war_ids)):
             status = "construction_observation_frame_mismatch"
         elif construction.get("status") == "source_red":
             status = "construction_source_red"
@@ -295,7 +359,13 @@ def plan_m5_wartime_query_only(
                     is int
                     and candidate["authored_monthly_income_hundredths"] > 0):
                 status = "incomplete_war_cash"
-                missing = list(_MISSING_ACTIVE_WAR_CASH)
+                missing = (list(cash["missing"]) if cash is not None
+                           else list(_MISSING_ACTIVE_WAR_CASH))
+                if cash is not None and cash["status"] == "complete":
+                    status = "complete_war_cash_observed"
+                if cash_error is not None:
+                    status = "war_cash_resource_invalid"
+                    missing.insert(0, "valid_same_frame_war_cash_resource")
             else:
                 status = "construction_candidate_value_unavailable"
                 candidate = None
@@ -313,6 +383,8 @@ def plan_m5_wartime_query_only(
             "war_ids": war_ids,
             "candidate": candidate,
             "missing": missing,
+            "war_cash_resource": cash,
+            "war_cash_error": cash_error,
         },
     }
     return result
