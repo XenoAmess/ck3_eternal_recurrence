@@ -1775,6 +1775,16 @@ def create_server(
                 scheme_instance_id=scheme_instance_id, after_sequence=after_sequence,
             )
 
+    if getattr(driver, "allow_private_player_religion_draft_groups_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_draft_groups_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read selected draft-group sources and current native Tenet gates."""
+            return driver.query_player_religion_draft_groups_private_v1(
+                expected_revision=expected_revision,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3646,6 +3656,10 @@ def parser() -> argparse.ArgumentParser:
         "--private-active-scheme-sway-completion-invalidation-reason-query", action="store_true",
         help="enable retained native Sway invalidation notification observations",
     )
+    result.add_argument(
+        "--private-player-religion-draft-groups-query", action="store_true",
+        help="enable selected draft-group source and current native Tenet gate observations",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3745,6 +3759,7 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_active_scheme_sway_completion_termination_query
             or args.private_player_religion_personal_parameters_query
             or args.private_active_scheme_sway_completion_invalidation_reason_query
+            or args.private_player_religion_draft_groups_query
             ) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -3845,6 +3860,8 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_player_religion_personal_parameters_query = True
     if args.private_active_scheme_sway_completion_invalidation_reason_query:
         driver.allow_private_active_scheme_sway_completion_invalidation_reason_query = True
+    if args.private_player_religion_draft_groups_query:
+        driver.allow_private_player_religion_draft_groups_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",
