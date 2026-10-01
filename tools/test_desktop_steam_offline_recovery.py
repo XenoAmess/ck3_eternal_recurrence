@@ -10,7 +10,7 @@ from pathlib import Path
 import tempfile
 import time
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 import pywintypes
 from PIL import Image
 
@@ -31,6 +31,73 @@ def snapshot() -> dict:
             "todesk_service": {"status": "running", "pid": 11},
             "ck3_pids": [], "steam_windows": [{"hwnd": 123, "pid": 456}],
             "screen_owners": [TASK], "steam_offline_status_observed": None}
+
+
+class SteamWindowIdentityTests(unittest.TestCase):
+    def enumerate_windows(self, windows: list[dict]) -> list[tuple[int, int]]:
+        by_hwnd = {row["hwnd"]: row for row in windows}
+        by_pid = {row["pid"]: row for row in windows}
+
+        def enumerate_mock(visit, context) -> None:
+            for row in windows:
+                visit(row["hwnd"], context)
+
+        def process_mock(pid: int) -> Mock:
+            return Mock(**{"name.return_value": by_pid[pid]["process"]})
+
+        with (patch.object(freshness.win32gui, "EnumWindows", side_effect=enumerate_mock),
+              patch.object(freshness.win32gui, "IsWindowVisible",
+                           side_effect=lambda hwnd: by_hwnd[hwnd]["visible"]),
+              patch.object(freshness.win32gui, "GetWindowText",
+                           side_effect=lambda hwnd: by_hwnd[hwnd]["title"]),
+              patch.object(freshness.win32process, "GetWindowThreadProcessId",
+                           side_effect=lambda hwnd: (1, by_hwnd[hwnd]["pid"])),
+              patch.object(freshness.psutil, "Process", side_effect=process_mock)):
+            return freshness._steam_windows()
+
+    def test_native_steam_sdl_main_window_is_accepted(self) -> None:
+        self.assertEqual(self.enumerate_windows([
+            {"hwnd": 123, "pid": 456, "title": "Steam", "visible": True,
+             "process": "steam.exe"},
+        ]), [(123, 456)])
+
+    def test_legacy_cef_main_window_is_accepted(self) -> None:
+        self.assertEqual(self.enumerate_windows([
+            {"hwnd": 123, "pid": 456, "title": "Steam", "visible": True,
+             "process": "STEAMWEBHELPER.EXE"},
+        ]), [(123, 456)])
+
+    def test_title_visibility_and_live_steam_process_are_all_required(self) -> None:
+        self.assertEqual(self.enumerate_windows([
+            {"hwnd": 1, "pid": 11, "title": "Steam", "visible": True,
+             "process": "other.exe"},
+            {"hwnd": 2, "pid": 12, "title": "Steam Settings", "visible": True,
+             "process": "steam.exe"},
+            {"hwnd": 3, "pid": 13, "title": "steam", "visible": True,
+             "process": "steamwebhelper.exe"},
+            {"hwnd": 4, "pid": 14, "title": "Steam", "visible": False,
+             "process": "steam.exe"},
+        ]), [])
+
+    def test_multiple_steam_hosts_remain_ambiguous_and_block_capture(self) -> None:
+        windows = self.enumerate_windows([
+            {"hwnd": 123, "pid": 456, "title": "Steam", "visible": True,
+             "process": "steam.exe"},
+            {"hwnd": 789, "pid": 987, "title": "Steam", "visible": True,
+             "process": "steamwebhelper.exe"},
+        ])
+        self.assertEqual(windows, [(123, 456), (789, 987)])
+        self.assertIn("steam_window_not_unique", recovery.preflight(
+            [task(TASK)], TASK, [], {"status": "running"}, windows))
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(freshness.psutil, "process_iter", return_value=[]),
+                  patch.object(freshness, "_steam_windows", return_value=windows),
+                  patch.object(freshness.win32gui, "MoveWindow") as move,
+                  patch.object(freshness.pyautogui, "screenshot") as screenshot):
+                with self.assertRaisesRegex(RuntimeError, "found 2"):
+                    freshness.capture(Path(temp))
+            move.assert_not_called()
+            screenshot.assert_not_called()
 
 
 class DesktopRecoveryTests(unittest.TestCase):

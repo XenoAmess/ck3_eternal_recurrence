@@ -34,6 +34,12 @@ def _identity(path: Path) -> dict[str, object]:
 
 
 def _steam_windows() -> list[tuple[int, int]]:
+    """Enumerate Steam-owned main windows; callers reject ambiguous results.
+
+    Steam can host its main UI in either the native steam.exe SDL window or
+    the steamwebhelper.exe CEF window. The exact title and live process owner
+    remain required for both hosts.
+    """
     found: list[tuple[int, int]] = []
 
     def visit(hwnd: int, _: object) -> None:
@@ -41,7 +47,7 @@ def _steam_windows() -> list[tuple[int, int]]:
             return
         _, pid = win32process.GetWindowThreadProcessId(hwnd)
         try:
-            if psutil.Process(pid).name().lower() == "steamwebhelper.exe":
+            if psutil.Process(pid).name().lower() in {"steam.exe", "steamwebhelper.exe"}:
                 found.append((hwnd, pid))
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             return
