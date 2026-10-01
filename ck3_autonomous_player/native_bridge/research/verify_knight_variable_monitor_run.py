@@ -162,8 +162,12 @@ def verify(args):
                   'event_producer_definitions_read', 'event_manager_token', 'event_definition_count')
         gate('same original prearmed identities throughout window', all(beginning[key] == final[key] for key in stable))
         gate('exact initial records retained as prefix', final['records'][:len(beginning['records'])] == beginning['records'])
+        controlled_lifecycle_thread = projection['managed_checkpoint']['before']['thread_id']
+        # GUI getter callbacks may run on the GUI owner thread. Only arm/final
+        # lifecycle binds this controlled thread; each original operation pair
+        # retains its actual thread/context, and commit causality is separate.
         monitor_projection = validate_variable_monitor(final, character_ids=characters, expected_monitor_token=token,
-              before_date_raw=dates[0], after_date_raw=dates[1], expected_thread=projection['managed_checkpoint']['before']['thread_id'])
+               before_date_raw=dates[0], after_date_raw=dates[1], expected_thread=controlled_lifecycle_thread)
         report['actual_monitor_projection'] = monitor_projection
         comparisons = []
         for index, cid in enumerate(characters):
@@ -176,6 +180,7 @@ def verify(args):
             endpoint_agrees = last is not None and saved is not None and last['after_flag']['native_name'] == saved['native_name']
             comparisons.append({'character_id': cid, 'before_saved_signature': old, 'after_saved_signature': saved,
                                 'actual_write_count': len(writes), 'last_actual_write': last,
+                                'first_original_native_owner_observation': monitor_projection['first_original_owner_observations'][index],
                                 'after_save_equals_last_independently_decoded_write': endpoint_agrees,
                                 'endpoint_save_relative_to_preUI_window': 'UI_WINDOW_ORDER_NOT_DECODED'})
         report['same_run_saved_endpoint_comparisons'] = comparisons
@@ -183,7 +188,9 @@ def verify(args):
         report['signature_write_and_after_endpoint_closed'] = bool(monitor_projection['actual_write_pairs']) and all(
             row['after_save_equals_last_independently_decoded_write'] for row in comparisons if row['actual_write_count'])
         report['limits'] = ['Saved pair wrapper alone does not establish its order relative to UI getters; do not treat it as monitor arm state.',
-                            'Monitor and daily tokens differ and are bound to this exact native process.',
+                             'Monitor and daily tokens differ and are bound to this exact native process.',
+                             'GUI observations retain their actual threads. Only controlled arm/final lifecycle and each original call pair require thread equality.',
+                             'Missing first original getter is UNKNOWN, not an absent initial signature; saved endpoints are independent observations.',
                             'Source-bound TLS producer proves nearest matched immediate ancestor, not root receiver equals victim.',
                             'No per-window UI/RNG or 13-domain/global completion is inferred by this receipt.']
         report['status'] = 'PASS_SAME_RUN_ORIGINAL_MONITOR_OPERATIONS_AND_SAVED_ENDPOINT_PROJECTION'

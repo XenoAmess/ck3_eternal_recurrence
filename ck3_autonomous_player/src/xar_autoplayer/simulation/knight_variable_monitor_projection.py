@@ -91,9 +91,11 @@ def validate_variable_monitor(monitor: dict | None, *, character_ids: list[int],
                               after_date_raw: int, expected_thread: int | None = None) -> dict:
     """Check the original monitor tuple and project actual writes/guard returns.
 
-The monitor token is independent of the managed-daily token. Native owner final
-rows deliberately do not dereference a cached pointer; saved endpoints and fresh
-original-owner observations remain separate evidence.
+    The monitor token is independent of the managed-daily token. ``expected_thread``
+    binds the controlled arm/final lifecycle, not GUI callbacks. Each original
+    operation must retain its own thread/context. Native owner final rows do not
+    dereference a cached pointer; saved endpoints and original-owner observations
+    remain separate evidence.
 """
     if monitor is None:
         return {'status': 'NOT_CAPTURED', 'actual_write_pairs': [],
@@ -130,7 +132,11 @@ original-owner observations remain separate evidence.
     check('unique ordered original sequences', [r['sequence'] for r in records] == sorted({r['sequence'] for r in records}))
     check('every record same declared window', all(r['failure_flags'] == 0 and r['date_raw'] in
           (before_date_raw, after_date_raw) and r['key_id'] == key_id and
-          (expected_thread is None or r['thread_id'] == expected_thread) for r in records))
+          type(r['thread_id']) is int and 0 < r['thread_id'] < 2**32 for r in records))
+    lifecycle_thread = records[0]['thread_id']
+    check('controlled arm/final lifecycle thread',
+          (expected_thread is None or lifecycle_thread == expected_thread) and
+          all(r['thread_id'] == lifecycle_thread for r in records if r['boundary'] in ('arm', 'final_paused')))
     check('every scoped character full identity', all(r['character_id'] == -1 or
           (r['character_id'] in character_ids and r['observed_character_id'] == r['character_id'] and
            r['full_identity_matches'] is True) for r in records))
@@ -145,6 +151,13 @@ original-owner observations remain separate evidence.
     check('complete ordered paired original calls', all(set(p) == {'enter', 'return'} and
           p['enter']['sequence'] < p['return']['sequence'] and p['enter']['thread_id'] == p['return']['thread_id']
           for p in pairs.values()))
+    operation_binding = ('key_id', 'character_id', 'observed_character_id', 'full_identity_matches',
+                         'execution_context_token', 'native_root_scope_token', 'native_scope_words',
+                         'setter_node_token', 'setter_node_vtable_rva', 'setter_node_hash',
+                         'daily_effect_context', 'current_death_commit_context', 'event_producer')
+    check('each original operation preserves context/key/full identity', all(
+          all(pair['enter'].get(field) == pair['return'].get(field) for field in operation_binding)
+          for pair in pairs.values()))
     writes, houses = [], []
     for (kind, invocation), pair in pairs.items():
         enter, returned = pair['enter'], pair['return']
@@ -205,9 +218,33 @@ original-owner observations remain separate evidence.
         gaps.append('no matched signature writes observed; a no-write branch requires separate actual branch/inventory proof')
     elif not producer_closed:
         gaps.append('one or more actual signature writes has no matched original notification immediate producer')
+    first_owners = []
+    for character_id in character_ids:
+        owners = [row for row in records if row['boundary'] == 'original_owner_return' and
+                  row['character_id'] == character_id]
+        observation = {'character_id': character_id, 'status': 'UNKNOWN_NO_ORIGINAL_GETTER',
+                       'is_arm_initial_state': False, 'is_final_state': False}
+        if owners:
+            row = owners[0]
+            check('first original getter actual owner and typed presence',
+                  row['owner_token'] > 0 and row['container_token'] == row['owner_token'] + 8 and
+                  row['owner_from_original_getter'] is True and type(row['value']['present']) is bool)
+            observation.update({'sequence': row['sequence'], 'thread_id': row['thread_id'],
+                                'date_raw': row['date_raw'], 'owner_token': row['owner_token'],
+                                'full_identity_matches': row['full_identity_matches']})
+            if row['value']['read'] is True:
+                flag = _flag(row['value'], monitor, required=False)
+                observation.update({'status': 'OBSERVED_PRESENT_AT_ORIGINAL_GETTER' if flag is not None
+                                    else 'OBSERVED_ABSENT_AT_ORIGINAL_GETTER', 'flag': flag})
+            else:
+                observation['status'] = 'UNKNOWN_ORIGINAL_GETTER_VALUE_NOT_READ'
+        first_owners.append(observation)
     return {'status': 'CAPTURED_ACTUAL_MONITOR_OPERATIONS_CHECKED', 'checks': checks,
             'monitor_sequence_token': expected_monitor_token, 'actual_write_pairs': writes,
             'original_house_predicate_pairs': houses, 'producer_closed': producer_closed,
+            'controlled_lifecycle_thread_id': lifecycle_thread,
+            'actual_observer_thread_ids': sorted({r['thread_id'] for r in records}),
+            'first_original_owner_observations': first_owners,
             'prearmed_event_definition_bindings': producer_bindings, 'gaps': gaps,
             'whole_game_mutable_bundle_complete': False,
             'limits': 'Requested names are independently decoded from original typed words. Saved endpoints, UI timing and producer proof are separate checks.'}

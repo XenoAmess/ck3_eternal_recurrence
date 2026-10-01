@@ -633,24 +633,53 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   }
   query->result = {};
   if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {
+    // Failure metadata is observed at this original application event boundary,
+    // never copied from the caller's expected snapshot.
+    query->ingame_result = {};
+    query->ingame_result.date_raw = stamp.date_raw;
+    query->ingame_result.paused = stamp.paused;
+    query->ingame_result.pump_epoch = stamp.pump_epoch;
+    query->ingame_result.thread_id = stamp.thread_id;
+    query->ingame_result.rng_owner_thread_id = stamp.rng_owner_thread_id;
     game::Snapshot before{};
-    if (!stamp.paused || !stamp.jomini_state || !stamp.game_state ||
-        !stamp.rng_wrapper || !stamp.rng_state || stamp.rng_owner_thread_id != stamp.thread_id ||
-        query->mailbox->paused_owner_verified_pump_epochs.load(std::memory_order_acquire) <
-            kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs ||
-        !ReadSnapshot(query->ingame_bindings, before) ||
-        before != query->ingame_expected_snapshot || !before.paused ||
-        !before.map_ready || before.date_raw != stamp.date_raw) {
+    if (!IsIngameUiPausedOwnerStampV1(*query->mailbox, stamp, GetCurrentThreadId())) {
+      query->ingame_result.unavailable_reason = "application_paused_owner_stamp_unverified";
+      return true;
+    }
+    query->ingame_result.application_owner_thread_verified = true;
+    if (!ReadSnapshot(query->ingame_bindings, before)) {
+      query->ingame_result.unavailable_reason = "owner_fresh_snapshot_read_failed";
+      return true;
+    }
+    query->ingame_result.played_character_id = before.played_character_id;
+    if (before != query->ingame_expected_snapshot || !before.paused ||
+        !before.map_ready || !before.has_played_character || before.date_raw != stamp.date_raw) {
       query->ingame_result.unavailable_reason = "owner_fresh_snapshot_admission_failed";
       return true;
     }
+    IngameUiGuiOwnerBindingV1 gui_before{};
+    if (!ReadIngameUiGuiOwnerBindingV1(query->environment, gui_before)) {
+      query->ingame_result.unavailable_reason = "current_gui_owner_binding_unverified";
+      return true;
+    }
     const bool ran = ExecuteIngameUiNavigationV1(query->environment,
-        query->ingame_request, before, stamp, query->ingame_result);
+        query->ingame_request, before, stamp, gui_before, query->ingame_result);
+    query->ingame_result.application_owner_thread_verified = true;
+    query->ingame_result.rng_owner_thread_id = stamp.rng_owner_thread_id;
+    query->ingame_result.gui_context_address = reinterpret_cast<std::uintptr_t>(gui_before.context);
+    query->ingame_result.gui_owner_address = reinterpret_cast<std::uintptr_t>(gui_before.owner);
+    IngameUiGuiOwnerBindingV1 gui_after{};
+    const bool same_gui = ReadIngameUiGuiOwnerBindingV1(query->environment, gui_after) && gui_after == gui_before;
+    query->ingame_result.gui_owner_binding_verified = same_gui;
     game::Snapshot after{};
     if (!ran || !ReadSnapshot(query->ingame_bindings, after) || after != before) {
       query->ingame_result.available = false;
       query->ingame_result.status = "unavailable";
       query->ingame_result.unavailable_reason = "owner_post_navigation_snapshot_changed";
+    } else if (!same_gui) {
+      query->ingame_result.available = false;
+      query->ingame_result.status = "unavailable";
+      query->ingame_result.unavailable_reason = "current_gui_owner_binding_changed_after_navigation";
     }
     return true;
   }

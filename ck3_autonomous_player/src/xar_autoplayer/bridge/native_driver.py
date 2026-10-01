@@ -4480,6 +4480,7 @@ class NativeHeadlessGameplayDriver:
         fields = {"window_kind": kind, "subject_id": subject_id}
         if operation != "query":
             fields["operation"] = operation
+        raw = None
         try:
             raw = self._execute_primitive_step(step, expected_revision=expected_revision,
                 required_capability=QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY,
@@ -4492,7 +4493,9 @@ class NativeHeadlessGameplayDriver:
             result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
                 native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor)
         except Exception as error:
-            self._record_command(step, ok=False, error=f"{type(error).__name__}: {error}")
+            self._record_command(step, ok=False,
+                result={"raw_native_ui_result": copy.deepcopy(raw)} if raw is not None else None,
+                error=f"{type(error).__name__}: {error}")
             raise
         result.update({"queried_snapshot_id": starting.get("snapshot_id"), "queried_revision": expected_revision,
             "queried_native_revision": starting.get("native_revision"), "episode_run_id": starting.get("episode_run_id"),
@@ -8205,6 +8208,32 @@ class NativeHeadlessGameplayDriver:
                 with self._driver_state_lock:
                     self._driver_state_error = None
 
+    def _preserve_ingame_ui_native_frame(
+        self, request: dict[str, object], frame: dict[str, object],
+        snapshot: dict[str, object],
+    ) -> dict[str, object]:
+        """Create-only original parsed pipe return, before any UI validation.
+
+        These are the actual parser's request/frame objects, not a reconstructed
+        accepted result or a claim to retain the underlying wire byte sequence.
+        """
+        folder = self._native_driver_state_path().parent / "ingame-ui-native-results"
+        folder.mkdir(parents=True, exist_ok=True)
+        path = folder / f"native-ui-{uuid.uuid4().hex}.json"
+        payload = {"schema": "xar.ck3.native-ui-original-parsed-return/v1",
+            "validation_state": "unvalidated", "request": request,
+            "original_parsed_command_result": frame,
+            "actual_pre_submission_snapshot": snapshot,
+            "wire_bytes_preserved": False}
+        encoded = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        with path.open("xb") as stream:
+            stream.write(encoded)
+            stream.flush()
+            os.fsync(stream.fileno())
+        return {"path": str(path), "bytes": len(encoded),
+            "sha256": hashlib.sha256(encoded).hexdigest(),
+            "validation_state": "unvalidated"}
+
     def _execute_primitive_step(
         self,
         step: str,
@@ -8292,6 +8321,12 @@ class NativeHeadlessGameplayDriver:
                     "native request_fields attempted to replace protocol fields"
                 )
             request.update(request_fields)
+        if step in {"navigate-ingame-ui-v1", "query-ingame-ui-window-v1"}:
+            # A managed UI action must have its create-only evidence location
+            # before it can dispatch; missing state_dir must not fail only
+            # after the original game action has already run.
+            (self._native_driver_state_path().parent / "ingame-ui-native-results").mkdir(
+                parents=True, exist_ok=True)
         self.endpoint.send(request)
         command_timeout_seconds = (
             self.command_timeout_seconds
@@ -8308,6 +8343,11 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
             )
+        ui_raw_receipt = None
+        if step in {"navigate-ingame-ui-v1", "query-ingame-ui-window-v1"}:
+            # Persist even unavailable/RED returns. No retry or normalization
+            # can erase the native cause of a later binding-validation failure.
+            ui_raw_receipt = self._preserve_ingame_ui_native_frame(request, frame, snapshot)
         if frame.get("ok") is not True:
             native_error = frame.get("error")
             raise _NativeCommandRejectedError(
@@ -8316,6 +8356,8 @@ class NativeHeadlessGameplayDriver:
         result = frame.get("result")
         if isinstance(result, dict):
             projected = {**result, "backend_id": "native-headless"}
+            if ui_raw_receipt is not None:
+                projected["native_ui_raw_return_receipt"] = ui_raw_receipt
             if not internal_semantic_snapshot:
                 return self._verify_idempotent_map_control_postcondition(
                     step=step,

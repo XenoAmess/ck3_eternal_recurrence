@@ -42,6 +42,29 @@ struct IngameUiRequestV1 {
   IngameUiWindowKindV1 window_kind = IngameUiWindowKindV1::character;
   std::uint32_t subject_id = 0;
 };
+struct IngameUiGuiOwnerBindingV1 {
+  void *context = nullptr;
+  void *owner = nullptr;
+  friend bool operator==(const IngameUiGuiOwnerBindingV1 &,
+                         const IngameUiGuiOwnerBindingV1 &) = default;
+};
+// Application-event ownership comes from the original SDL/TLS mailbox proof.
+// The global RNG wrapper has its own scoped subsystem owner and is diagnostic.
+inline bool IsIngameUiPausedOwnerStampV1(
+    const MainThreadQueryMailboxV1 &mailbox,
+    const MainThreadExecutionStampV1 &stamp,
+    std::uint32_t executing_thread_id) noexcept {
+  return stamp.pump_epoch != 0 && stamp.thread_id != 0 &&
+      executing_thread_id == stamp.thread_id &&
+      mailbox.owner_thread_id.load(std::memory_order_acquire) == stamp.thread_id &&
+      stamp.tls_initialized_flag_address != 0 && stamp.tls_initialized == 1 &&
+      stamp.tls_context != 0 && stamp.tls_main_thread_marker == 1 &&
+      stamp.paused && stamp.jomini_state != 0 && stamp.game_state != 0 &&
+      mailbox.owner_verified_pump_epochs.load(std::memory_order_acquire) >=
+          kMainThreadQueryMinimumOwnerVerifiedPumpEpochs &&
+      mailbox.paused_owner_verified_pump_epochs.load(std::memory_order_acquire) >=
+          kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs;
+}
 struct IngameUiResultV1 {
   bool available = false;
   bool dispatch_invoked = false;
@@ -58,6 +81,11 @@ struct IngameUiResultV1 {
   std::int32_t played_character_id = -1;
   std::uint64_t pump_epoch = 0;
   std::uint32_t thread_id = 0;
+  bool application_owner_thread_verified = false;
+  bool gui_owner_binding_verified = false;
+  std::uintptr_t gui_context_address = 0;
+  std::uintptr_t gui_owner_address = 0;
+  std::uint32_t rng_owner_thread_id = 0;
   bool combat_knights_read_available = false;
   std::int32_t left_knight_count = -1;
   std::int32_t right_knight_count = -1;
@@ -78,7 +106,13 @@ struct IngameUiResultV1 {
 bool ExecuteIngameUiNavigationV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const IngameUiRequestV1 &request, const game::Snapshot &snapshot,
-    const MainThreadExecutionStampV1 &stamp, IngameUiResultV1 &output) noexcept;
+    const MainThreadExecutionStampV1 &stamp,
+    const IngameUiGuiOwnerBindingV1 &gui_binding, IngameUiResultV1 &output) noexcept;
+// Two fresh reads of the original GUI singleton chain; caller-supplied native
+// pointers and fixture function overrides are never admitted in production.
+bool ReadIngameUiGuiOwnerBindingV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    IngameUiGuiOwnerBindingV1 &output) noexcept;
 
 bool ParseIngameUiRequestV1(std::string_view json, bool query,
                           IngameUiRequestV1 &output) noexcept;
