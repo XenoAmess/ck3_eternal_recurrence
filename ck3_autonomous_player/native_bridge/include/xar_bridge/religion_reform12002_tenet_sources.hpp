@@ -8,6 +8,7 @@
 namespace xar::ck3_12002::religion_reform {
 
 inline constexpr std::uintptr_t kTenetSourcesDatabaseGlobalRva = 0x5D1DEB8;
+inline constexpr std::uintptr_t kTenetSourcesDefaultDefinitionGlobalRva = 0x5D1F6C0;
 inline constexpr std::uintptr_t kTenetSourcesRiteStorageGlobalRva = 0x5D1E2F8;
 inline constexpr std::uintptr_t kTenetSourcesFaithStorageGlobalRva = 0x5D1E300;
 inline constexpr std::uintptr_t kTenetSourcesPerkDatabaseGlobalRva = 0x5C67128;
@@ -29,6 +30,7 @@ struct TenetSourcesBindings {
   bool enabled{};
   DraftWindowBindings window{};
   void *const *tenet_database_global{};
+  void *const *default_tenet_definition_global{};
   void *const *rite_storage_global{};
   void *const *faith_storage_global{};
   void *const *perk_database_global{};
@@ -41,6 +43,7 @@ struct TenetSourcesBindings {
 
 struct DraftTenetSourceSlot {
   std::uint32_t slot_index{};
+  // Empty storage denotes the native default-definition placeholder; JSON null.
   std::string selected_tenet_key;
 };
 struct DraftTenetSource {

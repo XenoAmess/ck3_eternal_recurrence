@@ -885,3 +885,9 @@ One topic records actual paused29slots94source rows49finalSelectable and doctrin
 One topic records actual paused native base quote ten slots with4500piety and4344.5missing; nine other basefee slots zero from exact CCost initialization. No actual debit, net outcome or action; quote is production-live readonly primitive. Old tests not repeated. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\resource-costs\live-r8-doc-source-only-manifest.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 22:01:49 Read actual native empty Tenet slot correctly
+
+Actual R8 selected-definition failure traced by one597byte paused VMread to exact native default singleton at slot2. Two production leaf fixes preserve slotID and legitimate null selectedkey; one new production fixture and1span16anchors pass. Other source/final gates unchanged, old8cases not repeated. Six source/test/topic paths, R9 actual pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\tenet-sources-r9-blank-slot\source-apply-delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

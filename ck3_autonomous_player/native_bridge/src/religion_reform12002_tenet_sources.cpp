@@ -65,13 +65,15 @@ bool ReadOnce(const TenetSourcesBindings &b, std::uint64_t epoch, DraftTenetSour
   ArrayView sources{}, slots{};
   if (!Array(sources_array, sources)) return Fail(out, "tenet_source_collection_unavailable");
   if (!Array(slots_array, slots)) return Fail(out, "actual_tenet_slots_unavailable");
+  const auto *native_default = b.default_tenet_definition_global ? *b.default_tenet_definition_global : nullptr;
   std::vector<const void *> selected;
   for (std::int32_t i = 0; i < slots.count; ++i) {
     const auto *item = At(slots.data, static_cast<std::size_t>(i) * 0x70);
     const auto *definition = Load<const void *>(item, 0x28);
     DraftTenetSourceSlot slot{};
     slot.slot_index = Load<std::uint32_t>(item, 0x20);
-    if (!religion::doctrine12002::CopyTenetDefinitionKey12002(definition, slot.selected_tenet_key))
+    if ((!native_default || definition != native_default) &&
+        !religion::doctrine12002::CopyTenetDefinitionKey12002(definition, slot.selected_tenet_key))
       return Fail(out, "selected_tenet_definition_unavailable");
     selected.push_back(definition);
     out.slots.push_back(std::move(slot));
@@ -174,6 +176,7 @@ TenetSourcesBindings BindCurrentDraftTenetSources12002(std::uintptr_t base,
   b.window = BindCurrentRiteCreationWindow12002(base, sha);
   if (!b.window.enabled) return b;
   b.tenet_database_global = reinterpret_cast<void *const *>(base + kTenetSourcesDatabaseGlobalRva);
+  b.default_tenet_definition_global = reinterpret_cast<void *const *>(base + kTenetSourcesDefaultDefinitionGlobalRva);
   b.rite_storage_global = reinterpret_cast<void *const *>(base + kTenetSourcesRiteStorageGlobalRva);
   b.faith_storage_global = reinterpret_cast<void *const *>(base + kTenetSourcesFaithStorageGlobalRva);
   b.perk_database_global = reinterpret_cast<void *const *>(base + kTenetSourcesPerkDatabaseGlobalRva);
@@ -216,7 +219,7 @@ std::string SerializeCurrentDraftTenetSources12002(const DraftTenetSources &v) {
   for (const auto &slot : v.slots) {
     if (slots.size() > 1) slots += ',';
     slots += "{\"slot_index\":" + std::to_string(slot.slot_index) +
-      ",\"selected_tenet_key\":" + Quote(slot.selected_tenet_key) + '}';
+      ",\"selected_tenet_key\":" + (slot.selected_tenet_key.empty() ? "null" : Quote(slot.selected_tenet_key)) + '}';
   }
   for (const auto &row : v.sources) {
     if (sources.size() > 1) sources += ',';
