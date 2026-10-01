@@ -490,3 +490,9 @@ Sway 当前原生 CanContinue 返回值已补齐 mode1/linked1 ABI 与 serialize
 6源读取相同paid validator nonnull native engine-string，复制后游戏856050 destructor正确释放。ABI30lifetime spans及Od/O2各13checks7actualJSON首轮GREEN；knownempty不是unavailable，nonempty不是拒绝。旧terms blocker_available=false不改；新readonly fullmailbox/MCP另外接线。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\reasons\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:50:07 Religion conversion reasons native query
+
+新增实际只读 reasons mailbox：生产 submit/drain/wait/reclaim、原生格式化解释与完整 protocol1 command_result。Od/O2 /W4 /WX 各59检查 GREEN，各8完整JSON与2拒绝收据；复用已冻结 reasons library，不重跑旧矩阵。状态 static-ready，中央 named permit/dispatch、Python SDK 与 root paused native文本读回仍待集成。没有执行改宗或访问 CK3/进程/pipe/UI/Steam，live/G2 新计分为0。 Owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\reasons-query\delivery-result.json SHA-256 49287e07595c822262046d81a62998fc5ee6bfa832dfabd353f6e554fef33247。文件资格清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ready-packages-1730\conversion-reasons-query\qualification.json。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
