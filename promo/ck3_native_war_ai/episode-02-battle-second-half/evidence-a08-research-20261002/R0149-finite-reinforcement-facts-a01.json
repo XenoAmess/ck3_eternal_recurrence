@@ -1,0 +1,710 @@
+{
+  "schema": "xar.d11.finite-current-reinforcement-facts/v1",
+  "created_at_utc": "2026-10-01T22:47:10.093611+00:00",
+  "status": "FINITE_D11_ORIGINAL_JOIN_PAUSED_FULL_FRAME_PAIR_VERIFIED",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0149",
+  "source_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\current-run-bindings.json",
+    "bytes": 6644,
+    "sha256": "ECF7E94291E4A48695CA2D094A60E370135E7C8F8547DD76567435905366307B"
+  },
+  "source_root": "C:\\w\\e2cap1001i",
+  "source_commit": "431461d6841604ebd19e65670661ca2a732dbff8",
+  "runtime_DLL": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bytes": 3591168,
+    "sha256": "2D6A1E32322848F4C42FB6F349434C4AFB5802CCFC17E4EF5FF7ABBF856E38B6"
+  },
+  "native_session_binding": {
+    "episode_run_id": "native-29829-2bfe4802ee78",
+    "connection_generation": 1,
+    "bridge_pid": 18008,
+    "native_hello_session_generation": 0
+  },
+  "managed_daily_sequence_token": 458468561545815161,
+  "before_date_raw": 53146488,
+  "after_date_raw": 53146512,
+  "historical_checkpoint_input": {
+    "save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-full-edge-attempt-004\\trace-d11-immutable.ck3",
+      "bytes": 52408560,
+      "sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+    },
+    "receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-full-edge-attempt-004\\ck3-output\\interactive-requests-responses\\trace-d11-save.json",
+      "bytes": 13397,
+      "sha256": "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5"
+    }
+  },
+  "current_before_save": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-immutable.ck3",
+    "bytes": 52411731,
+    "sha256": "CE1DFEA972D4C5A2E48A9A3E8427501E3F7B1D5ED2E3A83CAC7759A28DAF819D"
+  },
+  "current_after_save": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-immutable.ck3",
+    "bytes": 52390330,
+    "sha256": "CB76F1D7DD338C510A684E6C75DAE8A72703373037A41E011FC277AFAA621F85"
+  },
+  "current_native_finite_audit": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-a05\\R0149-current-original-join-phase-control-audit.json",
+    "bytes": 395820,
+    "sha256": "EF56443D98ADAD30596E630F67BFF87602B0E37C8F3A557AF90F74FF540B22C2"
+  },
+  "current_saved_endpoint_audit": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\R0149-two-save-finite-combat-endpoint-verification.json",
+    "bytes": 10263,
+    "sha256": "2DA691ECEB03D3A335FB294E563500DE0EF8466009A74E3461C829270892FD7C"
+  },
+  "pixel_direct_inspection": [
+    {
+      "phase": "before",
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-width-window.png",
+        "bytes": 6500669,
+        "sha256": "89C7F68014A58AE742C46C5DE36D60F7F0A3E8F0228C6D7DD8B7523886BCE18A"
+      },
+      "inspection": "Original file directly viewed with view_image(detail=original); no game/window capture or desktop input by auditor",
+      "reviewer": "/root/a04_reinforcement_evidence",
+      "visible_date": "1066.12.14",
+      "paused_visible": true,
+      "battle_title": "墨西拿之战",
+      "visible_top_counts": [
+        893,
+        1603
+      ],
+      "relative_soldiers_tooltip_counts": [
+        827,
+        1546
+      ],
+      "visible_width": 1480,
+      "visible_base_width": 1645,
+      "visible_terrain_width_text": "森林：90%",
+      "bottom_visible_text": [
+        "11名骑士",
+        "13名法里斯"
+      ],
+      "both_coat_and_commander_context_visible": true,
+      "full_stock_combat_bottom_edge_visible": true,
+      "same_one_original_frame_contains_all_fields": true,
+      "numeric_native_ID_visible_claimed": false,
+      "movie_review_or_signoff": false,
+      "root_review": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\before-width-full-frame-root-review.json",
+        "bytes": 2577,
+        "sha256": "007630A4A654FFA5832926BC224B099D5D66D8F2A0BD81F7B098A2D78CAD1381"
+      }
+    },
+    {
+      "phase": "after",
+      "image": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-width-window.png",
+        "bytes": 6504125,
+        "sha256": "C7F9D9451DFC7DE03143C4AE74BBDA0EAD102C0EE0293B40C6E4FAE06CA0842F"
+      },
+      "inspection": "Original file directly viewed with view_image(detail=original); no game/window capture or desktop input by auditor",
+      "reviewer": "/root/a04_reinforcement_evidence",
+      "visible_date": "1066.12.15",
+      "paused_visible": true,
+      "battle_title": "墨西拿之战",
+      "visible_top_counts": [
+        827,
+        4106
+      ],
+      "relative_soldiers_tooltip_counts": [
+        740,
+        4047
+      ],
+      "visible_width": 2220,
+      "visible_base_width": 2467,
+      "visible_terrain_width_text": "森林：90%",
+      "bottom_visible_text": [
+        "11名骑士",
+        "17名法里斯"
+      ],
+      "both_coat_and_commander_context_visible": true,
+      "full_stock_combat_bottom_edge_visible": true,
+      "same_one_original_frame_contains_all_fields": true,
+      "numeric_native_ID_visible_claimed": false,
+      "movie_review_or_signoff": false,
+      "root_review": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-full-frame-live-20261002-a13\\scoped-ui-research-attempt-01\\after-width-full-frame-root-review.json",
+        "bytes": 2576,
+        "sha256": "E1035CE39885F6269D5F0BBE7E1B018F3B73C7F95BCA206825F96190C6C8FCC0"
+      }
+    }
+  ],
+  "original_phase_record_boundaries": [
+    "native_capture_before_side0_schedule_call_0x27FB58F",
+    "native_capture_after_side1_schedule_return_0x27FB5AC",
+    "native_capture_before_side0_phase_fire_entry_0x23C9900",
+    "native_capture_after_side0_phase_fire_return_0x2309EF7",
+    "native_capture_before_side1_phase_fire_entry_0x23C9900",
+    "native_capture_after_side1_phase_fire_return_0x2309EFF",
+    "paused_next_day_stable_query"
+  ],
+  "original_phase_dates": [
+    53146488,
+    53146488,
+    53146512,
+    53146512,
+    53146512,
+    53146512,
+    53146512
+  ],
+  "original_phase_days": [
+    7,
+    7,
+    8,
+    8,
+    8,
+    8,
+    8
+  ],
+  "original_join_width_boundaries": [
+    {
+      "boundary": 0,
+      "thread_id": 13400,
+      "native_date_raw": 53146512,
+      "combat_id": 16777218,
+      "army_id": 22,
+      "side_index": -1,
+      "phase_day": 7,
+      "base_width": 1645,
+      "final_width": 1480,
+      "outgoing_width_argument": -1,
+      "side_fighting_total_raw": [
+        160317482,
+        89325449
+      ]
+    },
+    {
+      "boundary": 1,
+      "thread_id": 13400,
+      "native_date_raw": 53146512,
+      "combat_id": 16777218,
+      "army_id": 22,
+      "side_index": 0,
+      "phase_day": 7,
+      "base_width": 2467,
+      "final_width": 2220,
+      "outgoing_width_argument": -1,
+      "side_fighting_total_raw": [
+        410690163,
+        82785368
+      ]
+    },
+    {
+      "boundary": 2,
+      "thread_id": 13400,
+      "native_date_raw": 53146512,
+      "combat_id": 16777218,
+      "army_id": 22,
+      "side_index": 0,
+      "phase_day": 8,
+      "base_width": 2467,
+      "final_width": 2220,
+      "outgoing_width_argument": 2220,
+      "side_fighting_total_raw": [
+        410690163,
+        82785368
+      ]
+    }
+  ],
+  "actual_join_enter_return": {
+    "incoming_native_army_id": 22,
+    "joined_side_index": 0,
+    "before_armies": [
+      16777221,
+      16777231,
+      27
+    ],
+    "after_armies": [
+      16777221,
+      16777231,
+      27,
+      22
+    ],
+    "before_side_entry_counts": [
+      27,
+      24
+    ],
+    "after_side_entry_counts": [
+      40,
+      24
+    ],
+    "incoming_regiments_original": [
+      [
+        175,
+        750
+      ],
+      [
+        176,
+        400
+      ],
+      [
+        177,
+        10
+      ],
+      [
+        178,
+        776
+      ],
+      [
+        179,
+        1
+      ],
+      [
+        180,
+        1
+      ],
+      [
+        181,
+        1
+      ],
+      [
+        182,
+        1
+      ],
+      [
+        191,
+        402
+      ],
+      [
+        192,
+        87
+      ],
+      [
+        197,
+        26
+      ],
+      [
+        198,
+        58
+      ],
+      [
+        204,
+        57
+      ]
+    ],
+    "incoming_basic_soldiers_sum": 2570,
+    "new_entry_rows_original": [
+      [
+        175,
+        22,
+        0,
+        9,
+        75000000,
+        75000000,
+        0,
+        1000000,
+        1000000
+      ],
+      [
+        178,
+        22,
+        0,
+        10,
+        77600000,
+        77600000,
+        0,
+        1000000,
+        1000000
+      ],
+      [
+        191,
+        22,
+        0,
+        11,
+        40200000,
+        40200000,
+        0,
+        1000000,
+        1000000
+      ],
+      [
+        192,
+        22,
+        0,
+        12,
+        8700000,
+        8700000,
+        0,
+        1000000,
+        1000000
+      ],
+      [
+        197,
+        22,
+        0,
+        13,
+        2600000,
+        2600000,
+        0,
+        1000000,
+        1000000
+      ],
+      [
+        198,
+        22,
+        0,
+        14,
+        5800000,
+        5800000,
+        0,
+        1000000,
+        1000000
+      ],
+      [
+        204,
+        22,
+        0,
+        15,
+        5700000,
+        5700000,
+        0,
+        1000000,
+        1000000
+      ],
+      [
+        176,
+        22,
+        1,
+        18,
+        40000000,
+        40000000,
+        0,
+        4500000,
+        2650000
+      ],
+      [
+        177,
+        22,
+        1,
+        19,
+        1000000,
+        0,
+        0,
+        100000,
+        1272000
+      ],
+      [
+        179,
+        22,
+        1,
+        20,
+        100000,
+        100000,
+        0,
+        126750000,
+        25350000
+      ],
+      [
+        180,
+        22,
+        1,
+        21,
+        100000,
+        100000,
+        0,
+        58500000,
+        11700000
+      ],
+      [
+        181,
+        22,
+        1,
+        22,
+        100000,
+        100000,
+        0,
+        29250000,
+        5850000
+      ],
+      [
+        182,
+        22,
+        1,
+        23,
+        100000,
+        100000,
+        0,
+        9750000,
+        1950000
+      ]
+    ],
+    "new_current_sum_raw": 256000000,
+    "all_51_old_entry_rows_nine_columns_unchanged": true,
+    "cache_and_entry_totals": [
+      {
+        "boundary": 0,
+        "side_index": 0,
+        "entry_count": 27,
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "cache_raw": 160317482,
+        "entry_sum_raw": 154690163,
+        "cache_minus_entries_raw": 5627319
+      },
+      {
+        "boundary": 0,
+        "side_index": 1,
+        "entry_count": 24,
+        "army_ids": [
+          18
+        ],
+        "cache_raw": 89325449,
+        "entry_sum_raw": 82785368,
+        "cache_minus_entries_raw": 6540081
+      },
+      {
+        "boundary": 1,
+        "side_index": 0,
+        "entry_count": 40,
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "cache_raw": 410690163,
+        "entry_sum_raw": 410690163,
+        "cache_minus_entries_raw": 0
+      },
+      {
+        "boundary": 1,
+        "side_index": 1,
+        "entry_count": 24,
+        "army_ids": [
+          18
+        ],
+        "cache_raw": 82785368,
+        "entry_sum_raw": 82785368,
+        "cache_minus_entries_raw": 0
+      }
+    ],
+    "no_hidden_or_unpublished_writes_claimed": true
+  },
+  "original_frame_native_bindings_and_save_time_layers": [
+    {
+      "save_values": {
+        "date_raw": 53146488,
+        "paused": true,
+        "actor": 29829,
+        "revision": 4,
+        "native_revision": 3,
+        "snapshot_id": "native:3",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-2bfe4802ee78",
+        "connection_generation": 1,
+        "bridge_pid": 18008,
+        "native_hello_session_generation": 0
+      },
+      "image_values": {
+        "date_raw": 53146488,
+        "paused": true,
+        "actor": 29829,
+        "revision": 5,
+        "native_revision": 4,
+        "snapshot_id": "native:4",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-2bfe4802ee78",
+        "connection_generation": 1,
+        "bridge_pid": 18008,
+        "native_hello_session_generation": 0
+      },
+      "same_snapshot_and_revisions": false,
+      "different_fields": {
+        "snapshot_id": {
+          "save": "native:3",
+          "image": "native:4"
+        },
+        "native_revision": {
+          "save": 3,
+          "image": 4
+        },
+        "revision": {
+          "save": 4,
+          "image": 5
+        }
+      },
+      "same_snapshot_not_required_or_claimed_for_save": true,
+      "actual_saved_entry_cache_match_report": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\R0149-two-save-finite-combat-endpoint-verification.json",
+        "bytes": 10263,
+        "sha256": "2DA691ECEB03D3A335FB294E563500DE0EF8466009A74E3461C829270892FD7C"
+      }
+    },
+    {
+      "save_values": {
+        "date_raw": 53146512,
+        "paused": true,
+        "actor": 29829,
+        "revision": 8,
+        "native_revision": 7,
+        "snapshot_id": "native:7",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-2bfe4802ee78",
+        "connection_generation": 1,
+        "bridge_pid": 18008,
+        "native_hello_session_generation": 0
+      },
+      "image_values": {
+        "date_raw": 53146512,
+        "paused": true,
+        "actor": 29829,
+        "revision": 8,
+        "native_revision": 7,
+        "snapshot_id": "native:7",
+        "war_ids": [
+          4
+        ],
+        "army_id": 18,
+        "army_state": "combat",
+        "episode_run_id": "native-29829-2bfe4802ee78",
+        "connection_generation": 1,
+        "bridge_pid": 18008,
+        "native_hello_session_generation": 0
+      },
+      "same_snapshot_and_revisions": true,
+      "different_fields": {},
+      "same_snapshot_not_required_or_claimed_for_save": true,
+      "actual_saved_entry_cache_match_report": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\R0149-two-save-finite-combat-endpoint-verification.json",
+        "bytes": 10263,
+        "sha256": "2DA691ECEB03D3A335FB294E563500DE0EF8466009A74E3461C829270892FD7C"
+      }
+    }
+  ],
+  "finite_result_explanation": "Actual original join entry/return rebuilds both cached totals to current entry sums while 51 existing entries are unchanged in all nine published columns. Adds13 new army22 entries. Actual first side0 outgoing width argument equals2220. Final paused frame cache again differs from post-casualty current entry sums; every original UI tooltip/top count retains its distinct scope.",
+  "original_export_scope": {
+    "phase_records": 7,
+    "phase_failure_flags": 0,
+    "join_width_count": 3,
+    "join_width_failure_code": 0,
+    "join_full_entry_count": 2,
+    "join_full_entry_failure_code": 0,
+    "recoverable_checkpoint_created": true,
+    "detours_uninstalled": true,
+    "readiness_original_trace_ready": false,
+    "full_mutable_transition_bundle_complete": false
+  },
+  "cleanup_originals": {
+    "SDK_completion": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\native-sdk-attempt-01\\completion.json",
+      "bytes": 1229,
+      "sha256": "FDBF09122B7A9B0D544069114C61B6599BF44B796B9F6DFC9DD856F05939A4F8"
+    },
+    "completion": {
+      "schema_version": 1,
+      "server_instance_id": "594eea69-3dc6-48fe-a095-03e7a441043f",
+      "target_id": "ck3-e2-reinforcement-full-frame-20261002-a13",
+      "identity": {
+        "token_user": "1",
+        "desktop": "WinSta0\\Default",
+        "machine": "DESKTOP-3FEVHD2",
+        "process_id": 14744
+      },
+      "identity_matches_profile": true,
+      "process_gates": {
+        "ck3.exe": [],
+        "dowser.exe": [],
+        "ffmpeg.exe": [],
+        "obs64.exe": [],
+        "xar_ck3_bridge_injector.exe": []
+      },
+      "process_gate_errors": {},
+      "jobs": [
+        {
+          "job_id": "f4828703-66ec-4a91-bf02-34da72650ab2",
+          "request_id": "e2-reinforcement-full-frame-20261002-a13-root",
+          "job_name": "reinforcement-full-frame-capture",
+          "pid": 15096,
+          "state": "exited",
+          "exit_code": 0,
+          "started_unix": 1790892356.1657293,
+          "stdout_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\operator-state-a01\\jobs\\f4828703-66ec-4a91-bf02-34da72650ab2\\stdout.log",
+          "stderr_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\operator-state-a01\\jobs\\f4828703-66ec-4a91-bf02-34da72650ab2\\stderr.log",
+          "available_controls": []
+        }
+      ]
+    },
+    "Steam_offline_root_review": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\cleanup-steam-offline-root-review-a01.json",
+      "bytes": 2062,
+      "sha256": "F61A6EF07508EEDC44E878D61C2DB672EE3840CFD7E26B2BBB08C15EEAF57B8B"
+    },
+    "release_process": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\cleanup-release-process-a01.json",
+      "bytes": 686,
+      "sha256": "F13D124181595D994620702F72A287D8BD3C6872D4A6535AD12040F32056D8C4"
+    },
+    "release_stdout": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\cleanup-release-stdout-a01.bin",
+      "bytes": 1601,
+      "sha256": "CC795B0C8EB1022ED4E8A4EC00EDDF8CE2282159696475D977FB829A8722EB42"
+    },
+    "release_process_original": {
+      "returncode": 0,
+      "task_after": {
+        "git": {
+          "branch": "codex/war-e2-identifier-append-capture-20261002",
+          "dirty_entries": 0,
+          "head": "431461d6841604ebd19e65670661ca2a732dbff8"
+        },
+        "last_sequence": 3645,
+        "next_step": "fresh_offline_before_current_build_D11_launch",
+        "pid": 7328,
+        "repo": "C:\\w\\e2cap1001i",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "waiting",
+        "summary": "R149_capture_stopped_actual_prior_display_restored_Steam_offline_originals_reviewed",
+        "task_id": "war-e2-reinforcement-full-frame-screen-20261002-a13b",
+        "updated_at_utc": "2026-10-01T22:42:42.018036+00:00"
+      }
+    },
+    "display_restore_process": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\display-restore-across-lease-process-a01.json",
+      "bytes": 554,
+      "sha256": "0B760AFEEC595DF0307078BF62261967BA66C55AB701F253510E9B8F3B595E27"
+    },
+    "task_bus_business_unresolved_red_preserved": true,
+    "root_finite_capture_success_not_identical_to_task_business_result": true
+  },
+  "limitations": [
+    "This is a NEW R0149 capture from the historical immutable checkpoint, not a historical A01/R0138 original UI frame.",
+    "Join callbacks and seven phase records are distinct temporal boundaries, never the same paused UI frame.",
+    "Before saved snapshot native:3/rev4 differs from before image native:4/rev5; exact endpoint rows/caches/owners match, no same-snapshot save claim.",
+    "Source publishes global full_mutable_transition_bundle_complete=false and original_trace_ready=false; these are preserved.",
+    "Two saves and finite join entry rows do not enumerate all possible original hidden game writes; no full-world/scoped-global complete claim.",
+    "Native phase casualty endpoint differences are not promoted to unrecorded casualty operation callbacks.",
+    "No video render, human movie signoff, upload, master intake, source edits or Git actions by this auditor."
+  ],
+  "initial_evaluator_failures": {
+    "native_a01": "RED evaluator assumed ck3_advance_days rather than actual ck3_execute_step/life-advance; actual original request preserved.",
+    "derivation_a03_and_native_a03": "RED text-anchor/stray-plus syntax; no native operation executed.",
+    "saved_a01": "RED evaluator looked for active combat one container too high; actual before Rakaly decoded bytes preserved and reused.",
+    "native_a04": "RED incorrectly required saved snapshot equal image snapshot; actual unequal snapshots now explicit while screenshot before/after equality guards remain.",
+    "all_old_artifacts_retained": true
+  },
+  "global_bundle_complete": false,
+  "all_game_mechanisms_complete": false,
+  "human_movie_signoff": false,
+  "native_or_desktop_action_by_auditor": false
+}

@@ -1,0 +1,69 @@
+{
+  "at_utc": "2026-10-01T23:11:40.193022+00:00",
+  "status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+  "final_artifact": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\CK3-War-AI-Episode02-BrownGold-Research-20261002-a08.mp4",
+    "bytes": 232268593,
+    "sha256": "CFF09685022C148C7300D56DB636A75D45A4054416440FB05D5E4F641C3B3AD4",
+    "duration_expected": 1838.8,
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "whole_previous_AAC_reused": false,
+    "status": "pending-machine-check-and-human-full-review"
+  },
+  "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Research-20261002-a08.mp4",
+  "files_transferred": 1,
+  "local_copy": {
+    "status": "LOCAL_COPY_VERIFIED_CLOUD_PENDING",
+    "at_utc": "2026-10-01T23:09:36.034763+00:00",
+    "label": "series-video",
+    "source": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\CK3-War-AI-Episode02-BrownGold-Research-20261002-a08.mp4",
+    "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Research-20261002-a08.mp4",
+    "bytes": 232268593,
+    "sha256": "CFF09685022C148C7300D56DB636A75D45A4054416440FB05D5E4F641C3B3AD4",
+    "copy_stream_sha256": "CFF09685022C148C7300D56DB636A75D45A4054416440FB05D5E4F641C3B3AD4",
+    "source_mtime_ns": 1790895893475317600,
+    "cloud_confirmation": null
+  },
+  "last_client_sample": {
+    "at_utc": "2026-10-01T23:11:40.186492+00:00",
+    "raw": {
+      "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-Research-20261002-a08.mp4",
+      "sample_utc": "2026-10-01T23:11:40.089048+00:00",
+      "size": 232268593,
+      "mtime_ns": 1790896175116937100,
+      "attributes_hex": "0x00000020",
+      "sync_root_hresult": "0x00000000",
+      "handle_attributes_hex": "0x00000020",
+      "reparse_tag_hex": "0x00000000",
+      "cf_placeholder_state_hex": "0x00000000",
+      "cf_placeholder_state_flags": [],
+      "placeholder_hresult": "0x00000000",
+      "placeholder_returned_bytes": 412,
+      "in_sync_state": 1,
+      "on_disk": 232268593,
+      "validated": 232268593,
+      "modified": 0,
+      "pin_state": 0,
+      "file_id": 281474978525250,
+      "sync_root_file_id": 5910974510929700,
+      "stable_size_mtime": true
+    },
+    "checks": {
+      "exact_path": true,
+      "exact_size": true,
+      "stable_size_mtime": true,
+      "sync_root_success": true,
+      "placeholder_success": true,
+      "sync_root_id": true,
+      "in_sync": true,
+      "validated_full_size": true,
+      "modified_zero": true
+    }
+  },
+  "sample_count": 13,
+  "remote_independent_readback_performed": false,
+  "human_signoff": "not-provided",
+  "other_cloud_files_downloaded": false,
+  "old_outputs_changed": false
+}

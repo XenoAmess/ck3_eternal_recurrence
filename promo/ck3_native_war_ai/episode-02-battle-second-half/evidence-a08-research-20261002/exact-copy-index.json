@@ -1,0 +1,102 @@
+{
+  "copies": [
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\R0148-six-gap-finite-case-semantic-closure-a01.json",
+        "bytes": 172344,
+        "sha256": "17751A015324D4F995D0F5B9668F9EFE5B70784230A9C9F62CD6622E764E6091"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\R0148-six-gap-finite-case-semantic-closure-a01.json",
+        "bytes": 172344,
+        "sha256": "17751A015324D4F995D0F5B9668F9EFE5B70784230A9C9F62CD6622E764E6091"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\R0149-root-finite-capture-completion-a01.json",
+        "bytes": 7232,
+        "sha256": "5A0A37C70CAD0730F302BD38B03EC7EBBD33B5E246ECCC2CDE5A861D2BB1DFA1"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\R0149-root-finite-capture-completion-a01.json",
+        "bytes": 7232,
+        "sha256": "5A0A37C70CAD0730F302BD38B03EC7EBBD33B5E246ECCC2CDE5A861D2BB1DFA1"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\R0149-finite-reinforcement-facts-a01.json",
+        "bytes": 21669,
+        "sha256": "A91B333219864C161999FE74D4C6040B05A9EBCBA2D9BB3D9E8C1EC6C3D19819"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\R0149-finite-reinforcement-facts-a01.json",
+        "bytes": 21669,
+        "sha256": "A91B333219864C161999FE74D4C6040B05A9EBCBA2D9BB3D9E8C1EC6C3D19819"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\R0149-finite-reinforcement-audit-seal-a01.json",
+        "bytes": 40502,
+        "sha256": "CB92CEF25B3D59C3BF4C658B6BB6C8B1AEFE2FB02300E9D20E1AACFB035D5E9D"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\R0149-finite-reinforcement-audit-seal-a01.json",
+        "bytes": 40502,
+        "sha256": "CB92CEF25B3D59C3BF4C658B6BB6C8B1AEFE2FB02300E9D20E1AACFB035D5E9D"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\final-artifact.json",
+        "bytes": 469,
+        "sha256": "53A037B189480FD9A9C4CD293A9968B0DB35094C800599627E8C3BD1E24D4AF8"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\final-artifact.json",
+        "bytes": 469,
+        "sha256": "53A037B189480FD9A9C4CD293A9968B0DB35094C800599627E8C3BD1E24D4AF8"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\audit\\machine-report.json",
+        "bytes": 5851,
+        "sha256": "BFCD381131E625A6D3C1689F878B0E17A15D7F2D5A9C5AEA67D1D05E63D73421"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\machine-report.json",
+        "bytes": 5851,
+        "sha256": "BFCD381131E625A6D3C1689F878B0E17A15D7F2D5A9C5AEA67D1D05E63D73421"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\frame-review\\final-frame-quality.json",
+        "bytes": 3697,
+        "sha256": "47A2B0C95A98AE993034AD198BD9D93A22818503C3924534502FB358E925F0E9"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\final-frame-quality.json",
+        "bytes": 3697,
+        "sha256": "47A2B0C95A98AE993034AD198BD9D93A22818503C3924534502FB358E925F0E9"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-research-20261002-a02\\delivery\\final-delivery.json",
+        "bytes": 2855,
+        "sha256": "DB634031A065E59637F1F35494B3032D4E721680EBF02CE39C9311B875D44C0A"
+      },
+      "copy": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a08-research-20261002\\final-delivery.json",
+        "bytes": 2855,
+        "sha256": "DB634031A065E59637F1F35494B3032D4E721680EBF02CE39C9311B875D44C0A"
+      }
+    }
+  ],
+  "originals_modified": false,
+  "human_signoff": "not-provided"
+}

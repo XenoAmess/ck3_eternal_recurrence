@@ -1,0 +1,719 @@
+{
+  "schema": "xar.finite-readonly-audit-seal/v1",
+  "status": "READY_STOP_WRITING",
+  "created_at_utc": "2026-10-01T22:47:11.957750+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0149",
+  "files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit-evaluator-syntax-and-saved-container-correction-a05.json",
+      "bytes": 1618,
+      "sha256": "E4C2BFE906B5171BF2B77356D1F483ADEF1693C37B9356600A7EC389754DB57B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit_join_phase_current_r149_a01.py",
+      "bytes": 14795,
+      "sha256": "888C820CCB3E3E187D2187985072B116DDF0BC4DB7FDCD06D7ACBB0DCCBCA305"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit_join_phase_current_r149_a02.py",
+      "bytes": 15087,
+      "sha256": "2589235F95CF4C4DC2A853E9B9E7EF6897DE1C974E2B525D04363471E6E5EB12"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit_join_phase_current_r149_a03.py",
+      "bytes": 19050,
+      "sha256": "A9322F2BED9A6DED1510517B63B5F956C9D5891462098F0B9D18E90FC150D3D9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit_join_phase_current_r149_a04.py",
+      "bytes": 19048,
+      "sha256": "C2ACED9D9D0591A2A95B71AAB446BE8E165E73DD0A11F9A4564DC46DC0B261AD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit_join_phase_current_r149_a05.py",
+      "bytes": 19960,
+      "sha256": "CD2F189CBD93610A1800FD59EE45AA3A95990F4949B12A8C53B2CA949CE6AC5A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit_saved_join_endpoints_r149_a01.py",
+      "bytes": 9227,
+      "sha256": "AAEE1362DF2B21203487E20AAA72762A0C570260A9BD48B8587899FE6613FE54"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\audit_saved_join_endpoints_r149_a02.py",
+      "bytes": 9557,
+      "sha256": "DA5C37684DE7F0177C09A61993073957D8530BECA6FA112C3E5D3AAA602AA244"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\auditor-request-contract-correction-a02.json",
+      "bytes": 913,
+      "sha256": "2432F55796641E99CE524C37134D4870B1019174071C08A78D7AEEEBFD781F12"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derivation-anchor-repair-process-a04\\argv.json",
+      "bytes": 768,
+      "sha256": "7F4AC91F24F822C9F74A6CCFBA14DC762FCA298E5652FE739E63A3A307B5BDE1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derivation-anchor-repair-process-a04\\result.json",
+      "bytes": 868,
+      "sha256": "7776F54D2CB25AE93F2F9E93B25503FEA17690AF4EDCD546B0BF6352466D0C17"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derivation-anchor-repair-process-a04\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derivation-anchor-repair-process-a04\\stdout.bin",
+      "bytes": 126,
+      "sha256": "99D3D216AD90C098DA52C101FBE942E12579DD8645595CDAD2B1E6EE9E28145B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derivation-script-path-anchor-correction-a04.json",
+      "bytes": 684,
+      "sha256": "E430438D0AE63863205568EF8EE8F7151A30A64A4F5A5E54D415A39EF61F6298"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derive_audit_parse_repairs_a05.py",
+      "bytes": 2497,
+      "sha256": "34F4D438879E846BC601D0717B283C8984C60EA61AAA86E14FC3C497080A23C0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derive_current_auditor_a02.py",
+      "bytes": 2815,
+      "sha256": "7538D9757C955C14CBE0C160D879FBAE29DB89FD56DAF1757D3B98EA9D6C5A8D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derive_final_auditor_a03.py",
+      "bytes": 5337,
+      "sha256": "42D88F7C75C8F81AC7F843838131EF25F709914A77AC66E8FDF6655D19B387CC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derive_final_auditor_a04.py",
+      "bytes": 5336,
+      "sha256": "A4ECCB09573785D1589421476BA43DEADAAAF6FC8A179C301AB8572D092E872D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\derive_final_endpoint_contract_a05.py",
+      "bytes": 2660,
+      "sha256": "13C32DA278F635DB417FFAED6B011C51C8F833E80DB03A4FC597A93B03857406"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-derivation-process-a02\\argv.json",
+      "bytes": 767,
+      "sha256": "227FF1619FEED6394294602DD52A55422AA09C569DE5ADB9B38C371F4DD943A9"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-derivation-process-a02\\result.json",
+      "bytes": 856,
+      "sha256": "E7ADEACCC54194D044806AB112C67D717EA52549924F335FFDA4F66B1CB9D4F7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-derivation-process-a02\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-derivation-process-a02\\stdout.bin",
+      "bytes": 236,
+      "sha256": "AF6D089C7E869289E03C68DCE96E37E6E7EC9334E9F09EC3374E889BE12D3230"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-parse-repair-process-a05\\argv.json",
+      "bytes": 775,
+      "sha256": "101FC6660FF22F4E9E0CB1FE3DEF0E8C5475085FE97734398DC4D93DEE72E426"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-parse-repair-process-a05\\result.json",
+      "bytes": 863,
+      "sha256": "9A0E4B9116B2E41B74780AB814BBBCC5FDF671F96EC64541B27D4BC670746301"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-parse-repair-process-a05\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\evaluator-parse-repair-process-a05\\stdout.bin",
+      "bytes": 1082,
+      "sha256": "537FCC34D6823D80FAF9F2BDDA495E409EF70A7B97C1AC2070693621E4285B57"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-01-d11-a13-join-trace-begin-once.json",
+      "bytes": 12171,
+      "sha256": "BBF4DD52566AECE9A7F43E35A7C07C503CC5E2684BB3D4DF46D69AF9DDFCAE2C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-02-d11-a13-join-trace-finish-once.json",
+      "bytes": 439938,
+      "sha256": "0A46872ED06BC633AEA61CCB3AD73D5772DEA1638AE584A4FF7D130500D76967"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-03-d11-a13-one-original-day.json",
+      "bytes": 20273,
+      "sha256": "6295DC5562B83386F26F0BCC632DB667A31C79A0AAF9BF4B456BB9851ECC4ACE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-04-d11-a13-post-day-snapshot-only.json",
+      "bytes": 2206284,
+      "sha256": "45CAA670DDA29F519C60D3C5FE791092E4EB95498BE2B6A9D60C6F52736DCE92"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-05-one-day-finished.json",
+      "bytes": 440252,
+      "sha256": "BACAB03B76D000B6E7A461BABD580A03714987CD4F6B5E991E0115B2367FB2DB"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-06-before-saved-pair.json",
+      "bytes": 4486,
+      "sha256": "777F26AF0226D8B5D5FAE5FC35D7149801AF084B3A6CA67443188AA7FD9C86D3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-07-after-saved-pair.json",
+      "bytes": 4510,
+      "sha256": "08F4A0C50F0B881BCB737AC149D2C3FB70467AFC6DCC379DF1197DC4B53B28B1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-08-before-width-full-frame-root-review.json",
+      "bytes": 2577,
+      "sha256": "007630A4A654FFA5832926BC224B099D5D66D8F2A0BD81F7B098A2D78CAD1381"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-09-after-width-full-frame-root-review.json",
+      "bytes": 2576,
+      "sha256": "E1035CE39885F6269D5F0BBE7E1B018F3B73C7F95BCA206825F96190C6C8FCC0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-10-before-width-verified-reviewed-frame-verification.json",
+      "bytes": 2373372,
+      "sha256": "0A80D57250EDB52D757CB8F95C3A9B951FFD659441E892DD26E0E022BFC998A5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-11-after-width-verified-reviewed-frame-verification.json",
+      "bytes": 4867132,
+      "sha256": "11E8A898B7453ECFC468619F92F501462FE4749D3D2E309CE8823106342BE42A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-12-completion.json",
+      "bytes": 1229,
+      "sha256": "FDBF09122B7A9B0D544069114C61B6599BF44B796B9F6DFC9DD856F05939A4F8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-13-cleanup-steam-offline-root-review-a01.json",
+      "bytes": 2062,
+      "sha256": "F61A6EF07508EEDC44E878D61C2DB672EE3840CFD7E26B2BBB08C15EEAF57B8B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-14-cleanup-release-stdout-a01.bin",
+      "bytes": 1601,
+      "sha256": "CC795B0C8EB1022ED4E8A4EC00EDDF8CE2282159696475D977FB829A8722EB42"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-15-cleanup-release-process-a01.json",
+      "bytes": 686,
+      "sha256": "F13D124181595D994620702F72A287D8BD3C6872D4A6535AD12040F32056D8C4"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-16-display-restore-across-lease-process-a01.json",
+      "bytes": 554,
+      "sha256": "0B760AFEEC595DF0307078BF62261967BA66C55AB701F253510E9B8F3B595E27"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-17-before-width-source-control.json",
+      "bytes": 111600,
+      "sha256": "EEFBE90561FA9AFB72B528E6C1250047A37159AF82C758F82607F618FE7AE700"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-18-before-width-after-pixels-control.json",
+      "bytes": 111606,
+      "sha256": "E00985D3EF781BBD6EBFD93CE9827699822ACEF97A252A3727CA28046FEDF86A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-19-before-width-window.png",
+      "bytes": 6500669,
+      "sha256": "89C7F68014A58AE742C46C5DE36D60F7F0A3E8F0228C6D7DD8B7523886BCE18A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-20-before-width-full-panel-width-sample.json",
+      "bytes": 4128848,
+      "sha256": "671EE7B55E2CEE5F260E57415337453238E2F8CE894CC7C9E8CF3474CC53352B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-21-after-width-source-control.json",
+      "bytes": 131683,
+      "sha256": "AA04E5946BF33817B5E7338C0D0620AA813E69744240B818DFBCB1DD7BE48490"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-22-after-width-after-pixels-control.json",
+      "bytes": 131689,
+      "sha256": "44FE3BCF485A49D4F8F4F10180580E5DF51CE3417BD8F79AD38F5C31EC07696A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-23-after-width-window.png",
+      "bytes": 6504125,
+      "sha256": "C7F9D9451DFC7DE03143C4AE74BBDA0EAD102C0EE0293B40C6E4FAE06CA0842F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\original-24-after-width-full-panel-width-sample.json",
+      "bytes": 9042620,
+      "sha256": "55F2F4265AA2FF457BF3D16D786ED44530F9ED2F5BC0EB565A631DF9F0E25A3C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-01-capture_session.py",
+      "bytes": 122365,
+      "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-02-d11_admission.py",
+      "bytes": 12511,
+      "sha256": "C58FA03D19D5FA2729B65429B9DABB3B97778F5BC4F0B6E92BB34BF150FE5B4F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-03-combat_phase_event_trace_ring_v1.cpp",
+      "bytes": 105268,
+      "sha256": "81E4FA16049FBC3358B655131D838EA70CB98E4752EA2274ED6AB6AFDF34D7D5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-04-combat_phase_event_trace_wire_v1.cpp",
+      "bytes": 37378,
+      "sha256": "050D607EFF49B1D93AB28ED815886EE1909DED5CAFE7A6E6D1746CFB0EAD0490"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-05-combat_phase_event_trace_managed_v1.cpp",
+      "bytes": 52411,
+      "sha256": "61900E4F803A99868B4CA61AC8BB043129553137E27A14D13F18A4745E70D8AE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-06-combat_phase_event_trace_v1.hpp",
+      "bytes": 15855,
+      "sha256": "7D8058E2456F61C2753A1CA88A197FBDD7178D3B8A29B0D4B0C1CD81E4CCC13F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-07-combat_phase_event_trace_ring_v1.hpp",
+      "bytes": 33217,
+      "sha256": "93A904EA4639DCEFD120DF956ED3A3D7A5A840E3CF82E7A173B4E00F87C49557"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-08-ingame_ui_navigation_v1.cpp",
+      "bytes": 43853,
+      "sha256": "DD6393FD8B901565C9FE089FD331774310238F72FE01859EF5F4B76E57763819"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-09-knight_causal_save_projection.py",
+      "bytes": 41961,
+      "sha256": "A7497C1BDBD00D6F55DDEE711532B38BF64125EFA2C26DE18553DD0F574F91AA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-10-d11_one_original_day_a01.py",
+      "bytes": 4512,
+      "sha256": "57ADB80C9D7AF4521EA02F38841305611908C55AC1B4720FE32CD03AEB43BCED"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-11-current-run-bindings.json",
+      "bytes": 6644,
+      "sha256": "ECF7E94291E4A48695CA2D094A60E370135E7C8F8547DD76567435905366307B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-12-capture-input-plan-a01.json",
+      "bytes": 1991,
+      "sha256": "00BF55B5D85CE35213AB6F2BE68F5EDF46DF8CC00D4A9532E93406AED5DBE837"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-13-d11-no-launch-admission-lock-a02.json",
+      "bytes": 7847,
+      "sha256": "1C0BDC04C6805E3C145130FCB50211A48435A69AD1AEFBE276B291221669C207"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-copies\\source-14-battle-control-pair.json",
+      "bytes": 860,
+      "sha256": "1C519E364082EE5EDDD2F0AC0D628F0DC15E516525C91EE7B33AF068F3FC92B0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\exact-original-and-source-copy-receipt-a01.json",
+      "bytes": 24623,
+      "sha256": "8A97DE6A61B69C3BA5220F4E215A29E54AB0CA5E28639BE85D08135A4059C9FE"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a03\\argv.json",
+      "bytes": 763,
+      "sha256": "A27E712B16884D2E5241D2A369CBC4A552F3177FF586982FBF5CDF6AC77E9608"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a03\\result.json",
+      "bytes": 868,
+      "sha256": "8106BEE61251C44B94DC2201592A15CAA428D3926FA31AB22617E83583349CB0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a03\\stderr.bin",
+      "bytes": 298,
+      "sha256": "C8C889B061457529F51C223ABE5152A475049D6E9400F2FF7C4C43D462651B03"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a03\\stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a04\\argv.json",
+      "bytes": 763,
+      "sha256": "821574A8D6F228CAA5415A46723C92F3179FBDD17682ECFDC77AE987CEA1812D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a04\\result.json",
+      "bytes": 868,
+      "sha256": "E1316AE0BD980F148BF287D21A8459545664A65E8E16FC39EC1FF8B11BE3C039"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a04\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-derivation-process-a04\\stdout.bin",
+      "bytes": 248,
+      "sha256": "0ECE4DC9ECC79B17F17F1C6B34A2D15C5FF574375E5C2EBDB9F24FA1F3281B18"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-auditor-original-date-and-pixel-derivation-a03.json",
+      "bytes": 751,
+      "sha256": "C6A1A227179B2AE7F4134C850B6AB7687A81DB20147349603E0B9BCAE5558D60"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-endpoint-derivation-process-a05\\argv.json",
+      "bytes": 783,
+      "sha256": "60BDDEE8790A06AAB20D797153AD7644B1AEEC0DCC5913B9698B328456DD0B96"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-endpoint-derivation-process-a05\\result.json",
+      "bytes": 871,
+      "sha256": "4CDEB53A59891F341938B87EF6574A9F6AD3CF4B0AED6F69F754F311EB4B62FD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-endpoint-derivation-process-a05\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\final-endpoint-derivation-process-a05\\stdout.bin",
+      "bytes": 248,
+      "sha256": "A1BC913C7C5852E6EEFC7395A828665C60E7B1899E502BCED2C04281965E5154"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\finalize_finite_facts_and_seal_r149_a01.py",
+      "bytes": 15274,
+      "sha256": "76C15064E72D263D96A473E1A02E25A7D1013D159954C44AF45D5F0308653178"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\inspect-originals-a02\\argv.json",
+      "bytes": 763,
+      "sha256": "23F1AE369BC583AC1E7C8BFB2541773B7770E8015E12434AE5040097517DC12B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\inspect-originals-a02\\result.json",
+      "bytes": 825,
+      "sha256": "3D48BFC54C8F9FD17DC5E8FA2FCCC50CDCEEA86A42230C135275568D771BA34B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\inspect-originals-a02\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\inspect-originals-a02\\stdout.bin",
+      "bytes": 77813,
+      "sha256": "EA65EC39DF400902E6812A002221EDBF3C78367AF705A43F82A983B1F0E1AA85"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\inspect_current_r149_a01.py",
+      "bytes": 1461,
+      "sha256": "F6F41B905E42E5459E3A845218A3852796C4C0148DC9E13FC1F528DAEBD4A9F0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\inspect_current_r149_a02.py",
+      "bytes": 2080,
+      "sha256": "74E6244C0ECFBCAE16957A2B7C61F297159F6F5A4CD8B3D252E8BE3ECA9D79DF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-before-trace-a01\\R0149-current-original-join-phase-control-audit.json",
+      "bytes": 374740,
+      "sha256": "13319D4629C42E0D8C23AA60D7CCAA4C0BC41803FEE32770B754AB225B79C5A6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-before-trace-process-a01\\argv.json",
+      "bytes": 869,
+      "sha256": "47F49D11D2D8E6996356F659E00B2CA49F1517DDB3DBA1BEA766904326575C96"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-before-trace-process-a01\\result.json",
+      "bytes": 854,
+      "sha256": "FB9DF49956F35F055B2A89012378C9BF7C317BE9BD11DD9AD5E12E06672D78BD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-before-trace-process-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-before-trace-process-a01\\stdout.bin",
+      "bytes": 2204,
+      "sha256": "CE94C35D1C64FFE3731CC20151762ECEDF75E3D29E72B1C16E577C6037B55B22"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-a04\\R0149-current-original-join-phase-control-audit.json",
+      "bytes": 392143,
+      "sha256": "417E692771611548517D696B4113AD67560EC95992C166428CCF0045C4B1AD81"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-a05\\R0149-current-original-join-phase-control-audit.json",
+      "bytes": 395820,
+      "sha256": "EF56443D98ADAD30596E630F67BFF87602B0E37C8F3A557AF90F74FF540B22C2"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a03\\argv.json",
+      "bytes": 855,
+      "sha256": "127BB7910620E2ED4272F918A0F35A76BDD13C41965202CAB01EA4B9B1F73073"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a03\\result.json",
+      "bytes": 832,
+      "sha256": "BB3C840A7EC6E24995FEADFE7C7A9DD28420C9E36E14B2CFFB6794DDF43FA196"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a03\\stderr.bin",
+      "bytes": 459,
+      "sha256": "8B481F9AA19695514B1B1239A6F5B1B23D02E1E6930000F4F9B7474402CAF84F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a03\\stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a04\\argv.json",
+      "bytes": 855,
+      "sha256": "95478C644426E40E506E37F7ABABC61D77619E00070127EC278CC95F08609AE3"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a04\\result.json",
+      "bytes": 833,
+      "sha256": "D869E34899FAA148184DE60546ABFCD9EAABD2D121C6026FA29D3A6E5484935F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a04\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a04\\stdout.bin",
+      "bytes": 1961,
+      "sha256": "3DB06635FA8020907E0DD1910A59656F4218A2D43C7B99F0FF095E30E7A87EDA"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a05\\argv.json",
+      "bytes": 855,
+      "sha256": "FF6A36D6AF367FE466A512DE51A3F0C2A8804B7573FD1D1C4D01F0F34CC3917F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a05\\result.json",
+      "bytes": 833,
+      "sha256": "AF412B9B794810CFE1E41BDBA30809F71EEB851DD99ED2894F70E6213DFA6C76"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a05\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\native-final-process-a05\\stdout.bin",
+      "bytes": 1870,
+      "sha256": "9E8D2A15F011EB572A2F4AAD7E1D95F83928926315D0134962F017F890B03539"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\R0149-finite-reinforcement-facts-a01.json",
+      "bytes": 21669,
+      "sha256": "A91B333219864C161999FE74D4C6040B05A9EBCBA2D9BB3D9E8C1EC6C3D19819"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\R0149-finite-reinforcement-facts-a01.md",
+      "bytes": 2399,
+      "sha256": "931C082071F582750793157E1060982C863C82DDC37E2897FE9AF7DBBB1CA4F8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\repair_final_derivation_a04.py",
+      "bytes": 809,
+      "sha256": "6E4409765DBC3EF6EE23A95679762021A1DA77780A5A40CC8F3AD35A3BE14FB5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\run_readonly_stage_a01.py",
+      "bytes": 1529,
+      "sha256": "E5C109155F41A6CF2525E3A14CD8CE60C63A9A70A0B956BB115A8DE4850AB006"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-and-image-temporal-contract-a05.json",
+      "bytes": 1029,
+      "sha256": "DB87C9BE4833491B9471C1C100C1E3D8C100235228D34D1C36964E7099988811"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\before-melt-argv.json",
+      "bytes": 703,
+      "sha256": "3CFFDF2E943CF4A0C183D7E854542733F60D6456BE51CFF9E08AF74B1BCBBB49"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\before-melt-result.json",
+      "bytes": 869,
+      "sha256": "744651E61662D5BC10E932806F52C44710426B93F85CAEE80C12712DCDC29D7E"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\before-melt-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\before-melt-stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\before-melted.ck3",
+      "bytes": 81017428,
+      "sha256": "C79DFC204E4C984A22D47F1349B2C625395EA59D61A8AF2016D8E0FF1EFBA7BD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\rakaly-version-argv.json",
+      "bytes": 312,
+      "sha256": "A90F70FF00CE06047332C9E14639879274B1F7520C8E779F1A2E6AC992D9CDA5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\rakaly-version-result.json",
+      "bytes": 878,
+      "sha256": "F3349EAC677F7F00ACD4B512739D24AE709DC16B1512127A58F88432FE570F46"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\rakaly-version-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a01\\rakaly-version-stdout.bin",
+      "bytes": 7,
+      "sha256": "D6CB21ADF47733CBDDB6F624C559D39C4FA8F018D961F0E577F71B91327880E6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\after-melt-argv.json",
+      "bytes": 701,
+      "sha256": "889C1C02A456B776D5BB0B85E64547C904B9BFD55081610E841D69DE3B974CC5"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\after-melt-result.json",
+      "bytes": 866,
+      "sha256": "FA408304E77E091750DBFB773CF2FA1F820C4FD35C134A7B8B263D72C42F3429"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\after-melt-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\after-melt-stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\after-melted.ck3",
+      "bytes": 80982967,
+      "sha256": "C0E053F6AFC270E04813F9F459BA519951538B5A186F662B8A85BE747E89FEBC"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\after-saved-combat-endpoint-projection.json",
+      "bytes": 114286,
+      "sha256": "51A541D6037D615EB89C00BDD67147A2E6E496F749A455FEF57F93E581ECF540"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\before-saved-combat-endpoint-projection.json",
+      "bytes": 92759,
+      "sha256": "EDC774904AD8035D9A8D1096180E037801C3D9B4AAD3340171E8618D6CF4CB6D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\R0149-two-save-finite-combat-endpoint-verification.json",
+      "bytes": 10263,
+      "sha256": "2DA691ECEB03D3A335FB294E563500DE0EF8466009A74E3461C829270892FD7C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\rakaly-version-argv.json",
+      "bytes": 312,
+      "sha256": "4908E8833D162812D210A7E09A4EFB32C19CE84E0DC04900032556BF87DB6399"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\rakaly-version-result.json",
+      "bytes": 878,
+      "sha256": "08A107F5CE14B8B5B4BF54BBFDA39D09544FD133CAEB69CAE4EDC97C7D9920DF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\rakaly-version-stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-decode-a02\\rakaly-version-stdout.bin",
+      "bytes": 7,
+      "sha256": "D6CB21ADF47733CBDDB6F624C559D39C4FA8F018D961F0E577F71B91327880E6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a01\\argv.json",
+      "bytes": 785,
+      "sha256": "81F2E87D7DF5FE8D95CCFE77D1C205A0373FFAFDEA31C7631FD35448C062D137"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a01\\result.json",
+      "bytes": 838,
+      "sha256": "4C37EC2F75FE81699366A1C2DA168136929DBF577901BCD094CCA5BC329928DD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a01\\stderr.bin",
+      "bytes": 984,
+      "sha256": "C17315E203B00B1544C701095458A90D3BA79096C4E9DBAE34D26F8A3E3D069F"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a01\\stdout.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a02\\argv.json",
+      "bytes": 785,
+      "sha256": "123FBBA272F18C0500F8F50C51F527B8AA0E220A64D3AB62FB355C6695497624"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a02\\result.json",
+      "bytes": 839,
+      "sha256": "D307B36F5B50577C098DE29C9B33476296044C523E63EBA49DB813058FFD4D46"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a02\\stderr.bin",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\saved-endpoint-process-a02\\stdout.bin",
+      "bytes": 1565,
+      "sha256": "E6FFA98BDDA8C1815EFA07EF4C77EB80387EBEC1288D3D03D9D4FDF63AE18B80"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\summarize_current_controls_a01.py",
+      "bytes": 620,
+      "sha256": "4A10A722AC4B13BA533C35721CDEFFC32993AC8D4ECAA6F9BEDBB72C053062C1"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\summarize_phase_dates_a01.py",
+      "bytes": 554,
+      "sha256": "FC5D3BD38052F2643BE75E737ECF4194716ACB4ABEFB6F1ED7AAA66EB36015D0"
+    }
+  ],
+  "file_count": 141,
+  "files_double_hashed": true,
+  "sources_and_native_originals_unchanged": true,
+  "global_bundle_complete": false,
+  "human_movie_signoff": false,
+  "Git_or_game_or_desktop_actions": false
+}
