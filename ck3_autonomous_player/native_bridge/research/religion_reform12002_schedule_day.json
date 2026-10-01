@@ -1,0 +1,249 @@
+{
+  "build": "CK3 1.20.0.2 Crozier / Steam 25588574",
+  "exe_sha256": "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d",
+  "vtable_slots": [
+    {
+      "vtable_rva": "0x45ac5f8",
+      "slot": "0x8",
+      "slot_rva": "0x45ac600",
+      "target_rva": "0x1a304a0"
+    },
+    {
+      "vtable_rva": "0x45ac5f8",
+      "slot": "0x10",
+      "slot_rva": "0x45ac608",
+      "target_rva": "0x9d09f0"
+    },
+    {
+      "vtable_rva": "0x45ac5f8",
+      "slot": "0x18",
+      "slot_rva": "0x45ac610",
+      "target_rva": "0x1a31d90"
+    },
+    {
+      "vtable_rva": "0x45ac5f8",
+      "slot": "0x30",
+      "slot_rva": "0x45ac628",
+      "target_rva": "0x1a31ee0"
+    },
+    {
+      "vtable_rva": "0x44b50b0",
+      "slot": "0x8",
+      "slot_rva": "0x44b50b8",
+      "target_rva": "0x2988170"
+    },
+    {
+      "vtable_rva": "0x44b50b0",
+      "slot": "0x10",
+      "slot_rva": "0x44b50c0",
+      "target_rva": "0x29882a0"
+    },
+    {
+      "vtable_rva": "0x44b50b0",
+      "slot": "0x18",
+      "slot_rva": "0x44b50c8",
+      "target_rva": "0x2988fd0"
+    },
+    {
+      "vtable_rva": "0x44b50b0",
+      "slot": "0x20",
+      "slot_rva": "0x44b50d0",
+      "target_rva": "0x855aa0"
+    },
+    {
+      "vtable_rva": "0x476c9d0",
+      "slot": "0x10",
+      "slot_rva": "0x476c9e0",
+      "target_rva": "0x2989c10"
+    }
+  ],
+  "rtti": {
+    "ai_secondary_vtable": "0x45ac5f8",
+    "ai_col": "0x4bf0e10",
+    "ai_class": ".?AVCAIManager@@",
+    "ai_interface_offset": 8,
+    "daily_secondary_vtable": "0x44b50b0",
+    "daily_col": "0x4a4ccc8",
+    "daily_class": ".?AVCDailyTickCommand@@",
+    "daily_interface_offset": 24,
+    "manager_binder_vtable": "0x476c9d0",
+    "manager_binder_col": "0x4e1fdc8",
+    "manager_binder_class": ".?AV?$_Func_impl_no_alloc@V?$_Binder@U_Unforced@std@@P8CLegacyGameManagerInterface@@EAAXH@ZAEAPEAV3@H@std@@X$$V@std@@"
+  },
+  "native_sequence": [
+    "Daily command slot 0x10 (0x29882a0) submits registered manager jobs.",
+    "Per-manager binder invokes slot 0x10; AI thunk 0x9d09f0 forwards to slot 8, prepare 0x1a304a0.",
+    "Daily command slot 0x20 returns true; generic runner uses 0x29677e0 true path.",
+    "True path invokes daily command slot 8 (0x2988170), entering 0x22a0d80 and adding 24 to game date at 0x22a0e8d.",
+    "Generic runner then invokes daily command slot 0x18 (0x2988fd0), which calls AI execute 0x1a31ee0."
+  ],
+  "unknowns": [
+    "The full game-command queue consumer dispatch to generic runner was not followed; normal creation and generic stage execution were independently identified.",
+    "The complete OS-time/pause/network guard meanings in the normal creator 0x25a9c50 were not decoded.",
+    "Worker pool scheduling detail and unrelated daily manager bodies were intentionally outside scope.",
+    "No live process evidence or MCP capability was produced by this child."
+  ],
+  "schema": "religion_reform12002_schedule_day_chain_v1",
+  "regions": [
+    {
+      "name": "AI manager dispatch thunk",
+      "kind": "complete_leaf",
+      "begin_rva": "0x9d09f0",
+      "end_rva_exclusive": "0x9d09f7",
+      "sha256": "c3f67c51e5ce090fa0c688b157cb6af694f16189549bb2c8ffba8fdebe2096f3",
+      "hex": "488b0148ff6008"
+    },
+    {
+      "name": "Manager virtual slot 0x10 thunk",
+      "kind": "complete_leaf",
+      "begin_rva": "0x110cd00",
+      "end_rva_exclusive": "0x110cd07",
+      "sha256": "a42a09d1397b407adedb18f59ad53f00009bb34634ee6c6dfe97a9263dfcd527",
+      "hex": "488b0148ff6010"
+    },
+    {
+      "name": "Daily manager binder invoke",
+      "kind": "complete_leaf",
+      "begin_rva": "0x2989c10",
+      "end_rva_exclusive": "0x2989c1e",
+      "sha256": "260d3a0e9af7f1d232442261d28e5a1da9a03e902a197caad5eb63ec0808c698",
+      "hex": "8b5110488bc1488b491848ff6008"
+    },
+    {
+      "name": "Daily command true predicate",
+      "kind": "complete_leaf",
+      "begin_rva": "0x855aa0",
+      "end_rva_exclusive": "0x855aa3",
+      "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+      "hex": "b001c3"
+    },
+    {
+      "name": "Daily AI execute stage",
+      "kind": "complete_function",
+      "begin_rva": "0x2988fd0",
+      "end_rva_exclusive": "0x29890fa",
+      "sha256": "2ff06b969b73bed922dc6a839d7e7880945d04ba6646943c45c733f9397e768a",
+      "hex": "48895c24084889742410574883ec20e8ec8d8901488bd8e804d373014881fb809698007506486bd864eb21489948f7fb488bc84869c200ca9a3b489948f7fb488bd84869c100ca9a3b4803d8488b052dfc2d03488b88a00000004881c1502d0000e8aa8e0affe8e5a0b8ff488bf8e88d8d8901488bf0e8a5d273014881fe809698007506486bc064eb1e489948f7fe488bc84869c200ca9a3b4869c900ca9a3b489948f7fe4803c14863973c0d0000482bc30f57c0f2480f2ac0f20f5e05a6d60602f20f584708f20f1144d738488b4710488984d7380200008b87380d0000898497380c00008b87400d000083f8407d08ffc08987400d0000488b5c24308d4a01488b74243833d283f940488957088bc2488957100f4cc18997380d000089873c0d00004883c4205fc3"
+    },
+    {
+      "name": "Generic game command stage runner",
+      "kind": "complete_function",
+      "begin_rva": "0x29676a0",
+      "end_rva_exclusive": "0x2967799",
+      "sha256": "64128ad964301d3bf14165a822e5c2cb976cc6be865ab1312af1be9606d03c90",
+      "hex": "48895c2408574883ec700f297424600f297c2450488bd9e8942396ffe8bf08b5ff488bf8488bc8e874095f010f28f8c744242001000000488d050a17e0014889442428488d056e7fb70248894424300f1035627fb7020f117424380f104c24200f110d517fb702c644244801488b03488bcbff5010488b03488bcbff5020488bcb84c0740a488bd7e8b3000000eb06488b03ff5008488b03488bcbff5018488b0ddb2d3003488b014533c94533c0ba67330000ff90a000000080bf18010000007418488bcfe8d6085f01f20f5cc70f28c8488bcfe86752b5ff900f1135d77eb702488b9c24800000000f287424600f287c24504883c4705fc3"
+    },
+    {
+      "name": "AI manager construction within game state",
+      "kind": "selected_slice",
+      "begin_rva": "0x2adc63a",
+      "end_rva_exclusive": "0x2adc646",
+      "sha256": "c35c5a49a694b6ca9bf5e680a57b2b402c2bf4aa15a0d5cf9a5ad0570ee11a52",
+      "hex": "498d8f482d0000e81a1cf5fe"
+    },
+    {
+      "name": "AI manager registration into game state list",
+      "kind": "selected_slice",
+      "begin_rva": "0x2adbb60",
+      "end_rva_exclusive": "0x2adbb85",
+      "sha256": "f7255dabbe94b693b095a371b8f99eda31f4c486aea475ef19ceda7151512367",
+      "hex": "498d85482d00004885c0498d8d502d0000488d5548490f44cc48894d48488bcbe8bb47dafd"
+    },
+    {
+      "name": "Daily manager array membership",
+      "kind": "selected_slice",
+      "begin_rva": "0x29889ac",
+      "end_rva_exclusive": "0x29889c6",
+      "sha256": "ce78a50182fbbcde940912fdfd782241b445937628e663abc5bb3ee8c320a999",
+      "hex": "4d8b7d004963450c498d04c748894424584c3bf80f84fd000000"
+    },
+    {
+      "name": "Daily manager per-item binder construction",
+      "kind": "selected_slice",
+      "begin_rva": "0x2988bcd",
+      "end_rva_exclusive": "0x2988c57",
+      "sha256": "5ccbe38fded6fdbe92c780cc2d8aec8184f38e6889e976b3937180f6d2b8b5cb",
+      "hex": "4903dc48895c24584d8bec4c3be30f84210200008b857011000083c00269f0b385d64a4c8d25d93dde014c8d05024178fe66908bc6f7d88bc8c1e90833c881c1a41de3688bc1c1e00833c169c8e9c4561b8bc1c1e80833c169c8a28cd6928bd1c1ea0833d181c6b385d64a498b45004c8965304c8945380fbaf21f89554048894548488d453048894568"
+    },
+    {
+      "name": "Daily manager jobs submission",
+      "kind": "selected_slice",
+      "begin_rva": "0x2988e02",
+      "end_rva_exclusive": "0x2988e83",
+      "sha256": "8ffff97a8e49946e2bc2eb7cf1c6c74fdeb819bfeb3be0fc6e0861b70760664f",
+      "hex": "c74508b8000000c7450c04000000488d05293bde0148894510488d05563bde0148894518488d4d70e841a30aff488d442430488985b0000000488b0566633303488945b84533f6448975c08b4c243c894dc48b88ac000000ffc1894dc8c745cc01000000c745d002000000488d45084889442420488d5570488d4db8e88d090000"
+    },
+    {
+      "name": "Daily manager job worker invoke",
+      "kind": "selected_slice",
+      "begin_rva": "0x1a36830",
+      "end_rva_exclusive": "0x1a36861",
+      "sha256": "9add7d261987e516e8416c055ecf602a537df3aa9f5dd0a93b5c3f55b334fc8c",
+      "hex": "4883ec28488b4110486310488b410848c1e206488b08488b4c0a384885c9740b488b014883c42848ff6010e8b89f7e02cc"
+    },
+    {
+      "name": "Daily AI execute direct call",
+      "kind": "selected_slice",
+      "begin_rva": "0x298901c",
+      "end_rva_exclusive": "0x2989036",
+      "sha256": "7ea7082cf3d0135942286b175d53ff33307696782a662e6b52f77b37805113e5",
+      "hex": "488b052dfc2d03488b88a00000004881c1502d0000e8aa8e0aff"
+    },
+    {
+      "name": "Generic runner stage order",
+      "kind": "selected_slice",
+      "begin_rva": "0x296770c",
+      "end_rva_exclusive": "0x296773e",
+      "sha256": "01abdf1d0c988787c981fdcc7544f2cc7a62ce6f73e8b19f15dff26e4ac6d99f",
+      "hex": "488b03488bcbff5010488b03488bcbff5020488bcb84c0740a488bd7e8b3000000eb06488b03ff5008488b03488bcbff5018"
+    },
+    {
+      "name": "Generic runner true path invokes command slot 8",
+      "kind": "selected_slice",
+      "begin_rva": "0x296790c",
+      "end_rva_exclusive": "0x2967915",
+      "sha256": "d5532554cc958f45e10a76ff2382f5aa0bc3fe0673c6d272e78b5326620f788c",
+      "hex": "488b07488bcfff5008"
+    },
+    {
+      "name": "Daily stage enters date advance",
+      "kind": "selected_slice",
+      "begin_rva": "0x29881e0",
+      "end_rva_exclusive": "0x29881ec",
+      "sha256": "bf356e397d431deb6d7c9af53908cca37b671b9a14f10c00876b646035da7976",
+      "hex": "488b0d690a2e03e8948b91ff"
+    },
+    {
+      "name": "Game date adds 24 hours",
+      "kind": "selected_slice",
+      "begin_rva": "0x22a0e8b",
+      "end_rva_exclusive": "0x22a0e94",
+      "sha256": "dcde21e138078ae29adbec426f6695b2395bc24fca34003959da90749fe1ff4f",
+      "hex": "8bd8834608188b4e08"
+    },
+    {
+      "name": "Daily command queue construction",
+      "kind": "selected_slice",
+      "begin_rva": "0x25a9e8f",
+      "end_rva_exclusive": "0x25a9ec7",
+      "sha256": "4ecfa6f62b7f9c1488880af807c86d0da480a910c4f1ffaf53102e52b581b3ab",
+      "hex": "0f57c00f1145d7c645df20448965e3f30f7f45e7488d056eb1f001488945d7488d05fbb1f001488945efba07000000488d4dd7e8e97743fe"
+    },
+    {
+      "name": "Daily command elapsed-time threshold",
+      "kind": "selected_slice",
+      "begin_rva": "0x25a9d1d",
+      "end_rva_exclusive": "0x25a9d54",
+      "sha256": "c9615ac7936433d331ab7b72c479002990ef4ac37a177982c1c9ad6b443a2abb",
+      "hex": "0f57c0f20f5ac6f30f5887b8000000f30f1187b8000000488b0515ef6b0348634870488b05e2e7ea02f30f1034880f2ff00f87a9020000"
+    },
+    {
+      "name": "Pre-stage uses tomorrow game date",
+      "kind": "selected_slice",
+      "begin_rva": "0x2988309",
+      "end_rva_exclusive": "0x298831a",
+      "sha256": "cbadca846fcc4a9f7a0cdd8080de5d5d077da17b4112e0e073a27195af876a11",
+      "hex": "488b0d40092e038b410883c01889442448"
+    }
+  ]
+}
