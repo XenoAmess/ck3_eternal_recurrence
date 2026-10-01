@@ -49,3 +49,9 @@ promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-2026100
 # Preserve exact R0133 original receipts and the frozen layout consumer archive.
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0133-panel-layout-originals/*.json -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/layout-consumer-a01/** -text whitespace=cr-at-eol
+
+# Preserve exact R0134 originals and scoped consumer, plus the R0127 video checklist.
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/R0134-before-originals/*.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/scoped-consumer-a01/** -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/video-revision-checklist-R0127-a01.* -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/video-revision-checklist-R0127-a01.md -text whitespace=-blank-at-eol,cr-at-eol
