@@ -1,0 +1,279 @@
+{
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "scope": "already_materialized_current_popup_candidates",
+  "spans": {
+    "doctrine_can_pick_registration": {
+      "start_rva": "0xd7a50",
+      "end_rva": "0xd7b20",
+      "sha256": "c5cf8ebb325c35f163613cdb0a0ff65813e25b8c370c8f6d74257b6a599d6dc4",
+      "instruction_count": 47
+    },
+    "doctrine_can_pick_wrapper": {
+      "start_rva": "0xee4e60",
+      "end_rva": "0xee4f2d",
+      "sha256": "f9410d4aada2ea81e05ada3b6dcc7505c1285293e233f26abd7c2b16e4e7bb14",
+      "instruction_count": 61
+    },
+    "tenet_can_pick_registration": {
+      "start_rva": "0xd57d0",
+      "end_rva": "0xd5942",
+      "sha256": "b1fc3365445cce0379326044f20373b0a21d8690b77aed1ffa34f817ebde0417",
+      "instruction_count": 95
+    },
+    "tenet_can_pick_wrapper_chained": {
+      "start_rva": "0xee47a0",
+      "end_rva": "0xee48b9",
+      "sha256": "3a5fc0b865660477042ecc6bd18853fc1bce1e76c3895cb61be1cdc79a51784f",
+      "instruction_count": 85
+    },
+    "tenet_can_pick_core": {
+      "start_rva": "0xee0ad0",
+      "end_rva": "0xee0b87",
+      "sha256": "4372fc881ac0439410dfb3e7db2837fd5f6e884d47a79a13b03783907536bbb0",
+      "instruction_count": 53
+    },
+    "current_scope_getter": {
+      "start_rva": "0xc46360",
+      "end_rva": "0xc46369",
+      "sha256": "696771a2ae982142567b491abe228749191a7a7843a8cc6d28bafce3243a7a06",
+      "instruction_count": 3
+    },
+    "current_scope_wrapper": {
+      "start_rva": "0x14fbc60",
+      "end_rva": "0x14fbc98",
+      "sha256": "f952fddbea674ee8971fd377d6c97306b28df3a53baeb94fbee53320280a541d",
+      "instruction_count": 16
+    },
+    "scope_type_getter": {
+      "start_rva": "0xf05190",
+      "end_rva": "0xf05198",
+      "sha256": "0d0f01001c96618ac943f28f6637be2b40fc905386bdf6799d3eaaf3b0fc2f74",
+      "instruction_count": 1
+    },
+    "category_registration": {
+      "start_rva": "0x22ced0",
+      "end_rva": "0x22d0d9",
+      "sha256": "e6c2541d081444edfd43ed5c8924e4164e9612da178388522cfd159b9bcd69c4",
+      "instruction_count": 127
+    },
+    "category_getter_thunk": {
+      "start_rva": "0x14fbf30",
+      "end_rva": "0x14fbf35",
+      "sha256": "3f193c2c7d3eba503119101871961a7df900c409d5ba05088503a5878d9d076c",
+      "instruction_count": 1
+    },
+    "category_getter": {
+      "start_rva": "0x1070ba0",
+      "end_rva": "0x1070ba9",
+      "sha256": "2840687a4c94ea6ce906fc4807c83ea333fc77f7baf865b77d24d09b94771312",
+      "instruction_count": 3
+    },
+    "category_items_wrapper": {
+      "start_rva": "0x14fa960",
+      "end_rva": "0x14fa9b3",
+      "sha256": "835cc1cef4b2efc0ba6d87fafe213d2a03840f657dc1a4257f6e27512f31f60d",
+      "instruction_count": 21
+    },
+    "doctrine_array_index": {
+      "start_rva": "0x1514980",
+      "end_rva": "0x15149e9",
+      "sha256": "ec16e08a76b151d37d550c0f8ec5073d7c6f9c573c86a3a5fd719570788dbb2a",
+      "instruction_count": 27
+    },
+    "tenet_groups_getter": {
+      "start_rva": "0xb80140",
+      "end_rva": "0xb80149",
+      "sha256": "36e70eddddaa18f7977c258ff0c47676655ab43c7d4bc58fbe000b1b08c49c4a",
+      "instruction_count": 3
+    },
+    "tenet_groups_wrapper": {
+      "start_rva": "0x14fbd00",
+      "end_rva": "0x14fbd58",
+      "sha256": "1e58779a22d3d660f07e3e9e30fe2b967571f6c9fb66a562e84362456e3a3743",
+      "instruction_count": 24
+    },
+    "tenet_group_array_index": {
+      "start_rva": "0x1510530",
+      "end_rva": "0x1510597",
+      "sha256": "b0a7a77b11e89fbef4f2f9e833a0c17e1b45a7225ee0e4193220817e97c59fe2",
+      "instruction_count": 29
+    },
+    "group_tenets_wrapper": {
+      "start_rva": "0xee49b0",
+      "end_rva": "0xee4a03",
+      "sha256": "c4c018976b7b26509b4b8ee973f51cfea21d8b79fca218c97239f4e3d95a0b1b",
+      "instruction_count": 21
+    },
+    "tenet_array_index": {
+      "start_rva": "0xf076f0",
+      "end_rva": "0xf07751",
+      "sha256": "700b5177abfc2b0e7e067105668627abc2f3968323983769cb7983cae7fb9f86",
+      "instruction_count": 27
+    },
+    "prophet_database_getter": {
+      "start_rva": "0x8fcd40",
+      "end_rva": "0x8fcd97",
+      "sha256": "2efc539860c454033d48a5a463b969137af32c509d144cf82adf317592d60070",
+      "instruction_count": 18
+    },
+    "prophet_cache_initialization": {
+      "start_rva": "0x31ea270",
+      "end_rva": "0x31ea500",
+      "sha256": "b4e96740f040ea6aee41aa64c86591a6b48a9b5c9ecd26db5afecc47b9be338f",
+      "instruction_count": 131
+    },
+    "existing_has_perk": {
+      "start_rva": "0x2919070",
+      "end_rva": "0x2919090",
+      "sha256": "71cd9bd8bc11ebef732aa007cbf40b881b748fee4b5415c17207ede64ba282bc",
+      "instruction_count": 8
+    },
+    "headed_current_rite_mode": {
+      "start_rva": "0x14f4400",
+      "end_rva": "0x14f449b",
+      "sha256": "9fc83b9f330955207575e29dad700c3f0771d3d1f683af9515b3a4342c5c8b81",
+      "instruction_count": 43
+    }
+  },
+  "instruction_anchors": {
+    "0xee487c": {
+      "bytes": "e84fc2ffff",
+      "mnemonic": "call",
+      "operands": "0xee0ad0"
+    },
+    "0xee4ece": {
+      "bytes": "488b7f28",
+      "mnemonic": "mov",
+      "operands": "rdi, qword ptr [rdi + 0x28]"
+    },
+    "0xee4ed8": {
+      "bytes": "488d8fb8010000",
+      "mnemonic": "lea",
+      "operands": "rcx, [rdi + 0x1b8]"
+    },
+    "0xee4edf": {
+      "bytes": "e84c908402",
+      "mnemonic": "call",
+      "operands": "0x372df30"
+    },
+    "0xee4ee8": {
+      "bytes": "488d8fe8000000",
+      "mnemonic": "lea",
+      "operands": "rcx, [rdi + 0xe8]"
+    },
+    "0xee4ef2": {
+      "bytes": "e839908402",
+      "mnemonic": "call",
+      "operands": "0x372df30"
+    },
+    "0xc46360": {
+      "bytes": "488d81d0000000",
+      "mnemonic": "lea",
+      "operands": "rax, [rcx + 0xd0]"
+    },
+    "0x1070ba0": {
+      "bytes": "488d8188080000",
+      "mnemonic": "lea",
+      "operands": "rax, [rcx + 0x888]"
+    },
+    "0x14fa96c": {
+      "bytes": "488d4120",
+      "mnemonic": "lea",
+      "operands": "rax, [rcx + 0x20]"
+    },
+    "0x15149c6": {
+      "bytes": "48c1e104",
+      "mnemonic": "shl",
+      "operands": "rcx, 4"
+    },
+    "0xb80140": {
+      "bytes": "488d81a8070000",
+      "mnemonic": "lea",
+      "operands": "rax, [rcx + 0x7a8]"
+    },
+    "0x151056b": {
+      "bytes": "48c1e005",
+      "mnemonic": "shl",
+      "operands": "rax, 5"
+    },
+    "0xee49bc": {
+      "bytes": "488d4108",
+      "mnemonic": "lea",
+      "operands": "rax, [rcx + 8]"
+    },
+    "0xf07720": {
+      "bytes": "486bcb70",
+      "mnemonic": "imul",
+      "operands": "rcx, rbx, 0x70"
+    },
+    "0x31ea331": {
+      "bytes": "c74424500c000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rsp + 0x50], 0xc"
+    },
+    "0x31ea377": {
+      "bytes": "488987f00e0000",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rdi + 0xef0], rax"
+    },
+    "0xd7ac8": {
+      "bytes": "4c8d0591d3e000",
+      "target_rva": "0xee4e60"
+    },
+    "0xd58b7": {
+      "bytes": "488d15e2eee000",
+      "target_rva": "0xee47a0"
+    },
+    "0x8fcd44": {
+      "bytes": "488b05dda33605",
+      "target_rva": "0x5c67128"
+    },
+    "0x31ea325": {
+      "bytes": "488d356c226e01",
+      "target_rva": "0x48cc598"
+    }
+  },
+  "scope_rtti": {
+    "metadata_rva": "0x54D7E08",
+    "vtable_rva": "0x4503138",
+    "type": ".?AU?$SCopyableAnyTypeInPlace@PEBVCJominiTopScope@@$0CA@@PdxAnyImpl@@"
+  },
+  "stock": {
+    "gui/window_rite_creation.gui:1247": {
+      "file_sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "first_line": 1247,
+      "last_line": 1256,
+      "text": "\t\t\tsize = { 430 80 }\n\n\t\t\tlayoutpolicy_horizontal = expanding\n\n\t\t\tenabled = \"[And( DoctrineItem.CanPick( TopScope.Self ), GetScriptedGui( 'pam_know_doctrine' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'doctrine', DoctrineType.MakeScope ).End ) )]\"\n\n\t\t\tonclick = \"[RiteCreationWindow.SelectDoctrine( DoctrineItem.Self )]\"\n\t\t\tonclick = \"[VariableSystem.Clear( 'faith_creation_right_view' )]\"\n\t\t\tdown = \"[RiteCreationWindow.HasDoctrineSelected( DoctrineType.Self )]\"\n"
+    },
+    "gui/window_rite_creation.gui:1448": {
+      "file_sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "first_line": 1448,
+      "last_line": 1478,
+      "text": "\t\tvbox = {\n\t\t\tvisible = \"[PdxGuiFoldOut.IsUnfolded]\"\n\t\t\tdatacontext = \"[RiteCreationWindow.GetFaithScope]\"\n\n\t\t\tlayoutpolicy_horizontal = expanding\n\n\t\t\tfixedgridbox = {\n\t\t\t\tname = \"tenets_in_group\"\n\n\t\t\t\tlayoutpolicy_horizontal = expanding\n\t\t\t\tlayoutpolicy_vertical = expanding\n\n\t\t\t\taddcolumn = 165\n\t\t\t\taddrow = 220\n\n\t\t\t\tdatamodel_wrap = 3\n\t\t\t\tflipdirection = yes\n\n\t\t\t\tdatamodel = \"[TenetGroupItem.GetTenets]\"\n\t\t\t\titem = {\n\t\t\t\t\tbutton_group = {\n\t\t\t\t\t\tdatacontext = \"[TenetItem.GetTenet]\"\n\t\t\t\t\t\tdatacontext = \"[TenetItem.GetFaith]\"\n\t\t\t\t\t\tdatacontext = \"[TenetItem.GetRite]\"\n\n\t\t\t\t\t\tallow_outside = yes\n\n\t\t\t\t\t\tenabled = \"[TenetItem.CanPick( RiteCreationWindow.GetFounder.Self, TopScope.Self )]\"\n\t\t\t\t\t\tonclick = \"[RiteCreationWindow.SelectTenet( TenetItem.Self )]\"\n\t\t\t\t\t\tonclick = \"[VariableSystem.Clear( 'faith_creation_right_view' )]\"\n\t\t\t\t\t\tdown = \"[RiteCreationWindow.HasTenetSelected( TenetType.Self )]\""
+    },
+    "common/scripted_guis/pam_scripted_guis.txt:82": {
+      "file_sha256": "675c90f1b3496543456542f32d465535e5966dbbe92cd2157892a5a93b11fff2",
+      "first_line": 82,
+      "last_line": 92,
+      "text": "pam_know_doctrine = {\n\tscope = character\n\tsaved_scopes = { doctrine }\n\n\tis_valid = {\n\t\tOR = {\n\t\t\tknows_doctrine = scope:doctrine\n\t\t\thas_perk = prophet_perk\n\t\t}\n\t}\n}"
+    }
+  },
+  "status": "GREEN",
+  "local_ck3_touched": false,
+  "producer_api": "xar::ck3_12002::religion_reform::ReadCurrentDraftChoices12002",
+  "layout": {
+    "top_scope": 208,
+    "doctrine_category": 2184,
+    "doctrine_array": 32,
+    "doctrine_stride": 80,
+    "tenet_groups": 1960,
+    "tenet_group_stride": 32,
+    "group_items": 8,
+    "tenet_stride": 112,
+    "definition": 40,
+    "source": 36,
+    "count": 12
+  },
+  "readiness": "static-ready library"
+}

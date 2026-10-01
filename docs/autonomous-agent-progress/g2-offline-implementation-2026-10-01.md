@@ -412,3 +412,9 @@ runner receipt增加build_source_commit／source_freeze两metadata字段并说�
 26源关闭原旧ABI止步项：真实县titles/fullIDs/recovery modifier和treatment Character rows读取，复用现有定义库与legitimacy native getter，不扩其它事件。治疗Od/O2各26checks6wire，recovery各22checks9wire，所有actual serializer生成；首runner SyntaxError保留。完整command_result wrappers/同MCP接线待下一增量，裸payload不是live。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\events12002\ce1-provider-delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:07:44 Native Rite draft doctrine and tenet popup choices
+
+首36包不改，仅8文件补实际Doctrine/Tenet popup、复用已闭合KnowsDoctrine/prophet，Od/O2各10checks6JSON及PE22spans20anchors3stock通过，首计数夹具RED保留。最终delivery树/依赖明确，仍library static-ready，MCP及可见真实draft后验待完成。 状态与边界以manifest为准，本包后台完成，无CK操作。清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\final-delta-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
