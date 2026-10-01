@@ -1,0 +1,15 @@
+usage: verify_signature_commit_correlation_run_a01.py [-h]
+                                                      --monitor-verification MONITOR_VERIFICATION
+                                                      --causal-verification CAUSAL_VERIFICATION
+                                                      --output-dir OUTPUT_DIR
+
+Join two already-admitted same-run original-evidence projections. Create-only
+output. Reads no game state. The stopped READY verifiers must first validate
+raw receipts, source/connection identity, saves and monitor lifecycle. This
+adds a03 current-original-commit ancestry without changing those sources.
+
+options:
+  -h, --help            show this help message and exit
+  --monitor-verification MONITOR_VERIFICATION
+  --causal-verification CAUSAL_VERIFICATION
+  --output-dir OUTPUT_DIR

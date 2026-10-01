@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "branch",
+    "--show-current"
+  ],
+  "cwd": "C:\\w\\e2cap1001c",
+  "stdin": null,
+  "returncode": 0,
+  "stdout": "codex/war-e2-scoped-ui-owner-capture-20261001\n",
+  "stderr": "",
+  "at_utc": "2026-10-01T09:31:13.455335+00:00"
+}

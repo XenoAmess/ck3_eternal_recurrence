@@ -1,0 +1,7 @@
+{
+  "debug_desktop_enabled": false,
+  "default": "no-background-desktop-recorder",
+  "scope": "optional startup/debug evidence; never a certified gameplay recording",
+  "gameplay_recorder_owned_by_this_script": true,
+  "gameplay_start": "explicit immutable request after managed map load"
+}

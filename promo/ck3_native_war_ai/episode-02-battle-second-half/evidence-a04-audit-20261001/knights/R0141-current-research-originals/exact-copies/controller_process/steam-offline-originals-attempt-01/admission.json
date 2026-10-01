@@ -1,0 +1,39 @@
+{
+  "at_utc": "2026-10-01T09:38:23.098419+00:00",
+  "task": {
+    "git": {
+      "branch": "codex/war-e2-scoped-ui-owner-capture-20261001",
+      "dirty_entries": 0,
+      "head": "fda53e7b3e83053f235be3d5725a6238b89db9f0"
+    },
+    "last_sequence": 3408,
+    "next_step": "align_original_display_fresh_offline_evidence_after_full_build_then_same_owner_capture",
+    "pid": 17404,
+    "repo": "C:\\w\\e2cap1001c",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "fresh_private_owner_fix_build_original_UI_one_day_six_gap_research",
+    "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a04",
+    "updated_at_utc": "2026-10-01T09:37:17.732664+00:00"
+  },
+  "owner": {
+    "hwnd": 197612,
+    "pid": 7068,
+    "process_create_time": 1790777038.7610564
+  },
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\capture_current_steam_offline.py",
+    "bytes": 6443,
+    "sha256": "3752BB3408644056AD4F47B592E9B017468001515068168890596436126FAA5B"
+  },
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "bytes": 255200,
+    "sha256": "9B7BFFC26240463C965A2A2A5FADA1D8E741C21C25CD2E977728C339B82D9977"
+  },
+  "offline_visual_observed": null,
+  "steam_mode_changed": false
+}

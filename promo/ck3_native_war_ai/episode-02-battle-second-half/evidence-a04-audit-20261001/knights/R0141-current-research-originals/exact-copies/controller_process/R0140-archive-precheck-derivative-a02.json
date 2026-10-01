@@ -1,0 +1,17 @@
+{
+  "predecessor_precheck_result": "REJECTED_BEFORE_ANY_GIT_MUTATION",
+  "cause": "Literal path strings used forward/backward slash variants; actual pins must compare resolved path plus exact bytes/SHA.",
+  "create_only_derivative": {
+    "predecessor": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\commit_R0140_research_archive_a01.py",
+      "bytes": 3847,
+      "sha256": "12211FEBD941B2C19401F908EAF442FE10D09889A8136A6BCDDD13129F57B4FB"
+    },
+    "derivative": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\commit_R0140_research_archive_a02.py",
+      "bytes": 4063,
+      "sha256": "9D6F8AB249FBD7327EB0A509ACFBB4FCCDF20F7F2AC78310E3E5B0BEF3BB5EEB"
+    }
+  },
+  "no_research_status_changed": true
+}

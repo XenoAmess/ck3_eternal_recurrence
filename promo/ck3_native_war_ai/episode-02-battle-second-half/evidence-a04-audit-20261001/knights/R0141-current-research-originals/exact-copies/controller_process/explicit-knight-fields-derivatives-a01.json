@@ -1,0 +1,59 @@
+{
+  "at_utc": "2026-10-01T09:33:10.626536+00:00",
+  "records": [
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a07.py",
+        "bytes": 33892,
+        "sha256": "A3A31116C17E6313938677858AD230DD7945C8A8651FF16D475B14A3B1485CE5"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a08.py",
+        "bytes": 34603,
+        "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+      }
+    },
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a05.py",
+        "bytes": 5029,
+        "sha256": "A509C3C6612EA45DE46F37AB610722E09471F9B2191A99939D780040ADCC0066"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a06.py",
+        "bytes": 5029,
+        "sha256": "ED1E49026FB55DAE58D4669CB3C37B8ABEFFC46060DF49EC14E43A1E4DFCCD12"
+      }
+    },
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a06.py",
+        "bytes": 5060,
+        "sha256": "880F84BC828D140D5F6962C8903E196E43CC7F4708685889F1F7D33C5B8D94CE"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a07.py",
+        "bytes": 5060,
+        "sha256": "F1F78D3DDCD1B4D96CCDF1DAFC024C95C08B8C3D3CE02D3CE1B0708BB08263AB"
+      }
+    },
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a07.py",
+        "bytes": 11728,
+        "sha256": "9E18C9464FBF2DAD608BA7F6A5824EA097DD34E526B2F190F7CC7BCCAC077BA5"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a08.py",
+        "bytes": 11728,
+        "sha256": "9EFB2FEAECF7695C009DDE98369F2F7FA14C6677BD3687BFB9DA42720B64E5A8"
+      }
+    }
+  ],
+  "reason": "Reject missing equal-to-None knight getter fields independently of native backend normalization",
+  "zero_count_and_empty_markup_allowed": true,
+  "full_roster_ID_claim": false,
+  "old_helpers_preserved": true,
+  "new_live_pending": true,
+  "movie_changed": false
+}

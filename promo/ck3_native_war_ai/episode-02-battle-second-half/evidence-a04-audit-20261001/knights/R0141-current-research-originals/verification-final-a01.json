@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.e2.R0141-archive-final-disk-verification/v1",
+  "status": "PASS",
+  "source_file_sets_stable": true,
+  "original_file_stats_stable": true,
+  "all_copy_original_SHA_recomputed_equal": true,
+  "copy_count": 842,
+  "original_count": 6024,
+  "summary": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/current-native-research-R0141.json",
+    "bytes": 3093,
+    "sha256": "D6451FCE61996C2E10FBA5BD3386C7988CFAB649461C0A5969661A2291549B69"
+  },
+  "documentation": {
+    "path": "C:/w/e2gold1001/promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/current-native-research-R0141.md",
+    "bytes": 3685,
+    "sha256": "7A3549DC36441B8785300856F07D7B006E062D8042C938EBB7FF9AE5D3C5607E"
+  },
+  "disk_bytes_only_not_Git_canonical_verification": true
+}

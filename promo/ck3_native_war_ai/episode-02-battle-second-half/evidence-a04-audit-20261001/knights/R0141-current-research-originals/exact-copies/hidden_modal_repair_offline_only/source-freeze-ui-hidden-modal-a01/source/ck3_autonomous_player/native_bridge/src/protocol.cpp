@@ -1,0 +1,209 @@
+#include "xar_bridge/protocol.hpp"
+
+#include <array>
+#include <charconv>
+#include <limits>
+#include <utility>
+#include <vector>
+
+namespace xar::bridge {
+namespace {
+
+std::array<std::byte, 4> EncodeLength(std::uint32_t value) noexcept {
+  return {
+      std::byte(value & 0xffU),
+      std::byte((value >> 8U) & 0xffU),
+      std::byte((value >> 16U) & 0xffU),
+      std::byte((value >> 24U) & 0xffU),
+  };
+}
+
+std::uint32_t DecodeLength(const std::byte* bytes) noexcept {
+  return static_cast<std::uint32_t>(bytes[0]) |
+         (static_cast<std::uint32_t>(bytes[1]) << 8U) |
+         (static_cast<std::uint32_t>(bytes[2]) << 16U) |
+         (static_cast<std::uint32_t>(bytes[3]) << 24U);
+}
+
+bool WriteAll(HANDLE pipe, const void* data, std::size_t size) noexcept {
+  const auto* cursor = static_cast<const std::byte*>(data);
+  while (size != 0U) {
+    const auto chunk = static_cast<DWORD>(
+        size > static_cast<std::size_t>((std::numeric_limits<DWORD>::max)())
+            ? (std::numeric_limits<DWORD>::max)()
+            : size);
+    DWORD written = 0;
+    if (!WriteFile(pipe, cursor, chunk, &written, nullptr) || written == 0U) {
+      return false;
+    }
+    cursor += written;
+    size -= written;
+  }
+  return true;
+}
+
+bool ReadAll(HANDLE pipe, void* data, std::size_t size, DWORD& error) noexcept {
+  auto* cursor = static_cast<std::byte*>(data);
+  while (size != 0U) {
+    const auto chunk = static_cast<DWORD>(
+        size > static_cast<std::size_t>((std::numeric_limits<DWORD>::max)())
+            ? (std::numeric_limits<DWORD>::max)()
+            : size);
+    DWORD read = 0;
+    if (!ReadFile(pipe, cursor, chunk, &read, nullptr) || read == 0U) {
+      error = GetLastError();
+      return false;
+    }
+    cursor += read;
+    size -= read;
+  }
+  error = ERROR_SUCCESS;
+  return true;
+}
+
+}  // namespace
+
+bool WriteFrame(HANDLE pipe, std::string_view payload) noexcept {
+  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE || payload.empty() ||
+      payload.size() > kMaximumFrameBytes) {
+    return false;
+  }
+  const auto header = EncodeLength(static_cast<std::uint32_t>(payload.size()));
+  return WriteAll(pipe, header.data(), header.size()) &&
+         WriteAll(pipe, payload.data(), payload.size());
+}
+
+bool JsonStringField(std::string_view json, std::string_view key,
+                     std::string &output,
+                     std::size_t maximum_bytes) noexcept {
+  std::string needle = "\"";
+  needle += key;
+  needle += "\":\"";
+  const std::size_t begin = json.find(needle);
+  if (begin == std::string_view::npos) {
+    return false;
+  }
+  const std::size_t value_begin = begin + needle.size();
+  const std::size_t end = json.find('"', value_begin);
+  if (end == std::string_view::npos || end == value_begin ||
+      end - value_begin > maximum_bytes) {
+    return false;
+  }
+  const auto value = json.substr(value_begin, end - value_begin);
+  if (value.find('\\') != std::string_view::npos) {
+    return false;
+  }
+  output.assign(value);
+  return true;
+}
+
+bool JsonUnsignedField(std::string_view json, std::string_view key,
+                       std::uint64_t &output) noexcept {
+  std::string needle = "\"";
+  needle += key;
+  needle += "\":";
+  const std::size_t begin = json.find(needle);
+  if (begin == std::string_view::npos) {
+    return false;
+  }
+  std::size_t value_begin = begin + needle.size();
+  while (value_begin < json.size() &&
+         (json[value_begin] == ' ' || json[value_begin] == '\t' ||
+          json[value_begin] == '\r' || json[value_begin] == '\n')) {
+    ++value_begin;
+  }
+  std::size_t value_end = value_begin;
+  while (value_end < json.size() && json[value_end] >= '0' &&
+         json[value_end] <= '9') {
+    ++value_end;
+  }
+  if (value_end == value_begin ||
+      (value_end < json.size() && json[value_end] != ',' &&
+       json[value_end] != '}' && json[value_end] != ' ' &&
+       json[value_end] != '\t' && json[value_end] != '\r' &&
+       json[value_end] != '\n')) {
+    return false;
+  }
+  std::uint64_t parsed_value = 0;
+  const auto parsed = std::from_chars(json.data() + value_begin,
+                                      json.data() + value_end, parsed_value);
+  if (parsed.ec != std::errc{} || parsed.ptr != json.data() + value_end) {
+    return false;
+  }
+  output = parsed_value;
+  return true;
+}
+
+bool JsonBooleanField(std::string_view json, std::string_view key,
+                      bool &output) noexcept {
+  std::string needle = "\"";
+  needle += key;
+  needle += "\":";
+  const std::size_t begin = json.find(needle);
+  if (begin == std::string_view::npos)
+    return false;
+  std::size_t value_begin = begin + needle.size();
+  while (value_begin < json.size() &&
+         (json[value_begin] == ' ' || json[value_begin] == '\t' ||
+          json[value_begin] == '\r' || json[value_begin] == '\n')) {
+    ++value_begin;
+  }
+  const auto delimiter = [&json](std::size_t offset) noexcept {
+    return offset == json.size() || json[offset] == ',' ||
+           json[offset] == '}' || json[offset] == ' ' || json[offset] == '\t' ||
+           json[offset] == '\r' || json[offset] == '\n';
+  };
+  if (json.substr(value_begin, 4) == "true" && delimiter(value_begin + 4)) {
+    output = true;
+    return true;
+  }
+  if (json.substr(value_begin, 5) == "false" && delimiter(value_begin + 5)) {
+    output = false;
+    return true;
+  }
+  return false;
+}
+
+ReadResult TryReadFrame(HANDLE pipe) noexcept {
+  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
+    return {ReadStatus::closed, {}, ERROR_INVALID_HANDLE};
+  }
+
+  std::array<std::byte, 4> header{};
+  DWORD header_bytes = 0;
+  DWORD total_available = 0;
+  if (!PeekNamedPipe(pipe, header.data(), static_cast<DWORD>(header.size()),
+                     &header_bytes, &total_available, nullptr)) {
+    const DWORD error = GetLastError();
+    return {ReadStatus::closed, {}, error};
+  }
+  if (total_available < header.size() || header_bytes < header.size()) {
+    return {};
+  }
+
+  const std::uint32_t payload_size = DecodeLength(header.data());
+  if (payload_size == 0U || payload_size > kMaximumFrameBytes) {
+    return {ReadStatus::invalid, {}, ERROR_INVALID_DATA};
+  }
+  const auto frame_size = static_cast<std::uint64_t>(header.size()) + payload_size;
+  if (static_cast<std::uint64_t>(total_available) < frame_size) {
+    return {};
+  }
+
+  std::array<std::byte, 4> consumed_header{};
+  DWORD error = ERROR_SUCCESS;
+  if (!ReadAll(pipe, consumed_header.data(), consumed_header.size(), error)) {
+    return {ReadStatus::closed, {}, error};
+  }
+  if (DecodeLength(consumed_header.data()) != payload_size) {
+    return {ReadStatus::invalid, {}, ERROR_INVALID_DATA};
+  }
+
+  std::string payload(payload_size, '\0');
+  if (!ReadAll(pipe, payload.data(), payload.size(), error)) {
+    return {ReadStatus::closed, {}, error};
+  }
+  return {ReadStatus::frame, std::move(payload), ERROR_SUCCESS};
+}
+
+}  // namespace xar::bridge

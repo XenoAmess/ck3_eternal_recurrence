@@ -1,0 +1,252 @@
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_major_decision_found_kingdom_internal_route_v1_source_contract_test.dir/./
+
+  has 201 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/major_decision_found_kingdom_internal_route_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_steward_develop_county_action_v1_source_contract_test.dir/./
+
+  has 187 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/steward_develop_county_action_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_source_contract_test.dir/./
+
+  has 191 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/steward_develop_county_candidates_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_domain_construction_candidate_observer_v1_suspended_injection_test.dir/./
+
+  has 200 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_candidate_observer_v1_suspended_injection_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_domain_construction_runtime_callsite_observer_v1_test.dir/./
+
+  has 187 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_runtime_callsite_observer_v1_serializer.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test.dir/./
+
+  has 207 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/domain_construction_runtime_callsite_observer_v1_suspended_injection_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_council_assign_councillor_native_submit_adapter_v1_test.dir/./
+
+  has 189 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_assign_councillor_native_submit_adapter_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_council_composition_steward_candidates_private_probe_v1_test.dir/./
+
+  has 194 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_composition_steward_candidates_private_probe_v1.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_council_composition_steward_candidates_binding_v1_test.dir/./
+
+  has 188 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/council_composition_steward_candidates_binding_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_zhongguo_ai_owned_case_snapshot_v1_source_contract_test.dir/./
+
+  has 189 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_ai_owned_case_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_death_succession_modal_continue_v1_source_contract_test.dir/./
+
+  has 189 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/death_succession_modal_continue_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test.dir/./
+
+  has 187 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_promotion_compensation_postcondition_v1_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_zhongguo_workforce_normal_exit_snapshot_v1_mailbox_test.dir/./
+
+  has 189 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_normal_exit_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_zhongguo_workforce_normal_exit_snapshot_v1_source_contract_test.dir/./
+
+  has 197 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_normal_exit_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_zhongguo_workforce_collective_snapshot_v1_mailbox_test.dir/./
+
+  has 188 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_collective_snapshot_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_zhongguo_workforce_collective_snapshot_v1_source_contract_test.dir/./
+
+  has 196 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_workforce_collective_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_zhongguo_result_case_snapshot_v1_source_contract_test.dir/./
+
+  has 187 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/zhongguo_result_case_snapshot_v1_source_contract_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in CMakeLists.txt:
+  The object file directory
+
+    C:/Users/1/ck3-e2-six-gap-research-20261001/root-attempt-05-scoped-ui/frozen-release-build-attempt-01/build/CMakeFiles/xar_ck3_pending_character_interaction_context_v1_mailbox_test.dir/./
+
+  has 187 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    src/pending_character_interaction_context_v1_mailbox_test.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+

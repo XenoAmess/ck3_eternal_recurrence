@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a06.py",
+    "--help"
+  ],
+  "returncode": 0,
+  "stdout": "usage: scoped_ui_research_a06.py [-h] --bindings BINDINGS\n                                 --mode {ui,hover,fit,save,advance,monitor-begin,monitor-finish,finish}\n                                 [--phase {before,after}]\n                                 [--window-kind {character,army,combat,knights}]\n                                 [--character-role {victim,killer}]\n                                 [--ui-side {left,right}] [--label LABEL]\n\nOne source-bound research day and independently read original UI frames. This\nis a research consumer, not a video renderer or a human review signer. Each\nrequest and output is exclusive-create. Ambiguous mutations are never retried.\n\noptions:\n  -h, --help            show this help message and exit\n  --bindings BINDINGS\n  --mode {ui,hover,fit,save,advance,monitor-begin,monitor-finish,finish}\n  --phase {before,after}\n  --window-kind {character,army,combat,knights}\n  --character-role {victim,killer}\n  --ui-side {left,right}\n  --label LABEL\n",
+  "stderr": "",
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a06.py",
+    "bytes": 33740,
+    "sha256": "F77B638232D59594F0344E084B7FCE88DF3EB6BD1A27C99A0A734798BF3B4F52"
+  }
+}

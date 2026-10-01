@@ -1,0 +1,34 @@
+usage: verify_knight_causal_run.py [-h] --before-pair BEFORE_PAIR
+                                   --after-pair AFTER_PAIR
+                                   --before-save BEFORE_SAVE
+                                   --after-save AFTER_SAVE --trace TRACE
+                                   --rakaly RAKALY --output-dir OUTPUT_DIR
+                                   --expected-source-head EXPECTED_SOURCE_HEAD
+                                   --expected-dll-sha256 EXPECTED_DLL_SHA256
+                                   --episode-character-id EPISODE_CHARACTER_ID
+                                   --victim VICTIM --related RELATED
+                                   [--day-finished DAY_FINISHED]
+
+Verify one exact native knight run and project its full selected saved blocks.
+Only existing original request/result JSON, immutable CK3 saves and the pinned
+Rakaly decoder are read. No CK3, desktop, provider, Git mutation or network
+operation. The new output directory is create-only and keeps successful and
+failed assets.
+
+options:
+  -h, --help            show this help message and exit
+  --before-pair BEFORE_PAIR
+  --after-pair AFTER_PAIR
+  --before-save BEFORE_SAVE
+  --after-save AFTER_SAVE
+  --trace TRACE
+  --rakaly RAKALY
+  --output-dir OUTPUT_DIR
+  --expected-source-head EXPECTED_SOURCE_HEAD
+  --expected-dll-sha256 EXPECTED_DLL_SHA256
+  --episode-character-id EPISODE_CHARACTER_ID
+  --victim VICTIM
+  --related RELATED
+  --day-finished DAY_FINISHED
+                        Required for explicit-binding saved-pair input; exact
+                        unique one-day-finished.json original.

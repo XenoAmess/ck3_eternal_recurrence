@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-10-01T09:40:21.629689+00:00",
+  "reviewer": "/root",
+  "current_offline_ui_observed": true,
+  "original_pixels_actually_reviewed": true,
+  "screenshot": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+    "bytes": 796178,
+    "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+  },
+  "reviewed_images": [
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\steam-offline-originals-attempt-01\\ck3-library-03.png",
+      "bytes": 803087,
+      "sha256": "1DA597BB31EF80C6156CFA994B1376014E3D7756BFCB468CF0B79C74BE675167"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\steam-offline-originals-attempt-01\\bg3-library-03.png",
+      "bytes": 796178,
+      "sha256": "C9653B111C1551FCEDF406843F5F1FB70025F805D4314AC8DD049DE669FB6196"
+    }
+  ],
+  "source_capture": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\steam-offline-originals-attempt-01\\receipt.json",
+    "bytes": 4986,
+    "sha256": "105888A392F4DAC53CEA11AA22696FA069E09A479BCC45B8F55551D44FC7374A"
+  },
+  "owner": {
+    "hwnd": 197612,
+    "pid": 7068,
+    "process_create_time": 1790777038.7610564
+  },
+  "screen_task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a04",
+  "freshness_basis": "Root actually viewed both exact newly captured original files: CK3 artwork/selected row and 35 DLC panel changed to BG3 artwork/selected row and 2 DLC panel on the same HWND. Both display the current Steam offline text and bottom Offline Mode.",
+  "same_window_semantic_change_actually_reviewed": true,
+  "steam_mode_changed": false,
+  "movie_signoff": false
+}

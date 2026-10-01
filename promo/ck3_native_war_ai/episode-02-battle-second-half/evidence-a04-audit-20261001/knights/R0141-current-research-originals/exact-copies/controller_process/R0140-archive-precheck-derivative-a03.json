@@ -1,0 +1,19 @@
+{
+  "predecessor_precheck_result": "REJECTED_BEFORE_ANY_GIT_MUTATION",
+  "cause": "Windows Git default long-path limit and ordinary ignore rules must not omit preserved process evidence.",
+  "per_command_core_longpaths": true,
+  "global_git_configuration_modified": false,
+  "exact_709_file_set_before_and_after_stage_required": true,
+  "create_only_derivative": {
+    "predecessor": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\commit_R0140_research_archive_a02.py",
+      "bytes": 4063,
+      "sha256": "9D6F8AB249FBD7327EB0A509ACFBB4FCCDF20F7F2AC78310E3E5B0BEF3BB5EEB"
+    },
+    "derivative": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\commit_R0140_research_archive_a03.py",
+      "bytes": 4640,
+      "sha256": "033E577C2AC5270CF74B8BF4DB8EF342054165216C70524EDE93A9051583C23C"
+    }
+  }
+}

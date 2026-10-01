@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-01T09:48:18.920050+00:00",
+  "phase": "before",
+  "bindings": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\current-run-bindings.json",
+    "bytes": 4425,
+    "sha256": "9B9A52D9B1BA35FB4C8FEF9DF03B18DC1E85A5484E1F91B164DDF0E992D157FE"
+  },
+  "purpose": "UI-window comparison with main post-UI phase save",
+  "role": "extra pre-UI checkpoint",
+  "day_advance_requested": false
+}

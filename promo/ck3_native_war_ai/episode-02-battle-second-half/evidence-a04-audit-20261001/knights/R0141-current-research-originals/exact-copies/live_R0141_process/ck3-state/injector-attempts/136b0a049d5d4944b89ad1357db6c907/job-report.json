@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+    "6320",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll"
+  ],
+  "complete_process_tree_proven": true,
+  "creation_utc": "2026-10-01T09:42:42.823000+00:00",
+  "executable_sha256": "2CA0E8889E7CC2AA59517F038B731ECD0C535E410A512C3A62BE8EC772627DB8",
+  "injector_root_reaped": true,
+  "job_active_final": 0,
+  "job_limit_flags": 8200,
+  "job_pids_final": [],
+  "output_limit_bytes": 8388608,
+  "pid": 18036,
+  "pinned_executable": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+  "pre_resume_job_pids": [
+    18036
+  ],
+  "resume_previous_count": 1,
+  "returncode": 0,
+  "schema": "xar.ck3.contained-injector-job.v1",
+  "status": "EXIT",
+  "stderr_bytes": 0,
+  "stderr_complete": true,
+  "stderr_overflow": false,
+  "stderr_reader_error": null,
+  "stderr_retained_bytes": 0,
+  "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+  "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+  "stdout_bytes": 82,
+  "stdout_complete": true,
+  "stdout_overflow": false,
+  "stdout_reader_error": null,
+  "stdout_retained_bytes": 82,
+  "stdout_retained_sha256": "6E545BA0E972C9884D032A88F8CABBE73BDD40D2884315C1FE0F5F4F062D81BF",
+  "stdout_sha256": "6E545BA0E972C9884D032A88F8CABBE73BDD40D2884315C1FE0F5F4F062D81BF"
+}

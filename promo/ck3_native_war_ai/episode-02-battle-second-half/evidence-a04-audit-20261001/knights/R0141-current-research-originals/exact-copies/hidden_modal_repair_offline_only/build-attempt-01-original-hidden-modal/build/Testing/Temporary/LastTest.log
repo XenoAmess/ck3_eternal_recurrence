@@ -1,0 +1,20 @@
+Start testing: Oct 01 18:12 中国标准时间
+----------------------------------------------------------
+1/176 Testing: xar_ck3_ingame_ui_navigation_v1_test
+1/176 Test: xar_ck3_ingame_ui_navigation_v1_test
+Command: "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-ui-hidden-modal-repair-other-a01/build-attempt-01-original-hidden-modal/build/xar_ck3_ingame_ui_navigation_v1_test.exe"
+Directory: C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-ui-hidden-modal-repair-other-a01/build-attempt-01-original-hidden-modal/build
+"xar_ck3_ingame_ui_navigation_v1_test" start time: Oct 01 18:12 中国标准时间
+Output:
+----------------------------------------------------------
+offline original modal helper: 15 bounded/hidden/visible/mixed/null/unreadable cases and 2 actual serializer checks PASS; no game calls
+offline parser/full-generation/RTTI/application-owner/RNG0/GUI-double-read/admission negative cases PASS; no game calls
+<end of output>
+Test time =   0.16 sec
+----------------------------------------------------------
+Test Passed.
+"xar_ck3_ingame_ui_navigation_v1_test" end time: Oct 01 18:12 中国标准时间
+"xar_ck3_ingame_ui_navigation_v1_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 01 18:12 中国标准时间

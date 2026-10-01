@@ -1,0 +1,14 @@
+{
+  "name": "native-UI-fixture-original-stdout",
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stdout.bin",
+    "bytes": 258,
+    "sha256": "BA632EE6C8A89F707E80061E84351E22D17B099DAD67ED7261F07A0E07E3E580"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0141-ui-hidden-modal-repair-other-a01\\build-attempt-01-original-hidden-modal\\native-UI-fixture-original-stdout-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "git": {
+    "branch": "codex/war-e2-scoped-ui-owner-capture-20261001",
+    "dirty_entries": 0,
+    "head": "fda53e7b3e83053f235be3d5725a6238b89db9f0"
+  },
+  "last_sequence": 3426,
+  "next_step": "align_original_display_fresh_offline_evidence_after_full_build_then_same_owner_capture",
+  "pid": 2976,
+  "repo": "C:\\w\\e2cap1001c",
+  "resources": [],
+  "schema": "codex.task_bus.v1",
+  "state": "waiting",
+  "summary": "R0141_RED_UI_no_day_SDK_cleaned_expired_own_claim_release_display_restoration_pending",
+  "task_id": "war-e2-six-gap-scoped-ui-screen-20261001-a04",
+  "updated_at_utc": "2026-10-01T10:19:56.903947+00:00"
+}

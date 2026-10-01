@@ -1,0 +1,20 @@
+{
+  "job": {
+    "available_controls": [],
+    "exit_code": null,
+    "job_id": "723c2a3a-ef23-41c8-b6a9-16f52994cbda",
+    "job_name": "scoped-ui-research-capture",
+    "pid": 15284,
+    "request_id": "e2-scoped-ui-20261001-a03-root",
+    "started_unix": 1790847681.1169524,
+    "state": "running",
+    "stderr_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\operator-state-a01\\jobs\\723c2a3a-ef23-41c8-b6a9-16f52994cbda\\stderr.log",
+    "stdout_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\operator-state-a01\\jobs\\723c2a3a-ef23-41c8-b6a9-16f52994cbda\\stdout.log"
+  },
+  "job_spec_sha256": "F9815F5F923C72955265550AABF503639ECC2CF89FD540ED0E53AFE87ACD81E6",
+  "preflight_evidence_sha256": "44F1AC97FEB9C48E1472327F83E9EA705720C8F1D5D77D0D0F70BECA399A8133",
+  "profile_sha256": "88756750559A8314916E208D7AC21DBCD1484DCE39D0CE1BE624251447E49AD6",
+  "schema_version": 1,
+  "server_instance_id": "e2b09d82-3e4d-43a3-a722-78c0c3930c5b",
+  "target_id": "ck3-e2-scoped-ui-20261001-a03"
+}

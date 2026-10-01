@@ -1,0 +1,30 @@
+{
+  "expected_names": [
+    "xar_ck3_ingame_ui_navigation_v1_test",
+    "xar_ck3_native_bridge_combat_scoped_transition_chain_v1",
+    "xar_ck3_native_bridge_scoped_character_variable_monitor_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_ring_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_detour_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_wire_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_managed_v1",
+    "xar_ck3_native_bridge_main_thread_query_mailbox_v1"
+  ],
+  "actual_names": [
+    "xar_ck3_ingame_ui_navigation_v1_test",
+    "xar_ck3_native_bridge_scoped_character_variable_monitor_v1",
+    "xar_ck3_native_bridge_combat_scoped_transition_chain_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_ring_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_detour_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_wire_v1",
+    "xar_ck3_native_bridge_combat_phase_event_trace_managed_v1",
+    "xar_ck3_native_bridge_main_thread_query_mailbox_v1"
+  ],
+  "test_count": 8,
+  "all_ran_without_failure_or_skip": true,
+  "junit": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\frozen-release-build-attempt-01\\ctest-junit.xml",
+    "bytes": 3499,
+    "sha256": "F3CD6FA0EF9C8825F52C1CB0C95AEAAFF46591BA4D92FC1B721659F2C6FC836A"
+  },
+  "does_not_prove_live_game_or_ui": true
+}

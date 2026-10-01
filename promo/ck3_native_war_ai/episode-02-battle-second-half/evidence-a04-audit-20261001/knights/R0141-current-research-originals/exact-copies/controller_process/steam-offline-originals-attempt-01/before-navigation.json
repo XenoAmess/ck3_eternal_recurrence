@@ -1,0 +1,39 @@
+{
+  "label": "before-navigation",
+  "frames": [
+    {
+      "at_utc": "2026-10-01T09:38:23.811156+00:00",
+      "elapsed": 0.3710462000017287,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\steam-offline-originals-attempt-01\\before-navigation-01.png",
+        "bytes": 796182,
+        "sha256": "71686BB5F8E5ECC073AFCE2E63DA5311F632F5394496980C2E00F16A28FE710A"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T09:38:25.279078+00:00",
+      "elapsed": 1.824650800001109,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\steam-offline-originals-attempt-01\\before-navigation-02.png",
+        "bytes": 796182,
+        "sha256": "71686BB5F8E5ECC073AFCE2E63DA5311F632F5394496980C2E00F16A28FE710A"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T09:38:28.671024+00:00",
+      "elapsed": 5.220071799994912,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\steam-offline-originals-attempt-01\\before-navigation-03.png",
+        "bytes": 796182,
+        "sha256": "71686BB5F8E5ECC073AFCE2E63DA5311F632F5394496980C2E00F16A28FE710A"
+      }
+    }
+  ],
+  "errors": []
+}

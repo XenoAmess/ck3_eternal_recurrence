@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "core.longpaths=true",
+    "cat-file",
+    "--batch"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\R0140-exact-blob-batch-a04-stdout.bin",
+    "bytes": 37773229,
+    "sha256": "812852A7CB1189DD419890E848EFD37C9948B05928CDD5DE12B6644C014BFFB2"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\R0140-exact-blob-batch-a04-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

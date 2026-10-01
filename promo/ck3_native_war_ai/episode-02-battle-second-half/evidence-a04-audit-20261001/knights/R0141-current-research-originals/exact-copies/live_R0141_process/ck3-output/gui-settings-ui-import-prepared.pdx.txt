@@ -1,0 +1,19 @@
+"game"={
+	"promt_for_tutorial"={ version=0 enabled=no }
+	"prompt_for_china_tutorial"={ version=0 enabled=no }
+	"cloud_save"={ version=0 enabled=no }
+}
+"Graphics"={
+	"display_mode"={ version=0 value="fullscreen" }
+	"display_index"={ version=0 value="0" }
+	"fullscreen_resolution"={ version=0 value="2560x1440" }
+}
+"System"={
+	"language"={ version=0 value="l_simp_chinese" }
+}
+"GUI"={
+	"scale"={
+		version=1
+		value="1"
+	}
+}

@@ -1,0 +1,89 @@
+{
+  "exact_process_and_dependency_copies": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\review_scoped_ui_C08_reinforcement_a02.py",
+        "bytes": 4035,
+        "sha256": "33630A41B56CC19BBC3EDC584CACAB42BC0F4E9E40A514BEA78D098EF16DEAA7"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-independent-review-reinforcement-a02\\exact-process\\review_scoped_ui_C08_reinforcement_a02.py",
+        "bytes": 4035,
+        "sha256": "33630A41B56CC19BBC3EDC584CACAB42BC0F4E9E40A514BEA78D098EF16DEAA7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\review_scoped_ui_C07_reinforcement_a01.py",
+        "bytes": 12913,
+        "sha256": "783B03E350BBF91C77771FA929239DD61722A3C1E8A389E8224F125EA281C971"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-independent-review-reinforcement-a02\\exact-process\\review_scoped_ui_C07_reinforcement_a01.py",
+        "bytes": 12913,
+        "sha256": "783B03E350BBF91C77771FA929239DD61722A3C1E8A389E8224F125EA281C971"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\run_review_scoped_ui_C08_a02.py",
+        "bytes": 801,
+        "sha256": "859F587A7A5EC41BC640D004E30170BB1052B6240C678C4AF2F4AEA562942FC3"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-independent-review-reinforcement-a02\\exact-process\\run_review_scoped_ui_C08_a02.py",
+        "bytes": 801,
+        "sha256": "859F587A7A5EC41BC640D004E30170BB1052B6240C678C4AF2F4AEA562942FC3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a02-argv.json",
+        "bytes": 212,
+        "sha256": "5899A1B59D5BEFD1DF7EFBC24BF8C933F87A9E26E36A2CE18F4DD10F51F5C1B9"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-independent-review-reinforcement-a02\\exact-process\\scoped-ui-C08-review-a02-argv.json",
+        "bytes": 212,
+        "sha256": "5899A1B59D5BEFD1DF7EFBC24BF8C933F87A9E26E36A2CE18F4DD10F51F5C1B9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a02-stdout.bin",
+        "bytes": 289,
+        "sha256": "01DBADBE6D8D093EF5F6ED54F0AB0957D325C973EA9788C4DD9405716D84A443"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-independent-review-reinforcement-a02\\exact-process\\scoped-ui-C08-review-a02-stdout.bin",
+        "bytes": 289,
+        "sha256": "01DBADBE6D8D093EF5F6ED54F0AB0957D325C973EA9788C4DD9405716D84A443"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a02-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-independent-review-reinforcement-a02\\exact-process\\scoped-ui-C08-review-a02-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a02-process.json",
+        "bytes": 59,
+        "sha256": "CE828B684A43D21302AF8B3182CB9D7948319C875F860129CBE5FDE5181D73FC"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-independent-review-reinforcement-a02\\exact-process\\scoped-ui-C08-review-a02-process.json",
+        "bytes": 59,
+        "sha256": "CE828B684A43D21302AF8B3182CB9D7948319C875F860129CBE5FDE5181D73FC"
+      }
+    }
+  ],
+  "only_own_create_only_materials": true
+}

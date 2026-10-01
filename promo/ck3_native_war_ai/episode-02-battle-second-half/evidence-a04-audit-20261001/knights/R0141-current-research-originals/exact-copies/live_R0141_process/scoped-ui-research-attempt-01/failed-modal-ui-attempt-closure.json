@@ -1,0 +1,20 @@
+{
+  "status": "RED_MODAL_UI_ADMISSION_NO_DAY_ADVANCE",
+  "diagnostic": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\scoped-ui-research-attempt-01\\modal-rejection-diagnostic.json",
+    "bytes": 159309,
+    "sha256": "3C3FD387E37B39E75066438726C82E1C94CD55FB5190C5E62F39B857599C90C4"
+  },
+  "failed_action_response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a05\\ck3-output\\interactive-requests-responses\\before-victim-character-open.json",
+    "bytes": 138856,
+    "sha256": "199A9654CA7E42BA9496DBFAD57AA37923451E3F7CB3B3CE91DF0AF89ED57B2D"
+  },
+  "drain_preserved": true,
+  "drain_error": null,
+  "day_advance_count": 0,
+  "owner_finish_submitted_once": true,
+  "actual_process_cleanup": "pending same-owner SDK completion",
+  "video_changed": false,
+  "six_gap_evidence_closed": false
+}

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a06.py",
+    "--help"
+  ],
+  "returncode": 0,
+  "stdout": "usage: run_paused_ui_stage_a06.py [-h] --bindings BINDINGS\n                                  --phase {before,after}\n                                  --output-dir OUTPUT_DIR\n\nCollect sequential paused original UI assets; stop before review or any day\nadvance.\n\noptions:\n  -h, --help            show this help message and exit\n  --bindings BINDINGS\n  --phase {before,after}\n  --output-dir OUTPUT_DIR\n",
+  "stderr": "",
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a06.py",
+    "bytes": 5060,
+    "sha256": "880F84BC828D140D5F6962C8903E196E43CC7F4708685889F1F7D33C5B8D94CE"
+  }
+}

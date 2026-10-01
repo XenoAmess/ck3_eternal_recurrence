@@ -1,0 +1,40 @@
+{
+  "at_utc": "2026-10-01T09:41:20.641748+00:00",
+  "arguments": {
+    "target_id": "ck3-e2-scoped-ui-20261001-a03"
+  },
+  "reply": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_instance_id\": \"e2b09d82-3e4d-43a3-a722-78c0c3930c5b\",\n  \"target_id\": \"ck3-e2-scoped-ui-20261001-a03\",\n  \"identity\": {\n    \"token_user\": \"1\",\n    \"desktop\": \"WinSta0\\\\Default\",\n    \"machine\": \"DESKTOP-3FEVHD2\",\n    \"process_id\": 13308\n  },\n  \"identity_matches_profile\": true,\n  \"process_gates\": {\n    \"ck3.exe\": [],\n    \"dowser.exe\": [],\n    \"ffmpeg.exe\": [],\n    \"obs64.exe\": [],\n    \"xar_ck3_bridge_injector.exe\": []\n  },\n  \"process_gate_errors\": {},\n  \"jobs\": []\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_instance_id": "e2b09d82-3e4d-43a3-a722-78c0c3930c5b",
+      "target_id": "ck3-e2-scoped-ui-20261001-a03",
+      "identity": {
+        "token_user": "1",
+        "desktop": "WinSta0\\Default",
+        "machine": "DESKTOP-3FEVHD2",
+        "process_id": 13308
+      },
+      "identity_matches_profile": true,
+      "process_gates": {
+        "ck3.exe": [],
+        "dowser.exe": [],
+        "ffmpeg.exe": [],
+        "obs64.exe": [],
+        "xar_ck3_bridge_injector.exe": []
+      },
+      "process_gate_errors": {},
+      "jobs": []
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

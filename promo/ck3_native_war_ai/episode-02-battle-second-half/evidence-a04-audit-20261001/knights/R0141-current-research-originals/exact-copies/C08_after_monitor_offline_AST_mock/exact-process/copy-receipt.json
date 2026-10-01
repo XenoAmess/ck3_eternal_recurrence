@@ -1,0 +1,77 @@
+{
+  "exact_process_and_dependency_copies": [
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\review_C08_after_monitor_a03.py",
+        "bytes": 5948,
+        "sha256": "292AED4E7CD08CE195C0646B4A971D64DF4345F0E71445962A0B33971DA79A72"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\exact-process\\review_C08_after_monitor_a03.py",
+        "bytes": 5948,
+        "sha256": "292AED4E7CD08CE195C0646B4A971D64DF4345F0E71445962A0B33971DA79A72"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\run_review_C08_after_monitor_a03.py",
+        "bytes": 791,
+        "sha256": "8D7995A08BD25D41E72E66F5EE1141D28DA88FAED8D5AF06619FE5D46E365F18"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\exact-process\\run_review_C08_after_monitor_a03.py",
+        "bytes": 791,
+        "sha256": "8D7995A08BD25D41E72E66F5EE1141D28DA88FAED8D5AF06619FE5D46E365F18"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a03-argv.json",
+        "bytes": 202,
+        "sha256": "EDAE58B5C80DE5335E0A0B31E01B2BAC9327041E5FEDD27781DE0E4B4DD1621C"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\exact-process\\scoped-ui-C08-review-a03-argv.json",
+        "bytes": 202,
+        "sha256": "EDAE58B5C80DE5335E0A0B31E01B2BAC9327041E5FEDD27781DE0E4B4DD1621C"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a03-stdout.bin",
+        "bytes": 286,
+        "sha256": "9CECBCB3F30E3AAD41AFDBD1C3E69D012997FC776A7E486D500AA3634DA716B8"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\exact-process\\scoped-ui-C08-review-a03-stdout.bin",
+        "bytes": 286,
+        "sha256": "9CECBCB3F30E3AAD41AFDBD1C3E69D012997FC776A7E486D500AA3634DA716B8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a03-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\exact-process\\scoped-ui-C08-review-a03-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-review-a03-process.json",
+        "bytes": 59,
+        "sha256": "CE828B684A43D21302AF8B3182CB9D7948319C875F860129CBE5FDE5181D73FC"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\scoped-ui-C08-after-monitor-review-reinforcement-a03\\exact-process\\scoped-ui-C08-review-a03-process.json",
+        "bytes": 59,
+        "sha256": "CE828B684A43D21302AF8B3182CB9D7948319C875F860129CBE5FDE5181D73FC"
+      }
+    }
+  ],
+  "only_own_create_only_materials": true
+}

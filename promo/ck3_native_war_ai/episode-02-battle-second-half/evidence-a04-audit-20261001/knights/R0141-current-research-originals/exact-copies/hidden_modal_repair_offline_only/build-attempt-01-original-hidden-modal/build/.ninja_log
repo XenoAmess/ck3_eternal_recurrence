@@ -1,0 +1,7 @@
+# ninja log v7
+266	1851	8125527620941508	CMakeFiles/xar_ck3_ingame_ui_navigation_v1_test.dir/src/protocol.cpp.obj	6061bd2aacafdb78
+253	6398	8125527620811582	CMakeFiles/xar_ck3_ingame_ui_navigation_v1_test.dir/tests/ingame_ui_navigation_v1_test.cpp.obj	f08b62656203b9b5
+6399	9163	8125527682271941	CMakeFiles/xar_ck3_bridge.dir/src/frontend_gui_route_v1.cpp.obj	291021ff977a3644
+1852	12463	8125527636804883	CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj	f4cd02dce44994af
+12465	12684	8125527742928727	xar_ck3_ingame_ui_navigation_v1_test.exe	8a874bf0b9493de0
+9164	13933	8125527709913726	CMakeFiles/xar_ck3_bridge.dir/src/ingame_ui_navigation_v1.cpp.obj	2afd0552a11c676c

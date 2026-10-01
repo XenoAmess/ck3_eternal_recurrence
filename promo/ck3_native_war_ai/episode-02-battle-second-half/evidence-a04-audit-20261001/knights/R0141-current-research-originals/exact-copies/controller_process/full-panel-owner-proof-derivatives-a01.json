@@ -1,0 +1,58 @@
+{
+  "at_utc": "2026-10-01T09:25:07.488936+00:00",
+  "records": [
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a06.py",
+        "bytes": 33740,
+        "sha256": "F77B638232D59594F0344E084B7FCE88DF3EB6BD1A27C99A0A734798BF3B4F52"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\scoped_ui_research_a07.py",
+        "bytes": 33892,
+        "sha256": "A3A31116C17E6313938677858AD230DD7945C8A8651FF16D475B14A3B1485CE5"
+      }
+    },
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a04.py",
+        "bytes": 5029,
+        "sha256": "83E5F881DB7DF5C5580DE15DD859A6E88A18893651405EBAB0BE735D9E7D3F10"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\preserve_paused_ui_checkpoint_a05.py",
+        "bytes": 5029,
+        "sha256": "A509C3C6612EA45DE46F37AB610722E09471F9B2191A99939D780040ADCC0066"
+      }
+    },
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a05.py",
+        "bytes": 5060,
+        "sha256": "EC038843F773FB1A43E523D65A51DC705A027BB32EBC8190DEC5289B4BC8F86C"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\run_paused_ui_stage_a06.py",
+        "bytes": 5060,
+        "sha256": "880F84BC828D140D5F6962C8903E196E43CC7F4708685889F1F7D33C5B8D94CE"
+      }
+    },
+    {
+      "predecessor": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a06.py",
+        "bytes": 11728,
+        "sha256": "0B8F0846C83368AAED62887728FCB1EFF2D831CCF42BD089F8ECF6916422E537"
+      },
+      "derivative": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-05-scoped-ui\\prepare_runtime_binding_and_plan_a07.py",
+        "bytes": 11728,
+        "sha256": "9E18C9464FBF2DAD608BA7F6A5824EA097DD34E526B2F190F7CC7BCCAC077BA5"
+      }
+    }
+  ],
+  "purpose": "Require identical actual application thread and GUI singleton context/owner before and after full combat panel pixels",
+  "old_helpers_preserved": true,
+  "live_research_pending": true,
+  "movie_changed": false,
+  "human_movie_signoff": false
+}
