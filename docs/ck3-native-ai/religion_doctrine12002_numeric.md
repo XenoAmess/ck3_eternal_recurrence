@@ -1,6 +1,6 @@
 # CK3 1.20.0.2 当前宗教 special_parameters 数值缓存
 
-状态：原生字段与读取树 static-confirmed，实际只读 provider / serializer static-ready；没有 CK3 进程访问或 live 证据。
+状态：原生字段与读取树 static-confirmed；R6 私有 SDK 的五项缓存及原生最终阈值查询已取得真实暂停帧，升为 `production-live primitive`。覆盖仅为下文记录的本帧读取，没有宗教动作或 OODA。
 
 **1.20.0.2 的普通 `parameters` 与 `personal_tenet_parameters` 是布尔 token 集合，不是通用数值 map。** 冻结 stock 的 199 个普通参数块、95 个个人参数块没有数值赋值。旧 `STokenParameter` 数字反射 getter `0x22C81A0` 不能冒充本版本当前 effective 数值查询。`Faith.HasParameterByKey` 同样只转到 main Rite `+0x7B8` 布尔 membership。数值 authoring 位于独立 `special_parameters`。
 
@@ -50,4 +50,20 @@ typed lookup 分开 `Value`、`Unset`、`UnsupportedKey`、`UnavailableSource`�
 
 本轮验收 GREEN：`religion_doctrine12002_numeric_native.py` 校验 **10 spans、5 个实际 key、6 个 provider offsets**；`religion_doctrine12002_numeric_tests.py` 只编译并运行一次 `/O2 /W4 /WX`，链接实际 core 与实际 production reader/serializer，**15 项检查、6 份实际 C++ DTO JSON**：current-versus-main、known-zero-current、minimum-unset、legal-absent、faith-unavailable、state-changed。JSON parser 互证 0.05、0.5、signed threshold ±5、integer protection、原生 unset 与失败。没有 Od / 旧 Boolean 19 / Rows 15 / mailbox 29 重跑，也未启动 CK3。
 
-证据根：`Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/numeric/`。`native/native-verification.json`、`native/native-disassembly.txt`、`provider/result.json`、`provider/O2/build.log`、`test.log` 与实际 JSON 保留。新增六份实际 DTO 的可移植冻结文件为 [numeric_wire_fixtures.json](../../research/religion_doctrine12002_numeric_wire_fixtures.json)。这是 provider DTO，尚不是中央 mailbox command_result 或 paused 游戏证据。中央 query / Python SDK / MCP 接线由协调者合并，真实 paused 读样通过后才能提升 production-live primitive。最终 Faith heresy threshold 的 native define 与 callback 已闭合，在后续独立扩展中提供原生最终比较值。
+最初离线证据根：`Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/numeric/`。`native/native-verification.json`、`native/native-disassembly.txt`、`provider/result.json`、`provider/O2/build.log`、`test.log` 与实际 JSON 保留。新增六份实际 DTO 的可移植冻结文件为 [numeric_wire_fixtures.json](../../research/religion_doctrine12002_numeric_wire_fixtures.json)。这个文件仍是 provider DTO，不能单独作为中央 mailbox 或 paused 游戏证据；后续实际查询另见 [numeric mailbox](religion_doctrine12002_numeric_mailbox.md) 与本页下段。最终 Faith heresy threshold 的 native define 与 callback 通过独立 getter 提供原生最终比较值。
+
+**R6 实际暂停 SDK 读样，2026-10-01。** 已保存批次 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/targeted-sdk-r6/r6-new-five-law-recovery-20261001T115250Z/` 的 [003 数值响应](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/targeted-sdk-r6/r6-new-five-law-recovery-20261001T115250Z/003-ck3_query_player_religion_numeric_special_parameters_v1.json) 来自 `ck3_query_player_religion_numeric_special_parameters_v1`，`isError=false`、`resultType=complete`、`available=true`、`status=observed`、`read_only=true`。响应 SHA-256 为 `d87877f677e4ece4b6b94e7a033e8f125335aeca26e2f080df49eeb65ed75baf`。相邻已保存 snapshot 002 确认 `paused=true`、cold bridge PID **77216**、角色 **29829**、日期 **53169336**、exact-build match=true；游戏版本与 EXE SHA 与本专题冻结值一致。本次文档代理只核验保存包，没有新增游戏调用、测试或 state action。
+
+SDK `queried_revision=2`，原生 `queried_native_revision / snapshot_revision=3`，实际 owner `capture_epoch=13386`；这三个数各有含义，不能互换。Faith full ID 为 **23**；当前 Rite 与 Faith main Rite 本帧均为 **152**，两者各自 `observed_special_parameters_complete=true`、各有五项真实缓存：
+
+| key | 当前 Rite raw / value / state | main Rite raw / value / state |
+| --- | --- | --- |
+| `minimum_fervor` | `-1 / null / unset` | `-1 / null / unset` |
+| `fervor_per_holy_site` | `0 / 0.0 / value` | `0 / 0.0 / value` |
+| `bonus_fervor_gain` | `0 / 0.0 / value` | `0 / 0.0 / value` |
+| `bonus_heresy_protection` | `0 / 0 / value` | `0 / 0 / value` |
+| `heresy_threshold` adjustment | `0 / 0.0 / value` | `0 / 0.0 / value` |
+
+同一次响应的 `faith_numeric_final.available=true`，epoch、角色、日期及 Faith / Rite 身份与主缓存一致。原生 getter `0x2440920` 给出 `native_define_raw=6500000`、`main_rite_adjustment_raw=0`、`final_heresy_threshold_raw=6500000`、scale **100000**、最终阈值 **65.0**。这实际区分了零修正与最终比较值，也保留最低热忱的 unset；没有将 null 当作读取失败或把缓存零反推成 authored 参数不存在。
+
+该已保存帧支撑五项缓存和最终阈值的 `production-live primitive`。当前 / main Rite 相同，非零 bonus、负修正及不同 Rite 来源仍只有离线夹具覆盖，不能写成已实机覆盖。此读取不证明改宗、改革、费用支付、未来热忱预测或完整 OODA；实际动作、结果闭环和总体宗教 readiness 另属后续工作。保存包核验与原文件 SHA 索引在 [saved-package-verification.json](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-doctrines/live-r6-docs/saved-package-verification.json)。

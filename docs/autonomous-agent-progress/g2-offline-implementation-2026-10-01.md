@@ -765,3 +765,9 @@ Actual R4 cleanup pause rejected and escaped before the existing retry, leaving 
 One family topic records fixed-five native values, one zero-cost proposal, bilateral betrothal, h94 checkpoint and real new-PID cold result without resubmission. Both children8under16 and no alliance; actual day7 pause failure and initial cold root-query timeout retained. Bounded production-live marriage loop includes cold; ordinary G2 score unchanged. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\family-live-next\root-cold-doc-package-r6.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:17:02 Record paused numeric and personal religion queries
+
+Two owned topics record actual R6 paused identity and complete readonly values: native final threshold65.0,190 registered personal parameters knownfalse with no owned personalTenets. Saved packets checked once; no conversion, reform, action or OODA claim. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\live-r6-docs\document-source-package.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
