@@ -1,0 +1,126 @@
+{
+  "schema": "xar.jd11.stock-combat-width-hover-binding/v1",
+  "source_files": {
+    "gui": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_combat.gui",
+      "bytes": 58008,
+      "sha256": "7FEE98B7341E21607ED3BB9089C51EF890D229DB6C16865C88133C3BA3579236"
+    },
+    "zh_tooltip": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\combat_window_l_simp_chinese.yml",
+      "bytes": 6395,
+      "sha256": "37855E44CC012A3212C7356C46043683180198C091E7EBEDC0883746624114B3"
+    },
+    "en_tooltip": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\combat_window_l_english.yml",
+      "bytes": 6539,
+      "sha256": "BA9443583302233797018A1FA9EE7235C5FC68F2F73DFF1A808D9D7E078C6F85"
+    },
+    "zh_breakdown": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\combat_l_simp_chinese.yml",
+      "bytes": 5492,
+      "sha256": "25B430A68C6C375BA31BA9FD90D439698BF547B6911ACC7B9A3AABDE072E097D"
+    }
+  },
+  "target": {
+    "node": "combat_window / combat_progress",
+    "gui_lines": [
+      {
+        "line": 640,
+        "text": "\twidget = {"
+      },
+      {
+        "line": 641,
+        "text": "\t\tname = \"combat_progress\""
+      },
+      {
+        "line": 642,
+        "text": "\t\tvisible = \"[Not(CombatWindow.IsCombatInPursuitPhase)]\""
+      },
+      {
+        "line": 643,
+        "text": "\t\tparentanchor = top|hcenter"
+      },
+      {
+        "line": 644,
+        "text": "\t\tposition = { 0 19 }"
+      },
+      {
+        "line": 645,
+        "text": "\t\tsize = { 410 42 }"
+      },
+      {
+        "line": 646,
+        "text": "\t\ttooltip = \"CV_TT_RELATIVE_SOLDIERS\""
+      },
+      {
+        "line": 647,
+        "text": "\t\tusing = tooltip_above"
+      }
+    ],
+    "visible_condition": "Not(CombatWindow.IsCombatInPursuitPhase)",
+    "stock_layout_units_only_not_desktop_coordinates": {
+      "anchor": "top|hcenter",
+      "position": [
+        0,
+        19
+      ],
+      "size": [
+        410,
+        42
+      ]
+    },
+    "visible_texture_description": "blue/red horizontal battle progress bar centered near panel top",
+    "tooltip_key": "CV_TT_RELATIVE_SOLDIERS",
+    "placement": "tooltip_above",
+    "root_must_pick_fresh_original_image_interior_via_formal_mapper": true,
+    "desktop_hover_coordinates_provided_by_this_report": false
+  },
+  "tooltip_localization": {
+    "line": 65,
+    "exact_source": " CV_TT_RELATIVE_SOLDIERS: \"#T 相对军力#!\\n[CombatWindow.GetLeftCombatSide.GetComposition.GetSoldierCountString]对阵[CombatWindow.GetRightCombatSide.GetComposition.GetSoldierCountString][soldiers|E]\\n[CombatWindow.GetCombat.GetCombatWidthBreakdown]\"",
+    "title": "相对军力",
+    "first_body_row_binding": "left/right CombatSide.GetComposition.GetSoldierCountString",
+    "width_section_binding": "CombatWindow.GetCombat.GetCombatWidthBreakdown"
+  },
+  "width_breakdown_localization": [
+    {
+      "line": 89,
+      "text": " COMBAT_WIDTH_BREAKDOWN_HEADER: \"[combat_width|E]：$VALUE|V$\""
+    },
+    {
+      "line": 94,
+      "text": " COMBAT_WIDTH_BASE_DESCRIPTION: \"$BASE_COLON$#weak （战斗开始时所有[soldiers|E]数目的一半）#!\""
+    }
+  ],
+  "readback_admission": [
+    "actual tooltip title 相对军力",
+    "actual numeric 战斗宽度 header visible",
+    "base/terrain breakdown visible where provided",
+    "width numeric matches same paused battle control final_combat_width",
+    "same actor/date/army/combat and original frame/snapshot binding from consumer sample"
+  ],
+  "neighbor_semantics": {
+    "main_fighting_men_left": {
+      "line": 917,
+      "source": "text = \"[CombatSide.GetCurrentFightingMen|0]\""
+    },
+    "soft_casualties_left": {
+      "line": 968,
+      "source": "text = \"[CombatWindow.GetLeftCombatSide.GetSoftCasualties|0]\""
+    },
+    "soft_casualties_right": [
+      {
+        "line": 1091,
+        "text": "text = \"[CombatWindow.GetRightCombatSide.GetSoftCasualties|0]\""
+      }
+    ],
+    "conditional_294_312_interpretation": "If under the top counts beside fled/retreat icon, bound soft casualties, not width",
+    "army_composition_tooltip": "left_soldiers/right_soldiers use ArmyComposition.GetArmyCompositionTooltip, not CV_TT_RELATIVE_SOLDIERS",
+    "advantage_tooltip": "separate nodes use CombatWindow.GetAdvantageDescription"
+  },
+  "new_run_native_width_read_by_this_report": false,
+  "live_width_claimed": false,
+  "game_screen_bus_or_desktop_input_executed": false,
+  "frozen_consumer_or_GUI_modified": false
+}

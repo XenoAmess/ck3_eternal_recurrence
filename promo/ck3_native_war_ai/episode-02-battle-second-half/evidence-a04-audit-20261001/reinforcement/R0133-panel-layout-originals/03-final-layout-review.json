@@ -1,0 +1,35 @@
+{
+  "schema": "xar.jd11.a15.root-ui-review/v1",
+  "stage": "03-final-layout",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "reviewer": "Codex /root (direct original PNG inspection)",
+  "observed_at": "2026-10-01T00:34:13.021635+00:00",
+  "root_actually_viewed": true,
+  "approved_for_current_action": true,
+  "expected_ck3_pid": 17844,
+  "expected_foreground_hwnd": 2558060,
+  "frames": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\03-stability-start.png",
+      "bytes": 5052974,
+      "sha256": "C5E28DF7AEA384B6BCA5A9B7E5A814092D7872F30A4DCE9F9C9078FD7CF02B76"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-23-layout-repair-sdk\\paused-pair-controller\\04-stability-end.png",
+      "bytes": 4945211,
+      "sha256": "E179D7758B3B885835F94EBEC0BD3762C830998136A2BDDEF59ACE4ADFE6D6A5"
+    }
+  ],
+  "current_ui_region_reviewed": true,
+  "camera_stable": true,
+  "full_battle_panel": false,
+  "date_actor_army_battle_readable": false,
+  "overlay_free": false,
+  "root_visible_evidence": {
+    "two_current_original_frames": "Directly viewed current originals C5E28DF7AEA384B6BCA5A9B7E5A814092D7872F30A4DCE9F9C9078FD7CF02B76 and E179D7758B3B885835F94EBEC0BD3762C830998136A2BDDEF59ACE4ADFE6D6A5; both2560x1440, current CK3 HWND2558060 PID17844.",
+    "actual_panel": "Stable 墨西拿之战 panel at bottom center,893/1603, leaders34/30, advantage+6, dice8/7 and first composition row11 knights/13 faris visible. Panel bottom reaches image boundary and lower composition is not fully visible; full panel cannot be established.",
+    "actual_overlay": "Mapped pointer successfully left battle icon. A new 伊奥尼亚海 tooltip is actually visible near1825,727 in both stability originals; overlay-free gate remains false.",
+    "actual_date": "Both images paused 公元1066年12月14日.",
+    "decision_scope": "Reject complete layout. These new viewport-matched pixels do not authorize a day advance or prove UI width/native paired closure."
+  }
+}

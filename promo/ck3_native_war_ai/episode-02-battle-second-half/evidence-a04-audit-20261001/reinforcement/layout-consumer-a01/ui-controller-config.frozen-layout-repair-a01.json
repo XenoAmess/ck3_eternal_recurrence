@@ -1,0 +1,277 @@
+{
+  "schema": "xar.war-promo.e206-d11.ui-controller-intent/v1",
+  "run_attempt": "layout-repair-a01",
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "native_source_fingerprint": "91319267C8B7586FDAD2A474035D2286DBDA50CC0249E2FF745900F75DD778C1",
+  "dll_sha256": "94C3C1032BF20079586CEA9B6347A89AF488B6B72EDC91B516017241BD992B64",
+  "pair_sha256": "ADC37EAC80FF0CA0FB85E5E8388043DBECED25BB62089E34DAC92D779ACE9C31",
+  "prior_run_visual_closeout": {
+    "capture_report": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-recap-live-20260930-a14-fixed-source\\ck3-output\\capture-report.json",
+      "bytes": 9228,
+      "sha256": "C2488D1325FF23FE2789B34870F50DC41B0F7AB45A669844C21114311A8561E1"
+    },
+    "controller_result": {
+      "path": "C:\\Users\\1\\ck3-handoff-resume-20260930\\jd11-live-a03\\sdk-a01\\camera-layout-controller\\controller-result.json",
+      "bytes": 116171,
+      "sha256": "870CDFC7F69A9EB1C1377F806504E1F7AF9E2ECB3A61F5ABD2C4D5EDA57430B9"
+    },
+    "historical_run": "R0126",
+    "layout_ready": false,
+    "failure": "CURRENT_FOREGROUND_IS_NOT_THIS_RUN_CK3; actual failed foreground not saved",
+    "reuse_as_current_ui_approval": false,
+    "reuse_process_id_or_window_handle": false
+  },
+  "bounded_launch": {
+    "hold_seconds": 30,
+    "recovery_seconds": 180,
+    "interactive_seconds": 1200
+  },
+  "initial_mode": "CURRENT_PROCESS_WINDOW_REQUEST_AND_EXPLICIT_ROOT_SEMANTIC_FOCUS_THEN_THREE_UI_GATES",
+  "layout_gate_timeout_seconds": 600,
+  "maximum_gameplay_recorder_seconds": 600,
+  "maximum_native_days": 1,
+  "gameplay_start_default": false,
+  "date_trace_default": false,
+  "semantic_camera": {
+    "select_from": "THIS_RUN_CURRENT_PAUSED_NATIVE_SNAPSHOT",
+    "expected_actor": 29829,
+    "expected_war": 4,
+    "expected_player_army": 18,
+    "title_key_source": "select_war_hotspot plus LandedProvinceIndex of exact installed landed_titles; no guessed key/ID",
+    "require_native_center_postcondition": true,
+    "preposition_before_fixed_observe": true,
+    "canonical_selector_source": {
+      "path": "C:\\w\\jdcap0930\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_hotspot_camera.py",
+      "bytes": 8575,
+      "sha256": "774590798AE97F84653D4C9EBEA69D326AB8F6B24C83ED9D0D71FC87F3E977A9"
+    },
+    "historical_sample": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a13-canonical-selector-20260930-a01\\selector-receipt.json",
+      "bytes": 6161,
+      "sha256": "C8A054355F4659D9A89541F3F45E3BEE467238BA6DF1D8D2DDD06AAA8AD5EBEF"
+    },
+    "historical_sample_runtime_authority": false
+  },
+  "pointer_and_focus": {
+    "source_png": "THIS_RUN_CURRENT_ORIGINAL_DESKTOP_PNG",
+    "preview_content_rect": "ROOT_ACTUAL_IMAGE_CONTENT_RECT",
+    "reviewed_safe_region": "ROOT_ACTUAL_CK3_MAP_INTERIOR_REGION",
+    "required_readback": [
+      "actual_desktop_dimensions",
+      "pointer_before_after",
+      "foreground_hwnd_pid",
+      "expected_ck3_pid",
+      "point_inside_reviewed_region",
+      "dimensions_after_move"
+    ],
+    "old_1920_coordinates_allowed": false,
+    "mapper_source": {
+      "path": "C:\\w\\desktop_pointer_20260930\\tools\\desktop_coordinate_map.py",
+      "bytes": 14469,
+      "sha256": "B66D25560475D9DAF26827FA4E129D6244E80B9DEA0597D905937ACDE4901043"
+    },
+    "independent_review": {
+      "path": "C:\\Users\\1\\ck3-pointer-move-review-20260930\\attempt-01\\independent-review.json",
+      "bytes": 14975,
+      "sha256": "4EED8260DD2DA467A0687BBD88045CA0D1750D128C03A924181EA64DFBC26AE7"
+    },
+    "mapper_candidate_freeze": {
+      "path": "C:\\Users\\1\\ck3-pointer-move-candidate-20260930\\attempt-01\\candidate-freeze.json",
+      "bytes": 8092,
+      "sha256": "A038EA80DB7C5C3E67828933D5B029BC7DB8F1576856A810BADAEFA12FD4C19B"
+    },
+    "foreground_failure_evidence": "SAVE_CURRENT_FOREGROUND_HWND_PID_POINTER_DIMS_AND_ORIGINAL_PNG_BEFORE_PID_GATE",
+    "focus_workflow": {
+      "stage": "00-root-focus",
+      "automatic_focus": false,
+      "target_window": "ROOT_EXPLICIT_CURRENT_ENUMWINDOWS_HWND_OF_THIS_NATIVE_BRIDGE_PID",
+      "expected_process_identity": "THIS_RUN_PID_CREATE_TIME_EXE",
+      "required_readback": "BEFORE_AFTER_CURRENT_WINDOWS_FOREGROUND_FOCUS_DIMS_POINTER_BUTTONS_AND_PNG",
+      "authorization": "ROOT_ACTUAL_CURRENT_ORIGINAL_PNG_AND_EXPLICIT_HELPER_--focus",
+      "budget": "SAME_180_SECONDS_TOTAL_WITH_NATIVE_CENTER_AND_THREE_UI_STAGES",
+      "on_failure": "SAME_OWNER_MANAGED_FINISH_PRESERVE_AND_VERIFY_CLEANUP"
+    }
+  },
+  "visual_gate": {
+    "require_root_actual_two_frames": true,
+    "camera_stable": "PENDING_ACTUAL_LANDMARK_VIEW_NOT_INFERRED_FROM_PAUSED",
+    "full_battle_panel": "PENDING_CURRENT_MARKER_MAPPED_CLICK_AND_ACTUAL_FULL_PANEL_VIEW",
+    "date_actor_army_battle_readable": "PENDING_CURRENT_UI_REVIEW",
+    "overlay_free": "PENDING_CURRENT_TOOLTIP_AND_TODESK_POPUP_CHECK",
+    "native_battle_control_required": true,
+    "source_and_after_frames_must_match_root_attestation": true
+  },
+  "on_missing_or_red_gate": "EXPLICIT_SAME_OWNER_HOT_FINISH_PRESERVE_AND_VERIFY_CLEANUP",
+  "human_video_clean_signoff": false,
+  "planned_unique_seconds": 461,
+  "qualified_seconds": 0,
+  "status": "PREPARATION_FROZEN_NEW_NO_LAUNCH_AND_CURRENT_FOCUS_PENDING",
+  "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+  "canonical_camera_guard": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+    "bytes": 13247,
+    "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+  },
+  "hot_controller": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+    "bytes": 29587,
+    "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+  },
+  "old_managed_stop_helper": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-root-profile-generator-20260930-a01\\paused_map_and_stop.py",
+    "bytes": 10402,
+    "sha256": "7DB8A64458C7EACC3AB79A0A309570DA0643600F5590A35BE8FD29A7A8FF18C0"
+  },
+  "landed_title_input_files": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\00_landed_titles.txt",
+      "bytes": 1296625,
+      "sha256": "6A508DB6C113115AA5ACA18B8DA5374B30FEB76198533AEC3A59C5076958637E"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\01_japan.txt",
+      "bytes": 30468,
+      "sha256": "CE10CC1EB49A46947B69DC39D77AB8C3432D67708ED9F99C7957C3F0BD1F8A12"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\01_japan_noble_family.txt",
+      "bytes": 60852,
+      "sha256": "DDC47EB2FDCE24BBB6EE28944339D9CA4B95AAE592327A5DA70D1637CC4AC895"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\01_korea_noble_family.txt",
+      "bytes": 29942,
+      "sha256": "F0E0A935905F3AE775780B95DB0E5A6D1DAEF2CDD8CD463FAF1AA6782549C3CC"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\01_other_noble_family.txt",
+      "bytes": 65918,
+      "sha256": "8FC56BF1673C377877170BB81AE4E2757041EC7FEB665B2220C5B9BC7570167A"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\02_china.txt",
+      "bytes": 143624,
+      "sha256": "342F67E4D3E27A66B05A7257493A28C32AD8C0F9D9B314C0E18BDD8261165811"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\03_seasia.txt",
+      "bytes": 34048,
+      "sha256": "3BD4D636DE3CB499A2A4C1A673746D1E7905C10EE1FF033D7980FF0BE6EFE044"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\04_china_noble_families.txt",
+      "bytes": 272740,
+      "sha256": "23B161C109EE32071E269E82272ECB44DED02213FE7E342BABC4C01626A4F020"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\05_goryeo.txt",
+      "bytes": 20636,
+      "sha256": "D3514B73771FF91DCD8BA6B3E6D31BA333C388144FF189513E8FD5FE129E2E3D"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\06_philippines.txt",
+      "bytes": 31331,
+      "sha256": "43492ABF4543C0BE3DA0AC2AFD4FFE8E5E4DB982A8AE3CFAD7E3A8553FFE977F"
+    }
+  ],
+  "required_root_review_stages": [
+    "00-pre-center-pointer",
+    "02-battle-panel",
+    "02-post-open-pointer",
+    "03-final-layout"
+  ],
+  "after_layout_gate": "ROOT_EXPLICIT_FRESH_CONTINUATION_OR_DEFAULT_FINISH_WITH_ZERO_RECORDER_AND_DAY",
+  "recording_continuation": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\recording_continuation.py",
+    "bytes": 14941,
+    "sha256": "985D973D158B6A561C96AE99E3B96ADE77C996535D059D2BCE2D2424166FC405"
+  },
+  "continuation_wait_seconds": 45,
+  "before_one_day_seconds": 210,
+  "ffmpeg": "C:/Users/1/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0.1-full_build/bin/ffmpeg.exe",
+  "ffprobe": "C:/Users/1/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0.1-full_build/bin/ffprobe.exe",
+  "root_window_focus_helper": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+    "bytes": 21461,
+    "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+  },
+  "historical_a15_config_provenance": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\ui-controller-config.frozen-a01.json",
+    "bytes": 9727,
+    "sha256": "AE29461F161F655EBAB151ABA0C9873B05F4EECC57C0A5045E580ECB6D938FFB"
+  },
+  "native_candidate_head": "1901473429deb1297be7d5d4451169082629858b",
+  "pointer_before_center": {
+    "required": true,
+    "backend": "desktop-gdi",
+    "stages": [
+      "fresh-original-desktop",
+      "root-review-safe-region",
+      "formal-mapper-move-with-receipt",
+      "actual-focus-size-pointer-readback",
+      "fresh-paused-snapshot-control",
+      "pointer-still-safe-readback",
+      "typed-center-once"
+    ],
+    "coordinates": "ROOT_CURRENT_ORIGINAL_IMAGE_ONLY",
+    "root_review_flag": "pointer_safe_for_native_center",
+    "known_operational_observation": "SDK14 pointer [1023,276] on 1024x768 right edge; edge pan cause not yet proved",
+    "native_guards_changed": false
+  },
+  "root_visible_evidence_contract": {
+    "type": "non-empty JSON object",
+    "empty_object_and_string_rejected": true,
+    "actual_validator": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+      "bytes": 29587,
+      "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+    },
+    "actual_source_predicate": "isinstance(row.get('root_visible_evidence'), dict) and bool(row['root_visible_evidence'])",
+    "old_run_boundary": "R0131 failed before mapper; no pointer move, center or day action occurred"
+  },
+  "required_capture_viewport": [
+    2560,
+    1440
+  ],
+  "post_open_tooltip_neutralization": {
+    "stage": "02-post-open-pointer",
+    "required": true,
+    "review_flag": "pointer_safe_to_clear_battle_tooltip",
+    "action": "formal mapper move only",
+    "point_region_and_preview_geometry": "ROOT_THIS_RUN_CURRENT_ORIGINAL_DESKTOP_ONLY",
+    "receipt_does_not_prove_tooltip_cleared": true,
+    "fresh_stability_images_and_final_overlay_free_review_required": true
+  },
+  "layout_policy": {
+    "only_readonly_root_UI_review_budget_changed_from": 180,
+    "readonly_UI_review_budget_seconds": 600,
+    "maximum_native_days_unchanged": 1,
+    "recording_requested": false,
+    "stock_GUI_position_scale_untouched": true,
+    "viewport_mode_probe": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\readonly-display-inventory-a01.json",
+      "bytes": 57701,
+      "sha256": "B423D9349527A621B8D7990C28E18611852F24AD6637ACC97DAE89F225F996BB"
+    },
+    "actual_layout_input_audit": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-21-layout-repair\\actual-layout-input-audit-a01.json",
+      "bytes": 4635,
+      "sha256": "C17D92432830D999A1E9466D7FD1B880D1E854B946B6CE87BD7AEB92D0346E4E"
+    },
+    "selected_supported_mode": {
+      "width": 2560,
+      "height": 1440,
+      "bits_per_pixel": 32,
+      "refresh_hz": 60
+    },
+    "prior_supported_mode": {
+      "width": 1024,
+      "height": 768,
+      "bits_per_pixel": 32,
+      "refresh_hz": 60
+    },
+    "mode_change_performed_by_this_variant": false,
+    "live_stock_panel_fit": "NOT_OBSERVED"
+  }
+}
