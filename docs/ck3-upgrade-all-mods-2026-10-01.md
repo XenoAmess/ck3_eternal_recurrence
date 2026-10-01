@@ -17,7 +17,7 @@
 | 永恒轮回 | 特质目录、Rite、原生继承窗投影已迁移；L0 GREEN | R0003：廷臣五阶段及三项新增目录价格实际通过，已保存；冷载入、Rite 分支交付、死亡与导入继续 |
 | 白绮独立版 | 独立新版快照、Rite、文案与 LF 字节合同已合成；L0 GREEN | 待隔离验证 |
 | 肃清曼荼罗 | L0、可复现构建、parser GREEN；核心实机后更新兼容声明至 1.20.0.2 | R0001：9 个严格核心断言通过，日志无错误；fixture 核心覆盖 |
-| XenoAmess 体验优化 | 三类总督任命及改信/释放/赎金迁移；全额付款的余额上限及接收者上下文已修复；L0 GREEN、27 文件构建 | R0003：总督/退位/死亡/关闭严格断言通过；付款原 FAIL 保留，改信实际 UI 和修复后独立付款继续 |
+| XenoAmess 体验优化 | 三类总督任命及改信/释放/赎金迁移；全额付款的余额上限及接收者上下文已修复；L0 GREEN、27 文件构建 | R0003：总督/退位/死亡/关闭及改信/赎金/释放严格断言通过；付款原 FAIL 保留，修复后付款专用 R0004 继续 |
 | 重整河山 | 新版原生臣服、政府预算与毁头衔后果已迁移；30 项测试和 L0 GREEN | 待隔离验证 |
 | 驱策朝贡国 | L0、构建、parser GREEN；外置核心后果夹具已准备 | 待隔离验证 |
 | 天朝经商贪腐维护版 | 从新原版保留政府机制，只加经商能力；L0 GREEN | 待隔离验证 |
@@ -83,3 +83,13 @@ R0003 后续 `payment_full_only` 失败仍保留。其原观察器覆盖了当�
 此工作包已生成/静态/可复现构建/production parser 通过；终版夹具新增诊断后的独立 parser 为 6/6、零错误。证据在 `audits/xqol-payment-context-fixture-001/checks.json` 与 `audits/xqol-payment-context-fixture-002/final-report.json`；终版准备器 SHA `609b1815dc673faf32653089abd573e3500e6cffcccb3103a436e8f3572d2b5f`。修正后的生产字节仍待新付款会话实际验证，R0003 不标整体 PASS。完整范围见[付款上下文修正](xqol-native-payment-context-2026-10-01.md)。
 
 361 最新 1034 文件 production/profile02 已冻结，相对旧 staging 仅两份简中文案变化，830 份 TXT/GUI 与夹具保持原字节；不重复旧 parser，也不把新 profile 的文件准备写成实机通过。五个独立产品的连续启动与功能收集器，以及主/白绮冷载入、双顺序和死亡 driver，均以外置新 attempt 保留准备证据，等待串行取得实际桌面。
+
+## R0003 交互 UI 收口
+
+体验优化 R0003 已于 19:42 正常结束受管会话，`cleanup_proven`、`tree_gone` 为 true，job 及 CK3 inventory 均为零。实际 UI 与后续业务检查取得 `conversion_threshold_50_filtered`、`ransom_full_only`、`ransom_any_one_gold`、`release_priority_matrix`、`release_conversion_rite_matched` 五项 PASS；角色搜索器及完整角色面板实际读回 ZQA 两名样本、禅宗/罗马礼与意见正负。原 `payment_full_only` FAIL 保留，native report 的 GREEN 仅表示受管会话成功结束，不表示产品全矩阵通过。
+
+外置 `audits/xqol-R0003-ui-closeout-02/report.json` SHA `62b160a22ab231350b6d1ca409323ce6acd6996227f4ddf9ddb1a3ea0b5fbd4d` 冻结日志、三个实际 UI 原图、四个观察器结果、profile 输入与清理证明。最终 `error.log` 为 50,209 bytes，136 条记录中 57 条明确来自 tooltip 构建；其中包括验收探针的无人物/未设置 pending 作用域诊断。未将所有记录归为原版或声称零错误。前一 closeout 准备 attempt 因两个截图文件名不匹配停止，也已保留。
+
+冻结 R0003 的改信文件与当前 production 逐字节相同；付款/俘虏文件各顶层 effect 中，只有 `xqol_bulk_demand_payment_full_effect` 随接收者修复变化，其余赎金及释放 effect 均保持原字节。已通过的交互结果仅按这些未变输入延续；付款使用新的 `xqol-payment-context-profile-04` 独立验证弱牵制及强牵制边界，不重复未变的总督与交互矩阵。
+
+本机已再接入 `42d74678d` 的最新 master。相对此前主线，十个玩家产品、开发 bridge、准备器、构建器和静态检查输入均无变化，外置冻结的 d19 native 候选保持独立身份。
