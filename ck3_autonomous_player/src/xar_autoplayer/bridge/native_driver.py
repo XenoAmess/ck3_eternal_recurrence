@@ -2887,6 +2887,52 @@ class NativeHeadlessGameplayDriver:
             after_sequence=after_sequence, timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_religion_doctrine_catalogue_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read all loaded native Doctrine definitions."""
+        from .player_religion_doctrine_catalogue_private_transport import query_player_religion_doctrine_catalogue_private_v1
+
+        return query_player_religion_doctrine_catalogue_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_numeric_special_parameters_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read Rite numeric caches and the separate native Faith final value."""
+        from .player_religion_numeric_special_parameters_private_transport import query_player_religion_numeric_special_parameters_private_v1
+
+        return query_player_religion_numeric_special_parameters_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_conversion_outcome_private_v1(
+        self, *, expected_revision: int, target_rite_id: int,
+    ) -> dict[str, object]:
+        """Read current conversion outcome facts for a selected Rite."""
+        from .player_religion_conversion_outcome_private_transport import query_player_religion_conversion_outcome_private_v1
+
+        return query_player_religion_conversion_outcome_private_v1(
+            self, expected_revision=expected_revision, target_rite_id=target_rite_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_active_scheme_sway_completion_termination_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+        scheme_instance_id: int, after_sequence: int = 0,
+    ) -> dict[str, object]:
+        """Read retained native Sway termination records for one instance."""
+        from .active_scheme_sway_completion_termination_private_transport import query_active_scheme_sway_completion_termination_private_v1
+
+        return query_active_scheme_sway_completion_termination_private_v1(
+            self, expected_revision=expected_revision,
+            target_character_id=target_character_id, scheme_instance_id=scheme_instance_id,
+            after_sequence=after_sequence, timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_family_obligations_private_v1(
         self, *, expected_revision: int, subject_character_id: int,
         candidate_character_id: int, request_matrilineal_option: bool = False,

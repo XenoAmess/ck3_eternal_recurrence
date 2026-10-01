@@ -1,0 +1,46 @@
+{
+  "schema": "ck3-12002-player-religion-numeric-python-provenance-v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "input_fixture_sha256": {
+    "research/religion_doctrine12002_numeric_wire_fixtures.json": "ab1f15bd8129e1318751a5de7f086e9ce55d06cd1b748a78f7523aa97f60d133",
+    "research/religion_doctrine12002_numeric_final_wire_fixtures.json": "1e3887d43bda99b0dfe1ff6eacc67d3c037c962d5828d42c2c33abc71cf474b3",
+    "research/religion_doctrine12002_numeric_mailbox_wire_fixtures.json": "84014427e49c0125092ef2465e13ec087d22c9be2984135c4b976db8a58f053f"
+  },
+  "evidence_scopes": {
+    "research/religion_doctrine12002_numeric_wire_fixtures.json": "Actual numeric special-cache production reader and serializer against owned fixture memory; DTO only",
+    "research/religion_doctrine12002_numeric_final_wire_fixtures.json": "Actual Faith final production wrapper, native getter callback ABI and serializer; DTO only",
+    "research/religion_doctrine12002_numeric_mailbox_wire_fixtures.json": "Actual combined C++ TrySubmit/owner drain/production cache reader and native Faith final getter/Finish/Wait/Reclaim/complete command_result serializer"
+  },
+  "combined_packet_sha256": {
+    "current-versus-main": "f49a1d62a9489239a606b3f68fb6bc3167ef2cc06d80fbce65635db8611fddcc",
+    "known-zero-final": "4306acc2c4fc5b943979150a4f94d8d3c9e860602294bd8da3ad573c0df6fcaa",
+    "minimum-unset": "9c5a40f56240c655bb792e3f1e398e503ab99cef6b07b024cb121c0130e6da7a",
+    "legal-absent-faith": "159b84d9cf23f40096d66fe4c92ac39e9da8db7416dd5788af688f12bcca1e32",
+    "legal-absent-main-rite": "4e0c8cfeaddae67a722ccd5db280ba2e79a816fd69195dc8b7762b83dc87b057",
+    "native-threshold-unavailable": "de323ec0a49c230a53e3226abf49a98f8fefdbe328ab76ad4c40adf8ba32b3e1"
+  },
+  "receipt_refs": {
+    "native": {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\numeric\\mailbox\\final-combined\\result.json",
+      "sha256": "2da31e8a4ab3b4ecc9c9220f44c14dfa6d7489f3f0cea18c07955fbc54dd3a8e"
+    },
+    "native_delivery": {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-doctrines\\numeric\\numeric-mailbox-delivery-result.json",
+      "sha256": "62c3f543b3ea8012eed856c52e0be147a43f1bfbaa34189e2769b0f643246281"
+    },
+    "python_leaf": {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\python-religion-numeric-next\\leaf-focused.json",
+      "sha256": "000fdd3a3a1b2cee4cf7d7c452d82916b0b4958aeb747586156cef1ee61b66d5"
+    },
+    "sdk": {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\python-religion-numeric-next\\sdk-focused.json",
+      "sha256": "a391d3ba96a4e7ddc6d7d51145458b9c63dc194632b0ab9eae5146e14912870d"
+    }
+  },
+  "frame_preservation": "Only fixture endpoint request_id correlation changes in memory; all native DTO/status/scale/raw/zero/null/capture_epoch values are preserved",
+  "final_value_source": "Separate actual Faith native getter; no Python cache adjustment/define arithmetic produces final values",
+  "local_ck3_operations": [],
+  "live_verified": false,
+  "sdk_path": "Actual full C++ combined packet -> NativeProtocolState.ingest -> production wait_for_command_result -> production NativeHeadlessGameplayDriver descriptor -> official MCP Client"
+}

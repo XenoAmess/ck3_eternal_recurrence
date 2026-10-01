@@ -1,0 +1,135 @@
+{
+  "schema": "xar.g2.sway-completion-termination-python-fixtures.v1",
+  "recorded_at": "2026-10-01T10:05:51.425350+00:00",
+  "source_manifest": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-termination-mailbox\\delivery-result.json",
+  "source_manifest_sha256": "ad2593fa6060d0fb21f1aac000b82e6b1c48722063f93861baac2845add12208",
+  "source_fixture_receipt": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-termination-mailbox\\attempt-001\\result.json",
+  "source_fixture_receipt_sha256": "b5f068eef1e48383fa6a2525304e802204e2010737374ff2c7dcbb475da6e771",
+  "source_pins": {
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp": "56d652f5659cf62bef58b425886db75cd77d16c6a6db6e0db8e7d17931f7fa7f",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_completion_termination.cpp": "e5c59bab02a6da3b6e6df15cb3ca057b17ea702186accdcf2e38dddda41410ea",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_completion_termination_mailbox.cpp": "0e9e14bcf198c5d028e2b3ddef854949afe2d9b1150fdd9ef5e993a815a0953f",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_completion_termination_serializer.cpp": "aaffb6dfdc1e72be8ff17d452b57a09653366a0485a208842b0e07a3573c6db4",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_completion_termination_mailbox_test.cpp": "cd2fe3e2f3d5c92a70dfc59882fb749df477d5a8d13af6ca9d1ff8fc015da7e9",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_completion_termination_handler.cpp": "c116544bbe624968e155eeb9ad5ca5cf165a2c93fb73790fa8169e7f457d56f8",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_sway_completion_termination_test.cpp": "b97e80e0f805a8d5a7d6a7ea05ff84a6ec3cedf2830f8e8079ab7f37c99ea46a",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\research\\run_sway_completion12002_termination_mailbox_fixture.py": "093afba4239cc7de9f760767b53cab70222fe6c215f2c808058f725c9ea6dc2f",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_sway_completion_termination.hpp": "1e8a55a7b1636c6f124877eaa54ede7428b143d2803488b1a5734ce2469a03a6",
+    "Z:\\ck3_mod_rewrite\\.task-tmp\\g2src\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_sway_completion_termination_mailbox.hpp": "3c859c594cf1812963c931bad694d0cfef1fec29d9281a22f93a60e601194ac1"
+  },
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "source_artifacts": [
+    {
+      "fixture": "absent-post-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-termination-mailbox\\attempt-001\\Release\\absent-post-wire.json",
+      "sha256": "70726ef6973a4cd2d3ca182299d5d1249e7b1faf73a08e29c414c09743dd54b8"
+    },
+    {
+      "fixture": "original-no-terminal-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-termination-mailbox\\attempt-001\\Release\\original-no-terminal-wire.json",
+      "sha256": "d0ed65c13a88a28e4af4172a06438a736d01db86bedf2eb248d3b6a0700c3f3f"
+    },
+    {
+      "fixture": "terminal-transition-wire.json",
+      "source": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway\\completion-termination-mailbox\\attempt-001\\Release\\terminal-transition-wire.json",
+      "sha256": "04a0f4f5b3c2567ae709bb400e140b10c87a52ccdef0eff8e5484f60b6f65016"
+    }
+  ],
+  "payload_sha256": {
+    "absent-post-wire.json": "70726ef6973a4cd2d3ca182299d5d1249e7b1faf73a08e29c414c09743dd54b8",
+    "original-no-terminal-wire.json": "d0ed65c13a88a28e4af4172a06438a736d01db86bedf2eb248d3b6a0700c3f3f",
+    "terminal-transition-wire.json": "04a0f4f5b3c2567ae709bb400e140b10c87a52ccdef0eff8e5484f60b6f65016"
+  },
+  "command_result_fixtures": [
+    "absent-post-wire.json",
+    "original-no-terminal-wire.json",
+    "terminal-transition-wire.json"
+  ],
+  "actual_path": "Fixture-owned native slot installer -> capture before -> exactly once typed original -> native post readback -> pointer-free recorder -> paused owner QueryMailboxEnvelope -> production full command formatter",
+  "native_boundary": {
+    "actual_native_capture": true,
+    "actual_typed_original": true,
+    "actual_copied_recorder": true,
+    "actual_owner_envelope": true,
+    "actual_full_formatter": true,
+    "handler_compiled_od_o2_w4_wx": true,
+    "named_try_submit_admission_included": false
+  },
+  "boundary": {
+    "byte_identical_actual_native_outputs": true,
+    "command_result_envelopes_fabricated": false,
+    "native_tests_rerun": false,
+    "real_ck3_touched": false,
+    "readiness": "research/offline-verified",
+    "command_class_identifies_human_sender": false,
+    "authored_false_identifies_100_threshold": false,
+    "post_absence_implies_terminal": false,
+    "specific_termination_cause_claimed": false
+  },
+  "native_delivery_manifest": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\sway-completion\\termination-query-delivery-result.json",
+  "native_delivery_manifest_sha256": "d958b657577d777297d694cb7eb468726700646ca661bea8af3c90a50f4649e1",
+  "native_delivery_source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_termination.hpp",
+      "sha256": "1e8a55a7b1636c6f124877eaa54ede7428b143d2803488b1a5734ce2469a03a6"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination.cpp",
+      "sha256": "e5c59bab02a6da3b6e6df15cb3ca057b17ea702186accdcf2e38dddda41410ea"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_test.cpp",
+      "sha256": "b97e80e0f805a8d5a7d6a7ea05ff84a6ec3cedf2830f8e8079ab7f37c99ea46a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_termination_fixture.py",
+      "sha256": "45bc030b6131db1ff53139f519b95de29ce56aa91060d43d4986ad378239caa8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/sway_completion12002_termination_source_verify.py",
+      "sha256": "7255dcc4c4449d4fcee1434cbacd25eeb5ba6acd8b17418edb5590e7dab32c06"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/sway_completion12002_termination_abi.json",
+      "sha256": "4920e2da3f27db4169f7e8c2ec33524c14164e76b94db4bde139fdeb1034bcf4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/sway_completion12002_termination_tree.mmd",
+      "sha256": "05a4b250a1735eef7bfc43e795e0c5377935ddfb9d655c4165be39f254e0ffd1"
+    },
+    {
+      "path": "docs/ck3-native-ai/ck3-1.20.0.2-sway-termination-source.md",
+      "sha256": "3fcc0fc2d1d16f4096ce1d017ec8fcc6a5ea7252072db0a7f1fe53ccd7f3c58d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_mailbox_test.cpp",
+      "sha256": "cd2fe3e2f3d5c92a70dfc59882fb749df477d5a8d13af6ca9d1ff8fc015da7e9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_sway_completion12002_termination_mailbox_fixture.py",
+      "sha256": "093afba4239cc7de9f760767b53cab70222fe6c215f2c808058f725c9ea6dc2f"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_sway_completion_termination_mailbox.hpp",
+      "sha256": "3c859c594cf1812963c931bad694d0cfef1fec29d9281a22f93a60e601194ac1"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_mailbox.cpp",
+      "sha256": "0e9e14bcf198c5d028e2b3ddef854949afe2d9b1150fdd9ef5e993a815a0953f"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_handler.cpp",
+      "sha256": "c116544bbe624968e155eeb9ad5ca5cf165a2c93fb73790fa8169e7f457d56f8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_serializer.cpp",
+      "sha256": "aaffb6dfdc1e72be8ff17d452b57a09653366a0485a208842b0e07a3573c6db4"
+    },
+    {
+      "path": "docs/ck3-native-ai/ck3-1.20.0.2-sway-completion-termination-query.md",
+      "sha256": "bbb7c36b56bb34766de7b116e2fd7e1175f29861d47b345f15f1f11847f56246"
+    }
+  ]
+}

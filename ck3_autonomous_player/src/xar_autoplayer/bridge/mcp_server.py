@@ -1711,6 +1711,48 @@ def create_server(
                 expected_event_instance_id=expected_event_instance_id,
             )
 
+    if getattr(driver, "allow_private_player_religion_doctrine_catalogue_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_doctrine_catalogue_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read all loaded native Doctrine definitions."""
+            return driver.query_player_religion_doctrine_catalogue_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_player_religion_numeric_special_parameters_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_numeric_special_parameters_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read Rite numeric caches and the separate native Faith final value."""
+            return driver.query_player_religion_numeric_special_parameters_private_v1(
+                expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_player_religion_conversion_outcome_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_conversion_outcome_v1(
+            expected_revision: int, target_rite_id: int,
+        ) -> dict[str, object]:
+            """Read current conversion outcome facts without attributing resource changes."""
+            return driver.query_player_religion_conversion_outcome_private_v1(
+                expected_revision=expected_revision, target_rite_id=target_rite_id,
+            )
+
+    if getattr(driver, "allow_private_active_scheme_sway_completion_termination_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_active_scheme_sway_completion_termination_private_v1(
+            expected_revision: int, target_character_id: int, scheme_instance_id: int,
+            after_sequence: int = 0,
+        ) -> dict[str, object]:
+            """Read native Sway termination records for the exact instance."""
+            return driver.query_active_scheme_sway_completion_termination_private_v1(
+                expected_revision=expected_revision, target_character_id=target_character_id,
+                scheme_instance_id=scheme_instance_id, after_sequence=after_sequence,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3558,6 +3600,22 @@ def parser() -> argparse.ArgumentParser:
         "--private-player-epidemic-recovery-query", action="store_true",
         help="enable the existing native CE1 recovery county observation",
     )
+    result.add_argument(
+        "--private-player-religion-doctrine-catalogue-query", action="store_true",
+        help="enable the loaded native Doctrine definition catalogue observation",
+    )
+    result.add_argument(
+        "--private-player-religion-numeric-special-parameters-query", action="store_true",
+        help="enable Rite numeric cache and native Faith final value observations",
+    )
+    result.add_argument(
+        "--private-player-religion-conversion-outcome-query", action="store_true",
+        help="enable current conversion outcome observations for a selected Rite",
+    )
+    result.add_argument(
+        "--private-active-scheme-sway-completion-termination-query", action="store_true",
+        help="enable retained native Sway termination observations",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3651,6 +3709,10 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_religion_reform_context_query
             or args.private_active_scheme_sway_completion_execution_query
             or args.private_player_epidemic_recovery_query
+            or args.private_player_religion_doctrine_catalogue_query
+            or args.private_player_religion_numeric_special_parameters_query
+            or args.private_player_religion_conversion_outcome_query
+            or args.private_active_scheme_sway_completion_termination_query
             ) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -3739,6 +3801,14 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_active_scheme_sway_completion_execution_query = True
     if args.private_player_epidemic_recovery_query:
         driver.allow_private_epidemic_recovery_query = True
+    if args.private_player_religion_doctrine_catalogue_query:
+        driver.allow_private_player_religion_doctrine_catalogue_query = True
+    if args.private_player_religion_numeric_special_parameters_query:
+        driver.allow_private_player_religion_numeric_special_parameters_query = True
+    if args.private_player_religion_conversion_outcome_query:
+        driver.allow_private_player_religion_conversion_outcome_query = True
+    if args.private_active_scheme_sway_completion_termination_query:
+        driver.allow_private_active_scheme_sway_completion_termination_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",
