@@ -3,4 +3,4 @@ tags={
 	"Testing"
 }
 name="XQOL Acceptance Fixture"
-supported_version="1.19.0.6"
+supported_version="1.20.0.2"

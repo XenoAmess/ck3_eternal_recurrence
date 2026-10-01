@@ -1,8 +1,8 @@
-# XQOL：CK3 1.20.0.2 兼容候选与静态证据
+# XQOL：CK3 1.20.0.2 兼容修复与有界实机证据
 
 日期：2026-10-01。产品：`mod_xenoamess_quality_of_life`，Workshop item `3798133925`。
 
-当前结论：代码兼容迁移和本产品 L0 已完成。新版天朝场景已有严格继任、转封、死亡、关闭开关、改信门槛实际 UI、赎金和七组合释放证据；实机发现的足额牵制款报价与 recipient 上下文问题已修复，并由独立 R0004 付款场景验证。行政场景及下述未覆盖范围仍待验，不能据此宣称整个产品或正式发布完成。源 descriptor 仍为 `version="1.1.0"`、`supported_version="1.19.0.6"`；旧 native ABI、真实 Workshop 缓存和发布历史未修改。
+当前结论：代码兼容迁移、本产品 L0，以及新版天朝和行政两场核心验证已完成。天朝场景已有严格继任、转封、死亡、关闭开关、改信门槛实际 UI、赎金和七组合释放证据；实机发现的足额牵制款报价与 recipient 上下文问题已修复，并由独立 R0004 付款场景验证。R0005 补齐行政核心、三组实际决议开关及原生候选人面板读回，源 descriptor 现声明 `supported_version="1.20.0.2"`，产品版本保持 `version="1.1.0"`。下述未覆盖边界继续保留，不能据此宣称每条功能边界或正式发布完成；旧 native ABI、真实 Workshop 缓存和发布历史未修改。
 
 ## 精确输入
 
@@ -53,7 +53,7 @@ tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py 
 
 目前 `open_kaishek` 没有 CK3 1.20 semantic profile；本轮仅使用无版本语义的 parser，不用旧 1.19 profile 证明新版语义。互动引擎、GUI、异步 scope 生命周期、实际金钱/囚犯/改信/战争后果与 native ABI 均未由该离线结果证明。
 
-## 待新版实机验证
+## 新版实机证据与后续边界
 
 ### 2026-10-01 实机增量与边界
 
@@ -67,7 +67,13 @@ R0004 在同一真实引擎事务完成弱牵制足额/现有款/一金币边界
 
 两场均使用 fresh Steam 离线画面、一次性 userdir、冻结 d19 新版候选与官方 1.20 harness，并在正常结束后证明进程树清理及实际 CK3 零进程。开局人物为 1066 罗贝尔·德·欧特维尔／阿普利亚；旧 operator 中“Robert of Normandy”的称呼是历史错误。d19 event normalization 默认补出的 `enabled=true` 不是原生选项门禁实证；实际选择另依可见按钮/业务文字、fresh instance/revision 和真实后果确认。
 
-下列原完整验收清单继续作为范围要求。其中天朝上述已执行部分已有有界证据，行政主场景、复杂免费防御关系/战争后果、其余 slider 边界及独立宗教负门禁仍未执行。旧 runner 的游戏版本、EXE 与旧 Kaishek/native 准入锁保持冻结；新版实机入口是 checked 1.20 准备器与精确冻结的官方 harness，不能仅换旧 runner 常量声称迁移完成。
+R0005（`4-8e1c2f1861--xenoamess-quality-of-life--R0005`）在行政制独立 profile03 完成 17/17 严格 required markers：记录原版继任基线、启用后选择最高合格非玩家、卸任和死亡交接、关闭后恢复原版，以及保护标志所有权清理均成立。实际 UI 完成“自动选择继任”“别把封臣给我”“自动召集防御援军”三组开关，共六次真实确认及反向菜单名称读回。标题查找框实际输入并全文读回“安纳托利亚”，打开“安纳托利孔军区”的“查看继承”：完整任命继承制面板显示持有人将军君士坦丁，以及 2/2 候选——领主罗曼努斯 73、奈索斯分区长君士坦丁 61。玩家未在该两行中，未宣称已看见玩家惩罚 tooltip。
+
+行政场最终冻结报告为 `C:/workspace/ck3-upgrade-20261001/audits/xqol-R0005-administrative-closeout-01/report.json`，SHA-256 `80a4609c0a55b57b9b3c12c0d7d437e9c4fa966aa5989115a1c19d66bd53fc65`。该场最终 error.log 为 0 字节，仅说明 R0005 这一实例；R0003/R0004 的历史错误、付款 FAIL 与归因更正均保留。实际遇到的原版 `ep3_emperor_yearly.8050` 事件经当前 source/loc、可见第三项按钮、fresh instance/revision 和关闭后的实际读回处理，未用 normalization 的 `enabled=true` 代替门禁证明。自动流程的载入就绪、未知事件、合并标题与完整 OCR 拼字失败也保持历史原样，后续通过实际 HUD、原版源码与原图审阅继续。
+
+该场使用冻结 d19 官方 harness 和 fresh Steam 离线图；13:26:59 UTC 正常结束，native final 中嵌套 managed shutdown 的 `cleanup_proven=true`、`tree_gone=true`，独立 CK3 零进程读回成立。profile03 保持原字节：与修复后当前生产仅足额付款 effect 文件不同，行政 stage99 分支不调用付款；R0004 已独立验证当前付款修复，未把旧 profile 重标为全字节相同。产品 descriptor、静态 descriptor 合同和源码夹具 descriptor 的兼容目标同步至 1.20.0.2；必要 metadata 校验保存在 `audits/xqol-metadata-1.20-001/checks.json`。
+
+下列原完整验收清单继续作为范围要求。天朝、行政与付款上述实际范围已有有界证据；其余贤能文武任命家族、复杂免费防御关系/战争后果、其他 slider 边界及独立宗教负门禁仍未执行。旧 runner 的游戏版本、EXE 与旧 Kaishek/native 准入锁保持冻结；新版实机入口是 checked 1.20 准备器与精确冻结的官方 harness，不能仅换旧 runner 常量声称迁移完成。
 
 1. 三类政府的五种继任候选、开关与转封 guard 所有权清理。
 2. 免费防御关系矩阵、同人多关系去重及资源不扣减。
