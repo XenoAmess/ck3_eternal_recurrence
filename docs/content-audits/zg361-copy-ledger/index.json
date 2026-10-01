@@ -9,16 +9,24 @@
   "human_review_evidence": {
     "manifest_sha256": "bc28a77de59d26de915a5bf68f6bac51e260259c995f81d4cece637ec76c086c",
     "path": "docs/content-audits/zg361-copy-human-review.json",
+    "reason": "source input digest changed after review; event shard hashes changed after review",
     "reviewed_event_shards": 16,
     "reviewed_visible_events": 628,
-    "status": "pass"
+    "status": "review"
   },
-  "human_semantic_review_status": "pass",
-  "ledger_status": "pass",
+  "human_semantic_review_status": "review",
+  "ledger_status": "review",
   "live_render_validation_status": "pending",
   "machine_checks_status": "pass",
   "machine_failures": [],
   "open_items": [
+    {
+      "count": 628,
+      "kind": "manual_semantic_review",
+      "reason": "source input digest changed after review; event shard hashes changed after review",
+      "records": "event shards",
+      "status": "review"
+    },
     {
       "count": 1,
       "kind": "live_render_validation",
@@ -67,7 +75,7 @@
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-005.json",
       "records": 40,
-      "sha256": "1367c69956ab89abe30e898429e19e4b9b6c852f2224e264055f83a1d3aa55a6"
+      "sha256": "b530edf226e210c8097c48e7aa53354edd2280a448d12f3a91ef77bf7e01417e"
     },
     {
       "bytes": 63034,
@@ -182,11 +190,11 @@
       "sha256": "854b03e4132f823cd309f13d897a86a7cc72b7482e4dee6ec013556be13bf1c8"
     },
     {
-      "bytes": 73235,
+      "bytes": 73184,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-006.json",
       "records": 180,
-      "sha256": "8c3cb56f44284dae44d7e16805e8d948661e69024f27efef6626348d1668c6da"
+      "sha256": "cdf5d0393c9e0f45e6f6551829de20e7559903c4587ccdb2fc4dd9eace1c7437"
     },
     {
       "bytes": 69367,
@@ -1603,10 +1611,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 14480,
+        "bytes": 14429,
         "lines": 128,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_compensation_runtime_l_simp_chinese.yml",
-        "sha256": "c358dcd890eb5a214b55b08d83332fcce118d1bd8cfb1056902cba071f01817c"
+        "sha256": "7286dc5b024f5f1c034c474cdbe86d5533427242a7a7af15b8f32ba7a5fc753e"
       },
       {
         "authority": {
@@ -1831,9 +1839,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "98531f42fa7318e3315c23d8fb3f8861de1fa346",
+    "git_commit": "dbb84a92d188489b659992f8bb438476e0b530d3",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "028a946e1e4132a66c3b4fd8b592e5addf649fdeea83e76964d9dace18781960"
+    "input_digest_sha256": "f1c879ceab44a532e4143dee6ed7975dff4ad0d279b0f5b61e4a12c74d592d80"
   },
   "summary": {
     "all_event_definitions": 1013,
@@ -1863,8 +1871,8 @@
     "final_localization_keys": 5206,
     "hidden_events": 385,
     "machine_failure_count": 0,
-    "manual_review_open_count": 0,
-    "open_item_count": 1,
+    "manual_review_open_count": 628,
+    "open_item_count": 629,
     "visible_description_bindings": 854,
     "visible_events": 628,
     "visible_option_bindings": 1860,
