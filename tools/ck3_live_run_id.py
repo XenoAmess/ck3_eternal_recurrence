@@ -29,10 +29,12 @@ LOCK_TIMEOUT_SECONDS = 10.0
 CANONICAL_MOD_KEYS = frozenset(
     {
         "auto-upgrade-buildings",
+        "celestial-commerce-corruption",
         "eternal-recurrence",
         "ox-here",
         "reclaim-the-motherland",
         "remove-mandala",
+        "tributary-expansion-directives",
         "vanilla",
         "vivhite-courtier",
         "xenoamess-quality-of-life",

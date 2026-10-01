@@ -12,6 +12,22 @@ import ck3_live_run_id as live_ids
 
 
 class LiveRunIdTests(unittest.TestCase):
+    def test_expansion_products_receive_separate_counters(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            rows = live_ids.allocate_live_run_ids(
+                ("celestial-commerce-corruption", "tributary-expansion-directives"),
+                state_root=Path(temporary),
+                machine_id="upgrade-host",
+            )
+            again = live_ids.allocate_live_run_id(
+                "celestial-commerce-corruption",
+                state_root=Path(temporary),
+                machine_id="upgrade-host",
+            )
+        self.assertEqual([row.sequence for row in rows], [1, 1])
+        self.assertEqual(again.sequence, 2)
+        self.assertNotEqual(rows[0].run_id, rows[1].run_id)
+
     def test_sequences_are_scoped_by_machine_and_mod(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
