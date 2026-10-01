@@ -38,7 +38,7 @@ def prepare(repo: Path, output: Path) -> dict:
     return finish_receipt(repo, source, output, files, {
         "product": "mod_auto_upgrade_buildings", "mode": "scripted-core-engine",
         "entry": "on_game_start_after_lobby -> aubt120_start -> aubt.0 at day 1 -> existing matrix",
-        "rules": "vanilla declared defaults; no AUB game rule; choose ordinary 1066 Robert 1316",
+        "rules": "vanilla declared defaults; no AUB game rule; choose an ordinary 1066 ruler (Heinrich IV has character ID 1316)",
         "required_markers": ["AUBT120: TEST BEGIN engine_startup", *markers],
         "marker_policy": "Each required marker exactly once; no AUBT or AUBT120 TEST FAIL. Succession requires actual original Continue as heir UI before aubt.12.",
         "production_builder": "tools/build_auto_upgrade_buildings_release.py",
