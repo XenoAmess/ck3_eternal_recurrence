@@ -285,6 +285,8 @@ class OrdinaryGameplayTests(unittest.TestCase):
                 calls.append(("query", instance, kwargs))
                 return {"instance_id": instance}
         service._gameplay = Gameplay()
+        service._postcondition_timeout_seconds = 0.01
+        service._postcondition_poll_seconds = 0.001
         return service, backend, driver, calls
 
     def test_normal_time_controls_read_actual_postconditions_without_episode_binding(self):

@@ -90,6 +90,10 @@ class NativeProfileBackend:
         return read_live_clock(target["pid"], target["executable"], target["executable_sha256"], profile["game_version"])
 
 
+class _PostconditionPending(RuntimeError):
+    """The command was submitted but its native semantic frame is still pending."""
+
+
 class NativeProfileService:
     """No caller can choose a process, artifact, pipe, command, or run identity."""
     def __init__(self, profile: dict, *, backend=None, driver_factory=None) -> None:
@@ -103,6 +107,8 @@ class NativeProfileService:
         self.driver = None
         self.driver_factory = driver_factory
         self._gameplay = None
+        self._postcondition_timeout_seconds = 5.0
+        self._postcondition_poll_seconds = 0.05
 
     def guard(self) -> dict:
         profile = self.profile
@@ -267,9 +273,7 @@ class NativeProfileService:
             self._bound_frame(expected_revision, paused=paused)
             try:
                 result = invoke(gameplay)
-                after = self._snapshot()
-                observation = self.guard()
-                verify(result, before, after)
+                after, observation = self._wait_postcondition(result, before, verify)
                 return self._receipt(operation, {"status": "native_gameplay_postcondition_verified",
                     "result": result, "snapshot_before": before, "snapshot_after": after,
                     "observation_after": observation, "uses_ocr": False, "uses_desktop_input": False})
@@ -279,6 +283,25 @@ class NativeProfileService:
                 return self._receipt(operation, {"status": "RED", "snapshot_before": before,
                     "reason": f"{type(error).__name__}: {error}"})
 
+    def _wait_postcondition(self, result: dict, before: dict, verify) -> tuple[dict, dict]:
+        deadline = time.monotonic() + self._postcondition_timeout_seconds
+        while True:
+            self.guard()
+            after = self._snapshot()
+            observation = self.guard()
+            if after.get("map_ready") is not True:
+                raise RuntimeError("native postcondition frame is not map-ready")
+            try:
+                verify(result, before, after)
+                return after, observation
+            except _PostconditionPending:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise
+                # Polling only reads native state and profile guards. It never
+                # resends the command or changes a caller's operation/revision.
+                time.sleep(min(self._postcondition_poll_seconds, remaining))
+
     def simulation(self, action: str, expected_revision: int) -> dict:
         steps = {"pause": "pause-map", "resume": "resume-map",
                  "speed_1": "set-speed-1", "speed_3": "set-speed-3", "speed_5": "set-speed-5"}
@@ -286,9 +309,9 @@ class NativeProfileService:
             raise ValueError("unsupported ordinary simulation action")
         def verify(result, before, after):
             if action in {"pause", "resume"} and after["paused"] is not (action == "pause"):
-                raise RuntimeError("native pause/resume postcondition did not materialize")
+                raise _PostconditionPending("native pause/resume postcondition did not materialize before deadline")
             if action.startswith("speed_") and after["speed"] != int(action[-1]):
-                raise RuntimeError("native speed postcondition did not materialize")
+                raise _PostconditionPending("native speed postcondition did not materialize before deadline")
         return self._ordinary_action("simulation-" + action, expected_revision,
             lambda service: service.execute_step(steps[action], expected_revision=expected_revision), verify)
 
@@ -308,11 +331,12 @@ class NativeProfileService:
                 # caller revision matching. The existing provider binds its own
                 # fresh native submission frame; event/save/resume remain strict.
                 result = gameplay.execute_step("pause-map", expected_revision=None)
-                after = self._snapshot()
-                observation = self.guard()
-                if (after.get("map_ready") is not True or after["paused"] is not True
-                        or after["date_raw"] < before["date_raw"]):
-                    raise RuntimeError("current native pause postcondition did not materialize")
+                def verify_pause(result, before, after):
+                    if after["date_raw"] < before["date_raw"]:
+                        raise RuntimeError("current native pause raw date moved backwards")
+                    if after["paused"] is not True:
+                        raise _PostconditionPending("current native pause postcondition did not materialize before deadline")
+                after, observation = self._wait_postcondition(result, before, verify_pause)
                 return self._receipt("simulation-pause-current", {
                     "status": "native_gameplay_postcondition_verified", "result": result,
                     "snapshot_before": before, "snapshot_after": after,
@@ -331,7 +355,7 @@ class NativeProfileService:
         def verify(result, before, after):
             active = after.get("active_event")
             if isinstance(active, dict) and active.get("instance_id") == event_instance_id:
-                raise RuntimeError("selected event is still active after its native ACK")
+                raise _PostconditionPending("selected event is still active after its native ACK before deadline")
         return self._ordinary_action("event-select", expected_revision,
             lambda service: service.select_event_option(option_number, event_instance_id=event_instance_id,
                                                         expected_revision=expected_revision), verify, paused=True)

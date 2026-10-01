@@ -171,11 +171,16 @@ input or OCR. Live attach and gameplay are left to the exclusive desktop owner.
 
 Validation: 6 read-only clock tests, 18 profile/bootstrap/ordinary-player tests,
 5 real-provider endpoint campaign-projection tests and 11 existing semantic-profile tests
+plus 4 real-provider delayed postcondition tests
 passed, including official in-memory MCP schemas, stale process/Steam/lease
 rejection, wrong userdir and artifact rejection, native hello/build rejection,
 ACK without containment proof, one-shot attachment across server instances and
 native receipt readback, boot/null/incomplete/unstable byte reads and the exact
 read-only Windows process-access mask. These are deterministic fixtures, not live CK3 proof.
+
+ACKs now use a bounded read-only semantic postcondition wait; the trigger,
+operation-specific checks and preserved R8 RED are documented in
+[the wait contract](profile-native-postcondition-wait-2026-10-02.md).
 `open_kaishek` is not applicable to Windows process identity, named pipes and
 native byte/transport bindings; there is no Clausewitz script semantic change.
 
