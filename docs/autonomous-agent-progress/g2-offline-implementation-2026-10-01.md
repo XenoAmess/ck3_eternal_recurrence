@@ -867,3 +867,9 @@ Seven tested source and topic files. Actual R6 stopped at64quote rows before all
 Twelve frozen native research and topic sources combine current actor lookup, actual controller table and scheduler inputs. One actual owning query case12checks/two whole packets passes; prior schedule and context fixtures reused. No AI construction, action, score or reform-date prediction. Native named registration and actual paused follow. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\ai-inputs-native-source-only12.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 21:52:44 Expose religious AI inputs through the official SDK
+
+Nine frozen Python and topic sources. One new official SDK case consumes two native whole packets via realState and Driver, preserving exact fields and no-AI known absence. Default off and readonly; previous leaf test reused and cleanup pause fix preserved. Actual paused pending. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-routes\AI-INPUTS-R9-SHARED-READY.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

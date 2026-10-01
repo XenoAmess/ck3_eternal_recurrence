@@ -3001,6 +3001,17 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_religion_ai_reform_inputs_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read native reform AI inputs and retained controller schedules."""
+        from .player_religion_ai_reform_inputs_private_transport import query_player_religion_ai_reform_inputs_private_v1
+
+        return query_player_religion_ai_reform_inputs_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_family_obligations_private_v1(
         self, *, expected_revision: int, subject_character_id: int,
         candidate_character_id: int, request_matrilineal_option: bool = False,

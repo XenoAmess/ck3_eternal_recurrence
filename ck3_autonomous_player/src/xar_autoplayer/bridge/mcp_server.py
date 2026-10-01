@@ -1815,6 +1815,16 @@ def create_server(
                 expected_revision=expected_revision,
             )
 
+    if getattr(driver, "allow_private_player_religion_ai_reform_inputs_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_ai_reform_inputs_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native reform AI inputs and retained controller schedules."""
+            return driver.query_player_religion_ai_reform_inputs_private_v1(
+                expected_revision=expected_revision,
+            )
+
     if getattr(driver, "allow_private_faction_gift_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_faction_gift_candidate_private_v1(
@@ -3702,6 +3712,10 @@ def parser() -> argparse.ArgumentParser:
         "--private-player-religion-draft-resource-costs-query", action="store_true",
         help="enable the native current draft base resource fee quote",
     )
+    result.add_argument(
+        "--private-player-religion-ai-reform-inputs-query", action="store_true",
+        help="enable native reform AI input and controller schedule observations",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3805,6 +3819,7 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_religion_draft_doctrine_choices_query
             or args.private_player_religion_draft_tenet_choices_query
             or args.private_player_religion_draft_resource_costs_query
+            or args.private_player_religion_ai_reform_inputs_query
             ) and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -3913,6 +3928,8 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_player_religion_draft_tenet_choices_query = True
     if args.private_player_religion_draft_resource_costs_query:
         driver.allow_private_player_religion_draft_resource_costs_query = True
+    if args.private_player_religion_ai_reform_inputs_query:
+        driver.allow_private_player_religion_ai_reform_inputs_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

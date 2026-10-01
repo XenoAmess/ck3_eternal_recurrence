@@ -1,0 +1,23 @@
+{
+  "schema": "xar.ck3_12002.religion_ai_reform_inputs.actual_cpp_wire.v1",
+  "created_at": "2026-10-01T13:28:56.167827+00:00",
+  "producer_result": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\ai-inputs-caller\\attempt-001\\result.json",
+  "producer_result_sha256": "09d527ccb679eded5411655eaacd3648e138eb9a6e72bf2c89b60bb732098aa7",
+  "production_path": "TrySubmit -> owner Drain -> actual Core/actor -> holder context -> per-controller schedule -> Finish -> Wait/Reclaim -> complete native command_result",
+  "callbacks": "fixture process only; no CK3, pipe, UI or Steam",
+  "packet_edits": "none; in-memory tests correlate only the request_id nonce",
+  "packets": {
+    "multiple-controllers": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\ai-inputs-caller\\attempt-001\\wire\\multiple-controllers.json",
+      "source_sha256": "40712116527901eb9f251c666f3aa2b43933f3a715839210dd64d023e5b340be",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_ai_reform_inputs/multiple-controllers.json",
+      "sha256": "40712116527901eb9f251c666f3aa2b43933f3a715839210dd64d023e5b340be"
+    },
+    "observed-no-ai": {
+      "source_path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\religion-reform\\ai-inputs-caller\\attempt-001\\wire\\observed-no-ai.json",
+      "source_sha256": "ef7323474d1d4a1601d25a7b9c431f637539697bba778595b8a6a2bd587b50dd",
+      "fixture_path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_player_religion_ai_reform_inputs/observed-no-ai.json",
+      "sha256": "ef7323474d1d4a1601d25a7b9c431f637539697bba778595b8a6a2bd587b50dd"
+    }
+  }
+}
