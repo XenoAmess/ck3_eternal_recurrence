@@ -169,3 +169,32 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 首17 transport已提交后追加真实4counter nullable解析及现有service.plan_turn defaultOFF durable consumer，不更改选步。实际Cpp native baseline/post→Python新增2案例PASS；consumer改动后15案例联合PASS（12既有+3新增）。旧41/旧MCP2未重复。terminal后首次合法材料观测保留真实空XP而不造零；before/after trace不冒充奖励归因。未获自然Feast live/冷恢复资格。证据：Z:\ck3_mod_rewrite\.task-tmp\g2src\artifacts\g2-offline-2026-10-01\feast-python\counter-append-result.json；Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\feast\lifecycle\outcome-counters-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:49:34 当前精确 source commit 汇总
+
+以下是 shared source 分包 commit；delivery worktree 在每包普通 rebase／FF push 中保留并发上游，master SHA 可与 source SHA 不同。每包 commit/push 完整输出保存在 `artifacts/g2-offline-2026-10-01/*-commit-push.log`，中央最终 manifest 单独绑定实际编译源。一次上游差异核对已确认 `43b262e→8819f0a` 的额外变化是 mod工具／CI依赖／文档，没有 native 或 Python bridge 变化；没有因此重建无关旧矩阵。
+
+| 包 | source commit | 含报告的路径数 |
+| --- | --- | --- |
+| council | `34ba817861cf0a70445641eb5ba1855886c41099` | 31 |
+| factions | `87b419e2cba41de5156dde5aaefb2dfae0a2a31d` | 19 |
+| family-obligations | `ba6f383282f46e46cd82521a9cec89ac7f0b358a` | 43 |
+| feast-counters | `9bca801817c566bcfafcf1ed6d1bc8b0741fbfdf` | 9 |
+| feast-native | `36f7ace8333ea4ad8218ec3b8844197b7f46552f` | 100 |
+| feast-python | `442c801222f5f3be07885c29434c455efb933363` | 20 |
+| gift | `c3646fad7c610daa0e02db2805c3f3e1fb56478b` | 19 |
+| government-caller | `181382bcfffa4a15b6361b06a93117866332241f` | 8 |
+| government-native | `16b5dee5397f6342bb6c6976976036d8d07b98fb` | 17 |
+| law-native | `43b262eb42246b530c96625eca129e270103c7ef` | 35 |
+| law | `b285a6943b87041f2ce81c04836b50a0e7865a1a` | 37 |
+| multiwar-aggregation | `5a49a8186b911b4c0f958b96dae3a5f8705c4b98` | 8 |
+| prewar-muster | `a4f0407c50ca8b903c41c55cc1253ff0c8a18391` | 9 |
+| prewar-participants | `fbc3f93224dcad491c3d394d1b4e1c65e894b170` | 9 |
+| prisoner | `081c09d8294b54083612c345275ce15d152a4885` | 30 |
+| python-core | `1bb35d65504316cde6ef4b90dd8668b3a6f36531` | 22 |
+| religion | `355c7edecc99482b2520106300505235532603b8` | 12 |
+| runner | `ff6bb2c7ab2457e292b96ac7780d78f9eae0add1` | 7 |
+| sway-law-python | `afafa88d509ef22fe00f78e1d88ff345780f80d9` | 16 |
+| sway | `23f336478dc7989e275819f01f4dcb4da77bd60a` | 41 |
+
+当前仍在做最终中央／共享MCP接线与file candidate，随后root唯一实机操作；宗教下一增量独立继续。战争38源冻结，原失败及未验证source边界保留。

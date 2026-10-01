@@ -1,5 +1,27 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-01 15:49:34：非战争 G2 源码交付与实机准备
+
+项目所有者最新指令已允许本机 CK3 实机，恢复宗教研究，并停止战争相关研究。本节覆盖下方历史截点中的“禁止占用游戏／宗教暂缓／继续战争施工”安排；历史 artifact 与失败保留，不重新解释其资格。
+
+议会候选／四 gates／typed assign、完整派系／gift、Sway、realm law、Feast、政府真实 caller、家族 lineage／解约条款、赎金及普通 campaign 目标续接已按精确清单分包提交和普通 FF 推送。native fixture 与真实 C++ wire→Python／MCP 的通过范围见[施工账本](../autonomous-agent-progress/g2-offline-implementation-2026-10-01.md)；新增源最高为 **static-ready**，尚未新增 paused/live 或 G2 credit。中央候选首轮 DLL/injector 构建已通过，最终小增量／source pins 收口后使用[新独立 runner](../handover/2026-10-01-g2-offline-runner-files.md)进入新 PID cold／paused，再验证自然合法非战争动作及独立 material、next turn 和 cold。
+
+新候选为 **40 ON／4 OFF**，旧 slot33 council probe／war cash／prewar／planner diag OFF，新 council 使用 slot41；MCP 计划只启用八项非战争 readonly permits，typed action 由实机责任人单独明确启用。原 canonical pair actor29829／h74／raw53169072 只是独立 1.20 migration seed，未延续 Robert。G2 **3/8**、Robert **3153/36524**、完整一局／百年／双种子资格不增加。
+
+宗教先落 stock 与 exact-build 原生树，实际当前 Rite→Faith→Religion／main Rite／tags／fervor／精神满足度 provider 的 Od/O2 各20检查通过；当前为独立 library static-ready，同一 MCP 的实际只读 query 正在下一增量接线，尚无宗教 paused live／转换动作资格。Character+B4 是 Rite identity，不能沿用旧 Faith 标签。战争源已停止开发；[冻结归档](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/war-paused/.xar-frozen-evidence.json)保留38文件，含明确未验证的 prewar supply/latest selector，不能称其 static-ready。非战争 gold Snapshot 与赎金只复用停止前已证明的最小 getter，不继续战争研究。
+
+root 已取得当前 Steam 离线的新鲜像素证据（07:20 UTC）与无 CK3 进程清单；此处仍未启动新游戏。最终 native bundle／新 profile／paused outcome 按实际回执追加，不以首轮 build 或 ACK 代替结果。
+
+新版专题入口：
+
+- [Council candidates](ck3-1.20.0.2-council-candidates.md)、[gates](ck3-1.20.0.2-council-gates.md)、[assignment](ck3-1.20.0.2-council-assignment.md)
+- [Faction alerts](ck3-1.20.0.2-faction-alerts.md)、[gift](ck3-1.20.0.2-faction-gift.md)
+- [Sway state](ck3-1.20.0.2-sway-state.md)、[private Sway/law transport](ck3-1.20.0.2-private-sway-law-transport.md)
+- [Law action mailbox](ck3-1.20.0.2-realm-law-action-mailbox.md)
+- [Feast terminal values](ck3-1.20.0.2-feast-outcome-values.md)、[durable lifecycle](ck3-1.20.0.2-feast-durable-lifecycle.md)
+- [Government adapter](government-runtime-adapter-1.20.0.2.md)、[ordinary goal continuity](ordinary-campaign-goal-continuity.md)
+- [Religion stock](ck3-1.20.0.2-religion-stock.md)、[actual current context](ck3-1.20.0.2-religion-context.md)
+
 ## 2026-10-01 13:00：1.20.0.2 非战争组合离线收口
 
 11:56 历史截点中的 FAMILY/共享接线、native 联编和候选冻结 pending 已由后续实际回执闭合。provider 组合源码冻结于 master `adb19c92cb16a458aeaef7381201d0e9ce762885`；当前生产合同修复源码 `6878392841ed93328159a839999e0c9df44185ee` 的 [exact 官方 CI #36817339144](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36817339144) 于 12:59:27（Asia/Shanghai）**SUCCESS**。此前 adb 的 [CI #36816670532 RED](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36816670532) 保留：Vivhite 合同记录了 pre-add CRLF 哈希，修复绑定已提交 LF 原件，JSON 内容没有改动；不是游戏内 Rite 或文案机制变化。
