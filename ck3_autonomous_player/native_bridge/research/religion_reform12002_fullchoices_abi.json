@@ -1,0 +1,250 @@
+{
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "game_version": "1.20.0.2",
+  "spans": {
+    "scope_rebuild": {
+      "start_rva": "0x14f8820",
+      "end_rva": "0x14f892b",
+      "sha256": "9f2307a4865c94ddf325760f8d575b9d9e6ca315c25fb033aac6e83c306b35da",
+      "instruction_count": 56
+    },
+    "faith_scope_constructor": {
+      "start_rva": "0xee5bf0",
+      "end_rva": "0xee5cc5",
+      "sha256": "6b45ee6442a95e2ec01974a3beed6135843d8d4f393f1876c4e7f6e4bce8ac5c",
+      "instruction_count": 41
+    },
+    "scope_copy": {
+      "start_rva": "0x373af40",
+      "end_rva": "0x373afde",
+      "sha256": "ba045c5c5c390619f517dcee5cf7e40389801d97b43149e30d85d40add782d73",
+      "instruction_count": 34
+    },
+    "scope_selected_list_copy": {
+      "start_rva": "0x373a450",
+      "end_rva": "0x373a667",
+      "sha256": "c938c1f848cc0022e0aef31494b538d66999c569c99ab9ddf596806cf8d926d7",
+      "instruction_count": 147
+    },
+    "draft_selection_scope_refresh": {
+      "start_rva": "0x14f8660",
+      "end_rva": "0x14f8815",
+      "sha256": "415558e0369bc31ed260292db97ddd854d01aeb5b027d1373a6c654b74e218ea",
+      "instruction_count": 104
+    },
+    "draft_initial_scope_caller": {
+      "start_rva": "0x14f772a",
+      "end_rva": "0x14f7758",
+      "sha256": "0b27a9f63756d7f117c5f5f6f1ccfc0d1120ca9734d809d4d15cf8810265342c",
+      "instruction_count": 9
+    },
+    "draft_selected_definition_flag_list": {
+      "start_rva": "0x2592190",
+      "end_rva": "0x25923a5",
+      "sha256": "88bc87550c013e24c816432d050cefbbef16eced6814484044d1642a3fa00878",
+      "instruction_count": 147
+    },
+    "doctrine_item_cost_only_update": {
+      "start_rva": "0xee21b0",
+      "end_rva": "0xee2298",
+      "sha256": "b8d4338323da95049d6a8fbe1afdc3b7fb1d3405b4702088f517a8399df72fbe",
+      "instruction_count": 59
+    },
+    "doctrine_cache_clear": {
+      "start_rva": "0xee3640",
+      "end_rva": "0xee369b",
+      "sha256": "42ad11b76d93a6b198ab1ad9464fe1830a64470dfa97fd60ddfc0542042b6092",
+      "instruction_count": 27
+    },
+    "tenet_cache_clear": {
+      "start_rva": "0xee35d0",
+      "end_rva": "0xee3634",
+      "sha256": "70e38bcdef5cab8cb9e16ecd1d261cc10a84c8a4a2361bbb8625016567b934f5",
+      "instruction_count": 29
+    }
+  },
+  "anchors": {
+    "0x14f8851": {
+      "bytes": "e89ad39eff",
+      "mnemonic": "call",
+      "operands": "0xee5bf0"
+    },
+    "0x14f8861": {
+      "bytes": "488d9630070000",
+      "mnemonic": "lea",
+      "operands": "rdx, [rsi + 0x730]"
+    },
+    "0x14f886d": {
+      "bytes": "e8de1b2402",
+      "mnemonic": "call",
+      "operands": "0x373a450"
+    },
+    "0x14f8872": {
+      "bytes": "c744242004000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rsp + 0x20], 4"
+    },
+    "0x14f888f": {
+      "bytes": "e87c182402",
+      "mnemonic": "call",
+      "operands": "0x373a110"
+    },
+    "0x14f8894": {
+      "bytes": "488d8ed0000000",
+      "mnemonic": "lea",
+      "operands": "rcx, [rsi + 0xd0]"
+    },
+    "0x14f88a0": {
+      "bytes": "e89b262402",
+      "mnemonic": "call",
+      "operands": "0x373af40"
+    },
+    "0xee5c5c": {
+      "bytes": "b80d000000",
+      "mnemonic": "mov",
+      "operands": "eax, 0xd"
+    },
+    "0xee5cb8": {
+      "bytes": "48894708",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rdi + 8], rax"
+    },
+    "0x14f7739": {
+      "bytes": "498d8e280b0000",
+      "mnemonic": "lea",
+      "operands": "rcx, [r14 + 0xb28]"
+    },
+    "0x14f7740": {
+      "bytes": "e84baa0901",
+      "mnemonic": "call",
+      "operands": "0x2592190"
+    },
+    "0x14f774c": {
+      "bytes": "418b5708",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [r15 + 8]"
+    },
+    "0x14f7753": {
+      "bytes": "e8c8100000",
+      "mnemonic": "call",
+      "operands": "0x14f8820"
+    },
+    "0x14f86fe": {
+      "bytes": "488bd0",
+      "mnemonic": "mov",
+      "operands": "rdx, rax"
+    },
+    "0x14f8704": {
+      "bytes": "e8d7c6ffff",
+      "mnemonic": "call",
+      "operands": "0x14f4de0"
+    },
+    "0x14f87ba": {
+      "bytes": "e8d1990901",
+      "mnemonic": "call",
+      "operands": "0x2592190"
+    },
+    "0x14f87bf": {
+      "bytes": "418b5508",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [r13 + 8]"
+    },
+    "0x14f87c6": {
+      "bytes": "e855000000",
+      "mnemonic": "call",
+      "operands": "0x14f8820"
+    },
+    "0x25921c4": {
+      "bytes": "488b7108",
+      "mnemonic": "mov",
+      "operands": "rsi, qword ptr [rcx + 8]"
+    },
+    "0x25921f2": {
+      "bytes": "c744242028000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rsp + 0x20], 0x28"
+    },
+    "0x2592292": {
+      "bytes": "498b7550",
+      "mnemonic": "mov",
+      "operands": "rsi, qword ptr [r13 + 0x50]"
+    },
+    "0x25922bb": {
+      "bytes": "c744242027000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rsp + 0x20], 0x27"
+    },
+    "0x14f883f": {
+      "bytes": "8b1dbb33fe03",
+      "target_rva": "0x54dbc00"
+    }
+  },
+  "stock": {
+    "common/religion/doctrine_types/_doctrine_types.info": {
+      "sha256": "7a8f6f8e78f88f7c83de3c43239a5da2709777e9d56fed4ae031e98b76af2ffc",
+      "excerpts": [
+        {
+          "first_line": 72,
+          "last_line": 95,
+          "text": "\t### Brief: is_shown ( trigger )\n\t# When should this doctrine be shown when choosing doctrines?\n\t#\n\t# Supported scopes:\n\t#\troot ( Faith )\n\t#\n\tis_shown = {\n\t\t<triggers>\n\t}\n\n\t### Brief: can_pick ( trigger )\n\t# When can this doctrine be picked when choosing doctrines?\n\t# When doctrines should refer to other selected doctrines when creating a new faith (e.g. for mutually exclusive doctrines), use:\n\t#\t flag:required_doctrine = { is_in_list = selected_doctrines }\n\t# The \"selected_doctrines\" list is the list of doctrines currently selected in the UI. (It might be different from the doctrines in\n\t# the faith, since the player can change multiple doctrines when creating a faith.)\n\t#\n\t# Supported scopes:\n\t#\troot ( Faith )\n\t#\tactor: the character picking doctrines (usually Head of Faith / Head of Rite). Can be null\n\t#\n\tcan_pick = {\n\t\t<triggers>\n\t}"
+        }
+      ]
+    },
+    "common/religion/doctrine_types/20_doctrines.txt": {
+      "sha256": "e5e4b38240f3382ff1c4ef159c8ab68a2a50fabd39c1b0293f3a047a3939387f",
+      "excerpts": [
+        {
+          "first_line": 1087,
+          "last_line": 1097,
+          "text": "\t\t}\n\t}\n\n\tcan_pick = {\n\t\tcustom_description = {\n\t\t\ttext = incompatible_tenet_pentarchy_trigger\n\t\t\tNOT = { tenet:tenet_pentarchy = { is_in_list = selected_doctrines } }\n\t\t}\n\t}\n\n\tparameters = {"
+        },
+        {
+          "first_line": 1238,
+          "last_line": 1255,
+          "text": "\t\t}\n\t}\n\n\tcan_pick = {\n\t\tcustom_description = {\n\t\t\ttext = incompatible_doctrine_theocracy_temporal_trigger\n\t\t\tNOT = { doctrine:doctrine_theocracy_temporal = { is_in_list = selected_doctrines } }\n\t\t}\n\t\tcustom_description = {\n\t\t\ttext = incompatible_doctrine_spiritual_appointment_temporal_trigger\n\t\t\tNOR = {\n\t\t\t\tdoctrine:doctrine_clerical_succession_spiritual_appointment = { is_in_list = selected_doctrines }\n\t\t\t\tdoctrine:doctrine_clerical_succession_spiritual_fixed_appointment = { is_in_list = selected_doctrines }\n\t\t\t}\n\t\t}\n\t}\n\n\tparameters = {"
+        }
+      ]
+    },
+    "gui/window_rite_creation.gui": {
+      "sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "excerpts": [
+        {
+          "first_line": 987,
+          "last_line": 995,
+          "text": "\t\t\tusing = Background_Area\n\t\t\tmargin = { 5 5 }\n\t\t}\n\n\t\tonclick = \"[RiteCreationWindow.GetDoctrineCategoryWindow.ShowWindow( DoctrineItem.GetSlotIndex )]\"\n\t\tonclick = \"[GetVariableSystem.Set( 'faith_creation_right_view', 'doctrine_selection' )]\"\n\t\tonclick = \"[GetVariableSystem.Set( 'doctrine_group_name', DoctrineGroupType.GetName( Faith.Self ) )]\"\n\t\tdown = \"[And(GetVariableSystem.HasValue( 'doctrine_group_name', DoctrineGroupType.GetName( Faith.Self ) ), GetVariableSystem.HasValue( 'faith_creation_right_view', 'doctrine_selection' ))]\"\n"
+        },
+        {
+          "first_line": 1247,
+          "last_line": 1256,
+          "text": "\t\t\tsize = { 430 80 }\n\n\t\t\tlayoutpolicy_horizontal = expanding\n\n\t\t\tenabled = \"[And( DoctrineItem.CanPick( TopScope.Self ), GetScriptedGui( 'pam_know_doctrine' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'doctrine', DoctrineType.MakeScope ).End ) )]\"\n\n\t\t\tonclick = \"[RiteCreationWindow.SelectDoctrine( DoctrineItem.Self )]\"\n\t\t\tonclick = \"[VariableSystem.Clear( 'faith_creation_right_view' )]\"\n\t\t\tdown = \"[RiteCreationWindow.HasDoctrineSelected( DoctrineType.Self )]\"\n"
+        }
+      ]
+    },
+    "common/scripted_guis/pam_scripted_guis.txt": {
+      "sha256": "675c90f1b3496543456542f32d465535e5966dbbe92cd2157892a5a93b11fff2",
+      "excerpts": [
+        {
+          "first_line": 82,
+          "last_line": 92,
+          "text": "pam_know_doctrine = {\n\tscope = character\n\tsaved_scopes = { doctrine }\n\n\tis_valid = {\n\t\tOR = {\n\t\t\tknows_doctrine = scope:doctrine\n\t\t\thas_perk = prophet_perk\n\t\t}\n\t}\n}"
+        }
+      ]
+    }
+  },
+  "reused_evidence": [
+    "religion_reform12002_group_model_abi.json:12 spans / 25 anchors; ShowWindow14F1950, actual constructorEE1E80, group140, selected790/stride48",
+    "religion_reform12002_choices_abi.json:EE4E60 definition-only CanPick; trigger372DF30; initialized prophet/native knowledge bindings",
+    "research/religion_doctrine12002_selection_abi.json:EE4CC0 definition-only ShouldDisplay; corrected stride supplied by R6"
+  ],
+  "materialization_equivalence": {
+    "doctrine": true,
+    "scope": "all actual selected-slot group definition sources in one current draft",
+    "requires_fake_item": false,
+    "requires_scope_construction": false,
+    "requires_show_window": false,
+    "tenet": "separate religion_reform12002_tenet_sources research"
+  },
+  "local_ck3_touched": false,
+  "readiness": "research",
+  "status": "GREEN"
+}

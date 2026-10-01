@@ -1,0 +1,735 @@
+{
+  "schema": "xar.ck3_12002_rite_creation_base_resource_cost_abi.v1",
+  "game_version": "1.20.0.2",
+  "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "executable_size": 101039736,
+  "readiness": "static-confirmed",
+  "local_ck3_touched": false,
+  "live_verified": false,
+  "native_spans": [
+    {
+      "name": "create_command_secondary_execute",
+      "start_rva": "0x29a2de0",
+      "end_exclusive_rva": "0x29a2f5a",
+      "sha256": "5b5b02174f0d88f5af53c87a2d1369dacdbd50e6ae738cf55c5da8966f2e122b",
+      "bytes": "40 56 48 83 ec 20 48 8b 05 7b 47 2c 03 48 8b f1 48 89 5c 24 38 48 89 7c 24 40 48 85 c0 74 26 8b 51 08 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 5c c8 08 48 85 db 74 05 39 53 18 74 07 48 8b 1d 44 47 2c 03 48 8b 05 c5 b4 37 03 48 85 c0 74 29 8b 93 b4 00 00 00 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 08 48 2c 03 48 8b 15 91 b4 37 03 48 85 d2 74 2d 44 8b 80 b8 04 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 8b 42 20 48 03 c9 48 8b 4c c8 08 48 85 c9 74 06 44 39 41 08 74 07 48 8b 0d 38 b4 37 03 48 8d 96 50 02 00 00 48 8d 7e e8 e8 d8 9b 23 00 48 89 7c 24 30 4c 8d 4c 24 30 48 8b cb 84 c0 74 07 e8 82 4a 00 00 eb 05 e8 4b 4e 00 00 8b 05 25 8d b3 02 48 8b 7c 24 40 48 8b 5c 24 38 83 f8 ff 74 6a 8b 56 08 3b c2 75 63 48 8b 05 70 46 2c 03 48 85 c0 74 23 8b ca 81 e1 ff ff ff 00 3b 48 2c 73 16 48 8b 40 20 48 03 c9 48 8b 4c c8 08 48 85 c9 74 05 39 51 18 74 07 48 8b 0d 49 46 2c 03 4c 8b 15 f2 75 2c 03 4d 85 d2 74 21 44 8b 81 b4 00 00 00 45 33 c9 49 8b 02 ba 66 3e 00 00 49 8b ca 48 83 c4 20 5e 48 ff a0 a0 00 00 00 48 83 c4 20 5e c3"
+    },
+    {
+      "name": "edit_command_secondary_execute",
+      "start_rva": "0x29a25b0",
+      "end_exclusive_rva": "0x29a263b",
+      "sha256": "6e464d88d5aec62dcd1f83451e5946952709d3e64267093a601b6eaf5f4d915d",
+      "bytes": "40 53 48 83 ec 20 48 8b 05 ab 4f 2c 03 48 8b d9 48 85 c0 74 29 44 8b 41 0c 41 8b c8 81 e1 ff ff ff 00 3b 48 2c 73 17 48 8b 40 20 48 03 c9 48 8b 54 c8 08 48 85 d2 74 06 44 39 42 18 74 07 48 8b 15 7b 4f 2c 03 48 8d 4b e8 e8 f2 05 00 00 8b 05 fc 95 b3 02 83 f8 ff 74 2c 3b 43 0c 75 27 48 8b 0d 0b 7f 2c 03 48 85 c9 74 1b 48 8b 01 45 33 c9 44 8b 43 08 ba 6c 41 00 00 48 83 c4 20 5b 48 ff a0 a0 00 00 00 48 83 c4 20 5b c3"
+    },
+    {
+      "name": "new_faith_or_reform_wrapper",
+      "start_rva": "0x29a7950",
+      "end_exclusive_rva": "0x29a7d1e",
+      "sha256": "cc4e2ba9c18294b9d70d5e4afe381d2b67195618ca4b520c7565a5bfeb0b0a01",
+      "bytes": "48 89 5c 24 08 48 89 74 24 10 44 88 44 24 18 55 57 41 56 48 8d ac 24 c0 fd ff ff 48 81 ec 40 03 00 00 48 8b f9 48 8b 15 7c 69 37 03 8b b1 b4 00 00 00 48 85 d2 74 24 8b c6 25 ff ff ff 00 3b 42 2c 73 18 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 05 39 70 08 74 07 48 8b 05 be fc 2b 03 8b 98 b8 04 00 00 4d 8b 09 48 8b 05 8e 12 2c 03 48 8b 88 a0 00 00 00 48 81 c1 28 d5 00 00 49 83 c1 28 4c 8b c7 48 8d 95 70 02 00 00 e8 6d 99 02 00 45 33 f6 4c 89 74 24 48 4c 89 74 24 50 48 8d 05 11 b8 b3 02 48 89 44 24 58 48 8d 44 24 48 48 89 44 24 20 45 33 c9 41 b0 16 41 8d 56 32 48 8b cf e8 38 f1 cc ff 48 8d 4c 24 48 e8 3e f5 cc ff 48 8b 05 27 12 2c 03 48 8b 88 a0 00 00 00 48 81 c1 e0 f1 01 00 e8 24 b0 07 00 48 8d 4c 24 60 e8 1a 25 ee fd 90 4c 8b 05 aa 68 37 03 4d 85 c0 74 2b 8b 97 b4 00 00 00 8b c2 25 ff ff ff 00 41 3b 40 2c 73 18 8b c8 48 03 c9 49 8b 40 20 48 8b 44 c8 08 48 85 c0 74 05 39 50 08 74 07 48 8b 05 eb fb 2b 03 8b 80 b8 04 00 00 4c 8b 05 6e 68 37 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 54 d1 08 48 85 d2 74 05 39 42 08 74 07 48 8b 15 1c 68 37 03 48 8d 8d d0 00 00 00 e8 f0 5b 8d ff 90 48 8b d0 48 8d 4c 24 60 e8 62 34 d9 00 90 48 8d 8d e8 01 00 00 e8 15 1c ee fd 48 83 bd d0 01 00 00 00 74 34 48 8d 8d d0 01 00 00 e8 7f 1c ee fd 48 8b 8d e0 01 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 95 d0 01 00 00 ff 50 10 4c 89 b5 d0 01 00 00 44 89 b5 d8 01 00 00 48 8b 95 e8 00 00 00 48 85 d2 74 1a 44 89 b5 f4 00 00 00 48 8b 8d f8 00 00 00 48 8b 01 41 b8 08 00 00 00 ff 50 10 c7 44 24 30 04 00 00 00 8b 47 18 48 89 44 24 38 4c 8d 44 24 30 8b 15 5e 44 3a 03 48 8d 4c 24 78 e8 9c 25 d9 00 c7 44 24 30 0d 00 00 00 48 89 5c 24 38 4c 8d 44 24 30 8b 15 0c 43 3a 03 48 8d 4c 24 78 e8 7a 25 d9 00 c7 44 24 30 2a 00 00 00 8b c6 48 89 44 24 38 4c 8d 44 24 30 8b 15 1c 47 3a 03 48 8d 4c 24 78 e8 56 25 d9 00 c7 44 24 30 66 00 00 00 c7 44 24 34 17 00 00 00 48 8d 05 6f 80 dc 01 48 89 44 24 38 48 8d 05 d3 81 dc 01 48 89 44 24 40 48 8d 54 24 30 e8 54 72 f9 00 8b d8 85 c0 79 24 89 44 24 28 48 8d 05 83 39 f8 01 48 89 44 24 20 4c 8d 0d b7 02 39 03 33 d2 33 c9 44 8d 42 01 e8 7a 2f 5d 01 89 5c 24 70 e8 e1 0a 2b fe 48 8b f8 48 8b 48 38 48 8b 99 90 01 00 00 48 8d 0d 2c 7f d9 01 e8 37 29 8f ff 4c 8b 0d 10 10 2c 03 49 83 c1 08 48 8d 05 45 9c c0 ff 48 89 44 24 28 48 8d 05 d9 9a c0 ff 48 89 44 24 20 4c 8d 44 24 60 48 8b d3 48 8b cf e8 e4 4f e2 00 90 48 8d 4d 78 e8 8a 1a ee fd 48 83 7d 60 00 74 25 48 8d 4d 60 e8 fa 1a ee fd 48 8b 4d 70 48 8b 01 41 b8 08 00 00 00 48 8b 55 60 ff 50 10 4c 89 75 60 44 89 75 68 48 8b 54 24 78 48 85 d2 74 1d 44 89 75 84 48 8b 4d 88 48 8b 01 41 b8 08 00 00 00 ff 50 10 4c 89 74 24 78 44 89 75 80 48 8b 74 24 48 48 85 f6 74 33 8b 5c 24 54 85 db 7e 17 48 8d 7e 20 90 48 8b cf e8 68 e3 ea fd ff cb 48 83 c7 40 85 db 7f ee 48 8b 4c 24 58 48 8b 01 41 b8 08 00 00 00 48 8b d6 ff 50 10 4c 8d 9c 24 40 03 00 00 49 8b 5b 20 49 8b 73 28 49 8b e3 41 5e 5f 5d c3"
+    },
+    {
+      "name": "new_rite_wrapper",
+      "start_rva": "0x29a7d20",
+      "end_exclusive_rva": "0x29a8033",
+      "sha256": "9fe5a0f6dedc5e1cfd55a31ed02a23cdd31bb96fe0f107865d95c1b0b8544ea7",
+      "bytes": "48 89 5c 24 08 48 89 74 24 10 48 89 7c 24 18 4c 89 74 24 20 55 48 8d ac 24 c0 fd ff ff 48 81 ec 40 03 00 00 48 8b f1 48 8b 15 aa 65 37 03 8b b9 b4 00 00 00 48 85 d2 74 24 8b c7 25 ff ff ff 00 3b 42 2c 73 18 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 05 39 78 08 74 07 48 8b 05 ec f8 2b 03 8b 98 b8 04 00 00 48 8b d6 49 8b 09 e8 7b b4 ff ff 45 33 f6 4c 89 74 24 48 4c 89 74 24 50 48 8d 05 5f b4 b3 02 48 89 44 24 58 48 8d 44 24 48 48 89 44 24 20 45 33 c9 41 b0 17 41 8d 56 33 48 8b ce e8 86 ed cc ff 48 8d 4c 24 48 e8 8c f1 cc ff 48 8b 05 75 0e 2c 03 48 8b 88 a0 00 00 00 48 81 c1 e0 f1 01 00 e8 72 ac 07 00 48 8d 4c 24 60 e8 68 21 ee fd 90 48 8b d6 48 8d 8d d0 00 00 00 e8 68 fe 16 fe 90 48 8b d0 48 8d 4c 24 60 e8 2a 31 d9 00 90 48 8d 8d e8 01 00 00 e8 dd 18 ee fd 4c 39 b5 d0 01 00 00 74 32 48 8d 8d d0 01 00 00 e8 48 19 ee fd 48 8b 8d e0 01 00 00 48 8b 01 45 8d 46 08 48 8b 95 d0 01 00 00 ff 50 10 4c 89 b5 d0 01 00 00 44 89 b5 d8 01 00 00 48 8b 95 e8 00 00 00 48 85 d2 74 1a 44 89 b5 f4 00 00 00 48 8b 8d f8 00 00 00 48 8b 01 41 b8 08 00 00 00 ff 50 10 c7 44 24 30 0d 00 00 00 48 89 5c 24 38 4c 8d 44 24 30 8b 15 fc 3f 3a 03 48 8d 4c 24 78 e8 6a 22 d9 00 c7 44 24 30 2a 00 00 00 8b c7 48 89 44 24 38 4c 8d 44 24 30 8b 15 0c 44 3a 03 48 8d 4c 24 78 e8 46 22 d9 00 c7 44 24 30 66 00 00 00 c7 44 24 34 17 00 00 00 48 8d 05 5f 7d dc 01 48 89 44 24 38 48 8d 05 c3 7e dc 01 48 89 44 24 40 48 8d 54 24 30 e8 44 6f f9 00 8b d8 85 c0 79 24 89 44 24 28 48 8d 05 73 36 f8 01 48 89 44 24 20 4c 8d 0d a7 ff 38 03 33 d2 33 c9 44 8d 42 01 e8 6a 2c 5d 01 89 5c 24 70 e8 d1 07 2b fe 48 8b f8 48 8b 48 38 48 8b 99 98 01 00 00 48 8d 0d 1c 7c d9 01 e8 27 26 8f ff 4c 8b 0d 00 0d 2c 03 49 83 c1 08 48 8d 05 35 99 c0 ff 48 89 44 24 28 48 8d 05 c9 97 c0 ff 48 89 44 24 20 4c 8d 44 24 60 48 8b d3 48 8b cf e8 d4 4c e2 00 90 48 8d 4d 78 e8 7a 17 ee fd 48 83 7d 60 00 74 25 48 8d 4d 60 e8 ea 17 ee fd 48 8b 4d 70 48 8b 01 41 b8 08 00 00 00 48 8b 55 60 ff 50 10 4c 89 75 60 44 89 75 68 48 8b 54 24 78 48 85 d2 74 1d 44 89 75 84 48 8b 4d 88 48 8b 01 41 b8 08 00 00 00 ff 50 10 4c 89 74 24 78 44 89 75 80 48 8b 74 24 48 48 85 f6 74 33 8b 5c 24 54 85 db 7e 17 48 8d 7e 20 90 48 8b cf e8 58 e0 ea fd ff cb 48 83 c7 40 85 db 7f ee 48 8b 4c 24 58 48 8b 01 41 b8 08 00 00 00 48 8b d6 ff 50 10 4c 8d 9c 24 40 03 00 00 49 8b 5b 10 49 8b 73 18 49 8b 7b 20 4d 8b 73 28 49 8b e3 5d c3"
+    },
+    {
+      "name": "new_faith_or_reform_budget",
+      "start_rva": "0x29d1350",
+      "end_exclusive_rva": "0x29d1819",
+      "sha256": "b03071d0c60649216e8c751a4a228c0d8bde1c2fd11db38a36cb9bab8bd72960",
+      "bytes": "48 89 5c 24 08 4c 89 4c 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8d ac 24 00 f9 ff ff 48 81 ec 00 08 00 00 49 8b d9 4d 8b f0 4c 8b e2 4c 8b e9 33 f6 89 b5 50 07 00 00 41 81 78 1c 72 61 68 43 0f 85 5d 04 00 00 41 83 78 18 ff 0f 84 52 04 00 00 41 8b 80 b4 00 00 00 4c 8b 05 49 cf 34 03 4d 85 c0 74 27 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 19 8b d1 48 03 d2 49 8b 48 20 4c 8b 7c d1 08 4d 85 ff 74 06 41 39 47 08 74 07 4c 8b 3d 8e 62 29 03 41 8b 87 b8 04 00 00 4c 8b 05 10 cf 34 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 7c d1 08 48 85 ff 74 05 39 47 08 74 07 48 8b 3d be ce 34 03 81 7f 0c 74 69 61 46 0f 85 c4 03 00 00 83 7f 08 ff 0f 84 ba 03 00 00 48 8b cf e8 1f 75 20 00 84 c0 74 68 48 8d 97 e0 00 00 00 48 8d 4c 24 40 e8 aa 4a e8 fd c7 85 50 07 00 00 01 00 00 00 41 b8 04 00 00 00 48 8d 15 0f eb d5 01 48 8d 4c 24 40 e8 59 4b eb fd 48 8d 8f 00 01 00 00 48 8b 05 eb 61 29 03 48 89 44 24 20 4c 8b 0d 4f ce 34 03 4c 8b 05 d8 60 29 03 48 8d 54 24 40 e8 be 90 a6 ff 90 48 8d 4c 24 40 e8 a3 4b e8 fd 48 8b d3 48 8d 4d b0 e8 57 0a fd ff 90 89 75 a8 45 8b 4d 7c 4c 8d 05 98 2b da 01 ba 40 00 00 00 48 8d 4c 24 68 e8 e9 b3 ea fd b9 3f 00 00 00 3b c1 0f 4f c1 89 45 a8 48 8d 44 24 68 49 c7 c0 ff ff ff ff 49 ff c0 42 80 3c 00 00 75 f6 48 8d 54 24 68 48 8d 4d b8 e8 a8 48 e8 fd c7 85 d8 01 00 00 ff ff ff ff 8b 87 8c 00 00 00 4c 8b 05 69 c9 34 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 74 d1 08 48 85 f6 74 05 39 46 08 74 07 48 8b 35 af c8 34 03 48 8b 05 f8 76 29 03 48 8b 88 a0 00 00 00 48 81 c1 78 d9 00 00 c6 44 24 28 05 48 8d 45 b0 48 89 44 24 20 41 b1 01 4c 8b 87 90 00 00 00 48 8b d6 e8 1a 6c ff ff 48 8b d8 41 8b 96 b4 00 00 00 48 8b c8 e8 18 6f b2 ff 48 8d 45 b0 48 89 44 24 28 48 89 5c 24 20 45 33 c9 4c 8b 87 90 00 00 00 48 8b d6 49 8b cd e8 a5 18 00 00 48 8b f0 48 8d 95 c8 00 00 00 48 8b c8 e8 93 fc a6 ff 48 8b d7 48 8b ce e8 a8 f3 a6 ff 41 8b 4e 18 89 8e 04 03 00 00 48 8b 0d 37 8f 29 03 48 85 c9 74 15 48 8b 01 45 33 c9 44 8b 46 08 ba 6a 41 00 00 ff 90 a0 00 00 00 4c 8b 85 58 07 00 00 49 81 c0 40 02 00 00 33 ff 48 89 7c 24 20 45 33 c9 49 8b d7 48 8d 8d 50 07 00 00 e8 d6 2b 29 00 48 8b 18 49 8b ce e8 ab 24 ef ff 41 b8 23 02 00 00 48 c7 44 24 20 a0 86 01 00 45 33 c9 48 8b d0 48 8d 8d 50 07 00 00 e8 2a c0 27 00 48 8b 10 48 03 d3 48 89 7c 24 28 48 89 7c 24 20 4d 8b cf 4d 8b c6 48 8d 4c 24 60 e8 6a 16 29 00 c7 44 24 40 fd 01 00 00 c7 44 24 44 17 00 00 00 48 8d 05 6b 2a da 01 48 89 44 24 48 48 8d 05 8f 29 da 01 48 89 44 24 50 48 8d 54 24 40 e8 98 d7 f6 00 89 bd 54 07 00 00 69 c8 b3 85 d6 4a b8 9f ba a6 5e 2b c1 8b c8 c1 e9 08 33 c8 81 c1 a4 1d e3 68 8b c1 c1 e0 08 33 c1 69 c8 e9 c4 56 1b 8b c1 c1 e8 08 33 c1 69 c8 a2 8c d6 92 8b c1 c1 e8 08 33 c1 89 85 50 07 00 00 48 8b 44 24 60 48 f7 d8 49 8b 96 b0 01 00 00 48 85 d2 74 59 48 81 c2 08 01 00 00 48 8d 8d 50 07 00 00 48 89 4c 24 30 48 89 44 24 28 4c 8d 05 ce c5 ef ff 49 8b ce e8 d6 58 f0 ff 8b 05 d0 a4 b0 02 83 f8 ff 74 27 41 3b 46 18 75 21 48 8b 0d de 8d 29 03 48 85 c9 74 15 48 8b 01 45 33 c9 ba fd 35 00 00 44 8d 47 3d ff 90 a0 00 00 00 8b 86 98 00 00 00 4c 8b 05 8f cb 34 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 54 d1 08 48 85 d2 74 05 39 42 08 74 07 48 8b 15 d5 5e 29 03 45 33 c9 45 33 c0 49 8b ce e8 f7 e9 ed ff c6 86 d8 08 00 00 01 ba 80 96 98 00 48 8b ce e8 03 d4 a6 ff 48 8b ce e8 fb 82 20 00 49 8d 8d 70 03 00 00 8b 46 08 89 85 50 07 00 00 48 8d 95 50 07 00 00 e8 ef ed 13 fe 8b 46 08 41 89 04 24 48 8d 4d b0 e8 ef 17 b2 fe eb 08 41 c7 04 24 ff ff ff ff 49 8b c4 48 8b 9c 24 40 08 00 00 48 81 c4 00 08 00 00 41 5f 41 5e 41 5d 41 5c 5f 5e 5d c3"
+    },
+    {
+      "name": "new_rite_create_and_change",
+      "start_rva": "0x29a3210",
+      "end_exclusive_rva": "0x29a3363",
+      "sha256": "55457207e1db6302174654559148d9e760c1cd91219aea37c4366a9eae372a07",
+      "bytes": "48 89 5c 24 08 57 48 83 ec 20 48 8b 05 2f 5a 2c 03 4c 8b c1 49 83 c0 28 48 8b da 48 8b 88 a0 00 00 00 48 81 c1 78 d9 00 00 e8 52 51 02 00 45 33 c9 45 33 c0 48 8b d0 48 8b cb 48 8b f8 e8 4e cf f0 ff 48 8b 8b c0 01 00 00 48 85 c9 74 08 8b 91 b8 01 00 00 eb 05 ba ff ff ff ff 4c 8b 05 f6 42 2c 03 4d 85 c0 74 26 8b c2 25 ff ff ff 00 41 3b 40 2c 73 19 8b c8 49 8b 40 20 48 03 c9 4c 8b 54 c8 08 4d 85 d2 74 06 41 39 52 18 74 07 4c 8b 15 cc 42 2c 03 41 81 7a 1c 72 61 68 43 0f 85 a6 00 00 00 41 83 7a 18 ff 0f 84 9b 00 00 00 4c 8b 05 34 b0 37 03 48 8b 15 a5 43 2c 03 4d 85 c0 74 2e 45 8b 8a b4 00 00 00 41 8b c1 25 ff ff ff 00 41 3b 40 2c 73 19 8b c8 49 8b 40 20 48 03 c9 48 8b 44 c8 08 48 85 c0 74 06 44 39 48 08 74 03 48 8b c2 44 8b 98 b8 04 00 00 4d 85 c0 74 31 44 8b 8b b4 00 00 00 41 8b c1 25 ff ff ff 00 41 3b 40 2c 73 1c 8b c8 49 8b 40 20 48 03 c9 4c 8b 44 c8 08 4d 85 c0 74 09 45 39 48 08 75 03 49 8b d0 44 3b 9a b8 04 00 00 75 11 45 33 c9 45 33 c0 48 8b d7 49 8b ca e8 48 ce f0 ff 48 8b 5c 24 30 48 83 c4 20 5f c3"
+    },
+    {
+      "name": "new_rite_budget",
+      "start_rva": "0x29c8390",
+      "end_exclusive_rva": "0x29c8789",
+      "sha256": "8b9b11eed15e3f0905873b22be31af66e7a158b5d6509a4b47685d0b8dfbf972",
+      "bytes": "48 89 5c 24 18 44 89 4c 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8d 6c 24 d9 48 81 ec b0 00 00 00 4d 8b e8 4c 8b fa 48 8b f9 8b 82 b4 00 00 00 4c 8b 0d 31 5f 35 03 4d 85 c9 74 27 8b c8 81 e1 ff ff ff 00 41 3b 49 2c 73 19 8b d1 48 03 d2 49 8b 49 20 4c 8b 74 d1 08 4d 85 f6 74 06 41 39 46 08 74 07 4c 8b 35 76 f2 29 03 41 8b 86 b8 04 00 00 4c 8b 05 f8 5e 35 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 74 d1 08 48 85 f6 74 05 39 46 08 74 07 48 8b 35 a6 5e 35 03 c7 45 b7 29 01 00 00 c7 45 bb 17 00 00 00 48 8d 05 59 b8 da 01 48 89 45 bf 48 8d 05 be b7 da 01 48 89 45 c7 48 8d 55 b7 e8 d9 69 f7 00 45 33 e4 44 89 65 6b 69 c0 b3 85 d6 4a b9 9f ba a6 5e 2b c8 8b d1 c1 ea 08 33 d1 81 c2 a4 1d e3 68 8b c2 c1 e0 08 33 c2 69 c8 e9 c4 56 1b 8b c1 c1 e8 08 33 c1 69 c8 a2 8c d6 92 8b c1 c1 e8 08 33 c1 89 45 67 4d 8d 85 40 02 00 00 4c 89 64 24 20 45 33 c9 49 8b d6 48 8d 4d 6f e8 39 bd 29 00 48 8b 18 49 8b cf e8 0e b6 ef ff 41 b8 23 02 00 00 48 c7 44 24 20 a0 86 01 00 45 33 c9 48 8b d0 48 8d 4d 6f e8 90 51 28 00 48 8b 10 48 03 d3 4c 89 64 24 28 4c 89 64 24 20 4d 8b ce 4d 8b c7 48 8d 4d 6f e8 d1 a7 29 00 48 8b 45 6f 48 f7 d8 49 8b 97 b0 01 00 00 48 85 d2 74 57 48 81 c2 08 01 00 00 48 8d 4d 67 48 89 4c 24 30 48 89 44 24 28 4c 8d 05 b2 57 f0 ff 49 8b cf e8 ba ea f0 ff 8b 05 b4 36 b1 02 83 f8 ff 74 28 41 3b 47 18 75 22 48 8b 0d c2 1f 2a 03 48 85 c9 74 16 48 8b 01 45 33 c9 ba fd 35 00 00 45 8d 44 24 3d ff 90 a0 00 00 00 44 38 67 10 75 09 48 8b 1d ea f0 29 03 eb 40 48 8d 4f 20 48 8d 55 b7 e8 fb 4c 00 00 48 8b 5d b7 48 85 db 75 09 48 8b 1d cb f0 29 03 eb 10 b2 04 48 8b cb e8 7f c9 b2 ff 8b 45 bf 89 43 08 48 8d 4f 70 48 89 5d 67 48 8d 55 67 e8 78 7d eb fd 44 89 65 17 44 8b 4f 7c 4c 8d 05 c1 b8 da 01 ba 40 00 00 00 48 8d 4d d7 e8 db 42 eb fd b9 3f 00 00 00 3b c1 0f 4f c1 89 45 17 4c 89 65 b7 66 0f 6f 05 f2 e7 02 02 f3 0f 7f 45 c7 44 88 65 b7 48 8d 45 d7 49 c7 c0 ff ff ff ff 49 ff c0 46 38 24 00 75 f7 48 8d 55 d7 48 8d 4d b7 e8 88 d7 e8 fd 90 8b 86 8c 00 00 00 4c 8b 05 52 58 35 03 4d 85 c0 74 27 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 19 8b d1 48 03 d2 49 8b 48 20 4c 8b 44 d1 08 4d 85 c0 74 06 41 39 40 08 74 07 4c 8b 05 97 57 35 03 4c 89 6c 24 30 c6 44 24 28 01 48 8d 45 b7 48 89 44 24 20 4c 8b 8e 90 00 00 00 48 8b cb e8 e5 cc b2 ff 90 48 8b 55 cf 48 83 fa 10 72 31 48 ff c2 48 8b 4d b7 48 8b c1 48 81 fa 00 10 00 00 72 19 48 83 c2 27 48 8b 49 f8 48 2b c1 48 83 c0 f8 48 83 f8 1f 0f 87 c1 00 00 00 e8 9d b8 85 01 41 8b 57 18 48 8b cb e8 6d fb b2 ff 45 33 c0 8b 56 08 48 8b cb e8 cf f7 b2 ff 41 8b 97 b4 00 00 00 48 8b cb e8 c0 fd b2 ff 49 8d 95 18 01 00 00 48 8d 8b c8 04 00 00 48 3b ca 74 13 4c 8b 42 10 48 83 7a 18 10 72 03 48 8b 12 e8 9a d6 e8 fd 48 8b d3 48 8b cf e8 1f 26 00 00 48 8b d3 48 8b cf e8 64 2d 00 00 48 8d 8f a0 00 00 00 48 8b d3 e8 f5 ef ff ff 48 8b d3 48 8b cf e8 aa 3a 00 00 80 3d 9f eb 2e 03 00 74 16 48 8b d3 48 8d 4d 7f e8 b5 b4 29 00 8b 10 48 8b cb e8 ab fb b2 ff 48 8b c3 48 8b 9c 24 00 01 00 00 48 81 c4 b0 00 00 00 41 5f 41 5e 41 5d 41 5c 5f 5e 5d c3 e8 08 a3 86 01 cc"
+    },
+    {
+      "name": "edit_owned_rite_budget",
+      "start_rva": "0x29a2bf0",
+      "end_exclusive_rva": "0x29a2dd1",
+      "sha256": "b717635b64879a6de0384f6d54348396d0cb5ba6d1e85ecf51351461109fb275",
+      "bytes": "48 89 5c 24 18 48 89 6c 24 20 56 57 41 56 48 83 ec 60 48 8b f2 4c 8b c9 48 8b 15 e9 b6 37 03 48 85 d2 74 2a 44 8b 41 20 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 7c c8 08 48 85 ff 74 06 44 39 47 08 74 07 48 8b 3d 2b 4a 2c 03 49 8d 69 28 c7 44 24 40 76 01 00 00 c7 44 24 44 17 00 00 00 48 8d 05 48 10 dd 01 48 89 44 24 48 48 8d 05 2c 34 bc 01 48 89 44 24 50 45 33 f6 44 89 b4 24 84 00 00 00 48 8d 54 24 40 e8 ba c1 f9 00 69 c8 b3 85 d6 4a b8 9f ba a6 5e 2b c1 8b c8 c1 e9 08 33 c8 81 c1 a4 1d e3 68 8b c1 c1 e0 08 33 c1 69 c8 e9 c4 56 1b 8b c1 c1 e8 08 33 c1 69 c8 a2 8c d6 92 8b c1 c1 e8 08 33 c1 89 84 24 80 00 00 00 4c 8d 85 40 02 00 00 4c 89 74 24 20 45 33 c9 48 8b d7 48 8d 8c 24 88 00 00 00 e8 49 1a 2c 00 48 8b 18 48 8b ce e8 ee 0d f2 ff 41 b8 23 02 00 00 48 c7 44 24 20 a0 86 01 00 45 33 c9 48 8b d0 48 8d 8c 24 88 00 00 00 e8 6c a9 2a 00 48 8b 10 48 03 d3 4c 89 74 24 28 4c 89 74 24 20 4c 8b cf 4c 8b c6 48 8d 8c 24 88 00 00 00 e8 a9 ff 2b 00 48 8b 84 24 88 00 00 00 48 f7 d8 48 8b 96 b0 01 00 00 48 85 d2 74 59 48 81 c2 08 01 00 00 48 8d 8c 24 80 00 00 00 48 89 4c 24 30 48 89 44 24 28 4c 8d 05 82 af f2 ff 48 8b ce e8 8a 42 f3 ff 8b 05 84 8e b3 02 83 f8 ff 74 26 3b 46 18 75 21 48 8b 0d 93 77 2c 03 48 85 c9 74 15 48 8b 01 45 33 c9 ba fd 35 00 00 45 8d 46 3d ff 90 a0 00 00 00 4c 8b c5 48 8b d6 48 8b cf e8 3b 48 b5 ff 48 8b cf 4c 8d 5c 24 60 49 8b 5b 30 49 8b 6b 38 49 8b e3 41 5e 5f 5e e9 6f a2 23 00"
+    },
+    {
+      "name": "faith_internal_rite_allocation_no_second_base_debit",
+      "start_rva": "0x29c81a0",
+      "end_exclusive_rva": "0x29c8390",
+      "sha256": "e67a2df71e893cae7ba56bf8bc23a7c6c02000e5b19a33632daeaed29cd9caeb",
+      "bytes": "48 89 5c 24 10 48 89 6c 24 18 48 89 74 24 20 57 41 56 41 57 48 81 ec b0 00 00 00 41 0f b6 e9 4d 8b f0 4c 8b fa 48 8b f1 0f b6 bc 24 f8 00 00 00 40 80 ff 01 74 22 8d 47 fc 3c 01 76 1b bf 01 00 00 00 b9 05 00 00 00 48 8b 05 62 0a 2a 03 80 b8 c2 00 00 00 03 0f 44 f9 80 7e 10 00 75 09 48 8b 1d 6b f4 29 03 eb 4d 48 8d 4e 20 48 8d 54 24 40 e8 7b 50 00 00 48 8b 5c 24 40 48 85 db 75 09 48 8b 1d 4a f4 29 03 eb 13 40 0f b6 d7 48 8b cb e8 fc cc b2 ff 8b 44 24 48 89 43 08 48 8d 4e 70 48 89 9c 24 d0 00 00 00 48 8d 94 24 d0 00 00 00 e8 ec 80 eb fd 33 ff 89 bc 24 a0 00 00 00 44 8b 4e 7c 4c 8d 05 30 bc da 01 8d 57 40 48 8d 4c 24 60 e8 4b 46 eb fd b9 3f 00 00 00 3b c1 0f 4f c1 89 84 24 a0 00 00 00 48 89 7c 24 40 66 0f 6f 05 5d eb 02 02 f3 0f 7f 44 24 50 40 88 7c 24 40 48 8d 44 24 60 49 c7 c0 ff ff ff ff 66 0f 1f 44 00 00 49 ff c0 42 38 3c 00 75 f7 48 8d 54 24 60 48 8d 4c 24 40 e8 e8 da e8 fd 90 48 8b 84 24 f0 00 00 00 48 89 44 24 30 40 88 6c 24 28 48 8d 44 24 40 48 89 44 24 20 4d 8b ce 4d 8b c7 48 8b cb e8 7d d0 b2 ff 90 48 8b 54 24 58 48 83 fa 10 72 2e 48 ff c2 48 8b 4c 24 40 48 8b c1 48 81 fa 00 10 00 00 72 15 48 83 c2 27 48 8b 49 f8 48 2b c1 48 83 c0 f8 48 83 f8 1f 77 62 e8 37 bc 85 01 48 8b d3 48 8b ce e8 b8 3e 00 00 48 8d 8e a0 00 00 00 48 8b d3 e8 e9 f3 ff ff 80 3d 9e ef 2e 03 00 74 1a 48 8b d3 48 8d 8c 24 f8 00 00 00 e8 b0 b8 29 00 8b 10 48 8b cb e8 a6 ff b2 ff 48 8b c3 4c 8d 9c 24 b0 00 00 00 49 8b 5b 28 49 8b 6b 30 49 8b 73 38 49 8b e3 41 5f 41 5e 5f c3 e8 01 a7 86 01 cc"
+    },
+    {
+      "name": "tracked_resource_delta",
+      "start_rva": "0x28d7000",
+      "end_exclusive_rva": "0x28d7117",
+      "sha256": "4246a13d347d678d4295d8a16d917f6b6cb9177bab7c61289a1d619a99cf716f",
+      "bytes": "48 89 5c 24 08 48 89 6c 24 10 48 89 74 24 18 57 41 56 41 57 48 83 ec 20 8b 35 c6 12 b8 02 33 ff 44 8b 4a 18 4d 8b f8 4c 8b 5a 10 48 8b ea 4c 8b f1 8b df 85 f6 7e 21 4c 8b 15 9a 12 b8 02 44 8b c7 49 63 c0 41 8b d8 4d 3b 1c c2 7c 0b 41 8d 58 01 44 8b c3 3b de 7c e9 45 85 c9 78 0a 41 3b d9 44 0f 4c cb 41 8b d9 48 8b 54 24 68 48 8b cd 41 ff d7 44 8b 1d 6b 12 b8 02 8b cf 44 8b 45 18 4c 8b 55 10 45 85 db 7e 1e 4c 8b 0d 49 12 b8 02 8b d7 48 63 c2 8b ca 4d 3b 14 c1 7c 0a 8d 4a 01 8b d1 41 3b cb 7c eb 45 85 c0 78 0a 41 3b c8 44 0f 4c c1 41 8b c8 3b d9 74 45 4c 8b 44 24 70 40 0f 9d c7 49 8b ce 8d 57 16 e8 43 69 fe ff 8b 05 2d 4b c0 02 83 f8 ff 74 26 45 8b 46 18 41 3b c0 75 1d 48 8b 0d 38 34 39 03 48 85 c9 74 11 48 8b 01 45 33 c9 ba 68 41 00 00 ff 90 a0 00 00 00 48 8b 5c 24 40 48 8b 6c 24 48 48 8b 74 24 50 48 83 c4 20 41 5f 41 5e 5f c3"
+    },
+    {
+      "name": "piety_delta_leaf",
+      "start_rva": "0x28cdcf0",
+      "end_exclusive_rva": "0x28cdd20",
+      "sha256": "46f82fca7270487fc7cb944f2a1e616e8002141261a76c19f78cc0c97c5737ea",
+      "bytes": "48 85 d2 7e 26 4c 8b 41 08 4d 85 c0 79 19 49 f7 d8 48 8b c2 49 3b d0 4c 0f 4c c2 49 2b c0 48 01 41 10 48 01 51 08 c3 48 01 51 10 48 01 51 08 c3"
+    },
+    {
+      "name": "new_rite_affordability_vector",
+      "start_rva": "0x29c98a1",
+      "end_exclusive_rva": "0x29c999c",
+      "sha256": "1a849d9ee7dd29420aa14725b46b81ba5ec64d4dc0f68d171022d008e2404042",
+      "bytes": "0f 57 c0 0f 11 85 30 01 00 00 0f 11 85 40 01 00 00 0f 11 85 50 01 00 00 0f 11 85 60 01 00 00 0f 11 85 70 01 00 00 8b 86 b4 00 00 00 4c 8b 05 24 4a 35 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 7c d1 08 48 85 ff 74 05 39 47 08 74 07 48 8b 3d 6a dd 29 03 49 8d 85 40 02 00 00 48 89 85 48 03 00 00 4c 89 7c 24 20 45 33 c9 4c 8b c0 48 8b d7 48 8d 8d 40 03 00 00 e8 d2 a8 29 00 48 8b 18 48 8b ce e8 a7 a1 ef ff 41 b8 23 02 00 00 48 c7 44 24 20 a0 86 01 00 45 33 c9 48 8b d0 48 8d 8d 40 03 00 00 e8 26 3d 28 00 48 03 18 4c 89 7c 24 28 4c 89 7c 24 20 4c 8b cf 4c 8b c6 48 8b d3 48 8d 8d 40 03 00 00 e8 64 93 29 00 48 8b 85 40 03 00 00 48 89 85 40 01 00 00 4d 8b c6 48 8b d6 48 8d 8d 30 01 00 00 e8 74 4d 74 00"
+    },
+    {
+      "name": "new_faith_affordability_vector",
+      "start_rva": "0x29d1970",
+      "end_exclusive_rva": "0x29d1a6f",
+      "sha256": "94e1758db65f981998dfc996706a00ae1f0c1b466f245e14942208c7a8139380",
+      "bytes": "0f 57 c0 0f 11 85 40 01 00 00 0f 11 85 50 01 00 00 0f 11 85 60 01 00 00 0f 11 85 70 01 00 00 0f 11 85 80 01 00 00 8b 86 b4 00 00 00 4c 8b 05 55 c9 34 03 4d 85 c0 74 26 8b c8 81 e1 ff ff ff 00 41 3b 48 2c 73 18 8b d1 48 03 d2 49 8b 48 20 48 8b 7c d1 08 48 85 ff 74 05 39 47 08 74 07 48 8b 3d 9b 5c 29 03 49 8d 84 24 40 02 00 00 48 89 85 d8 03 00 00 45 33 e4 4c 89 64 24 20 45 33 c9 4c 8b c0 48 8b d7 48 8d 8d d0 03 00 00 e8 ff 27 29 00 48 8b 18 48 8b ce e8 d4 20 ef ff 41 b8 23 02 00 00 48 c7 44 24 20 a0 86 01 00 45 33 c9 48 8b d0 48 8d 8d d0 03 00 00 e8 53 bc 27 00 48 03 18 4c 89 64 24 28 4c 89 64 24 20 4c 8b cf 4c 8b c6 48 8b d3 48 8d 8d d0 03 00 00 e8 91 12 29 00 48 8b 85 d0 03 00 00 48 89 85 50 01 00 00 4d 8b c6 48 8b d6 48 8d 8d 40 01 00 00 e8 a1 cc 73 00"
+    },
+    {
+      "name": "edit_rite_affordability_vector",
+      "start_rva": "0x29c8ece",
+      "end_exclusive_rva": "0x29c8f91",
+      "sha256": "273af8928df0aaeeb53fd480fe35e56a4766f21d9f8b794f2883766de95583c2",
+      "bytes": "48 8d 86 40 02 00 00 48 89 44 24 68 4c 89 7c 24 20 45 33 c9 4c 8b c0 48 8b 95 48 03 00 00 48 8d 8d 40 03 00 00 e8 38 b8 29 00 48 8b 18 48 8b cf e8 dd ab ef ff 41 b8 23 02 00 00 48 c7 44 24 20 a0 86 01 00 45 33 c9 48 8b d0 48 8d 8d 40 03 00 00 e8 5c 47 28 00 48 03 18 4c 89 7c 24 28 4c 89 7c 24 20 4c 8b 8d 48 03 00 00 4c 8b c7 48 8b d3 48 8d 8d 40 03 00 00 e8 96 9d 29 00 90 0f 57 c0 0f 11 85 40 01 00 00 0f 11 85 50 01 00 00 0f 11 85 60 01 00 00 0f 11 85 70 01 00 00 0f 11 85 80 01 00 00 48 8b 85 40 03 00 00 48 89 85 50 01 00 00 4d 8b c6 48 8b d7 48 8d 8d 40 01 00 00 e8 7f 57 74 00"
+    },
+    {
+      "name": "CCost_CanAfford_code",
+      "start_rva": "0x310e710",
+      "end_exclusive_rva": "0x310edac",
+      "sha256": "b8616d7df109382af82ce270f7d31333602791091dd5ac78e0d841c093176410",
+      "bytes": "48 89 5c 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8d ac 24 90 fd ff ff 48 81 ec 70 03 00 00 4d 8b e8 4c 8b f2 4c 8b e1 33 db 89 9d c0 02 00 00 89 9d c8 02 00 00 4c 89 44 24 40 40 b6 01 48 8b ca e8 ba 46 7b ff 4c 8b 48 40 49 c1 e9 20 44 84 ce 74 12 49 8b ce e8 35 16 aa ff 84 c0 74 06 40 0f b6 d6 eb 02 32 d2 88 95 b8 02 00 00 8b fb 4c 8b fb 4c 8d 15 ff ee 7a 01 4c 8d 0d 48 ef 7a 01 4c 8d 1d b9 f2 7a 01 4c 8d 05 62 18 ef fc 83 ff 09 0f 87 83 05 00 00 48 63 c7 41 8b 8c 80 ac ed 10 03 49 03 c8 ff e1 4f 8b 04 fc 84 d2 75 05 4d 03 44 24 38 4c 89 5c 24 60 c7 44 24 68 15 00 00 00 c6 44 24 6c 00 49 8b 86 b0 01 00 00 48 85 c0 75 0f 48 89 5c 24 30 0f 28 44 24 60 e9 1c 05 00 00 48 8b 80 00 01 00 00 48 89 44 24 30 0f 28 44 24 60 e9 06 05 00 00 48 8d 05 22 f2 7a 01 48 89 44 24 70 c7 44 24 78 19 00 00 00 c6 44 24 7c 00 49 8b 86 b0 01 00 00 48 85 c0 74 16 48 8b 80 30 01 00 00 48 89 44 24 30 0f 28 44 24 70 e9 c7 04 00 00 48 89 5c 24 30 0f 28 44 24 70 e9 b8 04 00 00 48 8d 05 c0 f1 7a 01 48 89 45 80 c7 45 88 16 00 00 00 c6 45 8c 00 49 8b 86 b0 01 00 00 48 85 c0 74 15 48 8b 80 10 01 00 00 48 89 44 24 30 0f 28 45 80 e9 81 04 00 00 48 89 5c 24 30 0f 28 45 80 e9 73 04 00 00 4b 8b 1c fc 48 85 db 0f 84 87 04 00 00 49 8b ce e8 85 26 7a ff 84 c0 0f 85 a3 01 00 00 4d 85 ed 0f 84 92 01 00 00 48 8d 05 65 e7 37 01 48 89 45 90 c7 45 98 01 00 00 00 c6 45 9c 00 48 8d 55 90 49 8b cd e8 a2 88 e4 00 48 8d 05 1b f1 7a 01 48 89 45 b0 c7 45 b8 17 00 00 00 c6 45 bc 00 48 8d 05 a5 88 74 fd 48 89 44 24 20 4c 8d 0d 49 88 74 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 40 e8 7f 56 11 01 90 48 8d 8d c0 00 00 00 e8 ba b0 77 fd 90 48 8d 05 32 11 39 01 48 89 45 a0 c7 45 a8 09 00 00 00 c6 45 ac 00 33 f6 89 75 40 ba 10 00 00 00 65 48 8b 04 25 58 00 00 00 48 8b 08 8b 04 0a 39 05 68 8e b5 02 0f 8f 09 04 00 00 8b 05 60 8e b5 02 89 44 24 30 4c 89 74 24 50 4c 8d 4c 24 30 4c 8d 44 24 50 48 8d 55 a0 48 8d 8d c0 00 00 00 e8 85 9f d0 00 48 89 74 24 28 48 8d 85 c0 00 00 00 48 89 44 24 20 41 b9 01 00 00 00 4c 8d 45 40 48 8d 55 b0 48 8d 4d 20 e8 8d 7c d0 00 8b 9d c0 02 00 00 83 cb 02 89 9d c8 02 00 00 48 83 bd c0 00 00 00 00 74 33 48 8d 8d c0 00 00 00 e8 f8 b0 77 fd 48 8b 8d d0 00 00 00 48 8b 01 41 b8 08 00 00 00 48 8b 95 c0 00 00 00 ff 50 10 48 89 b5 c0 00 00 00 89 b5 c8 00 00 00 4c 8d 0d 9a 87 74 fd ba 78 00 00 00 44 8d 42 89 48 8d 4d 40 e8 24 52 11 01 83 e3 fd 83 cb 01 89 9d c0 02 00 00 89 9d c8 02 00 00 48 8d 55 20 48 83 7d 38 10 48 0f 43 55 20 4c 8b 45 30 49 8b cd e8 8c 75 77 fd 90 48 8d 4d 20 e8 02 76 74 fd 40 32 f6 e9 d9 02 00 00 48 8d 05 7b ef 7a 01 48 89 45 c0 c7 45 c8 21 00 00 00 c6 45 cc 00 48 8b 15 7d f0 c0 02 48 85 d2 74 2d 45 8b 86 58 01 00 00 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 10 74 07 48 8b 05 3c f0 c0 02 48 8b 15 c5 f3 c0 02 48 85 d2 74 2a 44 8b 40 2c 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 10 74 07 48 8b 05 3f f3 c0 02 48 8b 80 60 01 00 00 48 89 44 24 50 0f 28 45 c0 66 0f 7f 44 24 30 4c 8d 4c 24 30 4c 8b c3 48 8d 54 24 50 e9 0c 02 00 00 48 8d 05 e0 eb 7a 01 48 89 45 d0 c7 45 d8 1a 00 00 00 c6 45 dc 00 49 8b 86 b0 01 00 00 48 85 c0 74 15 48 8b 80 50 01 00 00 48 89 44 24 30 0f 28 45 d0 e9 c1 01 00 00 48 89 5c 24 30 0f 28 45 d0 e9 b3 01 00 00 4f 8b 04 fc 84 d2 74 05 4d 03 44 24 38 4c 89 4d e0 c7 45 e8 19 00 00 00 c6 45 ec 00 49 83 be b0 01 00 00 00 74 71 49 8b 86 c0 01 00 00 48 85 c0 74 14 83 b8 ec 01 00 00 00 74 25 48 8b 80 e0 01 00 00 8b 08 eb 1f 49 8b 86 d0 01 00 00 48 85 c0 74 0e 83 78 74 00 74 08 48 8b 40 68 8b 08 eb 05 b9 ff ff ff ff 89 4c 24 30 48 8d 4c 24 30 e8 27 82 8c fd 81 78 14 64 6e 61 4c 75 1b 83 78 10 ff 74 15 48 8b 80 18 03 00 00 48 89 44 24 30 0f 28 45 e0 e9 20 01 00 00 48 89 5c 24 30 0f 28 45 e0 e9 12 01 00 00 48 8d 05 be ea 7a 01 48 89 45 f0 c7 45 f8 16 00 00 00 c6 45 fc 00 49 8b 86 b0 01 00 00 48 85 c0 74 15 48 8b 80 70 01 00 00 48 89 44 24 30 0f 28 45 f0 e9 d7 00 00 00 48 89 5c 24 30 0f 28 45 f0 e9 c9 00 00 00 48 8d 05 61 ea 7a 01 48 89 45 00 c7 45 08 15 00 00 00 c6 45 0c 00 49 8b 86 c8 01 00 00 48 85 c0 74 09 44 8b 80 68 0b 00 00 eb 06 41 b8 ff ff ff ff 48 8b 15 08 ff c0 02 48 85 d2 74 26 41 8b c0 25 ff ff ff 00 3b 42 2c 73 19 8b c8 48 03 c9 48 8b 42 20 48 8b 44 c8 08 48 85 c0 74 06 44 39 40 08 74 07 48 8b 05 8e fe c0 02 48 8b 40 48 48 89 44 24 50 0f 28 45 00 66 0f 7f 44 24 30 4c 8d 4c 24 30 4f 8b 04 fc 48 8d 54 24 50 eb 50 4c 89 55 10 c7 45 18 1d 00 00 00 c6 45 1c 00 49 83 be b0 01 00 00 00 74 1a 49 8b 86 c0 01 00 00 48 85 c0 74 0e 48 8b 80 a0 04 00 00 48 89 44 24 30 eb 05 48 89 5c 24 30 0f 28 45 10 4f 8b 04 fc 48 8d 54 24 30 4c 8d 4c 24 50 66 0f 7f 44 24 50 48 8d 4c 24 40 e8 b9 00 00 00 40 22 f0 40 84 f6 75 05 4d 85 ed 74 18 ff c7 49 ff c7 83 ff 0a 74 0e 0f b6 95 b8 02 00 00 33 db e9 36 fa ff ff 40 0f b6 c6 48 8b 9c 24 b0 03 00 00 48 81 c4 70 03 00 00 41 5f 41 5e 41 5d 41 5c 5f 5e 5d c3 48 8d 0d 52 8a b5 02 e8 2d 4d 11 01 83 3d 46 8a b5 02 ff 0f 85 de fb ff ff 8b 05 1e 10 b5 02 89 05 38 8a b5 02 ff c0 89 05 10 10 b5 02 48 8d 0d 25 8a b5 02 e8 a0 4c 11 01 e9 b9 fb ff ff cc 66 90"
+    },
+    {
+      "name": "on_action_created_updated_edited_name_registration",
+      "start_rva": "0x25b032e",
+      "end_exclusive_rva": "0x25b03dc",
+      "sha256": "874048d3ae28539b0cdd3eb17f97812d1df45534552d183d69bb3e8c8f757b38",
+      "bytes": "48 8b 4b 50 48 81 c1 40 06 00 00 41 b8 10 00 00 00 48 8d 15 5a f7 18 02 e8 65 5a 2a fe 48 8b 4b 50 48 81 c1 60 06 00 00 41 b8 0f 00 00 00 48 8d 15 2d f7 18 02 e8 48 5a 2a fe 48 8b 4b 50 48 81 c1 80 06 00 00 41 b8 13 00 00 00 48 8d 15 18 f5 18 02 e8 2b 5a 2a fe 48 8b 4b 50 48 81 c1 a0 06 00 00 41 b8 0e 00 00 00 48 8d 15 eb f4 18 02 e8 0e 5a 2a fe 48 8b 4b 50 48 81 c1 c0 06 00 00 41 b8 0f 00 00 00 48 8d 15 06 f5 18 02 e8 f1 59 2a fe 48 8b 4b 50 48 81 c1 e0 06 00 00 41 b8 0e 00 00 00 48 8d 15 d9 f4 18 02 e8 d4 59 2a fe"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "name": "direct_callee",
+      "rva": "0x29a2eb3",
+      "bytes": "e8 d8 9b 23 00",
+      "instruction": "call 0x2bdca90",
+      "direct_targets": [
+        "0x2bdca90"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a2ec9",
+      "bytes": "e8 82 4a 00 00",
+      "instruction": "call 0x29a7950",
+      "direct_targets": [
+        "0x29a7950"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a2ed0",
+      "bytes": "e8 4b 4e 00 00",
+      "instruction": "call 0x29a7d20",
+      "direct_targets": [
+        "0x29a7d20"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a25f9",
+      "bytes": "e8 f2 05 00 00",
+      "instruction": "call 0x29a2bf0",
+      "direct_targets": [
+        "0x29a2bf0"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a79de",
+      "bytes": "e8 6d 99 02 00",
+      "instruction": "call 0x29d1350",
+      "direct_targets": [
+        "0x29d1350"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a7d90",
+      "bytes": "e8 7b b4 ff ff",
+      "instruction": "call 0x29a3210",
+      "direct_targets": [
+        "0x29a3210"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a3239",
+      "bytes": "e8 52 51 02 00",
+      "instruction": "call 0x29c8390",
+      "direct_targets": [
+        "0x29c8390"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29d1581",
+      "bytes": "e8 1a 6c ff ff",
+      "instruction": "call 0x29c81a0",
+      "direct_targets": [
+        "0x29c81a0"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29d1625",
+      "bytes": "e8 d6 2b 29 00",
+      "instruction": "call 0x2c64200",
+      "direct_targets": [
+        "0x2c64200"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29d1671",
+      "bytes": "e8 6a 16 29 00",
+      "instruction": "call 0x2c62ce0",
+      "direct_targets": [
+        "0x2c62ce0"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29d1725",
+      "bytes": "e8 d6 58 f0 ff",
+      "instruction": "call 0x28d7000",
+      "direct_targets": [
+        "0x28d7000"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29c84c2",
+      "bytes": "e8 39 bd 29 00",
+      "instruction": "call 0x2c64200",
+      "direct_targets": [
+        "0x2c64200"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29c850a",
+      "bytes": "e8 d1 a7 29 00",
+      "instruction": "call 0x2c62ce0",
+      "direct_targets": [
+        "0x2c62ce0"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29c8541",
+      "bytes": "e8 ba ea f0 ff",
+      "instruction": "call 0x28d7000",
+      "direct_targets": [
+        "0x28d7000"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a2ce2",
+      "bytes": "e8 49 1a 2c 00",
+      "instruction": "call 0x2c64730",
+      "direct_targets": [
+        "0x2c64730"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a2d32",
+      "bytes": "e8 a9 ff 2b 00",
+      "instruction": "call 0x2c62ce0",
+      "direct_targets": [
+        "0x2c62ce0"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a2d71",
+      "bytes": "e8 8a 42 f3 ff",
+      "instruction": "call 0x28d7000",
+      "direct_targets": [
+        "0x28d7000"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29c9997",
+      "bytes": "e8 74 4d 74 00",
+      "instruction": "call 0x310e710",
+      "direct_targets": [
+        "0x310e710"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29d1a6a",
+      "bytes": "e8 a1 cc 73 00",
+      "instruction": "call 0x310e710",
+      "direct_targets": [
+        "0x310e710"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29c8f8c",
+      "bytes": "e8 7f 57 74 00",
+      "instruction": "call 0x310e710",
+      "direct_targets": [
+        "0x310e710"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a7c67",
+      "bytes": "e8 e4 4f e2 00",
+      "instruction": "call 0x37ccc50",
+      "direct_targets": [
+        "0x37ccc50"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "direct_callee",
+      "rva": "0x29a7f77",
+      "bytes": "e8 d4 4c e2 00",
+      "instruction": "call 0x37ccc50",
+      "direct_targets": [
+        "0x37ccc50"
+      ],
+      "rip_targets": []
+    },
+    {
+      "name": "create_secondary_vtable_installed",
+      "rva": "0x14f5704",
+      "bytes": "48 8d 05 fd ac 27 03",
+      "instruction": "lea rax, [rip + 0x327acfd]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x4770408"
+      ]
+    },
+    {
+      "name": "create_secondary_price_draft",
+      "rva": "0x29a2ea8",
+      "bytes": "48 8d 96 50 02 00 00",
+      "instruction": "lea rdx, [rsi + 0x250]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "create_secondary_to_primary_adjustment",
+      "rva": "0x29a2eaf",
+      "bytes": "48 8d 7e e8",
+      "instruction": "lea rdi, [rsi - 0x18]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "faith_negative_base_fee",
+      "rva": "0x29d16f4",
+      "bytes": "48 f7 d8",
+      "instruction": "neg rax",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "faith_actor_extension",
+      "rva": "0x29d16f7",
+      "bytes": "49 8b 96 b0 01 00 00",
+      "instruction": "mov rdx, qword ptr [r14 + 0x1b0]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "faith_piety_resource_object",
+      "rva": "0x29d1703",
+      "bytes": "48 81 c2 08 01 00 00",
+      "instruction": "add rdx, 0x108",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "faith_piety_delta_callback",
+      "rva": "0x29d171b",
+      "bytes": "4c 8d 05 ce c5 ef ff",
+      "instruction": "lea r8, [rip - 0x103a32]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x28cdcf0"
+      ]
+    },
+    {
+      "name": "rite_negative_base_fee",
+      "rva": "0x29c8513",
+      "bytes": "48 f7 d8",
+      "instruction": "neg rax",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "rite_actor_extension",
+      "rva": "0x29c8516",
+      "bytes": "49 8b 97 b0 01 00 00",
+      "instruction": "mov rdx, qword ptr [r15 + 0x1b0]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "rite_piety_resource_object",
+      "rva": "0x29c8522",
+      "bytes": "48 81 c2 08 01 00 00",
+      "instruction": "add rdx, 0x108",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "rite_piety_delta_callback",
+      "rva": "0x29c8537",
+      "bytes": "4c 8d 05 b2 57 f0 ff",
+      "instruction": "lea r8, [rip - 0xfa84e]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x28cdcf0"
+      ]
+    },
+    {
+      "name": "edit_negative_base_fee",
+      "rva": "0x29a2d3f",
+      "bytes": "48 f7 d8",
+      "instruction": "neg rax",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "edit_actor_extension",
+      "rva": "0x29a2d42",
+      "bytes": "48 8b 96 b0 01 00 00",
+      "instruction": "mov rdx, qword ptr [rsi + 0x1b0]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "edit_piety_resource_object",
+      "rva": "0x29a2d4e",
+      "bytes": "48 81 c2 08 01 00 00",
+      "instruction": "add rdx, 0x108",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "edit_piety_delta_callback",
+      "rva": "0x29a2d67",
+      "bytes": "4c 8d 05 82 af f2 ff",
+      "instruction": "lea r8, [rip - 0xd507e]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x28cdcf0"
+      ]
+    },
+    {
+      "name": "generic_delta_stack_argument",
+      "rva": "0x28d7067",
+      "bytes": "48 8b 54 24 68",
+      "instruction": "mov rdx, qword ptr [rsp + 0x68]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "generic_delta_callback_call",
+      "rva": "0x28d706f",
+      "bytes": "41 ff d7",
+      "instruction": "call r15",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "piety_nonpositive_branch",
+      "rva": "0x28cdcf3",
+      "bytes": "7e 26",
+      "instruction": "jle 0x28cdd1b",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "piety_current_balance_write",
+      "rva": "0x28cdd1b",
+      "bytes": "48 01 51 08",
+      "instruction": "add qword ptr [rcx + 8], rdx",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "cost_resource_count",
+      "rva": "0x310ed39",
+      "bytes": "83 ff 0a",
+      "instruction": "cmp edi, 0xa",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "cost_slot_indexed_read",
+      "rva": "0x310ed09",
+      "bytes": "4f 8b 04 fc",
+      "instruction": "mov r8, qword ptr [r12 + r15*8]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "piety_current_balance_read",
+      "rva": "0x310e873",
+      "bytes": "48 8b 80 10 01 00 00",
+      "instruction": "mov rax, qword ptr [rax + 0x110]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "faith_created_on_action_pointer",
+      "rva": "0x29a7c26",
+      "bytes": "48 8b 99 90 01 00 00",
+      "instruction": "mov rbx, qword ptr [rcx + 0x190]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "rite_created_on_action_pointer",
+      "rva": "0x29a7f36",
+      "bytes": "48 8b 99 98 01 00 00",
+      "instruction": "mov rbx, qword ptr [rcx + 0x198]",
+      "direct_targets": [],
+      "rip_targets": []
+    },
+    {
+      "name": "faith_created_name",
+      "rva": "0x25b033f",
+      "bytes": "48 8d 15 5a f7 18 02",
+      "instruction": "lea rdx, [rip + 0x218f75a]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x473faa0"
+      ]
+    },
+    {
+      "name": "rite_created_name",
+      "rva": "0x25b035c",
+      "bytes": "48 8d 15 2d f7 18 02",
+      "instruction": "lea rdx, [rip + 0x218f72d]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x473fa90"
+      ]
+    },
+    {
+      "name": "rite_updated_name",
+      "rva": "0x25b03b3",
+      "bytes": "48 8d 15 06 f5 18 02",
+      "instruction": "lea rdx, [rip + 0x218f506]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x473f8c0"
+      ]
+    },
+    {
+      "name": "rite_edited_name",
+      "rva": "0x25b03d0",
+      "bytes": "48 8d 15 d9 f4 18 02",
+      "instruction": "lea rdx, [rip + 0x218f4d9]",
+      "direct_targets": [],
+      "rip_targets": [
+        "0x473f8b0"
+      ]
+    }
+  ],
+  "vtable_slots": [
+    {
+      "name": "create_execute_secondary",
+      "slot_rva": "0x4770410",
+      "target_rva": "0x29a2de0",
+      "bytes": "e0 2d 9a 42 01 00 00 00"
+    },
+    {
+      "name": "edit_execute_secondary",
+      "slot_rva": "0x4770528",
+      "target_rva": "0x29a25b0",
+      "bytes": "b0 25 9a 42 01 00 00 00"
+    },
+    {
+      "name": "create_validator_primary_reused",
+      "slot_rva": "0x4770580",
+      "target_rva": "0x29a2f60",
+      "bytes": "60 2f 9a 42 01 00 00 00"
+    },
+    {
+      "name": "create_clone_primary_reused",
+      "slot_rva": "0x4770590",
+      "target_rva": "0x29a7030",
+      "bytes": "30 70 9a 42 01 00 00 00"
+    }
+  ],
+  "affordability_vectors": [
+    {
+      "branch": "new_rite",
+      "zero_entire_CCost_bytes": 80,
+      "zero_write_rvas": [
+        "0x29c98a4",
+        "0x29c98ab",
+        "0x29c98b2",
+        "0x29c98b9",
+        "0x29c98c0"
+      ],
+      "only_nonzero_slot": 2,
+      "piety_write_rva": "0x29c9983",
+      "affordability_call_rva": "0x29c9997"
+    },
+    {
+      "branch": "new_faith_or_reform",
+      "zero_entire_CCost_bytes": 80,
+      "zero_write_rvas": [
+        "0x29d1973",
+        "0x29d197a",
+        "0x29d1981",
+        "0x29d1988",
+        "0x29d198f"
+      ],
+      "only_nonzero_slot": 2,
+      "piety_write_rva": "0x29d1a56",
+      "affordability_call_rva": "0x29d1a6a"
+    },
+    {
+      "branch": "edit_owned_current_rite",
+      "zero_entire_CCost_bytes": 80,
+      "zero_write_rvas": [
+        "0x29c8f4e",
+        "0x29c8f55",
+        "0x29c8f5c",
+        "0x29c8f63",
+        "0x29c8f6a"
+      ],
+      "only_nonzero_slot": 2,
+      "piety_write_rva": "0x29c8f78",
+      "affordability_call_rva": "0x29c8f8c"
+    }
+  ],
+  "CCost_resource_dispatch": [
+    {
+      "index": 0,
+      "offset": "0x0",
+      "dispatch_rva": "0x310e7b7",
+      "name": "gold"
+    },
+    {
+      "index": 1,
+      "offset": "0x8",
+      "dispatch_rva": "0x310e807",
+      "name": "prestige"
+    },
+    {
+      "index": 2,
+      "offset": "0x10",
+      "dispatch_rva": "0x310e851",
+      "name": "piety"
+    },
+    {
+      "index": 3,
+      "offset": "0x18",
+      "dispatch_rva": "0x310e896",
+      "name": null
+    },
+    {
+      "index": 4,
+      "offset": "0x20",
+      "dispatch_rva": "0x310eb11",
+      "name": null
+    },
+    {
+      "index": 5,
+      "offset": "0x28",
+      "dispatch_rva": "0x310ec40",
+      "name": null
+    },
+    {
+      "index": 6,
+      "offset": "0x30",
+      "dispatch_rva": "0x310eb56",
+      "name": null
+    },
+    {
+      "index": 7,
+      "offset": "0x38",
+      "dispatch_rva": "0x310ed2a",
+      "name": null
+    },
+    {
+      "index": 8,
+      "offset": "0x40",
+      "dispatch_rva": "0x310ebfb",
+      "name": null
+    },
+    {
+      "index": 9,
+      "offset": "0x48",
+      "dispatch_rva": "0x310eccd",
+      "name": null
+    }
+  ],
+  "reused_piety_quote_manifest": {
+    "path": "religion_reform12002_costs_abi.json",
+    "sha256": "94bdf0e6e89396917581977124209e19b8b860a87197f0e1d71fd65846144210"
+  },
+  "contract": {
+    "scope": "native command draft base-fee quote",
+    "raw_scale": 100000,
+    "slots": 10,
+    "piety_slot": 2,
+    "non_piety_base_fee_slots_zero": true,
+    "actual_negative_debit_changes_current_piety_only": true,
+    "actual_debit_observed": false,
+    "post_action_net_resource_change_observed": false
+  },
+  "unknown": [
+    "post-action total net resource outcome and event choices",
+    "paused production quote and actual action outcome"
+  ]
+}
