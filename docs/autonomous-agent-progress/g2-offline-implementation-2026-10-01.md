@@ -91,3 +91,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 实际完整FactionID、原生power/threshold/discontent/danger、county-only威胁与held-title/vassal-contract递归已迁移；县列表stride18、owner指针及UI比例已按新EXE闭合。Od/O2各7案例及旧reader/serializer测试通过；ABI布局53锚点、metrics22跨度、county10锚点。harness LNK2019首次失败已保留。静态就绪；paused值、SDK实机一致性与gift结果仍待实际验收。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\factions\delivery-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:38:48 Gift native final gate, owning command and independent receipt
+
+实际on_accept gift_value费用、玩家付款钱包、final CanSend、原生opinion/modifier、拥有型queue与独立full-generation faction结果已迁移；不是generic on_send零成本。Od/O2 opinion各151断言，slot34四步router各22检查及实际8份wire通过。保留首次harness失败；ACK仅代表提交。自然eligible收礼人、实际扣款/修正及cold结果仍待实机。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\gift\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

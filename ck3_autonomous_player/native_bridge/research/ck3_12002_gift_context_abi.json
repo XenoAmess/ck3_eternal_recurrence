@@ -1,0 +1,660 @@
+{
+  "schema_version": 1,
+  "capability": "ck3_12002_faction_gift_context",
+  "build": {
+    "product_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "pe_timestamp": "0x6abad861",
+    "image_base": "0x140000000",
+    "size_of_image": "0x61c5000",
+    "architecture": "x86_64",
+    "steam_build_id": "25588574"
+  },
+  "readiness": "static-ready native ABI; no new live claim",
+  "runtime_registered": false,
+  "live_verified": false,
+  "signature_anchors": [
+    {
+      "name": "interaction_database_getter",
+      "rva": "0x89da60",
+      "pattern": "48 83 EC 38 48 8B 05 CD 9A 3C 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 89 F5 BE 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44 24 20 41 8D 49 9D E8 B5 DB 6E 03 48 8B 05 86 9A 3C 05 48 83 C4 38 C3",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "stable_key_hash",
+      "rva": "0x3f7e240",
+      "pattern": "89 4C 24 08 53 48 83 EC 20 33 C0 48 8D 4C 24 30 41 8B D8 89 44 24 30 45 8B C8 89 44 24 40 4C 8B C2 48 8D 54 24 40 E8 95 FE FF FF 8B 54 24 40 44 8B C2 8B 4C 24 30 44 8B C9 41 83 E0 03 74 1F B9 04 00 00 00 41 2B C8 C1 E1 03 D3 EA 69 C2 51 2D 9E CC C1 C0 0F 69 C8 93 35 87 1B 41 33 C9 33 CB 8B C1 C1 E8 10 33 C1 69 C8 6B CA EB 85 8B C1 C1 E8 0D 33 C1 69 C8 35 AE B2 C2 8B C1 C1 E8 10 33 C1 48 83 C4 20 5B C3",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "stable_key_block_accumulator",
+      "rva": "0x3f7e100",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 4C 89 74 24 20 44 8B 12 48 8B F2 8B 39 45 8B DA 41 83 E3 03 4C 8B F1 41 8B DB F7 DB 83 E3 03 74 58 41 3B D9 7F 53 44 2B CB 0F 1F 84 00 00 00 00 00 41 0F B6 08 41 8B C2 C1 E1 18 FF CB C1 E8 08 44 8B D1 44 0B D0 49 FF C0 41 FF C3 41 83 FB 04 75 23 41 69 C2 51 2D 9E CC C1 C0 0F 44 69 D0 93 35 87 1B 41 33 FA C1 C7 0D 81 C7 14 AF DD FA 45 33 DB 8D 3C BF 85 DB 75 B8 41 8B C1 99 83 E2 03 03 C2 83 E0 FC 48 63 D8 49 03 D8 4C 3B C3 73 28 90 41 69 08 51 2D 9E CC 49 83 C0 04 C1 C1 0F 69 D1 93 35 87 1B 33 FA C1 C7 0D 81 C7 14 AF DD FA 8D 3C BF 4C 3B C3 72 D9 44 2B C8 74 4F 0F 1F 40 00 41 0F B6 08 4D 8D 40 01 41 8B C2 C1 E1 18 C1 E8 08 44 8B D1 44 0B D0 41 FF C9 41 FF C3 41 83 FB 04 75 23 41 69 C2 51 2D 9E CC C1 C0 0F 44 69 D0 93 35 87 1B 41 33 FA C1 C7 0D 81 C7 14 AF DD FA 45 33 DB 8D 3C BF 45 85 C9 75 B5 48 8B 5C 24 08 41 81 E2 00 FF FF FF 41 89 3E 45 0B D3 48 8B 7C",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "loaded_definition_lookup",
+      "rva": "0xa055e0",
+      "pattern": "48 89 5C 24 08 45 33 C0 48 63 DA 44 38 81 E0 0E 00 00 45 8B C8 41 0F 94 C1 45 8D 58 FE 45 85 C9 0F 84 8D 00 00 00 41 83 E9 01 74 3B 41 83 F9 01 0F 85 7D 00 00 00 F0 0F BA A9 A0 0E 00 00 00 73 0F F3 90 F0 0F BA A9 A0 0E 00 00 00 72 F3 66 90 8B 81 A0 0E 00 00 83 F8 01 76 04 F3 90 EB F1 41 B8 02 00 00 00 EB 4C 41 B8 02 00 00 00 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 74 31 0F 1F 40 00 41 8B C3 F0 0F C1 81 A0 0E 00 00 0F 1F 44 00 00 8B 81 A0 0E 00 00 A8 01 74 04 F3 90 EB F2 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 75 D3 41 B8 01 00 00 00 4C 63 89 8C 01 00 00 4C 8B 91 80 01 00 00 49 8B D1 48 23 D3 48 8D 04 52 B2 01 41 38 54 C2 04 49 8D 04 C2 72 10 3B 58 08 74 21 48 83 C0 18 FE C2 3A 50 04 76 F0 0F B6 81 90 01 00 00 FF C0 41 03 C1 48 98 48 8D 14 40 49 8D 04 D2 80 78 04 FF 74 06 48 8B 40 10 EB 07 48 8B 05 37 86 31 05 41 83 E8 01 74 14 41 83 F8 01 75 17 F0 44 21 99 A0 0E 00 00 48 8B 5C 24 08 C3 F0 44 0F C1 99 A0 0E 00 00 48 8B 5C 24 08 C3",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "construct_two_role_context",
+      "rva": "0x3076c90",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 54 41 55 41 56 41 57 48 83 EC 40 41 8B D9 41 8B F8 4C 8B F2 48 8B F1 48 89 11 48 83 C1 08 E8 97 32 81 FD 90 48 8D 8E 70 01 00 00 E8 8A 32 81 FD 90 89 BE D8 02 00 00 89 9E DC 02 00 00 48 C7 86 E0 02 00 00 FF FF FF FF C7 86 E8 02 00 00 FF FF FF FF 89 BE EC 02 00 00 33 DB 89 9E F0 02 00 00 48 89 9E F8 02 00 00 48 8D 8E 00 03 00 00 E8 B7 65 FE FD 90 48 89 9E 30 03 00 00 38 9C 24 98 00 00 00 74 41 48 8D 86 EC 02 00 00 48 89 44 24 30 48 8D 86 E8 02 00 00 48 89 44 24 28 48 8D 86 E4 02 00 00 48 89 44 24 20 4C 8D 8E E0 02 00 00 4C 8D 86 DC 02 00 00 48 8D 96 D8 02 00 00 48 8B 0E E8 75 20 0D 00 48 8B 94 24 90 00 00 00 48 85 D2 74 19 48 8D 4E 08 E8 5F 41 6C 00 48 8D 56 08 48 8D 8E 70 01 00 00 E8 4F 41 6C 00 41 0F B6 BE F8 26 00 00 40 80 FF 27 74 2D E8 BC C9 48 FF 8B CF 48 C1 E1 06 48 8B 4C 01 38 48 85 C9 74 18 48 8B 01 48 8D 94 24 90 00 00 00 FF 50 10 48 8B BC 24 90 00 00 00 EB 03 48 8B FB 48 89 9C 24 90 00 00 00 48 8B 8E 30 03 00 00 48 85 C9 74 12 48 8B 01 BA 01 00 00 00 FF 10 48 8B 9C 24 90 00 00 00 48 89 BE 30 03 00 00 48 85 DB 74 0D 48 8B 03 BA 01 00 00 00 48 8B CB FF 10 48 8B CE E8 3A 18 00 00 48 8B CE E8 52 39 00 00 84 C0 74 09 48 8B CE E8 66 1E 00 00 90 48 8B C6 4C 8D 5C 24 40 49 8B 5B 38 49 8B 6B 40 49 8B 73 48 49 8B E3 41 5F 41 5E 41 5D 41 5C 5F C3",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "native_string_to_definition_lookup_chain",
+      "rva": "0xa81191",
+      "pattern": "E8 CA C8 E1 FF 48 8B F0 48 8B D7 48 83 7F 18 10 72 03 48 8B 17 45 33 FF 48 85 D2 75 05 41 8B CF EB 16 48 C7 C1 FF FF FF FF 66 0F 1F 44 00 00 48 FF C1 44 38 3C 0A 75 F7 44 8B C1 E8 6F D0 4F 03 8B D0 48 8B CE E8 05 44 F8 FF 4C 8B D0 81 78 38 4F 62 44 47 74 21",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "definition_identity_initialization",
+      "rva": "0x3144a05",
+      "pattern": "44 89 56 10 66 0F 6F C6 66 0F 73 D8 08 66 41 0F 7E C0 66 48 0F 7E F2 E8 1F 98 E3 00 89 46 14 48 8D 4E 18 66 0F 6F C6 66 0F 73 D8 08 66 0F 7E C0 4C 63 C0 45 33 F6 4C 89 31 4C 89 71 10 48 C7 41 18 0F 00 00 00 44 88 31 66 48 0F 7E F2 E8 59 13 71 FD C7 46 38 4F 62 44 47",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "generic_ui_validate_and_send",
+      "rva": "0x10e9200",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 03 00 00 48 8B DA 48 8B F9 33 D2 48 8B CB E8 23 2E F9 01 84 C0 74 45 48 8B D3 48 8D 4C 24 20 E8 42 EF 87 01 90 BA 0E 00 00 00 48 8B C8 E8 74 84 8F FF 90 48 8D 4C 24 40 E8 59 E1 F8 01 48 8B 07 48 8B CF FF 90 88 00 00 00 B0 01 48 8B 9C 24 A0 03 00 00 48 81 C4 90 03 00 00 5F C3 32 C0 48 8B 9C 24 A0 03 00 00 48 81 C4 90 03 00 00 5F C3",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "puppet_or_actor_alias_initializer",
+      "rva": "0xeb24",
+      "pattern": "48 8D 05 35 FF 48 04 C7 44 24 28 0F 00 00 00 48 89 44 24 20 C6 44 24 2C 00 0F 28 44 24 20 66 0F 7F 44 24 20 E8 B3 BC F7 03 4C 8D 44 24 20 48 8B C8 48 8D 15 74 D5 D3 05 E8 4F B9 F7 03 E8 9A C1 74 03 48 8D 15 63 D5 D3 05 48 8B C8 48 83 C4 38 E9 97 41 AF 00 CC",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "puppet_or_actor_alias_key_string",
+      "rva": "0x449ea60",
+      "pattern": "70 75 70 70 65 74 5F 6F 72 5F 61 63 74 6F 72 00",
+      "confidence": "exact-build static bytes and native call/operand evidence"
+    },
+    {
+      "name": "refresh_context",
+      "rva": "0x3078a60",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 30 48 8B D9 84 D2 74 10 48 8D 91 70 01 00 00 48 83 C1 08 E8 4A 24 6C 00 8B 83 D8 02 00 00 4C 8D 45 F0 8B 15 A6 32 CD 02 48 8D 4B 20 48 89 45 F8 45 33"
+    },
+    {
+      "name": "finalize_context",
+      "rva": "0x3078c90",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "40 53 57 41 57 48 83 EC 20 48 8B 01 48 8B D9 44 8B B8 64 22 00 00 44 39 B9 0C 03 00 00 74 3C 7D 30 41 8B D7 48 81 C1 00 03 00 00 E8 D0 D4 C2 FD 48 63 8B 0C 03 00 00 41 8B C7 2B C1 85 C0 7E 11 48 03 8B 00 03 00 00 33 D2 4C 63 C0 E8 4F E2 1A"
+    },
+    {
+      "name": "validate_context",
+      "rva": "0x307c040",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 00 00 00 48 8B FA 48 8B D9 4C 8B CA 41 B0 01 41 0F B6 D0 E8 0E EB FF FF 84 C0 0F 84 C9 00 00 00 48 8B 03 80 B8 1A 27 00 00 00 0F 85 CC 00 00 00 48 C7 44 24 20 00 00 00 00 45 33 C9 45 33 C0 33 D2 48 8B CB E8 ED FB FF FF 3C 02 0F 85 AB 00 00 00 48 85 FF 0F 84"
+    },
+    {
+      "name": "destroy_context",
+      "rva": "0x30773a0",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "40 53 48 83 EC 20 48 8B D9 48 8B 89 30 03 00 00 48 85 C9 74 0A 48 8B 01 BA 01 00 00 00 FF 10 48 8B 93 00 03 00 00 48 85 D2 74 32 48 8B 8B 10 03 00 00 41 B8 01 00 00 00 C7 83 0C 03 00 00 00 00 00 00 48 8B 01 FF 50 10 48 C7 83 00 03 00 00 00"
+    },
+    {
+      "name": "recipient_acceptance",
+      "rva": "0x307c460",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 01 00 00 48 8B DA 48 8B F9 8B 81 DC 02 00 00 39 81 D8 02 00 00 75 0C 48 C7 02 80 96 98 00 E9 AA 00 00 00 48 8D 51 08 48 8D 4C 24 20 E8 75 E8 6B 00 90 B8 04 00 00 00 66 89 44 24 20 8B 87 DC 02 00 00 48 89 44 24 28 48 8B 0F 48 81 C1 18 19 00 00 4C 8D 44 24 20"
+    },
+    {
+      "name": "intermediary_acceptance",
+      "rva": "0x307c360",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 57 48 81 EC 90 01 00 00 48 8B DA 48 8B F9 8B 81 E8 02 00 00 83 F8 FF 0F 84 B8 00 00 00 39 81 D8 02 00 00 0F 84 AC 00 00 00 48 8D 51 08 48 8D 4C 24 20 E8 74 E9 6B 00 90 B8 04 00 00 00 66 89 44 24 20 8B 87 E8 02 00 00 48 89 44 24 28 48 8B 0F 48 81 C1 C8 18 00 00 4C 8D 44 24"
+    },
+    {
+      "name": "cost_evaluator",
+      "rva": "0x310cee0",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D AC 24 C0 FC FF FF 48 81 EC 40 04 00 00 4D 8B F0 4C 8B E2 4C 8B E9 33 DB 48 8D B1 A0 09 00 00 4D 8B F8 0F 1F 40 00 48 63 C3 48 69 F8 F0 00 00 00 48 8D 4C 24 60 E8 2C 91 62 00 48 8D 8D 88 00 00 00 E8 70 90 62 00 4C 89 A5 30 03 00 00 4C 89 64 24 30 4C 89 64 24"
+    },
+    {
+      "name": "trigger_evaluator",
+      "rva": "0x372df30",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 30 04 00 00 48 8B DA 48 8B F9 48 8D 4C 24 50 E8 0E 81 00 00 48 8D 8C 24 78 01 00 00 E8 51 80 00 00 48 89 9C 24 20 04 00 00 48 89 5C 24 20 33 F6 48 89"
+    },
+    {
+      "name": "send_constructor",
+      "rva": "0x2968170",
+      "confidence": "reviewed exact-build call-chain and instruction evidence",
+      "pattern": "48 89 5C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B F1 C6 41 08 00 33 C0 48 89 41 0C 89 41 14 48 8D 05 42 3B B2 01 48 89 01 48 8D 05 08 3B B2 01 48 89 41 18 48 83 C1 20 E8 CB E9 70 00 90 8B 9F D8 02 00 00 48 8D 54 24 38 48 8B CF E8 97 41 71 00 48 8D 8E 58 03 00 00 44 8B C3 48 8B 10 E8 75 F6 28 00 8B 9F D8 02 00"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "CSendCharacterInteractionCommand.primary",
+      "rva": "0x448bce0",
+      "function_rvas": [
+        "0x86be90",
+        "0x3f7e2d0",
+        "0x37eb3c0",
+        "0x3f7e350",
+        "0x37eb5d0",
+        "0x8522c0",
+        "0x29682a0",
+        "0x86d5c0",
+        "0x86d760"
+      ]
+    },
+    {
+      "name": "CSendCharacterInteractionCommand.secondary",
+      "rva": "0x448bcb0",
+      "function_rvas": [
+        "0x29677a0",
+        "0x2968220",
+        "0x8522c0",
+        "0x8522c0",
+        "0x855aa0"
+      ]
+    }
+  ],
+  "native_spans": [
+    {
+      "name": "interaction_database_getter",
+      "rva": "0x89da60",
+      "length": 87,
+      "sha256": "0BE97404B7C26775AFC31FFFDA0C689D487465CCD5287010077DA20BF5384BB2"
+    },
+    {
+      "name": "stable_key_hash",
+      "rva": "0x3f7e240",
+      "length": 135,
+      "sha256": "E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD"
+    },
+    {
+      "name": "stable_key_block_accumulator",
+      "rva": "0x3f7e100",
+      "length": 304,
+      "sha256": "D5770573E38BA6C3C9D612C4DB2B10732B4E89CE26183919FFA8B89F5A52A232"
+    },
+    {
+      "name": "loaded_definition_lookup",
+      "rva": "0xa055e0",
+      "length": 314,
+      "sha256": "5E890424254C7428BAFFFBBED1D325721C10CDE3582376E82C221E2441AD5565"
+    },
+    {
+      "name": "construct_two_role_context",
+      "rva": "0x3076c90",
+      "length": 444,
+      "sha256": "90643B72DB4C4700BF89F9F0D8D9C697155C5105315E0154E33202DC147A0F2C"
+    },
+    {
+      "name": "generic_ui_validate_and_send",
+      "rva": "0x10e9200",
+      "length": 121,
+      "sha256": "4C101F960B0C7E0B91473EEBF62D7FA91EED4F82941E420782132E4DAEE69794"
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "database_global_pointer",
+      "rva": "0x89da64",
+      "bytes": "48 8B 05 CD 9A 3C 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53c9acd]",
+      "rip_relative_target": "0x5c67538"
+    },
+    {
+      "purpose": "database_getter_after_report",
+      "rva": "0x89daab",
+      "bytes": "48 8B 05 86 9A 3C 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53c9a86]",
+      "rip_relative_target": "0x5c67538"
+    },
+    {
+      "purpose": "stable_hash_resets_seed",
+      "rva": "0x3f7e253",
+      "bytes": "89 44 24 30",
+      "instruction": "mov dword ptr [rsp + 0x30], eax"
+    },
+    {
+      "purpose": "stable_hash_accumulator_call",
+      "rva": "0x3f7e266",
+      "bytes": "E8 95 FE FF FF",
+      "instruction": "call 0x3f7e100",
+      "direct_call_target": "0x3f7e100"
+    },
+    {
+      "purpose": "native_lookup_database_call",
+      "rva": "0xa81191",
+      "bytes": "E8 CA C8 E1 FF",
+      "instruction": "call 0x89da60",
+      "direct_call_target": "0x89da60"
+    },
+    {
+      "purpose": "native_lookup_hash_length",
+      "rva": "0xa811c9",
+      "bytes": "44 8B C1",
+      "instruction": "mov r8d, ecx"
+    },
+    {
+      "purpose": "native_lookup_hash_call",
+      "rva": "0xa811cc",
+      "bytes": "E8 6F D0 4F 03",
+      "instruction": "call 0x3f7e240",
+      "direct_call_target": "0x3f7e240"
+    },
+    {
+      "purpose": "native_lookup_hash_result",
+      "rva": "0xa811d1",
+      "bytes": "8B D0",
+      "instruction": "mov edx, eax"
+    },
+    {
+      "purpose": "native_lookup_database_argument",
+      "rva": "0xa811d3",
+      "bytes": "48 8B CE",
+      "instruction": "mov rcx, rsi"
+    },
+    {
+      "purpose": "native_lookup_definition_call",
+      "rva": "0xa811d6",
+      "bytes": "E8 05 44 F8 FF",
+      "instruction": "call 0xa055e0",
+      "direct_call_target": "0xa055e0"
+    },
+    {
+      "purpose": "native_lookup_kind_check",
+      "rva": "0xa811de",
+      "bytes": "81 78 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rax + 0x38], 0x4744624f"
+    },
+    {
+      "purpose": "lookup_table_mask",
+      "rva": "0xa05693",
+      "bytes": "4C 63 89 8C 01 00 00",
+      "instruction": "movsxd r9, dword ptr [rcx + 0x18c]"
+    },
+    {
+      "purpose": "lookup_table_rows",
+      "rva": "0xa0569a",
+      "bytes": "4C 8B 91 80 01 00 00",
+      "instruction": "mov r10, qword ptr [rcx + 0x180]"
+    },
+    {
+      "purpose": "lookup_row_hash",
+      "rva": "0xa056b8",
+      "bytes": "3B 58 08",
+      "instruction": "cmp ebx, dword ptr [rax + 8]"
+    },
+    {
+      "purpose": "lookup_row_definition",
+      "rva": "0xa056e4",
+      "bytes": "48 8B 40 10",
+      "instruction": "mov rax, qword ptr [rax + 0x10]"
+    },
+    {
+      "purpose": "lookup_missing_definition",
+      "rva": "0xa056ea",
+      "bytes": "48 8B 05 37 86 31 05",
+      "instruction": "mov rax, qword ptr [rip + 0x5318637]",
+      "rip_relative_target": "0x5d1dd28"
+    },
+    {
+      "purpose": "two_role_definition",
+      "rva": "0x3076cbd",
+      "bytes": "48 89 11",
+      "instruction": "mov qword ptr [rcx], rdx"
+    },
+    {
+      "purpose": "two_role_actor",
+      "rva": "0x3076cd7",
+      "bytes": "89 BE D8 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2d8], edi"
+    },
+    {
+      "purpose": "two_role_recipient",
+      "rva": "0x3076cdd",
+      "bytes": "89 9E DC 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2dc], ebx"
+    },
+    {
+      "purpose": "two_role_secondary_ids_unset",
+      "rva": "0x3076ce3",
+      "bytes": "48 C7 86 E0 02 00 00 FF FF FF FF",
+      "instruction": "mov qword ptr [rsi + 0x2e0], 0xffffffffffffffff"
+    },
+    {
+      "purpose": "two_role_intermediary_unset",
+      "rva": "0x3076cee",
+      "bytes": "C7 86 E8 02 00 00 FF FF FF FF",
+      "instruction": "mov dword ptr [rsi + 0x2e8], 0xffffffff"
+    },
+    {
+      "purpose": "two_role_added_role_initial_actor",
+      "rva": "0x3076cf8",
+      "bytes": "89 BE EC 02 00 00",
+      "instruction": "mov dword ptr [rsi + 0x2ec], edi"
+    },
+    {
+      "purpose": "two_role_redirect_flag_stack",
+      "rva": "0x3076d21",
+      "bytes": "38 9C 24 98 00 00 00",
+      "instruction": "cmp byte ptr [rsp + 0x98], bl"
+    },
+    {
+      "purpose": "two_role_redirect_call",
+      "rva": "0x3076d66",
+      "bytes": "E8 75 20 0D 00",
+      "instruction": "call 0x3148de0",
+      "direct_call_target": "0x3148de0"
+    },
+    {
+      "purpose": "two_role_extra_context_stack",
+      "rva": "0x3076d6b",
+      "bytes": "48 8B 94 24 90 00 00 00",
+      "instruction": "mov rdx, qword ptr [rsp + 0x90]"
+    },
+    {
+      "purpose": "two_role_special_data",
+      "rva": "0x3076df5",
+      "bytes": "48 89 BE 30 03 00 00",
+      "instruction": "mov qword ptr [rsi + 0x330], rdi"
+    },
+    {
+      "purpose": "two_role_finalize_call",
+      "rva": "0x3076e25",
+      "bytes": "E8 66 1E 00 00",
+      "instruction": "call 0x3078c90",
+      "direct_call_target": "0x3078c90"
+    },
+    {
+      "purpose": "native_two_role_redirect_flag",
+      "rva": "0x115aacc",
+      "bytes": "C6 44 24 28 01",
+      "instruction": "mov byte ptr [rsp + 0x28], 1"
+    },
+    {
+      "purpose": "native_two_role_extra_context",
+      "rva": "0x115aad4",
+      "bytes": "4C 89 74 24 20",
+      "instruction": "mov qword ptr [rsp + 0x20], r14"
+    },
+    {
+      "purpose": "native_two_role_recipient",
+      "rva": "0x115aad9",
+      "bytes": "44 8B CF",
+      "instruction": "mov r9d, edi"
+    },
+    {
+      "purpose": "native_two_role_actor",
+      "rva": "0x115aadc",
+      "bytes": "44 8B C3",
+      "instruction": "mov r8d, ebx"
+    },
+    {
+      "purpose": "native_two_role_definition",
+      "rva": "0x115aadf",
+      "bytes": "48 8B 90 D0 10 00 00",
+      "instruction": "mov rdx, qword ptr [rax + 0x10d0]"
+    },
+    {
+      "purpose": "native_two_role_constructor_call",
+      "rva": "0x115aaeb",
+      "bytes": "E8 A0 C1 F1 01",
+      "instruction": "call 0x3076c90",
+      "direct_call_target": "0x3076c90"
+    },
+    {
+      "purpose": "native_two_role_refresh_call",
+      "rva": "0x115ab02",
+      "bytes": "E8 59 DF F1 01",
+      "instruction": "call 0x3078a60",
+      "direct_call_target": "0x3078a60"
+    },
+    {
+      "purpose": "definition_identity_hash_call",
+      "rva": "0x3144a1c",
+      "bytes": "E8 1F 98 E3 00",
+      "instruction": "call 0x3f7e240",
+      "direct_call_target": "0x3f7e240"
+    },
+    {
+      "purpose": "definition_msvc_string_capacity",
+      "rva": "0x3144a42",
+      "bytes": "48 C7 41 18 0F 00 00 00",
+      "instruction": "mov qword ptr [rcx + 0x18], 0xf"
+    },
+    {
+      "purpose": "definition_native_kind",
+      "rva": "0x3144a57",
+      "bytes": "C7 46 38 4F 62 44 47",
+      "instruction": "mov dword ptr [rsi + 0x38], 0x4744624f"
+    },
+    {
+      "purpose": "generic_ui_final_validator_call",
+      "rva": "0x10e9218",
+      "bytes": "E8 23 2E F9 01",
+      "instruction": "call 0x307c040",
+      "direct_call_target": "0x307c040"
+    },
+    {
+      "purpose": "generic_ui_negative_branch",
+      "rva": "0x10e921f",
+      "bytes": "74 45",
+      "instruction": "je 0x10e9266"
+    },
+    {
+      "purpose": "generic_ui_send_constructor_call",
+      "rva": "0x10e9229",
+      "bytes": "E8 42 EF 87 01",
+      "instruction": "call 0x2968170",
+      "direct_call_target": "0x2968170"
+    },
+    {
+      "purpose": "generic_ui_queue_channel",
+      "rva": "0x10e922f",
+      "bytes": "BA 0E 00 00 00",
+      "instruction": "mov edx, 0xe"
+    },
+    {
+      "purpose": "generic_ui_command_argument",
+      "rva": "0x10e9234",
+      "bytes": "48 8B C8",
+      "instruction": "mov rcx, rax"
+    },
+    {
+      "purpose": "generic_ui_submit_call",
+      "rva": "0x10e9237",
+      "bytes": "E8 74 84 8F FF",
+      "instruction": "call 0x9e16b0",
+      "direct_call_target": "0x9e16b0"
+    },
+    {
+      "purpose": "generic_ui_copied_context_destroy",
+      "rva": "0x10e9242",
+      "bytes": "E8 59 E1 F8 01",
+      "instruction": "call 0x30773a0",
+      "direct_call_target": "0x30773a0"
+    },
+    {
+      "purpose": "command_context_clone_call",
+      "rva": "0x29681b0",
+      "bytes": "E8 CB E9 70 00",
+      "instruction": "call 0x3076b80",
+      "direct_call_target": "0x3076b80"
+    },
+    {
+      "purpose": "command_actor_id",
+      "rva": "0x29681b6",
+      "bytes": "8B 9F D8 02 00 00",
+      "instruction": "mov ebx, dword ptr [rdi + 0x2d8]"
+    },
+    {
+      "purpose": "payer_alias_name",
+      "rva": "0xeb24",
+      "bytes": "48 8D 05 35 FF 48 04",
+      "instruction": "lea rax, [rip + 0x448ff35]",
+      "rip_relative_target": "0x449ea60"
+    },
+    {
+      "purpose": "payer_alias_key_slot_registration",
+      "rva": "0xeb55",
+      "bytes": "48 8D 15 74 D5 D3 05",
+      "instruction": "lea rdx, [rip + 0x5d3d574]",
+      "rip_relative_target": "0x5d4c0d0"
+    },
+    {
+      "purpose": "payer_alias_register_call",
+      "rva": "0xeb5c",
+      "bytes": "E8 4F B9 F7 03",
+      "instruction": "call 0x3f8a4b0",
+      "direct_call_target": "0x3f8a4b0"
+    },
+    {
+      "purpose": "payer_role_native_read",
+      "rva": "0x3078b4d",
+      "bytes": "8B 83 EC 02 00 00",
+      "instruction": "mov eax, dword ptr [rbx + 0x2ec]"
+    },
+    {
+      "purpose": "payer_alias_key_slot_lookup",
+      "rva": "0x3078b57",
+      "bytes": "8B 15 73 35 CD 02",
+      "instruction": "mov edx, dword ptr [rip + 0x2cd3573]",
+      "rip_relative_target": "0x5d4c0d0"
+    },
+    {
+      "purpose": "payer_alias_bind_call",
+      "rva": "0x3078b6c",
+      "bytes": "E8 9F 15 6C 00",
+      "instruction": "call 0x373a110",
+      "direct_call_target": "0x373a110"
+    },
+    {
+      "purpose": "puppet_role_exists_check",
+      "rva": "0x3078b77",
+      "bytes": "83 F8 FF",
+      "instruction": "cmp eax, -1"
+    },
+    {
+      "purpose": "puppet_role_differs_from_actor",
+      "rva": "0x3078b7c",
+      "bytes": "39 83 D8 02 00 00",
+      "instruction": "cmp dword ptr [rbx + 0x2d8], eax"
+    },
+    {
+      "purpose": "definition_autotrigger",
+      "rva": "0x2a2fe45",
+      "instruction": "mov rcx, qword ptr [rax + 0x2290]",
+      "bytes": "48 8B 88 90 22 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_autoscalar",
+      "rva": "0x2a2fe51",
+      "instruction": "movzx eax, byte ptr [rax + 0x2718]",
+      "bytes": "0F B6 80 18 27 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_runtime_id",
+      "rva": "0x3144a05",
+      "instruction": "mov dword ptr [rsi + 0x10], r10d",
+      "bytes": "44 89 56 10",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_key_hash",
+      "rva": "0x3144a21",
+      "instruction": "mov dword ptr [rsi + 0x14], eax",
+      "bytes": "89 46 14",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_canonical_key",
+      "rva": "0x3144a24",
+      "instruction": "lea rcx, [rsi + 0x18]",
+      "bytes": "48 8D 4E 18",
+      "rip_targets": []
+    },
+    {
+      "purpose": "definition_cost_block",
+      "rva": "0x3144a8e",
+      "instruction": "lea rcx, [rsi + 0x40]",
+      "bytes": "48 8D 4E 40",
+      "rip_targets": []
+    },
+    {
+      "purpose": "send_primary_vtable",
+      "rva": "0x2968197",
+      "instruction": "lea rax, [rip + 0x1b23b42]",
+      "bytes": "48 8D 05 42 3B B2 01",
+      "rip_targets": [
+        "0x448bce0"
+      ]
+    },
+    {
+      "purpose": "send_secondary_vtable",
+      "rva": "0x29681a1",
+      "instruction": "lea rax, [rip + 0x1b23b08]",
+      "bytes": "48 8D 05 08 3B B2 01",
+      "rip_targets": [
+        "0x448bcb0"
+      ]
+    }
+  ],
+  "source_constants": {
+    "kFactionGiftDatabaseGetterRvaV1": "0x89DA60",
+    "kFactionGiftStableHashRvaV1": "0x3F7E240",
+    "kFactionGiftDefinitionLookupRvaV1": "0xA055E0",
+    "kFactionGiftConstructTwoRoleContextRvaV1": "0x3076C90"
+  },
+  "native_entry_contract": {
+    "database_getter": "void* (*)()",
+    "stable_hash": "uint32_t (*)(void* ignored_database, const char* bytes, uint32_t length); zero seed regardless of database",
+    "definition_lookup": "void* (*)(void* database, int32_t stable_hash)",
+    "two_role_context": "void* (*)(void* storage, void* definition, int32_t actor, int32_t recipient, void* extra_scope, bool redirect_roles)",
+    "context_size": "0x338",
+    "send_command_size": "0x368",
+    "definition_identity": {
+      "ordinal_offset": "0x10",
+      "stable_hash_offset": "0x14",
+      "canonical_msvc_string_offset": "0x18",
+      "canonical_string_length_offset": "0x28",
+      "canonical_string_capacity_offset": "0x30",
+      "native_kind_offset": "0x38",
+      "native_kind": "0x4744624F"
+    },
+    "context_roles": {
+      "actor": "0x2D8",
+      "recipient": "0x2DC",
+      "secondary_actor": "0x2E0",
+      "secondary_recipient": "0x2E4",
+      "intermediary": "0x2E8",
+      "puppet_or_actor": "0x2EC"
+    },
+    "puppet_or_actor_alias_key_slot": "0x5D4C0D0",
+    "lookup_missing_definition_slot": "0x5D1DD28"
+  },
+  "stock_evidence": {
+    "path": "game/common/character_interactions/00_gift.txt",
+    "sha256": "D62A80DD8ED0F666A1223BA5BA68EA4362A8259E54C795C4D215C5EB7D0DF0F2",
+    "selected_lines": {
+      "final_money_legality": "89-102",
+      "actual_gift_payment": "167-174",
+      "opinion_modifier": "350-378",
+      "auto_accept": "604 onwards"
+    },
+    "cost_semantics": "Generic ten-slot cost vector at definition+0x40 evaluates on_send. Actual gift payment uses gift_value in on_accept pay_short_term_gold; generic gold slot is not a replacement for gift_value."
+  },
+  "boundaries": {
+    "no_process_or_desktop_access": true,
+    "no_general_religion_research": true,
+    "generic_context_proven": true,
+    "gift_value_receiver_in_this_manifest": false,
+    "opinion_value_receiver_in_this_manifest": false,
+    "fixture_or_ack_proves_effect": false,
+    "next_live_evidence": "One exact-build paused native gift preview, followed only on an independently qualified actor/recipient by native send and actual gold/opinion/faction re-query."
+  }
+}

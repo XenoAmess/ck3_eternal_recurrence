@@ -1,0 +1,1009 @@
+{
+  "schema": "xar.ck3_12002_gift_opinion.abi.v1",
+  "readiness": "static-ready",
+  "build": {
+    "game_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "image_base": "0x140000000"
+  },
+  "keys": {
+    "gift_opinion": "0xCA82155B",
+    "send_gift_opinion": "0xF8A1F946",
+    "gift_value": "0x58DD38F9"
+  },
+  "layout": {
+    "character_identity_offset": "0x18",
+    "character_extension_offset": "0x1B0",
+    "definition_hash_offset": "0x14",
+    "definition_canonical_string_offset": "0x18",
+    "definition_valid_tag_offset": "0x38",
+    "definition_valid_tag": "0x4744624F",
+    "definition_secondary_vptr_offset": "0x88",
+    "active_rows_offset": "0x08",
+    "active_count_offset": "0x14",
+    "active_modifier_pointer_offset": "0x08"
+  },
+  "native_spans": [
+    {
+      "name": "recipient_total_opinion",
+      "rva_start": "0x28bc490",
+      "rva_end_exclusive": "0x28bc4f9",
+      "length": 105,
+      "sha256": "6594307325C64CB7366CCDBBDA7F70AF28AEF56F2A11FC407B6C24D7BE681DB0"
+    },
+    {
+      "name": "opinion_trigger_evaluate",
+      "rva_start": "0x2b78d70",
+      "rva_end_exclusive": "0x2b78ea5",
+      "length": 309,
+      "sha256": "AF86D428457B2F696E9B52A49B21812A384BA184A864C38BE675CB10C7BC6BD6"
+    },
+    {
+      "name": "find_active_opinion_group",
+      "rva_start": "0x2949aa0",
+      "rva_end_exclusive": "0x2949b2a",
+      "length": 138,
+      "sha256": "A61D4F9A10F1362F865155F8F7FF8E09416CDBD754FBB0226373EA7AD13FC586"
+    },
+    {
+      "name": "sum_active_modifier",
+      "rva_start": "0x25962b0",
+      "rva_end_exclusive": "0x2596315",
+      "length": 101,
+      "sha256": "09C60B9D9BE9FEE62E5370450E6D4D09FF47D54A97859BD215F62E2C8BA0DFB4"
+    },
+    {
+      "name": "active_decay_value",
+      "rva_start": "0x25953b0",
+      "rva_end_exclusive": "0x259565e",
+      "length": 686,
+      "sha256": "702053DA4B3C07938E2CECA54AF8C59E868FC789BE3A3414DCAAA81D6370EE21"
+    },
+    {
+      "name": "opinion_modifier_lookup",
+      "rva_start": "0x25a2f00",
+      "rva_end_exclusive": "0x25a303a",
+      "length": 314,
+      "sha256": "B7656288CC560E3DAA9F0076786E3AD319775AAE08E8800B055FB3C976D2C67B"
+    },
+    {
+      "name": "opinion_modifier_database_getter",
+      "rva_start": "0x10afd70",
+      "rva_end_exclusive": "0x10afdc7",
+      "length": 87,
+      "sha256": "047315B1F25D7695FB4DAC6F2B978F75FBA91C74491D12E9842FE5CA55C30575"
+    },
+    {
+      "name": "opinion_modifier_trigger_initializer",
+      "rva_start": "0x2b78790",
+      "rva_end_exclusive": "0x2b78893",
+      "length": 259,
+      "sha256": "1CFF412672FAD05598641DD3171E67A5386BD5793CE98BBAAA5EEFF475FC0003"
+    },
+    {
+      "name": "opinion_modifier_constructor",
+      "rva_start": "0x3188b70",
+      "rva_end_exclusive": "0x3188caa",
+      "length": 314,
+      "sha256": "BE51C1BA3703EFD6D0F9E29B0744912BBEE0A75C0796080FD991CEBF3F23CF68"
+    }
+  ],
+  "semantic_checks": [
+    {
+      "purpose": "opinion_trigger_native_receiver",
+      "rva": "0x2b78e01",
+      "instruction": "call 0x28bc490",
+      "bytes": "E8 8A 36 D4 FF"
+    },
+    {
+      "purpose": "opinion_owner_extension_new_1b0",
+      "rva": "0x28bc4ad",
+      "instruction": "mov rcx, qword ptr [rdi + 0x1b0]",
+      "bytes": "48 8B 8F B0 01 00 00"
+    },
+    {
+      "purpose": "active_modifier_trigger_extension_new_1b0",
+      "rva": "0x2b78a1a",
+      "instruction": "mov rcx, qword ptr [rbx + 0x1b0]",
+      "bytes": "48 8B 8B B0 01 00 00"
+    },
+    {
+      "purpose": "active_group_final_native_lookup",
+      "rva": "0x2b78a2a",
+      "instruction": "call 0x2949aa0",
+      "bytes": "E8 71 10 DD FF"
+    },
+    {
+      "purpose": "modifier_native_sum",
+      "rva": "0x2b78a84",
+      "instruction": "call 0x25962b0",
+      "bytes": "E8 27 D8 A1 FF"
+    },
+    {
+      "purpose": "modifier_native_decay_value",
+      "rva": "0x25962ee",
+      "instruction": "call 0x25953b0",
+      "bytes": "E8 BD F0 FF FF"
+    },
+    {
+      "purpose": "modifier_initializer_database_getter",
+      "rva": "0x2b787a2",
+      "instruction": "call 0x10afd70",
+      "bytes": "E8 C9 75 53 FE"
+    },
+    {
+      "purpose": "modifier_initializer_hash",
+      "rva": "0x2b787dc",
+      "instruction": "call 0x3f7e240",
+      "bytes": "E8 5F 5A 40 01"
+    },
+    {
+      "purpose": "modifier_initializer_fresh_lookup",
+      "rva": "0x2b787e6",
+      "instruction": "call 0x25a2f00",
+      "bytes": "E8 15 A7 A2 FF"
+    },
+    {
+      "purpose": "modifier_initializer_validity_is_tag",
+      "rva": "0x2b787f2",
+      "instruction": "cmp dword ptr [rax + 0x38], 0x4744624f",
+      "bytes": "81 78 38 4F 62 44 47"
+    },
+    {
+      "purpose": "modifier_database_actual_global_slot",
+      "rva": "0x10afd74",
+      "instruction": "mov rax, qword ptr [rip + 0x4c70a65]",
+      "bytes": "48 8B 05 65 0A C7 04"
+    },
+    {
+      "purpose": "modifier_constructor_hash_roundtrip",
+      "rva": "0x3188bef",
+      "instruction": "mov dword ptr [rbx + 0x14], eax",
+      "bytes": "89 43 14"
+    },
+    {
+      "purpose": "modifier_constructor_ObDG_tag",
+      "rva": "0x3188c29",
+      "instruction": "mov dword ptr [rbx + 0x38], 0x4744624f",
+      "bytes": "C7 43 38 4F 62 44 47"
+    },
+    {
+      "purpose": "modifier_constructor_primary_vtable",
+      "rva": "0x3188c4f",
+      "instruction": "lea rax, [rip + 0x173c71a]",
+      "bytes": "48 8D 05 1A C7 73 01"
+    },
+    {
+      "purpose": "modifier_constructor_secondary_vtable",
+      "rva": "0x3188c68",
+      "instruction": "lea rax, [rip + 0x173c6c9]",
+      "bytes": "48 8D 05 C9 C6 73 01"
+    },
+    {
+      "purpose": "modifier_constructor_vbtable_secondary_displacement",
+      "rva": "0x3188b8a",
+      "instruction": "lea rax, [rip + 0x16fc357]",
+      "bytes": "48 8D 05 57 C3 6F 01"
+    }
+  ],
+  "vtable_prefixes": [
+    {
+      "name": "modifier_primary",
+      "rva": "0x48c5370",
+      "length": 8,
+      "sha256": "159F65198610E2248C3F03364147F4207E132F83A2146B16A16FD7E5E04874B4",
+      "function_rvas": [
+        "0x3188fe0"
+      ]
+    },
+    {
+      "name": "modifier_secondary",
+      "rva": "0x48c5338",
+      "length": 40,
+      "sha256": "FB3AD5A784DE2D2561A9B67C37E0DE487BA1A228F8506D9B74C1B0F90E8F5409",
+      "function_rvas": [
+        "0x3189960",
+        "0x2dca7e0",
+        "0x22968b8",
+        "0x3f7e350",
+        "0x2fd9e88"
+      ]
+    },
+    {
+      "name": "active_opinion",
+      "rva": "0x473de08",
+      "length": 48,
+      "sha256": "55B264406FD49A4DEB4A9AD3D78157A10D3A780924CF59A109A6824B990E02E9",
+      "function_rvas": [
+        "0x2595a10",
+        "0x3f7e2d0",
+        "0x2595ae0",
+        "0x3f7e350",
+        "0x2595e10",
+        "0x2596100"
+      ]
+    },
+    {
+      "name": "temporary_opinion",
+      "rva": "0x473ddd0",
+      "length": 48,
+      "sha256": "5097BA5741E1418A934DA56C47951C6B3AF3E43ED15E6DAD32B893F7963C960E",
+      "function_rvas": [
+        "0x2594d80",
+        "0x3f7e2d0",
+        "0x2594de0",
+        "0x3f7e350",
+        "0x2595090",
+        "0x8522c0"
+      ]
+    }
+  ],
+  "named_evaluation": {
+    "schema": "xar.ck3.gift_named_12002.offline_reverse_evidence",
+    "schema_version": 1,
+    "readiness": "research/static ABI migration evidence only",
+    "live_validation_executed": false,
+    "native_functions_executed": false,
+    "build": {
+      "game_version": "1.20.0.2",
+      "image_base": "0x140000000",
+      "file_size": 101039736,
+      "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+    },
+    "old_build_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "logical_function_ranges": [
+      {
+        "name": "named_value_database_getter",
+        "old_rva": "0x999AF0",
+        "start_rva": "0xA07970",
+        "end_rva": "0xA079C7",
+        "length": 87,
+        "sha256": "6F3BA6B062D06184191B330D91BCCA863BFE5D971725D2CC49F3E26C9BE5A536"
+      },
+      {
+        "name": "named_value_lookup",
+        "old_rva": "0x9999B0",
+        "start_rva": "0xA07830",
+        "end_rva": "0xA0796A",
+        "length": 314,
+        "sha256": "003F2D5E0452C4E8EED1B2413042189AA44A48CEE8F19E0C91AE2CCBB12A7DCE"
+      },
+      {
+        "name": "evaluate_named_fixed_five_argument",
+        "old_rva": "0x3369820",
+        "start_rva": "0x37542F0",
+        "end_rva": "0x3754479",
+        "length": 393,
+        "sha256": "6F992E6362201CFFD5CA55643CBFAEEE159907A621878812E4ECC20B37D68EC6"
+      },
+      {
+        "name": "clone_event_target_scope",
+        "old_rva": "0x3358E00",
+        "start_rva": "0x373AD10",
+        "end_rva": "0x373ADF9",
+        "length": 233,
+        "sha256": "2935CA790FBB2067D70A5C9B59608A0A47596E9D5EC1843A2D16E0B8978A6A8F"
+      },
+      {
+        "name": "construct_evaluation_support_118",
+        "old_rva": "0x3354330",
+        "start_rva": "0x3736060",
+        "end_rva": "0x37360E2",
+        "length": 130,
+        "sha256": "B9C06F876280E48017F92969F5E10AED69AD1A2684157ACF888F70CC0D490713"
+      },
+      {
+        "name": "construct_evaluation_support_2a8_logical",
+        "old_rva": "0x3354280",
+        "start_rva": "0x3735FB0",
+        "end_rva": "0x373605B",
+        "length": 171,
+        "sha256": "473C1002EE378CA523B03E7EB63C347018B5B8A0058C91EDB6E7AAD1319717A7"
+      },
+      {
+        "name": "destroy_scope_tail",
+        "old_rva": "0x81E900",
+        "start_rva": "0x889700",
+        "end_rva": "0x889776",
+        "length": 118,
+        "sha256": "0F1A84CDD95DD6DB78E7A49D4FC754164BB8340F4374073DC71F7531D63C0DB8"
+      },
+      {
+        "name": "destroy_scope_rows48_logical",
+        "old_rva": "0x81E980",
+        "start_rva": "0x889780",
+        "end_rva": "0x8897DD",
+        "length": 93,
+        "sha256": "7156A7E95CB379797E67D986F4CDBE2936EE932F6DCA093CDAD0669DE1994D10"
+      },
+      {
+        "name": "destroy_support_2a8_rows_logical",
+        "old_rva": "0x969BA0",
+        "start_rva": "0x9D7340",
+        "end_rva": "0x9D739B",
+        "length": 91,
+        "sha256": "AA4776FB3557B78989A812E711139A2F4AE3B41B0F15894FD20F403D9115FC43"
+      },
+      {
+        "name": "construct_jomini_named_value",
+        "old_rva": "0x333A220",
+        "start_rva": "0x371D120",
+        "end_rva": "0x371D22A",
+        "length": 266,
+        "sha256": "519A43332DC29C9C69C76D674BD672C7339F079BCB64487EB5552F15DE0F47B2"
+      },
+      {
+        "name": "evaluate_named_integer",
+        "old_rva": "0x3369600",
+        "start_rva": "0x37540D0",
+        "end_rva": "0x37542E6",
+        "length": 534,
+        "sha256": "521782462475CAC3D9C20E629ACB79EE83EE0AB35CE761E394ED3B3AE11D88DD"
+      },
+      {
+        "name": "stock_named_source_builder_and_fixed_call",
+        "old_rva": "0x2309580",
+        "start_rva": "0x258BD30",
+        "end_rva": "0x258BF6E",
+        "length": 574,
+        "sha256": "96B02BDE7C9594EF5CF1C89454687B827E1AF07B6773BD71DF5F92FE4F4790B3"
+      },
+      {
+        "name": "stock_recipient_root_scope_owner",
+        "old_rva": "0x2C44320",
+        "start_rva": "0x307C460",
+        "end_rva": "0x307C54B",
+        "length": 235,
+        "sha256": "0495716807E3D81C4296C8E12264403E54E104AA886B66249D2638A7B969CE21"
+      },
+      {
+        "name": "stock_evaluation_support_owner",
+        "old_rva": null,
+        "start_rva": "0x37616A0",
+        "end_rva": "0x3761791",
+        "length": 241,
+        "sha256": "A303FF18F133452CA589BEA3B633D6CA57AE1EBFA500515080671CB0E19E10A1"
+      },
+      {
+        "name": "fixed_raw_to_integer_converter",
+        "old_rva": null,
+        "start_rva": "0x37498C0",
+        "end_rva": "0x3749A89",
+        "length": 457,
+        "sha256": "36654350FE8DCF23E5E04D2745C25A98C4B88D0DF20FE5C2F41021061948E22F"
+      },
+      {
+        "name": "fixed_raw_to_integer_conversion_tail",
+        "old_rva": null,
+        "start_rva": "0x3749A40",
+        "end_rva": "0x3749A83",
+        "length": 67,
+        "sha256": "73D1C3D34DD923B142D7CC3D04E57A8594E5A6725F461C6E6CB4C74CAFECB259"
+      },
+      {
+        "name": "intern_string_registry_getter",
+        "old_rva": null,
+        "start_rva": "0x3F79B20",
+        "end_rva": "0x3F79C09",
+        "length": 233,
+        "sha256": "5F20E183F0F712BB9A020FE23350D981E36C57396B1054308CF1E926E7905991"
+      },
+      {
+        "name": "intern_string_view",
+        "old_rva": null,
+        "start_rva": "0x3F79DF0",
+        "end_rva": "0x3F79FFE",
+        "length": 526,
+        "sha256": "6EBDDCB94C4ECD8F1AB909ECED23A1212F19B16EB010F647142551ADB7700C52"
+      }
+    ],
+    "signature_anchors": [
+      {
+        "name": "named_value_database_getter",
+        "rva": "0xA07970",
+        "function_rva": "0xA07970",
+        "pattern": "48 83 EC 38 48 8B 05 D5 63 31 05 48 85 C0 75 42",
+        "unique_matches": 1
+      },
+      {
+        "name": "named_value_lookup",
+        "rva": "0xA07927",
+        "function_rva": "0xA07830",
+        "pattern": "8D 14 40 49 8D 04 D2 80 78 04 FF 74 06 48 8B 40 10 EB 07 48 8B 05 07 64",
+        "unique_matches": 1
+      },
+      {
+        "name": "evaluate_named_fixed_five_argument",
+        "rva": "0x37542F0",
+        "function_rva": "0x37542F0",
+        "pattern": "48 8B C4 48 89 58 10 48 89 70 18 55 57 41 54 41 56 41 57 48 8D 68 A9 48 81 EC 90 00 00 00 0F 29",
+        "unique_matches": 1
+      },
+      {
+        "name": "clone_event_target_scope",
+        "rva": "0x373AD10",
+        "function_rva": "0x373AD10",
+        "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 4C 24 08 56 57 41 56 48 83 EC 20 48 8B F2 4C 8B F1 33 ED 89",
+        "unique_matches": 1
+      },
+      {
+        "name": "construct_evaluation_support_118",
+        "rva": "0x3736060",
+        "function_rva": "0x3736060",
+        "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 8D 59 18 33 ED 48 89 29 48 8D 05 DC 4F 1F 01 89 69 08 48",
+        "unique_matches": 1
+      },
+      {
+        "name": "construct_evaluation_support_2a8_logical",
+        "rva": "0x3735FB0",
+        "function_rva": "0x3735FB0",
+        "pattern": "48 89 5C 24 10 48 89 6C 24 18 56 41 56 41 57 48 83 EC 20 33 ED 4C 8D 71 18 48 89 69 08 48 8D 05 1C 50 1F 01 48 89 29 48",
+        "unique_matches": 1
+      },
+      {
+        "name": "destroy_scope_tail",
+        "rva": "0x889700",
+        "function_rva": "0x889700",
+        "pattern": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 33 F6 48 8B F9 48 39 71 30 74 22 48 83 C1 30 E8 5D",
+        "unique_matches": 1
+      },
+      {
+        "name": "destroy_support_2a8_rows_logical",
+        "rva": "0x9D7340",
+        "function_rva": "0x9D7340",
+        "pattern": "48 89 5C 24 10 56 48 83 EC 20 8B 59 0C 48 8B F1 85 DB 7E 35 48 89 7C 24 30 48 8B 39 0F 1F 40 00 48 8B CF E8 58 52 00 00",
+        "unique_matches": 1
+      },
+      {
+        "name": "construct_jomini_named_value",
+        "rva": "0x371D120",
+        "function_rva": "0x371D120",
+        "pattern": "48 89 5C 24 08 57 48 83 EC 30 44 8B CA 0F 29 74 24 20 41 0F 28 30 48 8D 05 AB 7D 16 01 48 89 41",
+        "unique_matches": 1
+      },
+      {
+        "name": "evaluate_named_integer",
+        "rva": "0x37540D0",
+        "function_rva": "0x37540D0",
+        "pattern": "48 8B C4 48 89 58 10 48 89 70 18 55 57 41 54 41 56 41 57 48 8D 68 A1 48 81 EC 90 00 00 00 0F 29",
+        "unique_matches": 1
+      },
+      {
+        "name": "stock_named_source_builder_and_fixed_call",
+        "rva": "0x258BD30",
+        "function_rva": "0x258BD30",
+        "pattern": "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 60 49 8B F1 49 63 D8 48 8B F9",
+        "unique_matches": 1
+      },
+      {
+        "name": "stock_recipient_root_scope_owner",
+        "rva": "0x307C460",
+        "function_rva": "0x307C460",
+        "pattern": "48 89 5C 24 08 57 48 81 EC 90 01 00 00 48 8B DA 48 8B F9 8B 81 DC 02 00",
+        "unique_matches": 1
+      },
+      {
+        "name": "stock_evaluation_support_owner",
+        "rva": "0x37616A0",
+        "function_rva": "0x37616A0",
+        "pattern": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 81 EC 30 04 00 00 49 8B D8 48 8B F2 48 8B F9",
+        "unique_matches": 1
+      },
+      {
+        "name": "fixed_raw_to_integer_converter",
+        "rva": "0x37498C0",
+        "function_rva": "0x37498C0",
+        "pattern": "48 89 5C 24 08 57 48 81 EC C0 00 00 00 4C 8B C2",
+        "unique_matches": 1
+      },
+      {
+        "name": "fixed_raw_to_integer_conversion_tail",
+        "rva": "0x3749A40",
+        "function_rva": "0x3749A40",
+        "pattern": "48 B8 09 E1 D1 C6 11 6B F1 29 48 85 DB 79 09 48 81 C3 B0 3C FF FF EB 07 48 81 C3 50 C3 00 00 48 F7 EB 48 C1 FA 0E 48 8B C2 48 C1 E8 3F 48 03 D0 8B C2 48 8B 9C 24 D0 00",
+        "unique_matches": 1
+      },
+      {
+        "name": "intern_string_registry_getter",
+        "rva": "0x3F79B20",
+        "function_rva": "0x3F79B20",
+        "pattern": "48 83 EC 28 BA 10 00 00 00 65 48 8B 04 25 58 00 00 00 48 8B 08 8B 04 0A 39 05 DE 76 E4 01 7F 31",
+        "unique_matches": 1
+      },
+      {
+        "name": "intern_string_view",
+        "rva": "0x3F79DF0",
+        "function_rva": "0x3F79DF0",
+        "pattern": "48 89 5C 24 08 48 89 6C 24 18 48 89 74 24 20 57 41 56 41 57 48 83 EC 70 4C 8B FA 48 8B D9 44 8B",
+        "unique_matches": 1
+      }
+    ],
+    "instruction_evidence": [
+      {
+        "rva": "0xA07974",
+        "bytes": "48 8B 05 D5 63 31 05",
+        "instruction": "mov rax, qword ptr [rip + 0x53163d5]",
+        "purpose": "named registry slot",
+        "rip_targets": [
+          "0x5D1DD50"
+        ]
+      },
+      {
+        "rva": "0xA0793A",
+        "bytes": "48 8B 05 07 64 31 05",
+        "instruction": "mov rax, qword ptr [rip + 0x5316407]",
+        "purpose": "named null fallback slot",
+        "rip_targets": [
+          "0x5D1DD48"
+        ]
+      },
+      {
+        "rva": "0xA078E3",
+        "bytes": "4C 63 89 8C 01 00 00",
+        "instruction": "movsxd r9, dword ptr [rcx + 0x18c]",
+        "purpose": "named lookup hash table mask/count offset 0x18C"
+      },
+      {
+        "rva": "0xA078EA",
+        "bytes": "4C 8B 91 80 01 00 00",
+        "instruction": "mov r10, qword ptr [rcx + 0x180]",
+        "purpose": "named lookup rows offset 0x180"
+      },
+      {
+        "rva": "0x258BD50",
+        "bytes": "48 8B 80 F0 0E 00 00",
+        "instruction": "mov rax, qword ptr [rax + 0xef0]",
+        "purpose": "named registry vector data offset 0xEF0"
+      },
+      {
+        "rva": "0x258BD7A",
+        "bytes": "E8 A1 DD 9E 01",
+        "instruction": "call 0x3f79b20",
+        "purpose": "stock source builder obtains intern string registry",
+        "call_target": "0x3F79B20"
+      },
+      {
+        "rva": "0x258BD92",
+        "bytes": "E8 59 E0 9E 01",
+        "instruction": "call 0x3f79df0",
+        "purpose": "stock source builder interns canonical definition name",
+        "call_target": "0x3F79DF0"
+      },
+      {
+        "rva": "0x258BD97",
+        "bytes": "48 89 44 24 40",
+        "instruction": "mov qword ptr [rsp + 0x40], rax",
+        "purpose": "new source descriptor intern pointer at +0x00"
+      },
+      {
+        "rva": "0x258BDA3",
+        "bytes": "C6 44 24 54 01",
+        "instruction": "mov byte ptr [rsp + 0x54], 1",
+        "purpose": "new source descriptor flag at +0x14"
+      },
+      {
+        "rva": "0x258BDA8",
+        "bytes": "48 89 44 24 48",
+        "instruction": "mov qword ptr [rsp + 0x48], rax",
+        "purpose": "new source descriptor zero pointer at +0x08"
+      },
+      {
+        "rva": "0x258BDB0",
+        "bytes": "89 44 24 50",
+        "instruction": "mov dword ptr [rsp + 0x50], eax",
+        "purpose": "new source descriptor zero uint32 at +0x10"
+      },
+      {
+        "rva": "0x258BDB7",
+        "bytes": "89 44 24 5C",
+        "instruction": "mov dword ptr [rsp + 0x5c], eax",
+        "purpose": "new source descriptor zero uint32 at +0x1C"
+      },
+      {
+        "rva": "0x258BDC3",
+        "bytes": "C7 44 24 58 FF FF FF FF",
+        "instruction": "mov dword ptr [rsp + 0x58], 0xffffffff",
+        "purpose": "new source descriptor signed -1 at +0x18"
+      },
+      {
+        "rva": "0x258BDCB",
+        "bytes": "48 89 44 24 20",
+        "instruction": "mov qword ptr [rsp + 0x20], rax",
+        "purpose": "source descriptor is fifth stack argument"
+      },
+      {
+        "rva": "0x258BDD0",
+        "bytes": "E8 1B 85 1C 01",
+        "instruction": "call 0x37542f0",
+        "purpose": "stock five-argument named fixed receiver call",
+        "call_target": "0x37542F0"
+      },
+      {
+        "rva": "0x3754339",
+        "bytes": "38 05 99 97 5C 02",
+        "instruction": "cmp byte ptr [rip + 0x25c9799], al",
+        "purpose": "named evaluator diagnostic/profiler flag",
+        "rip_targets": [
+          "0x5D1DAD8"
+        ]
+      },
+      {
+        "rva": "0x3754384",
+        "bytes": "48 8B 4E 70",
+        "instruction": "mov rcx, qword ptr [rsi + 0x70]",
+        "purpose": "named compiled tree offset 0x70"
+      },
+      {
+        "rva": "0x375439C",
+        "bytes": "48 8B 45 7F",
+        "instruction": "mov rax, qword ptr [rbp + 0x7f]",
+        "purpose": "fixed receiver loads fifth source pointer at callee-entry RSP+0x28"
+      },
+      {
+        "rva": "0x37543BB",
+        "bytes": "80 7E 7B 00",
+        "instruction": "cmp byte ptr [rsi + 0x7b], 0",
+        "purpose": "named fixed constant flag offset 0x7B"
+      },
+      {
+        "rva": "0x37543C1",
+        "bytes": "48 8B 5E 68",
+        "instruction": "mov rbx, qword ptr [rsi + 0x68]",
+        "purpose": "named fixed raw constant offset 0x68"
+      },
+      {
+        "rva": "0x3754163",
+        "bytes": "48 8B 4B 70",
+        "instruction": "mov rcx, qword ptr [rbx + 0x70]",
+        "purpose": "named integer compiled tree offset 0x70"
+      },
+      {
+        "rva": "0x3754194",
+        "bytes": "E8 27 57 FF FF",
+        "instruction": "call 0x37498c0",
+        "purpose": "named integer invokes new raw integer converter",
+        "call_target": "0x37498C0"
+      },
+      {
+        "rva": "0x375422D",
+        "bytes": "80 7B 7A 00",
+        "instruction": "cmp byte ptr [rbx + 0x7a], 0",
+        "purpose": "named integer constant flag offset 0x7A"
+      },
+      {
+        "rva": "0x3754233",
+        "bytes": "8B 7B 60",
+        "instruction": "mov edi, dword ptr [rbx + 0x60]",
+        "purpose": "named integer constant offset 0x60"
+      },
+      {
+        "rva": "0x307C496",
+        "bytes": "E8 75 E8 6B 00",
+        "instruction": "call 0x373ad10",
+        "purpose": "clone context+0x08 scope into stack scope",
+        "call_target": "0x373AD10"
+      },
+      {
+        "rva": "0x307C4A1",
+        "bytes": "66 89 44 24 20",
+        "instruction": "mov word ptr [rsp + 0x20], ax",
+        "purpose": "rewrite clone root kind to character kind 4"
+      },
+      {
+        "rva": "0x307C4A6",
+        "bytes": "8B 87 DC 02 00 00",
+        "instruction": "mov eax, dword ptr [rdi + 0x2dc]",
+        "purpose": "recipient full id remains interaction context+0x2DC"
+      },
+      {
+        "rva": "0x307C4AC",
+        "bytes": "48 89 44 24 28",
+        "instruction": "mov qword ptr [rsp + 0x28], rax",
+        "purpose": "rewrite clone root payload as zero-extended uint32 full id"
+      },
+      {
+        "rva": "0x307C4D1",
+        "bytes": "E8 2A D2 80 FD",
+        "instruction": "call 0x889700",
+        "purpose": "destroy scope+0x118 tail",
+        "call_target": "0x889700"
+      },
+      {
+        "rva": "0x307C4EA",
+        "bytes": "E8 91 D2 80 FD",
+        "instruction": "call 0x889780",
+        "purpose": "destroy scope+0x100 rows48",
+        "call_target": "0x889780"
+      },
+      {
+        "rva": "0x37616C5",
+        "bytes": "E8 96 49 FD FF",
+        "instruction": "call 0x3736060",
+        "purpose": "stock constructor support118",
+        "call_target": "0x3736060"
+      },
+      {
+        "rva": "0x37616D2",
+        "bytes": "E8 D9 48 FD FF",
+        "instruction": "call 0x3735fb0",
+        "purpose": "stock constructor support2a8",
+        "call_target": "0x3735FB0"
+      },
+      {
+        "rva": "0x37616FA",
+        "bytes": "0F B6 05 DB C3 5B 02",
+        "instruction": "movzx eax, byte ptr [rip + 0x25bc3db]",
+        "purpose": "internal context+0x20 copies module evaluation flag",
+        "rip_targets": [
+          "0x5D1DADC"
+        ]
+      },
+      {
+        "rva": "0x3761728",
+        "bytes": "E8 13 5C 27 FD",
+        "instruction": "call 0x9d7340",
+        "purpose": "support2a8 rows destroyed first",
+        "call_target": "0x9D7340"
+      },
+      {
+        "rva": "0x3761744",
+        "bytes": "FF 50 10",
+        "instruction": "call qword ptr [rax + 0x10]",
+        "purpose": "support2a8 allocator virtual slot +0x10"
+      },
+      {
+        "rva": "0x3761772",
+        "bytes": "FF 50 10",
+        "instruction": "call qword ptr [rax + 0x10]",
+        "purpose": "support118 allocator virtual slot +0x10"
+      },
+      {
+        "rva": "0x371D136",
+        "bytes": "48 8D 05 AB 7D 16 01",
+        "instruction": "lea rax, [rip + 0x1167dab]",
+        "purpose": "named vbtable",
+        "rip_targets": [
+          "0x4884EE8"
+        ]
+      },
+      {
+        "rva": "0x371D189",
+        "bytes": "89 43 14",
+        "instruction": "mov dword ptr [rbx + 0x14], eax",
+        "purpose": "named stable hash remains +0x14"
+      },
+      {
+        "rva": "0x371D18C",
+        "bytes": "48 8D 4B 18",
+        "instruction": "lea rcx, [rbx + 0x18]",
+        "purpose": "named canonical string remains +0x18"
+      },
+      {
+        "rva": "0x371D1CA",
+        "bytes": "C7 43 38 4F 62 44 47",
+        "instruction": "mov dword ptr [rbx + 0x38], 0x4744624f",
+        "purpose": "definition valid tag at +0x38 is ObDG"
+      },
+      {
+        "rva": "0x371D1C3",
+        "bytes": "48 8D 05 D6 BE 20 01",
+        "instruction": "lea rax, [rip + 0x120bed6]",
+        "purpose": "named primary vtable",
+        "rip_targets": [
+          "0x49290A0"
+        ]
+      },
+      {
+        "rva": "0x371D1DC",
+        "bytes": "48 8D 05 CD BE 20 01",
+        "instruction": "lea rax, [rip + 0x120becd]",
+        "purpose": "named secondary vtable",
+        "rip_targets": [
+          "0x49290B0"
+        ]
+      },
+      {
+        "rva": "0x371D1E3",
+        "bytes": "48 89 44 19 08",
+        "instruction": "mov qword ptr [rcx + rbx + 8], rax",
+        "purpose": "secondary vptr lands vbtable(+4)=0x80 + object+0x08 => +0x88"
+      },
+      {
+        "rva": "0x3749A4F",
+        "bytes": "48 81 C3 B0 3C FF FF",
+        "instruction": "add rbx, -0xc350",
+        "purpose": "negative raw rounding subtracts 50000"
+      },
+      {
+        "rva": "0x3749A58",
+        "bytes": "48 81 C3 50 C3 00 00",
+        "instruction": "add rbx, 0xc350",
+        "purpose": "nonnegative raw rounding adds 50000"
+      },
+      {
+        "rva": "0x3749A5F",
+        "bytes": "48 F7 EB",
+        "instruction": "imul rbx",
+        "purpose": "signed division reciprocal multiply for scale100000"
+      },
+      {
+        "rva": "0x3F95FFA",
+        "bytes": "83 79 18 00",
+        "instruction": "cmp dword ptr [rcx + 0x18], 0",
+        "purpose": "source descriptor line/id offset +0x18"
+      },
+      {
+        "rva": "0x3F960AC",
+        "bytes": "48 8D 68 02",
+        "instruction": "lea rbp, [rax + 2]",
+        "purpose": "intern pointer string data begins +2"
+      },
+      {
+        "rva": "0x3F960B0",
+        "bytes": "80 7E 14 00",
+        "instruction": "cmp byte ptr [rsi + 0x14], 0",
+        "purpose": "source flag offset +0x14"
+      }
+    ],
+    "vtable_prefixes": [
+      {
+        "name": "named_primary",
+        "rva": "0x49290A0",
+        "function_rvas": [
+          "0x8522C0"
+        ],
+        "length": 8,
+        "sha256": "B09C3BDA0E1CC00BF3820674F1CCC10E1C73EDD7EF5D469F60BDB391B9726142"
+      },
+      {
+        "name": "named_secondary",
+        "rva": "0x49290B0",
+        "function_rvas": [
+          "0x372351C",
+          "0x2DCA7E0",
+          "0x8522C0",
+          "0x3723504",
+          "0x22C6010"
+        ],
+        "length": 40,
+        "sha256": "46246BD0CC382843062407E7363E397E9BE86A0A9C833C17EA6E54D63F2285D3"
+      },
+      {
+        "name": "named_null_primary",
+        "rva": "0x49294A8",
+        "function_rvas": [
+          "0x8522C0"
+        ],
+        "length": 8,
+        "sha256": "B09C3BDA0E1CC00BF3820674F1CCC10E1C73EDD7EF5D469F60BDB391B9726142"
+      },
+      {
+        "name": "named_null_secondary",
+        "rva": "0x49294B8",
+        "function_rvas": [
+          "0x37234E0",
+          "0x2DCA7E0",
+          "0x8522C0",
+          "0x3723504",
+          "0x22C6010"
+        ],
+        "length": 40,
+        "sha256": "4FE680EEF28D95D7E2E8B3471D56658022380FCA9EB62041197CD4AFC9E36D5A"
+      }
+    ],
+    "source_constants": {
+      "named_database_slot_rva": "0x5D1DD50",
+      "named_null_fallback_slot_rva": "0x5D1DD48",
+      "evaluation_flag_rva": "0x5D1DADC",
+      "named_registry_vector_data_offset": "0xEF0",
+      "named_hash_offset": "0x14",
+      "named_string_offset": "0x18",
+      "named_string_size_offset": "0x28",
+      "named_string_capacity_offset": "0x30",
+      "named_integer_constant_offset": "0x60",
+      "named_fixed_raw_constant_offset": "0x68",
+      "named_tree_offset": "0x70",
+      "named_integer_present_flag_offset": "0x7A",
+      "named_fixed_present_flag_offset": "0x7B",
+      "named_tag_offset": "0x38",
+      "valid_definition_tag": "0x4744624F",
+      "null_definition_tag": "0x4E756C6C",
+      "named_secondary_offset": "0x88",
+      "named_object_size": "0x90",
+      "scope_size": "0x168",
+      "support118_actual_size": "0x128",
+      "support2a8_size": "0x2A8",
+      "internal_context_size": "0x28",
+      "source_descriptor_size": "0x20"
+    },
+    "signatures": {
+      "named_getter": "void* __fastcall GetNamedValueDatabase()",
+      "named_lookup": "const void* __fastcall LookupNamedValue(void* database, int32_t stable_hash)",
+      "named_fixed": "int64_t* __fastcall EvaluateNamedFixed(const void* definition, int64_t* raw_output, void* primary_context, void* secondary_context, const void* source_descriptor_stack_argument_5)",
+      "scope_clone": "void* __fastcall CloneEventTargetScope(void* destination_0x168, const void* source_scope)",
+      "support_constructor": "void* __fastcall ConstructSupport(void* self)",
+      "scope_or_rows_destructor": "void __fastcall DestroyScopePart(void* part)",
+      "intern_getter": "void* __fastcall GetInternStringRegistry()",
+      "intern": "const void* __fastcall InternStringView(void* registry, const void* aligned_16_string_view)",
+      "fixed_raw_converter": "int32_t __fastcall ConvertFixedRaw(int64_t raw_q100000, const void* source_descriptor)"
+    },
+    "semantic_changes": [
+      "Named primary vtable now has one empty RET virtual, not a bool validity receiver. Do not call slot zero as bool. Validate exact vptrs plus ObDG tag at +0x38; null object tag is Null.",
+      "Named object remains size0x90 and secondary vptr+0x88; integer/fixed/tree/present fields shift down eight bytes.",
+      "Five-argument named fixed ABI is preserved; the descriptor is read from callee-entry RSP+0x28.",
+      "Source descriptor changes from old direct string view layout0x28 to new interned-name layout0x20. Stock obtains registry3F79B20 and interns aligned16 view{data pointer@0,uint32 length@8,byte0@C} through3F79DF0. Result is opaque pointer with two encoded length bytes before character data.",
+      "New descriptor fields: interned pointer@0x00, null pointer@0x08, uint32zero@0x10, byteone@0x14, int32minusone@0x18, uint32zero@0x1C.",
+      "InternStringView returns existing entry on hit and allocates/caches on miss. It does not change CK3 gameplay state; cache and lock effects must be described honestly.",
+      "Old tree integer evaluator0x9A3740 is replaced in the named integer chain by virtual tree raw evaluation and raw integer converter0x37498C0. The nearest integer/ties-away signed conversion formula remains (raw<0?raw-50000:raw+50000)/100000.",
+      "Scope clone is normalized-byte-identical. Scope teardown and support row/container layout offsets are preserved."
+    ],
+    "internal_context_layout": {
+      "0x00": "cloned scope pointer",
+      "0x08": "null",
+      "0x10": "same cloned scope pointer",
+      "0x18": "support118 pointer",
+      "0x20": "byte copied from5D1DADC"
+    },
+    "unconsumed_layout_inference": {
+      "named_registry_vector_capacity_offset": "0xEF8",
+      "named_registry_vector_count_offset": "0xEFC",
+      "basis": "same data/capacity/count vector layout inferred from old schema; not needed by current lookup/getter implementation and not yet directly instruction-confirmed"
+    },
+    "teardown": {
+      "scope_tail": "scope+0x118 ->889700",
+      "scope_rows48": "data0x100/cap0x108/count0x10C/allocator0x110 ->889780 then allocator+0x10",
+      "scope_named_aliases": "data0x18/cap0x20/count0x24/allocator0x28 ->allocator+0x10",
+      "support2a8": "data0/cap8/countC/allocator10 ->9D7340 thenallocator+0x10",
+      "support118": "data0/cap8/countC/allocator10 ->allocator+0x10"
+    },
+    "rtti": {
+      "name": ".?AVCJominiNamedValue@@",
+      "type_descriptor_rva": "0x56132D0",
+      "primary_col_rva": "0x5014B28",
+      "secondary_col_rva": "0x5014B50",
+      "secondary_col_offset": "0x88",
+      "secondary_col_cd_offset": 4,
+      "vbtable_rva": "0x4884EE8",
+      "vbtable_signed_int32": [
+        -8,
+        128
+      ],
+      "null_type_descriptor_rva": "0x5BA9E50",
+      "null_primary_col_rva": "0x5014880",
+      "null_secondary_col_rva": "0x5014970"
+    },
+    "evidence_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\gift\\named-reverse"
+  },
+  "stock_sources": [
+    {
+      "path": "game/common/character_interactions/00_gift.txt",
+      "sha256": "D62A80DD8ED0F666A1223BA5BA68EA4362A8259E54C795C4D215C5EB7D0DF0F2"
+    },
+    {
+      "path": "game/common/script_values/00_basic_values.txt",
+      "sha256": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF"
+    },
+    {
+      "path": "game/common/script_values/00_scheme_values.txt",
+      "sha256": "9D3692D294C8310E9DF102397C1F59D73E181CDEA2686BDE4EEB67D4B38D0256"
+    }
+  ],
+  "behavior": {
+    "opinion": "native recipient as owner / actor as toward; native final opinion including active/temporary contributions and engine clamp",
+    "modifier": "separate exact row presence and decay-aware native sum; present zero is legal",
+    "preview": "clone prepared scope preserving role aliases, root recipient; native named fixed evaluation twice then engine signed ties-away integer conversion",
+    "gift_payment": "gift_value native named fixed with actor root for ordinary non-puppet gift, preserving Q100000; stock pay_short_term_gold occurs on_accept",
+    "source_descriptor": "new 0x20 descriptor uses interned-key pointer; old data/size descriptor is incompatible",
+    "validity": "new ObDG +0x38 and actual vptr identity; do not invoke slot zero as old bool predicate"
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "ck3_process_access": false,
+    "paused_live_validated": false,
+    "gameplay_writes": false,
+    "definition_registry_read_lock": true,
+    "interned_string_cache_may_write": true
+  },
+  "fixture_artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\gift\\opinion-fixtures\\result.json"
+}
