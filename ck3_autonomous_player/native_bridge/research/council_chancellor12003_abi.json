@@ -1,7 +1,7 @@
 {
   "contract": "council-chancellor-readonly-12003",
   "schema_version": 1,
-  "evidence_level": "research",
+  "evidence_level": "static-ready",
   "game_version": "1.20.0.3",
   "steam_build": "25652598",
   "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
@@ -77,5 +77,13 @@
       "size": 39155,
       "sha256": "350A5E375D73E38CDD659FC3221FE8395AD6650B3FD244E03EE2342AFC9A8F88"
     }
-  ]
+  ],
+  "static_validation": {
+    "native_focused_tests": "5 GREEN; four reused from harness03 plus affected transport-only followup05",
+    "native_receipt": "artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/CHANCELLOR-NATIVE-FOCUSED-GREEN.json",
+    "native_receipt_sha256": "f28e89da5f564d79f9070f6c3df3883fd9610158dc93122bcea62790209e8b69",
+    "python_focused_tests": "23 PASS; new synthetic role/SDK cases plus existing Steward regressions",
+    "source_fixture_fix": "only transport_test.cpp changed-date second real idle pump; no additional production fix",
+    "paused_live": false
+  }
 }
