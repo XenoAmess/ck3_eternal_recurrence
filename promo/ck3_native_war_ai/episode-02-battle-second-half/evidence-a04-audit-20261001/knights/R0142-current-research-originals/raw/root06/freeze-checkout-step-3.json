@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "git",
+    "read-tree",
+    "-mu",
+    "HEAD"
+  ],
+  "cwd": "C:\\w\\e2cap1001d",
+  "stdin": null,
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "at_utc": "2026-10-01T10:30:16.968299+00:00"
+}

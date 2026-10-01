@@ -1,0 +1,1756 @@
+{
+  "interval": "single_day_saved_endpoints",
+  "before": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a02\\before-full-selected-saved-projection.json",
+    "bytes": 2658499,
+    "sha256": "62D3340A5E34E4AD6ED6744ADBE4E53C53337ACF4E8BFE0E29407B971ED231DF"
+  },
+  "after": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a02\\after-pre-ui-checkpoint-full-selected-saved-projection.json",
+    "bytes": 2627974,
+    "sha256": "CAB830539770A9075375E1E41B445F89D7B5526E3A9A931FF358D0153935E953"
+  },
+  "full_character_deltas": [
+    {
+      "character_id": 33437,
+      "full_scalar_leaf_deltas": [
+        {
+          "path": "/alive_data[0]/activity_data[0]/{}",
+          "before_present": true,
+          "before": null,
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/fertility[0]",
+          "before_present": true,
+          "before": "0.5",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/health[0]",
+          "before_present": true,
+          "before": "4.26192",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/influence[0]/currency[0]",
+          "before_present": true,
+          "before": "120",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/languages[0]/#array[0]",
+          "before_present": true,
+          "before": "language_french",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/location[0]/location[0]",
+          "before_present": true,
+          "before": "2633",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/piety[0]/accumulated[0]",
+          "before_present": true,
+          "before": "1007.6",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/piety[0]/currency[0]",
+          "before_present": true,
+          "before": "207.6",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/prestige[0]/accumulated[0]",
+          "before_present": true,
+          "before": "1000.3456",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/alive_data[0]/prestige[0]/currency[0]",
+          "before_present": true,
+          "before": "300.3456",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/court_data[0]/employer[0]",
+          "before_present": true,
+          "before": "29829",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/court_data[0]/join_court_date[0]",
+          "before_present": true,
+          "before": "1066.9.15",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/court_data[0]/knight[0]",
+          "before_present": true,
+          "before": "yes",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/court_data[0]/regiment[0]",
+          "before_present": true,
+          "before": "65",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/culture[0]",
+          "before_present": true,
+          "before": "73",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/dead_data[0]/date[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "1066.12.30"
+        },
+        {
+          "path": "/dead_data[0]/killer[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "34120"
+        },
+        {
+          "path": "/dead_data[0]/liege[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "29829"
+        },
+        {
+          "path": "/dead_data[0]/liege_title[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "2141"
+        },
+        {
+          "path": "/dead_data[0]/reason[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "\"death_battle\""
+        },
+        {
+          "path": "/faith[0]",
+          "before_present": true,
+          "before": "23",
+          "after_present": false,
+          "after": null
+        }
+      ]
+    },
+    {
+      "character_id": 34120,
+      "full_scalar_leaf_deltas": [
+        {
+          "path": "/alive_data[0]/kills[0]/#array[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "33437"
+        },
+        {
+          "path": "/alive_data[0]/prestige[0]/accumulated[0]",
+          "before_present": true,
+          "before": "1001.0608",
+          "after_present": true,
+          "after": "1151.0608"
+        },
+        {
+          "path": "/alive_data[0]/prestige[0]/currency[0]",
+          "before_present": true,
+          "before": "301.0608",
+          "after_present": true,
+          "after": "451.0608"
+        },
+        {
+          "path": "/alive_data[0]/variables[0]/data[0]/#array[0]/data[0]/flag[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "\"axe\""
+        },
+        {
+          "path": "/alive_data[0]/variables[0]/data[0]/#array[0]/data[0]/type[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "flag"
+        },
+        {
+          "path": "/alive_data[0]/variables[0]/data[0]/#array[0]/flag[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "\"signature_weapon\""
+        }
+      ]
+    }
+  ],
+  "full_case_combat_deltas": [
+    {
+      "path": "/combat_results[0]/16777218[0]",
+      "all_scalar_leaf_deltas": [
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[0]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "416.16251",
+          "after_present": true,
+          "after": "416.96382"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[0]/main_losses[0]",
+          "before_present": true,
+          "before": "18.09007",
+          "after_present": true,
+          "after": "18.27073"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[10]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "4.46463",
+          "after_present": true,
+          "after": "4.47741"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[11]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "5.98693",
+          "after_present": true,
+          "after": "6.00503"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[12]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "5.19768",
+          "after_present": true,
+          "after": "5.21304"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[13]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "5.19768",
+          "after_present": true,
+          "after": "5.21304"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[14]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "10.2949",
+          "after_present": true,
+          "after": "10.32794"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[15]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "4.98262",
+          "after_present": true,
+          "after": "4.99724"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[16]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "3.65653",
+          "after_present": true,
+          "after": "3.66658"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[17]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "2.33361",
+          "after_present": true,
+          "after": "2.33917"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[19]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "18.10742",
+          "after_present": true,
+          "after": "18.16768"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[1]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "522.8196",
+          "after_present": true,
+          "after": "522.50346"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[1]/main_losses[0]",
+          "before_present": true,
+          "before": "276.73734",
+          "after_present": true,
+          "after": "279.40812"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[20]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "8.29977",
+          "after_present": true,
+          "after": "8.32578"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[21]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "4.09692",
+          "after_present": true,
+          "after": "4.10835"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[22]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "1.29707",
+          "after_present": true,
+          "after": "1.29887"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[23]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "10.32829",
+          "after_present": true,
+          "after": "10.36132"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[24]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "3.43069",
+          "after_present": true,
+          "after": "3.43972"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[2]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "7.56617",
+          "after_present": true,
+          "after": "7.58972"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[3]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "6.77655",
+          "after_present": true,
+          "after": "6.79735"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[4]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "1.29476",
+          "after_present": true,
+          "after": "1.29687"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[5]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "77.76654",
+          "after_present": true,
+          "after": "77.82383"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[5]/main_losses[0]",
+          "before_present": true,
+          "before": "26.49847",
+          "after_present": true,
+          "after": "26.60561"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[7]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "22.30201",
+          "after_present": true,
+          "after": "23.51217"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[7]/main_losses[0]",
+          "before_present": true,
+          "before": "8.15372",
+          "after_present": true,
+          "after": "8.18723"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[8]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "8.356",
+          "after_present": true,
+          "after": "8.38228"
+        },
+        {
+          "path": "/attacker[0]/regiment_stats[0]/#array[9]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "6.77655",
+          "after_present": true,
+          "after": "6.79735"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[10]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "16.05493",
+          "after_present": true,
+          "after": "6.76695"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[10]/main_kills[0]",
+          "before_present": true,
+          "before": "18.89171",
+          "after_present": true,
+          "after": "19.08016"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[11]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "4.67864",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[12]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "2.51237",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[13]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "0.89313",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[14]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "0.06262",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[1]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "0.61702",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[2]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "0.06462",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[4]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "32.62856",
+          "after_present": true,
+          "after": "22.15878"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[4]/main_kills[0]",
+          "before_present": true,
+          "before": "30.76617",
+          "after_present": true,
+          "after": "31.3835"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[5]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "32.62856",
+          "after_present": true,
+          "after": "22.15878"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[5]/main_kills[0]",
+          "before_present": true,
+          "before": "30.76617",
+          "after_present": true,
+          "after": "31.3835"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[6]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "29.21727",
+          "after_present": true,
+          "after": "18.79987"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[6]/main_kills[0]",
+          "before_present": true,
+          "before": "28.38386",
+          "after_present": true,
+          "after": "28.90761"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[7]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "25.84215",
+          "after_present": true,
+          "after": "15.55243"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[7]/main_kills[0]",
+          "before_present": true,
+          "before": "26.00391",
+          "after_present": true,
+          "after": "26.43716"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[8]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "22.5151",
+          "after_present": true,
+          "after": "12.44304"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[8]/main_kills[0]",
+          "before_present": true,
+          "before": "23.62789",
+          "after_present": true,
+          "after": "23.97449"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[9]/damage_last_tick[0]",
+          "before_present": true,
+          "before": "19.24744",
+          "after_present": true,
+          "after": "9.50082"
+        },
+        {
+          "path": "/defender[0]/regiment_stats[0]/#array[9]/main_kills[0]",
+          "before_present": true,
+          "before": "21.2569",
+          "after_present": true,
+          "after": "21.52149"
+        },
+        {
+          "path": "/event[2]/key[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "\"knight_killed_by_enemy\""
+        },
+        {
+          "path": "/event[2]/left_portrait[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "33437"
+        },
+        {
+          "path": "/event[2]/right_portrait[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "34120"
+        },
+        {
+          "path": "/event[2]/type[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "death"
+        }
+      ]
+    },
+    {
+      "path": "/combats[0]/16777218[0]",
+      "all_scalar_leaf_deltas": [
+        {
+          "path": "/advantage_damage_factor[0]",
+          "before_present": true,
+          "before": "1.4",
+          "after_present": true,
+          "after": "1.6"
+        },
+        {
+          "path": "/attacker[0]/character[0]/casualties[0]",
+          "before_present": true,
+          "before": "33.26833",
+          "after_present": true,
+          "after": "33.39427"
+        },
+        {
+          "path": "/attacker[0]/character[0]/contribution[0]",
+          "before_present": true,
+          "before": "281586",
+          "after_present": true,
+          "after": "294317"
+        },
+        {
+          "path": "/attacker[0]/character[1]/casualties[0]",
+          "before_present": true,
+          "before": "127.47743",
+          "after_present": true,
+          "after": "127.95878"
+        },
+        {
+          "path": "/attacker[0]/character[1]/contribution[0]",
+          "before_present": true,
+          "before": "722747",
+          "after_present": true,
+          "after": "755221"
+        },
+        {
+          "path": "/attacker[0]/character[2]/casualties[0]",
+          "before_present": true,
+          "before": "55.26338",
+          "after_present": true,
+          "after": "55.47"
+        },
+        {
+          "path": "/attacker[0]/character[2]/contribution[0]",
+          "before_present": true,
+          "before": "364604",
+          "after_present": true,
+          "after": "380966"
+        },
+        {
+          "path": "/attacker[0]/character[3]/casualties[0]",
+          "before_present": true,
+          "before": "104.68221",
+          "after_present": true,
+          "after": "106.14902"
+        },
+        {
+          "path": "/attacker[0]/character[3]/contribution[0]",
+          "before_present": true,
+          "before": "1032532",
+          "after_present": true,
+          "after": "1105800"
+        },
+        {
+          "path": "/attacker[0]/character[4]/casualties[0]",
+          "before_present": true,
+          "before": "9.10985",
+          "after_present": true,
+          "after": "9.82319"
+        },
+        {
+          "path": "/attacker[0]/character[4]/contribution[0]",
+          "before_present": true,
+          "before": "108968",
+          "after_present": true,
+          "after": "136205"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[0]/current[0]",
+          "before_present": true,
+          "before": "133.72727",
+          "after_present": true,
+          "after": "133.41435"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[0]/soft_casualties[0]",
+          "before_present": true,
+          "before": "58.41193",
+          "after_present": true,
+          "after": "58.62629"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[10]/current[0]",
+          "before_present": true,
+          "before": "664.58352",
+          "after_present": true,
+          "after": "663.0284"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[10]/soft_casualties[0]",
+          "before_present": true,
+          "before": "76.32036",
+          "after_present": true,
+          "after": "77.38562"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[11]/current[0]",
+          "before_present": true,
+          "before": "344.28171",
+          "after_present": true,
+          "after": "343.4761"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[11]/soft_casualties[0]",
+          "before_present": true,
+          "before": "39.53711",
+          "after_present": true,
+          "after": "40.08896"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[12]/current[0]",
+          "before_present": true,
+          "before": "74.50877",
+          "after_present": true,
+          "after": "74.33442"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[12]/soft_casualties[0]",
+          "before_present": true,
+          "before": "8.55659",
+          "after_present": true,
+          "after": "8.67602"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[13]/current[0]",
+          "before_present": true,
+          "before": "22.26703",
+          "after_present": true,
+          "after": "22.21493"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[13]/soft_casualties[0]",
+          "before_present": true,
+          "before": "2.55715",
+          "after_present": true,
+          "after": "2.59284"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[14]/current[0]",
+          "before_present": true,
+          "before": "49.67254",
+          "after_present": true,
+          "after": "49.55631"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[14]/soft_casualties[0]",
+          "before_present": true,
+          "before": "5.70438",
+          "after_present": true,
+          "after": "5.784"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[15]/current[0]",
+          "before_present": true,
+          "before": "48.81613",
+          "after_present": true,
+          "after": "48.70191"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[15]/soft_casualties[0]",
+          "before_present": true,
+          "before": "5.60604",
+          "after_present": true,
+          "after": "5.68429"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[16]/current[0]",
+          "before_present": true,
+          "before": "412.6616",
+          "after_present": true,
+          "after": "411.69598"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[16]/soft_casualties[0]",
+          "before_present": true,
+          "before": "8.45183",
+          "after_present": true,
+          "after": "9.11328"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[17]/current[0]",
+          "before_present": true,
+          "before": "515.58425",
+          "after_present": true,
+          "after": "514.37779"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[17]/soft_casualties[0]",
+          "before_present": true,
+          "before": "10.55981",
+          "after_present": true,
+          "after": "11.38624"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[1]/current[0]",
+          "before_present": true,
+          "before": "4.8851",
+          "after_present": true,
+          "after": "4.87367"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[1]/soft_casualties[0]",
+          "before_present": true,
+          "before": "2.13382",
+          "after_present": true,
+          "after": "2.14165"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[2]/current[0]",
+          "before_present": true,
+          "before": "208.22373",
+          "after_present": true,
+          "after": "207.73649"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[2]/soft_casualties[0]",
+          "before_present": true,
+          "before": "90.95184",
+          "after_present": true,
+          "after": "91.2856"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[3]/current[0]",
+          "before_present": true,
+          "before": "4.27449",
+          "after_present": true,
+          "after": "4.26449"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[3]/soft_casualties[0]",
+          "before_present": true,
+          "before": "1.86708",
+          "after_present": true,
+          "after": "1.87393"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[4]/current[0]",
+          "before_present": true,
+          "before": "214.94061",
+          "after_present": true,
+          "after": "214.43765"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[4]/soft_casualties[0]",
+          "before_present": true,
+          "before": "93.8858",
+          "after_present": true,
+          "after": "94.23033"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[5]/current[0]",
+          "before_present": true,
+          "before": "4.27449",
+          "after_present": true,
+          "after": "4.26449"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[5]/soft_casualties[0]",
+          "before_present": true,
+          "before": "1.86708",
+          "after_present": true,
+          "after": "1.87393"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[6]/current[0]",
+          "before_present": true,
+          "before": "4.8851",
+          "after_present": true,
+          "after": "4.87367"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[6]/soft_casualties[0]",
+          "before_present": true,
+          "before": "2.13382",
+          "after_present": true,
+          "after": "2.14165"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[7]/current[0]",
+          "before_present": true,
+          "before": "25.03578",
+          "after_present": true,
+          "after": "24.9772"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[7]/soft_casualties[0]",
+          "before_present": true,
+          "before": "10.93561",
+          "after_present": true,
+          "after": "10.97574"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[8]/current[0]",
+          "before_present": true,
+          "before": "248.52505",
+          "after_present": true,
+          "after": "247.94351"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[8]/soft_casualties[0]",
+          "before_present": true,
+          "before": "108.55546",
+          "after_present": true,
+          "after": "108.95382"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[9]/current[0]",
+          "before_present": true,
+          "before": "642.31656",
+          "after_present": true,
+          "after": "640.81354"
+        },
+        {
+          "path": "/attacker[0]/levies[0]/#array[9]/soft_casualties[0]",
+          "before_present": true,
+          "before": "73.76322",
+          "after_present": true,
+          "after": "74.79279"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[0]/current[0]",
+          "before_present": true,
+          "before": "83.04509",
+          "after_present": true,
+          "after": "82.97082"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[0]/soft_casualties[0]",
+          "before_present": true,
+          "before": "11.61421",
+          "after_present": true,
+          "after": "11.66509"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[10]/current[0]",
+          "before_present": true,
+          "before": "0.94645",
+          "after_present": true,
+          "after": "0.9462"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[10]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.03678",
+          "after_present": true,
+          "after": "0.03696"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[11]/current[0]",
+          "before_present": true,
+          "before": "0.939",
+          "after_present": true,
+          "after": "0.93872"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[11]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.04189",
+          "after_present": true,
+          "after": "0.04209"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[12]/current[0]",
+          "before_present": true,
+          "before": "0.939",
+          "after_present": true,
+          "after": "0.93872"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[12]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.04189",
+          "after_present": true,
+          "after": "0.04209"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[13]/current[0]",
+          "before_present": true,
+          "before": "83.33596",
+          "after_present": true,
+          "after": "83.26283"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[13]/soft_casualties[0]",
+          "before_present": true,
+          "before": "11.41497",
+          "after_present": true,
+          "after": "11.46507"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[14]/current[0]",
+          "before_present": true,
+          "before": "0.96787",
+          "after_present": true,
+          "after": "0.96772"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[14]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.02212",
+          "after_present": true,
+          "after": "0.02223"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[15]/current[0]",
+          "before_present": true,
+          "before": "0.93662",
+          "after_present": true,
+          "after": "0.93633"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[15]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.04352",
+          "after_present": true,
+          "after": "0.04372"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[16]/current[0]",
+          "before_present": true,
+          "before": "0.91629",
+          "after_present": true,
+          "after": "0.91591"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[16]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.05743",
+          "after_present": true,
+          "after": "0.0577"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[17]/current[0]",
+          "before_present": true,
+          "before": "0.87685",
+          "after_present": true,
+          "after": "0.8763"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[17]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.08448",
+          "after_present": true,
+          "after": "0.08486"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[18]/current[0]",
+          "before_present": true,
+          "before": "377.34757",
+          "after_present": true,
+          "after": "377.01328"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[18]/soft_casualties[0]",
+          "before_present": true,
+          "before": "15.51698",
+          "after_present": true,
+          "after": "15.74597"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[1]/current[0]",
+          "before_present": true,
+          "before": "0.95697",
+          "after_present": true,
+          "after": "0.95677"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[1]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.02957",
+          "after_present": true,
+          "after": "0.02971"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[20]/current[0]",
+          "before_present": true,
+          "before": "0.994",
+          "after_present": true,
+          "after": "0.99391"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[20]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.00418",
+          "after_present": true,
+          "after": "0.00425"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[21]/current[0]",
+          "before_present": true,
+          "before": "0.98697",
+          "after_present": true,
+          "after": "0.98678"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[21]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.009",
+          "after_present": true,
+          "after": "0.00914"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[22]/current[0]",
+          "before_present": true,
+          "before": "0.97404",
+          "after_present": true,
+          "after": "0.97365"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[22]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.01786",
+          "after_present": true,
+          "after": "0.01813"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[23]/current[0]",
+          "before_present": true,
+          "before": "0.92384",
+          "after_present": true,
+          "after": "0.92273"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[23]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.05224",
+          "after_present": true,
+          "after": "0.05301"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[24]/current[0]",
+          "before_present": true,
+          "before": "98.84162",
+          "after_present": true,
+          "after": "98.74973"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[24]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.79353",
+          "after_present": true,
+          "after": "0.85648"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[25]/current[0]",
+          "before_present": true,
+          "before": "0.99797",
+          "after_present": true,
+          "after": "0.99781"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[25]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.00143",
+          "after_present": true,
+          "after": "0.00154"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[26]/current[0]",
+          "before_present": true,
+          "before": "0.99391",
+          "after_present": true,
+          "after": "0.99343"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[26]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.0042",
+          "after_present": true,
+          "after": "0.00453"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[2]/current[0]",
+          "before_present": true,
+          "before": "0.95229",
+          "after_present": true,
+          "after": "0.95207"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[2]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.03278",
+          "after_present": true,
+          "after": "0.03294"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[3]/current[0]",
+          "before_present": true,
+          "before": "0.8176",
+          "after_present": true,
+          "after": "0.81673"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[3]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.12504",
+          "after_present": true,
+          "after": "0.12564"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[4]/current[0]",
+          "before_present": true,
+          "before": "215.87748",
+          "after_present": true,
+          "after": "215.53735"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[4]/soft_casualties[0]",
+          "before_present": true,
+          "before": "57.62405",
+          "after_present": true,
+          "after": "57.85704"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[6]/current[0]",
+          "before_present": true,
+          "before": "74.11478",
+          "after_present": true,
+          "after": "74.00837"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[6]/soft_casualties[0]",
+          "before_present": true,
+          "before": "17.7315",
+          "after_present": true,
+          "after": "17.8044"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[7]/current[0]",
+          "before_present": true,
+          "before": "0.96082",
+          "after_present": true,
+          "after": "0.96064"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[7]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.02695",
+          "after_present": true,
+          "after": "0.02708"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[8]/current[0]",
+          "before_present": true,
+          "before": "0.95229",
+          "after_present": true,
+          "after": "0.95207"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[8]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.03278",
+          "after_present": true,
+          "after": "0.03294"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[9]/current[0]",
+          "before_present": true,
+          "before": "0.94091",
+          "after_present": true,
+          "after": "0.94058"
+        },
+        {
+          "path": "/attacker[0]/men_at_arms[0]/#array[9]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.04057",
+          "after_present": true,
+          "after": "0.0408"
+        },
+        {
+          "path": "/attacker[0]/total_fighting_men[0]",
+          "before_present": true,
+          "before": "4590.59254",
+          "after_present": true,
+          "after": "4573.99992"
+        },
+        {
+          "path": "/attacker[0]/total_levy_men[0]",
+          "before_present": true,
+          "before": "3638.27141",
+          "after_present": true,
+          "after": "3623.46373"
+        },
+        {
+          "path": "/days[0]",
+          "before_present": true,
+          "before": "22",
+          "after_present": true,
+          "after": "23"
+        },
+        {
+          "path": "/days_since_last_action[0]",
+          "before_present": true,
+          "before": "1",
+          "after_present": true,
+          "after": "2"
+        },
+        {
+          "path": "/defender[0]/character[0]/casualties[0]",
+          "before_present": true,
+          "before": "462.92847",
+          "after_present": true,
+          "after": "463.67764"
+        },
+        {
+          "path": "/defender[0]/character[0]/contribution[0]",
+          "before_present": true,
+          "before": "980970",
+          "after_present": true,
+          "after": "1019653"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[11]/regiment[0]",
+          "before_present": true,
+          "before": "65",
+          "after_present": true,
+          "after": "66"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[11]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.64012",
+          "after_present": true,
+          "after": "0.6401"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[12]/regiment[0]",
+          "before_present": true,
+          "before": "66",
+          "after_present": true,
+          "after": "67"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[12]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.6401",
+          "after_present": true,
+          "after": "0.64009"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[13]/current[0]",
+          "before_present": true,
+          "before": "0",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[13]/regiment[0]",
+          "before_present": true,
+          "before": "67",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[13]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.64009",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[13]/starting[0]",
+          "before_present": true,
+          "before": "1",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[3]/current[0]",
+          "before_present": true,
+          "before": "0.37685",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[3]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.39893",
+          "after_present": true,
+          "after": "0.64012"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[4]/current[0]",
+          "before_present": true,
+          "before": "0.37685",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[4]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.39893",
+          "after_present": true,
+          "after": "0.64012"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[5]/current[0]",
+          "before_present": true,
+          "before": "0.34432",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[5]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.41973",
+          "after_present": true,
+          "after": "0.6401"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[6]/current[0]",
+          "before_present": true,
+          "before": "0.30858",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[6]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.44262",
+          "after_present": true,
+          "after": "0.64012"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[7]/current[0]",
+          "before_present": true,
+          "before": "0.26933",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[7]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.46774",
+          "after_present": true,
+          "after": "0.64012"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[8]/current[0]",
+          "before_present": true,
+          "before": "0.22621",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[8]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.49533",
+          "after_present": true,
+          "after": "0.64011"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[9]/current[0]",
+          "before_present": true,
+          "before": "0.17902",
+          "after_present": true,
+          "after": "0"
+        },
+        {
+          "path": "/defender[0]/men_at_arms[0]/#array[9]/soft_casualties[0]",
+          "before_present": true,
+          "before": "0.52555",
+          "after_present": true,
+          "after": "0.64013"
+        },
+        {
+          "path": "/defender[0]/total_fighting_men[0]",
+          "before_present": true,
+          "before": "11.64299",
+          "after_present": true,
+          "after": "2.08116"
+        },
+        {
+          "path": "/defender[0]/variables[0]/list[0]/#array[0]/duration[0]/#array[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "1"
+        },
+        {
+          "path": "/defender[0]/variables[0]/list[0]/#array[0]/item[0]/identity[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "33437"
+        },
+        {
+          "path": "/defender[0]/variables[0]/list[0]/#array[0]/item[0]/type[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "char"
+        },
+        {
+          "path": "/defender[0]/variables[0]/list[0]/#array[0]/name[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "\"slain_side_knights\""
+        }
+      ]
+    }
+  ],
+  "full_house_DB_deltas": [
+    {
+      "path": "/database[0]/448[0]/fraction[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "0.1"
+    },
+    {
+      "path": "/database[0]/448[0]/history[0]/#array[0]/amount[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "0.1"
+    },
+    {
+      "path": "/database[0]/448[0]/history[0]/#array[0]/change_reason[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"\u0015ONCLICK:CHARACTER,35805 \u0015TOOLTIP:CHARACTER,35805 \u0015L \u0015high 伯爵\u0015!，\u0015high 鲍洛格\u0015!\u0015high 陶马什\u0015!\u0015!\u0015!\u0015!与\u0015ONCLICK:CHARACTER,36839 \u0015TOOLTIP:CHARACTER,36839 \u0015L \u0015high 女伯爵\u0015!，\u0015high 亚克\u0015!\u0015high 毛尔吉特\u0015!\u0015!\u0015!\u0015!结婚\""
+    },
+    {
+      "path": "/database[0]/448[0]/history[0]/#array[0]/date[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "1066.12.30"
+    },
+    {
+      "path": "/database[0]/448[0]/history[0]/#array[0]/level[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"default_house_relation_level_neutral\""
+    },
+    {
+      "path": "/database[0]/448[0]/houses[0]/#array[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "2283"
+    },
+    {
+      "path": "/database[0]/448[0]/houses[0]/#array[1]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "2284"
+    },
+    {
+      "path": "/database[0]/448[0]/latest_decay_date[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "1066.12.30"
+    },
+    {
+      "path": "/database[0]/448[0]/level[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"default_house_relation_level_neutral\""
+    },
+    {
+      "path": "/database[0]/448[0]/type[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"default_house_relation\""
+    },
+    {
+      "path": "/database[0]/448[0]/variables[0]/data[0]/#array[0]/data[0]/type[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "value"
+    },
+    {
+      "path": "/database[0]/448[0]/variables[0]/data[0]/#array[0]/flag[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"house_relation_duration_years\""
+    },
+    {
+      "path": "/database[0]/449[0]/fraction[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "0.1"
+    },
+    {
+      "path": "/database[0]/449[0]/history[0]/#array[0]/amount[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "0.1"
+    },
+    {
+      "path": "/database[0]/449[0]/history[0]/#array[0]/change_reason[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"\u0015ONCLICK:CHARACTER,62629 \u0015TOOLTIP:CHARACTER,62629 \u0015L \u0015high 蒋\u0015!\u0015high 思礼\u0015!\u0015!\u0015!\u0015!与\u0015ONCLICK:CHARACTER,62638 \u0015TOOLTIP:CHARACTER,62638 \u0015L \u0015high 卫\u0015!\u0015high 林鹤\u0015!\u0015!\u0015!\u0015!结婚\""
+    },
+    {
+      "path": "/database[0]/449[0]/history[0]/#array[0]/date[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "1066.12.30"
+    },
+    {
+      "path": "/database[0]/449[0]/history[0]/#array[0]/level[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"default_house_relation_level_neutral\""
+    },
+    {
+      "path": "/database[0]/449[0]/houses[0]/#array[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "10132"
+    },
+    {
+      "path": "/database[0]/449[0]/houses[0]/#array[1]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "10149"
+    },
+    {
+      "path": "/database[0]/449[0]/latest_decay_date[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "1066.12.30"
+    },
+    {
+      "path": "/database[0]/449[0]/level[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"default_house_relation_level_neutral\""
+    },
+    {
+      "path": "/database[0]/449[0]/type[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"default_house_relation\""
+    },
+    {
+      "path": "/database[0]/449[0]/variables[0]/data[0]/#array[0]/data[0]/type[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "value"
+    },
+    {
+      "path": "/database[0]/449[0]/variables[0]/data[0]/#array[0]/flag[0]",
+      "before_present": false,
+      "before": null,
+      "after_present": true,
+      "after": "\"house_relation_duration_years\""
+    }
+  ],
+  "saved_top_level_RNG_comparison": {
+    "random_seed": {
+      "before": 2705320081,
+      "after": 2705320081,
+      "equal": true,
+      "uint32_delta_modulo": 0
+    },
+    "random_count": {
+      "before": 420865,
+      "after": 421813,
+      "equal": false,
+      "uint32_delta_modulo": 948
+    }
+  },
+  "all_engine_or_context_RNG_unchanged": "UNKNOWN",
+  "time_resolution": "endpoint only",
+  "accolade_section_deltas": [
+    {
+      "name": "accolades",
+      "all_scalar_leaf_deltas": [
+        {
+          "path": "/database[0]/146[0]/glory[0]",
+          "before_present": true,
+          "before": "110",
+          "after_present": true,
+          "after": "135"
+        },
+        {
+          "path": "/database[0]/146[0]/variables[0]/data[0]/#array[0]/data[0]/identity[0]",
+          "before_present": true,
+          "before": "1000000",
+          "after_present": true,
+          "after": "3500000"
+        },
+        {
+          "path": "/database[0]/323[0]/acclaimed[0]",
+          "before_present": true,
+          "before": "44623",
+          "after_present": true,
+          "after": "50683"
+        },
+        {
+          "path": "/database[0]/323[0]/glory[0]",
+          "before_present": true,
+          "before": "125",
+          "after_present": true,
+          "after": "50"
+        },
+        {
+          "path": "/database[0]/323[0]/history[0]/#array[0]/acclaimed[0]",
+          "before_present": true,
+          "before": "44623",
+          "after_present": true,
+          "after": "50683"
+        },
+        {
+          "path": "/database[0]/323[0]/history[0]/#array[0]/date[0]",
+          "before_present": true,
+          "before": "1066.10.28",
+          "after_present": true,
+          "after": "1066.12.30"
+        },
+        {
+          "path": "/database[0]/323[0]/history[0]/#array[1]/acclaimed[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "44623"
+        },
+        {
+          "path": "/database[0]/323[0]/history[0]/#array[1]/date[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "1066.10.28"
+        },
+        {
+          "path": "/database[0]/323[0]/successor[0]",
+          "before_present": true,
+          "before": "50683",
+          "after_present": false,
+          "after": null
+        },
+        {
+          "path": "/database[0]/323[0]/variables[0]/data[0]/#array[0]/data[0]/identity[0]",
+          "before_present": true,
+          "before": "2500000",
+          "after_present": false,
+          "after": null
+        }
+      ]
+    }
+  ]
+}

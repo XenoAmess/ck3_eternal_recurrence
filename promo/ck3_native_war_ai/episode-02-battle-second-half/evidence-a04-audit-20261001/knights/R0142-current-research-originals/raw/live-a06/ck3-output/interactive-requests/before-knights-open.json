@@ -1,0 +1,7 @@
+{
+  "action": "mcp",
+  "tool": "ck3_open_knights_window_v1",
+  "arguments": {
+    "expected_revision": 5
+  }
+}

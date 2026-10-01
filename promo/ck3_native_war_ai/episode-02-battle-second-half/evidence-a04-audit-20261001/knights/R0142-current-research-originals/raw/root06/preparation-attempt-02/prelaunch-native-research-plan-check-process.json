@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\w\\e2cap1001d\\tools\\native_research_plan.py",
+    "check",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\prelaunch-native-research-plan.json",
+    "--for-observation",
+    "--output",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\prelaunch-native-research-plan-check.json"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

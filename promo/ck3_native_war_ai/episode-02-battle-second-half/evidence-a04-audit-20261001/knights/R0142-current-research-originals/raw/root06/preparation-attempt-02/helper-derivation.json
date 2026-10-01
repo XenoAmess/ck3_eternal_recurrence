@@ -1,0 +1,27 @@
+{
+  "original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\prepare_new_capture.py",
+    "bytes": 11297,
+    "sha256": "F45FDD164BEEB522C4BE209173639286D05C95CE914F1A639BE70D6F442F7DFC"
+  },
+  "derived": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\prepare_new_capture_a02.py",
+    "bytes": 11333,
+    "sha256": "7E0FC64F9F7524CAA7ADDE2B458A11E80DADE6571A3CAB93AA12B60739BB9D14"
+  },
+  "only_source_change": "Explicit original prelaunch plan path because new attempt is nested",
+  "sdk_exact_original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_new_capture_sdk.py",
+    "bytes": 4278,
+    "sha256": "892617AE3827664FE5305BC1CC2B7B3A8207DC3B18A419FB0D4E79B5180E4689"
+  },
+  "sdk_exact_copy": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\run_new_capture_sdk.py",
+    "bytes": 4278,
+    "sha256": "892617AE3827664FE5305BC1CC2B7B3A8207DC3B18A419FB0D4E79B5180E4689"
+  },
+  "prior_no_launch_RED_preserved": true,
+  "next_paths": "D26 exact source track requires episode02-e2-05-d26 prefix",
+  "game_launched": false,
+  "video_changed": false
+}

@@ -1,0 +1,3409 @@
+{
+  "reviewer": "/root",
+  "at_utc": "2026-10-01T11:41:18.024660+00:00",
+  "source_binding": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "bytes": 4492,
+    "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+  },
+  "original_pixels_actually_reviewed": true,
+  "reviewed_images": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-victim-character-window.png",
+      "bytes": 6170790,
+      "sha256": "5A68608660212DD7D121A30CCFF81AB6ECF14D02D3706E1CD8D09B2B5C993A41"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-killer-character-window.png",
+      "bytes": 6177519,
+      "sha256": "E087D578767DFDD0F35780F6E5F54F95E5645D8DE3BEB76904A0E3391C4D69EF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-fit-window.png",
+      "bytes": 6194708,
+      "sha256": "CF0FC289C37448BD58F5AE383F8485D38DE21BAD20D9124E67606F1B21BE7813"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-left-knights-fallback-desktop-original.png",
+      "bytes": 5072505,
+      "sha256": "43AF347A4FE287A2F71CDB1B4E56A8F23CA83599201AB4B1D8B56FDD8504C1C1"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-right-knights-fallback-desktop-original.png",
+      "bytes": 5095099,
+      "sha256": "7CF7D9B0BF7D595330738D0CBC460E5E023D284B95878C7278C5CB9AEFC13830"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-all-visible-desktop-original.png",
+      "bytes": 5105154,
+      "sha256": "7BCFB1BFAD6F9C861CC805F2CD268CAE76917AACA9317398342F99672B22D39E"
+    }
+  ],
+  "observations": [
+    "Victim33437 original page shows skull/death status, age31 and displayed prowess2; the before page displayed4. Endpoint and display observations do not imply complete causal writes.",
+    "Related34120 original page shows alive, age27, displayed prowess7 and prestige451; before page displayed prestige301.",
+    "After left original tooltip contains all10 visible rows and no victim name; before contained11 including victim.",
+    "After right original tooltip contains all19 visible rows including related character at displayed prowess7.",
+    "The final original combat image includes outer borders, both commanders, combat stats and bottom knight rows10/19 without overlapping tooltip.",
+    "All after originals are paused1066-12-30; exactly one game day was advanced in this run.",
+    "Native hover failure remains RED. Mouse fallback uses original screenshot, explicit measured1280x720 preview rectangle, foreground984144 and coordinate-map image receipts.",
+    "Daily trace FINISH failed managed DTO export; selector, unique death and complete mutable causal chain remain pending."
+  ],
+  "full_panel_original_image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-all-visible-desktop-original.png",
+    "bytes": 5105154,
+    "sha256": "7BCFB1BFAD6F9C861CC805F2CD268CAE76917AACA9317398342F99672B22D39E"
+  },
+  "source_values": {
+    "date_raw": 53146872,
+    "paused": true,
+    "actor": 29829,
+    "revision": 11,
+    "native_revision": 10,
+    "snapshot_id": "native:10",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a892e2bcf200",
+    "connection_generation": 1,
+    "bridge_pid": 14700,
+    "native_hello_session_generation": 0
+  },
+  "source_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests\\after-root-review-readonly-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\after-root-review-readonly-source.json",
+      "bytes": 4538282,
+      "sha256": "2F61453A722B10DA3C5348AF46E6F54AFE89E9BC1A83BA3A004E9C87332D5C69"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "current_native_combat_readback": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests\\after-root-review-combat-readonly.json",
+      "bytes": 144,
+      "sha256": "68C61FDE4471FE91311702EB2532AF62BBC6829410EA99477CFA2181BAE50C43"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\after-root-review-combat-readonly.json",
+      "bytes": 107058,
+      "sha256": "CC5977DF5323DD8A338DB564790BAFC6F7F0FE3F34211047BFCA6B8CC86C9BA2"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "current_native_combat_body": {
+    "schema": "ck3-ingame-ui-window-v1",
+    "accepted": true,
+    "available": true,
+    "status": "observed",
+    "window_kind": "combat",
+    "window_name": "combat_window",
+    "requested_subject_id": 0,
+    "window_exists": true,
+    "effective_visible": true,
+    "enabled": true,
+    "subject_id_available": true,
+    "current_subject_id": 16777218,
+    "native_army_id": 0,
+    "owner_character_id": 0,
+    "dispatch_invoked": false,
+    "verification_pending": false,
+    "date_raw": 53146872,
+    "paused": true,
+    "played_character_id": 29829,
+    "native_revision": 10,
+    "pump_epoch": 404664,
+    "thread_id": 7144,
+    "application_owner_thread_verified": true,
+    "gui_owner_binding_verified": true,
+    "gui_context_address": 2283449740656,
+    "gui_owner_address": 2283449740656,
+    "rng_owner_thread_id": 0,
+    "rng_owner_is_ui_admission_gate": false,
+    "combat_knights_read_available": true,
+    "left_knight_count": 10,
+    "right_knight_count": 19,
+    "left_knight_breakdown": "\u0015ONCLICK:CHARACTER,33435 \u0015TOOLTIP:CHARACTER,33435 \u0015L \u0015high 伯爵\u0015!\u0015high 罗贝尔\u0015!\u0015!\u0015!\u0015!：14\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36077 \u0015TOOLTIP:CHARACTER,36077 \u0015L \u0015high 君士坦丁\u0015!·\u0015high 德· 欧特维尔\u0015!\u0015!\u0015!\u0015!：14\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,32716 \u0015TOOLTIP:CHARACTER,32716 \u0015L \u0015high 伯爵\u0015!\u0015high 罗杰\u0015!\u0015!\u0015!\u0015!：13\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,32440 \u0015TOOLTIP:CHARACTER,32440 \u0015L \u0015high 伯爵\u0015!\u0015high 若弗鲁瓦\u0015!\u0015!\u0015!\u0015!：12\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34333 \u0015TOOLTIP:CHARACTER,34333 \u0015L \u0015high 伯爵\u0015!\u0015high 若弗鲁瓦\u0015!\u0015!\u0015!\u0015!：11\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34867 \u0015TOOLTIP:CHARACTER,34867 \u0015L \u0015high 伯爵\u0015!\u0015high 阿伯拉尔\u0015!\u0015!\u0015!\u0015!：10\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,43706 \u0015TOOLTIP:CHARACTER,43706 \u0015L \u0015high 市长\u0015!\u0015high 居伊\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,43712 \u0015TOOLTIP:CHARACTER,43712 \u0015L \u0015high 市长\u0015!\u0015high 亨利\u0015!\u0015!\u0015!\u0015!：5\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,35637 \u0015TOOLTIP:CHARACTER,35637 \u0015L \u0015high 塞洛\u0015!·\u0015high 德· 欧特维尔\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,30784 \u0015TOOLTIP:CHARACTER,30784 \u0015L \u0015high 罗贝尔\u0015!·\u0015high 德· 莫尔坦\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!",
+    "right_knight_breakdown": "\u0015ONCLICK:CHARACTER,47032 \u0015TOOLTIP:CHARACTER,47032 \u0015L \u0015high 穆罕默德\u0015!\u0015!\u0015!\u0015!：10\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,47031 \u0015TOOLTIP:CHARACTER,47031 \u0015L \u0015high 阿西姆\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,47029 \u0015TOOLTIP:CHARACTER,47029 \u0015L \u0015high 阿塔纳西\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34484 \u0015TOOLTIP:CHARACTER,34484 \u0015L \u0015high 瓦利\u0015!\u0015high 阿卜杜勒‑哈克\u0015!\u0015!\u0015!\u0015!：11\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,44476 \u0015TOOLTIP:CHARACTER,44476 \u0015L \u0015high 纳伊卜\u0015!\u0015high 加尼姆\u0015!\u0015!\u0015!\u0015!：9\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,33884 \u0015TOOLTIP:CHARACTER,33884 \u0015L \u0015high 阿卜杜拉\u0015!·\u0015high 齐里\u0015!\u0015!\u0015!\u0015!：6\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36303 \u0015TOOLTIP:CHARACTER,36303 \u0015L \u0015high 阿尤布\u0015!·\u0015high 齐里\u0015!\u0015!\u0015!\u0015!：8\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34117 \u0015TOOLTIP:CHARACTER,34117 \u0015L \u0015high 沙姆斯丁\u0015!\u0015!\u0015!\u0015!：7\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34120 \u0015TOOLTIP:CHARACTER,34120 \u0015L \u0015high 阿姆鲁\u0015!·\u0015high 阿尤布\u0015!\u0015!\u0015!\u0015!：7\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54140 \u0015TOOLTIP:CHARACTER,54140 \u0015L \u0015high 米凯尔\u0015!\u0015!\u0015!\u0015!：8\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54144 \u0015TOOLTIP:CHARACTER,54144 \u0015L \u0015high 阿什拉夫\u0015!\u0015!\u0015!\u0015!：4\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54145 \u0015TOOLTIP:CHARACTER,54145 \u0015L \u0015high 达拉特\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,54141 \u0015TOOLTIP:CHARACTER,54141 \u0015L \u0015high 阿比亚努斯\u0015!\u0015!\u0015!\u0015!：2\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,30517 \u0015TOOLTIP:CHARACTER,30517 \u0015L \u0015high 瓦利\u0015!\u0015high 阿卜杜拉\u0015!\u0015!\u0015!\u0015!：13\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,36673 \u0015TOOLTIP:CHARACTER,36673 \u0015L \u0015high 谢赫\u0015!\u0015high 卡米尔\u0015!\u0015!\u0015!\u0015!：6\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,35124 \u0015TOOLTIP:CHARACTER,35124 \u0015L \u0015high 谢赫\u0015!\u0015high 巴迪斯\u0015!\u0015!\u0015!\u0015!：3\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,34470 \u0015TOOLTIP:CHARACTER,34470 \u0015L \u0015high 谢赫\u0015!\u0015high 拉克姆希\u0015!\u0015!\u0015!\u0015!：1\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,53853 \u0015TOOLTIP:CHARACTER,53853 \u0015L \u0015high 希德尔\u0015!\u0015!\u0015!\u0015!：12\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!\n\u0015ONCLICK:CHARACTER,53854 \u0015TOOLTIP:CHARACTER,53854 \u0015L \u0015high 阿兹鲁尔\u0015!\u0015!\u0015!\u0015!：4\u0015E; \u0015TOOLTIP:GAME_CONCEPT,prowess 勇武\u0015!\u0015!",
+    "combat_roster_full_ids_available": false,
+    "native_backend_id": "ck3-1.19.0.6-native-ingame-ui-v1",
+    "hover_state_available": true,
+    "hovered_widget_name": "",
+    "hovered_ui_side": "",
+    "hovered_combat_id": 0,
+    "hover_readback_is_pixels": false,
+    "modal_admission": {
+      "attempted": false,
+      "header_read": false,
+      "receivers_verified": false,
+      "receiver_count": null,
+      "vector_address": 0,
+      "effective_visible_count": 0,
+      "effective_hidden_mask": 8,
+      "policy": "refuse_any_effective_visible_receiver",
+      "unavailable_reason": "",
+      "receivers": []
+    },
+    "combat_geometry": {
+      "available": true,
+      "combat_id": 16777218,
+      "widget_count": 138,
+      "coordinate_space": "native_gui_absolute",
+      "scope": "visible_widget_union_and_verified_stock_background_margins",
+      "stock_margin_source_verified": true,
+      "stock_margin_source_sha256": "7FEE98B7341E21607ED3BB9089C51EF890D229DB6C16865C88133C3BA3579236",
+      "content_inside_viewport": true,
+      "fit_required": false,
+      "readback_is_pixels": false,
+      "full_panel_pixels_proven": false,
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "width": 2560,
+        "height": 1440
+      },
+      "window_rect": {
+        "x": 842,
+        "y": 1093,
+        "width": 875,
+        "height": 330
+      },
+      "content_union": {
+        "x": 819,
+        "y": 1053,
+        "width": 921,
+        "height": 387
+      },
+      "proposed_translation": {
+        "x": 0,
+        "y": 0
+      },
+      "unavailable_reason": ""
+    },
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "unavailable_reason": "",
+    "knights_list_scope": "military_eligible_not_active_combat_roster",
+    "tree": {
+      "scope_root_name": "combat_window",
+      "root_available": true,
+      "truncated": false,
+      "widget_count": 351,
+      "widgets": [
+        {
+          "runtime_name": "combat_window",
+          "child_path": "",
+          "depth": 0,
+          "child_count": 10,
+          "vtable_rva": 72462416,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0",
+          "depth": 1,
+          "child_count": 4,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "1",
+          "depth": 1,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "2",
+          "depth": 1,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "combat_progress",
+          "child_path": "3",
+          "depth": 1,
+          "child_count": 3,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "troop_counters",
+          "child_path": "4",
+          "depth": 1,
+          "child_count": 4,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "terrain",
+          "child_path": "5",
+          "depth": 1,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "mouseover_catcher",
+          "child_path": "6",
+          "depth": 1,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "7",
+          "depth": 1,
+          "child_count": 7,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8",
+          "depth": 1,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "center_box",
+          "child_path": "9",
+          "depth": 1,
+          "child_count": 2,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0",
+          "depth": 2,
+          "child_count": 2,
+          "vtable_rva": 72461904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/1",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tile_frame_top_center_part",
+          "child_path": "0/2",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "commander_info",
+          "child_path": "0/3",
+          "depth": 2,
+          "child_count": 2,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "3/0",
+          "depth": 2,
+          "child_count": 1,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "power_bar_frame",
+          "child_path": "3/1",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "combat_result",
+          "child_path": "3/2",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/0",
+          "depth": 2,
+          "child_count": 2,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "left_soldiers",
+          "child_path": "4/1",
+          "depth": 2,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/2",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "right_soldiers",
+          "child_path": "4/3",
+          "depth": 2,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_go_to",
+          "child_path": "7/0",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "7/1",
+          "depth": 2,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_me",
+          "child_path": "7/2",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_back",
+          "child_path": "7/3",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_next",
+          "child_path": "7/4",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_minimize",
+          "child_path": "7/5",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_close",
+          "child_path": "7/6",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/0",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72375824,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "battle_event",
+          "child_path": "8/1",
+          "depth": 2,
+          "child_count": 3,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "combat_phases",
+          "child_path": "9/0",
+          "depth": 2,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "main_info",
+          "child_path": "9/1",
+          "depth": 2,
+          "child_count": 1,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0",
+          "depth": 3,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/1",
+          "depth": 3,
+          "child_count": 1,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "left_commander",
+          "child_path": "0/3/0",
+          "depth": 3,
+          "child_count": 10,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "right_commander",
+          "child_path": "0/3/1",
+          "depth": 3,
+          "child_count": 10,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "3/0/0",
+          "depth": 3,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/0/0",
+          "depth": 3,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/0/1",
+          "depth": 3,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/0",
+          "depth": 3,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/1",
+          "depth": 3,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/0",
+          "depth": 3,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/1",
+          "depth": 3,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_pin",
+          "child_path": "7/1/0",
+          "depth": 3,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_unpin",
+          "child_path": "7/1/1",
+          "depth": 3,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "left_portrait",
+          "child_path": "8/1/0",
+          "depth": 3,
+          "child_count": 6,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title",
+          "child_path": "8/1/1",
+          "depth": 3,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "right_portrait",
+          "child_path": "8/1/2",
+          "depth": 3,
+          "child_count": 6,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0",
+          "depth": 3,
+          "child_count": 5,
+          "vtable_rva": 72470432,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/1/0",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/1",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/2",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 72375824,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/3",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "martial_value",
+          "child_path": "0/3/0/4",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/5",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72466744,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/6",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72466744,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/7",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72466744,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/8",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72466744,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/9",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/1",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/2",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 72375824,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/3",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "martial_value",
+          "child_path": "0/3/1/4",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/5",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 72466744,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/6",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72466744,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/7",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72466744,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/8",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72466744,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/9",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "3/0/0/0",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "3/0/0/1",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "fled_icon_left",
+          "child_path": "4/1/0/0",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/0/1",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/1/0",
+          "depth": 4,
+          "child_count": 3,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/1/1",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "fled_icon_left",
+          "child_path": "4/3/0/0",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/0/1",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/1/0",
+          "depth": 4,
+          "child_count": 3,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/1/1",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/0",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/1",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 71885712,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/2",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/3",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/4",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "portrait_unknown_head_small_glow",
+          "child_path": "8/1/0/5",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/0",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/1",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 71885712,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/2",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/3",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/4",
+          "depth": 4,
+          "child_count": 1,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "portrait_unknown_head_small_glow",
+          "child_path": "8/1/2/5",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "MAA",
+          "child_path": "9/1/0/1",
+          "depth": 4,
+          "child_count": 5,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/2",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "knights",
+          "child_path": "9/1/0/3",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/4",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/0",
+          "depth": 5,
+          "child_count": 4,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/1",
+          "depth": 5,
+          "child_count": 4,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/2/0",
+          "depth": 5,
+          "child_count": 5,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "icon",
+          "child_path": "0/3/0/4/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "label",
+          "child_path": "0/3/0/4/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/9/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/9/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/0",
+          "depth": 5,
+          "child_count": 4,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/1",
+          "depth": 5,
+          "child_count": 4,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/2/0",
+          "depth": 5,
+          "child_count": 5,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "icon",
+          "child_path": "0/3/1/4/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "label",
+          "child_path": "0/3/1/4/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/5/0",
+          "depth": 5,
+          "child_count": 4,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/9/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/9/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "3/0/0/0/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "3/0/0/1/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "icon_soldier",
+          "child_path": "4/1/1/0/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/1/0/1",
+          "depth": 5,
+          "child_count": 1,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "quality_icon",
+          "child_path": "4/1/1/0/2",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "fled_icon_left",
+          "child_path": "4/1/1/1/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/1/1/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "icon_soldier",
+          "child_path": "4/3/1/0/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/1/0/1",
+          "depth": 5,
+          "child_count": 1,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "quality_icon",
+          "child_path": "4/3/1/0/2",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "fled_icon_left",
+          "child_path": "4/3/1/1/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/1/1/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "prison_bars",
+          "child_path": "8/1/0/1/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/4/0",
+          "depth": 5,
+          "child_count": 1,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "prison_bars",
+          "child_path": "8/1/2/1/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/4/0",
+          "depth": 5,
+          "child_count": 1,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "advantage",
+          "child_path": "9/1/0/0/0",
+          "depth": 5,
+          "child_count": 5,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "pursuit_phase",
+          "child_path": "9/1/0/0/1",
+          "depth": 5,
+          "child_count": 1,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/1",
+          "depth": 5,
+          "child_count": 2,
+          "vtable_rva": 72467432,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/1/2",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/3",
+          "depth": 5,
+          "child_count": 3,
+          "vtable_rva": 72467432,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/4",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/3/0",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/3/1",
+          "depth": 5,
+          "child_count": 5,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/0/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/0/1",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 71885712,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/0/2",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "portrait_unknown_body_glow",
+          "child_path": "0/3/0/0/0/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/1/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/1/1",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 71885712,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/0/1/2",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "portrait_unknown_body_glow",
+          "child_path": "0/3/0/0/1/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "crown",
+          "child_path": "0/3/0/2/0/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "adventurer_top_decor",
+          "child_path": "0/3/0/2/0/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "mercenary",
+          "child_path": "0/3/0/2/0/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "holy_order",
+          "child_path": "0/3/0/2/0/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/2/0/4",
+          "depth": 6,
+          "child_count": 2,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/0/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/0/1",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 71885712,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/0/2",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 72461384,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "portrait_unknown_body_glow",
+          "child_path": "0/3/1/0/0/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/1/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/1/1",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 71885712,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/0/1/2",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "portrait_unknown_body_glow",
+          "child_path": "0/3/1/0/1/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "crown",
+          "child_path": "0/3/1/2/0/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "adventurer_top_decor",
+          "child_path": "0/3/1/2/0/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "mercenary",
+          "child_path": "0/3/1/2/0/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "holy_order",
+          "child_path": "0/3/1/2/0/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/2/0/4",
+          "depth": 6,
+          "child_count": 2,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "normal_trait",
+          "child_path": "0/3/1/5/0/0",
+          "depth": 6,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "inheritable_trait",
+          "child_path": "0/3/1/5/0/1",
+          "depth": 6,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "virtue_trait",
+          "child_path": "0/3/1/5/0/2",
+          "depth": 6,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "sin_trait",
+          "child_path": "0/3/1/5/0/3",
+          "depth": 6,
+          "child_count": 2,
+          "vtable_rva": 72447904,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/1/1/0/1/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "4/3/1/0/1/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/4/0/0",
+          "depth": 6,
+          "child_count": 32,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/4/0/0",
+          "depth": 6,
+          "child_count": 32,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0",
+          "depth": 6,
+          "child_count": 3,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/2",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/3",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/4",
+          "depth": 6,
+          "child_count": 1,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0",
+          "depth": 6,
+          "child_count": 5,
+          "vtable_rva": 72469912,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/1/0",
+          "depth": 6,
+          "child_count": 6,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/1/1",
+          "depth": 6,
+          "child_count": 6,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/3/0",
+          "depth": 6,
+          "child_count": 6,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/3/1",
+          "depth": 6,
+          "child_count": 6,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/1/3/2",
+          "depth": 6,
+          "child_count": 6,
+          "vtable_rva": 72447904,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "left_knights",
+          "child_path": "9/1/0/3/1/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "left_no_knights",
+          "child_path": "9/1/0/3/1/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/3/1/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "right_no_knights",
+          "child_path": "9/1/0/3/1/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "right_knights",
+          "child_path": "9/1/0/3/1/4",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "prison_bars",
+          "child_path": "0/3/0/0/0/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "is_dead",
+          "child_path": "0/3/0/0/0/2/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "prison_bars",
+          "child_path": "0/3/0/0/1/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "is_dead",
+          "child_path": "0/3/0/0/1/2/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "coa_shadow",
+          "child_path": "0/3/0/2/0/4/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/0/2/0/4/1",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "prison_bars",
+          "child_path": "0/3/1/0/0/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "is_dead",
+          "child_path": "0/3/1/0/0/2/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "prison_bars",
+          "child_path": "0/3/1/0/1/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "is_dead",
+          "child_path": "0/3/1/0/1/2/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "coa_shadow",
+          "child_path": "0/3/1/2/0/4/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/3/1/2/0/4/1",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "trait_icon",
+          "child_path": "0/3/1/5/0/0/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "level_stars",
+          "child_path": "0/3/1/5/0/0/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "trait_icon",
+          "child_path": "0/3/1/5/0/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "level_stars",
+          "child_path": "0/3/1/5/0/1/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "trait_icon",
+          "child_path": "0/3/1/5/0/2/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "level_stars",
+          "child_path": "0/3/1/5/0/2/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "trait_icon",
+          "child_path": "0/3/1/5/0/3/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "level_stars",
+          "child_path": "0/3/1/5/0/3/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "lover",
+          "child_path": "8/1/0/4/0/0/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "friend",
+          "child_path": "8/1/0/4/0/0/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "rival",
+          "child_path": "8/1/0/4/0/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "soulmate",
+          "child_path": "8/1/0/4/0/0/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "best_friend",
+          "child_path": "8/1/0/4/0/0/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "nemesis",
+          "child_path": "8/1/0/4/0/0/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "grudge",
+          "child_path": "8/1/0/4/0/0/6",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "blood_brother",
+          "child_path": "8/1/0/4/0/0/7",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "elder",
+          "child_path": "8/1/0/4/0/0/8",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "disciple",
+          "child_path": "8/1/0/4/0/0/9",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "relation_icon",
+          "child_path": "8/1/0/4/0/0/10",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "hostage_icon",
+          "child_path": "8/1/0/4/0/0/11",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "traveling_icon",
+          "child_path": "8/1/0/4/0/0/12",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "incapable",
+          "child_path": "8/1/0/4/0/0/13",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "has_inspiration",
+          "child_path": "8/1/0/4/0/0/14",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "has_completed_inspiration",
+          "child_path": "8/1/0/4/0/0/15",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "can_be_punished",
+          "child_path": "8/1/0/4/0/0/16",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "hook",
+          "child_path": "8/1/0/4/0/0/17",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "powerful_vassal",
+          "child_path": "8/1/0/4/0/0/18",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tributary",
+          "child_path": "8/1/0/4/0/0/19",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "obedient_to_me",
+          "child_path": "8/1/0/4/0/0/20",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "obedient_to_someone_else",
+          "child_path": "8/1/0/4/0/0/21",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": false
+        },
+        {
+          "runtime_name": "disobedient_to_me",
+          "child_path": "8/1/0/4/0/0/22",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "disobedient_to_someone_else",
+          "child_path": "8/1/0/4/0/0/23",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": false
+        },
+        {
+          "runtime_name": "acclaimed_knight",
+          "child_path": "8/1/0/4/0/0/24",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/0/4/0/0/25",
+          "depth": 7,
+          "child_count": 5,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "unpredictable_small",
+          "child_path": "8/1/0/4/0/0/26",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "powerful_family",
+          "child_path": "8/1/0/4/0/0/27",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "dominant_family",
+          "child_path": "8/1/0/4/0/0/28",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "head_icon",
+          "child_path": "8/1/0/4/0/0/29",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "playable_icon",
+          "child_path": "8/1/0/4/0/0/30",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "is_dead",
+          "child_path": "8/1/0/4/0/0/31",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "lover",
+          "child_path": "8/1/2/4/0/0/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "friend",
+          "child_path": "8/1/2/4/0/0/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "rival",
+          "child_path": "8/1/2/4/0/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "soulmate",
+          "child_path": "8/1/2/4/0/0/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "best_friend",
+          "child_path": "8/1/2/4/0/0/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "nemesis",
+          "child_path": "8/1/2/4/0/0/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "grudge",
+          "child_path": "8/1/2/4/0/0/6",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "blood_brother",
+          "child_path": "8/1/2/4/0/0/7",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "elder",
+          "child_path": "8/1/2/4/0/0/8",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "disciple",
+          "child_path": "8/1/2/4/0/0/9",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "relation_icon",
+          "child_path": "8/1/2/4/0/0/10",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "hostage_icon",
+          "child_path": "8/1/2/4/0/0/11",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "traveling_icon",
+          "child_path": "8/1/2/4/0/0/12",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "incapable",
+          "child_path": "8/1/2/4/0/0/13",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "has_inspiration",
+          "child_path": "8/1/2/4/0/0/14",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "has_completed_inspiration",
+          "child_path": "8/1/2/4/0/0/15",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "can_be_punished",
+          "child_path": "8/1/2/4/0/0/16",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "hook",
+          "child_path": "8/1/2/4/0/0/17",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "powerful_vassal",
+          "child_path": "8/1/2/4/0/0/18",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tributary",
+          "child_path": "8/1/2/4/0/0/19",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "obedient_to_me",
+          "child_path": "8/1/2/4/0/0/20",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "obedient_to_someone_else",
+          "child_path": "8/1/2/4/0/0/21",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": false
+        },
+        {
+          "runtime_name": "disobedient_to_me",
+          "child_path": "8/1/2/4/0/0/22",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "disobedient_to_someone_else",
+          "child_path": "8/1/2/4/0/0/23",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": false
+        },
+        {
+          "runtime_name": "acclaimed_knight",
+          "child_path": "8/1/2/4/0/0/24",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "8/1/2/4/0/0/25",
+          "depth": 7,
+          "child_count": 5,
+          "vtable_rva": 72461384,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "unpredictable_small",
+          "child_path": "8/1/2/4/0/0/26",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "powerful_family",
+          "child_path": "8/1/2/4/0/0/27",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "dominant_family",
+          "child_path": "8/1/2/4/0/0/28",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "head_icon",
+          "child_path": "8/1/2/4/0/0/29",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "playable_icon",
+          "child_path": "8/1/2/4/0/0/30",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "is_dead",
+          "child_path": "8/1/2/4/0/0/31",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/0",
+          "depth": 7,
+          "child_count": 3,
+          "vtable_rva": 72470432,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/0/0/0/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/2",
+          "depth": 7,
+          "child_count": 3,
+          "vtable_rva": 72470432,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/2/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/3/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "advantage",
+          "child_path": "9/1/0/0/0/4/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/0",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/1",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/0/1/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/3",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/4",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/0/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/0/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/0/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/0/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/0/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/1/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/1/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/1/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/1/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/1/1/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/0/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/0/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/0/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/0/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/0/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/1/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/1/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/1/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/1/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/1/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/2/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/2/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/2/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/2/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/2/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "maa_icon",
+          "child_path": "9/1/0/1/3/2/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "coa_overlay",
+          "child_path": "0/3/0/2/0/4/1/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "coa_topframe",
+          "child_path": "0/3/0/2/0/4/1/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "coa_overlay",
+          "child_path": "0/3/1/2/0/4/1/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "coa_topframe",
+          "child_path": "0/3/1/2/0/4/1/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72376352,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "advancement_movement",
+          "child_path": "8/1/0/4/0/0/25/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expansion_movement",
+          "child_path": "8/1/0/4/0/0/25/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "conservative_movement",
+          "child_path": "8/1/0/4/0/0/25/2",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "pro_hegemon_movement",
+          "child_path": "8/1/0/4/0/0/25/3",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "undecided_movement",
+          "child_path": "8/1/0/4/0/0/25/4",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "advancement_movement",
+          "child_path": "8/1/2/4/0/0/25/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expansion_movement",
+          "child_path": "8/1/2/4/0/0/25/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "conservative_movement",
+          "child_path": "8/1/2/4/0/0/25/2",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "pro_hegemon_movement",
+          "child_path": "8/1/2/4/0/0/25/3",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "undecided_movement",
+          "child_path": "8/1/2/4/0/0/25/4",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "progressbar",
+          "child_path": "9/1/0/0/0/0/0/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "advantage_icons",
+          "child_path": "9/1/0/0/0/0/0/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/0/0/0/0/2",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "progressbar",
+          "child_path": "9/1/0/0/0/0/2/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "advantage_icons",
+          "child_path": "9/1/0/0/0/0/2/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/0/0/0/2/2",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "left_side_fled",
+          "child_path": "9/1/0/0/1/0/0/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/0/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "left_side_pursuing",
+          "child_path": "9/1/0/0/1/0/1/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/1/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/3/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "right_side_fled",
+          "child_path": "9/1/0/0/1/0/3/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/1/0/4/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72465552,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "right_side_pursuing",
+          "child_path": "9/1/0/0/1/0/4/1",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/0/0/0",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/0/0/1",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/0/0/0/0/1/0",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/2/0/0",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/2/0/1",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 72469912,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "9/1/0/0/0/0/2/1/0",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 72469912,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/0/0/1/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/0/0/1/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/2/0/1/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 72462928,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "9/1/0/0/0/0/2/0/1/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 72371872,
+          "effective_visible": false,
+          "enabled": true
+        }
+      ]
+    },
+    "backend_id": "native-headless",
+    "native_ui_raw_return_receipt": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\native-session\\ingame-ui-native-results\\native-ui-02713a0a33cc493c8c27f2c130a1ad27.json",
+      "bytes": 4628509,
+      "sha256": "949b1b9ff54e121c38d287dffa523314ff14abd7ec4ea62595c690b27417194b",
+      "validation_state": "unvalidated"
+    },
+    "queried_snapshot_id": "native:10",
+    "queried_revision": 11,
+    "queried_native_revision": 10,
+    "episode_run_id": "native-29829-a892e2bcf200",
+    "queried_connection_generation": 1
+  },
+  "pointer_receipts": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-left-knights-mapped-move.png.json",
+      "bytes": 2145,
+      "sha256": "0E8AA6718DFF289DEF2BA76E320DA68E197F70493979F6B21C0AAAE0608D3459"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-right-knights-mapped-move.png.json",
+      "bytes": 2151,
+      "sha256": "4C8AFF1BC00895A975FB468A54163224998FBEE086F5C54B0E720DCD39C4906E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-clear-tooltip-mapped-move.png.json",
+      "bytes": 2166,
+      "sha256": "CB91EEE810C1EC51F93D02A0B03BC923764A0D498632CE9823E0613FA87D4593"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-blank-ui-mapped-move.png.json",
+      "bytes": 2148,
+      "sha256": "438991CB7BFDA23EDA9EB74B1888905CD5209D8B5871C10E19B12B0D942CBDDF"
+    }
+  ],
+  "day_finished_identity": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\one-day-finished.json",
+    "bytes": 23312,
+    "sha256": "9644F822BBA524FB8493CCF638EAFF3B248A002A4B3AAF2AD710E9F9DC11B6F1"
+  },
+  "UI_getter_full_ordered_roster_IDs_proven": false,
+  "native_ordered_rosters_require_same_run_phase_ring": true,
+  "daily_trace_export_succeeded": false,
+  "native_hover_provider_stays_RED": true,
+  "human_movie_signoff": false,
+  "six_gaps_not_yet_closed": true,
+  "global_mutable_bundle_complete": false
+}

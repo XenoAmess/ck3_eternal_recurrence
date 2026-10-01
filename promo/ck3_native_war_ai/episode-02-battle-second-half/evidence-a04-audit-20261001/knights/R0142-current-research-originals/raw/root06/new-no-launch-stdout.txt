@@ -1,0 +1,1 @@
+{"result": "RED", "error": "RuntimeError('A04 UI import userdir/state/output does not match the source track')", "ck3_started_by_preflight": false, "native_session_invoked": false, "ck3_process_created": false, "at": "2026-10-01T10:38:37.589563+00:00"}

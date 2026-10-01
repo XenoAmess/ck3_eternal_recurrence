@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 984144,
+    "foreground_hwnd": 984144,
+    "foreground_pid": 14700,
+    "foreground_thread_id": 7144,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 984144,
+    "foreground_hwnd": 984144,
+    "foreground_pid": 14700,
+    "foreground_thread_id": 7144,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    100.0,
+    550.0
+  ],
+  "pointer_after": [
+    200,
+    1100
+  ],
+  "pointer_before": [
+    1600,
+    1000
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1280,
+    720
+  ],
+  "receipt_image_size": [
+    2560,
+    1440
+  ],
+  "receipt_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-blank-ui-mapped-move.png",
+  "receipt_sha256": "B4F96AD519EF8421897754B5192633C16C533BBD9A64706526904D91CD9E2036",
+  "reviewed_bounds": [
+    90.0,
+    540.0,
+    20,
+    20
+  ],
+  "screen_point": [
+    200,
+    1100
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-blank-ui-mapped-move.png.json",
+  "source_image": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-combat-unobscured-desktop-original.png",
+    "sha256": "9A6DEE960313B494B019DCF9C5808DBB505CD98852C44A729E947E8AC4E28529"
+  },
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "pointer-move-readback-matched"
+}

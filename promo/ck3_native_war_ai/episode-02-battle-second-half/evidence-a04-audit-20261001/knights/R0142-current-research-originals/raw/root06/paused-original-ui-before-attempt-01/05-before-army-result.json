@@ -1,0 +1,31 @@
+{
+  "at_utc": "2026-10-01T10:47:42.380242+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "--mode",
+    "ui",
+    "--window-kind",
+    "army",
+    "--phase",
+    "before",
+    "--label",
+    "before-army"
+  ],
+  "returncode": 1,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-original-ui-before-attempt-01\\05-before-army-stdout.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-original-ui-before-attempt-01\\05-before-army-stderr.bin",
+    "bytes": 1629,
+    "sha256": "E3B3EA7ECDA8B8F471C5FC526FF576606CCC63D42791E174739E4E02A1F73E54"
+  }
+}

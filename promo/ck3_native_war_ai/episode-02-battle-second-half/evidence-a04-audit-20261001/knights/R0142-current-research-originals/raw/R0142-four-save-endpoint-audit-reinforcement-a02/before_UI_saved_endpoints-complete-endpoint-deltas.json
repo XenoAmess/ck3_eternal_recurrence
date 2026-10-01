@@ -1,0 +1,72 @@
+{
+  "interval": "before_UI_saved_endpoints",
+  "before": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a02\\before-pre-ui-checkpoint-full-selected-saved-projection.json",
+    "bytes": 2657477,
+    "sha256": "117FF9809C9B587BC29AC53B02B8F29FC91D814E223860508B7CC3A244585FEE"
+  },
+  "after": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a02\\before-full-selected-saved-projection.json",
+    "bytes": 2658499,
+    "sha256": "62D3340A5E34E4AD6ED6744ADBE4E53C53337ACF4E8BFE0E29407B971ED231DF"
+  },
+  "full_character_deltas": [
+    {
+      "character_id": 33437,
+      "full_scalar_leaf_deltas": [
+        {
+          "path": "/dna[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "\"v8u/yzpCOkK/jr+OAG8AbwGMAYwAcwBzAH0AfQGEAYQBgwGDAHUAdQB+AH4BgQGBAG0AbQGcAZwAWQBZAH8AfwGBAYEAZwBnAEAAQAGCAYIBkAGQAGYAZgB1AHUBjAGMAZgBmAGhAaEBigGKAH4AfgGLAYsBiwGLAYsBiwGfAZ8AFQAVAGYAZgBoAGgBGwEbASQBJAAYABgAbwBvABkAGQAlACUAGQAZABYAFgFVAVUBdgF2AQcBBwEtAS0BGgEaAUMBQwFAAUABfwF/AAQABAByAHIAJgAmAB0AHQAHAAcBKQEpAAAAAAENAQ0AAAAAAAQABAFDAUMBGQEZACIAIgAQABAASgBKABMAEwFpAWkBCQEJAwQDBAEdAR0BJAEkABcAFwEYARgBMQExAAsACwEDAQMBwQHBARMBEwFgAWAA6QDpA9QD1AETARMAmgCaAAgACABBAEEDJwMnAEsASwAmACYCAAIAA7gDuAGIAYgDfwN/AQABAAdaB1oCLwIvApUClQKyArIAqACoAGkAaQGbAZsA5QDlAAAAAAFgAWA=\""
+        }
+      ]
+    },
+    {
+      "character_id": 34120,
+      "full_scalar_leaf_deltas": [
+        {
+          "path": "/dna[0]",
+          "before_present": false,
+          "before": null,
+          "after_present": true,
+          "after": "\"S/NL86adpp00vzS/AZABkAB8AHwBigGKAYABgAGEAYQBiwGLAH0AfQB3AHcBfwF/AHoAegGlAaUAeAB4AF0AXQGVAZUBlgGWAB8AHwB/AH8BhQGFAHEAcQGFAYUBiwGLAYwBjAB5AHkAegB6AYEBgQBzAHMAbwBvAeEB4QGtAa0BngGeAHEAcQBnAGcBAAEAAA4ADgAlACUAHgAeAHIAcgFaAVoAIQAhATwBPAAtAC0BHwEfAAIAAgEYARgAAAAAADMAMwAdAB0ANgA2ABwAHAApACkApACkARIBEgADAAMBPgE+AFkAWQEAAQABDAEMADQANABzAHMBVAFUAG0AbQAlACUBDQENAQMBAwExATEAUgBSAT0BPQEZARkBIgEiAeIB4gEcARwBIgEiAE8ATwFlAWUBAgECAQABAAEOAQ4AiQCJAEcARwBoAGgAKQApAAUABQBcAFwAAgACApsCmwAeAB4CAAIAANYA1gF2AXYCeQJ5CQAJAAV0BXQAQgBCCvoK+gHhAeEBwwHDArICsgHcAdwAPQA9AAAAAAFQAVA=\""
+        }
+      ]
+    }
+  ],
+  "full_case_combat_deltas": [
+    {
+      "path": "/combat_results[0]/16777218[0]",
+      "all_scalar_leaf_deltas": []
+    },
+    {
+      "path": "/combats[0]/16777218[0]",
+      "all_scalar_leaf_deltas": []
+    }
+  ],
+  "full_house_DB_deltas": [],
+  "saved_top_level_RNG_comparison": {
+    "random_seed": {
+      "before": 2705320081,
+      "after": 2705320081,
+      "equal": true,
+      "uint32_delta_modulo": 0
+    },
+    "random_count": {
+      "before": 420865,
+      "after": 420865,
+      "equal": true,
+      "uint32_delta_modulo": 0
+    }
+  },
+  "all_engine_or_context_RNG_unchanged": "UNKNOWN",
+  "time_resolution": "endpoint only",
+  "accolade_section_deltas": [
+    {
+      "name": "accolades",
+      "all_scalar_leaf_deltas": []
+    }
+  ]
+}

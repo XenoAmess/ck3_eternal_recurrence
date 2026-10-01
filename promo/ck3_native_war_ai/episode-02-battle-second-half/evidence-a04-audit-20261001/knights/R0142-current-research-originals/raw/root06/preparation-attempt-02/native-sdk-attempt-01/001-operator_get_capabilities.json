@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-01T10:40:33.830878+00:00",
+  "arguments": {},
+  "reply": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_version\": \"1.2.0\",\n  \"server_instance_id\": \"f20aa643-115e-4928-91a6-3150f83bf7ce\",\n  \"target_id\": \"ck3-e2-scoped-ui-20261001-a03\",\n  \"display_name\": \"Episode02 full knight mechanism and original UI research\",\n  \"profile_sha256\": \"16DA94E4F6D76E42D535E758967690EDB4447C1173FC5564F3B00212D1165D17\",\n  \"endpoint\": {\n    \"transport\": \"stdio\",\n    \"host\": \"127.0.0.1\",\n    \"port\": 8766\n  },\n  \"jobs\": [\n    \"scoped-ui-research-capture\"\n  ],\n  \"job_controls\": {\n    \"scoped-ui-research-capture\": []\n  },\n  \"tools\": [\n    \"operator_get_capabilities\",\n    \"operator_get_status\",\n    \"operator_preflight_job\",\n    \"operator_handoff_job\",\n    \"operator_control_job\",\n    \"operator_query_steam_workshop_status_v1\"\n  ],\n  \"steam_workshop_status_configured\": false,\n  \"caller_supplied_commands\": false,\n  \"operator_bootstrap_required\": true\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_version": "1.2.0",
+      "server_instance_id": "f20aa643-115e-4928-91a6-3150f83bf7ce",
+      "target_id": "ck3-e2-scoped-ui-20261001-a03",
+      "display_name": "Episode02 full knight mechanism and original UI research",
+      "profile_sha256": "16DA94E4F6D76E42D535E758967690EDB4447C1173FC5564F3B00212D1165D17",
+      "endpoint": {
+        "transport": "stdio",
+        "host": "127.0.0.1",
+        "port": 8766
+      },
+      "jobs": [
+        "scoped-ui-research-capture"
+      ],
+      "job_controls": {
+        "scoped-ui-research-capture": []
+      },
+      "tools": [
+        "operator_get_capabilities",
+        "operator_get_status",
+        "operator_preflight_job",
+        "operator_handoff_job",
+        "operator_control_job",
+        "operator_query_steam_workshop_status_v1"
+      ],
+      "steam_workshop_status_configured": false,
+      "caller_supplied_commands": false,
+      "operator_bootstrap_required": true
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

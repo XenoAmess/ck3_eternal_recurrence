@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\scoped_ui_research_a08.py", line 474, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\scoped_ui_research_a08.py", line 471, in main
+    {'ui': original_ui, 'hover': knight_hover, 'fit': fit_combat_panel, 'save': save, 'advance': advance, 'monitor-begin': variable_monitor, 'monitor-finish': variable_monitor, 'finish': finish}[args.mode](args, config, bound)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\scoped_ui_research_a08.py", line 173, in original_ui
+    require(action.get('accepted') is True and action.get('verification_pending') is True, 'Typed presentation action was not admitted')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\ck3-e2-six-gap-research-20261001\root-attempt-06-hidden-modal-ui\scoped_ui_research_a08.py", line 20, in require
+    raise RuntimeError(message)
+RuntimeError: Typed presentation action was not admitted

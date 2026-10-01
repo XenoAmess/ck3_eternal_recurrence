@@ -1,0 +1,74 @@
+{
+  "at_utc": "2026-10-01T11:24:49.416802+00:00",
+  "phase": "after",
+  "bindings": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "bytes": 4492,
+    "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+  },
+  "controller": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+    "bytes": 34603,
+    "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+  },
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\run_after_core_ui_a10.py",
+    "bytes": 5530,
+    "sha256": "A35636A48E78FE7B201699A34ACD4FFEC9F84DE675D7AA049FE3831C3D8E636F"
+  },
+  "retained_same_run_role_UI": [],
+  "operations": [
+    [
+      "pre-ui-checkpoint",
+      [
+        "--mode",
+        "extra-checkpoint"
+      ]
+    ],
+    [
+      "victim-character",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "victim"
+      ]
+    ],
+    [
+      "killer-character",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "killer"
+      ]
+    ],
+    [
+      "combat",
+      [
+        "--mode",
+        "ui",
+        "--window-kind",
+        "combat"
+      ]
+    ],
+    [
+      "combat-fit",
+      [
+        "--mode",
+        "fit"
+      ]
+    ]
+  ],
+  "stock_route": "Selecting this in-combat unit opens combat_window; an army_window frame is not a prerequisite for the six requested gaps",
+  "prior_failed_army_visibility_check_stays_preserved": true,
+  "army_selection_retried": false,
+  "eligible_military_list_entry_failure_preserved": true,
+  "roster_UI_scope": "Current combat left/right knight tooltips, independently joined to same-run native full-ID combat rosters",
+  "never_advances_a_day": true,
+  "human_movie_signoff": false
+}

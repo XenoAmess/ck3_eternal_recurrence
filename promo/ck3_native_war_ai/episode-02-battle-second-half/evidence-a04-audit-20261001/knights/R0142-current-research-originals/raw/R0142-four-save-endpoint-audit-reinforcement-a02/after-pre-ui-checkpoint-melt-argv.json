@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "melt",
+    "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-pre-ui-checkpoint-immutable.ck3",
+    "--unknown-key",
+    "stringify",
+    "--format",
+    "ck3",
+    "--out",
+    "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a02\\after-pre-ui-checkpoint-melted.ck3"
+  ],
+  "utc": "2026-10-01T11:55:30.204590+00:00"
+}

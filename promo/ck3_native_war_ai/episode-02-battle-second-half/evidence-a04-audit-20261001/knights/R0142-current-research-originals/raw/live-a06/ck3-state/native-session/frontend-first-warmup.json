@@ -1,0 +1,135 @@
+{
+  "enabled": true,
+  "status": "ready",
+  "pipe": "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_b70268e92a48484dbe384851b05e24ec",
+  "load_save_name": "war_film_checkpoint",
+  "target": {
+    "name": "war_film_checkpoint",
+    "load_save_name": "war_film_checkpoint",
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\profile\\save games\\war_film_checkpoint.ck3",
+    "size": 52880496,
+    "sha256": "c1276153435766a875b0984f1a3ad426cb3afcfb6ec33061cee6650538cffd2b"
+  },
+  "marker": "Setting idler 'Frontend'",
+  "timeout_seconds": 900.0,
+  "evidence_path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\native-session\\frontend-first-warmup.json",
+  "warmup_bridge": {
+    "mode": "disabled",
+    "pipe": null,
+    "dll_path": null,
+    "injector_path": null,
+    "dll_injection": false,
+    "mcp": false,
+    "same_pipe_as_final": false
+  },
+  "final_bridge": {
+    "mode": "native-headless",
+    "pipe": "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_b70268e92a48484dbe384851b05e24ec",
+    "dll_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "injector_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+    "dll_injection": true,
+    "load_save_name": "war_film_checkpoint"
+  },
+  "initial_launch": {
+    "continue_last_save": false,
+    "load_save_name": null,
+    "native_bridge_mode": "disabled",
+    "pipe": null,
+    "dll_injection": false
+  },
+  "warmup_pid": 3932,
+  "warmup_started_at": "2026-10-01T10:40:53.098985+00:00",
+  "frontend_marker": {
+    "marker": "Setting idler 'Frontend'",
+    "mode": "log-and-authenticated-window",
+    "fallback": true,
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\profile\\logs\\debug.log",
+    "seen": true,
+    "polls": 1107,
+    "log_bytes": 57344,
+    "elapsed_seconds": 56.449,
+    "observed_at": "2026-10-01T10:41:49.549237+00:00",
+    "signals": {
+      "idler_marker": false,
+      "history_end": false,
+      "frontend_gui_complete": true,
+      "fallback_ready": true
+    },
+    "window": {
+      "ready": true,
+      "pid": 3932,
+      "expected_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "expected_creation_date": "20261001104051.210571+000",
+      "identity": {
+        "pid": 3932,
+        "parent_pid": 9072,
+        "name": "ck3.exe",
+        "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "creation_date": "20261001104051.210571+000",
+        "command_line": ""
+      },
+      "identity_authenticated": true,
+      "handle_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "reason": "authenticated_responsive_frontend",
+      "window": {
+        "hwnd": 1311780,
+        "pid": 3932,
+        "title": "Crusader Kings III",
+        "wm_null_responded": true,
+        "wm_null_last_error": 0,
+        "is_hung_app_window": false,
+        "responsive": true
+      }
+    }
+  },
+  "frontend_seen_at": "2026-10-01T10:41:49.549262+00:00",
+  "warmup_shutdown": {
+    "nonce": "885bb39aa8324694a9c3ed2b815ef794",
+    "ck3_pid": 3932,
+    "ck3_creation_date": "20261001104051.210571+000",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 13284,
+    "watchdog_creation_date": "20261001104048.814116+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\control\\ck3.json": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\control\\watchdog-885bb39aa8324694a9c3ed2b815ef794.ready.json": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\control\\ck3.watchdog_error": true,
+      "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "warmup_bridge_lifecycle_cleared": true,
+  "warmup_bridge_pipe_reuse_authorized": false,
+  "target_before_final_launch": {
+    "name": "war_film_checkpoint",
+    "load_save_name": "war_film_checkpoint",
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-state\\profile\\save games\\war_film_checkpoint.ck3",
+    "size": 52880496,
+    "sha256": "c1276153435766a875b0984f1a3ad426cb3afcfb6ec33061cee6650538cffd2b"
+  },
+  "before_final_launch_gate_passed": true,
+  "final_pid": 14700,
+  "final_launch_started_at": "2026-10-01T10:41:59.338147+00:00",
+  "final_launch": {
+    "continue_last_save": false,
+    "load_save_name": "war_film_checkpoint",
+    "pipe": "\\\\.\\pipe\\xar_ck3_e2_scoped_ui_b70268e92a48484dbe384851b05e24ec",
+    "native_bridge_mode": "native-headless",
+    "dll_injection": true
+  }
+}

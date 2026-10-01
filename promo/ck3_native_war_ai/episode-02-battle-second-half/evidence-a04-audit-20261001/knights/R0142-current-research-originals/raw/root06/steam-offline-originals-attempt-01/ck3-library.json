@@ -1,0 +1,39 @@
+{
+  "label": "ck3-library",
+  "frames": [
+    {
+      "at_utc": "2026-10-01T10:36:18.337646+00:00",
+      "elapsed": 0.2581992000050377,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\ck3-library-01.png",
+        "bytes": 793611,
+        "sha256": "25B9047D5211C89B93DAED5B4444570D133B8B01B6911014EFB1A315082AA333"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T10:36:19.345063+00:00",
+      "elapsed": 1.265522100002272,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\ck3-library-02.png",
+        "bytes": 793288,
+        "sha256": "7036B794FD1E2F1D1232B0EA6F72101959B81B609DA11CEF8F2CA5480A4CA64D"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T10:36:20.350343+00:00",
+      "elapsed": 2.2697364000050584,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\ck3-library-03.png",
+        "bytes": 793315,
+        "sha256": "71DDD8D51EFA39452249694B9F7EE9FBF7BB4264C4810B6F2E2BB9F4675B6859"
+      }
+    }
+  ],
+  "errors": []
+}

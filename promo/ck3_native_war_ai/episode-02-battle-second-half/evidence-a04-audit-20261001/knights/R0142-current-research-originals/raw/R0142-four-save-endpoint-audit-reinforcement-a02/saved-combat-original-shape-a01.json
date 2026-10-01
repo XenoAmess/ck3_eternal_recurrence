@@ -1,0 +1,1965 @@
+[
+  {
+    "path": "/combat_results[0]/16777218[0]",
+    "shape": [
+      {
+        "key": "location",
+        "value": "2633"
+      },
+      {
+        "key": "attacker",
+        "value": [
+          {
+            "key": "main_participant",
+            "value": "31549"
+          },
+          {
+            "key": "commander",
+            "value": "34320"
+          },
+          {
+            "key": "inital_soldiers",
+            "value": "5641"
+          },
+          {
+            "key": "surviving_soldiers",
+            "value": "5453"
+          },
+          {
+            "key": "participants",
+            "value": [
+              {
+                "key": null,
+                "value": "31549"
+              },
+              {
+                "key": null,
+                "value": "32725"
+              },
+              {
+                "key": null,
+                "value": "34320"
+              },
+              {
+                "key": null,
+                "value": "32231"
+              },
+              {
+                "key": null,
+                "value": "34474"
+              }
+            ]
+          },
+          {
+            "key": "regiment_stats",
+            "value": [
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "defender",
+        "value": [
+          {
+            "key": "main_participant",
+            "value": "29829"
+          },
+          {
+            "key": "commander",
+            "value": "29829"
+          },
+          {
+            "key": "inital_soldiers",
+            "value": "1298"
+          },
+          {
+            "key": "surviving_soldiers",
+            "value": "1298"
+          },
+          {
+            "key": "participants",
+            "value": [
+              {
+                "key": null,
+                "value": "29829"
+              }
+            ]
+          },
+          {
+            "key": "regiment_stats",
+            "value": [
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 10,
+                  "keys": [
+                    "type",
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 9,
+                  "keys": [
+                    "knight",
+                    "damage_last_tick",
+                    "main_kills",
+                    "pursuit_kills",
+                    "main_losses",
+                    "pursuit_losses_maa",
+                    "pursuit_losses_self",
+                    "initial_count",
+                    "final_count"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "winning_side",
+        "value": "-1"
+      },
+      {
+        "key": "start_date",
+        "value": "1066.12.4"
+      },
+      {
+        "key": "end_date",
+        "value": "1.1.1"
+      },
+      {
+        "key": "win",
+        "value": "4294967295"
+      },
+      {
+        "key": "leader",
+        "value": "4294967295"
+      },
+      {
+        "key": "event",
+        "value": [
+          {
+            "key": "left_portrait",
+            "value": "47029"
+          },
+          {
+            "key": "right_portrait",
+            "value": "33435"
+          },
+          {
+            "key": "key",
+            "value": "\"knight_wounded_by_enemy\""
+          },
+          {
+            "key": "type",
+            "value": "wound"
+          },
+          {
+            "key": "attacker",
+            "value": "yes"
+          }
+        ]
+      },
+      {
+        "key": "event",
+        "value": [
+          {
+            "key": "left_portrait",
+            "value": "33884"
+          },
+          {
+            "key": "right_portrait",
+            "value": "32440"
+          },
+          {
+            "key": "key",
+            "value": "\"knight_wounded_by_enemy\""
+          },
+          {
+            "key": "type",
+            "value": "wound"
+          },
+          {
+            "key": "attacker",
+            "value": "yes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/combats[0]/16777218[0]",
+    "shape": [
+      {
+        "key": "attacker",
+        "value": [
+          {
+            "key": "armies",
+            "value": [
+              {
+                "key": null,
+                "value": "16777221"
+              },
+              {
+                "key": null,
+                "value": "16777231"
+              },
+              {
+                "key": null,
+                "value": "27"
+              },
+              {
+                "key": null,
+                "value": "22"
+              },
+              {
+                "key": null,
+                "value": "28"
+              }
+            ]
+          },
+          {
+            "key": "men_at_arms",
+            "value": [
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "levies",
+            "value": [
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "commander",
+            "value": "34320"
+          },
+          {
+            "key": "leader",
+            "value": "31549"
+          },
+          {
+            "key": "total_fighting_men",
+            "value": "4590.59254"
+          },
+          {
+            "key": "total_levy_men",
+            "value": "3638.27141"
+          },
+          {
+            "key": "initial_men",
+            "value": "5641"
+          },
+          {
+            "key": "initial_levies",
+            "value": "4502"
+          },
+          {
+            "key": "character",
+            "value": [
+              {
+                "key": "character",
+                "value": "31549"
+              },
+              {
+                "key": "contribution",
+                "value": "281586"
+              },
+              {
+                "key": "casualties",
+                "value": "33.26833"
+              }
+            ]
+          },
+          {
+            "key": "character",
+            "value": [
+              {
+                "key": "character",
+                "value": "32725"
+              },
+              {
+                "key": "contribution",
+                "value": "722747"
+              },
+              {
+                "key": "casualties",
+                "value": "127.47743"
+              }
+            ]
+          },
+          {
+            "key": "character",
+            "value": [
+              {
+                "key": "character",
+                "value": "34320"
+              },
+              {
+                "key": "contribution",
+                "value": "364604"
+              },
+              {
+                "key": "casualties",
+                "value": "55.26338"
+              }
+            ]
+          },
+          {
+            "key": "character",
+            "value": [
+              {
+                "key": "character",
+                "value": "32231"
+              },
+              {
+                "key": "contribution",
+                "value": "1032532"
+              },
+              {
+                "key": "casualties",
+                "value": "104.68221"
+              }
+            ]
+          },
+          {
+            "key": "character",
+            "value": [
+              {
+                "key": "character",
+                "value": "34474"
+              },
+              {
+                "key": "contribution",
+                "value": "108968"
+              },
+              {
+                "key": "casualties",
+                "value": "9.10985"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "defender",
+        "value": [
+          {
+            "key": "armies",
+            "value": [
+              {
+                "key": null,
+                "value": "18"
+              }
+            ]
+          },
+          {
+            "key": "men_at_arms",
+            "value": [
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "levies",
+            "value": [
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              },
+              {
+                "key": null,
+                "value": {
+                  "count": 4,
+                  "keys": [
+                    "regiment",
+                    "starting",
+                    "current",
+                    "soft_casualties"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "commander",
+            "value": "29829"
+          },
+          {
+            "key": "leader",
+            "value": "29829"
+          },
+          {
+            "key": "combat_effects",
+            "value": [
+              {
+                "key": null,
+                "value": {
+                  "count": 2,
+                  "keys": [
+                    "combat_effect",
+                    "advantage_change"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "total_fighting_men",
+            "value": "11.64299"
+          },
+          {
+            "key": "total_levy_men",
+            "value": "0"
+          },
+          {
+            "key": "initial_men",
+            "value": "1298"
+          },
+          {
+            "key": "initial_levies",
+            "value": "977"
+          },
+          {
+            "key": "character",
+            "value": [
+              {
+                "key": "character",
+                "value": "29829"
+              },
+              {
+                "key": "contribution",
+                "value": "980970"
+              },
+              {
+                "key": "casualties",
+                "value": "462.92847"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "phase",
+        "value": "main"
+      },
+      {
+        "key": "combat_results",
+        "value": "16777218"
+      },
+      {
+        "key": "province",
+        "value": "2633"
+      },
+      {
+        "key": "combat_width",
+        "value": "2199"
+      },
+      {
+        "key": "base_combat_width",
+        "value": "2444"
+      },
+      {
+        "key": "days_since_last_action",
+        "value": "1"
+      },
+      {
+        "key": "advantage",
+        "value": "-3"
+      },
+      {
+        "key": "attacker_roll",
+        "value": "6"
+      },
+      {
+        "key": "defender_roll",
+        "value": "8"
+      },
+      {
+        "key": "advantage_damage_factor",
+        "value": "1.4"
+      },
+      {
+        "key": "days",
+        "value": "22"
+      },
+      {
+        "key": "defender_advantage",
+        "value": "yes"
+      }
+    ]
+  }
+]

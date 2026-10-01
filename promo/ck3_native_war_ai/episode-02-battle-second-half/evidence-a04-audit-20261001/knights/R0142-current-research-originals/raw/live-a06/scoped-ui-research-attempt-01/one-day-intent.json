@@ -1,0 +1,66 @@
+{
+  "at_utc": "2026-10-01T11:18:37.197298+00:00",
+  "source_values": {
+    "date_raw": 53146848,
+    "paused": true,
+    "actor": 29829,
+    "revision": 6,
+    "native_revision": 5,
+    "snapshot_id": "native:5",
+    "war_ids": [
+      4
+    ],
+    "army_id": 18,
+    "army_state": "combat",
+    "episode_run_id": "native-29829-a892e2bcf200",
+    "connection_generation": 1,
+    "bridge_pid": 14700,
+    "native_hello_session_generation": 0
+  },
+  "source_snapshot": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests\\scoped-a11-day-source.json",
+      "bytes": 72,
+      "sha256": "0B2C20AD70FF854CB4006BD5A90AB28A736036EB50C61E0CC88142B3CEF6B96F"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\scoped-a11-day-source.json",
+      "bytes": 2675758,
+      "sha256": "9EC0767A75B511F04C6249723B40E11DEF5A972EDB12E47871FDBDDA7B3424F9"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "token": 458458016122659653,
+  "trace_begin": {
+    "request": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests\\scoped-a11-chain-begin.json",
+      "bytes": 376,
+      "sha256": "41CD7556808F256C0848B84C0083692FFCA1199E01B99611805CB3BDC3DD2AE8"
+    },
+    "response": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\scoped-a11-chain-begin.json",
+      "bytes": 11704,
+      "sha256": "3EFB555A24423E009967C9CC58888F3ADE2A0E0AFB9518B928BA8393D0573EDC"
+    },
+    "result": "CALL_COMPLETED",
+    "error": null
+  },
+  "trace_begin_body": {
+    "step": "experimental-combat-phase-event-trace-begin-v1",
+    "accepted": true,
+    "private_build": true,
+    "production_trace_ready": false,
+    "status": "armed",
+    "managed_daily_sequence_token": 458458016122659653,
+    "combat_id": 16777218,
+    "backend_id": "native-headless"
+  },
+  "actual_checkpoint_sequence": 2,
+  "advance_consumer": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\advance_materialized_checkpoint_a11.py",
+    "bytes": 5197,
+    "sha256": "16685C4DEBB7A7ECED9F5EE4FD0898D15B27CF4B2F993E47455312A854822574"
+  },
+  "at_most_one_day": true
+}

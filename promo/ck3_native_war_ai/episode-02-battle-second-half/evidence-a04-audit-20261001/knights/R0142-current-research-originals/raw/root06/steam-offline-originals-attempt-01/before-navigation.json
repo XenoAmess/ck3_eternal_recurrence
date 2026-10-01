@@ -1,0 +1,39 @@
+{
+  "label": "before-navigation",
+  "frames": [
+    {
+      "at_utc": "2026-10-01T10:36:09.763802+00:00",
+      "elapsed": 0.3579680999973789,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\before-navigation-01.png",
+        "bytes": 792657,
+        "sha256": "E31CDFB2F234C826A614A8B2B6C2E02B33E6DFEEC88308E0127914384DAA039F"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T10:36:11.217551+00:00",
+      "elapsed": 1.7985253000078956,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\before-navigation-02.png",
+        "bytes": 792657,
+        "sha256": "E31CDFB2F234C826A614A8B2B6C2E02B33E6DFEEC88308E0127914384DAA039F"
+      }
+    },
+    {
+      "at_utc": "2026-10-01T10:36:14.624065+00:00",
+      "elapsed": 5.189556299999822,
+      "width": 962,
+      "height": 768,
+      "image": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\steam-offline-originals-attempt-01\\before-navigation-03.png",
+        "bytes": 792657,
+        "sha256": "E31CDFB2F234C826A614A8B2B6C2E02B33E6DFEEC88308E0127914384DAA039F"
+      }
+    }
+  ],
+  "errors": []
+}

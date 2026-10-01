@@ -1,0 +1,158 @@
+{
+  "phase": "after",
+  "retained_inputs": [],
+  "processes": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8=0",
+        "-B",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preserve_paused_ui_checkpoint_a06.py",
+        "--bindings",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+        "--phase",
+        "after",
+        "--label",
+        "after-pre-ui-checkpoint"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\01-after-pre-ui-checkpoint-stdout.bin",
+        "bytes": 365,
+        "sha256": "F734D202D0FFC14C27245D24A5F0C7F93FD5F891CD79EE01DB0823A20625E1F4"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\01-after-pre-ui-checkpoint-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8=0",
+        "-B",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+        "--bindings",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "victim",
+        "--phase",
+        "after",
+        "--label",
+        "after-victim-character"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\02-after-victim-character-stdout.bin",
+        "bytes": 255,
+        "sha256": "1538943AA40CA2B9DBAEEBA31655A087EFFD24D9780872B50CBF35AB10CE5F55"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\02-after-victim-character-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8=0",
+        "-B",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+        "--bindings",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+        "--mode",
+        "ui",
+        "--window-kind",
+        "character",
+        "--character-role",
+        "killer",
+        "--phase",
+        "after",
+        "--label",
+        "after-killer-character"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\03-after-killer-character-stdout.bin",
+        "bytes": 255,
+        "sha256": "269F4A5E79D0A152F7A97929AA2E127A771CC4E559886500A3723BCC23829C26"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\03-after-killer-character-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8=0",
+        "-B",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+        "--bindings",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+        "--mode",
+        "ui",
+        "--window-kind",
+        "combat",
+        "--phase",
+        "after",
+        "--label",
+        "after-combat"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\04-after-combat-stdout.bin",
+        "bytes": 245,
+        "sha256": "762879F52822E7DF0D98441DD4F962E40A2D6209C540E07693D64BDC22A5E208"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\04-after-combat-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8=0",
+        "-B",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+        "--bindings",
+        "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+        "--mode",
+        "fit",
+        "--phase",
+        "after",
+        "--label",
+        "after-combat-fit"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\05-after-combat-fit-stdout.bin",
+        "bytes": 367,
+        "sha256": "2BA37C0CACD4F6900DA452DDCC3E9B58B7658414C684E2E23E5405A3632AADD5"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\paused-after-core-ui-attempt-01\\05-after-combat-fit-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    }
+  ],
+  "status": "REQUIRED_CASE_UI_CAPTURED_PENDING_ACTUAL_ROOT_PIXEL_REVIEW",
+  "original_pixels_actually_reviewed": false,
+  "day_advance_count": 0,
+  "human_movie_signoff": false
+}

@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "git",
+    "worktree",
+    "add",
+    "--no-checkout",
+    "-b",
+    "codex/war-e2-hidden-modal-capture-20261001",
+    "C:\\w\\e2cap1001d",
+    "4ad477ee33e15a93e412f711c7b05b216a2e6651"
+  ],
+  "cwd": "C:\\w\\e2research1001",
+  "stdin": null,
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Preparing worktree (new branch 'codex/war-e2-hidden-modal-capture-20261001')\n",
+  "at_utc": "2026-10-01T10:30:12.387766+00:00"
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "schema": "codex.task_bus.v1",
+    "task_id": "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+    "state": "running",
+    "summary": "fresh_hidden_modal_source_4ad477_full_build_then_D26_UI_and_causal_research",
+    "next_step": "align_native_display_fresh_Steam_offline_pixels_validate_candidate",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "updated_at_utc": "2026-10-01T10:40:52.642186+00:00",
+    "pid": 14816,
+    "repo": "C:\\w\\e2cap1001d",
+    "git": {
+      "head": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+      "branch": "codex/war-e2-hidden-modal-capture-20261001",
+      "dirty_entries": 0
+    },
+    "last_sequence": 3436
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 3436,
+    "event_id": "98de3f6061834fbb89f7d6038970ddbb",
+    "timestamp_utc": "2026-10-01T10:40:52.643587+00:00",
+    "kind": "heartbeat",
+    "task_id": "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+    "to": [
+      "*"
+    ],
+    "state": "running",
+    "summary": "fresh_hidden_modal_source_4ad477_full_build_then_D26_UI_and_causal_research",
+    "next_step": "align_native_display_fresh_Steam_offline_pixels_validate_candidate",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "repo": "C:\\w\\e2cap1001d",
+    "git": {
+      "head": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+      "branch": "codex/war-e2-hidden-modal-capture-20261001",
+      "dirty_entries": 0
+    }
+  }
+}

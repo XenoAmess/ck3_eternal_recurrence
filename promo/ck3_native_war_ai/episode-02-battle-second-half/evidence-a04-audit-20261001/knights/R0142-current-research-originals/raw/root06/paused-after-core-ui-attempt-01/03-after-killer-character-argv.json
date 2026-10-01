@@ -1,0 +1,22 @@
+{
+  "at_utc": "2026-10-01T11:25:01.401108+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "--mode",
+    "ui",
+    "--window-kind",
+    "character",
+    "--character-role",
+    "killer",
+    "--phase",
+    "after",
+    "--label",
+    "after-killer-character"
+  ]
+}

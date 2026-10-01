@@ -1,0 +1,29 @@
+0xe7e170: 48895c2408  mov qword ptr [rsp + 8], rbx
+0xe7e175: 57  push rdi
+0xe7e176: 4883ec30  sub rsp, 0x30
+0xe7e17a: 488b0d37168904  mov rcx, qword ptr [rip + 0x4891637]
+0xe7e181: 33db  xor ebx, ebx
+0xe7e183: 488bfa  mov rdi, rdx
+0xe7e186: 4885c9  test rcx, rcx
+0xe7e189: 7429  je 0xe7e1b4
+0xe7e18b: 488b4910  mov rcx, qword ptr [rcx + 0x10]
+0xe7e18f: 4c8d0dba0d1a04  lea r9, [rip + 0x41a0dba]
+0xe7e196: 4c8d058b0d1a04  lea r8, [rip + 0x41a0d8b]
+0xe7e19d: 895c2420  mov dword ptr [rsp + 0x20], ebx
+0xe7e1a1: 33d2  xor edx, edx
+0xe7e1a3: e84c50fe02  call 0x3e631f4
+0xe7e1a8: 4885c0  test rax, rax
+0xe7e1ab: 7407  je 0xe7e1b4
+0xe7e1ad: 488b9888000000  mov rbx, qword ptr [rax + 0x88]
+0xe7e1b4: 488b053de88e04  mov rax, qword ptr [rip + 0x48ee83d]
+0xe7e1bb: 488b4820  mov rcx, qword ptr [rax + 0x20]
+0xe7e1bf: 488b01  mov rax, qword ptr [rcx]
+0xe7e1c2: ff5010  call qword ptr [rax + 0x10]
+0xe7e1c5: 8b9724010000  mov edx, dword ptr [rdi + 0x124]
+0xe7e1cb: 488bcb  mov rcx, rbx
+0xe7e1ce: 84c0  test al, al
+0xe7e1d0: 410f94c0  sete r8b
+0xe7e1d4: 488b5c2440  mov rbx, qword ptr [rsp + 0x40]
+0xe7e1d9: 4883c430  add rsp, 0x30
+0xe7e1dd: 5f  pop rdi
+0xe7e1de: e96d0ec0ff  jmp 0xa7f050

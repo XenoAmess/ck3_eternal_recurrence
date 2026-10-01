@@ -1,0 +1,8 @@
+{
+  "action": "mcp",
+  "tool": "ck3_select_army_ui_v1",
+  "arguments": {
+    "subject_army_id": 18,
+    "expected_revision": 5
+  }
+}

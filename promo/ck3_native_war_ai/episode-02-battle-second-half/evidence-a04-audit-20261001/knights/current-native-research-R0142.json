@@ -1,0 +1,126 @@
+{
+  "schema": "ck3.R0142.current-native-research/v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0142",
+  "native_session": {
+    "episode_run_id": "native-29829-a892e2bcf200",
+    "connection_generation": 1,
+    "bridge_pid": 14700,
+    "native_hello_session_generation": 0
+  },
+  "source_commit": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "source_checkout": "C:\\w\\e2cap1001d",
+  "actor_id": 29829,
+  "war_id": 4,
+  "army_id": 18,
+  "combat_id": 16777218,
+  "victim_id": 33437,
+  "related_id": 34120,
+  "before_date_raw": 53146848,
+  "after_date_raw": 53146872,
+  "actual_days_advanced": 1,
+  "six_gaps": [
+    {
+      "key": "nextday_character_ui",
+      "status": "closed",
+      "scope": "Same-run victim33437 and related34120 original character windows, paused12/29->12/30; victim displayed prowess4->2 and alive->dead; related alive/prowess7->7/prestige301->451. No deathcause/weapon attribution implied."
+    },
+    {
+      "key": "knight_roster_change_ui",
+      "status": "closed",
+      "scope": "Current combat16777218 original left full visible list11->10 removes victim33437 semantic name; right19->19 retains related34120. Native GetKnightsBreakdown ONCLICK full IDs plus original pixels; these are UI counts, not ordered active native14->13 roster proof."
+    },
+    {
+      "key": "complete_battle_window_ui",
+      "status": "closed",
+      "scope": "Before fitted original and after unobscured original show outer borders, commanders, central stats and all lower composition rows inside2560x1440; stable native geometry/tree binding supports pixels. Before terrain tooltip lies above panel; after battle panel has no tooltip occlusion."
+    },
+    {
+      "key": "knight_selector",
+      "status": "pending",
+      "gap": "Same-run complete actual selector prefix/range/shared/source/TLS path not exported; daily FINISH RED."
+    },
+    {
+      "key": "unique_actual_death_execution_path",
+      "status": "pending",
+      "gap": "Endpoint death/UI removal alone cannot prove unique death execution or all rival-path exclusions; daily export RED and monitor native overflow."
+    },
+    {
+      "key": "full_13_domain_mutable_state_chain",
+      "status": "pending",
+      "gap": "flags8/truncatedtrue monitor FINISH cannot support complete chain; strict mechanism verifier NOT_RUN."
+    }
+  ],
+  "UI_original_list_counts": {
+    "left_before": 11,
+    "left_after": 10,
+    "right_before": 19,
+    "right_after": 19,
+    "not_full_native_ordered14_to13_proof": true
+  },
+  "native_daily_trace": {
+    "status": "RED_MANAGED_DTO_UNAVAILABLE",
+    "complete_causal_chain": false,
+    "old_failures_preserved": true
+  },
+  "native_variable_monitor": {
+    "accepted": false,
+    "failure_flags": 8,
+    "truncated": true,
+    "detours_uninstalled": true,
+    "reason": "ACTUAL_NATIVE_OVERFLOW",
+    "strict_mechanism_verifier": "NOT_RUN"
+  },
+  "native_hover": "RED_STOCK_DERIVED_TEXTBOX_RTTI_GATE_NO_DISPATCH",
+  "optional_eligible_military_roster": "RED_DEFAULT_PLAYER_OWNER_UNVERIFIED_NOT_ACTIVE_COMBAT_ROSTER",
+  "SDK_lifecycle": {
+    "actual_jobs_exit0": true,
+    "actual_game_cleanup_proven": true,
+    "controlled_game_exitcode": 1,
+    "process_gates_empty": true,
+    "does_not_upgrade_mechanism_RED": true
+  },
+  "desktop": {
+    "restored_mode": [
+      1024,
+      768
+    ],
+    "actual_root_original_pixel_review": "Steam offline and original mode confirmed",
+    "screen_task_state": "done",
+    "resources": [],
+    "CAS_sequence": 3461
+  },
+  "global_mutable_bundle_complete": false,
+  "video_modified": false,
+  "human_movie_signoff": false,
+  "render_or_export_or_upload": false,
+  "Git_performed_by_archiver": false,
+  "master_intake_or_integration": false,
+  "UI_independent_review": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-permanent-archive-other-a01\\independent-UI-endpoint-review-a01.json",
+    "bytes": 93682,
+    "sha256": "CEA278E208A9F8586195DFF25E9CF25B1B62A065CC3F4AC80F6B1FE6C07DA140"
+  },
+  "actual_stop_summary": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\actual-stopped-run-summary-a01.json",
+    "bytes": 4694,
+    "sha256": "4C105BC636163461FFC9A223803358651BE90A10D952A43BF1282AD80C104ED7"
+  },
+  "source_assets_index": {
+    "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\R0142-current-research-originals\\assets-index.json",
+    "bytes": 7217009,
+    "sha256": "B1B8CDFD2EF52B282FBF8948D5E40FD5FA3E2942A3A044E51AF101240BB22852"
+  },
+  "copy_verification": {
+    "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a04-audit-20261001\\knights\\R0142-current-research-originals\\copy-verification.json",
+    "bytes": 2890174,
+    "sha256": "911B4C317264967916ED8EBFC2F5D4744DEB373A74D4F2999931F6C0944C9E5F"
+  },
+  "archive_totals": {
+    "original_asset_entries": 6666,
+    "exact_copies": 3839,
+    "external_only_entries": 2827,
+    "indexed_original_bytes": 2027487120,
+    "exact_copied_bytes": 136521820
+  },
+  "later_source_repairs": "Only later preparation, never retroactively upgrade R0142 hover/daily/overflow results; active repair directories not included wholesale."
+}

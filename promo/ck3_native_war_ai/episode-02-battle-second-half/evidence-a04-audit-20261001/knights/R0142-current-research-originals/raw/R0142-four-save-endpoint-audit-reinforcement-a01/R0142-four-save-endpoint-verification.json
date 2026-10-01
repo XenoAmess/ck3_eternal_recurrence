@@ -1,0 +1,194 @@
+{
+  "kind": "R0142_FOUR_ORIGINAL_SAVED_ENDPOINTS_ONLY",
+  "status": "RED_SAVED_ENDPOINT_INPUT_GATE",
+  "checks": [
+    {
+      "name": "Runtime explicitly4ad, R0142, current live only",
+      "pass": true
+    },
+    {
+      "name": "Pinned actual Rakaly executable",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint exactsourcebinding",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint immutable current-slotpath",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint original save nativeaccepted/saved",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint actual raw saved receiptSHA/date/actor/session",
+      "pass": true
+    },
+    {
+      "name": "before-pre-ui-checkpoint pausedsourceactualsnapshot",
+      "pass": true
+    }
+  ],
+  "runtime_trace_available": false,
+  "monitor_complete": false,
+  "global_bundle_complete": false,
+  "case_13_domain_complete": false,
+  "sole_death_cause_proven": false,
+  "configuration": {
+    "original": {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+      "bytes": 4492,
+      "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\current-run-bindings.json",
+      "bytes": 4492,
+      "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D"
+    }
+  },
+  "configuration_pins": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\native-start-readback.json",
+      "bytes": 31341,
+      "sha256": "B30756B25D9089C551B33F0DB7D9C7045CAD210BCF8B31070EDD7D0D95874BE8"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\candidate-manifest.json",
+      "bytes": 2918,
+      "sha256": "1D796328E660A7B4A595ABAD5D320962BBA5AD4E0F5CF2F0D29CD71F3DB8AE17"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\new-capture-launch-plan.json",
+      "bytes": 3443,
+      "sha256": "DD7B30C44E0A7157E98BA2D385D2B0AF208EC242A6F76D5B4FD019CF7261B06C"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\scoped_ui_research_a08.py",
+      "bytes": 34603,
+      "sha256": "169EE7EA1DBF979B3EBE0C6221A4287B908E4F0F7BFA01A14DB86AC5D671F640"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\promo\\ck3_native_war_ai\\integration\\capture_session.py",
+      "bytes": 122365,
+      "sha256": "2A3807CFBD398AD9293A468E2FF548436C7E9EC15F246307D42A39A907BF34F1"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    },
+    {
+      "path": "C:\\w\\e2cap1001d\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\pursuit_live_step.py",
+      "bytes": 15355,
+      "sha256": "F59189031A4CD444F7E437C65067F6F229FCB40911C2CF21E88091056795946B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+      "bytes": 3556864,
+      "sha256": "C4C16AE5B306712FA9E02B07B6833CB01709E4D461E9B302DD6E96E135205D3A"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "FA932A86DB106F8D556BDA9E383025A05F4E106A28155BA296645796DC24CF4B"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\preflight.json",
+      "bytes": 21119,
+      "sha256": "68C10ACE836E674A1F7738364375B39B99CDA5B7886627C44BB6F4AC4EBE0CE3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\live-run-identity.json",
+      "bytes": 553,
+      "sha256": "1A9E6A33A0F1950FDD670FDD3EE08BED2C2FC98FE4454A94BF46FB6413D55B38"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010\\d26-immutable.ck3",
+      "bytes": 52880496,
+      "sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+    }
+  ],
+  "runtime_source_head": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "runtime_dll": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+    "bytes": 3556864,
+    "sha256": "C4C16AE5B306712FA9E02B07B6833CB01709E4D461E9B302DD6E96E135205D3A"
+  },
+  "parser_sources": [
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001d\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_causal_save_projection.py",
+        "bytes": 15996,
+        "sha256": "96B345E9BDFB3F07CB3E8C4B7F77CE27DEFB95FAB7EC064BBF8203D88386EFE6"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\knight_causal_save_projection.py",
+        "bytes": 15996,
+        "sha256": "96B345E9BDFB3F07CB3E8C4B7F77CE27DEFB95FAB7EC064BBF8203D88386EFE6"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\w\\e2cap1001d\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\knight_selector_replay.py",
+        "bytes": 9299,
+        "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+      },
+      "copy": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\knight_selector_replay.py",
+        "bytes": 9299,
+        "sha256": "41C4FD602EC0EB82B97733F155ED189AAC174685419006EA40D8CDBEBD54DB5F"
+      }
+    }
+  ],
+  "rng_reader_source": {
+    "original": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\knight-selector-causality-research-attempt-01\\saved_rng_endpoint_inventory_a01.py",
+      "bytes": 6567,
+      "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\saved_rng_endpoint_inventory_a01.py",
+      "bytes": 6567,
+      "sha256": "8B1C2321F045ACC785829BD370A78706AB451F135CD2BB96E7E25A8360A19808"
+    }
+  },
+  "rakaly": {
+    "original": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    },
+    "copy": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a01\\exact-copies\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+    }
+  },
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "probe": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8=0",
+        "-B",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a01\\verified-python.stdout.bin",
+        "bytes": 15,
+        "sha256": "9FC9968E3AE8D82284D7426A87E1426E07246027C7706B0803A1C8D9C60C7A4D"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-four-save-endpoint-audit-reinforcement-a01\\verified-python.stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    }
+  },
+  "error": "KeyError: 'state'"
+}

@@ -1,0 +1,8 @@
+{
+  "action": "mcp",
+  "tool": "ck3_open_combat_window_v1",
+  "arguments": {
+    "combat_id": 16777218,
+    "expected_revision": 5
+  }
+}

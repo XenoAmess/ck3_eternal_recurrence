@@ -1,0 +1,92 @@
+{
+  "schema": "ck3.R0142.failed-monitor-capacity-diagnosis/v1",
+  "runtime_run": "R0142",
+  "runtime_source_head": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "original": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\variable-monitor-finish-once.json",
+    "bytes": 711221,
+    "sha256": "C9C162B8D6E69DE048668AE835FDCA455201CE3447880FAE242FAAAA1B5F5E91"
+  },
+  "full_partial_inspection": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-trace-publish-diagnostic-repair-attempt-01\\actual-monitor-capacity-inspection-a01.json",
+    "bytes": 30508,
+    "sha256": "DB144962FB610B6A79B9CDCC5C9FCD88B66816A50FF2ACBE11B7375425CBD9F6"
+  },
+  "flags": 8,
+  "truncated": true,
+  "detours_uninstalled": true,
+  "record_counts": {
+    "arm": 1,
+    "original_owner_return": 125,
+    "house_predicate_enter": 1,
+    "house_predicate_return": 1
+  },
+  "null_getter_count": 123,
+  "null_getter_sequence_first_last": [
+    5,
+    127
+  ],
+  "null_getter_thread_ids": [
+    7144,
+    7952,
+    9784,
+    11732,
+    14868,
+    15416,
+    16596,
+    18404
+  ],
+  "null_getter_identity_date_state_distinct": [
+    {
+      "character_id": 33437,
+      "container_token": 0,
+      "date_raw": 53146872,
+      "dead": true,
+      "failure_flags": 0,
+      "full_identity_matches": true,
+      "observed_character_id": 33437,
+      "owner_token": 0,
+      "value": {
+        "expiration_raw": -1,
+        "flag_identifier_count": 0,
+        "flag_identifier_epoch": 0,
+        "flag_index": 0,
+        "flag_name": "",
+        "flag_name_read": false,
+        "present": false,
+        "read": false,
+        "scope_word0": 0,
+        "scope_word1": 0
+      }
+    }
+  ],
+  "first_null_prior_owner_token": 2296824419104,
+  "later_null_prior_owner_distinct": [
+    0
+  ],
+  "source_condition": {
+    "path": "C:/w/e2research1001/ck3_autonomous_player/native_bridge/src/scoped_character_variable_monitor_v1.cpp",
+    "lines": [
+      325,
+      326,
+      327,
+      328,
+      329,
+      330,
+      331
+    ],
+    "condition": "previous!=owner || !read || value!=session->last_owner_values[i]",
+    "effect": "A legitimate original null owner makes read=false and therefore emits every matching getter return; owner==0 is not marked container failure. Repeated failed/non-null reads remain distinct from legitimate null."
+  },
+  "conclusion": "The retained partial ring was occupied by repeated death-following null getter reads, then hit original capacity. Actual missing later rows cannot be reconstructed; no final_paused and no full-write coverage.",
+  "agreed_minimal_next_consumer_window": [
+    "complete before UI/main save/root reviews",
+    "monitor BEGIN",
+    "daily trace BEGIN and exactly one day",
+    "daily trace FINISH",
+    "monitor FINISH before any after UI"
+  ],
+  "source_changes_for_monitor": "NONE; no coalescing, lock or capacity widening",
+  "complete_coverage": false,
+  "six_gap_completion_inferred": false
+}

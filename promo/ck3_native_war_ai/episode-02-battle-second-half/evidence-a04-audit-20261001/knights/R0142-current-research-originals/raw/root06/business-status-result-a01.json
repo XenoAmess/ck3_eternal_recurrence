@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "status",
+    "--task",
+    "war-episode02-mechanism-evidence-20261001",
+    "--state",
+    "running",
+    "--repo",
+    "C:/w/e2research1001",
+    "--summary",
+    "R0142_one_actual_day_UI_pairs_full_panel_saved_daily_DTO_export_RED_monitor_overflow_RED_cleanup_restore_screen_released_video_held",
+    "--next-step",
+    "crosscheck_four_saves_UI_then_minimal_trace_diagnostics_and_reduced_monitor_noise_new_frozen_capture_no_master_intake"
+  ],
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\business-status-stdout.bin",
+    "bytes": 1666,
+    "sha256": "B31AFE473742EA8B7A61F32BDDC463E6E02F0ED2C25B924BE4B9CBA73ADD4B49"
+  },
+  "stderr": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\business-status-stderr.bin",
+    "bytes": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  }
+}

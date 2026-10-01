@@ -1,0 +1,98 @@
+{
+  "at_utc": "2026-10-01T11:48:20.930135+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0142",
+  "frozen_source_head": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "frozen_checkout": "C:/w/e2cap1001d",
+  "independent_private_branch": true,
+  "before_date_raw": 53146848,
+  "after_date_raw": 53146872,
+  "actual_days_advanced": 1,
+  "victim_id": 33437,
+  "related_id": 34120,
+  "combat_id": 16777218,
+  "before_review": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-ui-root-review.json",
+    "bytes": 101195,
+    "sha256": "97D9AC20527565976F4CF51F6535BF8D324923DD09335A6B7F5DF7DDB1222061"
+  },
+  "after_review": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-ui-root-review.json",
+    "bytes": 102968,
+    "sha256": "A3A12F618D6988C7937A0DE6A1E2599EA96BCA1E8A4DB2FDA4954D3CC980FD70"
+  },
+  "before_pair": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\before-saved-pair.json",
+    "bytes": 4447,
+    "sha256": "FF0C28B6B2A323818F835104A421333ECDD35B25D3C395C6F6F265042A829BB2"
+  },
+  "after_pair": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\after-saved-pair.json",
+    "bytes": 4442,
+    "sha256": "42EE873BF6BF513F9566554ED6C6384A03F36BE8038E169A06793F0612FDBF69"
+  },
+  "one_day_truthful_trace_RED": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\scoped-ui-research-attempt-01\\one-day-finished.json",
+    "bytes": 23312,
+    "sha256": "9644F822BBA524FB8493CCF638EAFF3B248A002A4B3AAF2AD710E9F9DC11B6F1"
+  },
+  "daily_trace_export_succeeded": false,
+  "monitor_original_response": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-ui-live-20261001-a06\\ck3-output\\interactive-requests-responses\\variable-monitor-finish-once.json",
+    "bytes": 711221,
+    "sha256": "C9C162B8D6E69DE048668AE835FDCA455201CE3447880FAE242FAAAA1B5F5E91"
+  },
+  "monitor_accepted": false,
+  "monitor_failure_flags": 8,
+  "monitor_truncated": true,
+  "monitor_detours_uninstalled": true,
+  "actual_sdk_completion": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\native-sdk-attempt-01\\completion.json",
+    "bytes": 1222,
+    "sha256": "E4138134B4F11BD58DCF9CD011885095583273D183DFE7C8AD178FCA30D3E402"
+  },
+  "blocked_processes": [],
+  "display_root_review": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display-restoration-root-review-a01.json",
+    "bytes": 971,
+    "sha256": "D94887ED19F838314A92A73BFDADEA2B47CCDD5AACF2CE418CD854BD7979DCF0"
+  },
+  "screen_release_receipt": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\display-restore-and-release-attempt-01\\screen-release-CAS.json",
+    "bytes": 2033,
+    "sha256": "5D8711D5EEA13B32087ECACE360D3230210B22C7E0DCD7F3D4DA5EF1EC3FF197"
+  },
+  "screen_final_state": {
+    "git": {
+      "branch": "codex/war-e2-hidden-modal-capture-20261001",
+      "dirty_entries": 0,
+      "head": "4ad477ee33e15a93e412f711c7b05b216a2e6651"
+    },
+    "last_sequence": 3461,
+    "next_step": "",
+    "pid": 8524,
+    "repo": "C:\\w\\e2cap1001d",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "native_research_capture_stopped_original_display_restored_assets_retained",
+    "task_id": "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+    "updated_at_utc": "2026-10-01T11:43:01.248530+00:00"
+  },
+  "business_progress_result": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\business-status-result-a01.json",
+    "bytes": 1210,
+    "sha256": "5ACEE3E96E3799D76E52EEA16E5D4C139A3687B942B49AC10ED310BE8AF7FE03"
+  },
+  "UI_endpoint_evidence": "actual_original_pairs_and_unobscured_full_battle_panel_pending_independent_contract_review",
+  "pending_mechanisms": [
+    "full_selector_actual_trace",
+    "unique_death_for_controlled_window",
+    "complete13domain_variable_causal_chain"
+  ],
+  "global_mutable_bundle_complete": false,
+  "movie_modified": false,
+  "human_movie_signoff": false,
+  "master_intake_or_integration": false,
+  "process_assets_permanently_preserved": true,
+  "root06_and_live_stop_writing_after_this_summary": true
+}

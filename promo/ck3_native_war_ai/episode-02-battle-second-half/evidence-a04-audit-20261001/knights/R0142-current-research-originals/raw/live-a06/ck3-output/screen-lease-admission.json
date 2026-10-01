@@ -1,0 +1,14 @@
+{
+  "schema": "xar.promo.screen-lease-cas/v1",
+  "task_id": "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+  "expected_sequence": 3430,
+  "sequence": 3431,
+  "event_id": "eaacc3feff764d7096d85b4daae1b3b5",
+  "updated_at_utc": "2026-10-01T10:40:41.366886+00:00",
+  "repo": "C:\\w\\e2cap1001d",
+  "checkout_head": "4ad477ee33e15a93e412f711c7b05b216a2e6651",
+  "source_cli": "C:\\w\\e2cap1001d\\tools\\codex_task_bus.py",
+  "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+  "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+  "screen_resource": "ck3-screen:acquired"
+}

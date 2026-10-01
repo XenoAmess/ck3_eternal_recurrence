@@ -1,0 +1,12 @@
+{
+  "schema": "ck3.create-only-review-receipt/v1",
+  "review": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0142-in-combat-army-routing-other-a01\\routing-review-final-a02.json",
+    "bytes": 30317,
+    "sha256": "4282C1FA857421C33B70A69E96B6D7324CD6B994F4F3DB43B1965F715BEEBBF3"
+  },
+  "additional_copy_count": 4,
+  "all_copy_checks": true,
+  "static_instruction_checks": 14,
+  "status": "STOCK_ROUTING_CONFIRMED_STATIC_AND_CURRENT_UI_READBACK"
+}

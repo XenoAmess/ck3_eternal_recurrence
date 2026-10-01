@@ -1,0 +1,261 @@
+{
+  "schema": "ck3-ingame-ui-navigation-exact-build-static-abi-v1",
+  "evidence_level": "static-compiled-offline-tested; live UI capture pending",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "frozen_base_commit": "1901473429deb1297be7d5d4451169082629858b",
+  "ui_action_scope": "fixed native presentation routing; no arbitrary pointer/RVA/widget/coordinates; no game-day command",
+  "functions": {
+    "DefaultOnCharacterClick": {
+      "registration_wrapper_rva": "0xA23440",
+      "actual_rva": "0xA04530",
+      "abi": "void(uint32 full CharacterID)",
+      "readback": "handler+0xD8 CharacterWindow+0xF8 -> Character storage570C130 object+18 full generation"
+    },
+    "SelectUnit": {
+      "registration_wrapper_rva": "0xE88180",
+      "actual_army_map_click_rva": "0xE7E170",
+      "actual_select_rva": "0xA7F050",
+      "abi": "void(handler*, uint32 full public CUnitID, bool replace_selection=true)",
+      "native_route_rva": "0xA812F0",
+      "readback": "handler+0xC8 ArmyWindow+0xF8 native CArmyID; nativeArmy+124 -> public CUnitID; publicUnit+178 backref; original stock UnitItem handler C7A330+7B reads this same ArmyWindow field",
+      "view6_warning": "Original payload is selected UnitItems collection, never a uint32 substituted into OpenViewData(view6). In combat stock selection opens CombatWindow."
+    },
+    "OpenCombat": {
+      "actual_gui_click_rva": "0xE7CAC0",
+      "engine_open_view_data_rva": "0xA79700",
+      "abi": "void(handler*, uint32 viewType=0x1A, const primitive-ID CPdxAny*)",
+      "id_type_getter_rva": "0x998130",
+      "CPdxAny_bytes": 40,
+      "readback": "handler+0x168 CombatWindow+0xF8 -> Combat storage570C758 object+8 generation",
+      "scope": "same CombatID in actual played CUnit -> native CArmy+128 combat join"
+    },
+    "OpenKnights": {
+      "registration_wrapper_rva": "0x11FC2E0",
+      "actual_show_rva": "0x11F6570",
+      "engine_open_view_rva": "0xA79200",
+      "abi": "void(handler*, uint32 viewType=0x55, bool=true)",
+      "readback": "handler+340 KnightsView+D0 -> same handler; handler+A0 MilitaryView+D0 -> same handler; MilitaryView+248 actual CharacterID validated570C130/+18",
+      "scope": "played actor military-eligible list; never active battle roster"
+    },
+    "CombatKnightCount": {
+      "left_wrapper_rva": "0x12F7870",
+      "left_actual_rva": "0x12F4790",
+      "right_wrapper_rva": "0x12F78B0",
+      "right_actual_rva": "0x12F4860",
+      "abi": "int32(CombatWindow*)"
+    },
+    "CombatKnightBreakdown": {
+      "left_wrapper_rva": "0x12F78F0",
+      "left_actual_rva": "0x12F4930",
+      "right_wrapper_rva": "0x12F7930",
+      "right_actual_rva": "0x12F4A10",
+      "abi": "nativeString*(CombatWindow* RCX, output32bytes* RDX)",
+      "native_destructor_rva": "0x7E97D0",
+      "ownership": "native engine allocates/destroys; bridge copies bounded native UTF8 bytes, not a cross-CRT std::string owner",
+      "scope": "current visible generation-validated CombatWindow ID before and after; original localized tooltip markup, not full-ID roster nor pixels"
+    },
+    "SetHoveredWidget": {
+      "actual_rva": "0x36CBAC0",
+      "function_end_rva": "0x36CBE46",
+      "abi": "void(native GuiContext* RCX, native targetWidget* RDX)",
+      "current_hover_widget_offset": "0xF0",
+      "MouseEnter_RTTI": "0x5699CF0",
+      "MouseEnter_vtable": "0x4506A58",
+      "unique_enter_constructor_xref": "0x36CBD69",
+      "MouseEnter_code": "0x11",
+      "MouseLeave_code": "0x12",
+      "native_event_delivery": "0x36CB4A0",
+      "target": "fixed combat_window descendant left_knights or right_knights; visible/enabled; CPdxGuiTextWidget RTTI5020010; widget+D8==resolved GuiContext; current fullCombatID matches request; bounded original modal vector: count0 or all effective-hidden; any effective-visible receiver refused",
+      "postcondition": "independent query target==context+F0, same current CombatID; pending stock tooltip dwell/pixels must be verified separately"
+    }
+  },
+  "world_guard": "published native revision equality and worker fresh full Snapshot equality; application-main owner/TLS/exact executor ticket, RNG owner + paused owner pump proof; owner fresh before/after Snapshot equality/date/map/actor; worker completion fresh Snapshot equality; no ambiguous resend",
+  "bounds": "target-window subtree max512 widgets, truncated retained; two tooltip strings max65536 bytes; non-available counts=-1/strings empty; no OCR",
+  "full_battle_roster": "battle-control DTO has no knights; use original phase-event ordered_knight_slots side+40 or flags0 managed side.knights with their own admission; UI left/right indices never assumed equal to native side0/1",
+  "known_boundary": "Original native UI/model getters can initialize presentation data; coarse Snapshot excludes weapon. Equipment setter/event attribution is a separate native trace task, never inferred from this UI ACK.",
+  "live_claim": false,
+  "human_approval_created": false,
+  "combat_window_fit_extension_v1": {
+    "source_stage": "knight-ui-freeze-other-a02; predecessor a01 preserved unchanged externally",
+    "status": "STATIC_CLOSED_COMPILED_OFFLINE_TESTED_LIVE_AND_PIXELS_PENDING",
+    "tool": {
+      "name": "ck3_fit_combat_window_v1",
+      "arguments": {
+        "combat_id": "positive full uint32 excluding FFFFFFFF",
+        "expected_revision": "current public uint64"
+      },
+      "wire_operation": "fit_combat_window",
+      "wire_window_kind": "combat",
+      "wire_step": "navigate-ingame-ui-v1",
+      "wire_capability": "game.command.navigate-ingame-ui-v1"
+    },
+    "typed_root": {
+      "original_R0139_census_path": "8/9",
+      "vtable_rva": 72462416,
+      "complete_object_locator_rva": 79386240,
+      "type_descriptor_rva": 85047424,
+      "type_name": ".?AVCPdxGuiWindow@@",
+      "scope": "fixed combat_window only, current visible full generation CombatID joined to CCombatWindow"
+    },
+    "native_original_spine": [
+      {
+        "rva": "0x374E060",
+        "role": "Stock window viewport-clamp caller proves the conversion recipe and coordinate space",
+        "prototype": "void CPdxGuiWindowClamp(widget*)",
+        "called_by_this_extension": false
+      },
+      {
+        "rva": "0x369C450",
+        "role": "Original widget local rectangle through actual anchor/parent-scale chain",
+        "prototype": "float4* fn(widget* RCX,float4* output RDX,const float4* local_rect R8)",
+        "layout": "float4=(x,y,width,height)"
+      },
+      {
+        "rva": "0x369C2A0",
+        "role": "Original absolute point to widget-local point",
+        "prototype": "float2* fn(widget* RCX,float2* output RDX,const float2* absolute_point R8)"
+      },
+      {
+        "rva": "0x369C110",
+        "role": "Original anchored current position",
+        "prototype": "float2* fn(widget* RCX,float2* output RDX)"
+      },
+      {
+        "rva": "0x369C030",
+        "role": "Original current/base position update; creates its native event and delivers via36CB4A0 then widget vslotF0",
+        "prototype": "void fn(widget* RCX,const float2* position RDX)"
+      }
+    ],
+    "native_fields": {
+      "context+0x3C0": "viewport width float",
+      "context+0x3C4": "viewport height float",
+      "widget+0xD8": "GUI context pointer must equal resolved current context",
+      "widget+0xE8": "parent pointer; validate acyclic bounded chain",
+      "widget+0xF0/+0xFC": "children pointer/count; require entire <=512 subtree and exact parent backlink",
+      "widget+0x110": "current scale, finite positive",
+      "widget+0x114": "cumulative parent scale, finite positive",
+      "widget+0x128/+0x12C": "current layout size width/height, transformed by original GetRect"
+    },
+    "content_bounds": {
+      "scope": "union of every effectively visible widget layout rectangle under combat_window, plus declared stock outer background bounds",
+      "count_bound": 512,
+      "parent_chain_bound": 64,
+      "truncation_or_cycle": "refuse fit; query keeps explicit unavailable reason",
+      "stock_background_margin_gui_units": [
+        23,
+        17
+      ],
+      "margin_original_source": "game/gui/window_combat.gui lines52-81 two backgrounds margin={-23 -17} within size100%x100% first widget",
+      "actual_source_file_read_and_hashed": true,
+      "stock_source_bytes": 58008,
+      "stock_source_sha256": "7FEE98B7341E21607ED3BB9089C51EF890D229DB6C16865C88133C3BA3579236",
+      "hash_implementation": "BCrypt SHA256; source from actual current ck3.exe binaries parent/game/gui path, no caller path",
+      "managed_live_precondition": "vanilla run/profile enabled_mods=[]; original file hash alone is not a VFS winner proof for modded games",
+      "coordinate_space": "native_gui_absolute, same as original viewport clamp; not a screenshot-pixel multiplier",
+      "pixels_boundary": "shader/glow/shadow raster extents are not certified by these layout rectangles; new original WGC must prove requested full panel"
+    },
+    "fit_policy": {
+      "operation": "smallest x/y translation fitting current complete union in current native viewport; oversized content refused",
+      "original_conversion": "new absolute root origin -> original absolute-to-local -> original anchored position + local delta*original own scale -> original SetPosition",
+      "no_caller_coordinates": true,
+      "no_gui_file_modified": true,
+      "no_memory_setter_write": true,
+      "paused_owner_before_after_guards": "unchanged frontend mailbox/TLS/epoch/date/actor/map/RNG/fullCombatID and independent driver fresh snapshots",
+      "no_dispatch_when_already_inside": "available+verification_pending; status=already_layout_fitted_verification_pending",
+      "successful_dispatch_status": "acknowledged_verification_pending; fresh independent query then original pixels still required"
+    },
+    "query_contract": {
+      "parent_field": "combat_geometry",
+      "fields": [
+        "available",
+        "combat_id",
+        "widget_count",
+        "coordinate_space",
+        "scope",
+        "stock_margin_source_verified",
+        "stock_margin_source_sha256",
+        "content_inside_viewport",
+        "fit_required",
+        "readback_is_pixels",
+        "full_panel_pixels_proven",
+        "viewport",
+        "window_rect",
+        "content_union",
+        "proposed_translation",
+        "unavailable_reason"
+      ],
+      "rect": "x,y,width,height; native GUI units",
+      "readback_is_pixels": false,
+      "full_panel_pixels_proven": false,
+      "unavailable_contract": "no retained coordinate/inside/fit assertion; zero rects/translation and explicit reason",
+      "parent_capture_sequence": "fresh query geometry -> typed fit pending -> fresh samepaused query(currentCombatID/geometry) -> original WGC -> fresh samepaused query; root directly reviews original image"
+    },
+    "static_evidence": [
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\combat-fit-ui-other-a01\\geometry_candidates_a02.json",
+        "bytes": 117637,
+        "sha256": "F049319A3890A67D628E240C9A5F9DEBD370FA2B1EDB79AFDFF3B7E9D54C5A51"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\combat-fit-ui-other-a01\\geometry_functions_a03.json",
+        "bytes": 215200,
+        "sha256": "41E35B4682FB99488B29971A05FEEAFF76A337EC7A63F1105A577A5F75300006"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\combat-fit-ui-other-a01\\position_path_a04.json",
+        "bytes": 335367,
+        "sha256": "C01E7FAECBA959C197528286A60C406945BD793F8CDBF32B5926F97FC9A0A927"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\combat-fit-ui-other-a01\\geometry_clamp_exact_a05.json",
+        "bytes": 28220,
+        "sha256": "8EA7AFFD93F4293650321360D9F569BF5CEFA714DBE4FDE1B02ED1B50141B7AA"
+      },
+      {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\combat-fit-ui-other-a01\\check_actual_census_type_a09.json",
+        "bytes": 711,
+        "sha256": "2C76E43BF2081D1A2D52CB619AA430A17AFBBA887BED5BE5DD6E17803FCF81FA"
+      }
+    ],
+    "verification": {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\combat-fit-ui-build-other-a01\\verification-report.json",
+      "bytes": 5230,
+      "sha256": "4D0561EAF3A4C26D3503D0B515FB2B89D789480DA70E167A79D019FDD98B316B"
+    },
+    "build_contract": {
+      "DLL_target": "xar_ck3_bridge",
+      "CTest_target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "CTest_regex": "^xar_ck3_ingame_ui_navigation_v1_test$",
+      "Python_argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "C:\\w\\e2research1001\\ck3_autonomous_player\\tests\\unit\\test_ingame_ui_navigation_v1.py"
+      ],
+      "new_link_dependency": "bcrypt.lib via explicit MSVC pragma; existing DLL already uses BCrypt. Offline target build/run verified."
+    },
+    "live_observed": false,
+    "game_launched": false,
+    "human_full_panel_review": false,
+    "human_video_signoff": false
+  },
+  "modal_admission_revision_v2": {
+    "trigger": "R0141 actual owner/TLS/GUI binding passed; count-only gate refused navigation. Original parsed unavailable stays RED/no-day.",
+    "evidence_level": "exact original EXE bytes + two later readonly PID6320 memory reads; source/offline validation; new live pending",
+    "original_exact_EXE_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "original_shortcut_manager_rva": "0x36E1C40..0x36E1D35",
+    "effective_hidden_scan_rva": "0x36E1C70..0x36E1CA6",
+    "count_layout": "GUI context signed int32 +0x29C, bounded 0..256; vector data +0x290, pointer stride8; receiver flags +0xD0 bit08 is effective-hidden cache",
+    "policy": "all global open/select/hover/fit actions reject any effective-visible receiver; count0 or fully readable all-hidden receivers allowed; no exception by runtime_name and no native descendant allowance",
+    "failed_read_policy": "header/negative/excessive count/null vector/null or unreadable entries/unreadable flags/header change => unavailable; GUI context/owner equality and all original main-thread paused/fullID/actor guards preserved",
+    "raw_native_diagnostic": "modal_admission object: attempted/header_read/receivers_verified/actual signed count or null/vector address/observed receiver addresses and D0 flags/effective-visible count/reason; existing driver create-only original parsed command_result persists it before validation. No new public MCP parameters or extra gameplay capability.",
+    "MCP_normalized_scope": "Optional raw diagnostic remains in original parsed return; no claim that the current Python normalized UI response publishes it.",
+    "readonly_current_memory_report": "C:/Users/1/ck3-a04-mechanism-evidence-20261001/R0141-modal-admission-diagnosis-other-a01/readonly-modal-receivers-a01.json",
+    "readonly_current_memory_SHA256": "FDC019E55D420FB7BBCF54B4F76470EABF086B18981B071C668A0A681EAD283F",
+    "static_anchors_report_SHA256": "4165872C563931C331CDF2537041D9BA705C690A2226A2E32ED5AC005F0B32FE",
+    "temporal_limit": "Later RPM does not reconstruct the failed call execution-time count/vector; the failed native reason had conflated resolver/pointer/read/count branches.",
+    "live_claim": false,
+    "human_approval_created": false
+  }
+}

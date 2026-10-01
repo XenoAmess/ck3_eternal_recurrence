@@ -1,0 +1,168 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "episode02-six-gap-scoped-causal-ui",
+  "purpose": "engine-transition",
+  "question": "What actual complete case-scoped selector, death, notification, roster and casualty chain occurs, and how does it appear in the original UI?",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "observation": {
+    "mode": "passive-runtime",
+    "actor_kind": "engine",
+    "identity_kind": "generation-id",
+    "producer_trigger": "daily-tick",
+    "owner_scope": "One admitted isolated vanilla process, actor29829/War4/publicUnit18/Combat16777218, victim33437 and related34120",
+    "identity_lifetime": "Every native object and full ID is valid only in this process/generation and current paused revision; native event/node identity expires on reload",
+    "producer": "Unmodified original combat schedule/effects/death-on-action/casualty calls, sampled by default-off private observers",
+    "caller": "Root submits native presentation only and at most one managed life-advance; original engine executes all gameplay writes",
+    "consumer": "Close all six user-requested research gaps before any episode02 video optimization",
+    "cache_lifetime": "Each native result is freshly bound; images have native before/after paused queries; no historical tuple fills new results",
+    "expected_signal": "Actual original UI, ordered candidate and roster identities, nested journal, typed death request/queue/commit, targeted passive variable writes and full same-run native-save deltas",
+    "zero_sample_meaning": "No relevant setter/death/event is a no-hit within this explicit observation lifetime; it does not prove impossibility or an unobserved sender",
+    "stop_condition": "At most one explicit +24 day and one FINISH; preserve ambiguous failures, never advance again, then verify actual cleanup and screen lease release",
+    "runtime_window_ref": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\new-capture-launch-plan.json"
+  },
+  "nodes": [
+    {
+      "id": "loaded",
+      "label": "Current paused D26 source"
+    },
+    {
+      "id": "ui",
+      "label": "Same-pause original character/combat/roster UI"
+    },
+    {
+      "id": "selector",
+      "label": "Actual candidate/filter/index/return"
+    },
+    {
+      "id": "request",
+      "label": "Death effect and native request"
+    },
+    {
+      "id": "commit",
+      "label": "Native death queue or immediate commit"
+    },
+    {
+      "id": "notify",
+      "label": "Death on-action/notification writes"
+    },
+    {
+      "id": "casualty",
+      "label": "Ordered roster/entry/cache/casualty transitions"
+    },
+    {
+      "id": "after",
+      "label": "Paused next-day UI and full save delta"
+    }
+  ],
+  "edges": [
+    {
+      "id": "loaded-ui",
+      "from": "loaded",
+      "to": "ui",
+      "label": "Full-ID native action/readback and actual original pixels",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Actual UI frames must show the character and complete battle panel; counts/markup alone are not pixels"
+    },
+    {
+      "id": "loaded-selector",
+      "from": "loaded",
+      "to": "selector",
+      "label": "Natural original schedule and selector return",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Capture all candidate scope words/full IDs/filter and selected return in this exact new process"
+    },
+    {
+      "id": "selector-request",
+      "from": "selector",
+      "to": "request",
+      "label": "Selected role through actual death effect",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Correlate invocation/parent identity and exact victim/killer typed request, without filling from R0139"
+    },
+    {
+      "id": "request-commit",
+      "from": "request",
+      "to": "commit",
+      "label": "Actual queue or immediate death commit route",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Count and order all relevant requests/enqueues/commits, with exact date/reason/killer and first death marker"
+    },
+    {
+      "id": "commit-notify",
+      "from": "commit",
+      "to": "notify",
+      "label": "Death on-action and notification setter",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Independently watch the two full character IDs for signature_weapon producer and house relation start guard"
+    },
+    {
+      "id": "commit-casualty",
+      "from": "commit",
+      "to": "casualty",
+      "label": "Regiment membership and current/soft/stats/hard ledger",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Track all actual entry and casualty boundaries, including a legitimate retired RegimentID"
+    },
+    {
+      "id": "notify-after",
+      "from": "notify",
+      "to": "after",
+      "label": "Full case write-set and actual next-day state",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Cover all 13 required domains with explicit timing resolution; do not label unpublished values as live per-write reads"
+    },
+    {
+      "id": "casualty-after",
+      "from": "casualty",
+      "to": "after",
+      "label": "Final paused ordered rosters and original UI",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Match same-run native roster IDs, actual tooltip names/counts, character dead UI and complete lower battle composition"
+    }
+  ],
+  "cases": [
+    {
+      "id": "six-gap-D26",
+      "question": "All six requested gaps closed from this actual new process?",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "new-binding",
+      "layer": "source-contract",
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+      "sha256": "DC912949FDC0E6AE99BCA456E93934F88CF3DB41E6500108B67E3E9820293A6D",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "Exact current run/source/build/inputs and new token declaration"
+    },
+    {
+      "id": "candidate",
+      "layer": "source-contract",
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\candidate-manifest.json",
+      "sha256": "1D796328E660A7B4A595ABAD5D320962BBA5AD4E0F5CF2F0D29CD71F3DB8AE17",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "Fresh exact private-branch build and offline checks; no live semantic proof"
+    },
+    {
+      "id": "launch",
+      "layer": "source-contract",
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preparation-attempt-02\\new-capture-launch-plan.json",
+      "sha256": "DD7B30C44E0A7157E98BA2D385D2B0AF208EC242A6F76D5B4FD019CF7261B06C",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "Actual explicit admitted research window; no video side effects"
+    }
+  ]
+}

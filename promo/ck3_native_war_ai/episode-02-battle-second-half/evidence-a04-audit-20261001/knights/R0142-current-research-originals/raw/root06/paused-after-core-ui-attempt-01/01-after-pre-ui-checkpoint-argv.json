@@ -1,0 +1,16 @@
+{
+  "at_utc": "2026-10-01T11:24:49.419509+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8=0",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\preserve_paused_ui_checkpoint_a06.py",
+    "--bindings",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\current-run-bindings.json",
+    "--phase",
+    "after",
+    "--label",
+    "after-pre-ui-checkpoint"
+  ]
+}

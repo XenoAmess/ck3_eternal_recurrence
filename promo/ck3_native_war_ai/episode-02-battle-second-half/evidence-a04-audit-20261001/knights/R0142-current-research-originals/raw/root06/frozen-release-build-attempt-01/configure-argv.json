@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "-S",
+    "C:\\w\\e2cap1001d\\ck3_autonomous_player\\native_bridge",
+    "-B",
+    "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build",
+    "-G",
+    "Ninja",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DXAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1=ON",
+    "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "-DPython3_EXECUTABLE=D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-DXAR_CK3_EXECUTABLE_PATH=C:\\SteamLibrary\\steamapps\\common\\CRUSAD~1\\binaries\\ck3.exe"
+  ],
+  "cwd": "C:\\w\\e2cap1001d\\ck3_autonomous_player\\native_bridge",
+  "at_utc": "2026-10-01T10:30:35.644300+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "branch",
+    "--show-current"
+  ],
+  "cwd": "C:\\w\\e2cap1001d",
+  "stdin": null,
+  "returncode": 0,
+  "stdout": "codex/war-e2-hidden-modal-capture-20261001\n",
+  "stderr": "",
+  "at_utc": "2026-10-01T10:30:17.056853+00:00"
+}

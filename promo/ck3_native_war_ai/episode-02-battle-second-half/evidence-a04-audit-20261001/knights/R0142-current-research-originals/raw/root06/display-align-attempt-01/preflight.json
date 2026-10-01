@@ -1,0 +1,49 @@
+{
+  "at_utc": "2026-10-01T10:35:53.198282+00:00",
+  "screen_owner": {
+    "git": {
+      "branch": "codex/war-e2-hidden-modal-capture-20261001",
+      "dirty_entries": 0,
+      "head": "4ad477ee33e15a93e412f711c7b05b216a2e6651"
+    },
+    "last_sequence": 3430,
+    "next_step": "align_native_display_fresh_Steam_offline_pixels_validate_candidate",
+    "pid": 14680,
+    "repo": "C:\\w\\e2cap1001d",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "fresh_hidden_modal_source_4ad477_full_build_then_D26_UI_and_causal_research",
+    "task_id": "war-e2-six-gap-hidden-modal-screen-20261001-a05",
+    "updated_at_utc": "2026-10-01T10:35:40.233083+00:00"
+  },
+  "mode": "align",
+  "device_name": "\\\\.\\DISPLAY1",
+  "busy_inventory": [],
+  "before_mode": {
+    "PelsWidth": 1024,
+    "PelsHeight": 768,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "enumerated_target": {
+    "PelsWidth": 2560,
+    "PelsHeight": 1440,
+    "BitsPerPel": 32,
+    "DisplayFrequency": 60,
+    "DisplayOrientation": 0,
+    "Position_x": 0,
+    "Position_y": 0,
+    "DisplayFlags": 0
+  },
+  "alignment_receipt": null,
+  "registry_update_requested": false,
+  "steam_online_switch": false,
+  "input_mouse_or_keyboard": false
+}

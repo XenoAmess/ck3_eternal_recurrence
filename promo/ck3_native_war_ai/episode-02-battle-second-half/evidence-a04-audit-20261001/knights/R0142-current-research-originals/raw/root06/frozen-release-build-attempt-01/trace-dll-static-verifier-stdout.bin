@@ -1,0 +1,14 @@
+{
+  "dll_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\xar_ck3_bridge.dll",
+  "dll_sha256": "C4C16AE5B306712FA9E02B07B6833CB01709E4D461E9B302DD6E96E135205D3A",
+  "cmake_cache_path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\frozen-release-build-attempt-01\\build\\CMakeCache.txt",
+  "private_trace_option_on": true,
+  "required_strings": {
+    "experimental-combat-phase-event-trace-begin-v1": true,
+    "experimental-combat-phase-event-trace-finish-v1": true,
+    "capture_runtime_counter_output": true,
+    "capture_runtime_advantage_components": true,
+    "native_cache_0x2308d50_original_calls": true
+  },
+  "ready": true
+}

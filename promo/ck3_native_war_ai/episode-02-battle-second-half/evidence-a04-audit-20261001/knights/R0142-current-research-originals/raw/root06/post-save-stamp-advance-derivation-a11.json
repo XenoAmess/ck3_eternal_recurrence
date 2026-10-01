@@ -1,0 +1,17 @@
+{
+  "original": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\advance_materialized_checkpoint_a10.py",
+    "bytes": 5344,
+    "sha256": "A28D9A868B58E4BC5D9A1A8E6577275656FC8226CB9CEB3F3A9BED2D54B164F4"
+  },
+  "derived": {
+    "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-06-hidden-modal-ui\\advance_materialized_checkpoint_a11.py",
+    "bytes": 5197,
+    "sha256": "16685C4DEBB7A7ECED9F5EE4FD0898D15B27CF4B2F993E47455312A854822574"
+  },
+  "proof_source": "Actual root review was captured after the main save: provider6/native5/snapshot native:5. Pair.source_values was read before that save: provider5/native4. No day was submitted.",
+  "only_logic_change": "Bind all current snapshot fields exactly to the post-save root review, rather than the pre-save request snapshot.",
+  "only_label_change": "New create-only readonly/admission/day/finish request labels scoped-a11",
+  "actual_checkpoint_sequence_read_from_saved_pair": true,
+  "runtime_source_Dll_unchanged": true
+}
