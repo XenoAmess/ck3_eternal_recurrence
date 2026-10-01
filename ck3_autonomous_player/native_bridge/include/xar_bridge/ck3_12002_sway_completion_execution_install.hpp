@@ -12,6 +12,10 @@ namespace xar::ck3_12002 {
 // Native slot 22 has two pointer inputs and a discarded (void) result.
 // See ck3_sway_completion12002_execution_install_abi.json before changing it.
 using SwayCompletionNativeExecute12002 = void (*)(const void *, const void *);
+// Called synchronously after the hidden-phase reader and before native Execute.
+// The root owns the context through the same pinned-DLL observer lifetime.
+using SwayCompletionSecondarySink12002 =
+    void (*)(void *, const void *, const void *) noexcept;
 
 inline constexpr std::array<std::uintptr_t, 3>
     kSwayCompletionExecuteSlotRvas12002{0x4837330, 0x48374D8, 0x4837410};
@@ -23,6 +27,8 @@ inline constexpr std::array<std::uintptr_t, 3>
 struct SwayCompletionExecutionInstall12002 {
   SwayExecutionBindings12002 bindings;
   SwayExecutionRecorder12002 *recorder = nullptr;
+  SwayCompletionSecondarySink12002 secondary_sink = nullptr;
+  void *secondary_sink_context = nullptr;
   std::array<SwayCompletionNativeExecute12002 *, 3> slots{};
   std::array<SwayCompletionNativeExecute12002, 3> originals{};
   std::array<bool, 3> patched{};
@@ -46,6 +52,24 @@ bool InstallSwayCompletionExecutionFixture12002(
     const std::array<SwayCompletionNativeExecute12002, 3> &expected_originals,
     SwayExecutionRecorder12002 &recorder,
     SwayCompletionExecutionInstall12002 &state) noexcept;
+
+// Both original Install signatures remain unchanged and use a null sink.
+// This overload shares their three pointer slots; it installs no second hook.
+bool InstallSwayCompletionExecutionWithSecondarySink12002(
+    std::uintptr_t image_base, std::string_view executable_sha256,
+    SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state,
+    SwayCompletionSecondarySink12002 secondary_sink,
+    void *secondary_sink_context) noexcept;
+
+bool InstallSwayCompletionExecutionFixtureWithSecondarySink12002(
+    const SwayExecutionBindings12002 &bindings,
+    const std::array<SwayCompletionNativeExecute12002 *, 3> &slots,
+    const std::array<SwayCompletionNativeExecute12002, 3> &expected_originals,
+    SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state,
+    SwayCompletionSecondarySink12002 secondary_sink,
+    void *secondary_sink_context) noexcept;
 
 bool UninstallSwayCompletionExecution12002(
     SwayCompletionExecutionInstall12002 &state) noexcept;

@@ -17,6 +17,9 @@ void Invoke(std::size_t index, const void *effect, const void *context) {
   if (state != nullptr && state->attached && state->recorder != nullptr) {
     (void)CaptureAndRecordSwayCompletionExecution12002(
         state->bindings, effect, context, *state->recorder);
+    if (state->secondary_sink != nullptr) {
+      state->secondary_sink(state->secondary_sink_context, effect, context);
+    }
   }
   // The original callback is never skipped for ignored/unavailable captures.
   if (original != nullptr) original(effect, context);
@@ -55,7 +58,8 @@ bool Install(const SwayExecutionBindings12002 &bindings,
              const std::array<SwayCompletionNativeExecute12002, 3> &originals,
              SwayExecutionRecorder12002 &recorder,
              SwayCompletionExecutionInstall12002 &state,
-             bool fixture) noexcept {
+             bool fixture, SwayCompletionSecondarySink12002 secondary_sink,
+             void *secondary_sink_context) noexcept {
   if (observer.load(std::memory_order_acquire) != nullptr || state.attached) {
     state.unavailable_reason = "sway_execution_observer_already_installed";
     return false;
@@ -74,6 +78,8 @@ bool Install(const SwayExecutionBindings12002 &bindings,
   }
   state.bindings = bindings;
   state.recorder = &recorder;
+  state.secondary_sink = secondary_sink;
+  state.secondary_sink_context = secondary_sink_context;
   state.slots = slots;
   state.originals = originals;
   state.fixture_slots = fixture;
@@ -100,6 +106,15 @@ bool Install(const SwayExecutionBindings12002 &bindings,
 bool InstallSwayCompletionExecution12002(
     std::uintptr_t base, std::string_view sha, SwayExecutionRecorder12002 &recorder,
     SwayCompletionExecutionInstall12002 &state) noexcept {
+  return InstallSwayCompletionExecutionWithSecondarySink12002(
+      base, sha, recorder, state, nullptr, nullptr);
+}
+
+bool InstallSwayCompletionExecutionWithSecondarySink12002(
+    std::uintptr_t base, std::string_view sha, SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state,
+    SwayCompletionSecondarySink12002 secondary_sink,
+    void *secondary_sink_context) noexcept {
   const auto bindings = BindSwayExecutionImage12002(base, sha);
   if (!bindings.enabled) {
     state.unavailable_reason = "sway_execution_install_unsupported_build";
@@ -113,7 +128,8 @@ bool InstallSwayCompletionExecution12002(
     originals[index] = reinterpret_cast<SwayCompletionNativeExecute12002>(
         base + kSwayCompletionExecuteRvas12002[index]);
   }
-  return Install(bindings, slots, originals, recorder, state, false);
+  return Install(bindings, slots, originals, recorder, state, false,
+                 secondary_sink, secondary_sink_context);
 }
 
 bool InstallSwayCompletionExecutionFixture12002(
@@ -122,7 +138,20 @@ bool InstallSwayCompletionExecutionFixture12002(
     const std::array<SwayCompletionNativeExecute12002, 3> &originals,
     SwayExecutionRecorder12002 &recorder,
     SwayCompletionExecutionInstall12002 &state) noexcept {
-  return Install(bindings, slots, originals, recorder, state, true);
+  return InstallSwayCompletionExecutionFixtureWithSecondarySink12002(
+      bindings, slots, originals, recorder, state, nullptr, nullptr);
+}
+
+bool InstallSwayCompletionExecutionFixtureWithSecondarySink12002(
+    const SwayExecutionBindings12002 &bindings,
+    const std::array<SwayCompletionNativeExecute12002 *, 3> &slots,
+    const std::array<SwayCompletionNativeExecute12002, 3> &originals,
+    SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state,
+    SwayCompletionSecondarySink12002 secondary_sink,
+    void *secondary_sink_context) noexcept {
+  return Install(bindings, slots, originals, recorder, state, true,
+                 secondary_sink, secondary_sink_context);
 }
 
 bool UninstallSwayCompletionExecution12002(
@@ -144,6 +173,8 @@ bool UninstallSwayCompletionExecution12002(
     complete = complete && written;
   }
   if (complete) {
+    state.secondary_sink = nullptr;
+    state.secondary_sink_context = nullptr;
     observer.store(nullptr, std::memory_order_release);
     state.unavailable_reason = "sway_execution_observer_not_installed";
   } else {

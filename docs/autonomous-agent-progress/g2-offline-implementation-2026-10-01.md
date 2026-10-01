@@ -670,3 +670,9 @@ One test file, two actually failing methods. Explicit legacy_full_tree_coverage 
 One existing header constant 0x50 to0x48 fixes both production choice and final selection consumers, plus one necessary multirow fixture. Four actual rows reproduce old reader failure; candidate Od/O2 each3checks passed. Applied tested bytes only, no old matrix repeated or game draft action. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-reform\group-model\stride-candidate\header-apply-result.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 19:12:07 Reuse Sway execution observer for invalidation reasons
+
+Five source files, two installer leaves applied exact previously tested bytes, three fixture and research documentation files. Same three stock execution slots capture hidden and selected reason then original exactly once; no second patcher. Od/O2 13checks fixture reused, named R6 realqueue proof separate pending. No live reason inferred. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\secondary-sink\FINAL-APPLIED-SOURCE-PACKAGE.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
