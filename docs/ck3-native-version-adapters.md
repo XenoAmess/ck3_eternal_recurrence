@@ -1,6 +1,6 @@
 # CK3 Native Bridge 版本适配与解耦契约
 
-2026-10-02 新构建施工入口：[Steam 1.20.0.3 迁移](ck3-1.20.0.3-migration.md)。新增独立 `ck3-1.20.0.3-msvc-x64` / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，保留旧 `.2` 与 `1.19.0.6`。102 份既有 ABI 合同在新版静态核对一致，独立 factory 显式复用已审阅 Crozier ABI；旧 binder SHA 门不放宽，outward 身份按实际构建渲染。此时 source/默认构建已验证，新版生产 live 状态以新专题中的真实回执为准；下方带历史日期的旧版合同保留。
+2026-10-02 新构建入口：[Steam 1.20.0.3 迁移](ck3-1.20.0.3-migration.md)。独立 `ck3-1.20.0.3-msvc-x64` / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，保留旧 `.2` 与 `1.19.0.6`。102 份既有 ABI 合同在新版静态核对一致，独立 factory 显式复用已审阅 Crozier ABI；旧 binder SHA 门不放宽，outward 身份按实际构建渲染。03:10正式SDK八项查询、实际一天推进、native保存和受管清理GREEN，03:11客户端切换及真实注册SDK回读GREEN；冻结runtime为`c0fda2a`。证据与诚实readiness边界见迁移专题，下方带历史日期的旧版合同保留。
 
 本文定义 CK3 升级、`ck3.exe` 改变时 native-headless 后端的失效方式、迁移边界和验收标准。目标不是让一组旧 RVA “自动兼容”未知版本，而是让每次逆向只替换一个逐版本适配器；MCP、策略、一代制生命周期和 OCR/键鼠 baseline 不随 CK3 ABI 一起重写。
 
