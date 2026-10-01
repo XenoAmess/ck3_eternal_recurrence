@@ -771,3 +771,9 @@ One family topic records fixed-five native values, one zero-cost proposal, bilat
 Two owned topics record actual R6 paused identity and complete readonly values: native final threshold65.0,190 registered personal parameters knownfalse with no owned personalTenets. Saved packets checked once; no conversion, reform, action or OODA claim. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-doctrines\live-r6-docs\document-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 20:17:02 Record actual readonly conversion outcome observation
+
+One owned topic publishes actual current Rite152 identity, resources, knowledge, Fulfillment and registered flags. Identity equality is not evidence of conversion or gain; real paused readonly primitive only. 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion-outcome\r6-current-observation\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
