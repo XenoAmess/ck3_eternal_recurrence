@@ -193,6 +193,21 @@ int main() {
   constexpr std::string_view key = "activity_invite_rule_vassals";
   {
     Fixture f;
+    f.Put(Fixture::base + 0x5D33F48, std::uintptr_t{0});
+    const auto read = ReadActivityFeastGuestRuleV1(f.environment, f.frame, key);
+    assert(read.status == ActivityFeastGuestRuleStatusV1::observed_inactive);
+    assert(read.native_key_hash == 0x1234 && read.ordered_rule_count == 1);
+    assert(read.unavailable_reason.empty() && !read.invoked && f.toggles == 0);
+    f.lookup_result = 0;
+    CheckUnavailableWire(f, "lookup_returned_null");
+  }
+  {
+    Fixture f;
+    f.lookup_result = 0x200080000ULL;
+    CheckUnavailableWire(f, "lookup_returned_missing");
+  }
+  {
+    Fixture f;
     f.Put(Fixture::base + 0x5D33EE8, std::uintptr_t{0});
     CheckUnavailableWire(f, "database_not_initialized");
   }

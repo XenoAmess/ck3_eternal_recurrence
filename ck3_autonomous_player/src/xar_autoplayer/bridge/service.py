@@ -1446,11 +1446,60 @@ class GameplayBridgeService:
         if getattr(
             self.driver, "allow_private_current_first_heir_betrothal_fulfillment", False
         ) is True:
-            current = plan_current_first_heir_betrothal_fulfillment_private(
-                self.driver, planned, snapshot,
-                prewar_arbitration=prewar_arbitration,
-                wartime_arbitration=wartime_arbitration,
-            )
+            query_history_index = None
+            history_view = getattr(self.driver, "_with_internal_planning_view", None)
+            history_snapshot = getattr(self.driver, "_history_snapshot", None)
+            if callable(history_view) and callable(history_snapshot):
+                query_history_index = history_view(
+                    snapshot, lambda _frame, history: {"index": len(history)}
+                )["index"]
+            try:
+                current = plan_current_first_heir_betrothal_fulfillment_private(
+                    self.driver, planned, snapshot,
+                    prewar_arbitration=prewar_arbitration,
+                    wartime_arbitration=wartime_arbitration,
+                )
+            except BridgeUnavailableError as error:
+                if getattr(error, "native_error", None) not in {
+                    "campaign-root snapshot changed or is not ready",
+                    "application-main typed query failed or its snapshot changed",
+                }:
+                    raise
+                retry_snapshot = snapshot
+                if query_history_index is not None:
+                    retry_snapshot = {
+                        **snapshot,
+                        "native_command_history": history_snapshot()[:query_history_index],
+                    }
+                root_query_retry = self._retry_rejected_campaign_root_read(
+                    retry_snapshot, planned, error
+                )
+                if root_query_retry is None:
+                    raise
+                snapshot = root_query_retry["fresh_snapshot"]
+                retry_evidence = {
+                    key: value
+                    for key, value in root_query_retry.items()
+                    if key not in ("fresh_snapshot", "starting_snapshot")
+                }
+                planned = {
+                    **planned,
+                    "snapshot_id": snapshot["snapshot_id"],
+                    "revision": snapshot["revision"],
+                    "plan": {**planned["plan"], "read_only_query_retry": retry_evidence},
+                }
+                try:
+                    current = plan_current_first_heir_betrothal_fulfillment_private(
+                        self.driver, planned, snapshot,
+                        prewar_arbitration=prewar_arbitration,
+                        wartime_arbitration=wartime_arbitration,
+                    )
+                except BridgeUnavailableError as retry_error:
+                    error.read_only_query_retry = {
+                        **retry_evidence,
+                        "second_error": f"{type(retry_error).__name__}: {retry_error}",
+                    }
+                    raise error from retry_error
             current_plan = current.get("plan")
             if (isinstance(current_plan, dict)
                     and current_plan.get("current_betrothal_fulfillment") is True):

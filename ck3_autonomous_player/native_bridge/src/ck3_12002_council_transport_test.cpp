@@ -542,14 +542,25 @@ void CheckSourceFrame(const std::filesystem::path& wire_directory) {
       mailbox.next_sequence.load() == receipt_sequence && adapter.full_snapshot_reads == 0);
   WriteWire(wire_directory, "status_receipt_idle.json", serialized);
 
+  // The receipt's changed date starts a new paused pump identity. Observe
+  // its next real idle pump before submitting another independent query.
+  assert(!ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(mailbox.paused_owner_verified_pump_epochs.load() >=
+      ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs);
+
   // A current-build private query owns its role string after the incoming
   // payload is gone and independently selects the Chancellor task/skill.
   provider.EnableChancellor();
   FixtureAdapter current_adapter{true};
   std::string chancellor_payload = "{\"expected_revision\":14,\"position_key\":\"councillor_chancellor\"}";
-  assert(HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+  const bool chancellor_query_accepted = HandleCouncilPrivate12002(
+      current_adapter, mailbox, receipt_published, 14,
       bridge::kCouncilPrivateQueryStepV1, chancellor_payload,
-      "chancellor-query-14", transport, serialized, failure));
+      "chancellor-query-14", transport, serialized, failure);
+  if (!chancellor_query_accepted)
+    std::cerr << "Chancellor private query failed: " << failure << '\n';
+  assert(chancellor_query_accepted);
   chancellor_payload.clear();
   assert(transport.query_position_key == ProviderFixture::kChancellorPosition &&
       transport.context.query_request.position_key == transport.query_position_key);

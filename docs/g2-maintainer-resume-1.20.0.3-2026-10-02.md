@@ -2,6 +2,22 @@
 
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
+## 05:38 真实续写：181 日、v5 当前材料与 Robert 暂停冷恢复
+
+本段按2026-10-02 05:38（Asia/Shanghai）已收到并读取的实际结果续写，前述时点保留历史状态。生产来源 `458dfe94e0f0769beccbb68c90552753d5785a09`/v5 的 `formal-run-v5-05` 完成50个正式回合、50真实日，raw53173752→53174952；累计恢复181日、独立rogue233日。随后当前家庭consumer的第二次campaign-root读取失败：`step-253-fe37bcacac9c` 期望native162，同帧succession读取 `step-252` 已SUCCESS。整批原RED保留；此前单次fresh只读恢复修复仅覆盖succession，此次family读取沿既有一次fresh入口修复在途，无动作重放。G2仍3/8，Robert3153/36524，不报总体百分比。
+
+成功50日已独立保存 `checkpoint-v5-50d-01`：full592/h592、paused、actor29829/episode `native-29829-3f80e147d033`；save72,883,895B/SHA256 `7899c025f3927d136d8b1ea156e6f5329eae242880aa20566cea84f7c7b5c2b1`，driver6,428,989B/SHA256 `eb4d929a508c535b1cc78601457054ee6a2135c8469b99f38cdfa7e071b48eb4`。随后 `readonly-v5-after-50d-01` 六项Sway及家庭只读GREEN，按正常入口同日另存最新h593、save72,883,895B/SHA256 `8c5421faec013b090b88345bcda3a894e55bf9b392075db570461d6ff1fe68e0`；date仍53174952、native165、paused。上述driver哈希属于h592原配对。root已正常停止PID95588。
+
+Sway同actor29829/target33433/full50331723/gen3：实际50日前195/355，后245/350，总好感都−25；CanContinue真实true、exposed/frozen均false。三ring已attached但latest0/records空、无retention gap，两modifier真实可读且缺席，无phase、终态或正收益；剩余105进度单位不换算成未来天数。当帧原婚约38822↔38718仍双向成立，recipient32897；新原生成年度量9/9、门槛16/16，双方minor、ready=false/completeCanSend=false，10发送成本0，预测仍betrothal。子代preview仍原生parent38822/House174/Dynasty174。旧唯一婚约action保留，未再次发送；本帧alliance未请求，之前双向false来自raw53171328、距当前151天，不能写成当前联盟读数。原pair继续等待合法成熟，M5没有新信用。
+
+v5只读Feast邀请规则实际给出 `missing_definition_not_initialized`。冻结`.3`原生lookup已证明有效命中不依赖nullable missing fallback，因此v6仅移除 `missing!=0` 前置要求；生产reader/serializer夹具及Python4项GREEN，组合v6构建与新PID规则读回仍待实际交付，未Start/扣费/M6完成。Chancellor只读扩展22文件已合入canonical `537d00b539ff7a9001334bd2edddd5290bb74c02`，Python23聚焦测试GREEN，原生5项focused外部harness构建待完成；此包没有任命、策略动作或G2信用。[458dfe94准确Official Runner CI run36926364766](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36926364766) 于05:10:17 SUCCESS，该终态只对应458dfe94来源。
+
+M7的旧Robert ordinary profile沿19a0e945/v4既有internal semantic/direct-service入口取得新的实机暂停连续性：first GAME PID74408 `first-paused-direct-01` GREEN并保存full4029；新GAME PID115688 `cold-paused-direct-01` GREEN、full4031/save anchor4029。既有消费者实际产出并消费 `dynasty_continuity`/progress0，next goal plan、feudal_government/core_landed、44 features与checkpoint来源cold读回一致。raw53220000未推进，same episode `native-29829-2bc2d599f7f9` 与三原账本保留，save79,280,616B/SHA256 `e4d4eaad6f253bde013392c6973461e61adaa3c06d92f234ec72f2594ed87529`。cold由root于05:35:13正常停止、exit0；70824是执行session ID，不是游戏PID。此前两次RED及原full4028 archive保留。这是 `production-live primitive` 的same-ruler paused checkpoint/cold结果，未执行计划动作、Robert新增日0；goal progress0不替换Robert3153/36524累计天数，多身份/seed/government/自然继承矩阵与M7整体仍in_progress。
+
+当前继续交付family单次读取恢复、combined v6及实际Chancellor/Feast只读输入；root独占游戏与pipe，各owner并行消费当前材料与补齐已有功能入口。Sway终态、自然M2、M4实际治理窗口、M5成年结果、Feast生命周期和M7后续矩阵仍待真实产出，既有G2合同和分母不变。
+
+证据根仍为 `artifacts/g2-maintainer-2026-10-02/resume-12003/`：`formal-run-v5-05/result.json`、`checkpoint-v5-50d-01/result.json`、`readonly-v5-after-50d-01/result.json`、`m4-sway/actual-12003-v5-50day-pair-proof.json`、`m5-family/actual-readonly-v5-after-50d-01-assessment.json`、`m6-feast/report-fields.json` 及 `m6-feast/guest-rule-nullable-missing/source-and-validation.json`、`m4-council/chancellor-readonly/ROOT-MERGE-RECEIPT.json`、`official-ci-458dfe94/terminal-status.json`；M7为 `m7-robert/paused-intent-19a0e945-v4/first-paused-direct-01/result.json`、`cold-paused-direct-01/result.json` 与05:41归档后补入的 `paired-proof-20261002-01/M7-PAUSED-COLD-PROOF.json`（SHA256 `0156ac7cbfee1dc4e5b48a500d5f6d9b8fb78a5ca5f60b9bedd8a5f432c28d6e`）。后者冻结完整cold save/driver、三账本、原两RED和两个实际supervisor exit0回执，correct game PID按result.bridge_pid取值。来源、日期与失败按各自配对引用。
+
 ## 04:47–04:49 真实补录：131 日与 v4 当前实机结果
 
 以下为 2026-10-02 04:47（Asia/Shanghai）的新增结果；下方 04:08 记录保留为当时基线。第二批 `formal-run-c3cd08bc-02` 完成 60 真实日，累计恢复 90 日，保存同日 raw53172768/full395/h395；对应 `checkpoint-after-90d-01` 的 save SHA256 为 `31ca980834ffc99a03b402aaf24708eed158b393e74c61cdf3bb31893977932c`。没有自然 stock 事件或旧动作重发。

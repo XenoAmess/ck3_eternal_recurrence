@@ -164,3 +164,59 @@ not a live recovery claim. The actively running `formal-run-v4-04` retains
 its frozen v4 source and is isolated from this source change. The failure
 packet, snapshot comparison, test result and source pins are recorded in
 `resume-12003/campaign-root-v4-03-diagnosis/`.
+
+## 1.20.0.3 v5 family relationship root read, 2026-10-02
+
+`resume-12003/formal-run-v5-05` retained 50 real days to raw `53174952`,
+then stopped before submitting turn 51. Its last request,
+`step-253-fe37bcacac9c`, is a campaign-root read at native revision `162`;
+the preserved result is `ok=false`,
+`application-main typed query failed or its snapshot changed`. Source was
+`458dfe94e0f0769beccbb68c90552753d5785a09`, the v5 package and the same exact
+CK3 `1.20.0.3` EXE SHA above. The preceding `step-252-06c42402cd46` root
+read succeeded at `162`, followed by successful Council, LIFE and
+construction reads. The failing second root read was issued by
+`_plan_private_family_opportunity_v1 ->
+plan_current_first_heir_betrothal_fulfillment_private ->
+query_current_first_heir_relationship_private_v1`: the relationship
+transport binds the primary first heir through its own campaign-root read.
+
+The same-PID independent checkpoint at
+`resume-12003/checkpoint-v5-50d-01` has raw `53174952`, native revision
+`163`, full/history row `592`, save SHA-256
+`7899C025F3927D136D8B1EA156E6F5329EAE242880AA20566CEA84F7C7B5C2B1`.
+The subsequent
+`resume-12003/readonly-v5-after-50d-01` independently returns an available
+relationship at native `165`, exact build `1.20.0.3`, heir `38822`,
+betrothed `38718`. The original 50-day attempt remains RED. These fresh
+reads establish continued availability without replaying those days;
+they do not identify the original grouped native failure branch or prove
+arrival within the existing retry wait.
+
+The recovery gap is at a second production consumer: the prior correction
+only covered succession preparation and selected-root execution. The
+current-pair family planner called its relationship transport directly,
+so its root rejection escaped before the existing fresh-read seam. The
+minimum correction captures the owned history position immediately before
+that current-pair planning call, matches only the already observed root
+rejection texts, then invokes `_retry_rejected_campaign_root_read` with
+the real pre-read history prefix. Its existing single-failed-root history
+tail, new revision and unchanged paused-frame checks remain intact. It
+reads the relationship once on the fresh frame and binds the returned plan
+and relationship to that frame, retaining `read_only_query_retry` evidence.
+A second rejection preserves the original exception and records
+`second_error`. No proposal submission, ledger write or game-day advance
+is retried. Native, relationship transport, Council and activity source
+remain unchanged.
+
+The existing focused retry module passed all ten tests in `0.036` seconds.
+Its added family case traverses the actual current-pair consumer and
+relationship transport, using the existing frozen Council root DTO and
+native-negative current-betrothal value with explicit synthetic revision
+and pair bindings. It verifies one fresh wait, two root reads, one fresh
+relationship read, a freshly bound held plan, retained original failed
+history and zero ledger writes/action submissions. Changed-date and
+second-rejection subcases remain RED. This is **static-ready**, with no
+new live repair claim. Original failure packets, snapshot comparison,
+source pins and the targeted result are in
+`resume-12003/campaign-root-v5-05-family-diagnosis/`.

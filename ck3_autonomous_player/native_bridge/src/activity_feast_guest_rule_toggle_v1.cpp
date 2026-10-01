@@ -390,10 +390,8 @@ ActivityFeastGuestRuleStatusV1 Bind(
     binding.unavailable_reason = "database_secondary_vtable_mismatch";
     return ActivityFeastGuestRuleStatusV1::rule_unavailable;
   }
-  if (missing == 0) {
-    binding.unavailable_reason = "missing_definition_not_initialized";
-    return ActivityFeastGuestRuleStatusV1::rule_unavailable;
-  }
+  // The native lookup reads this nullable fallback only on a lookup miss.
+  // A valid definition/ordered-row match does not require it to exist.
   const auto hash = env.hash_key != nullptr ? env.hash_key : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeHash12002 : &NativeHash);
   const auto lookup = env.lookup_rule != nullptr ? env.lookup_rule : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeLookup12002 : &NativeLookup);
   binding.hash = hash(env.context, source.module_base, key);

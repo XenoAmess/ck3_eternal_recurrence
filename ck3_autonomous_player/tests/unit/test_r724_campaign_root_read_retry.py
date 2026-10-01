@@ -6,6 +6,7 @@ import copy
 import json
 from pathlib import Path
 import sys
+import tempfile
 import threading
 import unittest
 from unittest import mock
@@ -23,6 +24,9 @@ from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     _NativeCommandRejectedError,
 )
 from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
+from xar_autoplayer.bridge.current_first_heir_relationship_private_transport import (  # noqa: E402
+    STEP as RELATION_STEP,
+)
 from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
     freeze_succession_expectation_v1,
@@ -212,6 +216,46 @@ class _InternalRejectedSuccessionRootDriver(_RejectedSuccessionRootDriver):
         )
 
 
+class _FamilyRejectedRootDriver(_InternalRejectedSuccessionRootDriver):
+    """Traverse the actual family consumer and relationship/root transport."""
+
+    allow_private_current_first_heir_betrothal_fulfillment = True
+    allow_private_current_first_heir_relationship_query = True
+    query_current_first_heir_relationship_private_v1 = (
+        NativeHeadlessGameplayDriver.query_current_first_heir_relationship_private_v1
+    )
+
+    def __init__(self, state_dir, **options):
+        super().__init__(**options)
+        self.state_dir = state_dir
+        self.endpoint = mock.Mock()
+        self.state.wait_for_command_result.side_effect = self.relationship_reply
+        self.pair_value = json.loads((ROOT / "native_bridge/research/fixtures" /
+            "ck3_12002_current_betrothal_negative.json").read_text(encoding="utf-8-sig"))
+        # Preserve the frozen native-negative value, with the Council pair IDs.
+        self.pair_value.update(actor_character_id=29829, heir_character_id=38822,
+                               partner_character_id=38718, recipient_character_id=32897)
+
+    def _execute_campaign_root_context_v1_query(self, *, expected_revision):
+        return self.execute_step(
+            QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, expected_revision=expected_revision
+        )
+
+    def relationship_reply(self, request_id, timeout_seconds):
+        request = self.endpoint.send.call_args.args[0]
+        if request["step"] != RELATION_STEP or request["expected_revision"] != 31:
+            raise AssertionError("family transport did not consume the fresh read frame")
+        return {"ok": True, "result": {
+            "step": RELATION_STEP, "accepted": True, "private_build": True,
+            "read_only": True, "advertised": False, "native_revision": 31,
+            "subject_source": "public_campaign_root_primary_first_heir",
+            "heir_character_id": 38822, "status": "available",
+            "unavailable_reason": None, "bilateral_verified": True,
+            "betrothed_character_id": 38718, "primary_spouse_character_id": None,
+            "spouse_character_ids": [], "betrothal_actionability": self.pair_value,
+        }}
+
+
 class R724CampaignRootReadRetryTests(unittest.TestCase):
     def _service(self, driver: _RejectedRootDriver) -> GameplayBridgeService:
         service = GameplayBridgeService(driver)
@@ -332,6 +376,46 @@ class R724CampaignRootReadRetryTests(unittest.TestCase):
         self.assertEqual(len(driver.calls), 1)
         self.assertEqual(driver.wait_count, 1)
         self.assertEqual(driver.retained_revisions, [])
+
+    def test_family_consumer_root_rejection_reuses_one_fresh_read(self) -> None:
+        for options in ({}, {"drift": "date"}, {"second_reject": True}):
+            with self.subTest(options=options), tempfile.TemporaryDirectory() as state_dir:
+                driver = _FamilyRejectedRootDriver(Path(state_dir), **options)
+                service = GameplayBridgeService(driver)
+                frame = driver.take_internal_semantic_snapshot()
+                planned = {"snapshot_id": frame["snapshot_id"], "revision": 500,
+                           "plan": {"selected_step": "life-advance"}}
+                with mock.patch(
+                    "xar_autoplayer.current_first_heir_betrothal_formal_consumer._identity",
+                    return_value=(4242, "fixture-created"),
+                ):
+                    if options:
+                        with self.assertRaises(_NativeCommandRejectedError) as observed:
+                            service._plan_private_family_opportunity_v1(planned, frame)
+                        self.assertIs(observed.exception, driver.first_error)
+                        self.assertEqual(len(driver.calls), 1 if "drift" in options else 2)
+                        driver.endpoint.send.assert_not_called()
+                        if "second_reject" in options:
+                            self.assertIn(_R11_REJECTION,
+                                observed.exception.read_only_query_retry["second_error"])
+                    else:
+                        current = service._plan_private_family_opportunity_v1(planned, frame)
+                        self.assertEqual((current["snapshot_id"], current["revision"]),
+                                         ("native:31", 501))
+                        choice = current["plan"]
+                        self.assertEqual(choice["selected_step"], "life-advance")
+                        self.assertEqual(choice["current_betrothal_status"], "held")
+                        self.assertEqual(choice["current_betrothal_relationship"]["native_revision"], 31)
+                        self.assertEqual(choice["read_only_query_retry"]["failed_history_index"], 2)
+                        self.assertEqual(driver.calls, [
+                            (QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, 500),
+                            (QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, 501),
+                        ])
+                        driver.endpoint.send.assert_called_once()
+                self.assertEqual(driver.wait_count, 1)
+                driver._history_snapshot.assert_called_once_with()
+                self.assertIs(driver.current["native_command_history"][1]["ok"], False)
+                self.assertEqual(list(Path(state_dir).iterdir()), [])
 
     def test_drift_or_typed_action_retains_original_rejection(self) -> None:
         for drift in (
