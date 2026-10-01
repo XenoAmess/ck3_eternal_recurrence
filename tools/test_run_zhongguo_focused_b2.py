@@ -670,11 +670,13 @@ class FocusedB2MainTests(unittest.TestCase):
             with self.assertRaisesRegex(
                 capture.acceptance.RunnerError, "MCP capability RED"
             ):
+                # The default P1 route uses a smaller capability profile.
                 capture.phase2_runtime_capability_preflight(
                     service,
                     artifacts,
                     tracked_ck3_pid=pid,
                     managed_restore_supervisor=True,
+                    legacy_full_tree_coverage=True,
                 )
 
         self.assertEqual(focused["result"], "GREEN")
@@ -1308,13 +1310,18 @@ class Phase2FullCapabilityPreflightTests(unittest.TestCase):
         service = SimpleNamespace(capabilities=lambda: capabilities)
         with tempfile.TemporaryDirectory() as temporary:
             artifacts = Path(temporary)
+            # The result-case query belongs to full-tree coverage, not P1.
             green = capture.phase2_runtime_capability_preflight(
                 service,
                 artifacts,
                 tracked_ck3_pid=pid,
                 managed_restore_supervisor=True,
+                legacy_full_tree_coverage=True,
             )
         self.assertEqual(green["result"], "GREEN")
+        self.assertEqual(
+            green["scope"], "legacy_full_tree_coverage_mcp_capability_profile"
+        )
         self.assertEqual(green["missing_requirements"], [])
 
         for kind in ("bridge_capability", "query_support_flag"):
@@ -1337,6 +1344,7 @@ class Phase2FullCapabilityPreflightTests(unittest.TestCase):
                         artifacts,
                         tracked_ck3_pid=pid,
                         managed_restore_supervisor=True,
+                        legacy_full_tree_coverage=True,
                     )
                 persisted = json.loads(
                     (
