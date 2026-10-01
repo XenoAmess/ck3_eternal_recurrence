@@ -1,0 +1,41 @@
+{
+  "schema": "ck3.scoped_original_death_commit_observation/v1",
+  "exact_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "original_callee_rva": "0x264BCB0",
+  "original_abi": {
+    "return": "void; no business return value fabricated",
+    "arguments": ["RCX manager", "RDX victim CCharacter pointer", "R8 death reason definition pointer", "R9 HistoricalDate pointer", "entry RSP+0x28 killer CCharacter pointer", "entry RSP+0x30 optional artifact reference pointer"],
+    "exact_prologue_hex": "48895C24084C894C24204C89442418",
+    "original_forward_count": 1
+  },
+  "publication": {
+    "existing_hook": "ScopedDeathCommitImpl; no second native detour",
+    "observer_linkage": "default-null atomic noexcept callback, bound to this pinned module during successful monitor Start; standalone chain target remains independent of monitor implementation",
+    "lifecycle": "existing whole ScopedDeathCommit wrapper enters the shared callback gate; monitor mutation requires exclusive gate and zero active callbacks; after Finish clears armed and g_monitor, callable observer immediately returns without sampling; no lock is held through original execution",
+    "boundaries": ["original_death_commit_enter", "original_death_commit_return"],
+    "field": "records[*].original_death_commit_context",
+    "context_kind": "original_264BCB0_direct_enter_return_arguments",
+    "version_field": "direct_original_death_commit_schema_version=1; previous enum values/schema and fields retained",
+    "source": "Six argument tokens and pointed typed values reread directly at the original call entry/return; actual active scoped context supplies independently checked day token/invocation/thread/combat metadata.",
+    "guards": ["real active scoped day token and invocation", "current original thread and date", "both original argument character pointers round-trip full-generation storage", "full HistoricalDate raw64 unchanged", "stable original reason key", "artifact actual-null distinct from nonnull invalid reference fullID -1", "all original parameters match the current original commit metadata"],
+    "capacity": 128,
+    "overflow": "original failure_flags and truncated RED remain",
+    "compression": "No direct commit/writer/house operation is coalesced; original getter strict key and raw words unchanged.",
+    "missing_read": "read=false and original failure bit; six actual argument tokens remain present when obtained, no inferred manager from queue"
+  },
+  "independent_semantics": {
+    "current_death_commit_context_unchanged": true,
+    "producer_activation_context_unchanged": true,
+    "no_backfill_of_old_runtime": true,
+    "global_complete": false,
+    "notification_receiver_inferred_as_victim": false,
+    "notification_named_dead_character_binding": "PENDING separate original event instance/execution-input ABI; direct commit observation does not establish it"
+  },
+  "open_kaishek_precheck": {
+    "status": "NOT_APPLICABLE_EXACT_NATIVE_ABI_OBSERVER",
+    "reason": "Only original Win64 native callee observation and bounded bridge publication change. No script parser/IR/finite-runtime semantics are added or changed. Existing script writer replay evidence is a separate study."
+  },
+  "no_game_state_writes": true,
+  "no_virtual_re_evaluation": true,
+  "no_new_public_step": true
+}

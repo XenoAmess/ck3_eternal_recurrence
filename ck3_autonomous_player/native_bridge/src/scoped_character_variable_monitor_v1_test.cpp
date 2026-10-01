@@ -5,6 +5,7 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
+#include <limits>
 #include <thread>
 using namespace xar::ck3_11906;
 namespace {
@@ -17,9 +18,10 @@ struct Fixture {
  std::array<std::array<std::byte,0x10>,202> slots{};
  std::array<std::array<std::byte,0x50>,3> owners{};
  std::array<std::array<std::byte,0x20>,3> rows{};
- std::array<std::array<std::byte,0x20>,3> names{};
+ std::array<std::array<std::byte,0x20>,4> names{};
  std::array<std::array<std::uint64_t,2>,3> scopes{{{4,101},{4,201},{4,102}}};
  std::array<std::byte,0x70> node{},context{};
+ std::array<std::byte,0x3D8> saved_targets{};
  std::array<std::array<std::byte,0x20>,2> houses{};
  std::array<std::byte,0x50> event_manager{};
  std::array<std::array<std::byte,0x240>,8> event_defs{};
@@ -33,9 +35,9 @@ struct Fixture {
   Put(storage.data(),0x20,reinterpret_cast<std::uintptr_t>(slots.data()));Put(storage.data(),0x2C,std::int32_t(202));
   for(std::size_t i=0;i<2;++i){const auto id=101+std::int32_t(i)*100;Put(chars[i].data(),0x18,id);Put(chars[i].data(),0x150,std::int32_t(31+i));Put(slots[id].data(),8,reinterpret_cast<std::uintptr_t>(chars[i].data()));Put(houses[i].data(),0x10,std::int32_t(31+i));}
   date_slot=reinterpret_cast<std::uintptr_t>(date.data());Put(date.data(),8,std::int32_t(53146848));
-  Key(names[0].data(),"other");Key(names[1].data(),"signature_weapon");Key(names[2].data(),"axe");Put(table.data(),0,std::uint8_t(1));Put(table.data(),0x30,reinterpret_cast<std::uintptr_t>(names.data()));Put(table.data(),0x3C,std::int32_t(3));
+  Key(names[0].data(),"other");Key(names[1].data(),"signature_weapon");Key(names[2].data(),"axe");Key(names[3].data(),"dead_character");Put(table.data(),0,std::uint8_t(1));Put(table.data(),0x30,reinterpret_cast<std::uintptr_t>(names.data()));Put(table.data(),0x3C,std::int32_t(4));
   for(std::size_t i=0;i<3;++i){Put(owners[i].data(),0x10,reinterpret_cast<std::uintptr_t>(rows[i].data()));Put(owners[i].data(),0x18,std::int32_t(1));Put(owners[i].data(),0x1C,std::int32_t(0));}
-  Put(node.data(),0,std::uintptr_t(0x1444D19B0));Put(node.data(),0x38,std::uint32_t(771));Put(context.data(),0,reinterpret_cast<std::uintptr_t>(scopes[1].data()));
+  Put(node.data(),0,std::uintptr_t(0x1444D19B0));Put(node.data(),0x38,std::uint32_t(771));Put(context.data(),0,reinterpret_cast<std::uintptr_t>(scopes[1].data()));Put(context.data(),0x18,reinterpret_cast<std::uintptr_t>(saved_targets.data()));
   Put(type.data(),0x10,std::int32_t(9));Key(type.data()+0x18,"default_house_relation");
  }
  void Events(std::uintptr_t module){
@@ -467,4 +469,165 @@ void NullProducerContexts() {
   std::cout<<"different actual notification producer invocations / definitions / current commit tuples never aggregate PASS\n";
 }
 }
-int main(){Observation();Guards();ExactAnchorsAndRollback();WholeCallbackAndParentLifetime();EventProducerIdentity();SynchronousDeathCommitAttribution();DeadNullRepeatedAndTransitions();ConcurrentDeadNullReturns();ContextsWritersAndOverflow();NullProducerContexts();std::cout<<"passive monitor offline checks passed; no CK3 process invoked\n";}
+namespace {
+int g_direct_commit_mode=0;
+std::uint32_t g_direct_commit_calls=0;
+void DirectCommitWithoutGetter(void *manager,void *victim,void *reason,void *date,void *killer,void *artifact){
+  ++g_direct_commit_calls;
+  CombatScopedDeathCommitContextV1 active{};
+  assert(ReadCurrentCombatScopedDeathCommitContextV1(active)&&active.read);
+  assert(active.manager==reinterpret_cast<std::uintptr_t>(manager)&&active.victim==reinterpret_cast<std::uintptr_t>(victim)&&
+      active.reason==reinterpret_cast<std::uintptr_t>(reason)&&active.date_argument==reinterpret_cast<std::uintptr_t>(date)&&
+      active.killer==reinterpret_cast<std::uintptr_t>(killer)&&active.artifact==reinterpret_cast<std::uintptr_t>(artifact));
+  if(g_direct_commit_mode==1){
+    std::thread detached([&]{ObserveScopedVariableMonitorOriginalDeathCommitV1(true,manager,victim,reason,date,killer,artifact);});detached.join();
+  }else if(g_direct_commit_mode==2){Put(date,0,Get<std::int64_t>(date,0)+1);}
+  else if(g_direct_commit_mode==3){Put(victim,0x18,std::int32_t(102));}
+}
+void DirectCommitIndependentArguments(){
+  for(int mode=0;mode<6;++mode){
+    Fixture f;auto m=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(Arm(*m,f));
+    assert(BindCombatScopedOriginalsForOfflineFixtureV1(UnusedDeath,DirectCommitWithoutGetter,UnusedQueue,UnusedCasualty));
+    std::array<std::byte,0x720> combat{};std::array<std::byte,0x80> trait_db{};
+    std::array<std::byte,0x298> trait_def{};std::array<std::byte,0x40> reason{};std::array<std::byte,0x18> artifact{};
+    std::uintptr_t defptr=reinterpret_cast<std::uintptr_t>(trait_def.data());
+    Put(trait_def.data(),0x10,std::int32_t(1));Key(trait_def.data()+0x18,"brave");
+    Put(trait_db.data(),0x68,reinterpret_cast<std::uintptr_t>(&defptr));Put(trait_db.data(),0x74,std::int32_t(1));
+    Key(reason.data()+0x18,"death_battle");Put(artifact.data(),0x10,std::int32_t(-1));
+    std::int64_t requested_date=0x042A0B1D032AF4F8LL;
+    CombatPhaseEventTraceCapturePlanV1 plan{};plan.module_base=0x140000000;plan.managed_daily_sequence_token=79;
+    plan.combat_id=0x01000002;plan.combat=reinterpret_cast<std::uintptr_t>(combat.data());Put(combat.data(),8,plan.combat_id);
+    plan.current_date_slot=reinterpret_cast<std::uintptr_t>(&f.date_slot);plan.expected_current_date_object=f.date_slot;
+    plan.character_count=2;plan.loaded_event_row_objects_available=true;
+    for(std::size_t i=0;i<2;++i){plan.characters[i]={std::int32_t(101+i*100),reinterpret_cast<std::uintptr_t>(f.chars[i].data())};
+      plan.sides[i]=plan.combat+(i==0?0x20:0x368);Put(reinterpret_cast<void*>(plan.sides[i]),0xB8,plan.combat);}
+    auto chain=std::make_unique<CombatScopedChainV1>();assert(ArmCombatScopedChainV1(*chain,plan,101,201,11,reinterpret_cast<std::uintptr_t>(trait_db.data())));
+    const auto owner_calls=g_owner_calls,setter_calls=g_setter_calls,commit_calls=g_direct_commit_calls;
+    g_direct_commit_mode=mode;
+    if(mode==4)m->count.store(128);
+    if(mode==5){
+      // Outside the original commit's TLS lifecycle: raw arguments retained but not verified.
+      ObserveScopedVariableMonitorOriginalDeathCommitV1(true,combat.data(),f.chars[0].data(),reason.data(),&requested_date,f.chars[1].data(),artifact.data());
+    }else{
+      ScopedDeathCommit(combat.data(),f.chars[0].data(),reason.data(),&requested_date,f.chars[1].data(),artifact.data());
+      assert(g_direct_commit_calls==commit_calls+1);
+    }
+    assert(g_owner_calls==owner_calls&&g_setter_calls==setter_calls);
+    if(mode==0){
+      const auto &enter=Find(*m,ScopedVariableMonitorBoundaryV1::original_death_commit_enter);
+      const auto &leave=Find(*m,ScopedVariableMonitorBoundaryV1::original_death_commit_return);
+      assert(enter.original_death_commit_context.read&&enter.original_death_commit_context==leave.original_death_commit_context);
+      const auto &direct=enter.original_death_commit_context;
+      assert(direct.manager==reinterpret_cast<std::uintptr_t>(combat.data())&&direct.victim_id==101&&direct.killer_id==201&&
+          direct.requested_death_date_raw==requested_date&&direct.artifact==reinterpret_cast<std::uintptr_t>(artifact.data())&&
+          !direct.artifact_actual_null&&direct.artifact_id_read&&direct.artifact_id==-1&&direct.managed_daily_sequence_token==79);
+      assert(!enter.current_death_commit_context.read&&!leave.current_death_commit_context.read&&
+          !enter.event_producer.read&&!leave.event_producer.read);
+      assert(m->count.load()==3&&m->owner_getter_observed.load()==0&&m->failure_flags.load()==0);
+      assert(FinishScopedCharacterVariableMonitorV1(*m,true));
+      const auto drained_count=m->count.load();
+      // The chain's optional callback remains callable but a drained monitor samples nothing.
+      ScopedDeathCommit(combat.data(),f.chars[0].data(),reason.data(),&requested_date,f.chars[1].data(),artifact.data());
+      assert(g_direct_commit_calls==commit_calls+2&&m->count.load()==drained_count&&
+          m->active_callbacks.load()==0&&m->detours_uninstalled&&m->failure_flags.load()==0);
+      FinishCombatScopedChainV1(*chain);
+      const auto wire=SerializeScopedCharacterVariableMonitorV1(*m);
+      assert(wire.find("original_264BCB0_direct_enter_return_arguments")!=std::string::npos);
+      assert(wire.find("\"direct_original_death_commit_schema_version\":1")!=std::string::npos);
+      std::cout<<"{\"kind\":\"OFFLINE_DIRECT_COMMIT_NO_GETTER_FIXTURE_NOT_GAME_TRUTH\",\"scoped_variable_monitor\":"<<wire<<"}\n";
+    }else{
+      assert(m->failure_flags.load()!=0);
+      if(mode==1||mode==5){const auto &bad=Find(*m,ScopedVariableMonitorBoundaryV1::original_death_commit_enter,true);assert(!bad.original_death_commit_context.read);}
+      if(mode==2){const auto &bad=Find(*m,ScopedVariableMonitorBoundaryV1::original_death_commit_return);assert(!bad.original_death_commit_context.read&&bad.original_death_commit_context.requested_death_date_raw==requested_date);}
+      if(mode==3){const auto &bad=Find(*m,ScopedVariableMonitorBoundaryV1::original_death_commit_return);assert(!bad.original_death_commit_context.read&&!bad.original_death_commit_context.victim_full_identity_matches);}
+      if(mode==4)assert(m->failure_flags.load()&scoped_chain_failure_capacity);
+      CancelCombatScopedChainV1(*chain);assert(FinishScopedCharacterVariableMonitorV1(*m,true));
+      // Finish acknowledges drain/uninstall; original failure flags still reject the collector.
+      assert(m->detours_uninstalled&&m->active_callbacks.load()==0&&m->failure_flags.load()!=0);
+    }
+    g_direct_commit_mode=0;
+  }
+  std::cout<<"direct six original arguments without getter / forward once / invalid artifact ref / cross-thread TLS / mutated full date / generation / missing lifecycle / capacity RED PASS\n";
+}
+}
+namespace {
+std::byte *g_named_mutation_row=nullptr;
+std::uintptr_t NamedSetter(void *container,std::int32_t key,const void *value,std::int32_t duration){
+  const auto result=Setter(container,key,value,duration);
+  if(g_named_mutation_row)Put(g_named_mutation_row,0x10,std::int64_t(201));
+  return result;
+}
+void NotificationNamedScopes(){
+  Fixture f;auto m=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(Arm(*m,f));
+  constexpr auto key=std::int32_t(0x01000003);
+  std::array<std::array<std::byte,0x20>,2> primary{};
+  std::array<std::byte,0x30> parent{};
+  std::array<std::array<std::byte,0x18>,2> fallback{};
+  auto set=[&](void *row,std::int32_t id,std::uint64_t word0=0xABCDEFAA00000004ULL){Put(row,0,key);Put(row,8,word0);Put(row,0x10,std::int64_t(id));};
+  set(primary[0].data(),101);set(primary[1].data(),201);set(fallback[0].data(),201);
+  Put(f.saved_targets.data(),0,reinterpret_cast<std::uintptr_t>(primary.data()));Put(f.saved_targets.data(),0xC,std::int32_t(2));
+  Put(f.saved_targets.data(),0x3D0,reinterpret_cast<std::uintptr_t>(parent.data()));
+  Put(parent.data(),0x18,reinterpret_cast<std::uintptr_t>(fallback.data()));Put(parent.data(),0x24,std::int32_t(1));
+  ScopedNotificationNamedDeadCharacterV1 read{};
+  auto query=[&]{return ReadScopedNotificationNamedDeadCharacterV1(*m,reinterpret_cast<std::uintptr_t>(f.context.data()),read);};
+  assert(query()&&read.read&&read.stable_two_reads&&read.source_level==1&&read.found_index==0&&
+      read.payload==101&&read.matches_monitored_victim&&read.scope_words[0]==0xABCDEFAA00000004ULL&&!read.fallback_pointer_read);
+  // Original first match, duplicate key and primary precedence are preserved.
+  Put(primary[0].data(),0,std::int32_t(-1));assert(query()&&read.found_index==1&&read.payload==201&&!read.matches_monitored_victim);
+  set(primary[0].data(),0,0x1234567800000000ULL);assert(query()&&read.present&&read.source_level==1&&read.kind==0&&
+      read.scope_words_read&&read.scope_words[0]==0x1234567800000000ULL&&!read.fallback_pointer_read);
+  Put(f.saved_targets.data(),0xC,std::int32_t(1));Put(primary[0].data(),0,std::int32_t(-1));
+  set(fallback[0].data(),101);assert(query()&&read.source_level==2&&read.fallback_header_read&&read.found_index==0&&read.matches_monitored_victim);
+  // Duplicated fallback names also use the first actual row.
+  set(fallback[1].data(),201);Put(parent.data(),0x24,std::int32_t(2));assert(query()&&read.payload==101&&read.found_index==0);
+  Put(fallback[0].data(),0,std::int32_t(-1));Put(fallback[1].data(),0,std::int32_t(-1));
+  assert(query()&&read.read&&!read.present&&!read.scope_words_read&&read.kind==0&&read.payload==0);
+  Put(f.saved_targets.data(),0xC,std::int32_t(0));Put(f.saved_targets.data(),0x3D0,std::uintptr_t(0));
+  assert(query()&&!read.present&&read.fallback_pointer_read&&!read.fallback_header_read);
+  Put(f.saved_targets.data(),0xC,std::int32_t(1));set(primary[0].data(),101,3);
+  assert(query()&&read.present&&read.kind==3&&!read.character_identity_read&&!read.matches_monitored_victim);
+  set(primary[0].data(),0x01000065);assert(query()&&read.present&&read.kind==4&&read.character_id==0x01000065&&
+      !read.character_full_identity_matches&&!read.matches_monitored_victim);
+  Put(primary[0].data(),0x10,std::uint64_t(0xABCDEF1200000065ULL));
+  assert(query()&&read.present&&read.kind==4&&read.character_full_id_low32_read&&read.character_full_id_raw32==101&&
+      read.character_id==101&&read.character_full_identity_matches&&read.matches_monitored_victim&&
+      read.payload_raw64==0xABCDEF1200000065ULL&&read.scope_words[1]==0xABCDEF1200000065ULL);
+  set(primary[0].data(),101);Put(f.chars[0].data(),0x18,std::int32_t(102));
+  assert(query()&&read.present&&!read.character_full_identity_matches&&!read.matches_monitored_victim);Put(f.chars[0].data(),0x18,std::int32_t(101));
+  Put(f.saved_targets.data(),0xC,std::int32_t(-1));assert(!query()&&!read.read&&read.primary_count==-1);
+  Put(f.saved_targets.data(),0xC,std::int32_t(65537));assert(!query()&&!read.read);
+  Put(f.saved_targets.data(),0xC,std::int32_t(1));Put(f.saved_targets.data(),0,std::uintptr_t(0));assert(!query()&&!read.read);
+  Put(f.saved_targets.data(),0,std::numeric_limits<std::uintptr_t>::max()-15);assert(!query()&&!read.read);
+  Put(f.saved_targets.data(),0xC,std::int32_t(0));Put(parent.data(),0x24,std::int32_t(1));
+  Put(f.saved_targets.data(),0x3D0,reinterpret_cast<std::uintptr_t>(parent.data()));
+  Put(parent.data(),0x18,std::numeric_limits<std::uintptr_t>::max()-7);assert(!query()&&!read.read);
+  Put(f.saved_targets.data(),0xC,std::int32_t(1));Put(f.saved_targets.data(),0x3D0,std::uintptr_t(0));
+  Put(f.saved_targets.data(),0,reinterpret_cast<std::uintptr_t>(primary.data()));Key(f.names[3].data(),"other");assert(!query()&&!read.read);Key(f.names[3].data(),"dead_character");
+  Put(f.context.data(),0x18,std::uintptr_t(1));assert(!query()&&!read.read);Put(f.context.data(),0x18,reinterpret_cast<std::uintptr_t>(f.saved_targets.data()));
+  assert(FinishScopedCharacterVariableMonitorV1(*m,true)&&m->failure_flags.load()==0);
+
+  auto *space=static_cast<std::byte*>(VirtualAlloc(nullptr,0x6000000,MEM_RESERVE,PAGE_NOACCESS));assert(space);
+  assert(VirtualAlloc(space+0x44CF000,4096,MEM_COMMIT,PAGE_READWRITE));const auto module=reinterpret_cast<std::uintptr_t>(space);
+  Fixture live;live.Events(module);g_fixture=&live;Put(live.node.data(),0,module+0x44D19B0);Put(g_ordinary_nested_root.data(),0,module+0x44CF030);
+  std::array<std::byte,0x20> actual_row{};set(actual_row.data(),101);
+  Put(live.saved_targets.data(),0,reinterpret_cast<std::uintptr_t>(actual_row.data()));Put(live.saved_targets.data(),0xC,std::int32_t(1));
+  assert(BindScopedVariableMonitorOfflineOriginalsV1(Owner,NamedSetter,Effect,House,RootOriginal));
+  auto run=std::make_unique<ScopedCharacterVariableMonitorV1>();
+  assert(StartScopedCharacterVariableMonitorV1(*run,live.bindings,module,{101,201},91,true,true,
+      reinterpret_cast<std::uintptr_t>(live.table.data()),reinterpret_cast<std::uintptr_t>(&live.date_slot),reinterpret_cast<std::uintptr_t>(&live.event_manager_slot)));
+  g_named_mutation_row=actual_row.data();ObservedScopedEventImmediateRootV1(live.event_roots[2].data(),live.context.data());g_named_mutation_row=nullptr;
+  const auto &left=Find(*run,ScopedVariableMonitorBoundaryV1::variable_write_enter);
+  const auto &right=Find(*run,ScopedVariableMonitorBoundaryV1::variable_write_return);
+  assert(left.event_producer.named_dead_character_at_activation.payload==101&&left.event_producer.named_dead_character_at_observation.payload==101&&
+      right.event_producer.named_dead_character_at_activation.payload==101&&right.event_producer.named_dead_character_at_observation.payload==201&&
+      left.event_producer.root_scope_words[1]==201&&left.event_producer.named_dead_character_at_observation.matches_monitored_victim&&
+      !right.event_producer.named_dead_character_at_observation.matches_monitored_victim);
+  assert(FinishScopedCharacterVariableMonitorV1(*run,true)&&run->failure_flags.load()==0);
+  std::cout<<"{\"kind\":\"OFFLINE_NAMED_DEAD_CHARACTER_EDGE_CHANGE_FIXTURE_NOT_GAME_TRUTH\",\"scoped_variable_monitor\":"<<SerializeScopedCharacterVariableMonitorV1(*run)<<"}\n";
+  assert(VirtualFree(space,0,MEM_RELEASE));
+  Fixture no_key;Key(no_key.names[3].data(),"other");auto missing_key=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(!Arm(*missing_key,no_key));
+  Fixture duplicate_key;Key(duplicate_key.names[0].data(),"dead_character");auto duplicated_key=std::make_unique<ScopedCharacterVariableMonitorV1>();assert(!Arm(*duplicated_key,duplicate_key));
+  std::cout<<"named scope primary / fallback / duplicates first match / primary kind0 shadows / absent padding unknown / wrong kind / full generation / counts / identifier changes / memory fault / real writer edges retain changed named target PASS\n";
+}
+}
+int main(){Observation();Guards();ExactAnchorsAndRollback();WholeCallbackAndParentLifetime();EventProducerIdentity();SynchronousDeathCommitAttribution();DeadNullRepeatedAndTransitions();ConcurrentDeadNullReturns();ContextsWritersAndOverflow();NullProducerContexts();DirectCommitIndependentArguments();NotificationNamedScopes();std::cout<<"passive monitor offline checks passed; no CK3 process invoked\n";}

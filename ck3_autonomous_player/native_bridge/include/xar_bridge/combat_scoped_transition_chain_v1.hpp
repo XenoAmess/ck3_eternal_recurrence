@@ -138,6 +138,22 @@ struct CombatScopedEffectIdentityV1 {
   std::uintptr_t node = 0;
   std::uint32_t vtable_rva = 0, hash = 0, original_execute_rva = 0;
   bool read = false;
+  friend bool operator==(const CombatScopedEffectIdentityV1 &,
+                         const CombatScopedEffectIdentityV1 &) = default;
+};
+
+struct CombatScopedScriptedDefinitionV1 {
+  bool read = false;
+  std::uintptr_t object = 0;
+  std::uint32_t vtable_rva = 0;
+  CombatScopedStableKeyV1 key{};
+  std::int32_t parameter_count_raw = -1, invocation_argument_count_raw = -1;
+  CombatScopedEffectIdentityV1 default_root{};
+  // 3381DFF uses template+120 only when the actual wrapper+94 count is zero.
+  // A parameterized instance's active cache root is deliberately not inferred.
+  bool default_root_selected_by_empty_arguments = false;
+  friend bool operator==(const CombatScopedScriptedDefinitionV1 &,
+                         const CombatScopedScriptedDefinitionV1 &) = default;
 };
 
 struct CombatScopedChainRecordV1 {
@@ -166,6 +182,7 @@ struct CombatScopedChainRecordV1 {
   bool effect_if_optional_read = false;
   std::uintptr_t effect_if_optional_node = 0;
   CombatScopedEffectIdentityV1 effect_if_optional_identity{};
+  CombatScopedScriptedDefinitionV1 scripted_effect_definition{};
   std::uint32_t depth = 0;
   std::uintptr_t caller_return_address = 0;
   std::int64_t casualty_damage_raw = 0;
@@ -352,5 +369,9 @@ extern "C" std::uintptr_t __fastcall ScopedSelectorMaterializer(void *,void *,vo
 extern "C" std::uintptr_t __fastcall ScopedSelectorFilter(void *,void *,void *,void *,void *) noexcept;
 extern "C" std::uintptr_t __fastcall ScopedSelectorPredicate(void *,void *,std::uint8_t) noexcept;
 extern "C" std::uintptr_t __fastcall ScopedCombatListWriter(void *,std::int32_t,const void *,std::int32_t) noexcept;
+
+// Optional passive publication; the original six-parameter callee is still forwarded once.
+using CombatScopedOriginalDeathCommitObserverV1 = void (*)(bool,void *,void *,void *,void *,void *,void *) noexcept;
+bool BindCombatScopedOriginalDeathCommitObserverV1(CombatScopedOriginalDeathCommitObserverV1) noexcept;
 
 } // namespace xar::ck3_11906
