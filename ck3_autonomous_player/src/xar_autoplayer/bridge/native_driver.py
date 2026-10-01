@@ -1472,7 +1472,13 @@ class NativeHeadlessGameplayDriver:
         private_faction_round_id: str | None = None,
         succession_lifecycle_binding: dict[str, object] | None = None,
         war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
+        episode_projection: str = "one_life",
     ) -> None:
+        if episode_projection not in {"one_life", "native_campaign"}:
+            raise ValueError("episode_projection must be one_life or native_campaign")
+        if episode_projection == "native_campaign" and succession_lifecycle_binding is not None:
+            raise ValueError("native_campaign must not assert an episode/game-rule lifecycle binding")
+        self.episode_projection = episode_projection
         if war31_one_shot_surrender_gate is not None and not isinstance(
             war31_one_shot_surrender_gate, War31OneShotSurrenderGate
         ):
@@ -3652,6 +3658,11 @@ class NativeHeadlessGameplayDriver:
         self, snapshot: dict[str, object]
     ) -> dict[str, object]:
         """Project the immutable character identity of this one-life episode."""
+        if self.episode_projection == "native_campaign":
+            # Ordinary simulation consumes the engine's actual current player,
+            # including natural succession. It does not infer XAR game rules,
+            # bind a one-life identity, or expose a counter-policy terminal.
+            return {**snapshot, "episode_projection": "native_campaign"}
         played_character = snapshot.get("played_character")
         current_character_id = (
             played_character.get("character_id")

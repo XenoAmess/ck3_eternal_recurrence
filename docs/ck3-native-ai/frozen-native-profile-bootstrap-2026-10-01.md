@@ -140,7 +140,16 @@ constructor and accepts separate `state_dir` and `save_dir`. The main
 the same provider with the calling run's actual userdir, unlike the native CLI's
 implicit `<state-dir>/profile` layout.
 
-This package does not establish long-duration gameplay, ordinary succession,
+The existing driver's default snapshot projection binds a legacy one-life
+identity even if its controller is never started. The profile consumer therefore
+passes the explicit `episode_projection="native_campaign"` option. This new
+authoritative provider option skips that counter-policy projection, follows the
+engine's actual played character through ordinary succession and adds no
+invented game-rule binding. Supplying an episode lifecycle binding together
+with this mode is rejected. The bootstrap requires that mode marker in its
+snapshot readback. Default callers retain the previous one-life behavior.
+
+This package does not establish live long-duration gameplay or ordinary succession,
 event policy or save/reload acceptance. Existing normal speed, pause/resume,
 event and checkpoint commands remain in the authoritative provider. The narrow
 ordinary-player tools call those existing service methods, require a map-ready
@@ -155,7 +164,8 @@ The bootstrap does not start the one-generation controller, observe, reseed,
 jump dates, skip simulation ticks or alter AI behavior. It performs no desktop
 input or OCR. Live attach and gameplay are left to the exclusive desktop owner.
 
-Validation: 6 read-only clock tests, 13 profile/bootstrap/ordinary-player tests and 11 existing semantic-profile tests
+Validation: 6 read-only clock tests, 13 profile/bootstrap/ordinary-player tests,
+4 real-provider endpoint campaign-projection tests and 11 existing semantic-profile tests
 passed, including official in-memory MCP schemas, stale process/Steam/lease
 rejection, wrong userdir and artifact rejection, native hello/build rejection,
 ACK without containment proof, one-shot attachment across server instances and

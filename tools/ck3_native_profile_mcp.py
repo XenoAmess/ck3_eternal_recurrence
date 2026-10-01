@@ -155,6 +155,8 @@ class NativeProfileService:
             raise RuntimeError("native hello is not the frozen target process and exact build")
         if type(snapshot.get("date_raw")) is not int or type(snapshot.get("paused")) is not bool or type(snapshot.get("speed")) is not int:
             raise RuntimeError("native date/paused/speed snapshot is unavailable")
+        if snapshot.get("episode_projection") != "native_campaign":
+            raise RuntimeError("native profile must consume the engine campaign without one-life projection")
         return snapshot
 
     def attach(self) -> dict:
@@ -185,7 +187,8 @@ class NativeProfileService:
             injected = None
             try:
                 self.driver = factory(self.pipe_name, state_dir=self.profile["state_directory"],
-                                      save_dir=str(Path(self.profile["userdir"]) / "save games"))
+                                      save_dir=str(Path(self.profile["userdir"]) / "save games"),
+                                      episode_projection="native_campaign")
                 command = [self.profile["injector"]["path"], "--pipe", self.pipe_name,
                            str(self.profile["guard"]["target"]["pid"]), self.profile["dll"]["path"]]
                 injected = self.backend.inject(command)

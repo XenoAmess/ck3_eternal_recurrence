@@ -55,6 +55,7 @@ class Driver:
     def __init__(self, profile):
         target = profile["guard"]["target"]
         self.snapshot = {"date_raw": 123456, "paused": True, "speed": 3, "map_ready": True, "revision": 7,
+                         "episode_projection": "native_campaign",
                          "diagnostics": {"bridge_pid": target["pid"], "hello": {
                              "game_adapter_status": "ready", "expected_ck3_version": profile["game_version"],
                              "expected_ck3_sha256": target["executable_sha256"]}}}
@@ -89,6 +90,7 @@ class NativeProfileTests(unittest.TestCase):
                                                    service.pipe_name, "11", service.profile["dll"]["path"]])
             self.assertEqual(arguments[0][0], service.pipe_name)
             self.assertEqual(arguments[0][1]["save_dir"], str(Path(service.profile["userdir"]) / "save games"))
+            self.assertEqual(arguments[0][1]["episode_projection"], "native_campaign")
             self.assertEqual(backend.polls, [service.profile["guard"]["screen_task_id"]])
             self.assertIs(result, service.attach())
             self.assertEqual(len(backend.injections), 1)
@@ -171,13 +173,15 @@ class NativeProfileTests(unittest.TestCase):
             self.assertEqual(len(backend.injections), 1)
 
     def test_native_wrong_pid_build_or_unavailable_clock_cannot_verify_attach(self):
-        for mode in ("pid", "hash", "version", "adapter", "paused"):
+        for mode in ("pid", "hash", "version", "adapter", "paused", "projection"):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
                 service, backend, driver, _, _ = service_fixture(Path(temporary))
                 if mode == "pid":
                     driver.snapshot["diagnostics"]["bridge_pid"] = 99
                 elif mode == "paused":
                     driver.snapshot["paused"] = None
+                elif mode == "projection":
+                    driver.snapshot["episode_projection"] = "one_life"
                 else:
                     field = {"hash": "expected_ck3_sha256", "version": "expected_ck3_version", "adapter": "game_adapter_status"}[mode]
                     driver.snapshot["diagnostics"]["hello"][field] = "other"
