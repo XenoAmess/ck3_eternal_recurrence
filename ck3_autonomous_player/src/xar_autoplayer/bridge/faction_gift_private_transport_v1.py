@@ -1,8 +1,9 @@
 """Scoped private native read for the unadvertised faction gift candidate.
 
-Normal GameplayBridgeService planning may consume this same-frame query. It
-does not expose an action step or submit a gift while the cold recovery query
-is absent from the exact-build native bridge.
+Normal GameplayBridgeService planning may consume this same-frame query.
+The exact-build native adapter selects the provider; the stable query DTO
+is also used by the separate pending, receipt and cold-recovery route. This
+function reads the candidate and never submits a gift.
 """
 
 from __future__ import annotations

@@ -11,6 +11,12 @@ from __future__ import annotations
 import re
 from typing import Final
 
+from .version_identity import (
+    CK3_12002,
+    require_exact_native_backend,
+    require_exact_native_build,
+)
+
 
 QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY: Final = (
     "game.command.query-player-faction-alerts-v1"
@@ -22,6 +28,9 @@ PLAYER_FACTION_ALERTS_V1_EXECUTABLE_SHA256: Final = (
 )
 PLAYER_FACTION_ALERTS_V1_BACKEND_ID: Final = (
     "ck3-1.19.0.6-native-player-faction-alerts-v1"
+)
+PLAYER_FACTION_ALERTS_V1_12002_BACKEND_ID: Final = (
+    CK3_12002.backend_id("player-faction-alerts-v1")
 )
 PLAYER_FACTION_ALERTS_V1_CONTRACT_STAGE: Final = (
     "targeting_count_live_rows_and_county_fixture_pending_native_readers"
@@ -110,11 +119,6 @@ _PROVENANCE_FIELDS: Final = {
     "game_version",
     "executable_sha256",
     "backend_id",
-}
-_PROVENANCE_VALUES: Final = {
-    "game_version": PLAYER_FACTION_ALERTS_V1_GAME_VERSION,
-    "executable_sha256": PLAYER_FACTION_ALERTS_V1_EXECUTABLE_SHA256,
-    "backend_id": PLAYER_FACTION_ALERTS_V1_BACKEND_ID,
 }
 _UNAVAILABLE_REASONS: Final = {
     "reader_not_implemented",
@@ -223,9 +227,17 @@ def _sorted_unique_ids(
 def _provenance(value: object) -> dict[str, str]:
     if not isinstance(value, dict) or set(value) != _PROVENANCE_FIELDS:
         raise ValueError("provenance must contain exactly the v1 fields")
-    if any(value.get(key) != expected for key, expected in _PROVENANCE_VALUES.items()):
-        raise ValueError("provenance does not match the frozen exact build")
-    return {key: str(value[key]) for key in _PROVENANCE_VALUES}
+    build = require_exact_native_backend(
+        value.get("game_version"),
+        value.get("executable_sha256"),
+        value.get("backend_id"),
+        suffix="player-faction-alerts-v1",
+    )
+    return {
+        "game_version": build.game_version,
+        "executable_sha256": build.executable_sha256,
+        "backend_id": build.backend_id("player-faction-alerts-v1"),
+    }
 
 
 def _targeting_faction(value: object, index: int) -> dict[str, object]:
@@ -454,6 +466,8 @@ def normalize_player_faction_alerts_v1(
     *,
     expected_date_raw: int,
     expected_snapshot_revision: int,
+    expected_game_version: object = None,
+    expected_executable_sha256: object = None,
 ) -> dict[str, object]:
     """Validate and normalize one exact paused faction-alert frame."""
 
@@ -473,6 +487,19 @@ def normalize_player_faction_alerts_v1(
     if value.get("snapshot_revision") != expected_snapshot_revision:
         raise ValueError("snapshot_revision does not match the paused frame")
     provenance = _provenance(value.get("provenance"))
+    if (
+        expected_game_version is not None
+        or expected_executable_sha256 is not None
+    ):
+        expected_build = require_exact_native_build(
+            expected_game_version, expected_executable_sha256
+        )
+        if (
+            provenance["game_version"] != expected_build.game_version
+            or provenance["executable_sha256"]
+            != expected_build.executable_sha256
+        ):
+            raise ValueError("faction source does not match the connected exact build")
     readiness = _readiness(value.get("readiness"))
     reasons = _component_reasons(value.get("component_unavailable_reasons"))
     planner = _planner_projection(value.get("planner_projection"))
@@ -675,6 +702,7 @@ def validate_player_faction_war_handoffs_v1(
 
 __all__ = [
     "PLAYER_FACTION_ALERTS_V1_BACKEND_ID",
+    "PLAYER_FACTION_ALERTS_V1_12002_BACKEND_ID",
     "PLAYER_FACTION_ALERTS_V1_EXECUTABLE_SHA256",
     "PLAYER_FACTION_ALERTS_V1_FIXED_POINT_SCALE",
     "PLAYER_FACTION_ALERTS_V1_CONTRACT_STAGE",

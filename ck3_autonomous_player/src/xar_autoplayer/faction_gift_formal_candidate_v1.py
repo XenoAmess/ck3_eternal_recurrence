@@ -91,7 +91,7 @@ def choose_private_faction_gift_candidate_v1(
         # The exact targeting vector exists, but its native selector found no
         # direct landed recipient in the public same-frame vassal list.
         return {"status": "no_legal_candidate", "reason": "no_direct_landed_member"}
-    if status != "preview_ready" or not isinstance(native, Mapping):
+    if status not in {"preview_ready", "no_legal_candidate"} or not isinstance(native, Mapping):
         return {"status": "unavailable", "reason": "native_preview_not_terminal"}
     if native.get("failure_flags") != 0 or native.get("completion") != "preview_ready":
         return {"status": "unavailable", "reason": "native_preview_receiver_red"}

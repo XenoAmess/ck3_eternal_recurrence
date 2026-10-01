@@ -1,0 +1,1 @@
+{"type":"command_result","protocol_version":1,"request_id":"status-available-pending","ok":true,"result":{"private_council_transport":true,"advertised":false,"step":"private-council-application-main-status-v1","status":"pending"}}

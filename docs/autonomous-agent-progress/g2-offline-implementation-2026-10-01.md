@@ -216,3 +216,9 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 中央13文件加既有gold getter2文件接入新版本非战争callback、worker permits、拥有型mailbox和实际CMake target；候选40 ON/4 OFF，默认全OFF，冻结warcash/prewar/alliance/religion查询不进入本轮target。实际dispatcher default63/selected186检查通过，注册31callback通过，公共Snapshot实际gold/prestige/piety/stress及负债leaf夹具通过。修正Gift/Sway selector、Council status零revision轮询、Crozier成本与guest provenance installer；不fullread status，不把ACK当结果。gold只复用已完成treasury getter，未继续战争研究。最终双配置DLL/injector64jobs正在收口；source/binary最终pin和paused/live资格另按实际回执。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\central-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 15:59:19 Council faction and gift actual native SDK contracts
+
+32个leaf/test/真实fixture/docs文件闭合实际议会query→typed assign→后续独立incumbent receipt、实际派系DTO和赠礼preview/提交/独立gold-opinion/faction/cold读取。实际复现并最小修复完整CanSend=false被误判不可用、显式gold reserve被旧10m硬编码覆盖；ordinary默认10m保持。24个unique案例与2 subtests通过（首轮16PASS/6FAIL保留，失败7和受影响旧默认2聚焦通过），不是重跑所有旧矩阵。SDK fake PID和synthetic storage范围明确；自然paused/material/next/newPID资格仍待。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-council-gift\handoff-manifest.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。

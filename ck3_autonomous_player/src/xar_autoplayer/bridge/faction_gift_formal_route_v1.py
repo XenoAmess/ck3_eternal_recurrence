@@ -1,9 +1,9 @@
 """Controlled formal route for one exact-build faction mitigation gift.
 
-This module deliberately stays outside public capabilities and MCP.  It owns
-the durable pending identity before the one-shot native submit, then routes a
-same-process receipt or an independent cold-process fact read.  Missing facts
-remain unresolved and never authorize a duplicate gift.
+This module owns the durable pending identity before native submit, then
+routes a same-process receipt or an independent cold-process fact read. The
+opt-in private MCP tools reuse these functions; ordinary planning keeps its
+existing separate opt-in. Missing facts never authorize a duplicate gift.
 """
 
 from __future__ import annotations
@@ -270,7 +270,7 @@ def submit_faction_gift_private_v1(
         state_dir, request_id=request_id, episode_run_id=episode,
         source_round_id=round_id, source_bridge_pid=pid,
         source_bridge_creation_date=creation, observation=observation,
-        minimum_gold_reserve_raw=MINIMUM_GOLD_RESERVE_RAW,
+        minimum_gold_reserve_raw=choice["minimum_gold_reserve_raw"],
         checkpoint_sha256_before_submit=digest,
     )
     result = _send(driver, SUBMIT_STEP, {

@@ -1,9 +1,9 @@
 """Strict public contract for one paused steward-candidate frame.
 
-The native producer owns CK3 legality and skill enrichment.  Python only
-validates the frozen Council19 payload and keeps the formal planner bound to
-that exact paused frame.  Appointment remains fail-closed until a separate
-semantic action is implemented.
+The native producer owns CK3 legality and skill enrichment. Python validates
+the stable Council19 payload and keeps the planner bound to its exact paused
+frame. Native 1.19.0.6 and 1.20.0.2 adapters publish this same DTO; the separate
+Council22 action verifies appointment through a later incumbent receipt.
 """
 
 from __future__ import annotations

@@ -32,6 +32,7 @@ from xar_autoplayer.bridge.player_faction_alerts_contract import (
     validate_player_faction_war_handoffs_v1,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.version_identity import CK3_11906, CK3_12002
 
 
 NATIVE_REVISION = 41
@@ -264,6 +265,50 @@ class PlayerFactionAlertsContractTests(unittest.TestCase):
             normalized["planner_projection"]["war_handoff_faction_ids"],
             [773],
         )
+
+    def test_crozier_source_uses_same_dto_and_connected_build_binding(self) -> None:
+        frame = _full_frame()
+        frame["provenance"] = {
+            "game_version": CK3_12002.game_version,
+            "executable_sha256": CK3_12002.executable_sha256,
+            "backend_id": CK3_12002.backend_id("player-faction-alerts-v1"),
+        }
+        normalized = normalize_player_faction_alerts_v1(
+            frame,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+            expected_game_version=CK3_12002.game_version,
+            expected_executable_sha256=CK3_12002.executable_sha256,
+        )
+        self.assertEqual(normalized["targeting_factions"], frame["targeting_factions"])
+        self.assertEqual(normalized["planner_projection"], frame["planner_projection"])
+        self.assertEqual(normalized["provenance"], frame["provenance"])
+
+    def test_valid_legacy_source_cannot_bind_to_crozier_connection(self) -> None:
+        with self.assertRaisesRegex(ValueError, "connected exact build"):
+            normalize_player_faction_alerts_v1(
+                _full_frame(),
+                expected_date_raw=DATE_RAW,
+                expected_snapshot_revision=NATIVE_REVISION,
+                expected_game_version=CK3_12002.game_version,
+                expected_executable_sha256=CK3_12002.executable_sha256,
+            )
+
+    def test_crozier_source_rejects_legacy_sha_or_backend(self) -> None:
+        for field, legacy_value in (
+            ("executable_sha256", CK3_11906.executable_sha256),
+            ("backend_id", CK3_11906.backend_id("player-faction-alerts-v1")),
+        ):
+            with self.subTest(field=field):
+                frame = _full_frame()
+                frame["provenance"] = {
+                    "game_version": CK3_12002.game_version,
+                    "executable_sha256": CK3_12002.executable_sha256,
+                    "backend_id": CK3_12002.backend_id("player-faction-alerts-v1"),
+                }
+                frame["provenance"][field] = legacy_value
+                with self.assertRaisesRegex(ValueError, "frozen exact build"):
+                    self._normalize(frame)
 
     def test_component_partial_keeps_count_and_fails_planner_closed(self) -> None:
         normalized = self._normalize(_partial_frame())
