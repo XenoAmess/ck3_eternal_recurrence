@@ -1,0 +1,161 @@
+{
+  "contract": "ck3_12002_realm_law_final_terms_abi",
+  "readiness": "static-ready",
+  "build": {
+    "game_version": "1.20.0.2",
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "file_size": 101039736,
+    "image_base": "0x140000000",
+    "image_size": "0x61c5000"
+  },
+  "entrypoints": {
+    "gui_can_enact": "0x41D5270",
+    "candidate_kind_allowed": "0x30B2B40",
+    "already_active": "0x2BA97F0",
+    "engine_final_can_enact": "0x30B1B70",
+    "full_can_enact_and_reason": "0x30B1CE0",
+    "law_numeric_cost": "0x30B26D0",
+    "engine_cost_evaluator": "0x310CEE0",
+    "native_reason_destructor": "0x856050",
+    "cost_block_offset_from_law": "0xC40",
+    "native_cost_raw_scale": 100000,
+    "native_cost_slot_count": 10
+  },
+  "native_cost_slots": [
+    "gold",
+    "prestige",
+    "piety",
+    "renown",
+    "influence",
+    "herd",
+    "treasury",
+    "treasury_or_gold",
+    "merit",
+    "barter_goods"
+  ],
+  "instruction_spans": [
+    {
+      "name": "gui_can_enact",
+      "rva": "0x41d5270",
+      "end_rva": "0x41d5319",
+      "sha256": "9b0213c4578151747087eb4012c1522d74b37b867ee0a4456e71e30cc814dded"
+    },
+    {
+      "name": "candidate_kind_with_jump_table",
+      "rva": "0x30b2b40",
+      "end_rva": "0x30b2b90",
+      "sha256": "2526a678f890a6694fa52ef34a46085088ce5f7931734119247db387c3610c0f"
+    },
+    {
+      "name": "already_active",
+      "rva": "0x2ba97f0",
+      "end_rva": "0x2ba9881",
+      "sha256": "a72c8ba14ec9307f1eb11a105f168ea77e45ae405f523671ed3db6091391d179"
+    },
+    {
+      "name": "engine_final_can_enact",
+      "rva": "0x30b1b70",
+      "end_rva": "0x30b1cdd",
+      "sha256": "b455916f55006ac77c69d4232383d6e0793b24883a7f26993a3f2e1490fade91"
+    },
+    {
+      "name": "full_can_enact_and_reason",
+      "rva": "0x30b1ce0",
+      "end_rva": "0x30b1e15",
+      "sha256": "d15a328bc170fff6b7be0c2b8b8f084315dcc9354e5492f68c0b7d9a4ee741df"
+    },
+    {
+      "name": "law_numeric_cost",
+      "rva": "0x30b26d0",
+      "end_rva": "0x30b27ed",
+      "sha256": "59c3d0011ba318c2d9d3c2dd36dfce62a1fcee7d33f834092863a60b589c96e5"
+    },
+    {
+      "name": "engine_cost_evaluator",
+      "rva": "0x310cee0",
+      "end_rva": "0x310d0f1",
+      "sha256": "d860e437ad5d5f015d6cd143dd5b33ce21f9796fc5f0180b8f996edce08f3c83"
+    },
+    {
+      "name": "native_reason_destructor",
+      "rva": "0x856050",
+      "end_rva": "0x8560ae",
+      "sha256": "cda9b32b8589f906d343c52deeb909c2a63cde5954ff6568851a6d3ec66d8545"
+    }
+  ],
+  "relative_calls": [
+    {
+      "site": "0x41d52db",
+      "target": "0x30b2b40"
+    },
+    {
+      "site": "0x41d52ea",
+      "target": "0x2ba97f0"
+    },
+    {
+      "site": "0x41d52fc",
+      "target": "0x30b1b70"
+    },
+    {
+      "site": "0x30b1c32",
+      "target": "0x30b26d0"
+    },
+    {
+      "site": "0x30b1c45",
+      "target": "0x310e710"
+    },
+    {
+      "site": "0x30b1d09",
+      "target": "0x30b2b40"
+    },
+    {
+      "site": "0x30b1d1c",
+      "target": "0x2ba97f0"
+    },
+    {
+      "site": "0x30b1e0e",
+      "target": "0x30b1b70"
+    },
+    {
+      "site": "0x30b2770",
+      "target": "0x310cee0"
+    },
+    {
+      "site": "0x30b1de9",
+      "target": "0x856050"
+    }
+  ],
+  "semantic_instructions": [
+    {
+      "rva": "0x41d52ce",
+      "bytes": "4883bbc001000000",
+      "meaning": "played character context is CCharacter+0x1C0"
+    },
+    {
+      "rva": "0x30b1c1f",
+      "bytes": "488d96400c0000",
+      "meaning": "final evaluator receives law+0xC40 compiled cost block"
+    },
+    {
+      "rva": "0x30b2b40",
+      "bytes": "0fb681d80b0000",
+      "meaning": "candidate kind is law byte+0xBD8"
+    },
+    {
+      "rva": "0x310d025",
+      "bytes": "83fb0a",
+      "meaning": "ten native cost ordinals"
+    },
+    {
+      "rva": "0x310d0bd",
+      "bytes": "4869c8a0860100",
+      "meaning": "native output scale 100000"
+    },
+    {
+      "rva": "0x30b26e8",
+      "bytes": "488d8aa0090000",
+      "meaning": "compiled cost includes ten 0xF0 authored blocks after header"
+    }
+  ],
+  "boundary": "Only exact-build offline read ABI; paused native values, payment and law enact/succession outcome require live acceptance."
+}

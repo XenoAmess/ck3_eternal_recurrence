@@ -1,0 +1,452 @@
+{
+  "contract": "ck3_12002_realm_law_enact_mutation_v1_abi",
+  "contract_version": 1,
+  "status": "exact-build static-ready; current-build paused submission and resulting law/resources/succession are pending",
+  "build": {
+    "game_version": "1.20.0.2",
+    "executable": "binaries/ck3.exe",
+    "architecture": "x86_64",
+    "machine": "0x8664",
+    "preferred_image_base": "0x140000000",
+    "image_size": "0x61c5000",
+    "file_size": 101039736,
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "command": {
+    "size": "0x30",
+    "primary_vtable_rva": "0x47600F8",
+    "secondary_vtable_rva": "0x4760190",
+    "actor_id_offset": "0x20",
+    "law_pointer_offset": "0x28",
+    "secondary_this_offset": "0x18",
+    "submit_flags": "0x0E",
+    "class_key": "0x2FF3"
+  },
+  "instruction_spans": [
+    {
+      "name": "popup_confirm_add_law_submit",
+      "rva": "0x41d49c0",
+      "end_rva": "0x41d4a17",
+      "size": "0x57",
+      "sha256": "4A220AF435629A4640699DCCE8215331E49F380D7C885A1C278BFEFACC6D0E74",
+      "runtime_functions": [
+        [
+          "0x41d49c0",
+          "0x41d4a17",
+          "0x5185de8"
+        ]
+      ]
+    },
+    {
+      "name": "popup_can_confirm",
+      "rva": "0x41d4a20",
+      "end_rva": "0x41d4abb",
+      "size": "0x9b",
+      "sha256": "29E7686159CC2354945F09DB9B8480EB1F4CDEA4ACA113285D58CC3CA3A9D1DD",
+      "runtime_functions": [
+        [
+          "0x41d4a20",
+          "0x41d4abb",
+          "0x5109c60"
+        ]
+      ]
+    },
+    {
+      "name": "engine_final_law_evaluator",
+      "rva": "0x30b1b70",
+      "end_rva": "0x30b1cdd",
+      "size": "0x16d",
+      "sha256": "B455916F55006AC77C69D4232383D6E0793B24883A7F26993A3F2E1490FADE91",
+      "runtime_functions": [
+        [
+          "0x30b1b70",
+          "0x30b1cdd",
+          "0x52d98c0"
+        ]
+      ]
+    },
+    {
+      "name": "engine_final_command_validator",
+      "rva": "0x30b1ce0",
+      "end_rva": "0x30b1e15",
+      "size": "0x135",
+      "sha256": "D15A328BC170FFF6B7BE0C2B8B8F084315DCC9354E5492F68C0B7D9A4EE741DF",
+      "runtime_functions": [
+        [
+          "0x30b1ce0",
+          "0x30b1e15",
+          "0x52d98f4"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_command_executor",
+      "rva": "0x288d9b0",
+      "end_rva": "0x288da39",
+      "size": "0x89",
+      "sha256": "203CE00F45D17999F743520CF43A140A847151271D58805A66EFDC630D6C3B66",
+      "runtime_functions": [
+        [
+          "0x288d9b0",
+          "0x288da39",
+          "0x527bb98"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_command_validator_adapter",
+      "rva": "0x288da40",
+      "end_rva": "0x288da8e",
+      "size": "0x4e",
+      "sha256": "F8450F331DE36FFE76712F0FC483B83789EE2E00CB3BA0FAAABF99ECA2ACA6B8",
+      "runtime_functions": []
+    },
+    {
+      "name": "add_law_command_heap_clone",
+      "rva": "0x2896230",
+      "end_rva": "0x28962ac",
+      "size": "0x7c",
+      "sha256": "BCDB56996055EB07E5B949821A282A5C9D569401C2998EC5333CDDCB4C6C6BC3",
+      "runtime_functions": [
+        [
+          "0x2896230",
+          "0x28962ac",
+          "0x5109c60"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_command_class_key",
+      "rva": "0x28962b0",
+      "end_rva": "0x28962b6",
+      "size": "0x6",
+      "sha256": "A3E5408F5F55BE0748CD4AAF0E6B33C439B4C69719D5DCE93911B1D4F40730B5",
+      "runtime_functions": []
+    },
+    {
+      "name": "add_law_command_serializer",
+      "rva": "0x288da90",
+      "end_rva": "0x288db2f",
+      "size": "0x9f",
+      "sha256": "F68077E743B70FDCEA711CEFA0468CE89531B2A62A4B611EFFE3BDEB747B7210",
+      "runtime_functions": [
+        [
+          "0x288da90",
+          "0x288db2f",
+          "0x5109c60"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_command_deserializer",
+      "rva": "0x288db30",
+      "end_rva": "0x288dbf9",
+      "size": "0xc9",
+      "sha256": "BE5BE1D997306E61D6E25AD4F0E324E69F3F133F74293DBA5FBA18A620301A17",
+      "runtime_functions": [
+        [
+          "0x288db30",
+          "0x288db68",
+          "0x512b7e8"
+        ],
+        [
+          "0x288db68",
+          "0x288dbd0",
+          "0x527bbb8"
+        ],
+        [
+          "0x288dbd0",
+          "0x288dbe3",
+          "0x527bbd0"
+        ],
+        [
+          "0x288dbe3",
+          "0x288dbf9",
+          "0x527bbe8"
+        ]
+      ]
+    },
+    {
+      "name": "gui_submit_clone_and_queue_void_wrapper",
+      "rva": "0x9e16b0",
+      "end_rva": "0x9e1728",
+      "size": "0x78",
+      "sha256": "5048D599B10A65E292FC7C179CF2516943FEC8CBB30D29D73BEEA4844C828C18",
+      "runtime_functions": [
+        [
+          "0x9e16b0",
+          "0x9e1728",
+          "0x511eb2c"
+        ]
+      ]
+    },
+    {
+      "name": "locked_command_queue",
+      "rva": "0x37f06f0",
+      "end_rva": "0x37f07ea",
+      "size": "0xfa",
+      "sha256": "535C67B33DA7E1CDB8F1838476B2064A6DD4C09EF3EFCEDA33E5E9D28D34A2BE",
+      "runtime_functions": [
+        [
+          "0x37f06f0",
+          "0x37f07ea",
+          "0x535f2f8"
+        ]
+      ]
+    },
+    {
+      "name": "law_mutation_context_constructor",
+      "rva": "0x28a94f0",
+      "end_rva": "0x28a958f",
+      "size": "0x9f",
+      "sha256": "0EA47055418DBD8CB069FE99B499C2290C94FB3AD4972B0D8B60744335019296",
+      "runtime_functions": [
+        [
+          "0x28a94f0",
+          "0x28a958f",
+          "0x51208fc"
+        ]
+      ]
+    },
+    {
+      "name": "law_mutation_select_group",
+      "rva": "0x28a96e0",
+      "end_rva": "0x28a9788",
+      "size": "0xa8",
+      "sha256": "23825069C72071F85A263B8DA0BEEE6C93E5774DDA6DF1D9164EDAC53FB43C6E",
+      "runtime_functions": [
+        [
+          "0x28a96e0",
+          "0x28a9701",
+          "0x5109cc0"
+        ],
+        [
+          "0x28a9701",
+          "0x28a977d",
+          "0x527db7c"
+        ],
+        [
+          "0x28a977d",
+          "0x28a9788",
+          "0x527db90"
+        ]
+      ]
+    },
+    {
+      "name": "law_mutation_apply_logical_span",
+      "rva": "0x28a9790",
+      "end_rva": "0x28a994a",
+      "size": "0x1ba",
+      "sha256": "8994A58664734C4658DCE70139831356E37F21D72ED0C574D8C06F2032029B44",
+      "runtime_functions": [
+        [
+          "0x28a9790",
+          "0x28a9819",
+          "0x5256798"
+        ],
+        [
+          "0x28a9819",
+          "0x28a9827",
+          "0x527dba0"
+        ],
+        [
+          "0x28a9827",
+          "0x28a98c0",
+          "0x527dbb4"
+        ],
+        [
+          "0x28a98c0",
+          "0x28a9921",
+          "0x527dbc8"
+        ],
+        [
+          "0x28a9921",
+          "0x28a994a",
+          "0x527dbd8"
+        ]
+      ]
+    },
+    {
+      "name": "law_mutation_finalizer",
+      "rva": "0x28a9590",
+      "end_rva": "0x28a96de",
+      "size": "0x14e",
+      "sha256": "F8BF78D21B620DA92594FAE6E0D0EE288DFA0A402FD93063A1061F68BEA42EE3",
+      "runtime_functions": [
+        [
+          "0x28a9590",
+          "0x28a96de",
+          "0x527db64"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_command_destructor",
+      "rva": "0x9d1560",
+      "end_rva": "0x9d158b",
+      "size": "0x2b",
+      "sha256": "B366E6937D2ABABA61AAC02C64B2AE8373DB5D2CAE01E0119C700A11F27C9235",
+      "runtime_functions": [
+        [
+          "0x9d1560",
+          "0x9d158b",
+          "0x51094f0"
+        ]
+      ]
+    }
+  ],
+  "relative_edges": [
+    {
+      "name": "confirm_primary_vtable",
+      "instruction_rva": "0x41d49db",
+      "instruction_size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x47600f8"
+    },
+    {
+      "name": "confirm_secondary_vtable",
+      "instruction_rva": "0x41d49e7",
+      "instruction_size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x4760190"
+    },
+    {
+      "name": "confirm_calls_void_wrapper",
+      "instruction_rva": "0x41d4a0c",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x9e16b0"
+    },
+    {
+      "name": "wrapper_calls_locked_queue",
+      "instruction_rva": "0x9e16f3",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x37f06f0"
+    },
+    {
+      "name": "wrapper_uses_manager",
+      "instruction_rva": "0x9e16ec",
+      "instruction_size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x5cc1240"
+    },
+    {
+      "name": "validator_reaches_final_command_evaluator",
+      "instruction_rva": "0x288da89",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x30b1ce0"
+    },
+    {
+      "name": "command_validator_reaches_final_law_evaluator",
+      "instruction_rva": "0x30b1e0e",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x30b1b70"
+    },
+    {
+      "name": "popup_reuses_final_law_evaluator",
+      "instruction_rva": "0x41d4aab",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x30b1b70"
+    },
+    {
+      "name": "executor_constructs_mutation_context",
+      "instruction_rva": "0x288da15",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a94f0"
+    },
+    {
+      "name": "executor_selects_same_group",
+      "instruction_rva": "0x288da23",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a96e0"
+    },
+    {
+      "name": "executor_finalizes_mutation",
+      "instruction_rva": "0x288da2e",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a9590"
+    },
+    {
+      "name": "selector_calls_apply",
+      "instruction_rva": "0x28a9773",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a9790"
+    }
+  ],
+  "absolute_pointer_edges": [
+    {
+      "name": "primary_destructor",
+      "pointer_rva": "0x47600f8",
+      "target_rva": "0x9d1560"
+    },
+    {
+      "name": "primary_validator",
+      "pointer_rva": "0x4760128",
+      "target_rva": "0x288da40"
+    },
+    {
+      "name": "primary_clone",
+      "pointer_rva": "0x4760138",
+      "target_rva": "0x2896230"
+    },
+    {
+      "name": "primary_serializer",
+      "pointer_rva": "0x4760178",
+      "target_rva": "0x288da90"
+    },
+    {
+      "name": "primary_deserializer",
+      "pointer_rva": "0x4760180",
+      "target_rva": "0x288db30"
+    },
+    {
+      "name": "secondary_executor",
+      "pointer_rva": "0x4760198",
+      "target_rva": "0x288d9b0"
+    },
+    {
+      "name": "popup_confirm",
+      "pointer_rva": "0x49f20b8",
+      "target_rva": "0x41d49c0"
+    },
+    {
+      "name": "popup_can_confirm",
+      "pointer_rva": "0x49f20a8",
+      "target_rva": "0x41d4a20"
+    }
+  ],
+  "ascii_evidence": [
+    {
+      "name": "add_law_command_rtti",
+      "rva": "0x5a04f88",
+      "value": ".?AVCAddLawCommand@@"
+    },
+    {
+      "name": "enact_popup_rtti",
+      "rva": "0x5c551c8",
+      "value": ".?AVCEnactLawConfirmationPopup@@"
+    }
+  ],
+  "uint64_evidence": [],
+  "calling_conventions": {
+    "clone": "void** __fastcall(void* command, void** out_clone); returns out_clone, writes newly allocated 0x30-byte command",
+    "validator": "bool __fastcall(void* command, void* optional_error_sink); AL result",
+    "locked_queue": "bool __fastcall(void* manager, void** owned_command, uint32_t flags, void* unused_argument, void** unused_result); consumes/zeros owned_command on rejection and queue retention",
+    "gui_wrapper": "void __fastcall(void* command, uint32_t flags); cloned queue result is not preserved in AL",
+    "mutation_executor": "void __fastcall(void* secondary_this); secondary_this is command+0x18"
+  },
+  "semantic_boundary": [
+    "native queue acceptance is only submitted_verification_pending",
+    "active-law key/resource balances/title succession must be independently observed later",
+    "no policy score or forced Crown Authority enactment is added",
+    "law pointers are immediate submit leases only"
+  ]
+}

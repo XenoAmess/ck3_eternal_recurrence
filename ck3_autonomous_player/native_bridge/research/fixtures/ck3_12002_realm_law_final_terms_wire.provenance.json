@@ -1,0 +1,21 @@
+{
+  "schema": "xar.ck3_12002_realm_law_wire_fixture_provenance.v1",
+  "readiness": "static-ready",
+  "producer": "actual new native-layout memory reader, final term reader and JSON serializer with explicitly synthetic native call operations",
+  "source_fixture": true,
+  "paused_live": false,
+  "game_started": false,
+  "running_process_access": false,
+  "game_version": "1.20.0.2",
+  "exact_build_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+  "payload_sha256": "2fca001023f181a7a634af9b5c5f140ce986dbbb6128561044f3f318acc68e9e",
+  "source_sha256": {
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_realm_law_wire_test.cpp": "db5082a7328b8fac08eabf0c9247ef9b0d674e740f83bfa99988c7ffb2aedddb",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_realm_law.cpp": "04ef24d5fada77865aa81b95ffeaf24fe416b8ed8634b08a4858963ae8f62fe3",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_realm_law_active_collection.cpp": "6cbe885ad8f957c20352a04ee2ae421f92d59773a19ed5b00ef6345d68a11870",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_realm_law_candidate_collection.cpp": "1f275c0d81087490419c30eec43a3076c8c36c0b7afa6ce0cdadb8fc79ea8813",
+    "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_realm_law_final_terms.cpp": "bd44d69b93a0daa4ab840457582b3f40f3d07a2f0dbb187be97cfd2ff813512d"
+  },
+  "artifact": "Z:\\ck3_mod_rewrite\\artifacts\\g2-offline-2026-10-01\\law\\terms\\wire-fix\\wire-O2\\realm-law-final-terms-wire.json",
+  "boundary": "Synthetic actor/date/costs/reasons exercise the actual provider and serializer; they do not represent observed CK3 state."
+}

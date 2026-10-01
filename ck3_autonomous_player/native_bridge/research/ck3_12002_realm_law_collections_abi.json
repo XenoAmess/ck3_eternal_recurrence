@@ -1,0 +1,106 @@
+{
+  "contract": "ck3_12002_realm_law_collections_abi",
+  "contract_version": 1,
+  "status": "exact-build static-ready provider; paused read validation pending",
+  "build": {
+    "game_version": "1.20.0.2",
+    "steam_build_id": "25588574",
+    "executable": "binaries/ck3.exe",
+    "size": 101039736,
+    "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
+  },
+  "read_only_chain": {
+    "played_character_law_context_offset": "0x1C0",
+    "law_collection_offset_from_context": "0x200",
+    "collection_data_pointer_offset": "0x00",
+    "collection_count_int32_offset": "0x0C",
+    "law_key_msvc_string_offset": "0x18",
+    "law_key_string_size_offset": "0x28",
+    "law_key_string_capacity_offset": "0x30",
+    "law_group_equality_field_offset": "0x40",
+    "law_group_equality_field_semantics": "CLawGroup pointer; +0x38 now native object magic",
+    "law_group_database_singleton_rva": "0x5D202F0",
+    "database_group_array_offset": "0x50",
+    "database_group_count_int32_offset": "0x5C",
+    "group_key_msvc_string_offset": "0x18",
+    "group_candidate_array_offset": "0x58",
+    "group_candidate_count_int32_offset": "0x64",
+    "read_only_group_allowlist": [
+      "crown_authority",
+      "succession_order_laws"
+    ]
+  },
+  "instruction_spans": [
+    {
+      "name": "actor_law_collection_getter",
+      "rva": "0x28b6200",
+      "end_rva": "0x28b6279",
+      "sha256": "9C258FCFEF6871C66297E4781C16BEC1FDB38B123EF20564E350BBE3CFABE483"
+    },
+    {
+      "name": "active_law_membership_lookup",
+      "rva": "0x2ba97f0",
+      "end_rva": "0x2ba9881",
+      "sha256": "A72C8BA14EC9307F1EB11A105F168EA77E45AE405F523671ED3DB6091391D179"
+    },
+    {
+      "name": "law_group_database_singleton_store",
+      "rva": "0x2e79490",
+      "end_rva": "0x2e794aa",
+      "sha256": "970D9FFDE1BC6C458025EE1CB51CA710C463F5FFD0401C0E45EA717C6AC77F32"
+    },
+    {
+      "name": "native_database_group_array",
+      "rva": "0x28a9b8d",
+      "end_rva": "0x28a9bed",
+      "sha256": "C82AA9E82F64E79675C595A0B3304972C1EB19DAA03744C6BB7EC109675D52AF"
+    },
+    {
+      "name": "active_law_group_pointer_match",
+      "rva": "0x28b6316",
+      "end_rva": "0x28b6345",
+      "sha256": "DEB1EC3FECA58B8825F322A8CCF534E7C3764A6302C99A23258AA06BBE1975F3"
+    },
+    {
+      "name": "group_candidate_array",
+      "rva": "0x30b39d0",
+      "end_rva": "0x30b3a52",
+      "sha256": "AC105A279024CA365230A94C4AFEA2B9DBFA9B0DC4D1188ACB06166976366C18"
+    },
+    {
+      "name": "law_key_string_constructor",
+      "rva": "0x30ae3c4",
+      "end_rva": "0x30ae3fe",
+      "sha256": "BEB829EA10A9F3D213F77282F7FB8BBF4B9D4CD94B23A2CAAD159F109962BE2C"
+    },
+    {
+      "name": "group_key_string",
+      "rva": "0x30b3adc",
+      "end_rva": "0x30b3aea",
+      "sha256": "CF47B8A32FB7F357B37F6A9E8BF4FBAA2139A93BC56CA90FA503635CC82180C4"
+    }
+  ],
+  "rtti_identity": {
+    "class": "CLawGroupDatabase",
+    "type_descriptor_rva": "0x5AB55C0",
+    "complete_object_locator_rva": "0x4F17AC0",
+    "vtable_rva": "0x488F900",
+    "constructor_rva": "0x2E79490",
+    "separate_law_database_singleton_rva": "0x5C67140"
+  },
+  "stock_inputs": [
+    {
+      "path": "common/laws/00_realm_laws.txt",
+      "sha256": "E44C43FAC8A2965F50B414863957339D3D86976560CB1F8EEE659A7BF4057E29"
+    },
+    {
+      "path": "common/laws/00_succession_laws.txt",
+      "sha256": "71C914A17BA184E2E00D0CFABE028B99DDED04E9B6AB11DB0E0ACFACDAF3CCAA"
+    }
+  ],
+  "remaining_live": [
+    "paused active/candidate equality against player realm",
+    "same-frame final terms integration",
+    "independent enacted-key and resource receipt after meaningful law choice"
+  ]
+}
