@@ -8765,6 +8765,8 @@ def _compact_m5_joint_collection(plan: dict[str, object]) -> dict[str, object] |
                   if isinstance(frame, dict) else None),
         "status": collection.get("status"),
         "producer_family_status": collection.get("producer_family_status"),
+        "producer_faction_status": collection.get("producer_faction_status"),
+        "incomplete_domains": copy.deepcopy(collection.get("incomplete_domains")),
         "collected_candidate_ids": (
             copy.deepcopy(candidate_ids[:8]) if isinstance(candidate_ids, list)
             else None),

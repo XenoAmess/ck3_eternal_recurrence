@@ -971,7 +971,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertIn("root_faction_facts_unknown", planned["plan"]["reason"])
         construction_query.assert_not_called()
 
-    def test_same_frame_unavailable_root_is_red_without_requery(self) -> None:
+    def test_same_frame_unavailable_root_holds_date_without_independent_proposal(self) -> None:
         snapshot = _snapshot(faction_count=0)
         snapshot["native_command_history"] = [{
             "command": ROOT_QUERY_STEP, "ok": True,
@@ -1000,6 +1000,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         ), mock.patch(
             "xar_autoplayer.m5_peacetime_proposal_sources_v1."
             "query_construction_private",
+            return_value=_construction(status="no_legal_budgeted_building"),
         ) as construction_query:
             planned = GameplayBridgeService(driver).plan_turn()
         self.assertIsNone(planned["plan"]["selected_step"])
@@ -1009,7 +1010,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                       planned["plan"]["reason"])
         self.assertEqual(planned["plan"]["m5_joint_status"],
                          "same_frame_faction_root_unavailable")
-        construction_query.assert_not_called()
+        construction_query.assert_called_once()
 
     def test_pending_construction_reaches_existing_receipt_before_joint_read(self) -> None:
         self.state_dir.mkdir(parents=True, exist_ok=True)

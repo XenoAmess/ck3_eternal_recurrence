@@ -210,10 +210,14 @@ def collect_m5_formal_proposals(
         "formal_action_ready": False,
     }
     producer = sources.get("producer")
-    if isinstance(producer, Mapping) and isinstance(
-        producer.get("family_status"), str
-    ):
-        result["producer_family_status"] = producer["family_status"]
+    if isinstance(producer, Mapping):
+        for domain in ("family", "faction"):
+            status = producer.get(f"{domain}_status")
+            if isinstance(status, str):
+                result[f"producer_{domain}_status"] = status
+        incomplete = producer.get("incomplete_domains")
+        if isinstance(incomplete, list):
+            result["incomplete_domains"] = deepcopy(incomplete)
     return result
 
 
@@ -350,9 +354,8 @@ def plan_m5_formal_query_only(
         }
 
     def root_unavailable(reason: str) -> dict[str, object]:
-        # The joint comparison cannot run without the faction root.  Keep it
-        # visibly unresolved and hold date advance; the service may still
-        # invoke the independent, native-gated family consumer on this frame.
+        # No independent ready proposal was observed. Keep the faction
+        # comparison unresolved and retain its existing date hold.
         return {
             **cleaned,
             "plan": {
@@ -449,25 +452,26 @@ def plan_m5_formal_query_only(
     # building. An opted-out gift has no resource claim or root dependency.
     root_status = (latest_same_frame_faction_root_v1(snapshot, history)["status"]
                    if gift_enabled else "gift_consumer_disabled")
+    completed_root_unavailable = (
+        gift_enabled and root_status == "same_frame_root_not_observed"
+        and _same_frame_root_returned_unavailable(snapshot, history)
+    )
     if gift_enabled and root_status == "same_frame_root_not_observed":
-        if _same_frame_root_returned_unavailable(snapshot, history):
-            return root_unavailable(
-                "M5 same-frame root returned unavailable; joint inputs remain RED"
-            )
-        if ROOT_QUERY_STEP not in available_steps:
+        if not completed_root_unavailable and ROOT_QUERY_STEP not in available_steps:
             return root_unavailable(
                 "M5 same-frame faction root is absent and its query is unavailable"
             )
-        return {
-            **cleaned,
-            "plan": {
-                **baseline,
-                "phase": "m5_joint_root_query",
-                "selected_step": ROOT_QUERY_STEP,
-                "reason": "observe same-frame feudal faction facts before joint spending",
-                "m5_joint_formal_action_ready": False,
-            },
-        }
+        if not completed_root_unavailable:
+            return {
+                **cleaned,
+                "plan": {
+                    **baseline,
+                    "phase": "m5_joint_root_query",
+                    "selected_step": ROOT_QUERY_STEP,
+                    "reason": "observe same-frame feudal faction facts before joint spending",
+                    "m5_joint_formal_action_ready": False,
+                },
+            }
     try:
         sources = reader(
             snapshot=deepcopy(dict(snapshot)),
@@ -605,6 +609,12 @@ def plan_m5_formal_query_only(
             },
         }
     if collection["status"] == "no_complete_feasible_proposal":
+        if completed_root_unavailable:
+            held = root_unavailable(
+                "M5 same-frame root returned unavailable; no independent proposal is ready"
+            )
+            held["plan"]["m5_joint_query_only"] = collection
+            return held
         return {
             **cleaned,
             "plan": {

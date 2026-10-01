@@ -34,7 +34,9 @@ from .player_child_default_formal_consumer import read_child_default_ledger
 from .bridge.observed_heir_marriage_private_action_v1 import (
     SUBMIT_STEP as FAMILY_SUBMIT_STEP,
 )
-from .m5_formal_proposal_collector import SOURCE_SCHEMA
+from .m5_formal_proposal_collector import (
+    SOURCE_SCHEMA, _same_frame_root_returned_unavailable,
+)
 from .m5_observed_opportunity_selector import observed_frame
 
 
@@ -74,9 +76,10 @@ def query_m5_peacetime_proposal_sources_v1(
     family_enabled = getattr(
         driver, "allow_private_family_marriage_formal_trial", False
     ) is True
-    family_ledger = (read_family_marriage_ledger(state_dir)
-                     if family_enabled else None)
-    pending_family = (family_ledger["pending"] if family_enabled else None)
+    # Turning off new family submissions does not cancel an already sent
+    # proposal. Its observed durable role claims still occupy this episode.
+    family_ledger = read_family_marriage_ledger(state_dir)
+    pending_family = family_ledger["pending"]
     family_claims = _pending_family_commitments(pending_family, frame)
     child_default_ledger = read_child_default_ledger(state_dir)
     pending_child_default = child_default_ledger["pending"]
@@ -120,7 +123,12 @@ def query_m5_peacetime_proposal_sources_v1(
                  if gift_enabled else None)
     root_status = (root_view.get("status") if isinstance(root_view, Mapping)
                    else "gift_consumer_disabled")
-    if gift_enabled and root_status not in {"known_empty", "targeting_present"}:
+    root_unavailable = (
+        gift_enabled and root_status == "same_frame_root_not_observed"
+        and _same_frame_root_returned_unavailable(snapshot, history)
+    )
+    if (gift_enabled and not root_unavailable
+            and root_status not in {"known_empty", "targeting_present"}):
         raise BridgeUnavailableError(
             "M5 peacetime source lacks a complete same-frame feudal faction root: "
             f"{root_status or 'unknown'}"
@@ -161,6 +169,15 @@ def query_m5_peacetime_proposal_sources_v1(
         faction = {
             "status": "consumer_disabled",
             "reason": "formal_gift_trial_off",
+            "public_capability_advertised": False,
+            "gift_submission_enabled": False,
+        }
+    elif root_unavailable:
+        # A completed unavailable read leaves diplomacy unresolved; it says
+        # nothing about an independently legal building on this peace frame.
+        faction = {
+            "status": "same_frame_root_unavailable",
+            "reason": "native_faction_root_unavailable",
             "public_capability_advertised": False,
             "gift_submission_enabled": False,
         }
@@ -274,7 +291,7 @@ def query_m5_peacetime_proposal_sources_v1(
         raise BridgeUnavailableError(
             "M5 peacetime faction ledger changed during readback"
         )
-    if family_enabled and read_family_marriage_ledger(state_dir) != family_ledger:
+    if read_family_marriage_ledger(state_dir) != family_ledger:
         raise BridgeUnavailableError(
             "M5 peacetime family ledger changed during readback"
         )
@@ -325,6 +342,7 @@ def query_m5_peacetime_proposal_sources_v1(
             "observed_player_army_count": 0,
             "construction_status": construction_status,
             "faction_status": faction.get("status"),
+            "incomplete_domains": ["diplomacy"] if root_unavailable else [],
             "family_status": family_status,
             "pending_family_commitment_source": (
                 "formal_pending_ledger" if pending_family is not None else None
@@ -333,8 +351,7 @@ def query_m5_peacetime_proposal_sources_v1(
                 "formal_pending_ledger" if pending_child_default is not None else None
             ),
             "pending_formal_ledgers_empty": (
-                (not family_enabled or family_ledger["pending"] is None)
-                and pending_child_default is None),
+                pending_family is None and pending_child_default is None),
             "formal_action_ready": False,
         },
     }
