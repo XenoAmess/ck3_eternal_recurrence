@@ -22,6 +22,7 @@ import run_ox_here_acceptance as harness
 import run_acceptance as acceptance
 import run_vivhite_acceptance as isolated
 import validate_tributary_expansion_directives_static as static_gate
+from ck3_installation import CURRENT_GAME_VERSION
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -179,7 +180,7 @@ def product_source_errors() -> list[str]:
         for token in (
             'version="1.0.0"',
             'name="Tributary Expansion Directives — 驱策朝贡国"',
-            'supported_version="1.19.0.6"',
+            f'supported_version="{CURRENT_GAME_VERSION}"',
         ):
             if token not in sanitized:
                 errors.append(f"product descriptor missing {token}")

@@ -971,3 +971,9 @@ R9结束后的实际接续文件为 `Z:/ck3_mod_rewrite_process_assets/g2-12002-
 3精确delta源，原v1实际sourceframe executableSHA为null、fixture误补字段已保留并撤回对应实机就绪判断；现在复用private_native_provenance(after)读取原始hello.expected_ck3_sha256/ck3_build_match。原始before/after/command_result零改写的唯一新case GREEN。其余shared与14case不变不重跑；root使用新冻结runtime，不热改旧L11。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\python-r11-real-hello-normalized.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 2026-10-02 00:30:34 Correct the actual CI supported-version assertion
+
+实际官方5e58/d47同一Step21 RED：runner仍strict要求1.19.0.6，而实际descriptor/fixture/staticgate已1.20.0.2。仅两行引用既有CURRENT_GAME_VERSION；唯一实际失败方法使用真实当前CI输入PASS0.440s。旧RED保留，root普通合并保留上游configured selector；新exact官方CI待回执。 精确source与测试账本：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ci-r11-tributary-supported-version-fix\delivery-result.json
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
