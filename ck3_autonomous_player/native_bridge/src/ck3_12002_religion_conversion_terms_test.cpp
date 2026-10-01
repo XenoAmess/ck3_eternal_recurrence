@@ -185,8 +185,8 @@ struct Pump {
     mailbox.tls_initialized_flag = reinterpret_cast<std::uintptr_t>(&initialized);
     mailbox.tls_context_getter = &FixtureTls;
     mailbox.executor_submission_enabled = true;
-    // The central owner registers a named conversion permit; fixture uses the existing primary permit.
-    mailbox.permitted_executor = &c::ExecutePlayerReligionConversionTermsMailbox12002;
+    // The production named conversion permit with fixture-owned memory.
+    mailbox.permitted_executor_religion_conversion12002 = &c::ExecutePlayerReligionConversionTermsMailbox12002;
     mailbox.iat_hook_installed = true;
     mailbox.state = api::MainThreadQueryMailboxStateV1::idle;
     for (unsigned i = 0; i < 2; ++i)

@@ -94,7 +94,7 @@ def main() -> int:
     result = {'status': 'GREEN', 'readiness': 'static-ready', 'live_verified': False,
         'local_ck3_touched': False, 'actual_core': True, 'actual_conversion_gates_provider': True,
         'actual_predicted_base_provider': True, 'actual_mailbox_submit_drain_wait_reclaim': True,
-        'actual_command_result_serializer': True, 'fixture_executor_permit': 'Existing offline primary slot; central uses independent named inputs slot',
+        'actual_command_result_serializer': True, 'fixture_executor_permit': 'Actual permitted_executor_religion_conversion_inputs12002 named slot with fixture-owned memory',
         'fixture_native_callbacks': 'Synthetic objects and native getter callback behavior in fixture-owned memory',
         'fixture_adapter_unwrap': 'Bare GameAdapter identity branch only; no WorkerAdapter implementation substituted',
         'compiler': 'MSVC /W4 /WX /Od and /O2', 'runs': runs,

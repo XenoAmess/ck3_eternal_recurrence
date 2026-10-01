@@ -166,7 +166,7 @@ struct Pump {
     mailbox.game_state_slot = reinterpret_cast<std::uintptr_t>(&fixture.state_ptr);
     mailbox.tls_initialized_flag = reinterpret_cast<std::uintptr_t>(&initialized);
     mailbox.tls_context_getter = &FixtureTls; mailbox.executor_submission_enabled = true;
-    mailbox.permitted_executor = &c::ExecutePlayerReligionConversionChoicesMailbox12002;
+    mailbox.permitted_executor_religion_conversion_choices12002 = &c::ExecutePlayerReligionConversionChoicesMailbox12002;
     mailbox.iat_hook_installed = true; mailbox.state = api::MainThreadQueryMailboxStateV1::idle;
     for (unsigned i = 0; i < 2; ++i)
       api::ObserveMainThreadPumpAndDrainV1(mailbox, mailbox.pump_exact_return_rva, GetCurrentThreadId());

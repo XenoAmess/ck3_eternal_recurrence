@@ -203,7 +203,7 @@ struct Pump {
     mailbox.tls_context_getter = &FixtureTls;
     mailbox.executor_submission_enabled = true;
     // Existing offline primary permit; central production uses the inputs named slot.
-    mailbox.permitted_executor = &c::ExecutePlayerReligionConversionInputsMailbox12002;
+    mailbox.permitted_executor_religion_conversion_inputs12002 = &c::ExecutePlayerReligionConversionInputsMailbox12002;
     mailbox.iat_hook_installed = true;
     mailbox.state = api::MainThreadQueryMailboxStateV1::idle;
     for (unsigned i = 0; i < 2; ++i)

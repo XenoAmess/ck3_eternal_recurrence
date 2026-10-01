@@ -96,7 +96,7 @@ def main() -> int:
         "local_ck3_touched": False, "actual_native_core": True, "actual_faith_and_rite_providers": True,
         "actual_mailbox_submit_drain_wait_reclaim": True, "actual_command_result_serializer": True,
         "fixture_native_callbacks": "Fixture-owned native callbacks and objects; no CK3 function calls",
-        "fixture_executor_permit": "Existing primary permit; production requires central named choices permit",
+        "fixture_executor_permit": "Actual permitted_executor_religion_conversion_choices12002 named slot with fixture-owned memory",
         "compiler": "MSVC /W4 /WX /Od and /O2", "runs": runs,
         "source_sha256": {str(path.relative_to(root)): digest(path) for path in pins}}
     (output / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

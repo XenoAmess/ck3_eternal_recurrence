@@ -520,3 +520,9 @@ CE1 当前构建的治疗与恢复只读 Handle→真实 mailbox→owner callbac
 已完成 exact-build 三个精确 virtual slots 的安装/卸载 helper：wrapper 在 typed original 执行前 CaptureAndRecord，原行为恰好透传一次，并恢复原指针与页保护。状态 static-ready。复用已有 MSVC /Od 与 /O2 /W4 /WX fixture，每模式 26 checks，覆盖 actual install/wrappers、成功/失败 query wires、toast/popup passthrough、detached unavailable 与 reinstall 生命周期。原 reader 的 196-check capture/recorder 矩阵没有重跑。仍需 root 的 shared/CMake/startstop 与 owned recorder 生命周期接线、DLL 构建、实机 paused source capture；独立 material/terminal 验证另行完成。owner 未报告失败 attempt。 本轮仅准备外部交付清单：owner 6 项源文件逐 SHA 核对一次，排除已提交 L2 中相同内容 0 项，本次待提交 6 项。owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\sway\completion-execution-install\delivery-result.json（SHA-256 09a8c363f31451edf5de7c57c8a652d8b1cb7c99f205f9af1cbe73589e39f2a9）。无 CK3/进程/pipe/UI/Steam 操作，无 Git 执行或共享源码/报告写入，没有新增 live、游戏日或 G2 计分。
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
+
+### 17:53:35 Conversion production named executor fixtures
+
+改宗terms/choices/inputs三个真实mailbox夹具改用生产提供的三个独立named executor slot，对应三个Python runner标签同步；本次六文件为source-pin delta，provider源码未变，旧artifact保留，domain owner未重跑provider矩阵。中央唯一affected O2实际named队列证据已附：三个程序各只执行一次，terms42检查/6回包、choices41/5、inputs51/6；原输出重解析修正backend前缀及revision709/801字面期望，attempt-001/002汇总器RED保留且没有EXE重跑/providerRED。状态static-ready，不添加改宗动作或G2/live成绩。未访问CK3/进程/pipe/UI/Steam，本执行者未运行测试/Git或写共享源码/报告。 Owner manifest：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-conversion\named-fixture-source-update.json SHA-256 c3440f1d776305da54e7879afa2c691c33e349592b5825285dee921f915764f4。 中央receipt：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\religion-integration-next\central-checks\result.json SHA-256 88f0b03bd6a1c4c9172b8a997371ad2015b8c4104684a248c681b37530702f9b。资格清单：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\ready-packages-1730\conversion-named-fixture\qualification.json。
+
+本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
