@@ -27,8 +27,23 @@ struct ScopedVariableValueV1 {
   CombatScopedStableKeyV1 flag_name{};
   friend bool operator==(const ScopedVariableValueV1 &, const ScopedVariableValueV1 &) = default;
 };
+enum class ScopedNotificationNamedReadFailureV1 : std::uint32_t {
+  none, context_extent, identifier_table_extent, prearmed_key,
+  identifier_names_span, identifier_count_shrunk, identifier_epoch,
+  identifier_key_index, identifier_key_name, store_extent, primary_rows,
+  fallback_store_extent, fallback_parent_extent, fallback_rows,
+  resolved_character_extent, identifier_header_changed, identifier_key_changed,
+  snapshots_differ, observations_unread, access_fault, not_observed
+};
 struct ScopedNotificationNamedDeadCharacterV1 {
   bool read = false, stable_two_reads = false, present = false, scope_words_read = false;
+  // Actual per-observation header; prearm session fields remain unchanged.
+  bool identifier_header_read = false, identifier_key_name_matches = false;
+  std::uintptr_t identifier_table = 0, identifier_data = 0;
+  std::int32_t identifier_count = 0;
+  std::uint32_t prearmed_identifier_count = 0, identifier_key_index = 0;
+  std::uint8_t identifier_epoch = 0, prearmed_identifier_epoch = 0;
+  ScopedNotificationNamedReadFailureV1 failure_stage = ScopedNotificationNamedReadFailureV1::not_observed;
   std::uintptr_t execution_context = 0, store = 0, primary_data = 0, fallback_parent = 0, fallback_data = 0, found_row = 0;
   std::int32_t key_id = -1, primary_count = 0, fallback_count = 0, found_index = -1;
   bool fallback_pointer_read = false, fallback_header_read = false;
@@ -167,5 +182,8 @@ extern "C" void __fastcall ObservedScopedEventImmediateRootV1(void *, void *) no
 void ObserveScopedVariableMonitorOriginalDeathCommitV1(bool entering, void *manager,
     void *victim, void *reason, void *date, void *killer, void *artifact) noexcept;
 bool ReadScopedNotificationNamedDeadCharacterV1(const ScopedCharacterVariableMonitorV1 &,
-    std::uintptr_t execution_context, ScopedNotificationNamedDeadCharacterV1 &) noexcept;
+     std::uintptr_t execution_context, ScopedNotificationNamedDeadCharacterV1 &) noexcept;
+// Pure comparison of two original passive observations; never reads native state.
+bool ValidateScopedNotificationNamedDeadCharacterPairV1(const ScopedNotificationNamedDeadCharacterV1 &,
+     const ScopedNotificationNamedDeadCharacterV1 &, ScopedNotificationNamedDeadCharacterV1 &) noexcept;
 } // namespace xar::ck3_11906
