@@ -1,0 +1,334 @@
+{
+  "schema": "ck3.episode02.four-question-investigation/v1",
+  "created_at_utc": "2026-10-02T01:47:46.788649+00:00",
+  "scope": "Original 1.19.0.6 local bytes and retained receipts; zero new game/desktop actions",
+  "question_1": {
+    "formula_and_static_vectors_researched": true,
+    "nonzero_loser_live_parity_complete": false,
+    "zero_loser_screen_case_is_not_nonzero_screen_validation": true,
+    "existing_inventory": "252 receipts / 32 pursuit snapshots / 0 losing-side nonzero screen candidates; inventory is scoped and historical",
+    "required_next_case": [
+      "same-frame losing soft>0 AND effective screen>0",
+      "winner and loser effective attributes, modifiers, frozen levy/MAA pools, original storage order",
+      "original budget and per-entry writes; next-day soft/readable hard; participant hard ledger",
+      "separate screen>pursuit and 0<screen<pursuit cases"
+    ],
+    "sources": [
+      {
+        "path": "C:\\w\\e2research1001\\docs\\ck3-native-ai\\pursuit-screen-nonzero-branch-contract-2026-09-27.md",
+        "bytes": 5831,
+        "sha256": "834DAFCF0C7D13DAE7742F4DC772FD7C41498CC0347798E53ED25E26281C1C7B"
+      },
+      {
+        "path": "C:\\w\\e2research1001\\docs\\ck3-native-ai\\pursuit-screen-frozen-candidate-audit-2026-09-27.md",
+        "bytes": 4407,
+        "sha256": "142598425B89134B9A315D8859D6A73ED4F8599FDD41313EA4D0DE7779284DBD"
+      }
+    ],
+    "new_live_capture": false
+  },
+  "question_2": {
+    "formula": "damage=P_effective*50*E; toughness=P_effective*10*E; E=displayed_percentage/100",
+    "E_example": "175%=1.75; 100%=1; 200%=2",
+    "live_case_math": [
+      {
+        "state": "before",
+        "stat": "damage",
+        "effective_prowess": 11,
+        "E": "1.75",
+        "base_per_prowess": 50,
+        "computed": "962.50",
+        "native_reading": "962.5",
+        "source": {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json",
+          "bytes": 3894,
+          "sha256": "961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100"
+        }
+      },
+      {
+        "state": "before",
+        "stat": "toughness",
+        "effective_prowess": 11,
+        "E": "1.75",
+        "base_per_prowess": 10,
+        "computed": "192.50",
+        "native_reading": "192.5",
+        "source": {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json",
+          "bytes": 3894,
+          "sha256": "961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100"
+        }
+      },
+      {
+        "state": "after",
+        "stat": "damage",
+        "effective_prowess": 7,
+        "E": "1.75",
+        "base_per_prowess": 50,
+        "computed": "612.50",
+        "native_reading": "612.5",
+        "source": {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json",
+          "bytes": 3894,
+          "sha256": "961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100"
+        }
+      },
+      {
+        "state": "after",
+        "stat": "toughness",
+        "effective_prowess": 7,
+        "E": "1.75",
+        "base_per_prowess": 10,
+        "computed": "122.50",
+        "native_reading": "122.5",
+        "source": {
+          "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json",
+          "bytes": 3894,
+          "sha256": "961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100"
+        }
+      }
+    ],
+    "scope": "stock base per-prowess rule and the exact 039→040 case; damage is a stat, not daily deaths"
+  },
+  "question_3": {
+    "identities": [
+      {
+        "day": 5,
+        "character_id": 34333,
+        "first_name_key": "Geoffroy",
+        "stock_zh": "若弗鲁瓦",
+        "save": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day05-wound-growth-attempt-039\\d05-replay-source-melted.ck3",
+          "bytes": 80618992,
+          "sha256": "6864BA494BED7729235E62EAAAB9A8205404623C101839C307D71238F18DF5BD"
+        },
+        "localization": {
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\names\\character_names_l_simp_chinese.yml",
+          "bytes": 1119627,
+          "sha256": "1FC26B5187A7DFB0695309969031EBF5FDD0F2B89D8D7CE6D3C7C4E3F24820B1"
+        },
+        "source_scope": "given-name key; no unobserved title/dynasty UI concatenation claimed"
+      },
+      {
+        "day": 5,
+        "character_id": 47032,
+        "first_name_key": "Muhammad",
+        "stock_zh": "穆罕默德",
+        "save": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day05-wound-growth-attempt-039\\d05-replay-source-melted.ck3",
+          "bytes": 80618992,
+          "sha256": "6864BA494BED7729235E62EAAAB9A8205404623C101839C307D71238F18DF5BD"
+        },
+        "localization": {
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\names\\character_names_l_simp_chinese.yml",
+          "bytes": 1119627,
+          "sha256": "1FC26B5187A7DFB0695309969031EBF5FDD0F2B89D8D7CE6D3C7C4E3F24820B1"
+        },
+        "source_scope": "given-name key; no unobserved title/dynasty UI concatenation claimed"
+      },
+      {
+        "day": 6,
+        "character_id": 34333,
+        "first_name_key": "Geoffroy",
+        "stock_zh": "若弗鲁瓦",
+        "save": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day05-wound-growth-attempt-039\\d06-melted.ck3",
+          "bytes": 80632554,
+          "sha256": "B47F7474C867F314623A8702236D7B55EF2A64B08073122C55972F072545B931"
+        },
+        "localization": {
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\names\\character_names_l_simp_chinese.yml",
+          "bytes": 1119627,
+          "sha256": "1FC26B5187A7DFB0695309969031EBF5FDD0F2B89D8D7CE6D3C7C4E3F24820B1"
+        },
+        "source_scope": "given-name key; no unobserved title/dynasty UI concatenation claimed"
+      },
+      {
+        "day": 6,
+        "character_id": 47032,
+        "first_name_key": "Muhammad",
+        "stock_zh": "穆罕默德",
+        "save": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day05-wound-growth-attempt-039\\d06-melted.ck3",
+          "bytes": 80632554,
+          "sha256": "B47F7474C867F314623A8702236D7B55EF2A64B08073122C55972F072545B931"
+        },
+        "localization": {
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\names\\character_names_l_simp_chinese.yml",
+          "bytes": 1119627,
+          "sha256": "1FC26B5187A7DFB0695309969031EBF5FDD0F2B89D8D7CE6D3C7C4E3F24820B1"
+        },
+        "source_scope": "given-name key; no unobserved title/dynasty UI concatenation claimed"
+      }
+    ],
+    "names_verified_both_saves": true,
+    "same_name_different_characters_must_keep_IDs": true
+  },
+  "question_4": {
+    "source_order": [
+      "select opposing knight",
+      "award prestige",
+      "growth random list and guarded followup",
+      "battle event",
+      "death request and deferred commit"
+    ],
+    "three_growth_results": [
+      "no-op",
+      "add_prowess_skill=1",
+      "blademaster_lifestyle_rank_up_effect"
+    ],
+    "base_weights": [
+      60,
+      30,
+      10
+    ],
+    "no_op_weight_rule": "60-2*effective Learning, then factor0.5 if warfare_legacy_3; only positive evaluated weights enter selection",
+    "prowess_plus_one_weight": 30,
+    "blademaster_weight_rules": {
+      "base": 10,
+      "martial_education_add": 5,
+      "education_martial_prowess_add_by_rank": [
+        4,
+        8,
+        12,
+        16
+      ],
+      "existing_blademaster_add": 15,
+      "shrewd_add": 10,
+      "physique_good_add": 10,
+      "intellect_good_add_by_rank": [
+        5,
+        15,
+        30
+      ],
+      "culture_blademaster_traits_more_common_factor": 3,
+      "existing_blademaster_XP_at_least_100_factor": 0
+    },
+    "blademaster_effect": "absent: add trait; present and XP<100: add10 XP; stock trait thresholds50/100; not prowess+10",
+    "historical_observed_weights": {
+      "call_index": 14,
+      "side_index": 1,
+      "native_event_load_index": 11,
+      "effect_node_identity_token": "process-local-0x2531F105D10",
+      "entry_node_identity_tokens": [
+        "process-local-0x251DDAA64C0",
+        "process-local-0x251DDAA39A0",
+        "process-local-0x251DDAA1D80"
+      ],
+      "selected_entry_identity_token": "process-local-0x251DDAA64C0",
+      "weights_native_int32": [
+        40,
+        30,
+        15
+      ],
+      "weights_bytes_hex": "280000001E0000000F000000",
+      "positive_weight_total": 85,
+      "child_counter_before": 1462316485,
+      "selection_draw31": 51510340,
+      "threshold": 2,
+      "selected_source_order_index": 0,
+      "child_counter_after": 1462316487
+    },
+    "historical_conditional_prowess_gain_share": "35.29411764705882352941176471",
+    "historical_weights_not_backfilled_into_R0148": true,
+    "current_case_selected_empty_entry": {
+      "wrapper_invocation": 53,
+      "default_root_invocation": 54,
+      "selected_empty_entry_invocation": 56,
+      "entry_body": {
+        "invocation": 56,
+        "sequence_enter": 111,
+        "sequence_return": 112,
+        "node_identity_token": "process-local-0x1792fb1ad60",
+        "local_no_write_closed": true,
+        "named_growth_or_accolade_domain_closed": false,
+        "configured_children": [],
+        "actual_direct_child_invocations": [],
+        "status": "ORIGINAL_CHILD_ONLY_EXECUTOR_EMPTY_LIST",
+        "limits": "Local effect-body branch coverage only. Predicate evaluation, other day callbacks and semantic stock-role correspondence are separate."
+      },
+      "followup_body": {
+        "invocation": 57,
+        "sequence_enter": 114,
+        "sequence_return": 115,
+        "node_identity_token": "process-local-0x1795b299530",
+        "local_no_write_closed": true,
+        "named_growth_or_accolade_domain_closed": false,
+        "configured_children": [
+          {
+            "read": true,
+            "node_identity_token": "process-local-0x1795b2997a0",
+            "node_vtable_rva": 72162840,
+            "node_hash": 325858645,
+            "node_original_execute_rva": 54035632
+          },
+          {
+            "read": true,
+            "node_identity_token": "process-local-0x1795b292510",
+            "node_vtable_rva": 72162840,
+            "node_hash": 4058109726,
+            "node_original_execute_rva": 54035632
+          },
+          {
+            "read": true,
+            "node_identity_token": "process-local-0x1792fd0d980",
+            "node_vtable_rva": 72165304,
+            "node_hash": 3260814059,
+            "node_original_execute_rva": 54041024
+          }
+        ],
+        "actual_direct_child_invocations": [],
+        "status": "CIF_NO_ACTUAL_CHILD_AND_VERIFIED_NULL_OPTIONAL",
+        "limits": "Local effect-body branch coverage only. Predicate evaluation, other day callbacks and semantic stock-role correspondence are separate."
+      },
+      "finite_no_write_closed": true
+    },
+    "player_liege_followup": "if player liege and not flagged was_the_target_of_event_court_5060: increment/init number_of_impressive_knight_things; guarded four-year maintenance and liege impressive_knights list; current finite followup dispatches no child",
+    "proof_limit": "Other nonempty growth branches are explained from exact stock scripts; no new nonempty live branch is asserted"
+  },
+  "exact_original_pins_verified": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_commander_effects.txt",
+      "bytes": 17072,
+      "sha256": "7999F7731F56A63A5E6E615EF1805F6382101D958A5AD4967F9C68CF3E8EE6F6"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\combat_phase_events\\00_knight_phase_events.txt",
+      "bytes": 41771,
+      "sha256": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 119477,
+      "sha256": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 95206008,
+      "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day05-wound-growth-attempt-039\\d05-replay-source-melted.ck3",
+      "bytes": 80618992,
+      "sha256": "6864BA494BED7729235E62EAAAB9A8205404623C101839C307D71238F18DF5BD"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day05-wound-growth-attempt-039\\d06-melted.ck3",
+      "bytes": 80632554,
+      "sha256": "B47F7474C867F314623A8702236D7B55EF2A64B08073122C55972F072545B931"
+    },
+    {
+      "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json",
+      "bytes": 3894,
+      "sha256": "961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100"
+    },
+    {
+      "path": "C:\\w\\ep2a03\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\data\\ck3_1_19_0_6_episode01_day26_runtime_weights_v1.json",
+      "bytes": 60647,
+      "sha256": "8BC27BC8420B31474DEDABDF00E004E5C2C910C4906406A15CE0D46144E809A8"
+    }
+  ],
+  "master_intake": false,
+  "rendered_new_video": false,
+  "human_full_video_review_or_signoff": false
+}
