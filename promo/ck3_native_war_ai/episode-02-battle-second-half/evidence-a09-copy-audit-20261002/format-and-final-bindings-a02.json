@@ -1,0 +1,44 @@
+{
+  "created_at_utc": "2026-10-02T01:55:13.559770+00:00",
+  "format_changes": [
+    {
+      "original_exact_binding": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-a09.txt",
+        "bytes": 27590,
+        "sha256": "715E16C67D5BE645BA51988F0F4322B3E789D9D03F38E427A83780F502DC02FB"
+      },
+      "preserved_original_bytes": {
+        "path": "C:\\Users\\1\\ck3-e2-copy-audit-20261002-a01\\private-commit-attempt-02\\preserved-prior-format\\full-narration-zh-a09.txt",
+        "bytes": 27590,
+        "sha256": "715E16C67D5BE645BA51988F0F4322B3E789D9D03F38E427A83780F502DC02FB"
+      },
+      "new_binding": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-a09.txt",
+        "bytes": 27589,
+        "sha256": "0A490144A92C2F08AE72B5E1AD6B7FCDC89F931DED9E14B3D188AFBA15639545"
+      },
+      "change": "Remove surplus EOF blank line; narration unchanged"
+    },
+    {
+      "original_exact_binding": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-en-a09.txt",
+        "bytes": 52575,
+        "sha256": "CA61C877BE1F1CC41B627B4FF965E3AE35661D3AB41BEDE56E5B10B73BD530A2"
+      },
+      "preserved_original_bytes": {
+        "path": "C:\\Users\\1\\ck3-e2-copy-audit-20261002-a01\\private-commit-attempt-02\\preserved-prior-format\\full-narration-zh-en-a09.txt",
+        "bytes": 52575,
+        "sha256": "CA61C877BE1F1CC41B627B4FF965E3AE35661D3AB41BEDE56E5B10B73BD530A2"
+      },
+      "new_binding": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-en-a09.txt",
+        "bytes": 52574,
+        "sha256": "1879AD17181EE98994B4B9F021E49DBB64153BAE9B1D8FDD0BF9D4661F3F6A89"
+      },
+      "change": "Remove surplus EOF blank line; narration unchanged"
+    }
+  ],
+  "earlier_validation_preserved": "final-validation.json applies to prior manuscript byte bindings; current bindings are above",
+  "all167_cue_semantics_and177_final_cues_unchanged": true,
+  "new_media": false
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "ck3.episode02.copy-a09.final-validation/v1",
+  "created_at_utc": "2026-10-02T01:52:03.156482+00:00",
+  "checks": {
+    "all167_original_cues_retained": true,
+    "six_chapters_order": true,
+    "per_cue_audit_coverage": true,
+    "177_unique_cues": true,
+    "audited_original_bytes_unchanged": true,
+    "new_media_status_honest": true,
+    "nonzero_screen_still_not_closed": true,
+    "names_and_IDs_together": true,
+    "death_order_corrected": true,
+    "old_a08_executors_untouched": true,
+    "all47_cited_source_bytes_still_match": true,
+    "new_python_syntax_valid": true,
+    "354_subtitle_fields_at_most_two_lines": true,
+    "latest_release_is_formal": true,
+    "native_CLI_authoring_config_valid": true
+  },
+  "passed": true,
+  "language_field_count": 354,
+  "old_Chinese_characters": 8352,
+  "new_Chinese_characters": 8516,
+  "characters_do_not_establish_TTS_duration": true,
+  "outputs": [
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a09-story.json",
+      "bytes": 327082,
+      "sha256": "61969B7321EB86754A8AF4EE87B90C3455EA62682D2A2771ACFE20A62B7F96C3"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a09-project.json",
+      "bytes": 1796,
+      "sha256": "DEF08E489AC3B52A8D2A7F7BE32310C96E035D9C3A5D0E79703AB7B3F1D272EA"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-a09.txt",
+      "bytes": 27590,
+      "sha256": "715E16C67D5BE645BA51988F0F4322B3E789D9D03F38E427A83780F502DC02FB"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-en-a09.txt",
+      "bytes": 52575,
+      "sha256": "CA61C877BE1F1CC41B627B4FF965E3AE35661D3AB41BEDE56E5B10B73BD530A2"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a09-copy-audit-20261002\\four-question-findings.txt",
+      "bytes": 7651,
+      "sha256": "CA049173457811E48721CE2FAF48E3382B20C76D1B489D9B954F25A6DE547DB2"
+    }
+  ],
+  "no_new_media_or_human_signoff": true,
+  "master_intake": false,
+  "latest_release": {
+    "assets": [
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/540761476",
+        "contentType": "application/octet-stream",
+        "createdAt": "2026-09-02T06:57:14Z",
+        "digest": "sha256:776f6ec5ec03a306e1bcb8f95d0be55c2a39cc89a46a5faf085966876722b5a7",
+        "downloadCount": 5,
+        "id": "RA_kwDOULD9e84gO12E",
+        "label": "",
+        "name": "SHA256SUMS",
+        "size": 208,
+        "state": "uploaded",
+        "updatedAt": "2026-09-02T06:57:14Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/SHA256SUMS"
+      },
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/540761475",
+        "contentType": "application/octet-stream",
+        "createdAt": "2026-09-02T06:57:14Z",
+        "digest": "sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+        "downloadCount": 6894,
+        "id": "RA_kwDOULD9e84gO12D",
+        "label": "",
+        "name": "xar_promo_toolchain-0.2.1-py3-none-any.whl",
+        "size": 190405,
+        "state": "uploaded",
+        "updatedAt": "2026-09-02T06:57:14Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+      },
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/540761477",
+        "contentType": "application/x-gtar",
+        "createdAt": "2026-09-02T06:57:14Z",
+        "digest": "sha256:56a712c03078a67a856f861d8c619dcdbd17967a4f26645c9c6e1643d14e4ad5",
+        "downloadCount": 2,
+        "id": "RA_kwDOULD9e84gO12F",
+        "label": "",
+        "name": "xar_promo_toolchain-0.2.1.tar.gz",
+        "size": 13281238,
+        "state": "uploaded",
+        "updatedAt": "2026-09-02T06:57:15Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1.tar.gz"
+      }
+    ],
+    "isDraft": false,
+    "isPrerelease": false,
+    "tagName": "v0.2.1",
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1"
+  }
+}

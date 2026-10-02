@@ -1,0 +1,38 @@
+{
+  "created_at_utc": "2026-10-02T01:54:00.362391+00:00",
+  "root_direct_image_review": [
+    {
+      "character_id": 33437,
+      "visible_given_name_zh": "图尔吉塞",
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-victim-character-window.png",
+        "bytes": 6135443,
+        "sha256": "56416C004CBF49F8B78F2A517362F445FC7479CE474DA4C5B43926A47F9B6DF9"
+      },
+      "original_image_dimensions": [
+        2560,
+        1440
+      ],
+      "scope": "R0148 before original character page,1066.12.29",
+      "review": "/root actually viewed this original image this turn; not OCR or a synthetic UI"
+    },
+    {
+      "character_id": 34120,
+      "visible_given_name_zh": "阿姆鲁",
+      "source": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-05-d26-six-gap-identifier-append-live-20261002-a12\\scoped-ui-research-attempt-01\\before-killer-character-window.png",
+        "bytes": 6076786,
+        "sha256": "AC6D8685B898DC2D60CB6D063EC01717AE16206732333BBD359ADD058CC64F3E"
+      },
+      "original_image_dimensions": [
+        2560,
+        1440
+      ],
+      "scope": "R0148 before original character page,1066.12.29",
+      "review": "/root actually viewed this original image this turn; not OCR or a synthetic UI"
+    }
+  ],
+  "desktop_actions": 0,
+  "prior_tracked_tree_diff_exit_code": 0,
+  "human_movie_signoff": false
+}

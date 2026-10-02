@@ -1,0 +1,62 @@
+[
+  {
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_commander_effects.txt",
+      "bytes": 17072,
+      "sha256": "7999F7731F56A63A5E6E615EF1805F6382101D958A5AD4967F9C68CF3E8EE6F6"
+    },
+    "first_line": 20,
+    "last_line": 147,
+    "numbered_text": "20: knight_increase_prowess_chance_effect = {\n21: \trandom_list = {\n22: \t\t60 = {\n23: \t\t\tmodifier = {\n24: \t\t\t\tadd = {\n25: \t\t\t\t\tvalue = this.learning\n26: \t\t\t\t\tmultiply = -1\n27: \t\t\t\t\tmultiply = 2\n28: \t\t\t\t}\n29: \t\t\t}\n30: \t\t\tmodifier = {\n31: \t\t\t\tfactor = 0.5\n32: \t\t\t\tdynasty ?= {\n33: \t\t\t\t\thas_dynasty_perk = warfare_legacy_3\n34: \t\t\t\t}\n35: \t\t\t}\n36: \t\t}\n37: \t\t30 = {\n38: \t\t\tadd_prowess_skill = 1\n39: \t\t}\n40: \t\t10 = {\n41: \t\t\tblademaster_lifestyle_rank_up_effect = yes\n42: \t\t\tmodifier = {\n43: \t\t\t\tadd = 5\n44: \t\t\t\thas_education_martial_trigger = yes\n45: \t\t\t}\n46: \t\t\tmodifier = {\n47: \t\t\t\tadd = 4\n48: \t\t\t\thas_trait = education_martial_prowess_1\n49: \t\t\t}\n50: \t\t\tmodifier = {\n51: \t\t\t\tadd = 8\n52: \t\t\t\thas_trait = education_martial_prowess_2\n53: \t\t\t}\n54: \t\t\tmodifier = {\n55: \t\t\t\tadd = 12\n56: \t\t\t\thas_trait = education_martial_prowess_3\n57: \t\t\t}\n58: \t\t\tmodifier = {\n59: \t\t\t\tadd = 16\n60: \t\t\t\thas_trait = education_martial_prowess_4\n61: \t\t\t}\n62: \t\t\tmodifier = {\n63: \t\t\t\tadd = 15\n64: \t\t\t\thas_trait = lifestyle_blademaster\n65: \t\t\t}\n66: \t\t\tmodifier = {\n67: \t\t\t\tadd = 10\n68: \t\t\t\thas_trait = shrewd\n69: \t\t\t}\n70: \t\t\tmodifier = {\n71: \t\t\t\tadd = 10\n72: \t\t\t\thas_trait = physique_good\n73: \t\t\t}\n74: \t\t\tmodifier = {\n75: \t\t\t\tadd = 5\n76: \t\t\t\thas_trait = intellect_good_1\n77: \t\t\t}\n78: \t\t\tmodifier = {\n79: \t\t\t\tadd = 15\n80: \t\t\t\thas_trait = intellect_good_2\n81: \t\t\t}\n82: \t\t\tmodifier = {\n83: \t\t\t\tadd = 30\n84: \t\t\t\thas_trait = intellect_good_3\n85: \t\t\t}\n86: \t\t\tmodifier = {\n87: \t\t\t\tfactor = 3\n88: \t\t\t\tculture = {\n89: \t\t\t\t\thas_cultural_parameter = blademaster_traits_more_common\n90: \t\t\t\t}\n91: \t\t\t}\n92: \t\t\tmodifier = {\n93: \t\t\t\tfactor = 0\n94: \t\t\t\tAND = {\n95: \t\t\t\t\thas_trait = lifestyle_blademaster\n96: \t\t\t\t\thas_trait_xp = {\n97: \t\t\t\t\t\ttrait = lifestyle_blademaster\n98: \t\t\t\t\t\tvalue >= trait_third_level\n99: \t\t\t\t\t}\n100: \t\t\t\t}\n101: \t\t\t}\n102: \t\t}\n103: \t}\n104: \n105: \t#This effect is used when the knight does something \"good\", so let's save them for the player to perhaps reward in the future\n106: \tif = {\n107: \t\tlimit = {\n108: \t\t\tliege ?= { is_ai = no }\n109: \t\t\tNOT = { has_character_flag = was_the_target_of_event_court_5060 }\n110: \t\t}\n111: \t\tif = {\n112: \t\t\tlimit = {\n113: \t\t\t\texists = var:number_of_impressive_knight_things\n114: \t\t\t}\n115: \t\t\tchange_variable = {\n116: \t\t\t\tname = number_of_impressive_knight_things\n117: \t\t\t\tadd = 1\n118: \t\t\t}\n119: \t\t}\n120: \t\telse = {\n121: \t\t\tset_variable = {\n122: \t\t\t\tname = number_of_impressive_knight_things\n123: \t\t\t\tvalue = 1\n124: \t\t\t}\n125: \t\t}\n126: \n127: \t\t# Maintenance of the variable\n128: \t\tif = {\n129: \t\t\tlimit = {\n130: \t\t\t\tNOT = { has_character_flag = is_schedueled_for_court_5061_maintenance }\n131: \t\t\t}\n132: \t\t\tadd_character_flag = {\n133: \t\t\t\tflag = is_schedueled_for_court_5061_maintenance\n134: \t\t\t\tyears = 4\n135: \t\t\t}\n136: \t\t\ttrigger_event = {\n137: \t\t\t\tid = court.5061\n138: \t\t\t\tyears = 4\n139: \t\t\t}\n140: \t\t}\n141: \t\tliege = {\n142: \t\t\tadd_to_variable_list = {\n143: \t\t\t\tname = impressive_knights\n144: \t\t\t\ttarget = prev\n145: \t\t\t}\n146: \t\t}\n147: \t}"
+  },
+  {
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\combat_phase_events\\00_knight_phase_events.txt",
+      "bytes": 41771,
+      "sha256": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1"
+    },
+    "first_line": 1243,
+    "last_line": 1322,
+    "numbered_text": "1243: \t\tif = {\n1244: \t\t\tlimit = {\n1245: \t\t\t\tscope:combat_side.enemy_side = {\n1246: \t\t\t\t\tany_side_knight = {\n1247: \t\t\t\t\t\tthis.prowess >= scope:knight.prowess_for_combat_event_opponent\n1248: \t\t\t\t\t}\n1249: \t\t\t\t}\n1250: \t\t\t}\n1251: \t\t\tscope:combat_side.enemy_side = {\n1252: \t\t\t\trandom_side_knight = {\n1253: \t\t\t\t\tlimit = {\n1254: \t\t\t\t\t\tthis.prowess >= scope:knight.prowess_for_combat_event_opponent\n1255: \t\t\t\t\t}\n1256: \t\t\t\t\tsave_temporary_scope_as = enemy_knight\n1257: \t\t\t\t\tadd_prestige = knight_prestige_gain_on_kill_inverse\n1258: \t\t\t\t\tknight_increase_prowess_chance_effect = yes\n1259: \t\t\t\t\t# Scope:enemy_knight gets some glory.\n1260: \t\t\t\t\tscope:enemy_knight = {\n1261: \t\t\t\t\t\tif = {\n1262: \t\t\t\t\t\t\tlimit = {\n1263: \t\t\t\t\t\t\t\tis_acclaimed = yes\n1264: \t\t\t\t\t\t\t}\n1265: \t\t\t\t\t\t\taccolade = { add_glory = minor_glory_gain }\n1266: \t\t\t\t\t\t}\n1267: \t\t\t\t\t}\n1268: \t\t\t\t}\n1269: \t\t\t}\n1270: \n1271: \t\t\tif = {\n1272: \t\t\t\tlimit = {\n1273: \t\t\t\t\tscope:knight = { is_alive = yes }\n1274: \t\t\t\t\tscope:enemy_knight = { is_alive = yes }\n1275: \t\t\t\t}\n1276: \t\t\t\tscope:combat_side = {\n1277: \t\t\t\t\tbattle_event = {\n1278: \t\t\t\t\t\tkey = \"knight_killed_by_enemy\"\n1279: \t\t\t\t\t\tleft_portrait = scope:knight\n1280: \t\t\t\t\t\tright_portrait = scope:enemy_knight\n1281: \t\t\t\t\t\ttype = death\n1282: \t\t\t\t\t}\n1283: \t\t\t\t\t# For after-battle messaging\n1284: \t\t\t\t\tadd_to_variable_list = {\n1285: \t\t\t\t\t\tname = slain_side_knights\n1286: \t\t\t\t\t\ttarget = scope:knight\n1287: \t\t\t\t\t}\n1288: \t\t\t\t}\n1289: \t\t\t\tif = {\n1290: \t\t\t\t\tlimit ={\n1291: \t\t\t\t\t\texists = house\n1292: \t\t\t\t\t\texists = scope:enemy_knight.house\n1293: \t\t\t\t\t}\n1294: \t\t\t\t\thouse = {\n1295: \t\t\t\t\t\tchange_house_relation_effect = {\n1296: \t\t\t\t\t\t\tHOUSE = scope:enemy_knight.house\n1297: \t\t\t\t\t\t\tVALUE = house_relation_damage_medium_value\n1298: \t\t\t\t\t\t\tREASON = killed\n1299: \t\t\t\t\t\t\tCHAR = scope:enemy_knight\n1300: \t\t\t\t\t\t\tTARGET_CHAR = scope:knight\n1301: \t\t\t\t\t\t\tTITLE = scope:dummy_gender\n1302: \t\t\t\t\t\t}\n1303: \t\t\t\t\t}\n1304: \t\t\t\t}\n1305: \t\t\t\tif = {\n1306: \t\t\t\t\tlimit = {\n1307: \t\t\t\t\t\tscope:enemy_knight = {\n1308: \t\t\t\t\t\t\tfaith = {\n1309: \t\t\t\t\t\t\t\thas_doctrine = tenet_cranial_trophies\n1310: \t\t\t\t\t\t\t}\n1311: \t\t\t\t\t\t}\n1312: \t\t\t\t\t}\n1313: \t\t\t\t\ttgp_cranial_trophies_beheading_effect = {\n1314: \t\t\t\t\t\tKILLER = scope:enemy_knight\n1315: \t\t\t\t\t\tDEAD = scope:knight\n1316: \t\t\t\t\t}\n1317: \t\t\t\t}\n1318: \t\t\t\tdeath = {\n1319: \t\t\t\t\tdeath_reason = death_battle\n1320: \t\t\t\t\tkiller = scope:enemy_knight\n1321: \t\t\t\t}\n1322: \t\t\t}"
+  },
+  {
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 119477,
+      "sha256": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
+    },
+    "first_line": 610,
+    "last_line": 611,
+    "numbered_text": "610: \tKNIGHT_DAMAGE_PER_PROWESS = 50\t\t\t\t\t# How much \"Damage\" stat does a knight get per prowess?\n611: \tKNIGHT_TOUGHNESS_PER_PROWESS = 10\t\t\t\t# How much \"Toughness\" stat does a knight get per prowess?"
+  },
+  {
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_lifestyle_focus_effects.txt",
+      "bytes": 23261,
+      "sha256": "6891063B67F9954B01C54BC6201B9551A722F22437AEC0104746232622034C70"
+    },
+    "first_line": 574,
+    "last_line": 594,
+    "numbered_text": "574: #Blademaster (for AI, gained through knight events)\n575: blademaster_lifestyle_rank_up_effect = {\n576: \tif = {\n577: \t\tlimit = {\n578: \t\t\tNOT = { has_trait = lifestyle_blademaster }\n579: \t\t}\n580: \t\tadd_trait = lifestyle_blademaster\n581: \t}\n582: \telse_if = {\n583: \t\tlimit = {\n584: \t\t\thas_trait_xp = {\n585: \t\t\t\ttrait = lifestyle_blademaster\n586: \t\t\t\tvalue < 100\n587: \t\t\t}\n588: \t\t}\n589: \t\tadd_trait_xp = {\n590: \t\t\ttrait = lifestyle_blademaster\n591: \t\t\tvalue = 10\n592: \t\t}\n593: \t}\n594: }"
+  },
+  {
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\traits\\00_traits.txt",
+      "bytes": 306016,
+      "sha256": "079F0AB5C4224C505AB9F25BCA80D8DF296E5899BFAB26049CE5FE794DC0B042"
+    },
+    "first_line": 1177,
+    "last_line": 1235,
+    "numbered_text": "1177: lifestyle_blademaster = {\n1178: \tcategory = lifestyle\n1179: \ticon = blademaster.dds\n1180: \n1181: \t# Modifiers\n1182: \tnegate_health_penalty_add = 0.25\n1183: \tprowess = 3\n1184: \tculture_modifier = {\n1185: \t\tparameter = trait_county_opinion_modifiers\n1186: \t\tcounty_opinion_add = 2\n1187: \t}\n1188: \tculture_modifier = {\n1189: \t\tparameter = blademaster_trait_bonuses\n1190: \t\tattraction_opinion = 5\n1191: \t\tmonthly_prestige = 0.25\n1192: \t}\n1193: \tculture_modifier = {\n1194: \t\tparameter = blademaster_traits_give_learning\n1195: \t\tlearning = 2\n1196: \t}\t\n1197: \n1198: \ttrack = {\n1199: \t\t50 = {\n1200: \t\t\tnegate_health_penalty_add = 0.25\n1201: \t\t\tprowess = 3\n1202: \t\t\tculture_modifier = {\n1203: \t\t\t\tparameter = trait_county_opinion_modifiers\n1204: \t\t\t\tcounty_opinion_add = 3\n1205: \t\t\t}\t\t\t\n1206: \t\t\tculture_modifier = {\n1207: \t\t\t\tparameter = blademaster_trait_bonuses\n1208: \t\t\t\tattraction_opinion = 5\n1209: \t\t\t\tmonthly_prestige = 0.25\n1210: \t\t\t}\n1211: \t\t\tculture_modifier = {\n1212: \t\t\t\tparameter = blademaster_traits_give_learning\n1213: \t\t\t\tlearning = 2\n1214: \t\t\t}\n1215: \t\t}\n1216: \t\t100 = {\n1217: \t\t\tnegate_health_penalty_add = 0.5\n1218: \t\t\tprowess = 6\n1219: \t\t\t\n1220: \t\t\tculture_modifier = {\n1221: \t\t\t\tparameter = trait_county_opinion_modifiers\n1222: \t\t\t\tcounty_opinion_add = 5\n1223: \t\t\t}\n1224: \t\t\t\n1225: \t\t\tculture_modifier = {\n1226: \t\t\t\tparameter = blademaster_trait_bonuses\n1227: \t\t\t\tattraction_opinion = 5\n1228: \t\t\t\tmonthly_prestige = 0.5\n1229: \t\t\t}\n1230: \n1231: \t\t\tculture_modifier = {\n1232: \t\t\t\tparameter = blademaster_traits_give_learning\n1233: \t\t\t\tlearning = 2\n1234: \t\t\t}\n1235: \t\t}"
+  },
+  {
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_trait_values.txt",
+      "bytes": 604,
+      "sha256": "8A6A617AAFD0247364DA1A6CCF0298DE8A496412CB9589B168872251F8BC69E0"
+    },
+    "first_line": 1,
+    "last_line": 12,
+    "numbered_text": "1: #Trait xp\n2: miniscule_trait_xp = 1\n3: minor_trait_xp = 3\n4: medium_trait_xp = 5\n5: major_trait_xp = 10\n6: massive_trait_xp = 20 #Rarely ever use\n7: \n8: #XP needed for trait level\n9: trait_second_level = 50\n10: trait_third_level = 100\n11: \n12: trait_first_of_five_level_value = 20"
+  }
+]
