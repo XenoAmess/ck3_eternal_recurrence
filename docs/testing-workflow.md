@@ -10,6 +10,12 @@
 
 显式 `native-session --start-minimized` 将首次、frontend warm-up/final、checkpoint 和 next-episode 启动传入 Windows `STARTUPINFO` 的 `STARTF_USESHOWWINDOW` / `SW_SHOWMINNOACTIVE`，复用受管 PID 的窗口采样保持最小化。默认其它流程不改变；当前 G2 后续启动全部选择此参数。真实 CLI→session→launch 参数链、Win32 producer 与 PID helper 的一个定向 case GREEN；新进程焦点／窗口状态仍由实机采样确认。对应源码及收据为 `artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-start-implementation-01/`。
 
+## 22:33 Robert配偶scope修复实机闭环与新增4日：累计3242天
+
+2026-10-02 22:33:32 Asia/Shanghai实际续行：唯一Robert原ordinary latest pair、Steam离线/最小化no-focus，root独占game/SDK/pipe/state/Git；Python242沿用native/env716-v19，未经combined新native验收不得改称新DLL live。原feast.2001/instance11配偶34730四scope形状由既有typed consumer一次native0/API1选择；独立paused同date53222040/native55→56、公有2→3证实旧11消失。该选项tooltip-only/empty effect/metric null，gold/prestige delta0，包装status不作M2材料。随后同ordinary正式life-advance正常 **＋4保存日** 到raw53222136/h4111/full4111，新的instance12/1 authored只记出现，下一先现成typed exactkey读取再处理。[原11真实clear与正常＋4日](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-normal90-natural-blocker-01/actual-242-next-closed/REPORT-FIELDS.json)。
+
+当前 **Robert3242/36524、本次恢复89durable新日**，G2 4/8、NW1/4与typedgoal0保持。Save85,694,642B/SHA `05bb2edc36c8276ab88c6555bd62a465e76056599ab8efc3c816742b6d011cfd`，driver49,674,745B/SHA `fb63ee5115b713291c7406787ad66361b2d28bb44aadf48f539728891d22a265`；保持正常latest4111 pair及已有pending/action，不回旧pair、不重发Feast/Sway/Council。已closed39的Feast原following native23/date53220648=true可计自动ongoing有限loop，但不当当前hosted终态/参加/归因收益/cold；建设净值最小fix与Family/C源包静态成功不当新动作。公开242 CI真实RED为旧prompt文字规则错误，与本次原生选择/正常时间GREEN分列。此次只一次文档与JSON检查，旧85阶段/L0/ABI/fixture/CI不重复；新源码/新实机成果下一增量记录。
+
 ## 22:09 Robert一次Feast启动与已保存59日增量：累计3238天，90日窗口未达标
 
 2026-10-02 22:09:30 Asia/Shanghai当前实际流程：唯一Robert原ordinary campaign、21:12继续授权/Steam离线/最小化no-focus，root独占game/SDK/pipe/state/Git；actual Python412/native716-v19/PID70968。合法fresh预算305.948 reserve＋100cost≤1206.59426且无Family hold之后，**只一次Start**得到独立fullActivity83886111/精确100gold debit。随后自然feast.7002/instance10 sole native0/API1在raw53220648被消费、独立prestige＋35，ordinary下一turn及共38日正常后续闭合；不代替2multi或M6完整lifecycle。
