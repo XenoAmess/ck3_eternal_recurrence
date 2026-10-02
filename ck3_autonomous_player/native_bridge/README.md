@@ -123,11 +123,24 @@ compile, but such an artifact is not a production-tested bridge.
 
 Globbed 1.20 feast wire fixtures that call stage-five qualification or serialization
 also link `xar_ck3_12002_feast_fixture_support`. The selector includes
-`ck3_12002_activity_feast_wire_test` as well as `guest_wire`; omitting the former
-leaves those two symbols unresolved when the private production features are OFF.
-This is a fixture-link correction and does not enable features. A DLL linked before
-an offline test target fails still has a RED full-build result; preserve that attempt
-and record the actual scope of any subsequent incremental validation.
+`ck3_12002_activity_feast_wire_test`, `guest_wire`, and the actual serializer
+consumer `ck3_12002_feast_outcome_values_test`. The pure serializer and its four
+append helpers live in `activity_feast_stage5_start_private_serializer_v1.cpp`;
+their function and preprocessor bytes were moved unchanged. The fixture library
+links that file without the transport's live capture/execution dependencies.
+Production still compiles both files under the original stage-five feature condition.
+The wire CTest passes its two output JSON paths as required by the existing fixture.
+
+The earlier selector-only correction was partial: serializer linkage remained RED,
+and linking the complete transport pulled in an unrelated `ReadSnapshot` dependency.
+A support-only MSVC `/Gy` experiment also remained RED and is not retained.
+With the pure split, all ten affected targets linked; nine related CTests passed,
+then the corrected wire invocation passed with both three-row JSON outputs checked.
+The six previously passing event/protocol/adapter tests were unchanged and not
+repeated. This is a Release fixture-link correction with no feature or expected
+changes; Debug and the remainder of the default graph were not rerun. A DLL linked
+before an offline test target fails still has a RED full-build result. Preserve that
+attempt and record the actual scope of any subsequent incremental validation.
 
 The offline tests inject only into the purpose-built
 `xar_ck3_bridge_target.exe`; they do not start or touch CK3. One test covers

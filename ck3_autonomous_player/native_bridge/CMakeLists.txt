@@ -1913,7 +1913,8 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
     src/activity_stage5_feast_guest_join_v1.cpp
     src/activity_feast_guest_candidate_v1.cpp
     src/activity_feast_stage5_start_v1.cpp
-    src/activity_feast_stage5_start_private_transport_v1.cpp)
+    src/activity_feast_stage5_start_private_transport_v1.cpp
+    src/activity_feast_stage5_start_private_serializer_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1=1)
 endif()
@@ -2090,6 +2091,7 @@ if(BUILD_TESTING)
     src/activity_feast_planner_open_v1.cpp
     src/activity_feast_resource_balance_v1.cpp
     src/activity_feast_stage5_start_v1.cpp
+    src/activity_feast_stage5_start_private_serializer_v1.cpp
     src/activity_hosted_identity_v1.cpp)
   target_include_directories(xar_ck3_12002_feast_fixture_support PRIVATE include)
   target_compile_definitions(xar_ck3_12002_feast_fixture_support PRIVATE
@@ -2125,7 +2127,7 @@ if(BUILD_TESTING)
     add_executable(${fixture_target} "${fixture}")
     target_link_libraries(${fixture_target} PRIVATE xar_ck3_12002_runtime)
     target_include_directories(${fixture_target} PRIVATE src research)
-    if(fixture_name MATCHES "^ck3_12002_(activity_feast_(costs|guest_rule|guest_wire|wire|planner_open_v1|start)|activity_hosted_identity|feast_guests)_test$")
+    if(fixture_name MATCHES "^ck3_12002_(activity_feast_(costs|guest_rule|guest_wire|wire|planner_open_v1|start)|activity_hosted_identity|feast_guests|feast_outcome_values)_test$")
       target_link_libraries(${fixture_target} PRIVATE
         xar_ck3_12002_feast_fixture_support)
     endif()
@@ -2163,6 +2165,10 @@ if(BUILD_TESTING)
     if(fixture_name STREQUAL "ck3_12002_thread_runtime_test")
       add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target}
         "${XAR_CK3_12002_FROZEN_EXE}")
+    elseif(fixture_name STREQUAL "ck3_12002_activity_feast_wire_test")
+      add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target}
+        "${CMAKE_CURRENT_BINARY_DIR}/${fixture_name}-hosted.json"
+        "${CMAKE_CURRENT_BINARY_DIR}/${fixture_name}-ordinary.json")
     else()
       add_test(NAME "xar_${fixture_name}" COMMAND ${fixture_target})
     endif()
