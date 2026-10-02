@@ -395,10 +395,13 @@ optional hash-bound append/replace/remove plan fields. See the
 This extension is static-ready; its first live query and public media-order
 verification remain the responsibility of the publishing operator.
 
-Native create and update publication are both live-verified. Download callback
-automation and Steam mode restoration are not native MCP features yet: the
-verified releases used Steam's console for fresh downloading and its menu for
-offline restoration. Direct tools remain separate from the prototype WAL workflow.
+Native create and update publication are both live-verified. An isolated
+`workshop_native_download` worker now handles the exact download callback and
+installation readback; see the [download contract](../docs/workshop-native-download.md).
+This new tool has focused static tests; its first live acceptance is recorded
+separately by the publishing operator. Earlier verified releases used Steam's
+console for fresh downloads. Steam mode restoration still uses the client menu.
+Direct tools remain separate from the prototype WAL workflow.
 
 ### Native MCP invocation used for publication
 

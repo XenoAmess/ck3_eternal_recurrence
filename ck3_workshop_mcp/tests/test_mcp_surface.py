@@ -14,6 +14,25 @@ from ck3_workshop_mcp.wal import OperationStore
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class McpSurfaceTests(unittest.IsolatedAsyncioTestCase):
+    async def test_native_download_forwards_exact_target_and_preserves_unknown(self) -> None:
+        from mcp import Client
+
+        with tempfile.TemporaryDirectory() as temporary:
+            service = WorkshopService(OperationStore(Path(temporary)), PdxLauncherReadOnlyProvider())
+            server = create_server(service, enable_native=True)
+            partial = {"ok": False, "status": "unknown", "item_id": "3182367229", "app_id": 1158310}
+            with patch("ck3_workshop_mcp.steam_download.download", return_value=partial) as run:
+                async with Client(server) as client:
+                    tools = {t.name: t for t in (await client.list_tools()).tools}
+                    self.assertFalse(tools["workshop_native_download"].annotations.read_only_hint)
+                    result = await client.call_tool("workshop_native_download", {
+                        "dll_path": "unused.dll", "item_id": "3182367229", "app_id": 1158310,
+                        "timeout_seconds": 300, "expected_cache_path": "C:/fixture/3182367229",
+                    })
+                    self.assertFalse(result.is_error)
+                    self.assertEqual(partial, result.structured_content)
+                    run.assert_called_once_with("unused.dll", "3182367229", 1158310, 300, "C:/fixture/3182367229")
+
     async def test_native_preview_read_tool_forwards_exact_target_without_loading_dll(self) -> None:
         from mcp import Client
 

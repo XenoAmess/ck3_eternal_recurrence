@@ -80,6 +80,18 @@ _ADDITIONAL_PREVIEW_FLAT_EXPORTS = (
     "SteamAPI_ISteamUGC_RemoveItemPreview",
 )
 
+_DOWNLOAD_FLAT_EXPORTS = (
+    "SteamAPI_ISteamUGC_DownloadItem",
+    "SteamAPI_ISteamUGC_GetItemState",
+    "SteamAPI_ISteamUGC_GetItemDownloadInfo",
+    "SteamAPI_ISteamUGC_GetItemInstallInfo",
+    "SteamAPI_ManualDispatch_Init",
+    "SteamAPI_ManualDispatch_RunFrame",
+    "SteamAPI_ManualDispatch_GetNextCallback",
+    "SteamAPI_ManualDispatch_FreeLastCallback",
+    "SteamAPI_GetHSteamPipe",
+)
+
 _VISIBILITY = {
     "public": 0,
     "friends_only": 1,
@@ -339,6 +351,8 @@ def symbols(dll_path: str | Path) -> dict[str, object]:
         "additional_preview_missing": [
             name for name in _ADDITIONAL_PREVIEW_FLAT_EXPORTS if name not in export_set
         ],
+        "download_flat_exports": {name: name in export_set for name in _DOWNLOAD_FLAT_EXPORTS},
+        "download_missing": [name for name in _DOWNLOAD_FLAT_EXPORTS if name not in export_set],
         "missing": missing,
         "abi": {
             "create_item_callback_id": CREATE_ITEM_CALLBACK_ID,
@@ -1446,6 +1460,13 @@ def _parser() -> argparse.ArgumentParser:
     previews_parser.add_argument("--item-id", required=True)
     previews_parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID)
 
+    download_parser = subparsers.add_parser("download", help="download one exact item in an isolated native callback worker")
+    download_parser.add_argument("--dll", required=True)
+    download_parser.add_argument("--item-id", required=True)
+    download_parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID)
+    download_parser.add_argument("--timeout-seconds", type=float, default=300)
+    download_parser.add_argument("--expected-cache-path")
+
     publish_parser = subparsers.add_parser(
         "publish", help="create or update a Workshop item from a reviewed plan"
     )
@@ -1464,6 +1485,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = probe(arguments.dll, arguments.app_id)
         elif arguments.command == "previews":
             result = previews(arguments.dll, arguments.item_id, arguments.app_id)
+        elif arguments.command == "download":
+            from .steam_download import download
+            result = download(arguments.dll, arguments.item_id, arguments.app_id,
+                              arguments.timeout_seconds, arguments.expected_cache_path)
         else:
             result = publish(
                 arguments.dll, arguments.plan_file, arguments.receipt_file

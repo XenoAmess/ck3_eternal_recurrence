@@ -245,6 +245,13 @@ def create_server(
             from .steam_native import previews
             return previews(dll_path, item_id, app_id)
 
+        @server.tool(annotations=external_reversible)
+        def workshop_native_download(dll_path: str, item_id: str, app_id: int = 1158310,
+                                     timeout_seconds: float = 300, expected_cache_path: str | None = None) -> dict[str, Any]:
+            """Download one exact item in an isolated callback worker; no subscription or cache deletion."""
+            from .steam_download import download
+            return download(dll_path, item_id, app_id, timeout_seconds, expected_cache_path)
+
         @server.tool(annotations=irreversible)
         def workshop_native_publish(dll_path: str, plan_file: str, receipt_file: str) -> dict[str, Any]:
             """Create/update one authorized Steam Workshop item using a durable native receipt."""
