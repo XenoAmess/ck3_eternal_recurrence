@@ -1,0 +1,16 @@
+{
+  "at_utc": "2026-10-02T02:51:47.118917+00:00",
+  "indexed_files": 3299,
+  "manifest": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-run\\run-manifest.json",
+    "bytes": 50086,
+    "sha256": "71C575F8838F1E859600A117EF5B31D96E042B117BA3CF77DDF73FFB82149EAF"
+  },
+  "index": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\closed-process-index.json",
+    "bytes": 868644,
+    "sha256": "E4A09E1517EC9026EBF2E3941203A692F2363FFE0F29EAF81AE3B4D544D16DC7"
+  },
+  "human_signoffs": 0,
+  "all_bindings_valid": true
+}

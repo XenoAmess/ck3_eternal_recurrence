@@ -1,0 +1,87 @@
+{
+  "at_utc": "2026-10-02T02:41:04.344381+00:00",
+  "reviewer": "/root",
+  "verdict": "PASS_PENDING_HUMAN_REVIEW",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "bytes": 247708305,
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "duration_expected": 1911.3000000000002,
+    "music": {
+      "title": "Quiet Courtly Tension",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+        "bytes": 30726160,
+        "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+      },
+      "policy": "single existing war-series theme throughout; narration 0dB; music -17dB; same original loop; 2s fade in / 8s fade out; no normalization",
+      "reference_build": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\build-records\\v5-theme-fullfilm-20260924-r1.json",
+        "bytes": 6134,
+        "sha256": "964D3EDD8B0725785738750756B4BF1DC530F0932EEF05D65235AADD0056243D"
+      },
+      "human_listening_signoff": "not-provided"
+    },
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "status": "pending-machine-and-human-review"
+  },
+  "reviewed_contact_sheets": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-01.jpg",
+      "bytes": 411204,
+      "sha256": "7A529FC52D86DB3AD41BD50C8D02C9671DF1BA2F57553193AFBEF49FA6561157"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-02.jpg",
+      "bytes": 443077,
+      "sha256": "D3DB1426EC7B2FF3A8B85FCCC77182CFC1D14F3D03FDC29CA6C0DA70CD2235B2"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-03.jpg",
+      "bytes": 427860,
+      "sha256": "A0EAE205F647D0FB727BF14B3C535E322BAE0AF2890CFCCBEBEA3B0448584397"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-04.jpg",
+      "bytes": 421891,
+      "sha256": "AD58748A4F7759ECF15AFCB8AF3DB788254972C76B23415BB6FDFED96EEE9EFF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-05.jpg",
+      "bytes": 453777,
+      "sha256": "96E222C887D68D7F95F625942133BAA97132672CB523A20F1108397DDE059FFA"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-06.jpg",
+      "bytes": 462240,
+      "sha256": "6CD008F90992A366BAF10052162D51FE529AF173BD37211F0F75453536EBC8F0"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-07.jpg",
+      "bytes": 531026,
+      "sha256": "FA629DE754D2A516134EC3F03B882099B15D9ADB77046C8B988EB9CADDE3DD54"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-08.jpg",
+      "bytes": 521888,
+      "sha256": "76A5378C28097B619826DDAF4FBE7CDAD2F8070405516CD8F1F290C16D9E4E93"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\frame-review\\contact-09.jpg",
+      "bytes": 129545,
+      "sha256": "53C7F5098F29931D93A41015888C82EC26EFE73A22B191305BC05009FE641C7F"
+    }
+  ],
+  "reviewed_final_frame_count": 33,
+  "brown_gold_series_palette_visible": true,
+  "formula_names_growth_and_original_UI_visible": true,
+  "original_notice_visible_then_absent": true,
+  "175_percent_example_explicitly_static": true,
+  "BGM_actual_decoded_audio_verified": true,
+  "full_1x_human_viewing": false,
+  "full_listening_performed": false,
+  "human_signoff": "not-provided",
+  "production_clean_admission": false,
+  "scope": "Root directly inspected nine sheets containing33 actual final frames. Music evidence is a signal comparison, not a claimed human audition."
+}

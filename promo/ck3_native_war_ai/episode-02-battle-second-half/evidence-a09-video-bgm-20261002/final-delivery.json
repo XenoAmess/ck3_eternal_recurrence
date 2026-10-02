@@ -1,0 +1,83 @@
+{
+  "at_utc": "2026-10-02T02:43:19.402180+00:00",
+  "status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+  "final_artifact": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "bytes": 247708305,
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "duration_expected": 1911.3000000000002,
+    "music": {
+      "title": "Quiet Courtly Tension",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+        "bytes": 30726160,
+        "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+      },
+      "policy": "single existing war-series theme throughout; narration 0dB; music -17dB; same original loop; 2s fade in / 8s fade out; no normalization",
+      "reference_build": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\build-records\\v5-theme-fullfilm-20260924-r1.json",
+        "bytes": 6134,
+        "sha256": "964D3EDD8B0725785738750756B4BF1DC530F0932EEF05D65235AADD0056243D"
+      },
+      "human_listening_signoff": "not-provided"
+    },
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "status": "pending-machine-and-human-review"
+  },
+  "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+  "files_transferred": 1,
+  "local_copy": {
+    "status": "LOCAL_COPY_VERIFIED_CLOUD_PENDING",
+    "at_utc": "2026-10-02T02:41:15.170117+00:00",
+    "label": "series-video",
+    "source": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "bytes": 247708305,
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "copy_stream_sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "source_mtime_ns": 1790908537455301100,
+    "cloud_confirmation": null
+  },
+  "last_client_sample": {
+    "at_utc": "2026-10-02T02:43:19.400440+00:00",
+    "raw": {
+      "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+      "sample_utc": "2026-10-02T02:43:19.352545+00:00",
+      "size": 247708305,
+      "mtime_ns": 1790908873366847600,
+      "attributes_hex": "0x00000020",
+      "sync_root_hresult": "0x00000000",
+      "handle_attributes_hex": "0x00000020",
+      "reparse_tag_hex": "0x00000000",
+      "cf_placeholder_state_hex": "0x00000000",
+      "cf_placeholder_state_flags": [],
+      "placeholder_hresult": "0x00000000",
+      "placeholder_returned_bytes": 412,
+      "in_sync_state": 1,
+      "on_disk": 247708305,
+      "validated": 247708305,
+      "modified": 0,
+      "pin_state": 0,
+      "file_id": 562949954823072,
+      "sync_root_file_id": 5910974510929700,
+      "stable_size_mtime": true
+    },
+    "checks": {
+      "exact_path": true,
+      "exact_size": true,
+      "stable_size_mtime": true,
+      "sync_root_success": true,
+      "placeholder_success": true,
+      "sync_root_id": true,
+      "in_sync": true,
+      "validated_full_size": true,
+      "modified_zero": true
+    }
+  },
+  "sample_count": 13,
+  "remote_independent_readback_performed": false,
+  "human_signoff": "not-provided",
+  "other_cloud_files_downloaded": false,
+  "old_outputs_changed": false
+}
