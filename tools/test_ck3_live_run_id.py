@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import json
+import contextlib
+import io
 from pathlib import Path
 import tempfile
 import unittest
@@ -12,6 +14,76 @@ import ck3_live_run_id as live_ids
 
 
 class LiveRunIdTests(unittest.TestCase):
+    def cli_json(self, args: list[str]) -> dict:
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(live_ids.main(args), 0)
+        return json.loads(output.getvalue())
+
+    def test_external_cli_counters_are_scoped_without_changing_builtin_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            common = ["--state-root", str(root), "--machine-id", "machine-a"]
+            first = self.cli_json(["allocate", "--external-mod", "example-overhaul", *common])
+            second = self.cli_json(["allocate", "--external-mod", "example-overhaul", *common])
+            other_mod = self.cli_json(["allocate", "--external-mod", "another-overhaul", *common])
+            other_machine = self.cli_json(["allocate", "--external-mod", "example-overhaul",
+                                           "--state-root", str(root), "--machine-id", "machine-b"])
+            builtin = self.cli_json(["allocate", "--mod", "vanilla", *common])
+            self.assertEqual(first["run_id"], "machine-a--example-overhaul--R0001")
+            self.assertEqual(second["sequence"], 2)
+            self.assertEqual(other_mod["sequence"], 1)
+            self.assertEqual(other_machine["sequence"], 1)
+            self.assertEqual(builtin["run_id"], "machine-a--vanilla--R0001")
+            counter = json.loads((root / "machine-a/example-overhaul/counter.json").read_text())
+            self.assertEqual(counter["schema"], live_ids.COUNTER_SCHEMA)
+            self.assertEqual(counter["last_sequence"], 2)
+
+    def test_external_cli_status_and_identity_keep_v1_and_legacy_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            common = ["--state-root", str(root), "--machine-id", "machine-a"]
+            allocated = self.cli_json(["allocate", "--external-mod", "example-overhaul",
+                                       "--legacy-alias", "R12a", *common])
+            self.assertEqual(allocated["schema"], live_ids.IDENTITY_SCHEMA)
+            self.assertEqual(allocated["legacy_alias"], "R12A")
+            identity = live_ids.load_live_run_identity(allocated["run_id"], "example-overhaul",
+                                                       state_root=root, machine_id="machine-a", external_mod=True)
+            self.assertEqual(identity.to_dict(), allocated)
+            self.assertEqual(live_ids.format_run_id("machine-a", "example-overhaul", 1, external_mod=True), identity.run_id)
+            for status in ("launch-started", "completed-red"):
+                row = self.cli_json(["status", "--external-mod", "example-overhaul", "--run-id", identity.run_id,
+                                     "--status", status, "--reason", "synthetic offline test", *common])
+                self.assertEqual(row["execution_id"], identity.execution_id)
+            rows = [json.loads(line) for line in (root / "machine-a/example-overhaul/statuses.jsonl").read_text().splitlines()]
+            self.assertEqual([row["status"] for row in rows], ["launch-started", "completed-red"])
+            with self.assertRaises(live_ids.LiveRunIdError):
+                live_ids.load_live_run_identity(identity.run_id, "another-overhaul", state_root=root,
+                                                machine_id="machine-a", external_mod=True)
+
+    def test_external_invalid_slugs_refuse_before_state_write(self) -> None:
+        invalid = ("Example-mod", " example-mod", "example-mod ", "", "bad--key", "-bad", "bad-",
+                   "../bad", "bad/key", "C:mod", "é", "a" * 65, "nul", "com1", "vanilla")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for slug in invalid:
+                with self.subTest(slug=slug), self.assertRaises(live_ids.LiveRunIdError):
+                    live_ids.allocate_live_run_id(slug, external_mod=True, state_root=root, machine_id="machine-a")
+                self.assertEqual(list(root.iterdir()), [])
+
+    def test_mod_modes_are_mutually_exclusive_and_builtin_listing_is_unchanged(self) -> None:
+        for command in ("allocate", "status"):
+            suffix = [] if command == "allocate" else ["--run-id", "irrelevant", "--status", "voided", "--reason", "test"]
+            for mode_args in ([], ["--mod", "vanilla", "--external-mod", "example-overhaul"]):
+                with self.subTest(command=command, modes=mode_args), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as error:
+                    live_ids._parse_args([command, *mode_args, *suffix])
+                self.assertEqual(error.exception.code, 2)
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(live_ids.main(["list-mods"]), 0)
+        self.assertEqual(set(output.getvalue().splitlines()), live_ids.CANONICAL_MOD_KEYS)
+        self.assertNotIn("example-overhaul", live_ids.CANONICAL_MOD_KEYS)
+
     def test_expansion_products_receive_separate_counters(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             rows = live_ids.allocate_live_run_ids(

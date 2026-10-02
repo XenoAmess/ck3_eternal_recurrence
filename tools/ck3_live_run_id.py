@@ -44,6 +44,8 @@ CANONICAL_MOD_KEYS = frozenset(
 )
 
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+EXTERNAL_MOD_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+WINDOWS_DEVICE_RE = re.compile(r"^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])$")
 LEGACY_ALIAS_RE = re.compile(r"^R[0-9]+[a-z]?$", re.IGNORECASE)
 RUN_STATUSES = frozenset(
     {"launch-started", "completed-green", "completed-red", "superseded", "voided"}
@@ -129,7 +131,17 @@ def default_state_root() -> Path:
     return (base / "XarCk3Acceptance" / "live-run-ids-v1").resolve()
 
 
-def validate_mod_key(mod_key: str) -> str:
+def validate_mod_key(mod_key: str, *, external_mod: bool = False) -> str:
+    if external_mod:
+        # External namespaces are explicit canonical keys, never normalized.
+        # Single hyphens also keep the run-ID '--' delimiter unambiguous.
+        if (not isinstance(mod_key, str) or not 1 <= len(mod_key) <= 64
+                or not EXTERNAL_MOD_RE.fullmatch(mod_key)
+                or WINDOWS_DEVICE_RE.fullmatch(mod_key)):
+            raise LiveRunIdError(f"invalid external mod slug: {mod_key!r}")
+        if mod_key in CANONICAL_MOD_KEYS:
+            raise LiveRunIdError(f"built-in mod key {mod_key!r} must use --mod")
+        return mod_key
     value = _slug(mod_key, label="mod key")
     if value not in CANONICAL_MOD_KEYS:
         known = ", ".join(sorted(CANONICAL_MOD_KEYS))
@@ -137,9 +149,11 @@ def validate_mod_key(mod_key: str) -> str:
     return value
 
 
-def format_run_id(machine_id: str, mod_key: str, sequence: int) -> str:
+def format_run_id(
+    machine_id: str, mod_key: str, sequence: int, *, external_mod: bool = False
+) -> str:
     machine = _slug(machine_id, label="machine id")
-    product = validate_mod_key(mod_key)
+    product = validate_mod_key(mod_key, external_mod=external_mod)
     if sequence < 1:
         raise LiveRunIdError("sequence must be positive")
     return f"{machine}--{product}--R{sequence:04d}"
@@ -240,8 +254,9 @@ def allocate_live_run_id(
     legacy_alias: str | None = None,
     allocated_at_utc: str | None = None,
     allocator_pid: int | None = None,
+    external_mod: bool = False,
 ) -> LiveRunIdentity:
-    product = validate_mod_key(mod_key)
+    product = validate_mod_key(mod_key, external_mod=external_mod)
     machine = current_machine_id(machine_id)
     if legacy_alias is not None and not LEGACY_ALIAS_RE.fullmatch(legacy_alias):
         raise LiveRunIdError(f"invalid legacy alias: {legacy_alias!r}")
@@ -260,7 +275,7 @@ def allocate_live_run_id(
         sequence = _read_last_sequence(counter_path, machine, product) + 1
         identity = LiveRunIdentity(
             schema=IDENTITY_SCHEMA,
-            run_id=format_run_id(machine, product, sequence),
+            run_id=format_run_id(machine, product, sequence, external_mod=external_mod),
             execution_id=execution,
             machine_id=machine,
             mod_key=product,
@@ -370,8 +385,9 @@ def load_live_run_identity(
     *,
     state_root: Path | None = None,
     machine_id: str | None = None,
+    external_mod: bool = False,
 ) -> LiveRunIdentity:
-    product = validate_mod_key(mod_key)
+    product = validate_mod_key(mod_key, external_mod=external_mod)
     machine = current_machine_id(machine_id)
     history_path = (
         (state_root or default_state_root()).expanduser().resolve()
@@ -413,40 +429,47 @@ def write_identity_receipt(artifacts: Path, identities: Sequence[LiveRunIdentity
     return target
 
 
-def _parse_args() -> argparse.Namespace:
+def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("machine", help="print this machine's stable ID")
     subparsers.add_parser("list-mods", help="print canonical mod keys")
     allocate = subparsers.add_parser("allocate", help="consume the next per-mod number")
-    allocate.add_argument("--mod", required=True, choices=sorted(CANONICAL_MOD_KEYS))
+    allocate_product = allocate.add_mutually_exclusive_group(required=True)
+    allocate_product.add_argument("--mod", choices=sorted(CANONICAL_MOD_KEYS))
+    allocate_product.add_argument("--external-mod", metavar="SLUG", help="explicit canonical slug for an external mod")
     allocate.add_argument("--legacy-alias")
     allocate.add_argument("--state-root")
     allocate.add_argument("--machine-id")
     status = subparsers.add_parser("status", help="append lifecycle state for a run")
     status.add_argument("--run-id", required=True)
-    status.add_argument("--mod", required=True, choices=sorted(CANONICAL_MOD_KEYS))
+    status_product = status.add_mutually_exclusive_group(required=True)
+    status_product.add_argument("--mod", choices=sorted(CANONICAL_MOD_KEYS))
+    status_product.add_argument("--external-mod", metavar="SLUG", help="the external slug used at allocation")
     status.add_argument("--machine-id")
     status.add_argument("--status", required=True, choices=sorted(RUN_STATUSES))
     status.add_argument("--reason", required=True)
     status.add_argument("--state-root")
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
-def main() -> int:
-    args = _parse_args()
+def main(argv: Sequence[str] | None = None) -> int:
+    args = _parse_args(argv)
     if args.command == "machine":
         print(current_machine_id())
         return 0
     if args.command == "list-mods":
         print("\n".join(sorted(CANONICAL_MOD_KEYS)))
         return 0
+    external = args.external_mod is not None
+    mod_key = args.external_mod if external else args.mod
     if args.command == "status":
         identity = load_live_run_identity(
             args.run_id,
-            args.mod,
+            mod_key,
             state_root=Path(args.state_root) if args.state_root else None,
             machine_id=args.machine_id,
+            external_mod=external,
         )
         row = record_live_run_status(
             identity,
@@ -457,10 +480,11 @@ def main() -> int:
         print(json.dumps(row, ensure_ascii=False, indent=2))
         return 0
     identity = allocate_live_run_id(
-        args.mod,
+        mod_key,
         state_root=Path(args.state_root) if args.state_root else None,
         machine_id=args.machine_id,
         legacy_alias=args.legacy_alias,
+        external_mod=external,
     )
     print(json.dumps(identity.to_dict(), ensure_ascii=False, indent=2))
     return 0

@@ -12,7 +12,7 @@
 
 - `machine-id` 标识执行机器。默认由主机名加本机稳定标识的 SHA-256 前 10 位生成，不公开原始 MachineGuid；需要人工管理机器名时可用
   `XAR_CK3_MACHINE_ID` 覆盖。
-- `mod-key` 必须来自 `tools/ck3_live_run_id.py` 的 canonical 清单，避免同一产品因拼写变化分裂成多个计数器。
+- 内置 `mod-key` 来自 `tools/ck3_live_run_id.py` 的 canonical 清单；外部 mod 通过显式 `--external-mod` 使用自己固定的 canonical slug，避免同一产品因拼写变化分裂成多个计数器。
 - `celestial-commerce-corruption` 与 `tributary-expansion-directives` 分别为天朝经商贪腐维护版与驱策朝贡国的独立命名空间；不得借用其他 mod 的计数器。
 - `vanilla` 专用于实际 `enabled_mods=[]` 的原版会话，包括原版界面取景；它不表示加载了名为 vanilla 的 mod。项目片名另记在报告中，不为每条视频创建一个 mod 产品，也不得借用已发布 mod 的计数器。
 - `R<n>` 只在同一 `machine-id + mod-key` 命名空间内递增。不同机器、不同 mod 都从自己的 `R0001` 开始；不再存在跨项目的全局 R 号。
@@ -28,7 +28,16 @@ py tools/ck3_live_run_id.py machine
 py tools/ck3_live_run_id.py list-mods
 py tools/ck3_live_run_id.py allocate --mod auto-upgrade-buildings
 py tools/ck3_live_run_id.py status --mod auto-upgrade-buildings --run-id <完整ID> --status voided --reason "说明"
+py tools/ck3_live_run_id.py allocate --external-mod example-overhaul
+py tools/ck3_live_run_id.py status --external-mod example-overhaul --run-id <完整ID> --status launch-started --reason "实际开始启动"
 ```
+
+`allocate` 和 `status` 都要求 `--mod` / `--external-mod` 二选一。`list-mods` 只列内置清单，外部 slug 不加入公共产品常量。
+外部 slug 长度为 1–64 个 ASCII 字符，只接受小写字母、数字及词段之间的单个连字符；不自动转小写、去空白或截断。
+路径字符、连续/首尾连字符、Windows 保留设备名和内置产品键均拒绝，内置产品继续用 `--mod`。
+外部编号仍是 `<machine-id>--<external-slug>--R<n>`，每机器、每 slug 独立递增；分配和更新状态必须一直使用同一 slug 与持久状态根。
+Python 调用 `allocate_live_run_id`、`format_run_id`、`load_live_run_identity` 时显式传 `external_mod=True`；既有内置 API 默认行为、v1 回执字段及历史 alias 保持兼容。
+此入口只分配编号，不注册或加载 mod，也不代表游戏已启动或验收通过。
 
 计数状态位于本机 `%LOCALAPPDATA%\XarCk3Acceptance\live-run-ids-v1\<machine-id>\<mod-key>\`，不提交 Git。每个命名空间有原子更新的
 `counter.json`、append-only `allocations.jsonl` 和 append-only `statuses.jsonl`；文件锁防止同机并发分配重复序号。生命周期状态包括
