@@ -336,6 +336,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.enforce-demands-N";
   } else if (step == "query-army-strengths-v1") {
     capability = "game.command.query-army-strengths-v1";
+  } else if (IsCanonicalPositiveIdStep(
+                 step, "query-province-local-siege-v1-")) {
+    capability = "game.command.query-province-local-siege-v1-N";
   } else if (ck3_11906::ParseCampaignRootContextV1Step(step)) {
     capability = ck3_11906::kCampaignRootContextV1Capability;
   } else if (ck3_11906::ParsePlayerFactionAlertsV1Step(step)) {
@@ -486,6 +489,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     }
   }
   if (capability.empty()) {
+    CurrentBattleKnightRequestV1 knight_request{};
+    if (ck3_11906::ParseCurrentBattleKnightV1Step(step, knight_request)) {
+      capability = ck3_11906::kCurrentBattleKnightV1Capability;
+    }
+  }
+  if (capability.empty()) {
     BattleReinforcementAssignmentRequest reinforcement_request{};
     if (ck3_11906::ParseBattleReinforcementAssignmentV1Step(
             step, reinforcement_request)) {
@@ -572,6 +581,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, "query-defender-de-jure-exit-terms-v1-")) {
     capability = "game.command.query-defender-de-jure-exit-terms-v1-N";
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  } else if (capability.empty() &&
+             step == ck3_11906::kH2743ExistingTruceV1Step) {
+    capability = ck3_11906::kH2743ExistingTruceV1Capability;
+#endif
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, ck3_11906::kRaiktorActualTruceExpiryV1StepPrefix)) {
     capability = ck3_11906::kRaiktorActualTruceExpiryV1Capability;

@@ -191,6 +191,9 @@
 #include "xar_bridge/route_contact_horizon_v1_dispatch.hpp"
 #include "xar_bridge/physical_army_inventory_diagnostics_v1_json.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+#include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
+#endif
 #include "xar_bridge/set_played_character_v1_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 #include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
@@ -6860,6 +6863,28 @@ std::string BattleControlSnapshotResultFrame(
   return result;
 }
 
+std::string CurrentBattleKnightResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence, std::uint64_t native_revision,
+    const xar::game::CurrentBattleKnightSnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeCurrentBattleKnightV1(snapshot);
+  if (payload.empty()) {
+    return {};
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"available\",";
+  result += "\"query_sequence\":" + Number(query_sequence);
+  result += ",\"snapshot_revision\":" + Number(native_revision);
+  result += ",\"current_battle_knight\":" + payload + "}}";
+  return result;
+}
+
 std::string BattleTransitionResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -7461,6 +7486,29 @@ std::string RaiktorActualTruceExpiryResultFrame(
   result += ",\"backend_id\":\"native-headless\"}}";
   return result;
 }
+
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+std::string H2743PreactionExistingTruceResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::H2743ExistingTruceSnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeH2743PreactionExistingTruceV1(snapshot);
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, xar::ck3_11906::kH2743ExistingTruceV1Step);
+  result += ",\"accepted\":true,\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"h2743_preaction_existing_truce\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+#endif
 
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 std::string RaiktorWarBoundLossCleanupResultFrame(
@@ -8611,6 +8659,31 @@ std::string ArmyStrengthsResultFrame(
     AppendArmyStrength(result, strengths[index]);
   }
   result += "]}}";
+  return result;
+}
+
+std::string ProvinceLocalSiegeResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence, std::uint64_t snapshot_revision,
+    std::int32_t date_raw, bool complete,
+    const xar::game::WarObjectiveProvinceState &state) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"";
+  result += complete ? "available" : "partial";
+  result += "\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot_revision);
+  result += ",\"date_raw\":";
+  result += SignedNumber(date_raw);
+  result += ",\"province_state\":";
+  AppendWarObjectiveProvinceState(result, state);
+  result += "}}";
   return result;
 }
 
@@ -9887,6 +9960,21 @@ std::optional<std::int32_t> WarTerminationQueryStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> ProvinceLocalSiegeQueryStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-province-local-siege-v1-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  const auto suffix = step.substr(prefix.size());
+  const auto parsed = PositiveNativeId(suffix);
+  if (!parsed.has_value() || std::to_string(parsed.value()) != suffix) {
+    return std::nullopt;
+  }
+  return parsed;
+}
+
 std::optional<std::int32_t> WarPrisonerReleasePairsQueryStepV1(
     std::string_view step) noexcept {
   constexpr std::string_view prefix =
@@ -10840,6 +10928,7 @@ struct WorkerState {
   std::uint64_t route_contact_horizon_query_sequence = 0;
   std::uint64_t actual_contact_scope_query_sequence = 0;
   std::uint64_t battle_control_snapshot_query_sequence = 0;
+  std::uint64_t current_battle_knight_query_sequence = 0;
   std::uint64_t battle_transition_query_sequence = 0;
   std::uint64_t battle_reinforcement_assignment_query_sequence = 0;
   std::uint64_t battle_terminal_transition_query_sequence = 0;
@@ -10923,6 +11012,7 @@ struct WorkerState {
   std::uint64_t player_epidemic_recovery_query_sequence = 0;
   std::uint64_t coat_of_arms_designer_probe_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
+  std::uint64_t province_local_siege_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t combat_phase_event_trace_query_sequence = 0;
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
@@ -10955,6 +11045,9 @@ struct WorkerState {
   std::uint64_t war_termination_terms_query_sequence = 0;
   std::uint64_t defender_de_jure_exit_terms_query_sequence = 0;
   std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  std::uint64_t h2743_existing_truce_query_sequence = 0;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   std::uint64_t raiktor_war_bound_loss_cleanup_query_sequence = 0;
   std::optional<xar::ck3_11906::RaiktorWarBoundLossBaselineV1>
@@ -11733,6 +11826,8 @@ void RunConnectedSession(
       state.actual_contact_scope_query_sequence;
   auto &battle_control_snapshot_query_sequence =
       state.battle_control_snapshot_query_sequence;
+  auto &current_battle_knight_query_sequence =
+      state.current_battle_knight_query_sequence;
   auto &battle_transition_query_sequence =
       state.battle_transition_query_sequence;
   auto &battle_reinforcement_assignment_query_sequence =
@@ -11807,6 +11902,8 @@ void RunConnectedSession(
       state.coat_of_arms_designer_probe_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
+  auto &province_local_siege_query_sequence =
+      state.province_local_siege_query_sequence;
   auto &combat_inputs_query_sequence =
       state.combat_inputs_query_sequence;
   auto &combat_phase_event_trace_query_sequence =
@@ -11824,6 +11921,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
   auto &raiktor_actual_truce_expiry_query_sequence =
       state.raiktor_actual_truce_expiry_query_sequence;
+#endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  auto &h2743_existing_truce_query_sequence =
+      state.h2743_existing_truce_query_sequence;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   auto &raiktor_war_bound_loss_cleanup_query_sequence =
@@ -21209,6 +21310,85 @@ void RunConnectedSession(
               }
             }
           }
+        } else if (step.starts_with("query-province-local-siege-v1-")) {
+          const auto province_id = ProvinceLocalSiegeQueryStep(step);
+          std::uint64_t expected_revision = 0;
+          if (!province_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-province-local-siege-v1-<province_id> step"));
+          } else if (!xar::ck3_11906::
+                         ParseCampaignRootContextExpectedRevisionV1(
+                             incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "province-local-siege expected revision is malformed"));
+          } else if (state_revision == 0 ||
+                     expected_revision != state_revision ||
+                     !previous_snapshot.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "province-local-siege snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot admission{};
+            if (!xar::game::ReadSnapshot(game, admission) ||
+                admission != previous_snapshot.value() ||
+                !admission.map_ready || !admission.paused ||
+                !admission.has_played_character ||
+                !admission.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "province-local-siege admission frame is unavailable"));
+            } else {
+              xar::game::WarObjectiveProvinceState province_state{};
+              const auto query_result = xar::game::ReadProvinceLocalSiege(
+                  game, province_id.value(), province_state);
+              xar::game::Snapshot completion{};
+              if (!xar::game::ReadSnapshot(game, completion) ||
+                  completion != admission) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "province-local-siege completion frame changed"));
+              } else if (query_result ==
+                             xar::game::ReadProvinceLocalSiegeResult::available ||
+                         query_result ==
+                             xar::game::ReadProvinceLocalSiegeResult::partial) {
+                ++province_local_siege_query_sequence;
+                connected = xar::bridge::WriteFrame(
+                    pipe, ProvinceLocalSiegeResultFrame(
+                              request_id, step,
+                              province_local_siege_query_sequence,
+                              state_revision, admission.date_raw,
+                              query_result == xar::game::
+                                                  ReadProvinceLocalSiegeResult::
+                                                      available,
+                              province_state));
+              } else {
+                std::string_view error =
+                    "province-local-siege native read is unavailable";
+                if (query_result == xar::game::
+                                        ReadProvinceLocalSiegeResult::
+                                            province_not_found) {
+                  error = "CK3 Province was not found";
+                } else if (query_result == xar::game::
+                                               ReadProvinceLocalSiegeResult::
+                                                   state_changed) {
+                  error = "province-local-siege native state changed";
+                } else if (query_result == xar::game::
+                                               ReadProvinceLocalSiegeResult::
+                                                   requires_paused) {
+                  error = "province-local-siege requires a paused map";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              }
+            }
+          }
         } else if (step == "query-army-strengths-v1") {
           std::vector<xar::game::ArmyStrengthSnapshot> strengths;
           const auto query_result =
@@ -22093,6 +22273,106 @@ void RunConnectedSession(
                 connected = write_frame(
                     pipe,
                     CommandResultFrame(request_id, step, false, error));
+              }
+            }
+          }
+        }
+#endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+        else if (step == xar::ck3_11906::kH2743ExistingTruceV1Step) {
+          std::uint64_t expected_revision = 0;
+          std::uint64_t expected_date_raw = 0;
+          std::uint64_t expected_public_revision = 0;
+          std::uint64_t expected_native_revision = 0;
+          std::uint64_t expected_actor_character_id = 0;
+          std::uint64_t expected_war_id = 0;
+          std::string expected_snapshot_id;
+          std::string expected_episode_id;
+          std::string expected_checkpoint_sha256;
+          std::string expected_exe_sha256;
+          const bool request_bound =
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) &&
+              xar::bridge::JsonUnsignedField(
+                   incoming.payload, "expected_date_raw", expected_date_raw) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_public_revision",
+                  expected_public_revision) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_native_revision",
+                  expected_native_revision) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_actor_character_id",
+                  expected_actor_character_id) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_war_id", expected_war_id) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_snapshot_id",
+                  expected_snapshot_id, 48) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_episode_id",
+                  expected_episode_id, 64) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_checkpoint_sha256",
+                  expected_checkpoint_sha256, 64) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_exe_sha256",
+                  expected_exe_sha256, 64) &&
+              expected_revision == state_revision && state_revision != 0;
+          if (!request_bound || !previous_snapshot.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "H2743 preaction existing-truce source/frame claim invalid"));
+          } else {
+            xar::game::Snapshot admission{};
+            if (!xar::game::ReadSnapshot(game, admission) ||
+                admission != previous_snapshot.value()) {
+              connected = PublishSnapshot(
+                  pipe, game, previous_snapshot, state_revision,
+                  checkpoint_submission, published_checkpoint_sequence);
+              if (connected) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "H2743 preaction existing-truce admission frame changed"));
+              }
+            } else if (!xar::ck3_11906::AdmitH2743PreactionFrameClaimV1(
+                           {expected_public_revision, expected_native_revision,
+                            expected_date_raw, expected_actor_character_id,
+                            expected_war_id, expected_snapshot_id,
+                            expected_episode_id, expected_checkpoint_sha256,
+                            expected_exe_sha256},
+                           state_revision, admission)) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "H2743 preaction existing-truce source/frame claim invalid"));
+            } else {
+              xar::game::H2743ExistingTruceSnapshotV1 existing{};
+              xar::game::ReadH2743PreactionExistingTruceV1(game, existing);
+              xar::game::Snapshot completion{};
+              if (!xar::game::ReadSnapshot(game, completion) ||
+                  completion != admission) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "H2743 preaction existing-truce completion frame changed"));
+                }
+              } else {
+                existing.snapshot_revision = state_revision;
+                const auto next_sequence =
+                    h2743_existing_truce_query_sequence + 1;
+                connected = xar::bridge::WriteFrame(
+                    pipe, H2743PreactionExistingTruceResultFrame(
+                              request_id, next_sequence, existing));
+                if (connected) {
+                  h2743_existing_truce_query_sequence = next_sequence;
+                }
               }
             }
           }
@@ -23095,17 +23375,35 @@ void RunConnectedSession(
           }
         } else if (step.starts_with(
                        xar::ck3_11906::
-                           kBattleControlSnapshotV1StepPrefix)) {
+                           kBattleControlSnapshotV1StepPrefix) ||
+                   step.starts_with(
+                       xar::ck3_11906::kCurrentBattleKnightV1StepPrefix)) {
+          const bool current_knight_step = step.starts_with(
+              xar::ck3_11906::kCurrentBattleKnightV1StepPrefix);
           xar::game::BattleControlRequest battle_request{};
+          xar::game::CurrentBattleKnightRequestV1 knight_request{};
           std::uint64_t expected_revision = 0;
-          if (!xar::ck3_11906::ParseBattleControlSnapshotV1Step(
-                  step, battle_request) ||
-              !xar::ck3_11906::ParseBattleControlExpectedRevisionV1(
-                  incoming.payload, expected_revision)) {
+          bool parsed = xar::ck3_11906::
+              ParseBattleControlExpectedRevisionV1(
+                  incoming.payload, expected_revision);
+          if (current_knight_step) {
+            parsed = parsed &&
+                xar::ck3_11906::ParseCurrentBattleKnightV1Step(
+                    step, knight_request) &&
+                xar::ck3_11906::ParseCurrentBattleKnightExpectedV1(
+                    incoming.payload, expected_revision, knight_request);
+            battle_request.subject_public_cunit_id =
+                knight_request.subject_public_cunit_id;
+          } else {
+            parsed = parsed &&
+                xar::ck3_11906::ParseBattleControlSnapshotV1Step(
+                    step, battle_request);
+          }
+          if (!parsed) {
             connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
-                          "battle-control-snapshot request is malformed"));
+                          "battle-control/current-knight request is malformed"));
           } else if (expected_revision != state_revision) {
             connected = write_frame(
                 pipe, CommandResultFrame(
@@ -23142,6 +23440,9 @@ void RunConnectedSession(
                 query.mailbox = &g_main_thread_query_mailbox_v1;
                 query.bindings = xar::ck3_11906::BindCurrentProcess(true);
                 query.request = battle_request;
+                if (current_knight_step) {
+                  query.knight_request = knight_request;
+                }
                 query.expected_snapshot_revision = expected_revision;
                 query.expected_snapshot = current_snapshot;
                 xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1
@@ -23199,12 +23500,21 @@ void RunConnectedSession(
                         completion_snapshot == current_snapshot &&
                         completion_snapshot == previous_snapshot.value()) {
                       completion_snapshot_stable = true;
-                      response = BattleControlSnapshotResultFrame(
-                          request_id, step,
-                          battle_control_snapshot_query_sequence + 1,
-                          query.result);
+                      response = current_knight_step
+                          ? CurrentBattleKnightResultFrame(
+                                request_id, step,
+                                current_battle_knight_query_sequence + 1,
+                                expected_revision, query.knight_result)
+                          : BattleControlSnapshotResultFrame(
+                                request_id, step,
+                                battle_control_snapshot_query_sequence + 1,
+                                query.result);
                       if (!response.empty()) {
-                        ++battle_control_snapshot_query_sequence;
+                        if (current_knight_step) {
+                          ++current_battle_knight_query_sequence;
+                        } else {
+                          ++battle_control_snapshot_query_sequence;
+                        }
                       }
                     }
                   }
@@ -23232,9 +23542,9 @@ void RunConnectedSession(
                                std::to_string(queued_wake_trace.last_wake_error) +
                                ")";
                     }
-                    if (query.result.status == xar::game::
-                                                   BattleControlSnapshotStatus::
-                                                       state_changed &&
+                    if ((current_knight_step ||
+                         query.result.status == xar::game::
+                             BattleControlSnapshotStatus::state_changed) &&
                         !query.result.diagnostic_reason.empty()) {
                       error += " (";
                       error += query.result.diagnostic_reason;

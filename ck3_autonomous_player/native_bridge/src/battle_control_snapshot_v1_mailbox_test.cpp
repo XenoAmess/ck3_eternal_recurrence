@@ -194,6 +194,16 @@ game::BattleControlSnapshotStatus ReadBattleControlSnapshot(
   return g_native_status;
 }
 
+bool ReadCurrentBattleKnightV1(
+    const Bindings &, const game::Snapshot &,
+    const game::BattleControlSnapshot &,
+    const game::CurrentBattleKnightRequestV1 &,
+    game::CurrentBattleKnightSnapshotV1 &output) noexcept {
+  output = {};
+  output.unavailable_reason = "fixture_knight_source_unavailable";
+  return false;
+}
+
 } // namespace xar::ck3_11906
 
 int main() {
@@ -773,6 +783,24 @@ int main() {
       query.result.attacker.stored_levy_current_matches_derived ||
       SerializeBattleControlSnapshotV1(query.result).empty()) {
     return Fail("battle-control application-main executor contract failed");
+  }
+
+  BattleControlSnapshotMailboxContextV1 knight_query{};
+  knight_query.mailbox = &mailbox;
+  knight_query.ticket.sequence = 18;
+  knight_query.request = query.request;
+  knight_query.expected_snapshot_revision = 9;
+  knight_query.expected_snapshot = g_outer_snapshot;
+  knight_query.knight_request = game::CurrentBattleKnightRequestV1{};
+  mailbox.published_sequence.store(knight_query.ticket.sequence);
+  mailbox.executor_context = &knight_query;
+  if (!ExecuteBattleControlSnapshotMailboxQueryV1(&knight_query, stamp) ||
+      knight_query.completion !=
+          BattleControlSnapshotMailboxCompletionV1::query_unavailable ||
+      knight_query.result.status != game::BattleControlSnapshotStatus::unavailable ||
+      knight_query.result.diagnostic_reason != "fixture_knight_source_unavailable" ||
+      !SerializeCurrentBattleKnightV1(knight_query.knight_result).empty()) {
+    return Fail("unavailable knight read leaked an accepted battle result");
   }
 
   std::cout << "battle_control_snapshot_v1_mailbox_test: ok\n";

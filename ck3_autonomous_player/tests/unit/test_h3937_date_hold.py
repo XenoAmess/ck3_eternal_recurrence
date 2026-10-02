@@ -194,13 +194,7 @@ class H3937DateHoldTests(unittest.TestCase):
                             ),
                             action_steps=(step,),
                         )
-                        if step.startswith("advance-route-contact-horizon-"):
-                            self.assertEqual(
-                                old["phase"],
-                                "native_war_route_contact_physical_inventory_unproven",
-                            )
-                        else:
-                            self.assertEqual(old["selected_step"], step)
+                        self.assertEqual(old["selected_step"], step)
 
 
 if __name__ == "__main__":

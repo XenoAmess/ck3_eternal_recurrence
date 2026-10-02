@@ -59,3 +59,9 @@ prove all relevant writers and replay/postcondition reconciliation. A policy
 owner must separately supply the minimum reserve, horizon and future risk
 method. Until then the request in the fixed OneDrive `WAR/R0266-H3937-WAR-CASH-20260929/`
 directory remains open.
+
+## 2026-10-02 provenance addendum: distinct H3937 frame records
+
+PR [#449](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449) head `3bc267e0d3c565249f9a93ac24e33acb0a44ded7` preserved a different opening identity for this historical source note: snapshot `native:4`, native revision `4`, public revision `5`, with the same episode/date/WarID. The existing opening above records native revision `3`, public revision `4` and remains unchanged. These source versions are retained as distinct records; matching date/episode alone does not make their frame identities interchangeable. Neither record supplies a live numeric quote or a formal cash producer.
+
+This addendum imports provenance from the frozen CK3 1.19.0.6 research branch. It does not install its driver lifecycle hooks or candidate cash contracts in the current 1.20 runtime, and does not reclassify the synthetic writer-subset tests as native amount evidence. The complete source response is retained under `historical_pr449_20260928_20260930` in the [R0266 response](../autonomous-agent-progress/coordination/war-requests/responses/WAR-ROBERT-R0266-JOINT-CASH-20260928.json).

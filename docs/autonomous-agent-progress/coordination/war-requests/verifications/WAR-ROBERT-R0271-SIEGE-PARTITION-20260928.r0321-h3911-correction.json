@@ -1,0 +1,38 @@
+{
+  "schema": "xar.g2.war-r0271-h3911-source-pair-correction.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "audit_at_utc": "2026-09-28T14:30:29Z",
+  "corrects_prior_audit": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0321-source-boundary.json",
+  "correction_type": "later_source_evidence_supersedes_handoff_recovery_qualification_field",
+  "new_authority": {
+    "git_commit": "32c0dd3706b95426977d787886b44f5545105772",
+    "files": [
+      "docs/project-state/current-state.json",
+      "docs/project-state/current-state.source.json"
+    ],
+    "scope": "Git-tracked source-machine project-state projection; source-only locators and SHA claims, not transferred receiver artifact bytes or a receiver cold restore."
+  },
+  "later_source_pair_status": {
+    "round": "R0321",
+    "history_index": 3911,
+    "date_raw": 53219928,
+    "durable_game_days": 3150,
+    "increment_from_h3860_days": 6,
+    "formal_result": "26/27 attempted turns completed before turn27 war forecast RED; only last qualified saved H3911 checkpoint retained",
+    "checkpoint_save_sha256": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+    "frozen_source_driver_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "family_sidecar_sha256": "6F007805A9CC5B602858AF9A670F2A6A591EE269E19C6301239422FFBEEAE0B3",
+    "pair_identity_sha256": "FDE4CC3A64DF5BB5D83F7B132FE5CC2985D31ACA28F0883A1C6245C197B5915E",
+    "prepared_candidate_source_commit": "2eb9cb9523d9c02055882d9418395d0cce35cc31",
+    "official_no_launch_report_sha256": "1067E8468BE61A6B0240E12B145FD173D6DCD4E786FED3991E7E436253E75712",
+    "rebound_driver_sha256": "BF58AB4FE890F7AAAC6EA8F0254655DA869BB3327DF867C6D217550165D9085D",
+    "source_claimed_gate": "Frozen H3911 save/source driver and family/ransom sidecars passed official pairing, rebind and no-launch in an independent source recovery candidate.",
+    "cold_restore_status": "No H3911 CK3 cold restore claimed."
+  },
+  "reconciliation": {
+    "old_handoff": "The earlier 5777-byte SOURCE-R0321-WAR-FORECAST-RED-v1.json truthfully said recovery_qualified_for_receiver=false at its handoff time. Its field is retained as historical source metadata, not used as the current H3911 source-candidate status.",
+    "now_source_qualified": "The later Git project-state commit identifies H3911 as the canonical latest qualified durable Robert pair and records source-side official pairing/rebind/no-launch. This supersedes the earlier claim that the source pair had not yet passed those gates.",
+    "still_receiver_pending": "The H3911 save, exact frozen source driver, sidecars, pair identity, no-launch report, raw h3911 frame and R0321 formal report have not been transferred and hashed on the receiver. Source Z: locators are not receiver download paths; receiver matching candidate, independent no-launch and live replay remain pending.",
+    "still_war_red": "Turn27 qualified forecast producer_unavailable/same_frame_encounter_scope_mismatch remains RED; active attack was not selected. The later partition-available source report does not repair the original R0271 H3388 offsite RED or authorize the target siege fight."
+  }
+}

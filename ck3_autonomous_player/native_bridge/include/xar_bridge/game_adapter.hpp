@@ -2,6 +2,7 @@
 
 #include "xar_bridge/combat_v3.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 #include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
 #endif
@@ -128,6 +129,11 @@ public:
   submit_enforce_demands(std::int32_t war_id) const noexcept = 0;
   virtual ReadArmyStrengthsResult read_army_strengths(
       std::vector<ArmyStrengthSnapshot> &output) const noexcept = 0;
+  virtual ReadProvinceLocalSiegeResult read_province_local_siege(
+      std::int32_t, WarObjectiveProvinceState &output) const noexcept {
+    output = {};
+    return ReadProvinceLocalSiegeResult::unavailable;
+  }
   virtual ReadCombatSimulationInputsResult read_combat_simulation_inputs(
       const CombatSimulationInputsRequest &request,
       CombatSimulationInputsSnapshot &output) const noexcept = 0;
@@ -161,6 +167,14 @@ public:
     (void)toward_character_id;
     output = {};
     return ReadRaiktorActualTruceExpiryResultV1::unavailable;
+  }
+  // Keep the shared adapter layout identical in the separately built 1.20
+  // runtime and the optional 1.19 reader. Only the exact legacy adapter can
+  // override this method or advertise its capability when the option is ON.
+  virtual H2743ExistingTruceStatusV1 read_h2743_preaction_existing_truce_v1(
+      H2743ExistingTruceSnapshotV1 &output) const noexcept {
+    output = {};
+    return H2743ExistingTruceStatusV1::unavailable;
   }
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   virtual bool read_raiktor_war_bound_loss_cleanup(
@@ -337,6 +351,11 @@ inline ReadArmyStrengthsResult ReadArmyStrengths(
     std::vector<ArmyStrengthSnapshot> &output) noexcept {
   return game.read_army_strengths(output);
 }
+inline ReadProvinceLocalSiegeResult ReadProvinceLocalSiege(
+    const GameAdapter &game, std::int32_t province_id,
+    WarObjectiveProvinceState &output) noexcept {
+  return game.read_province_local_siege(province_id, output);
+}
 inline ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
     const GameAdapter &game, const CombatSimulationInputsRequest &request,
     CombatSimulationInputsSnapshot &output) noexcept {
@@ -373,6 +392,11 @@ inline ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
     const GameAdapter &game, std::int32_t toward_character_id,
     RaiktorActualTruceExpirySnapshotV1 &output) noexcept {
   return game.read_raiktor_actual_truce_expiry(toward_character_id, output);
+}
+inline H2743ExistingTruceStatusV1 ReadH2743PreactionExistingTruceV1(
+    const GameAdapter &game,
+    H2743ExistingTruceSnapshotV1 &output) noexcept {
+  return game.read_h2743_preaction_existing_truce_v1(output);
 }
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 inline bool ReadRaiktorWarBoundLossCleanup(

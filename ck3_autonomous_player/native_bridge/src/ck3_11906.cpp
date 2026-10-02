@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/h2743_war_storage_candidate_v1.hpp"
+#include "xar_bridge/current_battle_knight_v1.hpp"
 #include "xar_bridge/campaign_root_context_v1.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
@@ -11052,6 +11053,61 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
   return output.status;
 }
 
+game::ReadProvinceLocalSiegeResult ReadProvinceLocalSiege(
+    const Bindings &bindings, std::int32_t province_id,
+    game::WarObjectiveProvinceState &output) noexcept {
+  using Result = game::ReadProvinceLocalSiegeResult;
+  output = {};
+  if (province_id <= 0) {
+    return Result::province_not_found;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) {
+    return Result::unavailable;
+  }
+  if (!before.map_ready) {
+    return Result::unavailable;
+  }
+  if (!before.paused) {
+    return Result::requires_paused;
+  }
+  if (!before.has_played_character || !before.played_character_alive) {
+    return Result::no_played_character;
+  }
+  if (bindings.game_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      *bindings.army_storage_slot == nullptr) {
+    return Result::unavailable;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr || ResolveProvince(game_state, province_id) == nullptr) {
+    return Result::province_not_found;
+  }
+
+  // The original rich Province reader already validates every exact-build
+  // pointer and leaves unavailable subdomains unobservable. This direct read
+  // does not consume or change the active-war objective-row budget.
+  const auto armies = ReadArmies(bindings, game_state,
+                                before.played_character_id, true);
+  const auto first = ReadWarObjectiveProvinceState(
+      bindings, game_state, province_id, before.played_character_id, armies,
+      true);
+  const auto second = ReadWarObjectiveProvinceState(
+      bindings, game_state, province_id, before.played_character_id, armies,
+      true);
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before || first != second) {
+    return Result::state_changed;
+  }
+  output = second;
+  const bool complete = output.occupation_observable &&
+                        output.fort_level_observable &&
+                        output.garrison_size_observable &&
+                        output.besieging_strength_observable &&
+                        output.siege_observable;
+  return complete ? Result::available : Result::partial;
+}
+
 ReadArmyStrengthsResult ReadArmyStrengths(
     const Bindings &bindings,
     std::vector<ArmyStrengthSnapshot> &output) noexcept {
@@ -16800,6 +16856,227 @@ BattleControlSnapshotStatus ReadBattleControlSnapshot(
   return output.status;
 }
 
+bool ReadCurrentBattleKnightV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleControlSnapshot &same_frame_battle,
+    const CurrentBattleKnightRequestV1 &request,
+    CurrentBattleKnightSnapshotV1 &output) noexcept {
+  output = {};
+  const auto fail = [&output](std::string_view reason) noexcept {
+    output = {};
+    output.unavailable_reason = std::string(reason);
+    return false;
+  };
+  std::string_view scope_failure;
+  const auto *const stored_entry = SelectCurrentBattleKnightEntryV1(
+      same_frame_battle, request, scope_failure);
+  if (stored_entry == nullptr) {
+    return fail(scope_failure);
+  }
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.evaluate_regiment_stats_at_province == nullptr ||
+      bindings.get_knight_effectiveness_context == nullptr ||
+      bindings.read_knight_effectiveness == nullptr ||
+      bindings.knight_damage_per_prowess == nullptr ||
+      bindings.knight_toughness_per_prowess == nullptr ||
+      !same_frame_world.paused ||
+      !same_frame_world.has_played_character ||
+      same_frame_world.played_character_id !=
+          request.expected_played_character_id ||
+      same_frame_world.date_raw != request.expected_date_raw) {
+    return fail("current_knight_source_unavailable");
+  }
+  if (std::count_if(
+          same_frame_world.active_wars.begin(),
+          same_frame_world.active_wars.end(),
+          [&request](const ActiveWarSnapshot &war) {
+            return war.war_id == request.expected_war_id;
+          }) != 1) {
+    return fail("expected_war_not_active");
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || before != same_frame_world) {
+    return fail("world_snapshot_changed_before_knight_read");
+  }
+  const auto sample = [&]() noexcept {
+    CurrentBattleKnightSnapshotV1 row{};
+    row.unavailable_reason = "current_knight_identity_unavailable";
+    void *const game_state = *bindings.game_state_slot;
+    void *const unit = ResolveStoredComponent(
+        bindings.army_storage_slot, request.subject_public_cunit_id,
+        kArmyIdOffset);
+    void *const army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot,
+        request.expected_native_carmy_id, kInternalArmyIdOffset);
+    void *const combat = ResolveStoredComponent(
+        bindings.combat_storage_slot, request.expected_combat_id,
+        kCombatIdOffset);
+    void *const province =
+        ResolveProvince(game_state, request.expected_province_id);
+    void *const regiment = ResolveStoredComponent(
+        bindings.regiment_storage_slot, request.regiment_id,
+        kRegimentIdOffset);
+    void *const character = ResolveStoredComponent(
+        bindings.character_storage_slot, request.character_id,
+        kCharacterIdOffset);
+    if (game_state == nullptr || unit == nullptr || army == nullptr ||
+        combat == nullptr || province == nullptr || regiment == nullptr ||
+        character == nullptr ||
+        LoadAt<std::int32_t>(game_state, kGameStateDateOffset) !=
+            request.expected_date_raw ||
+        LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyUnitIdOffset) !=
+            request.subject_public_cunit_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyCombatIdOffset) !=
+            request.expected_combat_id ||
+        LoadAt<void *>(unit, kArmyCurrentProvinceOffset) != province ||
+        LoadAt<void *>(combat, kCombatProvinceOffset) != province ||
+        LoadAt<std::uint8_t>(combat,
+                             kCombatDailyDispatchInProgressOffset) != 0 ||
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(regiment,
+                             kRegimentKnightCharacterIdOffset) !=
+            request.character_id) {
+      return row;
+    }
+    std::vector<std::int32_t> regiment_ids;
+    if (!ReadContactIdArray(army, kInternalArmyRegimentIdsOffset,
+                            kInternalArmyRegimentCountOffset,
+                            kMaximumActualContactRegiments, regiment_ids,
+                            false) ||
+        std::count(regiment_ids.begin(), regiment_ids.end(),
+                   request.regiment_id) != 1) {
+      row.unavailable_reason = "regiment_outside_current_army";
+      return row;
+    }
+    bool character_valid = false;
+    void *const knight_link =
+        LoadAt<void *>(character, kCharacterKnightLinkOffset);
+    if (!ReadSubobjectPredicate(character,
+                                kCharacterValiditySubobjectOffset,
+                                character_valid) ||
+        !character_valid || knight_link == nullptr ||
+        LoadAt<std::int32_t>(
+            knight_link, kCharacterKnightLinkRegimentIdOffset) !=
+            request.regiment_id) {
+      row.unavailable_reason = "knight_character_regiment_backlink_invalid";
+      return row;
+    }
+    CombatEffectiveStatsSnapshot stats{};
+    if (!ReadEncounterEffectiveStats(bindings, regiment, province,
+                                     request.regiment_id,
+                                     request.expected_province_id, stats)) {
+      row.unavailable_reason = stats.unavailable_reason;
+      return row;
+    }
+    const auto prowess = LoadAt<std::int32_t>(
+        character, kCharacterEffectiveProwessOffset);
+    void *const context =
+        bindings.get_knight_effectiveness_context(character);
+    std::int64_t effectiveness = 0;
+    if (context == nullptr ||
+        bindings.read_knight_effectiveness(&effectiveness, context, 0) !=
+            &effectiveness ||
+        effectiveness < 0) {
+      row.unavailable_reason = "knight_effectiveness_unavailable";
+      return row;
+    }
+    const auto formula = CheckCurrentBattleKnightFormulaV1(
+        effectiveness, prowess, *bindings.knight_damage_per_prowess,
+        *bindings.knight_toughness_per_prowess, stats.damage_raw,
+        stats.toughness_raw);
+    if (!formula.empty()) {
+      row.unavailable_reason = formula;
+      return row;
+    }
+    std::vector<std::int32_t> regiment_ids_after;
+    if (!ReadContactIdArray(army, kInternalArmyRegimentIdsOffset,
+                            kInternalArmyRegimentCountOffset,
+                            kMaximumActualContactRegiments,
+                            regiment_ids_after, false) ||
+        regiment_ids_after != regiment_ids) {
+      row.unavailable_reason = "current_army_regiment_roster_changed";
+      return row;
+    }
+    if (ResolveStoredComponent(bindings.army_storage_slot,
+                               request.subject_public_cunit_id,
+                               kArmyIdOffset) != unit ||
+        ResolveStoredComponent(bindings.army_internal_storage_slot,
+                               request.expected_native_carmy_id,
+                               kInternalArmyIdOffset) != army ||
+        ResolveStoredComponent(bindings.combat_storage_slot,
+                               request.expected_combat_id,
+                               kCombatIdOffset) != combat ||
+        ResolveProvince(game_state, request.expected_province_id) !=
+            province ||
+        ResolveStoredComponent(bindings.regiment_storage_slot,
+                               request.regiment_id, kRegimentIdOffset) !=
+            regiment ||
+        ResolveStoredComponent(bindings.character_storage_slot,
+                               request.character_id, kCharacterIdOffset) !=
+            character ||
+        LoadAt<std::int32_t>(game_state, kGameStateDateOffset) !=
+            request.expected_date_raw ||
+        LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyUnitIdOffset) !=
+            request.subject_public_cunit_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyCombatIdOffset) !=
+            request.expected_combat_id ||
+        LoadAt<void *>(unit, kArmyCurrentProvinceOffset) != province ||
+        LoadAt<void *>(combat, kCombatProvinceOffset) != province ||
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(regiment,
+                             kRegimentKnightCharacterIdOffset) !=
+            request.character_id ||
+        LoadAt<void *>(character, kCharacterKnightLinkOffset) != knight_link ||
+        LoadAt<std::int32_t>(
+            knight_link, kCharacterKnightLinkRegimentIdOffset) !=
+            request.regiment_id) {
+      row.unavailable_reason = "current_knight_generation_changed";
+      return row;
+    }
+    row.available = true;
+    row.unavailable_reason.clear();
+    row.observed_date_raw = request.expected_date_raw;
+    row.combat_id = request.expected_combat_id;
+    row.province_id = request.expected_province_id;
+    row.subject_public_cunit_id = request.subject_public_cunit_id;
+    row.native_carmy_id = request.expected_native_carmy_id;
+    row.character_id = request.character_id;
+    row.regiment_id = request.regiment_id;
+    row.effective_prowess = prowess;
+    row.knight_effectiveness_raw = effectiveness;
+    row.fresh_damage_raw = stats.damage_raw;
+    row.fresh_toughness_raw = stats.toughness_raw;
+    row.stored_entry_damage_raw =
+        stored_entry->effective_damage_raw;
+    row.stored_entry_toughness_raw =
+        stored_entry->effective_toughness_raw;
+    return row;
+  };
+  const auto first = sample();
+  const auto second = sample();
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before) {
+    return fail("world_snapshot_changed_after_knight_read");
+  }
+  const auto pair_status = CheckCurrentBattleKnightPairV1(first, second);
+  if (!pair_status.empty()) {
+    return fail(pair_status);
+  }
+  output = second;
+  return true;
+}
+
 BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(
     const Bindings &bindings, const BattleTransitionRequest &request,
     BattleTransitionSnapshot &output) noexcept {
@@ -19478,6 +19755,70 @@ ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
   access.get_truce_end_date = bindings.get_character_truce_end_date;
   return ReadRaiktorActualTruceExpiryV1(access, toward_character_id, output);
 }
+
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+game::H2743ExistingTruceStatusV1 ReadH2743PreactionExistingTruceV1(
+    const Bindings &bindings,
+    game::H2743ExistingTruceSnapshotV1 &output) noexcept {
+  H2743ExistingTruceAccessV1 access{};
+  access.exact_build_admitted = bindings.enabled &&
+                                bindings.game_state_slot != nullptr;
+  access.context = const_cast<Bindings *>(&bindings);
+  access.read_snapshot = [](void *context, Snapshot &snapshot) noexcept {
+    return ReadSnapshot(*static_cast<const Bindings *>(context), snapshot);
+  };
+  access.read_war_identity = [](
+      void *context, H2743TruceWarIdentityV1 &identity) noexcept {
+    identity = {};
+    const auto &bindings = *static_cast<const Bindings *>(context);
+    if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+        *bindings.game_state_slot == nullptr) return false;
+    void *const war = ResolveWar(bindings, *bindings.game_state_slot,
+                                 kH2743TruceWarIdV1);
+    if (war == nullptr) return false;
+    void *const cb = LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+    if (cb == nullptr) return false;
+    const auto cb_index = LoadAt<std::int32_t>(
+        cb, kCasusBelliTypeDatabaseIndexOffset);
+    if (cb_index != 17) return false;
+    try {
+      std::string key;
+      if (!ReadCasusBelliTypeKey(cb, key) ||
+          key != "individual_county_de_jure_cb" ||
+          !ReadNativeIntArray(
+              static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+              identity.target_title_ids, kMaximumWarObjectiveTitleIds)) {
+        return false;
+      }
+    } catch (...) {
+      return false;
+    }
+    identity.war_object = war;
+    identity.casus_belli_object = cb;
+    identity.war_id = LoadAt<std::int32_t>(war, kWarIdOffset);
+    identity.primary_attacker_id = LoadAt<std::int32_t>(
+        war, kWarPrimaryAttackerCharacterIdOffset);
+    identity.primary_defender_id = LoadAt<std::int32_t>(
+        war, kWarPrimaryDefenderCharacterIdOffset);
+    identity.casus_belli_database_index = cb_index;
+    identity.exact_casus_belli_key = true;
+    return true;
+  };
+  access.resolve_living_character = [](void *context,
+                                       std::int32_t id) noexcept -> void * {
+    const auto &bindings = *static_cast<const Bindings *>(context);
+    void *const character = ResolveCharacter(bindings, id);
+    return character != nullptr &&
+                   LoadAt<void *>(character, kCharacterDeathDataOffset) ==
+                       nullptr
+               ? character
+               : nullptr;
+  };
+  access.has_truce = bindings.has_character_truce;
+  access.get_truce_end_date = bindings.get_character_truce_end_date;
+  return ck3_11906::ReadH2743PreactionExistingTruceV1(access, output);
+}
+#endif
 
 // These helpers inspect pre-existing containers only. They do not call
 // GetOwnedPerks, HasPerk, script effects, or the truce evaluator.

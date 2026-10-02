@@ -3155,7 +3155,8 @@ class GameplayBridgeService:
         }
 
     def execute_step(
-        self, step: str, *, expected_revision: int | None = None
+        self, step: str, *, expected_revision: int | None = None,
+        expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         if step == CENTER_MAP_ON_LANDED_TITLE_V1_STEP:
             raise UnsupportedStepError(
@@ -3163,6 +3164,17 @@ class GameplayBridgeService:
             )
         if step in {"navigate-ingame-ui-v1", "query-ingame-ui-window-v1"}:
             raise UnsupportedStepError("ingame UI requires its explicit typed MCP facade")
+        from .h2743_preaction_existing_truce_v1 import QUERY_STEP
+        if step == QUERY_STEP or expected_h2743_frame is not None:
+            if (step != QUERY_STEP or type(expected_revision) is not int
+                    or expected_h2743_frame is None):
+                raise BridgeUnavailableError(
+                    "H2743 read-only query requires an explicit before-frame claim"
+                )
+            reader = getattr(self.driver, "query_h2743_preaction_existing_truce_v1", None)
+            if not callable(reader):
+                raise BridgeUnavailableError("H2743 native read-only reader unavailable")
+            return reader(expected_h2743_frame, expected_revision=expected_revision)
         return self.driver.execute_step(step, expected_revision=expected_revision)
 
     def save_checkpoint(
@@ -12914,6 +12926,44 @@ class GameplayBridgeService:
     ) -> dict[str, object]:
         return self.driver.wait_for_change(
             after_revision, timeout_seconds=timeout_seconds
+        )
+
+
+    def query_current_battle_knight_v1(
+        self,
+        *,
+        subject_public_cunit_id: int,
+        character_id: int,
+        regiment_id: int,
+        expected_played_character_id: int,
+        expected_war_id: int,
+        expected_native_carmy_id: int,
+        expected_combat_id: int,
+        expected_province_id: int,
+        expected_date_raw: int,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_snapshot_id: str,
+    ) -> dict[str, object]:
+        """Read one paired current knight/regiment on a pinned paused frame."""
+        reader = getattr(self.driver, "query_current_battle_knight_v1", None)
+        if not callable(reader):
+            raise UnsupportedStepError(
+                "selected backend has no current-battle-knight native reader"
+            )
+        return reader(
+            subject_public_cunit_id=subject_public_cunit_id,
+            character_id=character_id,
+            regiment_id=regiment_id,
+            expected_played_character_id=expected_played_character_id,
+            expected_war_id=expected_war_id,
+            expected_native_carmy_id=expected_native_carmy_id,
+            expected_combat_id=expected_combat_id,
+            expected_province_id=expected_province_id,
+            expected_date_raw=expected_date_raw,
+            expected_revision=expected_revision,
+            expected_native_revision=expected_native_revision,
+            expected_snapshot_id=expected_snapshot_id,
         )
 
 

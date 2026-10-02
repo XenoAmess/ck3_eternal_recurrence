@@ -42,7 +42,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 105;
+constexpr std::size_t kBaseCapabilityCount = 107;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
@@ -52,6 +52,9 @@ constexpr std::size_t kCapabilityCount =
     + 1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+    + 1
+#endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
     + 1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
@@ -111,6 +114,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-route-contact-horizon-v1-N",
     "game.command.query-actual-contact-scope-v1-N",
     "game.command.query-battle-control-snapshot-v1-N",
+    "game.command.query-current-battle-knight-v1-N-N-N",
     "game.command.query-battle-transition-v1-N",
     "game.command.query-battle-terminal-transition-v1",
     "game.command.query-battle-reinforcement-assignment-v1-N",
@@ -125,6 +129,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.declare-war-N",
     "game.command.enforce-demands-N",
     "game.command.query-army-strengths-v1",
+    "game.command.query-province-local-siege-v1-N",
     "game.command.query-campaign-root-context-v1",
     ck3_11906::kPlayerFactionAlertsV1Capability,
     ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
@@ -200,6 +205,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-defender-de-jure-exit-terms-v1-N",
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
     ck3_11906::kRaiktorActualTruceExpiryV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+    ck3_11906::kH2743ExistingTruceV1Capability,
 #endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
     ck3_11906::kRaiktorWarBoundLossCleanupV1Capability,
@@ -347,6 +355,11 @@ public:
       std::vector<ArmyStrengthSnapshot> &output) const noexcept override {
     return ck3_11906::ReadArmyStrengths(bindings_, output);
   }
+  ReadProvinceLocalSiegeResult read_province_local_siege(
+      std::int32_t province_id,
+      WarObjectiveProvinceState &output) const noexcept override {
+    return ck3_11906::ReadProvinceLocalSiege(bindings_, province_id, output);
+  }
   ReadCombatSimulationInputsResult read_combat_simulation_inputs(
       const CombatSimulationInputsRequest &request,
       CombatSimulationInputsSnapshot &output) const noexcept override {
@@ -388,6 +401,12 @@ public:
     return ck3_11906::ReadRaiktorActualTruceExpiry(
         bindings_, toward_character_id, output);
   }
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  H2743ExistingTruceStatusV1 read_h2743_preaction_existing_truce_v1(
+      H2743ExistingTruceSnapshotV1 &output) const noexcept override {
+    return ck3_11906::ReadH2743PreactionExistingTruceV1(bindings_, output);
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   bool read_raiktor_war_bound_loss_cleanup(
       const ck3_11906::RaiktorWarBoundLossBaselineV1 &baseline,

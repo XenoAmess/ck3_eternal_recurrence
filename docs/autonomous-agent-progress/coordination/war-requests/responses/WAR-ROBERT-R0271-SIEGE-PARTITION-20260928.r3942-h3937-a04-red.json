@@ -1,0 +1,81 @@
+{
+  "schema": "xar.war.r0271-r3942-h3937-readonly-response.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "response_kind": "append_only_live_attempt_result",
+  "status": "RED_NATIVE_READINESS_TIMEOUT",
+  "round": "R3942",
+  "attempt": "war-h3937-combined-live-20260929/attempt-04",
+  "source_frame_identity": {
+    "history_index": 3937,
+    "date_raw": 53219928,
+    "identity_scope": "source checkpoint only; no native paused frame was obtained in this receiver attempt"
+  },
+  "official_result": {
+    "error_type": "NativeReadinessTimeoutError",
+    "error": "native readiness timed out: native game state is not available yet; CK3 may still be loading or may not have entered a map; last=None",
+    "native_readiness_timeout_seconds": 300,
+    "native_snapshot_obtained": false,
+    "formal_readonly_queries": 0,
+    "gameplay_actions": 0,
+    "date_advance_authorized": false,
+    "action_authorized": false,
+    "live_date_raw": null,
+    "unchanged_date_poststate_proven": false
+  },
+  "war_evidence": {
+    "local_siege_query": null,
+    "full_hostile_route_contact_query": null,
+    "same_frame_native_participant_partition": null,
+    "complete_physical_army_inventory": null,
+    "future_target_2629_actual_participant_set": null,
+    "war_cash_pending_spending": null,
+    "war_cash_immediate_costs": null,
+    "war_cash_minimum_reserve": null,
+    "war_cash_timed_future_costs": null,
+    "reason": "No native paused snapshot or query response was obtained; query ACK, local siege, route contact, physical army inventory and cash cannot be inferred."
+  },
+  "risk_contract": {
+    "r0271_h3388_original_red_retained": true,
+    "existing_r0002_r0004_r0005_bounded_first_hop_recovery_retained": true,
+    "r3942_readonly_observation_qualified": false,
+    "same_frame_siege_participants_proven": false,
+    "date_advance_gate": "RED",
+    "direct_attack_allowed": false,
+    "robert_resume_allowed_by_this_response": false,
+    "next_attempt": "Requires a new isolated official attempt and a real paused native frame; this RED does not grant a game-date advance or combat action."
+  },
+  "evidence": {
+    "outer_report": {
+      "path": "D:\\ck3-research-artifacts\\war-h3937-combined-live-20260929\\attempt-04\\outer-report.json",
+      "sha256": "3C3AD85BAF8AC5EDAFE03B7FDFCD77AEF7F33A70AC462B076017AD9FB7CBD9AA"
+    },
+    "worker_completion": {
+      "path": "D:\\ck3-research-artifacts\\war-h3937-combined-live-20260929\\attempt-04\\completion.json",
+      "sha256": "E8720E792FA9BA951FDB9F2D03B9500BA4D93B2129620527F2C59911FADE22C1"
+    },
+    "supervisor_completion": {
+      "path": "D:\\ck3-research-artifacts\\war-h3937-combined-live-20260929\\attempt-04\\supervisor-completion.json",
+      "sha256": "83809E5A3733A88D89AA86393289AC866EADBBFB9604FB3AB7B377CF05B5B44D"
+    },
+    "red_closeout": {
+      "path": "D:\\ck3-research-artifacts\\war-h3937-combined-live-20260929\\screen-attempt-04\\red-closeout.json",
+      "sha256": "3ABF91B974E45567C607B1AFEFFFBEA21A96558558C4AC1A394AE84FB6A35D35"
+    },
+    "taskbus_release": {
+      "path": "D:\\ck3-research-artifacts\\war-h3937-combined-live-20260929\\screen-attempt-04\\taskbus-released.json",
+      "sha256": "C793B784C8CEFEE1955C65D201B22F3675DD8EE5836B5FFE2E736F23AAD570FE"
+    },
+    "post_cleanup_inspect": {
+      "path": "D:\\ck3-research-artifacts\\war-h3937-combined-live-20260929\\screen-attempt-04\\post-cleanup-inspect.json",
+      "sha256": "725ACF344D345536B284B9DC8404E8F7BC71E0214C9152BBC01F46BEE640D468"
+    }
+  },
+  "cleanup": {
+    "outer_cleanup_proven": true,
+    "processes_gone": true,
+    "taskbus_state": "done",
+    "taskbus_resources": [],
+    "taskbus_release_sequence": 2404
+  },
+  "source_readback_status": "pending"
+}

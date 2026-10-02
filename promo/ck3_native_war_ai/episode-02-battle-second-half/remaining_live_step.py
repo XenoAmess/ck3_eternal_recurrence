@@ -376,7 +376,7 @@ def advance(output: Path, track: str, binding: dict[str, Any],
     post_control_receipt = None
     post_control_values = None
     post_control_error = None
-    if track == "e2-06-d11" and post_ok:
+    if track in ("e2-05-d26", "e2-06-d11") and post_ok:
         try:
             post_control, post_control_receipt = call(
                 output, track + "-post-control", "ck3_query_battle_control_snapshot_v1",

@@ -1416,9 +1416,10 @@ def summarize_trial_outcomes(
             / experiment.sample_count
         ),
         fidelity_gate=fidelity_gate,
-        planner_usable=fidelity_gate,
+        planner_usable=False,
         model_fidelity=(
-            "exact-native-parity" if fidelity_gate else "research-only-bounded-core"
+            "transition-parity-manifest-claim" if fidelity_gate
+            else "research-only-bounded-core"
         ),
         missing_required_domains=manifest.missing_required_domains,
     )

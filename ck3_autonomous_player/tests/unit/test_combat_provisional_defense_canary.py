@@ -12,9 +12,13 @@ from xar_autoplayer.strategy import (
     _primary_defender_siege_relief_assessment,
     _provisional_defense_research_assessment,
     _siege_forecast_participant_partition,
+    choose_one_life_turn,
     query_combat_simulation_inputs_v3_step,
     query_route_contact_horizon_step,
 )
+
+from xar_autoplayer.simulation.general_battle_forecast import forecast_fixed_contact
+from xar_autoplayer.simulation.combat_input import freeze_combat_simulation_input
 
 from ck3_autonomous_player.tests.unit.test_gameplay_bridge import (
     _army,
@@ -35,6 +39,301 @@ R0265_REPORT = (
 
 
 class ProvisionalDefenseCanaryTests(unittest.TestCase):
+    def test_two_defender_one_day_contact_cannot_consume_research_canary(self):
+        frame = self._frame()
+        frame["active_wars"][0]["enemy_armies"].append(_army(
+            22, soldiers=311, province_id=32, controllable=False,
+            army_state="sieging", army_state_code=3,
+            route_province_ids=[], in_combat=False, retreating=False,
+        ))
+        frame["army_strengths"].append(
+            _army_strength(22, "active_war_enemy", [95], current=311)
+        )
+        frame["diagnostics"]["hello"] = {
+            "ck3_build_match": True,
+            "expected_ck3_sha256":
+                "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        }
+        frame["succession_lifecycle"] = {
+            "lifecycle": "ordinary_campaign_succession", "xar_enabled": "xar_off",
+        }
+        frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 30
+        frame["combat_simulation_inputs_v3_defender_army_ids"] = [21, 22]
+        frame["combat_simulation_inputs_v3"] = {
+            "completeness": {"input_observation_ready": True},
+            "base_inputs": {
+                "target_province_id": 32,
+                "scenario": {
+                    "attacker_entry_province_id": 30,
+                    "attacker_army_ids": [11],
+                    "defender_army_ids": [21, 22],
+                    "attacker_side": "player_or_allied",
+                    "defender_side": "enemy",
+                    "actual_route_dependency": False,
+                },
+            },
+        }
+        preview = _preview_row(
+            1, origin=30, target=32, date_raw=frame["date_raw"], route=[32],
+        )
+        contact = _route_contact_row(
+            2, origin=30, target=32, date_raw=frame["date_raw"],
+            route=[32], hostile_ids=(21, 22), contact_free=False,
+            hostile_provinces={21: 32, 22: 32},
+        )
+        query = self._query_row(30)
+        query_step = query_combat_simulation_inputs_v3_step(32, 30, [11], [21, 22])
+        query["command"] = query_step
+        query["result"]["step"] = query_step
+        rows = [preview, contact, query]
+        forecast = {
+            "status": "estimated", "input_sha256": "A" * 64,
+            "advantage_input": {}, "simulator_build": "test-only",
+            "sample_count": 512, "player_wins": 512, "player_losses": 0,
+            "no_resolution": 0, "resolved_win_wilson95": {"lower": 0.99},
+            "player_p90_hard_loss_raw": 0,
+            "player_p90_hard_loss_fraction": 0.0,
+            "player_stack_wipe_probability": 0.0,
+            "commander_or_knight_death_probability": None,
+            "missing_required_domains": [],
+        }
+
+        def plan():
+            return _primary_defender_siege_forecast_ingress(
+                {"phase": "native_war_no_safe_exact_route", "selected_step": None},
+                commands=rows, snapshot=frame,
+                action_steps={"move-army-11-to-32"},
+                bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+            )
+
+        with mock.patch(
+            "xar_autoplayer.strategy.forecast_fixed_contact", return_value=forecast,
+        ):
+            blocked = plan()
+        self.assertEqual(blocked["provisional_forecast"]["status"],
+                         "multi_defender_research_only", blocked)
+        self.assertIsNone(blocked["selected_step"])
+        self.assertFalse(blocked["active_attack_allowed"])
+
+        # Defence in depth: a stale or mistaken admissible result still cannot
+        # enter the one-day contact action when two defenders are observed.
+        with mock.patch(
+            "xar_autoplayer.strategy._provisional_defense_research_assessment",
+            return_value={"status": "provisional_admissible"},
+        ):
+            misclassified = plan()
+        self.assertIsNone(misclassified["selected_step"])
+        self.assertFalse(misclassified["active_attack_allowed"])
+
+    def test_two_exact_target_defenders_keep_full_ordered_forecast_scope(self):
+        fixture = json.loads(
+            (FIXTURES / "live_rev4_player_attacks_357.json").read_text(encoding="utf-8")
+        )
+        base = copy.deepcopy(fixture["combat_simulation_inputs"])
+        second = copy.deepcopy(base["armies"][1])
+        second["army_id"] = 358
+        second["native_carmy_id"] += 1
+        if second["commander"]["character_id"] is not None:
+            second["commander"]["character_id"] += 100_000
+        for regiment in second["regiments"]:
+            regiment["regiment_id"] += 100_000_000
+        for knight in second["knights"]["members"]:
+            knight["character_id"] += 100_000
+            knight["source_regiment_id"] += 100_000_000
+            knight["army_id"] = second["native_carmy_id"]
+        base["armies"].append(second)
+        base["scenario"]["defender_army_ids"] = [357, 358]
+        frame = {
+            "diagnostics": {"hello": {
+                "ck3_build_match": True,
+                "expected_ck3_sha256": fixture["executable_sha256"],
+            }},
+            "succession_lifecycle": {
+                "lifecycle": "ordinary_campaign_succession", "xar_enabled": "xar_off",
+            },
+            "combat_simulation_inputs_v3": {
+                "completeness": {"input_observation_ready": True},
+                "base_inputs": base,
+            },
+            **fixture["capture"],
+        }
+        freeze_combat_simulation_input(base, capture=fixture["capture"])
+        forecast = forecast_fixed_contact(
+            frame["combat_simulation_inputs_v3"],
+            target_province_id=2581, attacker_entry_province_id=2587,
+            attacker_army_ids=(83_886_341,), defender_army_ids=(357, 358),
+            capture=fixture["capture"], sample_count=16, horizon_days=4,
+        )
+        self.assertEqual(forecast["status"], "estimated", forecast)
+        exact = _provisional_defense_research_assessment(
+            frame, target_province_id=2581, entry_province_id=2587,
+            attacker_army_id=83_886_341, defender_army_ids=(357, 358),
+            friendly_current_soldiers=1_482,
+        )
+        self.assertEqual(exact["status"], "multi_defender_research_only", exact)
+        self.assertFalse(exact["planner_usable"])
+        self.assertEqual(exact["sample_count"], 512)
+        self.assertFalse(exact["calibrated_win_probability_available"])
+        reversed_roster = _provisional_defense_research_assessment(
+            frame, target_province_id=2581, entry_province_id=2587,
+            attacker_army_id=83_886_341, defender_army_ids=(358, 357),
+            friendly_current_soldiers=1_482,
+        )
+        self.assertEqual(reversed_roster["status"], "same_frame_encounter_scope_mismatch")
+
+    def _r0321_two_defender_inputs(self):
+        frame, rows = self._r0271_replay_inputs()
+        frame["episode_run_id"] = "native-29829-r0321-test"
+        frame["played_character_id"] = 29829
+        frame["played_character_gold"] = {"raw": 100_000_000, "scale": 100_000}
+        second = frame["active_wars"][0]["enemy_armies"][1]
+        second.update({
+            "current_province_id": 2629, "army_state": "sieging",
+            "army_state_code": 3, "move_target_province_id": None,
+            "route_province_ids": [],
+        })
+        full = rows[1]["result"]["route_contact_horizon"]
+        full["hostile_routes"][1].update({
+            "current_province_id": 2629,
+            "route_province_ids": [], "arrival_date_raws": [],
+        })
+        rows[1]["result"]["queried_episode_run_id"] = frame["episode_run_id"]
+        route = rows[0]["result"]["route_preview"]["route_province_ids"]
+        first_hop = route[0]
+        rows.append(_preview_row(
+            4, army_id=83886367, origin=2610, target=first_hop,
+            date_raw=frame["date_raw"], route=[first_hop],
+        ))
+        rows.append(_route_contact_row(
+            5, army_id=83886367, origin=2610, target=first_hop,
+            date_raw=frame["date_raw"], route=[first_hop],
+            hostile_ids=(50331920, 83886484), contact_free=True,
+            episode_run_id=frame["episode_run_id"],
+            hostile_provinces={50331920: 2629, 83886484: 2629},
+        ))
+        query_step = query_combat_simulation_inputs_v3_step(
+            2629, route[-2], [83886367], [50331920, 83886484]
+        )
+        rows.append({
+            "index": 6, "command": query_step, "ok": True,
+            "result": {
+                "step": query_step, "accepted": True, "status": "available",
+                "queried_snapshot_id": frame["snapshot_id"],
+                "queried_revision": frame["revision"],
+                "queried_native_revision": frame["native_revision"],
+            },
+        })
+        frame.update({
+            "combat_simulation_inputs_v3": {"completeness": {}},
+            "combat_simulation_inputs_v3_status": "available",
+            "combat_simulation_inputs_v3_target_province_id": 2629,
+            "combat_simulation_inputs_v3_attacker_entry_province_id": route[-2],
+            "combat_simulation_inputs_v3_attacker_army_ids": [83886367],
+            "combat_simulation_inputs_v3_defender_army_ids": [50331920, 83886484],
+            "combat_simulation_inputs_v3_queried_snapshot_id": frame["snapshot_id"],
+            "combat_simulation_inputs_v3_queried_revision": frame["revision"],
+        })
+        step = f"move-army-83886367-to-{first_hop}"
+        actions = {step}
+        return frame, rows, actions, step
+
+    def test_r0321_synthetic_two_defender_route_reads_before_cash_without_move(self):
+        frame, rows, actions, move_step = self._r0321_two_defender_inputs()
+        first_hop = 2614
+        short_preview_step = f"preview-move-army-83886367-to-{first_hop}"
+        short_contact_step = query_route_contact_horizon_step(
+            83886367, first_hop, (50331920, 83886484)
+        )
+        actions.update((short_preview_step, short_contact_step))
+        full_horizon = rows[1]["result"]["route_contact_horizon"]
+        self.assertEqual(
+            full_horizon["subject_route"]["arrival_date_raws"][0]
+            - frame["date_raw"], 168,
+        )
+        self.assertEqual(
+            full_horizon["horizon_end_date_raw"] - frame["date_raw"], 24,
+        )
+        short_preview, short_contact = rows[2:4]
+        rows = [rows[0], rows[1], rows[4]]
+
+        def plan(current_frame=frame, current_rows=rows):
+            with (
+                mock.patch("xar_autoplayer.strategy.plan_raiktor_formal_exit",
+                           return_value=None),
+                mock.patch("xar_autoplayer.strategy._choose_one_life_turn_core",
+                           return_value={"phase": "native_war_no_safe_exact_route",
+                                         "selected_step": None}),
+                mock.patch(
+                    "xar_autoplayer.strategy._provisional_defense_research_assessment",
+                    return_value={"status": "same_frame_encounter_scope_mismatch"},
+                ),
+            ):
+                return choose_one_life_turn(
+                    current_rows, snapshot=current_frame, action_steps=actions,
+                    bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+                )
+
+        first = plan()
+        self.assertEqual(first["selected_step"], short_preview_step, first)
+        self.assertFalse(first["active_attack_allowed"])
+        failed_preview = {"index": 7, "command": short_preview_step, "ok": False}
+        self.assertIsNone(plan(current_rows=rows + [failed_preview])["selected_step"])
+
+        rows.append(short_preview)
+        second = plan()
+        self.assertEqual(second["selected_step"], short_contact_step, second)
+        self.assertFalse(second["active_attack_allowed"])
+        failed_contact = {"index": 8, "command": short_contact_step, "ok": False}
+        self.assertIsNone(plan(current_rows=rows + [failed_contact])["selected_step"])
+
+        rows.append(short_contact)
+        without_cash = plan()
+        self.assertIsNone(without_cash["selected_step"], without_cash)
+        self.assertFalse(without_cash["active_attack_allowed"])
+        frame["native_revision"] += 1
+        stale = plan()
+        self.assertNotEqual(stale["selected_step"], move_step, stale)
+        frame["native_revision"] -= 1
+        # This integration deliberately has no cash producer or move branch.
+        # Once both read-only queries exist, even a shaped external field does
+        # not authorize a move or date advance.
+        frame["war_first_hop_cash_bound_v1"] = {"selected_step": move_step}
+        research = plan()
+        self.assertIsNone(research["selected_step"], research)
+        self.assertFalse(research["active_attack_allowed"])
+
+    def test_r0321_readonly_first_hop_never_queries_direct_contact_or_pending_event(self):
+        frame, rows, actions, move_step = self._r0321_two_defender_inputs()
+        short_preview_step = "preview-move-army-83886367-to-2614"
+        actions.add(short_preview_step)
+        rows = [rows[0], rows[1], rows[4]]
+
+        def plan(current_frame, current_rows):
+            with mock.patch(
+                "xar_autoplayer.strategy._provisional_defense_research_assessment",
+                return_value={"status": "multi_defender_research_only",
+                              "planner_usable": False},
+            ):
+                return _primary_defender_siege_forecast_ingress(
+                    {"phase": "native_war_no_safe_exact_route", "selected_step": None},
+                    commands=current_rows, snapshot=current_frame,
+                    action_steps=actions,
+                    bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+                )
+
+        for change in (
+            lambda f, r: f.update(active_event={"event_id": 1}),
+            lambda f, r: r[1]["result"]["route_contact_horizon"].update(
+                horizon_end_date_raw=f["date_raw"] + 48),
+            lambda f, r: r[2]["result"].update(accepted=False),
+        ):
+            f, r = copy.deepcopy(frame), copy.deepcopy(rows)
+            change(f, r)
+            result = plan(f, r)
+            self.assertNotEqual(result.get("selected_step"), short_preview_step, result)
+            self.assertNotEqual(result.get("selected_step"), move_step, result)
+            self.assertIsNot(result.get("active_attack_allowed"), True)
+
     def _r0271_replay_inputs(self):
         report = json.loads(R0265_REPORT.with_name(
             "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0271-blocker-excerpt.json"

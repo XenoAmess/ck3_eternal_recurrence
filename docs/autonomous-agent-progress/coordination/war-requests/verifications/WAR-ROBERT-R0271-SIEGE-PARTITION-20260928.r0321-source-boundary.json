@@ -1,0 +1,64 @@
+{
+  "schema": "xar.g2.war-r0271-later-source-partition-audit.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "audit_at_utc": "2026-09-28T14:26:18Z",
+  "status": "later_source_reported_partition_available_original_r0271_red_unchanged",
+  "receiver_verified_handoff": {
+    "onedrive_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json",
+    "size_bytes": 5777,
+    "sha256": "6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20",
+    "scope": "Only this small source handoff JSON was read and SHA-256 checked on the receiver machine. The source formal report, raw paused frame, checkpoint pair and executable binaries were not transferred for this audit."
+  },
+  "historical_r0271": {
+    "frame": "native:30/raw53219160",
+    "war_id": 16777231,
+    "player_army_id": 83886367,
+    "target_province_id": 2629,
+    "offsite_hostile_army_id": 83886484,
+    "offsite_hostile_province_id": 3719,
+    "result": "Original turn-36 partition RED remains immutable. Its receiver matching-live recovery established only the bounded first-hop move and six fresh one-day full-hostile gates, not future target-siege participants."
+  },
+  "later_r0321_source_report": {
+    "source_commit": "a6d1ae845f11e1e0bae79cac3fd9c30b00afae59",
+    "source_round": "R0321",
+    "source_input_h3860_save_sha256": "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A",
+    "source_native_dll_sha256": "C71F6A5DFE8D23374B5B73F9DFA18AD9455CFF087D36EC93D2D29F7F610E8786",
+    "source_native_injector_sha256": "F9F2472C5969A248E7942AC79CC17A03CFDDA24C7FF79E78DA810A66A0E30C15",
+    "formal_turn_index": 27,
+    "frame": "h3911/native:23/public-revision:24/native-revision:23/raw53219928",
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id": 16777231,
+    "player_army_id": 83886367,
+    "player_army_province_id": 2610,
+    "enemy_army_ids": [50331920, 83886484],
+    "enemy_province_id": 2629,
+    "participant_partition_status": "available",
+    "offsite_hostile_army_ids": [],
+    "offsite_arrival_risk": "none_observed",
+    "v3_read_accepted": true,
+    "v3_read_status": "available",
+    "qualified_forecast_status": "producer_unavailable",
+    "provisional_forecast_status": "same_frame_encounter_scope_mismatch",
+    "monte_carlo_ready": false,
+    "planner_usable": false,
+    "active_attack_allowed": false,
+    "selected_step": null,
+    "formal_stop": "turn27 planning/planner_blocked before attack; required qualified-same-frame-combat-forecast-and-expected-utility",
+    "source_formal_report_size_bytes": 388302,
+    "source_formal_report_sha256": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30",
+    "source_recovery_save_sha256": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+    "source_recovery_driver_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "recovery_qualified_for_receiver": false
+  },
+  "inference_and_limits": {
+    "bounded_credit": "The source reports that the same Robert campaign and WarID reached a later formal frame where both hostile army IDs were observed at target2629 and participant partition was available. This is a later-state source report, not receiver matching-live proof of the original offsite H3388 case.",
+    "changed_conditions": "R0321 is 768 raw ticks (32 game days) after the old blocker. Enemy 83886484 is reported at target2629 rather than offsite3719, and the source commit and native binary hashes differ from the original R0271 candidate.",
+    "not_proven": "The receiver has not inspected the 388302-byte formal report or raw h3911 frame, verified the exact source checkpoint pair/binaries via transfer and no-launch checks, or replayed the later frame with a matching candidate. The target battle participant membership and usable win probability/utility remain unproven independently. An accepted v3 read is not attack authorization.",
+    "new_blocker": "At h3911 the reported participant partition is no longer the immediate gate. The formal planner remains RED at a distinct qualified forecast producer/same-frame encounter-scope gate, with no unsafe attack selected. R0321 forecast work is tracked separately.",
+    "historical_status": "Do not rewrite original R0271 RED, receiver R0004/R0005 recovery evidence, or the pending R0312/H3774 and R0319/H3860 source-excerpt requests as a siege-contact GREEN.",
+    "pending_source_excerpt_requests": [
+      "WAR/R0271-H3388/REQUEST-R0312-H3774-SIEGE-FRAME-v1.json SHA-256 3B3B1514568F7BE5ABB882E3CC158F67DB5C9206C47A6258F1CE4586E9314CC8",
+      "WAR/R0271-H3388/REQUEST-R0319-H3860-SIEGE-FRAME-v1.json SHA-256 7ECCB6D7561B4DD2F0701959B6F79EFC52131CB0EF55D0CCDFA7D6DEB80A4E1D"
+    ]
+  }
+}

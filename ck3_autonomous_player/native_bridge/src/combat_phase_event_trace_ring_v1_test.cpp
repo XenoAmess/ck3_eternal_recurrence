@@ -13,6 +13,7 @@
 #include <string>
 #include <string_view>
 #include <thread>
+#include <utility>
 
 namespace {
 
@@ -1184,6 +1185,247 @@ bool CounterOutputCaptureCases() {
 
 std::uintptr_t DummySchedule(void *, std::uint32_t *, void *) { return 0; }
 std::uintptr_t DummyFire(void *) { return 0; }
+std::uintptr_t DummyOutgoingDamage(void *, std::int64_t *, std::int32_t,
+                                   std::int64_t, void *);
+
+// Exercise the real selector hook through its phase-fire/effect-root TLS scope.
+// The executable stub gives phase-fire the exact synthetic return site.
+struct SelectorScenario {
+  Fixture fixture{};
+  std::array<std::byte, 0x200> event_object{};
+  std::array<std::byte, 0x30> context{};
+  std::array<std::byte, 8> rng{};
+  std::array<std::byte, 0x20> candidates{};
+  std::array<std::array<std::uintptr_t, 2>, 14> entries{};
+  std::unique_ptr<CombatPhaseEventTraceRingV1> ring =
+      std::make_unique<CombatPhaseEventTraceRingV1>();
+  void *fire_stub = nullptr;
+  void *unreadable_rng = nullptr;
+  std::int32_t chosen = 8;
+  std::int32_t calls = 1;
+  std::int32_t original_calls = 0;
+  bool advance_rng = true;
+  bool pass_candidates = true;
+
+  SelectorScenario() {
+    entries[8] = {0x111, 0x222};
+    Store(candidates, 0, reinterpret_cast<std::uintptr_t>(entries.data()));
+    Store(candidates, 0xC, std::int32_t{14});
+    Store(rng, 0, std::uint32_t{612212889});
+    Store(rng, 4, std::uint32_t{7});
+    Store(context, 0x28, reinterpret_cast<std::uintptr_t>(rng.data()));
+    Store(event_object, 0x178 + 0x38, std::uint32_t{0x1234});
+    fixture.plan.loaded_event_row_objects_available = true;
+    for (std::size_t index = 0;
+         index < fixture.plan.loaded_event_row_objects.size(); ++index) {
+      fixture.plan.loaded_event_row_objects[index] =
+          0x100000 + index * 0x1000;
+    }
+    fixture.plan.loaded_event_row_objects[11] =
+        reinterpret_cast<std::uintptr_t>(event_object.data());
+  }
+
+  ~SelectorScenario() {
+    CancelCombatPhaseEventTraceRingV1(*ring);
+    if (fire_stub != nullptr) VirtualFree(fire_stub, 0, MEM_RELEASE);
+    if (unreadable_rng != nullptr) VirtualFree(unreadable_rng, 0, MEM_RELEASE);
+  }
+
+  bool Prepare();
+  std::uintptr_t InvokeWithSide(void *side) {
+    ring->committed_count.store(5, std::memory_order_release);
+    using Stub = std::uintptr_t(__fastcall *)(void *);
+    return reinterpret_cast<Stub>(fire_stub)(side);
+  }
+  std::uintptr_t Invoke() {
+    return InvokeWithSide(reinterpret_cast<void *>(fixture.plan.sides[1]));
+  }
+};
+
+SelectorScenario *g_selector_scenario = nullptr;
+
+std::int32_t __fastcall SelectorOriginal(void *, void *, void *) {
+  auto &scenario = *g_selector_scenario;
+  ++scenario.original_calls;
+  if (scenario.advance_rng) {
+    std::uint32_t counter = 0;
+    std::memcpy(&counter, scenario.rng.data(), sizeof(counter));
+    Store(scenario.rng, 0, counter + 1);
+  }
+  return scenario.chosen;
+}
+
+std::uintptr_t __fastcall SelectorEffectOriginal(void *, void *context) {
+  auto &scenario = *g_selector_scenario;
+  for (std::int32_t index = 0; index < scenario.calls; ++index) {
+    (void)XarCombatPhaseKnightSelectHookV1(
+        nullptr, scenario.pass_candidates ? scenario.candidates.data() : nullptr,
+        context);
+  }
+  return 0x1234;
+}
+
+std::uintptr_t __fastcall SelectorFireOriginal(void *) {
+  auto &scenario = *g_selector_scenario;
+  return XarCombatPhaseEffectDispatchHookV1(
+      scenario.event_object.data() + 0x178, scenario.context.data());
+}
+
+bool SelectorScenario::Prepare() {
+  constexpr std::array<std::uint8_t, 21> code{
+      0x48, 0x83, 0xEC, 0x28,             // sub rsp, 0x28
+      0x48, 0xB8, 0, 0, 0, 0, 0, 0, 0, 0, // mov rax, fire hook
+      0xFF, 0xD0,                         // call rax
+      0x48, 0x83, 0xC4, 0x28, 0xC3};     // add rsp, 0x28; ret
+  fire_stub = VirtualAlloc(nullptr, 4096, MEM_RESERVE | MEM_COMMIT,
+                           PAGE_READWRITE);
+  if (fire_stub == nullptr) return false;
+  std::memcpy(fire_stub, code.data(), code.size());
+  const auto hook =
+      reinterpret_cast<std::uintptr_t>(&XarCombatPhaseEventFireHookV1);
+  std::memcpy(static_cast<std::byte *>(fire_stub) + 6, &hook, sizeof(hook));
+  fixture.plan.module_base =
+      reinterpret_cast<std::uintptr_t>(fire_stub) + 16 -
+      kCombatPhaseEventFireSide1ReturnRva;
+  DWORD previous = 0;
+  if (!VirtualProtect(fire_stub, 4096, PAGE_EXECUTE_READ, &previous) ||
+      !FlushInstructionCache(GetCurrentProcess(), fire_stub, code.size())) {
+    return false;
+  }
+  g_selector_scenario = this;
+  return ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan) &&
+         BindCombatPhaseEventTraceOriginalTrampolinesV1(
+             &DummySchedule, &SelectorFireOriginal, &DummyOutgoingDamage) &&
+         BindCombatPhaseEffectDispatchOriginalV1(&SelectorEffectOriginal) &&
+         BindCombatPhaseKnightSelectOriginalV1(&SelectorOriginal);
+}
+
+bool SelectorHookProducerCases() {
+  {
+    Fixture fixture;
+    auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+    if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan) ||
+        BindCombatPhaseKnightSelectOriginalV1(nullptr) ||
+        XarCombatPhaseKnightSelectHookV1(nullptr, nullptr, nullptr) != -1 ||
+        (ring->failure_flags.load() &
+         trace_capture_failure_original_trampoline) == 0) {
+      return Fail("missing selector original was admitted");
+    }
+    CancelCombatPhaseEventTraceRingV1(*ring);
+  }
+  {
+    // The full battle fixture is large; keep each debug fixture off the stack.
+    auto scenario_owner = std::make_unique<SelectorScenario>();
+    auto &scenario = *scenario_owner;
+    if (!scenario.Prepare() || scenario.Invoke() != 0x1234 ||
+        scenario.original_calls != 1 ||
+        scenario.ring->knight_select_count.load() != 1) {
+      return Fail("scoped selector original/count was not captured");
+    }
+    const auto &row = scenario.ring->knight_selects[0];
+    if (row.side_index != 1 || row.native_event_load_index != 11 ||
+        row.candidate_count != 14 || row.selected_index != 8 ||
+        row.counter_before != 612212889 ||
+        row.counter_after != 612212890 ||
+        row.salt_before != 7 || row.salt_after != 7 ||
+        row.selected_candidate_word0 != 0x111 ||
+        row.selected_candidate_word1 != 0x222 ||
+        (scenario.ring->failure_flags.load() &
+         (trace_capture_failure_knight_select | trace_capture_failure_capacity |
+          trace_capture_failure_original_trampoline)) != 0) {
+      return Fail("scoped selector count/index/RNG/token fields differ");
+    }
+  }
+  constexpr std::array<std::pair<std::int32_t, std::int32_t>, 3> bad_choices{{
+      {0, 8}, {65'537, 8}, {14, 14}}};
+  for (const auto [count, chosen] : bad_choices) {
+    auto scenario_owner = std::make_unique<SelectorScenario>();
+    auto &scenario = *scenario_owner;
+    Store(scenario.candidates, 0xC, count);
+    scenario.chosen = chosen;
+    if (!scenario.Prepare() || scenario.Invoke() != 0x1234 ||
+        scenario.original_calls != 1 ||
+        (scenario.ring->failure_flags.load() &
+         trace_capture_failure_knight_select) == 0) {
+      return Fail("invalid selector count/index was admitted");
+    }
+  }
+  {
+    auto scenario_owner = std::make_unique<SelectorScenario>();
+    auto &scenario = *scenario_owner;
+    Store(scenario.context, 0x28, std::uintptr_t{0});
+    scenario.advance_rng = false;
+    if (!scenario.Prepare() || scenario.Invoke() != 0x1234 ||
+        (scenario.ring->failure_flags.load() &
+         trace_capture_failure_knight_select) == 0) {
+      return Fail("missing selector RNG state was admitted");
+    }
+  }
+  {
+    auto scenario_owner = std::make_unique<SelectorScenario>();
+    auto &scenario = *scenario_owner;
+    scenario.unreadable_rng = VirtualAlloc(nullptr, 4096,
+        MEM_RESERVE | MEM_COMMIT, PAGE_NOACCESS);
+    if (scenario.unreadable_rng == nullptr) return Fail("RNG fault page unavailable");
+    Store(scenario.context, 0x28,
+          reinterpret_cast<std::uintptr_t>(scenario.unreadable_rng));
+    scenario.advance_rng = false;
+    if (!scenario.Prepare() || scenario.Invoke() != 0x1234 ||
+        (scenario.ring->failure_flags.load() &
+         trace_capture_failure_knight_select) == 0) {
+      return Fail("unreadable selector RNG state was admitted");
+    }
+  }
+  {
+    auto scenario_owner = std::make_unique<SelectorScenario>();
+    auto &scenario = *scenario_owner;
+    scenario.calls = 65;
+    if (!scenario.Prepare() || scenario.Invoke() != 0x1234 ||
+        scenario.original_calls != 65 ||
+        scenario.ring->knight_select_count.load() != 65 ||
+        (scenario.ring->failure_flags.load() &
+         trace_capture_failure_capacity) == 0) {
+      return Fail("selector ring capacity overflow was admitted");
+    }
+  }
+  {
+    auto scenario_owner = std::make_unique<SelectorScenario>();
+    auto &scenario = *scenario_owner;
+    if (!scenario.Prepare()) return Fail("wrong-scope selector setup failed");
+    (void)XarCombatPhaseKnightSelectHookV1(
+        nullptr, scenario.candidates.data(), scenario.context.data());
+    (void)XarCombatPhaseEffectDispatchHookV1(
+        scenario.event_object.data() + 0x178, scenario.context.data());
+    if (scenario.ring->knight_select_count.load() != 0 ||
+        scenario.original_calls != 2) {
+      return Fail("selector outside phase-fire scope leaked a row");
+    }
+    if (scenario.InvokeWithSide(reinterpret_cast<void *>(
+            scenario.fixture.plan.sides[1] + 1)) != 0x1234 ||
+        scenario.ring->knight_select_count.load() != 0) {
+      return Fail("selector under wrong side scope leaked a row");
+    }
+    scenario.fixture.plan.loaded_event_row_objects[11] += 1;
+    scenario.ring->plan.loaded_event_row_objects[11] += 1;
+    if (scenario.Invoke() != 0x1234 ||
+        scenario.ring->knight_select_count.load() != 0) {
+      return Fail("selector under wrong event-root scope leaked a row");
+    }
+  }
+  {
+    auto scenario_owner = std::make_unique<SelectorScenario>();
+    auto &scenario = *scenario_owner;
+    scenario.pass_candidates = false;
+    if (!scenario.Prepare() || scenario.Invoke() != 0x1234 ||
+        scenario.ring->knight_select_count.load() != 0 ||
+        scenario.original_calls != 1) {
+      return Fail("null candidate pointer produced a selector row");
+    }
+  }
+  g_selector_scenario = nullptr;
+  return true;
+}
+
 std::uintptr_t DummyOutgoingDamage(void *side, std::int64_t *output,
                                    std::int32_t width,
                                    std::int64_t multiplier_raw,
@@ -1385,7 +1627,7 @@ int main(int argc, char **argv) {
   static_assert(std::is_trivially_copyable_v<
                 CombatPhaseEventTraceCapturePlanV1>);
   if (argc != 3 || !SourceContract(argv[1]) ||
-      !SourceCodeContract(argv[2]) ||
+      !SourceCodeContract(argv[2]) || !SelectorHookProducerCases() ||
        !CaptureSevenRecordFixture() ||
        !CaptureSevenRecordFixture(24, true) ||
       !CaptureSevenRecordFixture(0) ||

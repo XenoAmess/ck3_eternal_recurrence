@@ -372,3 +372,25 @@ flowchart LR
 RE 后续闭合 transition 时，把现有 `phase_event_evaluator` 接入一个实现 `BattleTransitionKernel` 的 exact kernel，并提交独立
 original-trace fixture；不修改数值 primitive 的 golden expected。当前最短顺序是：同日 participant/contribution/commander
 replacement 与 effect draw trace → mixed-owner AI retreat policy → exact fixture SHA → 才允许 planner/strategy 消费。
+
+## 2026-10-02 补入：PR #512 的 H3911 硬伤研究与摘要含义
+
+来源为 [PR #512](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/512) 冻结 head `3af6fdd2f00ac89430878848f8af35c71f07967d`，研究日期 2026-09-29，仍绑定本文 CK3 **1.19.0.6** EXE。现有全文和旧图原样保留；本节补记来源研究，不能把其输入、trace 或源分支测试外推为 1.20 live 结果。
+
+[H3911 原始硬伤对照](r0321-hard-conversion-source-audit-2026-09-29.md) 绑定摘录 SHA-256 `865EA7B7AC1B4A680E2BE3A1D84012C67CF9550474075E4A917EFE043CCCDD51` 与父 driver SHA-256 `DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33`，核对 `/command_history/3919` 与摘录完整命令行相等。目标2629、入口2630、进攻军 `[83886367]`、守军 `[50331920,83886484]` 的 local-shell 原生修正，按 `trunc(30000 × (100000 + own + opposing enemy + winter) / 100000)` 得到进攻军承伤 **36000**、守军承伤 **45000**；研究包络省略这些修正时两侧均用默认 **30000**。这是已记录的首帧输入差异，不能把默认30%的研究硬伤分布称为已校准原版风险。
+
+这四个数来自 **hypothetical precontact CCombatSide shell**，还没有真实 `CCombat` 同帧及逐团 current/soft/hard/owner ledger parity，也不冻结每日司令、加成、战宽、入列、事件、撤退或追击刷新。[只读诊断与工具](../../ck3_autonomous_player/src/xar_autoplayer/simulation/hard_conversion_diagnostic.py) 固定 `actual_combat_parity=false`、`future_daily_refresh_modeled=false`、`planner_usable=false`、`active_attack_allowed=false`；完整战斗、跨存档校准和三行动 EU 的缺口仍见 [双守军/168 小时边界](r0321-h3911-dual-defender-168h-gates-2026-09-29.md)。这些研究不授权进攻或启动为补样而进行的接敌。
+
+#512 对 `summarize_trial_outcomes` 的研究摘要含义作了更正：四项 transition manifest 全部声明满足，只能称作 `transition-parity-manifest-claim`，`planner_usable` 仍为 false。布尔声明与单个 original-trace SHA 不自行证明逐日原版 parity、独立胜率校准或同帧三行动效用。上文旧段/旧图中的 `exact-native-parity`、`planner_usable=true` 分支是更正前的接口表述，保留为历史；本节以如下研究边界解释。实际集成代码和聚焦测试结果由本次集成记录单独绑定，不以这份文档宣布新 production 能力。
+
+```mermaid
+flowchart LR
+    M["transition manifest 四项声明"] --> S["transition-parity-manifest-claim<br/>planner_usable=false"]
+    S -. "独立原版逐日 trace / 留出校准 / 同帧 EU 仍未闭合" .-> U["qualified forecast unavailable"]
+    H["H3911 local-shell 36% / 45%"] --> D["只读硬伤输入诊断"]
+    D -. "不等于真实整场转移" .-> U
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+这是现有研究结果的标注与缺口记录，不新增部署门禁或派生安全审计。H3911 的来源 read-only 输入、168 小时 ETA 与仅24小时 contact horizon 仍是分开的证据；没有由此次补记得到 Robert 发令、推进日期、现金支出或接战资格。

@@ -1264,6 +1264,47 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertNotIn("checkpoint", response["result"])
         self.assertEqual(report["restart_count"], 1)
 
+    def test_frontend_first_disk_gate_failure_blocks_final_launch(self) -> None:
+        process = mock.Mock(pid=4901)
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\frontend-first-gate-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        save_path = self.spec.profile_dir / "save games" / "last_save.ck3"
+        save_path.parent.mkdir(parents=True)
+        save_path.write_bytes(b"frozen frontend-first save")
+
+        def fail_gate(_spec) -> None:
+            raise RuntimeError("GUI.scale was rewritten to 1.3")
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle,
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            return_value={"ok": True, "contract_errors": []},
+        ) as stop_mock, mock.patch(
+            "xar_autoplayer.native_session._wait_for_frontend_marker",
+            return_value={"marker": NATIVE_SESSION_FRONTEND_MARKER, "seen": True},
+        ), self.assertRaisesRegex(AgentError, "GUI.scale was rewritten to 1.3"):
+            _native_session_locked(
+                self.spec, config, 5.0, input_stream=None,
+                output_stream=io.StringIO(), poll_interval_seconds=0.001,
+                verify_prepared_profile=False,
+                frontend_first_load_save_name="last_save",
+                frontend_first_before_final_launch=fail_gate,
+            )
+        launch_mock.assert_called_once()
+        stop_mock.assert_called_once_with(handle, require_running=False)
+        evidence_path = self.spec.state_dir / "native-session" / "frontend-first-warmup.json"
+        evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+        self.assertEqual(evidence["status"], "failed")
+        self.assertNotIn("final_pid", evidence)
+
+
 
 if __name__ == "__main__":
     unittest.main()

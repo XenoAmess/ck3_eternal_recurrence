@@ -286,6 +286,8 @@ int main() {
                 "game.command.query-battle-terminal-transition-v1") ||
       !Contains(known.capabilities,
                 "game.command.query-battle-reinforcement-assignment-v1-N") ||
+      !Contains(known.capabilities,
+                "game.command.query-current-battle-knight-v1-N-N-N") ||
       !Contains(known.capabilities, "game.command.split-army-half-N") ||
       !Contains(known.capabilities,
                 "game.command.merge-armies-N-with-N") ||
@@ -294,6 +296,8 @@ int main() {
       !Contains(known.capabilities, "game.command.declare-war-N") ||
       !Contains(known.capabilities,
                 "game.command.query-army-strengths-v1") ||
+      !Contains(known.capabilities,
+                "game.command.query-province-local-siege-v1-N") ||
       !Contains(known.capabilities,
                 "game.command.query-campaign-root-context-v1") ||
       !Contains(known.capabilities,
@@ -575,6 +579,7 @@ int main() {
   if (exact_adapter == nullptr || !exact_adapter->enabled() ||
       !exact_adapter->supports_step(canonical_combat_step) ||
       !exact_adapter->supports_step(canonical_v3_combat_step) ||
+      !exact_adapter->supports_step("query-province-local-siege-v1-2610") ||
       !exact_adapter->supports_step("query-campaign-root-context-v1") ||
       !exact_adapter->supports_step("query-player-faction-alerts-v1") ||
       exact_adapter->supports_step("query-player-faction-alerts-v1-x") ||
@@ -695,6 +700,16 @@ int main() {
       exact_adapter->supports_step(
           "query-battle-control-snapshot-v1-2147483648") ||
       !exact_adapter->supports_step(
+          "query-current-battle-knight-v1-83886341-100-401") ||
+      exact_adapter->supports_step(
+          "query-current-battle-knight-v1-083886341-100-401") ||
+      exact_adapter->supports_step(
+          "query-current-battle-knight-v1-83886341-0-401") ||
+      exact_adapter->supports_step(
+          "query-current-battle-knight-v1-83886341-100-2147483648") ||
+      exact_adapter->supports_step(
+          "query-current-battle-knight-v1-83886341-100-401-extra") ||
+      !exact_adapter->supports_step(
           "query-battle-transition-v1-335544325") ||
       !exact_adapter->supports_step(
           "query-battle-transition-v1--2147483647") ||
@@ -757,13 +772,50 @@ int main() {
     return Fail("unverified selected-bookmark StartGame was advertised");
   }
 #endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  if (!exact_adapter->supports(
+          xar::ck3_11906::kH2743ExistingTruceV1Capability) ||
+      !exact_adapter->supports_step(
+          xar::ck3_11906::kH2743ExistingTruceV1Step) ||
+      exact_adapter->supports_step(
+          "query-h2743-preaction-existing-truce-v1-16777231")) {
+    return Fail("H2743 exact read-only step was not bound to its capability");
+  }
+#else
+  if (exact_adapter->supports(
+          "game.command.query-h2743-preaction-existing-truce-v1") ||
+      exact_adapter->supports_step(
+          "query-h2743-preaction-existing-truce-v1")) {
+    return Fail("default-off H2743 read-only step was advertised");
+  }
+#endif
   for (const auto invalid : invalid_combat_steps) {
     if (exact_adapter->supports_step(invalid)) {
       return Fail("exact adapter advertised a malformed combat query step");
     }
   }
+  constexpr std::array<std::string_view, 8> invalid_province_siege_steps{
+      "query-province-local-siege-v1-",
+      "query-province-local-siege-v1-0",
+      "query-province-local-siege-v1-02610",
+      "query-province-local-siege-v1--1",
+      "query-province-local-siege-v1-2610x",
+      "query-province-local-siege-v1-2610-extra",
+      "query-province-local-siege-v1-2147483648",
+      "prefix-query-province-local-siege-v1-2610",
+  };
+  for (const auto invalid : invalid_province_siege_steps) {
+    if (exact_adapter->supports_step(invalid)) {
+      return Fail("exact adapter advertised a noncanonical province siege query");
+    }
+  }
 
   StubAdapter partial(kFutureDescriptor, true);
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  if (partial.supports_step(xar::ck3_11906::kH2743ExistingTruceV1Step)) {
+    return Fail("H2743 read-only step leaked to an adapter without capability");
+  }
+#endif
   std::vector<xar::game::DeclarableWarSnapshot> target_declarations;
   if (xar::game::ReadDeclarableWarsForTarget(
           partial, 29097, target_declarations) !=
@@ -779,6 +831,7 @@ int main() {
       partial.supports("game.state.war-objective-siege-progress") ||
       partial.supports("game.command.declare-war-N") ||
       partial.supports_step("query-army-strengths-v1") ||
+      partial.supports_step("query-province-local-siege-v1-2610") ||
       partial.supports_step("query-war-termination-options-16777217") ||
       partial.supports_step(
           "query-war-termination-terms-v1-16777217") ||
@@ -798,7 +851,8 @@ int main() {
     return Fail("capability lookup did not use the selected adapter set");
   }
   StubAdapter disabled(kFutureDescriptor, false);
-  if (disabled.supports("game.state.snapshot")) {
+  if (disabled.supports("game.state.snapshot") ||
+      disabled.supports_step("query-province-local-siege-v1-2610")) {
     return Fail("disabled adapter exposed gameplay capabilities");
   }
 
@@ -888,10 +942,20 @@ int main() {
     const bool original_build = descriptor == &known;
     for (const auto legacy_step : {
              "navigate-ingame-ui-v1", "query-ingame-ui-window-v1",
-             "query-defender-de-jure-exit-terms-v1-16777290"}) {
+             "query-defender-de-jure-exit-terms-v1-16777290",
+             "query-current-battle-knight-v1-83886341-100-401",
+             "query-province-local-siege-v1-3"}) {
       if (selected->supports_step(legacy_step) != original_build) {
         return Fail("original-build research capability crossed an adapter gate");
       }
+    }
+    xar::game::H2743ExistingTruceSnapshotV1 unavailable_truce{};
+    if (!original_build &&
+        (selected->supports_step("query-h2743-preaction-existing-truce-v1") ||
+         xar::game::ReadH2743PreactionExistingTruceV1(
+             *selected, unavailable_truce) !=
+             xar::game::H2743ExistingTruceStatusV1::unavailable)) {
+      return Fail("legacy optional reader crossed the modern adapter boundary");
     }
   }
   if (!xar::game::BindCk3_12003AdapterImage(

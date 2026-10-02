@@ -14354,6 +14354,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         public = driver.take_snapshot()
         self.assertNotIn("native_command_history", internal)
         self.assertEqual(len(public["native_command_history"]), 4096)
+        self.assertEqual(
+            {key: value for key, value in public.items()
+             if key not in {"native_command_history", "native_rollback_war_failure",
+                            "native_rollback_war_failures"}},
+            internal,
+        )
         with mock.patch.object(
             driver, "_with_internal_planning_view", None
         ):

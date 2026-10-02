@@ -1586,6 +1586,46 @@ struct BattleControlSnapshot {
                          const BattleControlSnapshot &) = default;
 };
 
+// Private exact-build read of one knight in one retained battle regiment.
+// Stored CCombat entry values are deliberately separate from a fresh native
+// province evaluation.  This is an observation, not a damage forecast.
+struct CurrentBattleKnightRequestV1 {
+  std::int32_t subject_public_cunit_id = -1;
+  std::int32_t expected_played_character_id = -1;
+  std::int32_t expected_war_id = -1;
+  std::int32_t expected_native_carmy_id = -1;
+  std::int32_t expected_combat_id = -1;
+  std::int32_t expected_province_id = -1;
+  std::int64_t expected_date_raw = -1;
+  std::int32_t character_id = -1;
+  std::int32_t regiment_id = -1;
+
+  friend bool operator==(const CurrentBattleKnightRequestV1 &,
+                         const CurrentBattleKnightRequestV1 &) = default;
+};
+
+struct CurrentBattleKnightSnapshotV1 {
+  bool available = false;
+  std::string unavailable_reason = "not_sampled";
+  std::int64_t observed_date_raw = -1;
+  std::int32_t combat_id = -1;
+  std::int32_t province_id = -1;
+  std::int32_t subject_public_cunit_id = -1;
+  std::int32_t native_carmy_id = -1;
+  std::int32_t character_id = -1;
+  std::int32_t regiment_id = -1;
+  std::int32_t effective_prowess = 0;
+  std::int64_t knight_effectiveness_raw = 0;
+  std::int64_t fresh_damage_raw = 0;
+  std::int64_t fresh_toughness_raw = 0;
+  std::int64_t stored_entry_damage_raw = 0;
+  std::int64_t stored_entry_toughness_raw = 0;
+  std::int64_t scale = 100'000;
+
+  friend bool operator==(const CurrentBattleKnightSnapshotV1 &,
+                         const CurrentBattleKnightSnapshotV1 &) = default;
+};
+
 // Read-only lifecycle projection addressed by a full-generation CombatID.
 // Unlike BattleControlSnapshot this query has no CUnit eligibility dependency,
 // so it remains usable after a player movement command marks the selected unit
@@ -2083,6 +2123,17 @@ enum class ReadArmyStrengthsResult {
   partial,
   requires_paused,
   no_played_character,
+  unavailable,
+};
+// One arbitrary Province is read independently of the war-objective row
+// budget. A partial result preserves every field's observable/null semantics.
+enum class ReadProvinceLocalSiegeResult {
+  available,
+  partial,
+  requires_paused,
+  no_played_character,
+  province_not_found,
+  state_changed,
   unavailable,
 };
 enum class ReadCombatSimulationInputsResult {

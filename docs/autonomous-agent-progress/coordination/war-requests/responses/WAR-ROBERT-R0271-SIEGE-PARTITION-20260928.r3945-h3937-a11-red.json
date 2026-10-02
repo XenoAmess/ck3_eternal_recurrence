@@ -1,0 +1,125 @@
+{
+  "schema": "xar.war.r0271-r3945-h3937-readonly-response.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "response_kind": "append_only_live_attempt_result",
+  "status": "RED_NATIVE_READINESS_TIMEOUT",
+  "created_at_utc": "2026-09-29T15:53:12Z",
+  "round": "R3945",
+  "attempt": "war-h3937-combined-live-20260929/attempt-11",
+  "task_bus_id": "war-h3937-combined-readonly-live-20260929-a11",
+  "live_registry_id": "desktop-3fevhd2-1c74096080--vanilla--R0111",
+  "candidate_head": "f96dc005422e87ab7748909c0d71f02a63935e49",
+  "source_frame_identity": {
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id": 16777231,
+    "history_index": 3937,
+    "date_raw": 53219928,
+    "checkpoint_sha256": "92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6",
+    "raw_source_driver_sha256": "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC1311722",
+    "prepared_driver_sha256": "9A4E0AEA2A6C164FD03B4824789B66B85DC64A9DFC9C0752D52B381FF5240F82",
+    "bridge_dll_sha256": "F5E708FC554C377420B3D31D9B38B4FB6DE2D3A3B19C7D298DAA3DB61233793F",
+    "bridge_injector_sha256": "8E2115CBE43358DD6F47C12CC94A2E96BF8049DE70204E425B37B5CE825AFE5E",
+    "identity_scope": "source checkpoint only; no native paused frame was obtained in a11"
+  },
+  "official_result": {
+    "outer_status": "RED",
+    "error_type": "NativeReadinessTimeoutError",
+    "error": "semantic game state unavailable",
+    "semantic_readiness_timeout_seconds": 1800,
+    "semantic_readiness": null,
+    "native_snapshot_obtained": false,
+    "formal_readonly_queries": 0,
+    "gameplay_actions": 0,
+    "date_advance_authorized": false,
+    "action_authorized": false,
+    "live_date_raw": null,
+    "unchanged_date_poststate_proven": false,
+    "frontend_route_status": "unavailable",
+    "timeout_image_status": "RED_CAPTURE_FAILED",
+    "timeout_image_bytes": 0,
+    "timeout_image_visual_reviewed": false,
+    "prelaunch_fresh_steam_offline_frame_reviewed": true
+  },
+  "war_evidence": {
+    "local_siege_query": null,
+    "full_hostile_route_contact_query": null,
+    "same_frame_native_participant_partition": null,
+    "complete_physical_army_inventory": null,
+    "future_target_2629_actual_participant_set": null,
+    "reason": "No semantic native paused snapshot or target query was obtained. The zero-byte timeout image cannot establish the a11 end screen, and the source checkpoint date is not a live poststate."
+  },
+  "r0266_cash_gate": {
+    "source_request_id": "WAR-R0266-H3937-FIVE-CASH-20260929",
+    "pending_war_cash_raw": null,
+    "immediate_war_action_cost_raw": null,
+    "future_war_cost_upper_raw": null,
+    "future_risk_budget_raw": null,
+    "policy_minimum_gold_reserve_raw": null,
+    "horizon_days": null,
+    "future_bound_assumptions": null,
+    "formal_cash_eligible": false,
+    "m5_spend_ready": false
+  },
+  "risk_contract": {
+    "r0271_h3388_original_red_retained": true,
+    "existing_r0002_r0004_r0005_bounded_first_hop_recovery_retained": true,
+    "r3945_readonly_observation_qualified": false,
+    "same_frame_siege_participants_proven": false,
+    "date_advance_gate": "RED",
+    "direct_attack_allowed": false,
+    "robert_resume_allowed_by_this_response": false,
+    "next_attempt": "A new isolated official attempt requires a real paused semantic native frame. This a11 RED grants no game-date advance, combat action or cash spending."
+  },
+  "evidence": {
+    "go_receipt": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/go-attempt-11.json",
+      "sha256": "C55D93EEB5256A5B61FC8C604EB988254EEEA619B25065FC30C78515726FC461"
+    },
+    "invocation": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-11/invocation.json",
+      "sha256": "55D7005A15D5E110B32375CBED29327EFF3AE2418B313585E915B1B54F487FE3"
+    },
+    "outer_report": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-11/outer-report.json",
+      "sha256": "5197B0CB85EDFBC11BE7DB0348B3221F31D4E8E6CEDE8A3513457D9ECF2653F3"
+    },
+    "worker_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-11/completion.json",
+      "sha256": "A0AC917BBCACA22D0CCB172E1BC82288D484AF8E0FCFA670B855B710E62B8B58"
+    },
+    "supervisor_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-11/supervisor-completion.json",
+      "sha256": "AA5A2B4AA31C1369E5C6FE9A49FAC58853982EE7957BA7B76567959BAFE66442"
+    },
+    "readiness_progress_series": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-11/readiness-progress-series.json",
+      "sha256": "AA265A64D2429DCE37BF92B4CF785D84D58F1E1DC26C126668E7B9C4DE41265D"
+    },
+    "final_postcheck": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-11/final-postcheck.json",
+      "sha256": "E387CFB4B9ADC9A9DC94E6FB6632184959C295936FCC63298AE3B0D51716FA3D"
+    },
+    "timeout_visual_review_failure": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-11/timeout-visual-review-failure.json",
+      "sha256": "533E72168504A56A6CA38191CF53B78EFE7D1377C93EEC43C0BED5BFB5DAA357"
+    },
+    "steam_offline_direct_review": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260929/screen-attempt-11/steam-offline-direct-review.json",
+      "sha256": "D75580D11072AA54FB16C4982FDD35D404752DB967623CB13907899F400E39B4"
+    }
+  },
+  "cleanup": {
+    "outer_cleanup_proven": true,
+    "processes_gone": true,
+    "source_and_run_assets_unchanged_by_postcheck": true,
+    "taskbus_state": "done",
+    "taskbus_resources": [],
+    "taskbus_release_sequence": 2458
+  },
+  "ack_state": {
+    "a11_source_ack_observed": false,
+    "a11_receiver_consumption_ack_observed": false
+  },
+  "source_readback_status": "pending"
+}

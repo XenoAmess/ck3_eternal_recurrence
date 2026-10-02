@@ -23,7 +23,7 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name).resolve()
-        self.attempt = self.root / "source-attempt"
+        self.attempt = self.root / "source-live-a01"
         self.recorder = self.attempt / "recording-a01"
         self.recorder.mkdir(parents=True)
         self.output = self.root / "pending-a01"
@@ -74,6 +74,22 @@ class ExistingCaptureBundleTest(unittest.TestCase):
             "frame_pts_by_stream": {"0": {"count": len(self.pts)}},
             "format_duration_seconds": "0.120"})
         self.raw = raw
+
+    def add_sibling_screenshot_mark(self, screenshot: Path, *, key: str = "screenshot") -> None:
+        screenshot.parent.mkdir(parents=True, exist_ok=True)
+        screenshot.write_bytes(b"preserved original screen lease screenshot")
+        marks = self.recorder / "marks.jsonl"
+        rows = [json.loads(line) for line in marks.read_text(encoding="utf-8").splitlines()]
+        rows.insert(-1, {"kind": "next-day-visible", "monotonic_ns": 250,
+                         "approx_seconds_from_recorder_start": 0.08,
+                         "approx_seconds_are_not_video_pts": True,
+                         "date_raw": 53147016, "combat_id": 16777218, "war_id": 4,
+                         key: bundle.record(screenshot)})
+        marks.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+        final_path = self.recorder / "recorder-final.json"
+        final = bundle.read_json(final_path)
+        final["marks"] = bundle.record(marks)
+        write(final_path, final)
 
     def prepare(self) -> dict:
         with patch.object(bundle, "toolchain_identity", return_value={
@@ -128,6 +144,21 @@ class ExistingCaptureBundleTest(unittest.TestCase):
                                   "no_foreign_overlay": True, **frames}]})
         return review
 
+    def rewrite_endpoint_commands(self, review_path: Path, change) -> None:
+        review = bundle.read_json(review_path)
+        for phase in ("begin", "end"):
+            frame = review["spans"][0][f"{phase}_frame"]
+            receipt_path = Path(frame["extraction_receipt"]["path"])
+            receipt = bundle.read_json(receipt_path)
+            command_path = Path(receipt["command"]["path"])
+            command = bundle.read_json(command_path)
+            change(command, receipt, frame)
+            write(command_path, command)
+            receipt["command"] = bundle.record(command_path)
+            write(receipt_path, receipt)
+            frame["extraction_receipt"] = bundle.record(receipt_path)
+        write(review_path, review)
+
     def test_pending_inventory_does_not_create_adapter_green(self) -> None:
         source = self.prepare()
         self.assertEqual(source["status"], "PENDING_CLEAN_REVIEW")
@@ -137,6 +168,38 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         self.assertFalse((self.output / "report.json").exists())
         self.assertFalse((self.output / "evidence-index.json").exists())
         self.assertTrue(self.raw.exists())
+
+    def test_matching_screen_lease_screenshot_survives_prepare_and_package(self) -> None:
+        screenshot = self.root / "source-screen-lease-a01/d06-hover.png"
+        self.add_sibling_screenshot_mark(screenshot)
+        original = bundle.record(screenshot)
+        source = self.prepare()
+        bundle.validate_source_inventory(source)
+        self.assertIn(original, source["files"])
+        self.assertEqual(source["navigation_marks"][1]["evidence"]["screenshot"], original)
+        review = self.review(source)
+        result = bundle.package(self.output / "source-manifest.json", review,
+                                self.root / "bundle-screen-lease")
+        self.assertEqual(result["status"], "ADAPTER_VALIDATED_SELECTED_SPANS_ONLY")
+        copied = (self.root / "bundle-screen-lease/source/external-screen-lease"
+                  / "source-screen-lease-a01/d06-hover.png")
+        self.assertEqual(bundle.record(copied)["sha256"], original["sha256"])
+        self.assertEqual(bundle.record(screenshot), original)
+
+    def test_unrelated_sibling_screenshot_is_rejected_before_pending_inventory(self) -> None:
+        self.add_sibling_screenshot_mark(self.root / "other-screen-lease-a01/d06-hover.png")
+        with patch.object(bundle, "toolchain_identity", return_value={"version": "0.2.1"}):
+            with self.assertRaisesRegex(ValueError, "evidence escapes source attempt"):
+                bundle.prepare(self.attempt, self.recorder, self.output, self.root / "unused")
+        self.assertFalse(self.output.exists())
+
+    def test_matching_screen_lease_cannot_supply_control(self) -> None:
+        self.add_sibling_screenshot_mark(self.root / "source-screen-lease-a01/control.png",
+                                         key="control")
+        with patch.object(bundle, "toolchain_identity", return_value={"version": "0.2.1"}):
+            with self.assertRaisesRegex(ValueError, "evidence escapes source attempt"):
+                bundle.prepare(self.attempt, self.recorder, self.output, self.root / "unused")
+        self.assertFalse(self.output.exists())
 
     def test_exact_release_pin_matches_installed_toolchain(self) -> None:
         requirements = Path(__file__).resolve().parents[3] / "tools/requirements-promo-toolchain.txt"
@@ -148,6 +211,8 @@ class ExistingCaptureBundleTest(unittest.TestCase):
     def test_exact_frame_extractor_binds_showinfo_pts_without_review(self) -> None:
         self.prepare()
         def fake_run(argv, **kwargs):
+            self.assertEqual(argv[argv.index("-fps_mode") + 1], "passthrough")
+            self.assertNotIn("-vsync", argv)
             Path(argv[-1]).write_bytes(b"raw-derived fixture frame")
             kwargs["stderr"].write(b"[Parsed_showinfo_1] n: 0 pts: 33 pts_time:0.033\n")
             return SimpleNamespace(returncode=0)
@@ -186,6 +251,43 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         self.assertEqual(result["span_ids"], ["terminal_window"])
         self.assertEqual(bundle.read_json(self.attempt / "ck3-output/capture-report.json")["result"],
                          "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO")
+
+    def test_package_accepts_exact_legacy_successful_extraction_receipts(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        def legacy(command, receipt, frame):
+            command["argv"] = [command["argv"][0], *bundle.legacy_extract_argv_tail(
+                source["raw"]["path"], receipt["decoded_index"], frame["image"]["path"])]
+        self.rewrite_endpoint_commands(review, legacy)
+        result = bundle.package(self.output / "source-manifest.json", review,
+                                self.root / "legacy-bundle")
+        self.assertEqual(result["status"], "ADAPTER_VALIDATED_SELECTED_SPANS_ONLY")
+        self.assertFalse(result["film_signoff_granted"])
+
+    def test_package_rejects_legacy_extraction_without_png(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        def legacy(command, receipt, frame):
+            command["argv"] = [command["argv"][0], *bundle.legacy_extract_argv_tail(
+                source["raw"]["path"], receipt["decoded_index"], frame["image"]["path"])]
+        self.rewrite_endpoint_commands(review, legacy)
+        (self.root / "begin.png").unlink()
+        target = self.root / "missing-legacy-png-bundle"
+        with self.assertRaises((FileNotFoundError, ValueError)):
+            bundle.package(self.output / "source-manifest.json", review, target)
+        self.assertFalse(target.exists())
+
+    def test_package_rejects_other_sync_flag_even_with_matching_hashes(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        def wrong_flag(command, receipt, frame):
+            argv = command["argv"]
+            argv[argv.index("-fps_mode")] = "-arbitrary-sync"
+        self.rewrite_endpoint_commands(review, wrong_flag)
+        target = self.root / "arbitrary-flag-bundle"
+        with self.assertRaisesRegex(ValueError, "command does not bind selected frame"):
+            bundle.package(self.output / "source-manifest.json", review, target)
+        self.assertFalse(target.exists())
 
     def test_package_refuses_missing_human_attestation_without_writing(self) -> None:
         source = self.prepare()

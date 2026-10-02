@@ -1286,6 +1286,124 @@ bool ParseBattleControlExpectedRevisionV1(
          output > 0;
 }
 
+bool ParseCurrentBattleKnightV1Step(
+    std::string_view step,
+    game::CurrentBattleKnightRequestV1 &output) noexcept {
+  output = {};
+  if (!step.starts_with(kCurrentBattleKnightV1StepPrefix)) {
+    return false;
+  }
+  const auto ids = step.substr(kCurrentBattleKnightV1StepPrefix.size());
+  const auto first = ids.find('-');
+  const auto second = first == std::string_view::npos
+                          ? first : ids.find('-', first + 1);
+  if (first == std::string_view::npos ||
+      second == std::string_view::npos ||
+      !ParseCanonicalPositiveInt32(ids.substr(0, first),
+                                   output.subject_public_cunit_id) ||
+      !ParseCanonicalPositiveInt32(ids.substr(first + 1,
+                                              second - first - 1),
+                                   output.character_id) ||
+      !ParseCanonicalPositiveInt32(ids.substr(second + 1),
+                                   output.regiment_id)) {
+    output = {};
+    return false;
+  }
+  return true;
+}
+
+bool ParseCurrentBattleKnightExpectedV1(
+    std::string_view json, std::uint64_t native_revision,
+    game::CurrentBattleKnightRequestV1 &request) noexcept {
+  const auto number = [json](std::string_view key,
+                             std::int64_t &value) noexcept {
+    const auto at = json.find(key);
+    if (at == std::string_view::npos ||
+        json.find(key, at + key.size()) != std::string_view::npos) {
+      return false;
+    }
+    auto begin = at + key.size();
+    while (begin < json.size() &&
+           (json[begin] == ' ' || json[begin] == '\t' ||
+            json[begin] == '\r' || json[begin] == '\n')) {
+      ++begin;
+    }
+    auto end = begin;
+    while (end < json.size() && json[end] >= '0' && json[end] <= '9') {
+      ++end;
+    }
+    if (end == begin || (json[begin] == '0' && end - begin > 1) ||
+        (end < json.size() && json[end] != ',' && json[end] != '}' &&
+         json[end] != ' ' && json[end] != '\t' && json[end] != '\n' &&
+         json[end] != '\r')) {
+      return false;
+    }
+    const auto parsed =
+        std::from_chars(json.data() + begin, json.data() + end, value);
+    return parsed.ec == std::errc{} &&
+           parsed.ptr == json.data() + end;
+  };
+  std::int64_t native = -1;
+  std::int64_t actor = -1;
+  std::int64_t war = -1;
+  std::int64_t army = -1;
+  std::int64_t combat = -1;
+  std::int64_t province = -1;
+  std::int64_t date = -1;
+  if (!number("\"expected_native_revision\":", native) ||
+      native < 1 || static_cast<std::uint64_t>(native) != native_revision ||
+      !number("\"expected_played_character_id\":", actor) ||
+      !number("\"expected_war_id\":", war) ||
+      !number("\"expected_native_carmy_id\":", army) ||
+      !number("\"expected_combat_id\":", combat) ||
+      !number("\"expected_province_id\":", province) ||
+      !number("\"expected_date_raw\":", date) ||
+      actor <= 0 || war < 0 || army <= 0 || combat <= 0 ||
+      province <= 0 || date < 0 ||
+      actor > std::numeric_limits<std::int32_t>::max() ||
+      war > std::numeric_limits<std::int32_t>::max() ||
+      army > std::numeric_limits<std::int32_t>::max() ||
+      combat > std::numeric_limits<std::int32_t>::max() ||
+      province > std::numeric_limits<std::int32_t>::max()) {
+    return false;
+  }
+  char id_text[40]{};
+  constexpr std::string_view prefix = "native:";
+  std::copy(prefix.begin(), prefix.end(), id_text);
+  const auto rendered = std::to_chars(
+      id_text + prefix.size(), id_text + sizeof(id_text), native_revision);
+  if (rendered.ec != std::errc{}) {
+    return false;
+  }
+  constexpr std::string_view id_key = "\"expected_snapshot_id\":";
+  const auto id_at = json.find(id_key);
+  if (id_at == std::string_view::npos ||
+      json.find(id_key, id_at + id_key.size()) != std::string_view::npos) {
+    return false;
+  }
+  auto id_value = id_at + id_key.size();
+  while (id_value < json.size() &&
+         (json[id_value] == ' ' || json[id_value] == '\t' ||
+          json[id_value] == '\r' || json[id_value] == '\n')) {
+    ++id_value;
+  }
+  if (id_value >= json.size() || json[id_value] != '"' ||
+      !json.substr(id_value + 1).starts_with(std::string_view(
+          id_text, static_cast<std::size_t>(rendered.ptr - id_text))) ||
+      id_value + 1 + (rendered.ptr - id_text) >= json.size() ||
+      json[id_value + 1 + (rendered.ptr - id_text)] != '"') {
+    return false;
+  }
+  request.expected_played_character_id =
+      static_cast<std::int32_t>(actor);
+  request.expected_war_id = static_cast<std::int32_t>(war);
+  request.expected_native_carmy_id = static_cast<std::int32_t>(army);
+  request.expected_combat_id = static_cast<std::int32_t>(combat);
+  request.expected_province_id = static_cast<std::int32_t>(province);
+  request.expected_date_raw = date;
+  return true;
+}
+
 bool ExecuteBattleControlSnapshotMailboxQueryV1(
     void *opaque_context,
     const MainThreadExecutionStampV1 &stamp) noexcept {
@@ -1317,6 +1435,20 @@ bool ExecuteBattleControlSnapshotMailboxQueryV1(
     const auto status = ReadBattleControlSnapshot(
         query->bindings, query->request, query->result);
 
+    if (status == game::BattleControlSnapshotStatus::available &&
+        query->knight_request.has_value() &&
+        !ReadCurrentBattleKnightV1(query->bindings, before, query->result,
+                                   *query->knight_request,
+                                   query->knight_result)) {
+      const auto reason = query->knight_result.unavailable_reason;
+      query->result = {};
+      query->result.status = game::BattleControlSnapshotStatus::unavailable;
+      query->result.diagnostic_reason = reason;
+      query->completion =
+          BattleControlSnapshotMailboxCompletionV1::query_unavailable;
+      return true;
+    }
+
     game::Snapshot after{};
     if (!ReadSnapshot(query->bindings, after) || after != before ||
         !SameExpectedFrame(after, *query, stamp)) {
@@ -1332,6 +1464,13 @@ bool ExecuteBattleControlSnapshotMailboxQueryV1(
         query->result.subject_public_cunit_id ==
             query->request.subject_public_cunit_id &&
         query->result.battle_control_ready) {
+      if (query->knight_request.has_value() &&
+          !query->knight_result.available) {
+        query->result = {};
+        query->completion =
+            BattleControlSnapshotMailboxCompletionV1::query_unavailable;
+        return true;
+      }
       query->result.snapshot_revision = query->expected_snapshot_revision;
       query->completion =
           BattleControlSnapshotMailboxCompletionV1::available;
@@ -1791,6 +1930,55 @@ std::string SerializeActiveCombatResumeInputsV1(
   return output.size() <= kBattleControlSnapshotV1WireMaximumBytes
              ? output
              : std::string{};
+}
+
+std::string SerializeCurrentBattleKnightV1(
+    const game::CurrentBattleKnightSnapshotV1 &snapshot) {
+  if (!snapshot.available || !snapshot.unavailable_reason.empty() ||
+      snapshot.character_id <= 0 || snapshot.regiment_id <= 0 ||
+      snapshot.subject_public_cunit_id <= 0 ||
+      snapshot.native_carmy_id <= 0 || snapshot.combat_id == -1 ||
+      snapshot.province_id <= 0 || snapshot.observed_date_raw < 0 ||
+      snapshot.scale != 100'000) {
+    return {};
+  }
+  std::string output = "{\"schema\":\"current-battle-knight-v1\",";
+  const auto field = [&output](std::string_view name,
+                               auto value) {
+    AppendJsonString(output, name);
+    output.push_back(':');
+    if (!AppendNumber(output, value)) {
+      return false;
+    }
+    output.push_back(',');
+    return true;
+  };
+  if (!field("observed_date_raw", snapshot.observed_date_raw) ||
+      !field("combat_id", snapshot.combat_id) ||
+      !field("province_id", snapshot.province_id) ||
+      !field("subject_public_cunit_id",
+             snapshot.subject_public_cunit_id) ||
+      !field("native_carmy_id", snapshot.native_carmy_id) ||
+      !field("character_id", snapshot.character_id) ||
+      !field("regiment_id", snapshot.regiment_id) ||
+      !field("current_effective_prowess", snapshot.effective_prowess) ||
+      !field("knight_effectiveness_raw",
+             snapshot.knight_effectiveness_raw) ||
+      !field("province_evaluated_damage_raw",
+             snapshot.fresh_damage_raw) ||
+      !field("province_evaluated_toughness_raw",
+             snapshot.fresh_toughness_raw) ||
+      !field("stored_combat_entry_damage_raw",
+             snapshot.stored_entry_damage_raw) ||
+      !field("stored_combat_entry_toughness_raw",
+             snapshot.stored_entry_toughness_raw) ||
+      !field("scale", snapshot.scale)) {
+    return {};
+  }
+  output += "\"paired_generation_ids_verified\":true,";
+  output += "\"double_sample_stable\":true,";
+  output += "\"province_evaluation_fresh\":true}";
+  return output;
 }
 
 } // namespace xar::ck3_11906

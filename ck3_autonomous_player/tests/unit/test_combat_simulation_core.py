@@ -680,6 +680,24 @@ class MonteCarloContractTests(unittest.TestCase):
         )
         self.assertFalse(manifest.fidelity_gate)
 
+    def test_transition_fidelity_alone_never_promotes_trials_to_planner(self) -> None:
+        manifest = TransitionFidelityManifest(
+            simulator_build="synthetic-unvalidated-model",
+            loaded_phase_effects_exact=True,
+            battle_end_exact=True,
+            retreat_and_forced_result_exact=True,
+            original_trace_fixture_sha256="A" * 64,
+            closed_numeric_domains=(),
+        )
+        summary = summarize_trial_outcomes(
+            (TrialOutcome(TrialResult.PLAYER_WIN, 1, 0, 0),),
+            experiment=CombatExperiment("B" * 64, 7, 1, 30),
+            manifest=manifest,
+        )
+        self.assertTrue(summary.fidelity_gate)
+        self.assertEqual(summary.model_fidelity, "transition-parity-manifest-claim")
+        self.assertFalse(summary.planner_usable)
+
 
 if __name__ == "__main__":
     unittest.main()

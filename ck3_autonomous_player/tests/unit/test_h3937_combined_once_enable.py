@@ -6,11 +6,30 @@ import hashlib
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+import threading
 from types import SimpleNamespace
 
 import pytest
 
 from xar_autoplayer import h3937_combined_once_enable as once
+
+
+@pytest.fixture(autouse=True)
+def exercise_archived_logic_only(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    """Keep the historical fixtures executable without reopening a11 in production."""
+    monkeypatch.setattr(once, "_refuse_retired_entry", lambda: None)
+    config = tmp_path / "synthetic-run-config.json"
+    config.write_bytes(b"{}")
+    monkeypatch.setattr(once, "RUN_CONFIG_PATH", config)
+    monkeypatch.setattr(once, "RUN_CONFIG_BYTES", config.read_bytes())
+    monkeypatch.setattr(once, "RUN_CONFIG_SHA256", digest(config))
+    # Current source delegates renewals to its worker keeper. Archive fixtures
+    # observe that boundary without touching the installed task bus.
+    monkeypatch.setattr(once, "screen_keeper_for_runner", lambda *_args: SimpleNamespace(
+        start=lambda: once._require_live_screen_lease(), stop=lambda: None,
+        report=lambda: {"failure": None, "thread_exited": True},
+        abort=threading.Event(), process_create_gate=lambda: None,
+    ))
 
 
 def digest(path: Path) -> str:
@@ -52,6 +71,7 @@ def bounded(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
         "schema": "xar.war.h3937-combined-supervisor-claim.v1",
         "claim_nonce": "nonce", "round": once.ROUND,
         "output_dir": str(output), "head": "pinned",
+        "run_config_sha256": once.RUN_CONFIG_SHA256,
     }), encoding="utf-8")
     go = tmp_path / "go.json"
     go.write_text("{}", encoding="utf-8")
@@ -663,7 +683,7 @@ def test_supervisor_accepts_only_green_child_and_zero_processes(monkeypatch, tmp
     check(result["timeout"] is False)
 
 
-def test_supervisor_renews_exact_screen_lease_during_long_worker(monkeypatch, tmp_path):
+def test_supervisor_leaves_screen_renewal_to_worker(monkeypatch, tmp_path):
     output = tmp_path / "long-worker"
     entry = tmp_path / "entry.py"
     entry.write_text("", encoding="utf-8")
@@ -695,9 +715,11 @@ def test_supervisor_renews_exact_screen_lease_during_long_worker(monkeypatch, tm
             }), encoding="utf-8")
             return b"worker ok", b""
 
-    monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: SlowWorker())
+    worker = SlowWorker()
+    monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: worker)
     check(once.supervise_exact_once(entry) == 0)
-    check(heartbeats == [1])
+    check(heartbeats == [])
+    check(worker.calls == 2)
     result = json.loads((output / "supervisor-completion.json").read_text(encoding="utf-8"))
     check(result["timeout"] is False)
 
@@ -761,6 +783,8 @@ def test_supervisor_postcheck_failures_retain_red(monkeypatch, tmp_path, failure
 
     monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: Worker())
     if failure == "taskkill_failed_worker_alive":
+        moments = iter((0.0, 0.0, float(once.SUPERVISOR_TIMEOUT_SECONDS + 1)))
+        monkeypatch.setattr(once, "_monotonic", lambda: next(moments))
         monkeypatch.setattr(once.subprocess, "run", lambda *a, **k: SimpleNamespace(
             returncode=1, stdout=b"", stderr=b"taskkill failed"))
     check(once.supervise_exact_once(entry) == 1)

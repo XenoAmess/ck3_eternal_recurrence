@@ -99,6 +99,7 @@ from .bridge.war_contract import (
     observe_merge_armies_postcondition_v1,
     move_army_step,
     offer_white_peace_step,
+    parse_advance_route_contact_horizon_step,
     surrender_war_step,
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
@@ -124,6 +125,15 @@ from .bridge.war_contract import (
     war_objective_province_ids,
     war_termination_active_war_signature,
     war_termination_negative_query_signature,
+)
+from .bridge.physical_army_inventory_authorization import (
+    authenticated_physical_inventory_for_route_contact,
+)
+from .bridge.h3937_date_hold import (
+    h3937_date_hold_active,
+    h3937_date_hold_audit,
+    is_army_move_control_step,
+    is_date_control_step,
 )
 from .environment import write_json_atomic
 from .errors import AgentError
@@ -7290,6 +7300,72 @@ def _annotate_active_combat_resume_input(
     }
 
 
+def _h3937_hold_selected_date(
+    plan: dict[str, object], snapshot: dict[str, object] | None
+) -> dict[str, object]:
+    """Block every formal date selection in the frozen Robert war episode."""
+
+    step = plan.get("selected_step")
+    if not (
+        h3937_date_hold_active(snapshot)
+        and is_date_control_step(step)
+        and isinstance(snapshot, dict)
+    ):
+        return plan
+    return {
+        **plan,
+        "phase": "h3937_war_date_hold_pending_inventory_and_cash_policy",
+        "selected_step": None,
+        "blocked_date_step": step,
+        "blocked_date_phase": plan.get("phase"),
+        "required_observation": (
+            "authenticated-physical-hostile-inventory-and-formal-war-cash-policy"
+        ),
+        "reason": (
+            "the H3937 war episode has no authenticated complete physical "
+            "hostile inventory or accepted joint war/cash risk policy"
+        ),
+        "h3937_date_hold": h3937_date_hold_audit(snapshot),
+    }
+
+
+def _h3937_hold_selected_move(
+    plan: dict[str, object], snapshot: dict[str, object] | None
+) -> dict[str, object]:
+    """Keep the H3937 move order closed until a separate war-risk admission."""
+
+    step = plan.get("selected_step")
+    if not (
+        h3937_date_hold_active(snapshot)
+        and is_army_move_control_step(step)
+        and isinstance(snapshot, dict)
+    ):
+        return plan
+    return {
+        **plan,
+        "phase": "h3937_war_move_hold_pending_inventory_and_cash_policy",
+        "selected_step": None,
+        "blocked_move_step": step,
+        "blocked_move_phase": plan.get("phase"),
+        "required_observation": (
+            "authenticated-physical-hostile-inventory-and-formal-war-cash-policy"
+        ),
+        "reason": (
+            "the H3937 war episode has no authenticated complete physical "
+            "hostile inventory or accepted joint war/cash move risk policy"
+        ),
+        "h3937_move_hold": h3937_date_hold_audit(snapshot),
+    }
+
+
+def _h3937_hold_selected_control(
+    plan: dict[str, object], snapshot: dict[str, object] | None
+) -> dict[str, object]:
+    return _h3937_hold_selected_move(
+        _h3937_hold_selected_date(plan, snapshot), snapshot
+    )
+
+
 def choose_one_life_turn(
     commands: list[dict[str, object]],
     *,
@@ -7309,7 +7385,7 @@ def choose_one_life_turn(
         bridge_capabilities=capabilities,
     )
     if isinstance(formal, dict) and formal.get("status") != "continue_ready":
-        return formal
+        return _h3937_hold_selected_control(formal, snapshot)
     plan = _choose_one_life_turn_core(
         commands,
         snapshot=snapshot,
@@ -7333,11 +7409,48 @@ def choose_one_life_turn(
         bridge_capabilities=set(capabilities),
     )
     plan = _annotate_active_combat_resume_input(plan, snapshot)
+    plan = _h3937_hold_selected_control(plan, snapshot)
+    if (
+        h3937_date_hold_active(snapshot)
+        and parse_advance_route_contact_horizon_step(plan.get("selected_step"))
+        is not None
+        and not authenticated_physical_inventory_for_route_contact(snapshot)
+    ):
+        plan = {
+            **plan,
+            "phase": "native_war_route_contact_physical_inventory_unproven",
+            "selected_step": None,
+            "required_observation": (
+                "authenticated-same-frame-physical-hostile-army-inventory"
+            ),
+            "reason": (
+                "the contact horizon covers a published war roster, but the "
+                "full physical hostile army inventory is not authenticated"
+            ),
+        }
     defender_exit_observation = observe_primary_defender_de_jure_exit(snapshot)
     if defender_exit_observation is not None:
+        if defender_exit_observation.get("status") == "native_legality_observed_material_comparison_open":
+            candidate_step = plan.get("selected_step")
+            if isinstance(candidate_step, str) and candidate_step.startswith(
+                ("surrender-war-", "offer-white-peace-")
+            ):
+                candidate_step = None
+            defender_exit_observation = {
+                **defender_exit_observation,
+                "continuation_handoff": {
+                    "status": (
+                        "existing_tactical_candidate_requires_revalidation"
+                        if isinstance(candidate_step, str) else "no_tactical_candidate"
+                    ),
+                    "candidate_selected_step": candidate_step,
+                    "current_frame_revalidation_required": True,
+                    "exit_action_authorized": False,
+                },
+            }
         plan = {**plan, "formal_defender_exit_observation": defender_exit_observation}
     if not isinstance(formal, dict):
-        return plan
+        return _h3937_hold_selected_control(plan, snapshot)
     decision = formal["decision"]
     war_id = decision["war_id"]
     if plan.get("selected_step") in {
@@ -7350,23 +7463,23 @@ def choose_one_life_turn(
             == "de-jure-no-safe-route-emergency-exit-v1"
             and plan.get("selected_step") == surrender_war_step(war_id)
         ):
-            return {
+            return _h3937_hold_selected_control({
                 **plan,
                 "formal_three_way_decision": decision,
                 "formal_continue_overridden_by_proven_route_exhaustion": True,
-            }
-        return {
+            }, snapshot)
+        return _h3937_hold_selected_control({
             "policy": "raiktor-formal-three-way-exit-v1",
             "phase": "native_war_raiktor_threeway_conflicting_terminal",
             "selected_step": None,
             "reason": "bounded tactical planner chose a different terminal from the current three-way continue recommendation",
             "war_exit_decision": decision,
-        }
-    return {
+        }, snapshot)
+    return _h3937_hold_selected_control({
         **plan,
         "war_exit_decision": decision,
         "bounded_continue_adapter": "existing-native-tactical-turn-v1",
-    }
+    }, snapshot)
 
 
 def consume_one_life_lifestyle_private_trial(
@@ -16916,7 +17029,10 @@ def _primary_defender_siege_forecast_ingress(
             defender_army_ids=defenders,
             friendly_current_soldiers=int(balance["friendly_current_soldiers"]),
         )
-        if provisional.get("status") == "provisional_admissible":
+        if (
+            len(defenders) == 1
+            and provisional.get("status") == "provisional_admissible"
+        ):
             # The native route is a real proposal, but the v3 battle is a
             # conditional encounter at its final entry.  A long route must
             # stop at its first waypoint; it cannot spend today's model result
@@ -17005,6 +17121,88 @@ def _primary_defender_siege_forecast_ingress(
                     **{**evidence, "forecast_status": "provisional_trial", "active_attack_allowed": True},
                 }
             return short_waypoint(trial, qualified_trial=False)
+        if (
+            qualified.get("status") == "producer_unavailable"
+            and (
+                provisional.get("status") == "same_frame_encounter_scope_mismatch"
+                or (
+                    provisional.get("status") == "multi_defender_research_only"
+                    and provisional.get("planner_usable") is False
+                )
+            )
+            and result.get("accepted") is True
+            and result.get("status") == "available"
+            and len(defenders) > 1
+            and len(route) > 1
+            and route[0] not in {origin, target}
+            and contact.get("one_day_contact_free") is True
+            and contact_conflicts == []
+            and date_raw is not None
+            and _r0321_one_day_contact_free(contact, date_raw)
+            and len(active_wars) == 1
+            and len(player_armies) == 1
+        ):
+            first_hop = route[0]
+            move_step = move_army_step(army_id, first_hop)
+            if move_step in action_steps:
+                short_preview = _fresh_move_route_preview(
+                    commands, army_id=army_id, origin_province_id=origin,
+                    target_province_id=first_hop, date_raw=date_raw,
+                )
+                short_preview_step = preview_move_army_step(army_id, first_hop)
+                if short_preview is None and (
+                    short_preview_step in action_steps
+                    and not _r0321_query_attempted_this_date(
+                        commands, short_preview_step
+                    )
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_siege_first_hop_preview_query",
+                        "selected_step": short_preview_step,
+                        "reason": "collect the exact first-waypoint route as read-only research",
+                        "route_preview": preview,
+                        "route_contact_horizon": contact,
+                        "qualified_forecast": qualified,
+                        "provisional_forecast": provisional,
+                        **evidence,
+                    }
+                if not (
+                    isinstance(short_preview, dict)
+                    and short_preview.get("status") == "available"
+                    and short_preview.get("route_province_ids") == [first_hop]
+                ):
+                    return blocked(
+                        "the first-waypoint route preview is missing or mismatched",
+                        "fresh-exact-first-hop-preview",
+                        detail={"short_route_preview": short_preview},
+                    )
+                short_contact = _fresh_route_contact_horizon(
+                    commands, snapshot, army_id=army_id,
+                    origin_province_id=origin, target_province_id=first_hop,
+                    hostile_army_ids=hostile_ids, route_province_ids=[first_hop],
+                )
+                short_contact_step = query_route_contact_horizon_step(
+                    army_id, first_hop, hostile_ids
+                )
+                if short_contact is None and (
+                    short_contact_step in action_steps
+                    and not _r0321_query_attempted_this_date(
+                        commands, short_contact_step
+                    )
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_siege_first_hop_contact_query",
+                        "selected_step": short_contact_step,
+                        "reason": "collect the same-frame full-hostile one-day first-waypoint timeline as read-only research",
+                        "route_preview": preview,
+                        "route_contact_horizon": contact,
+                        "short_route_preview": short_preview,
+                        "qualified_forecast": qualified,
+                        "provisional_forecast": provisional,
+                        **evidence,
+                    }
         return blocked(
             "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
             "qualified-same-frame-combat-forecast-and-expected-utility",
@@ -17051,6 +17249,28 @@ def _primary_defender_siege_forecast_ingress(
         "route_contact_horizon": contact,
         **evidence,
     }
+
+
+def _r0321_one_day_contact_free(contact: dict[str, object], date_raw: int) -> bool:
+    return (
+        contact.get("horizon_start_date_raw") == date_raw
+        and contact.get("horizon_end_date_raw") == date_raw + 24
+        and contact.get("one_day_contact_free") is True
+        and contact.get("conflicts") == []
+    )
+
+
+def _r0321_query_attempted_this_date(
+    commands: list[dict[str, object]], step: str
+) -> bool:
+    """Stop a failed read-only query from looping in the same date epoch."""
+    last_advance = _latest_life_advance_index(commands)
+    return any(
+        _effective_command(row) == step
+        and (index := _native_int(row.get("index"))) is not None
+        and index > last_advance
+        for row in _history_after_latest_restore(commands)
+    )
 
 
 def _provisional_defense_research_assessment(
@@ -17140,8 +17360,13 @@ def _provisional_defense_research_assessment(
         and isinstance(p90_hard_loss, int)
         and p90_hard_loss <= hard_loss_budget_raw
     )
+    multi_defender_research_only = len(defender_army_ids) > 1
     return {
-        "status": "provisional_admissible" if admitted else "model_risk_budget_exceeded",
+        "status": (
+            "multi_defender_research_only" if multi_defender_research_only
+            else "provisional_admissible" if admitted else "model_risk_budget_exceeded"
+        ),
+        **({"planner_usable": False} if multi_defender_research_only else {}),
         "model_fidelity": "research_only_phase_events_disabled",
         "calibrated_win_probability_available": False,
         "input_sha256": forecast["input_sha256"],

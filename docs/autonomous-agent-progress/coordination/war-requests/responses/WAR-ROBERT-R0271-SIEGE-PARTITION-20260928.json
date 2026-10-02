@@ -65,5 +65,28 @@
     "The route read says offsite army 83886484 may enter target 2629 before the player, but future participation remains unknown. The first-hop contact horizon covers one day, not its entire current seven-day ETA; each later day needs a fresh full-hostile proof.",
     "Git contains only hashes and bounded excerpts; the raw H3388 source and exact candidate binaries remain in the verified receiver artifact store. Receiver R0001 failed its 300-second map readiness at turn zero and its profile logs were overwritten by R0002 because the same prepared profile was reused; R0003 separately failed 900-second readiness at turn zero. Those environment REDs and the R0001 evidence-retention gap are not algorithm proof. R0002/R0004/R0005 each have separate frozen evidence manifests."
   ],
-  "next_step": "Robert can consume the recoverable first-hop contract: use current same-frame full-hostile contact proof before each further one-day advance, re-evaluate war/route/siege at each new frame, and leave target siege participation unresolved until new native evidence proves it. R0266 cash inputs and H2743 war-exit comparison remain separate pending war-side deliveries."
+  "next_step": "Robert can consume the recoverable first-hop contract: use current same-frame full-hostile contact proof before each further one-day advance, re-evaluate war/route/siege at each new frame, and leave target siege participation unresolved until new native evidence proves it. R0266 cash inputs and H2743 war-exit comparison remain separate pending war-side deliveries.",
+  "later_r0321_source_partition_audit": {
+    "status": "later_source_reported_partition_available_original_r0271_red_unchanged",
+    "verification": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0321-source-boundary.json",
+    "source_handoff_sha256": "6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20",
+    "bounded_finding": "R0321 source metadata reports formal h3911/raw53219928 in the same campaign/WarID, 32 game days after the original H3388 RED. Both hostile armies 50331920 and 83886484 are now reported at target2629, so participant_partition_status=available and offsite_hostile_army_ids=[] at that later frame. This is a changed battlefield state, not retrospective proof that the original offsite participant set was knowable.",
+    "new_red": "The later planner remains blocked before attack: accepted v3 read, qualified forecast producer_unavailable, provisional same_frame_encounter_scope_mismatch, no usable win probability or expected-utility authorization, active_attack_allowed=false, selected_step=null.",
+    "receiver_boundary": "Only the 5777-byte handoff JSON was receiver verified. The source formal report/raw frame, checkpoint pair, exact later binaries and matching receiver replay are pending; source recovery_qualified_for_receiver=false. Earlier R0271 receiver recovery and historical RED statuses are unchanged."
+  },
+  "later_r0321_h3911_source_pair_correction": {
+    "status": "source_pair_official_rebind_no_launch_recorded_receiver_transfer_and_live_pending",
+    "verification": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0321-h3911-correction.json",
+    "authority_commit": "32c0dd3706b95426977d787886b44f5545105772",
+    "correction": "The prior 5777-byte source handoff's recovery_qualified_for_receiver=false was a historical pre-preparation statement. Later Git project-state records the last qualified H3911/raw53219928 Robert checkpoint as canonical, six durable days beyond H3860, and a separate source candidate with official pair/rebind/no-launch passed. No H3911 cold restore, receiver asset transfer, matching receiver replay or closure of the turn27 forecast RED is claimed.",
+    "source_pair": "Frozen H3911 save SHA-256 5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746 and original driver SHA-256 DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33; independent rebind produces a different driver SHA-256 BF58AB4FE890F7AAAC6EA8F0254655DA869BB3327DF867C6D217550165D9085D."
+  },
+  "historical_r0319_h3860_excerpt_audit": {
+    "status": "source_ack_and_bounded_excerpt_receiver_verified_final_same_frame_participants_not_observed",
+    "verification": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0319-h3860-excerpt-audit.json",
+    "excerpt_sha256": "506497A181A9F3061E4365B9C95E2FCE67379033C17C3F8D9BCC8333EFF4C638",
+    "receiver_ack_sha256": "3AA1E415D202035E137413E5BC17DC60C88543F0A27D6D0A15422E37722FECE5",
+    "bounded_finding": "At R0319 final h3860/native:34/raw53219784, the extracted same-frame rows show active WarID16777231 and three scoped army-strength rows only. The source explicitly marks final-frame army position/route/ETA, province2629 siege/presence, full-hostile contact, participant partition and next planner step not_observed. An earlier native:30 route-contact/one-day advance is retained separately and cannot fill those same-frame gaps.",
+    "boundary": "The source accepted the H3860 request and the receiver verified the five exact small files and their reference chain. A receiver ACK was written and re-read locally; source readback remains pending. Parent formal report/driver remain source-only. H3860 is historical versus the later H3911 source pair; neither SOURCE-ACK nor excerpt resolves the original H3388 R0271 RED or R0321 forecast RED."
+  }
 }

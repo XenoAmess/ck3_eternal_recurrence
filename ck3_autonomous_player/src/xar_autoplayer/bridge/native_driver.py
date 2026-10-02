@@ -98,6 +98,11 @@ from .war_exit_terms_contract import (
     parse_query_war_termination_exit_terms_step,
     query_war_termination_exit_terms_step,
 )
+from .defender_dejure_exit_terms_v1 import (
+    CAPABILITY as QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY,
+    normalize_defender_dejure_exit_terms_v1,
+    parse_query_defender_dejure_exit_terms_v1_step,
+)
 from .war_entry_contract import (
     QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
     QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX,
@@ -451,6 +456,15 @@ from .raiktor_actual_truce_expiry_contract import (
     QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
     normalize_raiktor_actual_truce_expiry_v1,
     parse_query_raiktor_actual_truce_expiry_v1_step,
+)
+from .h2743_preaction_existing_truce_v1 import (
+    CAPABILITY as H2743_PREACTION_EXISTING_TRUCE_CAPABILITY,
+    CHECKPOINT_SHA256 as H2743_PREACTION_CHECKPOINT_SHA256,
+    DATE_RAW as H2743_PREACTION_DATE_RAW,
+    EPISODE as H2743_PREACTION_EPISODE,
+    QUERY_STEP as H2743_PREACTION_EXISTING_TRUCE_STEP,
+    normalize_result as normalize_h2743_preaction_existing_truce,
+    require_frame_claim as require_h2743_preaction_frame_claim,
 )
 from .raiktor_war_bound_loss_cleanup_contract import (
     QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY,
@@ -7486,6 +7500,16 @@ class NativeHeadlessGameplayDriver:
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
             )
+        if step == H2743_PREACTION_EXISTING_TRUCE_STEP:
+            if H2743_PREACTION_EXISTING_TRUCE_CAPABILITY not in set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the exact H2743 existing truce slot"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
         prisoner_release_war_id = (
             parse_query_war_prisoner_release_pairs_v1_step(step)
         )
@@ -7786,6 +7810,18 @@ class NativeHeadlessGameplayDriver:
             ):
                 raise UnsupportedStepError(
                     "native DLL cannot query structured termination exit terms"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
+        if parse_query_defender_dejure_exit_terms_v1_step(step) is not None:
+            # Explicit research query only.  It is not an advertised planner
+            # action and cannot authorize a war resolution.
+            if QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY not in set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the defender de-jure exit baseline"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
@@ -10364,8 +10400,29 @@ class NativeHeadlessGameplayDriver:
             payload, request=request
         )
 
+    def query_h2743_preaction_existing_truce_v1(
+        self, frame_claim: dict[str, object], *, expected_revision: int
+    ) -> dict[str, object]:
+        """Execute only the old-slot reader against an explicit before frame."""
+        try:
+            result = self._execute_native_war_step(
+                H2743_PREACTION_EXISTING_TRUCE_STEP,
+                expected_revision=expected_revision,
+                expected_h2743_frame=frame_claim,
+            )
+        except Exception as error:
+            self._record_command(
+                H2743_PREACTION_EXISTING_TRUCE_STEP,
+                ok=False, result=None, error=f"{type(error).__name__}: {error}",
+            )
+            raise
+        self._record_command(H2743_PREACTION_EXISTING_TRUCE_STEP,
+                             ok=True, result=result)
+        return result
+
     def _execute_native_war_step(
-        self, step: str, *, expected_revision: int | None
+        self, step: str, *, expected_revision: int | None,
+        expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         termination_query_war_id = (
             parse_query_war_termination_options_step(step)
@@ -10379,9 +10436,13 @@ class NativeHeadlessGameplayDriver:
         termination_terms_query_war_id = (
             parse_query_war_termination_terms_step(step)
         )
+        defender_dejure_exit_query_war_id = (
+            parse_query_defender_dejure_exit_terms_v1_step(step)
+        )
         actual_truce_expiry_toward = (
             parse_query_raiktor_actual_truce_expiry_v1_step(step)
         )
+        h2743_existing_truce_query = step == H2743_PREACTION_EXISTING_TRUCE_STEP
         war_bound_loss_cleanup_war_id = (
             parse_query_raiktor_war_bound_loss_cleanup_v1_step(step)
         )
@@ -10391,7 +10452,9 @@ class NativeHeadlessGameplayDriver:
             or prisoner_release_war_id is not None
             or outbound_white_peace_query_war_id is not None
             or termination_terms_query_war_id is not None
+            or defender_dejure_exit_query_war_id is not None
             or actual_truce_expiry_toward is not None
+            or h2743_existing_truce_query
             or war_bound_loss_cleanup_war_id is not None
             or province_local_siege_id is not None
             or parse_preview_move_army_step(step) is not None
@@ -10413,6 +10476,47 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
+        if h2743_existing_truce_query:
+            try:
+                frame_claim = require_h2743_preaction_frame_claim(
+                    expected_h2743_frame, starting
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"exact H2743 native source/frame claim unavailable: {error}"
+                ) from error
+            if (type(expected_revision) is not int
+                    or expected_revision != frame_claim["revision"]):
+                raise BridgeUnavailableError(
+                    "exact H2743 public before-frame revision unavailable"
+                )
+            native_revision = frame_claim["native_revision"]
+            raw = self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=H2743_PREACTION_EXISTING_TRUCE_CAPABILITY,
+                request_fields={
+                    "expected_date_raw": H2743_PREACTION_DATE_RAW,
+                    "expected_snapshot_id": frame_claim["snapshot_id"],
+                    "expected_public_revision": frame_claim["revision"],
+                    "expected_native_revision": native_revision,
+                    "expected_actor_character_id": frame_claim["actor_character_id"],
+                    "expected_war_id": frame_claim["war_id"],
+                    "expected_episode_id": H2743_PREACTION_EPISODE,
+                    "expected_checkpoint_sha256": H2743_PREACTION_CHECKPOINT_SHA256,
+                    "expected_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+                },
+                internal_semantic_snapshot=True,
+            )
+            try:
+                proof = normalize_h2743_preaction_existing_truce(
+                    raw, native_revision=native_revision
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native H2743 existing truce result is malformed: {error}"
+                ) from error
+            return {**raw, "h2743_preaction_existing_truce_proof": proof}
         if province_local_siege_id is not None:
             if starting.get("paused") is not True:
                 raise BridgeUnavailableError(
@@ -10621,6 +10725,13 @@ class NativeHeadlessGameplayDriver:
                 starting=starting,
                 selected_revision=selected_revision,
                 war_id=termination_terms_query_war_id,
+            )
+        if defender_dejure_exit_query_war_id is not None:
+            return self._execute_defender_dejure_exit_terms_v1_query(
+                step,
+                starting=starting,
+                selected_revision=selected_revision,
+                war_id=defender_dejure_exit_query_war_id,
             )
         if outbound_white_peace_query_war_id is not None:
             return self._execute_outbound_war_white_peace_status_query(
@@ -16530,6 +16641,95 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": native_revision,
         }
 
+    def _execute_defender_dejure_exit_terms_v1_query(
+        self,
+        step: str,
+        *,
+        starting: dict[str, object],
+        selected_revision: int,
+        war_id: int,
+    ) -> dict[str, object]:
+        """Read a current-frame baseline; no material outcome is authorized."""
+        war = _war_by_id(starting, war_id)
+        played = starting.get("played_character")
+        defender_id = played.get("character_id") if isinstance(played, dict) else None
+        if (
+            starting.get("paused") is not True
+            or not isinstance(war, dict)
+            or war.get("player_side") != "defender"
+            or war.get("player_is_primary_war_leader") is not True
+            or type(defender_id) is not int
+            or type(war.get("primary_opponent_character_id")) is not int
+            or not isinstance(war.get("targeted_title_ids"), list)
+            or not war["targeted_title_ids"]
+        ):
+            raise BridgeUnavailableError(
+                "native defender de-jure exit baseline requires a paused primary defender war"
+            )
+        if getattr(self, "_h2743_stock_predicate_admission", None) is not None:
+            # Reuse the current stock admission/provenance path rather than
+            # normalize a stock-enabled wire as the historical baseline.
+            if selected_revision != starting.get("revision"):
+                raise BridgeUnavailableError(
+                    "native defender de-jure baseline expected revision differs"
+                )
+            from .h2743_exit_readonly_transport import query_h2743_exit_baseline
+            return query_h2743_exit_baseline(self, expected_frame=starting)
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY,
+            internal_semantic_snapshot=True,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "defender_de_jure_exit_terms_v1",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "baseline_only"
+            or type(result.get("query_sequence")) is not int
+            or result["query_sequence"] < 1
+            or result["query_sequence"] > 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native defender de-jure exit baseline returned malformed frame"
+            )
+        try:
+            baseline = normalize_defender_dejure_exit_terms_v1(
+                result.get("defender_de_jure_exit_terms_v1"),
+                expected_war_id=war_id,
+                expected_native_revision=starting["native_revision"],
+                expected_date_raw=starting["date_raw"],
+                expected_defender_id=defender_id,
+                expected_attacker_id=war["primary_opponent_character_id"],
+                expected_target_title_ids=war["targeted_title_ids"],
+            )
+        except (KeyError, ValueError) as error:
+            raise BridgeUnavailableError(
+                f"native defender de-jure exit baseline is malformed: {error}"
+            ) from error
+        current = self.take_internal_semantic_snapshot()
+        if not _same_paused_native_frame(starting, current) or _war_by_id(
+            current, war_id
+        ) != war:
+            raise BridgeUnavailableError(
+                "native defender de-jure exit baseline crossed a war frame"
+            )
+        return {
+            **result,
+            "defender_de_jure_exit_terms_v1": baseline,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
     def _execute_war_termination_terms_query(
         self,
         step: str,
@@ -20202,6 +20402,165 @@ class NativeHeadlessGameplayDriver:
         return value if isinstance(value, str) and value else None
 
 
+    def query_current_battle_knight_v1(
+        self,
+        *,
+        subject_public_cunit_id: int,
+        character_id: int,
+        regiment_id: int,
+        expected_played_character_id: int,
+        expected_war_id: int,
+        expected_native_carmy_id: int,
+        expected_combat_id: int,
+        expected_province_id: int,
+        expected_date_raw: int,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_snapshot_id: str,
+    ) -> dict[str, object]:
+        """One private exact-frame native read. Never retries an executed query."""
+        ids = (
+            subject_public_cunit_id,
+            character_id,
+            regiment_id,
+            expected_played_character_id,
+            expected_native_carmy_id,
+            expected_combat_id,
+            expected_province_id,
+        )
+        if any(type(value) is not int or not 1 <= value <= 2**31 - 1
+               for value in ids):
+            raise ValueError("current-knight IDs must be positive int32")
+        if type(expected_war_id) is not int or not 0 <= expected_war_id <= 2**31 - 1:
+            raise ValueError("expected_war_id must be a nonnegative int32")
+        if type(expected_date_raw) is not int or expected_date_raw < 0:
+            raise ValueError("expected_date_raw must be nonnegative")
+        if type(expected_revision) is not int or expected_revision < 1:
+            raise ValueError("expected_revision must be positive")
+        if type(expected_native_revision) is not int or expected_native_revision < 1:
+            raise ValueError("expected_native_revision must be positive")
+        if expected_snapshot_id != f"native:{expected_native_revision}":
+            raise ValueError("expected_snapshot_id/native revision mismatch")
+        start = self.take_snapshot()
+        player = start.get("played_character")
+        subject = _army_by_id(start, subject_public_cunit_id)
+        wars = start.get("active_wars")
+        if not (
+            start.get("paused") is True
+            and start.get("revision") == expected_revision
+            and start.get("native_revision") == expected_native_revision
+            and start.get("snapshot_id") == expected_snapshot_id
+            and start.get("date_raw") == expected_date_raw
+            and isinstance(player, dict)
+            and player.get("character_id") == expected_played_character_id
+            and isinstance(subject, dict)
+            and subject.get("controllable") is True
+            and _army_in_active_combat(subject)
+            and subject.get("current_province_id") == expected_province_id
+            and isinstance(wars, list)
+            and sum(
+                isinstance(war, dict)
+                and war.get("war_id") == expected_war_id
+                for war in wars
+            ) == 1
+        ):
+            raise BridgeUnavailableError(
+                "current-knight source snapshot or identity is stale"
+            )
+        step = (
+            "query-current-battle-knight-v1-"
+            f"{subject_public_cunit_id}-{character_id}-{regiment_id}"
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=expected_revision,
+            required_capability=(
+                "game.command.query-current-battle-knight-v1-N-N-N"
+            ),
+            request_fields={
+                "expected_native_revision": expected_native_revision,
+                "expected_snapshot_id": expected_snapshot_id,
+                "expected_played_character_id": expected_played_character_id,
+                "expected_war_id": expected_war_id,
+                "expected_native_carmy_id": expected_native_carmy_id,
+                "expected_combat_id": expected_combat_id,
+                "expected_province_id": expected_province_id,
+                "expected_date_raw": expected_date_raw,
+            },
+        )
+        end = self.take_snapshot()
+        if not _same_paused_native_frame(start, end) or any(
+            end.get(key) != start.get(key)
+            for key in ("revision", "native_revision", "snapshot_id", "date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "current-knight source frame changed during query"
+            )
+        row = result.get("current_battle_knight")
+        expected_row = {
+            "observed_date_raw": expected_date_raw,
+            "combat_id": expected_combat_id,
+            "province_id": expected_province_id,
+            "subject_public_cunit_id": subject_public_cunit_id,
+            "native_carmy_id": expected_native_carmy_id,
+            "character_id": character_id,
+            "regiment_id": regiment_id,
+        }
+        expected_keys = set(expected_row) | {
+            "schema",
+            "current_effective_prowess",
+            "knight_effectiveness_raw",
+            "province_evaluated_damage_raw",
+            "province_evaluated_toughness_raw",
+            "stored_combat_entry_damage_raw",
+            "stored_combat_entry_toughness_raw",
+            "scale",
+            "paired_generation_ids_verified",
+            "double_sample_stable",
+            "province_evaluation_fresh",
+        }
+        if not (
+            result.get("status") == "available"
+            and result.get("step") == step
+            and result.get("accepted") is True
+            and type(result.get("query_sequence")) is int
+            and result["query_sequence"] > 0
+            and type(result.get("snapshot_revision")) is int
+            and result["snapshot_revision"] == expected_native_revision
+            and isinstance(row, dict)
+            and set(row) == expected_keys
+            and row.get("schema") == "current-battle-knight-v1"
+            and all(
+                type(row.get(key)) is int and row[key] == value
+                for key, value in expected_row.items()
+            )
+            and row.get("paired_generation_ids_verified") is True
+            and row.get("double_sample_stable") is True
+            and row.get("province_evaluation_fresh") is True
+            and row.get("scale") == 100000
+            and all(
+                type(row.get(key)) is int
+                for key in (
+                    "current_effective_prowess",
+                    "knight_effectiveness_raw",
+                    "province_evaluated_damage_raw",
+                    "province_evaluated_toughness_raw",
+                    "stored_combat_entry_damage_raw",
+                    "stored_combat_entry_toughness_raw",
+                )
+            )
+        ):
+            raise BridgeUnavailableError(
+                "current-knight native response failed exact-frame validation"
+            )
+        return {
+            **result,
+            "queried_snapshot_id": expected_snapshot_id,
+            "queried_revision": expected_revision,
+            "queried_native_revision": expected_native_revision,
+        }
+
+
 def _is_deferred_read_only_history_step(step: object) -> bool:
     """Return commands whose successful result may wait for a durable barrier."""
     return bool(
@@ -22277,6 +22636,52 @@ class ConfiguredHybridFallbackDriver:
 
     def close(self) -> None:
         self.native.close()
+
+
+    def query_current_battle_knight_v1(self, **request: object) -> dict[str, object]:
+        """Preserve wrapper/native revision domains for the private native read."""
+        wrapper_revision = request.get("expected_revision")
+        native_revision = request.get("expected_native_revision")
+        snapshot_id = request.get("expected_snapshot_id")
+        starting = self.take_snapshot()
+        if not (
+            type(wrapper_revision) is int
+            and type(native_revision) is int
+            and starting.get("revision") == wrapper_revision
+            and starting.get("native_revision") == native_revision
+            and starting.get("snapshot_id") == snapshot_id
+        ):
+            raise BridgeUnavailableError(
+                "hybrid current-knight wrapper/native frame is stale"
+            )
+        raw = self.native.query_current_battle_knight_v1(
+            **{**request, "expected_revision": native_revision}
+        )
+        ending = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, ending)
+            and all(
+                ending.get(key) == starting.get(key)
+                for key in (
+                    "revision", "native_revision", "snapshot_id", "date_raw"
+                )
+            )
+        ):
+            raise BridgeUnavailableError(
+                "hybrid current-knight frame changed during native read"
+            )
+        return {
+            **raw,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": wrapper_revision,
+            "queried_native_revision": native_revision,
+            "source": {
+                "backend_id": "native-headless",
+                "revision": wrapper_revision,
+                "native_revision": native_revision,
+                "snapshot_id": snapshot_id,
+            },
+        }
 
 
 def selected_pipe_name(pipe_name: str | None = None) -> str:
@@ -26202,6 +26607,9 @@ def _action_steps(
             expand_outbound_white_peace_status_queries = True
         elif capability == QUERY_WAR_TERMINATION_TERMS_CAPABILITY:
             expand_termination_terms_queries = True
+        elif capability == QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY:
+            # Research-only baseline; never advertise a planner step.
+            continue
         elif capability == QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY:
             # The post-result target may no longer appear in active wars.
             # Callers must supply the generation-safe prior opponent identity;
@@ -26246,6 +26654,7 @@ def _action_steps(
                 "query-war-prisoner-release-pairs-v1-",
                 "query-outbound-war-white-peace-status-v1-",
                 "query-war-termination-terms-v1-",
+                "query-defender-de-jure-exit-terms-v1-",
                 QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
                 QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
                 "surrender-war-",

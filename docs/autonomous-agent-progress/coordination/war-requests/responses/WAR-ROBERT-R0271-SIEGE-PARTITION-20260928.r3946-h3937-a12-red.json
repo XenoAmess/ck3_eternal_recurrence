@@ -1,0 +1,148 @@
+{
+  "schema": "xar.war.r0271-r3946-h3937-readonly-response.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "response_kind": "append_only_live_attempt_result",
+  "status": "RED_UNSUPPORTED_NATIVE_READONLY_QUERY",
+  "fixed_war_revision": 2,
+  "supersedes_fixed_war_response": {
+    "name": "RESPONSE-WAR-ROBERT-R0271-R3946-H3937-A12-RED-v1.json",
+    "sha256": "5468E781DC07EA51DDB25BF4C22E8ABE84FC14E6051686410DAA912838F1099B",
+    "reason": "The v1 visual-reviewed boolean could imply that no observer image was ever inspected. Some images were viewed for cold-load diagnosis; all eleven capture receipts remain CAPTURED_UNREVIEWED, without a complete formal frame-by-frame review."
+  },
+  "created_at_utc": "2026-09-29T19:09:02Z",
+  "round": "R3946",
+  "attempt": "war-h3937-combined-live-20260930/attempt-12",
+  "task_bus_id": "war-h3937-cold-observer-readonly-live-20260930-a12",
+  "live_registry_id": "desktop-3fevhd2-1c74096080--vanilla--R0114",
+  "candidate_head": "4feb7f7547b106c60355b7c9fd742879eadef9b4",
+  "source_checkpoint": {
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id": 16777231,
+    "history_index": 3937,
+    "date_raw": 53219928,
+    "save_sha256": "92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6",
+    "raw_source_driver_sha256": "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC1311722",
+    "bridge_dll_sha256": "F5E708FC554C377420B3D31D9B38B4FB6DE2D3A3B19C7D298DAA3DB61233793F",
+    "bridge_injector_sha256": "8E2115CBE43358DD6F47C12CC94A2E96BF8049DE70204E425B37B5CE825AFE5E",
+    "identity_scope": "exact input source; separate from the first live paused frame"
+  },
+  "live_first_frame": {
+    "obtained": true,
+    "snapshot_id": "native:4",
+    "public_revision": 5,
+    "native_revision": 4,
+    "date_raw": 53219928,
+    "map_ready": true,
+    "paused": true,
+    "post_query_frame": null,
+    "unchanged_date_poststate_proven": false
+  },
+  "official_result": {
+    "outer_status": "RED",
+    "first_query_step": "query-province-local-siege-v1-2610",
+    "read_only_query_attempts": 1,
+    "completed_query_envelopes": 0,
+    "remaining_authorized_queries_not_attempted": 5,
+    "inner_frame_count": 1,
+    "query_error_type": "_NativeCommandRejectedError",
+    "query_error": "native gameplay step failed: unsupported native gameplay step",
+    "inner_error": "AgentError: H3937 local combined read is incomplete",
+    "gameplay_actions": 0,
+    "action_authorized": false,
+    "date_advance_authorized": false,
+    "same_paused_frame_poststate_proven": false,
+    "first_query_result_available": false,
+    "six_query_target_observed": false,
+    "physical_army_inventory_completeness_proven": false
+  },
+  "war_evidence": {
+    "queried_province_id": 2610,
+    "local_siege_query_result": null,
+    "full_hostile_route_contact_query": null,
+    "same_frame_native_participant_partition": null,
+    "complete_physical_army_inventory": null,
+    "future_target_2629_actual_participant_set": null,
+    "reason": "The first read-only query was attempted but rejected before a result envelope or post-query frame. Published war scope in the first frame is not a complete physical participant set. No later target query ran."
+  },
+  "r0266_cash_gate": {
+    "source_request_id": "WAR-R0266-H3937-FIVE-CASH-20260929",
+    "pending_war_cash_raw": null,
+    "immediate_war_action_cost_raw": null,
+    "future_war_cost_upper_raw": null,
+    "future_risk_budget_raw": null,
+    "policy_minimum_gold_reserve_raw": null,
+    "horizon_days": null,
+    "future_bound_assumptions": null,
+    "formal_cash_eligible": false,
+    "m5_spend_ready": false
+  },
+  "risk_contract": {
+    "r0271_h3388_original_red_retained": true,
+    "existing_r0002_r0004_r0005_bounded_first_hop_recovery_retained": true,
+    "r3945_a11_red_not_overwritten": true,
+    "r3946_readonly_observation_qualified": false,
+    "same_frame_siege_participants_proven": false,
+    "date_advance_gate": "RED",
+    "direct_attack_allowed": false,
+    "robert_resume_allowed_by_this_response": false,
+    "next_attempt": "A new exact candidate with a supported native read-only step needs its own isolated official attempt. This a12 RED grants no game-date advance, combat action or cash spending."
+  },
+  "visual_scope": {
+    "prelaunch_fresh_steam_offline_frame_directly_reviewed": true,
+    "cold_load_observer_frames_captured": 11,
+    "cold_load_observer_capture_failures": 0,
+    "partial_cold_load_diagnostic_visual_inspection_reported": true,
+    "all_eleven_observer_receipts_status": "CAPTURED_UNREVIEWED",
+    "all_eleven_frames_formally_reviewed": false,
+    "terminal_screen_conclusion": null
+  },
+  "evidence": {
+    "go_receipt": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/go-attempt-12.json",
+      "sha256": "46663DE7FA03818543D7728F51931A341910EF359FC7B65DE975C6DDB293CEDF"
+    },
+    "outer_report": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/attempt-12/outer-report.json",
+      "bytes": 215127206,
+      "sha256": "AE6B4E3A19A040EEF095EF37159277D75108C526F8B193D80065FE0922E8A5C8"
+    },
+    "worker_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/attempt-12/completion.json",
+      "sha256": "8ABB7F2633A6A0743C1884C67D5239E24DCBF7402CD1F471D1FCB1FCA65C323D"
+    },
+    "supervisor_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/attempt-12/supervisor-completion.json",
+      "sha256": "CA9A306C38CF5AACA8B8654B7CAD9B2653BA8A715B86549F932892742AB30359"
+    },
+    "operator_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/operator-attempt-12/completion.json",
+      "sha256": "152E89705DC724B6FA93C0DAAC2FCD0517AA8B44222C1FCDB1BE6C04B321C300"
+    },
+    "final_postcheck": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/a12-final-postcheck.json",
+      "sha256": "43E0B55694574C2D46B7DF6B490A0C8EFEAFCA4ACF446676A32B24621ACB2814"
+    },
+    "steam_offline_direct_review": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/screen-attempt-12/steam-offline-direct-review.json",
+      "sha256": "E1B28F57161CA3B9AC444D840AF22FEC13EF905D1AF79C289F1D35DD88BDC852"
+    }
+  },
+  "cleanup": {
+    "source_original_and_verified_copy_hashes_match": true,
+    "run_driver_state_expected_write": {
+      "before_sha256": "1C9C85563F8040EEB610F7882DDD01CE7F5B3DED2CEC0D358F178749A3B1E3F4",
+      "after_sha256": "A50D3C5605F72114ED1F300B32E87C23F14A46525ED02A586353483A51FFE7EC"
+    },
+    "outer_cleanup_proven": true,
+    "processes_gone": true,
+    "taskbus_state": "done",
+    "taskbus_resources": [],
+    "taskbus_release_sequence": 2526
+  },
+  "ack_state": {
+    "a12_source_ack_observed_by_operator": false,
+    "a12_receiver_consumption_ack_observed_by_operator": false
+  },
+  "source_readback_status": "pending"
+}

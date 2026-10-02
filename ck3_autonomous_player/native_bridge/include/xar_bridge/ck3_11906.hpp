@@ -2,6 +2,9 @@
 
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+#include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/marriage_candidate_alliance_projection_v1.hpp"
 #include "xar_bridge/marriage_native_outcome_classifier_v1.hpp"
@@ -850,6 +853,13 @@ ReadArmyStrengthsResult ReadArmyStrengths(
     const Bindings &bindings,
     std::vector<ArmyStrengthSnapshot> &output) noexcept;
 
+// A paused, double-read local Province observation. It uses the existing
+// objective-Province ABI but does not require objective membership and does
+// not alter the shared objective snapshot budget or issue a game command.
+game::ReadProvinceLocalSiegeResult ReadProvinceLocalSiege(
+    const Bindings &bindings, std::int32_t province_id,
+    game::WarObjectiveProvinceState &output) noexcept;
+
 using game::ReadCombatSimulationInputsResult;
 
 // Paused object-graph projection for one explicit hypothetical contact. The
@@ -1071,6 +1081,8 @@ using game::ActualContactScopeStatus;
 using game::BattleControlRequest;
 using game::BattleControlSnapshot;
 using game::BattleControlSnapshotStatus;
+using game::CurrentBattleKnightRequestV1;
+using game::CurrentBattleKnightSnapshotV1;
 using game::BattleTransitionRequest;
 using game::BattleTransitionSnapshot;
 using game::BattleTransitionSnapshotStatus;
@@ -1110,6 +1122,15 @@ ActualContactScopeStatus ReadActualContactScope(
 BattleControlSnapshotStatus ReadBattleControlSnapshot(
     const Bindings &bindings, const BattleControlRequest &request,
     BattleControlSnapshot &output) noexcept;
+
+// Main-thread-only, paused, double-sampled read of the exact knight/regiment
+// pair selected from a same-frame battle-control projection.  Returns typed
+// unavailable on any identity, generation, helper, or sample drift.
+bool ReadCurrentBattleKnightV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleControlSnapshot &same_frame_battle,
+    const CurrentBattleKnightRequestV1 &request,
+    CurrentBattleKnightSnapshotV1 &output) noexcept;
 
 // Main-thread-only, paused lifecycle query addressed directly by one positive
 // full-generation CombatID. It samples the retained CCombat projection twice,
@@ -1482,6 +1503,14 @@ using game::ReadRaiktorActualTruceExpiryResultV1;
 ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
     const Bindings &bindings, std::int32_t toward_character_id,
     RaiktorActualTruceExpirySnapshotV1 &output) noexcept;
+
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+// H2743's already-applied attacker->defender relation only. It cannot return
+// the result of surrender, which has not yet been applied.
+game::H2743ExistingTruceStatusV1 ReadH2743PreactionExistingTruceV1(
+    const Bindings &bindings,
+    game::H2743ExistingTruceSnapshotV1 &output) noexcept;
+#endif
 
 using game::ReadWarTerminationExitTermsResult;
 

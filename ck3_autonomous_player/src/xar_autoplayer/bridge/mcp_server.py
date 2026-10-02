@@ -1316,6 +1316,37 @@ def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
     tool.parameters = parameters
 
 
+def _ck3_query_current_battle_knight_v1(
+    service: GameplayBridgeService,
+    subject_public_cunit_id: int,
+    character_id: int,
+    regiment_id: int,
+    expected_played_character_id: int,
+    expected_war_id: int,
+    expected_native_carmy_id: int,
+    expected_combat_id: int,
+    expected_province_id: int,
+    expected_date_raw: int,
+    expected_revision: int,
+    expected_native_revision: int,
+    expected_snapshot_id: str,
+) -> dict[str, object]:
+    """Private current read; every identity comes from this session's frame."""
+    return service.query_current_battle_knight_v1(
+        subject_public_cunit_id=subject_public_cunit_id,
+        character_id=character_id,
+        regiment_id=regiment_id,
+        expected_played_character_id=expected_played_character_id,
+        expected_war_id=expected_war_id,
+        expected_native_carmy_id=expected_native_carmy_id,
+        expected_combat_id=expected_combat_id,
+        expected_province_id=expected_province_id,
+        expected_date_raw=expected_date_raw,
+        expected_revision=expected_revision,
+        expected_native_revision=expected_native_revision,
+        expected_snapshot_id=expected_snapshot_id,
+    )
+
 def create_server(
     driver: GameplayBridgeDriver,
     *,
@@ -1981,7 +2012,7 @@ def create_server(
                 candidate_character_id=candidate_character_id,
             )
 
-    @server.tool()
+    @server.tool(annotations=read_only_tool)
     def ck3_get_bridge_diagnostics() -> dict[str, object]:
         """Return live transport diagnostics without claiming CK3 game state."""
         return service.bridge_diagnostics()
@@ -2027,10 +2058,63 @@ def create_server(
             sample_limit=sample_limit,
         )
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_current_battle_knight_v1(
+        subject_public_cunit_id: int,
+        character_id: int,
+        regiment_id: int,
+        expected_played_character_id: int,
+        expected_war_id: int,
+        expected_native_carmy_id: int,
+        expected_combat_id: int,
+        expected_province_id: int,
+        expected_date_raw: int,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_snapshot_id: str,
+    ) -> dict[str, object]:
+        """Read one paired knight/regiment's current battle stats while paused."""
+        return _ck3_query_current_battle_knight_v1(
+            service,
+            subject_public_cunit_id,
+            character_id,
+            regiment_id,
+            expected_played_character_id,
+            expected_war_id,
+            expected_native_carmy_id,
+            expected_combat_id,
+            expected_province_id,
+            expected_date_raw,
+            expected_revision,
+            expected_native_revision,
+            expected_snapshot_id,
+        )
+
     @server.tool()
     def ck3_take_snapshot() -> dict[str, object]:
         """Return the latest backend-neutral CK3 session snapshot."""
         return service.snapshot()
+
+    semantic_snapshot = getattr(driver, "take_internal_semantic_snapshot", None)
+    if (getattr(driver, "allow_private_semantic_snapshot_readonly", False) is True
+            and callable(semantic_snapshot)):
+        @server.tool(annotations=read_only_tool)
+        def ck3_take_semantic_snapshot_private_v1() -> dict[str, object]:
+            """Read one native semantic frame without the command transcript."""
+            frame = semantic_snapshot()
+            if (not isinstance(frame, dict)
+                    or any(key in frame for key in (
+                        "native_command_history", "native_rollback_war_failure",
+                        "native_rollback_war_failures",
+                    ))):
+                raise RuntimeError(
+                    "native semantic snapshot must exclude driver transcript fields"
+                )
+            # MCP emits both pretty text and structured content. Keep the one
+            # line stdio response well below the full campaign transcript.
+            if len(json.dumps(frame, ensure_ascii=False).encode("utf-8")) > 8 * 1024 * 1024:
+                raise RuntimeError("native semantic snapshot exceeds the 8 MiB read bound")
+            return frame
 
     @server.tool()
     def ck3_get_one_life_settlement() -> dict[str, object]:
@@ -2056,10 +2140,14 @@ def create_server(
 
     @server.tool()
     def ck3_execute_step(
-        step: str, expected_revision: int | None = None
+        step: str, expected_revision: int | None = None,
+        expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Execute one semantic gameplay step through the selected backend."""
-        return service.execute_step(step, expected_revision=expected_revision)
+        return service.execute_step(
+            step, expected_revision=expected_revision,
+            expected_h2743_frame=expected_h2743_frame,
+        )
 
     @server.tool()
     def ck3_save_checkpoint(
@@ -3643,6 +3731,11 @@ def parser() -> argparse.ArgumentParser:
     )
     result.add_argument("--ordinary-campaign-no-pact", action="store_true")
     result.add_argument(
+        "--private-semantic-snapshot-readonly",
+        action="store_true",
+        help="enable the local stdio-only native frame read without command history",
+    )
+    result.add_argument(
         "--private-current-first-heir-relationship-query",
         action="store_true",
         help="enable the local stdio-only read of the current first-heir relation",
@@ -3933,6 +4026,12 @@ def main(argv: list[str] | None = None) -> int:
         args.driver != "native-headless" or args.transport != "stdio"
     ):
         raise ValueError("private nonwar MCP queries require native-headless stdio")
+    if args.private_semantic_snapshot_readonly and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError(
+            "private semantic snapshot MCP query requires native-headless stdio"
+        )
     selected_state_dir = Path(args.state_dir) if args.state_dir else _default_state_dir()
     driver = load_driver(
         args.driver,
@@ -3943,6 +4042,8 @@ def main(argv: list[str] | None = None) -> int:
         succession_lifecycle_binding=succession_lifecycle_binding,
     )
     driver.nonwar_only = args.nonwar_only
+    if args.private_semantic_snapshot_readonly:
+        driver.allow_private_semantic_snapshot_readonly = True
     if args.private_current_first_heir_relationship_query:
         driver.allow_private_current_first_heir_relationship_query = True
     if args.private_player_child_marriage_subject_query:

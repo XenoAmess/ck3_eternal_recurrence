@@ -189,6 +189,65 @@ class RemainingLiveStepTest(unittest.TestCase):
                 self.assertEqual(row["subject_combat_membership_verified"],
                                  post_combat == live.COMBAT)
 
+    def test_e205_post_control_is_required_after_exactly_one_day(self) -> None:
+        track = "e2-05-d26"
+        date = live.TRACKS[track]["date"]
+        for outcome in ("available", "wrong_combat", "query_error"):
+            with self.subTest(outcome=outcome), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory)
+                steps = output / "operator-steps"
+                steps.mkdir()
+                binding = {"track": track}
+                write(steps / f"{track}-observe.json",
+                      {"same_source_war_army_frame": True, "source_binding": binding,
+                       "subject_combat_membership_verified": True,
+                       "snapshot_values": {"revision": 4, "native_revision": 3,
+                                           "snapshot_id": "native:3"}})
+                replies = {
+                    f"{track}-pre-advance-snapshot": self.d11_snapshot(date, 4),
+                    f"{track}-before-save": {"accepted": True, "checkpoint":
+                                                {"status": "saved", "date_raw": date}},
+                    f"{track}-after-save-snapshot": self.d11_snapshot(date, 5),
+                    f"{track}-after-save-control": self.d11_control(date, 5),
+                    f"{track}-one-day": {"revision": 6, "ending_date_raw": date + 24},
+                    f"{track}-post-snapshot": self.d11_snapshot(date + 24, 6),
+                    f"{track}-post-control": self.d11_control(
+                        date + 24, 6, live.COMBAT + (outcome == "wrong_combat")),
+                }
+                calls = []
+
+                def fake_call(_output, name, tool, arguments, _timeout):
+                    calls.append((name, tool, arguments))
+                    if name == f"{track}-post-control" and outcome == "query_error":
+                        raise RuntimeError("native post-control unavailable")
+                    return replies[name], {"response": {"sha256": name}}
+
+                def fake_private(_output, name, _arguments, _timeout):
+                    return {"accepted": True, "combat_id": live.COMBAT,
+                            "managed_daily_sequence_token": 7}, {"response": {"sha256": name}}
+
+                with patch.object(live, "marked_running_recorder", return_value={}), \
+                        patch.object(live, "call", side_effect=fake_call), \
+                        patch.object(live, "private_call", side_effect=fake_private):
+                    result = live.advance(output, track, binding,
+                                          output / "recorder", 7, 10)
+                row = json.loads((steps / f"{track}-advance.json").read_text(encoding="utf-8"))
+                self.assertEqual(result, 0 if outcome == "available" else 2)
+                self.assertEqual(row["result"], "ONE_DAY_ADVANCED_UNREVIEWED"
+                                 if outcome == "available" else "RED_PRESERVED")
+                self.assertEqual(sum(tool == "ck3_execute_step" for _, tool, _ in calls), 1)
+                self.assertEqual(calls[-1][0], f"{track}-post-control")
+                self.assertEqual(calls[-1][1], "ck3_query_battle_control_snapshot_v1")
+                self.assertEqual(calls[-1][2]["expected_revision"], 6)
+                if outcome == "query_error":
+                    self.assertIsNone(row["post_control"])
+                    self.assertIn("native post-control unavailable", row["post_control_error"])
+                else:
+                    self.assertEqual(row["post_control"]["response"]["sha256"],
+                                     f"{track}-post-control")
+                    self.assertEqual(row["subject_combat_membership_verified"],
+                                     outcome == "available")
+
     def test_d11_post_control_error_preserves_advanced_red_and_allows_cleanup(self) -> None:
         date = live.TRACKS["e2-06-d11"]["date"]
         with tempfile.TemporaryDirectory() as directory:
@@ -488,6 +547,11 @@ class RemainingLiveStepTest(unittest.TestCase):
             write(lock, {"fixture": True})
             files = {name: {"sha256": name} for name in
                      ("capture_script", "dll", "injector", "save", "receipt", "pair")}
+            # This new admission seals a rebuilt pair; historical pins stay frozen.
+            files["dll"] = {"sha256": "A" * 64}
+            files["injector"] = {"sha256": "B" * 64}
+            preflight["bridge_dll"] = dict(files["dll"])
+            preflight["bridge_injector"] = dict(files["injector"])
             admission = {"lock": live.identity(lock),
                          "binding": {"attempt": "fresh-no-launch", "checkout_head": "fresh-head",
                                      "files": files}}
@@ -509,6 +573,8 @@ class RemainingLiveStepTest(unittest.TestCase):
             with patch.object(d11_admission, "verify_lock", return_value=admission):
                 self.assertEqual(live.bind_session(output, "e2-06-d11", lock)["track"],
                                  "e2-06-d11")
+                self.assertNotEqual(files["dll"]["sha256"], spec["dll"])
+                self.assertEqual(live.TRACKS["e2-06-d11"]["dll"], spec["dll"])
                 preflight["d11_admission"]["checkout_head"] = "different-head"
                 write(output / "preflight.json", preflight)
                 with self.assertRaisesRegex(ValueError, "not bound to the sealed"):

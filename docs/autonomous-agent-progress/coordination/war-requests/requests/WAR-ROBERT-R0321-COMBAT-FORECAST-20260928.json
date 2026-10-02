@@ -1,0 +1,157 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-R0321-COMBAT-FORECAST-20260928",
+  "created_at_utc": "2026-09-28T14:17:05Z",
+  "producer_role": "war_maintainer_receiver",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "blocks_formal_robert_continuation_after_r0321_h3911_checkpoint",
+  "related_requests": [
+    "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+    "WAR-ROBERT-R0266-JOINT-CASH-20260928"
+  ],
+  "scope": "A newer, distinct R0321 formal Robert planning RED at h3911/raw53219928: the siege participant partition is source-reported available, but a read-only V3 input acceptance and provisional forecast do not supply a qualified same-frame encounter forecast or expected-utility authorization. Preserve selected_step=null and active_attack_allowed=false until the exact scope mismatch is resolved and the existing risk gate authorizes a choice. This request authorizes no CK3 action.",
+  "source_notice": {
+    "onedrive_relative_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json",
+    "git_evidence_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.source-notice.json",
+    "size_bytes": 5777,
+    "sha256": "6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20",
+    "created_at_utc_source_claim": "2026-09-28T14:13:41Z",
+    "source_commit": "a6d1ae845f11e1e0bae79cac3fd9c30b00afae59",
+    "formal_report_source_claim_size_bytes": 388302,
+    "formal_report_source_claim_sha256": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30"
+  },
+  "source_pair_claim": {
+    "input_h3860_save_sha256": "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "runtime_dll_sha256": "C71F6A5DFE8D23374B5B73F9DFA18AD9455CFF087D36EC93D2D29F7F610E8786",
+    "injector_sha256": "F9F2472C5969A248E7942AC79CC17A03CFDDA24C7FF79E78DA810A66A0E30C15",
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "played_character_id": 29829,
+    "war_id": 16777231
+  },
+  "source_reported_blocker": {
+    "turn_index": 27,
+    "stage": "planning",
+    "history_index": 3911,
+    "date_raw": 53219928,
+    "snapshot_id": "native:23",
+    "public_revision": 24,
+    "native_revision": 23,
+    "player_relative_war_score": -19,
+    "player_army_id": 83886367,
+    "player_army_province_id": 2610,
+    "enemy_army_ids": [50331920, 83886484],
+    "enemy_province_id": 2629,
+    "participant_partition_status": "available",
+    "offsite_hostile_army_ids": [],
+    "v3_query_step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484",
+    "v3_read_accepted": true,
+    "v3_read_status": "available",
+    "qualified_forecast_status": "producer_unavailable",
+    "provisional_forecast_status": "same_frame_encounter_scope_mismatch",
+    "monte_carlo_ready": false,
+    "planner_usable": false,
+    "forecast_status": "research_only",
+    "active_attack_allowed": false,
+    "selected_step": null,
+    "formal_error": "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact"
+  },
+  "receiver_static_triage": {
+    "source_file": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+    "sufficient_research_scope_failure": "At line 16880, _provisional_defense_research_assessment requires len(defender_army_ids)==1; the source notice names two defenders. This condition alone makes that research canary return same_frame_encounter_scope_mismatch, but the untransferred raw V3 result is still needed to audit the full runtime scope.",
+    "production_gate": "ck3_autonomous_player/src/xar_autoplayer/simulation/combat_decision_contract.py line 22 sets COMBAT_ENTRY_EU_ACTIVATION_ENABLED=False. No qualified forecast or expected-utility authorization is demonstrated by the R0321 notice; removing the one-defender research guard alone is insufficient to permit contact."
+  },
+  "requested_delivery": [
+    "Return immutable R0321 formal-report bytes and a bounded, lossless excerpt containing the paused frame, full participant partition, exact V3 request/response, provisional encounter-scope comparison, qualified producer availability reason, expected-utility inputs or explicit missing fields, and the planner gate. Give row/JSON pointers and SHA-256 rather than reconstructing a result from this small notice.",
+    "Identify the exact native/provisional scope identity mismatch and the minimum same-frame observation or producer change that can make the complete two-defender encounter forecast qualified. A syntactically accepted V3 read, strength ratio, or research-only provisional output is not a battle probability or attack authorization.",
+    "Deliver a fail-closed, same-frame source/observation or bounded continuation allowed by the existing war risk contract, with focused normal and optimized checks and a matching formal live run when assets and managed screen are available. Keep no-action RED if qualification remains unavailable."
+  ],
+  "recovery_asset_request": {
+    "onedrive_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
+    "source_checkpoint_history_index": 3911,
+    "source_checkpoint_date_raw": 53219928,
+    "source_checkpoint_save_size_bytes": 78514751,
+    "source_checkpoint_save_sha256": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+    "source_checkpoint_driver_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "receiver_qualification": "source_side_no_launch_now_qualified_but_receiver_bytes_unverified"
+  },
+  "later_source_qualification_correction": {
+    "supersedes_only_notice_field": "SOURCE-R0321-WAR-FORECAST-RED-v1.json recovery.recovery_qualified_for_receiver=false",
+    "source_master_commit": "32c0dd3706b95426977d787886b44f5545105772",
+    "source_git_path": "docs/project-state/current-state.source.json",
+    "source_git_file_size_bytes": 132004,
+    "source_git_file_sha256": "76B21C3F6E41A79AA9B919594CCE9EC7B28F2BD027391E973578ED1BE7419507",
+    "source_claim": "Frozen H3911 save, source driver and sidecars passed official source-machine pairing, rebind and no-launch in an independent recovery candidate at 2eb9cb952; no H3911 cold restore or live forecast RED closure.",
+    "source_pair_identity_sha256": "FDE4CC3A64DF5BB5D83F7B132FE5CC2985D31ACA28F0883A1C6245C197B5915E",
+    "source_no_launch_report_sha256": "1067E8468BE61A6B0240E12B145FD173D6DCD4E786FED3991E7E436253E75712",
+    "receiver_war_addendum_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-QUALIFICATION-ADDENDUM-v1.json",
+    "receiver_war_addendum_sha256": "BAB04D146FE399F52685B73F8B595F8F32864372F94D9C140E760834C7D811DD",
+    "receiver_limit": "Source-side qualification is not receiver byte verification, receiver no-launch, cold restore, or an authorized attack. The report remains first transfer priority; later H3911 assets require exact manifest and selective receipt."
+  },
+  "later_receiver_formal_report_update": {
+    "source_transfer_manifest_sha256": "7F0C05B4286497521B9D69EF580FD9ECE0167E674FD7EBC57ABB800751841B8C",
+    "report_filename": "R0321-formal-report.txt",
+    "report_bytes_verified": 388302,
+    "report_sha256_verified": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30",
+    "parsed_excerpt_git_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.formal-report-excerpt.json",
+    "parsed_excerpt_sha256": "86241A5632FD02F64EFB788378E6F6B29ED834EA0849A6346835CD4DE17CAD88",
+    "source_side_small_proofs": "H3911 pair identity 1490B/FDE4CC3A..., no-launch report 4005B/1067E846..., rebind receipt 4039B/57B571A0... were individually verified on receiver; save/driver/binaries were not transferred.",
+    "receiver_ack_sha256": "08C26D2FB60FB614E494213CEEFD62B5139461561FBF713F1EE56B5CC9F6040B",
+    "receiver_ack_erratum_sha256": "4A9DDD1E240256BD04618A8AE708B260DB293E9495AA9DFF8ECA0BEF563DF680",
+    "report_readback": "26/27 formal turns; R0321 turn27 paused native:23/public24/native23/raw53219928. Both defenders are at target2629 and partition available. Route contact is only one-day-free to raw53219952 while first hop2614 ETA raw53220096. V3 query result is accepted/available envelope with monte_carlo_ready=false and planner_usable=false. selected_step remains null; no attack or blocked-turn advance.",
+    "raw_v3_status_at_report_transfer": "not_in_formal_report; source pointed to then-untransferred H3911 46002331-byte frozen driver /command_history/3919/result/combat_simulation_inputs",
+    "next_raw_excerpt_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "next_raw_excerpt_request_sha256": "969231232C6FEC4B22B6B42F7A801081707803EEDC0302D373FB8F5FEEEB3658"
+  },
+  "later_receiver_raw_v3_update": {
+    "source_manifest_sha256": "F0ADF5B0DDA0A8E237C76BF9A8EE03D8CAECFEA61FE25640B9DD80231F597B4F",
+    "excerpt_filename": "SOURCE-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "excerpt_bytes_verified": 2080166,
+    "excerpt_sha256_verified": "865EA7B7AC1B4A680E2BE3A1D84012C67CF9550474075E4A917EFE043CCCDD51",
+    "receiver_ack_sha256": "EF4F896561F87F35B3433A80F19F6E2E8A697ABB59E7B3034DFDA5875B4F03FE",
+    "parsed_summary_git_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.v3-receiver-summary.json",
+    "parsed_summary_sha256": "EB2ABAE2425C681A25C5FC48983ECCFD78C15EDF5CE82F169FFDE21BA2CB8E02",
+    "row_wrapper": "index3920, accepted=true/status=available, queried native:23/public24/native23 and query_sequence=1; seven shared fields match the verified formal report's turn25 query envelope. Original row lacks request/before/after/episode_run_id/connection_generation, so this match is not a complete independent same-session proof.",
+    "v3_input": "Schema3 production_exact_132_refs input: attacker [83886367] at2610, ordered defenders [50331920,83886484] both at2629, hypothetical entry2630/target2629, no ongoing combat, input_observation_ready=true and phase_event_inputs_ready=true.",
+    "still_red": "monte_carlo_ready=false, transition_fidelity_gate=false, planner_usable=false, active_attack_allowed=false; four missing transition/event domains and three missing phase-event fidelity gates. No qualified battle probability, calibration, three-action expected utility or attack authorization.",
+    "parent_driver_boundary": "The 46002331-byte frozen source driver was not transferred, so source-side semantic equality of the excerpt to its parent is not independently receiver-verified."
+  },
+  "matching_receiver_asset_request": {
+    "onedrive_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-MATCHED-PAIR-v1.json",
+    "sha256": "1C82BD10B526179AE1AEC4CF8F8A452190089D5204DF031212B501371601769F",
+    "status_at_request": "receiver_selected_source_files_pending_source_ack_and_transfer",
+    "selected": "H3911 frozen save 78514751B/5EFB3B3C..., source driver 46002331B/DE09EA8B..., family sidecar 2742B/6F007805..., ransom sidecar 1383B/D60736FB..., exact R0321 runtime DLL C71F6A5D... and injector F9F2472C... with source-measured byte counts. Source-side rebound driver and old H3860 pair are excluded.",
+    "qualification_boundary": "Even a six-file byte-exact transfer is only a prerequisite for receiver official rebind/no-launch and separate matched bounded verification. It is not a qualified two-defender forecast, war-cash quote or attack approval."
+  },
+  "later_receiver_attempt2": {
+    "fixed_war_response": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-ATTEMPT2-RESULT-v1.json",
+    "fixed_war_response_sha256": "C03B5C52EFD4B3269FD5C58DBA85CA4A06EC97CC77D51B86679C2E2542B9CBFD",
+    "git_response": "../responses/WAR-ROBERT-R0321-H3911-RECEIVER-ATTEMPT2-20260928.json",
+    "asset_receipt_sha256": "25B832ED62BC6C75081B353BA1CFA018892AE357C6BAD7099F8C32E6C312C174",
+    "asset_status": "Exact H3911 save, source driver, two sidecars, DLL and injector: 6/6 SHA-256 verified, 128617719 bytes immutable-copied. The received parent driver /command_history/3919 is semantically equal to the earlier verified V3 excerpt /command_row, including its combat_simulation_inputs object.",
+    "no_launch": "Receiver attempt-2 ordinary rebind and preflight passed without CK3 launch; ready-summary SHA 1E7FF924D79A7B38532889AEDE4D0CDC3867B7847646EAF828FD24A65524D485. Original save bytes stayed unchanged.",
+    "live_readonly": "A later separately bounded native session launched CK3, but 50 readiness reads ended with native game state unavailable and an ExceptionGroup. Failure SHA 460DABE02C1BA11D37FF79758A471AFA6F2060E3C59A51B0612B73710DD18EC2; session-exit SHA 9E1E948C076BFAFCF0EF98D6A2DFDC3B0C8C1B387E0B30ECAA410E72A235E456. No live map state, war query or gameplay action was obtained.",
+    "decision": "R0321 two-defender forecast remains RED with selected_step null and active_attack_allowed false; receiver asset transport and no-launch readiness do not satisfy qualified forecast, cash quote or same-frame risk/expected-utility gate."
+  },
+  "later_receiver_attempt3": {
+    "fixed_war_response": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-ATTEMPT3-RESULT-v1.json",
+    "fixed_war_response_sha256": "C40EED0164B864CAF3F9C7F1E466BA679EDE8D76428FD0AC0E3E2D54A946FFD0",
+    "git_response": "../responses/WAR-ROBERT-R0321-H3911-RECEIVER-ATTEMPT3-20260929.json",
+    "receiver_code_commit": "f5c4f0250f37029f124c7a7c42d64545d42f128f",
+    "no_launch": "Exact source pair rebind and preflight passed on this fresh receiver attempt with source save unchanged.",
+    "live": "The separate CK3 native session reached log-based postread/vassals coldload gate and MCP initialize, then the first ck3_take_snapshot call timed out without a response envelope or readiness receipt. Preserved failure.json SHA B7C052938C7449B7B3F6F54CC8DBF66586332164716EDF3A801B7A44D2F0552D records ExceptionGroup, not a lower-level cause. Session-exit SHA 9EFFF136BBFE7A5C2C4444AD427E2C57FD599394DDC37BD69631D63964ED36CF records cleanup and no CK3 PID after. No paused H3911 native snapshot, war query or gameplay action was obtained.",
+    "decision": "Forecast, route and cash live qualifications remain RED; selected_step remains null and active_attack_allowed false."
+  },
+  "later_r0329_emma_dependency": {
+    "source_notice": "WAR/M5-WAR-CASH-20260928/SOURCE-R0329-EMMA-PENDING-WAR-ADVANCE-DEPENDENCY-v1.json",
+    "source_notice_sha256": "66DCE2F2A250B1BC4C5CAB40239ABC03FFA8DFD9028C7DDFD028959BA38BCB99",
+    "initial_status_response_sha256": "6707CED8EAEFC1875D03F748CA1D1D54C6725E3994857BBE218B7C54DAEE59C7",
+    "attempt3_status_addendum_sha256": "AA1EEBC190A9CBAADC55E7CD4776FC323F039DD607A3B6F2CFE332EBD67D0304",
+    "git_addendum": "../responses/WAR-ROBERT-R0329-EMMA-WAR-DEPENDENCY-ATTEMPT3-20260929.json",
+    "source_claim": "Emma proposal remains pending at raw53219928; source verdict/report are untransferred, and no marriage or pending-age advance is receiver-verified.",
+    "war_dependency": "No exact qualified war forecast or safe-route master commit and compatibility fields can yet be sent to the nonwar owner; latest observed master D459FF4D493EAB33459A9B406C39EFCAA163A992 added Emma pending reports only, while PR 502 and PR 507 remain Draft/Open. No manual date advance is authorized."
+  },
+  "relation_to_prior": "R0271 original turn36 future-siege-participant RED remains historical. R0004/R0005 proved only a bounded first-hop/day-by-day recovery; R0319 reported later progress to h3860. R0321's source-reported participant_partition=available at h3911 is a new frame and does not retroactively prove the old frame. R0266 cash amount fields are independent and remain unfilled by this forecast notice.",
+  "receiver_boundary": "The source notice, formal report, V3 excerpt and selected six H3911 source files are receiver byte-verified; the excerpt command row now compares equal to the full received parent driver. Receiver attempts 2 and 3 separately passed no-launch rebind/preflight, but each later live native session failed before any paused H3911 native snapshot or war read-only query was delivered. The V3 object is still an input observation with missing transition/fidelity gates; no receiver same-frame cash receipt, qualified forecast, formal replay, model accuracy or attack authorization is claimed. The original R0271 turn36 RED remains historical."
+}
