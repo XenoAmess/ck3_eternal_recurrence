@@ -185,6 +185,7 @@ on_member_character_joined = {
 | 参数化 scripted effect 想校验 `$AMOUNT$ > 0`，展开后可能变成无效的 `10 > 0` | `$PARAM$` 是文本替换；比较式左侧应是可求值的 script value/scope value，不能假定调用方传入的数字字面量可直接充当左值 | 先在 scripted trigger 中 `save_temporary_scope_value_as = { name = amount value = $AMOUNT$ }`，再写 `scope:amount > 0`；动态变量名可用原版已采用的 `has_variable = $VARIABLE$`、`var:$VARIABLE$`、`name = $VARIABLE$`。原版源码证据：CK3 1.19.0.6 `00_military_triggers.txt` 的 ratio 临时值与 `00_achievement_effects.txt` 的变量名参数；本项目共享案卷内核已做 L0 source contract，尚待 CK3 加载期互证 |
 | GUI 明明在 `MakeScope.Var(...)` 读镜像表头，加载仍报 `Variable '<name>' is set but is never used` | CK3 的游戏脚本变量用途分析不把 GUI/本地化读取算作脚本消费 | 变量确实只用于 UI 时，仍在实际可达的 effect/trigger 中做有意义的一次校验或组合；无用遥测则直接删掉。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |
 | `Wrong scope for effect: character, expected dynasty` | 迭代器 scope 不对 | `every_dynasty_member` 需在 dynasty scope：角色下先 `dynasty = {}` |
+| 数值式加上资格检查后原来的最低奖励消失，或把 `min` / `max` 当成同名数学取值函数 | script value 按书写顺序计算；`min = n` 将较小的累计值抬到 n，`max = n` 将较大的值压到 n。将整个 effect 放入 getter 资格门会同时丢掉后续保底与倍率 | 只保护依赖该机制的数值读取，保留原公式其余运算及顺序；不要混淆 `min` 下界与 `floor = yes` 向下取整。见下方原版数值式合同；缺少机制不是整个业务奖励的取消条件 |
 
 ### 动态家族名称的地点准备合同（2026-10-02）
 
@@ -212,6 +213,22 @@ CK3 1.20.0.3 / build 25652598 的原版 `game/common/scripted_effects/00_decisio
 | `common/on_action/dynasty_on_actions.txt` | `c43c24e64049fc0661a094c09ffcc07f10cf9d6d7c186564a9b64ad361b81b53` |
 | `localization/simp_chinese/dynasties/dynasty_names_l_simp_chinese.yml` | `91a5f1d12cd263baa3070db17e7a6412c101f1840d38380945ad0f90ed3299a7` |
 | `localization/english/dynasties/dynasty_names_l_english.yml` | `4d5b2396a78e5ed219bdbaaf22dd757ac6f11f0c231efb8a4fdfac20e9b58162` |
+
+### 数值式的上下界与机制资格（2026-10-02）
+
+CK3 1.20.0.3 原版 `game/common/script_values/_script_values.info:27–34` 明确 `value` 覆盖累计值、
+`min` 是下界、`max` 是上界，`floor` 才是向负无穷取整；61–70 的例子说明运算按书写顺序执行。
+因此读取不存在或不适用的机制时，不能把“避免读取”直接改写为“整段业务不执行”。
+原版 `game/common/scripted_effects/00_faction_effects.txt:1125–1135` 的 `change_herd` 数值式
+只在资本县 `uses_county_fertility` 成立时加生育率，随后仍执行 `min = 20`、`multiply = 150`。
+该原版形状将资格门限制在 getter 周围，保留最低奖励和原有 domicile 可选边界；不是新增奖励政策。
+静态修复应比较有效输入的公式、无机制分支的下界及未改业务字节，不能只检查错误字符串消失。
+本次仅核对原版文档与源码，实际奖励、缺县/无机制县和 tooltip 的引擎验证均 **NOT_RUN**。
+
+两份完整原版输入 SHA-256 分别为 `_script_values.info` 的
+`764ad711339c61bf239851bd52d87168dc1a2c91fe0c385c308ec4b85e2b5ef1` 与 `00_faction_effects.txt` 的
+`c7f853b9c8cf836cfc6b635c58bfa3c31a686528e99f5628e320a1d97a5efc70`。
+这里只收通用运算/资格合同；产品配置、真实县/战争/日志和专属修复不进入主仓。
 
 ### R184：同卡前序写入不能作为 tooltip 的变量前置条件（2026-09-07）
 
