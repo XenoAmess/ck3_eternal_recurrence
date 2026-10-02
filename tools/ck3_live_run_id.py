@@ -31,6 +31,7 @@ CANONICAL_MOD_KEYS = frozenset(
         "auto-upgrade-buildings",
         "celestial-commerce-corruption",
         "eternal-recurrence",
+        "more-tenets-slots",
         "ox-here",
         "reclaim-the-motherland",
         "remove-mandala",
