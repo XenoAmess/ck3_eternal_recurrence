@@ -4,6 +4,8 @@ pefile==2024.8.26
 # Existing offline runner tests import these packages without operating the desktop.
 PyAutoGUI==0.9.54
 jsonschema==4.26.0
+# Native bridge facade type constraints are imported by offline capture fixtures.
+pydantic==2.13.5
 numpy==2.5.2
 opencv-python==5.0.0.93
 pywin32==312; sys_platform == "win32"

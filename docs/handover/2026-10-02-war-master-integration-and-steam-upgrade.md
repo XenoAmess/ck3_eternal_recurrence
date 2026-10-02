@@ -51,3 +51,9 @@ Python-only 检查首次将十份冻结构建环境日志里的默认 Windows PA
 - R0148/R0149 的 nonzero screen / nonempty growth 等未闭合项沿用原研究边界，没有用本次版本升级补写 GREEN。
 - a09 完整 1× 观看 / 听审和人工签核仍待人工完成。既有 OneDrive InSync 记录没有新增远端字节回读，本次没有重新上传或宣称视频最终签核。
 - 新升级安装已核验；本次整合没有新增 CK3 1.20 实机 attempt。后续原生能力验收须使用新版本身份及新鲜 Steam 离线画面，不能复用 1.19 的地址与配对验收结果。
+
+## 首次官方 CI 的依赖修复
+
+首个整合提交 `b441b91465f4c70c1b8a9deebb994bc787c1e060` 已普通推送；[官方 run 36975221321](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36975221321) 在 ZhongGuo capture 离线合同测试导入 `bridge.mcp_server` 时实际返回 `ModuleNotFoundError: pydantic`。原生 UI 的严格整数输入使用该包，而官方静态依赖遗漏；本机主 venv 已装 2.13.5，导致先前定向检查没有暴露这项环境差异。补入 `tools/requirements-static.txt` 和 `ck3_autonomous_player/pyproject.toml` 的精确依赖，未安装或调用 CK3，也未放宽类型校验。
+
+[原始 CI RED](evidence/2026-10-02-war-master-integration/ci-failed-log-065219352034.json) 与[受影响完整 capture 离线回归 PASS](evidence/2026-10-02-war-master-integration/zhongguo-capture-ci-regression-065425429869.json) 均按原字节入库。本机 regression 使用明确的主 venv，实际 RC=0；其中测试故意生成的 RED 路径属于拒绝错误输入的断言，不是新实机 attempt。13 个来源归档标签已普通上传并逐项匿名 Git refs 回读核对；来源分支仍须等待修复后 master 的准确 SHA 官方 CI GREEN 再退役。

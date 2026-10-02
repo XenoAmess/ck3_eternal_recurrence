@@ -79,6 +79,16 @@
       "file": "docs/handover/evidence/2026-10-02-war-master-integration/native-source-final-receipt.json",
       "sha256": "706e7b65eff9d69a683a3e14548c69b7e30a9a8a38f5c8958b45a1849ce441da",
       "bytes": 39306
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/ci-failed-log-065219352034.json",
+      "sha256": "98b12f3bf9f9b19ba78d896f35f7fa6aacf4db2883471ffbb6fc5f79e4e10c6b",
+      "bytes": 42451
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/zhongguo-capture-ci-regression-065425429869.json",
+      "sha256": "f072389356e485e0f59cd371bbebb6f7b0f67deec5dc7a6ea44787fd7d9ccf98",
+      "bytes": 2432
     }
   ],
   "external_process_assets": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01",
