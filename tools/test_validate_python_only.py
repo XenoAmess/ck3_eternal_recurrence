@@ -29,6 +29,29 @@ class PythonOnlyValidationTests(unittest.TestCase):
         self.assertIn("defaults:\n      run:\n        shell: cmd", workflow.replace("\r\n", "\n"))
         self.assertNotIn("shell: " + validate_python_only.SHORT_ENGINE_NAME, workflow.casefold())
 
+    def test_build_metadata_inherited_directory_is_not_an_engine_call(self) -> None:
+        engine = validate_python_only.ENGINE_NAME
+        directory = "C:/Windows/System32/Windows" + engine + "/v1.0/"
+        for name in validate_python_only.ENVIRONMENT_METADATA_NAMES:
+            with self.subTest(name=name):
+                cleaned = validate_python_only.reference_text(name, directory + "lld-link.exe")
+                self.assertNotIn(engine, cleaned.casefold())
+
+    def test_metadata_engine_executable_still_rejected(self) -> None:
+        engine = validate_python_only.ENGINE_NAME
+        command = "C:/Windows/System32/Windows" + engine + "/v1.0/" + engine + ".exe -Command"
+        cleaned = validate_python_only.reference_text("CMakeConfigureLog.yaml", command)
+        self.assertIn(engine, cleaned.casefold())
+
+    def test_environment_directory_exception_does_not_apply_to_code(self) -> None:
+        engine = validate_python_only.ENGINE_NAME
+        directory = "C:/Windows/System32/Windows" + engine + "/v1.0/"
+        self.assertEqual(validate_python_only.reference_text("runner.py", directory), directory)
+
+    def test_metadata_other_forbidden_references_remain_visible(self) -> None:
+        source = validate_python_only.SHORT_ENGINE_NAME + " " + validate_python_only.FORBIDDEN_SUFFIXES[0]
+        self.assertEqual(validate_python_only.reference_text("vs-environment-selected.json", source), source)
+
 
 if __name__ == "__main__":
     unittest.main()

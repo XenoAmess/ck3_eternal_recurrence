@@ -17,6 +17,12 @@ FORBIDDEN_REFERENCES = (
     *FORBIDDEN_SUFFIXES,
 )
 STRUCTURED_AUTOMATION_SUFFIXES = {".json", ".toml", ".yaml", ".yml"}
+ENVIRONMENT_METADATA_NAMES = {
+    "CMakeConfigureLog.yaml", "vs-environment-selected.json", "selected-build-environment.json",
+}
+WINDOWS_ENV_DIRECTORY = re.compile(
+    r"Windows" + ENGINE_NAME + r"[/\\]+v1\.0(?=[/\\])", re.IGNORECASE
+)
 LEGACY_COMMANDS = (
     "Start" + "-Process",
     "Get" + "-ChildItem",
@@ -99,6 +105,13 @@ def fenced_block_findings(relative: str, text: str) -> list[str]:
     return findings
 
 
+def reference_text(relative: str, text: str) -> str:
+    """Ignore an inherited search directory in build metadata, never an engine executable."""
+    if Path(relative).name in ENVIRONMENT_METADATA_NAMES:
+        return WINDOWS_ENV_DIRECTORY.sub("WindowsEnvironmentDirectory", text)
+    return text
+
+
 def validate(paths: list[str]) -> list[str]:
     findings: list[str] = []
     for relative in paths:
@@ -113,7 +126,7 @@ def validate(paths: list[str]) -> list[str]:
         if text is None:
             continue
         if normalized != "AGENTS.md":
-            folded = text.casefold()
+            folded = reference_text(normalized, text).casefold()
             for reference in FORBIDDEN_REFERENCES:
                 if reference.casefold() in folded:
                     findings.append(f"{normalized}: forbidden shell reference {reference!r}")

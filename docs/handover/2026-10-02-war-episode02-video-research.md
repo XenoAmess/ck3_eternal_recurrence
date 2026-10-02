@@ -16,7 +16,7 @@
 
 上述三棵树在交接检查时均无真实脏项。Windows 深路径证据较多，Git 命令必须带 `-c core.longpaths=true`；未开启时可能显示虚假的文件删除和目录过长警告，不能据此清理、恢复或提交证据。本次交接提交和推送只针对视频独立分支；研究树与采集冻结树保持原样。
 
-全项目禁止 PowerShell。命令使用 Python 的 `subprocess` 参数数组，或明确选择 `cmd.exe`。不要把主工作树 `D:/workspace/ck3_eternal_recurrence` 当作本任务编辑目录，它还有其他任务的未跟踪文件。
+全项目执行根目录 AGENTS 的 Windows shell 禁令。命令使用 Python 的 `subprocess` 参数数组，或明确选择 `cmd.exe`。不要把主工作树 `D:/workspace/ck3_eternal_recurrence` 当作本任务编辑目录，它还有其他任务的未跟踪文件。
 
 本轮没有启动游戏或更改 Steam 状态。后续实机仍须先查看当次新鲜 Steam 离线原图、取得本机屏幕和 CK3 排他资源，并按当前原生采集合同分配新 run。旧离线截图、旧 cleanup 回执与任务总线 stale 状态都不能证明当前现场可占用。坐标和键盘输入遵守根指南及 `docs/desktop-coordinate-mapping.md`。
 

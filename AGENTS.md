@@ -1,12 +1,11 @@
 ﻿# 琉焰卿的永恒轮回（AGENTS 指南）
 
-## ie 研究隔离（2026-09-30 用户指令）
+## ie 研究隔离已获合回授权（2026-10-02 用户指令）
 
-- 战争研究和第二期完整六章视频继续在 `ie`；冻结 master 基线为 `c69260e65b63bf8f8b8ae42e3aee8f2a68561660`。
-- 在用户明确命令合回之前，禁止接收后续 master 变动：不 fetch/pull master，不 merge/rebase master，不 cherry-pick 或复制冻结点之后的 master 内容，不向 master 推送本任务。
-- 已冻结的旧执行树、原片、失败 attempt 和构建输入保留；新工作从固定的 ie 提交建立隔离树，研究补丁只交付到 ie。
-- 本机 Steam 必须持续保持当前离线模式。本任务没有切换在线、Workshop 上传或其他 Steam 联网授权；启动游戏前仍须按下文直接审阅当次新鲜离线原图。
-- 固定基线、工作目录与操作边界见 `docs/handover/2026-09-30-ie-research-isolation.md`。
+- 用户明确要求升级本机 Steam 管理的 CK3，并把研究成果、视频分支及其他有价值的关联成果全部整合回 `master`。2026-09-30 的禁止接收后续 master / 禁止向 master 推送约束已在本任务中解除。
+- 旧执行树、原片、失败 attempt、配置及构建输入继续保留；原始来源提交以 `archive/war-handover-20261002/*` 标签保全。历史 1.19.0.6 实机证据不能外推为 1.20 实机验收。
+- 必要的 Steam 在线升级已完成，客户端已恢复离线；后续开发及实机仍执行下文默认离线和账号占用规则。
+- 原隔离指令作为历史记录保留在 `docs/handover/2026-09-30-ie-research-isolation.md`；本次版本、来源、验证和未完成能力边界见 `docs/handover/2026-10-02-war-master-integration-and-steam-upgrade.md`。
 
 ## 项目结构
 
