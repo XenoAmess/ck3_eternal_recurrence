@@ -29,7 +29,7 @@
       "layer": "source-contract",
       "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
       "path": "../../ck3_autonomous_player/native_bridge/research/ck3_1_20_0_3_fullscreen_event_context.json",
-      "sha256": "e09ca799e6f7ada354b6b32ab51bd974ba1e7d6ac3a4fc69fe089f54c84c52a7",
+      "sha256": "4e40f92ce97e225beacc785ef4973c430f5c1ffef957c3e520ce9ff7b723126b",
       "supports": "exact native creation/selector/materializer and typed reader contract; no live confirmation"
     },
     {
@@ -37,7 +37,7 @@
       "layer": "source-contract",
       "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
       "path": "../../ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context.cpp",
-      "sha256": "5ad729a2915ab30a41a2a03755e160b223bb41c82c9ab5180cf082febe384726",
+      "sha256": "c858d713a42c4959485a8384b6b6002d87dca83c8d63319520c6520e7bc90263",
       "supports": "exact native creation/selector/materializer and typed reader contract; no live confirmation"
     }
   ],

@@ -35,6 +35,9 @@ struct EventWindowBindings {
   std::uintptr_t ingame_interface_idler_vtable = 0;
   std::uintptr_t event_window_primary_vtable = 0;
   std::uintptr_t splash_window_primary_vtable = 0;
+  // Only the exact patch3 binder admits the observed native null payload in
+  // named saved scopes. Root scopes and legacy patch2 behavior stay strict.
+  bool allow_null_saved_character_scope = false;
   std::uintptr_t scheme_type_primary_vtable = 0;
   void **trait_database_slot = nullptr;
   void **scheme_type_database_slot = nullptr;
@@ -60,7 +63,8 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     game::EventWindowContextV1 &output) noexcept;
 
 std::string SerializeEventWindowContextV1(
-    const game::EventWindowContextV1 &context);
+    const game::EventWindowContextV1 &context,
+    bool allow_null_saved_character_scope = false);
 
 bool ParseEventWindowContextRequestV1(
     std::string_view json, std::uint64_t &expected_revision,

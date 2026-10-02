@@ -1,0 +1,103 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "nullable-saved-character-scope",
+  "question": "Does the exact patch3 native null character sentinel represent a legal absent named scope without weakening root or option validation?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "observation": {
+    "mode": "paused-snapshot",
+    "actor_kind": "engine",
+    "owner_scope": "current local player event root and named saved scope inventory",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "bound event instance and unchanged pre/post scope inventory; null saved character has no live identity",
+    "producer_trigger": "paused-query",
+    "producer": "type4 native token producer at 0x9D5738 writes zero-extended UINT32_MAX into named puppeteer scope; 0x373A110 upserts original token",
+    "caller": "existing guarded profile event-window query on owning native thread",
+    "consumer": "existing typed event-window context and guarded genuine option selection; unavailable character identity cannot satisfy a character requirement",
+    "cache_lifetime": "selected item and pending transition slot must remain stable within the read; cached values are not complete scripted effect prediction",
+    "expected_signal": "typed named absence with strict valid root, genuine option rows and unchanged inventory",
+    "zero_sample_meaning": "optional named character is absent only for exact verified sentinel; no live identity inferred",
+    "stop_condition": "null root, unknown/mismatched type, malformed nonnull/generation/payload, inventory drift or existing window/option failure",
+    "runtime_window_ref": "next root-owned cold run after new source/artifact qualification; this plan performs no live operation"
+  },
+  "evidence": [
+    {
+      "id": "native-manifest",
+      "layer": "source-contract",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "path": "../../ck3_autonomous_player/native_bridge/research/ck3_1_20_0_3_fullscreen_event_context.json",
+      "sha256": "4e40f92ce97e225beacc785ef4973c430f5c1ffef957c3e520ce9ff7b723126b",
+      "supports": "exact patch3 native null-character producer and strict named-scope reader; new live result pending"
+    },
+    {
+      "id": "reader-contract",
+      "layer": "source-contract",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "path": "../../ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context.cpp",
+      "sha256": "c858d713a42c4959485a8384b6b6002d87dca83c8d63319520c6520e7bc90263",
+      "supports": "exact patch3 native null-character producer and strict named-scope reader; new live result pending"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "creation",
+      "label": "Exact patch3 type4 named null producer"
+    },
+    {
+      "id": "scope",
+      "label": "Registered type and exact full sentinel"
+    },
+    {
+      "id": "dto",
+      "label": "Named typed identity unavailable; root stays strict"
+    },
+    {
+      "id": "live",
+      "label": "Next cold-run query/select readback"
+    }
+  ],
+  "edges": [
+    {
+      "id": "producer",
+      "from": "creation",
+      "to": "scope",
+      "label": "native named token preserves type/subtype/payload",
+      "status": "static-confirmed",
+      "evidence": [
+        "native-manifest"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "decode",
+      "from": "scope",
+      "to": "dto",
+      "label": "only .3 named saved scope; unavailable live identity",
+      "status": "static-confirmed",
+      "evidence": [
+        "reader-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "runtime",
+      "from": "dto",
+      "to": "live",
+      "label": "future genuine cold-run readback",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does the new source-bound DLL publish the actual absent saved character while retaining genuine presented options?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "cold-null-saved-character",
+      "question": "Does the exact patch3 native null character sentinel represent a legal absent named scope without weakening root or option validation?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

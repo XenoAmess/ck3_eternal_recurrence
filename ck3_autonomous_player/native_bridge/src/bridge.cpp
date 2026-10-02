@@ -7535,9 +7535,10 @@ std::string PendingCharacterInteractionContextResultFrame(
 std::string EventWindowContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::EventWindowContextV1 &context,
-    bool crozier = false) {
+    bool crozier = false, bool allow_null_saved_character_scope = false) {
   const auto payload = crozier
-      ? xar::ck3_12002::SerializeEventWindowContextV1(context)
+      ? xar::ck3_12002::SerializeEventWindowContextV1(
+            context, allow_null_saved_character_scope)
       : xar::ck3_11906::SerializeEventWindowContextV1(context);
   if (payload.empty()) {
     return {};
@@ -11161,7 +11162,8 @@ std::string RunTypedQuery12002(
         ++state.pending_character_interaction_context_query_sequence, query.pending, true); break;
   case QueryKind12002::event_window:
     response = EventWindowContextResultFrame(request_id,
-        ++state.event_window_context_query_sequence, query.event, true); break;
+        ++state.event_window_context_query_sequence, query.event, true,
+        game.descriptor().executable_sha256 == xar::ck3_12003::kExecutableSha256); break;
   case QueryKind12002::title_map: {
     const auto status = query.title_command.status;
     if (status != xar::game::TitleMapNavigationCommandStatusV1::centered &&

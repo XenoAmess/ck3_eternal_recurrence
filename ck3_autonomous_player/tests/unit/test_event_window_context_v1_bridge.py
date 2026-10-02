@@ -7,12 +7,14 @@ from xar_autoplayer.bridge.event_window_context_contract import (
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
     normalize_current_event_window_context_v1,
+    _EVENT_PROVENANCE_BY_BACKEND,
 )
 from xar_autoplayer.bridge.driver import CallbackGameplayDriver
 from xar_autoplayer.bridge.mcp_server import (
     _ck3_query_current_event_window_context_v1,
 )
 from xar_autoplayer.bridge.native_driver import _action_steps
+from xar_autoplayer.bridge.version_identity import CK3_12002, CK3_12003
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.strategy import choose_one_life_turn
 from xar_autoplayer.vanilla_events.bookmark_raiktor_policy import (
@@ -475,6 +477,56 @@ class EventWindowContractTests(unittest.TestCase):
                         expected_date_raw=DATE_RAW,
                         expected_snapshot_revision=NATIVE_REVISION,
                     )
+
+    def test_patch3_null_saved_character_preserves_genuine_options(self) -> None:
+        frame = _frame()
+        frame["provenance"] = copy.deepcopy(
+            _EVENT_PROVENANCE_BY_BACKEND[CK3_12003.backend_id("event-window-v1")]
+        )
+        frame["options"][0]["effect_indicators"]["coverage"] = (
+            "played-character-event-icon-indicators-1.20.0.3-v1"
+        )
+        frame["saved_scopes"][0]["scope"]["typed_identity"] = {
+            "status": "unavailable", "reason": "character_scope_is_null"
+        }
+
+        def normalize(value):
+            return normalize_current_event_window_context_v1(
+                value,
+                expected_event_instance_id=EVENT_ID,
+                expected_date_raw=DATE_RAW,
+                expected_snapshot_revision=NATIVE_REVISION,
+            )
+
+        result = normalize(frame)
+        self.assertEqual(result["saved_scopes"], frame["saved_scopes"])
+        self.assertEqual(result["root_scope"], frame["root_scope"])
+        self.assertEqual(result["options"], frame["options"])
+        self.assertFalse(result["options"][0]["enabled"])
+        self.assertFalse(result["readiness"]["semantic_decision_ready"])
+        frame["options"][0]["enabled"] = True
+        self.assertTrue(normalize(frame)["options"][0]["enabled"])
+        old = copy.deepcopy(frame)
+        old["provenance"] = copy.deepcopy(
+            _EVENT_PROVENANCE_BY_BACKEND[CK3_12002.backend_id("event-window-v1")]
+        )
+        old["options"][0]["effect_indicators"]["coverage"] = (
+            "played-character-event-icon-indicators-1.20.0.2-v1"
+        )
+        root_null = copy.deepcopy(frame)
+        root_null["root_scope"]["typed_identity"] = copy.deepcopy(
+            frame["saved_scopes"][0]["scope"]["typed_identity"]
+        )
+        invented_id = copy.deepcopy(frame)
+        invented_id["saved_scopes"][0]["scope"]["typed_identity"]["character_id"] = CHARACTER_ID
+        unknown_reason = copy.deepcopy(frame)
+        unknown_reason["saved_scopes"][0]["scope"]["typed_identity"]["reason"] = "arbitrary"
+        wrong_type = copy.deepcopy(frame)
+        wrong_type["saved_scopes"][0]["scope"]["raw_type_index"] = 3
+        for mutation in (old, root_null, invented_id, unknown_reason, wrong_type):
+            with self.subTest(mutation=mutation):
+                with self.assertRaises(ValueError):
+                    normalize(mutation)
 
     def test_multiple_authored_cancel_flags_are_preserved(self) -> None:
         original = _frame()

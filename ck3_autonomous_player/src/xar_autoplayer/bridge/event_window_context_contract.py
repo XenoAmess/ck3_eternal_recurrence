@@ -250,6 +250,7 @@ def _event_scope(
     label: str,
     *,
     allow_unavailable_character_identity: bool = False,
+    allow_null_character_identity: bool = False,
 ) -> None:
     scope = _exact_object(value, _SCOPE_FIELDS, label)
     if scope["status"] != "available":
@@ -272,10 +273,11 @@ def _event_scope(
                 {"status", "reason"},
                 f"{label}.typed_identity",
             )
-            if not allow_unavailable_character_identity or identity != {
-                "status": "unavailable",
-                "reason": "character_scope_identity_unavailable",
-            }:
+            allowed_reasons = ("character_scope_identity_unavailable",)
+            if allow_null_character_identity:
+                allowed_reasons += ("character_scope_is_null",)
+            if (not allow_unavailable_character_identity
+                    or identity["reason"] not in allowed_reasons):
                 raise ValueError(f"{label}.typed_identity is invalid")
             return
         identity = _exact_object(
@@ -445,6 +447,7 @@ def normalize_current_event_window_context_v1(
             saved["scope"],
             f"current event saved scope {index}.scope",
             allow_unavailable_character_identity=True,
+            allow_null_character_identity=event_build == CK3_12003,
         )
     if readiness != {
         "event_definition_identity_ready": True,

@@ -147,13 +147,20 @@ void AppendEffectIndicator(std::string &output,
   }
 }
 
-bool ValidScope(const game::EventScopeV1 &scope) {
+bool ValidScope(const game::EventScopeV1 &scope,
+                bool allow_null_saved_character_scope = false) {
   if (scope.raw_type_index == 0 || scope.type_key.empty() ||
       scope.type_key.size() > kMaximumEventDefinitionKeyBytes) {
     return false;
   }
   const auto &identity = scope.typed_identity;
   if (scope.raw_type_index == kCharacterScopeTypeIndex) {
+    if (allow_null_saved_character_scope &&
+        scope.type_key == kCharacterScopeTypeKey && !identity.available &&
+        !identity.character_id.has_value() &&
+        identity.unavailable_reason == "character_scope_is_null") {
+      return true;
+    }
     return scope.type_key == kCharacterScopeTypeKey && identity.available &&
            identity.character_id.has_value() &&
            *identity.character_id > 0 && identity.unavailable_reason.empty();
@@ -182,7 +189,8 @@ void AppendScope(std::string &output, const game::EventScopeV1 &scope) {
   output.push_back('}');
 }
 
-bool ValidSavedScopes(const std::vector<game::EventSavedScopeV1> &scopes) {
+bool ValidSavedScopes(const std::vector<game::EventSavedScopeV1> &scopes,
+                      bool allow_null_saved_character_scope) {
   if (scopes.size() > kMaximumSavedScopes) {
     return false;
   }
@@ -196,7 +204,7 @@ bool ValidSavedScopes(const std::vector<game::EventSavedScopeV1> &scopes) {
         });
     if (scope.name.empty() ||
         scope.name.size() > kMaximumEventDefinitionKeyBytes || duplicate ||
-        !ValidScope(scope.scope)) {
+        !ValidScope(scope.scope, allow_null_saved_character_scope)) {
       return false;
     }
   }
@@ -206,7 +214,8 @@ bool ValidSavedScopes(const std::vector<game::EventSavedScopeV1> &scopes) {
 } // namespace
 
 std::string SerializeEventWindowContextV1(
-    const game::EventWindowContextV1 &context) {
+    const game::EventWindowContextV1 &context,
+    bool allow_null_saved_character_scope) {
   if (context.snapshot_revision == 0 ||
       context.current_event_instance_id <= 0) {
     return {};
@@ -223,7 +232,8 @@ std::string SerializeEventWindowContextV1(
                      !context.runtime_stats_ordinal.has_value() ||
                      !context.root_scope.has_value() ||
                      !ValidScope(*context.root_scope) ||
-                     !ValidSavedScopes(context.saved_scopes) ||
+                      !ValidSavedScopes(context.saved_scopes,
+                                        allow_null_saved_character_scope) ||
                      !context.root_scope_ready ||
                      !context.saved_scopes_ready ||
                      !context.option_presentation_ready ||

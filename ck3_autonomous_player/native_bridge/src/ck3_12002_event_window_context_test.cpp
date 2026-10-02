@@ -4,6 +4,7 @@
 
 
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -46,6 +47,7 @@ enum class EventIdentityDrift {
   definition_key,
   instance_id,
   scope_subtype,
+  saved_scope_payload,
   splash_current_item,
   splash_transition_item,
 };
@@ -186,6 +188,11 @@ void *GetCurrentEvent(void *) {
     case EventIdentityDrift::scope_subtype:
       Store<std::uint16_t>(g_active_event, 0x02, 1);
       break;
+    case EventIdentityDrift::saved_scope_payload: {
+      void *const rows = Load<void *>(g_active_event, 0x18);
+      Store<std::uint64_t>(rows, 0x10, kCharacterId);
+      break;
+    }
     case EventIdentityDrift::splash_current_item:
       Store<void *>(g_splash_window, 0xD0, nullptr);
       break;
@@ -549,8 +556,11 @@ bool TestMigration() {
     ck3_12003::kExecutableSha256);
   if (!binding.events.core.enabled || mismatched.events.core.enabled ||
       binding.splash_window_primary_vtable != 0 ||
+      binding.allow_null_saved_character_scope ||
       mismatched.splash_window_primary_vtable != 0 ||
+      mismatched.allow_null_saved_character_scope ||
       !patch3.events.core.enabled || patch3.splash_window_primary_vtable != 0x184596D38 ||
+      !patch3.allow_null_saved_character_scope ||
       binding.ingame_interface_idler_vtable != 0x1844BC408 ||
       reinterpret_cast<std::uintptr_t>(binding.trait_database_slot) != 0x185C67528)
     return false;
@@ -641,9 +651,85 @@ bool TestSplash() {
   if (read() || output.unavailable_reason != "state_changed") return false;
   return true;
 }
+
+bool TestNullSavedCharacterScope() {
+  using namespace xar;
+  // Exercise the same genuine option and scope reader in ordinary and splash
+  // presentations. The null scope is a typed absence, never a live character.
+  for (const bool splash : {false, true}) {
+    Fixture fixture;
+    fixture.bindings.allow_null_saved_character_scope = true;
+    if (splash) fixture.UseSplash();
+    constexpr std::uint64_t null_payload = 0xFFFFFFFFULL;
+    Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, null_payload);
+    game::EventWindowContextV1 output{};
+    auto read = [&]() {
+      g_current_event_calls = 0;
+      return ck3_12002::ReadEventWindowContextV1(
+          fixture.bindings, kRevision, kEventId, output) ==
+          game::ReadEventWindowContextResultV1::available;
+    };
+    if (!read() || output.saved_scopes.size() != 2 ||
+        output.saved_scopes[0].name != "xar_scope_root_control" ||
+        output.saved_scopes[0].scope.raw_type_index != 4 ||
+        output.saved_scopes[0].scope.type_key != "character" ||
+        output.saved_scopes[0].scope.subtype != 2 ||
+        output.saved_scopes[0].scope.typed_identity.available ||
+        output.saved_scopes[0].scope.typed_identity.character_id.has_value() ||
+        output.saved_scopes[0].scope.typed_identity.unavailable_reason != "character_scope_is_null" ||
+        output.saved_scopes[1].scope.type_key != "province" ||
+        output.root_scope->typed_identity.character_id != kCharacterId ||
+        output.options.size() != 1 || !output.options[0].shown ||
+        output.options[0].enabled || output.options[0].native_option_index != 3 ||
+        output.effect_preview_ready || output.semantic_decision_ready) return false;
+    if (!ck3_12002::SerializeEventWindowContextV1(output).empty()) return false;
+    const auto wire = ck3_12002::SerializeEventWindowContextV1(output, true);
+    if (wire.find("character_scope_is_null") == std::string::npos ||
+        wire.find("\"typed_identity\":{\"status\":\"unavailable\",\"reason\":\"character_scope_is_null\"}") == std::string::npos) return false;
+    std::cout << game::RenderCrozierBuildIdentity(
+                     wire, game::Ck3_12003AdapterDescriptor()) << '\n';
+    auto invalid_wire = output;
+    invalid_wire.root_scope->typed_identity = output.saved_scopes[0].scope.typed_identity;
+    if (!ck3_12002::SerializeEventWindowContextV1(invalid_wire, true).empty()) return false;
+    invalid_wire = output;
+    invalid_wire.saved_scopes[0].scope.typed_identity.character_id = kCharacterId;
+    if (!ck3_12002::SerializeEventWindowContextV1(invalid_wire, true).empty()) return false;
+    // Enabling a genuine option remains independent of null-scope admission.
+    fixture.InitializeOption(0, 3, true, true);
+    if (!read() || !output.options[0].enabled || !output.options[0].shown) return false;
+    fixture.bindings.allow_null_saved_character_scope = false;
+    if (read() || output.unavailable_reason != "event_saved_scope_invalid") return false;
+    fixture.bindings.allow_null_saved_character_scope = true;
+    Store<std::uint64_t>(fixture.active_event.data(), 0x08, null_payload);
+    if (read() || output.unavailable_reason != "event_root_scope_invalid") return false;
+    Store<std::uint64_t>(fixture.active_event.data(), 0x08, kCharacterId);
+    for (const std::uint64_t invalid : {0ULL, 43ULL, 0x0100002AULL,
+                                      0x1FFFFFFFFULL, 0xFFFFFFFFFFFFFFFFULL}) {
+      Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, invalid);
+      if (read() || output.unavailable_reason != "event_saved_scope_invalid" ||
+          !output.options.empty()) return false;
+    }
+    Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, null_payload);
+    for (const std::uint16_t invalid_type : {0, 5}) {
+      Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x08, invalid_type);
+      if (read() || output.unavailable_reason != "event_saved_scope_invalid") return false;
+    }
+    Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x08, 3);
+    g_generic_value_type_names[103] =
+        reinterpret_cast<const std::string *>(fixture.generic_character_name.data());
+    if (read() || output.unavailable_reason != "event_saved_scope_invalid") return false;
+    g_generic_value_type_names[103] =
+        reinterpret_cast<const std::string *>(fixture.generic_province_name.data());
+    Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x08, 4);
+    g_event_identity_drift = EventIdentityDrift::saved_scope_payload;
+    if (read() || output.unavailable_reason != "event_scope_changed") return false;
+    g_event_identity_drift = EventIdentityDrift::none;
+  }
+  return true;
+}
 } // namespace
 int main() {
-  if (!TestMigration() || !TestSplash()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
+  if (!TestMigration() || !TestSplash() || !TestNullSavedCharacterScope()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
   std::cout << "CK3 1.20.0.2 event-window offline fixture passed\n";
   return 0;
 }

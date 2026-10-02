@@ -313,7 +313,8 @@ bool ResolveCharacterScopeIdentity(const EventWindowBindings &bindings,
 }
 
 bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
-                         const void *token, game::EventScopeV1 &output) {
+                          const void *token, game::EventScopeV1 &output,
+                          bool named_saved_scope = false) {
   output = {};
   if (token == nullptr) {
     return false;
@@ -329,6 +330,17 @@ bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
   if (output.raw_type_index == kCharacterScopeTypeIndex) {
     if (output.type_key != kCharacterScopeTypeKey) {
       return false;
+    }
+    // The exact patch3 native producer stores this zero-extended full payload
+    // for an absent optional character (for example puppeteer). Preserve the
+    // registered type/name without inventing a live character identity.
+    if (named_saved_scope && bindings.allow_null_saved_character_scope &&
+        LoadAt<std::uint64_t>(token, kEventScopeTokenPayloadOffset) ==
+            std::numeric_limits<std::uint32_t>::max()) {
+      output.typed_identity.available = false;
+      output.typed_identity.character_id.reset();
+      output.typed_identity.unavailable_reason = "character_scope_is_null";
+      return true;
     }
     std::int32_t character_id = -1;
     if (!ResolveCharacterScopeIdentity(bindings, token, character_id)) {
@@ -457,7 +469,7 @@ bool ReadEventScopeInventory(const EventWindowBindings &bindings,
     }
     if (!ReadEventScopeToken(
             bindings, registry,
-            row + kEventScopeNamedRowTokenOffset, saved.scope)) {
+            row + kEventScopeNamedRowTokenOffset, saved.scope, true)) {
       failure_reason = "event_saved_scope_invalid";
       return false;
     }
@@ -832,6 +844,7 @@ EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,
   const bool patch3_splash = sha256 == ck3_12003::kExecutableSha256;
   result.events = BindEventsImage(image_base, patch3_splash ? kExecutableSha256 : sha256);
   if (!result.events.core.enabled) { return result; }
+  result.allow_null_saved_character_scope = patch3_splash;
   result.ingame_interface_idler_vtable = image_base + kEventWindowIdlerGfxVtableRva;
   result.event_window_primary_vtable = image_base + kEventWindowPrimaryVtableRva;
   if (patch3_splash)
