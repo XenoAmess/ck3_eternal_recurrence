@@ -24,9 +24,24 @@ struct ActivityPlannerPrivate12002QueryBaseV1 : LegacyQuery {
 struct ActivityPlannerDiagPrivate12002QueryV1
     : ActivityPlannerPrivate12002QueryBaseV1<
           ck3_11906::ActivityPlannerDiagPrivateQueryV1> {};
+enum class ActivityFeastPlannerOpenOperation12002V1 {
+  planner_open,
+  current_activity_view_open,
+};
+
+inline constexpr std::string_view kCurrentActivityViewOpenPrivate12003StepV1 =
+    "open-current-activity-view-v1-private";
+
 struct ActivityFeastPlannerOpenPrivate12002QueryV1
     : ActivityPlannerPrivate12002QueryBaseV1<
-          ck3_11906::ActivityFeastPlannerOpenPrivateQueryV1> {};
+          ck3_11906::ActivityFeastPlannerOpenPrivateQueryV1> {
+  ActivityFeastPlannerOpenOperation12002V1 operation =
+      ActivityFeastPlannerOpenOperation12002V1::planner_open;
+  std::string_view actual_executable_sha256{};
+  std::uint32_t expected_activity_id = 0;
+  std::uint32_t current_view_activity_id = 0;
+  bool current_view_dispatch_invoked = false;
+};
 struct ActivityStage1OptionReadPrivate12002QueryV1
     : ActivityPlannerPrivate12002QueryBaseV1<
           ck3_11906::ActivityStage1OptionReadPrivateQueryV1> {};

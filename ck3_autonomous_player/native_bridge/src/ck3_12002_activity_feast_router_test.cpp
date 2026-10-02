@@ -1,6 +1,8 @@
 #include "ck3_12002_activity_feast_router.hpp"
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
 #include "ck3_12002_activity_stage5_canstart_private_transport_v1.hpp"
+#include "ck3_12002_feast_planner_private_transport_v1.hpp"
+#include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 
 #include <array>
@@ -25,6 +27,7 @@ public:
   game::Snapshot frame{};
   mutable std::atomic<std::uint32_t> reads{0};
   bool available = true;
+  bool patch3 = false;
   FixtureAdapter() {
     frame.date_raw = 53220000;
     frame.paused = true;
@@ -37,7 +40,10 @@ public:
     static const game::AdapterDescriptor result{
         "ck3-1.20.0.2-msvc-x64", "1.20.0.2", build::kExecutableSha256,
         "fixture-only", {}};
-    return result;
+    static const game::AdapterDescriptor patch3_result{
+        xar::ck3_12003::kAdapterId, "1.20.0.3",
+        xar::ck3_12003::kExecutableSha256, "fixture-only", {}};
+    return patch3 ? patch3_result : result;
   }
   bool enabled() const noexcept override { return true; }
   bool read_snapshot(game::Snapshot &output) const noexcept override {
@@ -101,6 +107,9 @@ struct MemoryFixture {
 MemoryFixture *memory_fixture = nullptr;
 FixtureAdapter *expected_adapter = nullptr;
 std::uint32_t callback_reads = 0, canstart_calls = 0, feast_calls = 0;
+std::uint32_t current_view_calls = 0, planner_open_calls = 0;
+bool current_view_fail = false;
+constexpr std::uint32_t kFixtureActivityId = 553648129;
 bool domain_unavailable = false, start_policy = false, prior_pending = false;
 std::array<std::int64_t, 4> last_reserve{};
 api::ActivityFeastStage5PrivateModeV1 last_mode{};
@@ -171,9 +180,10 @@ bool TestRouter() {
   memory.jomini[0x20] = std::byte{1};
   memory.tls[0x20] = std::byte{1};
   std::memcpy(memory.state.data() + 0x08, &adapter.frame.date_raw, sizeof(adapter.frame.date_raw));
-  const std::array<api::MainThreadQueryExecutorV1, 2> executors{
+  const std::array<api::MainThreadQueryExecutorV1, 3> executors{
       &build::ExecuteActivityStage5CanStartPrivate12002V1,
-      &build::ExecuteActivityFeastStage5Private12002V1};
+      &build::ExecuteActivityFeastStage5Private12002V1,
+      &build::ExecuteActivityFeastPlannerOpenPrivate12002V1};
   auto environment = build::BindThreadRuntimeImage(0x140000000ULL, build::kExecutableSha256, executors);
   environment.offline_fixture = true;
   environment.peek_message_iat_slot_override = &memory.iat;
@@ -239,6 +249,66 @@ bool TestRouter() {
   CHECK(last_mode == api::ActivityFeastStage5PrivateModeV1::hosted_post && feast_calls == 2);
   CHECK(Contains(serialized, "\"activity_feast_hosted_post\":{") && Contains(serialized, "\"read_only\":true"));
   CHECK(mailbox.executed_requests == 4 && mailbox.failure_flags == 0 && callback_reads == 4);
+  CHECK(build::ActivityFeastPlannerOpenPrivate12002QueryV1{}.operation ==
+        build::ActivityFeastPlannerOpenOperation12002V1::planner_open);
+  CHECK(build::IsActivityFeastPrivateStep12002(
+        build::kCurrentActivityViewOpenPrivate12003StepV1));
+  constexpr std::string_view view_request =
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,"
+      "\"expected_date_raw\":53220000,\"expected_activity_id\":553648129}";
+  CHECK(!run(build::kCurrentActivityViewOpenPrivate12003StepV1, view_request));
+  CHECK(failure == "current activity view exact-build or request invalid" &&
+        current_view_calls == 0);
+  CHECK(WorkerQuery(mailbox, [&] {
+    return run(api::kActivityFeastPlannerOpenPrivateStepV1, "{\"expected_revision\":19}");
+  }));
+  CHECK(planner_open_calls == 1 && current_view_calls == 0 &&
+        Contains(serialized, "\"activity_feast_planner_open\":{") &&
+        Contains(serialized, "\"status\":\"available\""));
+  adapter.patch3 = true;
+  CHECK(!run(build::kCurrentActivityViewOpenPrivate12003StepV1,
+      "{\"expected_revision\":18,\"expected_actor_character_id\":29829,"
+      "\"expected_date_raw\":53220000,\"expected_activity_id\":553648129}"));
+  CHECK(failure == "activity feast exact-build frame or request invalid");
+  CHECK(!run(build::kCurrentActivityViewOpenPrivate12003StepV1,
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29830,"
+      "\"expected_date_raw\":53220000,\"expected_activity_id\":553648129}"));
+  CHECK(!run(build::kCurrentActivityViewOpenPrivate12003StepV1,
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,"
+      "\"expected_date_raw\":53220024,\"expected_activity_id\":553648129}"));
+  CHECK(!run(build::kCurrentActivityViewOpenPrivate12003StepV1,
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,"
+      "\"expected_date_raw\":53220000}"));
+  CHECK(!run(build::kCurrentActivityViewOpenPrivate12003StepV1,
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,"
+      "\"expected_date_raw\":53220000,\"expected_activity_id\":4294967295}"));
+  CHECK(failure == "current activity view exact-build or request invalid" &&
+        current_view_calls == 0 && mailbox.executed_requests == 5);
+  CHECK(WorkerQuery(mailbox, [&] {
+    return run(build::kCurrentActivityViewOpenPrivate12003StepV1, view_request);
+  }));
+  CHECK(current_view_calls == 1 && planner_open_calls == 1 && feast_calls == 2 &&
+        mailbox.executed_requests == 6 && mailbox.failure_flags == 0 &&
+        executor_thread == GetCurrentThreadId());
+  CHECK(Contains(serialized, "\"current_activity_view_open\":{") &&
+        Contains(serialized, "\"schema\":\"current-activity-view-open-private-v1\"") &&
+        Contains(serialized, "\"status\":\"invoked_pending\"") &&
+        Contains(serialized, "\"read_only\":false") &&
+        Contains(serialized, "\"advertised\":false") &&
+        Contains(serialized, "\"native_dispatch_invoked\":true") &&
+        Contains(serialized, "\"invocations\":1") &&
+        Contains(serialized, "\"activity_id\":553648129") &&
+        Contains(serialized, xar::ck3_12003::kExecutableSha256) &&
+        !Contains(serialized, "opened"));
+  current_view_fail = true;
+  CHECK(WorkerQuery(mailbox, [&] {
+    return run(build::kCurrentActivityViewOpenPrivate12003StepV1, view_request);
+  }));
+  CHECK(current_view_calls == 2 && Contains(serialized, "\"ok\":false") &&
+        Contains(serialized, "\"status\":\"red\"") &&
+        Contains(serialized, "\"native_dispatch_invoked\":false") &&
+        Contains(serialized, "fixture current activity unavailable") &&
+        mailbox.state == api::MainThreadQueryMailboxStateV1::idle);
   CHECK(api::UninstallMainThreadQueryMailboxV1(mailbox, 0) == api::MainThreadQueryUninstallResultV1::uninstalled);
   CHECK(memory.iat == reinterpret_cast<void *>(&FakePeek));
   return true;
@@ -246,6 +316,27 @@ bool TestRouter() {
 } // namespace
 
 namespace xar::ck3_12002 {
+bool ExecuteActivityFeastPlannerOpenPrivate12002V1(
+    void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &query = *static_cast<ActivityFeastPlannerOpenPrivate12002QueryV1 *>(opaque);
+  if (!CheckCallback(query, stamp)) return false;
+  ++query.invocations;
+  if (query.operation == ActivityFeastPlannerOpenOperation12002V1::current_activity_view_open) {
+    ++current_view_calls;
+    if (query.actual_executable_sha256 != xar::ck3_12003::kExecutableSha256 ||
+        query.expected_activity_id != kFixtureActivityId)
+      return false;
+    if (current_view_fail) query.failure = "fixture current activity unavailable";
+    else {
+      query.current_view_activity_id = query.expected_activity_id;
+      query.current_view_dispatch_invoked = true;
+    }
+  } else {
+    ++planner_open_calls;
+    query.result.status = bridge::ActivityFeastPlannerOpenStatusV1::already_open;
+  }
+  return true;
+}
 bool ExecuteActivityStage5CanStartPrivate12002V1(
     void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto &query = *static_cast<ActivityStage5CanStartPrivate12002QueryV1 *>(opaque);
@@ -281,8 +372,15 @@ std::string SerializeActivityFeastStage5Private12002V1(
 }
 } // namespace xar::ck3_12002
 
+namespace xar::ck3_11906 {
+std::string SerializeActivityFeastPlannerOpenPrivateV1(
+    const ActivityFeastPlannerOpenPrivateQueryV1 &) {
+  return "{\"fixture_dispatch\":true}";
+}
+} // namespace xar::ck3_11906
+
 int main() {
   if (!TestRouter()) return 1;
-  std::puts("PASS: production feast router and mailbox dispatch; fixture adapter snapshot callbacks, CanStart unavailable diagnostics, request grammar, reserve order, pending Start and independent hosted-post routes; no CK3 contact or native/live qualification");
+  std::puts("PASS: production feast router and mailbox dispatch; existing routes and exact .3 current-view action full ID/actor/date/revision, owner-thread once invocation, pending-only receipt and domain RED; native leaf is fixture data, no CK3 contact or live qualification");
   return 0;
 }

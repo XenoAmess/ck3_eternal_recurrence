@@ -2295,10 +2295,17 @@ def _create_suspended_process(
     command: list[str],
     working_directory: Path,
     environment: Mapping[str, str] | None = None,
+    *,
+    start_minimized: bool = False,
 ) -> _SuspendedWindowsProcess:
     import win32process
 
     startup = win32process.STARTUPINFO()
+    if start_minimized:
+        import win32con
+
+        startup.dwFlags |= win32con.STARTF_USESHOWWINDOW
+        startup.wShowWindow = win32con.SW_SHOWMINNOACTIVE
     creation_flags = win32process.CREATE_SUSPENDED
     if environment is not None:
         creation_flags |= getattr(
@@ -2790,6 +2797,7 @@ def launch(
     verify_prepared_profile: bool = True,
     prepared_xar_enabled: str = "xar_on",
     before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
+    start_minimized: bool = False,
 ) -> SessionHandle:
     native_bridge = (
         native_bridge_launch_config_from_environment()
@@ -2948,6 +2956,7 @@ def launch(
                 command,
                 spec.game_exe.parent,
                 child_environment,
+                **({"start_minimized": True} if start_minimized else {}),
             )
         write_json_atomic(
             unsafe_marker,

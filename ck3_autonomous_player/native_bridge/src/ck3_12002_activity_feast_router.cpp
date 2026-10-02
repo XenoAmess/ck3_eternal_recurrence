@@ -219,7 +219,8 @@ bool IsActivityFeastPrivateStep12002(std::string_view step) noexcept {
   if (step == ck3_11906::kActivityPlannerDiagPrivateStepV1) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
-  if (step == ck3_11906::kActivityFeastPlannerOpenPrivateStepV1) return true;
+  if (step == ck3_11906::kActivityFeastPlannerOpenPrivateStepV1 ||
+      step == kCurrentActivityViewOpenPrivate12003StepV1) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
   if (step == ck3_11906::kActivityStage1OptionReadPrivateStepV1) return true;
@@ -363,6 +364,49 @@ bool HandleActivityFeastPrivate12002(
     }
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
+    if (step == kCurrentActivityViewOpenPrivate12003StepV1) {
+      std::uint64_t activity_id = 0;
+      if (!game::IsCk3_12003Descriptor(adapter.descriptor()) ||
+          !ParseActorDate(payload, current) ||
+          !bridge::JsonUnsignedField(payload, "expected_activity_id", activity_id) ||
+          activity_id == 0 || activity_id >= (std::numeric_limits<std::uint32_t>::max)()) {
+        failure = "current activity view exact-build or request invalid";
+        return false;
+      }
+      ActivityFeastPlannerOpenPrivate12002QueryV1 query{};
+      BindQuery(query, adapter, mailbox, current, revision);
+      query.operation =
+          ActivityFeastPlannerOpenOperation12002V1::current_activity_view_open;
+      query.actual_executable_sha256 = adapter.descriptor().executable_sha256;
+      query.expected_activity_id = static_cast<std::uint32_t>(activity_id);
+      if (!RunQuery(query, &ExecuteActivityFeastPlannerOpenPrivate12002V1, failure))
+        return false;
+      const bool stable = !query.frame_changed && SameFrame(adapter, current);
+      const bool invoked = stable && query.failure.empty() &&
+          query.current_view_dispatch_invoked && query.invocations == 1 &&
+          query.current_view_activity_id == query.expected_activity_id;
+      std::string native =
+          "{\"schema\":\"current-activity-view-open-private-v1\","
+          "\"snapshot_revision\":" + std::to_string(revision) +
+          ",\"date_raw\":" + std::to_string(current.date_raw) +
+          ",\"actor_character_id\":" + std::to_string(current.played_character_id) +
+          ",\"activity_id\":" + std::to_string(query.current_view_activity_id) +
+          ",\"expected_activity_id\":" + std::to_string(query.expected_activity_id) +
+          ",\"native_dispatch_invoked\":" +
+          (query.current_view_dispatch_invoked ? "true" : "false") +
+          ",\"invocations\":" + std::to_string(query.invocations) +
+          ",\"actual_executable_sha256\":";
+      AppendString(native, query.actual_executable_sha256);
+      native += ",\"status\":";
+      AppendString(native, invoked ? "invoked_pending" : "red");
+      native += '}';
+      const bool reclaimed = Reclaim(query, failure);
+      if (!reclaimed) return false;
+      serialized = ResultFrame(request_id, step, "current_activity_view_open",
+          native, invoked, invoked, false, invoked ? "invoked_pending" : "red",
+          query.failure);
+      return true;
+    }
     if (step == ck3_11906::kActivityFeastPlannerOpenPrivateStepV1) {
       ActivityFeastPlannerOpenPrivate12002QueryV1 query{};
       BindQuery(query, adapter, mailbox, current, revision);

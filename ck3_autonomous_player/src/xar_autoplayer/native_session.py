@@ -171,7 +171,7 @@ def _minimize_process_windows(
     timeout_seconds: float,
     poll_interval_seconds: float,
 ) -> bool:
-    """Wait for a relaunched CK3 window and restore its prior minimized state."""
+    """Wait for the exact CK3 window and minimize it without activation."""
     import win32con
     import win32gui
 
@@ -181,7 +181,7 @@ def _minimize_process_windows(
         if windows:
             for hwnd in windows:
                 if not win32gui.IsIconic(hwnd):
-                    win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
+                    win32gui.ShowWindow(hwnd, win32con.SW_SHOWMINNOACTIVE)
             if all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows):
                 return True
         now = time.monotonic()
@@ -719,6 +719,7 @@ def native_session(
     output_stream: TextIO | None = None,
     poll_interval_seconds: float = 0.05,
     cold_start_checkpoint: bool = False,
+    start_minimized: bool = False,
     stop_event: threading.Event | None = None,
     verify_prepared_profile: bool = True,
     prepared_xar_enabled: str = "xar_on",
@@ -816,6 +817,7 @@ def native_session(
                 output_stream=output_stream,
                 poll_interval_seconds=float(poll_interval_seconds),
                 cold_start_checkpoint=cold_start_checkpoint,
+                **({"start_minimized": True} if start_minimized else {}),
                 stop_event=stop_event,
                 verify_prepared_profile=verify_prepared_profile,
                 prepared_xar_enabled=prepared_xar_enabled,
@@ -841,6 +843,7 @@ def _native_session_locked(
     output_stream: TextIO | None,
     poll_interval_seconds: float,
     cold_start_checkpoint: bool = False,
+    start_minimized: bool = False,
     stop_event: threading.Event | None = None,
     verify_prepared_profile: bool = True,
     prepared_xar_enabled: str = "xar_on",
@@ -987,6 +990,8 @@ def _native_session_locked(
         # Passing the validated config explicitly prevents environment changes
         # from selecting hybrid fallback between command parsing and launch.
         initial_launch_options: dict[str, object] = {"native_bridge": config}
+        if start_minimized:
+            initial_launch_options["start_minimized"] = True
         if before_process_create is not None:
             initial_launch_options["before_process_create"] = before_process_create
         if prepared_xar_enabled != "xar_on":
@@ -1039,6 +1044,12 @@ def _native_session_locked(
             )
         pid = int(handle.process.pid)
         last_pid = pid
+        if start_minimized and os.name == "nt":
+            last_known_window_minimized = _minimize_process_windows(
+                pid,
+                timeout_seconds=min(30.0, max(0.001, deadline - time.monotonic())),
+                poll_interval_seconds=poll_interval_seconds,
+            )
         if startup_slot0_probe_plan is not None:
             startup_slot0_probe = startup_slot0_probe_plan.start(
                 pid,
@@ -1163,11 +1174,19 @@ def _native_session_locked(
                 # not repeat a repository-wide fingerprint during relaunch.
                 "verify_prepared_profile": False,
             }
+            if start_minimized:
+                final_launch_options["start_minimized"] = True
             if before_process_create is not None:
                 final_launch_options["before_process_create"] = before_process_create
             handle = launch(spec, **final_launch_options)
             pid = int(handle.process.pid)
             last_pid = pid
+            if start_minimized and os.name == "nt":
+                last_known_window_minimized = _minimize_process_windows(
+                    pid,
+                    timeout_seconds=min(30.0, max(0.001, deadline - time.monotonic())),
+                    poll_interval_seconds=poll_interval_seconds,
+                )
             frontend_first_warmup["status"] = "ready"
             frontend_first_warmup["final_pid"] = pid
             frontend_first_warmup["final_launch_started_at"] = utc_now()
@@ -1209,6 +1228,12 @@ def _native_session_locked(
             )
             if not stop_requested and now >= next_window_state_sample:
                 sampled_window_state = _process_windows_minimized(pid)
+                if start_minimized and sampled_window_state is False:
+                    sampled_window_state = _minimize_process_windows(
+                        pid,
+                        timeout_seconds=0.001,
+                        poll_interval_seconds=poll_interval_seconds,
+                    )
                 if sampled_window_state is not None:
                     last_known_window_minimized = sampled_window_state
                 next_window_state_sample = now + 0.5
@@ -1296,7 +1321,9 @@ def _native_session_locked(
                         )
                         if sampled_window_state is not None:
                             last_known_window_minimized = sampled_window_state
-                        preserve_minimized = last_known_window_minimized is True
+                        preserve_minimized = (
+                            start_minimized or last_known_window_minimized is True
+                        )
                         restart_shutdown = stop_tracked(
                             handle, require_running=False
                         )
@@ -1327,6 +1354,7 @@ def _native_session_locked(
                             spec,
                             native_bridge=config,
                             load_save_name=str(selected_save["load_save_name"]),
+                            **({"start_minimized": True} if start_minimized else {}),
                             **({"before_process_create": before_process_create}
                                if before_process_create is not None else {}),
                             # The session owns both global launch and state
@@ -1917,6 +1945,7 @@ def run_from_cli(
     *,
     timeout_seconds: float,
     cold_start_checkpoint: bool = False,
+    start_minimized: bool = False,
     prepared_xar_enabled: str = "xar_on",
 ) -> dict[str, object]:
     """CLI adapter kept here so the generic CLI never imports visual code."""
@@ -1926,5 +1955,6 @@ def run_from_cli(
         input_stream=sys.stdin,
         output_stream=sys.stdout,
         cold_start_checkpoint=cold_start_checkpoint,
+        **({"start_minimized": True} if start_minimized else {}),
         prepared_xar_enabled=prepared_xar_enabled,
     )

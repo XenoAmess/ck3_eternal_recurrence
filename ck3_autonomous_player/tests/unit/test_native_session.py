@@ -173,6 +173,83 @@ class NativeSessionLifecycleTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
+    def test_start_minimized_reaches_launch_and_windows_without_activation(self) -> None:
+        from xar_autoplayer import native_session as session_module
+        from xar_autoplayer import runtime
+
+        args = cli.parser().parse_args(["native-session", "--start-minimized"])
+        self.assertTrue(args.start_minimized)
+        self.assertFalse(cli.parser().parse_args(["native-session"]).start_minimized)
+        config = _config(Path(self.temporary.name))
+        process = mock.Mock(pid=4242)
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        with mock.patch(
+            "xar_autoplayer.native_session.native_bridge_launch_config_from_environment",
+            return_value=config,
+        ), mock.patch(
+            "xar_autoplayer.native_session.exclusive_launch_lock",
+            return_value=mock.MagicMock(),
+        ), mock.patch(
+            "xar_autoplayer.native_session.exclusive_state_lock",
+            return_value=mock.MagicMock(),
+        ), mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle,
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            return_value={"ok": True, "contract_errors": []},
+        ), mock.patch(
+            "xar_autoplayer.native_session._minimize_process_windows", return_value=True,
+        ) as minimize_mock, mock.patch(
+            "xar_autoplayer.native_session._process_windows_minimized", return_value=True,
+        ), mock.patch("sys.stdin", io.StringIO("stop\n")), mock.patch(
+            "sys.stdout", io.StringIO(),
+        ):
+            report = session_module.run_from_cli(
+                self.spec, timeout_seconds=1.0, start_minimized=args.start_minimized,
+            )
+        self.assertTrue(report["ok"])
+        launch_mock.assert_called_once_with(
+            self.spec, native_bridge=config, continue_last_save=True, start_minimized=True,
+        )
+        self.assertEqual(minimize_mock.call_args.args, (4242,))
+
+        created = mock.Mock(return_value=(object(), object(), 4242, 123))
+        startup = SimpleNamespace(dwFlags=0, wShowWindow=0)
+        windows_process = SimpleNamespace(
+            STARTUPINFO=mock.Mock(return_value=startup),
+            CREATE_SUSPENDED=4,
+            CreateProcess=created,
+        )
+        windows_constants = SimpleNamespace(
+            STARTF_USESHOWWINDOW=1, SW_SHOWMINNOACTIVE=7,
+        )
+        with mock.patch.dict(sys.modules, {
+            "win32process": windows_process, "win32con": windows_constants,
+        }):
+            owned = runtime._create_suspended_process(
+                ["ck3.exe"], Path(self.temporary.name), start_minimized=True,
+            )
+        self.assertEqual(owned.pid, 4242)
+        self.assertEqual(created.call_args.args[5], 4)
+        self.assertIs(created.call_args.args[8], startup)
+        self.assertEqual(startup.dwFlags, 1)
+        self.assertEqual(startup.wShowWindow, 7)
+
+        windows_gui = SimpleNamespace(
+            IsIconic=mock.Mock(side_effect=[False, True]), ShowWindow=mock.Mock(),
+        )
+        with mock.patch.dict(sys.modules, {
+            "win32gui": windows_gui, "win32con": windows_constants,
+        }), mock.patch(
+            "xar_autoplayer.native_session._visible_process_windows", return_value=[91],
+        ) as owned_windows:
+            self.assertTrue(session_module._minimize_process_windows(
+                4242, timeout_seconds=0.1, poll_interval_seconds=0.001,
+            ))
+        owned_windows.assert_called_once_with(4242)
+        windows_gui.ShowWindow.assert_called_once_with(91, 7)
+
     def test_frontend_evidence_retries_windows_reader_share_violation(
         self,
     ) -> None:

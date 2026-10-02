@@ -2,6 +2,14 @@
 
 2026-10-01 当前所有者偏好：游戏使用原生runner脚本直接启动 `ck3.exe`；不得为Steam离线状态截图切换Steam焦点。优先复用已有明确离线证据；CK3实机由root唯一操作，后台代理只做源码/静态/文件准备。婚姻提议需独立双向关系与实际checkpoint/cold读回，队列接受不代替结果。
 
+2026-10-02 本轮起，所有者进一步要求不占用其窗口焦点、最小化执行。本次 G2 实机停止前台恢复与桌面点击；沿 native-headless 进行查询、命令和存档，不能沿用下面历史视觉流程中的前台恢复作为自动回退。冷加载活动视图未物化时，应接通游戏内部 presentation 调用，再独立查询事件窗口；不得重发活动 Start。
+
+1.20.0.3 / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` 已实测最小化查询／存档：source `0c09a305`、复用 v15 DLL、PID63520，在同一 paused 日期 `53330784` 上完成实际事件窗口查询、campaign-root typed 查询和 native autosave。现有 `PeekMessageW` 主线程泵增加2478次，两请求完成，failure=0；最终窗口 `IsIconic=true`，前台 PID29436 与 CK3不同，未恢复窗口或发送桌面输入。正常保存 h2109（112529958 bytes / SHA `ed8d4b3baaa5b81ad28843dc0bbe0784f759f7451417cfd15808adfe3de1c102`）。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-execution-probe-01/` 及 `minimized-native-pump-readout/READOUT.md`。这是后台查询／保存的 production-live primitive，尚非完整后台时间推进循环。
+
+该帧 event15 的 `event_window_not_materialized` / zero matches 与此前 cold 视图缺口相同，不是最小化停泵证据。原版活动 cup 调用的是 `Activity.OpenActivityView`，后台可施工入口为 exact-build 活动模型方法与现有主线程队列；只读查询本身保持无物化副作用。最小化使用 `SW_SHOWMINNOACTIVE=7`；其不激活窗口的语义见 [Microsoft ShowWindow 文档](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow)。原生新进程的启动即最小化与活动模型调用仍待各自实机验证，不能由一次查询／保存外推完成。
+
+显式 `native-session --start-minimized` 将首次、frontend warm-up/final、checkpoint 和 next-episode 启动传入 Windows `STARTUPINFO` 的 `STARTF_USESHOWWINDOW` / `SW_SHOWMINNOACTIVE`，复用受管 PID 的窗口采样保持最小化。默认其它流程不改变；当前 G2 后续启动全部选择此参数。真实 CLI→session→launch 参数链、Win32 producer 与 PID helper 的一个定向 case GREEN；新进程焦点／窗口状态仍由实机采样确认。对应源码及收据为 `artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-start-implementation-01/`。
+
 
 ## 启动与日志
 

@@ -1,6 +1,12 @@
 #include "ck3_12002_feast_planner_private_transport_v1.hpp"
 
+#include "xar_bridge/ck3_12002_activity_hosted_identity.hpp"
+#include "xar_bridge/ck3_12003.hpp"
+
 #include <windows.h>
+
+#include <array>
+#include <limits>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -65,6 +71,109 @@ bool SuccessfulDiagnostic(bridge::ActivityPlannerDiagStatusV1 status) noexcept {
          status == bridge::ActivityPlannerDiagStatusV1::planner_absent;
 }
 
+template <class T>
+bool ReadCurrentActivityAt(
+    const bridge::ActivityPlannerDiagEnvironmentV1 &environment,
+    std::uintptr_t base, std::size_t offset, T &output) noexcept {
+  return base != 0 &&
+         offset <= (std::numeric_limits<std::uintptr_t>::max)() - base &&
+         environment.read_memory != nullptr &&
+         environment.read_memory(environment.context, base + offset,
+                                 &output, sizeof(output));
+}
+
+bool ResolveCurrentFeastActivity12003(
+    ActivityPlanner12002NativeV1 &native, std::uint32_t full_id,
+    std::int32_t host_id, std::uintptr_t &activity) noexcept {
+  activity = 0;
+  if (full_id == 0 || full_id == 0xFFFFFFFFU || host_id <= 0) return false;
+  const auto environment = BuildActivityPlanner12002DiagEnvironmentV1(native);
+  const auto index = full_id & 0x00FFFFFFU;
+  std::uintptr_t root = 0, world = 0, manager = 0, chunks = 0;
+  std::uintptr_t index_table = 0, object = 0, chunk = 0;
+  std::uint32_t chunk_count = 0, capacity = 0;
+  std::int32_t highest_live = -1;
+  std::uint8_t initialized = 0;
+  if (!ReadCurrentActivityAt(environment, native.module_base,
+                             bridge::kActivityHosted12002GameStateRva, root) ||
+      root == 0 || root != native.game_state ||
+      !ReadCurrentActivityAt(environment, root, 0xA0, world) || world == 0 ||
+      bridge::kActivityHosted12002ManagerOffset >
+          (std::numeric_limits<std::uintptr_t>::max)() - world)
+    return false;
+  manager = world + bridge::kActivityHosted12002ManagerOffset;
+  // Reuse the hosted identity manager layout for this one full ID; no scan.
+  if (!ReadCurrentActivityAt(environment, manager, 0x10, initialized) ||
+      initialized == 0 ||
+      !ReadCurrentActivityAt(environment, manager, 0x20, chunks) || chunks == 0 ||
+      !ReadCurrentActivityAt(environment, manager, 0x2C, chunk_count) ||
+      !ReadCurrentActivityAt(environment, manager, 0x38, index_table) ||
+      index_table == 0 ||
+      !ReadCurrentActivityAt(environment, manager, 0x44, capacity) ||
+      index >= capacity ||
+      !ReadCurrentActivityAt(environment, manager, 0x50, highest_live) ||
+      highest_live < 0 || index > static_cast<std::uint32_t>(highest_live) ||
+      index / 1024 >= chunk_count ||
+      !ReadCurrentActivityAt(environment, index_table,
+                            static_cast<std::size_t>(index) * 16 + 8, object) ||
+      object == 0 ||
+      !ReadCurrentActivityAt(environment, chunks,
+                            static_cast<std::size_t>(index / 1024) * 8, chunk) ||
+      chunk == 0)
+    return false;
+  const auto slot_offset = static_cast<std::size_t>(index % 1024) *
+                           bridge::kActivityHosted12002ObjectStride;
+  if (slot_offset > (std::numeric_limits<std::uintptr_t>::max)() - chunk ||
+      object != chunk + slot_offset)
+    return false;
+  std::uint32_t observed_id = 0;
+  std::int32_t observed_host = -1;
+  std::uintptr_t vtable = 0, type = 0, type_vtable = 0;
+  if (!ReadCurrentActivityAt(environment, object, 0x08, observed_id) ||
+      observed_id != full_id ||
+      !ReadCurrentActivityAt(environment, object, 0x3A8, observed_host) ||
+      observed_host != host_id ||
+      !ReadCurrentActivityAt(environment, object, 0, vtable) ||
+      vtable != native.module_base + bridge::kActivityHosted12002ActivityVtableRva ||
+      !ReadCurrentActivityAt(environment, object, 0x3A0, type) || type == 0 ||
+      !ReadCurrentActivityAt(environment, type, 0, type_vtable) ||
+      type_vtable != native.module_base +
+                         bridge::kActivityHosted12002ActivityTypeVtableRva)
+    return false;
+  constexpr std::string_view key = "activity_feast";
+  std::uint64_t size = 0, string_capacity = 0;
+  std::uintptr_t data = 0;
+  std::array<char, 16> actual{};
+  if (!ReadCurrentActivityAt(environment, type, 0x28, size) ||
+      size != key.size() ||
+      !ReadCurrentActivityAt(environment, type, 0x30, string_capacity) ||
+      string_capacity < size ||
+      0x18 > (std::numeric_limits<std::uintptr_t>::max)() - type)
+    return false;
+  data = type + 0x18;
+  if ((string_capacity > 15 &&
+       !ReadCurrentActivityAt(environment, type, 0x18, data)) ||
+      !environment.read_memory(environment.context, data, actual.data(), key.size()) ||
+      std::string_view(actual.data(), key.size()) != key)
+    return false;
+  activity = object;
+  return true;
+}
+
+bool InvokeCurrentActivityView12003(std::uintptr_t module_base,
+                                   std::uintptr_t activity) noexcept {
+  using NativeOpen = void(__fastcall *)(void *);
+  const auto open = reinterpret_cast<NativeOpen>(module_base + 0xA90050);
+  __try {
+    // The original Activity.OpenActivityView callback calls this receiver-only
+    // presentation leaf. Its return register does not prove materialization.
+    open(reinterpret_cast<void *>(activity));
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+}
+
 template <class Query>
 bool CompleteException(Query &query, const char *failure) noexcept {
   query.failure = failure;
@@ -107,6 +216,24 @@ bool ExecuteActivityFeastPlannerOpenPrivate12002V1(
     if (!Prepare(*query, stamp, &ExecuteActivityFeastPlannerOpenPrivate12002V1,
                  current, native))
       return query->completed;
+    if (query->operation ==
+        ActivityFeastPlannerOpenOperation12002V1::current_activity_view_open) {
+      std::uintptr_t activity = 0;
+      if (query->actual_executable_sha256 != ck3_12003::kExecutableSha256) {
+        query->failure = "exact_current_activity_view_12003_build_unavailable";
+      } else if (!ResolveCurrentFeastActivity12003(
+                     native, query->expected_activity_id,
+                     current.played_character_id, activity)) {
+        query->failure = "native_current_activity_view_identity_unavailable";
+      } else if (!InvokeCurrentActivityView12003(native.module_base, activity)) {
+        query->failure = "native_current_activity_view_dispatch_exception";
+      } else {
+        query->current_view_activity_id = query->expected_activity_id;
+        query->current_view_dispatch_invoked = true;
+      }
+      query->completed = true;
+      return true;
+    }
     query->result = bridge::OpenActivityFeastPlannerV1(
         BuildActivityPlanner12002OpenEnvironmentV1(native),
         ExpectedFrame(query->expected_revision, current));

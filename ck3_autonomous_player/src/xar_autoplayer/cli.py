@@ -289,6 +289,11 @@ def parser() -> argparse.ArgumentParser:
     )
     native_session_parser.add_argument("--timeout", type=float, default=21600)
     native_session_parser.add_argument(
+        "--start-minimized",
+        action="store_true",
+        help="start and keep the managed CK3 window minimized without activation",
+    )
+    native_session_parser.add_argument(
         "--cold-start-checkpoint",
         action="store_true",
         help="launch the exact v2 xar_checkpoint save instead of last_save.ck3",
@@ -1019,6 +1024,7 @@ def main(argv: list[str] | None = None) -> int:
                 timeout_seconds=args.timeout,
                 cold_start_checkpoint=args.cold_start_checkpoint,
                 prepared_xar_enabled=args.xar_enabled,
+                **({"start_minimized": True} if args.start_minimized else {}),
             )
         elif args.command == "native-auto-run":
             from .native_auto_run import native_auto_run
