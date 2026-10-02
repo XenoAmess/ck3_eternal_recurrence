@@ -146,6 +146,8 @@ The frozen adapter's `TimelineReady` checks commands, pause vtables, map readine
 
 The operator preserved the rejected attempt and used one existing artifact-reviewed, profile-bound semantic action to close the observed ordinary modal. The action receipt remained `dispatched_requires_business_readback` with `business_postcondition_verified=false`. A fresh native snapshot and independent native clock then agreed on the unchanged paused date; only after that evidence did a new policy attempt submit normal resume and observe `paused=false` with actual date advancement. The same CK3 PID, loaded DLL, bridge session and generation 2 remained in use. No rejected command was blindly replayed, and no game restart, reinjection or accumulated-year reset occurred.
 
+This sequence establishes the later action/state postconditions. It did not isolate notification dismissal from transient engine submission state or other merged prerequisites; the refusal's root cause remains unlocated. The observation supplies no general automatic-click recovery policy.
+
 | Frozen independent-project evidence | SHA-256 | Boundary |
 | --- | --- | --- |
 | `dismiss-war-result-001-desktop_execute_action_v1.json` | `f27af2e8467a760c2283911630f6cfa354a148635b3868a362cbd54922ceb3a0` | One input ACK; business result still false |
