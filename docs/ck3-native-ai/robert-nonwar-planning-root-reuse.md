@@ -29,6 +29,8 @@ flowchart TD
   I --> J[next turn: fresh succession/root observation]
   C -. same paused public/native frame .-> F
   C -. same paused public/native frame .-> G
+  C -. static-ready: same-frame incumbent .-> K[consume applied Chancellor persistence]
+  K -. next natural live validation pending .-> F
   H -. future unobserved business outcomes: unknown .-> U[actual later reply / event]
 ```
 
@@ -73,3 +75,13 @@ flowchart TD
 有限 external capture 为 turn 184706 B 加两份 snapshot 49169 B，共 **233875 B**；history 在这些外部 snapshot 继续明确 omitted，而保存的 checkpoint history index 与完整 driver history 都是 **4081**。完整 save/driver bytes 与 SHA 由协调者关闭时计算并写入不可变 result，分析者未读取当前 live state。
 
 本范围升级为 **production-live loop：普通规划中复用首份 root 观测**，对应真实“观察 → 决策 → life-advance → 验证/保存”。G2 整局目标与其他能力边界不变。一次 closed-file readout 位于 `m7-robert/planning-reuse-412-live-readout-01/`：`wire-live-proof.json`、`context-timers-proof.json` 与 `capture-history-proof.json`；后续自然新帧继续正常主线，不为额外样本重复实机。
+
+## v24：Chancellor 持任核对复用与规划耗时
+
+`m7-robert/normal30-after-finalread-recovered-82c-v24-actual-01` 的 16 个正式普通回合已 CLOSED。冻结 Python 为 `production-source-82c03174`。正式 service 合计 **438.775308 秒**，其中提交前 planning **419.075478 秒，占 95.5103%**；dispatch/verification 为 19.675587 秒。外置 JSON 写入合计 0.873864 秒，与阶段计时重叠；16 次外部 Sway 预查询未计入 formal service，因此这些数值不是约九分钟进程全程的完整分解，也不能归因于最小化执行或某个 native wait。
+
+每轮 root 已只读一次。Chancellor 与 Steward 的两份 final-gates 查询针对不同职务，status 分别消耗各自 pending 操作。本次可减少的是既有 Chancellor 赋职的持任核对：**16/16** 同帧 root 的 incumbent、applied 人选与 Chancellor terminal 查询的 incumbent 都为 **43696**，日期与 native revision 匹配；消费函数只使用额外查询的 incumbent。单叶补丁删除这组异职务的 final-gates/status 请求，直接使用既有 root holder；Steward 完整候选与合法性 quote、同职务核对及动作后的独立 receipt 验证保留，既有 root 帧绑定和 fresh fallback 原样使用。
+
+新增既有测试文件的一个 focused case，真实 production consumer → driver wrapper → pending/status transport 的离线 wire 请求 **4 → 2**，Steward 完整计划、quote、决策和 Chancellor 消费结果相等，既有 typed 提交行为保持。第一次因独立测试目录缺少 frozen tools import 路径而在收集阶段 **harness RED**，尚未进入用例；receipt 保留，补路径后同一个用例 **1 passed in 3.56s**。最终测试文件只另同步旧 cold-query 计数断言，已通过的 focused case 字节未变，未重跑旧 suite。这是 **static-ready**，端点回包仍为 fixture 输入。按本批次预计每轮读取请求 **9 → 7**（16 轮 144 → 112；planning 请求 128 → 96），尚无节省秒数或实机提速百分比的 claim；等待新冻结 Python attach 后下一轮自然普通游玩确认。日期 1/7/30 策略、native DLL、窗口行为与完整 history 持久化保持现有实现。
+
+完整计时、16/16 比较、两路径 patch/pins、首次 harness RED 与 focused GREEN 索引见 `artifacts/g2-maintainer-2026-10-02/resume-12003/performance-v24-normal16/ROOT-DELIVERY.json`（SHA-256 `7372273681087f2f659ccec1197a4f6271329df66dae7c2979f4f84956349458`）。本分析与静态补丁不另加 Robert 天数、政府资格或 G2 credit。

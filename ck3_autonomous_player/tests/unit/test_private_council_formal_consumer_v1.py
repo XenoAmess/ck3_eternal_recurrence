@@ -291,7 +291,7 @@ def test_chancellor_vacancy_preserves_old_steward_and_consumes_own_next_and_cold
     assert recovered["council_receipt_consumed"]["next_turn_consumed"] is True
     assert recovered["council_receipt_consumed"]["next_turn_native_revision"] == 1
     assert recovered["council_receipt_consumed"]["next_turn_position"]["incumbent_character_id"] == candidate_character_id
-    assert cold.role_queries == ["councillor_chancellor", "councillor_steward"]
+    assert cold.role_queries == ["councillor_steward"]
     assert cold.submit_calls == 0
     assert set(read_council_ledger(tmp_path)) == {"schema", "pending", "applied"}
 
@@ -315,3 +315,116 @@ def test_applied_chancellor_read_does_not_overwrite_a_new_steward_submit_quote(t
     pending = submit_council_private(driver, plan=planned["plan"], expected_revision=planned["revision"])
     assert pending["action_ack"]["council_assign_councillor_ack"]["position_key"] == "councillor_steward"
     assert driver.submit_calls == 1
+
+
+def test_applied_chancellor_reuses_root_with_real_pending_transport(tmp_path):
+    """Production consumer/wrapper/transport; endpoint replies are offline.
+
+    The configured Steward quote remains native-shaped and last. This proves
+    transport request counts, not CK3 elapsed time or a live assignment.
+    G2_CHANCELLOR_BASELINE_PATH enables the same-case frozen-source comparison
+    in the external delivery; ordinary repository pytest exercises current code.
+    """
+    import importlib.util
+    import os
+    from types import SimpleNamespace
+    from test_nonwar_planning_root_reuse import _PlanningDriver
+    from test_chancellor_council_query_v1 import _MailboxDriver, _terminal, _wire
+    from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+    from xar_autoplayer.bridge.council_private_transport_v1 import PRIVATE_GATES_STEP, PRIVATE_STATUS_STEP
+    from xar_autoplayer.bridge.version_identity import CK3_12003
+
+    class WireDriver(_PlanningDriver):
+        allow_private_council_query = True
+        query_council_final_gates_private_v1 = NativeHeadlessGameplayDriver.query_council_final_gates_private_v1
+        submit_council_assign_private_v1 = OfflineChancellorDriver.submit_council_assign_private_v1
+
+        def __init__(self, state_dir, query_roles):
+            super().__init__(state_dir)
+            self.material = OfflineChancellorDriver(state_dir, candidate_character_id=43696, diplomacy=12)
+            self.material.phase = "cold"
+            self.material.steward_improvement = True
+            self.frame.update(self.material.take_snapshot())
+            self.frame["diagnostics"]["hello"].update(expected_ck3_version=CK3_12003.game_version,
+                expected_ck3_sha256=CK3_12003.executable_sha256)
+            self.requests = []
+            self.endpoint = SimpleNamespace(send=self.requests.append)
+            self.state = SimpleNamespace(wait_for_command_result=self.council_reply)
+            self.command_timeout_seconds = 1.0
+            self.last_queried_role = None
+            self.steward_improvement = True
+            self.phase = "cold"
+            self.native_ack = None
+            self.results = []
+            for role in query_roles:
+                pending = _wire("council-private-query-pending.json")["result"]
+                pending["step"] = PRIVATE_GATES_STEP
+                quote = self.material.query_council_final_gates_private_v1(
+                    expected_revision=self.frame["revision"], position_key=role)
+                terminal = _terminal(role, PRIVATE_GATES_STEP)
+                payload = terminal["council_final_gates"]["council_composition_candidates"]
+                payload.update(copy.deepcopy(quote["council_composition_candidates"]))
+                terminal["council_final_gates"].update(copy.deepcopy(quote["council_final_gates"]))
+                terminal["council_final_gates"]["council_composition_candidates"] = payload
+                terminal.update(snapshot_revision=self.frame["native_revision"],
+                                query_sequence=201 if role == "councillor_steward" else 200)
+                self.results.extend((pending, terminal))
+
+        def _execute_campaign_root_context_v1_query(self, *, expected_revision):
+            result = super()._execute_campaign_root_context_v1_query(expected_revision=expected_revision)
+            holder = next(row for row in result["campaign_root_context"]["council"]["positions"]
+                          if row["position_key"] == "councillor_chancellor")
+            holder["incumbent_character_id"] = 43696
+            self.last_root_result = copy.deepcopy(result)
+            return result
+
+        def council_reply(self, request_id, timeout_seconds):
+            assert timeout_seconds > 0 and self.requests[-1]["request_id"] == request_id
+            frame = _MailboxDriver._response(self, request_id, timeout_seconds)
+            payload = frame["result"].get("council_final_gates", {}).get("council_composition_candidates")
+            if payload is not None:
+                self.last_queried_role = payload["position"]["position_key"]
+            return frame
+
+    baseline_path = os.environ.get("G2_CHANCELLOR_BASELINE_PATH")
+    consumers = []
+    if baseline_path:
+        spec = importlib.util.spec_from_file_location("xar_autoplayer._g2_council_baseline", baseline_path)
+        baseline = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(baseline)
+        consumers.append(("before", baseline.plan_council_private))
+    consumers.append(("after", plan_council_private))
+    observations = []
+    for label, consumer in consumers:
+        state_dir = tmp_path / label
+        state_dir.mkdir()
+        expected_roles = ["councillor_chancellor", "councillor_steward"] if label == "before" else ["councillor_steward"]
+        driver = WireDriver(state_dir, expected_roles)
+        applied = {"status": "applied", "episode_run_id": driver.frame["episode_run_id"],
+            "candidate_character_id": 43696,
+            "action_ack": {"council_assign_councillor_ack": {"position_key": "councillor_chancellor"}},
+            "receipt": {}, "next_turn_consumed": False}
+        (state_dir / LEDGER_FILENAME).write_text(json.dumps({"schema": "xar.ck3.private-council-formal/v1",
+            "pending": None, "applied": applied}), encoding="utf-8")
+        root = driver._execute_campaign_root_context_v1_query(expected_revision=driver.frame["revision"])
+        planned = consumer(driver, {"revision": driver.frame["revision"], "snapshot_id": driver.frame["snapshot_id"],
+            "plan": {"policy": "nonwar-dispatch", "selected_step": None}}, driver.take_internal_semantic_snapshot(),
+            [], set(), campaign_root_result=root)
+        material = planned["plan"]
+        assert [request["position_key"] for request in driver.requests if request["step"] == PRIVATE_GATES_STEP] == expected_roles
+        assert [request["step"] for request in driver.requests] == [PRIVATE_GATES_STEP, PRIVATE_STATUS_STEP] * len(expected_roles)
+        assert driver.root_calls == 1
+        assert driver.results == []
+        assert material["council_receipt_consumed"]["next_turn_consumed"] is True
+        assert material["council_receipt_consumed"]["next_turn_position"]["incumbent_character_id"] == 43696
+        assert material["council_decision"]["position_key"] == "councillor_steward"
+        assert material["council_decision"]["outcome"] == "REPLACE_REQUIRED"
+        assert driver.last_queried_role == "councillor_steward"
+        consumed = read_council_ledger(state_dir)["applied"]
+        pending = submit_council_private(driver, plan=material, expected_revision=planned["revision"])
+        assert pending["action_ack"]["council_assign_councillor_ack"]["position_key"] == "councillor_steward"
+        assert driver.submit_calls == 1
+        observations.append((planned, consumed))
+        print(f"{label}: production_transport_wire_requests={len(driver.requests)} root_calls=1 configured_steward_submit=1 consumed_chancellor=43696")
+    if baseline_path:
+        assert observations[0] == observations[1]

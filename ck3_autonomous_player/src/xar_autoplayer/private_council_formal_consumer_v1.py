@@ -237,10 +237,8 @@ def plan_council_private(
     applied_role = (_record_position_key(applied)
                     if isinstance(applied, dict) and applied.get("episode_run_id") == snapshot.get("episode_run_id")
                     else None)
-    # Read persistence for another role first; keep the configured submission
-    # quote last in the native mailbox. The default remains Steward.
-    applied_query = (_query_position(driver, applied_role)
-                     if applied_role is not None and applied_role != position_key else None)
+    # Keep the configured submission quote in the native mailbox.
+    # Persistence for another role uses the independent campaign-root holder.
     query = _query_position(driver, position_key)
     decision = select_council_candidate_v1(
         query, position_key=position_key,
@@ -254,8 +252,8 @@ def plan_council_private(
         root, current = _root(driver, campaign_root_result)
         holder = _position(root, applied_role)
         receipt = applied.get("receipt", {}).get("council_assign_councillor_receipt", {})
-        persistence_query = query if applied_role == position_key else applied_query
-        observed = persistence_query.get("council_composition_candidates", {}).get("position", {})
+        observed = (query.get("council_composition_candidates", {}).get("position", {})
+                    if applied_role == position_key else holder)
         persists = bool(holder and holder.get("incumbent_character_id") == applied.get("candidate_character_id")
                         and observed.get("incumbent_character_id") == applied.get("candidate_character_id"))
         consumption = {**applied, "next_turn_consumed": persists,
