@@ -1044,6 +1044,7 @@ def ck3_process_inventory() -> dict[str, object]:
             ["tasklist", "/FI", "IMAGENAME eq ck3.exe", "/FO", "CSV", "/NH"],
             capture_output=True,
             text=True,
+            encoding="mbcs",
             errors="replace",
             check=False,
             timeout=10,

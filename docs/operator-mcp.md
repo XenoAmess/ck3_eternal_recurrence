@@ -72,6 +72,21 @@ Bootstrap 的唯一人工/外部边界是：首次让 server 本身运行在目�
 UIA/坐标。返回的 `build_matches_expected`、`installed_matches_latest` 与 hash 是实际文件 readback；
 进程存在、manifest 存在或一次 MCP 调用 ACK 均不能替代这些 readback。
 
+## Windows 进程清单的输出编码
+
+受管 CK3 runtime 的 [ck3_process_inventory](../ck3_autonomous_player/src/xar_autoplayer/environment.py)
+使用 tasklist 与 Toolhelp32 核对完整 PID 集合。实际中文 Windows ACP/OEMCP 936 的无匹配输出为
+“信息: 没有运行的任务匹配指定标准。”；stdout SHA `cb1256981f7b3ac53e3cfc7c6a13d4b058702bb707431b31e202abfcf6782f07`。
+Python UTF-8 模式会让未指定 encoding 的 text subprocess 将这些 CP936 bytes 错解为乱码，
+导致已有 INFO/信息识别拒绝。现在只为这次 tasklist 调用显式设 `encoding="mbcs"`，采用 Windows
+ANSI code page；保留原 errors、超时、未知输出拒绝、CSV 解析、两路 PID 不一致拒绝和 Toolhelp 失败拒绝。
+此修复不把未知文本当空清单，也不放宽活 CK3 排他门；不声称支持所有 locale/OEM 与 ANSI 不同的情况。
+
+一次 `-X utf8=1` 聚焦验收通过 6 项：实际给定 CP936 bytes 经 harmless Python 子进程重放并由
+生产 decoder 正确读取；Toolhelp 指出有进程时仍拒绝空 tasklist，旧乱码仍拒绝，原两路差异、
+RPC 失败、Toolhelp 失败与 access-denied fallback 继续保持。未执行 tasklist/Toolhelp、操作桌面、
+启动 CK3 或接入 SDK；实际新受管 launch 仍 NOT_RUN。旧失败和冻结候选不由未来修复重新解释。
+
 ## 版本与复用
 
 - profile schema：`1`

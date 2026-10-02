@@ -15,6 +15,11 @@ from unittest import mock
 from jsonschema import Draft202012Validator
 
 
+TASKLIST_CP936_EMPTY_STDOUT = bytes.fromhex(
+    "d0c5cfa23a20c3bbd3d0d4cbd0d0b5c4c8cecef1c6a5c5e4d6b8b6a8b1ead7bca1a30d0a"
+)
+
+
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
 
@@ -1147,6 +1152,55 @@ class TrackedShutdownTests(unittest.TestCase):
             self.assertEqual(
                 _process_identity(123), {**identity, "command_line": ""}
             )
+
+    def test_tasklist_native_ansi_contract_keeps_unknown_output_fail_closed(self) -> None:
+        for unknown in (False, True):
+            stdout = TASKLIST_CP936_EMPTY_STDOUT.decode(
+                "utf-8" if unknown else "cp936", errors="replace"
+            )
+            completed = subprocess.CompletedProcess(["tasklist"], 0, stdout, "")
+            with self.subTest(unknown=unknown), mock.patch(
+                "xar_autoplayer.environment.os.name", "nt"
+            ), mock.patch(
+                "xar_autoplayer.environment.subprocess.run", return_value=completed
+            ) as run, mock.patch(
+                "xar_autoplayer.environment._toolhelp_ck3_processes", return_value=[]
+            ) as native:
+                if unknown:
+                    with self.assertRaisesRegex(AgentError, "unexpected output"):
+                        ck3_process_inventory()
+                    native.assert_not_called()
+                else:
+                    inventory = ck3_process_inventory()
+                    self.assertEqual(inventory["tasklist_pids"], [])
+                    self.assertEqual(inventory["native_pids"], [])
+                    native.assert_called_once_with()
+                self.assertEqual(run.call_args.kwargs["encoding"], "mbcs")
+
+    @unittest.skipUnless(os.name == "nt", "Windows native ANSI byte replay")
+    def test_tasklist_cp936_bytes_replay_retains_toolhelp_disagreement(self) -> None:
+        expected = TASKLIST_CP936_EMPTY_STDOUT.decode("cp936", "strict")
+        try:
+            native_text = TASKLIST_CP936_EMPTY_STDOUT.decode("mbcs", "strict")
+        except UnicodeDecodeError:
+            self.skipTest("This captured fixture requires Windows ACP 936")
+        if native_text != expected:
+            self.skipTest("This captured fixture requires Windows ACP 936")
+        real_run = subprocess.run
+
+        def replay(command, **kwargs):
+            self.assertEqual(command, ["tasklist", "/FI", "IMAGENAME eq ck3.exe", "/FO", "CSV", "/NH"])
+            self.assertEqual(kwargs["encoding"], "mbcs")
+            # Harmless Python byte emitter only; never run tasklist or native inventory.
+            emit = "import sys; sys.stdout.buffer.write(bytes.fromhex(" + repr(TASKLIST_CP936_EMPTY_STDOUT.hex()) + "))"
+            return real_run([sys.executable, "-X", "utf8=1", "-c", emit], **kwargs)
+
+        with mock.patch("xar_autoplayer.environment.subprocess.run", side_effect=replay):
+            with mock.patch("xar_autoplayer.environment._toolhelp_ck3_processes", return_value=[]):
+                self.assertEqual(ck3_process_inventory()["processes"], [])
+            with mock.patch("xar_autoplayer.environment._toolhelp_ck3_processes", return_value=[{"pid": 123}]):
+                with self.assertRaisesRegex(AgentError, "inventories disagree"):
+                    ck3_process_inventory()
 
     def test_tasklist_access_denied_uses_toolhelp_inventory(self) -> None:
         denied = subprocess.CompletedProcess(
