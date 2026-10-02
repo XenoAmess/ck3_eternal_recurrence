@@ -1,0 +1,25 @@
+{
+  "schema": "xar.g2.m5-war-cash-latest-pair-request.v1",
+  "created_at_utc": "2026-09-28T08:31:32Z",
+  "status": "requested_identity_only_no_transfer_yet",
+  "owner": "r0266_resume",
+  "request_relative_path": "WAR/M5-WAR-CASH-20260928/REQUEST.json",
+  "requested_latest_checkpoint": {
+    "checkpoint": "H3492",
+    "date_raw": 53219160,
+    "save_sha256_as_published": "98FC24FEDC2C6A1F8C67F83A8CAB5BF18E3A1A2ACCBEB92CB851801F1F935F46",
+    "actor_character_id": 29829,
+    "war_id_to_recheck": 16777231,
+    "source_document": "origin/master docs/autonomous-agent-progress/daily/2026-09-28.md R0288 at commit f6e27d579",
+    "origin_locator_is_metadata_only": "Z:/m6ransom-r0287-cold-receipt-candidate-v1/state-v2/profile/save games/xar_checkpoint.ck3"
+  },
+  "request_to_origin": [
+    "Identify and freeze the exact H3492 source save bytes matching the published SHA, or report that they are no longer extant after successor runs.",
+    "Produce or identify an officially rebound H3492 driver, complete family sidecar and paired candidate index; bind the exact save, checkpoint history/date, actor/episode, source commit, WarID and no post-checkpoint command-history contamination.",
+    "Provide exact SHA-256, byte size and proposed receiver filename for save, driver, family sidecar, official rebind receipt, official no-launch preflight and candidate index. State whether official pair/no-launch checks passed and whether any files were mutated by later R0289.",
+    "Identify the exact compatible CK3 EXE, DLL and injector SHA/source commit. Do not infer current cash from H3446, H3388 or H2825 and do not call an older candidate a new cash build."
+  ],
+  "origin_response_file": "PAIR-RESPONSE-H3492-v1.json",
+  "transfer_contract": "Respond with an identity manifest or a precise unavailable/conflict status first. Do not transfer large assets until the receiver checks the proposed exact filename/SHA/size mapping and writes a separate ASSET-ACCEPT-H3492-v1.json. Only that accepted whitelist may then be copied into this same WAR folder.",
+  "cash_boundary": "No H3492 same-frame cash reading, no CK3 launch requested by this file, and all five wartime cash inputs remain null."
+}

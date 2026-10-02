@@ -1,0 +1,154 @@
+{
+  "schema": "xar.war-ai.episode02.a01-join-card-facts.v2",
+  "usage_scope": "current-a01-private-join-edit-proxy",
+  "media_status": "PTS_CONTINUOUS_UNREVIEWED",
+  "clean_spans_certified": false,
+  "human_review_completed": false,
+  "run_identity": {
+    "run": "episode02-e2-06-d11-live-20260928-a01",
+    "source_relation": "independent_cold_load_of_004_day11_checkpoint_same_save_as_historical_085_distinct_run",
+    "source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+    "pre_date_raw": 53146488,
+    "post_date_raw": 53146512,
+    "game_version": "1.19.0.6",
+    "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F",
+    "player_character_id": 29829,
+    "combat_id": 16777218,
+    "war_id": 4,
+    "province_id": 2633,
+    "joining_army_id": 22,
+    "player_army_id": 18
+  },
+  "sources": {
+    "preflight": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/preflight.json",
+      "sha256": "7876B3C75253A2CFC48F1D584EB45124A71C8EFAD66AE5E974578BA1DCC3D0A0"
+    },
+    "start_readback": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/native-start-readback.json",
+      "sha256": "B6C619930060FC521E0F84B9966BE771D8BF78FE177422344DB52A2F13FD5DF0"
+    },
+    "pre_snapshot": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/interactive-requests-responses/e2-06-d11-snapshot.json",
+      "sha256": "2709EB87D3C5420510BFBF3092B9E324D20BA3B5ACF8A6204F1A572501E1D1A6"
+    },
+    "trace_begin": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/interactive-requests-responses/e2-06-d11-trace-begin.json",
+      "sha256": "0475E133E989AE9A5C83A2FA805C26FF2541E37B522B0E0FC239CE9721629437"
+    },
+    "trace_finish": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/interactive-requests-responses/e2-06-d11-trace-finish.json",
+      "bytes": 439154,
+      "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5"
+    },
+    "post_snapshot": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/interactive-requests-responses/e2-06-d11-post-snapshot.json",
+      "bytes": 50100,
+      "sha256": "23A38AFB71F660695793CE04E3CF433E6BF0A93A7C590A6CD41D502EB083337A"
+    },
+    "one_day_advance": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/operator-steps/e2-06-d11-advance.json",
+      "sha256": "8A2DDB58464E3206304C80B03B38FC23BA832E762C52A256EBE05C1210A321B5"
+    },
+    "recorder_final": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/recorder-final.json",
+      "sha256": "F4EA84BCF8BF42149F80BAFB8820B3FC4BB87C0A23653353D7FE535109F3741F"
+    },
+    "pts_audit": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/pts-audit-a01.json",
+      "sha256": "6BF5086B8AF8E2CB2E7261989487F52A3E57D2B43A7204B474340B29B7ECBCDB"
+    },
+    "session_result": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/session-result.json",
+      "sha256": "3413FB08D3496F41988F225C9DAAFCE5443C3A4CDD41FA8BBBB1B8AB6941108C"
+    },
+    "raw_video": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+      "bytes": 1325156480,
+      "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+      "hash_provenance": "recorder_final_and_pts_audit_reported_not_rehashed_for_cards"
+    }
+  },
+  "native_join_facts": {
+    "private_trace": true,
+    "production_trace_ready": false,
+    "original_trace_ready": false,
+    "full_mutable_transition_bundle_complete": false,
+    "join_boundary_count": 2,
+    "width_boundary_count": 3,
+    "old_side0_entry_count": 27,
+    "old_side1_entry_count": 24,
+    "incoming_regiments": 13,
+    "incoming_starting_people": 2570,
+    "incoming_current_people": 2560,
+    "zero_current_regiment_id": 177,
+    "zero_current_regiment_starting_people": 10,
+    "side0_before_cache_raw_q100000": 160317482,
+    "side0_before_entry_sum_raw_q100000": 154690163,
+    "side0_cache_minus_entry_raw_q100000": 5627319,
+    "side1_before_cache_raw_q100000": 89325449,
+    "side1_before_entry_sum_raw_q100000": 82785368,
+    "side1_cache_minus_entry_raw_q100000": 6540081,
+    "side0_after_cache_and_entry_raw_q100000": 410690163,
+    "side1_after_cache_and_entry_raw_q100000": 82785368,
+    "after_cache_minus_entry_raw_q100000": [
+      0,
+      0
+    ],
+    "base_width_before": 1645,
+    "final_width_before": 1480,
+    "base_width_after": 2467,
+    "final_width_after": 2220,
+    "first_side0_fire_width_argument": 2220,
+    "forest_width_multiplier_raw_q100000": 90000,
+    "forest_multiplier_provenance": "same_build_stock_script_static_not_a01_runtime_field"
+  },
+  "poststate_facts": {
+    "war4_player_relative_score": 0,
+    "army22_in_combat_pre": false,
+    "army22_in_combat_post": true,
+    "army18_in_combat_pre_and_post": true,
+    "army18_exact_battle_control_membership_proven": false
+  },
+  "media_boundaries": {
+    "duration_seconds": "600.000000",
+    "frame_count_with_pts": 16691,
+    "pts_gap_count": 0,
+    "clean_spans_certified": false,
+    "human_review_completed": false,
+    "gui_scale_1_3_lower_panel_crop": "reported_by_separate_readonly_audit_commit_2f7995c8f; full native panel not established in this card factcheck"
+  },
+  "historical_comparison": {
+    "historical_replay": "085",
+    "numeric_fields_equal": true,
+    "same_source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+    "same_run": false,
+    "historical_card_e2_06_sha256": "767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5",
+    "historical_card_e2_07_sha256": "91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527"
+  },
+  "artifacts": {
+    "card_index": {
+      "path_relative_to_this_file": "calculation-cards.json",
+      "bytes": 27681,
+      "sha256": "AF6B27757423E81355DBA965BD867AE43AF12844BC61C22277C9CFCD58429690"
+    },
+    "renderer": {
+      "path_relative_to_this_file": "render_calculation_cards.py",
+      "bytes": 52796,
+      "sha256": "32C52164DA73EB2286EB9BDFD8A656A05EABA2BAA30DBE29711CD640132C49C9"
+    },
+    "current_a01_e2_06_card": {
+      "path_relative_to_this_file": "e2-06-a01-calculation.svg",
+      "bytes": 6169,
+      "sha256": "814C801E5CFAD07A07A4EC6DE4A1C46A699CF2D605A2FF54D12CD98CA9EAFFB3"
+    },
+    "current_a01_e2_07_card": {
+      "path_relative_to_this_file": "e2-07-a01-calculation.svg",
+      "bytes": 5406,
+      "sha256": "3C4AC6DC781820B20352BE5F1D13CB05AA655DAE34C2065B910C74C3E696AE6F"
+    }
+  },
+  "supersedes_receipt_sha256": "2F282D3B199524CDB6B39E837C7BEC52E150E77E7B14A0919BA0AC8D97C0A8CD",
+  "supersedes_reason": "formal_card_index_and_renderer_rebound_to_same_a05_pursuit_control_and_parity_run_without_changing_a01_join_or_a05_terminal_artifacts"
+}

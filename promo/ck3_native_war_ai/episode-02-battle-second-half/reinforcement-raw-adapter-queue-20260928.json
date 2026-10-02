@@ -1,0 +1,63 @@
+{
+  "schema": "xar.war-promo.episode02-reinforcement-adapter-queue/v1",
+  "status": "METADATA_CHECKED_PENDING_FULL_RAW_AND_VISUAL_REVIEW",
+  "adapter_eligible": false,
+  "clean_spans_certified": false,
+  "human_1x_review_performed": false,
+  "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01",
+  "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01",
+  "capture_report": {
+    "bytes": 8643,
+    "sha256_checked_this_pass": "F59CBFFACCA88C59D158A6196CD2994BAFF0D6FD22A1E051FD167C2BC51D4F2F",
+    "result": "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO"
+  },
+  "session_result": {
+    "bytes": 7489,
+    "sha256_checked_this_pass": "3413FB08D3496F41988F225C9DAAFCE5443C3A4CDD41FA8BBBB1B8AB6941108C",
+    "shutdown_tree_gone": true,
+    "shutdown_cleanup_proven": true
+  },
+  "recorder_final": {
+    "bytes": 1927,
+    "sha256_checked_this_pass": "F4EA84BCF8BF42149F80BAFB8820B3FC4BB87C0A23653353D7FE535109F3741F",
+    "result": "ENCODED_UNREVIEWED"
+  },
+  "raw": {
+    "relative_path": "recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+    "bytes_stat_checked_this_pass": 1325156480,
+    "sha256_from_recorder_final_not_rehashed_this_pass": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+    "width": 1920,
+    "height": 1080,
+    "format_duration_seconds": "600.000000"
+  },
+  "ffprobe": {
+    "relative_path": "recording-e2-06-d11-a01/ffprobe.json",
+    "bytes_stat_checked_this_pass": 15862058,
+    "sha256_from_recorder_final_not_rehashed_this_pass": "FE062858E759D29CEA538FB3AD7F300812AB410DF0C02B8A0544A9D09B0310F0"
+  },
+  "pts_audit": {
+    "bytes": 1694,
+    "sha256_checked_this_pass": "6BF5086B8AF8E2CB2E7261989487F52A3E57D2B43A7204B474340B29B7ECBCDB",
+    "result": "PTS_CONTINUOUS_UNREVIEWED",
+    "frames": 16691,
+    "first_pts_seconds": "0.000000",
+    "last_pts_seconds": "599.967000",
+    "missing_pts_count": 0,
+    "nonmonotonic_count": 0,
+    "gap_over_0_2_seconds_count": 0
+  },
+  "marks": {
+    "bytes": 1940,
+    "sha256_checked_this_pass": "B028F603784512C6013095735DE3A9F1AEA7971F57E69AA86BFDAEBD8E99C02E",
+    "navigation_only_not_media_pts": [
+      {"kind": "e2-06-d11-before", "approx_seconds": "226.7199571", "date_raw": 53146488, "combat_id": 16777218, "war_id": 4},
+      {"kind": "e2-06-d12-after", "approx_seconds": "374.0667917", "date_raw": 53146512, "combat_id": 16777218, "war_id": 4}
+    ]
+  },
+  "candidate_search_windows_seconds": [
+    {"purpose": "day11 before-state navigation", "begin": 200, "end": 255, "exact_media_pts_endpoints_verified": false, "visual_review_performed": false},
+    {"purpose": "day12 after-state navigation", "begin": 350, "end": 410, "exact_media_pts_endpoints_verified": false, "visual_review_performed": false}
+  ],
+  "visual_limit": "GUI.scale=1.3 clipped the lower battle panel; this raw cannot prove lower regiment and combat-width UI visibility",
+  "next_gate": "Serial prepare with a current verified xar-promo wheel; inspect full ffprobe and raw at 1x, extract exact PTS endpoint frames, then separately attest review and package selected spans."
+}

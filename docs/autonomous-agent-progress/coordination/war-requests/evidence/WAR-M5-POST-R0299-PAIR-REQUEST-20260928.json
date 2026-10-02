@@ -1,0 +1,30 @@
+{
+  "schema": "xar.g2.m5-war-cash-post-r0299-pair-request.v1",
+  "created_at_utc": "2026-09-28T09:51:19Z",
+  "owner": "r0266_resume",
+  "sender_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "reply_file": "PAIR-RESPONSE-POST-R0299-v1.json",
+  "trigger": "After R0299 has normally completed and its own official latest durable checkpoint is independently verified; do not pause or terminate R0299 for this request.",
+  "known_historical_pair": {
+    "source_round": "R0298",
+    "history_index": 3603,
+    "date_raw": 53219352,
+    "addendum_sha256": "D9E08F70C1CE881BD2A7DC60FC077511FF676E260652DA3037F80BDEB50B0480"
+  },
+  "source_window_response_sha256": "05417B275E7176376BF3D5AC881984D4704182C0886E17B82D49144958DC4C80",
+  "requested_metadata": [
+    "Final official durable history index, date_raw, episode and actor, WarID recheck source, producer commit, save filename/bytes/SHA-256 and exact matching raw driver filename/bytes/SHA-256.",
+    "Whether an isolated official rebound and family/ledger pair can be prepared after R0299 cleanup; if so provide exact source no-launch/cold validator results, a per-file whitelist, byte sizes and SHA-256, then wait for separate receiver transfer acceptance.",
+    "Explicit latest war-cash producer availability by field: outstanding committed war cash, selected action immediate cost with typed step/route/quote identity, future cost upper bound with horizon and debit cadence, risk budget, and versioned player war minimum reserve policy. Unknown remains null.",
+    "Whether a short no-command frozen-frame development window is feasible only after R0299 completes and before any next campaign advance; report owner, safe start/expiry, and whether current player prisoner ransom receipt remains pending."
+  ],
+  "transfer_boundary": "Metadata only in this request. Do not transfer large save/driver, unrelated OneDrive files, DLL or injector until a separate exact file/SHA acceptance is published. H3603 transferred assets remain historical and are not reusable as the new frame.",
+  "authority_boundary": "No CK3 launch, gameplay command, prisoner ransom action, source process interruption, M5 spend or cash value is authorized by this request. Receiver will separately prove code/binary identity and official no-launch/live pause after local screen release.",
+  "war_cash_q100000": {
+    "pending_war_cash_raw": null,
+    "immediate_war_action_cost_raw": null,
+    "future_war_cost_upper_raw": null,
+    "future_risk_budget_raw": null,
+    "policy_minimum_gold_reserve_raw": null
+  }
+}

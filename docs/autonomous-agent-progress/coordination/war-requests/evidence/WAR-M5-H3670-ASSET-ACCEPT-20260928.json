@@ -1,0 +1,33 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3670-rebound-asset-accept.v1",
+  "created_at_utc": "2026-09-28T10:01:32Z",
+  "owner": "r0266_resume",
+  "status": "accepted_for_exact_seven_file_historical_transfer_only",
+  "source_response_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-RESPONSE-POST-R0299-v1.json",
+  "source_response_sha256": "2921AE4D38F51FAD855E439E28289D219DE124710AC9C45C01EA3605C6AB22DB",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "frame_identity": {
+    "checkpoint": "H3670",
+    "source_round": "R0299",
+    "history_index": 3670,
+    "date_raw": 53219496,
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id_to_recheck": 16777231,
+    "source_producer_commit": "4693c77278ad158c54722fd831e1153675988d37"
+  },
+  "accepted_files": [
+    {"file": "H3670-rebound-v1-xar_checkpoint.ck3", "bytes": 78478808, "sha256": "131B10B439F601AC94FBD817FE05678FA787E0B8CF3515B6D589000B0072F3AE"},
+    {"file": "H3670-rebound-v1-driver-state.json", "bytes": 89772659, "sha256": "F93744FAA7A6ABCDD2BEA773FEF4904353BDE4596C601694167E8DB9FEC558EC"},
+    {"file": "H3670-rebound-v1-first-heir-marriage-formal-v1.json", "bytes": 2740, "sha256": "18350BBCF019331A2E821E9DE59D9B2A58424A4A8B7D5E8C8E82DE73CA36BFC3"},
+    {"file": "H3670-rebound-v1-player-prisoner-ransom-formal-v1.json", "bytes": 1281, "sha256": "3D133A7252CECC51DE4B0AEEFBF83028A73197AF1A7933AA432484912866743E"},
+    {"file": "H3670-rebound-v1-rebind-receipt.json", "bytes": 4165, "sha256": "F34BDE4D67FCEA44DC1BB8754F20FBF8C8D2FE26046A31C5A3420EF821AB048D"},
+    {"file": "H3670-rebound-v1-no-launch-preflight.json", "bytes": 4110, "sha256": "C0278EC96C3DA09857F1596917783B878316792B5EB0E37466EB0527DBA7024A"},
+    {"file": "H3670-rebound-v1-candidate-index.json", "bytes": 5512, "sha256": "69EF538909FC539E8984D8B64A6247E4E844520AFF2D5278973DCAA4094EC958"}
+  ],
+  "total_accepted_bytes": 168269275,
+  "transfer_boundary": "Only these seven files are accepted. H3603/H3568 assets, R0299 raw driver, DLL, injector and unrelated OneDrive files are excluded. The resolved prisoner 44484 ransom ledger and 30-gold income are continuity facts, not war cash.",
+  "window_boundary": "Source explicitly granted no H3670 no-command hold and is preparing R0300. This acceptance does not request a pause or interrupt the source. H3670 can only serve isolated historical diagnostic if source advances.",
+  "verification_boundary": "Transfer is separate from receiver official pairing/no-launch and paused-frame identity. Receiver CK3/recorder screen lease is held by E2-09 video; do not use the assets for gameplay or current-frame cash before independent gates.",
+  "cash_boundary": "All five war cash Q100000 values, horizon, debit cadence and selected war-action quote are null. No M5 spend or cash GREEN follows."
+}

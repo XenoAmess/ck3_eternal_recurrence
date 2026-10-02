@@ -1,0 +1,2395 @@
+{
+  "schema": "ck3.war-handover.related-source-preservation.v1",
+  "baseline_master": "67184ba9dda67ff53af7d83fb691b7ee7b178552",
+  "preserved_missing_paths": 398,
+  "records": [
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/current_battle_knight_v1.hpp",
+      "git_blob": "ba9ee1b967b6ebaab17413eac1184e05c00948f9",
+      "sha256": "a84a5d3089a9164240d90f006408f263ed0b3914129a1c0a6655cc5e8b474d5b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "ck3_autonomous_player/tests/unit/test_current_battle_knight_v1_port.py",
+      "git_blob": "7dc4463eef91f244036e3de2d2fbe299122798ea",
+      "sha256": "97a751d3e11a68866e9b410bbcbabafc9858665a049153d72e9fef0384250875"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/a01-a02-sparse-visual-index-20260928.md",
+      "git_blob": "e5be714d8c71526e7ff353b533eb0c5312efc286",
+      "sha256": "50d18fee04d27e131ecedc03397e1d1a89c4591bd13704f4f65f8ff7f0c06771"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/a05-machine-pts-candidates-20260928.md",
+      "git_blob": "66c3f764a1e0fe2a0f6398b779c80417e58a3d7d",
+      "sha256": "7223865965f477026d7da41f8dbc9d564aa193c078972709d340162f31436742"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/audit_a05_pursuit_against_004.py",
+      "git_blob": "922a7991c15f3a3e612252b2c56fee73ecba1dc4",
+      "sha256": "b40548eca4de4262ae5a032346a9054f3eb5bb85f2c9bee03fed06dbbf508275"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/audit_e2_05_postrun_links.py",
+      "git_blob": "ea3a606798df26b8d614e7e226e0aab7dbab9fb4",
+      "sha256": "3ea9834bed0682a67d38a2f98211066f7df74083852d686d045e18296fbf807d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/audit_narration_budget.py",
+      "git_blob": "7ebfc9b8790543710b3a1f0bc17781ae20ec0b1e",
+      "sha256": "d868a21dfdd88ae3c84ffb30d64f44b845e49a04a6c8aca59d3d32851649c60a"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/audit_raw_video_pts.py",
+      "git_blob": "cb9ee41b6b7fa3d6d083139ca055b04f8fdbfc9d",
+      "sha256": "85c842d05765bc81af2937bc0cf4433ee41cfbaefe2d5bd8edb953bb8308814b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/audit_terminal_pair_raw_pts.py",
+      "git_blob": "0287991057ccec3e3188edf2dc0ea2359b4b462f",
+      "sha256": "bb53a2b63c30762a1a1eb20f8fdb0b4fc7823c7d816dc08c0d2d696aa9d14ead"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/build_a05_pursuit_parity_adapter.py",
+      "git_blob": "37850f2106924c9606cc83db75883d3d57d51b09",
+      "sha256": "188b76c912a44f731ef17eeaff2ff8c2262c619a04bb3fd7246bd57f08e49097"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/capture-readiness-audit-20260928.md",
+      "git_blob": "7c91401c2f6d05c814a2a44dd467176907f1d50a",
+      "sha256": "3eb8a388b95dab8c3b881cf9dfc7fb1923f2b6350295255e0747ac16f23c6286"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/README.md",
+      "git_blob": "974699134fa36bbb57cb314d307cdff166d54a2b",
+      "sha256": "4f305738b11ea28491748dfac7c987b1610cbc8491871c50a907c6ffb8a308a5"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-02-03-a05-pursuit-facts-20260928.json",
+      "git_blob": "2d855a397a762ea5359ea4d3d61481ef32345168",
+      "sha256": "40bc4c8e5b2e4af4cd86bd0d794c75047022e0dd456447fccae4918c169480a8"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+      "git_blob": "84ce094be7af1dd5751442725b1376fb3a1bafde",
+      "sha256": "ebf8036deb926536f74448fdd61c2e430bf4dd87e824d1032db826d70d32d6e6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928.json",
+      "git_blob": "2c3f3dd7ce5c8364dc5268160dd399a10575575a",
+      "sha256": "2f282d3b199524cdb6b39e837c7bec52e150e77e7b14a0919ba0ac8d97c0a8cd"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-09-a05-writer-facts-20260928-v2.json",
+      "git_blob": "f1d5c076003330e3497fd7b401547bf22b7a19a1",
+      "sha256": "5ea9cce31a58510182ef13a02f88066ed218d787586c64f92b0c4c293fcb116f"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-09-a05-writer-facts-20260928-v3.json",
+      "git_blob": "9b5582c8d3067819fa8a6f500d1c86c6736aa088",
+      "sha256": "a6e8cdebfc866df7c73241b12946e5e83c543de846a2b5d8290234af71626efe"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-09-a05-writer-facts-20260928.json",
+      "git_blob": "0a68f8a9f20741f4cdeb531d64bed594082a27d3",
+      "sha256": "22f3943dc4bf77cd64c4c74846253702c217966ebbabe3f265724d715e5e42b6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/verify_e2_02_03_a05_fact_receipt.py",
+      "git_blob": "b5acb3f4aa823ac01b7f087426d7b59fb53c3cd0",
+      "sha256": "65451c5e2e1ada26bc285897db672d6932fa4c2e37cd04c2fe5a25bf4c5ffe2b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/verify_e2_06_07_a01_fact_receipt.py",
+      "git_blob": "671080e42cc3698ae37d640234737311af355c91",
+      "sha256": "40847b7a3645e8f01be13f79348fd509736305dfb368f2669c58a47b2278c136"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/cards/verify_e2_09_a05_fact_receipt.py",
+      "git_blob": "68fff47b740796706ef625f321e90ef4a4876892",
+      "sha256": "02dc4580f194464ad2c7e791b337767125d53be8a0abc9d7a81e38966a47e545"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/control-known-gap-pregate-20260929.md",
+      "git_blob": "3573194d8a52b16ed93bb1237414f5fd108fc362",
+      "sha256": "839e7ab37f0c39bb16f6340a85ef44defd2554bb56ea25092d79c35ffcf2f25e"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/director-plan.md",
+      "git_blob": "243dece622520c9d953b380c78e84b9e98c853b5",
+      "sha256": "5d804eab2ac72c9530f8d2c9ecdf1dfbcc20ab7840d533afbb8022377efbea32"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/drive_terminal_pair_live.py",
+      "git_blob": "ea33ff7c0541c5d57235704f04f32bea8a36d575",
+      "sha256": "74e7e299c94f7df204ebfd2b331dfd1b2a4074950a6188561e08dc6ed60c0a30"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/drive_terminal_pair_segment.py",
+      "git_blob": "5be4ba78911a4006363ed6c73ab97602526eeb59",
+      "sha256": "776dc1b4ab5b62decda43738271be70ec3aadbe101b2cf910a5b148d8e76bf26"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-02-03-a05-pursuit-rebind-audit-20260928.md",
+      "git_blob": "d932fe120b7637381170c9d2bb6a710a7c8c5045",
+      "sha256": "e33e1777dbe1109164bdc3213ba45f791d4e4df4c0f92df33e9f358740b9bf9c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-05-narration-card-tts-source-audit-20260929.md",
+      "git_blob": "71b4194e26c6e0a3cf7e537fc0781712d6957ed8",
+      "sha256": "2f39a5bbddc54cf93f09b5b4192f90093cec3170ef84754108b7ae8efefdeb40"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a03-warmup-scale-gate-red-20260928.md",
+      "git_blob": "f2537a0816c95850eaa47300a68a237222a8e8e1",
+      "sha256": "0e56cdd46a81fd674bf8be5778a34aea844b23becb8261fe73a54cc21a73b78f"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a04-gui-scale-coldlaunch-evidence-20260929.md",
+      "git_blob": "156d0f9149a633a7e89394227f672f6e10766224",
+      "sha256": "71f5f2bf1a1d79c479ced0c8d37ef34f53d247c66386cd7e45b8bb7fb899a717"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a04-native-ui-save-red-outcome-20260929.md",
+      "git_blob": "730e3106305691490fc5478910548aebc168a9d8",
+      "sha256": "880b31a4e35a7d153fc85218317941357e62184d26ab3a546cde075314a6b004"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a04-no-screen-admission-20260928.md",
+      "git_blob": "62f12cc4dce69eeb942914c6f530f3e2751c1b0e",
+      "sha256": "df9fb559984bed3ef8934c9eb5eb2fddd8bf9270b380cd01c8321a8c404d0018"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a05-combat-panel-geometry-readonly-20260929.md",
+      "git_blob": "f0d559784f757cb56296b69c2af9e5d5e2341030",
+      "sha256": "05e4a431cf9cc96b9c8709b334900480186786643ffcd9136954fa6726cf893b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a05-ui-gui-import-candidate-20260929.md",
+      "git_blob": "1ca5e4b9078e1f534a20268cc2d52ba4939cb740",
+      "sha256": "0f17822fdaf6cbe167e191e33644641e7b2514db84fcb2e7e32144ec876553a7"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a05-ui-import-disk-green-visual-red-20260929.md",
+      "git_blob": "78ae6688a634433a8379cb4fabe8f3b5fc9637f1",
+      "sha256": "d49779a24bcb9a2ab4a1602b8a6841e69d400c9682d329e02d8261c6afefb467"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a05-ui-source-cli-admission-20260929.md",
+      "git_blob": "96033e6eabb1082225d7442102e67862d6384316",
+      "sha256": "1883b1f4528c694078f09544f38c08ed8f78fd64e0d0dc4f44afc26cc6550ae0"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a06-content-admission-20260929.md",
+      "git_blob": "b8bc57060f0e2abd7835a7588cb0f9e44409b508",
+      "sha256": "07a831af86796d77cfa677b04d2c733d3ed131eea3e0b38778b79fbddbf69d2d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a06-prelaunch-red-receipt-20260929.md",
+      "git_blob": "fbe4576141cf91085712dc3c4486e0d8cdc81c15",
+      "sha256": "38c42a476595d361ef8e622799162bb6e1de8a09c67fb5c937a477a1c160e0e6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a06-prelaunch-watchdog-red-20260929.md",
+      "git_blob": "cef15d57ef3f2088dc01d91660067bf85c231447",
+      "sha256": "574d9eb1187fbb622357233eb14e7466aab0592a710d6f5c19c60ae1570b72d3"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a06-watchdog-bootstrap-smoke-20260929.md",
+      "git_blob": "de8d473f726e617f9068c3ad6e030286219d85c7",
+      "sha256": "5a2d6d0d6183cb096d36ee64f875ea72dd521c20dff3a79f6bf86bafd8fd5e95"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a07-live-evidence-20260929.md",
+      "git_blob": "bb0479ee0139b6749c1d150ac5f6a744f71ae7c5",
+      "sha256": "8336915d6fb74d148741d0377a1979a52f4b0b322dfb56748b76bc3f7942629c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a07-maim-stat-timing-audit-20260929.md",
+      "git_blob": "c337e3640546600c8b30879a6d20503b167dd577",
+      "sha256": "0c6d2271631d738beff0aa6a23764d0790cc81d128729edd5068b806f995ea74"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a08-d06-bounded-current-read-proposal-20260929.md",
+      "git_blob": "0edd52d40ebc4f94cee8e4bb7f18b0706e95a191",
+      "sha256": "9bbd161f09f01600e68f61d93d1b797877f4b6e67ae0cefacfd62998a923e71f"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a08-d06-coldload-media-boundary-20260929.md",
+      "git_blob": "de747aa8a5977cb3134f725d992ac9c2a21aae98",
+      "sha256": "5126131951f6f532b5cf855d8b451d688a58326a63b5fe23b3ef92e9a43f0b2e"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a08-d06-knight-row-identity-ledger-20260929.md",
+      "git_blob": "4d88ad869865e4ae7be362d05eef39e275c7c3c6",
+      "sha256": "072dc9d3883fffe199d4c9bef09a00af94ff5c6600a1cd8915fbf04d6b2b3c1a"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-a08-postframe-save-v3-plan-20260929.md",
+      "git_blob": "e854c8b194a7f37385628768930df0363b9e7e78",
+      "sha256": "bcc3617cf36d5e6f8a67f75e301fcf773077ee36c6284b70bbd5ebee8dcfa6b4"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-d06-current-knight-native-port-20260929.md",
+      "git_blob": "8f7b5fde6e1615a1eaa58c7fbb0a786a4c12efe4",
+      "sha256": "d296620548492ea5dda1e1ba90e72972891492da90442258952a3d52922f0660"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-d06-knight-second-session-runbook-20260929.md",
+      "git_blob": "af454a3d73614ddc4c93a3cf46f86fcb35c5ce57",
+      "sha256": "bc258ec80f85d7dfcf7b02d4764a52ff47b3f365ab475bc94ad4f1f867f53bf7"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-04-e2-05-live-red-outcome-20260928.md",
+      "git_blob": "591ed45c6fdbedeaa3198eb08f9d51b781211146",
+      "sha256": "8aa0fda824d1ef9b29d1d016e4b7e69d20cbbb660885adea105d6b85dceb5855"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-adapter-bundle-admission-20260929.md",
+      "git_blob": "a96d2d588beb1f70ba52a5e132453dc32432cfa1",
+      "sha256": "0a9f9cb1af180749bd8d6aa7e8aaee474311255adb388d0f4714cf26f6acd55f"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-adjacent-visual-transition-20260929.md",
+      "git_blob": "70aa5a6b75f9eb2890b045c6324ba915eebbdfa6",
+      "sha256": "fb841745cc02ea96f8d6fa84a9c101a4df7eb05e6c8f7992091a8511acb57b79"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-capture-outcome-20260929.md",
+      "git_blob": "06742571354d4c0b334195b7b4b202fa9989ecac",
+      "sha256": "20e203b4c35302cffb8d24d13659fdbd25515b752a4546336655ffba5344553c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-native-event-candidate-20260929.md",
+      "git_blob": "720441c9a3ec4935a3eb75f47c43b62a18378ecd",
+      "sha256": "5ee58d117326e1559b52952bf5c5ca18a562001e75982b0f5041d5e3ca3c5b9d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-no-screen-admission-20260929.md",
+      "git_blob": "4147d3b535df32bb1cc4a50d9b252f3fd5cfb286",
+      "sha256": "a8dddf8b02b67a0385a14147eed6b8c57d750790d5ec82f48a77b88efc720f47"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-postrun-audit-checklist-20260929.md",
+      "git_blob": "4f33117454487ab4ae09f91f07dcae53a7e0ed77",
+      "sha256": "b63d5d42521162bf83149cf59d337bb2a1e456672e443125ce97c0fe5da17eb7"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-postrun-pts-result-20260929.md",
+      "git_blob": "a2536ddb7f8630594b716a4bc31802edad35b820",
+      "sha256": "eead85ec46ae9e1fe2947a052b0bdec643c21375fa92897099b43c2ac7f41c42"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-sparse-visual-index-20260929.md",
+      "git_blob": "44ad040db67f55ee2470c860a7584e697a830f71",
+      "sha256": "1075a7bbbf767d16fc62d9c4bb3d4c24bb3f9317ee17dabbc0a5c7588245997c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-transition-localization-20260929-a04.md",
+      "git_blob": "0f4ea668e198d8515d8f87fed4789df488816d68",
+      "sha256": "ee3fe8261e920d1d867b38e07a6a11f811f7fe1c659e3ad898601f7f55e98569"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-visual-review-plan-20260929.md",
+      "git_blob": "9a38e8a45fcaa4ab54eaacab11e9fd0de422ea63",
+      "sha256": "9bbb0a07bfedf82de6d883b069587eeb434b96950e9828bbcd30377e111b2a33"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a03-character-status-selector-static-audit-20260929.md",
+      "git_blob": "e74074444e56f8c08c8b397369fce7f79e274ca8",
+      "sha256": "7db157960ca35c8dd07ddb1d412f081e04a67e5f236acabcbcc38105bb86076b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a03-d27-no-screen-source-gate-20260929.md",
+      "git_blob": "3942832d9d77e59cdb31f95eec2a00bc2a5be583",
+      "sha256": "54c70e4872e4e61c467a99a7b0d159e3caacf12a96f37cb366ac8f54bf0dffe5"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a03-offline-character-reader-20260929.md",
+      "git_blob": "88b1e09f7d8df53de5d6d8e697046ab25cd0d53d",
+      "sha256": "691a510d8884f13d66dbcbe7fe31ea695c706912b9542ba6d544d9c307e0ad31"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a03-postframe-and-selector-admission-20260929.md",
+      "git_blob": "2ddd4f5808fa4ca4b51954133d988524d827691b",
+      "sha256": "12bfd74a98a4a79219c1b1d0673985681bc2b35a0cbd1031d7a6576ec22bb25e"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a03-selector-binary-candidate-20260929.md",
+      "git_blob": "eb1795e2fff8006815ee45cdb4cf7d99c9d8ae66",
+      "sha256": "19ba1c79532f1b6a94c11f4517544e2b8b6c501be22ba8a30cbb8c8e793642fe"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a03-selector-ring-producer-contract-20260929.md",
+      "git_blob": "443501a4c1833d74f88278d50df6c6e7dba975b6",
+      "sha256": "798d2b2f184deb8d3bd83e04875f726a40a8264881a7804b42990223ad1697bd"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-06-combat-panel-crop-readonly-20260928.md",
+      "git_blob": "bd891d9e9bb043a0ddcc441e115fd838e6017318",
+      "sha256": "d5ad313625a3b244705bc4902131b392470b8ed4c3681cc0dd2d9e4905539713"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-06-d11-after-r0107-reentry-plan-20260929.md",
+      "git_blob": "7474a422ed6ee0a9f77d624f4498097e106890dc",
+      "sha256": "7de105ddaeb2b6fd1c58536f548955084633dd97d445793ed1358e96ec84a88d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-06-d11-r0107-source-pair-20260929.md",
+      "git_blob": "78d57a9d53f52115e00e49e02e8698d0e5293d27",
+      "sha256": "28fcc01a759d95fba5cd0085a6c7c108b92fff5b17e72f9fc711c09ad7664a14"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-06-d11-recap-r0107-red-20260929.md",
+      "git_blob": "3f0ff6a057eb9c883c80cec32908cab82f3e34ce",
+      "sha256": "99ef0f5047499bd3329be5bca5a2eca86f399d261900e2c0d141638e19f4bb3d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-06-d11-recapture-no-launch-a01-20260929.md",
+      "git_blob": "a3e3c9105851d385c87857dfb5333104b489183c",
+      "sha256": "ccd98cd00d93dcde5a3694027a829d9eb1db0e6bdde23ec77b1530265b696dcf"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-09-a05-new-pair-evidence-20260928.md",
+      "git_blob": "2dfbc4f9ecf15a8fa173cd58ffcde4c6a2e5b589",
+      "sha256": "b04d12417860c3b7e9470340996ba4164ca9a039759fe1c9c7ee1fc110a38548"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py",
+      "git_blob": "6248dd6f9eaf351700db3b40d86f3bacaf12ea71",
+      "sha256": "865daf997b9579c77280c53b976ec7a81e120702b804ac21a343e7b5cddccb41"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_postframe_save.py",
+      "git_blob": "15f1dfff93a2f8200b01d861cb8f8b75d51bc5b2",
+      "sha256": "247e0ca2401e3de71f3e12c2d6def02b9277048d881265e42961d429ac2f7f1d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2_05_a03_character_status.py",
+      "git_blob": "464445cbe0bd0325a7ef43f16d85e73d6294065d",
+      "sha256": "88dd9d075b427af42f3f9f51586dffceef86984de4a417aa95159ef74b1f9305"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2_05_a03_no_screen_gate.py",
+      "git_blob": "729f06476c1a175635680fc254673d94fd45bb69",
+      "sha256": "6af8163101b2d2e1ef20c2ee7d367d8bac05edb3e7bd138f0b421e82c30747d1"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2_05_a03_selector_binary_gate.py",
+      "git_blob": "3b6d2e0fa1d844a520cb01a1db8418f5d5536d4c",
+      "sha256": "c71342a1539889ceef49f5f6e32d6bfa0de9be3af75553164c8930bcd11a5272"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2_05_trace_static_probe.py",
+      "git_blob": "6360cb80c83ed345875b82eb3f738e5fdec90dd4",
+      "sha256": "b067eddb5537c64b6292f7369fc2a026343a8e48f7ccbd8489871dc310b84082"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/editorial-timeline-26-to-28-min-20260928.md",
+      "git_blob": "2a94934211f17d8cad63827e8d310416bc0c644a",
+      "sha256": "e3c744253645ac6e0561d61e09f553b72d5712d58c43fa22789ce3213b01a866"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/english-subtitles.json",
+      "git_blob": "c2eb84c4bac676a80a870125de551203345326c0",
+      "sha256": "9ef2e78f85703e9d632cf822396c890cd7743b7ab0fe52fc2befa8b6b314b039"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/existing-capture-adapter-bundle.md",
+      "git_blob": "51f59710a3d329fdd7472bc96c71910ba5084758",
+      "sha256": "41e984a94390c7d1ae297c5dd254b6b3add889d99ee2ea01a610a1f648e1a20d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/first-live-recording-runbook-20260928.md",
+      "git_blob": "718d9b1f6e4ef87eb4fff40828e80bba06f5dfdc",
+      "sha256": "9f370085a8c788457e757c93ff4a6cf9ec3f43d0d54fd0b4f298ea7d4132fbc5"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/four-raw-pts-candidates-20260929-a01.json",
+      "git_blob": "89d895dd613b627b8ef321c6f5aea429f5a65ef6",
+      "sha256": "7f9fb380fe92d300168da81d4b4a7f86adf5df1481a9b12f8a9b642cf9de4433"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/four-raw-pts-candidates-20260929-a02.json",
+      "git_blob": "9c7d8c98c4d036c94418f8a94d09f6c95a4776b1",
+      "sha256": "598f720d5c1c37ba538dc3fc0eb75089c731444d489594648cdb93448b46b913"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/four-raw-pts-candidates-20260929-a03.json",
+      "git_blob": "41068e080655391a08bb754dc65749a5298ea9d9",
+      "sha256": "a1ac7b7b749bfc43aba612586462872cb76887a4b9f978aa5d99115e89b76c4f"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/four-raw-pts-candidates-20260929.md",
+      "git_blob": "b47ded269686a44d0b4e01e0fa9919b07a586236",
+      "sha256": "812d6a5d74c6040d8603bf891670442733a5459a715f06be482f076b90e4946a"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/freeze_capture_attempt.py",
+      "git_blob": "71f5edf0b8373ec3c623292a4d65e40fd4c03551",
+      "sha256": "849432f4554f9a64f5469d6190ec761f40db7d746ce9ac3551a589b698def832"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/freeze_tts_source_groups.py",
+      "git_blob": "057b6910991ab7872b083f86eeba44ce39430961",
+      "sha256": "2f89c6f9eac4317c10d5bdc867e4aff5b7abb2bf5df70a7455a13038ba8205c8"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/historical-terminal-closing-candidate-20260928.md",
+      "git_blob": "79d3a40463ddadaba016e45a1bbde1c4a706307b",
+      "sha256": "e0242b34e6ebef8676a027676b09e4a7bb6c5e4a2be108d963337712375adbab"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/inspect_display_modes.py",
+      "git_blob": "adadf02a28d3dfe9f08dde15d23e1f4264cfd267",
+      "sha256": "f16e724ec2de8a5e7a5db071e5acf4907ddbe6b7f8138b5687fbffa7e1bff79a"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/invoke_terminal_pair_stage.py",
+      "git_blob": "32797a4d30c75c45593b1b669fe21bdf4c522da0",
+      "sha256": "4e7bfe6d9d9d8927122c5a83a1b2e595b0f2c9c8f016e5fcbc1697216012ad9b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/j-a01-adapter-admission-20260929.md",
+      "git_blob": "27fc79d8c87a02ea7e0ce5da819b1052e14d249d",
+      "sha256": "d875313b1580e944530c96136d78566e51ff6485120744c196f18b194a35e839"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/j-a01-d11-recapture-no-screen-plan-20260929.md",
+      "git_blob": "5f2ae5f49ea939a97b284e678656c1b0b13e10f7",
+      "sha256": "1de006e97a09519bf0977751be9f26aa7b9bbebc9f1c67e6818ff6e61ef1e161"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/j-a01-old-raw-visual-audit-20260929.md",
+      "git_blob": "753fdb3ca40baba1eafef6828f425be244bd963d",
+      "sha256": "77a46af5c272bcd0f02aae6b63064333a2c9adf21d05043cb9c49529969a71a3"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/join-terminal-600s-capture-plan-20260928.md",
+      "git_blob": "a93481f959b8252b846570121f7bd906cd2e25e6",
+      "sha256": "3c74f75d9c84cb00165fe52fd1164898c67684800a75ca894dea96ef025a3636"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/join-terminal-capture-inputs.json",
+      "git_blob": "d28e408e9736864a3073cc5fd9938f090b0c04db",
+      "sha256": "97c5401ef19033899bf8e820bd940fd48e362ba72cce40d0ca2ad0b9638a360b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/join-terminal-evidence-index.md",
+      "git_blob": "d566385b0a76383633d9226767acff24e2987d47",
+      "sha256": "1d6099c76bccd1af86739bde21b9c29547c90b17cf31316b4fd7587b478d22de"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/join-terminal-preflight-evidence-20260928.json",
+      "git_blob": "3f8b6e214a92c7e2424d56d51dd49caa003a2c2b",
+      "sha256": "1dab737406920dc9f21054e0adfa8d74e82b8638b4ce11d114fb7601a22fe072"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/knight-capture-preflight-20260928.md",
+      "git_blob": "f0f7c44d255bbdac7db1c69730cc417a2d2dbed8",
+      "sha256": "6638335d190042d78f36ae5ebc13012858cfffc9a87d0ea19ef15c0093c56823"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/narration-duration-audit-20260928.md",
+      "git_blob": "aeb70e025ee1ff42f4dbf48765221c7fa58ece9b",
+      "sha256": "78363213d4b395266f426349aa120699665784ed3ff3515939ba3eb74eaa421d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/narration-script-draft.md",
+      "git_blob": "f1661d3c83d416096bc8a893fc63de0a3065964b",
+      "sha256": "8979b3e72b4c1d58c36428d8a7ae390666e479cbcef53d22dfb59a5c66f1a699"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/narration-timing-audit-20260928-a02.md",
+      "git_blob": "f5f68a9741683f79a82270077405026ff94da8f5",
+      "sha256": "f7e081e4963f96431e971484f1916b7e61c2cfbec099f11699e4b84bec9a173a"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/plan_four_raw_pts_candidates.py",
+      "git_blob": "e3dc00b5cd964553728de3de04d07d2475fe49b8",
+      "sha256": "b1046bc6a6a8481adb3b1b010734b56ee8ad418488ea0bd4a03377f22aa4afd6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/prepare_existing_capture_bundle.py",
+      "git_blob": "8c704a87271cbf06f99fe2d63e2921de33b686c1",
+      "sha256": "082fe3cef8e3cdd874356b93e71ebeb1c30dea31e218d9560e315c5f1f199089"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/prepare_production_inputs.py",
+      "git_blob": "416c736939c51b60d1630e2a5ecf14bb4798ce33",
+      "sha256": "74eaeae8fb766e20b8b770e18050394838a95112d1d348a642147c13a79c5048"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/prepare_reel_edit.py",
+      "git_blob": "d8b597f9c1a40bd9ab4ae139a8da07521de6c43b",
+      "sha256": "26e78f4968c4ee419714caef9796c3c7c4981360fbe2b6a49b456fe37d841efa"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/prepare_subtitle_inputs.py",
+      "git_blob": "5670bbadab7ada97a392275fb80420a6b5fdb789",
+      "sha256": "d647afb54c95887591309004b189c341ced6a63d3911622d36adadd21220b635"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/prepare_terminal_pair_static.py",
+      "git_blob": "a64dc79293a10092b8dfdd707f82c669f86ada0d",
+      "sha256": "e1fe9809b57552cfadaae16521ac483edfd1bb3a25ba552053ccb0d96b3e4001"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/preserve_selected_narration.py",
+      "git_blob": "9013a813c4bdb92760333d23ff4f957e50bc772e",
+      "sha256": "d3d7c1626d018ede0b26708453527ff08f474eebcb284896bc4e56c791f0c106"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/production-preserve-plan.md",
+      "git_blob": "086e677f4508a75c6e962a9aab992d912aeb39c4",
+      "sha256": "21d2d0b2356dfd4f5ec7077199dc3fa9d9eff924e01be63ef83e324e6a2b0544"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/production-six-chapter-handoff-20260928.md",
+      "git_blob": "a4603990b84951f0f02730281e96f28384c4b62f",
+      "sha256": "068a7669c22ef3e8658aa862bf79f33861d7eaa777346b01ebdf9365bd2472d3"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/project/README.md",
+      "git_blob": "377b05063bb4af09e44c0ea756a0cb171b661008",
+      "sha256": "d9a889f09bcaf8196d5d7e3d165ecbcfe5b1f79ad555bd9f52ea99f0191293be"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/project/chapter-composer-design-20260928.md",
+      "git_blob": "bb262d85f9c3905d98410859fde4ee8fb4b6705d",
+      "sha256": "c19a1b67ffd3d930e1b6aad94b108a8875ddc06bd648d34b42f8ee86025a4d0d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/project_terminal_pair_numbers.py",
+      "git_blob": "b2a4bfc934db790966e7a5c4469aa106a8d23179",
+      "sha256": "82d55247a1e7d796bad148072722db70d58601034bf974c89b8abd1b21da8b75"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/provisional-edl-e2-05-a02-duration-addendum-20260929.md",
+      "git_blob": "523d7c40ac0d35d2f277320e64bd95e28deb4890",
+      "sha256": "1a28dffd70344eebf9a305521a7930c4c94b94535656463394c6c40587d05a62"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/provisional-edl-four-raw-a03-20260929.md",
+      "git_blob": "dc66630094517d0ae5df0eff52ce1189e4af72fc",
+      "sha256": "4f4848812963b5b3e10ed63862e3776c28d62bc506f18fd122df8024679f723c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/pursuit-capture-preflight-20260928.md",
+      "git_blob": "e32cf0ce0846bee7fc0cc738073829a4bd1c35cf",
+      "sha256": "52ff7b5c63a96a836e18c8ac401e9a6235d927ba6402082f9840d5236db6909e"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/pursuit-knight-evidence-audit-20260928.md",
+      "git_blob": "63061749d0e8879f7f2dc0f5667763046f18db5f",
+      "sha256": "00151fcd59e77493693f5cf38dcb8bb0f70bb5172b68409180492c1bf89c9bbd"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/reel-edit-production-contract-20260929.md",
+      "git_blob": "feb794b5062a26b7ff06997a5f8ece7b372e3919",
+      "sha256": "db6ce0a1544e4812e9b4c0354ba2de500a1add24a8e0c8be4cbae4fcc049ff20"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/reinforcement-raw-adapter-queue-20260928.json",
+      "git_blob": "2fbbb25edc3b7ac8c2fac5d4c6a4b9a1e24b5b44",
+      "sha256": "06c122d909003a356456411c1d6a6c35edf9d5a63f459c0e6d5fc3f6d978ce69"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/reinforcement-raw-adapter-queue-20260928.md",
+      "git_blob": "be4b85d2687332f86e2cc5c8a47c9eb2c613bf0e",
+      "sha256": "854cdc672f900aa5696b8017e54d8cc896b385babc5d0d2c4351a3322c17fa51"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/remaining-live-queue-20260928.md",
+      "git_blob": "66f1d136c83f278d7aa50de5850b06dd7f3e8c33",
+      "sha256": "9cd823be59b2c050f1316b074fd525953599d2c4910293de12ab3451355a67d2"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/remaining-live-static-readiness-20260928.md",
+      "git_blob": "23b1010b93b99cc37ff883e22697947bcf71ea5c",
+      "sha256": "b82816387b39afa7c9dcddbdc2a1429e346e3c4a4510d36cb2401155ce0d945b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/remaining-live-tracks-runbook-20260928.md",
+      "git_blob": "38c44bc91fde262ce2217e64ce1171f2a0ebaa95",
+      "sha256": "71d9bb77dae843d3d0b8f7e1fd9cc9a4a425b2420e618f7a7c4cf51de38479f0"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/render_selected_narration.py",
+      "git_blob": "098e3865853de8e14ee9850fc93732e5c8aa3bd4",
+      "sha256": "20fd97ecc34913b6cf7ec0ae854d60efa4664fa737d231872b41de7b510dd776"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/renew_screen_lease.py",
+      "git_blob": "228443ae7fb041837196cb9340be039eae625912",
+      "sha256": "ac199918d840368bcacf9849811b549a840bb9fd6be5574492b014d3637271db"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/sample_e2_05_raw_visual_index.py",
+      "git_blob": "feb96ef0897c1a0a364de4b385ad7671e9b48d16",
+      "sha256": "8a82c61f122aedbd72a491e6e3ba80fbf097f8e8a91eac003178804c320fd0bd"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/sample_narration_tts.py",
+      "git_blob": "2eeba585e677628e534fe77d0b6d60041b4fc2e9",
+      "sha256": "4ef973979154056fc1527f5950a0a1c619b3fbff22c79dc97de693ed31220c16"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/sample_narration_tts_v2.py",
+      "git_blob": "975a17738d0a22b0b19063cb99c206f17c287c77",
+      "sha256": "3a46bba8481fff97a5de48da8e12f1cfaec531f6363a07ecb5a891ccd4326145"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/sample_raw_visual_index.py",
+      "git_blob": "2b679af4e97fcd9b092ec2d60e73bbb7e9b0cf69",
+      "sha256": "49d7a1654aeec81ade9f277c73bbecd826fb83c5ed1156f813beab7b89a2c300"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/screen-bus-cas-admission-20260930.md",
+      "git_blob": "27d18d168c186b447933f7809945ab93483c4bef",
+      "sha256": "8c0899416a0a47670356622f98f685afdf4a9b7c873c4f309bf3ff7aecaf8b4e"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/selected-narration-render-20260928.md",
+      "git_blob": "8c042fd8c310f55ae599d9d72f29310be24a148b",
+      "sha256": "2233404ebb85311303ac92597d07d196700c5dfb9a22b24457350809f6d3dcb6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/shot-list.md",
+      "git_blob": "119e0638bdb7f97b587dde0ebd4684b66ae7deff",
+      "sha256": "67f4ef24e9e5894ad34ee972b328b95ce66aca9aa5695e3f6bf0c8a4e44f356a"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/six-chapter-clean-span-candidates-20260929.md",
+      "git_blob": "eb13728521d6dc45fd04fa807a578367fe692e3a",
+      "sha256": "c3d0bc24b5f4feb9a0c17c049505c0815dba347ee9f6e3965a23a7552e9c02d5"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/six-chapter-gameplay-recapture-plan-20260929.md",
+      "git_blob": "fe94bb8dc25a5d4346772cb7b6f24f008fdcc8de",
+      "sha256": "ed622de319f09bbbd4da1e779eaabc956d20f8ad3e3cfc6c4374e7d9716b8b3b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/six-chapter-narration-fact-ledger-20260929.md",
+      "git_blob": "09fca0242d08adb8c5b938d8be3c34e3c006a882",
+      "sha256": "8351898ba3d77ac3ab439f826e88dfe1b9490f75a89a88882a716f74f8fb7793"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/six-chapter-raw-mining-priorities-20260929.md",
+      "git_blob": "6b7804daf395fb81f635785b19ad36a599e61aa4",
+      "sha256": "d447c51642ac1eb7765c4b4f7123bce381c7b8feacb3edd0bfde4cd8344bff94"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/terminal-new-pair-evidence-20260928.json",
+      "git_blob": "15604edb79a9a674e2c6cfb362c1497528969a35",
+      "sha256": "52d9202f767609a6a9f52b6824c112c21fe000170de44dd7b1aa9f80a7ab7257"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/terminal-new-pair-inputs.json",
+      "git_blob": "c09146cc4ead5dc9f5a3b3d1911a95d79632a8e7",
+      "sha256": "419c96187562b3b6bf0fbc3769499fc9dd26e38f581960b4afde561db1b64ded"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/terminal-new-paired-attempt-plan-20260928.md",
+      "git_blob": "d09db5e703fd8e72e0a2917d9d2f94c48646cdd8",
+      "sha256": "75c302559eb079f956b4bbff4fe407c6251d71fec62c2f284c527a9c399b8b0c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/terminal-pair-a04-admission-20260928.md",
+      "git_blob": "7cda5ae1d9751838e08045683b969d837a6ec7d7",
+      "sha256": "8e3ffc9ee764b0ba8ce9013beb17029d89832cde92e1e5b40e8885c8ef44d8a2"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/terminal-pair-a05-integrated-admission-20260928.md",
+      "git_blob": "9bd88418e680b53da93a5faafce57980c50aea0c",
+      "sha256": "ee91b0be512b1205a7a3af280331591f202973db96a1355980487ead0e325525"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/terminal-pair-a05-next-screen-static-prep-20260928.md",
+      "git_blob": "5fd8143e7eb17b7127a868efed16d8783e72af76",
+      "sha256": "c398330215322faed34bd710987b39af78fb93bab42f9f8ae9697ca956f68ea3"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/terminal-pair-new-run-preflight-20260928.md",
+      "git_blob": "13987ed4a98e4b2d7da5b96472688a2c321c2708",
+      "sha256": "61781456efb6a2e77968a7954114c475d9f6019bca7c367a3c1b70577ab7b936"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_a01_tts_fact_gate.py",
+      "git_blob": "6e15220d1d7e3fd952e5b0bd8671b17c9e343215",
+      "sha256": "6426c4b46913e88d14453cc9a5b737411813f455908e8292844ecb1131e60342"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_a05_pursuit_tts_fact_gate.py",
+      "git_blob": "fd42cb7bba3a2bb74580a12bf3001f0f05148836",
+      "sha256": "6ec40f901b9046807ce9980c7999e82cfb4356687813224b2e5e4099ab5fcb24"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_audit_e2_05_postrun_links.py",
+      "git_blob": "94bac210d0e97c44c643a85fed5221f1f5821d73",
+      "sha256": "359818211706b2969dcff9df05b71e8693c0d7f4310c6aa039192d49c512dcd6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_drive_terminal_pair_segment.py",
+      "git_blob": "e2941ff78dc4a0980da23b57368464fc20551b61",
+      "sha256": "6ab6007b9bb2f6ee61847bc9f193bedb191397b8e614fa0487645d01074100ba"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_e2_04_d06_knight_live.py",
+      "git_blob": "3031d68d40ed8c1caa244ebd7a898beaca6d1a50",
+      "sha256": "ab1801f51b3789030257e548a0c276331c577161dcf6def1610be0d1b6031c08"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_e2_04_postframe_save.py",
+      "git_blob": "d39c1c951ca75efaa876f0d585f57738c5fed37c",
+      "sha256": "91e13d72865d5411563866ed08783fb7acd0890ade6dbc1f5bd312e01a293676"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_e2_05_a03_character_status.py",
+      "git_blob": "715882af31d1f938eff47890edcdcc8fe4ada37b",
+      "sha256": "06e7626560f03abddb08343717215c806248f1e64693952b6b55582e37907e47"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_e2_05_a03_no_screen_gate.py",
+      "git_blob": "93583513623ec21804d70723c29faa84854e01eb",
+      "sha256": "9033ee00c4fb1a1828c12eec79f48fd1373d98cd369cf878ef1939f6178790fe"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_e2_05_a03_selector_binary_gate.py",
+      "git_blob": "e13bef2a56018276b6ba34c2534056313bff2eaa",
+      "sha256": "4e0683bf2d199807d45e491c57ec799b276dbfd23bfaf089c7f9a0b00dceb552"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_e2_05_trace_static_probe.py",
+      "git_blob": "63636f2b3c2072c105d39f5d9c0683cd26424084",
+      "sha256": "7933e0443ad09200a98ff71151cf1aab2dfd3c52a2490b65bf4600671fb84bc9"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_english_subtitle_gate.py",
+      "git_blob": "65ab20126851fa00ad58fb6dc37865109884d9d5",
+      "sha256": "e2a2e8ca79a192493c7966161ad55cba4942d3b3afa243020923227512028b73"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_plan_four_raw_pts_candidates.py",
+      "git_blob": "fe2614dc6784c88cabfb8cfd02738be6cb295476",
+      "sha256": "582b19189494fb198ef3080d45ccd650fc88e321c8569c7851cfabd62c5be8df"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_prepare_existing_capture_bundle.py",
+      "git_blob": "a11776dab6d03d484bbefb2f985b80e0090e3e39",
+      "sha256": "7117e778dd4f686303b8301612969a60e8a146e17ba432216b179196104671d6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_prepare_production_inputs.py",
+      "git_blob": "1be5b7f663d8ef09773f297bbf25cfcb92924883",
+      "sha256": "be00cc07b4eb78c047a62297d9ea553e64fcb95da11165742ced8d713954ed6f"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_remaining_live_step.py",
+      "git_blob": "105c4faa0c1d474912275573e087709a47be9dc0",
+      "sha256": "75157cbf522c3cdfb32a6a389ea0c916ac01cc5d0a529c2a807684edfad5b6a6"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_sample_e2_05_raw_visual_index.py",
+      "git_blob": "706966cf50fef40fa1c455df7e20366ec1d99ac2",
+      "sha256": "fb5ae8f4387c56da08f46c9fcdb09b08fd33b220b54a319907e1cc8be783e941"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_verify_e2_05_a02_candidate.py",
+      "git_blob": "8a495af5094e5a8499e99b245219b8f90c5b6a38",
+      "sha256": "d495942788dff7b4f46c9b99b17a76532a4344d6c890ea0f99ae39325e0cfe42"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/three-raw-adapter-queue-20260928.json",
+      "git_blob": "bfb75e16a0d74858680af166980e463e22c248b4",
+      "sha256": "2f78e46fca00d14e61f9d75b10be6f50a50c54f2ca60cf5167fecdfc69935b0d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/three-raw-adapter-queue-20260928.md",
+      "git_blob": "9b7b4caa3f53f395edd379842dc3ecc646a6c2d9",
+      "sha256": "d578cbcc05bcd5d7a91e3aff5707ee84c9fbcd21f708abb06dc71a5540f62913"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/verify_e2_05_a02_candidate.py",
+      "git_blob": "7f70c6283545287125a52e43712c8d354568c770",
+      "sha256": "598c1590de6c48f5ad5c3e09b66cffe254390d7856177d574bba052fa5b170c3"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/verify_join_terminal_capture_inputs.py",
+      "git_blob": "e29594de3bf876f8731928dc808dec44ce1c5630",
+      "sha256": "802e05bba065c3cc2de4243a895ed97c09a4f3c0d04d3432447e4446b4e2f2d8"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/verify_selected_narration_run.py",
+      "git_blob": "3b80f106e6577b4bb8e26af854e7780955359b15",
+      "sha256": "8022c3138edfe501c6e18abcea5a0286f893535b8ffb93e08636936c7039b1a8"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/verify_subtitle_inputs.py",
+      "git_blob": "c27a72ae14247dd0c0dec8f6a688781d09b89819",
+      "sha256": "e3a186e8a42454f9bf789fb3643ceb0ef731445069044b047f33d6a4ebe94ade"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/verify_terminal_new_pair.py",
+      "git_blob": "cb4ad5f9a3aae5777056446a595b0a60f306da86",
+      "sha256": "41d2e5563cba894099c8da559579024e756c1df55787d940117ea05e60657e04"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/write_reviewed_offline_receipt.py",
+      "git_blob": "2c6f42a0df9673c5fe2fb7ad54aea1bd70fd0870",
+      "sha256": "afd66f9ea240cd04c9932295d7a6e35c16a097564484c6c45d71221f13967569"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/fixtures/e2-04-a03-warmup-pdx-settings.bin",
+      "git_blob": "3574fc4e5d9c0d1e005aa9ae3ff2c7fbb3cca4d1",
+      "sha256": "2191ea423b3b1a94cb7e905b6096f3d07bbf0b7f1668c3e0ed412297aef2c509"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/scripts/smoke_episode_two_assembly.py",
+      "git_blob": "164b3faba45e59d4caafc2316f000e33ebe35351",
+      "sha256": "3831a88b1a3d37f09ceb6d04aff8fa150d24908e5a6e3818abc9a6f81be90e6d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/src/war_ai_promo/assemble_episode_two.py",
+      "git_blob": "eaff5525c5f9a879a3ba64922fe162fb097b1c68",
+      "sha256": "9d330a89752a8812d9fa5ce8d9638d13c864850b4f70fce2a18035ab3496db68"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/src/war_ai_promo/episode_two_pts_contract.py",
+      "git_blob": "ef000ef90ef2da0bf4c1eb72a60d7534b214bbaa",
+      "sha256": "11182c64f25d2d3a750c33e55a99a728e906663f6e644298c0dc9478099d1d0d"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/src/war_ai_promo/episode_two_reel_edit.py",
+      "git_blob": "09b3b80d610b0fd16989e2acd00c0de2346627f3",
+      "sha256": "91cf790d8f1361cc9e64660c3398bda66b61c3b9c40505f2ed232c985d984272"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/src/war_ai_promo/episode_two_second_half.py",
+      "git_blob": "513d9d9abf0a9023657b5b06ea1e771e15979727",
+      "sha256": "7912ea1f88159fc5f715daa18da38a53f14f8a47260c7eaef9b4a93b878cd963"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/src/war_ai_promo/episode_two_subtitle_contract.py",
+      "git_blob": "871a9ebbba80ad2f124f01520f6d23271419effe",
+      "sha256": "514b00dd319188c9be63edf49b1f746a1537b0f202f7048566eb398e26f160f9"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_capture_a04_ui_targets.py",
+      "git_blob": "647c63cc8942a5cb7905001d57c2242af49ed5c9",
+      "sha256": "b296301c701f03c541e0fd4194e7890f063ee3a190794e26b0ef8e650b8badcf"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_capture_a05_ui_cli.py",
+      "git_blob": "ccdc3cd41b618fac4f041c4e6e432f86da1a25f4",
+      "sha256": "dbb3d414eab19b11fa03a5b2a804d07cba451383e806ea7f8545404952a6592f"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_capture_gui_scale.py",
+      "git_blob": "977b9e26849aa32d6cd6e591bd33c56b85b4ff80",
+      "sha256": "47f4444212e36d01890328c516433534b1dfcc75d8b531f8d31035ce37f5fa09"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_capture_ui_gui_import.py",
+      "git_blob": "1e935d436f21410d5faf402ef60e71f3e90fc5b3",
+      "sha256": "e8a9be3d86812780584228ff0c47f88e4c5afec05a1307cafa0763a302f6bee0"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_d11_admission.py",
+      "git_blob": "ef90ae5aaf51f3b2d87751472e05a0daffce9b0c",
+      "sha256": "35e90376a730072b54ca64086965ce4641b36f158cd15cf5c38a366de19b6a2a"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_d11_battle_control_pair.py",
+      "git_blob": "e880d3af26db9799fcdbb3eb62a7e20df981b047",
+      "sha256": "2c9e2258d1d9232913966259e9085a6fac3e4a895618ca42f8935d905b6f5a9e"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_episode_two_capture_audits.py",
+      "git_blob": "0b27267e0936a30f44ba3b9340ce81f6f5af7314",
+      "sha256": "ebfb39f553ac87970e2aaa5f6ac5840e39273f8ce82c90883e3643ce0d30064c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_episode_two_card_index.py",
+      "git_blob": "dbb95685a49a15f20bab0f480c05d720d8d7ccc5",
+      "sha256": "7d5cd541d00480ce7bcc42b609915b9b38f6df9be1782d29754719ab8b2982dc"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_episode_two_pts_contract.py",
+      "git_blob": "53f886c59a954ba83934725ac9fa6c58eed0cfee",
+      "sha256": "8e8b3c870b3916830d07003613deff562904b77a9a763c0e9374e89db578fd2c"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_episode_two_reel_edit.py",
+      "git_blob": "dbb827d86657bdedad7f7bf2096d0e8426d1729d",
+      "sha256": "7d3d43613ff2c663dfbb41b6b129a2d07e107496b7b10350d34d07305df02408"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_episode_two_subtitle_gate.py",
+      "git_blob": "ecaf5cd9381d5014aec2cb1c9019cccd82f55a6c",
+      "sha256": "f484058c5bf14a0be1bd3be11ee5478508aa246a9f977e12a2105afa98ace94b"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_recorder_job.py",
+      "git_blob": "3594ac75ad985fd84ba79b2b75efc13086e794ae",
+      "sha256": "7bbc1b1dcc9cc0f821db018f8db30542877548d9f8c1c87b6ff1c5420c13e04e"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_screen_bus_lease.py",
+      "git_blob": "e4e9e1873b692222d66eee986170b887e088cd67",
+      "sha256": "ca5fa687a4ada6e3c5f171572560df1d2fbb2ec98fdd8c9402ec1f2b458fd0a1"
+    },
+    {
+      "source_commit": "96acba4f1da547b523683eaa5ce346207c03b877",
+      "path": "promo/ck3_native_war_ai/integration/test_screen_process_create_gate.py",
+      "git_blob": "92f5cd5245b7aa1a85a0394e7ef7fc599cff6bcb",
+      "sha256": "5c7e5a21fa729c5aca35edd04782e7969012ea83fab8598c1d16b5e9d2dfb8a8"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/h2743_preaction_existing_truce_v1.hpp",
+      "git_blob": "9bb0241b8f2c784c0e122c5c6057d33d223dd9c6",
+      "sha256": "71d82f46ee084ea18661826f7e36036079e92af48c156a26f528f92c1854bb04"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/build_h2743_title_prestate_static.py",
+      "git_blob": "a9c349fc759f85ab53c05cb3b5f0b1b5dc0507f3",
+      "sha256": "bae0fa5259d4d01e1f078ddc2067603d2bcfb13f16cd7a3e835bc7ac008b3241"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/build_h2743_war_storage_candidate_static.py",
+      "git_blob": "2f04d6bc083cad8b183828f349235105a37e37bc",
+      "sha256": "c5794c01ba9178642c3a431bb08a6c1b578efd3a24958bac82f0ac964b9d17cc"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/dejure_title_scope_resolution_gate_1_19_0_6.json",
+      "git_blob": "74d94f2751897ef39befe2dc21e0e041a6c7c26d",
+      "sha256": "b6df482b83fe7267428098aec6bac8477959497a5fbcecdce217aa4454ff1e82"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/dejure_title_scope_resolution_gate_v2_1_19_0_6.json",
+      "git_blob": "807afce0aeff851bb43ea87a9d169b4a5f329330",
+      "sha256": "6529a76ba638318863021d404c8236f765bb99449c6b516803c769209a10c23f"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/disasm_ck3_bounded_disk.py",
+      "git_blob": "79157524383e8c0d4329837291cf35e80e0a4b53",
+      "sha256": "3c21317a78d83953d677dd40dadf587e6b63e6c213a9bc489f8cb99cf06af9ac"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/extract_dejure_title_scope_resolution_gate.py",
+      "git_blob": "acfa1d6a67c0546708bbf6dff13c0ff0f957ea80",
+      "sha256": "e3a6a9fd04907d1b60d334921146588d4ab0a930470167a16beb0eeeb80d73ab"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/h2743_existing_truce_source_abi_v1.json",
+      "git_blob": "61210e67a7cea5a24bd90ed573b28b8a7e09d455",
+      "sha256": "3be199b19097c1b05d98fc0b881d77bf8395018e8aca2633c29e41d012c0d36a"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/h2743_exit_static_resource_envelope_1_19_0_6.json",
+      "git_blob": "36578d2e8c2630b52b2df31e8d1b45a190090fae",
+      "sha256": "f18403d151a0436ed475bb2e0c707eba3d99e712367f884a0de82f795a1244c3"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/h2743_preaction_truce_abi_probe_v1.json",
+      "git_blob": "460a0c1f7e9d7e55321f2483e055ffb9e58e4a65",
+      "sha256": "3a2f729044ca3dc054437aa8f935ddf9527fc69c8d609815d96146776d1db564"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/h2743_screen_cas_protocol.py",
+      "git_blob": "aef7a46dcca2178c3cfb62a9cbf8c1c7aa86d868",
+      "sha256": "7222f72f279f4c63345f0acf16505f78421c06048700ae5e33868383bfc14e7b"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/issue_h2743_title_prestate_addendum.py",
+      "git_blob": "4b802f0c0b7dfd7f9d220ff92a69581c603b9cd0",
+      "sha256": "78ca86ca3a34ecb419e61712cbccba9c5386c5623ef793f606f3f93c6bd1144a"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/probe_h2743_preaction_truce_abi.py",
+      "git_blob": "2fce970a8bc0e31d514246bfcc1e7c09284c5c34",
+      "sha256": "ab93a6e9c0a3dccd0be7a9bc7257c414c9e80c80a0255d95a16291a8f0e851d8"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/project_h2743_attempt11_continue_risk.py",
+      "git_blob": "9a3ed26cc151dfd8864fbe50c816930148675513",
+      "sha256": "a8d745a0f6d4a4395852b5ea5d9afffb6cdc2c68136adcd583af7e396994ac22"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/project_h2743_exit_static_envelope.py",
+      "git_blob": "b2fd116f9a4c0315a068174e5820816c118a599a",
+      "sha256": "d60b082559ca04a2597cfd129dbbd7f0e68adb42eaa794cd06fc376e04e4aae8"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/run_h2743_dejure_readonly_v3.py",
+      "git_blob": "347394ff3674a4ed210e2adc6c591d286e770d0e",
+      "sha256": "45173a151738aa6a8942c1ead3103c06df1919afa031dfdadc209bfc876c474f"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/test_h2743_profile_cli_cleanup.py",
+      "git_blob": "235eccca33438338b8fe7896113df46a905fc059",
+      "sha256": "0ab9f6d336430e64e9832434559d296225f4382cb77695227198ba5d87887f67"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/test_h2743_screen_cas_protocol.py",
+      "git_blob": "606ea5f044aa4b711908e5306e6c8e4b94a92e7f",
+      "sha256": "177ec1ca555e40fff00989ddb6a0f66b60c48d47d9046e9653e77583b2cc7e60"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/test_h2743_v5_head_pair_runner.py",
+      "git_blob": "50a2d99a653945b218548616643e2b576f147d51",
+      "sha256": "c0c8554ae41b0f0c080648ef1e8fd8321755e290ea2ab8f8d24f0fed1521a38a"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_h2743_clone_observer_seams.py",
+      "git_blob": "b8a64791fe04d11dc8244e43fbb064f0d93c4901",
+      "sha256": "7e971345f808d392226d28760432fedcad04584d1ad6c59c92d1257f9133ba76"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_h2743_dejure_readonly_getter_candidates.py",
+      "git_blob": "3b0e188ed5dd79252774afb2ecfab2619b4911be",
+      "sha256": "298e6413a1dc936118045c21c0c31b3dd01215ac1c1323cd626fb01a7166bfb9"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_h2743_existing_truce_source_abi_v1.py",
+      "git_blob": "8be28855eac4b2e43a2bf943602f7a1244d020f0",
+      "sha256": "780b5a2f11562ac22fd26dc8f482209d867ce4e8c68d2d598c8ff7f7085a2d1c"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_h2743_surrender_root_coverage.py",
+      "git_blob": "3670f75b9587b67a48ac35d6965443cb745259d9",
+      "sha256": "532f8c3c3b2fb39435c54c80f9a86b052df47f1e885fe7371e7366558f301919"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_preaction_existing_truce_v1.cpp",
+      "git_blob": "decdb16c800d6da986c64e55518352c501d5b2ca",
+      "sha256": "89a6a78ae73e1ed1603a8eafd1b1ab7cd29b065241118beb9d44c8a63e500dcd"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_preaction_existing_truce_v1_test.cpp",
+      "git_blob": "e8158848c2097ca30d286314b83ad3c348c99092",
+      "sha256": "763a8621817a4934d89930157fddddc6a2d0133e32cd037f365a02a649b39a47"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_war_storage_candidate_v1_test.cpp",
+      "git_blob": "bc7e038568bdc650e58e5d0c9a8fe035d2ef375a",
+      "sha256": "53fda3797ba6fd28355e82181a983b36d19df44455dbfc6c57b3f3150dd16adb"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/h2743_border_raid_pair_scan_v1.py",
+      "git_blob": "9565cb8235c71daa64c40b2c8fb4ffabfe37e00a",
+      "sha256": "d465f36d0f144ea62c8094d51b4bcc37e73bac45204f15470fea8c371e601eb9"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/h2743_preaction_existing_truce_v1.py",
+      "git_blob": "8440b45690dd91567a8c00460d3043e9617cbe91",
+      "sha256": "3a63d58445c29bc43cde4827b7626576f53a64d01bf15db15b508a40b3b587f5"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/h2743_surrender_preaction_inputs_v1.py",
+      "git_blob": "7984bbe4f10124bbefa9091adc48c9b5082a481c",
+      "sha256": "42399972f28a0d58db9c943fade7be37086fa60a495f3fe7c5f463e98aa1c030"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_continue_risk_v1.py",
+      "git_blob": "c525dbf49f65627c10f776bd003c577231d3df4f",
+      "sha256": "2be0bf55b7a6d90e36aa200492ff509c004179f36010a857220f7d82dad4db68"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_exit_comparison.py",
+      "git_blob": "23c2d9f8d8ebf7c552db5573ea42c2f4b2602bcf",
+      "sha256": "8524bcf187af8bfdfc3897b912c0c69e878e876bcaa49491273cb88e2b3d4b26"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/fixtures/h2743_surrender_preaction_attempt12.json",
+      "git_blob": "70bb2198a355fd1feb0b5a4c78aa24f64d5397da",
+      "sha256": "361cd303e1abbda6eb1365c2c605bb9ce51ae78e264342251fb23a456462f0ca"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_defender_dejure_exit_terms_v1.py",
+      "git_blob": "fe0580878fc2c69f06a1091ed80acb932a98ad65",
+      "sha256": "503873e9d6f6d677398f2e5739b98eb06696a0c877ea1e71a491d78c01435df4"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_formal_defender_continue_risk_v1.py",
+      "git_blob": "40884d4bbb0a569040602f366a21bc3c5cb8b985",
+      "sha256": "36ba81d9d8d21149e6fae0c69cb412414c093a2ee53642c4d4b1c0f0a4788178"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_formal_defender_exit_comparison.py",
+      "git_blob": "818284b61ccdef1c0f6de5af38ed81dd0fac1bb2",
+      "sha256": "77101e98d31cbca7672a145dc0b8d3123c0224c8a66dffe644c68cdbbf235e2e"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_h2743_border_raid_pair_scan_v1.py",
+      "git_blob": "14abcfb46966abfae413b1f6a6514f1f8b549ca9",
+      "sha256": "7c44565799eff1c84541187f95a6dfdb24702120fcd14286d316d06f7cf3fea8"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_h2743_existing_truce_source_abi_v1.py",
+      "git_blob": "0b02acd451700e69e2bda1081aa58fb28646e967",
+      "sha256": "4e1bcc262276f046f2d22df50768c826263cbe2db898fad583e49129cb28fedf"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_h2743_preaction_existing_truce_v1.py",
+      "git_blob": "6393873c6be63a4054ef15f22f8981e36e672953",
+      "sha256": "fe154fd29a8108731d0ef35713f74df4f98c7c07f5598eac94bf82a85a9c6e50"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_h2743_surrender_preaction_inputs_v1.py",
+      "git_blob": "6bdf7c62641893a2c6e9321aa9771b964d35bd29",
+      "sha256": "b03f070cc093e7cbbe2a68fabd159cbfd37a65ab69305b5a2040dfa04f2a5729"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_probe_h2743_preaction_truce_abi.py",
+      "git_blob": "b3d2b701ba7e54c53bef2c47ee25a09c96747a26",
+      "sha256": "c985a0ab31ecbff4d6e6e6514d74284cf64e898079944570c615e4d2eb5daa70"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_project_h2743_attempt11_continue_risk.py",
+      "git_blob": "fee24d8568fe825de14568fcd2242d2e72bdcd3c",
+      "sha256": "f7d80040c496694334773e7b8eea6f5d43677259d32651d514bc6024194dde82"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_project_h2743_exit_static_envelope.py",
+      "git_blob": "135b4dad19ac02ebf0fa1725b2a4a2b2f4594232",
+      "sha256": "0dec25f9426198939ff641d3ede7f3c45bb8cecb74e461d3e3ef5819ede6b56e"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tests/unit/test_run_h2743_dejure_readonly_v3.py",
+      "git_blob": "e6a8b5d5598754deb5785daa793e06dd3eb73c4a",
+      "sha256": "684fa2d4de73df2add75b8ae7fd96316b9d7c8a7282afd236021c536d462a909"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "ck3_autonomous_player/tools/project_h2743_h2825_continuation.py",
+      "git_blob": "b990306328e37cd7fd139b2674c61a7c142fa1f6",
+      "sha256": "fe185a1c385786722b14657af01ddc745f331a0e037e22a679710547c451d2ae"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.h2743-h2825-continuation.json",
+      "git_blob": "7ab108dcc77044d12c9a9d59348e5cf9baa86d23",
+      "sha256": "a5d2a953278275deeef297e5f5a4668dc598d7a3aceac4732921974d7530aea0"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-attempt11-surrender-effect-gap-2026-09-28.md",
+      "git_blob": "de4a040771e293a4683c199ac134a663430d915a",
+      "sha256": "69142583e46fc321f75e52f0ea59f31159ff9bfb4259da5d628d9e88a3ee74ec"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-bounded-defender-continue-risk-envelope-2026-09-28.md",
+      "git_blob": "75b7cb92cae42c113efcd8085663c73e6084e8c8",
+      "sha256": "a962423ae4332e3dfc7c10dfd3a7e29cd35d20d2bd13be150e72e536af5852d5"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-clone-passive-observer-seams-2026-09-29.md",
+      "git_blob": "7224b2e31677d5a6c869d00e9e236cc02418e2ca",
+      "sha256": "81bc5469a9e48fae1966c68b55bee070d590300476262f72e3b1a584ce3beba9"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-defender-dejure-partial-truce-attempt-12-2026-09-29.md",
+      "git_blob": "f440c801f4e3457a92b4d7397b7c96b300723afb",
+      "sha256": "be48272a6d619bc02a78f3a3e354921af37499ed7efadae7ef9977b22de2b51b"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-defender-dejure-readonly-attempt-11-2026-09-28.md",
+      "git_blob": "eef5d0face1f3025863c65736073f06f709d0d20",
+      "sha256": "d9380fe3111eb502d3f6ab10cc6579f6892d8282c392f8e4d303620504de4415"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-defender-surrender-static-effect-audit-2026-09-28.md",
+      "git_blob": "da8d612650e5874131bfce0daaa50a94ea7fbc94",
+      "sha256": "4de3a5e0a17eca5557c03b86c7bad12b33af1f92af5009aa8a6ef5d3cc070277"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-defender-surrender-two-root-effect-gap-2026-09-29.md",
+      "git_blob": "4e86a489806e9172b4b37b50582a8474cb437124",
+      "sha256": "d5e428aca2142538340190cfedc780fa0ba83825281266e2e1d5e159e6200757"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-dejure-counterfactual-clone-boundary-2026-09-29.md",
+      "git_blob": "73b2ba5fe3ec082cf409e36537c7ba8346648123",
+      "sha256": "812bc45ae0d0e4fd1946c734bf407b6832bf99fcfc433b198c5267871dc5a907"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-dejure-exit-read-port-plan-2026-09-28.md",
+      "git_blob": "1c23088a58e750d7ab6b2ee6bf612e2165c25f2f",
+      "sha256": "1a85ec307960318246e190c933b236bceedf616abe0ac71428bb92a7aa72d6a3"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-dejure-exit-v2-fail-closed-plan-2026-09-28.md",
+      "git_blob": "9bad32cc924a123efd441c2787f3d71130935c53",
+      "sha256": "b84ab36447b1051421f0a72ddcae0a2562283a31a17103b8224a00a450330a2f"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-dejure-narrow-native-producer-boundary-2026-09-28.md",
+      "git_blob": "677e76d2a57a9f5e75607c2464229b91603ad465",
+      "sha256": "38922232ad450a354bda90c6b4ccf3d4c29e192c96de5ffa106adf503b4dbfbc"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-dejure-next-readonly-getter-candidate-2026-09-28.md",
+      "git_blob": "57e4b76996d0d6014ceff52538d71d03f96d2730",
+      "sha256": "f2bd803393f0ff8c7b8f19241cb49ec6fc31485880ecb10e385cc3e46c3669ae"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-dejure-partial-truce-input-native-candidate-2026-09-28.md",
+      "git_blob": "6048238e3de725b9c4ffea2ac55c3a42cb5c1332",
+      "sha256": "bc65e65a46826bdae9a941d68b5bac44decd417f0dee7841c64ad548521c2b56"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-dejure-readonly-live-v3-runbook-2026-09-28.md",
+      "git_blob": "24bac372d74239349bd486a9aebc305cf4c052da",
+      "sha256": "2b8ef5911b34050e643cedf5fd8c14fb3a50997927818fb6fcd212ffc6eb27cc"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-existing-truce-arbitrary-owner-candidate-2026-09-29.md",
+      "git_blob": "526d0a4ac5d1d7def5f25f538d8fc8d02b9fb40b",
+      "sha256": "7b99ecf9f9180efd8d694553e5b9bca9c7f3effb7ad2c2bf93a6f1dbf4144213"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-existing-truce-r0110-red-and-dynamic-frame-claim-2026-09-29.md",
+      "git_blob": "214e4015425f8a88765fb7fafe1383fd3f8642a7",
+      "sha256": "84254fe91d3a229245260e6ab7e1f5e78433f3c1791808ce355736ab0b43e17b"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-existing-truce-release-build-and-no-launch-2026-09-29.md",
+      "git_blob": "09fd09ec5b9b761444d1c0739263d5a8c89345ce",
+      "sha256": "957567d4dab3cbf34b9b479e89f9214e045800ab207a4afe622a0366d870a17a"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-exit-readiness-handoff-2026-09-28.md",
+      "git_blob": "f69f487d1780c00fc43871fa024923f20cd31c34",
+      "sha256": "631e44aecad742dea0eee32412dd6a3ef160bdf5a5f107651b5e785e770e25bb"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-exit-resource-truce-static-envelope-2026-09-28.md",
+      "git_blob": "4359932101789f23b48c516383d1f682eb6f7845",
+      "sha256": "ccc7e2e9a2dd86e71e6c3201ad7de5e4009e8d9e9500873a9ab49076da1c788c"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-formal-exit-comparison-contract-2026-09-28.md",
+      "git_blob": "61ccc4686ba0002fc4de9d86e3195f94eb5b44c5",
+      "sha256": "42120f010e072239587230fd4a65602453c266583eb3402854984f247f4337f1"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-minimum-exit-readonly-producers-and-admission-2026-09-29.md",
+      "git_blob": "7d6900b9f5c303b13ed39c1c467ab1db46ce5526",
+      "sha256": "0f30b2b2f3bca30caeb38f38ae085660060ce5197a8eb807942f1e388dcb199d"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-partial-truce-readonly-admission-2026-09-29.md",
+      "git_blob": "97e70deab8cec166257c12c8a54162b45bf08121",
+      "sha256": "96430c852d16d5d8b011a1b38066a4b86142faafd539936ef173513397a95f5e"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-profile-cli-cleanup-and-launch-fence-2026-09-30.md",
+      "git_blob": "534d15de817e506a0d5b443937098d96a6ac71a2",
+      "sha256": "e372e4f71861d878d8ecbd34d0d11699cb87f70ada37c953011026066ed03300"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-runner-cas-cutover-stop-2026-09-30.md",
+      "git_blob": "0ab87ae3fd8e02f7928f2ee2a28c29e36ae5671a",
+      "sha256": "c14fe1f605b5a6d8283190690803c6110d8bf7315d37e8504814fe5f3469b33c"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-screen-bus-cas-prototype-2026-09-30.md",
+      "git_blob": "3868718e7aef52160a8812374e6543bf1c307701",
+      "sha256": "46ccd158834bf801de23619fe206ad7b66f2200530ce7932f2c45052938cc063"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-surrender-effect-input-contract-2026-09-29.md",
+      "git_blob": "19d387da31e6b73c4c9b3c870e659d766dff840b",
+      "sha256": "1a503a86c2509db15e1dd82d3c6d5d3cea5899364098394c6766d0629f27feac"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-surrender-preaction-abi-probe-and-unobservable-effects-2026-09-29.md",
+      "git_blob": "5419952a0e045f20d0f1d61c9fad6465204ecfd2",
+      "sha256": "60b9ebcbf4e3bccff8fd900039f51d24dae9b1334b4fb7675342eb4580f3982b"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-surrender-preaction-native-input-bundle-2026-09-29.md",
+      "git_blob": "117198c86fb2d48d809b4bf984f8ef3f2f032a2b",
+      "sha256": "33b9106f4b0b986c5ae46650e0c1d48a14f89dc1a4e2cf861c2d8e22ccf479f6"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-termination-options-payload-boundary-2026-09-29.md",
+      "git_blob": "ca770c5da5578b9abb0da79c3628619eddf72633",
+      "sha256": "bc2b0190a6b1e6969940d654476fcaa41a958a7c49d89c2e717dd222058075dd"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-title-holder-prestate-candidate-2026-09-28.md",
+      "git_blob": "d18eb07eb62912d05f64957c87cc921e63f909f4",
+      "sha256": "9df68ac1608a51e81fbb9d62229febe9658dec02dae676e381f68ee7ebdacf5c"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-title-prestate-source-ack-2026-09-28.md",
+      "git_blob": "a4fc760e7c974dbf357b4ca39e3af15d10ef32fa",
+      "sha256": "c495fa29d412252c1e049ff4ddac04d91f3885207ba46c7329e315b8f062fa32"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-v3-local-fallback-static-gate-2026-09-28.md",
+      "git_blob": "f0344b3314ee04f12d102a6760de842a8b76013d",
+      "sha256": "6c4bcc31012e8ecedc4608e3b1185c0cfd4de7207dc3871e702329630baafdab"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-v3-post-e2-static-admission-2026-09-28.md",
+      "git_blob": "9ca3107424a478148dfab8304d25005f51418790",
+      "sha256": "bba59b921c507f1c5ab61367acdcdc25fb1d54e515d97041df8a4ba5304f2082"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-v3-r0266-options-evidence-checklist-2026-09-28.md",
+      "git_blob": "c18730845223ef9cdf6ffb2d036153187378377a",
+      "sha256": "1840ef953458b4e3870699d1f09992cf7575971febd49f2978503860cfaad984"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-v3-source-machine-war-dispatch-2026-09-28.md",
+      "git_blob": "60bd030855574c35eb0565865a6a63de55c5afb9",
+      "sha256": "38e9555ca266354ecdf88fe7d6718c6500131520ceeb80570d5f6680aa906caa"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-v5-static-seal-2026-09-30.md",
+      "git_blob": "ab5707506b21a79a63a7e6ebd2c0792cf83eaab9",
+      "sha256": "c7ad2d8a4a70c5455e68c51c88d88b977a8f1f7d66327646aca45f5afaee5542"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-war-storage-attempt-13-red-2026-09-29.md",
+      "git_blob": "f7d7218e458ae4b86eac463ff8427a36bbcad059",
+      "sha256": "598ee3f1907b97f751d832c6132a20c83925003516b8abf63454ef50dbfb886b"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-war-storage-attempt-14-red-2026-09-29.md",
+      "git_blob": "f60da617964dc2c9a2163864c6e26d9a6d5e848b",
+      "sha256": "0dad41425de58a3be5f9aff92f58fc9a788db540266ba72a79f5c22a292b4e35"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/h2743-war-storage-candidate-v5-2026-09-29.md",
+      "git_blob": "310b50cd57a148bb0361621a421861f59cdd109c",
+      "sha256": "34edb95a06588f41394af6695b5ca56d7386c045d13dca0872845f7335f84190"
+    },
+    {
+      "source_commit": "78d75e0185da638473109ad11005a5cb04eb5850",
+      "path": "docs/ck3-native-ai/research/h2743-title-prestate-addendum-draft-20260928.json",
+      "git_blob": "64b07dcc06d5c921eae11efc347fa716018647c2",
+      "sha256": "5abec31e4bd2df6085f9a4bcd62b7ed7823cf2ba67c0eda3ae508184a08d0c59"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/inspect_war_cash_hud_ctor_owner.py",
+      "git_blob": "58d89d5d7406b59ee593948044346cfaa9063f35",
+      "sha256": "aff03ec3c1628c49a5de1570172012aac1507fdb4e991e4777db5b2abea89641"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_war_cash_embark_quote_candidate.py",
+      "git_blob": "567b08eb6847bfaa7ed09555383788b818b87e64",
+      "sha256": "d41262cb1286863218296136fe17ddb5741dee48efe9f3c641760fd97864ff74"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_war_cash_gui_rtti_candidate.py",
+      "git_blob": "bac4cf545060e682e6ce09f87c8ddb089a7c7ebe",
+      "sha256": "9be46b0321691d76e45f50eee250a07bcd7790b43e17c6efab692e9ac40d9351"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_war_cash_hud_owner_chain.py",
+      "git_blob": "d123a9d4f2f195086715c5fea78695661bb3c4b5",
+      "sha256": "8a4eaffa42df0e3224659c7efa991f4c72282c4a30232299312a5b79d94e3148"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_war_cash_military_view_candidate.py",
+      "git_blob": "637ac76458347066cea50d18534c83cd8d7ce33c",
+      "sha256": "c11adebc0f05f48fd135e0f61f2f8dc39bb1202b11088c825a3b5dbb4410508d"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_war_cash_topbar_expense_candidate.py",
+      "git_blob": "a21eb9bc0274c0c8258837194ca214307bedfd2f",
+      "sha256": "6630504b53b56a2b54bf039d5463eec774dc0b9eb7e3f3bba283735078680e9c"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/verify_war_cash_topbar_mouse_enter_refresh_edge.py",
+      "git_blob": "69e4d441e8b48f71b555ecbf27355d895f333059",
+      "sha256": "04b877eba5df8dde3e88cc670b32df717280f1f6a33ff9d970e5296a6e8a679e"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/war_cash_embark_cost_candidate.py",
+      "git_blob": "3377782bd1e6ad9e5ebbea8c8a600b274dfd4fe3",
+      "sha256": "35abb4faf55b0d9e99e176a4ba9e9faa8df1797f7ab3741a95cb51c19abe1ab9"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/war_cash_military_view_probe.py",
+      "git_blob": "27a31abacd7ef6abd74d56be7b4a0a7289f2c45e",
+      "sha256": "81bf18daec843e72a1a69dc3443f3f9c36252a9f965c30a60942ec1739a516ab"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/war_cash_passive_military_view_sample.py",
+      "git_blob": "7111361e87a4e6cfa869dcf8cbbfe3376af6bcff",
+      "sha256": "5e337d693628ec75300e8341a72e6a637192b1edfbbaa1f24caf5b1d785ab301"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/war_cash_topbar_bounded_sample.py",
+      "git_blob": "532ded87d95aab26bf289d461386c023f3b2337f",
+      "sha256": "81741761db9e6c0cade3b30c6d2706a6557ff689cc667e9bc45fea2a424f4e2a"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/war_cash_topbar_owner_path.py",
+      "git_blob": "9e6162858c68c32f8d22c5a031bd9c44553311e6",
+      "sha256": "cbee72a6e60c4c3e00cfdaf53de7f833412dd927404cc5eaec79ec4df9f2d15f"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/war_cash_topbar_passive_layout.py",
+      "git_blob": "3207decbe04fafb8cadbb0639210b6b4d147dafb",
+      "sha256": "fb51e25923074e24fac6464877f4e1daea97a7627905872793fa6516a475368a"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/native_bridge/research/war_cash_topbar_render_epoch.py",
+      "git_blob": "d02a9114f59bcfa52a68836099296d3dce665bbe",
+      "sha256": "f63f9436b443677c9817942716f914c08717df03f6cbaf0d884f1e4355da69dd"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_owner_command_ledger.py",
+      "git_blob": "457b9ae2430057f809a0d7a9134e326109e8bceb",
+      "sha256": "2e974fa0ded521d47c440ffa0d92df6203d9a20d2e6a858628f13d7f4d5b20e4"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/m5_war_cash_binding_candidate.py",
+      "git_blob": "d44138be71e6284354418c6bde086fbac9ab2fcd",
+      "sha256": "b63ef9341a87958731ce07d0c06421231e54a5d0904c4813e7def10f1fde3c26"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_cash_floor_policy_provenance_v1.py",
+      "git_blob": "2ed7291dbfa5f7d5736be77a8a5a09fd5ba2bf14",
+      "sha256": "07538cbf253559cc92c8871dd3644e1f06cf413097014efcba4d719da83dd8d0"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_cash_formal_query_passive_topbar_v1.py",
+      "git_blob": "a6cf108bb64b7ede2c0e39ca2517b69ffe559cd0",
+      "sha256": "42758c56ed6ece41f16b78e2bd2939bd9bd6429c83490c8ef2537a5fff6294bd"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_cash_formal_query_runtime_receipt_v1.py",
+      "git_blob": "37e85e6add6868518ba2192d2e7467e8edc87d5b",
+      "sha256": "a60bdb602c2ab3c5fdbc7d2ba798058ebe9f60b1f55f72a921e73609c9f0edb0"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_cash_no_selected_action_v1.py",
+      "git_blob": "4bfb391cf812ad2eee154e9f5c8cee7493ff5bd5",
+      "sha256": "32d3955eaed5c1ee02e02c2ccdf61aae407e1536e62f02f0a72a6bc1464a252e"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_cash_pending_ledger_v1.py",
+      "git_blob": "6ea333b3a145d7108199a8501d51c4e3ef461854",
+      "sha256": "cc6937846a488578858658a89093f2e791df1d308318a9be474dd0fd1f1b3e83"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_cash_termination_query_zero_fee_v1.py",
+      "git_blob": "74e1b616a38bfc610a891b1d61224c4b05da1d2f",
+      "sha256": "0208bf47eb15bb02b08e1fc4a6a79f5f74e7a9c60eefe267dba5a7881e0429ff"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_m5_war_cash_binding_candidate.py",
+      "git_blob": "ccfc297706d1bb05a63dbcdc242bbb31a8765fb3",
+      "sha256": "9e72331862f9088519df894ee8f7b2ade57fab02ad17fecc5c847db4fe5c5241"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_native_owner_command_ledger.py",
+      "git_blob": "b4c2a11bd3b24be29f12813628e08fde655553d1",
+      "sha256": "94b75fa1a66429ec93b37e3f73ecfa990717fec6bb976d26ca144038f3425d9b"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_floor_policy_provenance_v1.py",
+      "git_blob": "166dff168aa7c3e5357544e913c6e0547b1c1a12",
+      "sha256": "8146e9b2d5e3a8ab5cfee52b4377c9f2865cde33c9085bff862c20b9f0d1ec5a"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_formal_query_passive_topbar_v1.py",
+      "git_blob": "544816c2c8415555939239e56984a548e81c8e24",
+      "sha256": "d0a2c5da230edc109eba0de66e16d5393d7b43c6003598bc5138f6b20e5e1683"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_formal_query_runtime_receipt_v1.py",
+      "git_blob": "68ed7219005ff94213c1a7cc40675323bae8811f",
+      "sha256": "f287ea623b765b5ae27efc83e722a2683b20fd888b4f95f4506435c40178aca9"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_no_selected_action_v1.py",
+      "git_blob": "a07ffe46aad4bfbb86fd9ed29596daa87edac771",
+      "sha256": "758c91ca188b5528561a8795f5175a8151cbe28f55332c7c124d7c124a41f5f4"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_pending_ledger_v1.py",
+      "git_blob": "c7754bf8c464c062ce27bfba900f2a64d2f10003",
+      "sha256": "84d950440ca487a9c3dbbf13f156c1d5e674d831651118fc96445c64f0e29d67"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_termination_query_zero_fee_v1.py",
+      "git_blob": "9caa324128299e267a6e56194ceecc6cb1928747",
+      "sha256": "e4d7a1028938bbcbcb635cfb368282c556e7a3b678cd1dab2b5a07f2f10aa84d"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_topbar_bounded_sample.py",
+      "git_blob": "06b5b296205fb7c4257b9e205b05ee7cfd3f0099",
+      "sha256": "c2f0d16d226b930e068cd754cc0660638aca0683e811d4cd80eb9778112e9d1c"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_topbar_owner_path.py",
+      "git_blob": "2f048f23e97c86d1de17d0fa8260c655aa8097dc",
+      "sha256": "49169e3f094b53ba74fb139af51cc5974968018edc4b59445f4abe2d91e90041"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_topbar_passive_layout.py",
+      "git_blob": "cb04125b9102a24b4ccf13ec4ce8ba6302639326",
+      "sha256": "684e4db1696264d906c7530eadfd6de36bdf5fc30ce1f1a706ad6f5146cdae37"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_topbar_render_epoch.py",
+      "git_blob": "f6cd206c0229c4e94b22be28380dc81c50a2d590",
+      "sha256": "2c3f655fda7c7dd3543675e8a4ee68d5a27cdd49f14aa6589ca110d868f91951"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-CASH-RESPONSE-INDEX-v2-20260928.json",
+      "git_blob": "dc54c5965bd4785d8bc61124815aeddbddd24b2f",
+      "sha256": "4119ea932a91fd2b6c080687a370275c942c783a8de6ce431f5c755ba7b2867a"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-CASH-RESPONSE-v2-20260928.json",
+      "git_blob": "6654b69ce998d87a92bc0c073573be0b9b29d935",
+      "sha256": "b63a4e53fccfd23f74cbf2fcfd2a0e2abab49b849929fea48ada27500fd3ada6"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3446-CASH-ASSET-REQUEST-20260928.json",
+      "git_blob": "e3172d4f7179f916fd8600762e323190aa1ff175",
+      "sha256": "a54a02b6a2771f6387c3adc1b61065ba301bf9a3c8f0b082ceea631ff0864176"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3446-REBIND-ASSET-ACCEPT-20260928.json",
+      "git_blob": "23b896191005491adf950b3809000ea50a8d2c00",
+      "sha256": "453e8e3b2dee911d95a0ea3a4a9f3a246cb33d601a780fc36ce4501efa5f27b9"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3492-ASSET-ACCEPT-20260928.json",
+      "git_blob": "3a40edfa6085c55bafae19d7bd8675a772b14a07",
+      "sha256": "e4676ddf4c86465b7dd73a8c02a4e6e06282140a60b88786e1967606ec3fd138"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3492-BINARY-REQUEST-20260928.json",
+      "git_blob": "bd33c1699987886bed57e0efb185ad2cb280ce3c",
+      "sha256": "e11c785963d5236b1b9f3236432164286a5833b00a873adc4f4d1c88405fb5d2"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3492-PAIR-DECISION-20260928.json",
+      "git_blob": "4bf100988b112888334cc9fa8d020aa14a3b46c8",
+      "sha256": "53dfcc9c65fcbc5aba7bc6765e37e4a7982baf8f4f61f58a6bf48264187851dc"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3492-PAIR-REQUEST-20260928.json",
+      "git_blob": "2a035ecb5c7ba507877f9f111112d8674ad1fc53",
+      "sha256": "8d42a83c9d5bd6a43ce27ee76a06b39b7bd23d4e1e2a2a5a50db2d275f948774"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3547-H3568-PAIR-ACK-20260928.json",
+      "git_blob": "e873de4cb93b23eadb6f3c05b9748532c623fd80",
+      "sha256": "9e677dbe2eca834fd4ba69c15414a46fb3ae5ac8b55f603d369ba4d2eca09022"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3547-PAIR-REQUEST-20260928.json",
+      "git_blob": "7289116019d771c63802b7ca01248924b2d895cf",
+      "sha256": "d204a4d7aca5a2f40e51647a40606cd306e656d85210252e888902b3f0029ff5"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3568-ASSET-ACCEPT-20260928.json",
+      "git_blob": "6512068572420e1097fe5fa84e1476ec59aa929e",
+      "sha256": "3a021e572f18cf32bee1e55fb219b49e32a27e2b03aeeda019b9bdfe57a849b6"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3568-SUPERSESSION-20260928.json",
+      "git_blob": "38cb4265f19d9efde4f4f7458277bfb19dbf0c33",
+      "sha256": "c1787531d10e9f7044895df489de38e6a56b9662b1dfc069e28fba3a94d5f6fa"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3603-ASSET-ACCEPT-20260928.json",
+      "git_blob": "e05155bf3a2d3fa6145cbd44266b0db99e5dccc3",
+      "sha256": "0cd8bbaad879cbbd6d3103cc3730453c37fcb48355d020f3ab9f4288682063da"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3603-PRODUCER-WINDOW-REQUEST-20260928.json",
+      "git_blob": "935d0be2385641bb54402239b8bd46451148a9cc",
+      "sha256": "6619a6a17b193dc046bbedb9df05ef3f8362f865c93c2f53532025fff86b4e4e"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3603-RECEIVER-ACK-20260928.json",
+      "git_blob": "e47e213d55783fb882ac47d415f74c6a99c0a21e",
+      "sha256": "f117bbc0f121440495b86c6a06ad00e8948c1bd13a70104d947beb7a4b19f792"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3670-ASSET-ACCEPT-20260928.json",
+      "git_blob": "ddc111cbffe4be0c994e9c3144036fc763aeeb68",
+      "sha256": "4f9dc7a0d13a600ae398506ae2f452d320752d3c47b12533fbd00641cd7d0241"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3674-PAIR-ACK-20260928.json",
+      "git_blob": "9965bff0dc07574852a0a198423775b6db5b22bc",
+      "sha256": "a86bad5af1b1c9b3f5836034c10a855d5cbcf6ab373fc733a63a160b4449e7a1"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-POST-R0299-PAIR-REQUEST-20260928.json",
+      "git_blob": "e7d5fa4f5703f2e5cc0bf360c3d3b06578aa5f27",
+      "sha256": "cc0b123415ed50b6e7268e961a188804d2b641d12b51cb756fa2c5553fe94889"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-current-frame-live-gate-2026-09-28.md",
+      "git_blob": "9d6ed091e0bc49c1c0da68edefceedbd6fc2151c",
+      "sha256": "9ecca2772ae284338f9a327c9f6263fd7e44273b6a54ff5db6338e706968470e"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-embark-quote-abi-static-2026-09-28.md",
+      "git_blob": "ea2fd5ac7011a8ac9c076f775f1ed1fba0edc014",
+      "sha256": "875562ecc53857472de96f788083f237e107cbb1805f91f73ae2e4dadcd8cc50"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-five-cash-producer-map-2026-09-28.md",
+      "git_blob": "343e57e44f36c559acfe8784ed513550a3264b8c",
+      "sha256": "4b47a9cbe31a279f97139034a47ced372fd2657db80647b0e219f8e723edf5a8"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-formal-selected-query-runtime-receipt-2026-09-28.md",
+      "git_blob": "e0788595386f871b99906176011b5a655da41168",
+      "sha256": "f17180ca6daccd815767c764f58c21f09750e8e9ede45cf50244190239784666"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h2743-query-zero-fee-receiver-checklist-2026-09-28.md",
+      "git_blob": "ff9f5c7fa37f359bd1090bcede1b517a3432d356",
+      "sha256": "3a67c0ea0dc949d458d11787067f057e026e3ff09bcf2d2510c68d70bf09102a"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h2825-attempt11-red-2026-09-28.md",
+      "git_blob": "a303cab0e97bc064359ee2f877e44706ae0ab4ce",
+      "sha256": "e96c55024c77a9e7993d51a5f41713c66c9ca61605dc54031ba10751ad577e2d"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-attempt05-topbar-offline-diagnosis-2026-09-29.md",
+      "git_blob": "12c7b8154fd43fb9e5c248e14031d73acc2b1f20",
+      "sha256": "7efdd75c7153f7ed4f7f9d312e61168d04fdbdd8791fd363e618c887653ae375"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-expense-header-static-followup-2026-09-29.md",
+      "git_blob": "28dafebb5c1ed5aa838ac38415a05762d1947962",
+      "sha256": "5577e32808209952bd63f2c1675b8c768c2ea0980e75a6836bb1598a1859f9e6"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-formal-query-attempt01-red-2026-09-29.md",
+      "git_blob": "081001d88be028a92319392dd48b468ab825bf17",
+      "sha256": "43ea0076210747c4eddbb212f330cf74ec04f06db7030a32dd8b3877758634fd"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-formal-query-attempt03-cached-before-red-2026-09-29.md",
+      "git_blob": "1aae6b0596c011bc98db7f56e833e7827226a5c3",
+      "sha256": "33e7e9aef05f36a442638daaa4140857c2cd156c0f35a536011c72a03a9194ef"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-formal-query-attempt04-executed-outcome-red-2026-09-29.md",
+      "git_blob": "a260ea42ac6743aa28f90321b2520d0b43785595",
+      "sha256": "5f18527a18e35345e7dfd2800da65037cd5403bd3621258ad7b50c873f62f3f0"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-formal-query-attempt05-passive-red-2026-09-29.md",
+      "git_blob": "07e806eb6386bf5e68efe53c5225352f12a9dd82",
+      "sha256": "2e9ffcbc44291f2399a32d83ef268322ecd5f28e354b573516a29248a0a93a44"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-formal-query-receiver-plan-2026-09-28.md",
+      "git_blob": "deb3ea367030f5eebaa8fb79f8e00643dc96ae6c",
+      "sha256": "a4be64613f25b1eba5a4f509863f39d0a69bba63560015fd643127db2d480823"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-query-and-military-same-session-attempt-2026-09-29.md",
+      "git_blob": "51b0835337c758d7bb386aee8fead62dc8e7d9b6",
+      "sha256": "244c92fdb8b3bef981a9b3dd436e04f41b09e16c674c1eca4fa845a943743713"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3911-source-driver-war-cash-audit-2026-09-29.md",
+      "git_blob": "86a4a826b790b5f6becef44ac85ba59bc94c4bda",
+      "sha256": "df115a7ea4444f29135f563947eeed5ab062346d48a580709f4eb746d3c06d44"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3937-native-war-cash-producer-proposal-2026-09-29.md",
+      "git_blob": "73b8948bc0c5252b4173fe0f37d7788ebbc425e4",
+      "sha256": "5f025ff385821e9c8df27bb64832d8e6bcd42d0d7f8b79d7839587a1161c5d12"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-h3937-owned-pending-source-candidate-2026-09-29.md",
+      "git_blob": "688adbb28c92287294616dea5a0ad776470db382",
+      "sha256": "6b4af7a5b4320988cbe9482eb314fc3ac86548acc1aa249f09425200c464d7e0"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-other-war-cash-static-boundaries-2026-09-28.md",
+      "git_blob": "5aa7abd3442136038c7560f40c42c09c423a762a",
+      "sha256": "480035008ad16cac1efad5515082e77578446552dac3bbcb9fd48d8088b5120e"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-selected-move-embark-quote-crosswalk-2026-09-28.md",
+      "git_blob": "67ad0f8bc0c05b91fbb2519f094299923cc4ef97",
+      "sha256": "5a928baabad9e2e28d15ed014f9262005b071652a1e591de56ffb0ebdbaab911"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-topbar-expense-static-2026-09-28.md",
+      "git_blob": "c76a4a9a479fdec102d2e5a889d6a63dd31d3925",
+      "sha256": "5c722fdda165dfdb1ff2d82d36c1f48eef1c6b26e351404cb6c405577783790e"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-war-cash-action-binding-followup-2026-09-28.md",
+      "git_blob": "8d318d3792feb3634e41bc044a766d78de92a6c1",
+      "sha256": "54d54553f301b3311b333a1e3be1c3ec5c4e2d9b815d066c2d8bb71ac7e03625"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-war-cash-cadence-static-audit-2026-09-28.md",
+      "git_blob": "652b3550306d8a8d31750e6176c4c5bfb92f7555",
+      "sha256": "7350955eb9c50a972b503b7e71d4515fc4ce9f4eab3ed3be1e681d49f58a09f6"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0266-war-cash-readonly-sampling-contract-2026-09-29.md",
+      "git_blob": "c3eb24b059653064ea9069ad505e52b987c2ff53",
+      "sha256": "138f3b5a9b40319eaa5819ccd8b63e29372f659dfb7bdf8eeee8b0a7ac61ff43"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0303-no-selected-war-action-fee-2026-09-28.md",
+      "git_blob": "d23f73f4889fc31ee8f3c20597152405c47873b5",
+      "sha256": "0c841c1fad9d2758fe8e12c2c6a2cac9490901b609992283679aa94e5264706d"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0303-war-cash-hud-owner-chain-2026-09-28.md",
+      "git_blob": "8242cc25a3fad4309f72775effcf0ded1a626faf",
+      "sha256": "3b83fb4b951ee54736c591d7d24c202b2653c6c1f4e0103daec5fd301c6541c3"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0303-war-cash-passive-instance-gate-2026-09-28.md",
+      "git_blob": "4067a50e54c62ffe0ce76ec5d493888a58d03118",
+      "sha256": "c797a1ea8c32b96ab0f84a3aa40c3d803f32dde353c0f7069c35827d20b4617a"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0303-war-cash-policy-floor-static-audit-2026-09-28.md",
+      "git_blob": "83a9aa843260a0b1d609af311d0651ca41045152",
+      "sha256": "39921e6f4cff2724c6b49f6dccbe5864b01259f93038e752a75f606eb6045d89"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0313-war-termination-query-zero-fee-gate-2026-09-28.md",
+      "git_blob": "c9e17104edce01e768add31984fec05c232d4fac",
+      "sha256": "60cf007369ce98bb818009a4e830b93d18b5f4a5d93a143b9d86b8237e920331"
+    },
+    {
+      "source_commit": "356793e197393387eea9558eeaec7bf23cde95af",
+      "path": "docs/ck3-native-ai/r0326-h3911-war-query-cash-static-audit-2026-09-29.md",
+      "git_blob": "d1e213041861dc2eba2fdaf7cf4763e5928e5ab2",
+      "sha256": "0ec6f5d1a6622d41f9ea8fb88d1b7623702d7852beadc35647ac432794399bef"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/physical_army_inventory_authorization.py",
+      "git_blob": "eabe42f9497b9437eb3b60c88a90b291e4d435de",
+      "sha256": "1f402cf0a0c9ac1e2cfaad8d93c03ecfbf23b48947d0539eb5c09fdde5e52eee"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h3937_r0117_static_seal.py",
+      "git_blob": "320565bb7b689500a3ff79b6a663dd35c494bf28",
+      "sha256": "22810bfa5d59c38092e3677aaa465cb81b8062a39247063b84160da1d9086264"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py",
+      "git_blob": "87229737690a5eda80a8956617bb2630cf8da4b3",
+      "sha256": "b411eab2ad5b6390817fc0917c5f6cd6a55a7f21ef4e35c479531d5d6338a9e3"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_cold_load_observer.py",
+      "git_blob": "13ece42a8f75b087b6aad7f9c05bdbc13824db99",
+      "sha256": "0df2917f1f3f82a721bdeaf6a7d525722e2f84964d872ccec0d3a806f3e727de"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_cold_observer_once_enable.py",
+      "git_blob": "9cddbe8b8e9ef7d1d0272ddf7342890d1ed4d6cc",
+      "sha256": "afaa9b250e34c6e6bb61263b433d04c4a16d5871d2238a5eb833e45eef388d57"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_combined_once_enable.py",
+      "git_blob": "60acbe9ba35628389e9679514be22f59ab24c96a",
+      "sha256": "a829fa38be96241687db0203f642c2722c89cea4b68128adf21b097933e4a281"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_combined_paused_war_scope_run.py",
+      "git_blob": "e907584e5d6254651966f7c928d85f56b43ef2f7",
+      "sha256": "5df7437b954398a4d2f734def862c5ed303262b11a6c67af098543135e6cd148"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_combined_readonly_queries.py",
+      "git_blob": "d9d9b8d1aeb1aeff4ea0c09334454d49db12ac6c",
+      "sha256": "e8ead73f8cce0dec44bd45a47541a4b33fce5f1cd7fdb93559224a30a76b6f6c"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_date_hold.py",
+      "git_blob": "9ac5335d0dbb99f8d521c6e98c1f7adc261d9d5b",
+      "sha256": "0901595cf07b6dd836e49ab435ec1c3a7e3387b08d93107574ad6af4b673eb18"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_operator_release_gate.py",
+      "git_blob": "d28882354c240c404fdfb3998882fd1cb23ed74e",
+      "sha256": "1a908a615c83961d69279379ae0c6a66d16ff96a452d129d0f11672995c1f288"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_paused_war_scope_run.py",
+      "git_blob": "33f9792f1c41a717fe6de6ae3b6a9f35f7cb77b9",
+      "sha256": "be87991c62618dbea4ca0985de44ba693025d2a5e33709dc0e5115503af86c83"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_r0117_static_seal.py",
+      "git_blob": "d75a72b0dc7c806329c11dd29845b68fd334bd7f",
+      "sha256": "410cd1f5000f34ddba258bc33c786a4ed287b31b48388380423dacad6f3cf864"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_stationary_route_contact_query_run.py",
+      "git_blob": "ccee0f7de6631241e9244a6b56dbac8d385dba8f",
+      "sha256": "b4de08f2065bc5446945d985a360e83e8c54b185a95cc42c9437700b58310d53"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_target_readonly_queries.py",
+      "git_blob": "58fc55af15370a89040700fb48d7ba409e9b0074",
+      "sha256": "390cc36658f8b9f35464721f5e1e6e5448cf473da6af749291a08e35012c0acb"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_physical_army_inventory_v1.py",
+      "git_blob": "67f7dda343926e970ec2cb3c11d9483fa875573a",
+      "sha256": "9756134ed561e722645d6712209d5d57c3e85fd321be5a42be1448075527a8a9"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_province_local_siege_contract.py",
+      "git_blob": "7fd91e4051602118f99f657fff80916d32c248a1",
+      "sha256": "1543d4b0c2b8b613ad13a20a441b66b5674985d61b6e3b44152a040ab6bc2224"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "ck3_autonomous_player/tests/unit/test_stationary_route_contact_query_run.py",
+      "git_blob": "5fdc8aeeffb157bf4a2a8cb99a1deb2485bd6fbc",
+      "sha256": "a4c9868a14afacfc0ebd4d704a72d86a939a4f3417489f21475013598e41615c"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/army-route-read-status.md",
+      "git_blob": "6df24cba759f7b201e344029c5cfc97ceb821109",
+      "sha256": "d83e76ed1079f61877fd11196fb855a9e266601302bb907d0705dad0898c2f5e"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-cold-load-observer-candidate-2026-09-30.md",
+      "git_blob": "fa2d902e79af4041cf629ecd048e8f122551776b",
+      "sha256": "17821c28cb7c6da1800d612a1e46040022a6be1847eafa3b88213916b6c82e0e"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-cold-observer-admission-2026-09-30.md",
+      "git_blob": "700876154f12d38cc386c6a903194334544d5c1c",
+      "sha256": "b63d1e3ccfa0dea961b223360216b36da9ee49b2bfda0c50263d51d0cd7b2425"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-cold-readiness-a04-a05-2026-09-29.md",
+      "git_blob": "ff53a432a8a275ea8f4c8cfa33abf5c78e90cae0",
+      "sha256": "8f0dc21c6e2bb183676499ae63a21979d568f5068c32d951576f56b1a76e5665"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-combined-a05-readiness-diagnostic-2026-09-29.md",
+      "git_blob": "eff52d8d1ca26d8227d47ea3413d0d59358ecc4f",
+      "sha256": "fe6272e2f7998367c17892711104dc2c26710f4b7342e7548e0856a338a21e13"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-combined-once-enable-2026-09-29.md",
+      "git_blob": "1dddd94bf05eb1d9c219545fc7b7d94a8ef0283f",
+      "sha256": "a489ce8d61227cd6e610b47eab05308f298134aa5f97311f589cc56878151bad"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-combined-paused-war-readonly-design.md",
+      "git_blob": "1b97c7eab154dc62f7093a1f2ae9dbbbcae19060",
+      "sha256": "7fe0b8cb4a517ba60ee83fff7ce6c52a2a1cb6f435224dc277bed64c2a575c55"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-formal-date-hold-2026-09-29.md",
+      "git_blob": "3d703a15f1fb6e5cc1af5e0ac814538f9424a74d",
+      "sha256": "ad7334059019041014d919ca4d095d767b5be72492409c9171c2a7a4dd7baaab"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-paused-war-scope-phase0-candidate.md",
+      "git_blob": "c1ea639247460708dfeaa9717dcf917d3c8a118c",
+      "sha256": "50199d94b0211997f734b4cb6d6baf9660647f4a07460a71c93baed0b5977a75"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-physical-army-inventory-candidate-2026-09-29.md",
+      "git_blob": "684eca5fee8833ffcb6d3937eb2bfda291744cbc",
+      "sha256": "4add371351db9b86425c165dd366a7eabd1fbce579438c7267036a0af5e4c8a7"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-physical-inventory-mailbox-candidate-2026-09-29.md",
+      "git_blob": "14379bc193beeb2b296101456359a637a6cff51c",
+      "sha256": "2c785caa8d9cf22e50c7a1a8bbd5c68dadb70595d8ee5fbbe18291279f6875e9"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-province-local-siege-port.md",
+      "git_blob": "76eaf03606c209b422bfcdfa5aa997cdc629293c",
+      "sha256": "357629c8a7cb08484d584e93ef9c108530dd000e2b4c4b424d901c5228a2abe0"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-r0117-a14-static-seal-2026-09-30.md",
+      "git_blob": "6a862d85b17784a1a18658247da13f5c7aab655f",
+      "sha256": "66d22ba0ed35981285ad0b7b1d2b9e6ccc4dc723a9c49fa12e9a96333e458ec4"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-safe-first-hop-static-audit-2026-09-29.md",
+      "git_blob": "ba2a8548b9929cdfa37586098f35c7f4f843080d",
+      "sha256": "ad24fdd52c32c6e5f5bada4948ec62847762d7b4b0f3bcf2430312296631d3b7"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-stationary-route-contact-readonly-candidate.md",
+      "git_blob": "647840d4ca436ba2ef24327b0a8d588e6608bbc6",
+      "sha256": "2507585ed99f84cbe86084ea1d5a8c8cbe76ac06a3573b24b60cdc0c71400106"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "docs/ck3-native-ai/h3937-target-siege-readonly-stage-2026-09-29.md",
+      "git_blob": "34c503e31f5c34d6d3cdf3638f95cc52becfca3f",
+      "sha256": "a3bb71745ef33f15d5f12c5bd2fc6e8430561dc9f85c9cb2ab9055b3d4760e82"
+    },
+    {
+      "source_commit": "5cec58c6cc3214a131e05763df6f8d9599719cb3",
+      "path": "tools/test_codex_task_bus_cas.py",
+      "git_blob": "0837c15dfcd1253eabb0ced1e9781c915d9d66d8",
+      "sha256": "f113ed50dc9dd9c99ff265e83cfa4bc17b269f55eb9a07d0c3875b056bed7a4c"
+    },
+    {
+      "source_commit": "a3fdd31ca8631644cb6341b85db2ae0b29b7c1b4",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/e2-05-a02-transition-localization-20260929.md",
+      "git_blob": "0c23ffaf575c525ac662a499f05066a43d0a11ec",
+      "sha256": "70ccc7620d1dc2272d7a13780c6d5bc8737218f6315864c8e4556af96b121aa9"
+    },
+    {
+      "source_commit": "a3fdd31ca8631644cb6341b85db2ae0b29b7c1b4",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/list_e2_05_frozen_pts.py",
+      "git_blob": "92a8de9857ba4190d579bef5bf65e754bbfdd406",
+      "sha256": "21ab39797c58d2004eb51617df59a1a9368ad5014fbf848275859306e862261b"
+    },
+    {
+      "source_commit": "a3fdd31ca8631644cb6341b85db2ae0b29b7c1b4",
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_list_e2_05_frozen_pts.py",
+      "git_blob": "dc57d698efbeead3bbb4dd8aec6242aece02f5bd",
+      "sha256": "1e6dd5515ea0f8c9110c80b3af447ee65285470418d339b8bed3b71156dbefa6"
+    },
+    {
+      "source_commit": "9e2076c97e9ceebd06eaf5ac701e13f711fc9049",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h3937_worker_proof_contract.py",
+      "git_blob": "39efe362cfd4dc0d8e1029eee74e97f67c68da6b",
+      "sha256": "5c4884f2cdae9c9e350f566dced008410bd1659d8c40b9f9431c09ae2ed6ad5b"
+    },
+    {
+      "source_commit": "9e2076c97e9ceebd06eaf5ac701e13f711fc9049",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_worker_proof_contract.py",
+      "git_blob": "bc4ea59d2792172d9649750be5241b8df23a25fd",
+      "sha256": "b8329e0bbdd9a46e54747cc5263c76b00235f25d1f22e9eeaa17971246c1f7f5"
+    },
+    {
+      "source_commit": "b13925c22ad68508b3c283b0f148894a2209e9d3",
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_combined_once_retirement.py",
+      "git_blob": "d6401336af5c4c3d4323e5254ff8dfcc8569229d",
+      "sha256": "eb27a365dfd33b14fd8aa6874b88e0105ea666d5d3c841e102f1aacee132be58"
+    },
+    {
+      "source_commit": "b13925c22ad68508b3c283b0f148894a2209e9d3",
+      "path": "docs/ck3-native-ai/h3937-a11-legacy-entry-retirement-2026-09-30.md",
+      "git_blob": "5a5e77d0911140110587259dd72dc0cf02f74acc",
+      "sha256": "71c090a8f121e18613c072ec34f1a2c32c0451e2343f746ad1ed2efd7cea6eda"
+    },
+    {
+      "source_commit": "beaa9a19e20e8b886ce7ab426e4bf26c18c455c8",
+      "path": "docs/ck3-native-ai/h2743-stock-predicate-source-candidate-2026-09-30.md",
+      "git_blob": "384a2cbc519398de9c173a4840e772d5ccee75f9",
+      "sha256": "437d94356cce816d7b25ed9876caba37f901ef5460c26ad5030cb2525ab77198"
+    },
+    {
+      "source_commit": "38b28769b4c905c2041f11700bbad2808a6d0256",
+      "path": "ck3_autonomous_player/tests/unit/test_watchdog_process_custody.py",
+      "git_blob": "1c3c85d47d7a145ebfd2e917d900d4350d8915ad",
+      "sha256": "59042d2bd22de921ebe9ddaf7f6c58d9c0439cc3eaa652c9652c0f1023da3127"
+    },
+    {
+      "source_commit": "bc4225176ef94e586097707d6a12ce0783cf217a",
+      "path": "docs/ck3-native-ai/h3937-one-day-recovery-after-combined-read-2026-09-29.md",
+      "git_blob": "2875becbc9b63a01bb35f24eb61b5177bff6863d",
+      "sha256": "29becf727791ffa2b00471ce6f651dc4457f179505cdf45fe2c23640c774ae5b"
+    }
+  ]
+}

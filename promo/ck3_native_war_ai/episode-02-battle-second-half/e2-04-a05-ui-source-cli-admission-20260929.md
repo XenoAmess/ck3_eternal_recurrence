@@ -1,0 +1,24 @@
+# E2 a05: source-bound native UI GUI import candidate
+
+Prepared 2026-09-29 CST, without a screen lease or CK3 launch. This is a CLI candidate for a **new** a05 cold-load attempt. a04 remains RED. An imported profile and a passing disk readback alone do not prove cold-load geometry or authorize a gameplay recorder, a date advance, or an E2-05 scene.
+
+The exact a04 native SaveAndClose source is an external 6,891-byte full `pdx_settings.txt` copy, SHA-256 `E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D`. Its sole 54-byte GUI block at `[6642:6696]` has SHA-256 `F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593` and serializes 100% as `value="1"`. The preservation receipt SHA-256 is `69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779`; it binds the original UI images and the hot readback SHA-256 `D3F1837AB33FD5541CA2696FF51DD27A114FEACFD332431D2CAC48691D68D337`. The hot readback was RED under the old literal-only gate. All these expected identities are fixed in the project adapter, rather than accepted from CLI arguments or computed from a candidate source at runtime.
+
+The new `capture_session.py` options are `--import-a04-ui-gui-100`, `--a04-ui-settings-snapshot`, and `--a04-ui-preservation-receipt`. They require `--gui-scale 1.0` and the existing day-26 checkpoint save/receipt pair. The program checks the external full source, preservation receipt, hot readback and five original screenshots before returning a no-launch preflight. It rejects symlink paths, altered bytes and incomplete arguments. Only the exact GUI block is appended to the unchanged vanilla settings template in a **fresh** isolated profile; the full a04 settings file is never used as the profile. The import emits `gui-settings-ui-block-import.json`, the exact prepared settings snapshot and `gui-settings-prelaunch.json`. The existing disk gate accepts the native literal `"1"` only for this explicit bound a05 path. Default literal `"1.0"` behavior remains unchanged; `"1.00"` is still rejected.
+
+If warmup rewrites `GUI.scale` to `"1.3"`, the a05 opt-in reseed replaces its sole reviewed GUI block with the **exact frozen 54-byte native block**, preserving every non-GUI byte. The before-warmup snapshot, before/after disk readbacks and reseed receipt remain separate append-only files. The before-final-launch gate, postmap/posthold gates and hot-service readback require both literal `"1"` and that exact block SHA. A synthetic `"1.0"` or a reformatted `"1"` fails a05 even if its numeric ratio is 100%. The default, non-opted-in reseed retains its prior literal `"1.0"` behavior.
+
+The future screen holder must use new, collision-checked no-launch and live roots, separate state directories and pipe names, and the same explicit opt-in argv for both calls. The a04 source and receipt are:
+
+```text
+D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d05-screen-lease-20260928-a04/native-ui-saved-settings-a01.pdx.txt
+D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d05-screen-lease-20260928-a04/native-ui-saved-settings-a01.json
+```
+
+Before any live cold load, acquire the screen lease and review a new original Steam offline frame under `AGENTS.md`. Use the already checked day-26 save, its actual native sidecar, exact game/DLL/injector and a fresh pipe. Invoke no-launch without `--capture` first, archive command/stdout/stderr/preflight, and verify the bound source in `preflight.json`. Invoke `--capture` separately only for a cold-load geometry attempt with `--record-debug-desktop` **absent**. Review the new original postmap/full battle panel and the before-native, postmap and posthold receipts. Warmup reseed, if needed, must produce its own immutable source and receipt before final launch. A live disk GREEN still leaves the visual gate pending. Keep all failures append-only and do not modify a04.
+
+Only after same-frame source identity, native/wrapper revisions, 100% runtime readback and the entire unobstructed lower battle panel are proven in a05 may the screen holder consider the separately gated E2-05 day-26 to day-27 recorder/action plan in `e2-05-a02-no-screen-admission-20260929.md`. No historical random draw, raw clip or event is imported by this settings change.
+
+## No-screen candidate check
+
+The first real CLI no-launch invocation used an append-only root at `D:/ck3-research-artifacts/e2-a05-cli-no-launch-20260929-a01/`. It reached process inventory after the frozen source checks and returned RED: `An existing CK3 process blocks capture`; `ck3_started_by_preflight=false`. Preserve `output/command.json`, `static-capability-strings.json` and `entry-failure.json`. This is **not** a READY preflight or a reason to disturb another screen holder's CK3. Repeat the no-launch gate in another new root after the current managed process has ended; only its own READY receipt can admit a05's later cold load.

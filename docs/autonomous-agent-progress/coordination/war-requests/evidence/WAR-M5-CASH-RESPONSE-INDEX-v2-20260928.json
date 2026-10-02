@@ -1,0 +1,28 @@
+{
+  "schema": "xar.g2.m5-war-cash-response-index/v2",
+  "created_utc": "2026-09-28T08:23:17Z",
+  "request_relative_path": "WAR/M5-WAR-CASH-20260928/REQUEST.json",
+  "request_sha256": "B93693573017D6DEEE72D0DE5AF491B739B321F2FCFA1495F6633E8C09A5FCDA",
+  "previous_index_relative_path": "WAR/M5-WAR-CASH-20260928/RESPONSE-INDEX.json",
+  "previous_index_sha256": "1DE75CC0A674D17A09F0A9351DB2D93E66AED67370720C27C29DBF1E64A83DB1",
+  "responses": [
+    {
+      "version": 1,
+      "relative_path": "WAR/M5-WAR-CASH-20260928/RESPONSE.json",
+      "sha256": "20FF00F92C6E97FEDA6F330FDCC1CDC4427066D03185BD70290D8F7DEA769309",
+      "status": "accepted_routed_incomplete_no_live_cash_receipt"
+    },
+    {
+      "version": 2,
+      "relative_path": "WAR/M5-WAR-CASH-20260928/RESPONSE-v2.json",
+      "sha256": "B63A4E53FCCFD23F74CBF2FCFD2A0E2ABAB49B849929FEA48ADA27500FD3ADA6",
+      "status": "incomplete_h2825_scan_ceiling_red_h3446_pair_identity_conflict"
+    }
+  ],
+  "h3446_asset_request_relative_path": "WAR/M5-WAR-CASH-20260928/ASSET-REQUEST-H3446.json",
+  "h3446_asset_request_sha256": "A54A02B6A2771F6387C3ADC1B61065BA301BF9A3C8F0B082CEEA631FF0864176",
+  "h3446_asset_response_relative_path": "WAR/M5-WAR-CASH-20260928/ASSET-RESPONSE-H3446.json",
+  "h3446_asset_response_sha256": "AF4EA3A1437860840F91DE780E4463372D9B5722CBA56AE9501E333890787B6E",
+  "current_cash_status": "incomplete_all_five_war_cash_values_null",
+  "append_only": true
+}

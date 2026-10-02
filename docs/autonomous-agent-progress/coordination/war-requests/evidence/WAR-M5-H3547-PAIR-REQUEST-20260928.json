@@ -1,0 +1,29 @@
+{
+  "schema": "xar.g2.m5-war-cash-current-official-pair-request.v1",
+  "created_at_utc": "2026-09-28T09:11:51Z",
+  "status": "requested_identity_and_cash_producer_capability_no_large_transfer_yet",
+  "owner": "r0266_resume",
+  "fixed_receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "source_public_evidence": {
+    "master_commit": "8A3D51F4B0E55F4E8F3B82B00E6CF080DD3AB900",
+    "daily_document": "docs/autonomous-agent-progress/daily/2026-09-28.md",
+    "latest_officially_paired_durable_checkpoint": "H3547",
+    "history_index": 3547,
+    "date_raw": 53219304,
+    "actor_character_id": 29829,
+    "save_sha256": "B809FD507B3EB7FFB16AFC7AE1B63B93BE58A40FEDEBF1C6386F89E1FE5F4CC8",
+    "war_id_to_recheck": 16777231,
+    "ransom_receipt_state": "R0289 resolved/applied and R0290 new PID cold readback; the historical 34486 ransom gold quote was 5000000 raw, not a war-cash amount",
+    "newer_same_date_checkpoint": "R0292 H3564/raw53219304 exists but its own official resume pair identity was not established in the cited daily entry"
+  },
+  "request_origin_first_response_file": "PAIR-RESPONSE-H3547-v1.json",
+  "requested_origin_first_response": [
+    "Confirm the latest officially paired durable Robert checkpoint and report if H3547 has been superseded by a newer official pair, with history index/date/actor/episode/WarID and the exact current save SHA-256.",
+    "For that frame, identify exact official rebound driver SHA-256 and byte count, family and any pending/resolved ransom sidecar required for a read-only receiver; provide prepare/rebind/no-launch receipt identities, candidate index, exact EXE, DLL and injector provenance.",
+    "Publish the six or necessary expanded whitelisted filenames, sizes and SHA-256 before any large file transfer. Do not silently pair the H3547 save with H3492 driver/binaries or use H3492 treasury as the H3547 cash value.",
+    "State whether a safe same-frame native war-cash producer exists for outstanding war commitments, selected-action fee/identity, bounded future upkeep and risk horizon, and player war policy reserve. If absent, report each as null with the missing source; do not fill from net income, a GUI monthly rate, an AI war chest or the separate ransom receipt.",
+    "Because formal checkpoints are advancing, propose a read-only producer attached to each formal paused-frame query with player/WarID/episode/date/native revision/selected step, rather than treating any transferred checkpoint amount as automatically current after a later turn."
+  ],
+  "transfer_gate": "No large assets requested or accepted by this file. Receiver will examine an exact new manifest and append a separate ASSET-ACCEPT-H3547-v1.json before transfer. Only the named fixed WAR folder is authorized; no unrelated OneDrive files.",
+  "cash_boundary": "H3492 eight-file transfer remains useful for scanner/ABI diagnosis only. It is now historical relative to official H3547 and cannot satisfy current M5 same-frame cash. All five R0266 war-cash amount fields remain null."
+}

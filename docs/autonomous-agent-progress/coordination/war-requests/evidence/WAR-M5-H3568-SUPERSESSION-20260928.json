@@ -1,0 +1,17 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3568-transfer-supersession.v1",
+  "created_at_utc": "2026-09-28T09:43:05Z",
+  "owner": "r0266_resume",
+  "status": "h3568_historical_only_superseded_by_h3603",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "prior_accept_file": "ASSET-ACCEPT-H3547-REBIND-v1.json",
+  "prior_accept_sha256": "3A021E572F18CF32BEE1E55FB219B49E32A27E2B03AEEDA019B9BDFE57A849B6",
+  "prior_addendum_sha256": "88137CC4AD9E8597090455F45082A5511E54AEE49C3F285352593CE09F0CBCB0",
+  "new_addendum_file": "PAIR-ADDENDUM-H3547-LATEST-H3603-v1.json",
+  "new_addendum_sha256": "D9E08F70C1CE881BD2A7DC60FC077511FF676E260652DA3037F80BDEB50B0480",
+  "old_frame": {"history_index": 3568, "date_raw": 53219304},
+  "latest_reported_frame": {"history_index": 3603, "date_raw": 53219352, "source_round": "R0298"},
+  "transfer_instruction": "If the accepted H3568 seven-file transfer has not started, omit it. If already in flight, preserve it as historical transfer only; do not delete, replace, or conflate bytes. H3603 requires separate acceptance and receiver validation.",
+  "cash_status": "All five wartime cash fields remain null. H3568 cannot be called the current M5 frame or used to price H3603.",
+  "response_requested": "Source may acknowledge this supersession in a new append-only file; do not overwrite prior addendum or acceptance."
+}

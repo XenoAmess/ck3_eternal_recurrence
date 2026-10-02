@@ -1,0 +1,14 @@
+{
+  "schema": "xar.g2.m5-war-cash-producer-window-request.v1",
+  "created_at_utc": "2026-09-28T09:43:05Z",
+  "owner": "r0266_resume",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "latest_source_addendum_file": "PAIR-ADDENDUM-H3547-LATEST-H3603-v1.json",
+  "latest_source_addendum_sha256": "D9E08F70C1CE881BD2A7DC60FC077511FF676E260652DA3037F80BDEB50B0480",
+  "frame": {"history_index": 3603, "date_raw": 53219352, "actor_character_id": 29829},
+  "request": "Can the source briefly hold M6 and other gameplay advancement on the frozen H3603 official pair, with no new commands or save mutation, so the war side can develop and validate an exact-build, read-only same-frame cash producer? Please state whether this is feasible, the maximum window, and which process owns the official continuation.",
+  "requested_until_utc": "2026-09-28T10:45:00Z",
+  "response_file": "PRODUCER-WINDOW-RESPONSE-H3603-v1.json",
+  "boundary": "This is a scheduling request, not a claim that the source has paused. Do not overwrite or discard the pending prisoner 44484 ransom ledger; no new gameplay action or source binary is authorized here. If the source cannot pause, report the newest durable pair identity and preserve H3603 as historical.",
+  "cash_status": "All five war cash values are null. Static rates, historical treasury, ransom quotes, and AI war chest do not substitute for same-frame action-bound cash."
+}

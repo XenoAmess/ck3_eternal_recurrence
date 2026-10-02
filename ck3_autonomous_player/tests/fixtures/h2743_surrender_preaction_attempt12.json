@@ -1,0 +1,667 @@
+{
+  "schema": "xar.ck3.h2743-surrender-preaction-attempt12-fixture.v1",
+  "source_path": "D:\\ck3-research-artifacts\\war31-h2743-20260928\\attempt-12-dejure-baseline-no-launch\\live-dejure-partial-truce-v4",
+  "source_sha256": {
+    "before-payload.json": "DC9C9F306118C9D9A4C3378C26B6E037B7ABBD9CB39995E400BEBF94970A3AF2",
+    "baseline-query-1-payload.json": "EAB40AC965BC36E2BA119ED2944AC5A211FECA3D0E34959FADB27DFE1D4B19CF",
+    "war-options-query-payload.json": "D7C6A50F5120944B4C53C42B52D0C64734BE9B169235F1C5764B3AABEA0DD2EB",
+    "baseline-query-2-payload.json": "2ED3D4320A01E619CBFFF1165B0E4E54CFF2FB6B384B8F2A9F4DBA2B2A73BB9D",
+    "after-snapshot-payload.json": "C1FD640492B7CCF93C498F2725CF86885FB8EEEBB4C2DA62A8D3E467FF8DC4C0"
+  },
+  "before_snapshot": {
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "played_character": {
+      "character_id": 29829
+    },
+    "diagnostics": {
+      "connection_generation": 1
+    },
+    "active_wars": [
+      {
+        "war_id": 16777231,
+        "player_side": "defender",
+        "player_is_primary_war_leader": true,
+        "primary_opponent_character_id": 30097,
+        "player_relative_war_score": -12,
+        "targeted_title_ids": [
+          2128
+        ]
+      }
+    ],
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53217264
+  },
+  "baseline_first": {
+    "step": "query-defender-de-jure-exit-terms-v1-16777231",
+    "accepted": true,
+    "status": "baseline_only",
+    "query_sequence": 1,
+    "defender_de_jure_exit_terms_v1": {
+      "schema": "xar.ck3.defender-de-jure-exit-terms.v1",
+      "war_id": 16777231,
+      "native_revision": 3,
+      "date_raw": 53217264,
+      "primary_attacker_character_id": 30097,
+      "primary_defender_character_id": 29829,
+      "target_title_ids": [
+        2128
+      ],
+      "target_title_holder_prestate": [
+        {
+          "title_id": 2128,
+          "holder_character_id": 33435,
+          "holder_immediate_liege_character_id": 29829
+        }
+      ],
+      "primary_resource_balances": [
+        {
+          "character_id": 30097,
+          "resource": "gold",
+          "value": {
+            "raw": 22861397,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "prestige",
+          "value": {
+            "raw": 85874500,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "prestige_experience",
+          "value": {
+            "raw": 111774500,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "piety",
+          "value": {
+            "raw": 34640000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "piety_experience",
+          "value": {
+            "raw": 129640000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "legitimacy",
+          "value": {
+            "raw": 71550000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "stress",
+          "value": {
+            "raw": 0,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "gold",
+          "value": {
+            "raw": 111861020,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "prestige",
+          "value": {
+            "raw": 253090010,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "prestige_experience",
+          "value": {
+            "raw": 581996507,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "piety",
+          "value": {
+            "raw": 40832500,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "piety_experience",
+          "value": {
+            "raw": 131586927,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "legitimacy",
+          "value": {
+            "raw": 22100000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "stress",
+          "value": {
+            "raw": 0,
+            "scale": 100000
+          }
+        }
+      ],
+      "primary_monthly_gold_income": [
+        {
+          "character_id": 30097,
+          "value": {
+            "raw": 943261,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "value": {
+            "raw": 421089,
+            "scale": 100000
+          }
+        }
+      ],
+      "truce_inputs_v1": {
+        "schema": "xar.ck3.defender-de-jure-truce-inputs.v1",
+        "attacker_flexible_truces_perk": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "attacker_government_is_nomadic": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "defender_government_is_nomadic": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "nomad_both": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "short": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "stock_condition_reader_unavailable"
+        },
+        "long": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "stock_condition_reader_unavailable"
+        },
+        "border_raid_pair": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "stock_condition_reader_unavailable"
+        },
+        "evaluated_days": null,
+        "persisted_expiry_date_raw": null
+      },
+      "title_vassal_delta": null,
+      "title_vassal_delta_unavailable_reason": "runtime_target_scope_and_de_jure_change_semantics_unproven",
+      "signed_resource_delta": null,
+      "signed_resource_delta_unavailable_reason": "conditional_effects_and_cb_prestige_factor_unread",
+      "directed_truce": null,
+      "directed_truce_unavailable_reason": "attacker_victory_truce_duration_unread",
+      "material_complete": false,
+      "recommended_outcome": null,
+      "action_literal": null
+    },
+    "backend_id": "native-headless",
+    "queried_snapshot_id": "native:3",
+    "queried_revision": 4,
+    "queried_native_revision": 3
+  },
+  "option_result": {
+    "step": "query-war-termination-options-16777231",
+    "accepted": true,
+    "status": "available",
+    "query_sequence": 1,
+    "war_termination_options": {
+      "war_id": 16777231,
+      "player_side": "defender",
+      "player_is_primary_war_leader": true,
+      "player_relative_war_score": -12,
+      "war_duration_days": 1101,
+      "active_casus_belli_present": true,
+      "active_casus_belli_identity": {
+        "database_index": 17,
+        "canonical_key": "individual_county_de_jure_cb"
+      },
+      "cb_allows_white_peace": true,
+      "absolute_war_scores_observable": true,
+      "attacker_war_score": 12,
+      "defender_war_score": -12,
+      "war_score_breakdown": {
+        "battles": 0,
+        "imprisonment": 0,
+        "occupation": 39,
+        "ticking": -27
+      },
+      "options": {
+        "surrender": {
+          "outcome": "attacker_victory",
+          "hostage_variant": "none",
+          "context_constructed": true,
+          "native_validator_passed": true,
+          "available": true,
+          "terms_observable": false,
+          "terms": {
+            "status": "unavailable",
+            "reason": "cb_specific_terms_not_observable"
+          },
+          "ai_acceptance_observable": true,
+          "ai_acceptance": {
+            "raw": -8700000,
+            "scale": 100000
+          },
+          "auto_accept_observable": true,
+          "auto_accept": true,
+          "recipient_response": {
+            "status": "available",
+            "decision_status_raw": 0,
+            "would_accept_now": true
+          }
+        },
+        "white_peace": {
+          "outcome": "white_peace",
+          "hostage_variant": "none",
+          "context_constructed": true,
+          "native_validator_passed": false,
+          "available": false,
+          "terms_observable": false,
+          "terms": {
+            "status": "unavailable",
+            "reason": "cb_specific_terms_not_observable"
+          },
+          "ai_acceptance_observable": true,
+          "ai_acceptance": {
+            "raw": -2990110,
+            "scale": 100000
+          },
+          "auto_accept_observable": true,
+          "auto_accept": false,
+          "recipient_response": {
+            "status": "unavailable",
+            "decision_status_raw": null,
+            "would_accept_now": null
+          }
+        },
+        "victory": {
+          "outcome": "attacker_defeat",
+          "hostage_variant": "none",
+          "context_constructed": true,
+          "native_validator_passed": false,
+          "available": false,
+          "terms_observable": false,
+          "terms": {
+            "status": "unavailable",
+            "reason": "cb_specific_terms_not_observable"
+          },
+          "ai_acceptance_observable": true,
+          "ai_acceptance": {
+            "raw": -11100000,
+            "scale": 100000
+          },
+          "auto_accept_observable": true,
+          "auto_accept": false,
+          "recipient_response": {
+            "status": "unavailable",
+            "decision_status_raw": null,
+            "would_accept_now": null
+          }
+        }
+      },
+      "source": "native"
+    },
+    "backend_id": "native-headless",
+    "queried_snapshot_id": "native:3",
+    "queried_revision": 4,
+    "queried_native_revision": 3,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "native-29829-2bc2d599f7f9",
+    "termination_query_context": {
+      "schema_version": 1,
+      "queried_date_raw": 53217264,
+      "queried_connection_generation": 1,
+      "queried_episode_run_id": "native-29829-2bc2d599f7f9",
+      "queried_character_id": 29829,
+      "active_war_signature": [
+        {
+          "war_id": 16777231,
+          "player_side": "defender",
+          "player_is_primary_war_leader": true,
+          "primary_opponent_character_id": 30097,
+          "player_relative_war_score": -12,
+          "targeted_title_ids": [
+            2128
+          ]
+        }
+      ],
+      "negative_decision_signature": {
+        "war_id": 16777231,
+        "player_side": "defender",
+        "player_is_primary_war_leader": true,
+        "player_relative_war_score": -12,
+        "absolute_war_scores_observable": true,
+        "attacker_war_score": 12,
+        "defender_war_score": -12,
+        "war_score_breakdown": {
+          "battles": 0,
+          "imprisonment": 0,
+          "occupation": 39,
+          "ticking": -27
+        },
+        "active_casus_belli_present": true,
+        "active_casus_belli_identity": {
+          "database_index": 17,
+          "canonical_key": "individual_county_de_jure_cb"
+        },
+        "cb_allows_white_peace": true,
+        "options": {
+          "surrender": {
+            "outcome": "attacker_victory",
+            "hostage_variant": "none",
+            "context_constructed": true,
+            "native_validator_passed": true,
+            "available": true,
+            "recipient_response": {
+              "status": "available",
+              "decision_status_raw": 0,
+              "would_accept_now": true
+            }
+          },
+          "white_peace": {
+            "outcome": "white_peace",
+            "hostage_variant": "none",
+            "context_constructed": true,
+            "native_validator_passed": false,
+            "available": false,
+            "recipient_response": {
+              "status": "unavailable",
+              "decision_status_raw": null,
+              "would_accept_now": null
+            }
+          },
+          "victory": {
+            "outcome": "attacker_defeat",
+            "hostage_variant": "none",
+            "context_constructed": true,
+            "native_validator_passed": false,
+            "available": false,
+            "recipient_response": {
+              "status": "unavailable",
+              "decision_status_raw": null,
+              "would_accept_now": null
+            }
+          }
+        }
+      },
+      "queried_war_duration_days": 1101
+    }
+  },
+  "baseline_second": {
+    "step": "query-defender-de-jure-exit-terms-v1-16777231",
+    "accepted": true,
+    "status": "baseline_only",
+    "query_sequence": 2,
+    "defender_de_jure_exit_terms_v1": {
+      "schema": "xar.ck3.defender-de-jure-exit-terms.v1",
+      "war_id": 16777231,
+      "native_revision": 3,
+      "date_raw": 53217264,
+      "primary_attacker_character_id": 30097,
+      "primary_defender_character_id": 29829,
+      "target_title_ids": [
+        2128
+      ],
+      "target_title_holder_prestate": [
+        {
+          "title_id": 2128,
+          "holder_character_id": 33435,
+          "holder_immediate_liege_character_id": 29829
+        }
+      ],
+      "primary_resource_balances": [
+        {
+          "character_id": 30097,
+          "resource": "gold",
+          "value": {
+            "raw": 22861397,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "prestige",
+          "value": {
+            "raw": 85874500,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "prestige_experience",
+          "value": {
+            "raw": 111774500,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "piety",
+          "value": {
+            "raw": 34640000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "piety_experience",
+          "value": {
+            "raw": 129640000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "legitimacy",
+          "value": {
+            "raw": 71550000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 30097,
+          "resource": "stress",
+          "value": {
+            "raw": 0,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "gold",
+          "value": {
+            "raw": 111861020,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "prestige",
+          "value": {
+            "raw": 253090010,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "prestige_experience",
+          "value": {
+            "raw": 581996507,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "piety",
+          "value": {
+            "raw": 40832500,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "piety_experience",
+          "value": {
+            "raw": 131586927,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "legitimacy",
+          "value": {
+            "raw": 22100000,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "resource": "stress",
+          "value": {
+            "raw": 0,
+            "scale": 100000
+          }
+        }
+      ],
+      "primary_monthly_gold_income": [
+        {
+          "character_id": 30097,
+          "value": {
+            "raw": 943261,
+            "scale": 100000
+          }
+        },
+        {
+          "character_id": 29829,
+          "value": {
+            "raw": 421089,
+            "scale": 100000
+          }
+        }
+      ],
+      "truce_inputs_v1": {
+        "schema": "xar.ck3.defender-de-jure-truce-inputs.v1",
+        "attacker_flexible_truces_perk": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "attacker_government_is_nomadic": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "defender_government_is_nomadic": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "nomad_both": {
+          "status": "observed",
+          "value": false,
+          "unavailable_reason": null
+        },
+        "short": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "stock_condition_reader_unavailable"
+        },
+        "long": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "stock_condition_reader_unavailable"
+        },
+        "border_raid_pair": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "stock_condition_reader_unavailable"
+        },
+        "evaluated_days": null,
+        "persisted_expiry_date_raw": null
+      },
+      "title_vassal_delta": null,
+      "title_vassal_delta_unavailable_reason": "runtime_target_scope_and_de_jure_change_semantics_unproven",
+      "signed_resource_delta": null,
+      "signed_resource_delta_unavailable_reason": "conditional_effects_and_cb_prestige_factor_unread",
+      "directed_truce": null,
+      "directed_truce_unavailable_reason": "attacker_victory_truce_duration_unread",
+      "material_complete": false,
+      "recommended_outcome": null,
+      "action_literal": null
+    },
+    "backend_id": "native-headless",
+    "queried_snapshot_id": "native:3",
+    "queried_revision": 4,
+    "queried_native_revision": 3
+  },
+  "after_snapshot": {
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "played_character": {
+      "character_id": 29829
+    },
+    "diagnostics": {
+      "connection_generation": 1
+    },
+    "active_wars": [
+      {
+        "war_id": 16777231,
+        "player_side": "defender",
+        "player_is_primary_war_leader": true,
+        "primary_opponent_character_id": 30097,
+        "player_relative_war_score": -12,
+        "targeted_title_ids": [
+          2128
+        ]
+      }
+    ],
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53217264
+  }
+}

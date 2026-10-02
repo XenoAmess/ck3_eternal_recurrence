@@ -1,0 +1,31 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3603-rebound-asset-accept.v1",
+  "created_at_utc": "2026-09-28T09:43:05Z",
+  "status": "accepted_for_exact_seven_file_transfer_only",
+  "owner": "r0266_resume",
+  "source_addendum_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-ADDENDUM-H3547-LATEST-H3603-v1.json",
+  "source_addendum_sha256": "D9E08F70C1CE881BD2A7DC60FC077511FF676E260652DA3037F80BDEB50B0480",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "frame_identity": {
+    "checkpoint": "H3603",
+    "history_index": 3603,
+    "date_raw": 53219352,
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id_to_recheck": 16777231,
+    "source_round": "R0298",
+    "producer_commit": "c74e8c34bafb6f072544cac8fdc03cd6ed4b3e7e"
+  },
+  "accepted_files": [
+    {"file": "H3603-rebound-v1-xar_checkpoint.ck3", "bytes": 78448710, "sha256": "8D57C3439B2AE504BAC15749583025D534275F004915C27D7BE8795063021F48"},
+    {"file": "H3603-rebound-v1-driver-state.json", "bytes": 89330536, "sha256": "77F2A9F631DD7165900486D01BD0AFFC47C8323B1E9B2491AC47031A0BC64C9B"},
+    {"file": "H3603-rebound-v1-first-heir-marriage-formal-v1.json", "bytes": 2740, "sha256": "18350BBCF019331A2E821E9DE59D9B2A58424A4A8B7D5E8C8E82DE73CA36BFC3"},
+    {"file": "H3603-rebound-v1-player-prisoner-ransom-formal-v1.json", "bytes": 2125, "sha256": "8BE8C13E6F0E95EB694889A6DD6E61A6CC958CDB0951CD5800096527D2B06A34"},
+    {"file": "H3603-rebound-v1-rebind-receipt.json", "bytes": 4165, "sha256": "E26E7A5E38E91A864E701519E434F12A57826506664C7E9816EA8C73D48416F8"},
+    {"file": "H3603-rebound-v1-no-launch-preflight.json", "bytes": 4110, "sha256": "443500F3189990C463679F9A824AC027CDA5C39FADB87A7FD9E39F314FEB5D44"},
+    {"file": "H3603-rebound-v1-candidate-index.json", "bytes": 5169, "sha256": "CF8D42DD2CECC00B6497F200AE2F43E99E8609DACC95B18F6B3E10BD0881933B"}
+  ],
+  "transfer_boundary": "Only these seven exact files are accepted. H3568 assets, R0298 raw driver, historical binaries, DLL, injector, and unrelated OneDrive files are excluded. Pending prisoner 44484 ransom ledger is continuity evidence, not wartime cash.",
+  "verification_boundary": "Transfer alone is not receiver-side official pairing, current WarID proof, gameplay authority, or cash observation. Receiver must independently hash all seven, select its own code and DLL, and run isolated official rebind/no-launch after CK3 and recorder cleanup.",
+  "cash_boundary": "Five wartime Q100000 fields remain null; no H3603 same-frame safe producer, horizon, selected war action quote, or player war reserve has been demonstrated. No M5 spend is authorized."
+}

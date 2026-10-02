@@ -1,0 +1,26 @@
+{
+  "schema": "xar.g2.m5-war-cash-latest-pair-decision.v1",
+  "created_at_utc": "2026-09-28T08:42:24Z",
+  "owner": "r0266_resume",
+  "source_response_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-RESPONSE-H3492-v1.json",
+  "source_response_sha256": "2AB0DE24A26CA7EE0245A1CC5B005068247317F6C1E1363C72FD07CDDFB6DF76",
+  "decision": "origin_prepare_new_official_h3492_rebound_pair_then_offer_manifest",
+  "reason": "The extant source save 98FC24 and raw driver 70E480 have a matching last checkpoint and no post-checkpoint tail, but the historical official rebound BA29 driver bytes were mutated by R0289. Origin has the exact source and candidate build; a new frozen official pair avoids receiver-side reuse of an unqualified raw driver or old DLL.",
+  "source_identity_to_bind": {
+    "checkpoint": "H3492/raw53219160",
+    "actor_character_id": 29829,
+    "war_id_to_recheck": 16777231,
+    "save_sha256": "98FC24FEDC2C6A1F8C67F83A8CAB5BF18E3A1A2ACCBEB92CB851801F1F935F46",
+    "raw_driver_sha256": "70E4804DCB5CDBC24939D0F90E5C23BDE24AFA52013EDDB1320CE75502648C10",
+    "family_sidecar_sha256": "18350BBCF019331A2E821E9DE59D9B2A58424A4A8B7D5E8C8E82DE73CA36BFC3"
+  },
+  "requested_origin_next_step": [
+    "Use a new isolated state directory and the official prepare/rebind/family-pair/no-launch workflow against the exact extant H3492 save and raw driver. Preserve R0288/R0289 prior attempts unchanged.",
+    "Freeze the newly rebound driver bytes, exact save, family sidecar, rebind receipt, no-launch preflight and candidate index; produce a proposed filename/size/SHA manifest plus exact EXE, DLL and injector identity/source commit.",
+    "If official pairing fails or any published source byte no longer exists, respond RED with the precise missing asset or validator result. Do not silently substitute the historical mutated BA29 driver or a later save.",
+    "If a newer durable Robert checkpoint has superseded H3492, report that identity separately; H3492 remains a specifically requested historical M5 frame."
+  ],
+  "origin_reply_file": "PAIR-ADDENDUM-H3492-REBIND-v1.json",
+  "asset_transfer_boundary": "Do not transfer large files yet. Receiver will first check a new exact proposed six-file manifest and then write ASSET-ACCEPT-H3492-v1.json. Existing H3446 rebound assets cannot be called H3492.",
+  "cash_boundary": "No H3492 paused cash observation or spend readiness; five wartime cash fields remain null."
+}

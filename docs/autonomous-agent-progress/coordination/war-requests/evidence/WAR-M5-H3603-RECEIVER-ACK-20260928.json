@@ -1,0 +1,32 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3603-rebound-receiver-ack.v1",
+  "created_at_utc": "2026-09-28T09:55:38Z",
+  "owner": "r0266_resume",
+  "status": "seven_files_received_verified_historical_transfer_only",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "source_addendum_sha256": "D9E08F70C1CE881BD2A7DC60FC077511FF676E260652DA3037F80BDEB50B0480",
+  "receiver_accept_sha256": "0CD8BBAAD879CBBD6D3103CC3730453C37FCB48355D020F3AB9F4288682063DA",
+  "source_transfer_manifest_sha256": "B5DEA7ED79B91239D2160C177749CDF7FDFF609DB489212E2C2A76CAFEFA21AA",
+  "external_transfer_receipt": "D:/ck3-research-artifacts/war-intake-20260928/h3603-rebind-transfer-001/transfer-receipt.json",
+  "external_transfer_receipt_sha256": "7B31B34B1FEF98A536E3ADB07E1ED77D816387993A19FFF16976CBD916E1ACA9",
+  "source_files_verified_count": 7,
+  "source_files_verified_total_bytes": 167797555,
+  "frame": {
+    "source_round": "R0298",
+    "history_index": 3603,
+    "date_raw": 53219352,
+    "actor_character_id": 29829,
+    "war_id_to_recheck": 16777231
+  },
+  "current_frame_boundary": "R0299 started after H3603 and was live beyond at least H3639/raw53219424 at source response time. H3603 is an immutable historical research pair, not current M5 cash or a command hold.",
+  "receiver_official_no_launch_status": "not_run_video_ck3_screen_priority",
+  "receiver_live_cash_observed": false,
+  "cash_values": {
+    "pending_war_cash_raw": null,
+    "immediate_war_action_cost_raw": null,
+    "future_war_cost_upper_raw": null,
+    "future_risk_budget_raw": null,
+    "policy_minimum_gold_reserve_raw": null
+  },
+  "authority_boundary": "Transfer verification does not approve gameplay, historical-to-current amount reuse, official pair use without receiver checks, or M5 spending. No H3603 hold was granted and R0299 must not be interrupted."
+}

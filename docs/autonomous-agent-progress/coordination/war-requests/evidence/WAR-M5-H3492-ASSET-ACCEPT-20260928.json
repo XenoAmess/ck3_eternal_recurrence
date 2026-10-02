@@ -1,0 +1,44 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3492-rebound-asset-accept.v1",
+  "created_at_utc": "2026-09-28T08:53:25Z",
+  "status": "accepted_for_exact_six_file_transfer_only",
+  "owner": "r0266_resume",
+  "source_addendum_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-ADDENDUM-H3492-REBIND-v1.json",
+  "source_addendum_sha256": "FF5A5E86B5E6E8F00BF38B0AA465106F667FFFE7BF8F0EFCCCE826F8119BA659",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "accepted_files": [
+    {
+      "file": "H3492-rebound-v1-xar_checkpoint.ck3",
+      "bytes": 78434237,
+      "sha256": "98FC24FEDC2C6A1F8C67F83A8CAB5BF18E3A1A2ACCBEB92CB851801F1F935F46"
+    },
+    {
+      "file": "H3492-rebound-v1-driver-state.json",
+      "bytes": 88597398,
+      "sha256": "36675855F2D43DCC9746CE7242FC2D80BECB3FB7230B824931998A00ABDE40F5"
+    },
+    {
+      "file": "H3492-rebound-v1-first-heir-marriage-formal-v1.json",
+      "bytes": 2740,
+      "sha256": "18350BBCF019331A2E821E9DE59D9B2A58424A4A8B7D5E8C8E82DE73CA36BFC3"
+    },
+    {
+      "file": "H3492-rebound-v1-rebind-receipt.json",
+      "bytes": 4165,
+      "sha256": "7C96CB583E641404372A1FA0A963800697EB2A5473004FCDE98CBF3E6F873630"
+    },
+    {
+      "file": "H3492-rebound-v1-no-launch-preflight.json",
+      "bytes": 4110,
+      "sha256": "ED38BB88BC6E34278AF915BD672338F47D377D854601AD650C2262242D0A1D70"
+    },
+    {
+      "file": "H3492-rebound-v1-candidate-index.json",
+      "bytes": 4810,
+      "sha256": "93574F5140FA06451F94760E355902C4A04CA19431C74603CF31F4DE9CF3C6C9"
+    }
+  ],
+  "transfer_boundary": "Only the six listed assets are accepted. No DLL, injector, ransom sidecar, historical BA29 driver or unrelated OneDrive file is accepted by this request.",
+  "verification_boundary": "Transfer alone is not receiver-side official pairing, a same-frame WarID observation, a new war-cash binary qualification or cash evidence. Receiver will independently rehash, rebind and run official no-launch validation after CK3 is clear; five cash fields remain null.",
+  "historical_frame_boundary": "H3492/raw53219160 is the named M5 frame. H3446 and H2825 receipts cannot be assigned to it. Its pending ransom sidecar is outside this read-only cash transfer and formal gameplay continuation remains gated."
+}

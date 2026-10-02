@@ -1,0 +1,419 @@
+{
+  "schema": "xar.war-promo.episode02-four-raw-pts-candidates/v1",
+  "status": "MACHINE_PTS_CANDIDATES_ONLY_UNREVIEWED",
+  "queue_sources": [
+    {
+      "path": "D:/w/e2_pts/promo/ck3_native_war_ai/episode-02-battle-second-half/three-raw-adapter-queue-20260928.json",
+      "bytes": 4564,
+      "sha256": "0824D133302FFB7E09CEB6994F2525163B39EE014DFAFD5BD70B75EA53D8DD5B"
+    },
+    {
+      "path": "D:/w/e2_pts/promo/ck3_native_war_ai/episode-02-battle-second-half/reinforcement-raw-adapter-queue-20260928.json",
+      "bytes": 3150,
+      "sha256": "06C122D909003A356456411C1D6A6C35EDF9D5A63F459C0E6D5FC3F6D978CE69"
+    }
+  ],
+  "raw_sha256_rehashed_this_pass": false,
+  "full_ffprobe_sha256_rehashed_this_pass": true,
+  "human_1x_review_performed": false,
+  "clean_spans_certified": false,
+  "adapter_eligible": false,
+  "sources": [
+    {
+      "id": "e2-02-03-a01",
+      "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01",
+      "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01/recording-e2-02-03-a01",
+      "capture_report": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01/ck3-output/capture-report.json",
+        "bytes": 8640,
+        "sha256": "FBBFCD6ACBF7F6156ADE725EFF189AB9F9169A7D1D2E9E8508928CE5B7DB2997"
+      },
+      "session_result": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01/ck3-output/session-result.json",
+        "bytes": 7370,
+        "sha256": "F0847053C14D3738FBFBDDC7DEF9585BFB8B7CE8F3555AECFB1A329873A27BFC"
+      },
+      "recorder_final": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01/recording-e2-02-03-a01/recorder-final.json",
+        "bytes": 1928,
+        "sha256": "C4BED9D42150C97AD55486FC607C526355906FE4A029CA87C1E7F91333CB9EEC"
+      },
+      "raw_stat_bytes": 1304900034,
+      "raw_sha256_from_recorder_final_not_rehashed": "29D11C77ABCE92B79608F5E82E66D3949C08FE30BF6219626E526ECCA5698AAB",
+      "ffprobe_verified": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01/recording-e2-02-03-a01/ffprobe.json",
+        "bytes": 15439959,
+        "sha256": "A0AE959BD3C39AF2338754C769A4B9B2F0A643C66BCCE3B9D7C1EE9EE5AD0717"
+      },
+      "video_width": 1920,
+      "video_height": 1080,
+      "format_duration_seconds": "600.000000",
+      "frame_count": 16247,
+      "all_gaps_over_0_2_seconds": [],
+      "candidate_windows": [
+        {
+          "purpose": "day27 context",
+          "visual_risk": null,
+          "original_window_claimed_exact": false,
+          "original_exact_claim_confirmed": null,
+          "requested_begin_seconds": "30",
+          "requested_end_seconds": "120",
+          "exact_begin_pts_seconds": "30.000000",
+          "exact_end_pts_seconds": "120.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 825,
+          "end_frame_index": 3257,
+          "frame_count": 2433,
+          "actual_duration_seconds": "90.000000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        },
+        {
+          "purpose": "day28 pursuit",
+          "visual_risk": null,
+          "original_window_claimed_exact": false,
+          "original_exact_claim_confirmed": null,
+          "requested_begin_seconds": "220",
+          "requested_end_seconds": "260",
+          "exact_begin_pts_seconds": "220.000000",
+          "exact_end_pts_seconds": "260.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 5986,
+          "end_frame_index": 7076,
+          "frame_count": 1091,
+          "actual_duration_seconds": "40.000000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        },
+        {
+          "purpose": "day29 pursuit",
+          "visual_risk": null,
+          "original_window_claimed_exact": false,
+          "original_exact_claim_confirmed": null,
+          "requested_begin_seconds": "390",
+          "requested_end_seconds": "480",
+          "exact_begin_pts_seconds": "390.000000",
+          "exact_end_pts_seconds": "479.967000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": false,
+          "begin_frame_index": 10582,
+          "end_frame_index": 12999,
+          "frame_count": 2418,
+          "actual_duration_seconds": "89.967000",
+          "max_adjacent_gap_seconds": "0.100000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        }
+      ],
+      "forbidden_window": null,
+      "visual_review_performed": false,
+      "clean_spans_certified": false
+    },
+    {
+      "id": "e2-09-a05-a01",
+      "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live",
+      "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01",
+      "capture_report": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/capture-report.json",
+        "bytes": 8641,
+        "sha256": "4071162AE68C384CF5AFDAAC3D9D33A3DF264E44D87CF49662383513DEFCD504"
+      },
+      "session_result": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/session-result.json",
+        "bytes": 7539,
+        "sha256": "6A7816AA763BA7316FE9AD30EDE05EE8C4D5672AFBEC5D8667F8842C14D21AFF"
+      },
+      "recorder_final": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01/recorder-final.json",
+        "bytes": 1971,
+        "sha256": "4D23C06ECEFB7525C48FE651FE30FC9573689E635439FF45AC7B98FFF2CD911E"
+      },
+      "raw_stat_bytes": 951186809,
+      "raw_sha256_from_recorder_final_not_rehashed": "C2E3AB8B0E60171316DD445B999B95E91227211666FE78CCF797F733AFDA315B",
+      "ffprobe_verified": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01/ffprobe.json",
+        "bytes": 16086455,
+        "sha256": "A65DEE1670DF72467BA28B5955AB012303A578129E7E2890DB394B4D14916DBD"
+      },
+      "video_width": 1920,
+      "video_height": 1080,
+      "format_duration_seconds": "600.000000",
+      "frame_count": 16934,
+      "all_gaps_over_0_2_seconds": [],
+      "candidate_windows": [
+        {
+          "purpose": "WarID4 before",
+          "visual_risk": null,
+          "original_window_claimed_exact": true,
+          "original_exact_claim_confirmed": false,
+          "requested_begin_seconds": "245",
+          "requested_end_seconds": "270",
+          "exact_begin_pts_seconds": "245.000000",
+          "exact_end_pts_seconds": "269.967000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": false,
+          "begin_frame_index": 6901,
+          "end_frame_index": 7616,
+          "frame_count": 716,
+          "actual_duration_seconds": "24.967000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        },
+        {
+          "purpose": "day27 to day28",
+          "visual_risk": null,
+          "original_window_claimed_exact": true,
+          "original_exact_claim_confirmed": true,
+          "requested_begin_seconds": "350",
+          "requested_end_seconds": "450",
+          "exact_begin_pts_seconds": "350.000000",
+          "exact_end_pts_seconds": "450.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 9887,
+          "end_frame_index": 12679,
+          "frame_count": 2793,
+          "actual_duration_seconds": "100.000000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        }
+      ],
+      "forbidden_window": null,
+      "visual_review_performed": false,
+      "clean_spans_certified": false
+    },
+    {
+      "id": "e2-09-a05-a02",
+      "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live",
+      "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02",
+      "capture_report": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/capture-report.json",
+        "bytes": 8641,
+        "sha256": "4071162AE68C384CF5AFDAAC3D9D33A3DF264E44D87CF49662383513DEFCD504"
+      },
+      "session_result": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/session-result.json",
+        "bytes": 7539,
+        "sha256": "6A7816AA763BA7316FE9AD30EDE05EE8C4D5672AFBEC5D8667F8842C14D21AFF"
+      },
+      "recorder_final": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/recorder-final.json",
+        "bytes": 1971,
+        "sha256": "5431520988C402A80D017B0338703463B61824B9E59213FD24467F14A8F60C49"
+      },
+      "raw_stat_bytes": 840210967,
+      "raw_sha256_from_recorder_final_not_rehashed": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+      "ffprobe_verified": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/ffprobe.json",
+        "bytes": 15730950,
+        "sha256": "1EA5CCC3C36500DFE62AA42409FC6725237C03DCAB9B5BD2AA3D7176EF1BA5E0"
+      },
+      "video_width": 1920,
+      "video_height": 1080,
+      "format_duration_seconds": "600.000000",
+      "frame_count": 16560,
+      "all_gaps_over_0_2_seconds": [
+        {
+          "before_pts_seconds": "37.933000",
+          "after_pts_seconds": "38.700000",
+          "gap_seconds": "0.767000"
+        },
+        {
+          "before_pts_seconds": "179.600000",
+          "after_pts_seconds": "180.067000",
+          "gap_seconds": "0.467000"
+        },
+        {
+          "before_pts_seconds": "271.267000",
+          "after_pts_seconds": "278.833000",
+          "gap_seconds": "7.566000"
+        }
+      ],
+      "candidate_windows": [
+        {
+          "purpose": "day28 to day29",
+          "visual_risk": null,
+          "original_window_claimed_exact": true,
+          "original_exact_claim_confirmed": true,
+          "requested_begin_seconds": "60",
+          "requested_end_seconds": "170",
+          "exact_begin_pts_seconds": "60.000000",
+          "exact_end_pts_seconds": "170.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 1648,
+          "end_frame_index": 4726,
+          "frame_count": 3079,
+          "actual_duration_seconds": "110.000000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        },
+        {
+          "purpose": "day30",
+          "visual_risk": null,
+          "original_window_claimed_exact": true,
+          "original_exact_claim_confirmed": true,
+          "requested_begin_seconds": "200",
+          "requested_end_seconds": "250",
+          "exact_begin_pts_seconds": "200.000000",
+          "exact_end_pts_seconds": "250.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 5558,
+          "end_frame_index": 6966,
+          "frame_count": 1409,
+          "actual_duration_seconds": "50.000000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        },
+        {
+          "purpose": "day31",
+          "visual_risk": null,
+          "original_window_claimed_exact": true,
+          "original_exact_claim_confirmed": false,
+          "requested_begin_seconds": "300",
+          "requested_end_seconds": "350",
+          "exact_begin_pts_seconds": "300.000000",
+          "exact_end_pts_seconds": "349.967000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": false,
+          "begin_frame_index": 8165,
+          "end_frame_index": 9573,
+          "frame_count": 1409,
+          "actual_duration_seconds": "49.967000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        },
+        {
+          "purpose": "day32 writer and WarID4 after",
+          "visual_risk": "Event modal overlays the upper war panel in the after screenshot; no_foreign_overlay gate unproven.",
+          "original_window_claimed_exact": true,
+          "original_exact_claim_confirmed": true,
+          "requested_begin_seconds": "385",
+          "requested_end_seconds": "500",
+          "exact_begin_pts_seconds": "385.000000",
+          "exact_end_pts_seconds": "500.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 10556,
+          "end_frame_index": 13744,
+          "frame_count": 3189,
+          "actual_duration_seconds": "115.000000",
+          "max_adjacent_gap_seconds": "0.100000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        }
+      ],
+      "forbidden_window": {
+        "reason": "Crosses 271.267–278.833 raw PTS gap of 7.566 seconds",
+        "requested_begin_seconds": "250",
+        "requested_end_seconds": "300",
+        "exact_begin_pts_seconds": "250.000000",
+        "exact_end_pts_seconds": "300.000000",
+        "requested_begin_is_frame_pts": true,
+        "requested_end_is_frame_pts": true,
+        "begin_frame_index": 6966,
+        "end_frame_index": 8165,
+        "frame_count": 1200,
+        "actual_duration_seconds": "50.000000",
+        "max_adjacent_gap_seconds": "7.566000",
+        "gaps_over_0_2_seconds": [
+          {
+            "before_pts_seconds": "271.267000",
+            "after_pts_seconds": "278.833000",
+            "gap_seconds": "7.566000"
+          }
+        ],
+        "machine_status": "GAP_REJECTED"
+      },
+      "visual_review_performed": false,
+      "clean_spans_certified": false
+    },
+    {
+      "id": "e2-06-07-a01",
+      "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01",
+      "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01",
+      "capture_report": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/capture-report.json",
+        "bytes": 8643,
+        "sha256": "F59CBFFACCA88C59D158A6196CD2994BAFF0D6FD22A1E051FD167C2BC51D4F2F"
+      },
+      "session_result": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/ck3-output/session-result.json",
+        "bytes": 7489,
+        "sha256": "3413FB08D3496F41988F225C9DAAFCE5443C3A4CDD41FA8BBBB1B8AB6941108C"
+      },
+      "recorder_final": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/recorder-final.json",
+        "bytes": 1927,
+        "sha256": "F4EA84BCF8BF42149F80BAFB8820B3FC4BB87C0A23653353D7FE535109F3741F"
+      },
+      "raw_stat_bytes": 1325156480,
+      "raw_sha256_from_recorder_final_not_rehashed": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+      "ffprobe_verified": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/ffprobe.json",
+        "bytes": 15862058,
+        "sha256": "FE062858E759D29CEA538FB3AD7F300812AB410DF0C02B8A0544A9D09B0310F0"
+      },
+      "video_width": 1920,
+      "video_height": 1080,
+      "format_duration_seconds": "600.000000",
+      "frame_count": 16691,
+      "all_gaps_over_0_2_seconds": [],
+      "candidate_windows": [
+        {
+          "purpose": "day11 before-state navigation",
+          "visual_risk": null,
+          "original_window_claimed_exact": false,
+          "original_exact_claim_confirmed": null,
+          "requested_begin_seconds": "200",
+          "requested_end_seconds": "255",
+          "exact_begin_pts_seconds": "200.000000",
+          "exact_end_pts_seconds": "255.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 5500,
+          "end_frame_index": 7040,
+          "frame_count": 1541,
+          "actual_duration_seconds": "55.000000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        },
+        {
+          "purpose": "day12 after-state navigation",
+          "visual_risk": null,
+          "original_window_claimed_exact": false,
+          "original_exact_claim_confirmed": null,
+          "requested_begin_seconds": "350",
+          "requested_end_seconds": "410",
+          "exact_begin_pts_seconds": "350.000000",
+          "exact_end_pts_seconds": "410.000000",
+          "requested_begin_is_frame_pts": true,
+          "requested_end_is_frame_pts": true,
+          "begin_frame_index": 9714,
+          "end_frame_index": 11385,
+          "frame_count": 1672,
+          "actual_duration_seconds": "60.000000",
+          "max_adjacent_gap_seconds": "0.067000",
+          "gaps_over_0_2_seconds": [],
+          "machine_status": "PTS_CANDIDATE_UNREVIEWED"
+        }
+      ],
+      "forbidden_window": null,
+      "visual_review_performed": false,
+      "clean_spans_certified": false
+    }
+  ],
+  "total_raw_stat_bytes": 4421454290,
+  "total_ffprobe_verified_bytes": 63119422
+}
