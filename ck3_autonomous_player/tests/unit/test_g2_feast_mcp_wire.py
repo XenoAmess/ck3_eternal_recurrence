@@ -20,6 +20,7 @@ from test_activity_feast_guest_rule_provenance_private_transport import (
 )
 from test_activity_feast_guest_opinion_private_transport import (
     Driver as GuestOpinionDriver, snapshot as opinion_snapshot,
+    payload as guest_opinion_payload,
 )
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
@@ -35,6 +36,32 @@ ROUTE_TOOL = "ck3_query_activity_feast_guest_route_proof_private_v1"
 PROVENANCE_TOOL = "ck3_query_activity_feast_guest_rule_provenance_private_v1"
 INPUT_TOOL = "ck3_query_activity_feast_stage5_start_inputs_private_v1"
 OPINION_TOOL = "ck3_query_activity_feast_guest_opinion_private_v1"
+TARGET_ACTIVITY_ID = 83886111
+
+
+def guest_opinion_sdk_payload():
+    native = guest_opinion_payload()
+    native["snapshot_revision"] = 4
+    native["reward_opinion_modifiers"] = {
+        "hosted_feast_opinion": {"status": "observed", "present": False, "value": None},
+        "hosted_mediocre_feast_opinion": {"status": "observed", "present": False, "value": None},
+        "impressed_opinion": {"status": "observed", "present": True, "value": 10},
+    }
+    return native
+
+
+def observed_activity_target():
+    return {
+        "status": "observed", "activity_id": TARGET_ACTIVITY_ID,
+        "guest_character_id": 32000, "host_character_id": 31000,
+        "activity_type_key": "activity_feast",
+        "native_completed": True, "native_invalidated": False,
+        "attending_list_observed": True, "attending_count": 1,
+        "target_in_attending_list": True, "character_record_observed": True,
+        "character_activity_id": TARGET_ACTIVITY_ID,
+        "character_activity_state_raw": 2,
+        "character_record_matches_activity": True, "native_active_attendee": True,
+    }
 
 
 class NativeWrapperWireDriver(FixtureDriver):
@@ -130,6 +157,132 @@ class GuestOpinionWireDriver(GuestOpinionDriver):
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class FeastMcpWireTests(unittest.IsolatedAsyncioTestCase):
+    async def test_guest_activity_target_default_sdk_call_preserves_old_wire(self):
+        from mcp import Client
+
+        for optional_arguments in ({}, {"activity_id": None}):
+            with self.subTest(arguments=optional_arguments):
+                native = guest_opinion_sdk_payload()
+                driver = GuestOpinionWireDriver(native)
+                async with Client(create_server(driver)) as client:
+                    tools = {tool.name: tool for tool in (await client.list_tools()).tools}
+                    schema = tools[OPINION_TOOL].input_schema
+                    self.assertEqual(set(schema["properties"]),
+                                     {"expected_revision", "guest_character_id", "activity_id"})
+                    self.assertEqual(set(schema["required"]),
+                                     {"expected_revision", "guest_character_id"})
+                    self.assertIsNone(schema["properties"]["activity_id"]["default"])
+                    self.assertIs(tools[OPINION_TOOL].annotations.read_only_hint, True)
+                    reply = await client.call_tool(OPINION_TOOL, {
+                        "expected_revision": 5, "guest_character_id": 32000,
+                        **optional_arguments,
+                    })
+                self.assertFalse(reply.is_error)
+                observed = reply.structured_content
+                self.assertNotIn("activity_target", observed)
+                self.assertNotIn("activity_target_ready", observed)
+                self.assertNotIn("activity_id", driver.sent[0])
+                self.assertEqual(observed["reward_opinion_modifiers"], native["reward_opinion_modifiers"])
+                self.assertEqual(observed["exact_ck3_build"], CK3_12003.game_version)
+                self.assertEqual(observed["exe_sha256"], CK3_12003.executable_sha256)
+                self.assertEqual(observed["queried_snapshot_id"], observed["post_snapshot_id"])
+                self.assertEqual(driver.sent[0]["expected_revision"], 4)
+                self.assertEqual(len(driver.sent), 1)
+
+    async def test_guest_activity_target_sdk_observes_member_empty_and_no_record(self):
+        from mcp import Client
+
+        current = observed_activity_target()
+        empty = {**current, "attending_count": 0, "target_in_attending_list": False,
+                 "character_activity_id": 0xFFFFFFFF, "character_activity_state_raw": 3,
+                 "character_record_matches_activity": False, "native_active_attendee": False}
+        no_record = {**empty, "character_record_observed": False,
+                     "character_activity_id": None, "character_activity_state_raw": None,
+                     "character_record_matches_activity": None, "native_active_attendee": None}
+        different_activity = {**current, "character_activity_id": TARGET_ACTIVITY_ID + 1,
+                              "character_record_matches_activity": False,
+                              "native_active_attendee": False}
+        different_state = {**current, "character_activity_state_raw": 1,
+                           "native_active_attendee": False}
+        for case, target in (("current", current), ("empty", empty),
+                             ("no_record", no_record), ("different_activity", different_activity),
+                             ("different_state", different_state)):
+            with self.subTest(case=case):
+                native = guest_opinion_sdk_payload()
+                native["activity_target"] = target
+                driver = GuestOpinionWireDriver(native)
+                async with Client(create_server(driver)) as client:
+                    reply = await client.call_tool(OPINION_TOOL, {
+                        "expected_revision": 5, "guest_character_id": 32000,
+                        "activity_id": TARGET_ACTIVITY_ID,
+                    })
+                self.assertFalse(reply.is_error)
+                observed = reply.structured_content
+                self.assertEqual(observed["activity_target"], target)
+                self.assertIs(observed["activity_target_ready"], True)
+                self.assertEqual(observed["reward_opinion_modifiers"], native["reward_opinion_modifiers"])
+                self.assertEqual(observed["exact_ck3_build"], CK3_12003.game_version)
+                self.assertEqual(observed["exe_sha256"], CK3_12003.executable_sha256)
+                self.assertEqual(observed["queried_snapshot_id"], observed["post_snapshot_id"])
+                self.assertEqual(driver.sent[0]["activity_id"], TARGET_ACTIVITY_ID)
+                self.assertEqual(driver.sent[0]["expected_revision"], 4)
+                self.assertEqual(len(driver.sent), 1)
+                self.assertNotIn("benefit_verified", observed)
+                self.assertNotIn("attendance_verified", observed)
+
+    async def test_guest_activity_target_sdk_rejects_unknown_or_mistyped_status(self):
+        from mcp import Client
+
+        for status in (False, "not_requested", "unrecognised_status"):
+            with self.subTest(status=status):
+                native = guest_opinion_sdk_payload()
+                native["activity_target"] = {**observed_activity_target(), "status": status}
+                driver = GuestOpinionWireDriver(native)
+                async with Client(create_server(driver)) as client:
+                    reply = await client.call_tool(OPINION_TOOL, {
+                        "expected_revision": 5, "guest_character_id": 32000,
+                        "activity_id": TARGET_ACTIVITY_ID,
+                    })
+                self.assertTrue(reply.is_error)
+                self.assertEqual(len(driver.sent), 1)
+
+    async def test_guest_activity_target_sdk_keeps_unavailable_independent_of_opinion(self):
+        from mcp import Client
+
+        for status in ("attending_list_unavailable", "character_record_unavailable"):
+            with self.subTest(status=status):
+                target = {key: None for key in observed_activity_target()}
+                target.update(status=status, activity_id=TARGET_ACTIVITY_ID,
+                              guest_character_id=32000)
+                native = guest_opinion_sdk_payload()
+                native["activity_target"] = target
+                driver = GuestOpinionWireDriver(native)
+                async with Client(create_server(driver)) as client:
+                    reply = await client.call_tool(OPINION_TOOL, {
+                        "expected_revision": 5, "guest_character_id": 32000,
+                        "activity_id": TARGET_ACTIVITY_ID,
+                    })
+                self.assertFalse(reply.is_error)
+                observed = reply.structured_content
+                self.assertEqual(observed["status"], "observed")
+                self.assertEqual(observed["guest_opinion_of_actor"], native["guest_opinion_of_actor"])
+                self.assertEqual(observed["activity_target"], target)
+                self.assertIs(observed["activity_target_ready"], False)
+                self.assertIsNone(observed["activity_target"]["target_in_attending_list"])
+                self.assertIsNone(observed["activity_target"]["native_active_attendee"])
+                self.assertEqual(observed["exact_ck3_build"], CK3_12003.game_version)
+                self.assertEqual(driver.sent[0]["activity_id"], TARGET_ACTIVITY_ID)
+
+        target["target_in_attending_list"] = False
+        native["activity_target"] = target
+        driver = GuestOpinionWireDriver(native)
+        async with Client(create_server(driver)) as client:
+            reply = await client.call_tool(OPINION_TOOL, {
+                "expected_revision": 5, "guest_character_id": 32000,
+                "activity_id": TARGET_ACTIVITY_ID,
+            })
+        self.assertTrue(reply.is_error)
+
     async def test_fixed_reward_modifiers_use_actual_native_wire_through_official_sdk(self):
         from mcp import Client
 
@@ -144,6 +297,8 @@ class FeastMcpWireTests(unittest.IsolatedAsyncioTestCase):
                     tools = {tool.name: tool for tool in (await client.list_tools()).tools}
                     self.assertIs(tools[OPINION_TOOL].annotations.read_only_hint, True)
                     self.assertEqual(set(tools[OPINION_TOOL].input_schema["properties"]),
+                                     {"expected_revision", "guest_character_id", "activity_id"})
+                    self.assertEqual(set(tools[OPINION_TOOL].input_schema["required"]),
                                      {"expected_revision", "guest_character_id"})
                     reply = await client.call_tool(OPINION_TOOL, {
                         "expected_revision": 5, "guest_character_id": 32000,

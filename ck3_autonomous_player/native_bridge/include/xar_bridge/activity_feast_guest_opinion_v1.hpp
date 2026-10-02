@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/activity_hosted_identity_v1.hpp"
+
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -54,6 +56,9 @@ struct ActivityFeastGuestOpinionEnvironmentV1 {
   void (*read_reward_modifiers)(void *, std::uint32_t recipient_character_id,
                                std::uint32_t actor_character_id,
                                ActivityFeastRewardOpinionModifiersV1 &) noexcept = nullptr;
+  void (*read_activity_target)(void *, std::uint32_t activity_id,
+                               std::int32_t guest_character_id,
+                               ActivityHostedTargetResultV1 &) noexcept = nullptr;
 };
 
 struct ActivityFeastGuestOpinionResultV1 {
@@ -64,12 +69,15 @@ struct ActivityFeastGuestOpinionResultV1 {
   std::int32_t guest_opinion_of_actor = 0;
   bool reward_modifiers_requested = false;
   ActivityFeastRewardOpinionModifiersV1 reward_modifiers{};
+  bool activity_target_requested = false;
+  ActivityHostedTargetResultV1 activity_target{};
 };
 
 ActivityFeastGuestOpinionResultV1 ReadActivityFeastGuestOpinionV1(
     const ActivityFeastGuestOpinionEnvironmentV1 &environment,
     const ActivityFeastGuestOpinionFrameV1 &expected,
-    std::int32_t guest_character_id) noexcept;
+    std::int32_t guest_character_id,
+    std::uint32_t activity_id = 0) noexcept;
 
 std::string_view ActivityFeastGuestOpinionStatusKeyV1(
     ActivityFeastGuestOpinionStatusV1 status) noexcept;

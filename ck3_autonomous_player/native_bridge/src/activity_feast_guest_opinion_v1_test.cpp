@@ -1,6 +1,7 @@
 #include "xar_bridge/activity_feast_guest_opinion_v1.hpp"
 
 #include <cstdio>
+#include <string_view>
 
 namespace {
 
@@ -20,6 +21,7 @@ struct Fixture {
   bool change_modifier = false;
   ActivityFeastRewardOpinionModifiersV1 modifiers{{
       {true, false, std::nullopt}, {true, true, 0}, {false, false, std::nullopt}}};
+  int target_reads = 0;
 };
 
 bool ReadFrame(void *opaque, ActivityFeastGuestOpinionFrameV1 &output) noexcept {
@@ -60,9 +62,56 @@ bool Expect(bool ok, const char *message) {
   return ok;
 }
 
+void ReadTarget(void *opaque, std::uint32_t activity_id, std::int32_t guest_id,
+                ActivityHostedTargetResultV1 &output) noexcept {
+  auto &fixture = *static_cast<Fixture *>(opaque);
+  ++fixture.target_reads;
+  output.status = ActivityHostedTargetStatusV1::observed;
+  output.activity_id = activity_id;
+  output.guest_character_id = guest_id;
+  output.native_completed = true;
+  output.attending_list_observed = true;
+  output.attending_count = 0;
+  output.target_in_attending_list = false;
+}
+
+int TargetOnly() {
+  Fixture fixture{};
+  const ActivityFeastGuestOpinionEnvironmentV1 environment{
+      &fixture, &ReadFrame, &ReadOpinion, &ReadModifiers, &ReadTarget};
+  const auto expected = fixture.frame;
+  auto result = ReadActivityFeastGuestOpinionV1(environment, expected, 32000);
+  if (!Expect(result.status == ActivityFeastGuestOpinionStatusV1::observed &&
+                  !result.activity_target_requested && fixture.target_reads == 0,
+              "default query does not read an activity target")) return 1;
+  fixture = Fixture{};
+  result = ReadActivityFeastGuestOpinionV1(environment, expected, 32000, 83886111);
+  if (!Expect(result.status == ActivityFeastGuestOpinionStatusV1::observed &&
+                  result.activity_target_requested && fixture.target_reads == 1 &&
+                  result.activity_target.status == ActivityHostedTargetStatusV1::observed &&
+                  result.activity_target.activity_id == 83886111 &&
+                  result.activity_target.guest_character_id == 32000 &&
+                  result.activity_target.native_completed &&
+                  result.activity_target.attending_list_observed &&
+                  result.activity_target.attending_count == 0 &&
+                  !result.activity_target.target_in_attending_list,
+              "same query carries target identity and legitimate empty list")) return 1;
+  fixture = Fixture{};
+  fixture.change_after_read = true;
+  result = ReadActivityFeastGuestOpinionV1(environment, expected, 32000, 83886111);
+  if (!Expect(result.status == ActivityFeastGuestOpinionStatusV1::frame_changed &&
+                  result.activity_target.status == ActivityHostedTargetStatusV1::snapshot_changed &&
+                  !result.activity_target.native_completed &&
+                  result.activity_target.activity_id == 83886111,
+              "outer frame change clears independently read target material")) return 1;
+  std::puts("PASS optional Feast activity-target observer (3 cases)");
+  return 0;
+}
+
 } // namespace
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--target-only") return TargetOnly();
   Fixture fixture{};
   const ActivityFeastGuestOpinionEnvironmentV1 environment{
       &fixture, &ReadFrame, &ReadOpinion};

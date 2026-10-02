@@ -1,5 +1,14 @@
 # CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-03：v24/82c 实际消费旅行19，条件清旗保持未知
+
+ROOT正常push Python82c0317448eb8c83c4bf17364a02373b61c0775b后，以v24/newPID38520/严格native-env6c87原输入复用当前19的source-bound route。唯一finiteclosed `robert-travel1000-82c03174-v24-actual-select-01/result.json` current `travel_completion_event.1000`，native5/public2/暂停53222952/root-owner29829、currentexact5scopes和authored2/rendered1/sole0全部readback合法，24项registry checks全true。Loadercalculated4221000/runtime6534及scope nameidentifier变化不改变canonicalkey/typename/currentcontract，numericloaderordinal没有成为固定决策标签。
+
+实际 **API1/native0一次**，独立native6/public3证明old19gone且afteractiveeventnull，同Robert29829/ordinaryepisode/暂停日期/PID保持。before/after **stress7、gold105813299、prestige256705850、piety41357500**完全不变（资源scale100000）。Generic profile/metricNone、materialunavailable、helpernaturalprovenancefalse/newcreditfalse原样；源conditionalafter `recently_completed_mandala_contract` 旗标没有独立读，因此不记已清旗收益，也不从buttonack/资源不变猜traitXP或前置成长。
+
+本阶段为 **production-live primitive**，0day/0新增M2/M6/材料信用；原M2complete/G2状态不重判。Source当前only5scope/当前native0 acknowledgement，不外推旅行phase/fulltravelID/全路线或活动terminal。ROOT normal30已有lifestyleoptin正在执行；本package不读pending输出，正天数next/pairedcheckpoint只在后续closed后另追加。唯一本次18项有限实际assessment：`m2-events/actual-robert-travel-completion1000-blocker-01/actual-82c03174-v24-closed/REPORT-FIELDS.json`，原legacy7/RED及source-only首次GREEN保持，未重SDK/旧test/ABI/source施工。
+
+
 ## 2026-10-03：实际19旅行完成，合法5scope替代历史7scope前置
 
 ROOT currentRobert ordinaryepisode/PID6280/暂停raw53222952的onceobserve已经闭合，原queued19真实定义 **travel_completion_event.1000**，不是从7101后置ID猜出来。`robert-queued19-a391c881-v23-actual-observe-01/result.json` currentnative29/public2、calculated2931000/runtime5104、root29829；basic **authored2**，typed **rendered1/native0/API1** shownenabled。savedexact5为`travel_plan,travel_owner,current_location,travel_plan_scope,final_destination_province`；travel_owner character29829，travel_plan两项rawtype35/province两项rawtype8，identityopaque保持。原registryalreadyknown，但recommendation与ordinaryplan的真实RED都是`direct_projection_support:character_scopes`/`direct_projection_support:unique_character_scope_excludes`。

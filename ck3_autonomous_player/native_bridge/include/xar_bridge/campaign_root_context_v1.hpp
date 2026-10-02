@@ -97,6 +97,8 @@ struct CampaignRootCouncilPositionV1 {
   std::optional<CampaignRootCouncilTargetV1> target;
   std::optional<bool> frozen;
   std::optional<CampaignRootCouncilProgressV1> progress;
+  // Evaluated task owner modifier, before the owner's global piety aggregate.
+  std::optional<FixedPointValue> task_owner_monthly_piety_v1;
 
   friend bool operator==(const CampaignRootCouncilPositionV1 &,
                          const CampaignRootCouncilPositionV1 &) = default;
@@ -317,6 +319,11 @@ using NativeCampaignRootCouncilValueProgressV1 =
     std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
         void *task_type, std::int64_t *output, void *task_scopes);
 
+// Composite read callback; its implementation owns the three exact engine calls.
+using ReadCampaignRootTaskOwnerMonthlyPietyV1 = bool (*)(
+    std::uintptr_t module_base, void *task_type, const void *task_scopes,
+    std::int64_t &output) noexcept;
+
 #undef XAR_CAMPAIGN_ROOT_FASTCALL
 
 struct CampaignRootNativeEnvironmentV1 {
@@ -353,6 +360,7 @@ struct CampaignRootNativeEnvironmentV1 {
       province_holder_character_id = nullptr;
   NativeCampaignRootScriptIdentifierNameV1 script_identifier_name = nullptr;
   NativeCampaignRootMonthlyPietyV1 monthly_piety = nullptr;
+  ReadCampaignRootTaskOwnerMonthlyPietyV1 task_owner_monthly_piety = nullptr;
 };
 
 using CaptureCampaignRootFrameV1 = bool (*)(

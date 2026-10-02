@@ -118,6 +118,9 @@ struct ActivityFeastGuestOpinionPrivateQueryV1 : ActivityFeastGuestTransportSour
   game::Snapshot expected_snapshot{};
   std::uint64_t expected_revision = 0;
   std::int32_t guest_character_id = -1;
+  // Optional exact-.3 target observation; zero preserves the existing wire.
+  std::uint32_t activity_id = 0;
+  std::string_view actual_executable_sha256{};
   bridge::ActivityFeastGuestOpinionResultV1 opinion{};
   bool completed = false;
   bool frame_changed = false;

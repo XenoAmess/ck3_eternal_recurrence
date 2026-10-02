@@ -390,6 +390,21 @@ def _optional_monthly_piety_v1(value: object) -> dict[str, object]:
     raise ValueError("monthly piety observation is invalid")
 
 
+def _optional_task_owner_monthly_piety_v1(
+    value: object, name: str
+) -> dict[str, object]:
+    row = _exact_object(value, _LEGITIMACY_FIELDS, name)
+    if row.get("status") == "available":
+        amount = _fixed_point(row.get("value"), name + ".value")
+        if row.get("unavailable_reason") is not None:
+            raise ValueError(f"{name} available observation is invalid")
+        return {"status": "available", "value": amount, "unavailable_reason": None}
+    if (row.get("status") == "unavailable" and row.get("value") is None
+            and row.get("unavailable_reason") == "task_owner_monthly_piety_unavailable"):
+        return dict(row)
+    raise ValueError(f"{name} observation is invalid")
+
+
 def _optional_positive_int32(value: object, name: str) -> int | None:
     if value is None:
         return None
@@ -734,7 +749,17 @@ def _normalize_council(
     positions: list[dict[str, object]] = []
     for index, value in enumerate(positions_value):
         name = f"council.positions[{index}]"
-        row = _exact_object(value, _COUNCIL_POSITION_FIELDS, name)
+        fields = _COUNCIL_POSITION_FIELDS
+        if isinstance(value, dict) and "task_owner_monthly_piety_v1" in value:
+            fields = fields | {"task_owner_monthly_piety_v1"}
+        row = _exact_object(value, fields, name)
+        owner_monthly_piety = (
+            {"task_owner_monthly_piety_v1": _optional_task_owner_monthly_piety_v1(
+                row.get("task_owner_monthly_piety_v1"),
+                f"{name}.task_owner_monthly_piety_v1",
+            )}
+            if "task_owner_monthly_piety_v1" in row else {}
+        )
         position_key = _stable_key(row.get("position_key"), f"{name}.position_key")
         incumbent = _optional_positive_int32(
             row.get("incumbent_character_id"), f"{name}.incumbent_character_id"
@@ -745,7 +770,7 @@ def _normalize_council(
                 for field in ("task_key", "task_type", "target", "frozen", "progress")
             ):
                 raise ValueError(f"{name} vacant position invented an active task")
-            positions.append({**row, "position_key": position_key})
+            positions.append({**row, "position_key": position_key, **owner_monthly_piety})
             continue
 
         task_key = _stable_key(row.get("task_key"), f"{name}.task_key")
@@ -793,6 +818,7 @@ def _normalize_council(
                 "target": target,
                 "frozen": frozen,
                 "progress": progress,
+                **owner_monthly_piety,
             }
         )
     position_keys = [str(row["position_key"]) for row in positions]

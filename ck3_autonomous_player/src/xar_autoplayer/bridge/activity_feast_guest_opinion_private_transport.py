@@ -1,7 +1,8 @@
 """Default-off same-frame native opinion read for an ordinary feast guest.
 
-The result is a relationship value input. It does not establish invite-rule
-membership, invitation legality, acceptance, attendance or feast rewards.
+The default result is a relationship value input. An optional full activity ID
+adds current native attending-list and character-record observations. Neither
+planning membership nor this read alone establishes historical feast rewards.
 """
 
 from __future__ import annotations
@@ -29,16 +30,88 @@ _BASE_PAYLOAD_KEYS = {
 _UNAVAILABLE = frozenset({
     "invalid_request", "frame_changed", "opinion_unavailable",
 })
+_ACTIVITY_TARGET_KEYS = {
+    "status", "activity_id", "guest_character_id", "host_character_id",
+    "activity_type_key", "native_completed", "native_invalidated",
+    "attending_list_observed", "attending_count", "target_in_attending_list",
+    "character_record_observed", "character_activity_id",
+    "character_activity_state_raw", "character_record_matches_activity",
+    "native_active_attendee",
+}
+_ACTIVITY_TARGET_UNAVAILABLE = frozenset({
+    "exact_build_rejected", "frame_rejected", "manager_unavailable",
+    "actor_identity_unavailable", "activity_identity_unavailable",
+    "target_identity_unavailable", "attending_list_unavailable",
+    "character_record_unavailable", "snapshot_changed",
+})
+
+
+def _parse_activity_target(
+    target: object, *, activity_id: int, actor_id: int, guest_id: int,
+) -> bool:
+    if (not isinstance(target, dict) or set(target) != _ACTIVITY_TARGET_KEYS
+            or type(target["activity_id"]) is not int
+            or target["activity_id"] != activity_id
+            or type(target["guest_character_id"]) is not int
+            or target["guest_character_id"] != guest_id
+            or not isinstance(target["status"], str)):
+        raise BridgeUnavailableError("private feast activity target malformed")
+    if target["status"] in _ACTIVITY_TARGET_UNAVAILABLE:
+        observed_keys = _ACTIVITY_TARGET_KEYS - {
+            "status", "activity_id", "guest_character_id",
+        }
+        if any(target[key] is not None for key in observed_keys):
+            raise BridgeUnavailableError("private feast activity target unavailable malformed")
+        return False
+    if target["status"] != "observed":
+        raise BridgeUnavailableError("private feast activity target status unknown")
+    if (type(target["host_character_id"]) is not int
+            or target["host_character_id"] != actor_id
+            or target["activity_type_key"] != "activity_feast"
+            or type(target["native_completed"]) is not bool
+            or type(target["native_invalidated"]) is not bool
+            or target["attending_list_observed"] is not True
+            or type(target["attending_count"]) is not int
+            or target["attending_count"] < 0
+            or type(target["target_in_attending_list"]) is not bool
+            or (target["target_in_attending_list"]
+                and target["attending_count"] == 0)
+            or type(target["character_record_observed"]) is not bool):
+        raise BridgeUnavailableError("private feast activity target observation malformed")
+    record_keys = {
+        "character_activity_id", "character_activity_state_raw",
+        "character_record_matches_activity", "native_active_attendee",
+    }
+    if target["character_record_observed"] is False:
+        if any(target[key] is not None for key in record_keys):
+            raise BridgeUnavailableError("private feast activity target empty record malformed")
+        return True
+    if (type(target["character_activity_id"]) is not int
+            or not 0 <= target["character_activity_id"] < 2**32
+            or type(target["character_activity_state_raw"]) is not int
+            or not 0 <= target["character_activity_state_raw"] < 2**32
+            or type(target["character_record_matches_activity"]) is not bool
+            or type(target["native_active_attendee"]) is not bool):
+        raise BridgeUnavailableError("private feast activity target record malformed")
+    same_activity = target["character_activity_id"] == activity_id
+    active_attendee = (target["target_in_attending_list"] and same_activity
+                       and target["character_activity_state_raw"] == 2)
+    if (target["character_record_matches_activity"] is not same_activity
+            or target["native_active_attendee"] is not active_attendee):
+        raise BridgeUnavailableError("private feast activity target predicate malformed")
+    return True
 
 
 def parse_activity_feast_guest_opinion_private_v1(
     payload: object, *, native_revision: int, date_raw: int,
     actor_id: int, guest_id: int, envelope_status: str,
+    activity_id: int | None = None,
 ) -> dict[str, object]:
+    expected_keys = _BASE_PAYLOAD_KEYS | ({"activity_target"} if activity_id is not None else set())
     if (not isinstance(payload, dict)
             or set(payload) not in (
-                _BASE_PAYLOAD_KEYS,
-                _BASE_PAYLOAD_KEYS | {"reward_opinion_modifiers"},
+                expected_keys,
+                expected_keys | {"reward_opinion_modifiers"},
             )
             or payload["schema"] != SCHEMA
             or type(payload["snapshot_revision"]) is not int
@@ -82,11 +155,18 @@ def parse_activity_feast_guest_opinion_private_v1(
                     raise BridgeUnavailableError("private feast reward modifier failure malformed")
             else:
                 raise BridgeUnavailableError("private feast reward modifier status unknown")
-    return dict(payload)
+    parsed = dict(payload)
+    if activity_id is not None:
+        parsed["activity_target_ready"] = _parse_activity_target(
+            payload["activity_target"], activity_id=activity_id,
+            actor_id=actor_id, guest_id=guest_id,
+        )
+    return parsed
 
 
 def query_activity_feast_guest_opinion_private_v1(
     driver: object, *, expected_revision: int, guest_character_id: int,
+    activity_id: int | None = None,
     timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_activity_feast_guest_opinion_query", False) is not True:
@@ -96,6 +176,9 @@ def query_activity_feast_guest_opinion_private_v1(
     if (type(guest_character_id) is not int
             or not 0 < guest_character_id < 2**31):
         raise ValueError("guest_character_id must be a positive full CharacterID")
+    if activity_id is not None and (type(activity_id) is not int
+                                   or not 0 < activity_id < 2**32 - 1):
+        raise ValueError("activity_id must be a positive nonempty full ActivityID")
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = _source_snapshot(driver)
@@ -106,14 +189,17 @@ def query_activity_feast_guest_opinion_private_v1(
     if guest_character_id == actor_id:
         raise ValueError("guest_character_id must differ from the host")
     request_id = "activity-feast-guest-opinion-" + uuid.uuid4().hex
-    driver.endpoint.send({
+    request = {
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": STEP,
         "expected_revision": before["native_revision"],
         "expected_date_raw": before["date_raw"],
         "expected_actor_character_id": actor_id,
         "guest_character_id": guest_character_id,
-    })
+    }
+    if activity_id is not None:
+        request["activity_id"] = activity_id
+    driver.endpoint.send(request)
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
     if (not isinstance(frame, dict) or frame.get("type") != "command_result"
             or frame.get("protocol_version") != 1
@@ -141,6 +227,7 @@ def query_activity_feast_guest_opinion_private_v1(
         native_revision=cast(int, before["native_revision"]),
         date_raw=cast(int, before["date_raw"]), actor_id=actor_id,
         guest_id=guest_character_id, envelope_status=envelope["status"],
+        activity_id=activity_id,
     )
     after = driver.take_snapshot()
     if not _same_frame(before, after):

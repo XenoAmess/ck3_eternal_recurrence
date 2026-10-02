@@ -470,16 +470,25 @@ bool HandleActivityFeastPrivate12002(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1)
     if (step == kActivityFeastGuestOpinionPrivateStepV1) {
       std::uint64_t guest = 0;
+      std::uint64_t activity_id = 0;
+      const bool target_requested = payload.find("\"activity_id\"") != std::string_view::npos;
       if (!ParseActorDate(payload, current) ||
           !bridge::JsonUnsignedField(payload, "guest_character_id", guest) ||
           guest == 0 || guest > 0x7fffffffULL ||
-          guest == static_cast<std::uint64_t>(current.played_character_id)) {
+          guest == static_cast<std::uint64_t>(current.played_character_id) ||
+          (target_requested &&
+           (!game::IsCk3_12003Descriptor(adapter.descriptor()) ||
+            !bridge::JsonUnsignedField(payload, "activity_id", activity_id) ||
+            activity_id == 0 ||
+            activity_id >= (std::numeric_limits<std::uint32_t>::max)()))) {
         failure = "activity feast guest opinion request invalid";
         return false;
       }
       ActivityFeastGuestOpinionPrivateQueryV1 query{};
       BindQuery(query, adapter, mailbox, current, revision);
       query.guest_character_id = static_cast<std::int32_t>(guest);
+      query.activity_id = static_cast<std::uint32_t>(activity_id);
+      query.actual_executable_sha256 = adapter.descriptor().executable_sha256;
       if (!RunQuery(query, &ExecuteActivityFeastGuestOpinionPrivateV1, failure))
         return false;
       const bool stable = !query.frame_changed && SameFrame(adapter, current);

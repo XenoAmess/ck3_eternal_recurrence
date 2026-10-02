@@ -37,6 +37,7 @@
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_religion_mailbox.hpp"
+#include "xar_bridge/ck3_12003_holy_order_loan_mailbox.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_epidemic_treatment_mailbox.hpp"

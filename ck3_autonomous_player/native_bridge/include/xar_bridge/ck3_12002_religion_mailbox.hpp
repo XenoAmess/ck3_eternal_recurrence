@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_religion_context.hpp"
+#include "xar_bridge/ck3_12003_spiritual_fulfillment_progress.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -16,6 +17,8 @@ struct PlayerReligionMailboxContext12002 {
   QueryMailboxEnvelope envelope{};
   religion::Bindings bindings{};
   religion::Context observation{};
+  religion::fulfillment_progress12003::Bindings progress_bindings{};
+  religion::fulfillment_progress12003::Progress progress{};
   bool completed = false;
   std::string failure;
 };

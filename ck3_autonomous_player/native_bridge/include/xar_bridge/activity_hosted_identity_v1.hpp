@@ -76,4 +76,50 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
     const ActivityHostedIdentityEnvironmentV1 &environment,
     const ActivityHostedIdentityFrameV1 &expected) noexcept;
 
+// Current-frame material for one full activity and one full character identity.
+// This query does not claim historical attendance or character liveness.
+enum class ActivityHostedTargetStatusV1 {
+  observed,
+  exact_build_rejected,
+  frame_rejected,
+  manager_unavailable,
+  actor_identity_unavailable,
+  activity_identity_unavailable,
+  target_identity_unavailable,
+  attending_list_unavailable,
+  character_record_unavailable,
+  snapshot_changed,
+};
+
+struct ActivityHostedTargetResultV1 {
+  ActivityHostedTargetStatusV1 status =
+      ActivityHostedTargetStatusV1::exact_build_rejected;
+  ActivityHostedIdentityFrameV1 frame{};
+  std::uint32_t activity_id = 0;
+  std::int32_t guest_character_id = -1;
+  std::int32_t host_character_id = -1;
+  std::array<char, 64> type_key{};
+  std::uint8_t type_key_size = 0;
+  bool native_completed = false;
+  bool native_invalidated = false;
+  bool attending_list_observed = false;
+  std::uint32_t attending_count = 0;
+  bool target_in_attending_list = false;
+  bool character_record_observed = false;
+  std::uint32_t character_activity_id = 0;
+  // No observed record is UINT32_MAX, never an invented native state 3.
+  std::uint32_t character_activity_state_raw = UINT32_MAX;
+  bool character_record_matches_activity = false;
+  bool native_active_attendee = false;
+};
+
+std::string_view ActivityHostedTargetStatusKeyV1(
+    ActivityHostedTargetStatusV1 status) noexcept;
+
+ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
+    const ActivityHostedIdentityEnvironmentV1 &environment,
+    const ActivityHostedIdentityFrameV1 &expected,
+    std::uint32_t activity_full_id,
+    std::int32_t target_character_id) noexcept;
+
 } // namespace xar::bridge

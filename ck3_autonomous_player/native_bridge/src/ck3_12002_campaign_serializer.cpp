@@ -728,6 +728,15 @@ bool AppendCouncil(std::string &output,
       }
       output.push_back('}');
     }
+    output += ",\"task_owner_monthly_piety_v1\":";
+    if (!position.task_owner_monthly_piety_v1.has_value()) {
+      output += "{\"status\":\"unavailable\",\"value\":null,"
+                "\"unavailable_reason\":\"task_owner_monthly_piety_unavailable\"}";
+    } else {
+      output += "{\"status\":\"available\",\"value\":";
+      if (!AppendFixedPoint(output, position.task_owner_monthly_piety_v1)) return false;
+      output += ",\"unavailable_reason\":null}";
+    }
     output.push_back('}');
   }
   output += "],\"auxiliary_vacancies_complete\":";

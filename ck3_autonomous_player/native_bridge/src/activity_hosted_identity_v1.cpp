@@ -195,6 +195,127 @@ bool ReadSlot(const ActivityHostedIdentityEnvironmentV1 &environment,
          object == expected;
 }
 
+struct TargetCharacterSample {
+  std::uintptr_t storage = 0;
+  std::uintptr_t fallback = 0;
+  std::uintptr_t slots = 0;
+  std::uint32_t capacity = 0;
+  std::uintptr_t character = 0;
+  std::uint32_t full_id = 0;
+
+  friend bool operator==(const TargetCharacterSample &,
+                         const TargetCharacterSample &) = default;
+};
+
+bool ResolveTargetCharacter(
+    const ActivityHostedIdentityEnvironmentV1 &environment,
+    std::uint32_t full_id, TargetCharacterSample &sample) noexcept {
+  const auto index = full_id & 0x00FFFFFFU;
+  return full_id != 0xFFFFFFFFU &&
+         ReadAt(environment, environment.module_base,
+                kActivityHosted12002CharacterStorageRva, sample.storage) &&
+         ReadAt(environment, environment.module_base,
+                kActivityHosted12002CharacterFallbackRva, sample.fallback) &&
+         sample.storage != 0 &&
+         ReadAt(environment, sample.storage, 0x20, sample.slots) &&
+         ReadAt(environment, sample.storage, 0x2C, sample.capacity) &&
+         sample.slots != 0 && index < sample.capacity &&
+         ReadAt(environment, sample.slots,
+                static_cast<std::size_t>(index) * 16 + 8, sample.character) &&
+         sample.character != 0 && sample.character != sample.fallback &&
+         ReadAt(environment, sample.character, 0x18, sample.full_id) &&
+         sample.full_id == full_id;
+}
+
+struct HostedTargetSample {
+  std::uintptr_t activity = 0;
+  std::uintptr_t vtable = 0;
+  std::uint32_t activity_id = 0;
+  std::int32_t host_character_id = -1;
+  std::uintptr_t type = 0;
+  std::array<char, 64> type_key{};
+  std::uint8_t type_key_size = 0;
+  std::uint8_t completed = 0;
+  std::uint8_t invalidated = 0;
+  std::uintptr_t attending_begin = 0;
+  std::int32_t attending_count = 0;
+  bool target_in_attending_list = false;
+  TargetCharacterSample character{};
+  std::uintptr_t extension = 0;
+  std::uintptr_t record = 0;
+  std::uint32_t record_activity_id = 0;
+  std::uint32_t record_state_raw = UINT32_MAX;
+
+  friend bool operator==(const HostedTargetSample &,
+                         const HostedTargetSample &) = default;
+};
+
+ActivityHostedTargetStatusV1 ReadHostedTargetSample(
+    const ActivityHostedIdentityEnvironmentV1 &environment,
+    const ManagerSample &manager, std::int32_t host_id,
+    std::uint32_t full_id, std::uint32_t target_id,
+    HostedTargetSample &sample) noexcept {
+  const auto index = full_id & 0x00FFFFFFU;
+  ActivityHostedIdentityV1 identity{};
+  if (full_id == 0xFFFFFFFFU || manager.active_count == 0 ||
+      index >= manager.capacity ||
+      index > static_cast<std::uint32_t>(manager.highest_live) ||
+      !ReadSlot(environment, manager, index, sample.activity) ||
+      sample.activity == 0 ||
+      !ReadAt(environment, sample.activity, 0, sample.vtable) ||
+      sample.vtable != environment.module_base +
+                           kActivityHosted12002ActivityVtableRva ||
+      !ReadAt(environment, sample.activity, 0x08, sample.activity_id) ||
+      sample.activity_id != full_id ||
+      !ReadAt(environment, sample.activity, 0x3A8,
+              sample.host_character_id) ||
+      sample.host_character_id != host_id ||
+      !ReadAt(environment, sample.activity, 0x3A0, sample.type) ||
+      !ReadTypeKey(environment, sample.type, identity) ||
+      std::string_view(identity.type_key.data(), identity.type_key_size) !=
+          "activity_feast" ||
+      !ReadAt(environment, sample.activity, 0x421, sample.completed) ||
+      !ReadAt(environment, sample.activity, 0x422, sample.invalidated) ||
+      sample.completed > 1 || sample.invalidated > 1)
+    return ActivityHostedTargetStatusV1::activity_identity_unavailable;
+  sample.type_key = identity.type_key;
+  sample.type_key_size = identity.type_key_size;
+  if (!ResolveTargetCharacter(environment, target_id, sample.character))
+    return ActivityHostedTargetStatusV1::target_identity_unavailable;
+
+  // The native attending builder reads full CharacterIDs from this vector.
+  // Its default state is a wildcard, so membership alone is not active state.
+  if (!ReadAt(environment, sample.activity, 0x528, sample.attending_begin) ||
+      !ReadAt(environment, sample.activity, 0x534, sample.attending_count) ||
+      sample.attending_count < 0 ||
+      static_cast<std::uint32_t>(sample.attending_count) >
+          sample.character.capacity ||
+      (sample.attending_count != 0 && sample.attending_begin == 0))
+    return ActivityHostedTargetStatusV1::attending_list_unavailable;
+  for (std::int32_t entry = 0; entry < sample.attending_count; ++entry) {
+    std::uint32_t attendee_id = 0;
+    if (!ReadAt(environment, sample.attending_begin,
+                static_cast<std::size_t>(entry) * sizeof(attendee_id),
+                attendee_id))
+      return ActivityHostedTargetStatusV1::attending_list_unavailable;
+    if (attendee_id == target_id) sample.target_in_attending_list = true;
+  }
+
+  // Native 28BEE50 follows both pointers. A null association is observed empty;
+  // no static fallback call or invented state 3 is used here.
+  if (!ReadAt(environment, sample.character.character, 0x1B0,
+              sample.extension))
+    return ActivityHostedTargetStatusV1::character_record_unavailable;
+  if (sample.extension != 0 &&
+      !ReadAt(environment, sample.extension, 0x4F8, sample.record))
+    return ActivityHostedTargetStatusV1::character_record_unavailable;
+  if (sample.record != 0 &&
+      (!ReadAt(environment, sample.record, 0x04, sample.record_activity_id) ||
+       !ReadAt(environment, sample.record, 0x38, sample.record_state_raw)))
+    return ActivityHostedTargetStatusV1::character_record_unavailable;
+  return ActivityHostedTargetStatusV1::observed;
+}
+
 } // namespace
 
 ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
@@ -295,6 +416,127 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
   }
   result.manager_active_count = seen;
   result.status = ActivityHostedIdentityStatusV1::observed;
+  return result;
+}
+
+std::string_view ActivityHostedTargetStatusKeyV1(
+    ActivityHostedTargetStatusV1 status) noexcept {
+  switch (status) {
+  case ActivityHostedTargetStatusV1::observed: return "observed";
+  case ActivityHostedTargetStatusV1::exact_build_rejected:
+    return "exact_build_rejected";
+  case ActivityHostedTargetStatusV1::frame_rejected: return "frame_rejected";
+  case ActivityHostedTargetStatusV1::manager_unavailable:
+    return "manager_unavailable";
+  case ActivityHostedTargetStatusV1::actor_identity_unavailable:
+    return "actor_identity_unavailable";
+  case ActivityHostedTargetStatusV1::activity_identity_unavailable:
+    return "activity_identity_unavailable";
+  case ActivityHostedTargetStatusV1::target_identity_unavailable:
+    return "target_identity_unavailable";
+  case ActivityHostedTargetStatusV1::attending_list_unavailable:
+    return "attending_list_unavailable";
+  case ActivityHostedTargetStatusV1::character_record_unavailable:
+    return "character_record_unavailable";
+  case ActivityHostedTargetStatusV1::snapshot_changed: return "snapshot_changed";
+  }
+  return "exact_build_rejected";
+}
+
+ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
+    const ActivityHostedIdentityEnvironmentV1 &environment,
+    const ActivityHostedIdentityFrameV1 &expected,
+    std::uint32_t activity_full_id,
+    std::int32_t target_character_id) noexcept {
+  ActivityHostedTargetResultV1 result{};
+  result.frame = expected;
+  result.activity_id = activity_full_id;
+  result.guest_character_id = target_character_id;
+  // The same production ReviewedCrozierAbiSha256 mapping is local to this
+  // leaf. The caller must still identify the actual .3 executable, not AE1.
+  constexpr std::string_view kActual12003Sha256 =
+      "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
+  if (environment.admitted_executable_sha256 != kActual12003Sha256)
+    return result;
+  auto layout_environment = environment;
+  layout_environment.admitted_executable_sha256 =
+      kActivityHostedIdentity12002ExeSha256V1;
+  if (!VerifyExactBuild(layout_environment)) return result;
+  ActivityHostedIdentityFrameV1 before{};
+  if (expected.revision == 0 || expected.actor_character_id <= 0 ||
+      !expected.paused || !expected.application_main_thread ||
+      !expected.map_ready || !expected.actor_alive ||
+      !environment.read_frame(environment.context, before) || before != expected) {
+    result.status = ActivityHostedTargetStatusV1::frame_rejected;
+    return result;
+  }
+  TargetCharacterSample actor_first{};
+  if (!ResolveActor(layout_environment,
+                    static_cast<std::uint32_t>(expected.actor_character_id)) ||
+      !ResolveTargetCharacter(environment,
+                              static_cast<std::uint32_t>(expected.actor_character_id),
+                              actor_first)) {
+    result.status = ActivityHostedTargetStatusV1::actor_identity_unavailable;
+    return result;
+  }
+  if (target_character_id <= 0) {
+    result.status = ActivityHostedTargetStatusV1::target_identity_unavailable;
+    return result;
+  }
+  std::uintptr_t root = 0, world = 0, manager_address = 0;
+  ManagerSample first_manager{};
+  if (!ReadAt(environment, environment.module_base,
+              kActivityHosted12002GameStateRva, root) ||
+      root == 0 || !ReadAt(environment, root, 0xA0, world) ||
+      !CheckedAdd(world, kActivityHosted12002ManagerOffset, manager_address) ||
+      !ReadManager(environment, manager_address, first_manager)) {
+    result.status = ActivityHostedTargetStatusV1::manager_unavailable;
+    return result;
+  }
+  HostedTargetSample first{};
+  result.status = ReadHostedTargetSample(
+      layout_environment, first_manager, expected.actor_character_id, activity_full_id,
+      static_cast<std::uint32_t>(target_character_id), first);
+  if (result.status != ActivityHostedTargetStatusV1::observed) return result;
+
+  ManagerSample last_manager{};
+  HostedTargetSample last{};
+  TargetCharacterSample actor_last{};
+  ActivityHostedIdentityFrameV1 after{};
+  std::uintptr_t root_after = 0, world_after = 0;
+  if (!ReadAt(environment, environment.module_base,
+              kActivityHosted12002GameStateRva, root_after) ||
+      root_after != root || !ReadAt(environment, root_after, 0xA0, world_after) ||
+      world_after != world ||
+      !ReadManager(environment, manager_address, last_manager) ||
+      last_manager != first_manager ||
+      !ResolveTargetCharacter(environment,
+                              static_cast<std::uint32_t>(expected.actor_character_id),
+                              actor_last) || actor_last != actor_first ||
+      ReadHostedTargetSample(layout_environment, last_manager, expected.actor_character_id,
+                             activity_full_id,
+                             static_cast<std::uint32_t>(target_character_id), last) !=
+          ActivityHostedTargetStatusV1::observed || last != first ||
+      !environment.read_frame(environment.context, after) || after != expected) {
+    result.status = ActivityHostedTargetStatusV1::snapshot_changed;
+    return result;
+  }
+  result.host_character_id = first.host_character_id;
+  result.type_key = first.type_key;
+  result.type_key_size = first.type_key_size;
+  result.native_completed = first.completed != 0;
+  result.native_invalidated = first.invalidated != 0;
+  result.attending_list_observed = true;
+  result.attending_count = static_cast<std::uint32_t>(first.attending_count);
+  result.target_in_attending_list = first.target_in_attending_list;
+  result.character_record_observed = first.record != 0;
+  result.character_activity_id = first.record_activity_id;
+  result.character_activity_state_raw = first.record_state_raw;
+  result.character_record_matches_activity =
+      result.character_record_observed && first.record_activity_id == activity_full_id;
+  result.native_active_attendee = result.target_in_attending_list &&
+      result.character_record_matches_activity && first.record_state_raw == 2;
+  result.status = ActivityHostedTargetStatusV1::observed;
   return result;
 }
 

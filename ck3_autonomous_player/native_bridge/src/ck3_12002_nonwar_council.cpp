@@ -133,6 +133,36 @@ bool ValueProgress(ck3_11906::NativeCampaignRootCouncilValueProgressV1 function,
   return returned == &output;
 }
 
+// TaskType's own builder constructs the ScriptContext from the original scopes.
+constexpr std::uintptr_t kTaskOwnerModifierBuilderRva = 0x31ABE10;
+constexpr std::uintptr_t kEvaluatedModifierValueRva = 0x2303700;
+constexpr std::uintptr_t kEvaluatedModifierDestructorRva = 0x9F24F0;
+constexpr std::uint16_t kMonthlyPietyModifierId = 0x61;
+
+bool TaskOwnerMonthlyPiety(std::uintptr_t module_base, void *type,
+                          const void *scopes, std::int64_t &output) noexcept {
+  if (module_base == 0) return false;
+  using Builder = void *(__fastcall *)(const void *, void *, const void *);
+  using Value = std::int64_t *(__fastcall *)(const void *, std::int64_t *,
+                                           std::uint16_t);
+  using Destroy = void(__fastcall *)(void *);
+  const auto builder = reinterpret_cast<Builder>(module_base + kTaskOwnerModifierBuilderRva);
+  const auto value = reinterpret_cast<Value>(module_base + kEvaluatedModifierValueRva);
+  const auto destroy = reinterpret_cast<Destroy>(module_base + kEvaluatedModifierDestructorRva);
+  alignas(8) std::byte modifier[0x1C0]{};
+  bool read = false;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    if (builder(type, modifier, scopes) != modifier) return false;
+    read = value(modifier, &output, kMonthlyPietyModifierId) == &output;
+    destroy(modifier);
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+  return read;
+}
+
 bool ProvinceValid(const CampaignRootNativeEnvironmentV1 &environment,
                    const CampaignRootAccessV1 &access, std::int32_t id) noexcept {
   void *state = nullptr, *data = nullptr, *array = nullptr, *province = nullptr;
@@ -207,6 +237,14 @@ bool Position(const CampaignRootNativeEnvironmentV1 &environment,
     progress.maximum = game::FixedPointValue{maximum, kScale};
   }
   output.progress = progress;
+  const void *scopes = nullptr;
+  std::int64_t piety_raw = 0;
+  if (environment.task_owner_monthly_piety != nullptr &&
+      Address(task, kTaskScopes, scopes) &&
+      environment.task_owner_monthly_piety(environment.module_base, type,
+                                            scopes, piety_raw)) {
+    output.task_owner_monthly_piety_v1 = game::FixedPointValue{piety_raw, kScale};
+  }
   return true;
 }
 
@@ -219,6 +257,7 @@ bool KeyLess(std::string_view left, std::string_view right) noexcept {
 
 void BindNonwarCouncil12002(CampaignRootNativeEnvironmentV1 &environment,
                            std::uintptr_t module_base) noexcept {
+  environment.task_owner_monthly_piety = &TaskOwnerMonthlyPiety;
   environment.active_council_task_storage_slot = reinterpret_cast<void **>(
       module_base + kCampaignRootActiveCouncilTaskStorageSlotRva);
   environment.active_council_task_fallback_slot = reinterpret_cast<void **>(

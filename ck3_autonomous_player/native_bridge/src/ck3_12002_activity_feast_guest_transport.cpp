@@ -1015,6 +1015,41 @@ bool OpinionReadFrame(void *opaque,
   return true;
 }
 
+bool OpinionTargetReadMemory(void *opaque, std::uintptr_t address, void *output,
+                            std::size_t size) noexcept {
+  const auto &context = *static_cast<OpinionContext *>(opaque);
+  return GetCurrentThreadId() == context.owner_thread_id &&
+         CandidateReadMemory(nullptr, address, output, size);
+}
+
+bool OpinionTargetReadFrame(void *opaque,
+                           bridge::ActivityHostedIdentityFrameV1 &output) noexcept {
+  bridge::ActivityFeastGuestOpinionFrameV1 frame{};
+  if (!OpinionReadFrame(opaque, frame)) return false;
+  output = {frame.revision, frame.date_raw, frame.actor_character_id, true,
+            frame.paused, frame.map_ready, frame.actor_alive};
+  return true;
+}
+
+void OpinionReadActivityTarget(void *opaque, std::uint32_t activity_id,
+                               std::int32_t guest_character_id,
+                               bridge::ActivityHostedTargetResultV1 &output) noexcept {
+  auto &context = *static_cast<OpinionContext *>(opaque);
+  const auto &snapshot = context.query->expected_snapshot;
+  const bridge::ActivityHostedIdentityFrameV1 expected{
+      context.query->expected_revision, snapshot.date_raw,
+      snapshot.played_character_id, true, snapshot.paused, snapshot.map_ready,
+      snapshot.has_played_character && snapshot.played_character_alive};
+  const bridge::ActivityHostedIdentityEnvironmentV1 environment{
+      context.query->enabled, context.query->actual_executable_sha256,
+      context.module_base, &context, &OpinionTargetReadMemory,
+      &OpinionTargetReadFrame};
+  // Direct read-only leaf on this owned main-thread execution. No nested
+  // mailbox, native getter invocation or current-hosted activity filter.
+  output = bridge::ReadActivityHostedTargetV1(environment, expected, activity_id,
+                                             guest_character_id);
+}
+
 bool OpinionReadOpinion(void *opaque, std::uint32_t recipient_character_id,
                  std::uint32_t actor_character_id,
                  std::int32_t &output) noexcept {
@@ -1114,9 +1149,10 @@ bool ExecuteActivityFeastGuestOpinionPrivateV1(
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true};
     const bridge::ActivityFeastGuestOpinionEnvironmentV1 environment{
-        &context, &OpinionReadFrame, &OpinionReadOpinion, &OpinionReadRewardModifiers};
+        &context, &OpinionReadFrame, &OpinionReadOpinion, &OpinionReadRewardModifiers,
+        &OpinionReadActivityTarget};
     query->opinion = bridge::ReadActivityFeastGuestOpinionV1(
-        environment, expected, query->guest_character_id);
+        environment, expected, query->guest_character_id, query->activity_id);
     query->completed = true;
     return true;
   } catch (...) {
@@ -1160,6 +1196,41 @@ std::string SerializeActivityFeastGuestOpinionPrivateV1(
       result += row.observed && row.value.has_value() ? std::to_string(*row.value) : "null";
       result += "}";
     }
+    result += "}";
+  }
+  if (query.opinion.activity_target_requested) {
+    const auto &target = query.opinion.activity_target;
+    const bool target_observed = target.status ==
+        bridge::ActivityHostedTargetStatusV1::observed;
+    const auto observed_bool = [target_observed](bool value) {
+      return target_observed ? (value ? "true" : "false") : "null";
+    };
+    result += ",\"activity_target\":{\"status\":\"" +
+        std::string(bridge::ActivityHostedTargetStatusKeyV1(target.status)) +
+        "\",\"activity_id\":" + std::to_string(query.activity_id) +
+        ",\"guest_character_id\":" + std::to_string(query.guest_character_id) +
+        ",\"host_character_id\":";
+    result += target_observed ? std::to_string(target.host_character_id) : "null";
+    result += ",\"activity_type_key\":";
+    result += target_observed ? "\"" + std::string(target.type_key.data(), target.type_key_size) + "\""
+                              : "null";
+    result += ",\"native_completed\":" + std::string(observed_bool(target.native_completed)) +
+        ",\"native_invalidated\":" + observed_bool(target.native_invalidated) +
+        ",\"attending_list_observed\":" + observed_bool(target.attending_list_observed) +
+        ",\"attending_count\":";
+    result += target_observed ? std::to_string(target.attending_count) : "null";
+    result += ",\"target_in_attending_list\":" +
+        std::string(observed_bool(target.target_in_attending_list)) +
+        ",\"character_record_observed\":" + observed_bool(target.character_record_observed) +
+        ",\"character_activity_id\":";
+    const bool record_observed = target_observed && target.character_record_observed;
+    result += record_observed ? std::to_string(target.character_activity_id) : "null";
+    result += ",\"character_activity_state_raw\":";
+    result += record_observed ? std::to_string(target.character_activity_state_raw) : "null";
+    result += ",\"character_record_matches_activity\":";
+    result += record_observed ? (target.character_record_matches_activity ? "true" : "false") : "null";
+    result += ",\"native_active_attendee\":";
+    result += record_observed ? (target.native_active_attendee ? "true" : "false") : "null";
     result += "}";
   }
   result += ",\"read_only\":true,\"raw_pointer_fields_persisted\":false}";

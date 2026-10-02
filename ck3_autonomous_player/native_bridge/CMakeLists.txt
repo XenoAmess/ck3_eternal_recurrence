@@ -813,7 +813,11 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_mailbox.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_spiritual_fulfillment_progress.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_context.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_wire.cpp")
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
@@ -2235,6 +2239,7 @@ if(BUILD_TESTING)
       src/ck3_12003_abi_profile.cpp
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_mailbox.cpp
+      src/ck3_12003_spiritual_fulfillment_progress.cpp
       src/ck3_12002_religion_mailbox_test.cpp)
     target_include_directories(xar_ck3_12002_religion_mailbox_test PRIVATE include)
     target_link_libraries(xar_ck3_12002_religion_mailbox_test PRIVATE

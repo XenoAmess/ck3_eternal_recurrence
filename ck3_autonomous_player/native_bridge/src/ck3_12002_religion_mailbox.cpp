@@ -75,6 +75,12 @@ bool ExecutePlayerReligionMailbox12002(
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.played_character_id = static_cast<std::int32_t>(frame.played_character_id);
     }
+    // Read the independent milestone component on the same owner callback.
+    // Its availability does not alter the existing Context or conversion inputs.
+    (void)religion::fulfillment_progress12003::ReadPlayerSpiritualFulfillmentProgress12003(
+        query.progress_bindings,
+        out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
+        out, query.progress);
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -97,7 +103,9 @@ std::string SerializePlayerReligionResult12002(
       ",\"backend_id\":" + Quote(kPlayerReligionBackend12002) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
-      ",\"player_religion_context\":" + religion::SerializePlayedReligionContext12002(query.observation) + "}}";
+      ",\"player_religion_context\":" + religion::SerializePlayedReligionContext12002(query.observation) +
+      ",\"player_spiritual_fulfillment_progress\":" +
+      religion::fulfillment_progress12003::SerializeSpiritualFulfillmentProgress12003(query.progress) + "}}";
 }
 
 bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
@@ -160,9 +168,13 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
+    const auto image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     query.bindings = religion::BindReligionContextImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+        image_base,
         xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    query.progress_bindings =
+        religion::fulfillment_progress12003::BindSpiritualFulfillmentProgressImage12003(
+            image_base, adapter.descriptor());
     return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_handler_exception"; return false; }
 }

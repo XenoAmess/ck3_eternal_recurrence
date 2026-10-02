@@ -5,16 +5,23 @@ namespace xar::bridge {
 ActivityFeastGuestOpinionResultV1 ReadActivityFeastGuestOpinionV1(
     const ActivityFeastGuestOpinionEnvironmentV1 &environment,
     const ActivityFeastGuestOpinionFrameV1 &expected,
-    std::int32_t guest_character_id) noexcept {
+    std::int32_t guest_character_id,
+    std::uint32_t activity_id) noexcept {
   ActivityFeastGuestOpinionResultV1 result{};
   result.frame = expected;
   result.guest_character_id = guest_character_id;
+  result.activity_target_requested = activity_id != 0;
+  if (result.activity_target_requested) {
+    result.activity_target.activity_id = activity_id;
+    result.activity_target.guest_character_id = guest_character_id;
+    result.activity_target.status = ActivityHostedTargetStatusV1::frame_rejected;
+  }
   if (expected.revision == 0 || expected.actor_character_id <= 0 ||
       guest_character_id <= 0 ||
       guest_character_id == expected.actor_character_id || !expected.paused ||
       !expected.map_ready || !expected.actor_alive ||
       environment.read_frame == nullptr ||
-      environment.read_opinion == nullptr) {
+      environment.read_opinion == nullptr || activity_id == UINT32_MAX) {
     return result;
   }
   ActivityFeastGuestOpinionFrameV1 before{};
@@ -25,6 +32,10 @@ ActivityFeastGuestOpinionResultV1 ReadActivityFeastGuestOpinionV1(
     return result;
   }
   result.reward_modifiers_requested = environment.read_reward_modifiers != nullptr;
+  if (result.activity_target_requested && environment.read_activity_target != nullptr) {
+    environment.read_activity_target(environment.context, activity_id,
+                                     guest_character_id, result.activity_target);
+  }
   std::int32_t opinion = 0;
   if (!environment.read_opinion(environment.context,
                                 static_cast<std::uint32_t>(guest_character_id),
@@ -54,6 +65,12 @@ ActivityFeastGuestOpinionResultV1 ReadActivityFeastGuestOpinionV1(
   if (!environment.read_frame(environment.context, after) ||
       after != expected) {
     result.reward_modifiers = {};
+    if (result.activity_target_requested) {
+      result.activity_target = {};
+      result.activity_target.activity_id = activity_id;
+      result.activity_target.guest_character_id = guest_character_id;
+      result.activity_target.status = ActivityHostedTargetStatusV1::snapshot_changed;
+    }
     result.status = ActivityFeastGuestOpinionStatusV1::frame_changed;
     return result;
   }

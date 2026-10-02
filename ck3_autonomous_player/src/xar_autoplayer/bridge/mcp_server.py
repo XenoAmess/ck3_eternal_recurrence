@@ -1631,6 +1631,15 @@ def create_server(
                 expected_revision=expected_revision,
             )
 
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_holy_order_loan_context_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native holy-order borrowing terms and current debt; no action."""
+            return driver.query_player_holy_order_loan_context_private_v1(
+                expected_revision=expected_revision,
+            )
+
     if getattr(driver, "allow_private_player_religion_doctrines_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_religion_doctrines_v1(expected_revision: int) -> dict[str, object]:
@@ -2003,11 +2012,13 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_activity_feast_guest_opinion_private_v1(
             expected_revision: int, guest_character_id: int,
+            activity_id: int | None = None,
         ) -> dict[str, object]:
-            """Read one full guest ID's opinion and fixed stock Feast reward modifiers."""
+            """Read guest opinion and reward modifiers, optionally for a full activity ID."""
             return query_activity_feast_guest_opinion_private_v1(
                 driver, expected_revision=expected_revision,
                 guest_character_id=guest_character_id,
+                activity_id=activity_id,
             )
 
     if getattr(driver, "allow_private_activity_feast_guest_route_proof_query", False) is True:
