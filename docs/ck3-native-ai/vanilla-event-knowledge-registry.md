@@ -1,5 +1,30 @@
 ﻿# CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-02：Robert 自然活禽宴会 `feast_main_live_fowl.0003`
+
+正常 `.2001` 消费后推进四天产生的新 instance `12`，首次正式读取在 `feast2001-following-normal30-242-actual-01/turn-001/natural-event/result.json` 返回 `existing_consumer_not_ready`；原 result SHA-256 `0E85C592E8E0209FFC7E7DE6F2A631E4A58F0E1908DC3C9BD87B3FBFFECDC339`。这是 Python242/native716 的 registry 缺项，不是原生窗口读取故障：typed key `feast_main_live_fowl.0003`、calculated ID `6040003`、runtime ordinal `10287`，`native:62` / public revision `2` / `date_raw=53222136`，root=host=玩家 `29829`。saved scopes 为 `activity/host/province/fowl_dinner_target/fowl_bird_chaser`；两个实际人物为 `37636/36907`，不作为固定合同 ID。activity/province typed payload 继续 opaque。basic snapshot authored count `1`，唯一 rendered/native `0/0` 显示启用，API option `1`；中文 resolved label 为“啊，没有恶作剧的宴会可不完整。”。此 RED 没有提交选择或推进时间，原实例保留。
+
+以下原生树在修改我方消费路线之前冻结：CK3 `1.20.0.3` / Steam `25652598`，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。`events/activities/feast_activity/main_events/feast_main_live_fowl_events.txt:233–319` 全文件 SHA `159C17409D07B6F6D8307D58522FBF066F90E895B25DC64BD97AEE77D7202C56`；SourceTree 从 key token 到末 brace、保留原 CRLF 且不含随后换行的 block SHA `E54265F7CE985EDD3FE79CCAFFD4C888979E0FB00F9E9D6DB1E411D9B42F62DA`，LF 规范化 token block SHA `DD2776B8B86A91120C16CFB06E5B97F71CB7B8F5831F675E6BB065BD7CFB3990`，二者不能混用。最小完整 source ledger 与原生树落在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-following-natural12-242-blocker-01/source-evidence/stock-source-exact-12003.json`（SHA `3E29B6B12FACFF805A117DB8704E1E1E5A53219AA26285998A5E0CA2BAE94AFB`）；简中、英文定位均复用原 key，未创作或更改原版文案。
+
+```mermaid
+flowchart TD
+    C["[stock] .0001 选择非host dinner target；无killer时选择非host/target的chaser"] --> H["[stock] host若非已有killer，触发.0003"]
+    H --> G["[stock] root未有raucous entertainment modifier；immediate只播放音乐"]
+    G --> P["[actual typed] 五scope、root=host29829、唯一native0 enabled"]
+    P --> O["[stock] 唯一.a：root获得五年modifier；没有ai_chance"]
+    O --> M["[stock] health +0.5；stress_gain_mult -0.2"]
+    O --> A["[stock after] good activity log score25；十天后排.9000"]
+    O --> T["[stock] killer dread20仅show_as_tooltip；不是执行效果"]
+    M -. "独立实机结果尚未观测" .-> U["unknown：实际modifier/health变化"]
+    A -. "届时自然出现再处理" .-> N["unknown：.9000后续结果"]
+```
+
+直接 caller `.0001:75–82,100–133` 产生目标/追鸟者作用域并分发主办者事件；本次不登记 sibling 或 `.9000`。`.0003:275–277` 的音乐已在展示前执行，不能归给选项收益。唯一 native0 `285–299` 添加 `feast_raucous_entertainment_modifier` 五年；`common/modifiers/00_activity_feast_modifiers.txt:125–129`（文件 SHA `4B6A39429FAF60B50D2D20A32687E4E1148CA7660235C0C2A01F3A51EC0CABEE`）定义 `stress_gain_mult=-0.2` 与 `health=0.5`。当前没有 killer scope，且 `show_as_tooltip` 中的 dread 20 不是真实执行或玩家收益。`after:301–318` 排十天后的 `.9000` 并记 good 活动日志，score25、character=root、target=dinner target；不能提前宣称日志、后续事件或宾客结果已发生。
+
+这是有明确游戏价值的非空效果单选路线，没有立即写金币、威望或压力点；incomplete empty icon indicators 不能把它改判为 effectless。现有 consumer 的材料比较器仅覆盖压力点、金币与威望，本次 `observable_postcondition=None`，不制造财富变化或 M2 credit。已发表 `ck3_query_campaign_root_context_v1(expected_revision=<fresh public revision>)` 提供 `campaign_root_context.player_health.raw/scale`：根执行者可以在选择前后独立 paused 查询，同角色/日期确认实际健康变化。原 basic snapshot 没有健康 baseline，源定义 `+0.5` 不是实际 delta，也不是自动动作的新增前置门槛。
+
+最小登记及现有生产消费路径现为 **static-ready**：独立 `.3` fowl leaf 只覆盖本次五 scope；现有 `.3` registry dispatch 与 relational-scope 有限 key 集各接入此 key，不改 service、driver、native、outcome 或 DLL。唯一新增的 existing full-route 方法首次 **GREEN，1/1**，使用真实 public2/native62/key/五 scope、authored1/rendered1，经过 normalizer → knowledge/classifier → ordinary `choose_one_life_turn` → service 的显式 instance API1 → native driver 的独立合成 old12 advance / same actor-date paused。selected 与 common-after profiles 均非空，材料 expectation 保持 None，没有模拟 modifier/健康收益或十天后结果。测试记录为同包 `python-compatibility/focused-checks.json`；原 `.7002/.2001/.6231` 方法未重跑。根执行者仍需冻结新 Python，并在其实际 native 环境中一次消费原12与独立回读；本包没有新增 live/M2 credit，原 RED 与 checkpoint 保留。
+
 ## 2026-10-02：实际普通宴会开席 `feast.2001`
 
 根执行者的 `formal-v14-next-02` 在正常推进 41 天到原 planned start `53330784` 后，自然读到 instance `15` / `feast.2001` / calculated ID `5162001` / runtime ordinal `8308`。真实 typed context available，root 与 host 均为玩家 `31853`，保存 scope 恰为 `activity`、`host`、`province`；非 character payload 的 typed identity 继续 opaque。当前唯一 rendered `0` / native `0` / API option `1` 显示并启用，文案“欢迎，朋友们！”。原正式 turn6 因 `not_registered` 停止，没有选择；冻结 typed 包是 `artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v14-next-02/turn-006/result.json`，保存 h2097 SHA-256 `F5849B3A9A17D0D1E9006A06B96479535665DBAB963075121B6A5EFF62E5EBF0`。
@@ -257,6 +282,33 @@ flowchart TD
 消失及同 actor/date paused；使用实际 native `53` / public `12` 绑定，材料 expectation
 保持 `None`。既有三 scope、`.7002` 和 `.6231` 测试未重跑。此修复为 **static-ready**；
 root 对原 paused 实例的更新 runtime 选择与下一真实回合仍待执行，原 RED 保留。
+
+同次随后正式 source `242d2f0f75278a9f78fec3b9fa96211c1f0da29a` 更新 Python 并复用
+原 native `716` / PID `70968`。`feast2001-spouse-242-next-actual-01/turn-001` 在
+原 `53222040`、instance `11` 读到同样四 scopes，scope count/names/type coverage
+与其他登记检查全部通过；唯一 enabled native `0` 以 API `1` 提交。
+独立 snapshot `native:55/public2 -> native:56/public3` 证明原 `11` 已消失，
+同 Robert `29829`、date/episode、暂停状态保持；本次 fresh public revision `2`
+正确绑定，不重用此前 RED 的 public `12`。
+
+其选择仍无 authored state effect：gold raw `110726288` 与 prestige raw `237193690`
+前后不变，material expectation `None`，独立 material 的 metric 为 `null`、
+`status=unavailable/current_selected_choice_material_profile_unavailable`。
+外层 `event_selected_material_recorded` 只表示流程记录完成，不给予物质信用。
+原 source scope-drift RED 保留，此 exact 四 scope 的读取→选择→独立推进→普通 next
+现为 **production-live loop**，不重跑静态 fixture。
+
+turn `2` 原普通 `life-advance` 在 active_event 已清空的状态下继续，正常增加四天
+`53222040 -> 53222136`，并产生**新** instance `12` / authored count `1`。
+因此 next 消费要求旧 `11` 缺席，不要求随后永远没有自然事件；新 `12` 的 key 尚未由
+本次判读查询，不能依据单选形态猜测其定义。一次离线判读首版误要求 next 的全部事件为空，
+对应 REVIEW 已保留并从已冻结 extract 修正，非游戏能力 RED，没有重读/重查游戏或重跑测试。
+最终暂停保存 h4111、大小 `85694642`、SHA
+`05BB2EDC36C8276AB88C6555BD62A465E76056599AB8EFC3C816742B6D011CFD`；
+四天已由 root 的正常窗口计数，不重复增加。
+闭合实际判读与报告字段在
+`m2-events/actual-robert-normal90-natural-blocker-01/actual-242-next-closed/`。
+本条只恢复普通宴会开场时间线，M2 selected-choice material credit 仍为 `0`。
 
 ## 当前状态
 
