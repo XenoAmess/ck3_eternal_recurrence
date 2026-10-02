@@ -195,10 +195,12 @@ bool InvokeLiege(NativeCampaignRootCharacterResolverV1 function,
 }
 
 bool ReadMembers(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
-                 const PlayerFactionAlertsAccessV1 &access, void *faction,
-                 std::int32_t faction_id, std::size_t span_offset,
-                 bool county, std::vector<std::int32_t> &output) {
+                  const PlayerFactionAlertsAccessV1 &access, void *faction,
+                  std::int32_t faction_id, std::size_t span_offset,
+                  bool county, std::vector<std::int32_t> &output,
+                  std::vector<game::PlayerFactionCountyMemberObservationV1> *observations = nullptr) {
   output.clear();
+  if (observations) observations->clear();
   void *data = nullptr;
   std::int32_t count = 0;
   if (!Read(access, faction, span_offset, data) ||
@@ -223,8 +225,37 @@ bool ReadMembers(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
                  member_id, county ? 0x10 : 0x18, member) || !member)
       return false;
     output.push_back(member_id);
+    if (county && environment.county_observations_12003 && observations) {
+      game::PlayerFactionCountyMemberObservationV1 observation{};
+      observation.county_title_id = member_id;
+      FactionCountyOpinionMaterial12003 opinion{};
+      const bool opinion_available = ReadCountyMemberOpinion12003(
+          environment, access, member_id, opinion);
+      if (opinion.capital_province_id > 0)
+        observation.capital_province_id = opinion.capital_province_id;
+      if (opinion.holder_character_id > 0)
+        observation.holder_character_id = opinion.holder_character_id;
+      if (opinion_available) {
+        observation.county_opinion = opinion.county_opinion;
+        observation.opinion_status = "available";
+      }
+      CountyFactionFinalObservation12003 finals{};
+      const bool finals_available = ReadCountyFactionFinals12003(
+          environment.county_faction_finals, access, faction, member,
+          static_cast<const std::byte *>(data) + offset, finals);
+      observation.native_county_join_score_raw = finals.join_score_raw;
+      observation.can_add_county = finals.can_add_county;
+      observation.removal_queued = finals.removal_queued;
+      observation.native_leave_score_threshold = finals.leave_score_threshold;
+      if (finals_available) observation.native_final_status = "available";
+      observations->push_back(std::move(observation));
+    }
   }
   std::sort(output.begin(), output.end());
+  if (observations)
+    std::sort(observations->begin(), observations->end(), [](const auto &left, const auto &right) {
+      return left.county_title_id < right.county_title_id;
+    });
   return std::adjacent_find(output.begin(), output.end()) == output.end();
 }
 
@@ -286,7 +317,7 @@ ReadFactionEntityResult12002 ReadEntitySample(
   if (!ReadMembers(environment, access, faction, faction_id, 0x48, false,
                    row.character_member_ids) ||
       !ReadMembers(environment, access, faction, faction_id, 0x60, true,
-                   row.county_member_title_ids))
+                   row.county_member_title_ids, &row.county_member_observations))
     return ReadFactionEntityResult12002::unavailable;
   std::int32_t months = 0;
   if (!InvokeFactionFixed(environment.power, faction, row.power.raw) ||
@@ -547,6 +578,47 @@ PlayerFactionAlertsNativeEnvironmentV1 BindPlayerFactionAlertsNativeEnvironmentV
   environment.dangerous = reinterpret_cast<NativeFactionDanger12002>(
       module_base + 0x1D65BF0);
   return environment;
+}
+
+void BindCountyMemberObservations12003(
+    PlayerFactionAlertsNativeEnvironmentV1 &environment) noexcept {
+  environment.county_observations_12003 =
+      environment.exact_build_admitted && environment.module_base != 0;
+  environment.county_opinion = environment.county_observations_12003
+      ? reinterpret_cast<NativeCountyOpinionInt32_12003>(environment.module_base + 0x24D4CB0)
+      : nullptr;
+  environment.county_faction_finals = BindCountyFactionFinals12003(
+      environment.module_base, environment.county_observations_12003);
+}
+
+bool ReadCountyMemberOpinion12003(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t county_title_id,
+    FactionCountyOpinionMaterial12003 &output) noexcept {
+  output = {};
+  try {
+    if (!Admitted(environment, access) || county_title_id <= 0) return false;
+    void *title = nullptr, *province = nullptr, *county = nullptr, *holder = nullptr;
+    FactionCountyOpinionMaterial12003 row{};
+    row.county_title_id = county_title_id;
+    std::int32_t county_identity = -1;
+    std::uint32_t province_tag = 0;
+    if (!Resolve(access, environment.landed_title_storage_slot,
+                 environment.landed_title_fallback_slot, county_title_id, 0x10, title) ||
+        !title || !InvokeLiege(environment.title_province, title, province) || !province ||
+        !Read(access, province, 0x10, row.capital_province_id) ||
+        row.capital_province_id <= 0 ||
+        !Read(access, province, 0x85C, province_tag) || province_tag != 0x50726F76U ||
+        !Read(access, province, 0x848, county) || !county ||
+        !Read(access, county, 0x18, county_identity) || county_identity != county_title_id ||
+        !Read(access, title, 0x128, row.holder_character_id) ||
+        !Resolve(access, environment.character_storage_slot,
+                 environment.character_fallback_slot, row.holder_character_id, 0x18, holder) ||
+        !holder) return false;
+    output = row;
+    // Signed whole-point final opinion: negative and zero are material.
+    return InvokeInt(environment.county_opinion, county, output.county_opinion);
+  } catch (...) { return false; }
 }
 
 ReadFactionEntityResult12002 ReadFactionEntityV1(

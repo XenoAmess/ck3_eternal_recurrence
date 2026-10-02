@@ -29,6 +29,7 @@
 #include "xar_bridge/ck3_12002_title_map.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/ck3_12002_nonwar_metrics.hpp"
 #include "xar_bridge/ck3_12002_pending_context.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
@@ -10288,9 +10289,13 @@ bool ExecuteTypedQuery12002(
       access.context = envelope;
       access.capture_frame = &CaptureTypedFrame12002<xar::game::CampaignRootFrameV1>;
       access.is_main_thread = &xar::ck3_12002::IsQueryOwningThread;
+      auto environment = xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(
+          query.image_base, true);
+      if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor())) {
+        xar::ck3_12002::BindNonwarFinance12003(environment, query.image_base);
+      }
       xar::ck3_12002::ReadCampaignRootContextV1(
-          xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(query.image_base, true),
-          access, query.campaign_request, query.campaign);
+          environment, access, query.campaign_request, query.campaign);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::loaded_features) {
       xar::ck3_11906::LoadedFeatureManifestAccessV1 access{};

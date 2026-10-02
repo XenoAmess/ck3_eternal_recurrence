@@ -53,6 +53,8 @@ _FIELDS: Final = {
     "provenance",
 }
 _MATERIAL_FIELDS: Final = _FIELDS | {"player_legitimacy_v1"}
+_FINANCE_FIELDS: Final = _FIELDS | {"player_max_monthly_gold_maintenance_v1"}
+_ALL_MATERIAL_FIELDS: Final = _MATERIAL_FIELDS | {"player_max_monthly_gold_maintenance_v1"}
 _LEGITIMACY_FIELDS: Final = {"status", "value", "unavailable_reason"}
 _LEGITIMACY_UNAVAILABLE_REASONS: Final = {
     "data_pointer_unreadable",
@@ -278,6 +280,7 @@ _UNAVAILABLE_NULL_FIELDS: Final = {
     "player_monthly_gold_income",
     "player_health",
     "player_legitimacy_v1",
+    "player_max_monthly_gold_maintenance_v1",
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
@@ -354,6 +357,22 @@ def _optional_legitimacy_v1(value: object) -> dict[str, object]:
             raise ValueError("unavailable legitimacy invented a balance")
         return {"status": status, "value": None, "unavailable_reason": reason}
     raise ValueError("player_legitimacy_v1.status is invalid")
+
+
+def _optional_max_gold_maintenance_v1(value: object) -> dict[str, object]:
+    name = "player_max_monthly_gold_maintenance_v1"
+    row = _exact_object(value, _LEGITIMACY_FIELDS, name)
+    if row.get("status") == "available":
+        amount = _fixed_point(row.get("value"), name + ".value")
+        if amount["raw"] < 0 or row.get("unavailable_reason") is not None:
+            raise ValueError("available max gold maintenance is invalid")
+        return {"status": "available", "value": amount, "unavailable_reason": None}
+    if (row.get("status") == "unavailable" and row.get("value") is None
+            and row.get("unavailable_reason") in {
+                "getter_unavailable", "getter_failed", "amount_invalid"
+            }):
+        return dict(row)
+    raise ValueError("max gold maintenance observation is invalid")
 
 
 def _optional_positive_int32(value: object, name: str) -> int | None:
@@ -927,11 +946,12 @@ def normalize_campaign_root_context_v1(
         maximum=2**64 - 1,
     )
     if not isinstance(value, dict) or set(value) not in (
-        _FIELDS, _MATERIAL_FIELDS
+        _FIELDS, _MATERIAL_FIELDS, _FINANCE_FIELDS, _ALL_MATERIAL_FIELDS
     ):
         raise ValueError("campaign_root_context has invalid v1 fields")
     frame = value
     material_present = "player_legitimacy_v1" in frame
+    finance_present = "player_max_monthly_gold_maintenance_v1" in frame
     if frame.get("schema_version") != 1:
         raise ValueError("campaign_root_context.schema_version must be 1")
     status = frame.get("status")
@@ -1052,6 +1072,10 @@ def normalize_campaign_root_context_v1(
     player_legitimacy_v1 = (
         _optional_legitimacy_v1(frame.get("player_legitimacy_v1"))
         if material_present else None
+    )
+    player_max_monthly_gold_maintenance_v1 = (
+        _optional_max_gold_maintenance_v1(frame.get("player_max_monthly_gold_maintenance_v1"))
+        if finance_present else None
     )
     player_domain_size = _int(
         frame.get("player_domain_size"),
@@ -1209,6 +1233,8 @@ def normalize_campaign_root_context_v1(
         "player_health": player_health,
         **({"player_legitimacy_v1": player_legitimacy_v1}
            if material_present else {}),
+        **({"player_max_monthly_gold_maintenance_v1": player_max_monthly_gold_maintenance_v1}
+           if finance_present else {}),
         "player_domain_size": player_domain_size,
         "player_domain_limit": player_domain_limit,
         "player_targeting_faction_count": player_targeting_faction_count,

@@ -65,6 +65,31 @@ bool Health(ck3_11906::NativeCampaignRootCharacterFixedPointV1 function,
 #endif
 }
 
+bool Maintenance(
+    ck3_11906::NativeCampaignRootMaxMonthlyMaintenanceV1 function,
+    void *character, std::int64_t &output) noexcept {
+  // The native getter initializes all ten slots. A scalar output would let
+  // the real production call write beyond the caller-owned buffer.
+  std::int64_t resources[10]{};
+#if defined(_MSC_VER)
+  __try {
+    if (function(resources, character) != resources) {
+      return false;
+    }
+    output = resources[0];
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  if (function(resources, character) != resources) {
+    return false;
+  }
+  output = resources[0];
+  return true;
+#endif
+}
+
 bool Integer(ck3_11906::NativeCampaignRootCharacterInt32V1 function,
              void *character, std::int32_t &output) noexcept {
 #if defined(_MSC_VER)
@@ -99,6 +124,33 @@ void BindNonwarMetrics12002(
       module_base + kCampaignRootDomainLimitRva);
 }
 
+void BindNonwarFinance12003(
+    ck3_11906::CampaignRootNativeEnvironmentV1 &environment,
+    std::uintptr_t module_base) noexcept {
+  environment.max_monthly_maintenance = module_base == 0
+      ? nullptr
+      : reinterpret_cast<ck3_11906::NativeCampaignRootMaxMonthlyMaintenanceV1>(
+            module_base + kCampaignRootMaxMonthlyMaintenanceRva12003);
+}
+
+game::CampaignRootMaxMonthlyGoldMaintenanceV1
+ReadOptionalMaxMonthlyGoldMaintenance12003(
+    ck3_11906::NativeCampaignRootMaxMonthlyMaintenanceV1 function,
+    void *character) noexcept {
+  game::CampaignRootMaxMonthlyGoldMaintenanceV1 output{};
+  std::int64_t raw = 0;
+  if (function == nullptr) {
+    output.unavailable_reason = "getter_unavailable";
+  } else if (character == nullptr || !Maintenance(function, character, raw)) {
+    output.unavailable_reason = "getter_failed";
+  } else if (raw < 0) {
+    output.unavailable_reason = "amount_invalid";
+  } else {
+    output.value = game::FixedPointValue{raw, 100'000};
+  }
+  return output;
+}
+
 bool ReadNonwarMetrics12002(
     const ck3_11906::CampaignRootNativeEnvironmentV1 &environment,
     const ck3_11906::CampaignRootAccessV1 &access, void *character,
@@ -121,6 +173,9 @@ bool ReadNonwarMetrics12002(
     failure = "player_health_unavailable";
     return false;
   }
+  output.max_monthly_gold_maintenance =
+      ReadOptionalMaxMonthlyGoldMaintenance12003(
+          environment.max_monthly_maintenance, character);
   if (!Integer(environment.domain_size, character, output.domain_size) ||
       !Integer(environment.domain_limit, character, output.domain_limit) ||
       output.domain_size < 0 || output.domain_limit < 1) {

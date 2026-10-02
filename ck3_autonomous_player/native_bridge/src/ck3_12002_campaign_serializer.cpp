@@ -401,6 +401,18 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       !context.player_character_alive.has_value() ||
       !context.player_monthly_gold_income.has_value() ||
       context.player_monthly_gold_income->scale != 100'000 ||
+      (context.player_max_monthly_gold_maintenance_v1.has_value() &&
+       (context.player_max_monthly_gold_maintenance_v1->value.has_value()
+            ? (context.player_max_monthly_gold_maintenance_v1->value->scale !=
+                   100'000 ||
+               context.player_max_monthly_gold_maintenance_v1->value->raw < 0 ||
+               !context.player_max_monthly_gold_maintenance_v1->unavailable_reason.empty())
+            : (context.player_max_monthly_gold_maintenance_v1->unavailable_reason !=
+                   "getter_unavailable" &&
+               context.player_max_monthly_gold_maintenance_v1->unavailable_reason !=
+                   "getter_failed" &&
+               context.player_max_monthly_gold_maintenance_v1->unavailable_reason !=
+                   "amount_invalid"))) ||
       !context.player_health.has_value() ||
       context.player_health->scale != 100'000 ||
       !context.player_legitimacy_v1.has_value() ||
@@ -518,6 +530,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.player_character_id.has_value() &&
          !context.player_character_alive.has_value() &&
          !context.player_monthly_gold_income.has_value() &&
+         !context.player_max_monthly_gold_maintenance_v1.has_value() &&
          !context.player_health.has_value() &&
          !context.player_legitimacy_v1.has_value() &&
          !context.player_domain_size.has_value() &&
@@ -888,6 +901,22 @@ std::string SerializeCampaignRootContextV1(
     AppendJsonString(output,
                      context.player_legitimacy_v1->unavailable_reason);
     output.push_back('}');
+  }
+  if (!available) {
+    output += ",\"player_max_monthly_gold_maintenance_v1\":null";
+  } else if (context.player_max_monthly_gold_maintenance_v1.has_value()) {
+    output += ",\"player_max_monthly_gold_maintenance_v1\":";
+    const auto &maintenance = *context.player_max_monthly_gold_maintenance_v1;
+    if (maintenance.value.has_value()) {
+      output += "{\"status\":\"available\",\"value\":{\"raw\":";
+      if (!AppendNumber(output, maintenance.value->raw)) return {};
+      output += ",\"scale\":100000},\"unavailable_reason\":null}";
+    } else {
+      output += "{\"status\":\"unavailable\",\"value\":null,"
+                "\"unavailable_reason\":";
+      AppendJsonString(output, maintenance.unavailable_reason);
+      output.push_back('}');
+    }
   }
   output += ",\"player_domain_size\":";
   AppendOptionalInt32(output, context.player_domain_size);

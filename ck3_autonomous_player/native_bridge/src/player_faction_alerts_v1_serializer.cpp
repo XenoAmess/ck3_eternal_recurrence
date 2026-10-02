@@ -76,6 +76,31 @@ bool StrictlyIncreasing(const std::vector<std::int32_t> &values) {
          std::adjacent_find(values.begin(), values.end()) == values.end();
 }
 
+bool ValidCountyObservationStatus(std::string_view status) noexcept {
+  return status == "available" || status == "unavailable" ||
+         status == "unsupported_build";
+}
+
+bool ValidCountyObservations(const game::PlayerTargetingFactionV1 &row) {
+  std::int32_t previous_title_id = 0;
+  for (const auto &county : row.county_member_observations) {
+    if (county.county_title_id <= previous_title_id ||
+        !std::binary_search(row.county_member_title_ids.begin(),
+                            row.county_member_title_ids.end(),
+                            county.county_title_id) ||
+        (county.capital_province_id.has_value() &&
+         county.capital_province_id.value() <= 0) ||
+        (county.holder_character_id.has_value() &&
+         county.holder_character_id.value() <= 0) ||
+        !ValidCountyObservationStatus(county.opinion_status) ||
+        !ValidCountyObservationStatus(county.native_final_status)) {
+      return false;
+    }
+    previous_title_id = county.county_title_id;
+  }
+  return true;
+}
+
 bool ValidTargetingRow(const game::PlayerTargetingFactionV1 &row,
                        std::int32_t player_character_id) {
   if (row.faction_id <= 0 || row.target_character_id != player_character_id ||
@@ -97,6 +122,7 @@ bool ValidTargetingRow(const game::PlayerTargetingFactionV1 &row,
        row.months_until_max_discontent.value() < 0) ||
       !StrictlyIncreasing(row.character_member_ids) ||
       !StrictlyIncreasing(row.county_member_title_ids) ||
+      !ValidCountyObservations(row) ||
       !StableKey(row.danger_reason)) {
     return false;
   }
@@ -322,6 +348,44 @@ void AppendFixedPoint(std::string &output,
             Number(value.scale) + "}";
 }
 
+template <typename Integer>
+void AppendOptionalScaledInteger(std::string &output,
+                                 const std::optional<Integer> &value,
+                                 std::int32_t scale) {
+  if (value.has_value()) {
+    output += "{\"raw\":" + Number(value.value()) + ",\"scale\":" +
+              Number(scale) + "}";
+  } else {
+    output += "null";
+  }
+}
+
+void AppendCountyMemberObservation(
+    std::string &output,
+    const game::PlayerFactionCountyMemberObservationV1 &county) {
+  output += "{\"county_title_id\":" + Number(county.county_title_id) +
+            ",\"capital_province_id\":";
+  AppendOptionalInt32(output, county.capital_province_id);
+  output += ",\"holder_character_id\":";
+  AppendOptionalInt32(output, county.holder_character_id);
+  output += ",\"county_opinion\":";
+  AppendOptionalScaledInteger(output, county.county_opinion, 1);
+  output += ",\"native_county_join_score\":";
+  AppendOptionalScaledInteger(output, county.native_county_join_score_raw,
+                              kFixedPointScale);
+  output += ",\"can_add_county\":";
+  AppendOptionalBool(output, county.can_add_county);
+  output += ",\"removal_queued\":";
+  AppendOptionalBool(output, county.removal_queued);
+  output += ",\"native_leave_score_threshold\":";
+  AppendOptionalScaledInteger(output, county.native_leave_score_threshold, 1);
+  output += ",\"opinion_status\":";
+  AppendJsonString(output, county.opinion_status);
+  output += ",\"native_final_status\":";
+  AppendJsonString(output, county.native_final_status);
+  output.push_back('}');
+}
+
 void AppendTargetingRow(std::string &output,
                         const game::PlayerTargetingFactionV1 &row) {
   output += "{\"faction_id\":" + Number(row.faction_id) +
@@ -354,6 +418,16 @@ void AppendTargetingRow(std::string &output,
   AppendInt32Array(output, row.character_member_ids);
   output += ",\"county_member_title_ids\":";
   AppendInt32Array(output, row.county_member_title_ids);
+  // Legacy providers do not claim an empty current material query.
+  if (!row.county_member_observations.empty()) {
+    output += ",\"county_member_observations\":[";
+    for (std::size_t index = 0;
+         index < row.county_member_observations.size(); ++index) {
+      if (index != 0) output.push_back(',');
+      AppendCountyMemberObservation(output, row.county_member_observations[index]);
+    }
+    output.push_back(']');
+  }
   output += ",\"dangerous_by_stock_rule\":";
   output += row.dangerous_by_stock_rule ? "true" : "false";
   output += ",\"danger_reason\":";

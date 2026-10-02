@@ -41,6 +41,24 @@ struct PlayerFactionFixedPointV1 {
                          const PlayerFactionFixedPointV1 &) = default;
 };
 
+struct PlayerFactionCountyMemberObservationV1 {
+  std::int32_t county_title_id = -1;
+  std::optional<std::int32_t> capital_province_id;
+  std::optional<std::int32_t> holder_character_id;
+  // Opinion and the leave threshold are integer values (wire scale 1).
+  std::optional<std::int32_t> county_opinion;
+  // The native county join evaluator returns signed Q100000.
+  std::optional<std::int64_t> native_county_join_score_raw;
+  std::optional<bool> can_add_county;
+  std::optional<bool> removal_queued;
+  std::optional<std::int32_t> native_leave_score_threshold;
+  std::string opinion_status = "unavailable";
+  std::string native_final_status = "unavailable";
+
+  friend bool operator==(const PlayerFactionCountyMemberObservationV1 &,
+                         const PlayerFactionCountyMemberObservationV1 &) = default;
+};
+
 struct PlayerTargetingFactionV1 {
   std::int32_t faction_id = -1;
   std::string faction_type_key;
@@ -58,6 +76,7 @@ struct PlayerTargetingFactionV1 {
   std::optional<std::int32_t> months_until_max_discontent;
   std::vector<std::int32_t> character_member_ids;
   std::vector<std::int32_t> county_member_title_ids;
+  std::vector<PlayerFactionCountyMemberObservationV1> county_member_observations;
   bool dangerous_by_stock_rule = false;
   std::string danger_reason;
 

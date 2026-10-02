@@ -8,6 +8,9 @@
 namespace xar::ck3_12002 {
 
 inline constexpr std::uintptr_t kCampaignRootMonthlyGoldIncomeRva = 0x2BCA960;
+// Exact 1.20.0.3 resource-vector getter. Only its gold slot is projected.
+inline constexpr std::uintptr_t kCampaignRootMaxMonthlyMaintenanceRva12003 =
+    0x2C152D0;
 inline constexpr std::uintptr_t kCampaignRootHealthRva = 0x28C6500;
 inline constexpr std::uintptr_t kCampaignRootDomainSizeRva = 0x28B7200;
 inline constexpr std::uintptr_t kCampaignRootDomainLimitRva = 0x28B71D0;
@@ -28,6 +31,7 @@ struct NonwarMetricsProjection12002 {
   std::int32_t domain_limit = 0;
   std::int32_t targeting_faction_count = 0;
   game::CampaignRootLegitimacyV1 legitimacy;
+  game::CampaignRootMaxMonthlyGoldMaintenanceV1 max_monthly_gold_maintenance;
 
   friend bool operator==(const NonwarMetricsProjection12002 &,
                          const NonwarMetricsProjection12002 &) = default;
@@ -38,6 +42,19 @@ struct NonwarMetricsProjection12002 {
 void BindNonwarMetrics12002(
     ck3_11906::CampaignRootNativeEnvironmentV1 &environment,
     std::uintptr_t module_base) noexcept;
+
+// Called only by the enclosing exact 1.20.0.3 descriptor branch; the .2
+// metrics binder leaves this optional callback absent.
+void BindNonwarFinance12003(
+    ck3_11906::CampaignRootNativeEnvironmentV1 &environment,
+    std::uintptr_t module_base) noexcept;
+
+// Native output is ten int64 resource slots even though only gold slot zero
+// is published. Missing/failed/negative reads remain optional diagnostics.
+game::CampaignRootMaxMonthlyGoldMaintenanceV1
+ReadOptionalMaxMonthlyGoldMaintenance12003(
+    ck3_11906::NativeCampaignRootMaxMonthlyMaintenanceV1 function,
+    void *character) noexcept;
 
 // The caller supplies the already resolved played Character and retains its
 // existing generation revalidation and paused two-sample equality check.

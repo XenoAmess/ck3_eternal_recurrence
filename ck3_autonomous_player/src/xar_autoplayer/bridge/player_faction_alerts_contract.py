@@ -84,6 +84,24 @@ _TARGETING_FACTION_FIELDS: Final = {
     "dangerous_by_stock_rule",
     "danger_reason",
 }
+_TARGETING_FACTION_OPTIONAL_FIELDS: Final = {"county_member_observations"}
+_COUNTY_MEMBER_OBSERVATION_FIELDS: Final = {
+    "county_title_id",
+    "capital_province_id",
+    "holder_character_id",
+    "county_opinion",
+    "native_county_join_score",
+    "can_add_county",
+    "removal_queued",
+    "native_leave_score_threshold",
+    "opinion_status",
+    "native_final_status",
+}
+_COUNTY_MEMBER_OBSERVATION_STATUSES: Final = {
+    "available",
+    "unavailable",
+    "unsupported_build",
+}
 _COUNTY_EXPOSURE_FIELDS: Final = {
     "county_title_id",
     "faction_id",
@@ -209,6 +227,76 @@ def _fixed_point(
     return {"raw": raw, "scale": scale}
 
 
+def _nullable_county_fixed_point(
+    value: object,
+    field: str,
+    *,
+    scale: int,
+    bits: int,
+) -> dict[str, int] | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
+        raise ValueError(f"{field} must contain exactly raw and scale")
+    raw = _int(
+        value.get("raw"),
+        f"{field}.raw",
+        minimum=-(2 ** (bits - 1)),
+        maximum=2 ** (bits - 1) - 1,
+    )
+    observed_scale = _int(
+        value.get("scale"),
+        f"{field}.scale",
+        minimum=scale,
+        maximum=scale,
+    )
+    return {"raw": raw, "scale": observed_scale}
+
+
+def _county_member_observation(value: object, field: str) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != _COUNTY_MEMBER_OBSERVATION_FIELDS:
+        raise ValueError(f"{field} must contain exactly the county observation fields")
+    statuses = {}
+    for name in ("opinion_status", "native_final_status"):
+        status = value.get(name)
+        if not isinstance(status, str) or status not in _COUNTY_MEMBER_OBSERVATION_STATUSES:
+            raise ValueError(f"{field}.{name} is invalid")
+        statuses[name] = status
+    return {
+        "county_title_id": _positive_int32(
+            value.get("county_title_id"), f"{field}.county_title_id"
+        ),
+        "capital_province_id": _nullable_positive_int32(
+            value.get("capital_province_id"), f"{field}.capital_province_id"
+        ),
+        "holder_character_id": _nullable_positive_int32(
+            value.get("holder_character_id"), f"{field}.holder_character_id"
+        ),
+        "county_opinion": _nullable_county_fixed_point(
+            value.get("county_opinion"), f"{field}.county_opinion", scale=1, bits=32
+        ),
+        "native_county_join_score": _nullable_county_fixed_point(
+            value.get("native_county_join_score"),
+            f"{field}.native_county_join_score",
+            scale=PLAYER_FACTION_ALERTS_V1_FIXED_POINT_SCALE,
+            bits=64,
+        ),
+        "can_add_county": _nullable_bool(
+            value.get("can_add_county"), f"{field}.can_add_county"
+        ),
+        "removal_queued": _nullable_bool(
+            value.get("removal_queued"), f"{field}.removal_queued"
+        ),
+        "native_leave_score_threshold": _nullable_county_fixed_point(
+            value.get("native_leave_score_threshold"),
+            f"{field}.native_leave_score_threshold",
+            scale=1,
+            bits=32,
+        ),
+        **statuses,
+    }
+
+
 def _sorted_unique_ids(
     value: object,
     field: str,
@@ -242,7 +330,12 @@ def _provenance(value: object) -> dict[str, str]:
 
 def _targeting_faction(value: object, index: int) -> dict[str, object]:
     field = f"targeting_factions[{index}]"
-    if not isinstance(value, dict) or set(value) != _TARGETING_FACTION_FIELDS:
+    if (
+        not isinstance(value, dict)
+        or not _TARGETING_FACTION_FIELDS <= set(value)
+        or set(value) - _TARGETING_FACTION_FIELDS
+        - _TARGETING_FACTION_OPTIONAL_FIELDS
+    ):
         raise ValueError(f"{field} must contain exactly the v1 fields")
     faction_at_war = _bool(value.get("faction_at_war"), f"{field}.faction_at_war")
     war_id = _nullable_positive_int32(
@@ -297,7 +390,7 @@ def _targeting_faction(value: object, index: int) -> dict[str, object]:
         expected_reason = "non_peasant_discontent_not_increasing"
     if dangerous is not expected_dangerous or danger_reason != expected_reason:
         raise ValueError(f"{field} stock dangerous result is inconsistent")
-    return {
+    normalized = {
         "faction_id": _positive_int32(value.get("faction_id"), f"{field}.faction_id"),
         "faction_type_key": faction_type_key,
         "target_character_id": _positive_int32(
@@ -334,6 +427,25 @@ def _targeting_faction(value: object, index: int) -> dict[str, object]:
         "dangerous_by_stock_rule": dangerous,
         "danger_reason": danger_reason,
     }
+    if "county_member_observations" in value:
+        observations_value = value["county_member_observations"]
+        observations_field = f"{field}.county_member_observations"
+        if not isinstance(observations_value, list):
+            raise ValueError(f"{observations_field} must be a list")
+        observations = [
+            _county_member_observation(row, f"{observations_field}[{row_index}]")
+            for row_index, row in enumerate(observations_value)
+        ]
+        county_ids = normalized["county_member_title_ids"]
+        observation_ids = [row["county_title_id"] for row in observations]
+        if observation_ids != sorted(set(observation_ids)) or any(
+            county_id not in county_ids for county_id in observation_ids
+        ):
+            raise ValueError(
+                f"{observations_field} must follow county_member_title_ids order"
+            )
+        normalized["county_member_observations"] = observations
+    return normalized
 
 
 def _county_exposure(value: object, index: int) -> dict[str, object]:

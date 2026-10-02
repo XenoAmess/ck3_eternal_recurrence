@@ -976,6 +976,8 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
         first.metrics.monthly_gold_income_raw, 100'000};
     output.player_health = {first.metrics.health_raw, 100'000};
     output.player_legitimacy_v1 = std::move(first.metrics.legitimacy);
+    output.player_max_monthly_gold_maintenance_v1 =
+        std::move(first.metrics.max_monthly_gold_maintenance);
     output.player_domain_size = first.metrics.domain_size;
     output.player_domain_limit = first.metrics.domain_limit;
     output.player_targeting_faction_count =

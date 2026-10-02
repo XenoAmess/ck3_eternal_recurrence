@@ -14,19 +14,25 @@ from .player_child_matrilineal_formal_consumer import read_child_matrilineal_led
 
 # Reuse the existing independent construction policy's 200-gold cash floor.
 PEACEFUL_GOLD_FLOOR_RAW = 20_000_000
+DISCRETIONARY_MAINTENANCE_RESERVATION_MONTHS = 18
+DISCRETIONARY_MAINTENANCE_POLICY = "robert-feast-discretionary-maintenance-allocation-v1"
 
 
 def observe_feast_start_budget_v1(
     snapshot: Mapping[str, object], inputs: Mapping[str, object], *,
     state_dir: Path,
+    campaign_root: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Bind native war count and durable spending intents to the Start frame.
 
     This bounded activity lane owns the only submission in its paused frame.
     Stage 1 Confirm and Stage 2 destination selection do not spend resources.
     With no unresolved spending intents, existing same-frame reservations are
-    therefore zero. An active war retains an unknown cash reserve and cannot
-    finance a positive-Gold feast until the war budget is observed.
+    therefore zero. During an active war, a same-frame native maximum monthly
+    gold maintenance read supports an explicit 18-month discretionary-spend
+    allocation. This player finance policy adopts the stock AI's coefficient;
+    it is neither a future-cost upper bound nor a complete M5 war budget.
+    Without the actual financial read, the war cash reserve remains unknown.
     """
     actor = snapshot.get("played_character")
     if (not isinstance(state_dir, Path)
@@ -61,7 +67,33 @@ def observe_feast_start_budget_v1(
         if ledger.get("pending") is not None:
             return {"status": "unavailable", "reason": domain + "_pending",
                     "budget": None}
-    return {
+    war_cash_reserve_raw = None
+    financial_reservation = None
+    if (wars and isinstance(campaign_root, Mapping)
+            and campaign_root.get("player_character_id") == inputs["actor_character_id"]
+            and campaign_root.get("snapshot_revision") == inputs["snapshot_revision"]
+            and campaign_root.get("date_raw") == inputs["date_raw"]):
+        maintenance = campaign_root.get("player_max_monthly_gold_maintenance_v1")
+        value = maintenance.get("value") if isinstance(maintenance, Mapping) else None
+        if (isinstance(maintenance, Mapping)
+                and maintenance.get("status") == "available"
+                and isinstance(value, Mapping)
+                and type(value.get("raw")) is int and value["raw"] >= 0
+                and value.get("scale") == 100_000):
+            war_cash_reserve_raw = (
+                DISCRETIONARY_MAINTENANCE_RESERVATION_MONTHS * value["raw"]
+            )
+            financial_reservation = {
+                "policy": DISCRETIONARY_MAINTENANCE_POLICY,
+                "scale": 100_000,
+                "maximum_monthly_gold_maintenance_raw": value["raw"],
+                "reservation_months": DISCRETIONARY_MAINTENANCE_RESERVATION_MONTHS,
+                "war_cash_reserve_raw": war_cash_reserve_raw,
+                "amount_semantics": "discretionary_spend_financial_allocation",
+                "native_future_cost_upper_bound": False,
+                "m5_complete_war_cash_receipt": False,
+            }
+    result = {
         "status": "observed", "reason": "exclusive_paused_activity_lane",
         "frame": {
             "actor_character_id": inputs["actor_character_id"],
@@ -74,6 +106,9 @@ def observe_feast_start_budget_v1(
             "peaceful_spend_allowed": True,
             "gold_floor_raw": PEACEFUL_GOLD_FLOOR_RAW,
             "active_war_count": len(wars),
-            "war_cash_reserve_raw": None,
+            "war_cash_reserve_raw": war_cash_reserve_raw,
         },
     }
+    if financial_reservation is not None:
+        result["financial_reservation"] = financial_reservation
+    return result

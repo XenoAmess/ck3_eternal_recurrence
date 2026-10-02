@@ -59,6 +59,8 @@ bool ReadPlayerFactionAlertsOnApplicationMain12002(
     query.envelope.typed_context = &query;
     query.environment = BindPlayerFactionAlertsNativeEnvironmentV1(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true);
+    if (game::IsCk3_12003Descriptor(adapter.descriptor()))
+      BindCountyMemberObservations12003(query.environment);
     const auto submitted = ck3_11906::TrySubmitMainThreadQueryV1(
         mailbox, &ExecutePlayerFactionAlertsMailbox12002, &query.envelope,
         query.envelope.ticket);

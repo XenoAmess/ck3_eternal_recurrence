@@ -1000,6 +1000,7 @@ add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
   src/ck3_12003_abi_profile.cpp
+  src/county_faction_final_12003.cpp
   research/ck3_12002_construction_submit_binding.cpp
   src/player_lifestyle_window_candidates_v1.cpp
   src/main_thread_query_mailbox_v1.cpp)

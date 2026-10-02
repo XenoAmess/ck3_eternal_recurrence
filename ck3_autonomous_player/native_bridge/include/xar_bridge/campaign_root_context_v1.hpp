@@ -154,6 +154,15 @@ struct CampaignRootReadinessV1 {
                          const CampaignRootReadinessV1 &) = default;
 };
 
+// Optional native budget material; read failure does not change root readiness.
+struct CampaignRootMaxMonthlyGoldMaintenanceV1 {
+  std::optional<FixedPointValue> value;
+  std::string unavailable_reason;
+
+  friend bool operator==(const CampaignRootMaxMonthlyGoldMaintenanceV1 &,
+                         const CampaignRootMaxMonthlyGoldMaintenanceV1 &) = default;
+};
+
 // A successful row distinguishes native-observed absence from read failure by
 // the top-level status. Optional primary/capital/immediate/government values
 // are therefore legitimate engine states only when status is available.
@@ -168,6 +177,8 @@ struct CampaignRootContextV1 {
   std::optional<FixedPointValue> player_monthly_gold_income;
   std::optional<FixedPointValue> player_health;
   std::optional<CampaignRootLegitimacyV1> player_legitimacy_v1;
+  std::optional<CampaignRootMaxMonthlyGoldMaintenanceV1>
+      player_max_monthly_gold_maintenance_v1;
   std::optional<std::int32_t> player_domain_size;
   std::optional<std::int32_t> player_domain_limit;
   std::optional<std::int32_t> player_targeting_faction_count;
@@ -284,6 +295,9 @@ using NativeCampaignRootMonthlyGoldIncomeV1 =
     std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
         std::int64_t *output, void *character, void *optional_breakdown,
         void *evaluation_context);
+using NativeCampaignRootMaxMonthlyMaintenanceV1 =
+    std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(std::int64_t *output,
+                                               void *character);
 using NativeCampaignRootCharacterFixedPointV1 =
     std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(void *character,
                                                 std::int64_t *output);
@@ -316,6 +330,7 @@ struct CampaignRootNativeEnvironmentV1 {
   void **game_rule_selection_service_slot = nullptr;
   void **game_rule_token_fallback_slot = nullptr;
   NativeCampaignRootMonthlyGoldIncomeV1 monthly_gold_income = nullptr;
+  NativeCampaignRootMaxMonthlyMaintenanceV1 max_monthly_maintenance = nullptr;
   NativeCampaignRootCharacterFixedPointV1 health = nullptr;
   NativeCampaignRootCharacterInt32V1 domain_size = nullptr;
   NativeCampaignRootCharacterInt32V1 domain_limit = nullptr;

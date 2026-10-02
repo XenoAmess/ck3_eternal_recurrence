@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/county_faction_final_12003.hpp"
 #include "xar_bridge/player_faction_alerts_v1.hpp"
 
 namespace xar::ck3_12002 {
@@ -34,6 +35,8 @@ using NativeFactionCharacterBool12002 = bool(XAR_FACTION_12002_CALL *)(
 using NativeFactionFixedPoint12002 = std::int64_t *(XAR_FACTION_12002_CALL *)(
     void *faction, std::int64_t *output);
 using NativeFactionInt32_12002 = std::int32_t(XAR_FACTION_12002_CALL *)(void *faction);
+using NativeCountyOpinionInt32_12003 = std::int32_t(XAR_FACTION_12002_CALL *)(
+    void *county_data);
 using NativeFactionBool12002 = bool(XAR_FACTION_12002_CALL *)(void *faction);
 using NativeFactionDanger12002 = bool(XAR_FACTION_12002_CALL *)(
     void *ignored, void *faction);
@@ -64,6 +67,9 @@ struct PlayerFactionAlertsNativeEnvironmentV1 {
   NativeFactionInt32_12002 months_until_max_discontent = nullptr;
   NativeFactionBool12002 at_war = nullptr;
   NativeFactionDanger12002 dangerous = nullptr;
+  bool county_observations_12003 = false;
+  NativeCountyOpinionInt32_12003 county_opinion = nullptr;
+  CountyFactionFinalBindings12003 county_faction_finals;
 };
 
 struct PlayerFactionAlertsAccessV1 {
@@ -84,6 +90,23 @@ enum class ReadFactionEntityResult12002 {
 
 PlayerFactionAlertsNativeEnvironmentV1 BindPlayerFactionAlertsNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept;
+
+struct FactionCountyOpinionMaterial12003 {
+  std::int32_t county_title_id = -1;
+  std::int32_t capital_province_id = -1;
+  std::int32_t holder_character_id = -1;
+  std::int32_t county_opinion = 0;
+};
+
+// Enabled only by the exact .3 descriptor at the existing query entry.
+// The shared .2 binder retains its original reader behavior.
+void BindCountyMemberObservations12003(
+    PlayerFactionAlertsNativeEnvironmentV1 &environment) noexcept;
+
+bool ReadCountyMemberOpinion12003(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t county_title_id,
+    FactionCountyOpinionMaterial12003 &output) noexcept;
 
 // Independent full-generation lookup for gift receipts. Absence in the
 // player's targeting vector is not evidence that a faction was destroyed.
