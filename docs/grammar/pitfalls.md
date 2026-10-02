@@ -1,6 +1,6 @@
 # 踩坑合集（按错误信息索引）
 
-本项目实测踩过的坑。遇到报错先在这里检索关键词。
+已记录的报错与原版合同。遇到报错先在这里检索关键词；各条分别注明源码确认、实机观察与修复验收的边界。
 
 ## 加载/解析期
 
@@ -9,6 +9,8 @@
 | 宫廷职位“任命免费”但仍产生月度薪资，或用 `temporary_court_position_cost_removal` 后薪资仍未归零 | 任命/替换、撤销威望费用、月度 `salary` 是三条不同机制；该 flag 只影响 `minor/medium/major_court_position_prestige_revoke_cost`，不影响 `champion_total_salary_value` | 先用 `appoint_court_position` / `court_position_grant_effect` 处理任命，再在对应职位的 total salary script value 中按 `scope:liege` + `any_court_position_holder` 精确检查持有者 flag 后 `multiply = 0`。CK3 1.19.0.6 本条为源码静态确认，尚未实机验证；详见 [court-position-mechanics.md](../court-position-mechanics.md) |
 | `should be in utf8-bom encoding`（lexer.cpp，txt/gui） | 文件无 BOM | 加 UTF-8 BOM（警告级，建议都加） |
 | `Missing UTF8 BOM`（yml） | yml 无 BOM | **必须加**，否则整个文件不加载 |
+| `Unknown modifier: faith_creation_piety_cost_mult`（1.20.0.3） | 旧创建/改革虔诚费用字段已不适用；当前原版使用 `rite_creation_piety_cost_mult`，而转教仍有独立的 `faith_conversion_piety_cost_mult` | 对照原版同对象、同 `character_modifier` 与创建窗口费用合同后，只替换已证明用途相同的字段，保留原优惠值；不要批量把所有 `faith_*` 改成 `rite_*`，也不要照搬新版平衡数值。原版格式、标签和窗口依据见下方 [1.20.0.3 证据](#ck3-12003-原版证据与验证边界)；修复树引擎与实际费用验收仍须另做 |
+| `Could not find the preregistered modifier type ...`，随后提示政府未包含于 `GOVERNMENT_TYPES`（1.20.0.3） | 政府定义存在，不代表其自动生成的 modifier 已预注册；覆盖 `NGovernment.GOVERNMENT_TYPES` 的旧清单可漏掉当前原版新增政府或真实自定义政府 | 先核对实际加载的政府定义与 defines 清单，再补缺失注册名，保持已有项及顺序。升级时对照当前原版清单；不要把一种政府的税收/好感修正改成另一种政府的字段来消警。追加注册仅是最小源码修复，不能据此宣称旧档兼容或所有自动 modifier 已通过引擎验证；本条没有证明顺序与存档索引之间的具体映射 |
 | `Cannot read [xxx] as a script value` / `Failed to find a valid event target link 'xxx'` | script value 定义放错目录 | 目录是 `common/script_values`，不是 `scripted_values` |
 | `Theme missing in event` | 可见事件没写 `theme`；hidden event 可省略，但有 `title` / `desc` / `option` 的玩家通知仍必须显式选主题。2026-09-01 CK3 1.19.0.6 phase2 loader 在 `zg361wpf.2`、`zg361workforcenormalexitfact.1`、`zg361wrf.1` 实机复现 | 加 `theme = <common/event_themes 里的键>`；361 Workforce 通知统一使用项目已加载的 `theme = stewardship`，并由各自生成器测试逐事件断言 |
 | `revoke_court_position effect [ Expected opening bracket ]` | CK3 1.19.0.6 的实际加载器要求新版复合参数；旧式 `revoke_court_position = <court_position_type>` 虽仍残留在 `_court_positions.info` 示例中，却会在产品脚本解析期失败。2026-09-01 phase2 loader 于 Workforce exit 两处及 normal-exit 一处实机复现 | 在**雇主 character scope** 调用 `revoke_court_position = { recipient = <岗位持有者 scope> court_position = <type> }`。本项目的 subject-root 延迟事件先进入冻结的 owner 变量 scope，再以 `recipient = root` 指回持有者；测试必须精确拒绝旧单值形状。原版 1.19.0.6 `00_court_position_effects.txt`、`00_councillor_effects.txt` 与 `10_tgp_interactions.txt` 均采用该复合形状 |
@@ -47,6 +49,9 @@
 | 现象 | 原因 | 解法 |
 |---|---|---|
 | 原版开局逻辑失效（`There is more than one 'effect' defined`） | on_action 同名字段**覆盖不合并** | 只加 `on_actions = { 自定义钩子 }` 条目 |
+| `Undefined event target 'actor'` / `scope:actor trigger [ Failed context switch ]`，位置在 interaction 的 `ai_potential`（1.20.0.3） | 当前原版明确规定此回调的 `root` 是发起角色，其他 event target 不可用；不能把其他交互回调的 `scope:actor`、`scope:recipient`、`scope:target` 合同搬进来 | 条件直接对角色 root 求值；保留既有包装深度时可将 `scope:actor = { ... }` 改为 `root = { ... }`。还须检查其调用的 trigger 闭包是否依赖其他保存目标，不能只替换一层。此字段已被原版标为 deprecated；迁移到 `is_available` 应另审玩家入口和可用性，不能当成纯 scope 修复 |
+| `Undefined event target 'employer'` / `Invalid right side during comparison 'scope'`，位置在 court-position 的 `is_shown_character` / `valid_character`（1.20.0.3） | 这两个候选回调提供的是 `scope:employee`（被考虑或正在任职者）和 `scope:liege`（该职位的雇主），没有 `scope:employer` 合同 | 对雇主的比较使用 `scope:liege`，对候选人的条件使用 `scope:employee`；不要盲换 `root` 或候选人的政治 `liege`。`valid_position` 又是另一个回调，原版明确给它雇主 character root；按具体字段核对，不统一替换整份职位文件 |
+| `Event target link 'root' returned an unset scope`，位置在 CB `on_victory` 的 tooltip/description（1.20.0.3） | 胜利描述可在战争尚未建立时预求值；CB 的默认根是 CB scope，不等同于攻击方角色，且此时 `root.war` 可不存在 | 仿原版先以外层 `if = { limit = { exists = root.war } ... }` 保护整个依赖战争的调用，再显式传 `WAR = root.war`。共享 helper 可按传入的 `$WAR$` 建存在性门，保留有效战争分支全部业务；不要从攻击方任意另找一场战争，也不要假定 `scope:war` 总被注入。同级 guard/read 不短路规则仍适用；预览报错次数不等于实际败坏的胜利场数 |
 | 失地玩家持有的角色状态无法由 `yearly_global_pulse` 恢复 | `yearly_global_pulse` 没有 root；R426 实机证明其 `every_player` 不枚举这个仍为 `is_ai = no`、但已不再是 count+ playable 的角色 | 扩展原版 `random_yearly_everyone_pulse`；在自定义 on_action 的 `trigger` 首先要求 `is_ai = no`，再调用严格的玩家状态恢复 effect。该原版 pulse 明确逐个覆盖所有角色 |
 | 开局钩子里玩家/规则拿不到 | `on_game_start` 时机太早 | 用 `on_game_start_after_lobby` |
 | effect 里设的值，同 on_action 触发的事件读到旧值 | effect 与事件**并发**执行 | 计算进事件 immediate，或事件延迟 1 天 |
@@ -61,6 +66,76 @@
 | 拆分 generated effect 时，行首正则多算出“重复顶层定义” | 生成器插值出的嵌套 scripted-effect 调用可能没有缩进、同样顶格；行首形状不代表 brace depth 为 0 | 顶层 block 扫描必须忽略注释/字符串并跟踪花括号深度，只在 depth 0 接受定义。2026-09-04 Workforce 4.64 MB 单体静态取证：行首正则误报 326，brace-depth 结果为 324 |
 | 静态可达扫描显示 effect/event 闭包齐全，投影仍缺 deadline 事件 | 事件 ID 不只会出现在 `trigger_event = { id = ... }`；通用 helper 还可用 `EVENT = zg361we.<id>` 作为 scripted-effect 参数传递 | 闭包扫描同时识别 literal `id =` 与已冻结的 event-ID 参数 ABI，并继续展开目标事件。2026-09-04 B2/Workforce 静态取证：旧扫描漏 4 个事件与 3 个后继 effect，`68/24` 更正为 `71/28`；尚待该候选 CK3 实机互证 |
 | 用途分片后的大候选仍在主菜单前长期停滞，`error.log` 没有对应 material/parser 首错 | scripted effect 调用图中存在直接同名自递归；本例是 `zg361_workforce_appointment_fact_seal_and_publish_effect` 调用自身。仅拆分文件的 r2/r3 仍在 `302.912s / 303.181s` RED；只移除该自调用后，同一 245-file 框架在 `180.349s` GREEN，generator 修复后的 r4/r5 又连续 GREEN | 先扫描并拒绝 `effect_name = { ... effect_name = { ... } ... }` 的直接自调用；将 intended continuation 内联或改为明确的无环 helper，再用 exact-tree full-entry 实机复验。不要把这类结果归因成“文件过大”：本次证据证明直接自递归是已定位原因，文件体量既非必要条件也非充分条件。CK3 1.19.0.6，2026-09-04 实测 |
+
+## Situation 未来阶段积分（CK3 1.20.0.3）
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `phase_takeover_points` 报 `has future phase ... but it not progressed with Points`，或 `doesn't have ... as a future phase` | 查询作用域是 situation sub-region，目标必须是**当前阶段**的 `future_phases` 中按 Points 推进的阶段。全局存在同名 phase、配置了 catalysts 或写了 `takeover_points`，都不单独满足合同；`untyped` 未来阶段不能按此 API 读取 Points | 先核对实际加载的当前阶段→未来阶段边及 `takeover_type = points`，再在对应 current-phase 的惰性分支中查询；没有 situation、没有该未来边或非 Points 分支，应明确走既定业务的不可用/替代路径。不要查询后再用 `OR` 兜底，也不要为了消警改 phase、伪造零分或重置积分。不同产品的阈值和替代政策须分别设计，不能通用替换成一种政治风险条件 |
+
+内置 help 将该 trigger 定义为读取此 sub-region 中未来阶段的 takeover points，形状为
+`phase_takeover_points:future_phase_key <= scripted_value`。它读取累计进度，不是配置的
+`takeover_points` 门槛：当前原版 `pam_investiture_council_effects.txt:438–461` 在特定当前阶段下，
+通过读累计值并以 `add_takeover_phase_points` 逐次减去 100、10、1 来清空该进度。
+合成例 `phase_takeover_points:example_future >= 100` 的必要前提，是正在查询的 sub-region
+当前阶段确有名为 `example_future` 的 Points 未来边；别的当前阶段不应进入这个读取分支。
+
+`_situations.info:280–303` 说明 `points`、`duration`、默认 `none` 与 catalyst 自动接管合同，
+没有完整说明 `untyped` 实现。内置诊断已明确拒绝非 Points 查询，但这不足以推导
+`untyped` 是否另有内部 catalyst 状态。仅有 catalyst 声明、写积分 effect、
+`situation_top_has_catalyst`、GUI 的相对进度或单个 catalyst 点数，都不能证明存在一个可读的
+untyped 累计积分镜像。本条不提供未经证明的替代 API。
+
+## CK3 1.20.0.3 原版证据与验证边界
+
+2026-10-02 归纳；CK3 **1.20.0.3 / Steam build 25652598**，`binaries/ck3.exe`
+SHA-256：`94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。
+上述新增条目只提炼已取证的错误合同，复用原版源码与该 EXE 的内置 help/诊断文本。
+下列路径均相对游戏 `game/`，只记录出处与完整文件哈希，不在知识库复制原版整文件。
+
+| 原版来源、关键行号 | 合同 | 完整文件 SHA-256 |
+|---|---|---|
+| `common/character_interactions/_character_interactions.info:562–568` | `ai_potential` root 为 actor；其他 event target 不可用；字段已弃用 | `cc2442a313a6b1a2a7fa02b92a094276edfe39c60835c3286172c5b6d7b70a37` |
+| `common/court_positions/types/_court_positions.info:100–127` | 区分雇主 root 的 `valid_position` 与 `liege` / `employee` 候选回调 | `d33893bbf21caf3886f9e30b2fcb51bfa102be1b138746bd2047dc7ff18d6c1f` |
+| `common/casus_belli_types/_casus_belli.info:55,147` | 结果描述与效果同 scope；默认 CB scope | `270343ebae0f8ebd2e4d24f9f839a7c77cb663836d9b36af6d5138a58755bb05` |
+| `common/casus_belli_types/00_tributarize.txt:285–291` | 战前本地化以 `exists = root.war` 保护，再显式传 WAR | `087d6151be86546d4b1fcb600230534cb14c6a57ec2762e4efdb3ae98f9227c9` |
+| `common/situation/situations/_situations.info:280–303` | 未来阶段推进方式、Points 门槛与 catalysts | `1fe343a5f6ffb7954af1bbd88d2dcc71808fd336aa33842e744450d84d2c955a` |
+| `common/scripted_effects/pam_investiture_council_effects.txt:438–461` | 在合法当前阶段读写未来阶段累计 Points | `b7ea1e6d7ec14e4d98d1185dd13aac01a04aa4c6209bfc1a0bba79c75bc85537` |
+| `common/modifier_definition_formats/00_definitions.txt:2778–2787` | rite 创建/改革的虔诚加值与比例格式；比例项 `percent = yes` | `a1db27f5dc5ae1c1e89764ccb265d4167ba8be5be40b88602b0d90b471287cc4` |
+| `common/culture/pillars/00_ethos.txt:73–79` | 当前原版在 `character_modifier` 中使用 rite 创建费用字段 | `80e4d665b97f9f1305d3a6503a0dc0a008c9de6c6b8e8fa0940d58616bc52017` |
+| `localization/english/modifiers/modifiers_l_english.yml:1213–1214` | 当前比例字段的创建与改革费用标签 | `83085526be6e02c7ffff136fcedb75e15865c421014bda53d7fa39fda3d2ab02` |
+| `localization/english/gui/rite_creation_window_l_english.yml:117–120` | 创建窗口读取 `RiteCreationWindow.CalcPietyCost` | `aad18249fdad770fccf458365e90e3cd65d720c32b6be4199a03e067a56e49d2` |
+| `common/defines/00_defines.txt:550–572` | 当前 `NGovernment.GOVERNMENT_TYPES` 注册清单 | `8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982` |
+
+EXE 原始文件偏移 `74998320–74998609` 附近保留 `phase_takeover_points` 的 help 和非 Points
+诊断；偏移 `76245136` 的诊断明确把缺少 preregistered modifier 与 `GOVERNMENT_TYPES`
+关联。字符串与原版样例提供合同证据，不能单凭字符串证明内部数据布局、全部推进方式或旧存档兼容。
+创建费用字段的对应也只限当前**虔诚费用比例**用途，不证明 1.19 与 1.20 宗教系统或总费用公式完全相同。
+
+以下是需要结合已有定义使用的合成片段，全部 **engine NOT_RUN**。它们只说明 scope 和守卫形状，
+不包含完整交互、职位或 CB；`example_*` 须由使用者自己的产品定义。
+
+```text
+# interaction.ai_potential；保留原包装深度，条件仍检查发起角色
+ai_potential = { root = { has_character_flag = example_eligible } }
+
+# court_position.is_shown_character；明确候选人与职位雇主
+is_shown_character = {
+    scope:employee = { is_spouse_of = scope:liege }
+}
+
+# CB.on_victory；只在本次战争存在时调用战争结算
+if = {
+    limit = { exists = root.war }
+    example_settle_war_effect = { WAR = root.war }
+}
+```
+
+复用这些修复时，必要静态检查应锁定回调位置、参数消费、guard 与读取的嵌套关系，以及有效对象分支
+保留的条件/数值/业务顺序；字段改名或包装层改动还应反向核验未改字节。该检查不是 CK3 执行。
+本次知识富化只修改文档，没有启动游戏、生成 script docs 或运行跨 mod 试验；合成示例和任何新的
+产品修复仍为 **engine NOT_RUN**。后续要在包含修复的 exact-tree 上分别核验错误签名、真实业务结果
+与必要读档；触及日志上限后的缺失记录或旧进程的零报错都不能代替通过。
 
 ## 变量
 
@@ -138,7 +213,7 @@ domain/stage，再让后段 effect 各自安静 no-op。若业务允许分步提
 | `Failed parsing data statement 'PauseMenu.ExitGame'` | GUI 数据上下文按窗口注入（同 Tutorial 一类）；且该函数要参数 | 原签名 `PauseMenu.ExitGame( '(bool)yes' )`；即便写对，从自定义窗口 state 调用也无效。非铁人终局可走 `ExecuteConsoleCommand('observe')`；铁人模式禁止控制台命令，必须分支到注册 modal，以 `OnPause` 保持暂停、`OnPauseMenu` 打开原生菜单，再让玩家走原生自动保存/退出。`OnPause` 是 toggle，只能在 `Not( IsGamePaused )` 时调用。2026-08-21 CK3 1.19.0.6 非 debug 实测。 |
 | 同名 character modifier 重复购买不生效 | add_character_modifier 同名不叠加 | 用一系列不同名修正逐个发放（见 modifiers/xar_modifiers.txt 的 50 层寿命） |
 | 事件选项太多溢出 | option_grid 不支持滚动 | 分页（页变量 + 翻页选项 + 重触发事件） |
-| 免费宗教改革无 effect | 改革走信仰窗口 GUI | 发 `faith_creation_piety_cost_mult = -1` 修正让费用归零 |
+| 免费宗教改革无 effect | 改革走创建窗口 GUI，费用修正字段须按版本核对 | 历史 1.19 建议为 `faith_creation_piety_cost_mult`；1.20.0.3 当前创建/改革虔诚费用字段是 `rite_creation_piety_cost_mult`，见加载期索引与下方原版合同。`-1` 是比例优惠输入，叠加、上限和最终扣款须实际核验，不能只凭源值宣称费用归零 |
 | `has_global_variable` 门控初始化导致首帧读到 none | 引擎加载时静态注册所有被引用的全局变量名：检查为 true 但值仍是 none，初始化被跳过 | 一次性初始化放到只执行一次的上游（如开局事件选项里），不要用存在性检查做幂等 |
 | custom localization / GUI 每帧刷 `Failed to fetch variable ... not being set` | 可见性桥用数值比较读取尚未赋值的全局变量；custom loc 会高频重复求值，把一次错误放大成错误风暴 | 布尔信号改用 `has_character_flag` 等无未初始化值的 trigger；不要在首帧可求值的 GUI/custom loc 中数值读取未设全局变量（2026-08-18 实测） |
 | 窗口移出屏幕后 state 停求值 | 离屏被裁剪 | 隐身用"无背景+点击穿透"，不要移出屏幕 |
