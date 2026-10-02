@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 10-03 04:17 宗教readonly进入当前月净值，原存档0日冷恢复
+
+2026-10-03T04:17:52+08:00 Asia/Shanghai当前真实补录：唯一Robert29829/episode `native-29829-2bc2d599f7f9`，当前source/native **6c87eb77 / v24 / newPID38520**、env8a98。本段 **0新增保存日**，累计 **3276/36524**、resume **123新增保存日**、10-03 **28保存日**；typedgoal reconciled_successions0另列。G2 **5/8=62.5%**、NW **1/4=25%**与global M2/M5/NW-FAMILY complete保持，不以新readonly/query/代码或sourceCI增加整项。
+
+**当前月虔诚查询升为production-live primitive**：同MCP v24实际player_monthly_piety_v1 **available=true / signed raw43750 / scale100000＝＋0.4375/月**，Robert29829/raw53222952/frontend2/native3、rootready=true；同帧现任56513/ReligiousRelations、frozen=false/infinite保持。这是玩家最终月净值，不是piety余额413.1375，也不因现任learning9或任务保持就分配为该任务贡献/approval。原synthetic−125000/17只属于历史fixtures；此currentvalue是新生产reader真实paused验收，不是代码字段长期null。没有新任务任命/command/保存日/整项信用。[月虔诚独立实际final字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/monthly-piety-observation-12003/actual-v24-monthly-and-sway-cold-01/REPORT-FIELDS.json)。旅行19新.3形状current5scope/2authored-render1/sole0源包已release、唯一fullroute首次 **1/1 GREEN**，目前static-ready，Root选择尚未发生，不以静态leaf/GREEN升级live。[当前旅行完成exact形状静态包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-travel-completion1000-blocker-01/python-compatibility/REPORT-FIELDS.json)。
+
+currentpair4192/4191/date53222952、新38520及六ledger/goal0已恢复；原20typedclear后旅行19缺现形状consumer，0normalday保存不新增durable进度。下一为旅行completion实际接续、现有月净值有价值消费与conversion因果action，原Feast终态/具名modifier/必要参加材料和Sway专属收益持续。GlobalM2/M5 complete不重新设置5distinct或cold附加门禁；全面宗教授权撤禁已publicdone，不以权限/strict/query称全域完成。[机器状态](g2-requirements-v1.json)、[当日日报](daily/2026-10-03.md)维护current，旧日期段留作history。下一步沿最新4191原存档精确处理旅行完成19，再继续正常formalclock并保存实际日数；20choice原结果不重发。月虔诚真实最终净值可进入现有resource/value消费，收益解释/任务归因及conversion合法quote→一次command→独立faith/payment/cold结果按需要另包；Feast参加/有价值后置与Sway专属收益继续，已有M5不新增比较门禁。本cold/query闭合段立即发布，不等19新route或conversion未来动作。
+
 ## 10-03 03:26 当前3276累计：从实际query推进正常订婚与native终态
 
 2026-10-03T03:26:56+08:00 Asia/Shanghai真实滚动补录。唯一Robert actor29829/episode `native-29829-2bc2d599f7f9`，v23 newPID6280最小化，Python/native **2c435dcb** / envd1f0。正常又保存 **13实际日**，累计 **3276/36524**、resume **123保存新增日**、10-03 **28保存日**；typed dynasty_continuity reconciled_successions0另列，非自然继承已发生。G2 **5/8=62.5%**、NW **1/4=25%**保持，原M2完整合同不复核/不重授。

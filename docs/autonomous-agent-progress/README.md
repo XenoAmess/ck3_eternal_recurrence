@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 04:17 当前v24：月虔诚＋0.4375/月，3276日保持
+
+2026-10-03T04:17:52+08:00 Asia/Shanghai当前真实补录：唯一Robert29829/episode `native-29829-2bc2d599f7f9`，当前source/native **6c87eb77 / v24 / newPID38520**、env8a98。本段 **0新增保存日**，累计 **3276/36524**、resume **123新增保存日**、10-03 **28保存日**；typedgoal reconciled_successions0另列。G2 **5/8=62.5%**、NW **1/4=25%**与global M2/M5/NW-FAMILY complete保持，不以新readonly/query/代码或sourceCI增加整项。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。full4192/save4191/raw53222952，当前saveSHA2e1a27f33e020fd86628ccab4af23376b91591d364c3ffb1e7298b1b1e7d1ed7/driverSHA57f04dad3f5629ad6768ca140c47aee798764c46ed2b2e8068862f73c462304a。
+
+同MCP最终monthlypiety实读signed43750/Q100000＝**＋0.4375/month**升primitive，不当余额增益或任务归因。原20onceclear＋选后0normalday，currenttravel_completion_event.1000/19未选；conversionstrict编译但Catholic未改。原Sway55%/三attached空ringscold不推progress；37265 impressed_opinion10新present及总opinion82是具名材料，个人attendance/Feast归因未推。GlobalM2/M5/NWFAMILYcomplete保持，不为Robert新增5distinct门禁；全宗教撤禁publicdone。exact6c strict83.226s/938＋new38520cold＋official37057203529SUCCESS分列。
+
 ## 10-03 03:26 当前3276日：v23学习9/订婚材料/Feast terminal已实测
 
 2026-10-03T03:26:56+08:00 Asia/Shanghai真实滚动补录。唯一Robert actor29829/episode `native-29829-2bc2d599f7f9`，v23 newPID6280最小化，Python/native **2c435dcb** / envd1f0。正常又保存 **13实际日**，累计 **3276/36524**、resume **123保存新增日**、10-03 **28保存日**；typed dynasty_continuity reconciled_successions0另列，非自然继承已发生。G2 **5/8=62.5%**、NW **1/4=25%**保持，原M2完整合同不复核/不重授。 [日报](daily/2026-10-03.md) / [周报](weekly/2026-W40.md)。最新full/save4187/raw53222952/save86097647B/SHA19660902df72fd0e51934ac6eface446dcf750c050e9e28c6d67989206e697e1、driverSHAcb7c0017b00cf8160be9409cb25da615ef3941a979e44132ea577d51e9f3340e；实际3＋3＋7共13日，新20未登记使30目标暂停。
