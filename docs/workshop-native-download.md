@@ -140,5 +140,10 @@ item's successful fresh download. Unsubscribed temporary-cache behavior,
 timeouts, failed callbacks and child failure remain statically tested only.
 The implementation author performed no Steam/game/desktop action for this
 documentation package. Public metadata/media/notes and final Steam offline
-restoration are distinct gates, with their final status owned by the product
-publication report.
+restoration are distinct gates. The publication root subsequently passed the
+final offline gate at `2026-10-02T22:29:12Z`, with a fresh reviewed offline UI
+and CK3 inventory zero. Its product `steam-offline-verification.json` binds PNG
+SHA-256 `ae469ee6cfa4529bd6dabc46462ced4e1681b479a0be4c51a2e559117b2c264a`.
+The [existing offline recovery guide](ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md)
+records the actual combined recovery path; the download MCP has no mode-control
+capability.

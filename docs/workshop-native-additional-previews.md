@@ -160,8 +160,13 @@ The implementation author only recorded the root's provided first-live facts;
 Steam actions were performed by that root while holding its screen lease.
 This acceptance covers fresh enumeration plus replace/append on this exact
 item/DLL. It does not promote removal, failure/timeout recovery or unrelated
-items to live-verified. Final Steam offline restoration remains separately
-required and must be recorded in the product's final release report.
+items to live-verified. The root subsequently passed the separate final Steam
+offline gate at `2026-10-02T22:29:12Z`: fresh UI showed offline after normal
+client exit/restart and reporter cancellation. The product report retains
+`steam-offline-verification.json` and the reviewed original PNG, SHA-256
+`ae469ee6cfa4529bd6dabc46462ced4e1681b479a0be4c51a2e559117b2c264a`.
+The reusable experience and causal boundary are recorded in the
+[existing offline recovery guide](ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md).
 
 - [Valve ISteamUGC documentation](https://partner.steamgames.com/doc/api/ISteamUGC)
   defines query, preview setters and native image limits.

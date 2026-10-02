@@ -34,3 +34,11 @@ H2825 再次出现“窗口边缘能移动、Steam 内容区全黑、两次完�
 2026-09-27 本机静态／实测证据：历史 `ck3-xqol-phase2-20260910` 屏幕记录已过期约 16 天，登记 PID 2696 不存在；CK3 与常见录屏进程不在运行。取得新独占租约后，`D:\workspace\ck3_native_war_ai_promo_work\steam-offline-recovery-20260927-002\recovery.json` 报 `fresh_frame_needs_offline_visual_review`，`probe-1/steam-frame-freshness.json` 中 `moving_edge_changed=true`，`moved_identity.sha256=205DAEA6748C6A2508C9DB02F113D9525F4FC6ADFF8737221AE6DE04349CC9D6`；原始 Steam 窗口矩形 `[0,0,962,768]` 经 `[20,0,982,768]` 后已复位。人工查看同次 `steam-moved.png`，Steam 左下显示“离线模式”。ToDesk 服务 PID 4792 始终运行，未触发重启，未启动 CK3。
 
 聚焦静态测试：`<verified-python> tools/test_desktop_steam_offline_recovery.py`。它覆盖其他任务占用时拒绝操作、失活占用的 PID 复核、新鲜帧不重启服务、录制中拒绝重启、显式 stale 分支才重启及失败时尽力恢复服务。此工具验证本机桌面采集响应，不检测另一台远端查看器是否正在显示最新帧；远端仍卡住时需在远端另取当前画面作独立核验。
+
+## 2026-10-03 Workshop 发布后的正常退出与离线恢复实证
+
+More Tenets Slots(XA) v10 发布完成后，屏幕独占 root 多次点击官方菜单“进入离线模式”，未出现确认窗口或状态变化。随后正常执行 Exit Steam，客户端曾提示等待 CK3 关闭；当时实际 CK3 进程为 0，本机另有 7 个旧 CK3 CrashReporter，均已核对父进程不存在。Steam 随后正常退出。root 按每个报告窗口的原生 Cancel 按钮发送 `BM_CLICK` 关闭这 7 个窗口，未上传报告；每组 7 或 8 个既有 crash 文件的 SHA-256 前后全部不变。
+
+重新打开 Steam 时保留 `-cef-disable-gpu`，再用官方菜单进入离线，约 8 秒后的新原图明确显示“离线模式”。本次窗口水平位置从 40 移至 80 时画面实时变化，随后审阅新图，CK3 仍为 0。该位移是当次画面响应证据，坐标不是后续通用默认值。最终 `steam-offline-verification.json` 于 `2026-10-02T22:29:12Z` 记录 PASS，审阅 PNG SHA-256 为 `ae469ee6cfa4529bd6dabc46462ced4e1681b479a0be4c51a2e559117b2c264a`。具体收据和原图留在独立项目的 [v10 发布报告](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/workshop/publication-v10.md)，这里不复制完整进程命令行、上传 URL、机器路径或产物。
+
+这次闭环验证的是“正常退出、取消已核对的本机孤儿报告窗口、重新打开、官方菜单切换、鲜图读回”的组合路径，没有隔离 A/B，不能认定 CrashReporter 是菜单无反应的单一根因。操作没有注销账号、接管远端游戏、启动 CK3或结束其他游戏。后续遇到相同现象时仍先核对当前进程、报告窗口归属和屏幕占用；本文没有新增自动离线 MCP，也没有将上述桌面取证工具扩为模式控制工具。框架作者仅记录 root 提供的实证，没有执行此次 Steam 或桌面操作。
