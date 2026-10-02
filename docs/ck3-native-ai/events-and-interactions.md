@@ -290,6 +290,24 @@ instance，且 bridge PID、connection generation、episode binding 不变、结
 before/after revision；ACK、仅 revision 增长或 option-count 变化都不算成功。`native_auto_run.py` 另要求 artifact 同时出现
 `event_changed` 与 `event_selection.status=event_instance_advanced`。该实现已有离线回归，尚未在真实 CK3 fixture 上验收。
 
+### 动作提交与后置拒绝的证据顺序
+
+[consumer-contract / engine NOT_RUN] 以下是通用消费者的证据保存合同，独立于上文的 exact-build ABI 断言；
+它不宣称任一 SDK 已提供完整动作 journal，也不扩大动作授权、合法性、策略或物质后置条件。
+
+1. 提交前保全实际 before snapshot、typed query 原返回、选择依据和精确提交意图。意图须先追加落盘，完成
+   flush 与 fsync 后才调用动作；只提交一次，不为取得更多诊断重发动作。
+2. SDK 实际返回后，先保全未经成功判定的返回对象，再检查返回合同和等待状态。记录真实拒绝也遵循此顺序；
+   不能只留下最终错误而丢失已收到的 ACK。
+3. 每次独立 readback 先保存原 snapshot，再核对 PID、connection generation、episode、玩家和 revision 等
+   该动作要求的绑定。过渡帧及被守卫拒绝的帧同样保留，随后追加 deadline、漂移或其它拒绝原因。
+4. journal 采用单 writer、追加模式和明确顺序号；追加、flush 或 fsync 失败时停止后续动作，保留失败原因和
+   已写字节。失败的末行可能不完整或没有耐久性证明，不截断、修复或重写历史以制造完整证据。
+
+ACK 只证明所记录的返回内容，不能代替独立后置或玩法结果。若 SDK 内部收到 native ACK，随后在返回消费者前
+抛出异常，消费层未观测到的 ACK 仍是 UNKNOWN；需要 SDK 自身已有的原返回证据，不能从提交意图、超时或异常
+推造一个 ACK。消费层 journal 只覆盖实际返回值和自身 readback，不冒充底层 wire bytes 或 SDK 内部全部帧。
+
 ## 原生 AI 的主动人物互动树
 
 ### 调度、目标与选项组合
