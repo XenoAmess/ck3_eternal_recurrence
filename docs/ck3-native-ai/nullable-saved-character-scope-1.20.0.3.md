@@ -42,7 +42,7 @@ flowchart LR
     Root[Root scope] --> Strict[Existing live generation validation]
     Other[Other character payload] --> Strict
     Null --> Options[Existing real presented options and instance guards]
-    Options -. next cold run pending .-> Live[Actual query/select readback]
+    Options --> Live[Patch3 ordinary live query/select verified]
 ```
 
 `open_kaishek` is not applicable to this native PE/token reader and C++ byte-layout fixture; no CK3 script is edited. Exact offline evidence and fixture qualification cannot establish that the next live context succeeds or that a hundred-year campaign completes.
@@ -68,4 +68,12 @@ The first frozen prototype `C:/cb123n1` completed production compilation, then r
 
 The final receipt binds scoped logs, original prototype RED, exact offline checks, saved-event source evidence, cross-layer consumption and current Python consumer hashes. The consumer package rebased onto `50e353bfa142194cc2a53372c1aec726ddd98da1`; intervening council and feast/family native changes are **absent from this immutable DLL epoch**. All seven event-context overlay files remain byte-equivalent after LF normalization. Root must pin the qualified DLL epoch and current Python commit separately. Existing native profile fields, action APIs, policy and independent pause controller are unchanged.
 
-This qualifies the frozen binary and its scoped contracts. Whole-target compilation, all CTest, live null-scope readback, complete effect preview and hundred-year stability remain unclaimed. The next cold run must provide genuine current-event query/select readback; the old attached DLL is never replaced in a live process.
+This qualifies the frozen binary and its scoped contracts. At this qualification stage, live null-scope readback remained pending. The subsequent cold-run observation below closes that specific regression. Whole-target compilation, all CTest, complete effect preview and hundred-year stability remain unclaimed. The old attached DLL was never replaced in a live process.
+
+## Actual cold-run regression
+
+On 2026-10-02 at 00:33:51 UTC, the new `C-damengsan-three-R5` process, PID 16520, returned a genuine ordinary `pay_homage.0101` event query through the authoritative MCP. It used the qualified `n2` DLL above and Python consumer commit `5c05c7dcb90eb8ba66bce4f9a4357f19c0ef4b68`, on the same exact CK3 executable. The native event instance was 4, root character was 7923, and the actual window match count was 1. Named scope `puppeteer` retained type 4, subtype 0 and name identifier 228, with `typed_identity.status=unavailable` and `reason=character_scope_is_null`. The root remained available and generation-validated; no substitute character ID was introduced.
+
+The actual presented option at index 0 was shown and enabled. Selection was followed by a separately verified native postcondition at revision 67 and raw date 77529096: the old instance had cleared. Evidence is preserved in the suite run's `native-campaign-policy-001/000091-mcp-receipt.json`, `000092-event-choice.json` and `000098-action-confirmed.json`; mod source binding is `d51519b438d4389472c197f64640a90c32819ef3`. This proves the previously blocked optional-null context can pass through the production query, Python consumer and selection path. It does not prove fullscreen live coverage, every option effect, or long-term campaign completion. Effect-preview readiness remained false and was not promoted to a complete semantic preview.
+
+The reusable diagnosis is to distinguish an absent optional saved identity from a corrupt required root, verify the exact native producer and serializer together, and preserve the precise unavailable reason across the real wire contract. A query rejected before presentation scanning cannot establish that the GUI window is missing. Fixtures should also retain mixed scopes and genuine disabled options so admitting a null optional identity does not accidentally weaken action eligibility. The shared reader, serializer, fixtures and this version-bound report belong in the system repository; the suite's broadcast repair and campaign-specific results remain in its independent project.
