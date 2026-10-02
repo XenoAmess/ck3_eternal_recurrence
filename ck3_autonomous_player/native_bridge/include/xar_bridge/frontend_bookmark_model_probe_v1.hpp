@@ -18,6 +18,7 @@ struct FrontendBookmarkTargetProfileV1 {
   std::string_view character_key;
   std::string_view government_key;
   std::uint32_t date_low_raw;
+  std::string_view bookmark_group_key;
 };
 
 const FrontendBookmarkTargetProfileV1 &GetFrontendBookmarkTargetProfileV1(
@@ -125,11 +126,15 @@ struct FrontendBookmarkChangeV1 {
   bool setter_invoked = false;
   bool same_frame_bookmark_matches = false;
   std::string unavailable_reason;
+  // Selecting the native Group and the native Bookmark are separate calls.
+  bool group_setter_invoked = false;
 };
 
 using FrontendBookmarkSetterV1 =
     bool (*)(void *opaque_context, void *setup_view,
-             const void *bookmark) noexcept;
+              const void *bookmark) noexcept;
+
+using FrontendBookmarkGroupSetterV1 = FrontendBookmarkSetterV1;
 
 bool SelectSupportedBookmarkV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
@@ -137,6 +142,7 @@ bool SelectSupportedBookmarkV1(
     FrontendBookmarkChangeV1 &output,
     FrontendBookmarkSeedTargetV1 target =
         FrontendBookmarkSeedTargetV1::configured_1066,
-    FrontendBookmarkSetterV1 fixture_setter = nullptr) noexcept;
+    FrontendBookmarkSetterV1 fixture_setter = nullptr,
+    FrontendBookmarkGroupSetterV1 fixture_group_setter = nullptr) noexcept;
 
 } // namespace xar::ck3_11906

@@ -1,5 +1,12 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 2026-10-02 14:18：后台原生呈现与正式续行已实证，Murchad独立153日
+
+2026-10-02 14:18 Asia/Shanghai真实更新：G2仍4/8=50%（原M0/M1/M3/M5），NW四包仍1/4=25%（NW-FAMILY）；固定合同项比例不代表整局自主完成率。Murchad原ordinary episode独立153自然日，最新h2121/full2121、raw53330832、save112,436,214B、SHA `1fd5168dd61a373849b93d46fc8c27093d88ebaf382c3f93923ad3fe1b2be74c`；rogue191/243、Robert3153/36524与自然继承/政府矩阵资格不增加。v16 source d4f377d9/938inputs/63ON4OFF strictGREEN，[exact官方CI36969620602](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36969620602)13:40:05 SUCCESS。
+
+用户持续要求最小化、不抢前台已落实：首次启动1914样本与运行1949样本两180秒窗口均无CK3 foreground、0window/input mutations。一次显式原生Activity呈现保留原event15→typed读首次成功→正式tooltip-only2001选择→正常2日→保存，窄后台production-live loop成立，0M2材料/完整Feast终态信用。Chancellor仅唯一ACK/receipt_pending，material/next/cold false；原Steward39761 once/material/next/cold已满足M4 Council及M6 institution子项，没有额外替换现任门槛。最后Sway实际151日91/310/opinion-5/modifierabsent/rings空，无收益/终态。Develop实际3county只读primitive可用，任务价值比较仍待。
+
+当前formal turn4新自然事件existing_consumer_not_ready暂停；Clan旧607秒RED与Tribal新54.489秒真实bookmark拒绝分开留存，均0新政府资格。下一步事件续行/原Chancellor材料及Sway/Feast结果，修真实frontend后再mincold。14:10–14:30及14:30–15:30为条件ETA，完整G2无法可靠定时。[当前机器合同](g2-requirements-v1.json)、[最新日报](daily/2026-10-02.md)、[完整证据与历史RED](../g2-maintainer-resume-1.20.0.3-2026-10-02.md)。下方各原日期状态是历史截点，保留。
 
 ## 2026-10-02 11:03：G2-M5原合同完成，当前4/8与真实110日停点
 

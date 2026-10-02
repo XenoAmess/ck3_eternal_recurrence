@@ -424,6 +424,7 @@ def native_auto_run(
     timeout_seconds: float,
     readiness_timeout_seconds: float,
     cold_start_checkpoint: bool = False,
+    start_minimized: bool = False,
     native_bridge: NativeBridgeLaunchConfig | None = None,
     readiness_stable_seconds: float = READINESS_STABLE_SECONDS,
     poll_interval_seconds: float = READINESS_POLL_SECONDS,
@@ -1042,6 +1043,7 @@ def native_auto_run(
                 output_stream=None,
                 poll_interval_seconds=poll_seconds,
                 cold_start_checkpoint=cold_start_checkpoint,
+                **({"start_minimized": True} if start_minimized else {}),
                 stop_event=stop_event,
                 **session_profile_options,
             )

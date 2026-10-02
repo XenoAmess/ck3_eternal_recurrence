@@ -333,12 +333,15 @@ def query_vanilla_event_knowledge_v1(
         from .records_marriage_notice_12003 import MARRIAGE_NOTICE_12003_RECORDS
         from .records_feast_arrival_12003 import FEAST_ARRIVAL_12003_RECORDS
         from .records_feast_start_12003 import FEAST_START_12003_RECORDS
+        from .records_feast_drinks_12003 import FEAST_DRINKS_12003_RECORDS
 
         notice = MARRIAGE_NOTICE_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = FEAST_ARRIVAL_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = FEAST_START_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = FEAST_DRINKS_12003_RECORDS.get(event_definition_key)
         if notice is not None:
             return _knowledge_response(
                 status="available",

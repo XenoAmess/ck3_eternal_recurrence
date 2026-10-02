@@ -80,6 +80,8 @@ def _base(decision: Mapping[str, object]) -> dict[str, object] | None:
     supported = _SUPPORTED_CHOICES.get((event_key, native_index))
     if event_key == "feast.7002" and native_index == 0 and decision.get("ck3_build") == "1.20.0.3":
         supported = ("played_character_prestige.raw", "strictly_increasing")
+    if event_key == "feast_default.6231" and native_index == 0 and decision.get("ck3_build") == "1.20.0.3":
+        supported = ("played_character_gold.raw", "strictly_decreasing")
     if supported is None:
         return None
     profile = decision.get("choice_effect_profile")

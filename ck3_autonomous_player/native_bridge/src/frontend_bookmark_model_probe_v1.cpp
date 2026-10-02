@@ -29,17 +29,21 @@ struct FrontendModelAbiV1 {
   std::uintptr_t final_government_getter;
   std::uintptr_t character_setter;
   std::uintptr_t bookmark_setter;
-  std::size_t all_bookmarks;
+  std::size_t setup_bookmark_collection;
+  std::uintptr_t group_setter;
+  std::uintptr_t bookmark_database_slot;
+  std::uintptr_t bookmark_database_vtable;
 };
 
 constexpr FrontendModelAbiV1 kLegacyAbi{
     0x4093158, {0x40C9BD0, 0x40F3A10, 0x40F3CF0}, 0x410B070,
     0x51FCE10, 0x5212C48, 0x78, 0x108, 0x38, 0x150, 0x158, 0x15C,
-    0x38, 0x170, 0x2DAB260, 0xF707E0, 0xF706A0, 0xF0};
+    0x38, 0x170, 0x2DAB260, 0xF707E0, 0xF706A0, 0xF0, 0, 0, 0};
 constexpr FrontendModelAbiV1 kCrozierAbi{
     0x449BDA8, {0x44D5F30, 0x4500660, 0x45008B0}, 0x451B938,
     0x5702BF0, 0x5720228, 0x60, 0xD8, 0x18, 0x120, 0x128, 0x12C,
-    0x40, 0x160, 0x321D1A0, 0x1060A90, 0x1060950, 0xC0};
+    0x40, 0x160, 0x321D1A0, 0x1060A90, 0x1060950, 0xC0,
+    0x1060090, 0x5C67210, 0x48D0200};
 
 const FrontendModelAbiV1 &ModelAbi(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept {
@@ -61,13 +65,13 @@ constexpr std::string_view kConfiguredCharacterKey =
 #endif
 constexpr FrontendBookmarkTargetProfileV1 kConfiguredTarget{
     "bm_1066_rags_to_riches", kConfiguredCharacterKey,
-    "feudal_government", 0x032AEB08};
+    "feudal_government", 0x032AEB08, "bm_group_1066"};
 constexpr FrontendBookmarkTargetProfileV1 kYahyaTarget{
     "bm_1066_rags_to_riches", "bookmark_rags_to_riches_emir_yahya",
-    "clan_government", 0x032AEB08};
+    "clan_government", 0x032AEB08, "bm_group_1066"};
 constexpr FrontendBookmarkTargetProfileV1 kRurikTarget{
     "bm_867_adventurers", "bookmark_adventurers_rurik_rurikid",
-    "tribal_government", 51394920};
+    "tribal_government", 51394920, "bm_group_867"};
 
 bool IsScriptKeyByte(char value) noexcept {
   return (value >= 'a' && value <= 'z') ||
@@ -778,7 +782,8 @@ bool SelectSupportedBookmarkV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
     FrontendBookmarkChangeV1 &output, FrontendBookmarkSeedTargetV1 seed_target,
-    FrontendBookmarkSetterV1 fixture_setter) noexcept {
+    FrontendBookmarkSetterV1 fixture_setter,
+    FrontendBookmarkGroupSetterV1 fixture_group_setter) noexcept {
   output = {};
   const auto &abi = ModelAbi(environment);
   const auto &profile = GetFrontendBookmarkTargetProfileV1(seed_target);
@@ -798,18 +803,82 @@ bool SelectSupportedBookmarkV1(
     return true;
   }
   output.owner_resolved = true;
-  if (before.selected_bookmark_key == profile.bookmark_key) {
+  const bool crozier =
+      environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003;
+  if (before.selected_bookmark_key == profile.bookmark_key &&
+      (!crozier ||
+       (before.selected_date_raw_available &&
+        before.selected_date_low_raw == profile.date_low_raw &&
+        (!before.selected_bookmark_group_key_available ||
+         before.selected_bookmark_group_key == profile.bookmark_group_key)))) {
     output.already_selected = true;
     output.target_resolved = true;
     output.same_frame_bookmark_matches = true;
     return true;
   }
+  void *target_group = nullptr;
+  void *current_group = nullptr;
+  void *collection_owner = setup_view;
+  std::size_t collection_offset = abi.setup_bookmark_collection;
+  if (crozier) {
+    // Exact ResetView 0x105FDE0 copies CBookmarkGroupDatabase+0x50 into
+    // view+0xC0. Its entries are Group*, never Bookmark*. Each Bookmark
+    // instead comes from CBookmarkDatabase+0x50 and owns Group* at +0x150.
+    void *groups = nullptr;
+    std::uint32_t group_capacity = 0;
+    std::uint32_t group_count = 0;
+    if (!ReadAt(access, setup_view, abi.setup_bookmark_collection, groups) ||
+        !ReadAt(access, setup_view, abi.setup_bookmark_collection + 8,
+                group_capacity) ||
+        !ReadAt(access, setup_view, abi.setup_bookmark_collection + 0xC,
+                group_count) ||
+        group_count == 0 || group_count > group_capacity ||
+        group_count > kMaxBoundedGuiContextOwners || groups == nullptr ||
+        !ReadAt(access, setup_view, abi.selected_group, current_group)) {
+      output.unavailable_reason = "current_bookmark_group_collection_unavailable";
+      return true;
+    }
+    for (std::uint32_t i = 0; i < group_count; ++i) {
+      void *candidate = nullptr;
+      std::string key;
+      if (!ReadAt(access, groups,
+                  static_cast<std::size_t>(i) * sizeof(void *), candidate) ||
+          candidate == nullptr ||
+          !ReadScriptKeySso(access, candidate, abi.group_key, key)) {
+        output.unavailable_reason = "current_bookmark_group_key_unavailable";
+        return true;
+      }
+      if (key != profile.bookmark_group_key) continue;
+      if (target_group != nullptr) {
+        output.unavailable_reason = "target_bookmark_group_key_ambiguous";
+        return true;
+      }
+      target_group = candidate;
+    }
+    if (target_group == nullptr) {
+      output.unavailable_reason = "target_bookmark_group_not_in_current_collection";
+      return true;
+    }
+    void *database = nullptr;
+    std::uint64_t database_vtable_rva = 0;
+    const auto *database_slot = reinterpret_cast<const void *>(
+        environment.module_base + abi.bookmark_database_slot);
+    if (!ReadAt(access, database_slot, 0, database) ||
+        !ReadVtableRva(access, environment.module_base, database,
+                       database_vtable_rva) ||
+        database_vtable_rva != abi.bookmark_database_vtable) {
+      output.unavailable_reason = "current_bookmark_database_unverified";
+      return true;
+    }
+    collection_owner = database;
+    collection_offset = 0x50;
+  }
   void *entries = nullptr;
   std::uint32_t capacity = 0;
   std::uint32_t count = 0;
-  if (!ReadAt(access, setup_view, abi.all_bookmarks, entries) ||
-      !ReadAt(access, setup_view, abi.all_bookmarks + 8, capacity) ||
-      !ReadAt(access, setup_view, abi.all_bookmarks + 0xC, count) ||
+  if (!ReadAt(access, collection_owner, collection_offset, entries) ||
+      !ReadAt(access, collection_owner, collection_offset + 8, capacity) ||
+      !ReadAt(access, collection_owner, collection_offset + 0xC, count) ||
       count == 0 || count > capacity || count > kMaxBoundedGuiContextOwners ||
       entries == nullptr) {
     output.unavailable_reason = "current_bookmark_collection_unavailable";
@@ -826,6 +895,14 @@ bool SelectSupportedBookmarkV1(
       return true;
     }
     if (key != profile.bookmark_key) continue;
+    if (crozier) {
+      void *candidate_group = nullptr;
+      if (!ReadAt(access, candidate, 0x150, candidate_group) ||
+          candidate_group != target_group) {
+        output.unavailable_reason = "target_bookmark_group_mismatch";
+        return true;
+      }
+    }
     if (bookmark != nullptr) {
       output.unavailable_reason = "target_bookmark_key_ambiguous";
       return true;
@@ -847,6 +924,31 @@ bool SelectSupportedBookmarkV1(
     output.unavailable_reason = "fixture_bookmark_setter_required";
     return true;
   }
+  if (crozier && current_group != target_group) {
+    if (fixture_group_setter == nullptr && access.read_memory != nullptr) {
+      output.unavailable_reason = "fixture_bookmark_group_setter_required";
+      return true;
+    }
+    // Stock SelectBookmarkGroup callback unwraps Group.Self into RDX and
+    // calls 0x1060090(view, Group*). It writes +0xD8 and picks a native
+    // default Bookmark. SetSelectedBookmark 0x1060950 leaves +0xD8 intact.
+    output.group_setter_invoked = true;
+    if (fixture_group_setter != nullptr) {
+      if (!fixture_group_setter(access.context, setup_view, target_group)) {
+        output.unavailable_reason = "fixture_bookmark_group_setter_rejected";
+        return true;
+      }
+    } else {
+      using NativeSetter = void (*)(void *, const void *);
+      reinterpret_cast<NativeSetter>(environment.module_base + abi.group_setter)(
+          setup_view, target_group);
+    }
+    if (!ReadAt(access, setup_view, abi.selected_group, current_group) ||
+        current_group != target_group) {
+      output.unavailable_reason = "submitted_bookmark_group_not_target";
+      return true;
+    }
+  }
   output.setter_invoked = true;
   if (fixture_setter != nullptr) {
     if (!fixture_setter(access.context, setup_view, bookmark)) {
@@ -860,12 +962,19 @@ bool SelectSupportedBookmarkV1(
   }
   void *current = nullptr;
   std::string key;
+  std::uint64_t current_date = 0;
   if (!ReadAt(access, setup_view, abi.selected_bookmark, current) ||
-      current != bookmark || !ReadScriptKeySso(access, current, 0x18, key)) {
+      current != bookmark || !ReadScriptKeySso(access, current, 0x18, key) ||
+      (crozier &&
+       (!ReadAt(access, current, abi.bookmark_date, current_date) ||
+        !ReadAt(access, setup_view, abi.selected_group, current_group)))) {
     output.unavailable_reason = "submitted_bookmark_unreadable";
     return true;
   }
-  output.same_frame_bookmark_matches = key == profile.bookmark_key;
+  output.same_frame_bookmark_matches = key == profile.bookmark_key &&
+      (!crozier ||
+       (static_cast<std::uint32_t>(current_date) == profile.date_low_raw &&
+        current_group == target_group));
   if (!output.same_frame_bookmark_matches) {
     output.unavailable_reason = "submitted_bookmark_not_target";
   }

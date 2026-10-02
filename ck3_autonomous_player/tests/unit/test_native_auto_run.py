@@ -2755,6 +2755,7 @@ class NativeAutoRunTests(unittest.TestCase):
         succession_lifecycle: str = ROGUE_ONE_LIFE,
         ordinary_campaign_no_pact: bool = False,
         cold_start_checkpoint: bool | None = None,
+        start_minimized: bool = False,
         before_submit: object = None,
         after_intercept: object = None,
         require_initial_lifestyle_focus_before_date_advance: bool = False,
@@ -3038,6 +3039,7 @@ class NativeAutoRunTests(unittest.TestCase):
                     checkpoint_every_eligible_advances
                 ),
                 cold_start_checkpoint=use_cold_start_checkpoint,
+                **({"start_minimized": True} if start_minimized else {}),
                 completion_contract=completion_contract,
                 succession_lifecycle=succession_lifecycle,
                 ordinary_campaign_no_pact=ordinary_campaign_no_pact,
@@ -3136,6 +3138,42 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
             )
         return report, harness
+
+    def test_cli_start_minimized_reaches_owned_native_session(self) -> None:
+        argv = [
+            "--bridge-mode", "native-headless",
+            "--bridge-dll", str(self.dll_path),
+            "--bridge-injector", str(self.injector_path),
+            "native-auto-run", "--turns", "1",
+        ]
+        self.assertFalse(cli.parser().parse_args(argv).start_minimized)
+        production_runner = native_auto_run_module.native_auto_run
+        observed = {}
+
+        def bounded_cli_runner(spec, **kwargs):
+            self.assertIs(spec, self.spec)
+            observed["cli_start_minimized"] = kwargs.get("start_minimized")
+            with mock.patch.object(
+                native_auto_run_module, "native_auto_run", production_runner,
+            ):
+                report, harness = self._run(
+                    ["advance"], start_minimized=kwargs["start_minimized"],
+                )
+            observed["session_kwargs"] = harness.session_kwargs
+            return report
+
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec,
+        ), mock.patch.object(
+            cli, "configure_native_bridge_launch_environment", return_value=self.config,
+        ), mock.patch.object(
+            native_auto_run_module, "native_auto_run", side_effect=bounded_cli_runner,
+        ), contextlib.redirect_stdout(io.StringIO()):
+            cli.main(argv + ["--start-minimized"])
+
+        self.assertIs(observed["cli_start_minimized"], True)
+        self.assertIs(observed["session_kwargs"]["start_minimized"], True)
+        self.assertEqual(observed["session_kwargs"]["native_bridge"], self.config)
 
     def test_parser_exposes_bounded_native_auto_run(self) -> None:
         args = cli.parser().parse_args(

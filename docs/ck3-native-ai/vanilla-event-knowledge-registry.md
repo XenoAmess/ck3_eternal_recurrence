@@ -83,6 +83,69 @@ activity/province typed payload 保持 opaque，没有加入猜测的身份或�
 冻结来源和原始阻点在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v11-feast-modal-blocker/registry-continuation/`；
 `.2/.19` 记录、历史结果与下文旧版本截点保持原样。
 
+## 2026-10-02：后台自然 `feast_default.6231` 的当前两选项路线
+
+`formal-v16-background-next-01/turn-004` 在普通时间推进后出现真实 instance `16`，
+玩家/root/host `31853`、`date_raw=53330832`；原生查询 available，暂停原因是 registry
+`event_definition_key_not_registered`，没有选项提交。原始 result SHA-256 为
+`15B567D0793671E16B025779E4D9C6567B54E56E74E4B8725BAFE0C0C1A48366`。
+这是当前生产 `d4f377d9` 的后台既有消费者缺项，没有重开窗口或新增 native 故障。
+basic snapshot 的 `option_count=4` 包含隐藏定义项；当前 typed window 只显示
+rendered/native `0/0`、`1/1`，两项 enabled，consumer API `1` 对应 native `0`。
+saved scopes 为 `activity/host/province/drunk_guest`；后者 typed character 为 `16843458`，
+activity/province 仍 opaque。不能把外部活动 ID 注入其 typed payload。
+
+当前 exact build 为 CK3 `1.20.0.3` / Steam `25652598`，EXE SHA-256
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。
+来源账本在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v16-natural-consumer-blocker/source-evidence/stock-source-exact-12003.json`
+（SHA `0181BBCF6F0525B53D340D5C97070C7B1409DF37C97C386F8E5F330DD7BB9263`），
+冻结八个必要资源文件、23 个值/trigger/modifier 定义及英文、简中文案；不扩展其他事件。
+原版 `events/activities/feast_activity/main_events/feast_default_events.txt:10935–11098`
+文件 SHA 为 `D26B858CEF9CEF76C9E1BF6FB796E2BFA9E103E54853676B0D28A1927052A3F1`，
+从事件 key token 到末 brace、不含随后换行的 block SHA 为
+`F2DD92D63941723EE6E0B4AB8E7382DC7810DFE9F26369975C56C99F5D207D62`。
+
+```mermaid
+flowchart TD
+    T["原版 trigger：root 饮酒；超过两名其他饮酒来宾；六个月 cooldown"] --> I["immediate：优先荣誉宾客，否则其他饮酒来宾；保存 drunk_guest"]
+    I --> P["实际同帧：root=host31853；drunk_guest16843458；仅 native0/1 显示且 enabled"]
+    P --> A["native0：原生动态金币 affordability；扣 medium gold；合格来宾好感与十年威望修正"]
+    P --> B["native1：增加 dynamic minor gold；威望 -75；条件压力/fulfillment"]
+    I --> H["源码 native2 reveler / native3 wine cellar：本帧隐藏"]
+    A --> W["native0 AI base50 + energy*.5 + honor*.25 + compassion*.25"]
+    B --> V["native1 AI base50 + greed*.5"]
+    W -. "当前数值/随机聚合未观测" .-> U["unknown：原生最终偏好、条件压力、精确动态金额与逐位宾客结果"]
+    V -. "当前数值/随机聚合未观测" .-> U
+    A --> C["我方当前目标：完成已开始的宴会并改善来宾关系；选择 native0/API1"]
+    C -. "实机选择待 root 续行" .-> R["独立同 actor/date paused：旧 instance advance + gold.raw 严格减少"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,R unknown;
+```
+
+四个 authored options 已完整审阅；无 common `after`。`immediate:10961–10977`
+已经在展示前执行，不算选择收益。native `0:10979–11039` 的原生条件是
+`short_term_gold >= activity_medium_gold_value`，本帧 enabled 是其最终可用性证据。
+`activity_medium_gold_value` 绑定 `medium_gold_value`：月角色收入乘六，符合
+`has_treasury && this!=top_liege && is_landed` 时再乘 0.25，最小 50、最大
+300 乘文化时代系数，再向上取整为五的倍数。当前金额依赖未读出，不猜固定费用，
+不额外加入预算 gate。该选项给其他合格、存活、未囚禁 AI 与会者 `pleased_opinion +10`，
+合格 drunkard 另得 `grateful_opinion +20`；十年 `feast_bought_more_drink_modifier`
+提供每月威望 `0.5`。greedy 的压力/fulfillment 输入为 `+40`，drunkard 为 `-30`，
+当前 trait 与修正未观测，不建立压力后置或声称相加后的实际结果。
+
+native `1:11041–11055` 是另一可见候选：动态 minor gold 增加，威望固定 `-75`，
+just/generous 条件压力/fulfillment 各输入 `+40`。它适合保留现金的目标，
+但当前 root 明确采用来宾关系目标；源码子线的 treasury-first 建议只作为取舍记录，
+没有被实现或执行。native `2` 的 reveler 门、威望 `+150` / AI base `500`，以及
+native `3` 的 wine-cellar 门、influence `+30` / ambitious AI `+50` 仅为隐藏源码分支，
+不属于本帧候选。策略只登记当前 authored `4` / rendered `2` 的投影，
+效用为 `source_reviewed_ordinal` rank `1/2`，不声称数值校准或复现原生 AI 最优解。
+
+现有金币减少 comparator 用来验证实际费用发生；ACK、源码预期和 fixture 的模拟 delta
+不能替代独立实机 gold raw。来宾好感、modifier 与任何指定宾客 `35465` 的 attendance/收益
+需各自独立观测，不从金币扣款推断。本包为 **static-ready**，保留原始 not_registered RED，
+没有新的实机选择、物质收益或 M2 credit；多选资格须在真实选择/材料/正常 next 消费后另行评估。
+
 ## 当前状态
 
 - [static-ready] 共享 registry 已实现在

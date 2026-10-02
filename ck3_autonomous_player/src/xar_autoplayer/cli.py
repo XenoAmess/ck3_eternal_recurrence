@@ -329,6 +329,11 @@ def parser() -> argparse.ArgumentParser:
     native_auto_run_parser.add_argument("--exact-war-move-stop-sha256")
     native_auto_run_parser.add_argument("--timeout", type=float, default=21600)
     native_auto_run_parser.add_argument(
+        "--start-minimized",
+        action="store_true",
+        help="start and keep the managed CK3 window minimized without activation",
+    )
+    native_auto_run_parser.add_argument(
         "--readiness-timeout",
         type=float,
         default=300,
@@ -1150,6 +1155,7 @@ def main(argv: list[str] | None = None) -> int:
                     timeout_seconds=args.timeout,
                     readiness_timeout_seconds=args.readiness_timeout,
                     cold_start_checkpoint=args.cold_start_checkpoint,
+                    **({"start_minimized": True} if args.start_minimized else {}),
                     **(
                         {"exact_war_move_stop_contract": exact_war_move_stop_contract}
                         if exact_war_move_stop_contract is not None else {}

@@ -946,6 +946,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "epidemic_events.5007",
         "feast.2001",
         "feast.7002",
+        "feast_default.6231",
         "health.1001",
         "health.1010",
         "health.1101",

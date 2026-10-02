@@ -2,7 +2,39 @@
 
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
+## 14:45 用户调整当前迭代：罗贝尔优先
 
+2026-10-02 14:45 Asia/Shanghai真实补录。用户最新明确要求当前迭代更专注罗贝尔，root已暂停Clan/Tribal后续实机；此前新政府14:30–15:30等条件ETA已被本次优先级调整覆盖，不再作为本轮主线或交付期限。新主线为Robert最新真实归档→新版兼容恢复→读取当前局面→合法动作、独立结果与正式下一回合的完整OODA，再正常保存。Robert仍3153/36524，尚无新日数或本次恢复成功声明。Murchad153独立日/h2121现场暂停保留；G2仍4/8（固定项50%）、NW仍1/4（固定项25%），原合同与分母不变，既有Family complete及M4 Council/M6institution子项保持。
+
+暂停前已完成的Clan实际材料仍记录：v16官方prepare/verify GREEN，extensionless `actual-native-bootstrap-01`真实GREEN126.633秒，Yahya书签idx2/living actor32563、clan_government、raw53144328、原episode尾a281c63adf57；正常opaque h1/save68,943,399B（SHA2f811542…6a10），不增加自然日。bootstrap03的180秒1834样本观察无CK3 foreground/无window-input mutations，用户前台末PID39252。后续newPID53776 mincold同actor/date；cold包05曾RED4.878秒，但一次实际判读确认govquery available、clan_government/core_landed/core_supported true、ordinary_goal_context_ready true；普通goal plan同actor/episode已正确消费。
+
+该05 RED为外置helper过严要求本轮gov-used的HARNESS RED：真实active event instance1/options1在service中先于government query处理，normal plan正确选择active_event_window_query，不能据此写missing adapter或原生capability失败。原RED保留，owner将合法modal_pending边界写入外置结果；Clan当前government cold只读primitive实际成立，尚非完整Clan普通游戏loop、多政府矩阵或M7 complete。root已正常停止此诊断进程；另Clan07新PID mincold也停止，原opaque h1保留，没有继续时间/动作推进。
+
+Tribal真实54.489秒bookmark拒绝的最小修复已static-ready：exact .3 SetupView+C0实际为Group*，旧迁移误作Book*；现读取BookDB，解析group/book关联和date，在同mainthread先Group后Book。现有唯一focused生产Select/Probe fixture与wrapper reason通过，但使用mock setters，不能算新版Tribal已实际NewGame/actor/government或day资格。ROOT将已有静态源码包正常收口；新政府后续实机按用户本次安排暂停，不重复known-bad或已通过检查。
+
+接下来只按罗贝尔当前真实局面推进，最小化、不抢前台的持续偏好继续生效。其新版恢复、合法材料与时间推进以未来实际结果记录，完整G2没有可靠完成时刻。本次仅四报告文字追加，machine/README/roadmap及原visible_outcome未改；复用已有domain evidence/测试，不重跑已GREEN的报告validator，root统一commit/push。
+
+[Tribal静态修复字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-frontend-12003/v16-rurik-switch-repair/REPORT-FIELDS.json)。Clan实际bootstrap、coldgov与cleanup范围据root本次closed observation和domain交付记录，保留其原harness失败；未将新政府准备计入Robert或Murchad天数。
+
+## 14:18 真实续写：后台原生呈现与正式续行已实证，Murchad独立153日
+
+2026-10-02 14:18 Asia/Shanghai真实补录，覆盖此前11:03以后已闭合增量。G2固定8个可见里程碑已完成4个（M0/M1/M3/M5，4/8=50%），当前NW四包完成1个（NW-FAMILY，1/4=25%）；这两个比例仅表示原固定验收项，不能推为整局自动游玩完成率。M2/M4/M6/M7仍in_progress，原visible_outcome和分母不变。Murchad独立自然日151→153；rogue恢复191/累计243与Robert3153/36524不变，不跨seed相加。
+
+用户要求后续CK3保持最小化、不抢前台，已作为持续运行偏好。v16 actual source `d4f377d97b7a4f97ac85151610adbc4d4df818f8`，DLL `83a811d717b836f589f76c91fc03f205235aac70bb72c50842258d701468a6ff`，938inputs、63ON/4OFF、strict构建约7秒GREEN；[exact官方CI36969620602](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36969620602)于13:40:05 SUCCESS，13:49:46查询确认。官方CI只证明源码检查，不代替本机live。启动180.0664秒/1914样本与操作180.0065秒/1949样本两轮closed观察均无CK3前台、窗口保持minimized、foregroundPID29436，window/input mutations0；这些结论限于已观测区间。
+
+实际PID77724、actor31853、原episode `native-31853-af642d76cb41`、fullActivity587202561/date53330784：一次显式原生Activity呈现操作经既有application-main队列执行，ACK invoked_pending后首个独立typed查询由0matches变1match，保留feast.2001/event15/唯一native0；无OS前台切换或输入，没有重发Start。该呈现包正常保存h2114。随后 `formal-v16-background-next-01` turn1真实选择原2001选项，turn3正常推进2自然日并保存h2121/full2121、raw53330832、save112,436,214B、SHA `1fd5168dd61a373849b93d46fc8c27093d88ebaf382c3f93923ad3fe1b2be74c`；形成“后台呈现→既有事件选择→正常时间→保存”的窄production-live loop。2001普通选项仅tooltip、0材料收益，不算M2多选/材料；也不代表完整Feast终态、attendance/named reward或M4/M6/M7 complete。
+
+同正式run turn2 Chancellor真实唯一ACK：`council-formal-6785b8845870418c970feeadda000a8d`，原空缺→候选36403/diplomacy9/task9760/assign_vacant，matching ACK1/receipt0，stage receipt_pending。turn3保留同pending，尚未独立确认holder/task，material、next_consumed、cold均false；该turn的council_receipt_consumed是旧Steward39761，不能转借新Chancellor。turn4遭新自然事件 `existing_consumer_not_ready` 停下，未新增选择；后续最小registry续行正在施工，当前+2日与正常checkpoint已闭合，不能写本批目标全完成。
+
+此前v14已正常推进41日（33+8）到151日，signed pending -721420283由一次typed reject→独立pending null→正式正常41日消费闭合，仅为该拒绝续行loop；ordinal296自动策略的再次自然触发未实证，0M2信用。v14第一次Council root故障已定位worker最终ReadSnapshot失败、final_equal未执行；同PID独立fresh query成功后恢复，原RED保留，不宣称永久能力失效或源码修复。Develop callback注册修复已有实际3county/3valid target只读材料primitive，尚非任务切换及收益比较。
+
+原M4合同要求有价值合法“内阁调整”，没有另加必须替换现任门槛。原空缺Steward→最优合法39761（skill8，合法备选7）已具once、独立material、formal next、新PIDcold，满足Council子项；同证据也满足M6的institution OR子项，不给M4/M6整体完成。建设仍in_progress，stock收入差+0.15/月不当实际净收益/完工。Sway最后闭合151日读数同full234881208/gen14为91/310、opinion-5、两专属modifier合法absent、三rings attached/seq0/empty/no-gap，暂无phase/terminal/收益；本次+2日后没有新Sway材料，不能外推93或归因总opinion。
+
+v15原冷view未物化0日失败与root-assisted开view后count阻点均保留：definition snapshot count5、typed可见1/native0，旧registry误填1，唯一predicate失败；计数修复focused1case通过后本次v16真正选择闭合，5不表示5个可选选项，更不顶替M2两个multi。原minimized query/save probe也实际GREEN，既有PeekMessageW/WM_NULL wake无需修改pump。v14 Clan607.34秒RED无actor/goal/NewGame/cp，清理完成；最新Tribal v16官方prepare/verifyGREEN但bootstrap03于54.489秒真实RED：已读1066书签，Rurik bookmark请求被application-main frontend executor rejected request，selector/start false，tree/job/watchdog/CK3清理完成。它与旧607秒executor unavailable故障分开保存，新增government/seed/day资格0；不重复known-bad运行。
+
+下一步按当前阻点继续：新自然事件registry→正常续行并核Chancellor原pending，持续Sway材料/完整Feast生命周期；Clan/Tribal待最小真实frontend修复后保持最小化验收。14:10–14:30事件续行、14:30–15:30新政府mincold只是有条件估计，随实际故障调整；完整G2没有可靠完成时间。已有domain focused测试、closed材料和CI直接复用，本轮仅对报告索引运行一次既有validator，root统一commit/push，未来源码/实机结果不提前计入。
+
+证据入口：[v16后台Activity闭合](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-feast/cold-view-headless/actual-v16-proof/REPORT.json)、[frontend汇总](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-frontend-12003/background-activity-view/actual-v16-headless-materialized/REPORT-FIELDS.json)、[正式run](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v16-background-next-01/result.json)、[Chancellor待验证](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/ACTUAL-V16-REPORT-FIELDS.json)、[Tribal原RED](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-tribal-preparation/actual-v16-d4f377d9-01/fresh-bootstrap-03/report.json)。启动及操作观察分别为外置root的 `murchad-v16-background-cold-focus-observation-01.json` / `murchad-v16-headless-activity-focus-observation-01.json`；原M4合同判读见 `requirements-ledger/M4-COUNCIL-VACANCY-ORIGINAL-CONTRACT-DECISION.json`。
 
 ## 11:03 真实续写：原成人家族合同闭合，G2完成4/8
 

@@ -417,7 +417,9 @@ bool DispatchSelectSupportedBookmark(
   }
   query.result.target_resolved = query.result.bookmark_change.target_resolved;
   query.result.dispatch_invoked = query.result.bookmark_change.setter_invoked;
-  return query.result.dispatch_invoked;
+  // Complete the model request so its domain rejection reaches the existing
+  // result formatter. Setter invocation remains a separate acknowledgement.
+  return true;
 }
 
 bool DispatchOpenRulerDesigner(

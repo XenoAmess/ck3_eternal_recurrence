@@ -258,9 +258,10 @@ fully proven. The new attempt's fields are retained separately under
 `m7-frontend-12003/actual-v14-route-wait-red/`, without replacing previous
 failed artifacts.
 
-No actual seed, paired save, cold restore, or succession has been established.
-M7 remains open. Root must verify actual government, actor, rules, paired
-checkpoint, and formal consumer/cold continuation before assigning readiness.
+At the v14 attempt cutoff, no actual fresh seed, paired save, cold restore or
+succession had been established. The later v16 Clan bootstrap and Rurik
+group-switch results below supersede that startup cutoff; M7 remains open
+until each required government has its own ordinary goal and cold continuation.
 
 ```mermaid
 flowchart TD
@@ -268,11 +269,152 @@ flowchart TD
   R -->|runtime target fix; actual v13 hello has all three| H[Advertisement subfault closed]
   H --> I[Actual v13 RED: Python binding accepts legacy identity only]
   I -->|exact .3 facade identity fix| J[Actual v14 RED: native frontend executor unavailable]
-  J -. exact .3 existing frontend executor registration; actual route pending .-> A1[Main menu route query]
-  A1 -. private typed NewGame pending live .-> B[Bookmarks]
-  B -. Rurik only: key-derived native Bookmark setter .-> C[Fresh target Bookmark model]
-  B -. Yahya: same Bookmark target probe .-> C
-  C -. one source-key-derived character setter .-> D[Independent selected-role model]
-  D -. one stock StartGame button .-> E[Actual paused player and government]
-  E -. root seed verification pending .-> F[Ordinary goal + paired checkpoint + cold formal consumer]
+  J -->|v16 registered executor actual route| A1[Main menu route query]
+  A1 -->|v16 actual private typed NewGame| B[Bookmarks]
+  B -. Rurik v16 RED: Group array mistaken for Bookmark array; repaired source pending live .-> C[Fresh target Rurik Bookmark model]
+  B -->|v16 independent Yahya target probe| Y[Yahya Bookmark model]
+  Y -->|one source-key-derived character setter| D[Independent selected Yahya model]
+  D -->|one stock StartGame button| E[Actual paused Clan player 32563]
+  E -->|ordinary goal and actual h1 paired save| F[Clan bootstrap primitive]
+  F -. independent cold/native family and formal continuation .-> G[Clan qualification and continuation]
+  C -. character selection and StartGame still pending .-> T[Actual paused Tribal player and ordinary goal]
+```
+
+## v16 Clan bootstrap and Rurik group-switch boundary, 2026-10-02
+
+The root's independent ordinary Yahya bootstrap is actual GREEN under the
+same exact v16 source/DLL described below: 126.633 seconds and 119 calls,
+native Bookmark character index 2, paused living runtime actor 32563, date raw
+53144328, `clan_government`, an ordinary dynastic goal and real paired checkpoint
+history 1. The frozen report is the extensionless JSON
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-clan-preparation/actual-v16-d4f377d9-01/actual-native-bootstrap-01`,
+SHA-256 `5b5b4eb5c00c9f9a754f4fcdb475c1490a43efd17d3adb1ab998fb899af91792`.
+The Clan owner parsed that packet once; core family and cold continuation are
+independent follow-up evidence. This closes a common frontend registration or
+exact-build initialization explanation for the separate Rurik failure.
+
+The actual Rurik packet is
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-tribal-preparation/actual-v16-d4f377d9-01/fresh-bootstrap-03/report.json`,
+SHA-256 `7ec6e803dda2c94c30f55a313033955a39229fb39c443af222256addaa1fd359`.
+NewGame was independently verified from `main_menu` to `bookmarks`. The private
+model read itself succeeded, proving one registered SetupView matched the
+bookmarks root. It observed `bm_group_1066`, `bm_1066_rags_to_riches`, date low
+53144328, selected character index -1 and no Rurik candidate or government.
+One `activate-frontend-select-bookmark-rurik-v1` transport request returned
+`ok=false` / `application-main frontend executor rejected request` in 0.022
+seconds. Character selection and StartGame were never submitted; the complete
+54.489-second attempt was cleaned up. Repeated report aliases describe that
+same frame and action, rather than additional native invocations.
+
+The precise .3 producer evidence identifies a migration defect:
+`ResetView` RVA `0x105FDE0` populates SetupView+`0xC0` from getter `0x1061670` /
+global `0x5D205A0`, whose constructor installs the **CBookmarkGroupDatabase**
+vtable `0x48AD6C0`. That collection contains Group pointers. The distinct
+**CBookmarkDatabase** is global `0x5C67210`, getter `0x8FC260`, vtable
+`0x48D0200`, with the full Bookmark pointer collection at +`0x50`. The first
+migration scanned Group pointers as Bookmarks; its earlier fixture mistakenly
+put Bookmark pointers directly in the Group collection and concealed this
+semantic mismatch. The exact setter `0x1060950(view, Bookmark*)` preserves
+view+`0xD8` selected group. The original `0x1060090(view, Group*)` changes the
+group and picks a native default Bookmark, so crossing to the 867 group needs
+both typed steps followed by an independent model read.
+
+The archived generic error does not retain the specific inner failure reason
+or mailbox wait enum. Independently, the production wrapper returned
+`setter_invoked=false` as executor failure, discarding the model's existing
+domain reason before the bridge's completed-result formatter could use it.
+The minimum repair uses the actual Group and Bookmark producers, verifies the
+target Bookmark's group/date, invokes the two existing native setters in one
+application-main request, and preserves a processed domain result for the
+existing error formatter. Its actual Rurik result remains pending. This attempt
+provides no Tribal actor, government, ordinary seed, goal, paired save or
+succession credit.
+
+The corrected production model function passed one focused existing fixture
+under MSVC `/O2 /W4 /WX`, compile/run exit zero, in 1.856 seconds:
+`m7-frontend-12003/v16-rurik-switch-repair/bookmark-db-fixture-01/RESULT.json`.
+Its memory contains real Group-pointer and Bookmark-pointer collection shapes;
+the Group setter fixture deliberately picks a different 867 default Bookmark,
+so the subsequent explicit target Bookmark setter remains necessary. Each
+setter fixture runs once, then an independent production model probe reads
+Rurik's group, key, date low 51394920 and `tribal_government`. A second same-target
+request makes no extra setter calls. The complete production dispatch wrapper
+also passed its single before/after fixture, preserving a missing-target domain
+reason instead of returning executor failure. Both setter bodies and the
+wrapper's inner GUI/model dependencies are explicit fixture callbacks; this is
+**static-ready**, rather than an actual 867 campaign. The exact original PE
+receipts are indexed by `m7-frontend-12003/native-abi/rurik-cross-group-gap/PROOF.json`
+and `CORRECTION.md`. Root's v17 strict build and minimized fresh Rurik bootstrap
+remain the next required actual verification; the v16 RED stays archived.
+
+## Existing Activity presentation without window focus, 2026-10-02
+
+The registered application-main command substrate now has one actual
+**production-live primitive** for opening an existing hosted Feast view while
+CK3 remains minimized. This uses the existing private Feast executor through
+the explicit step `open-current-activity-view-v1-private`; it adds no frontend
+route, public capability, service, or generic UI framework. The native Feast
+callee and its decision tree are maintained in
+[the Feast topic](ck3-1.20.0.2-feast-guest-rule.md), while this section records
+the reused command substrate and its actual independent readback.
+
+The exact source is `d4f377d97b7a4f97ac85151610adbc4d4df818f8`, bound by
+`artifacts/g2-maintainer-2026-10-02/resume-12003/runtime-freeze-d4f377d9-v16-background.json`.
+The DLL SHA-256 is
+`83a811d717b836f589f76c91fc03f205235aac70bb72c50842258d701468a6ff`.
+The runtime executable is the same exact CK3 1.20.0.3 build 25652598 EXE SHA
+`94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`.
+The closed actual packet is
+`artifacts/g2-maintainer-2026-10-02/resume-12003/murchad-v16-headless-activity-open-01/`.
+
+| Actual stage | Recorded result |
+| --- | --- |
+| Existing typed query before the action | Event full ID 15, zero window matches, `event_window_not_materialized` |
+| Sent private action | Native revision 3, player runtime full actor ID 31853, date raw 53330784, existing runtime full Activity ID 587202561 |
+| Native dispatch receipt | Actual .3 EXE identity, `invocations=1`, `native_dispatch_invoked=true`, `read_only=false`, `invoked_pending` |
+| First independent typed query after the action | One match, `available`, `feast.2001`, root and saved host character identity 31853 |
+| Preserved game frame | Same player and date, event full ID 15 preserved, game paused |
+| Window state after the action | CK3 PID 77724 minimized, foreground PID 29436, no window mutation or physical input |
+| Saved checkpoint | Native autosave history 2114, SHA-256 `ada8fe83fbf71760a3aba8d50d674d33d84d08ea2e1cdaa7bbd2b31b93bb4258`; helper client closed normally |
+
+`current-activity-view-open-01.json` retains the original request and native
+receipt. `event-context-before.json` and `event-context-after-01.json` establish
+materialization independently of the ACK. `snapshot-before.json` and
+`snapshot-after.json` bind the preserved player, date, pause and event identity.
+`window-state-after.json` records the minimized state and separate foreground
+process. The closed startup witness is
+`murchad-v16-background-cold-focus-observation-01.json`, SHA-256
+`401db2d5bd2a2b754dea67d72700a29fddee9a1f1ab424ebc03686ad2b963e82`:
+180 seconds and 1,914 samples with the window minimized from creation and
+foreground PID 29436 throughout. The closed operational witness is
+`murchad-v16-headless-activity-focus-observation-01.json`, SHA-256
+`f1328b39b7d2eb619f9ff25cae75901225147f9ceeddcc4a7988ce50b57abb05`:
+180 seconds and 1,949 samples with CK3 minimized and never foreground.
+Both files are in `artifacts/g2-maintainer-2026-10-02/resume-12003/` and remain
+the root launch/operator owner's evidence; their samples were not rerun.
+
+This helper submitted zero new Feast Start commands and selected zero event
+options. The typed result has `effect_preview_ready=false` and
+`semantic_decision_ready=false`; materializing the event does not complete
+general event decision quality. The subsequent root-owned
+`formal-v16-background-next-01` selected the preserved `feast.2001` event 15,
+submitted a Chancellor assignment, advanced normally by two days to raw
+53330832, saved checkpoint history 2121 and stopped on a new modal at turn 4.
+This is a narrow background loop; Chancellor assignment remains
+`submitted_pending`, with no claim that the position was filled. This
+milestone does not establish a fresh Yahya/Rurik ordinary seed, government
+qualification, NewGame/Bookmark/StartGame success, or a complete Feast/G2 loop.
+
+```mermaid
+flowchart TD
+  C[Cold paused existing Activity: event 15 has zero typed window matches] --> R[Explicit private step through registered Feast executor]
+  R --> Q[Existing application-main queue: exact .3 and current actor frame]
+  Q --> I[Resolve supplied full Activity ID and current host]
+  I --> P[A90050 Activity presentation invoked once: ACK pending]
+  P --> V[Independent first typed query: feast.2001 available]
+  V --> W[Same actor/date/event; minimized; foreground unchanged]
+  W --> S[Native checkpoint history 2114 saved]
+  S --> L[Subsequent formal event 15 selection: normal 2 days and checkpoint 2121]
+  L --> M[New modal stop; Chancellor submitted pending]
+  M -. complete Feast and G2 remain open .-> O[Full background autonomous loop]
 ```
