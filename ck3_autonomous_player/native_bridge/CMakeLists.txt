@@ -2126,7 +2126,7 @@ if(BUILD_TESTING)
         XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1=1
         XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1=1)
       target_link_libraries(${fixture_target} PRIVATE
-        xar_ck3_12002_feast_fixture_support)
+        xar_ck3_12002_feast_fixture_support xar_bridge_protocol)
     endif()
     if(fixture_name STREQUAL "ck3_12002_nonwar_mailbox_test")
       target_link_libraries(${fixture_target} PRIVATE user32)
