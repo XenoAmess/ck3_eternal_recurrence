@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 05:06 4235闭包3304日／resume151：正常保存28日，LIFE20真实query
+
+2026-10-03T05:06:09+08:00 Asia/Shanghai真实补录，本阶段按 **full/save4235** 闭包截点收账：原Robert存档实际又保存 **28日（12＋16）**，该截点累计 **3304/36524**，本resume **151新增保存日**，10-03 **56保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`；typed dynasty_continuity **reconciled_successions0** 独立记账。G2 **5/8＝62.5%**、NW **1/4＝25%** 保持，global M2、M5与NW-FAMILY原complete不重授或回退；后继新闭包另段记账，不覆写本段。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。本阶段full/save4235/raw53223624；saveSHA037c1678e95f0d8c1b192764f63f51504957cc5d02c7466c841f3dfe931a849f，driverSHAde59a2e60c23352476fe3f7005340de306c3eb24d2ba345d121b09a904478b1d。
+
+第一窗真实12日末端finalRead=false，独立4201保存＋同PIDfresh query恢复；后继16正式回合各1日、正常退出0/turn-budget-boundary，请求30尚未达到。LIFE20条available/ready只读、unused0/候选空，没有本轮新perk动作；Guy原婚约cold材料保留、联盟仍false。旅行19真实一次选择但无奖励材料。v24生命周期沿用历史native23 terminal，不是新HostedPost；37265samefull/active2只属被动研究，不加MCP/M6完整信用。当前Python82c / native6c-v24 / PID38520，sourceCI37059620499 SUCCESS；前3276中央文档已经发布72241092，新+28另包及时发布。
+
 ## 10-03 04:17 当前v24：月虔诚＋0.4375/月，3276日保持
 
 2026-10-03T04:17:52+08:00 Asia/Shanghai当前真实补录：唯一Robert29829/episode `native-29829-2bc2d599f7f9`，当前source/native **6c87eb77 / v24 / newPID38520**、env8a98。本段 **0新增保存日**，累计 **3276/36524**、resume **123新增保存日**、10-03 **28保存日**；typedgoal reconciled_successions0另列。G2 **5/8=62.5%**、NW **1/4=25%**与global M2/M5/NW-FAMILY complete保持，不以新readonly/query/代码或sourceCI增加整项。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。full4192/save4191/raw53222952，当前saveSHA2e1a27f33e020fd86628ccab4af23376b91591d364c3ffb1e7298b1b1e7d1ed7/driverSHA57f04dad3f5629ad6768ca140c47aee798764c46ed2b2e8068862f73c462304a。

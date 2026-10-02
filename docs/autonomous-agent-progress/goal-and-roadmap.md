@@ -1,5 +1,15 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 10-03 05:06 同原存档28日保存与LIFE可见观测
+
+2026-10-03T05:06:09+08:00 Asia/Shanghai真实补录，本阶段按 **full/save4235** 闭包截点收账：原Robert存档实际又保存 **28日（12＋16）**，该截点累计 **3304/36524**，本resume **151新增保存日**，10-03 **56保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`；typed dynasty_continuity **reconciled_successions0** 独立记账。G2 **5/8＝62.5%**、NW **1/4＝25%** 保持，global M2、M5与NW-FAMILY原complete不重授或回退；后继新闭包另段记账，不覆写本段。
+
+同PID后继 `normal30-after-finalread-recovered-82c-v24-actual-01` 正常退出0，按 **turn-budget-boundary** 收束：16个正式回合各执行life-advance1日，合计 **16日**，raw53223240→**53223624**，末态正常保存 **full/save4235**。这次请求30日尚未达到，回合预算结束不等于30日目标完成。[后继16个正式回合保存闭包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/normal30-after-finalread-recovered-82c-v24-actual-01/result.json)。 本阶段闭包保存 **86,769,058B / SHA `037c1678e95f0d8c1b192764f63f51504957cc5d02c7466c841f3dfe931a849f`**，配对driver **50,848,602B / SHA `de59a2e60c23352476fe3f7005340de306c3eb24d2ba345d121b09a904478b1d`**；full/save4235/date53223624。保存日由Root日数账本只计一次，LIFE/Family/M2各包不重复加28日。
+
+LIFE现有formal consumer实际抵达：两个已结束包共 **20条（4＋16）available/ready查询**，当前Robert/原episode/PID38520；财富重心合法、stewardship XP **837.5→868.75**，used7/unused0、owned20，policy_target候选available且items=[]，实际decision **no_legal_minimum / selected_action=null**。readiness仅升 **production-live readonly primitive＋正常零点consumer**；本轮submit0/receipt0/技能动作冷结果0，不是新perk动作loop或M4 complete。canAdd与named per-target legal未显式发布，应记missing而不是false；旧centralization回执postdate53215920只是历史重消费，不作为本轮新动作。[本轮LIFE实际有限字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-lifestyle/actual-closed/REPORT-FIELDS.json)。
+
+当前第一批末端fullsnapshot finalRead=false已由samePID fresh query恢复，12日有独立4201保存，不升级为全批GREEN；后16日按真实回合预算正常保存。Global M2/M5原complete及visible outcomes保持，不因新leaf或Family冷材料重复加分。Feast原真实terminal/具名modifier保留，当前新PIDlifecycle历史早返和guestactive2研究明确分开；M6整体仍未由owner授complete。宗教growth与任务贡献包static-ready待v25实读，Catholic未改；完整宗教权限不等全域OODA。[机器状态](g2-requirements-v1.json)与[日报](daily/2026-10-03.md)维护现局，旧日期段保留历史数字。下一步从最新4235当前pair继续正常formal循环并保存实际日数；LIFE保持unused0/候选空的合法观测结果，不强行生成技能动作；Guy原婚约/年龄依赖正常接续，保持不重发。v25新growth/任务贡献与Feast真正新producer按真实strict/cold结果另段记录，当前保存28日与恢复已足够独立发布。
+
 ## 10-03 04:17 宗教readonly进入当前月净值，原存档0日冷恢复
 
 2026-10-03T04:17:52+08:00 Asia/Shanghai当前真实补录：唯一Robert29829/episode `native-29829-2bc2d599f7f9`，当前source/native **6c87eb77 / v24 / newPID38520**、env8a98。本段 **0新增保存日**，累计 **3276/36524**、resume **123新增保存日**、10-03 **28保存日**；typedgoal reconciled_successions0另列。G2 **5/8=62.5%**、NW **1/4=25%**与global M2/M5/NW-FAMILY complete保持，不以新readonly/query/代码或sourceCI增加整项。
