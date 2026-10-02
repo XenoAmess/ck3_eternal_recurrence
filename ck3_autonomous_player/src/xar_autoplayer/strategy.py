@@ -3330,8 +3330,9 @@ def _plan_council_composition_v1(
     *,
     available_capabilities: set[str],
     position_key: str,
+    allow_occupied_chancellor: bool = False,
 ) -> dict[str, object]:
-    """Preserve Steward selection and fill a native-legal Chancellor vacancy."""
+    """Preserve default coverage; allow explicitly configured Chancellor replacement."""
 
     if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
         raise ValueError("Council assignment position is outside coverage")
@@ -3364,7 +3365,8 @@ def _plan_council_composition_v1(
             **evidence,
         }
     selected = candidates[0]
-    if position_key == CHANCELLOR_POSITION_KEY and position["vacant"] is not True:
+    if (position_key == CHANCELLOR_POSITION_KEY and position["vacant"] is not True
+            and allow_occupied_chancellor is not True):
         return {
             "policy": policy,
             "outcome": "NO_CHANGE",

@@ -7,6 +7,7 @@
 #include "xar_bridge/ck3_12002_family_projection.hpp"
 #include "xar_bridge/ck3_12002_family_subject.hpp"
 #include "xar_bridge/ck3_12002_family_outbound.hpp"
+#include "xar_bridge/ck3_12003_family_terminal_events.hpp"
 #include "xar_bridge/ck3_12002_family_ranked_mailbox.hpp"
 #include "xar_bridge/ck3_12002_family_wire.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
@@ -9172,6 +9173,10 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   std::int32_t outbound_recipient12002 = -1;
   xar::bridge::MarriageOutboundPendingSnapshotV1 outbound12002{};
   bool outbound_read12002 = false;
+  bool terminal_events_with_outbound12003 = false;
+  xar::ck3_12002::EventWindowBindings terminal_event_bindings12003{};
+  xar::ck3_12003::FamilyTerminalEventsRequestV1 terminal_event_request12003{};
+  xar::ck3_12003::FamilyTerminalEventsSnapshotV1 terminal_events12003{};
   bool alliance_pair_only12002 = false;
   xar::ck3_12002::FamilyProjectionBindings projection12002{};
   bool alliance_pair_read12002 = false;
@@ -9208,6 +9213,13 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
           query.outbound_bindings12002, before.played_character_id,
           query.outbound_recipient12002, query.heir_character_id,
           query.bilateral_candidate12002, query.outbound12002);
+      if (query.terminal_events_with_outbound12003 &&
+          query.outbound_read12002 && query.outbound12002.state ==
+              xar::bridge::MarriageOutboundPendingStateV1::absent) {
+        (void)xar::ck3_12003::ReadFamilyTerminalEventsV1(
+            query.terminal_event_bindings12003,
+            query.terminal_event_request12003, query.terminal_events12003);
+      }
     } else if (query.alliance_pair_only12002) {
       query.alliance_pair_read12002 = xar::ck3_12002::ReadFamilyAlliancePairV1(
           query.family12002, query.projection12002, query.heir_character_id,
@@ -9362,7 +9374,8 @@ ReadMarriageAllianceForAdapterV1(const xar::game::GameAdapter &game,
 bool ReadMarriageOutboundForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected, std::int32_t actor, std::int32_t recipient,
     std::int32_t subject, std::int32_t candidate,
-    xar::bridge::MarriageOutboundPendingSnapshotV1 &output) {
+    xar::bridge::MarriageOutboundPendingSnapshotV1 &output,
+    xar::ck3_12003::FamilyTerminalEventsSnapshotV1 *terminal_events = nullptr) {
   if (!xar::game::IsReviewedCrozierAdapter(game)) {
     return xar::bridge::ReadMarriageOutboundPendingSnapshotV1(
         g_marriage_shared_glue_v1.resolution, actor, recipient, subject, candidate, output);
@@ -9374,8 +9387,17 @@ bool ReadMarriageOutboundForAdapterV1(const xar::game::GameAdapter &game,
   query.bilateral_candidate12002 = candidate;
   query.outbound_recipient12002 = recipient;
   query.outbound_only12002 = true;
+  if (terminal_events != nullptr && game.descriptor().game_version == "1.20.0.3") {
+    query.terminal_events_with_outbound12003 = true;
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    query.terminal_event_bindings12003 = xar::ck3_12002::BindEventWindowImage(
+        base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+    query.terminal_event_request12003 = {expected.date_raw, actor, actor,
+        recipient, subject, candidate};
+  }
   if (!RunFamilyMailbox12002(query) || !query.outbound_read12002) return false;
   output = query.outbound12002;
+  if (terminal_events != nullptr) *terminal_events = std::move(query.terminal_events12003);
   return true;
 }
 
@@ -9600,8 +9622,10 @@ std::string ObservedHeirMarriageMaterialFrameV1(
     xar::bridge::ObservedHeirMarriageMaterialStatusV1 material,
     bool cold_recovery,
     const xar::bridge::MarriageOutboundPendingSnapshotV1 *outbound_pending,
-    std::string_view step = kObservedFirstHeirMarriageResultStepV1) {
-  const char *status = "pending";
+    std::string_view step = kObservedFirstHeirMarriageResultStepV1,
+    bool gone_unmaterialized = false,
+    const xar::ck3_12003::FamilyTerminalEventsSnapshotV1 *terminal_events = nullptr) {
+  const char *status = gone_unmaterialized ? "gone_unmaterialized" : "pending";
   if (material ==
       xar::bridge::ObservedHeirMarriageMaterialStatusV1::marriage)
     status = "marriage";
@@ -9644,6 +9668,25 @@ std::string ObservedHeirMarriageMaterialFrameV1(
   result += pending.matrilineal_option_selected ? "true" : "false";
   result += ",\"fulfill_existing_betrothal\":";
   result += pending.fulfill_existing_betrothal ? "true" : "false";
+  if (gone_unmaterialized) {
+    result += ",\"proposal_disposition_source\":\"native_outbound_and_bilateral_pair\",\"terminal_cause_available\":false,\"terminal_cause\":\"not_observed\"";
+  }
+  if (terminal_events != nullptr) {
+    result += ",\"retained_player_event_queue_available\":";
+    result += terminal_events->available ? "true" : "false";
+    result += ",\"retained_player_event_queue_read_complete\":";
+    result += terminal_events->queue_read_complete ? "true" : "false";
+    result += ",\"retained_player_event_queue_stable\":";
+    result += terminal_events->queue_stable ? "true" : "false";
+    result += ",\"retained_player_event_queue_count\":";
+    result += SignedNumber(terminal_events->queue_count);
+    result += ",\"retained_original_role_letter_count\":";
+    result += Number(terminal_events->matched_count);
+    result += ",\"retained_original_role_letter_kind\":";
+    AppendJsonString(result, xar::ck3_12003::FamilyTerminalEventKindNameV1(terminal_events->kind));
+    result += ",\"retained_player_event_unavailable_reason\":";
+    AppendJsonString(result, xar::ck3_12003::FamilyTerminalEventFailureNameV1(terminal_events->failure));
+  }
   if (cold_recovery) {
     result += ",\"outbound_pending_state\":";
     const char *outbound_state =
@@ -16959,6 +17002,10 @@ void RunConnectedSession(
                 : xar::bridge::ObservedHeirMarriageMaterialStatusV1::
                       inconsistent;
             xar::bridge::MarriageOutboundPendingSnapshotV1 outbound_pending{};
+            xar::ck3_12003::FamilyTerminalEventsSnapshotV1 terminal_events{};
+            const bool terminal_events_requested = child_default_route && cold_recovery &&
+                !pending.fulfill_existing_betrothal &&
+                game.descriptor().game_version == "1.20.0.3";
             const bool outbound_read =
                 cold_recovery &&
                 material == xar::bridge::
@@ -16967,7 +17014,14 @@ void RunConnectedSession(
                     pending.played_character_id,
                     static_cast<std::int32_t>(cold_recipient),
                     pending.heir_character_id, pending.candidate_character_id,
-                    outbound_pending);
+                    outbound_pending, terminal_events_requested ? &terminal_events : nullptr);
+            const bool gone_unmaterialized = terminal_events_requested &&
+                material == xar::bridge::ObservedHeirMarriageMaterialStatusV1::pending &&
+                outbound_read && outbound_pending.state ==
+                    xar::bridge::MarriageOutboundPendingStateV1::absent &&
+                terminal_events.available && terminal_events.queue_read_complete &&
+                terminal_events.queue_stable && terminal_events.matched_count == 0 &&
+                terminal_events.kind == xar::ck3_12003::FamilyTerminalEventKindV1::no_match;
             xar::game::Snapshot post_scan{};
             const bool stable = xar::game::ReadSnapshot(game, post_scan) &&
                                 post_scan == before;
@@ -16984,7 +17038,8 @@ void RunConnectedSession(
                             request_id, pending, state_revision, material,
                             cold_recovery,
                             outbound_read ? &outbound_pending : nullptr,
-                            step)));
+                            step, gone_unmaterialized,
+                            terminal_events_requested ? &terminal_events : nullptr)));
             }
           }
 #endif

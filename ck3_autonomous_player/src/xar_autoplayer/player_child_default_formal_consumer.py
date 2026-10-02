@@ -61,6 +61,27 @@ def _rejected_candidates(resolved: Mapping[str, object]) -> frozenset[int]:
     return frozenset([*prior, candidate])
 
 
+def _prior_candidate_ids(source: Mapping[str, object], field: str) -> frozenset[int]:
+    prior = source.get(field, [])
+    if (not isinstance(prior, list)
+            or any(not _positive(value) for value in prior)
+            or len(set(prior)) != len(prior)):
+        raise ValueError("child default prior candidate history changed")
+    return frozenset(prior)
+
+
+def _attempted_candidates(resolved: Mapping[str, object]) -> frozenset[int]:
+    source = resolved.get("source_pending")
+    candidate = resolved.get("candidate_character_id")
+    if (resolved.get("status") != "gone_unmaterialized"
+            or not isinstance(source, dict)
+            or source.get("candidate_character_id") != candidate
+            or source.get("heir_character_id") != resolved.get("heir_character_id")
+            or not _positive(candidate)):
+        raise ValueError("child default disposition lacks its source proposal")
+    return _prior_candidate_ids(source, "prior_attempted_candidate_ids") | {candidate}
+
+
 def read_child_default_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.is_file():
@@ -190,6 +211,7 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
     resolved = ledger["resolved"]
     retry_source: dict[str, object] | None = None
     rejected_candidate_ids: frozenset[int] = frozenset()
+    attempted_candidate_ids: frozenset[int] = frozenset()
     if isinstance(resolved, dict):
         pid, creation = bridge_process_identity(driver)
         if resolved.get("episode_run_id") != snapshot.get("episode_run_id"):
@@ -217,7 +239,7 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
                     "child_default_resolved": dict(resolved),
                     "reason": "read actual player-recipient alliance"}}
             return planned
-        if resolved.get("status") not in {"refused", "invalidated"}:
+        if resolved.get("status") not in {"refused", "invalidated", "gone_unmaterialized"}:
             return planned
         source = resolved.get("source_pending")
         if (not isinstance(source, dict)
@@ -225,7 +247,14 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
                 or source.get("played_character_id") !=
                     snapshot["played_character"]["character_id"]):
             return planned
-        rejected_candidate_ids = _rejected_candidates(resolved)
+        if resolved.get("status") == "gone_unmaterialized":
+            rejected_candidate_ids = _prior_candidate_ids(
+                source, "prior_rejected_candidate_ids")
+            attempted_candidate_ids = _attempted_candidates(resolved)
+        else:
+            rejected_candidate_ids = _rejected_candidates(resolved)
+            attempted_candidate_ids = _prior_candidate_ids(
+                source, "prior_attempted_candidate_ids")
         retry_source = resolved
     if not _eligible_base_step(plan, snapshot):
         return planned
@@ -267,7 +296,9 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
         raise ValueError("child default comparator set is incomplete")
     decision = choose_specified_child_default_value(
         subject, values, split_successor_verified=True,
-        rejected_candidate_ids=rejected_candidate_ids)
+        # The existing chooser argument is a membership filter; factual
+        # attempted history remains separate from native refusal history.
+        rejected_candidate_ids=rejected_candidate_ids | attempted_candidate_ids)
     observation = {
         "split_successor": split,
         "shortlist_candidate_ids": shortlist,
@@ -276,6 +307,7 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
         "stop_reason": "complete_shortlist_compared",
         "policy_decision": decision,
         "rejected_candidate_ids": sorted(rejected_candidate_ids),
+        "attempted_candidate_ids": sorted(attempted_candidate_ids),
     }
     candidate_id = decision.get("selected_candidate_character_id")
     matches = [value for value in values
@@ -316,17 +348,32 @@ def submit_child_default_private(driver: object, *,
             or value.get("request_matrilineal_option") is not False):
         raise ValueError("child default selected value crossed its source frame")
     rejected_list = observation.get("rejected_candidate_ids")
+    attempted_list = observation.get("attempted_candidate_ids", [])
     retry_source = plan.get("child_default_retry_source")
     if (not isinstance(rejected_list, list)
             or any(not _positive(item) for item in rejected_list)
             or rejected_list != sorted(set(rejected_list))
-            or (retry_source is None and rejected_list)
+            or not isinstance(attempted_list, list)
+            or any(not _positive(item) for item in attempted_list)
+            or attempted_list != sorted(set(attempted_list))
+            or (retry_source is None and (rejected_list or attempted_list))
             or (retry_source is not None and not isinstance(retry_source, dict))):
         raise ValueError("child default rejected candidate proof changed")
     rejected_candidate_ids = frozenset(rejected_list)
-    if (isinstance(retry_source, dict)
-            and _rejected_candidates(retry_source) != rejected_candidate_ids):
-        raise ValueError("child default prior refusal changed")
+    attempted_candidate_ids = frozenset(attempted_list)
+    if isinstance(retry_source, dict):
+        source = retry_source.get("source_pending")
+        if not isinstance(source, dict):
+            raise ValueError("child default prior proposal lacks its source")
+        if retry_source.get("status") == "gone_unmaterialized":
+            expected_rejected = _prior_candidate_ids(source, "prior_rejected_candidate_ids")
+            expected_attempted = _attempted_candidates(retry_source)
+        else:
+            expected_rejected = _rejected_candidates(retry_source)
+            expected_attempted = _prior_candidate_ids(source, "prior_attempted_candidate_ids")
+        if (expected_rejected != rejected_candidate_ids
+                or expected_attempted != attempted_candidate_ids):
+            raise ValueError("child default prior proposal changed")
     split = _split_successor(driver, snapshot)
     if isinstance(retry_source, dict):
         source = retry_source["source_pending"]
@@ -350,7 +397,8 @@ def submit_child_default_private(driver: object, *,
             or chosen.get("status") != "selected"
             or chosen.get("selected_candidate_character_id") !=
                 value.get("candidate_character_id")
-            or value.get("candidate_character_id") in rejected_candidate_ids
+            or value.get("candidate_character_id") in
+                (rejected_candidate_ids | attempted_candidate_ids)
             ):
         raise ValueError("child default split or value changed before submission")
     fresh_values = [
@@ -362,7 +410,7 @@ def submit_child_default_private(driver: object, *,
     if (fresh_values != full_values
             or choose_specified_child_default_value(
                 legality, fresh_values, split_successor_verified=True,
-                rejected_candidate_ids=rejected_candidate_ids,
+                rejected_candidate_ids=rejected_candidate_ids | attempted_candidate_ids,
             ).get("selected_candidate_character_id") !=
                 value.get("candidate_character_id")):
         raise ValueError("child default full comparator changed before submission")
@@ -410,6 +458,7 @@ def submit_child_default_private(driver: object, *,
             row["recipient_character_id"]],
         "selected_value_projection": dict(row),
         "prior_rejected_candidate_ids": rejected_list,
+        "prior_attempted_candidate_ids": attempted_list,
         "deferred_prior_plan": dict(
             plan.get("child_default_displaced_plan", {})),
         "source_bridge_pid": pid,
@@ -468,7 +517,8 @@ def query_child_default_result_private(
         updated.pop("alliance_bridge_creation_date", None)
         _write(state_dir, {**ledger, "resolved": updated})
         return result
-    if status in {"marriage", "betrothal", "refused", "invalidated"}:
+    if status in {"marriage", "betrothal", "refused", "invalidated",
+                  "gone_unmaterialized"}:
         resolved = {
             **result, "source_pending": dict(pending),
             "episode_run_id": pending["episode_run_id"],
@@ -477,6 +527,8 @@ def query_child_default_result_private(
         if status in {"refused", "invalidated"}:
             resolved["rejected_candidate_ids"] = sorted(
                 _rejected_candidates(resolved))
+        elif status == "gone_unmaterialized":
+            resolved["attempted_candidate_ids"] = sorted(_attempted_candidates(resolved))
         _write(state_dir, {**ledger, "pending": None, "resolved": resolved})
     elif status in {"pending", "accepted_pending"}:
         updated = {

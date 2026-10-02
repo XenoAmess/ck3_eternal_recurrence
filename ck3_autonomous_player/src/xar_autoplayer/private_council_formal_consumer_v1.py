@@ -1,4 +1,4 @@
-"""Consume Steward adjustments and a vacant Chancellor in ordinary turns.
+"""Consume default Steward or explicitly configured Chancellor adjustments.
 
 The existing skill policy chooses among candidates passing the exact native
 final gates. A helper ACK remains pending until the existing receipt reader
@@ -128,6 +128,7 @@ def _query_position(driver: object, position_key: str) -> dict[str, object]:
 
 def select_council_candidate_v1(
     query: Mapping[str, object], *, position_key: str = STEWARD_POSITION_KEY,
+    allow_occupied_chancellor: bool = False,
 ) -> dict[str, object]:
     """Keep every native row as evidence; rank only rows passing native gates."""
     if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
@@ -177,10 +178,13 @@ def select_council_candidate_v1(
                              "native_gates": copy.deepcopy(gate)})
         else:
             legal.append(candidate)
+    planner_options = ({"allow_occupied_chancellor": True}
+                       if allow_occupied_chancellor is True else {})
     decision = _plan_council_composition_v1(
         {**observation, "candidates": legal},
         available_capabilities={ASSIGN_COUNCILLOR_V1_CAPABILITY},
         position_key=position_key,
+        **planner_options,
     )
     selected = decision.get("selected_candidate")
     incumbent = observation["position"]["incumbent_main_skill"]
@@ -198,10 +202,13 @@ def plan_council_private(
     history: list[dict[str, object]], available_steps: set[str],
     *, state_dir: Path | None = None,
     campaign_root_result: dict[str, object] | None = None,
+    position_key: str = STEWARD_POSITION_KEY,
 ) -> dict[str, object]:
     """Plan one private council turn without public advertisement or war policy."""
     if getattr(driver, "allow_private_council_action", False) is not True:
         return planned
+    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
+        raise ValueError("Council assignment position is outside coverage")
     plan = planned.get("plan")
     if not isinstance(plan, dict):
         return planned
@@ -230,12 +237,15 @@ def plan_council_private(
     applied_role = (_record_position_key(applied)
                     if isinstance(applied, dict) and applied.get("episode_run_id") == snapshot.get("episode_run_id")
                     else None)
-    # The native mailbox retains its last Council quote for submission. Read
-    # Chancellor persistence first so the default Steward decision stays last.
-    applied_query = (_query_position(driver, CHANCELLOR_POSITION_KEY)
-                     if applied_role == CHANCELLOR_POSITION_KEY else None)
-    query = _query_position(driver, STEWARD_POSITION_KEY)
-    decision = select_council_candidate_v1(query)
+    # Read persistence for another role first; keep the configured submission
+    # quote last in the native mailbox. The default remains Steward.
+    applied_query = (_query_position(driver, applied_role)
+                     if applied_role is not None and applied_role != position_key else None)
+    query = _query_position(driver, position_key)
+    decision = select_council_candidate_v1(
+        query, position_key=position_key,
+        allow_occupied_chancellor=position_key == CHANCELLOR_POSITION_KEY,
+    )
     current = _snapshot(driver)
     next_plan = {**plan, "council_private_query": query, "council_decision": decision,
                  "council_observation_consumed": decision["outcome"] != "QUERY_UNAVAILABLE"}
@@ -244,7 +254,7 @@ def plan_council_private(
         root, current = _root(driver, campaign_root_result)
         holder = _position(root, applied_role)
         receipt = applied.get("receipt", {}).get("council_assign_councillor_receipt", {})
-        persistence_query = query if applied_role == STEWARD_POSITION_KEY else applied_query
+        persistence_query = query if applied_role == position_key else applied_query
         observed = persistence_query.get("council_composition_candidates", {}).get("position", {})
         persists = bool(holder and holder.get("incumbent_character_id") == applied.get("candidate_character_id")
                         and observed.get("incumbent_character_id") == applied.get("candidate_character_id"))
@@ -262,9 +272,10 @@ def plan_council_private(
                     "plan": {**next_plan, "selected_step": None,
                              "reason": "current council holder differs from the applied assignment"}}
     if decision["outcome"] in {"ASSIGN_REQUIRED", "REPLACE_REQUIRED"}:
+        role = "steward" if position_key == STEWARD_POSITION_KEY else "chancellor"
         next_plan.update({"phase": "council_private_typed_submit", "selected_step": SUBMIT_STEP,
-                           "reason": "assign one current native-legal steward with higher observed skill"})
-    elif decision["outcome"] != "QUERY_UNAVAILABLE":
+                           "reason": f"assign one current native-legal {role} with higher observed skill"})
+    elif position_key == STEWARD_POSITION_KEY and decision["outcome"] != "QUERY_UNAVAILABLE":
         if root is None:
             root, current = _root(driver, campaign_root_result)
         chancellor = _position(root, CHANCELLOR_POSITION_KEY)

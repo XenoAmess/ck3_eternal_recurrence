@@ -1,0 +1,236 @@
+{
+  "schema": "xar.tests.player-child-default-gone-unmaterialized.12003/v1",
+  "scope": "offline planned native DTO; not live provider truth",
+  "provenance": {
+    "exact_ck3_build": "1.20.0.3",
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "frozen_source_snapshot": "production-source-716acfec",
+    "baseline_source_pins": [
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_child_matrilineal_private_action_v1.py",
+        "sha256": "70681a7cdcb89370497d357678aa67eab4f69b926ab0b6702cd35dcb8d672c6d"
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/player_child_default_formal_consumer.py",
+        "sha256": "92452c63bd76a5d697d75b629ea01fb214721ae924ded494ba4c58e5d406341e"
+      }
+    ],
+    "actual_source_artifacts": [
+      {
+        "path": "artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/robert-Guy-v19-actual-diagnostic-01/normal-Guy-ledger-after.json",
+        "sha256": "d7aef8736dd05b9c44fd034f9621adae361039b9d73a6fa2596acd34d89a1e74"
+      },
+      {
+        "path": "artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/robert-Guy-v19-actual-diagnostic-01/initial-finite-frame.json",
+        "sha256": "5a5ca8ef1f1f992c00b48cf6a4eec1ef55994e2e4aeaaa0b9c615b668c109d2a"
+      },
+      {
+        "path": "artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/robert-Guy-v19-actual-diagnostic-01/actual-original-Guy-consumer-result.json",
+        "sha256": "491bf8a4e9f6d867f0b33c19c105c1f6287553a088aedc075c09c520fa08b78f"
+      },
+      {
+        "path": "artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/robert-Guy-retained-letter-readprocessmemory-01/result.json",
+        "sha256": "9b7e42d0a1c910a3dba276d5a7fa1ef5b70701faefdc0305868d646784e3b6c8"
+      }
+    ],
+    "planned_native_dto": true,
+    "native_disposition_fields_added_for_offline_fixture": true,
+    "actual_provider_execution_verified": false,
+    "snapshot_date_source": "actual retained queue capture",
+    "snapshot_native_revision_source": "actual v19 finite frame",
+    "once_only_external_validation": {
+      "path": "artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/guy-terminal-research/consumer-continuation/focused-fixture/REPORT.json",
+      "sha256": "ca3c7e77ed55c33ba08cb5e0a8e95665e4d873aa0334e45183ad354ac2a44174",
+      "old": "FAIL",
+      "new": "PASS",
+      "old_error": "cold child proposal outbound state malformed",
+      "scope": "real transport _command and normal consumer atomic temporary ledger _write"
+    },
+    "planned_patch": {
+      "path": "artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/guy-terminal-research/consumer-continuation/candidate-factual-retirement-and-retry/candidate.patch",
+      "sha256": "c0543e4b18d7aa663e6fe9cf3e9a651d79a10160536e49c8c597c01e88c2bccc"
+    }
+  },
+  "input_ledger": {
+    "schema": "xar.ck3.player-child-default-formal.v1",
+    "pending": {
+      "schema": "xar.ck3.player-child-default-private-action.v1",
+      "status": "receipt_pending",
+      "submission_state": "receipt_pending",
+      "material_result": false,
+      "pre_native_revision": 3,
+      "source_date_raw": 53219928,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "played_character_id": 29829,
+      "heir_character_id": 38988,
+      "candidate_character_id": 37909,
+      "recipient_character_id": 34332,
+      "matrilineal_option_selected": false,
+      "split_title_ids": [
+        2173
+      ],
+      "claimed_character_ids": [
+        29829,
+        38988,
+        37909,
+        34332
+      ],
+      "selected_value_projection": {
+        "actor_character_id": 29829,
+        "heir_character_id": 38988,
+        "candidate_character_id": 37909,
+        "recipient_character_id": 34332,
+        "status": "available",
+        "requested_matrilineal_option": false,
+        "selected_option_readback": null,
+        "final_legality_sampled": true,
+        "complete_can_send": true,
+        "recipient_ai_accept_raw": 1000000,
+        "recipient_answer_status_raw": 0,
+        "generic_costs": {
+          "raw_scale": 100000,
+          "payer_role": "actor",
+          "application_timing": "on_send",
+          "gold_raw": 0,
+          "prestige_raw": 0,
+          "piety_raw": 0,
+          "renown_raw": 0,
+          "influence_raw": 0,
+          "herd_raw": 0,
+          "treasury_raw": 0,
+          "treasury_or_gold_raw": 0,
+          "merit_raw": 0,
+          "barter_goods_raw": 0
+        },
+        "failure": "none",
+        "projection_failure": "none",
+        "outcome_failure": "none",
+        "predicted_outcome_if_accepted": "betrothal",
+        "heir_is_adult": false,
+        "candidate_is_adult": true,
+        "heir_adult_measure_raw": 13,
+        "candidate_adult_measure_raw": 18,
+        "heir_adult_threshold_raw": 16,
+        "candidate_adult_threshold_raw": 16,
+        "heir_native_fertility": {
+          "source": "native_marriage_fertility_input",
+          "extension_present": true,
+          "native_gate_evaluated": true,
+          "native_gate_allows": true,
+          "effective_raw": 40000
+        },
+        "candidate_native_fertility": {
+          "source": "native_marriage_fertility_input",
+          "extension_present": true,
+          "native_gate_evaluated": true,
+          "native_gate_allows": true,
+          "effective_raw": 50000
+        },
+        "grand_wedding_option_selected": false,
+        "heir_betrothed_character_id": null,
+        "heir_primary_spouse_character_id": null,
+        "heir_spouse_character_ids": [],
+        "candidate_betrothed_character_id": null,
+        "candidate_primary_spouse_character_id": null,
+        "candidate_spouse_character_ids": [],
+        "played_house_id": 174,
+        "played_dynasty_id": 174,
+        "heir_house_id": 174,
+        "heir_dynasty_id": 174,
+        "candidate_house_id": 1688,
+        "candidate_dynasty_id": 1688,
+        "heir_sex_selector_raw": 0,
+        "candidate_sex_selector_raw": 1,
+        "effective_matrilineal_if_accepted": false,
+        "matrilineal_option_selected": false,
+        "possible_alliance_pairs": [
+          {
+            "first_character_id": 29829,
+            "second_character_id": 37909,
+            "already_allied": false,
+            "both_have_realm_data": false,
+            "would_attempt_if_accepted": false
+          }
+        ]
+      },
+      "prior_rejected_candidate_ids": [],
+      "deferred_prior_plan": {
+        "selected_step": null,
+        "phase": "native_war_siege_forecast_inputs_observed",
+        "reason": "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact"
+      },
+      "source_bridge_pid": 8792,
+      "source_bridge_creation_date": "20260930005657.900962+000",
+      "schema_version": 1,
+      "exact_ck3_build": "1.19.0.6",
+      "advertised": false,
+      "step": "submit-player-child-default-marriage-v1-private",
+      "accepted": true,
+      "private_build": true,
+      "last_checked_native_revision": 4,
+      "last_checked_bridge_pid": 70968,
+      "last_checked_bridge_creation_date": "20261002204020.352650+480",
+      "last_outbound_pending_state": "absent"
+    },
+    "resolved": null
+  },
+  "snapshot": {
+    "snapshot_id": "native:4",
+    "revision": 2,
+    "native_revision": 4,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "active_event": null,
+    "pending_character_interaction": null,
+    "played_character": {
+      "character_id": 29829,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "betrothed_id": null,
+      "primary_spouse_id": 34730,
+      "spouse_ids": [
+        34730
+      ]
+    },
+    "date_raw": 53220624,
+    "diagnostics": {
+      "hello": {
+        "expected_ck3_version": "1.20.0.3",
+        "expected_ck3_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+      }
+    }
+  },
+  "native_result": {
+    "schema": "xar.ck3.player-child-default-private-action.v1",
+    "schema_version": 1,
+    "exact_ck3_build": "1.20.0.3",
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "advertised": false,
+    "step": "query-player-child-default-marriage-result-v1-private",
+    "accepted": true,
+    "private_build": true,
+    "status": "gone_unmaterialized",
+    "material_result": false,
+    "cold_recovery": true,
+    "pre_native_revision": 0,
+    "post_native_revision": 4,
+    "heir_character_id": 38988,
+    "candidate_character_id": 37909,
+    "recipient_character_id": 34332,
+    "matrilineal_option_selected": false,
+    "fulfill_existing_betrothal": false,
+    "outbound_pending_state": "absent",
+    "outbound_pending_id": null,
+    "outbound_pending_age_days": null,
+    "outbound_pending_ai_reply_cutoff_days": null,
+    "proposal_disposition_source": "native_outbound_and_bilateral_pair",
+    "terminal_cause_available": false,
+    "terminal_cause": "not_observed"
+  },
+  "bridge_identity": {
+    "pid": 70968,
+    "creation_date": "20261002204020.352650+480"
+  }
+}

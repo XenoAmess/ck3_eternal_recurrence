@@ -203,13 +203,14 @@ def test_old_steward_response_cannot_satisfy_chancellor_request(query_step: str)
         )
 
 
-def test_chancellor_assignment_extends_only_the_vacant_ordinary_route() -> None:
+def test_chancellor_typed_occupied_request_preserves_default_vacancy_policy() -> None:
     observation = _normalize(_payload(CHANCELLOR_POSITION_KEY), expected_position_key=CHANCELLOR_POSITION_KEY)
-    with pytest.raises(ValueError, match="complete paused frame"):
-        build_assign_councillor_request_v1(
-            observation, candidate_character_id=observation["candidates"][0]["character_id"],
-            request_id="readonly-chancellor-fixture",
-        )
+    request = build_assign_councillor_request_v1(
+        observation, candidate_character_id=observation["candidates"][0]["character_id"],
+        request_id="offline-chancellor-occupied",
+    )
+    assert request.position_key == CHANCELLOR_POSITION_KEY
+    assert request.expected_has_incumbent is True
     terminal = _terminal(CHANCELLOR_POSITION_KEY, PRIVATE_GATES_STEP)
     query = {**terminal, "council_composition_candidates": observation}
     occupied = select_council_candidate_v1(query, position_key=CHANCELLOR_POSITION_KEY)

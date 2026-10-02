@@ -294,7 +294,7 @@ bool HandleCouncilPrivate12002(const game::GameAdapter& adapter,
       const auto& observed = state.context.wire.query_result;
       const auto position = Fixed(observed.position_key);
       const bool supported = position == kCouncilCandidatesStewardPosition12002 ||
-          (position == kCouncilCandidatesChancellorPosition12002 && observed.vacant);
+          position == kCouncilCandidatesChancellorPosition12002;
       if (!supported || !ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
           observed, static_cast<std::int32_t>(candidate),
           request_id, request, position) || request.expected_native_revision != revision ||

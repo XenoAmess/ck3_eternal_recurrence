@@ -179,8 +179,15 @@ def query_player_child_matrilineal_result_private_v1(
     result = _command(driver, DEFAULT_RESULT_STEP if default_route else RESULT_STEP,
                       payload, timeout_seconds)
     outbound = result.get("outbound_pending_state")
+    if result.get("status") == "gone_unmaterialized" and (
+            not default_route or not cold or outbound != "absent"
+            or result.get("proposal_disposition_source") !=
+                "native_outbound_and_bilateral_pair"
+            or result.get("terminal_cause_available") is not False
+            or result.get("terminal_cause") != "not_observed"):
+        raise BridgeUnavailableError("child proposal disposition unavailable")
     if cold and (outbound not in {"active", "absent", "ambiguous", "unavailable"}
-                 if result.get("status") == "pending"
+                  if result.get("status") in {"pending", "gone_unmaterialized"}
                  else outbound != "not_applicable"):
         raise BridgeUnavailableError("cold child proposal outbound state malformed")
     if cold and outbound == "active" and (
@@ -189,7 +196,8 @@ def query_player_child_matrilineal_result_private_v1(
             or type(result.get("outbound_pending_ai_reply_cutoff_days")) is not int):
         raise BridgeUnavailableError("cold child proposal pending receipt malformed")
     if (result.get("status") not in {"pending", "accepted_pending", "refused",
-                                      "invalidated", "marriage", "betrothal"}
+                                      "invalidated", "marriage", "betrothal",
+                                      "gone_unmaterialized"}
             or (cold and result["status"] in {"accepted_pending", "refused", "invalidated"})
             or result.get("material_result") is not
                 (result["status"] in {"marriage", "betrothal"})

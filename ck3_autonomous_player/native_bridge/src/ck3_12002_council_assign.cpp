@@ -43,10 +43,9 @@ game::CouncilAssignCouncillorAckStatusV1 ExecuteCouncilAssign12002(
     const CouncilAssignAccess12002& access,
     const game::CouncilAssignCouncillorActionRequestV1& request,
     game::CouncilAssignCouncillorActionAckV1& ack) noexcept {
-  // Existing Steward routes remain supported; the newly admitted Chancellor
-  // path fills a current vacancy through the same native task-bound helper.
-  const auto position = request.position_key == kCouncilCandidatesChancellorPosition12002 &&
-      !request.expected_has_incumbent ? kCouncilCandidatesChancellorPosition12002 :
+  // Steward and Chancellor use the same native task-bound assignment routes.
+  const auto position = request.position_key == kCouncilCandidatesChancellorPosition12002 ?
+      kCouncilCandidatesChancellorPosition12002 :
       kCouncilCandidatesStewardPosition12002;
   return ck3_11906::ExecuteCouncilAssignCouncillorActionForBuildV1(environment,
       access, request, ack, kExecutableSha256, position);

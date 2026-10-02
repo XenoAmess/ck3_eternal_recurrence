@@ -1,4 +1,4 @@
-"""Strict Council action contract for Steward and a vacant Chancellor.
+"""Strict Council action contract for Steward and Chancellor assignments.
 
 The native helper ACK only proves invocation.  A successful result requires
 the independently captured, later paused-frame receipt produced by the native
@@ -168,9 +168,7 @@ def build_assign_councillor_request_v1(
         isinstance(snapshot, dict)
         and snapshot.get("paused") is True
         and isinstance(position, dict)
-        and (position.get("position_key") == STEWARD_POSITION_KEY
-             or (position.get("position_key") == CHANCELLOR_POSITION_KEY
-                 and position.get("vacant") is True))
+        and position.get("position_key") in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}
         and isinstance(candidates, list)
         and observation.get("candidate_collection_complete") is True
         and isinstance(readiness, dict)
