@@ -1,0 +1,11 @@
+{
+  "name": "test_list_e2_05_frozen_pts.py",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "promo/ck3_native_war_ai/episode-02-battle-second-half/test_list_e2_05_frozen_pts.py"
+  ],
+  "cwd": "C:\\w\\e2merge1002",
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n"
+}

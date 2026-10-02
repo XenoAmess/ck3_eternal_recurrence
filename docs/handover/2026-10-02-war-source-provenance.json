@@ -64,19 +64,19 @@
       "unique_commits_against_baseline": 70
     },
     {
-      "source_ref": null,
+      "source_ref": "ie",
       "source_commit": "ff1b17dc294fb416667f849636d07dadf47f2567",
       "archive_tag": "archive/war-handover-20261002/11-ff1b17dc2",
       "unique_commits_against_baseline": 6
     },
     {
-      "source_ref": null,
+      "source_ref": "codex/war-e2-mechanism-closure-20261001",
       "source_commit": "c4e87182397e19ccb4112617bde13168d96eb50d",
       "archive_tag": "archive/war-handover-20261002/12-c4e871823",
       "unique_commits_against_baseline": 15
     },
     {
-      "source_ref": null,
+      "source_ref": "codex/war-series-brown-gold-20261001",
       "source_commit": "04bf1fe17de2a351288b70d9292316535d69d7de",
       "archive_tag": "archive/war-handover-20261002/13-04bf1fe17",
       "unique_commits_against_baseline": 28

@@ -1,0 +1,11 @@
+{
+  "name": "frozen-pts-index",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "promo/ck3_native_war_ai/episode-02-battle-second-half/test_list_e2_05_frozen_pts.py"
+  ],
+  "cwd": "C:\\w\\e2merge1002",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"C:\\w\\e2merge1002\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\test_list_e2_05_frozen_pts.py\", line 7, in <module>\n    from list_e2_05_frozen_pts import strict_video_pts\n  File \"C:\\w\\e2merge1002\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\list_e2_05_frozen_pts.py\", line 16, in <module>\n    from sample_e2_05_raw_visual_index import (\n    ...<5 lines>...\n    )\nImportError: cannot import name 'seek_text' from 'sample_e2_05_raw_visual_index' (C:\\w\\e2merge1002\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\sample_e2_05_raw_visual_index.py)\n"
+}

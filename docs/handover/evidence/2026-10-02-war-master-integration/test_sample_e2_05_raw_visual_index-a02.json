@@ -1,0 +1,11 @@
+{
+  "name": "test_sample_e2_05_raw_visual_index.py",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "promo/ck3_native_war_ai/episode-02-battle-second-half/test_sample_e2_05_raw_visual_index.py"
+  ],
+  "cwd": "C:\\w\\e2merge1002",
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ".......usage: sampler [-h] --postrun-links POSTRUN_LINKS\n               --postrun-links-sha256 POSTRUN_LINKS_SHA256 --raw RAW\n               --ffprobe-json FFPROBE_JSON --output OUTPUT --seek SEEK\nsampler: error: seek must be a finite source second in [0, 600)\nusage: sampler [-h] --postrun-links POSTRUN_LINKS\n               --postrun-links-sha256 POSTRUN_LINKS_SHA256 --raw RAW\n               --ffprobe-json FFPROBE_JSON --output OUTPUT --seek SEEK\nsampler: error: seek must be a finite source second in [0, 600)\nusage: sampler [-h] --postrun-links POSTRUN_LINKS\n               --postrun-links-sha256 POSTRUN_LINKS_SHA256 --raw RAW\n               --ffprobe-json FFPROBE_JSON --output OUTPUT --seek SEEK\nsampler: error: seek exceeds six fractional digits or source PTS width\nusage: sampler [-h] --postrun-links POSTRUN_LINKS\n               --postrun-links-sha256 POSTRUN_LINKS_SHA256 --raw RAW\n               --ffprobe-json FFPROBE_JSON --output OUTPUT --seek SEEK\nsampler: error: seek exceeds six fractional digits or source PTS width\nusage: sampler [-h] --postrun-links POSTRUN_LINKS\n               --postrun-links-sha256 POSTRUN_LINKS_SHA256 --raw RAW\n               --ffprobe-json FFPROBE_JSON --output OUTPUT --seek SEEK\nsampler: error: seek exceeds six fractional digits or source PTS width\nusage: sampler [-h] --postrun-links POSTRUN_LINKS\n               --postrun-links-sha256 POSTRUN_LINKS_SHA256 --raw RAW\n               --ffprobe-json FFPROBE_JSON --output OUTPUT --seek SEEK\nsampler: error: seek values must have distinct canonical PTS and filenames\n.\n----------------------------------------------------------------------\nRan 8 tests in 0.670s\n\nOK\n"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "episode-two-contracts",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "promo/ck3_native_war_ai/integration",
+    "-p",
+    "test_episode_two_*.py"
+  ],
+  "cwd": "C:\\w\\e2merge1002",
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ".............................\n----------------------------------------------------------------------\nRan 29 tests in 0.540s\n\nOK\n"
+}

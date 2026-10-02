@@ -1,0 +1,56 @@
+{
+  "files": [
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/identity.json",
+      "sha256": "0a4c405341c440ea97da85ae35519c138044d80154ecd635d83a52c2ebca96a3",
+      "bytes": 407
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/steam-offline-final.png",
+      "sha256": "6ec9276f2c14683da49f74d4b882de30b3770cfdc24711c0b8670f11c72d22fc",
+      "bytes": 860740
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/steam-offline-final.json",
+      "sha256": "d49ac1fb672eb1892813aefd09729f28a73eedc620553a815668dc0e200c0336",
+      "bytes": 1509
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/video-source-preservation.json",
+      "sha256": "3527d12e64b6077ad0eb54247776617972870b81a4de56a8e8011231eb0ec0d4",
+      "bytes": 231
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/episode-two-contracts-test.json",
+      "sha256": "cc5e66b33a21a8f21d185888399a9e78fc6193de27ad7e3c003c0d0a04d54e83",
+      "bytes": 500
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/frozen-pts-index-test.json",
+      "sha256": "7fd86a74a92a5f6abc34bb29dea3a4b3930ee780c7608dd194832005b863c853",
+      "bytes": 952
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/test_list_e2_05_frozen_pts-a02.json",
+      "sha256": "34a432319f5d17c4dd742b87044238d5e4e941fdcefb6f796f4fdbeb7c80bda1",
+      "bytes": 430
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/test_sample_e2_05_raw_visual_index-a02.json",
+      "sha256": "a2604846c7e4d0c976e351d06b7bdc1ac7d44958a94df18e1bcb6b3955c27f03",
+      "bytes": 2031
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/integration-python-only-a02.json",
+      "sha256": "dbd2ecad067ac4613fe35a2951d2772686b433918142598b9d3d82bac38e1a93",
+      "bytes": 247
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/recommendation.md",
+      "sha256": "dfaea579ed095b32ccdf975b81c62f2538fb8becf03c54a9d2ea4a6d7d5a6eff",
+      "bytes": 10498
+    }
+  ],
+  "external_process_assets": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01",
+  "historical_failed_attempts_retained": true
+}
