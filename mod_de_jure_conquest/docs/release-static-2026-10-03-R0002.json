@@ -1,0 +1,33 @@
+{
+  "result": "GREEN",
+  "layer": "L0-static",
+  "errors": [],
+  "runtime_allowlist_count": 16,
+  "checked_runtime_file_count": 16,
+  "release_localization": true,
+  "runtime_sha256": {
+    "common/casus_belli_types/duchy_de_jure_greatwar.txt": "ce5bfa79231fbfb0e57637f85ea5ae00b9ff1409afc010de23b38aa54451c033",
+    "common/casus_belli_types/empire_de_jure_greatwar.txt": "db0a5ea2f1e3c945b2d930d385b00b42a8847023965c2cc6d145404042cdbc58",
+    "common/casus_belli_types/kingdom_de_jure_greatwar.txt": "bf863027112bfcfa452e94c6dbd35d34def43b358d77fc4a84eb7a5b8e24000d",
+    "common/on_action/greatwar.txt": "8adc9843fd8d28acc730d6ba39109dedcb3d7b463f9c975195761c8c3b44a191",
+    "common/scripted_effects/djc_war_effects.txt": "9b153afd7fc918872067c3ead72a4c0a1334bdee833e2701eb5e6a694923d10a",
+    "descriptor.mod": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7",
+    "localization/english/greatwar_l_english.yml": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a",
+    "localization/french/greatwar_l_french.yml": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34",
+    "localization/german/greatwar_l_german.yml": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986",
+    "localization/japanese/greatwar_l_japanese.yml": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7",
+    "localization/korean/greatwar_l_korean.yml": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89",
+    "localization/polish/greatwar_l_polish.yml": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2",
+    "localization/russian/greatwar_l_russian.yml": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6",
+    "localization/simp_chinese/greatwar_l_simp_chinese.yml": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2",
+    "localization/spanish/greatwar_l_spanish.yml": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55",
+    "thumbnail.png": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+  },
+  "vanilla_sha256": {
+    "game/common/casus_belli_types/_casus_belli.info": "270343ebae0f8ebd2e4d24f9f839a7c77cb663836d9b36af6d5138a58755bb05",
+    "game/common/casus_belli_types/00_invasion_war.txt": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+    "game/common/casus_belli_types/00_religious_war.txt": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33",
+    "game/common/casus_belli_types/00_dejure_war.txt": "18c0d3647fd936b37e3d26e28980ec45657841414d6397667891ad2e73ac1f85"
+  },
+  "live": "NOT_RUN"
+}

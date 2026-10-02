@@ -1,0 +1,36 @@
+{
+  "schema": "djc.release-documentation-review.v1",
+  "review_date": "2026-10-03",
+  "scope": "product documentation and read-only source consistency",
+  "source_static_report": "C:\\workspace\\two-mod-maintenance-20261003\\mod_de_jure_conquest-release-static-R0002.json",
+  "preserved_static_report": "docs/release-static-2026-10-03-R0002.json",
+  "source_and_preserved_report_sha256": "54cbd92efdb19c4918f5ce28348539ec1618b847ccf6ee12863c0572924d4738",
+  "report_has_only_lf": false,
+  "current_runtime_hash_match_count": 16,
+  "notes": {
+    "path": "docs/steam-change-notes-1.0.0.txt",
+    "bytes": 3067,
+    "sha256": "6f338589f9130371019d409a32fc45011c26cbd35c54e34be252fadf54164076",
+    "normalized_lf_characters": 1213,
+    "normalized_lf_lines": 31,
+    "normalized_lf_sha256": "6f338589f9130371019d409a32fc45011c26cbd35c54e34be252fadf54164076",
+    "status": "pre-publication-draft"
+  },
+  "workshop_description": {
+    "path": "docs/workshop-description.bbcode",
+    "bytes": 2685,
+    "sha256": "c330b9a68e6a59391e1790b8bb87dcee92c8b77c0cfbd5c34bae238260155506",
+    "normalized_lf_characters": 1125,
+    "normalized_lf_lines": 31,
+    "normalized_lf_sha256": "c330b9a68e6a59391e1790b8bb87dcee92c8b77c0cfbd5c34bae238260155506",
+    "status": "pre-publication-draft"
+  },
+  "facts": {
+    "static_report_result": "GREEN",
+    "game_version_target": "1.20.0.3",
+    "mod_version": "1.0.0",
+    "live": "NOT_RUN",
+    "publication": "NOT_RUN"
+  },
+  "no_runtime_or_fixture_mutations": true
+}

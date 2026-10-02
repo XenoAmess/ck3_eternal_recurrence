@@ -2,13 +2,15 @@
 
 这是 `Change the holding types` 的独立第三方维护工作目录。上游 Workshop `3337428403` 只用于注明来源；未来维护版必须创建新的 Workshop 物品。
 
-当前状态（2026-10-03）：上游字节已冻结，CK3 1.20.0.3 代码适配与简中／英文 L0 已完成；实机验收、正式九语门与 Workshop 发布由本任务后续完成。当前属于维护候选，不是已发布版本。
+当前状态（2026-10-03）：上游字节已冻结，CK3 1.20.0.3代码适配与正式九语候选L0已完成；实机R0002仍在进行，Workshop尚未发布。九语格式／token覆盖不代表母语审阅或九语实机通过。当前属于维护候选。
 
 - [功能分析](docs/function-analysis.md)
 - [来源冻结记录](docs/upstream.md)
 - [CK3 适配计划](docs/adaptation-plan.md)
 - [测试计划](docs/test-plan.md)
 - [当前测试报告](docs/test-report-2026-10-03.md)
+- [正式九语静态报告](docs/release-static-R0003-2026-10-03.json)
+- [实机attempt边界](docs/live-attempt-status-2026-10-03.md)
 
 维护方法沿用仓库的 `mod_auto_upgrade_buildings`：原始字节另存、源码与发布 staging 分离、精确游戏版本绑定、静态检查、隔离实机和发布后的公开及订阅缓存读回。产品源码、配置和证据索引放在本目录，各产品独立验收。
 

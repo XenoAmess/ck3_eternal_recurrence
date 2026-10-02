@@ -11,7 +11,7 @@
 | 日常 L0 | GREEN | 外置 `de-jure-static-R0003/report.json`，实核9文件，最终allowlist16 |
 | 双语严格 parser | PASS | 共享 `parse_ck3_localization` 两语各15 key |
 | 正式其他七语 | format-certified | 主执行者生成候选并认证键／占位符；不代表七语界面实机 |
-| 正式16文件静态 | GREEN | `de-jure-static-R0004/report.json`，release_localization=true，完整16文件 |
+| 正式16文件静态 | GREEN | 最终canonical LF输入的 [R0002永久副本](release-static-2026-10-03-R0002.json)，release_localization=true，完整16文件 |
 | 可复现构建 | 16文件PASS | 公共builder双构建manifest／ZIP一致；尚非tag绑定发布包 |
 | 外置夹具生成 | parser PASS | `de-jure-fixture-R0002`，9真实CB战争场景／72预期PASS；未执行 |
 | Open Kaishek 确定性子集 | NOT_RUN | 本工作包未找到 sibling checkout；完整探测由主执行者协调 |
@@ -21,7 +21,13 @@
 
 双语最终冻结：EN `719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a`；CN `214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2`。历史9文件构建 manifest SHA `72881fb61ee36fb21feeffb8bc9f54312f616152afa51c5f8a667d5e9d9dcb3c`，ZIP SHA `2f84c8ddfd2645b9cbc553703047f980e7ce2795e56274bf72f1721b9a388059`；后续格式变化已使这些hash不适用最终包。
 
-当前16文件双构建：manifest SHA `a3e43482f2bacc0633204c41d242c0d3dbbdb870c746eb3fd2fc56f24e8506df`；ZIP SHA `c4869ed4653cc2d4389f880cd7f804776d2db02ac69cc3dea60fdd5f08aac756`。实际命令使用已验证实体Python执行 `mod_de_jure_conquest/tools/validate_static.py --release-localization --report C:/workspace/two-mod-maintenance-20261003/de-jure-static-R0004/report.json` 与 `mod_de_jure_conquest/tools/build_release.py --check`；返回码均0。该身份仅绑定构建时HEAD与精确运行字节，尚无正式版本tag、上传、缓存或Change Notes回读。
+历史16文件双构建：manifest SHA `a3e43482f2bacc0633204c41d242c0d3dbbdb870c746eb3fd2fc56f24e8506df`；ZIP SHA `c4869ed4653cc2d4389f880cd7f804776d2db02ac69cc3dea60fdd5f08aac756`。实际命令使用已验证实体Python执行 `mod_de_jure_conquest/tools/validate_static.py --release-localization --report C:/workspace/two-mod-maintenance-20261003/de-jure-static-R0004/report.json` 与 `mod_de_jure_conquest/tools/build_release.py --check`；返回码均0。之后七语canonical LF输入字节已变化，本段保留当时identity，不能再作为最终上传包身份。
+
+## 最终canonical LF静态报告永久保存
+
+主执行者提供 `C:/workspace/two-mod-maintenance-20261003/mod_de_jure_conquest-release-static-R0002.json`，现以精确bytes另存为 [release-static-2026-10-03-R0002.json](release-static-2026-10-03-R0002.json)。源文件与仓库副本SHA-256均为 `54cbd92efdb19c4918f5ce28348539ec1618b847ccf6ee12863c0572924d4738`，结果GREEN、16文件、正式九语，`live=NOT_RUN`。旧R0001／R0004等报告未改写。
+
+这里canonical LF指最终运行文件输入；报告JSON本身保留来源CRLF字节，没有重新序列化。只读比较确认当前16个runtime hash全部与该报告一致，未执行新的static／build／live。发布文本与源码一致性复核、完整草稿字符数／行数／SHA及精确文件记录见 [复核说明](release-documentation-review-2026-10-03.md) 与 [机器回执](release-documentation-review-2026-10-03.json)。
 
 两个翻译输入失败由主执行者保留：上游 yml 的仅空白行和EN行尾空格不满足共享 parser。逐行规范化后直接以同一生产 parser 验证15 key，不更改公共parser。该失败属于输入格式，不是CK3产品RED。
 
