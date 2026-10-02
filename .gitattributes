@@ -1,5 +1,9 @@
 * text=auto eol=lf
 
+# Keep Episode03 frozen editorial bytes reproducible across Git checkouts.
+promo/ck3_native_war_ai/episode-03-siege/project/live-source.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-03-siege/project/review-story-episode03.json -text whitespace=cr-at-eol
+
 # Preserve original operator evidence bytes and SHA-256 across Windows/Linux Git checkouts.
 docs/autonomous-agent-progress/coordination/war-requests/evidence/*.json binary
 docs/autonomous-agent-progress/coordination/war-requests/evidence/*.json.raw binary

@@ -1,5 +1,11 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03：战争第 3 期刘易斯围城实机与机制研究
+
+本次用户单独明确要求继续研究并完成战争系列视频；授权只覆盖这项交付，不改变 Robert 主线的非战争运行政策。CK3 **1.20.0.3 / Steam build25652598** 的[威廉刘易斯实机专题](episode03-william-lewes-live-2026-10-03.md)及[精确证据索引](episode03-william-lewes-evidence-index.json)记录自然102日围城、一天相邻读回、器械增援、正常合军、一次强攻开关与4月22日占领结果。
+
+规则研究入口：[普通推进及总工作量](episode03-siege-progress-1.20.0.3.md)、[阶段事件](episode03-siege-events-1.20.0.3.md)、[强攻](episode03-assault-1.20.0.3.md)、[占领与战争分数](episode03-occupation-war-score-1.20.0.3.md)。未知倍率、完整事件抽取调度及战争占领分母继续按未知记录；一天净变化不能扩大为隔离因果。为这次真实流程修复的公开军队ID0、路由和进程回收见[源码与验证边界](episode03-public-unit-zero-recovery-2026-10-03.md)。视频入口为[第3期项目说明](../../promo/ck3_native_war_ai/episode-03-siege/README.md)。这些结果不增加 Robert 保存日、G2 或非战争里程碑信用。
+
 ## 2026-10-02：宗教领域全面开放
 
 项目所有者已明确允许全方位深入研究并实现 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、教士、圣战与大圣战及 holy order。此前宗教暂缓和两项窄例外规则均已撤销，以当前 [AGENTS.md](../../AGENTS.md) 为准。下方按日期保存的旧禁令、失败原因和 artifact 只表示当时事实，不再限制新施工。

@@ -30,6 +30,12 @@ CI 保留 Windows x64 MSVC C++20 的真实 army fixture 编译、执行，以及
 
 较广 gameplay suite 的三项失败已在 before-source 重现：callback 不接受 `prewar_arbitration`、旧 MCP expected tool-set 少 8 个 UI tools、R0118 旧标签与当前 scope 不符。本包不把它们改写为全套 GREEN，也没有删除这些测试。
 
+## 2026-10-03 02:30 最终主线组合源码验证
+
+源包在 `238bbc13d9b6fca9bdc2718e093d52eeafcf5432` 合入当时最新master后，9个受影响的pytest module/class targets在normal与`-O`下各 **87 passed、384 subtests passed、1 skipped**，退出码0；1216个source/test/fixture pins前后完全一致。唯一skip是未显式开启的桌面集成 `test_watchdog_ready_authenticates_the_parent_object`，不冒充PASS；新增CP936完整CSV回放另实际1 PASS。仅适配主线上已有的两项tasklist测试方法，保留损坏PID fixture的 `injector_attestation=None`。证据为 `post-rebase-scoped-tests-a02/verification.json`，SHA `dba983973a72a601258626a1244137534d61bbcbdb51fb8d7c89b5eebcda1e5a`；隔离MSVC army compile/fixture另见 `post-rebase-army-msvc-a01/`。
+
+最终fresh Release/Ninja原生构建完成4个production targets与11个fixture EXE，**12/12 CTest**；实际cache中117个XAR BOOL全OFF，源码/header/CMake前后未变。外置wrapper起初只计main文件115项而拒绝收口，纳入included module的另2项后继续同一已通过configure，原guard失败保留。`native-final-master-a05-result.json` SHA `51a0c7c76eb74609d3f42eb02f91dffd1d04dcff12941f32f93ce80d70abab0d`、报告 `native-final-master-a05-report.md` SHA `f06339842c156443ea25e40cb51d4fd28c15285cf1fab490779eeca520db1c05`。新DLL4522496字节/SHA `ff78e2249d4a44fcf712dfca30655b914bcdec012cc9afdc749e3d18d1dde7e3` 未部署或加载，本段只证明组合源码的离线构建与fixtures；R0156继续绑定原实机DLL及输入。
+
 ## 实机资格与边界
 
 实际 R0156 为 `desktop-3fevhd2-1c74096080--vanilla--R0156`，execution ID `76f24633-87c9-4c12-907f-001cf0b6a9f1`。威廉独立原版案例完成正常围城、增援、合军、强攻启动与停止、城破后的独立读回和正常保存。SDK 源码输入 387 项在 capture 后、stop 后均无变化；211 个模块 origin 已核对；进程树与屏幕排他槽已释放。

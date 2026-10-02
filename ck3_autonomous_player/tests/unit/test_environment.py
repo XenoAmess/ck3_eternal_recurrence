@@ -1154,10 +1154,15 @@ class TrackedShutdownTests(unittest.TestCase):
                 _process_identity(123), {**identity, "command_line": ""}
             )
 
-    def test_tasklist_native_ansi_contract_keeps_unknown_output_fail_closed(self) -> None:
+    def test_tasklist_oem_full_csv_contract_keeps_unknown_output_fail_closed(self) -> None:
         for unknown in (False, True):
-            stdout = TASKLIST_CP936_EMPTY_STDOUT.decode(
-                "utf-8" if unknown else "cp936", errors="replace"
+            # An unfiltered inventory returns CSV even with no CK3 process.
+            # Localized or mojibake status prose never proves an empty inventory.
+            stdout = (
+                TASKLIST_CP936_EMPTY_STDOUT.decode("utf-8", errors="replace")
+                if unknown else
+                '\"System Idle Process\",\"0\",\"服务\",\"0\",\"8 K\"\n'
+                '\"中文程序.exe\",\"456\",\"控制台\",\"1\",\"1,234 K\"\n'
             )
             completed = subprocess.CompletedProcess(["tasklist"], 0, stdout, "")
             with self.subTest(unknown=unknown), mock.patch(
@@ -1176,24 +1181,31 @@ class TrackedShutdownTests(unittest.TestCase):
                     self.assertEqual(inventory["tasklist_pids"], [])
                     self.assertEqual(inventory["native_pids"], [])
                     native.assert_called_once_with()
-                self.assertEqual(run.call_args.kwargs["encoding"], "mbcs")
+                self.assertEqual(run.call_args.args[0], ["tasklist", "/FO", "CSV", "/NH"])
+                self.assertEqual(run.call_args.kwargs["encoding"], "oem")
+                self.assertEqual(run.call_args.kwargs["errors"], "strict")
 
-    @unittest.skipUnless(os.name == "nt", "Windows native ANSI byte replay")
-    def test_tasklist_cp936_bytes_replay_retains_toolhelp_disagreement(self) -> None:
-        expected = TASKLIST_CP936_EMPTY_STDOUT.decode("cp936", "strict")
+    @unittest.skipUnless(os.name == "nt", "Windows OEM CP936 byte replay")
+    def test_tasklist_cp936_full_csv_bytes_replay_retains_toolhelp_disagreement(self) -> None:
+        expected = (
+            '\"System Idle Process\",\"0\",\"服务\",\"0\",\"8 K\"\n'
+            '\"中文程序.exe\",\"456\",\"控制台\",\"1\",\"1,234 K\"\n'
+        )
+        captured = expected.encode("cp936", "strict")
         try:
-            native_text = TASKLIST_CP936_EMPTY_STDOUT.decode("mbcs", "strict")
+            native_text = captured.decode("oem", "strict")
         except UnicodeDecodeError:
-            self.skipTest("This captured fixture requires Windows ACP 936")
+            self.skipTest("This captured full-CSV fixture requires Windows OEM CP936")
         if native_text != expected:
-            self.skipTest("This captured fixture requires Windows ACP 936")
+            self.skipTest("This captured full-CSV fixture requires Windows OEM CP936")
         real_run = subprocess.run
 
         def replay(command, **kwargs):
-            self.assertEqual(command, ["tasklist", "/FI", "IMAGENAME eq ck3.exe", "/FO", "CSV", "/NH"])
-            self.assertEqual(kwargs["encoding"], "mbcs")
-            # Harmless Python byte emitter only; never run tasklist or native inventory.
-            emit = "import sys; sys.stdout.buffer.write(bytes.fromhex(" + repr(TASKLIST_CP936_EMPTY_STDOUT.hex()) + "))"
+            self.assertEqual(command, ["tasklist", "/FO", "CSV", "/NH"])
+            self.assertEqual(kwargs["encoding"], "oem")
+            self.assertEqual(kwargs["errors"], "strict")
+            # Harmless byte emitter only; never run tasklist or native inventory.
+            emit = "import sys; sys.stdout.buffer.write(bytes.fromhex(" + repr(captured.hex()) + "))"
             return real_run([sys.executable, "-X", "utf8=1", "-c", emit], **kwargs)
 
         with mock.patch("xar_autoplayer.environment.subprocess.run", side_effect=replay):

@@ -619,6 +619,11 @@
         "n1432_actual_date_label": "1067-04-22",
         "n1432_still_preoccupation": true,
         "frozen_report_date_label": "Apr21",
+        "append_only_date_erratum": {
+          "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/fall-date-erratum-a01.json",
+          "bytes": 2331,
+          "sha256": "0A7E38BEEF7E1A48FD874D7EBC89BC92986B2839D6AC64A1DCE202270D9E5F00"
+        },
         "note": "Original report bytes retained; local date-label erratum appended to native doc. No atomic refresh claim.",
         "original_png": {
           "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/fall-onset-a01/sample-007.png",
