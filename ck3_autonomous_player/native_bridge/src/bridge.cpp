@@ -12040,6 +12040,188 @@ void RunConnectedSession(
                      xar::bridge::kMaximumControlStringBytes) &&
                  IsSimpleRequestId(request_id)) {
         std::string step;
+        // Keep this terminal chain outside the long dispatcher nesting
+        // so MSVC can compile it without changing command precedence.
+        const auto execute_native_step_tail = [&]() {
+          if (step.starts_with("merge-armies-")) {
+            const auto army_ids = MergeArmiesStep(step);
+            if (!army_ids.has_value()) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "invalid merge-armies-<destination_army_id>-with-"
+                            "<source_army_id> step"));
+            } else {
+              const auto result = xar::game::SubmitMergeArmies(
+                  game, army_ids->destination_army_id,
+                  army_ids->source_army_id);
+              if (result == xar::game::MergeArmiesResult::merge_submitted) {
+                connected = write_frame(
+                    pipe, CommandResultFrame(request_id, step, true,
+                                             "merge_submitted"));
+              } else {
+                std::string_view error =
+                    "CK3 merge-armies state is unavailable";
+                if (result ==
+                    xar::game::MergeArmiesResult::no_played_character) {
+                  error = "no living played CK3 character";
+                } else if (result == xar::game::MergeArmiesResult::
+                                         destination_not_found) {
+                  error = "CK3 destination army was not found";
+                } else if (result ==
+                           xar::game::MergeArmiesResult::source_not_found) {
+                  error = "CK3 source army was not found";
+                } else if (result == xar::game::MergeArmiesResult::
+                                         destination_not_controllable) {
+                  error = "CK3 destination army is not player-controllable";
+                } else if (result == xar::game::MergeArmiesResult::
+                                         source_not_controllable) {
+                  error = "CK3 source army is not player-controllable";
+                } else if (result ==
+                           xar::game::MergeArmiesResult::same_army) {
+                  error = "CK3 merge-armies IDs must be distinct";
+                } else if (result == xar::game::MergeArmiesResult::
+                                         validator_rejected) {
+                  error = "CK3 rejected merge-armies validation";
+                } else if (result == xar::game::MergeArmiesResult::
+                                         submission_failed) {
+                  error = "CK3 rejected merge-armies queue submission";
+                }
+                connected = write_frame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              }
+            }
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision, checkpoint_submission,
+                                          published_checkpoint_sequence);
+            }
+          } else if (step.starts_with("start-assault-")) {
+            const auto siege_id = AssaultStep(step, "start-assault-");
+            if (!siege_id.has_value()) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "invalid start-assault-<siege_id> step"));
+            } else {
+              const auto result =
+                  xar::game::SubmitStartAssault(game, siege_id.value());
+              if (result == xar::game::StartAssaultResult::start_submitted) {
+                connected = write_frame(
+                    pipe, CommandResultFrame(request_id, step, true,
+                                             "start_submitted"));
+              } else {
+                std::string_view error =
+                    "CK3 start-assault state is unavailable";
+                if (result == xar::game::StartAssaultResult::
+                                  no_played_character) {
+                  error = "no living played CK3 character";
+                } else if (result ==
+                           xar::game::StartAssaultResult::siege_not_found) {
+                  error = "CK3 siege was not found";
+                } else if (result == xar::game::StartAssaultResult::
+                                         assault_already_active) {
+                  error = "CK3 assault is already active";
+                } else if (result == xar::game::StartAssaultResult::
+                                         validator_rejected) {
+                  error = "CK3 rejected start-assault validation";
+                } else if (result == xar::game::StartAssaultResult::
+                                         submission_failed) {
+                  error = "CK3 rejected start-assault queue submission";
+                }
+                connected = write_frame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              }
+            }
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision, checkpoint_submission,
+                                          published_checkpoint_sequence);
+            }
+          } else if (step.starts_with("stop-assault-")) {
+            const auto siege_id = AssaultStep(step, "stop-assault-");
+            if (!siege_id.has_value()) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "invalid stop-assault-<siege_id> step"));
+            } else {
+              const auto result =
+                  xar::game::SubmitStopAssault(game, siege_id.value());
+              if (result == xar::game::StopAssaultResult::stop_submitted) {
+                connected = write_frame(
+                    pipe, CommandResultFrame(request_id, step, true,
+                                             "stop_submitted"));
+              } else {
+                std::string_view error =
+                    "CK3 stop-assault state is unavailable";
+                if (result == xar::game::StopAssaultResult::
+                                  no_played_character) {
+                  error = "no living played CK3 character";
+                } else if (result ==
+                           xar::game::StopAssaultResult::siege_not_found) {
+                  error = "CK3 siege was not found";
+                } else if (result == xar::game::StopAssaultResult::
+                                         assault_not_active) {
+                  error = "CK3 assault is not active";
+                } else if (result == xar::game::StopAssaultResult::
+                                         validator_rejected) {
+                  error = "CK3 rejected stop-assault validation";
+                } else if (result == xar::game::StopAssaultResult::
+                                         submission_failed) {
+                  error = "CK3 rejected stop-assault queue submission";
+                }
+                connected = write_frame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              }
+            }
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision, checkpoint_submission,
+                                          published_checkpoint_sequence);
+            }
+          } else if (const auto option_index = EventOptionStep(step);
+                     option_index.has_value()) {
+            const auto result = xar::game::SubmitSelectEventOption(
+                game, option_index.value());
+            if (result == xar::game::SelectEventOptionResult::submitted) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(request_id, step, true, "submitted"));
+            } else {
+              std::string_view error = "CK3 event state is unavailable";
+              if (result ==
+                  xar::game::SelectEventOptionResult::no_active_event) {
+                error = "no active CK3 event";
+              } else if (result == xar::game::SelectEventOptionResult::
+                                       option_out_of_range) {
+                error = "event option index is out of range";
+              }
+              connected = write_frame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+            if (connected) {
+              connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                          state_revision, checkpoint_submission,
+                                          published_checkpoint_sequence);
+            }
+          } else {
+            const std::int32_t requested_speed = FixedSpeedStep(step);
+            if (requested_speed >= 1 &&
+                xar::game::SubmitSetSpeed(game, requested_speed)) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(request_id, step, true, "submitted"));
+              if (connected) {
+                connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                            state_revision, checkpoint_submission,
+                                            published_checkpoint_sequence);
+              }
+            } else {
+              connected = write_frame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "unsupported native gameplay step"));
+            }
+          }
+        };
         if (!xar::bridge::JsonStringField(
                 incoming.payload, "step", step,
                 xar::ck3_11906::kTacticalDailySentinelMaximumArmStepBytesV1)) {
@@ -24018,183 +24200,8 @@ void RunConnectedSession(
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
           }
-        } else if (step.starts_with("merge-armies-")) {
-          const auto army_ids = MergeArmiesStep(step);
-          if (!army_ids.has_value()) {
-            connected = write_frame(
-                pipe, CommandResultFrame(
-                          request_id, step, false,
-                          "invalid merge-armies-<destination_army_id>-with-"
-                          "<source_army_id> step"));
-          } else {
-            const auto result = xar::game::SubmitMergeArmies(
-                game, army_ids->destination_army_id,
-                army_ids->source_army_id);
-            if (result == xar::game::MergeArmiesResult::merge_submitted) {
-              connected = write_frame(
-                  pipe, CommandResultFrame(request_id, step, true,
-                                           "merge_submitted"));
-            } else {
-              std::string_view error =
-                  "CK3 merge-armies state is unavailable";
-              if (result ==
-                  xar::game::MergeArmiesResult::no_played_character) {
-                error = "no living played CK3 character";
-              } else if (result == xar::game::MergeArmiesResult::
-                                       destination_not_found) {
-                error = "CK3 destination army was not found";
-              } else if (result ==
-                         xar::game::MergeArmiesResult::source_not_found) {
-                error = "CK3 source army was not found";
-              } else if (result == xar::game::MergeArmiesResult::
-                                       destination_not_controllable) {
-                error = "CK3 destination army is not player-controllable";
-              } else if (result == xar::game::MergeArmiesResult::
-                                       source_not_controllable) {
-                error = "CK3 source army is not player-controllable";
-              } else if (result ==
-                         xar::game::MergeArmiesResult::same_army) {
-                error = "CK3 merge-armies IDs must be distinct";
-              } else if (result == xar::game::MergeArmiesResult::
-                                       validator_rejected) {
-                error = "CK3 rejected merge-armies validation";
-              } else if (result == xar::game::MergeArmiesResult::
-                                       submission_failed) {
-                error = "CK3 rejected merge-armies queue submission";
-              }
-              connected = write_frame(
-                  pipe, CommandResultFrame(request_id, step, false, error));
-            }
-          }
-          if (connected) {
-            connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                        state_revision, checkpoint_submission,
-                                        published_checkpoint_sequence);
-          }
-        } else if (step.starts_with("start-assault-")) {
-          const auto siege_id = AssaultStep(step, "start-assault-");
-          if (!siege_id.has_value()) {
-            connected = write_frame(
-                pipe, CommandResultFrame(
-                          request_id, step, false,
-                          "invalid start-assault-<siege_id> step"));
-          } else {
-            const auto result =
-                xar::game::SubmitStartAssault(game, siege_id.value());
-            if (result == xar::game::StartAssaultResult::start_submitted) {
-              connected = write_frame(
-                  pipe, CommandResultFrame(request_id, step, true,
-                                           "start_submitted"));
-            } else {
-              std::string_view error =
-                  "CK3 start-assault state is unavailable";
-              if (result == xar::game::StartAssaultResult::
-                                no_played_character) {
-                error = "no living played CK3 character";
-              } else if (result ==
-                         xar::game::StartAssaultResult::siege_not_found) {
-                error = "CK3 siege was not found";
-              } else if (result == xar::game::StartAssaultResult::
-                                       assault_already_active) {
-                error = "CK3 assault is already active";
-              } else if (result == xar::game::StartAssaultResult::
-                                       validator_rejected) {
-                error = "CK3 rejected start-assault validation";
-              } else if (result == xar::game::StartAssaultResult::
-                                       submission_failed) {
-                error = "CK3 rejected start-assault queue submission";
-              }
-              connected = write_frame(
-                  pipe, CommandResultFrame(request_id, step, false, error));
-            }
-          }
-          if (connected) {
-            connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                        state_revision, checkpoint_submission,
-                                        published_checkpoint_sequence);
-          }
-        } else if (step.starts_with("stop-assault-")) {
-          const auto siege_id = AssaultStep(step, "stop-assault-");
-          if (!siege_id.has_value()) {
-            connected = write_frame(
-                pipe, CommandResultFrame(
-                          request_id, step, false,
-                          "invalid stop-assault-<siege_id> step"));
-          } else {
-            const auto result =
-                xar::game::SubmitStopAssault(game, siege_id.value());
-            if (result == xar::game::StopAssaultResult::stop_submitted) {
-              connected = write_frame(
-                  pipe, CommandResultFrame(request_id, step, true,
-                                           "stop_submitted"));
-            } else {
-              std::string_view error =
-                  "CK3 stop-assault state is unavailable";
-              if (result == xar::game::StopAssaultResult::
-                                no_played_character) {
-                error = "no living played CK3 character";
-              } else if (result ==
-                         xar::game::StopAssaultResult::siege_not_found) {
-                error = "CK3 siege was not found";
-              } else if (result == xar::game::StopAssaultResult::
-                                       assault_not_active) {
-                error = "CK3 assault is not active";
-              } else if (result == xar::game::StopAssaultResult::
-                                       validator_rejected) {
-                error = "CK3 rejected stop-assault validation";
-              } else if (result == xar::game::StopAssaultResult::
-                                       submission_failed) {
-                error = "CK3 rejected stop-assault queue submission";
-              }
-              connected = write_frame(
-                  pipe, CommandResultFrame(request_id, step, false, error));
-            }
-          }
-          if (connected) {
-            connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                        state_revision, checkpoint_submission,
-                                        published_checkpoint_sequence);
-          }
-        } else if (const auto option_index = EventOptionStep(step);
-                   option_index.has_value()) {
-          const auto result = xar::game::SubmitSelectEventOption(
-              game, option_index.value());
-          if (result == xar::game::SelectEventOptionResult::submitted) {
-            connected = write_frame(
-                pipe, CommandResultFrame(request_id, step, true, "submitted"));
-          } else {
-            std::string_view error = "CK3 event state is unavailable";
-            if (result ==
-                xar::game::SelectEventOptionResult::no_active_event) {
-              error = "no active CK3 event";
-            } else if (result == xar::game::SelectEventOptionResult::
-                                     option_out_of_range) {
-              error = "event option index is out of range";
-            }
-            connected = write_frame(
-                pipe, CommandResultFrame(request_id, step, false, error));
-          }
-          if (connected) {
-            connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                        state_revision, checkpoint_submission,
-                                        published_checkpoint_sequence);
-          }
         } else {
-          const std::int32_t requested_speed = FixedSpeedStep(step);
-          if (requested_speed >= 1 &&
-              xar::game::SubmitSetSpeed(game, requested_speed)) {
-            connected = write_frame(
-                pipe, CommandResultFrame(request_id, step, true, "submitted"));
-            if (connected) {
-              connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision, checkpoint_submission,
-                                          published_checkpoint_sequence);
-            }
-          } else {
-            connected = write_frame(
-                pipe, CommandResultFrame(request_id, step, false,
-                                         "unsupported native gameplay step"));
-          }
+          execute_native_step_tail();
         }
         }
       }
