@@ -11,7 +11,7 @@
 
 执行身份与现有资源：
 - canonical delivery worktree：Z:/ck3_mod_rewrite/.task-tmp/g2dlv。原 root dirty workspace 保留，不 reset/stash/clean/force。
-- Python：Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe。PowerShell 不可用时用 cmd.exe/login:false。命令结构化传参，避免复杂 shell 拼接。
+- Python：Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe。使用 Python 与 cmd.exe（login:false）。命令结构化传参，避免复杂 shell 拼接。
 - HERE：Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003。
 - 当前 v19 source/native：716acfecc6c487e2b48942c6a6030c8b7012e5d5；runtime HERE/production-source-716acfec。
 - 下一Python候选已发布：41291bf2315f11b6748affce318e1e456a6f8918；runtime HERE/production-source-41291bf2，freeze HERE/robert-planning-root-reuse-source-freeze.json，static-ready/未正式attach/未live。ROOT已生成HERE/MCP-ROBERT-PLANNING-REUSE-41291bf2-PLAN.json，file-only/live_executed=false。当前live MCP依然716；native/environment继续716，不能将412误记为当前DLL来源。
