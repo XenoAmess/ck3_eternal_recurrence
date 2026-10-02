@@ -174,6 +174,7 @@ on_member_character_joined = {
 | manager core 在同一 option 中先调用案卷内核写 `zg361_case_kernel_applied`，随后裸读该变量；hover 时出现 fetch / unset-scope / invalid-comparison 三联错误 | tooltip 预演不会保证前序 `record_operation` 对 scratch 的写入已提交。R295 在真实 `zg361pp.170` option 构建期间复现 9 条，三条路线各触发一次完整三联错误；实际点击尚未发生 | core 对 `zg361_case_kernel_applied` 的读取也必须置于 `trigger_if` 的 `has_variable` 惰性门内，缺失时以 `trigger_else = { always = no }` 返回 false。不能因为写入 helper 位于同一个 core、逻辑顺序更近，就把它视为 tooltip 提交边界。生成器已覆盖 146–191 的全部 46 个 core；在 fresh product 将 R295 签名归零前只算 `static-ready` |
 | `Could not find data system function 'Var' in 'ROOT.Var(...)'`，或 `Could not find promote for 'MakeScope'` / `Failed converting statement`，随后 `Data error in loc string` | 这是两种不同错误：R110 的 `zg361_p2c_summary_desc` 使用裸 `[ROOT.Var('x')|0]`，缺少 value scope 的 `.GetValue`；`807f08d` 又误把它改成 `[ROOT.MakeScope.Var('x').GetValue|0]`。R115 实机证明 character event 的 `ROOT` 本身已经是 scope 数据对象、没有 `MakeScope` promotion，四个字段再次全部 RED。冻结 R115 产品中同类错误扩展为 657 处、29 keys、54 个九语言文件；CK3 1.19.0.6 原版本地化反证为 `ROOT.Var(...).GetValue` 648 处而裸 `ROOT.MakeScope.Var(...).GetValue` 为 0 | character event ROOT 上的数值变量统一写成 `[ROOT.Var('x').GetValue|0]`：保留 `.GetValue`，禁止插入 `.MakeScope`。只有表达式明确从 Character 数据对象开始时才使用 `ROOT.Char.MakeScope.Var(...)`；不要把它套到普通 event ROOT。生成器回归必须同时拒绝裸 `[ROOT.Var('x')|0]` 与 `ROOT.MakeScope.Var(...).GetValue`。R115 是产品 RED；全族修复须经 fresh R116 exact-tree 实机归零后才算 live 闭合 |
 | 事件正文中的 `[scope:<name>.GetShortUIName]` 依次报 `Failed to find type`、`Could not find promote`、`Failed converting` 与 `Data error in loc string` | `scope:<name>` 是游戏脚本中的命名 scope 写法，不能原样放进 localization 数据表达式。R116 resume1 在 22 个 Career D–Q 事件上产生 154 条错误；冻结产品同签名实际有 2,601 处，分布在 8 个九语言文件族。CK3 1.19.0.6 原版本地化中 `[scope:...]` 为 0，而事件 `save_scope_as = host` 对应正文使用 `[host.GetShortUIName]` | event localization 直接用保存名作为数据对象：`[<name>.GetShortUIName]`，不要加脚本前缀 `scope:`，也不要臆造 `.Char`。实机命中一项后必须按生成器所有权扫描和修复全部同签名产物；本项目 `validate_local.py` 对 `scope:*.GetShortUIName` 做全九语言硬门禁。产品修复须 fresh exact-tree 验收，不能用旧进程复验 |
+| 家族名称求值报 `Failed to find type 'location'`、`Could not find promote`、`Failed converting`，外层又报 `$HOUSE$` / `$TITLE$` 的 `Data error in loc string` | 动态名称可能缺少调用端保存的 Province 数据上下文；外层格式化器不是唯一生产者证据。原版支系命名先在创建者 Character 上保存 `new_house_head` 与 `location`，再创建并命名家族 | 核对实际名称 key、生产者及调用链；沿用原版 `save_best_location_for_house_name_effect` 的 domicile → capital province → default location 顺序，并在命名前调用。裸 `[location.GetBaronyNameExplicitlyNoTooltip]` 是原版数据表达式，不应替换成脚本 `scope:` 或臆造 `.Char`。见下方 1.20.0.3 出处；不推定所有同类错误同因或旧坏名称自动修复 |
 | `Left side and right side during comparison were of different types (left was 'character', right was 'landed_title')`，位置在 `var:<title> = { holder = this }` | 进入 title variable block 后 `THIS` 已是 landed title；`holder` 左侧返回 character，拿它与当前 title 比较必然类型不一致。R110 在 `zg361_career_hc_claim_cl_transfer_vacancy_effect` 实机出现 1 条 | 在 title block 内用 `holder = prev` 回指外层待校验 character，或先冻结该角色再显式比较；四个同形 vacancy guard 已统一修正并加回归，仍须 R111 将该 1 条归零后升级 live |
 | `add_opinion effect [ target character is dead during effect execution ]`，目标来自先前冻结的 owner variable | 冻结 receipt 时 owner 存活，不代表跨日/排队 consumer 执行时仍存活；weak character reference 仍足以通过身份收据比较，却不是合法的 `add_opinion` 目标。R110 共 20 条：`zg361_cl_m317_consume_effect` 10 条、`zg361_cl_m329_consume_effect` 10 条 | 只把关系写入包在 `has_variable = <owner>` 且 `var:<owner> = { is_alive = yes }` 的 guard 内；目标死亡时跳过 opinion，但 receipt 的消费、幂等封存和结案必须继续，不能把整个 consumer 塞进存活 guard。全关系型 consumer 已补静态回归，待 R111 将 20 条旧签名归零后才算 live |
 | `add_opinion effect [ <character> is trying to add an opinion of themself ]`，目标来自已保存且仍存活的 superior variable | `exists = liege`、`has_variable` 与 `is_alive = yes` 都不能证明上司和当前角色不是同一个对象；天朝制顶层角色的 `liege` 查询可把本人保存为 mandate superior。2026-09-07 R163 在 `zg361.41 -> zg361_refuse_jingcha_effect` 实机复现，精确位置为 `zg361_jingcha_mandate_effects.txt:175` | 在切入保存的 superior scope 前同时验证非自指：`var:<superior> = { is_alive = yes NOT = { this = prev } }`；显式拒办等不要求存活检查的路径也至少用 `var:<superior> = { NOT = { this = prev } }`。自指时必须走“独立顶层角色”分支，只结算该分支的资源代价并清理 mandate，不写 opinion、manager owner 或 KPI receipt。静态修复仍须由 fresh exact-tree CK3 将该签名归零后才能升为 live GREEN |
@@ -184,6 +185,33 @@ on_member_character_joined = {
 | 参数化 scripted effect 想校验 `$AMOUNT$ > 0`，展开后可能变成无效的 `10 > 0` | `$PARAM$` 是文本替换；比较式左侧应是可求值的 script value/scope value，不能假定调用方传入的数字字面量可直接充当左值 | 先在 scripted trigger 中 `save_temporary_scope_value_as = { name = amount value = $AMOUNT$ }`，再写 `scope:amount > 0`；动态变量名可用原版已采用的 `has_variable = $VARIABLE$`、`var:$VARIABLE$`、`name = $VARIABLE$`。原版源码证据：CK3 1.19.0.6 `00_military_triggers.txt` 的 ratio 临时值与 `00_achievement_effects.txt` 的变量名参数；本项目共享案卷内核已做 L0 source contract，尚待 CK3 加载期互证 |
 | GUI 明明在 `MakeScope.Var(...)` 读镜像表头，加载仍报 `Variable '<name>' is set but is never used` | CK3 的游戏脚本变量用途分析不把 GUI/本地化读取算作脚本消费 | 变量确实只用于 UI 时，仍在实际可达的 effect/trigger 中做有意义的一次校验或组合；无用遥测则直接删掉。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |
 | `Wrong scope for effect: character, expected dynasty` | 迭代器 scope 不对 | `every_dynasty_member` 需在 dynasty scope：角色下先 `dynasty = {}` |
+
+### 动态家族名称的地点准备合同（2026-10-02）
+
+CK3 1.20.0.3 / build 25652598 的原版 `game/common/scripted_effects/00_decisions_effects.txt`
+2878–2890 定义 `save_best_location_for_house_name_effect`：从当前创建者 Character 依次取
+`domicile.domicile_location`、`capital_province`，最后 `default_location`，并用 `save_scope_as = location`
+保存 Province。`create_cadet_house_with_name_effect` 2903–2904 先保存 `new_house_head` 并调用它，
+2933–2935 才执行 `create_cadet_branch` 的 `cadet_name_style_barony_dynasty` 命名。
+另一入口 `game/common/on_action/dynasty_on_actions.txt` 的 `on_dynasty_created.effect` 4–20
+先从 Dynasty 切入 `dynast` Character、保存 `new_house` / `new_house_head`，再准备地点并设置名称。
+调用者须保持自己的创建者身份；不能因外层格式化器报错就换用任意持有人或标题。
+
+该 key 的简中出处为 `game/localization/simp_chinese/dynasties/dynasty_names_l_simp_chinese.yml:12194`，
+英文为 `game/localization/english/dynasties/dynasty_names_l_english.yml:12296`；两者均直接读取
+`location.GetBaronyNameExplicitlyNoTooltip` 和 `new_house_head.GetHouse.GetDynasty.GetNameNoTooltip`。
+静态审阅只能闭合原版生产/消费合同；缺失 caller 的日志不能唯一归因到某个入口。
+新创建支系的名称/UI、无地产创建者的真实 fallback 与存档中的既存名称修复均为 **engine NOT_RUN**，
+不能把保存 `location` 的新增代码或没有旧错误当作这些业务通过。
+
+本次逐文件读回绑定的完整原版 SHA-256 如下；没有将原版或第三方完整源码、资产、日志、存档复制入主仓。
+
+| 原版相对 `game/` 的路径 | SHA-256 |
+| --- | --- |
+| `common/scripted_effects/00_decisions_effects.txt` | `a30e06ea5c3c3c0cc24e8be823600f12a5f5cb0caf3fa52c3ca98648b0f8f2d5` |
+| `common/on_action/dynasty_on_actions.txt` | `c43c24e64049fc0661a094c09ffcc07f10cf9d6d7c186564a9b64ad361b81b53` |
+| `localization/simp_chinese/dynasties/dynasty_names_l_simp_chinese.yml` | `91a5f1d12cd263baa3070db17e7a6412c101f1840d38380945ad0f90ed3299a7` |
+| `localization/english/dynasties/dynasty_names_l_english.yml` | `4d5b2396a78e5ed219bdbaaf22dd757ac6f11f0c231efb8a4fdfac20e9b58162` |
 
 ### R184：同卡前序写入不能作为 tooltip 的变量前置条件（2026-09-07）
 
