@@ -1,5 +1,39 @@
 # CK3 自动游玩智能体进度中心
 
+## 20:07 Robert原局冷恢复后正式续行闭包：3157天，整体门数不变
+
+2026-10-02 20:07:09 Asia/Shanghai真实当前状态：17:27用户已授权Robert原ordinary campaign恢复实机，Steam离线、最小化且不抢前台；原用户手玩禁令留作dated history。G2 **4/8=50%**、NW **1/4=25%**不变。本轮冷前1日＋新PID冷后正式3日已正常保存，Robert **3157/36524**（约8.6%历史天数），raw53220096、h4065/full4065；typed goal progress0/successions0分列，不新增政府矩阵或自然继承信用。
+
+Python/runtime c0f53e9b、native仍D4/v16 DLL83a811…；新GAME101084冷恢复原goal/五ledger pins、实际正式plan使用goal与feudal/core_landed44后life-advance→正常保存窄loop闭合。CA1原207prestige实际扣款及Steward32716/11→43706/14保留CollectTaxes，已具原next＋次日fresh＋新PIDcold，分别记有限production-live loop，不替整体M4/M6/M7完成。Sway原134217986/gen8冷同实例/三ring已挂载，原following消费next=true/raw53220048；此前1/353与opinion−10来自旧PID同日读，冷包未采这两值，仍无关系收益/终态。首继承人双方14/14未成年，Guy原pending不由四日推断结果；Feast未Start、war reserve hold保留，新finance/county源码CI成功但native C1061 RED修复中，无新getter live。
+
+最新真实pair：save80,076,282B/SHA `8f3517957d7697a2cbf780f3caedae3ae951a12a52a414378e5738e8ceb186aa`；driver49,131,360B/SHA `1db0dd4a2eefa90f542cdc7cd5bb84bab493d63daff89ff7dcbd925b9ac1f187`。冷恢复succession_expectation已清为null，旧prediction是历史；下一fresh frame重新观察，禁止声称逐字节恢复。详见[冷后3日正式续行结果](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/actual-cold-following-family-sway-01/result.json)及[当前维护专题](../g2-maintainer-resume-1.20.0.3-2026-10-02.md)。本段是真实晚间补录，source/API/合同分母不变，root负责后续Git发布，不预填commit。
+
+## 19:36 Robert本局法律、换任和Sway材料成立，时间及next/cold仍待
+
+2026-10-02 19:36:30 Asia/Shanghai阶段更新：Robert唯一入口与17:27用户释放保持。raw53220000/新增日0，G2仍4/8=50%、NW1/4=25%、Robert3153/36524，typedgoal0另列。CA1已独立enacted扣207prestige、其他4资源及14title继承集合保持；Steward原32716 skill11→43706 skill14及CollectTaxes独立APPLIED，同action无重发；Sway134217986/gen8已启动0/353/55%，三rings attached/seq0/empty，opinion−10/专属modifiersabsent。均production-live primitive，CA1/Councilnext/cold、Sway收益/终态尚待，不升级整体完成。
+
+派系188实际county-only populist/leadernull/charmembers[]/2111与2115，不能把Sway34333当派系处理。Family原first婚约cold材料有效，Guy13岁原pending age3、.3cutoff7，不重提议。FeastStage5/guest37265/fee100合法，但warreserve缺观测hold，未Start/扣款。Public finite SDK snapshot stdio实际GREEN/54,567B/history4041 omitted，仅snapshotprimitive，原90秒timeout留档；正常following hardcodedH3 early-deny RED与最小scopefix staticGREEN保持，实际日期推进/新PIDcold仍待ROOT。详见[当前实机ledger](../g2-maintainer-resume-1.20.0.3-2026-10-02.md)，root唯一Game/SDK/Git，owner文件并行，不抢Steam或用户前台。
+
+## 18:41 Robert原campaign实际恢复：v16暂停帧与16项读取GREEN
+
+2026-10-02 18:41:12 Asia/Shanghai当前实机增量：17:27用户释放/Steam离线和Robert唯一原campaign入口保持，旧offline禁令为历史。真正成功为v16 d4/PID109676，v17首direct600秒semantic未ready的RED保留、不升级v17live。原Robert29829/episode2bc2…在raw53220000 alive/paused/map_ready，原goal0successions保持；首gov query RED后同PID注册MCP available feudal/core_landed/44features，无patch。[16registered reads全GREEN](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/actual-v16-multidomain-01/capture-01/result.json)，0新日/动作/继承，checkpoint_requested=false，newPIDcold/正式next尚待。
+
+当前root收入3.73295/domain5/6/六Council occupied；main38822，5头衔→38822、2173→Guy38988。law数组数字Normalize不代表native priority，CA1合法207prestige不消除分割。Council32716skill11→43706skill14/gain3为合法REPLACE_REQUIRED机会，尚无ACK/receipt；Develop13/13valid、5own/capital2142-province2619 growth1.35/progress59.45。Law action正准备、prisoner0；Feast仅planner_opened/stage1推进中，HostedPost本批[]，未Start/费用/terminal。war1/army1使普通建设hold；Family/Sway专用新材料待existing readers，不借旧归档/其他seed。G2 4/8=50%、NW1/4=25%、Robert3153/36524与typedgoal0保持；ROOT负责实机/Git，owner文件并行，最小化/禁止Steamfocus不变。详细结果见[本轮resume](../g2-maintainer-resume-1.20.0.3-2026-10-02.md)。
+
+[现行授权与测试入口](../testing-workflow.md)。
+
+## 17:32 17:27用户明确恢复Robert唯一存档线实机
+
+实际补录时间2026-10-02 17:32:37（Asia/Shanghai）。用户于2026-10-02 17:27 CST明确释放CK3供agent恢复实机，并确认Steam已离线。此前14:55及15:41手玩期间“仅offline、等待用户明确恢复”的条件现已满足；这些段落保留为当时历史，不再作为当前禁止Robert实机的安排。
+
+**当前恢复的唯一实机入口仍是Robert原ordinary campaign最新真实save/driver配对**，同campaign自然继承继续沿用。没有授权另开Murchad、Clan、Tribal、rogue独立seed或CK3新开局fixture。root负责本机实机、SDK/pipe、managed进程与实际checkpoint；后台owner继续文件施工和已有closed材料判读，不各自连接游戏或操作窗口/state。
+
+Steam离线确认直接复用用户本次说明，不为截图切Steam窗口。CK3保持最小化、不抢用户前台；不得恢复桌面点击/SetForegroundWindow路线。先从Robert原归档恢复，fresh paused读取原未完成提议回执/家族盟约、当前同帧Council候选任务、建设材料及Sway/封臣，沿原策略合法操作、独立验证、正式next与正常保存；历史动作不重发。
+
+当前v17源 `2929bf666cf6d8ea5dddd5f398a76ab157a55417`、DLL `ac5f188d0a63e0633eb20ac70adc29a6f15ed2d7df729698429e606e9765e23c`的adopted构建仍按已闭合static-ready基线记录，用户恢复授权本身不算新paused/live能力结果。此条尚未产生新actual：G2仍4/8、NW仍1/4、Robert历史3153/36524及typed goal progress0保持，不预填新日数/动作/材料或government资格。后续结果按实际时间与独立receipt续写，不将旧archive/sourceCI作为当前帧实证；本次只有文档授权切换与一次纯文档检查，无G2/ABI/fixture/CI重跑。
+
+[现行测试入口与恢复说明](../testing-workflow.md)。
+
 ## 14:55 罗贝尔作为当前唯一测试入口；手玩期间仅离线工作
 
 2026-10-02 14:55:31 Asia/Shanghai真实补录。用户明确要求“使用罗贝尔作为当前唯一测试入口”：后续本机实机从Robert原ordinary campaign最新真实save/driver配对续跑，同campaign自然继承沿用；不另开Murchad/Clan/Tribal/rogue独立seed或CK3新开局fixture，旧artifact保留为历史证据，不算本轮新资格。

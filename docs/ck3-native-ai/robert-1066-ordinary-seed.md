@@ -139,3 +139,211 @@ succession, or broad M7 qualification. Existing episode hold findings describe
 legacy implementation, not a new release protocol or permanent user ban.
 No new gameplay/material/day/qualification credit is assigned by this
 checklist; M7 remains `in_progress`.
+
+## Resumed v17 Robert cold startup diagnostic, 2026-10-02
+
+The user released CK3 and confirmed Steam offline at 17:27 CST. This ends
+the manual-play-only interval described above. Root resumed the same ordinary
+Robert entry using the official packet and minimized GAME PID81664; no
+historical marriage, ransom, law, construction or scheme action was replayed.
+The session startup witness retains the actual e4d4eaad checkpoint at h4029.
+The game log reached InGame/history completion at 09:37:55 UTC, but the first
+direct helper exhausted its 600-second readiness wait and closed normally RED.
+
+The root's existing-driver diagnostics at 09:51:23 UTC establish a connected
+hello for PID81664, exact .3 EXE SHA/build match and adapter `ready`, with
+`semantic_state_available=false`, no heartbeat, zero rejected state snapshots,
+zero publish diagnostics and no transport error. This attempt therefore does
+not establish a fresh Robert goal, government, map or saved-day frame. The
+existing cold startup already supplies `-loadsave=xar_checkpoint`; no missing
+restore queue or preliminary SDK snapshot call was found.
+
+The bounded source comparison found identical ASTs for the v16/v17 minimized
+window readers, minimizer, initial process ShowWindow settings and continuous
+minimized enforcement. The prior actual minimized Murchad v16 context,
+checkpoint and two-day loop are a counterexample to a general claim that
+minimization suppresses all state publication; none of its gameplay credit is
+imported into Robert. The existing foreground helper restores, raises and
+acquires focus, while the managed supervisor reapplies minimization every
+0.5 seconds. Neither is an existing no-focus recovery command. The remaining
+concrete dependency is the native owner's current hello-to-heartbeat/state
+publisher analysis; this note does not assign a root cause or add an action.
+
+Retained inputs are `m7-robert/actual-v17-mainline-01/06-managed-first-session/stdout.log`,
+`m7-robert/actual-v17-paused-intent-01/first-paused-01/result.json` and
+`m7-robert/actual-v17-multidomain-readonly-01/diagnostics-01/result.json` under
+the same evidence root. The bounded comparison is
+`m7-robert/actual-v17-paused-intent-01/BOOT-CONTROL-COMPARISON-01.json`, SHA-256
+`37cc5547e45a7324c15f7d84bee8ab00e9f18a251d6b20efad09fef66896a80a`.
+Robert's historical3153/36524 days and archived typed-goal progress0 remain
+separate unchanged counts; this failed startup adds0 days,0 actions and0 M7
+qualification credit.
+
+## Actual v16 fallback frame and government recovery, 2026-10-02
+
+Root prepared a separate v16 state from the same retained full4031/saveh4029
+pair and the adopted `d4f377d9` runtime. Minimized GAME PID109676 reached a
+living paused Robert map at raw53220000. The accepted frame restores actor29829,
+episode `native-29829-2bc2d599f7f9`, ordinary succession/xar_off and the original
+`dynasty_continuity` goal with progress0. Identity adoption is complete; the
+observed frame has no active event or pending character interaction. A bounded
+read of the three current ledger files confirms their original retained SHA-256
+values; no historical action was replayed.
+
+The retained first direct attempt reached this frame, then returned RED at
+`government-runtime-query` after3.931 seconds with
+`government runtime adapter command_result unavailable`. The transport folds
+missing, mismatched or unsuccessful command results into that error; it does
+not retain the initial raw cause. Both the previously successful v4 and this
+v16 native metadata have the government query flag ON, and the first direct
+driver permit was enabled. The evidence does not establish a missing flag,
+timeout or ABI cause.
+
+Root subsequently queried the existing government interface through its
+registered MCP wrapper on the same PID. The actual002 packet and native wire
+establish `available`, `feudal_government`, `core_landed`, `core_supported`,
+44 effective features, `requirements_met=true`, `same_frame_ready=true` and
+`core_adapter_ready=true`. Player and date remain29829/raw53220000; queried and
+post native snapshot IDs are both `native:3`. This is actual government
+observation, not an inferred family from source or another seed. The first
+RED remains preserved, and another government query is unnecessary.
+
+The same managed process can now supply the normal formal plan. The external
+baseline-only recipe offers normal checkpoint plus a new minimized GAME PID
+goal/save/ledger comparison; it deliberately skips government and next-plan
+comparison, so those results cannot be credited from that narrower scope.
+At this recording, new checkpoint, new-PID baseline cold and normal next-plan
+results are still pending. Historical3153/36524 days, goal progress0 and M7
+`in_progress` remain unchanged; this observation adds0 days and0 actions.
+
+The first failure and accepted047/048/049 files remain under
+`m7-robert/robert-mainline-v16-fallback-review-01/paused-intent-01/first-paused-01/`.
+The same-PID002 packet and `native-wire.jsonl` are under
+`m7-robert/actual-v16-multidomain-01/capture-01/`.
+The bounded summary and actual three-ledger pins are
+`m7-robert/robert-mainline-v16-fallback-review-01/paused-intent-02/ACTUAL-FIRST-FRAME-AND-GOVERNMENT-01.json`,
+SHA-256 `3ce2e5e148803d4df0cc7946d4b282f5445c622cf78afabfc71909d8e1bf788b`.
+
+## Current saved continuation and cold plan, 2026-10-02
+
+The actual normal nonwar turn now executed `life-advance` for one natural day,
+raw53220000→53220024, and returned paused with a material checkpoint. At that
+turn's close, save/full history are h4052/full4052, save79,579,117 bytes/SHA-256
+`1610b9b4c00d258566fb51744b604240362e50ea38b31c9171dae02fbfd7c167`;
+the retained driver is48,960,585 bytes/SHA-256
+`767cb6e202148b021c789a0e55e21cb0b9b79c68ed722db83e04382e4080cdf4`.
+This adds1 saved Robert day to the historical3153, giving3154/36524. The last
+observed typed-goal progress remains the separate pre-advance value0;
+post-day goal observation is pending at this recording. This is one actual
+turn and saved day, not a century loop or natural-succession completion.
+
+Python source is now `c0f53e9bdce2990f4ad23fdf05126e7af3051c47`, officially
+attached to the existing native v16 process. Native DLL/source remain
+`83a811d717b836f589f76c91fc03f205235aac70bb72c50842258d701468a6ff` /
+`d4f377d97b7a4f97ac85151610adbc4d4df818f8`; the original prepared environment
+digest `aa263acb4c2cfdbfb11c77c02a109db59dc2cd4b4c23deaf9c8c816139016612`
+is preserved. New Python provenance does not imply new native compilation.
+The closed turn is `robert-mainline-date-hold-fix-01/actual-normal-clock-execution-01/result.json`.
+
+The M3 paused assessment at the earlier raw53220000 frame confirms main
+heir38822, five county-or-higher titles→38822 and county2173→Guy38988,
+`split_successors`, with no natural succession. Its source boundary matters:
+the law snapshot normalizer sorts successor arrays numerically; its first
+ID30253 is not the ordered primary heir. Crown Authority1 legality/cost does
+not prove partition disappeared. The retained assessment is
+`m3-robert/current-succession-01/ASSESSMENT.json`, SHA-256
+`7d5579162e5d6621baee0a13f9c604ac920e7222f4270d4fd492bf2603e0fc51`.
+Later actor/heir/material conclusions must use the post-day observations.
+
+The next cold continuation uses the current state and final normal checkpoint,
+not a replay of full4031/save4029 or a hard pin to this intermediate h4052.
+Root closes the current consumers, stops normally, then the external renderer
+retains the latest complete pair and all five family/Council/Sway ledgers.
+The old v16 official managed launcher verifies the valid old environment and
+reads the current v2 save/history anchor with `--cold-start-checkpoint` and
+`--start-minimized`. New Python then uses the official explicit ordinary
+environment binder to attach. No prepare, original-pair stage, manual state
+rewrite or environment rebind is needed for this unchanged state/profile.
+
+Before advancing the new GAME PID, root reattaches the existing Sway instance
+full134217986/gen8/target34333 through its completion query and three recorder
+reads with cursor0. The Sway owner's `COLD-REATTACH-CALLS.json` SHA-256 is
+`dc04c7bfb7188270234a842c41cc110d45b76b52d9c53709ef14ac977f9ea5b5`, under
+`m4-sway/robert-v16-rings-attached-01/`. This does not resend Sway Start.
+`m7-robert/current-v16-native-c0f53e9b-cold-01/ROOT-CURRENT-COLD-RECIPE.json`
+is the file-only argv recipe; its latest-state bind and actual new-PID cold
+results are still pending. M7 remains `in_progress`.
+
+## Actual current-checkpoint cold and consumed intent, 2026-10-02
+
+Root subsequently retained the final current pair at full4054/saveh4053,
+raw53220024, then normally stopped GAME109676 and cold-started minimized
+GAME101084. The qualified direct baseline returned GREEN at11:46:21 UTC:
+Robert29829, the original episode, saved `dynasty_continuity` goal and all five
+family/Council/Sway ledger hashes match the actual current source. Goal progress
+is still `reconciled_successions=0`, `last_succession=null`. The physical save is
+79,579,117 bytes/SHA-256
+`4ea3cfae9c15a9972a6af30f4a2af8ad2736d04c45f91986db2fd1212975bb03`.
+The existing cold consumer retains the saved history prefix and records its
+physical restore lineage at h4054. The archived pre-cold expectation remains
+available as source evidence; the actual post-cold driver has
+`succession_expectation=null`, so this result does not claim an active restored
+expectation. No goal, history or ledger was manually reconstructed.
+
+The subsequent nine-call batch closed GREEN on the same GAME101084. Before any
+new time advance, its first four existing Sway reads reattached the same
+full134217986/gen8/target34333 instance and completion recorders; Start was not
+resent. Campaign root, law, first-heir relationship, diagnostics and actual
+government observation then closed. Native DLL/source remain the adopted v16
+`83a811d7…68a6ff` / `d4f377d9`; Python remains the independently pinned
+`c0f53e9b` source attached through the unchanged old environment.
+
+The first following formal turn actually selected and executed `life-advance`
+for one day. Its `result.plan.campaign_goal_plan_used` uses this same
+`dynasty_continuity` campaign/current29829, progress0, marriage focus and the
+family100/partition60 priorities. Its
+`campaign_government_context_used` reports actual `feudal_government`,
+`core_landed`, 44 effective features, `core_adapter_ready=true` and
+`ordinary_goal_context_ready=true`. This proves the saved intent and actual
+government context reached the normal planner after the new-PID cold restore.
+Additional durable-day credit awaits the final saved continuation checkpoint;
+at this recording3154/36524 remains the saved total and M7 remains `in_progress`.
+
+The baseline is
+`m7-robert/current-v16-native-c0f53e9b-cold-01/latest-final-checkpoint-bound/actual-cold-goal-01/result.json`;
+the nine-call receipt is `m7-robert/actual-cold-material-101084-01/result.json`.
+The consumed plan is
+`m7-robert/actual-cold-following-family-sway-01/turn-001/result.json`.
+The compact file-only summaries are
+`m7-robert/CURRENT-COLD-CONTINUITY-101084-01.json` and
+`m7-robert/COLD-FOLLOWING-CONSUMED-INTENT-101084-01.json`. The first extractor's
+top-level plan lookup returned null; the separate corrected summary reads the
+actual nested `result.plan`, and the original extraction is retained.
+
+The next native v18 candidate uses public source
+`1a0a3ca0027face9e10714ec70bf3ca4eafc8469` and the latest normal current pair,
+including all five ledgers and the then-current expectation. It requires its
+own official profile and environment binding after native metadata adoption.
+It does not reuse the old D4 environment as a v18 compile identity or stage the
+old full4031/save4029 pair. Candidate preparation is file-only; no v18 paused,
+cold or gameplay credit is inferred from this working v16 continuation.
+
+The following batch is now closed with three executed `life-advance` turns,
+zero natural modals and three saved natural days, raw53220024→53220096. Its
+normal checkpoint is h4065/full4065,80,076,282 bytes/SHA-256
+`8f3517957d7697a2cbf780f3caedae3ae951a12a52a414378e5738e8ceb186aa`;
+the full retained driver is49,131,360 bytes/SHA-256
+`1db0dd4a2eefa90f542cdc7cd5bb84bab493d63daff89ff7dcbd925b9ac1f187`.
+The final frame is paused. Together with the pre-cold saved day, this stage
+adds4 durable days to historical3153, giving3157/36524. The existing Sway
+applied ledger is consumed by the first following normal turn and remains
+`already_applied` in later turns; Start is not replayed. The actual close is
+`m7-robert/actual-cold-following-family-sway-01/result.json`, SHA-256
+`f442894e16081f63bcd742d70630528e6dad2590b961c265cf2660e4799a3570`.
+This is a same-campaign saved-goal cold/normal-continuation loop; it does not
+complete M7's broader identity/government matrix or a natural succession.
+The v18 source1a0a3ca0 native build has an actual C1061 compiler RED and awaits
+the native owner's minimal fix and adopted final metadata. Its successful CI
+does not establish a usable DLL. Candidate rendering therefore accepts the
+root's final source/freeze and latest current pair rather than pinning either
+this intermediate h4065 or the failed build identity as the future entry.
