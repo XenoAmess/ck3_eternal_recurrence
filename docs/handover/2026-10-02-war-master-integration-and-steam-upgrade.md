@@ -12,6 +12,10 @@ Steam 公共默认分支已由 **1.19.0.6 (Scribe), build 23530548** 更新为 *
 - [最终离线原图](evidence/2026-10-02-war-master-integration/steam-offline-final.png)显示“离线模式”和当日 13:34 时钟；[尺寸 / SHA 回执](evidence/2026-10-02-war-master-integration/steam-offline-final.json)绑定 1024×768 原图，执行者直接审阅。
 - 本次没有启动 CK3，也没有执行 Workshop 或视频外部发布。
 
+升级后的 `00_traits.txt` SHA-256 为 `93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa`，与主线 1.20.0.2 的 306 项 trait 快照逐字节相同；保留原快照版本来源标签，记录这次 1.20.0.3 等价回读，未为相同输入重生产品文件。
+
+14:07 左右补采桌面时，画面时钟停在 13:44，该次截图作为 stale RED 保留，没有当成新鲜实机授权。只读回读唯一已保存账号的 `WantsOfflineMode=1`，且临时 CEF 8080 调试端口已关闭、CK3 进程为零；这些仅补充升级完成状态，不能替代后续游戏启动所需的新鲜离线原图。
+
 旧 EXE、原 manifest、全部桌面恢复 attempt、下载 / 重启日志及失败尝试保留在 `C:/Users/1/ck3-upgrade-integration-20261002-a01/`。曾按本机恢复合同尝试 ToDesk 服务恢复，显式重启返回权限拒绝；后来正常重启 Steam 恢复了新鲜画面。桌面独占 claim 已按 CAS 回收；其 `expired-own-claim-released` 收据中的 `unresolved_red` 是过期 claim 的保守业务标记，不覆盖上述安装身份和离线原图结果。
 
 ## 整合范围与字节保全

@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "tools/validate_python_only.py"
+  ],
+  "cwd": "C:\\w\\e2merge1002",
+  "returncode": 0,
+  "stdout": "PYTHON-ONLY GREEN\n",
+  "stderr": ""
+}

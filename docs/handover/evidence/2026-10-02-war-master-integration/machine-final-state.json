@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-10-02T06:06:19.285489+00:00",
+  "steam_processes": [
+    {
+      "cmdline": [
+        "D:\\Program Files (x86)\\Steam\\steam.exe",
+        "-cef-disable-gpu"
+      ],
+      "name": "steam.exe",
+      "pid": 17212
+    }
+  ],
+  "ck3_processes": [],
+  "temporary_cef_debug_port_8080_open": false,
+  "offline_screen_receipt": "steam-offline-final.json"
+}

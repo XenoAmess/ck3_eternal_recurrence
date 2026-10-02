@@ -1,0 +1,12 @@
+{
+  "time_utc": "2026-10-02T06:09:14.113445+00:00",
+  "unique_saved_account_resolved": true,
+  "offline_flags": {
+    "WantsOfflineMode": "1",
+    "SkipOfflineModeWarning": "0"
+  },
+  "desktop_completion_capture": "REJECTED_STALE_CLOCK_13_44_AT_14_07",
+  "prior_directly_reviewed_offline_image": "steam-offline-final.png",
+  "new_game_launched": false,
+  "scope": "Persisted offline preference corroborates the reviewed upgrade completion; this is not fresh screen evidence for a subsequent game launch"
+}

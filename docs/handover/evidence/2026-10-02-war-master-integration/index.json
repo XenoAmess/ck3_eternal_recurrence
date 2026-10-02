@@ -49,6 +49,26 @@
       "file": "docs/handover/evidence/2026-10-02-war-master-integration/recommendation.md",
       "sha256": "dfaea579ed095b32ccdf975b81c62f2538fb8becf03c54a9d2ea4a6d7d5a6eff",
       "bytes": 10498
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/installed-traits-compatibility.json",
+      "sha256": "9388d5add26880bf706d29bcdc5f1c7e383267226264ff86779475f3ae8ed904",
+      "bytes": 424
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/machine-final-state.json",
+      "sha256": "64ff97487e7bc5ef020c25185a60877480e21ac3e0cb66f02a27ff198cafbf85",
+      "bytes": 389
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/steam-offline-persisted-check.json",
+      "sha256": "947d1bf04cabb88e2366a46be1a65e4597d0405f0bdd9d65ca9053a6159e29f5",
+      "bytes": 518
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/integration-python-only-a03.json",
+      "sha256": "dbd2ecad067ac4613fe35a2951d2772686b433918142598b9d3d82bac38e1a93",
+      "bytes": 247
     }
   ],
   "external_process_assets": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01",
