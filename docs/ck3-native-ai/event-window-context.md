@@ -2,7 +2,7 @@
 
 本文冻结通用、非宗教事件窗口的 engine-owned presentation context，目标是让自动玩家读取**当前实际展示给玩家的选项**，而不是只读取事件定义中的 authored option 数量。它同时记录原生 `SetupOptions` 与 AI selector 的决策树、已经闭合的 production locator，以及仍待实机验证的边界。
 
-宗教、faith、doctrine、tenet、fervor、改宗、宗教改革、圣战等专用语义依项目所有者要求暂缓。本文只保留对所有事件通用的 opaque 兼容边界。
+项目所有者已于 2026-10-02 全面开放宗教、faith、rite、doctrine、tenet、fervor、改宗、宗教改革与 holy order 等领域。本文既有实现只证明通用窗口与 opaque 兼容边界；遇到宗教事件时可从实际 definition/root/saved scopes 和 engine-owned 选项入口施工，先落盘原生树，再补决策所需只读状态与语义契约。战争执行开关及停止战争研究的要求继续有效，授权本身不代表宗教事件闭环已完成。
 
 ## 版本与证据等级
 

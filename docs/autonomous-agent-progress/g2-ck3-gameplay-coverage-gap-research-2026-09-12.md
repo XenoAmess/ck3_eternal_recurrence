@@ -1,5 +1,9 @@
 # G2 CK3 玩法覆盖与 Native/MCP 缺口研究
 
+2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、战争研究停止及执行OFF、玩家限定或最小化后台操作约束。
+
+后续施工入口：先沿[宗教整合](../ck3-native-ai/ck3-1.20.0.2-religion-integration.md)、[教义与Tenet](../ck3-native-ai/religion_doctrine12002_overview.md)和[改革](../ck3-native-ai/religion-reform12002-overview.md)的原生树与已有只读查询补齐当前exact-build输入；自然宗教事件按真实选项、作用域与效果接回事件消费者。Holy order等未闭合分支继续定位原生资格、成本、对象状态及结果查询，先交付只读bridge/MCP，再据罗贝尔paused材料设计和验证策略；旧版实机证据不自动继承。
+
 研究日期：2026-09-12（Asia/Shanghai）。仓库审阅范围包括 G2 目标/路线图、one-generation blocker ledger、`docs/ck3-native-ai/` 专题、native bridge/MCP 实现、策略 schema，以及 2026-09-11 至 2026-09-12 的日报证据。
 
 ## 结论
@@ -285,7 +289,7 @@ flowchart LR
 - rare battle terminal 分支的穷举，除非 production run 真实命中；
 - 单一 CB 的更多边缘 terms，在 `GEN-034` 完成后由真实战争场景驱动；
 - 每个 DLC/政府一次性横向 schema；先完成 feudal core 与一个 Celestial/Administrative vertical slice；
-- 通用宗教、改宗、宗教改革、faith/doctrine/tenet/fervor、holy order；继续遵守 owner-deferred；
+- 本研究在2026-09-12曾将通用宗教、改宗、宗教改革、faith/doctrine/tenet/fervor、holy order列入owner-deferred；2026-10-02项目所有者已撤销该限制，这一项不再作为当前推迟理由。后续从宗教原生树、最终资格/费用及结果只读观测接入，不继承本页旧build的live资格；
 - 未来 `By God Alone` 与 `Silk & Silver` 内容。冻结 build `1.19.0.6` 只包含 Chapter V 支持/Stories 等当前内容，未发布玩法不进入当前能力 backlog。[^10]
 
 ## 测试与实机证据缺口

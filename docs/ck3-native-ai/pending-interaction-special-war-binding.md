@@ -28,9 +28,11 @@
 本文是 [interaction-structured-terms.md](interaction-structured-terms.md) 的独立 exact-build
 侦察记录，并复用 [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 已闭合的
 `0x2610840 -> relation+0x20 WarID` 交叉证据。战争结果脚本与既有发送路径见
-[war-termination.md](war-termination.md)。本文的普通 `claim_cb` fixture 不使用宗教暂缓的两项窄例外：战争域允许的
-圣战/大圣战最小语义，以及婚姻域不得不考虑信仰时的最小原生调用。本文不展开 faith、doctrine、tenet、fervor、
-改宗、宗教改革或教团；若后续研究圣战，必须在独立战争切片中只取完整 war OODA 所需最小输入。
+[war-termination.md](war-termination.md)。本文历史上的普通 `claim_cb` fixture 没有验证 faith、doctrine、tenet、
+fervor、改宗、宗教改革或教团语义，该覆盖边界继续保留。项目所有者于 2026-10-02 全面开放宗教研究与实现，
+原宗教暂缓、仅圣战与婚姻窄例外的限制已撤销。宗教专项互动的下一施工入口是当前 exact-build 的 concrete
+subtype/定义、原生最终判定与 typed terms，再接只读 bridge/MCP、策略和罗贝尔实机验收；旧三种普通 war-exit
+subtype 的结果不能外推为这些能力已完成。战争研究停止和战争执行开关 OFF 仍是独立约束，本次宗教授权不解除它们。
 
 ## 冻结输入
 

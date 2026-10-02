@@ -294,7 +294,7 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 `26/26` GREEN，详见 [`event-campaign-utility.md`](../ck3-native-ai/event-campaign-utility.md)。
 
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
-宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。
+2026-10-02 最新授权已全面开放宗教：faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、教士与 holy order 均可按 exact-build 原生树、只读 MCP、Robert paused 观测及正式动作后置推进。此前两项窄例外限制已撤销；现有战争执行开关与战争研究停止约束独立保留，授权不增加 G2 credit 或把未实现的宗教策略称为完成。
 
 ## 报告规则
 

@@ -1,5 +1,9 @@
 # 2026-10-01 新 G2 candidate 的纯文件 runner 准备
 
+2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、战争研究停止及执行OFF、玩家限定或最小化后台操作约束。
+
+后续施工入口：先沿[宗教整合](../ck3-native-ai/ck3-1.20.0.2-religion-integration.md)、[教义与Tenet](../ck3-native-ai/religion_doctrine12002_overview.md)和[改革](../ck3-native-ai/religion-reform12002-overview.md)的原生树与已有只读查询补齐当前exact-build输入；自然宗教事件按真实选项、作用域与效果接回事件消费者。Holy order等未闭合分支继续定位原生资格、成本、对象状态及结果查询，先交付只读bridge/MCP，再据罗贝尔paused材料设计和验证策略；旧版实机证据不自动继承。
+
 本包接续 [非战争 runner 交付](2026-10-01-nonwar-12002-offline-runner.md)，新一轮非战争 G2 candidate 已于 **16:13（Asia/Shanghai）实际完成纯文件 profile/pair 准备，状态 static-ready**，所有运行计划绑定稳定 `g2live` checkout。旧 `da05c04b…` profile 与 `nw12002/g2of` 冻结证据保持原样；新版 Council、faction/gift、Sway、law、Feast、government、family obligation、prisoner 的 source/binary 输入变化，使用独立新 profile 和 receipt，不能倒填成旧候选已经验收。用户随后暂缓战争研究，本轮 war cash、prewar 两项保持 OFF，不把它们记成候选已启用。
 
 ## 新候选实际消费入口
@@ -47,7 +51,7 @@ python -B -X utf8 tools/prepare_g2_12002_candidate_files.py --integration-manife
 
 `PAUSED-MCP-SUPERVISION-PLAN.json` 保存真实 CLI 的 session argv 与观察顺序。`native-session` 没有 `--start-paused` 参数，也不自行选择 gameplay action；监督启动后由 root 使用 MCP `ck3_take_snapshot` 验证实际 paused/readiness。若正在运行，可按当前 revision 显式 `ck3_execute_step(step="pause-map")`，然后重新 snapshot 验证；暂停 ACK 不替代状态。随后只读八个非战域，并对确有必要的动作显式选择 typed action。命令没有在后台执行。
 
-`open_kaishek` 为 not-applicable：本包是 manifest/argv/filesystem composition，无 CK3 script、IR 或 replay 语义。**用户已授权宗教研究，并停止战争研究**；本轮 candidate 没有宗教查询，原因是尚未接线，不能据此继续声称宗教域被用户暂缓或已经完成。
+`open_kaishek` 为 not-applicable：本包是 manifest/argv/filesystem composition，无 CK3 script、IR 或 replay 语义。**用户已授权宗教研究，并停止战争研究**；2026-10-02再次明确全面开放宗教研究与实现，包括holy order等全部相关域。本轮冻结candidate没有宗教查询，原因是尚未接线，不能据此继续声称宗教域被用户暂缓或已经完成；后续可将已绑定的宗教只读provider与对应MCP permit接回新candidate，再做罗贝尔真实暂停帧验收，不倒填本包旧receipt。
 
 ## 最终实际 profile/pair receipt（16:13）
 

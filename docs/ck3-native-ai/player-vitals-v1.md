@@ -106,7 +106,7 @@ flowchart TD
 
 这不是一棵统一的 CK3 AI“生命管理算法”。health 和 stress 主要由 engine 状态、on_action 和各决议/事件的局部 `ai_will_do` 消费；legitimacy type 则明确区分玩家每日与 AI 每年刷新，并把 level flags 送给婚姻、联盟、派系、宣战成本等多个系统。我方应读取原生最终 type/level，不复制一套会随 DLC、government、tier 和 era 漂移的阈值求值器。
 
-宗教域仍按项目约束暂缓。本合同不读取 faith/doctrine/tenet/fervor，也不以 health、stress 或 legitimacy 为入口扩展宗教策略。
+项目所有者已于 2026-10-02 全面开放宗教研究与实现。本合同的既有 wire 尚未读取 faith/doctrine/tenet/fervor，不能据此宣称宗教观测已完成；当 health、stress、legitimacy 或 fulfillment 的决策依赖这些状态时，应先冻结对应原生输入链、补只读查询，并用罗贝尔同帧 paused snapshot 验收后接入策略。
 
 ## `xar.ck3.player-vitals/v1` 目标 wire
 

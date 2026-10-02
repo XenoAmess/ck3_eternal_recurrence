@@ -308,7 +308,7 @@ glue GREEN 后，再依次接：compiled `valid_position` / `valid_character`，
 | **[unknown]** | 原版 AI 席位重算 cadence 与 `last_appointed_councillor` 语义 | 不推断换人时机；Mermaid 保留虚线 |
 | **[private binding static-ready / shared glue pending]** | 空列表与其它席位未实机互证；private binding 尚未进入共享构建/main-thread mailbox | R684 已关闭总管非空向量证据；COUNCIL6 core 与 COUNCIL7 exact producer/release/task binding 已闭合；下一步只做 shared glue 与一次按需 paused query |
 | **[static entry only]** | fire/reassign/swap 的完整 machine reason | 允许稳定粗粒度 reason；禁止解析 loc 猜原因 |
-| **[owner-deferred]** | 宫廷司祭通用信仰/教义策略 | 仅最终合法性和 opaque reason |
+| **[authorized; not implemented]** | 宫廷司祭通用信仰/教义策略 | 2026-10-02 已全面开放；现有证据仅最终合法性和 opaque reason，下一入口为宫廷司祭原生候选/任务树及实际依赖的 faith/doctrine 只读输入，随后由罗贝尔 paused snapshot 验收策略 |
 | **[not implemented]** | read-only MCP、planner 与 semantic action | 按上节顺序推进，状态不得写 live/action-ready |
 
 ## 精确切片账本

@@ -13,7 +13,7 @@
 
 两份文档均说明：可选 `base` 与当前角色拥有的对应 trait 项相加；正负项抵消。`base` 支持 script value，trait 项文档明确不支持 script value，同一 trait 只能出现一次。新命令还明确声明会依据角色是否依照／违背 trait，以及 trait 的 sinful／virtuous 分类，调整 spiritual fulfillment。因此可以保留已经核对过的 **authored stress 输入**，不能把旧 stress-only effect profile 换个 operation 名字后宣称完整结果相等。
 
-本任务不追踪 spiritual fulfillment 的数值、trait 分类、宗教状态或一般宗教机制。这些是所有者暂缓的依赖，只记录此原生效果确实可能涉及第二个域。下列 stress 常量在两版本 `common/script_values/00_stress_values.txt:26–35` 保持相同：gain `10/20/40/80/100`，loss `-5/-15/-30/-65/-100`。整文件哈希不同：旧 `104a7ef94ee9da1092f23aeb2fd9dc971b08c695415f3b7ebfb628f381d26395`，新 `821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4`。
+本次历史源码复用尚未闭合 spiritual fulfillment 的数值、trait 分类、宗教状态或一般宗教机制，只记录此原生效果确实可能涉及第二个域。项目所有者 2026-10-02 已全面开放这些依赖；下一施工入口是原生当前 Rite、sinful/virtuous 分类与 fulfillment 最终数值的只读查询，再以罗贝尔同帧 snapshot 验收后接入效果比较。下列 stress 常量在两版本 `common/script_values/00_stress_values.txt:26–35` 保持相同：gain `10/20/40/80/100`，loss `-5/-15/-30/-65/-100`。整文件哈希不同：旧 `104a7ef94ee9da1092f23aeb2fd9dc971b08c695415f3b7ebfb628f381d26395`，新 `821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4`。
 
 ## 两个已审阅的有界继续选项
 
@@ -33,7 +33,7 @@ flowchart TD
   T --> E[stress_and_fulfillment_impact]
   G --> E
   E --> S[authored stress 输入已核对]
-  E -. 数值与依赖 owner-deferred .-> F[fulfillment 完整结果未闭合]
+  E -. unknown：已授权，数值与依赖尚未观测 .-> F[fulfillment 完整结果未闭合]
   S -. 等待实际新版选项与 after-state .-> L[暂停实机继续验收]
 ```
 

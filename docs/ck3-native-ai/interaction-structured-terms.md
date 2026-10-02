@@ -3,9 +3,10 @@
 > 状态：2026-08-26，docs-first / exact-build Slice A 静态闭合并接入 production query；
 > generic costs 尚未新增实机验证。
 >
-> 本文只研究普通、非宗教角色互动的 engine-generic 能力，并以普通白和平互动作为优先
-> fixture。宗教专用域由项目所有者暂缓；原生总分里可能存在的该域修正只保留为 opaque
-> owner-deferred 节点，本文不读取、不拆解、不实现。
+> 本文的历史研究与 fixture 覆盖普通、非宗教角色互动的 engine-generic 能力及普通白和平互动。
+> 项目所有者于 2026-10-02 全面开放宗教研究与实现，原宗教暂缓限制已撤销。旧证据未拆解的
+> 宗教修正仍标记为未观测的 opaque 输入；当前可沿 exact-build 原生接受度调用链补观测、bridge/MCP
+> 与罗贝尔实机结果，不能把授权当成该能力已完成。战争研究停止和战争执行 OFF 仍独立有效。
 
 ## 1. 结论先行
 
@@ -51,7 +52,7 @@ special object 只是 exact subtype tag，WarID 来自 actor/recipient 的共同
 
 ### 2.2 本文明确不覆盖
 
-- owner-deferred 宗教专用树、字段、bridge、策略或实机矩阵；
+- 旧证据未覆盖的宗教专用树、字段、bridge、策略或实机矩阵；2026-10-02 授权后可施工，入口见末尾账本；
 - 三种已闭合 war-exit subtype 以外的 `special_data` 虚函数、布局或 mutator；
 - notification/tooltip/localization 文本到条款的反推；
 - `0x3380410` effect executor，或任何回复、发送、战争结算 mutator；
@@ -235,8 +236,9 @@ flowchart LR
 | 8 | `merit` | `MERIT_COST` | `0x3E42` |
 | 9 | `barter_goods` | `BARTER_GOODS_COST` | `0x3D30` |
 
-表中的 `piety` 只是一项 engine-generic 已付资源 key/raw；本文不展开其 faith、doctrine、tenet、
-fervor、conversion、reformation 或 holy-war 含义，也不据此进入 owner-deferred 宗教树。
+表中的 `piety` 只是一项 engine-generic 已付资源 key/raw；该历史成本证据不证明 faith、doctrine、tenet、
+fervor、conversion、reformation 或 holy-war 的玩法含义。宗教研究已全面授权；需要这些语义时，应沿当前
+构建的原生定义与最终判定补独立观测，而不是从资源 key 推断。
 
 slot 7 不是独立余额。`0x2CDCFF0` 在 actor 具有 treasury 时把它加到 slot 6，否则加到
 slot 0；随后跳过 slot 7 自身的余额检查。它的稳定作者 key 因而必须保留为
@@ -608,5 +610,7 @@ acceptance，以及 war-exit 的 resource/claim/truce/prisoner/hostage dynamic t
 | P1 | description `+0x1F0/+0x210/+0x230/+0x25C/+0x264` | typed getters/consumers | 保持 opaque |
 | P2 | owned outbound effects description lifecycle | constructor/destructor `.pdata` 与 source-contract tests | 只读 pending inline，不主动 materialize |
 
-这些 `unknown` 是明确的逆向施工入口，不是把字段长期留为 null 的完成状态。owner-deferred 宗教域
-不在本账本中排队，直至项目所有者解除暂缓。
+这些 `unknown` 是明确的逆向施工入口，不是把字段长期留为 null 的完成状态。2026-10-02 宗教授权已全面
+开放；宗教输入可从当前构建的 interaction definition 与原生最终接受度的实际调用分支入手，定位 faith/rite、
+doctrine/tenet/fervor 对具体提案的输入，增加同帧只读 bridge/MCP，再用罗贝尔 paused snapshot 验收并实现策略。
+旧静态/fixture 结果继续按原范围引用；宗教授权不提升 readiness，也不解除独立的战争研究停止与执行 OFF。

@@ -6,6 +6,13 @@ private mailbox binder to the frozen 1.20.0.2 executable
 The legacy 1.19.0.6 profile remains available. No running CK3 process is read,
 started, stopped, attached or queried by this offline work.
 
+Current authority, 2026-10-02: religion research and implementation are fully
+authorized, including holy orders and religious governments. Earlier owner
+deferrals are superseded. The exact 1.20.0.2 inputs and acceptance below remain
+historical evidence; this change does not qualify a new adapter or migrate an
+ABI to 1.20.0.3. Robert remains the only live test entry, and existing war
+execution switches remain unchanged.
+
 ## Native inputs and decision tree
 
 The exact-build input ledger is
@@ -27,10 +34,11 @@ requirement. DLC families retain `adapter_spec_ready_not_implemented`.
 The stock identity table also changed: 18 rows now contain 171 flag
 declarations, compared with 136 in 1.19.0.6. The old stock theocracy key is
 absent and the new monastic holy-order key is retained only as an opaque,
-owner-deferred identity. Clan tax-slot, tribal authority, domiciles and the
+unimplemented mechanics identity in this migration. Clan tax-slot, tribal
+authority, domiciles and the
 administrative/celestial budget flags are copied from the current stock files.
 The feudal key and its five flags are unchanged. These are identity inputs;
-this migration does not implement the budget or deferred religious systems.
+this migration does not implement the budget or religious mechanics systems.
 The current Japanese feudal `can_get_government` block no longer authors the
 old All Under Heaven gate. Its new identity row therefore does not use that
 old gate as a readiness condition; the family remains spec-only, and its
@@ -48,7 +56,7 @@ flowchart TD
   G --> K["Feudal / clan / tribal: existing core family"]
   G --> D["DLC families: spec only"]
   G --> U["Unknown key: retain identity / unadapted"]
-  G --> R["Religious identity: owner deferred"]
+  G -. "authorized research" .-> R["Religious mechanics / planner not implemented"]
   K -. "Wider paused qualification pending" .-> L["M7 multi-ruler/government qualification"]
 ```
 
@@ -70,8 +78,22 @@ independent public observations.
 identities, copied government flags, selected family and
 `readiness.core_adapter_ready`. That flag means the observed current identity
 selects an existing core adapter; it does not qualify every core government or
-complete M7. DLC families remain spec-only. Religious governments publish
-opaque identity/deferred status without a flag or mechanics projection.
+complete M7. DLC families remain spec-only. This frozen implementation publishes
+religious governments as opaque identity with the legacy deferred status,
+without a flag or mechanics projection. The status is an implementation gap,
+not a current owner prohibition; the 2026-10-02 authority supersedes that
+earlier rejection reason.
+
+The current construction entry is the GOV observer/source adapter and
+`ck3_12002_government_mailbox.cpp`, followed by the existing
+`government_runtime_adapter_private_transport.py` and
+`ordinary_campaign_government_context_v1.py` consumers. Rebind the actual
+government/feature ABI to the frozen current build, replace owner-deferral
+semantics with factual implementation status, then supply the native religious
+government AI inputs and decision-specific legality/cost/outcome providers.
+Holy-order and theocracy mechanics remain unimplemented until those providers
+and a Robert paused/live consumer are qualified; the 18 identity rows cannot
+be counted as 18 complete government play styles.
 
 The candidate caller uses `query-government-runtime-adapter-v1` and the fixed
 `ExecuteGovernmentRuntimeAdapterPrivateOperationV1` mailbox executor. Its

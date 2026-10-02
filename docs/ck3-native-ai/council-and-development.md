@@ -5,7 +5,7 @@
 - **[production-live]** `campaign-root-context-v1` 已实现并在新轮次 R639 验证当前统治者内阁的只读 typed observation：动态枚举全部已物化 active position，并为标准 landed、非 nomadic 范围补齐五个核心席位的可证空缺。独立/vassal 两个封建场景各观测到 6 个 occupied task，且 turn bundle 同帧投影一致。
 - 目标是把 `campaign-root-context-v1` 与 `xar.ck3.turn-bundle/v1` 中当前 unavailable 的 council 输入变成同一 paused frame 的 typed observation。它不实现任命、换任务、发展策略或其它内阁动作。
 - M1 首次 live gate 要求的两个当前封建统治者场景已完成。游牧 kurultai、天朝 ministry 和 vizier 变体进入同一可扩展 schema，但不能由本次封建 production artifact 冒充已经覆盖。
-- 宫廷司祭只作为 opaque council position/task 被观察。信仰、教义、教义条目、宗教热情、改宗和宗教改革继续遵守 owner-deferred 边界。
+- 宫廷司祭现有实现只观察 opaque council position/task。项目所有者 2026-10-02 已全面开放信仰、教义、教义条目、宗教热情、改宗和宗教改革；补观测应从宫廷司祭原生任命/任务候选和最终合法性链开始，再发布任务实际依赖的宗教状态并用罗贝尔 paused snapshot 验收，不能把现有 opaque 行计作完整策略。
 
 ## Exact-build 冻结
 
@@ -186,7 +186,7 @@ flowchart LR
 | **[production-live, spouse only]** | dynamic auxiliary occupied row | R639 两场景自然观测 spouse；vizier/ministry/kurultai 仍随对应政府场景补证 |
 | **[static/live pending]** | auxiliary vacancy completeness | 后续按具体 government 冻结 effective-position 原生集合；在此之前保持 `auxiliary_vacancies_complete=false` |
 | **[unknown]** | runtime scheduler/cadence | 仅影响后续任务切换 counter-policy；继续保留在原生树虚线分支 |
-| **[owner-deferred]** | 通用宗教内阁策略 | 宫廷司祭当前只作 opaque position/task；不借此扩展 faith/doctrine 树 |
+| **[authorized; not implemented]** | 通用宗教内阁策略 | 2026-10-02 已全面开放；现有宫廷司祭仍只作 opaque position/task，下一入口为原生候选/最终合法性与任务宗教输入的只读查询，随后接罗贝尔实机策略闭环 |
 
 `task_develop_county` 现在解锁“当前 steward 在何处发展、进度多少”的可见输入。是否切换任务、如何挑县和何时换人仍需先闭合 scheduler/候选行为，再设计 counter-policy。
 

@@ -337,6 +337,6 @@ flowchart LR
 | full structured effect preview | unknown / next observation dependency | 需寻找另一 engine-owned structured visitor/output；不得扩义本 vector 或解析 tooltip/OCR |
 | bridge indicator query | implemented / bounded nonempty fixture-live | 已并入 `current-event-window-context-v1` 的 production bridge/contract/service/MCP；Attempt4 SHA `690EB5EA...70B7B` 验证三条空 rows；非空 Attempt1 SHA `1DE73B16...8249C3` 验证三个特定 backing rows；full preview/completeness/resource/relation/semantic readiness 均保持 false |
 | production paused nonempty kinds | bounded fixture-live | [`current-event-nonempty-effect-indicators-live-fixture.md`](current-event-nonempty-effect-indicators-live-fixture.md) Attempt1 已在 seed/cold PID `23632/35364` 冻结空 control + `trait/add brave` + `stress/increase affected=false/critical=false` + death 与禁止 option selection 的 transcript；trait remove、其它 stress、scheme、stock/visual/lifecycle 仍未完成 |
-| owner-deferred religious domain | deferred, not complete | 本专题不使用圣战/婚姻两项窄例外；其余宗教域等待项目所有者解除暂缓 |
+| religious semantic observation | authorized; not complete | 2026-10-02 已全面开放，旧圣战/婚姻窄例外限制已撤销；下一入口是 fulfillment 与其他宗教效果的 engine-owned 结构化输出，再补只读查询及罗贝尔 paused snapshot，现有 indicator 不代表语义完备 |
 
 冻结后的下一 exact 入口不是继续猜 `OptionEffectItem`：该结构已经证明没有 resource/relation 完备性。应从 `CEffectDescriptionVisitorInterface` 的其它具体 derived visitors 或事件 tooltip 的 engine-owned structured model 反查一个会保留 resource/relationship delta 与 target identity 的只读输出；在找到明确输出 ABI 前，完整 preview 和多选 semantic policy 保持 typed dependency。

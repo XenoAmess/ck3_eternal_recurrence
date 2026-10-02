@@ -1,5 +1,7 @@
 # 和平期军事准备：原生 AI 树与首个只读合同
 
+> **2026-10-02 授权覆盖：** 宗教领域已全面开放；旧暂缓理由仅记录当时状态。未实现的观测与 exact-build/readiness 缺口继续列为可施工项，不代表完整 combat v3 已就绪。罗贝尔唯一入口、战争研究停止及 `WAR_CASH/PREWAR=OFF` 保持有效。
+
 > 2026-09-23 增量：[W1 军力缓存与特殊部队](war-film-declaration-power-cache-2026-09-23.md) 补充最新的精确静态调用链和剩余未知；旧历史证据保留。
 
 本文冻结 CK3 **1.19.0.6** 中与和平期军事准备直接相关的最小原生 AI 事实：常备军（Men-at-Arms，以下写作 MAA）的预算带、候选合法性和评分；征召兵恢复；骑士与统帅的可见入口；雇佣兵的已确认战争预算边界。目标是为 G2 和平治理 planner 指定下一项可以真实返回数据的只读 MCP，而不是先猜一套招兵策略。
@@ -339,7 +341,7 @@ flowchart TD
 
 [static-confirmed] GUI 的 `MilitaryView.GetAllMercenaries`、`GetHiredMercenaries` 与 `MercenaryCompany.IsHired / IsHiredByLocalPlayer / WillGoInDebt / WillGoInBankruptcy / GetCostDesc` 证明玩家界面能呈现市场、可用性、费用、组成和雇佣状态；这些名字尚未形成无窗口 ABI。原版 AI 的已确认支出树只证明战时 overmatch 和续约参数，未证明完整候选排序。
 
-[owner-deferred] holy order 与通用 faith/religion 域继续暂缓。本文不读取 `NHolyOrder` 形成候选、不把 piety/敌对信仰填进合同，也不将 mercenary GUI 邻接的 holy-order model 当成授权例外。以后只有战争 OODA 的必要圣战窄例外才能提出最小字段，并应优先消费原生最终合法性结果。
+[research-open] 2026-10-02 已全面开放 holy order 与通用 faith/religion 域研究，原“仅圣战窄例外”的限制撤销。本文尚未实现 `NHolyOrder` 候选观测、piety/信仰输入与原生最终合法性查询；可施工入口是 holy-order model 的实际 owner、只读查询调用链和 exact-build 字段绑定。mercenary GUI 邻接仅是定位线索，不能作为 native ABI 或已完成能力的证据；现行战争研究停止与执行开关保持不变。
 
 ## 第一只读合同：`military-preparation-summary-v1`
 
@@ -449,7 +451,7 @@ flowchart TD
 - [unknown] levy/MAA 月恢复的修正项与月 tick 内顺序；本文不做时间预测器。
 - [unknown] 骑士 eligible roster、default-by-prowess 的 exact comparator、强制/禁止与 AI 的关系、其他招募来源；统帅候选与换将策略。
 - [unknown] mercenary market 的无 GUI owner、距离/文化过滤调用链、最终费用 core、AI 公司排序与和平合约处理。
-- [owner-deferred] holy order、通用 faith/doctrine/tenet/fervor、改宗与宗教改革不在本文和后续通用军事准备合同内；不得借 mercenary 邻接接口扩域。
+- [research-open / not-implemented] holy order、通用 faith/doctrine/tenet/fervor、改宗与宗教改革已获全面研究授权，旧禁令不再限制后续只读合同施工。本文尚未提供这些观测与动作；需先冻结目标构建、闭合对应原生树和字段 ABI，再按真实 paused artifact 验收。宗教授权不恢复当前已停止的战争研究或开启战争执行开关。
 - [non-goal] 本文不实现猜测策略，不把原版 AI 概率当我方选择概率，不把 GUI presence 当 native ABI，不启动 CK3，也不改变现有 turn bundle、resource contract 或 action protocol。
 
 

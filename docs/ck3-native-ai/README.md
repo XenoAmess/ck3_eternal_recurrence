@@ -1,12 +1,18 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-02：宗教领域全面开放
+
+项目所有者已明确允许全方位深入研究并实现 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、教士、圣战与大圣战及 holy order。此前宗教暂缓和两项窄例外规则均已撤销，以当前 [AGENTS.md](../../AGENTS.md) 为准。下方按日期保存的旧禁令、失败原因和 artifact 只表示当时事实，不再限制新施工。
+
+新增能力仍按 exact-build 原生树 → 只读 bridge/MCP → Robert paused 观测 → 策略与独立动作后置推进；缺失输入应给出具体 ABI/provider 施工入口，不能以已撤销的禁令停止。授权不代表宗教全域已经完成，也不改变 Robert 唯一测试入口、战争研究停止或 `WAR_CASH/PREWAR` OFF。当前宗教事件阻塞先沿原生事件定义与实际合法选项闭合，再扩充长期宗教规划。
+
 ## 2026-10-02 21:46：Robert 两个非宗教 Council 角色的真实技能机会
 
 [非宗教 Council 角色输入与实际边界](ck3-1.20.0.3-council-role-coverage.md)记录新的同帧 paused 观测：Chancellor 34867 外交 7，唯一最高原生合法候选 43696 外交 13（+6）；Spymaster 34333 密谋 12，唯一最高合法候选 32440 密谋 23（+11）。完整候选／四 gates 与独立现任任务在 actor29829、raw53220624、native16／public2、PID70968 上闭合，各既有比较器一次 GREEN。当前是 **production-live primitive 只读输入**，任务产出、解职政治成本与原生总评分未观测；真实差值是下一项必要 task-value 观测及独立功能决策的依据，不是已任命或新的 G2／M4 credit。Steward43706 已闭合的 collect-taxes 循环不重发。
 
 ROOT 已选择 Chancellor +6 优先进入最小功能扩展；Spymaster +11 因现任34333是已有 Sway target／liberty member 暂不替换。当前412源码与工具清单未发布 current-task-value MCP口，旧v13执行token不代表该口；实际skill／current task／final gates已足够本轮最小策略，未采用任务总产出与政治utility记为质量差距，不新增前置blocker。该取舍不把本次只读包升级为动作结果，也不扩展为通用政治评分或其他职位施工。
 
-当前 [AGENTS.md](../../AGENTS.md) 明确“宗教域由项目所有者明确暂缓”，仅保留其中圣战与婚姻必要判定的窄例外。该当前指令覆盖下方 2026-10-01 历史截点中的“恢复宗教研究”安排；历史研究与 artifact 保留，通用宗教施工及 holy order 继续暂缓。本包仅处理非宗教 Council 角色。
+本包仅处理非宗教 Council 角色；其范围不构成宗教禁令。2026-10-02 最新授权已全面开放宗教领域，历史研究与 artifact 保留，通用宗教及 holy order 可按证据工作流继续施工。
 
 ## 2026-10-02：1.20.0.3 Spymaster 只读候选输入
 
@@ -364,8 +370,8 @@ candidate DLL `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e`
   pending query。[paused fixture](pending-special-war-binding-live-fixture.md) Attempt 2 已用普通 `claim_cb` 闭合
   white-peace subtype、WarID `16777290`、primary attacker/defender 与同 revision active-war 互证，artifact SHA-256
   `3140B47AD855DF50BE182CB41E5957D1041E2221496A7256C7FF903E660810EE`。Attempt 1 仍为 RED；victory/defeat、
-  special outcome terms、structured terms 与 semantic decision readiness 仍为 false。其它 subtype 保持 opaque；圣战只能
-  在独立战争切片中取完整 war OODA 所需最小输入，其余宗教专用语义继续暂缓。
+  special outcome terms、structured terms 与 semantic decision readiness 仍为 false。其它 subtype 保持 opaque；该历史圣战
+  切片只读取 war OODA 所需最小输入，未闭合的宗教专用语义不因此获得 live 资格；2026-10-02 已全面授权后续宗教研究。
 - [static-confirmed + implementation-confirmed + fixture-scoped live] [event-window-context.md](event-window-context.md) 复用原生
   `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
   manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，
@@ -655,7 +661,7 @@ candidate DLL `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e`
    一次实现整棵原生树。为解除一代 run 的真实 blocker，可以先交付只消费已证合法候选、具备真实后置验证的最小
    deterministic policy；未采用的原生输入/分支、质量差距与替换入口必须写入对应专题或
    `docs/autonomous-agent-progress/one-generation-blocker-ledger.md`。策略层仍须保留失败回退和观察窗口，不能调用尚未证实的
-   native 分支。该许可不覆盖 owner-deferred 宗教域；宗教仍只限圣战战争 OODA 与婚姻必要判定两项最小例外。
+    native 分支。宗教领域同样适用该工作流；2026-10-02 全面授权后，不再以原 owner-deferred 或两项窄例外规则限制施工。
 6. [static-confirmed] CK3 升级后按“新 SHA → 重新静态定位 → 只读互证 → 更新树 → 再改策略”的顺序执行，
    先改我方策略再补逆向文档不构成完成。
 

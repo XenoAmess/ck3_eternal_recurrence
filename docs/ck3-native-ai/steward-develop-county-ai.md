@@ -9,7 +9,7 @@
 - **[static-ready; exact enumerator observer ready; live reader pending]** `query-steward-develop-county-candidates-v1` 的严格 v1 合同、native mailbox/serializer、离线 source fixture、Python service 与 MCP 查询面已经实现。DEV2 已把候选枚举收窄到 exact `CCouncilWindow` 调用点和一个默认关闭的只读 observer；生产 reader 仍因 paused-live 行 identity、最终 legality 与发展输入 ABI 未闭合而返回 `reader_not_implemented`。该返回现在是有明确 capture 入口的临时状态，不是终态。本包没有启动 CK3，也没有新增动作。
 - 施工范围只覆盖和平治理中最高价值的 steward 发展分支。`task_promote_culture`、
   `task_accept_culture`、`task_convince_dejure` 仍参与完整 steward 任务池，但不在本包内假装已完成比较。
-  宫廷司祭及通用 faith/doctrine 系统继续遵守 owner-deferred 边界。
+  宫廷司祭及通用 faith/doctrine 系统已获项目所有者 2026-10-02 全面研究与实现授权。它们尚未由本 steward 切片实现；施工入口是先冻结宫廷司祭任务的原生候选与最终合法性链，再补只读输入并在罗贝尔 paused snapshot 上验收。
 
 ## Exact-build 冻结
 

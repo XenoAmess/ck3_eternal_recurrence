@@ -1,5 +1,7 @@
 # R8：当前宗教 draft 基费的实际暂停帧只读观测
 
+2026-10-02 当前授权：宗教领域的深入研究、bridge/MCP、策略和实机验收已全面开放，此前暂缓规则已撤销。以下保留 1.20.0.2 的历史费用实证及其原有资格；授权本身不增加 live 或 OODA credit。当前版本施工入口仍是资源费用 provider/mailbox 的 exact-build 迁移，以及罗贝尔实际草案、最终合法性和动作后独立余额查询。
+
 2026-10-01，root 的 R8 实机 session 在 h98 真实 campaign 已有、可见的 Rite draft 窗口，通过 `ck3_query_player_religion_draft_resource_costs_v1` 取得完整十槽基费报价；未加载外部 fixture。当前资格是 **`production-live readonly primitive` 的实际 paused 基费报价原语**，`advertised=false`；本页只补记实际回包，不改变[原生基费树／provider](religion-reform12002-resource-costs.md)、旧费用七文件或其历史资格。
 
 这次观测读到 `4500` 虔诚基费，尚缺 `4344.5` 虔诚；窗口中的当前 draft 属于创建 Rite 或 Faith，不是编辑本人所领的当前 Rite。root 没有执行创建／编辑命令，`actual_debit_observed=false`、`post_action_net_resource_change_observed=false`。资源基费原语的 GREEN 不增加完整宗教 OODA、production-live loop 或 G2 credit，也不代表三项新宗教查询全部 ready。

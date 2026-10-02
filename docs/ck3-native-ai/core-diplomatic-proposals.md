@@ -25,7 +25,7 @@
 | `00_tributary_interactions.txt` | 148,926 | `CF783E658F91D0D2EAA532663B6137CE640B1039F00478B53E7F92E104B15DF0` |
 | `10_tgp_interactions.txt` | 266,725 | `D081DD47F856C4F62313BDD1512177BCA049EADCE224F274A8E635F851576822` |
 
-本专题不覆盖婚姻/订婚、缔盟/参战、宣战/停战。宗教继续按所有者要求暂缓；其他交互中出现的信仰修正只作为原生最终合法性/接受度的 opaque reason，不自行重写 faith/doctrine/tenet 逻辑。
+本专题既有 11 项互动证据不覆盖婚姻/订婚、缔盟/参战、宣战/停战。项目所有者于 2026-10-02 全面开放宗教研究与实现，原宗教暂缓已撤销；旧输入中尚未拆解的信仰修正仍如实保留为原生最终合法性/接受度的 opaque reason。需要该输入作策略判断时，下一施工入口是当前 exact-build 的具体 interaction definition、原生最终判定调用分支及 faith/rite、doctrine/tenet 等实际输入，补只读 bridge/MCP 与罗贝尔 paused 验收，再实现相应提案策略。不能将授权视为 observer/action/live 已完成；战争研究停止、执行 OFF 和罗贝尔唯一入口仍独立有效。
 
 ## 原版主动互动树
 

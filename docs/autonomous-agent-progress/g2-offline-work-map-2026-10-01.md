@@ -1,5 +1,9 @@
 # G2 八项里程碑：仍可后台施工的实际缺口
 
+2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、战争研究停止及执行OFF、玩家限定或最小化后台操作约束。
+
+后续施工入口：先沿[宗教整合](../ck3-native-ai/ck3-1.20.0.2-religion-integration.md)、[教义与Tenet](../ck3-native-ai/religion_doctrine12002_overview.md)和[改革](../ck3-native-ai/religion-reform12002-overview.md)的原生树与已有只读查询补齐当前exact-build输入；自然宗教事件按真实选项、作用域与效果接回事件消费者。Holy order等未闭合分支继续定位原生资格、成本、对象状态及结果查询，先交付只读bridge/MCP，再据罗贝尔paused材料设计和验证策略；旧版实机证据不自动继承。
+
 2026-10-01，Asia/Shanghai。用户追问八项 G2 是否已经完全没有不占实机的工作。本次四线程只读核对冻结主线 `0acff9b35f778de3d70ebb48816841986f692127` 的需求、生产源码与原生专题；未查询或操作 CK3、进程、pipe、桌面、Steam，也未重跑已 GREEN 的验证。
 
 **仍有可离线施工的工作。** 13:11 的交付已完成当批 LIFE／建设／FAMILY／campaign 状态／事件合同／JOINT 修复及文件准备；“现在确实只剩实机”不能作为整个 G2 的结论。下面是尚未移植或实现的生产能力，不把旧 primitive、既有消费者或只缺自然阳性的分支重新列为开发工作。里程碑分母仍为 **3/8**。
@@ -41,7 +45,7 @@
 - **Feast：** [Stage5 Start](../../ck3_autonomous_player/native_bridge/src/activity_feast_stage5_start_v1.cpp)及 [common commit](../../ck3_autonomous_player/native_bridge/include/xar_bridge/activity_feast_stage5_start_v1.hpp)仍锁旧 ABI。可迁移现有 owner／stage、location、final gate、四费用、guest join／arrival、hosted identity，再追原生完成／失效与收益口。formal Start consumer、value policy 与 following-turn 已存在；R0403 的 CanStart=false 负结果保持，不能造资格或把 Start 当成活动完成。见[既有 formal entry](../ck3-native-ai/activity-feast-stage5-start-formal-entry-1.19.0.6.md)。
 - **备选 Found Kingdom：** [现有内部路线](../ck3-native-ai/major-decision-found-kingdom-internal-route.md)第 44–63 行明确生产 precondition 身份/capture 未齐、postcondition capture 未实现。可补单一定义的新版 capture 并复用 DECISION8。M6 接受一项非宗教 decision **或** law，先交付已有法律路线，不同时展开两个新矩阵。
 
-一般宗教与 holy order 保持暂缓。以上均可以先完成原生树／ABI、provider、同一 MCP 与必要 fixture，最终最多 `static-ready`；完成生命周期与收益仍必须实机。
+本页初期范围曾暂缓一般宗教与 holy order，该限制已由2026-10-02全面开放授权撤销。宗教、holy order与以上其他工作均可先完成原生树／ABI、provider、同一 MCP 与必要 fixture，最终最多 `static-ready`；完成生命周期与收益仍必须实机。Holy order缺失的原生资格、成本、对象状态和结果查询是可继续施工入口，不能因旧禁令停工。
 
 ## 第四波：M7 的连续整局输入
 

@@ -18,9 +18,7 @@
 - [static-confirmed] `static-confirmed` 表示原版 `.info`/defines 直接声明，或 exact-build 反汇编闭合；
   `live-confirmed` 表示 production bridge 在真实 paused frame 中互证；`inference` 表示已证事实的策略解释；
   `unknown` 表示尚未闭合，Mermaid 中一律画成虚线。
-- [owner-deferred] 项目所有者在 2026-08-26 明确暂缓宗教/信仰专项。本篇只研究所有事件与人物互动共用的
-  引擎机制；在收到“可以开始宗教相关内容”的明确通知前，不追踪宗教事件、改宗、改革、教义、信条、热情或
-  圣战互动的内容树，也不把该域记为完成。
+- [authorized; implementation incomplete] 项目所有者 2026-10-02 已全面开放宗教/信仰研究与实现，撤销 2026-08-26 的暂缓要求。宗教事件、改宗、改革、教义、信条、热情、rite 与 holy order 均可沿本篇共用引擎入口继续施工；先落盘原生内容树与 exact-build 输入，再补只读查询和罗贝尔实机证据。授权不提升已有 readiness，也不改变罗贝尔唯一测试入口、战争执行开关或停止战争研究的要求。
 
 本文区分三件事，避免再把一个裸命令冒充完整能力：
 
@@ -833,7 +831,7 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
    除 `-1` 外的完整 signed int32，不得因 JSON 为负而拒绝；每次都验证原 pending ID 推进以及关键游戏状态后置条件，ACK 本身不算成功。
 6. [campaign OODA] 连续处理多个不同类别的通用事件/互动；语义缺失时必须返回 typed observation dependency，或使用本篇明确
    定义、完整记账且有生命周期后置验证的 blocker-removal fallback。不得退回 OCR、鼠标、前台窗口或未记录的“默认点第一个/
-   默认接受”。宗教专项 fixture 在 owner 解除暂缓前不进入矩阵。
+   默认接受”。宗教专项 fixture 已获 2026-10-02 全面授权，可以按 exact-build 原生树、实际只读输入与罗贝尔场景加入对应矩阵；fixture 通过不能替代自然生产闭环。
 
 ## 当前 exact 下一入口
 

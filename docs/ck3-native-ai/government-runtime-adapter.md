@@ -5,6 +5,13 @@ The 1.20.0.2 migration is documented in
 This page retains the legacy exact-build inputs and historical acceptance.
 The dual-build implementation preserves its legacy default profile.
 
+Current authority, 2026-10-02: the project owner has fully opened religion
+research and implementation, including faith, rite, doctrine, tenet, fervor,
+conversion, reform, clergy and holy orders. Earlier religion deferrals are
+superseded. This page retains its frozen 1.19.0.6 evidence; authorization adds
+no implemented government adapter or live qualification. Robert remains the
+only live test entry, and existing war execution switches remain unchanged.
+
 ## Status and scope
 
 - **[research / static-frozen]** This topic freezes the exact-build government identity reader, all 18 stock government definitions, their nonreligious native AI switches, and the runtime feature inputs needed to select a future G2 adapter.
@@ -15,7 +22,7 @@ The dual-build implementation preserves its legacy default profile.
   no bridge caller or mailbox permit slot invokes it yet. No public schema,
   planner, capability, or MCP surface changed.
 - **[not live]** CK3 was neither started nor attached. The evidence is executable and source-file analysis only.
-- Religion remains owner-deferred. `theocracy_government` and `holy_order_government` are retained as identity rows, while faith, doctrine, tenet, fervor, conversion, religious reformation, and holy-order mechanics are excluded.
+- `theocracy_government` and `holy_order_government` remain identity rows in this legacy implementation. Their mechanics and planner adapters are not implemented here; they are authorized work, with the concrete extension entry below.
 
 Machine-readable evidence and the portable verifier are:
 
@@ -147,8 +154,10 @@ The government schema supplies these defaults:
 | `use_great_projects` | false |
 
 `perform_religious_reformation=yes` is also a schema default. It is
-deliberately absent from the G2 contract because that policy belongs to the
-deferred religion domain.
+absent from this frozen G2 contract because the legacy observer did not
+implement that policy. The 2026-10-02 authorization removes the former reason
+for exclusion: the next religion adapter must freeze its current-build native
+AI evaluation and publish the actual reform inputs before adding a planner.
 
 The schema additionally exposes
 `ai_ruler_desired_kingdom_titles`,
@@ -180,8 +189,8 @@ research JSON. The adapter-facing summary is:
 | `meritocratic_government` | All Under Heaven | two title scripts | All Under Heaven adapter spec |
 | `japan_administrative_government` | All Under Heaven | defaults | All Under Heaven adapter spec |
 | `japan_feudal_government` | All Under Heaven | defaults | All Under Heaven adapter spec |
-| `theocracy_government` | none | identity only | owner-deferred religion |
-| `holy_order_government` | none | identity only | owner-deferred religion |
+| `theocracy_government` | none | identity only | mechanics / planner not implemented |
+| `holy_order_government` | none | identity only | mechanics / planner not implemented |
 
 `RARE_TASK_TICK` is `{180,720,360,180,180,180,180}` days by tier.
 That cadence explains when stock AI reevaluates rare tasks; it is not a
@@ -238,7 +247,7 @@ flowchart TD
     T -- "DLC family" --> G{"all required feature<br/>booleans true?"}
     G -- yes --> A["versioned adapter family<br/>spec only"]
     G -- no --> M["unavailable_feature_mismatch"]
-    T -. "theocracy / holy order" .-> X["owner-deferred religion"]
+    T -. "theocracy / holy order" .-> X["authorized research<br/>mechanics / planner not implemented"]
     A -. "policy matrix and live proof pending" .-> P["G2 planner consumer"]
 ```
 
@@ -265,9 +274,24 @@ double-observation gate and reject changed frame, character/root identity,
 government object, feature root, or set layout.
 
 Unknown runtime government keys return `unadapted_runtime_government` and
-preserve their identity. Religious identities return
-`owner_deferred_religious` without querying religion internals. These states
-do not lower G2 acceptance or masquerade as a supported adapter.
+preserve their identity. The frozen legacy observer emitted
+`owner_deferred_religious` for religious identities without querying religion
+internals. That spelling records the earlier implementation; from 2026-10-02
+it must not be interpreted as an owner prohibition or used to stop authorized
+religion work. An unimplemented mechanics adapter still cannot masquerade as
+a supported adapter.
+
+The concrete extension begins at
+[`government_runtime_adapter_observer_v1.cpp`](../../ck3_autonomous_player/native_bridge/src/government_runtime_adapter_observer_v1.cpp)
+and the existing collector source adapter. Freeze the current-build religious
+government key, native AI switches and feature/flag inputs; replace the obsolete
+owner-deferral verdict with the actual implementation status. Add the required
+religion observation to the existing private mailbox/transport, qualify it on
+Robert's paused current-build frame, then connect its usable inputs through
+[`ordinary_campaign_government_context_v1.py`](../../ck3_autonomous_player/src/xar_autoplayer/ordinary_campaign_government_context_v1.py)
+to the planner. Holy-order hiring/founding and clergy or reform decisions need
+their own native legality, costs and outcome observations. Recognizing all 18
+identity rows does not establish 18 playable government strategies.
 
 ## G2 boundary and next work
 

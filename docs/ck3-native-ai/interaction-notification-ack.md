@@ -8,8 +8,10 @@
 - [static-confirmed] 本文只冻结通用 `CPendingCharacterInteraction` notification 发现、只读查询和
   `CReplyCharacterInteractionCommand(reply=4)` acknowledge 路径。互动的 costs、exchange、effect preview 和
   generic target typed payload 不在 ACK 合法性内，也不因通知可关闭而变成已知语义。
-- [owner-deferred] 宗教、信仰、教义、信条、热情、改宗、改革与圣战语义继续保持 opaque compatibility；本文没有读取、
-  分类或实现任何宗教专用分支。
+- [historical-coverage] 本文冻结证据没有读取、分类或实现宗教专用分支；这些语义在旧查询中保持 opaque compatibility。
+- [current-authority 2026-10-02] 宗教、信仰、教义、信条、热情、改宗、改革、圣战与教团研究和实现已全面授权，
+  原宗教暂缓撤销。尚未观测的分支需按当前构建补原生定义、最终判定与只读 bridge/MCP，不因通用 ACK 成功
+  冒称宗教效果已知。战争研究停止、执行 OFF 和罗贝尔唯一入口仍独立有效。
 - [implementation-confirmed] production bridge 的普通 accept/reject 行为保持不变；新增能力只让已经自动结算、
   `+0x5C6 != 0` 的本地通知可被发现、typed query 和严格 ACK。它不是通用 reply/mutator 入口。
 - [live-confirmed fixture-scoped] 非宗教 definition-only fixture 已以非负 full ID `738197506` 完成 fresh-cold
@@ -166,4 +168,6 @@ flowchart TD
   ordinary route `0/2` fixture替代。
 - [unknown] 多个同时本地 pending 的原生 UI 展示/优先级 tie-break 尚未单独闭合；当前 bridge 与原生 pending-ID vector/slot
   迭代都保持稳定先见顺序，不据此声称 UI 排序策略。
-- [owner-deferred] 宗教专项 interaction 不进入上述 fixture 矩阵；解除暂缓前只保留通用 opaque 行为。
+- [not-implemented] 宗教专项 interaction 尚不由上述历史 fixture 矩阵验证。现已获全面授权；下一入口是当前
+  exact-build 的具体 definition、notification materializer 和原生最终判定，补 typed context/effect 查询后，在
+  罗贝尔自然通知中验证 ACK 与实际结果，分别报告通道闭环和宗教玩法 readiness。

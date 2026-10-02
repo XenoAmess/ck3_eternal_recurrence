@@ -1,5 +1,7 @@
 # CK3 原生决策树文档覆盖盘点（2026-09-22）
 
+2026-10-02 授权覆盖注记：本审计保留 2026-09-22 的覆盖、source pin 和能力事实。项目所有者现已全面开放宗教研究与实现；当时的暂缓及圣战/婚姻窄例外不再约束当前施工。授权不增加覆盖数或 live/readiness，也不改变罗贝尔唯一测试入口、战争执行开关和停止战争研究的要求。
+
 本次盘点基于任务开始时 fetch 得到的远端 `master`：
 `0d7d4af1012127b10ace350582ee220d986dd418`（提交时间 2026-09-22 17:23:59 +08:00）。
 独立 detached worktree 为 `D:/workspace/ck3_native_tree_docs_audit_20260922`。
@@ -161,7 +163,7 @@ print(len(blob), hashlib.sha256(blob).hexdigest())
 | 交友结局 | 1/1 | [befriend_outcome.0002](befriend-outcome-0002.md)：success/failure 投影；success R861 有压力/事件/下一 turn/checkpoint，failure 尚有独立缺口 |
 | 叛乱参战来信 | 1/1 | [char_interaction.0232](char-interaction-0232-rebel-war-call.md)：三个 caller、参战/拒绝与好感；完整战争后果不在这个切片内 |
 | 科举家族通知 | 1/1 | [imperial_examination.7100](imperial-examination-family-notice.md)：殿试/会试/落榜优先级、scope 与选项；三种投影没有全部 live |
-| 历史宗教通知 | 1/1 | [fervor.1002](fervor-1002.md)：只列旧专题存在，宗教专项继续暂缓 |
+| 历史宗教通知 | 1/1 | [fervor.1002](fervor-1002.md)：只列旧专题存在；2026-09-22 审计时宗教专项暂缓，2026-10-02 全面授权已撤销该限制，原覆盖计数不变 |
 
 ## 尚未建成通用原生 AI 树的范围
 
@@ -172,7 +174,7 @@ print(len(blob), hashlib.sha256(blob).hexdigest())
 - 旅行路线/随从/危险与返程：活动与具体旅行事件已有切片，不能等同整条旅行规划树。
 - 各政府、无地冒险者、摄政/共治、劫掠等专门战略：有参数、军队任务和接口切片，尚不能计完整专属树。
 - 全局长期目标与跨域资源调度：现有 `player-counterpolicy`、G2 与各类 utility 文档是我方策略，不是完整原生总规划器。
-- 通用宗教、改宗/改革、教义/信条/热情与 holy order：**owner-deferred**。历史事件记录及战争/婚姻的最小例外不代表解除暂缓，也不计完成。
+- 通用宗教、改宗/改革、教义/信条/热情与 holy order：2026-09-22 审计时为 **owner-deferred**；2026-10-02 已全面授权研究与实现，旧窄例外限制已撤销。此历史审计没有证明完整能力，原覆盖计数不变；后续从各域 exact-build 原生决策树、只读输入和罗贝尔 paused snapshot 继续施工。
 
 `campaign-root-context`、DLC manifest、entity directory、GUI locator、存读档、loader/bridge、
 `zhongguo-*` 产品验收等文档各有用途，但不单独计成原生 AI 决策树。

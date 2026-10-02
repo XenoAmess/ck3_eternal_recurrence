@@ -1289,9 +1289,7 @@ planner 使用，但不得宣称完整复现原版入围概率。
 | `native_affordable_now`, `native_budget_allowed_now`, `budget_block_reason` | 区分钱不够、原生储备不允许与其他合法性失败 |
 | `row_ready` | identity、合法性、score、cost、queue 均 ready 时才为 true |
 
-宗教建筑不被假删。其 building key、piety cost、最终 native legality、最终 `ai_value` 与 opaque reason 可以进入合同；
-faith、doctrine、tenet、fervor、改宗和 holy-order 细节不进入 schema。`ai_pious_building_preference_modifier` 的内部输入也不展开，
-只消费最终分。这满足当前圣战/婚姻以外通用宗教域继续暂缓的项目边界。
+宗教建筑不被假删。既有合同可消费 building key、piety cost、最终 native legality、最终 `ai_value` 与 opaque reason；当前 schema 尚未发布 faith、doctrine、tenet、fervor、改宗和 holy-order 细节，`ai_pious_building_preference_modifier` 仍只消费最终分。项目所有者 2026-10-02 已全面开放该域，以上是实现边界，不能作为拒绝研究或扩充的理由。若建筑选择实际依赖缺失输入，应先沿该原生 modifier/最终合法性链冻结所需字段、补只读观测，并由罗贝尔 paused snapshot 验收后接策略；授权不代表这些字段或建筑动作已经完成。
 
 ### Readiness
 

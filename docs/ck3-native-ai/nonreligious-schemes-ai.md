@@ -12,8 +12,7 @@
    再接入 start preview 和动作。当前只达到 **static-ready**，没有启动、attach 或操纵 CK3，也没有 production paused
    snapshot；本文不能被引用为 production-live。
 
-本篇只研究 character/title 等非宗教目标。faith-targeted scheme、改宗、宗教改革、doctrine、tenet、fervor 与 holy order
-继续保持 owner-deferred。原版通用结构和 GUI 中出现 `faith` target union 仅作为类型边界记录，不构成宗教域研究或完成。
+本篇现有证据覆盖 character/title 等非宗教目标。项目所有者已于 2026-10-02 全面开放 faith-targeted scheme、改宗、宗教改革、doctrine、tenet、fervor 与 holy order 的研究与实现。原版通用结构和 GUI 中出现 `faith` target union 仍只证明类型边界，不代表这些能力已实现；新增施工应从对应 faith 目标的原生候选、最终合法性和效果查询链开始，补只读观测后再接策略与罗贝尔实机验收。
 
 机器可读证据与聚焦 verifier：
 

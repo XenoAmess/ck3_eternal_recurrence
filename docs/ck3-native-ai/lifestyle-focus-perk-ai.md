@@ -851,7 +851,7 @@ flowchart LR
 | 学识 / scholarship | `:751-786` | 无额外人格乘数 | learning +3，development growth +15% |
 | 学识 / theology | `:788-836` | `×5` zealous，`×0` cynical | religious-head opinion +10，learning +2，monthly piety +1 |
 
-宗教重心只是为了完整记录原版候选；本项目的宗教域仍明确暂缓，当前治理 planner 不研究或选择 theology。
+项目所有者已于 2026-10-02 全面开放宗教研究与实现，theology 可以进入后续治理策略施工。上表仍只证明冻结原版候选与 authored 权重，当前 planner 尚未完成该重心的选择闭环；应沿 theology 原生候选与选择链补足当前角色所需输入、最终合法性和收益观测，再在罗贝尔 paused snapshot 上接入并验收。
 
 ### 技能候选、父图和评分
 

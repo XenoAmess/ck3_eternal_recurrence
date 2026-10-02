@@ -2,7 +2,7 @@
 
 2026-10-01，状态 **static-ready**。现有专用消费者可以复用，**不需要生产代码修改**。本次只读取冻结原版脚本、旧版对照及当前消费者，运行一次窄源码提取和 current-build stress profile probe；没有 CK3、命名管道、桌面、动作或新实机证据。[旧版 R0092 专题](epidemic-events-5007-herbalist-accusation.md)保留原资格，自然事件 material RED 仍 OPEN。
 
-项目所有者已经恢复宗教研究授权。本包记录事件所需的 Rite 条件及 fulfillment 变化，不把历史迁移账本中的 `owner-deferred` 文字当作现行研究限制，也不展开转换、改革或其他宗教策略。
+项目所有者 2026-10-02 已全面开放宗教研究与实现。此历史源码包记录事件所需的 Rite 条件及 fulfillment 变化，保留原 `static-ready` 边界；转换、改革或其他宗教策略尚未由此包实现，后续可从各自原生最终判定与只读查询链施工。历史迁移账本中的 `owner-deferred` 文字不再构成现行限制。
 
 ## Exact build 与源码身份
 

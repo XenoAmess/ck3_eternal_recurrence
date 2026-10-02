@@ -20,7 +20,10 @@
 - [contract boundary] pending full ID 是完整 generation-bearing signed int32；仅 `-1` 是 invalid sentinel，`0` 结构合法但
   尚无 live 样本。generation byte 令 bit 31 置位时 JSON 数值会为负，bridge 仍必须原样保留。Attempt 8 的实值
   `738197506` 为非负数，所以该 GREEN 不覆盖 signed-negative ID。
-- [owner-deferred] 不读取或实现 faith、doctrine、tenet、fervor、conversion、reformation、holy-war 等宗教专用语义。
+- [historical-coverage] 本夹具当时未读取或实现 faith、doctrine、tenet、fervor、conversion、reformation、holy-war
+  等宗教专用语义，Attempt 8 的证据范围保持不变。项目所有者于 2026-10-02 已全面开放宗教研究与实现，
+  原暂缓限制撤销；尚未覆盖的宗教分支可沿当前构建补原生树、bridge/MCP 和实机结果。罗贝尔唯一入口、
+  战争研究停止及战争执行 OFF 仍独立有效，本授权不增加旧夹具的 readiness。
 
 ## 原生生成、持久化与清理树
 
@@ -269,4 +272,6 @@ source commit、fixture key/角色/definition hash、日志摘录及 cleanup inv
 - [live-pending] 自然 stock 非宗教 notification 的 campaign 出现矩阵仍缺；fixture 证明 generic native channel，不能冒充
   某个 stock interaction 的玩法条款或原生 AI 选择。
 - [unknown] route kind `1` intermediary notification 不由本 fixture 代替，需独立 fixture。
-- [owner-deferred] 宗教专用 interaction 不进入本矩阵。
+- [not-implemented] 宗教专用 interaction 未由本历史矩阵验证。新施工入口是当前 exact-build 的 concrete
+  definition、auto-accept/notification materializer 与原生最终结果，再补 typed query，在罗贝尔自然宗教通知
+  上验证发现、ACK、旧 full ID 消失与宗教实际结果；不得用旧非宗教夹具替代该验收。

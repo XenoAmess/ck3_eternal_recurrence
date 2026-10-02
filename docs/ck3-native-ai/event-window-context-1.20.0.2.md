@@ -43,7 +43,7 @@ CEventWindowData 的实例 ID `+0x00`、option vector `+0x10/+0x18/+0x1C` 保持
 {"kind":"stress_and_fulfillment","direction":"increase","secondary_direction":"decrease","magnitude":{"status":"unavailable"},"affected_by_trait":true,"critical":true}
 ```
 
-此项只搬运窗口已经物化的 indicator。没有展开 spiritual fulfillment 的宗教机制、宗教策略或其他 owner-deferred 域。indicator 的 coverage 为 `played-character-event-icon-indicators-1.20.0.2-v1`；`complete_effect_set=false`。图标没有数值幅度或完整效果信号，因此 `effect_preview_ready=false`、`semantic_decision_ready=false`，不会把显示摘要当作完整效果预测。
+此项只搬运窗口已经物化的 indicator，尚未实现 spiritual fulfillment 的完整数值观测或宗教策略。项目所有者 2026-10-02 已全面授权这些领域；后续入口是原生 fulfillment 状态与当前 Rite/trait 判定链的只读输出，并在罗贝尔 paused snapshot 上互证，不能由现有图标推断完整效果。indicator 的 coverage 为 `played-character-event-icon-indicators-1.20.0.2-v1`；`complete_effect_set=false`。图标没有数值幅度或完整效果信号，因此 `effect_preview_ready=false`、`semantic_decision_ready=false`，不会把显示摘要当作完整效果预测。
 
 ## Definition identity 与 root/saved scopes
 

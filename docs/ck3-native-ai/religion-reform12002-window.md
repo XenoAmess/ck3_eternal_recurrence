@@ -1,5 +1,7 @@
 # 1.20.0.2 当前 Rite 创建草案窗口：只读来源
 
+2026-10-02 当前授权：宗教创建、改革及其原生 AI、只读观测、策略和实机验收均已开放，此前宗教暂缓不再生效。本文保留 1.20.0.2 的窗口 ABI 和静态资格；新版本入口是 `religion_reform12002_window` 的 exact-build 根链/窗口字段迁移，再接同一 MCP owner callback 与实际草案查询。窗口 positive 场景和后续动作由罗贝尔唯一测试入口验收，授权不代表已有 headless 创建或完整改革循环。
+
 状态为 **static-ready library**；无 CK3 进程、UI、pipe 或 Steam 操作，无 paused/live artifact。项目所有者已恢复宗教研究，并停止战争研究。本包为[创建与改革](religion-reform12002-overview.md)的费用、候选和最终门提供**实际现存且可见的当前玩家草案**，不创建草案，不打开窗口，也不执行宗教命令。
 
 冻结为 CK3 1.20.0.2 Crozier / Steam25588574，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。
