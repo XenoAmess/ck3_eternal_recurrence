@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 06:51 3393日／resume240：NW-LIFE完成，NW2/4
+
+2026-10-03T06:51:32+08:00 Asia/Shanghai真实补录，按 **full/save4299** 的已closed截点一次收账：较上个3343阶段新保存 **50日＝10＋12＋9＋19**，原Robert累计 **3393/36524**，resume **240新增保存日**，10-03 **145保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`，typed dynasty_continuity reconciled_successions **0** 独立列。G2仍 **5/8＝62.5%**；按原NW-LIFE合同owner已qualified complete，NW由1/4升 **2/4＝50%**（LIFE＋原FAMILY）。整体M4未因此完成，global M2/M5/NW-FAMILY原complete保持，机器percent_reporting_allowed=false不改变。后继新的保存窗另queue，不覆写本4299截点。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。full/save4299/raw53225760；saveSHA841f15b9eadf5f90b2a804a043396c7d711ea3da5f58625f2b5b1a3476277473 / driverSHA7452d1acbf5adb8192cc081f09054fa12710d57c05173a9ec7ac5e12d39df951，native/source/env1bb-v26/new15592。
+
+Tax Man一次真实submit→独立owned/点数材料→正常next保存10日→v26同action freshowned/points冷读，原timely LIFE合同已complete，不是旧centralization历史回执。Cold XP131.25真实、PythonPUBLIC2/native3与DTOpublic3/proof3分开，历史intent/pending markers2不是native发送2。整体M4与G2不自动完成；性能semantic替换有真实loop，snapshot41→28属条件不同的观测而非控制提速。Holyloan已有真实quote300，但decision_evaluation_unavailable仍capabilityRED，其余默认false/cost0/债务null不当actualeligibility；全宗教不等整体OODA。下一+33另queue，不改本4299截点。
+
 ## 10-03 05:46 4279闭包3343日／resume190：v25新readonly与宴会材料
 
 2026-10-03T05:46:08+08:00 Asia/Shanghai真实补录，以 **full/save4279** 为本阶段闭包截点：新保存 **39日＝v24后继16日＋v25正常12日＋新短窗11日**，原Robert累计 **3343/36524**、resume **190新增保存日**、10-03 **95保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`，typed dynasty_continuity reconciled_successions **0** 独立列。G2 **5/8＝62.5%**、NW **1/4＝25%**及global M2/M5/NW-FAMILY complete保持；readonly和子项完整材料不自动升级全局整项。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。full/save4279/raw53224560；saveSHAd3832baa019a223781949b4e57f3f9b5bf1bea6bfa9820d8477f8b0915158665 / driverSHA7638a63acef8355acbc7d0e4d85046e1f61da569a89426f122d0056b0081bcc2。Python a588/nativef9-v25、新PID95636，前3304中央文档已public2e0d3c9d；4276四回合性能与后继4279单回合timer样本严格分列。

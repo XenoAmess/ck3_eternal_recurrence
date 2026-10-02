@@ -18,7 +18,8 @@
 
 ```mermaid
 flowchart TD
-  A[paused ordinary nonwar planner] --> B[succession preparation: fresh root query]
+  A[paused ordinary nonwar planner] --> R[query caller identity: semantic frames, actual 1b75]
+  R --> B[succession preparation: fresh root query]
   B --> C[successful full result recorded in native command history]
   C --> D[choose existing ordinary action and time horizon]
   D --> E[government and council final gates: fresh domain queries]
@@ -116,4 +117,25 @@ query 的 inclusive timer 包含其内部 snapshot，不能与表中读取时间
 
 四个生产源路径只替换上述只读 caller 的帧读取，另在既有 Sway transport 测试文件增加一个 focused case。必要源行已确认这些 caller 只消费角色、日期、revision、资源/状态与 provenance，不使用完整 history。真实生产 Sway/LIFE/Family query 函数与未修改的 internal reader 通过同一个离线 transport 回放：完整 snapshot 调用合计 **7 → 0**，返回值与 wire 请求一致，64 条历史记录完整保留；缺少 internal 接口的旧 fake driver 仍走 7 次原读取。冻结前源码对照也一致，唯一用例 **1 passed in 2.95s**。
 
-NativeDriver 的 root/Council 三处读取本轮以源码字段证明为边界，未扩大成其动态请求数验收。补丁为 **static-ready**；公开 snapshot、完整 history 生产/持久化与 expected revision 保持原样。统一源码和测试 pins、focused receipt 见 `performance-v24-normal16/semantic-query-readers/ROOT-DELIVERY.json`；下一轮 ROOT 的短 ordinary continuation 将确认实际完整 snapshot 次数与秒数，目前不声称 67.609% 的实测成本都会消失。
+NativeDriver 的 root/Council 三处读取在该 focused receipt 中以源码字段证明为边界，未扩大成其动态请求数验收。当时补丁为 **static-ready**；公开 snapshot、完整 history 生产/持久化与 expected revision 保持原样。统一源码和测试 pins、focused receipt 见 `performance-v24-normal16/semantic-query-readers/ROOT-DELIVERY.json`。后续真实运行如下。
+
+## 公开 1b75：semantic caller 进入普通游玩实机循环
+
+ROOT 已发布 Python `1b75a2dee8700ec0b0aeb60f0d464290b6385531`，native/environment 仍为 f9、PID 95636。`m7-robert/v25-1b75-semantic-readers-normal4-01` 已 CLOSED GREEN：一个 formal `life-advance` 实际推进 **9 天**、无 modal，actor **29829**，日期 **53225088 → 53225304**，最后暂停。该补丁进入 **production-live loop：普通规划只读帧读取 → 决策 → 推进 → 验证/保存**。
+
+| 同一计时接口 | a588：1 回合、11 天 | 1b75：1 回合、9 天 |
+| --- | ---: | ---: |
+| 方法测量窗口 | 38.164128 秒 | 24.134514 秒 |
+| 完整 `take_snapshot` 次数 | 41 | 28 |
+| 完整 snapshot inclusive 耗时 | 25.8024 秒 | 13.563905 秒 |
+| internal semantic reader 次数 / 耗时 | 62 / 0.08170 秒 | 60 / 0.081577 秒 |
+| formal planning | 28.129359 秒 | 17.127293 秒 |
+| formal service | 29.388833 秒 | 18.270936 秒 |
+
+完整 snapshot 观测少 **13 次（31.707%）**，其 inclusive 耗时低 **47.432%**；方法测量窗口低 **36.761%**。两份样本使用同一 native/environment/PID，但 Python、日期、revision、既有 receipt 状态和实际推进长度不同，不是控制试验，不能把全部秒数差或全部 13 次减少单独归因于十处 caller 替换。查询 timer 嵌套包含 snapshot，仍不能相加。当前完整 snapshot 仍占测窗 **56.201%**，并未全部消失。
+
+本回合五个相关 production query 都实际执行一次：root **1.30488 秒**，Council **0.048624 秒**，LIFE **0.017053 秒**，Family **0.032860 秒**，Sway **0.036159 秒**。未修改的 government 查询为 **4.247186 秒**。planning 占 formal **93.7406%**，dispatch/verification 为 **1.141961 秒**；33 次外置写入合计 **0.024120 秒**，同样与其他计时重叠。这些是本次实际总调用计时，未增加各 caller 内部子阶段计时或进一步修改源码。
+
+正式 plan 正常消费既有 `tax_man_perk` receipt：`post_target_perk_owned=true`、`postcondition_verified=true`，仍为 `stewardship_wealth_focus`；该 receipt 原验证日期为 **53224560**，本轮 LIFE 决策为 `no_legal_minimum`，未新选 perk。本证据证明已应用 receipt 的继续消费，不代替本轮独立 fresh Taxman 状态查询。
+
+真实 checkpoint history 与完整 driver history 都为 **4292**，producer 标记 history preserved；外部前/后帧继续省略 transcript，分别保留总数 **4289 / 4291**。保存为 **87,015,203 B**、SHA-256 `e663d7574101c940bf9c440e54ec6a0bbc911354279c781e33fe4b74e8e40e58`；完整 driver 为 **51,488,670 B**、SHA-256 `ad7f98c6055e57a4523410909899d861682be7a409a525102c4746e7d1f3c8c2`。一次有限 readout 及四份 actual 输入 pins 见 `performance-v24-normal16/actual-1b75-semantic-readers/REPORT-FIELDS.json`（SHA-256 `8c4c1471488ea698324715d7f0b87b1d8edd9eab7ddc7f3b48bc1d381eaa2bd5`）。ROOT 当前真实总进度 **3374 天**；本分析不另加这 9 天、不增加政府资格，也不表示完整 G2。

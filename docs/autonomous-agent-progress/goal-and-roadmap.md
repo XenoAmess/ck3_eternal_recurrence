@@ -1,5 +1,15 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 10-03 06:51 及时技能原合同闭合，NW进至2/4
+
+2026-10-03T06:51:32+08:00 Asia/Shanghai真实补录，按 **full/save4299** 的已closed截点一次收账：较上个3343阶段新保存 **50日＝10＋12＋9＋19**，原Robert累计 **3393/36524**，resume **240新增保存日**，10-03 **145保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`，typed dynasty_continuity reconciled_successions **0** 独立列。G2仍 **5/8＝62.5%**；按原NW-LIFE合同owner已qualified complete，NW由1/4升 **2/4＝50%**（LIFE＋原FAMILY）。整体M4未因此完成，global M2/M5/NW-FAMILY原complete保持，机器percent_reporting_allowed=false不改变。后继新的保存窗另queue，不覆写本4299截点。
+
+原NW-LIFE timely lifestyle focus and perk consumption合同owner最终qualified complete，readiness为该单perk窄production-live loop。真实税务专家 `tax_man_perk` / action `life-perk-cd2744b39fca4bc2b0142031aadb54da`：在原normal可用点机会native19/PUBLIC2/raw53224560，XP1100、unused1/used7/owned20与nativefinallegal row后只发送一次；独立native20/PUBLIC3 applied/verified/ownedtrue，XP100、unused0/used8/owned21，仅TaxMan新增；同action正式following保存10日到4286。v26新PID15592同episode/date53225304 fresh query available/ready/ownedTaxMantrue，wealth focus、unused0/used8/owned21，XP当前131.25；PythonPUBLIC2/native3与DTOpublic3/proof3分开。fresh NativeDriver query1，registered capture calls0只表示bookkeeping；历史intent与pending两markers不等于两次native发送，本次cold无submit/重放。冷后最后两正式回合继续消费原applied/verified/owned receipt，actual8＋11日保存到4299，raw53225760/PUBLIC9/native11。原合同normal once→warm material→following/save→newPID cold材料齐；只更新既有NW-LIFE原行complete，不增warming枚举、正常天数或收入门槛，不使wholeM4/G2或two-year目标完成。[原合同timely LIFE完整实际字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-lifestyle/v26-actual-tax-man-cold-01/REPORT-FIELDS.json)。
+
+本阶段最新save **87,142,531B / SHA `841f15b9eadf5f90b2a804a043396c7d711ea3da5f58625f2b5b1a3476277473`**，driver **51,547,517B / SHA `7452d1acbf5adb8192cc081f09054fa12710d57c05173a9ec7ac5e12d39df951`**，4299/raw53225760，最终paused。当前native/env/source **1bb3eee96e00216464e8269ec5153c60b22aca43 / v26 / newPID15592**；此前v25 sourcePython a588/1b75、nativef9的31日与本v26的19日分别绑定，不能把编译头倒填为旧实际源码。
+
+原NW-LIFE **timely lifestyle focus and perk consumption**沿现有normal consumer在真实可用点时只消费一次、独立原生point/owned材料、成功following后保存与新PID冷query闭合，按原contract升complete；没有warming枚举、额外收入门或新policy。G2-M4还包括其它原可见结果，不由此单包升complete。Current v26普通goal/六ledgercold后19日正式保存有真实4goal/gov plans，自然继承仍0。[机器状态](g2-requirements-v1.json)本次只更新NW-LIFE原行及completed_packages2，原8项visible outcomes/5of8/percentfalse与其他NW状态保持；详情见[日报](daily/2026-10-03.md)。下一沿最新配对与原TaxMan已applied ledger继续正常消费，不重发技能动作；NW-LIFE原合同完成后不再加warming枚举或收入测量门槛。经济仍按实际readonly输入与budget/action门接续、Sway原方案与M6原其它结果继续；Holy loan仅最小有实证的decision ABI修复待新strict/实际结果。新的+33正常窗另queue，本阶段以3393/4299闭包立即发布，不等v27或新研究。
+
 ## 10-03 05:46 三个新readonly值、原活动结果与正常39日闭包
 
 2026-10-03T05:46:08+08:00 Asia/Shanghai真实补录，以 **full/save4279** 为本阶段闭包截点：新保存 **39日＝v24后继16日＋v25正常12日＋新短窗11日**，原Robert累计 **3343/36524**、resume **190新增保存日**、10-03 **95保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`，typed dynasty_continuity reconciled_successions **0** 独立列。G2 **5/8＝62.5%**、NW **1/4＝25%**及global M2/M5/NW-FAMILY complete保持；readonly和子项完整材料不自动升级全局整项。

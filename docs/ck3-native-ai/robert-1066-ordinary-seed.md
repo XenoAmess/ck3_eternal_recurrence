@@ -619,3 +619,60 @@ from cached compact fields using `command_history_length`. No cold, normal or
 live query was repeated for that documentation fix. This delivery did not
 read current state or pending SDK directories, rewrite gameplay data or run
 tests/Git.
+
+## Actual v26 cold and nineteen saved normal days, 2026-10-03
+
+The v26 actual root-owned qualified cold baseline is GREEN at new GAME15592,
+replacing GAME95636. Robert29829 is alive and paused/map-ready at raw53225304,
+with the original episode and saved `dynasty_continuity` goal. Full4294/
+saveanchor4293, all six production ledger pins and ten opaque carried streams
+are preserved through the official independent-profile path. The cold source
+checkpoint is87,015,203 bytes/SHA-256 `e83cda5ffc51bf043d02ed45d0c7b912adc471d51780b21f5db5d8d07b3c409e`. This baseline
+adds0 natural days or qualification slots; its government query and next
+planner are intentionally skipped.
+
+Public runtime, native metadata and actual compiler source are
+`1bb3eee96e00216464e8269ec5153c60b22aca43`, with new environment
+`b554570173119d39f56d8a3e0dfa2c05fd21c4d4425ab771a18b33905c346adf`. The actual DLL is
+8,117,248 bytes/SHA-256 `5bfd1cb73e048c91187cd446b4b29c4f17c6b084cf22b6d07a83d7a55636d904`. The following same-PID normal
+window uses that qualified source/native/environment; it is not a new seed
+or replay of a pending submission.
+
+The requested16-day window closed `normal-time-target-reached` with
+19 actual saved days across4
+formal turns and0 natural modals,
+raw53225304→53225760, ending paused.
+Its actual returned plans contain4 saved campaign-goal contexts
+and4 observed government contexts, followed by successful
+normal execution. Goal origin/current remain29829, with
+`reconciled_successions=0` and
+`last_succession=null`.
+The saved pair is h4299/full4299:
+checkpoint87,142,531 bytes/SHA-256 `841f15b9eadf5f90b2a804a043396c7d711ea3da5f58625f2b5b1a3476277473`, driver
+51,547,517 bytes/SHA-256 `7452d1acbf5adb8192cc081f09054fa12710d57c05173a9ec7ac5e12d39df951`. Robert is now3393/36524,
+this iteration240 saved days; the current day03 stage has145 saved days.
+Requested16 is not substituted for observed19, and no natural succession or
+new M7 matrix identity is credited.
+
+One existing-driver cold lifestyle query on the actual native:3 frame confirms
+`tax_man_perk` owned for this Robert, with formal precondition `ready`,
+stewardship wealth focus,0 unspent perk points,8 used stewardship points and21
+owned perks. This is a fresh owned-state primitive, separated from the
+historical ledger receipt; no perk was newly submitted or credited again.
+Its legal-focus-candidate readiness remains false, so the owned query is not
+promoted to an available focus-change action. Root also reports that v26 now
+observes Holy Loan amount300, while the decision reader remains capability
+RED. The planned v27 void-getter repair is static work and does not establish
+current debt, decision legality or a complete religion loop.
+
+Cold evidence is
+`m7-robert/robert-mainline-v26-current-review-01/actual-candidate-cold-goal-01/result.json`;
+its already-frozen compact fields are
+`m7-robert/V26-CURRENT-COLD-REPORT-FIELDS-01.json`. The normal close is
+`m7-robert/v26-holy-life-following-normal16-01/result.json`, summarized once in
+`m7-robert/v26-holy-life-normal16-stage-fields-01.json`. The fresh lifestyle
+material is `m4-lifestyle/v26-actual-tax-man-cold-01/life/summary.json`.
+Delivery pins and actual normal plan contexts are in
+`m7-robert/V26-CURRENT-COLD-NORMAL-REPORT-FIELDS-01.json`. This update used
+cached cold fields and new closed summaries; it did not reread old cold raw,
+access current state/SDK or rerun gameplay/tests/Git. M7 remains `in_progress`.
