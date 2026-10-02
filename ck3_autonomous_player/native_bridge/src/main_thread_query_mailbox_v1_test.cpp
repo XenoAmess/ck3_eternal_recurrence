@@ -2249,8 +2249,10 @@ bool TestSourceContract(int argc, char **argv) {
   // The stale-revision branch must precede every route snapshot/native call,
   // and a second worker snapshot must bind the main-thread result back to the
   // same published revision before serialization.
+  // The worker route is the final occurrence; an earlier pure classifier also
+  // recognizes the prefix and must not become the start of this ordering check.
   const auto route_handler =
-      bridge.find("kRouteContactHorizonV1StepPrefix");
+      bridge.rfind("kRouteContactHorizonV1StepPrefix");
   const auto route_revision_parse = bridge.find(
       "ParseRouteContactExpectedRevisionV1", route_handler);
   const auto route_revision_gate = bridge.find(
