@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+## 00:18 午夜收口与2026-10-03早会入口
+
+2026-10-03 00:18:16 Asia/Shanghai已按自然日午夜截止正式 [收口10-02日报](daily/2026-10-02.md)，并立即以真实时间召开 [10-03早会](meetings/daily/2026-10-03.md)；[W40周报](weekly/2026-W40.md)仍滚动，周正式截止为10-05 00:00。Opening Robert3248/36524/本resume95新日、raw53222280/fullsave4130，typedgoal0successions另列；G24/8、NW1/4未变。全部宗教研究开放，旧dated限制已撤销；原13 rite_growth.0010/PREfulfillment0尚未选，后置归10-03。Publiccode6443/nativeactual4ee-v20分别记录；6443CI00:00:33文案规则RED是新日开场，不回填10-02或当宗教功能失败。本次四文档新增publication待root正常commit/push。
+
 ## 23:33 Robert v20冷恢复、健康材料及正式新增6日：累计3248天
 
 2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
