@@ -142,6 +142,32 @@ flowchart TD
     MCP["[unknown] MCP paused-frame title/vassal postcondition query"] -.-> P
 ```
 
+## 2026-10-02：1.20.0.3 实际收到转封提案与拒绝续行
+
+本段是新版增量，保留上文 1.19.0.6 的研究和未回复 RED。当前 exact build 为 CK3 `1.20.0.3 (Crozier)` / Steam `25652598`，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。根执行者的 `murchad-v14-cold-material-01/016-ck3_query_pending_character_interaction_context_v1.json` 真实读出 `grant_vassal_interaction`、hash `1006648858`、ordinal `296`，发起者 `32718` → 玩家接收者 `31853`，拟转封臣 `31506`。原负数完整 ID `-721420283` 在 V13 被读取器错误的 `<=0` 判断拒绝；V14 修复后可读，相关 [pending 原生专题](pending-character-interaction-context-1.20.0.2.md#v14负完整-id-的生产查询恢复) 区分源码与实际查询认证。
+
+当前 stock `common/character_interactions/00_vassal_interactions.txt` SHA-256 `B0F81CF740B6DBF42952D9A08703BA75E23D6918DD44F4D8E9999F11695B3A20`：`193–200` 仅对 AI recipient 自动接受；`245–256` 在接受时原子转封；`421–434` 的拒绝分支给 `puppet_or_actor` 触发 `char_interaction.0211`，并调用条件性 clan unity loss，没有 authored `change_liege`。当前 `events/interaction_events/character_interaction_events.txt` SHA-256 `46D0E436BBB9694E60E46C0C1C5EBC3AE1C14AFA041A8B8CD9548BD5C3836C69`，`1594–1609` 的 `.0211` 是唯一空效果选项的拒绝信件。只读 stock 摘录和 pins 保存在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v14-pending-interaction-query/`；没有扩展发起者 AI 候选评分或特殊制度研究。
+
+本帧为 direct recipient 普通回复，target 合法 absent、零发送选项、secondary recipient/intermediary 均 `-1`；同帧原生 reject 合法，剩余 `57/60` 天，actor 已发送的十项费用均为零。structured exchange/effect preview 仍 unavailable，不把它们解释为无副作用。既有 `grant-vassal-reject-only-v1` 已有 R0084 的普通生产先例：typed 拒绝负完整 ID `-1023410174`，独立 pending 变 null，下一 turn 消费；冻结依据为 `Z:/ck3_mod_rewrite_process_assets/g2-first-1066-r0084-focused-noevent-green-20260922/evidence-manifest.json`，不能把该历史结果当本次 `.3` 动作。
+
+本次最小正常续行是 root 通过现有 `ck3_reply_pending_character_interaction(accept=false, interaction_instance_id=-721420283, expected_revision=当前公共 revision)` 提交一次拒绝，再独立读同角色/日期/paused 与旧 full ID 消失，下一正常 turn 消费。最后 closed frame 的 public revision 是 `2`。当前 strategy 的历史政策仍固定 ordinal `277`，而实际 `.3` ordinal 为 `296`；自动规则复用需要版本兼容输入，这项读取评估没有改 strategy 或放开 accept/block。generic `interaction_semantic_decision_ready=false` 不阻止已经由当前 stock 和实际 native legality 支持的窄拒绝；接受效用与转封材料仍沿用上文未闭合边界。
+
+```mermaid
+flowchart TD
+    Q["[production-live query] .3 fullID -721420283 / grant_vassal ordinal296"] --> L["[production-live query] 31853 本地 recipient；reject合法；target absent"]
+    L --> R["[source-bound continuation] 正常 reject once"]
+    R --> S["[static .3] actor .0211拒信；条件clan unity；无 scripted转封"]
+    S --> V["[production-live primitive] root一次正常reject；独立old ID消失"]
+    V -. "下一正式turn待消费" .-> N["[unknown] normal loop续行"]
+    Q -. "接受效用未读" .-> A["[unknown] 31506直属领主/头衔、玩家容量与净收益"]
+```
+
+本次查询与拒绝达到 **production-live primitive**。根执行者的 `murchad-v14-grant-vassal-reply-01` 只提交一次现有 MCP typed reject；`004` 的 submitted 不单独证明完成，独立 `003→005` snapshot 实际显示原 full ID `-721420283` → null、public revision `2→3`，同 PID `88444`、角色 `31853`、episode、date raw `53329800`、paused。gold raw `52818557`、prestige raw `115891020` 以及 piety、war list 未变。一次 closed assessment 18/18 GREEN，artifact 为 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v14-grant-vassal-continuation/closed-packet-assessment.json`。正常 h2079 checkpoint size `112139354`、SHA-256 `F0F296468A12886892FDAC2D828466D2F8527163D36DBC4413F376569D409039`。
+
+本帧没有独立读取 `31506` 的 liege/title 或条件性 clan unity/opinion 后置，不能从 submitted/pending 消失推断全部副作用或物质收益。下一正常 turn 消费仍待 root；M2 材料 credit 为零。V13 原 RED 和 h2072 存档留存。
+
+本次真实 recurrence 同时证明正式策略的版本兼容缺口：现有 exact definition 校验仍要求旧 ordinal `277`。独立 scratch 最小修复在同一 `grant-vassal-reject-only-v1` 内按 exact `.3` context build/version/EXE SHA 选 ordinal `296` 与上述 current stock pins，保留旧 `277` 输入、回复选择、角色/合法性/期限等现有逻辑，不新增策略或门禁。现有 `test_gameplay_bridge.py` 单个新增方法首次 **GREEN**：生产 `service.plan_turn` / ordinary classifier 使用实际 .3 ID/roles/date/ordinal，选合法 reject，再经 `GameplayBridgeService` 显式 ID typed reply 调用验证模拟 pending 清空；同方法保留旧 `277` planner 子项。该结果为 **static-ready**，冻结于同包 `python-compatibility/focused-checks.json`，没有把合成回复冒称本次 live。源码仅为两文件 scratch 小 patch，由 root 合并同文件的议会独立 hunk 后提交与冻结。
+
 ## 对天朝 361 内部流动的约束
 
 1. #312 不自行创造人物、头衔或 HC。它只能认领 Career/HC 先前从真实角色、真实 `primary_title`、

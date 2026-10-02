@@ -162,7 +162,7 @@ flowchart TD
     D --> C[Exact .3 task type/scopes and realm enum]
     C --> L[Native final location predicate and full county/capital/holder identity]
     L --> G[Current development progress and signed Q100000 full growth]
-    G --> M[Same existing Develop MCP material profile]
+    G --> M[Same existing Develop MCP material profile: v14 actual available]
     T -. task owner modifier numeric caller unknown .-> X[Actual tax contribution]
     X -. alternate scoped tax utility unknown .-> V[Tax versus development decision]
     M -. full task utility and scheduler unknown .-> V
@@ -311,9 +311,9 @@ seam: a readonly callback field, mapping its nonnull value to the new
 adapter's free existing slot 14, and setting it only for the `.3` descriptor
 in root's shared bridge initialization. Legacy `.19` uses its independent
 registration path. One direct production registration/submit/pump/completed
-fixture will validate the actual omitted route. Original native reader /
+fixture would validate the actual omitted route. Original native reader /
 codec three GREEN and Python eleven tests plus six subtests are reused;
-their inputs and material profile have not changed. The reader remains
+their inputs and material profile have not changed. At this stage the reader remained
 **static-ready with an actual query integration RED**, not a new
 production-live material primitive. The one offline saved-packet report is
 `task-value-observation/ACTUAL-V13-FIRST-REGISTRATION-RED.json`.
@@ -336,9 +336,56 @@ and the frozen final source/patch record is
 `native-stock/v13-executor-registration/FINAL-REGISTRATION-GREEN.json`
 (SHA `5D64F7F818B9985E6BA4D4A2370035F3DE574EFE6340DE3DA51A0071427793FB`).
 Root applied the three exact native leaves plus the two shared bridge/CMake
-hunks after its successful apply check. The running immutable v13 DLL is
-unchanged; the fix is **static-ready pending the combined v14 DLL and actual
-paused SDK retry**. Original reader/codec/Python source and PASS are reused.
+hunks after its successful apply check. At that stage the running immutable
+v13 DLL was unchanged; the fix was **static-ready pending the combined v14
+DLL and actual paused SDK retry**. Original reader/codec/Python source and PASS are reused.
 The query material field paths, 19-field profile, task/location predicates,
 signed Q100000 current-growth semantics and absence of action/forecast
 claims remain unchanged. The initial actual RED remains retained.
+
+### Actual v14 material observation
+
+Root then adopted frozen source `7ebc43e0` / 937 compiled inputs and closed
+the GREEN SDK capture `resume-12003/murchad-v14-cold-material-01`. Existing
+offline inspector `inspect_develop_material_saved.py` passed once using the
+normalizer from that frozen runtime. This verifies the actual material
+body, not only transport acceptance: `status=available`, `readiness=true`,
+`shown=true`, `valid=true`, complete `player_realm` collection and stable
+same-frame source. Root query `018`, material query `020`, and surrounding
+snapshots `019`/`021` identify living paused Murchad 31853, episode
+`native-31853-af642d76cb41`, native snapshot/revision 1, public revision 2
+and date 53329800. Both fresh revision bindings remain consistent.
+
+The material's `current_active_task_binding` exactly matches the independent
+root row: Steward 39761, `task_collect_taxes`, general/infinite progress,
+null target/current/maximum and `frozen=false`. All three observed realm
+county rows return `native_target_valid=true`; their actual material is:
+
+| County title ID | Capital province ID | Holder | Player capital / directly held | Current monthly development growth | Current development progress |
+| --- | --- | --- | --- | --- | --- |
+| 525 | 45 | 31853 | true / true | 0.48 | 64.61 / 100 |
+| 530 | 46 | 31853 | false / true | 0.24 | 23.95 / 100 |
+| 533 | 49 | 39761 | false / false | 2.58795 | 36.724 / 100 |
+
+Every growth/progress value above is decoded from signed raw Q100000 data;
+the original raw values and native collection ordinals remain in the saved
+report. Independent aggregate monthly income is raw 352147 / 100000
+(3.52147), and gold is raw 52818557 / 100000 (528.18557). The paused frame
+has no active event. Normal checkpoint `026` is saved at the same date,
+history index 2077, with SHA
+`18A78E68385137B7FE35679AA8CA6A60437DA760189F18EA4E084FA92D9D2577`.
+
+The query now qualifies as **production-live primitive** for actual realm
+target predicates and current county growth. A target predicate is not the
+full assignment preflight, and current full growth is not the forecast
+after switching Steward task. Collect Taxes' isolated contribution and
+proposed-task growth/utility remain unobserved; no tax-versus-development
+decision, task change, income gain, game-time advance or complete M4 credit
+is assigned to this readonly capture. No action or policy changed. The
+original v13 registration RED, the one fresh registration fixture and prior
+reader/codec/Python PASS all remain available without rerunning them.
+
+The single offline material report is
+`task-value-observation/ACTUAL-V14-DEVELOP-MATERIAL-OBSERVATION.json`. Its
+evidence pins link the five actual packets; external `REPORT-FIELDS.json`
+records the live boundary for root's daily/weekly report integration.

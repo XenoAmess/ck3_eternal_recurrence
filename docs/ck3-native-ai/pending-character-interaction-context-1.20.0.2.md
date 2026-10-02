@@ -138,3 +138,15 @@ flowchart TD
 原生 focused 首次严格编译和运行 **GREEN**，结果为 `focused-pending-signed-id-01/result.json`，命令为现有 target `xar_ck3_12002_pending_context_test --actual-negative-id-only`，编译采用 `/W4 /WX /UNDEBUG`。它链接只读复制的真实 v13 runtime archive 与两项既有 family 纯依赖，没有 shim、CMake 修改或游戏接触。完整 argv、输入 pin 和实际 `.3` wire 分别保留在 `COMMANDS.json`、`input-pins.json`、`actual-negative-pending-context-wire.json`；没有重跑旧矩阵。
 
 当前修复为 **static-ready**；生产互动定义、回复合法性、正式动作和独立结果必须由根执行者在更新 DLL 后从 h2072 实际查询取得。历史 `.2` fixture-live 结果与本次 `.3` 生产 RED 分别保留；该目录沿用 `m2-events` 命名不代表 M2 事件或材料 credit。
+
+## V14：负完整 ID 的生产查询恢复
+
+根执行者从原存档以新 PID `88444` 冷恢复，`murchad-v14-cold-material-01/016-ck3_query_pending_character_interaction_context_v1.json` 实际返回 **available**，原 signed32 ID `-721420283` 完整保留。前后独立 snapshot `015/017` 同为 `native:1`、public/native revision `2/1`，玩家 `31853`、date raw `53329800`、paused；gold/prestige/piety 没有因查询变化。一次闭合读取核对的 22 项结果全部为真，冻结在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v14-pending-interaction-query/closed-packet-assessment.json`；未重复 native fixture 或新操作游戏。
+
+实际定义为 `grant_vassal_interaction`，key hash `1006648858`、runtime ordinal `296`。发起者 `32718`、玩家接收者 `31853`、拟转封臣 secondary actor `31506`；secondary recipient/intermediary 均为 `-1`。target envelope 合法 absent，发送选项数为零，本地普通 recipient 回复通道，剩余 `57/60` 天。原生 accept/reject/block 均合法，ACK 不合法。十项 structured costs 已闭合为 actor/on_send/already_applied，raw 全零；它们不是对拒绝后全部效果的零成本证明。
+
+该查询达到 **production-live primitive**。stable definition、roles、target、options、routing、deadline、reply legality、generic costs 与 same-frame readiness 为 true；结构化 exchange/effect preview 仍 unavailable，`interaction_semantic_decision_ready=false` 如实保留。正常拒绝续行依据已有 [封臣转封原生树](title-vassal-transfer.md) 与当前 stock decline，而不依赖无关 AI 接受评分；这份查询核对没有提交回复或认证完整循环。末 checkpoint h2077 的 save SHA-256 为 `18A78E68385137B7FE35679AA8CA6A60437DA760189F18EA4E084FA92D9D2577`、size `112139803`，同角色/日期。V13 原 `invalid_pending_interaction_id` RED、h2072 与旧 `.2` fixture 历史均继续保留。
+
+随后根执行者在 `murchad-v14-grant-vassal-reply-01` 只提交一次正常 typed reject，参数保留 `-721420283` / expected public revision `2`。`004` 的 submitted 只记原生命令提交；独立 `003→005` snapshot 才证明旧 pending → null、public revision `2→3`，同 PID `88444`、玩家 `31853`、episode `native-31853-af642d76cb41`、date raw `53329800`、paused。gold raw `52818557` 与 prestige raw `115891020` 不变，piety 和 observed war list 也不变。一次闭合核对的 18 项全部 GREEN，保存于 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v14-grant-vassal-continuation/closed-packet-assessment.json`；末正常 checkpoint h2079，size `112139354`、SHA-256 `F0F296468A12886892FDAC2D828466D2F8527163D36DBC4413F376569D409039`。
+
+这次生产原语覆盖查询 → source-bound 拒绝 → 独立旧 ID 清空；没有读取 `31506` 的 liege/title、opinion 或 clan unity 后置，因此不声明完整转封关系保持、全部副作用或物质收益。下一正常 turn 消费仍由根执行者继续，M2 material credit 为零；没有重复查询/fixture/回复，旧 RED 未改写。

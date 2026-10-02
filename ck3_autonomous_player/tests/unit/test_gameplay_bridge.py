@@ -9559,6 +9559,105 @@ class GameplayBridgeTests(unittest.TestCase):
             },
         )
 
+
+    def test_grant_vassal_12003_actual_pending_plans_and_rejects(self) -> None:
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+
+        steps = (
+            "accept-pending-character-interaction",
+            "reject-pending-character-interaction",
+        )
+        # Keep the existing legacy ordinal 277 route covered in this same case.
+        legacy = _plan_for_pending_context(
+            _grant_vassal_context_result(), action_steps=steps, active_wars=[]
+        )
+        self.assertEqual(legacy["phase"], "pending_grant_vassal_reject_only")
+        self.assertEqual(legacy["selected_step"], steps[1])
+        self.assertEqual(legacy["decision"]["grant_vassal_contract_gaps"], [])
+        self.assertEqual(
+            legacy["decision"]["definition_classification"]["evidence"]["runtime_ordinal"],
+            277,
+        )
+
+        result = _grant_vassal_context_result()
+        context = result["pending_character_interaction_context"]
+        context["pending_interaction_id"] = -721420283
+        context["date_raw"] = 53329800
+        context["definition"]["runtime_ordinal"] = 296
+        context["build"] = {
+            "version": CK3_12003.game_version,
+            "exe_sha256": CK3_12003.executable_sha256,
+        }
+        context["deadline"] = {
+            "age_days": 3, "expiration_days": 60, "remaining_days": 57,
+            "expiry_boundary_status": "not_reached",
+        }
+        self.assertEqual(context["roles"]["actor_character_id"], 32718)
+        self.assertEqual(context["roles"]["recipient_character_id"], 31853)
+        self.assertEqual(context["roles"]["secondary_actor_character_id"], 31506)
+
+        # This invokes the ordinary production planner and classifier through
+        # GameplayBridgeService; no private grant-policy helper is called here.
+        plan = _plan_for_pending_context(
+            result, action_steps=steps, active_wars=[]
+        )
+        self.assertEqual(plan["phase"], "pending_grant_vassal_reject_only")
+        self.assertEqual(plan["selected_step"], steps[1])
+        decision = plan["decision"]
+        self.assertEqual(decision["classification"], "known_grant_vassal_reject_only")
+        self.assertEqual(decision["grant_vassal_contract_gaps"], [])
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertFalse(decision["semantic_optimal"])
+        evidence = decision["definition_classification"]["evidence"]
+        self.assertEqual(evidence["runtime_ordinal"], 296)
+        self.assertEqual(evidence["build"], context["build"])
+        self.assertEqual(
+            evidence["source_sha256"],
+            "B0F81CF740B6DBF42952D9A08703BA75E23D6918DD44F4D8E9999F11695B3A20",
+        )
+
+        revision = result["queried_revision"]
+        pending_id = context["pending_interaction_id"]
+        state = {
+            **_snapshot(revision, [{
+                "command": "query-pending-character-interaction-context-v1",
+                "ok": True, "result": result,
+            }]),
+            "paused": True,
+            "native_revision": result["queried_native_revision"],
+            "date_raw": context["date_raw"],
+            "played_character": {"character_id": 31853, "alive": True},
+            "active_wars": [], "player_armies": [],
+            "pending_character_interaction": {
+                "instance_id": pending_id, "sender_character_id": 32718,
+                "auto_accept_notification": False,
+            },
+        }
+        calls = []
+        def execute(step, expected_revision):
+            calls.append((step, expected_revision))
+            state["revision"] += 1
+            state["snapshot_id"] = f"session:{state['revision']}"
+            state["pending_character_interaction"] = None
+            return {"step": step, "status": "rejected"}
+
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: copy.deepcopy(state),
+            execute=execute, action_steps=steps,
+        )
+        service = GameplayBridgeService(driver)
+        reply = service.reply_pending_character_interaction(
+            accept=decision["selected_action"] == "accept",
+            interaction_instance_id=plan["pending_character_interaction"]["instance_id"],
+            expected_revision=revision,
+        )
+        self.assertEqual(calls, [(plan["selected_step"], revision)])
+        self.assertEqual(reply["interaction_instance_id"], -721420283)
+        self.assertEqual(reply["sender_character_id"], 32718)
+        self.assertFalse(reply["accepted"])
+        self.assertEqual(reply["status"], "rejected")
+        self.assertIsNone(service.snapshot()["pending_character_interaction"])
+
     def test_grant_vassal_r0059_exact_shape_reject_only(self) -> None:
         plan = _plan_for_pending_context(
             _grant_vassal_context_result(),

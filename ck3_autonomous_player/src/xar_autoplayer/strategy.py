@@ -323,6 +323,22 @@ _GRANT_VASSAL_REJECT_ONLY_POLICY = {
         "conditional_clan_unity_loss",
     ],
 }
+_GRANT_VASSAL_REJECT_ONLY_12003_POLICY = {
+    **_GRANT_VASSAL_REJECT_ONLY_POLICY,
+    "runtime_ordinal": 296,
+    "source_sha256": (
+        "B0F81CF740B6DBF42952D9A08703BA75E23D6918DD44F4D8E9999F11695B3A20"
+    ),
+    "decline_event_source_sha256": (
+        "46D0E436BBB9694E60E46C0C1C5EBC3AE1C14AFA041A8B8CD9548BD5C3836C69"
+    ),
+    "build": {
+        "version": "1.20.0.3",
+        "exe_sha256": (
+            "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+        ),
+    },
+}
 _NEGOTIATE_ALLIANCE_INBOUND_POLICY = {
     "rule_id": "negotiate-alliance-inbound-accept-v1",
     "definition_key": "negotiate_alliance_interaction",
@@ -1551,6 +1567,20 @@ def _arrange_marriage_reject_contract_gaps(
     return gaps
 
 
+def _grant_vassal_reject_policy(
+    context: dict[str, object],
+) -> dict[str, object]:
+    build = context.get("build")
+    current_build = _GRANT_VASSAL_REJECT_ONLY_12003_POLICY["build"]
+    if (
+        isinstance(build, dict)
+        and build.get("version") == current_build["version"]
+        and build.get("exe_sha256") == current_build["exe_sha256"]
+    ):
+        return _GRANT_VASSAL_REJECT_ONLY_12003_POLICY
+    return _GRANT_VASSAL_REJECT_ONLY_POLICY
+
+
 def _grant_vassal_reject_contract_gaps(
     context: dict[str, object],
     *,
@@ -1560,15 +1590,16 @@ def _grant_vassal_reject_contract_gaps(
     """Admit only the observed direct, zero-option feudal-preview decline."""
 
     gaps: list[str] = []
+    policy = _grant_vassal_reject_policy(context)
     definition = context.get("definition")
     if not (
         isinstance(definition, dict)
         and definition.get("canonical_key")
-        == _GRANT_VASSAL_REJECT_ONLY_POLICY["definition_key"]
+        == policy["definition_key"]
         and definition.get("deterministic_key_hash")
-        == _GRANT_VASSAL_REJECT_ONLY_POLICY["deterministic_key_hash"]
+        == policy["deterministic_key_hash"]
         and definition.get("runtime_ordinal")
-        == _GRANT_VASSAL_REJECT_ONLY_POLICY["runtime_ordinal"]
+        == policy["runtime_ordinal"]
     ):
         gaps.append("grant_vassal_exact_definition_mismatch")
 
@@ -2512,7 +2543,7 @@ def _degraded_pending_interaction_decision(
         else []
     )
     grant_vassal_evidence = (
-        _GRANT_VASSAL_REJECT_ONLY_POLICY
+        _grant_vassal_reject_policy(context)
         if definition_key == _GRANT_VASSAL_REJECT_ONLY_POLICY["definition_key"]
         else None
     )
