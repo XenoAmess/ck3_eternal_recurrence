@@ -44,3 +44,19 @@ python -m unittest discover -s ck3_autonomous_player/tests/unit -p test_pending_
 ```
 
 The work package records 32 profile tests and 25 existing pending-driver tests passing. Initial fixture failures from uncached SDK return-shape assumptions and an overly short fake-provider deadline remain in ignored receipts; they were corrected without expanding production behavior. `_runtime/native-profile-resume-qualification-001.json` binds the final source/tests to their captured outputs and unchanged native epoch. This is scoped Python qualification, not a fresh native all-target build, a live reconnect/query/reply result, a complete interaction-effect preview or a completed century campaign.
+
+## Operator-owned live regression, 2026-10-02
+
+The operator exercised Python consumer `0700e17546d27d76fa1e37085d3d69db642c4988` against exact CK3 1.20.0.3/build25652598 with the already loaded, qualified patch3 DLL. Normal old-endpoint shutdown and new-endpoint resume kept the same game PID/DLL, original profile/claim and paused campaign. The new session reported native generation 1 to 2, independent clocks both `date_raw=77629680`, `speed=5`, `paused=true`, and the same pending mail. Resume reported `uses_injection=false`; this was an endpoint restart, with no game restart or new DLL attachment.
+
+| Frozen project-owned receipt | SHA-256 | Observed result |
+| --- | --- | --- |
+| `0001-resume.json` | `16cb182fe332649981606ff9ad01897311b8fd6da39b9921a009faad7135a7c2` | `resumed_snapshot_verified`, new session/generation, unchanged paused state |
+| `0003-pending-query.json` | `8735e9345becb0cf692020bd3acf6b8f26c3c518f806ba172770f165851a9233` | `native_pending_query_verified`, context available with partial semantics |
+| `0004-pending-reply.json` | `ee77cfe0673bd84beea26271ee4aa89effee8031b9e6440ccf4dbd47cc596550` | `native_gameplay_postcondition_verified`, old instance cleared, revision 2 to 3, paused date unchanged |
+
+A fresh snapshot confirmed the cleared instance. The operator then retained a complete same-date checkpoint and resumed normal simulation; cumulative elapsed days continued from the original baseline. Raw receipts, saves, project decisions and original RED remain in the independent project; main retains the reusable recovery method and these evidence identities. This documentation update changes neither the running Python consumer epoch nor native artifacts.
+
+The available query established definition/roles, local routing, a 59-day remaining deadline, and accept/reject legality. It retained `interaction_semantic_decision_ready=false`: target type `war` was available, but its typed identity was unavailable with `generic_scope_payload_identity_not_closed`; structured exchanges/effect preview and special outcome terms were also unavailable. A present target type is not a verified target identity. Available zero actor costs explicitly described `application_timing=on_send` and `pending_payment_state=already_applied`; they do not prove that a later assistance arrangement is free or has no conditional payment.
+
+The operator used a separately reviewed exact source contract and an immutable same-instance save to decide the explicit reply, without changing readiness or weakening the typed query/command guards. Clearing the old pending instance confirms that reply's bounded business postcondition. War participation, obligations, combat and eventual payment require separate evidence; they are not established by these generic receipts. This observed recovery/query/reply pass does not establish complete effect preview, universal interaction support or century stability.
