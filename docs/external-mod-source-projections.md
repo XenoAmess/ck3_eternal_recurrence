@@ -1,6 +1,6 @@
 # 独立 mod 的原版覆盖迁移与可逆投影
 
-2026-10-02，从 [More Tenets Slots(XA) 迁移](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/migration-plan.md) 提炼。产品源码、配置和实机报告留在独立仓库。
+2026-10-02，从 [More Tenets Slots(XA) 迁移](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/migration-plan.md) 提炼。产品源码、配置和实机报告留在独立仓库。迁移、本地化、构建与发布的现有入口集中于 [独立 mod 工具链](external-mod-toolchain.md)。
 
 游戏大版本升级时，先冻结 launcher/build/EXE 和依赖原版文件。覆盖审查必须同时比较文件路径、数据库目录、顶层定义及 scope，不能只检查原文件是否还存在或 supported_version。不同文件名仍可能覆盖同名定义；原版删除一个文件或将 ID 移到另一数据库时，旧 mod 的完整副本可能重新引入已退役类型。
 
@@ -36,7 +36,21 @@
 
 R0008 同时仍为加载检查 RED：`visible=no` 的隐藏教条也会解析默认 `_name`/`_desc` 本地化，隐藏性不能省略加载所需元数据；教条组按原版合同解析 `_name`。GUI 通过 `AddScope` 传入的 scope，应按原版 ScriptedGui 合同用 `saved_scopes` 声明。产品已依据原版 `doctrine_types`、`doctrine_group_types` 的 `.info` 和 `pam_scripted_guis.txt` 修正声明并补齐两种语言的空白本地化，具体生成源码和收据见独立项目 [候选说明](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/selector-repair-candidate.md)。修正最初只有静态通过，后续 [R0009](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/live-R0009-final-source.md) 使用新冻结源码冷启动，零字节 `error.log` 关闭了该加载故障；不能用 R0008 旧输入或静态 BOM/结构检查冒充新实机结果。框架只提炼加载合同和验收边界，不搬入产品教条、存档或专有夹具，也不将本产品结果外推为所有 mod 通过。
 
-验证入口：`python tools/test_ck3_text_projection.py`，覆盖真实生产投影/恢复路径、原生 controls 保留、变更拒绝、歧义锚点及注释/字符串扫描。
+## 创建结果与保存层的权威身份
+
+2026-10-03 的后续 [R0012](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/b10d50faac3c8462354cfa235ea62d72265ee54d/docs/live-R0012-sparse-create.md) 保留原生校验，以兼容的四个真实信条在下标 `[0,1,2,99]` 创建礼仪，中间 96 槽为空，并实际支付 5775 虔诚。随后 [R0013](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/b10d50faac3c8462354cfa235ea62d72265ee54d/docs/live-R0013-cold-reload.md) 在新进程冷载该原生二进制存档，简中 UI 确认创建结果，再正常生成原生文本保存。角色引用、礼仪数据库头、四个核心信条及剩余虔诚共同闭合本实例的保存结果。空槽未被伪信条补满；具体隐藏选择器元数据仍是产品实现，不成为通用默认方案。
+
+原生二进制存档、工具 melt 输出与游戏再次保存的原生文本是不同输入格式和来源。解析前记录输入类型、获得方法、大小、SHA、生产进程/冻结源码以及实际 parser，解析后复核原件未改变。用游戏冷载后重新保存取得可读文本，不能称为直接离线解码同一二进制。离线读取收据仍保留 `offline-save-inspection-only`、`live_verified=false`；原生创建和冷载 UI 的实机证据独立引用。
+
+身份应从角色实际引用追到对应数据库容器内的对象头，不能依据 `dynamic_rite_*` 标签后缀猜对象 ID。R0013 的 `dynamic_rite_154` 实际对应角色的 rite 153；相似文本或首次全局正则命中不足以完成身份闭合。大文本保存中应先限制明确的容器/块，再使用结构扫描原语校验引号与花括号，并记录被检查块的行号、字节数和摘要；不能把 `blocks` 包装成完整存档或引擎语义解析器。
+
+新建草稿与当前已保存实体是不同观察面。R0013 中角色实际当前礼仪已保存四个核心信条，但重新打开的新草稿默认取父礼仪的两个信条；该草稿不能用于证明当前礼仪退回两条。验收创建与持久化应读取实际角色引用和实体内容，再对照费用、保存、独立冷载以及冷载后再次保存。原生合法性拒绝、草稿展示和持久化故障分别判断，不因一种展示差异直接修改保存机制。
+
+以上为单产品的真实反例及可复用检查方法；没有穷举全部信条组合、其他 mod 或全部 DLC。具体存档、角色、教条、原始运行材料和产品 parser 调用留独立项目。
+
+验证入口：`python tools/test_ck3_text_projection.py`，覆盖真实生产投影/恢复路径、原生 controls 保留、变更拒绝、歧义锚点及注释/字符串扫描。本节补录仅修改方法文档，没有改动 parser，不重复运行已有回归或实机。
+
+## 其他维护与证据保全经验
 
 磁盘空间不足时，先区分可再下载的软件缓存与必须保留的研究材料。源码、冻结构建输入、存档、mod/Workshop 资产、夹具、原始及中间素材、dump 和失败 attempt 都不能作为垃圾；目录名含 `Temp`、`runtime` 或 `cache` 也不构成删除依据。已安装依赖和本地构建 wheel 继续保留，删除下载缓存不能改变 venv 或依赖版本。只对已确认可再生的具体缓存范围盘点，校验解析后的绝对目标仍位于该范围，拒绝符号链接、junction 与其他 reparse 路径；逐文件取得独占删除句柄并读回删除结果，锁定、近期或用途不明的内容跳过，不停止游戏或其他任务。
 
