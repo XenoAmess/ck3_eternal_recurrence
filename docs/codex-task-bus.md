@@ -33,5 +33,37 @@ py D:\workspace\.codex-task-bus\bin\codex_task_bus.py status --task ck3-xqol-rel
 1. 会话开始时使用唯一、稳定的 task ID 注册，并立即 `poll --ack`、`list`。
 2. 开始或结束一个工作包、进入等待/阻塞、占用或释放共享资源时更新 `status`。
 3. Git push、Workshop 上传、CK3 启动等共享状态变更前再轮询一次；发现冲突时定向 `notify`。
-4. 长任务至少每 15 分钟发一次 `heartbeat`。任务完成后写 `done`，不要删除事件或旧快照。
+4. 普通长任务至少每 15 分钟发一次 `heartbeat`；屏幕 owner 必须遵守下文 600 秒有效期及 fresh CAS。普通任务完成后写 `done`，不要删除事件或旧快照。
 5. 已在运行的旧会话不会自动获得新约定；它们必须在下一次交互时读取本文件或由用户明确告知。
+
+## 屏幕租约与 CAS 续租
+
+普通任务的 15 分钟心跳建议与屏幕租约是两个合同。[当前 CLI](../tools/codex_task_bus.py) 的
+`SCREEN_LEASE_MAX_AGE_SECONDS=600`；`ck3-screen:acquired` owner 只在更新时间距当前不超过 600 秒时有效。
+默认 `list` 仍按 15 分钟标记 stale，因此 `stale=false` 不能证明屏幕 owner 新鲜。
+屏幕任务必须是唯一、`running` 且 resources 恰为 `["ck3-screen:acquired"]` 的 owner，不能混入 Git 等资源。
+续租必须调用 `heartbeat --expected-sequence <latest-sequence>`，绑定已核对 source/installed CLI 的同一 SHA；
+缺少精确序号、租约过期或 owner 变化都会拒绝，普通 heartbeat/status 不能复活过期声明。
+
+长准备或受管会话直接复用 [ScreenLeaseKeeper](../promo/ck3_native_war_ai/integration/screen_bus_lease.py)：
+默认 `interval_seconds=180`（允许 30–240 秒），在新鲜 owner 准入后启动，按既有 `renew_once` 完成
+前后 locked list、heartbeat CAS 和新序号读回，保留 append-only journal。它不领取或释放屏幕。
+keeper 活跃期间，同一 task 的 sequence 只能由 keeper 推进；其他线程不得再对该 task heartbeat/status
+或另起续租器。续租失败会设 abort 并保留 RED，不能继续把该租约当作有效。
+交接或释放前先 `stop()`、确认 keeper 线程退出，再读取其 `report()["last_sequence"]` 与当前任务快照。
+
+实际长时间离线准备已发生超过有效期、fresh heartbeat CAS 被拒绝的情形。此时保留原事件、失败回执和
+精确最后序号，使用既有 `release-screen-cas` 释放未变化的自有声明；不要删资源 flag、编辑 task 文件
+或普通 status/done 绕过。CLI 对过期 owner 写 `waiting`、清空 resources、保留 next_step，并追加
+`retirement.business_status="unresolved_red"`；这只是释放占用，业务仍待处理，不是完成或恢复授权。
+若 owner/序号已变化，释放也会拒绝，应先闭合当前 owner；释放成功后以新 task 注册屏幕资源，再启动既有 keeper。
+
+```text
+<verified-python> <cli-source> --bus-dir <bus-dir> --expected-cli-sha256 <reviewed-cli-sha256> heartbeat --task <screen-task> --expected-sequence <latest-sequence> --repo <owner-checkout>
+<verified-python> <cli-source> --bus-dir <bus-dir> --expected-cli-sha256 <reviewed-cli-sha256> release-screen-cas --task <screen-task> --expected-sequence <latest-sequence> --summary "释放过期的自有屏幕声明；业务仍待处理"
+<verified-python> <cli-source> --bus-dir <bus-dir> --expected-cli-sha256 <reviewed-cli-sha256> register --task <new-screen-task> --repo <owner-checkout> --resource ck3-screen:acquired --summary "领取新的屏幕任务" --next-step "新鲜准入后启动既有 keeper"
+```
+
+本段核对 CLI SHA `b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee` 与
+keeper SHA `d000883192b63d0aa7f5df7769a7eff0c1ed90450075e88c3d21d10943b46924`；只补文档，
+未执行上述屏幕命令、启动 keeper 或操作游戏。后续部署仍须绑定当次实际 source/installed bytes。
