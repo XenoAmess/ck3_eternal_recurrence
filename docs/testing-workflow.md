@@ -10,6 +10,14 @@
 
 显式 `native-session --start-minimized` 将首次、frontend warm-up/final、checkpoint 和 next-episode 启动传入 Windows `STARTUPINFO` 的 `STARTF_USESHOWWINDOW` / `SW_SHOWMINNOACTIVE`，复用受管 PID 的窗口采样保持最小化。默认其它流程不改变；当前 G2 后续启动全部选择此参数。真实 CLI→session→launch 参数链、Win32 producer 与 PID helper 的一个定向 case GREEN；新进程焦点／窗口状态仍由实机采样确认。对应源码及收据为 `artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-start-implementation-01/`。
 
+## 21:25 21:12继续授权后的Robert正式7日闭包：累计3179天
+
+2026-10-02 21:25:13 Asia/Shanghai当前流程补录：21:12用户按新prompt继续，高并发owner仍仅文件并行；实机/SDK/pipe/state由root独占、Steam离线、最小化不抢前台，唯一Robert原ordinary campaign。新Python41291bf2接actual native716/v19/PID70968的一正式回合完成7日目标，真实raw53220456→53220624/final paused，无新natural modal/Sway Start。Robert3179/36524、本次恢复26新日；G2 4/8/NW1/4不变，typed goal0分列。最新full4081/save h4081，save84,495,805B/SHA `ce9c7b4aa8ac70664920696fa9629f58e738b28aa7e8227a7c8ded66bddfec60`，driver49,329,974B/SHA `91c383a0a147895464c5b7c3fe61415d68cb09e5ed9c4e66b27433d49f7384e1`；继续最新pair，不回退4075。[412正式7日闭包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/planning-reuse-412-actual-01/result.json)。
+
+本批turn184,706B＋双snapshot49,169B=233,875B，有限export omitted历史但正常driver完整4081history保留。规划复用是单次成功完整root的显式共享，下一date/revision/turn与domain material仍fresh；本批已经closed的唯一正式turn实读root查询3→1、all-planning queries8→6，其他5个domain查询各一次保留；goal dynasty_continuity同actor29829，GOV feudal/core_supported44 features ready=true，Steward43706 skill14/CollectTaxes且NO_CHANGE（14native/11legal），首继承人38822↔38718双向14/14、阈16保持未成年hold。本turn只life-advance，无新业务receipt，不扩Council/Family等动作分支的live覆盖。该单次规划root复用升production-live loop，规划20.101028s、dispatch1.317485s、整run JSON0.019963s；旧三turn平均26.823697s是不同日期、PID及sample1-vs3的观察，不能据此声称受控速度倍数或全部耗时改善。两路closed判读与有限capture proof已落盘，复用，不补跑样本。 [本批规划复用实际判读](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/planning-reuse-412-live-readout-01/wire-live-proof.json) 旧focused5与exact412 CI成功直接复用，无重复测试。
+
+当前Feast未Start，上一日期的guest/quote/maintenance/reserve材料不充作7日后fresh值；下一同局fresh预算→合法once Start→独立debit/fullID→原formal lifecycle，当前stage先发布。Guy原consumer最后GREEN仍pending/unresolved，未把7日推断成交；Sway原实例后置收益/终态尚待，既有Council/Law动作不重发。
+
 ## 20:36 Robert有限输出正式续行新增15日：累计3172天
 
 2026-10-02 20:36:16 Asia/Shanghai实际流程增量：延续17:27授权的Robert原ordinary campaign，root最小化管理且不抢Steam/用户前台。本轮正式finite run三turn requested1/7/7、actual1/5/9，真实15日raw53220096→53220456，final paused，原driver完整history4075正常保存。最新full4075/save h4075，save83,192,479B/SHA `dd4d3f772147778e7308a85f0e09336b491f00ad4f6e067e1d11564dfb5d23ec`，driver49,277,053B/SHA `49b547a68df99c2fe8e4c4aecd20d1bf6605a12a68aba908791cd1882f454b72`；本次恢复4＋15=19新日，Robert3172/36524，G2 4/8、NW1/4不变。继续使用最新真实pair，不回退旧4031/4065入口。[有限输出实际增量字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/normal-time-value-01/REPORT-FIELDS-LIVE-INCREMENT.json)。

@@ -2,6 +2,20 @@
 
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
+## 21:25 21:12继续授权后的Robert正式7日闭包：累计3179天
+
+2026-10-02 21:25:13 Asia/Shanghai真实补录：用户于 **21:12按新prompt继续并维持高并发**，此授权承接17:27已释放CK3/确认Steam离线。仍以Robert原ordinary campaign最新真实pair作为唯一实机入口，root独占game/SDK/pipe/state/Git、保持最小化/no-focus；owner仅并行文件工作。21:05已发布的计划/prompt/index public8f2373c5是文档交付，不倒填00:00早会，也不当新增live。当前G2 **4/8=50%**、NW **1/4=25%**不变；实际又正常保存 **7个自然日**，Robert3172→**3179/36524**，本次恢复19→**26个新增日**。typed dynasty_continuity进度/自然继承0与历史天数比例约8.7%分列。
+
+本批Python/runtime为 `41291bf2315f11b6748affce318e1e456a6f8918`，actual native仍 **716acfec/v19**、GAME PID70968，同actor29829/episode `native-29829-2bc2d599f7f9`。planning-reuse-412-actual-01 CLOSED GREEN/normal-time-target-reached、final paused、没有新natural modal或Sway Start。目标7日由 **1个正式life-advance回合**满足，真实raw53220456→53220624，不能把配置的最多3turn写成3个已执行回合。最新 **full4081/save h4081**：save **84,495,805B/SHA `ce9c7b4aa8ac70664920696fa9629f58e738b28aa7e8227a7c8ded66bddfec60`**，driver **49,329,974B/SHA `91c383a0a147895464c5b7c3fe61415d68cb09e5ed9c4e66b27433d49f7384e1`**。本批只加7日，不再加前一批15日或owner复核日。[412正式7日闭包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/planning-reuse-412-actual-01/result.json)。
+
+规划复用的源码focused5 GREEN与exact412官方CI run37010193680 SUCCESS（21:05:49完成/21:15:37确认）复用，不重跑测试或CI。新源码仅在同次paused规划显式共享首个成功完整campaign_root_result；跨回合/revision/date、receipt/public/default与family retry保持fresh，并非global cache或省略domain读数。1/7/30policy、war字段、driver history、goal/rollback没有因该复用改写。本批已经closed的唯一正式turn实读root查询3→1、all-planning queries8→6，其他5个domain查询各一次保留；goal dynasty_continuity同actor29829，GOV feudal/core_supported44 features ready=true，Steward43706 skill14/CollectTaxes且NO_CHANGE（14native/11legal），首继承人38822↔38718双向14/14、阈16保持未成年hold。本turn只life-advance，无新业务receipt，不扩Council/Family等动作分支的live覆盖。该单次规划root复用升production-live loop，规划20.101028s、dispatch1.317485s、整run JSON0.019963s；旧三turn平均26.823697s是不同日期、PID及sample1-vs3的观察，不能据此声称受控速度倍数或全部耗时改善。两路closed判读与有限capture proof已落盘，复用，不补跑样本。 [本批规划复用实际判读](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/planning-reuse-412-live-readout-01/wire-live-proof.json)
+
+本批外置有限输出实际为turn **184,706B**＋双snapshot **49,169B**＝**233,875B**，exported history omitted，而完整4081 native history仍由原driver正常保存；capturer既有production-live loop保持。该输出与旧882MB→608KB增量分别记录，不把两批相加后声称受控速度收益。为什么做：让原局正常规划继续推进的同时减少重复相同root读取和历史导出，把主要开销留给有价值的当前观测与动作。[本批有限输出与完整持久历史证明](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/planning-reuse-412-live-readout-01/capture-history-proof.json)。
+
+最新已关闭的前置材料是v19同日cold4 Sway full134217986/gen8/CanContinue55%/三ring attached seq0、liberty50331692 power32.455<80/discontent0/monthly-3/counties[]、maintenance5.886gold/月→自主18月预留105.948＋floor200=305.948；它们是在raw53220456读到，**不投射成本批7日后的fresh预算或Sway进度**。Sway19/353/opinion−10只来自此前warm v16同日native28，此批未采新的进度、专属收益或终态，旧populist188缺席不归因agent。Guy此前原proper consumer已GREEN但pending/materialfalse/cold_absent_relation_unresolvedtrue/outbound与双向关系absent，本批7日没有新增接受/拒绝/timeout后置；旧两subject RED留作dated history，当前不继续修已GREEN reader。CA1/Council窄loop沿用真实既有证据，不重复授M4/M6信用。
+
+Feast仍 **未Start/未扣款/无Robert fullActivity或attendance/terminal/reward**。root下一项需要同局fresh余额、quote、commitments与真实预算，再合法once Start→独立debit/fullID→正式lifecycle及终态观测；旧2619/37265/100gold报价是历史，不能在raw53220624直接当fresh资格。本stage现在收口发布，不等待未来Start或更多自然事件；后续新材料属于下一真实增量。只一次新文档UTF-8/新增链接/增量diff/机器计数核对，未做SDK/game/pipe/Git或L0/ABI/G2/fixture/CI重复；root负责正常commit/push，未来publication不预填。
+
 ## 20:36 Robert有限输出正式续行新增15日：累计3172天
 
 2026-10-02 20:36:16 Asia/Shanghai真实晚间补录，承接已发布docs96c802bd所收20:07的3157天/本轮4日阶段，旧段保留。17:27用户释放CK3、Steam离线及Robert原ordinary campaign唯一入口保持，root独占实际game/SDK/pipe/state/Git、最小化且不抢前台。G2 **4/8=50%**、NW **1/4=25%**不变。本轮新closed finite run真实再推进 **15个自然日**，本次恢复累计 **19个新增日，Robert3172/36524**；历史天数比例仍约8.7%，typed dynasty_continuity progress0/自然继承0不由天数推升。
