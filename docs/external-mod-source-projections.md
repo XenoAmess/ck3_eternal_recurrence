@@ -45,3 +45,7 @@ R0008 同时仍为加载检查 RED：`visible=no` 的隐藏教条也会解析默
 组件关系以用户指定来源和当前物品页核对，不能因主包 ID 改变而沿用或自行删掉依赖。匿名页面或接口不可见时，保留失败回执，再用已授权的登录态客户端核对；不能据匿名失败认定物品不存在。下载结束立即恢复 Steam 离线，随后以客户端下载结果、installed/latest manifest 相等、完整文件清单与 SHA-256 冻结精确输入。网页加载成功、订阅按钮状态或下载命令 ACK 均不能代替此闭合。
 
 原包的 embedded `.git`、编辑器目录和 authoring 素材保全为本机 raw 证据，运行树与 GitHub 提交使用显式资源投影。空间不足时，可对关闭的旧快照做无损 NTFS 压缩，记录逻辑 bytes、文件集合、mtime、file ID 与哈希检查的实际覆盖。相同内容也可在已冻结且不可变的 raw 快照之间核验后硬链接，逐文件记录来源与身份；禁止链接会被 Steam 更新的缓存。硬链接共享内容及属性，不能原地编辑、重编码或设置只读来改变旧证据；修改前复制到独立工作树。物理空间变化与逻辑内容校验应分开报告。
+
+Windows 上核验冻结文件身份时，前后都使用 `Path.stat(follow_symlinks=False)` 或 `os.stat(..., follow_symlinks=False)`。本机一次压缩前的只读准入把 `DirEntry.stat()` 与 `Path.stat()` 混比，前者的 `st_ino/st_dev` 实际返回零，后者则返回真实非零身份；内容哈希、大小和 mtime 均未变，这次拒绝发生在任何压缩之前。保留拒绝回执，在新的 attempt 中改用同一种真实身份采样，随后完成全文件哈希、身份、大小、mtime 和文件/目录集合核验。零值不能冒充身份保全，也不能仅凭这种 API 差异认定文件被修改。Python 官方文档明确说明 Windows `DirEntry.stat()` 的 `st_ino/st_dev/st_nlink` 为零，应调用 `os.stat()` 获取。[Python 3.14 文档](https://docs.python.org/3.14/library/os.html#os.DirEntry.stat)
+
+关闭 Windows 休眠属于系统功能变更，不能由“清理垃圾”自动推定授权。已有明确授权时，由该操作的 owner 调用原生 `powercfg.exe /hibernate off`，保留执行前后的 `powercfg.exe /a`、命令退出码、休眠文件原始逻辑大小及操作后是否存在；恢复命令为 `powercfg.exe /hibernate on`。这些是命令说明，本轮文档与收尾线程不再次执行该操作。文件消失、功能状态和磁盘净空闲变化分别报告；并行写入或其他压缩存在时，不能把整盘空闲差值全部归因于关闭休眠。开启/关闭及可用睡眠状态查询的语义以官方文档为准。[Microsoft powercfg 文档](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options#hibernate-or-h)
