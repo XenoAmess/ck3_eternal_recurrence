@@ -14,6 +14,10 @@
 
 实际反例见独立项目 [R0001 原生日志](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/evidence/live-R0001.json)：将 GUI `spacing` 写成向量 `{ 20 25 }`，结构扫描和投影恢复均通过，CK3 原生读取器仍报 `Malformed token`。该字段在此控件上接受标量。修改控件类型或属性值时，原版相邻控件只能帮助建立假设，最终须由真实加载日志验证属性类型；不能把可逆文本投影称为引擎语法验收。
 
+另一个实际反例见 [R0003 原生状态读回](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/evidence/live-R0003.json)：产品源文件中 define 和同名 script value 都写成 100，原生执行 `GetDefine` 却返回 100，`ScriptValue` 返回 3。产品 `mts_*.txt` 排在原版 `pam_values.txt` 前面，后者覆盖同名 ID。修复为排在原版后面的文件名，同时检查原版该 ID 的定义所有者。这个单模组实例不能推出所有数据库的统一加载规则；其他 mod 的同名覆盖仍须独立审阅。
+
+验收关键配置时，除了源文件和冻结哈希，还应记录真实加载后的有效值。对有镜像 script value 的 define 分别读回两者；对列表、槽位和创建结果再检查原生 UI、费用变化与存档实体。源内容相同不等于有效运行值相同。原生调试日志是本次实例的读回通道，不能将控制台文本已粘贴、按键已发送或命令 ACK 当作效果成功。
+
 受管桌面运行的屏幕所有者心跳必须使用当前任务的 `last_sequence` 做 CAS，并保持租约新鲜。首次失败后仅添加序号不能续约已经过期的租约；先按合同释放自己的旧 claim，再注册新任务。运行器须在续约失败等异常路径中关闭自己启动的进程，并写出退出回执，避免 Python 已结束而游戏继续占用桌面。产品冻结输入变化应分配新 run，保留旧 RED。
 
 验证入口：`python tools/test_ck3_text_projection.py`，覆盖真实生产投影/恢复路径、原生 controls 保留、变更拒绝、歧义锚点及注释/字符串扫描。
