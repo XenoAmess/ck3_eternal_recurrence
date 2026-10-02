@@ -475,6 +475,55 @@ class FeastLifecycleConsumerTest(unittest.TestCase):
                              "completed")
             self.assertEqual(sum(row["step"] == START_STEP for row in driver.sent), 1)
 
+    def test_nonwar_formal_caller_tracks_terminal_and_consumes_following_turn_once(self) -> None:
+        with TemporaryDirectory() as temp:
+            driver = self.start(Path(temp))
+            self.later(driver, 1)
+            plan = {"policy": "fixture-existing-nonwar", "phase": "life",
+                    "selected_step": "life-advance", "reason": "existing plan"}
+            service = GameplayBridgeService(driver)
+            with patch("xar_autoplayer.strategy.choose_nonwar_turn_v1", side_effect=lambda *_, **__: deepcopy(plan)):
+                queries_before = len(driver.sent)
+                default = service.plan_nonwar_turn()
+                self.assertNotIn("activity_feast_lifecycle_observation", default["plan"])
+                self.assertEqual(len(driver.sent), queries_before)
+                driver.allow_private_activity_feast_lifecycle_observation = True
+                with patch.object(service, "_execute_planned_turn", side_effect=lambda planned, **_: planned):
+                    first = service.auto_nonwar_turn()
+                second = service.plan_nonwar_turn()
+            self.assertEqual(first["plan"]["selected_step"], "life-advance")
+            self.assertEqual(first["plan"]["activity_feast_lifecycle_observation"]["lifecycle_status"],
+                             "completed")
+            self.assertTrue(first["plan"]["activity_feast_start_following_turn"]["next_turn_consumed"])
+            self.assertNotIn("activity_feast_start_following_turn", second["plan"])
+            self.assertEqual(second["plan"]["activity_feast_lifecycle_observation"]["status"],
+                             "lifecycle_terminal_recorded")
+            self.assertEqual(sum(row["step"] == START_STEP for row in driver.sent), 1)
+
+    def test_nonwar_pending_reconciles_material_before_existing_early_return(self) -> None:
+        with TemporaryDirectory() as temp:
+            driver = Driver(Path(temp))
+            driver.fail_submit = True
+            qualified = inputs()
+            qualified["native_guest_route_qualified"] = True
+            initial = consume_feast_start_private_v1(
+                driver, inputs=qualified, guest=guest(), budget=budget())
+            self.assertEqual(initial["status"], "submission_unresolved")
+            driver.fail_submit = False
+            driver.after_submit = True
+            driver.allow_private_activity_feast_lifecycle_observation = True
+            plan = {"policy": "fixture-natural-modal", "phase": "event",
+                    "selected_step": "choose-event-option:fixture", "reason": "existing event"}
+            with patch("xar_autoplayer.strategy.choose_nonwar_turn_v1", return_value=plan):
+                observed = GameplayBridgeService(driver).plan_nonwar_turn()
+            self.assertEqual(observed["plan"]["selected_step"], "choose-event-option:fixture")
+            self.assertTrue(observed["plan"]["activity_feast_lifecycle_observation"]["start_postcondition_verified"])
+            ledger = read_feast_start_ledger(Path(temp))
+            self.assertIsNone(ledger["pending"])
+            self.assertEqual(ledger["resolved"]["activity_id"], 77)
+            self.assertFalse(ledger["resolved"]["next_turn_consumed"])
+            self.assertEqual(sum(row["step"] == START_STEP for row in driver.sent), 1)
+
     def test_timeout_or_ambiguous_post_never_retries_start(self) -> None:
         with TemporaryDirectory() as temp:
             driver = Driver(Path(temp))

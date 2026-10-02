@@ -364,6 +364,45 @@ fixture 范围内 `live_validated=true`。后继非空 fixture 的证据另见
 
 ## 2026-09-05：失效 saved Character 不再拖垮整扇事件窗
 
+### 2026-10-02：1.20.0.3 婚姻通知的空 intermediary 修复
+
+G2 `formal-v10-01/turn-004/natural-event` 的真实自然 modal 在
+`date_raw=53328600`、actor `31853`、instance `13` 上返回
+`event_saved_scope_invalid`；同帧 snapshot 发布一个可选项，正式 service
+未执行选择并正常保存 h2031。原 RED 保留在
+[`natural-event/result.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v10-01/turn-004/natural-event/result.json)。
+
+该正常 checkpoint 的 SHA-256 为
+`5789934E31C255740A09EBF71F80429B949147815626A5163DDAE6D2DCF23CFC`。
+离线解码其 `player_event id=13` 确认 exact key
+`marriage_interaction.0010`，root `31853`，saved `intermediary` 是
+Character `identity=4294967295`（空角色 sentinel）。生产 `.3` 查询经
+v10 `bridge.cpp:9863` 调 `ck3_12002::ReadEventWindowContextV1`；该部署版本
+的 exact-build reader 拒绝此合法空角色，使全部 event key/scope/options
+丢失。本轮合并复用远端 `5c05c7dcb90eb8ba66bce4f9a4357f19c0ef4b68`
+已实现的 exact `.3` 空 saved Character reader、header、serializer 与
+Python contract；本地重复的 generic unresolved reader/fixture 改动不进入
+最终发布树。
+
+合并后的 exact `.3` binder 仅对 named saved Character 的完整 payload
+恰为零扩展 `UINT32_MAX` 开启 null 表示：保留合法 name/type/subtype，发布
+`typed_identity={status:unavailable,reason:character_scope_is_null}`，不发布
+CharacterID。root 身份仍必须 generation-valid；旧 `.2` binder 与其它
+无法解析的角色 token 继续保留各自既有行为。remote native fixture 已
+覆盖此空角色表示及 root/旧版本边界；本次不重复添加或运行该夹具。
+婚姻通知的两项现有生产 normalizer/registry 检查对齐合并后的 wire
+contract，原 v10 RED 不改。最终专项编译与实机恢复由本轮 root 增量构建
+和正式循环收口，这里不把静态检查当作 live GREEN。
+
+原版当前 `.3` `events/interaction_events/marriage_interaction_events.txt`
+SHA-256 为
+`78C367BA0B32A374E5BE5D88F7660E7898EF9DBC44412049521F64A472E4DCA5`。
+该 letter 仅有 `EXCELLENT` 空 option；婚姻已在交互接受时完成，事件
+immediate 只 `show_as_tooltip`。因此恢复通知继续路径不会给 M2 新增
+材料或多选信用。exact authored block、checkpoint event 和原 receipt hash
+保存在
+[`actual-v10-turn004`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v10-turn004/)。
+
 Phase2 产品时间线 R31 与 R33 在同一 paused frame（`date_raw=53147256`、event instance `14`）稳定复现
 `event_saved_scope_invalid`。20 次有界重试都保持同一 native revision，证明它不是 scope 构建中的瞬态窗口；同一时刻
 `error.log` 又记录 `intrigue_dread.1501:after` 对已经死亡的 scope character 执行 effect。故最小实际故障是：事件仍然可见、

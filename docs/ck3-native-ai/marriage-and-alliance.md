@@ -1,5 +1,43 @@
 # CK3 1.19.0.6 婚姻、联盟与战争召集：主动婚配与入站回复树
 
+## 2026-10-02：1.20.0.3 婚配接受通知的单选项续行
+
+正式 Murchad `formal-v10-01/turn-004` 在 `date_raw=53328600` 停于自然出现的
+`marriage_interaction.0010` instance `13`；原始 RED 保留在
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v10-01/turn-004/natural-event/`。
+该次查询没有提交选项。h2031 checkpoint SHA-256 为
+`5789934E31C255740A09EBF71F80429B949147815626A5163DDAE6D2DCF23CFC`；离线解析出的 root/actor
+为 `31853`，recipient 为 `39761`，secondary actor 为 `36403`，secondary recipient 为 `16825238`。
+`intermediary` 保存的是 character 空身份 `UINT32_MAX`，其余保存了 puppet_or_actor 和七项 boolean；
+这些本局人物、日期及 instance 仅作为 observation，不进入可复用合同。
+
+当前构建为 CK3 `1.20.0.3` / Steam build `25652598`，EXE SHA-256
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。
+原版 `events/interaction_events/marriage_interaction_events.txt:381–1039`，file SHA-256
+`78C367BA0B32A374E5BE5D88F7660E7898EF9DBC44412049521F64A472E4DCA5`，冻结定义块 SHA-256
+`8E5ACF62D61EB56689DEDA043D99245C57CD122668A8FFEC5B4D935761F7633A`。
+这是 `letter_event`：`immediate:1016–1034` 只在 `show_as_tooltip` 中展示先前婚姻或婚约结果；
+`option:1036–1038` 只有空 `EXCELLENT`，没有 `after` 或选项派生后续事件。
+
+```mermaid
+flowchart TD
+    A["已接受的婚配结果"] --> B[".0010 letter；婚姻/婚约 tooltip"]
+    B --> C{"玩家 typed root、十三 scope 与唯一可用 native 0 匹配？"}
+    C -->|是| D["authored 1 / native 0；空 EXCELLENT 确认"]
+    C -->|否| X["保留当前 modal；不提交"]
+    D -. "待正式同帧实机" .-> U["unknown：确认后 instance advance 与下一 turn"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+生产 registry 仅对 `.3` 增加这个实际 key 的 queried contract，复用既有 scope/option projection；
+intermediary 使用已有 `character-or-unavailable` 类型，允许 scope 自身可读但 typed identity 不可用，
+玩家 root 仍必须是合法 typed character。`.2/.19` registry 与旧 source index 保留原样。
+本包状态为 **static-ready**，不新增 campaign utility、不发布资源材料 expectation。
+关闭通知只证明确认续行；婚配关系在通知前已发生，不能计为 M2 选项材料变化或新 live 完成。
+冻结来源与离线分析在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v10-turn004/`；
+正式服务负责唯一一次选项提交，本包未调用游戏或重复发送动作。
+
 ## 2026-09-28：指定玩家子女的婚配入口（待 paused 实机）
 
 当前 Robert h3690 的首继承人 `38822` 已与 `38718` 订婚；仅反复扫描首继承人不会找到下一项家庭动作。h3686 的正式存档（SHA-256 `BCCF0B016CA1FED9D9993F3B529692458803D830194BA96A5EC922DB9D68DC09`）离线读到玩家 `29829` 的子女 `37265`（Emma），当时年满 16 岁、无婚约或配偶、House `174`、雇主 `29829`。R0323 后来在 h3911 暂停帧用原生 `is_child_of` 确认 Emma 身份、成人及未婚，取得具体默认五角色 Can Send/最终答复；候选 `37267` 的母系选项、伴侣状态、联盟及收益仍需专门同帧投影，参见 [Emma 证据](emma-matrilineal-option-2026-09-28.md#r0323-specified-child-and-default-final-legality)。

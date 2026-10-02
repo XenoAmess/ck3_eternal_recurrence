@@ -726,6 +726,21 @@ class GameplayBridgeService:
         available = action_step_set(caps)
         planning_view = getattr(self.driver, "_with_internal_planning_view", None)
 
+        feast_lifecycle_observation = None
+        feast_following_turn = None
+        state_dir = self._strategy_state_dir()
+        if (getattr(self.driver, "allow_private_activity_feast_lifecycle_observation", False) is True
+                and state_dir is not None and snapshot.get("paused") is True):
+            from ..activity_feast_stage5_start_formal_consumer import (
+                consume_feast_start_following_turn,
+                reconcile_feast_lifecycle_private_v1,
+            )
+
+            feast_lifecycle_observation = reconcile_feast_lifecycle_private_v1(
+                self.driver, snapshot=snapshot,
+            )
+            feast_following_turn = consume_feast_start_following_turn(state_dir, snapshot)
+
         def seed(view, native_history):
             history = [row for row in view.get("history", []) if isinstance(row, dict)]
             history.extend(row for row in native_history if isinstance(row, dict))
@@ -740,6 +755,10 @@ class GameplayBridgeService:
             goal = view.get("campaign_goal")
             if isinstance(goal, dict):
                 plan["campaign_goal_plan_used"] = ordinary_campaign_goal_plan_v1(goal)
+            if feast_lifecycle_observation is not None:
+                plan["activity_feast_lifecycle_observation"] = feast_lifecycle_observation
+            if feast_following_turn is not None:
+                plan["activity_feast_start_following_turn"] = feast_following_turn
             return {"snapshot_id": view["snapshot_id"], "revision": view["revision"],
                     "plan": plan, "_nonwar_history": history}
 

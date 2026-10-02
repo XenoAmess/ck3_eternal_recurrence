@@ -329,6 +329,20 @@ def query_vanilla_event_knowledge_v1(
             observations=None,
             unavailable_reason="invalid_event_definition_key",
         )
+    if ck3_build == "1.20.0.3":
+        from .records_marriage_notice_12003 import MARRIAGE_NOTICE_12003_RECORDS
+
+        notice = MARRIAGE_NOTICE_12003_RECORDS.get(event_definition_key)
+        if notice is not None:
+            return _knowledge_response(
+                status="available",
+                event_definition_key=event_definition_key,
+                ck3_build=ck3_build,
+                contract=notice["contract"],
+                analysis=notice["analysis"],
+                observations=notice["observations"],
+                unavailable_reason=None,
+            )
     contract = _registry_by_event_key.get(event_definition_key)
     if contract is None:
         return _knowledge_response(
