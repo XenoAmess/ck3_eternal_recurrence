@@ -389,6 +389,12 @@ restart recovery, and inert real-provider capabilities.
 
 ## Remaining work
 
+Existing-item additional image previews now have a read-only native query and
+optional hash-bound append/replace/remove plan fields. See the
+[additional preview contract](../docs/workshop-native-additional-previews.md).
+This extension is static-ready; its first live query and public media-order
+verification remain the responsibility of the publishing operator.
+
 Native create and update publication are both live-verified. Download callback
 automation and Steam mode restoration are not native MCP features yet: the
 verified releases used Steam's console for fresh downloading and its menu for

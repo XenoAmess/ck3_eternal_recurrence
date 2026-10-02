@@ -239,6 +239,12 @@ def create_server(
             from .steam_native import probe
             return probe(dll_path, app_id)
 
+        @server.tool(annotations=read_only)
+        def workshop_native_previews(dll_path: str, item_id: str, app_id: int = 1158310) -> dict[str, Any]:
+            """Read fresh additional image/video preview metadata for one exact item; no upload."""
+            from .steam_native import previews
+            return previews(dll_path, item_id, app_id)
+
         @server.tool(annotations=irreversible)
         def workshop_native_publish(dll_path: str, plan_file: str, receipt_file: str) -> dict[str, Any]:
             """Create/update one authorized Steam Workshop item using a durable native receipt."""

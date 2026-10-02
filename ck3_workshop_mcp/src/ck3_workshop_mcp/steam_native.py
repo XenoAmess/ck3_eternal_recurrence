@@ -32,6 +32,9 @@ ERESULT_OK = 1
 WORKSHOP_FILE_TYPE_COMMUNITY = 0
 CREATE_ITEM_CALLBACK_ID = 3403
 SUBMIT_ITEM_UPDATE_CALLBACK_ID = 3404
+UGC_QUERY_COMPLETED_CALLBACK_ID = 3401
+ADDITIONAL_PREVIEW_MAX_BYTES = 1024 * 1024
+ITEM_PREVIEW_TYPE_IMAGE = 0
 INVALID_API_CALL = 0
 INVALID_UPDATE_HANDLE = (1 << 64) - 1
 WORKSHOP_LEGAL_AGREEMENT_URL = (
@@ -62,6 +65,19 @@ _REQUIRED_FLAT_EXPORTS = (
     "SteamAPI_ISteamUGC_SetItemVisibility",
     "SteamAPI_ISteamUGC_SetItemTags",
     "SteamAPI_ISteamUGC_SubmitItemUpdate",
+)
+
+_ADDITIONAL_PREVIEW_FLAT_EXPORTS = (
+    "SteamAPI_ISteamUGC_CreateQueryUGCDetailsRequest",
+    "SteamAPI_ISteamUGC_SetReturnAdditionalPreviews",
+    "SteamAPI_ISteamUGC_SetAllowCachedResponse",
+    "SteamAPI_ISteamUGC_SendQueryUGCRequest",
+    "SteamAPI_ISteamUGC_GetQueryUGCNumAdditionalPreviews",
+    "SteamAPI_ISteamUGC_GetQueryUGCAdditionalPreview",
+    "SteamAPI_ISteamUGC_ReleaseQueryUGCRequest",
+    "SteamAPI_ISteamUGC_AddItemPreviewFile",
+    "SteamAPI_ISteamUGC_UpdateItemPreviewFile",
+    "SteamAPI_ISteamUGC_RemoveItemPreview",
 )
 
 _VISIBILITY = {
@@ -122,6 +138,35 @@ class SteamParamStringArray(ctypes.Structure):
     )
 
 
+class UGCQueryCompletedResult(ctypes.Structure):
+    """Valve SteamUGCQueryCompleted_t, including its 256-byte cursor buffer."""
+
+    _fields_ = (
+        ("handle", ctypes.c_uint64),
+        ("result", ctypes.c_int32),
+        ("num_results_returned", ctypes.c_uint32),
+        ("total_matching_results", ctypes.c_uint32),
+        ("cached_data", ctypes.c_bool),
+        ("next_cursor", ctypes.c_char * 256),
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class _PreviewFile:
+    path: Path
+    size: int
+    sha256: str
+    index: int | None = None
+
+    def identity(self) -> dict[str, object]:
+        result: dict[str, object] = {
+            "path": str(self.path), "size": self.size, "sha256": self.sha256
+        }
+        if self.index is not None:
+            result["index"] = self.index
+        return result
+
+
 @dataclass(frozen=True, slots=True)
 class _CreateResult:
     result: int
@@ -150,6 +195,10 @@ class _PreparedPlan:
     change_note: str
     legal_agreement_accepted: bool
     payload_sha256: str
+    additional_preview_files: tuple[_PreviewFile, ...] = ()
+    update_preview_files: tuple[_PreviewFile, ...] = ()
+    remove_preview_indices: tuple[int, ...] = ()
+    expected_additional_previews: dict[str, object] | None = None
 
 
 def _utc_now() -> str:
@@ -284,12 +333,20 @@ def symbols(dll_path: str | Path) -> dict[str, object]:
         "required_flat_exports": {
             name: name in export_set for name in _REQUIRED_FLAT_EXPORTS
         },
+        "additional_preview_flat_exports": {
+            name: name in export_set for name in _ADDITIONAL_PREVIEW_FLAT_EXPORTS
+        },
+        "additional_preview_missing": [
+            name for name in _ADDITIONAL_PREVIEW_FLAT_EXPORTS if name not in export_set
+        ],
         "missing": missing,
         "abi": {
             "create_item_callback_id": CREATE_ITEM_CALLBACK_ID,
             "create_item_result_size": ctypes.sizeof(CreateItemResult),
             "submit_item_update_callback_id": SUBMIT_ITEM_UPDATE_CALLBACK_ID,
             "submit_item_update_result_size": ctypes.sizeof(SubmitItemUpdateResult),
+            "ugc_query_completed_callback_id": UGC_QUERY_COMPLETED_CALLBACK_ID,
+            "ugc_query_completed_result_size": ctypes.sizeof(UGCQueryCompletedResult),
             "pointer_size": ctypes.sizeof(ctypes.c_void_p),
         },
     }
@@ -564,6 +621,108 @@ class _NativeClient:
     def set_preview(self, handle: int, value: Path) -> bool:
         return bool(self._set_preview(self.ugc, handle, self._utf8(str(value))))
 
+    def additional_previews(self, item_id: int) -> list[dict[str, object]]:
+        """Query one exact item with disk-cache reuse disabled; always release it."""
+
+        create = _bind(
+            self.library, "SteamAPI_ISteamUGC_CreateQueryUGCDetailsRequest",
+            ctypes.c_uint64,
+            (ctypes.c_void_p, ctypes.POINTER(ctypes.c_uint64), ctypes.c_uint32),
+        )
+        return_previews = _bind(
+            self.library, "SteamAPI_ISteamUGC_SetReturnAdditionalPreviews",
+            ctypes.c_bool, (ctypes.c_void_p, ctypes.c_uint64, ctypes.c_bool),
+        )
+        cached_response = _bind(
+            self.library, "SteamAPI_ISteamUGC_SetAllowCachedResponse",
+            ctypes.c_bool, (ctypes.c_void_p, ctypes.c_uint64, ctypes.c_uint32),
+        )
+        send = _bind(
+            self.library, "SteamAPI_ISteamUGC_SendQueryUGCRequest",
+            ctypes.c_uint64, (ctypes.c_void_p, ctypes.c_uint64),
+        )
+        count_previews = _bind(
+            self.library, "SteamAPI_ISteamUGC_GetQueryUGCNumAdditionalPreviews",
+            ctypes.c_uint32, (ctypes.c_void_p, ctypes.c_uint64, ctypes.c_uint32),
+        )
+        get_preview = _bind(
+            self.library, "SteamAPI_ISteamUGC_GetQueryUGCAdditionalPreview",
+            ctypes.c_bool,
+            (ctypes.c_void_p, ctypes.c_uint64, ctypes.c_uint32, ctypes.c_uint32,
+             ctypes.c_void_p, ctypes.c_uint32, ctypes.c_void_p, ctypes.c_uint32,
+             ctypes.POINTER(ctypes.c_int32)),
+        )
+        release = _bind(
+            self.library, "SteamAPI_ISteamUGC_ReleaseQueryUGCRequest",
+            ctypes.c_bool, (ctypes.c_void_p, ctypes.c_uint64),
+        )
+        ids = (ctypes.c_uint64 * 1)(item_id)
+        query_handle = int(create(self.ugc, ids, 1))
+        if query_handle == INVALID_UPDATE_HANDLE:
+            raise SteamNativeError("INVALID_QUERY_HANDLE", "invalid UGC query handle")
+        try:
+            _require_set(return_previews(self.ugc, query_handle, True), "return additional previews")
+            _require_set(cached_response(self.ugc, query_handle, 0), "disable cached query response")
+            raw = self._wait_for_result(
+                int(send(self.ugc, query_handle)), UGCQueryCompletedResult,
+                UGC_QUERY_COMPLETED_CALLBACK_ID,
+            )
+            assert isinstance(raw, UGCQueryCompletedResult)
+            if (raw.result != ERESULT_OK or raw.handle != query_handle
+                    or raw.num_results_returned != 1 or raw.cached_data):
+                raise SteamNativeError(
+                    "PREVIEW_QUERY_FAILED", "UGC query did not return one fresh exact item",
+                    details={"item_id": str(item_id), "result": int(raw.result),
+                             "handle": int(raw.handle), "returned": int(raw.num_results_returned),
+                             "cached_data": bool(raw.cached_data)},
+                )
+            count = int(count_previews(self.ugc, query_handle, 0))
+            previews: list[dict[str, object]] = []
+            for index in range(count):
+                url = ctypes.create_string_buffer(8192)
+                filename = ctypes.create_string_buffer(8192)
+                preview_type = ctypes.c_int32(-1)
+                if not get_preview(
+                    self.ugc, query_handle, 0, index, url, len(url), filename,
+                    len(filename), ctypes.byref(preview_type),
+                ):
+                    raise SteamNativeError(
+                        "PREVIEW_QUERY_FAILED", "could not read an additional preview",
+                        details={"item_id": str(item_id), "index": index},
+                    )
+                try:
+                    previews.append({
+                        "index": index, "type": int(preview_type.value),
+                        "url": url.value.decode("utf-8"),
+                        "original_filename": filename.value.decode("utf-8"),
+                    })
+                except UnicodeDecodeError as error:
+                    raise SteamNativeError("PREVIEW_QUERY_FAILED", "preview text is not UTF-8") from error
+            return previews
+        finally:
+            release(self.ugc, query_handle)
+
+    def add_preview_file(self, handle: int, value: Path) -> bool:
+        add = _bind(
+            self.library, "SteamAPI_ISteamUGC_AddItemPreviewFile", ctypes.c_bool,
+            (ctypes.c_void_p, ctypes.c_uint64, ctypes.c_char_p, ctypes.c_int32),
+        )
+        return bool(add(self.ugc, handle, self._utf8(str(value)), ITEM_PREVIEW_TYPE_IMAGE))
+
+    def update_preview_file(self, handle: int, index: int, value: Path) -> bool:
+        update = _bind(
+            self.library, "SteamAPI_ISteamUGC_UpdateItemPreviewFile", ctypes.c_bool,
+            (ctypes.c_void_p, ctypes.c_uint64, ctypes.c_uint32, ctypes.c_char_p),
+        )
+        return bool(update(self.ugc, handle, index, self._utf8(str(value))))
+
+    def remove_preview(self, handle: int, index: int) -> bool:
+        remove = _bind(
+            self.library, "SteamAPI_ISteamUGC_RemoveItemPreview", ctypes.c_bool,
+            (ctypes.c_void_p, ctypes.c_uint64, ctypes.c_uint32),
+        )
+        return bool(remove(self.ugc, handle, index))
+
     def set_visibility(self, handle: int, value: int) -> bool:
         return bool(self._set_visibility(self.ugc, handle, value))
 
@@ -616,6 +775,25 @@ def probe(dll_path: str | Path, app_id: int = DEFAULT_APP_ID) -> dict[str, objec
             "dll_path": client.metadata["dll_path"],
             "dll_sha256": client.metadata["sha256"],
             "accessors": client.metadata["accessors"],
+        }
+
+
+def previews(
+    dll_path: str | Path, item_id: str | int, app_id: int = DEFAULT_APP_ID,
+) -> dict[str, object]:
+    """Read only additional preview metadata; no update handle or submit."""
+
+    target = _parse_item_id(item_id, required=True)
+    if not isinstance(app_id, int) or isinstance(app_id, bool) or app_id <= 0:
+        raise SteamNativeError("INVALID_PLAN", "app_id must be a positive integer")
+    assert target is not None
+    with _open_client(dll_path, app_id) as client:
+        if not client.logged_on():
+            raise SteamNativeError("STEAM_USER_OFFLINE", "Steam user interface reports BLoggedOn=false")
+        return {
+            "schema": "ck3_workshop_mcp.steam_native.previews.v1",
+            "ok": True, "item_id": str(target), "app_id": app_id,
+            "previews": client.additional_previews(target),
         }
 
 
@@ -695,6 +873,68 @@ def _parse_item_id(value: object, *, required: bool) -> int | None:
     return parsed
 
 
+def _preview_index(value: object) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value < (1 << 32):
+        raise SteamNativeError("INVALID_PLAN", "preview index must be a uint32 integer")
+    return value
+
+
+def _preview_snapshot(value: object, item_id: int, app_id: int) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise SteamNativeError("INVALID_PLAN", "expected_additional_previews must be a frozen previews object")
+    if _parse_item_id(value.get("item_id"), required=True) != item_id or value.get("app_id") != app_id:
+        raise SteamNativeError("INVALID_PLAN", "preview snapshot target/AppID differs from publication target")
+    raw_previews = value.get("previews")
+    if not isinstance(raw_previews, list):
+        raise SteamNativeError("INVALID_PLAN", "preview snapshot must contain a previews array")
+    entries: list[dict[str, object]] = []
+    for index, entry in enumerate(raw_previews):
+        if not isinstance(entry, dict) or _preview_index(entry.get("index")) != index:
+            raise SteamNativeError("INVALID_PLAN", "preview snapshot indices must be contiguous and ordered")
+        kind = entry.get("type")
+        if not isinstance(kind, int) or isinstance(kind, bool) or not 0 <= kind < (1 << 31):
+            raise SteamNativeError("INVALID_PLAN", "preview snapshot type must be an integer")
+        url, filename = entry.get("url"), entry.get("original_filename")
+        if not isinstance(url, str) or not url or not isinstance(filename, str):
+            raise SteamNativeError("INVALID_PLAN", "preview snapshot URL and original filename must be strings")
+        entries.append({"index": index, "type": kind, "url": url, "original_filename": filename})
+    return {"item_id": str(item_id), "app_id": app_id, "previews": entries}
+
+
+def _check_preview_file(value: _PreviewFile) -> None:
+    if not value.path.is_file():
+        raise SteamNativeError("INVALID_PLAN", "additional preview file does not exist")
+    raw = value.path.read_bytes()
+    if len(raw) != value.size or hashlib.sha256(raw).hexdigest() != value.sha256:
+        raise SteamNativeError("PREVIEW_FILE_MISMATCH", "additional preview file differs from frozen size/SHA-256")
+    if not 16 <= len(raw) < ADDITIONAL_PREVIEW_MAX_BYTES:
+        raise SteamNativeError("INVALID_PLAN", "additional preview image must be at least 16 bytes and under 1 MiB")
+    if not (raw.startswith(b"\x89PNG\r\n\x1a\n") or raw.startswith(b"\xff\xd8\xff")
+            or raw.startswith((b"GIF87a", b"GIF89a"))):
+        raise SteamNativeError("INVALID_PLAN", "additional preview must have a PNG, JPEG or GIF signature")
+
+
+def _preview_files(value: object, *, indexed: bool) -> tuple[_PreviewFile, ...]:
+    if not isinstance(value, list):
+        raise SteamNativeError("INVALID_PLAN", "additional/update preview files must be arrays")
+    entries: list[_PreviewFile] = []
+    for entry in value:
+        if not isinstance(entry, dict):
+            raise SteamNativeError("INVALID_PLAN", "preview file requires path, size and sha256")
+        path, size, sha = entry.get("path"), entry.get("size"), entry.get("sha256")
+        if not isinstance(path, str) or not path or not Path(path).expanduser().is_absolute():
+            raise SteamNativeError("INVALID_PLAN", "additional preview path must be absolute")
+        if not isinstance(size, int) or isinstance(size, bool) or not 16 <= size < ADDITIONAL_PREVIEW_MAX_BYTES:
+            raise SteamNativeError("INVALID_PLAN", "additional preview image must be at least 16 bytes and under 1 MiB")
+        if not isinstance(sha, str) or re.fullmatch(r"[0-9a-fA-F]{64}", sha) is None:
+            raise SteamNativeError("INVALID_PLAN", "additional preview requires frozen SHA-256")
+        index = _preview_index(entry.get("index")) if indexed else None
+        file = _PreviewFile(Path(path).expanduser().resolve(), size, sha.lower(), index)
+        _check_preview_file(file)
+        entries.append(file)
+    return tuple(entries)
+
+
 def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
     operation_id = _require_string(data, "operation_id")
     operation = _require_string(data, "operation").lower()
@@ -765,6 +1005,29 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
             "INVALID_PLAN", "workshop_legal_agreement_accepted must be boolean"
         )
 
+    additional_files = _preview_files(data.get("additional_preview_files", []), indexed=False)
+    update_files = _preview_files(data.get("update_preview_files", []), indexed=True)
+    raw_remove = data.get("remove_preview_indices", [])
+    if not isinstance(raw_remove, list):
+        raise SteamNativeError("INVALID_PLAN", "remove_preview_indices must be an array")
+    remove_indices = tuple(sorted((_preview_index(index) for index in raw_remove), reverse=True))
+    expected_previews: dict[str, object] | None = None
+    if additional_files or update_files or remove_indices or "expected_additional_previews" in data:
+        if operation != "update" or target_item_id is None:
+            raise SteamNativeError("INVALID_PLAN", "additional preview edits require an update of an existing item")
+        expected_previews = _preview_snapshot(data.get("expected_additional_previews"), target_item_id, raw_app_id)
+        existing = expected_previews["previews"]
+        assert isinstance(existing, list)
+        indices = list(remove_indices) + [entry.index for entry in update_files]
+        if len(indices) != len(set(indices)):
+            raise SteamNativeError("INVALID_PLAN", "preview indices cannot be duplicated or both updated and removed")
+        if any(index is None or index >= len(existing) for index in indices):
+            raise SteamNativeError("INVALID_PLAN", "preview edit index is outside the frozen snapshot")
+        for file in update_files:
+            assert file.index is not None
+            if existing[file.index]["type"] != ITEM_PREVIEW_TYPE_IMAGE:
+                raise SteamNativeError("INVALID_PLAN", "UpdateItemPreviewFile requires an existing image preview")
+
     payload_identity = {
         "operation_id": operation_id,
         "operation": operation,
@@ -779,6 +1042,14 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
         "tags": list(tags),
         "change_note": change_note,
     }
+    # Preserve legacy payload hashes when no additional-preview fields are used.
+    if expected_previews is not None:
+        payload_identity["additional_previews"] = {
+            "expected": expected_previews,
+            "add": [file.identity() for file in additional_files],
+            "update": [file.identity() for file in update_files],
+            "remove_indices": list(remove_indices),
+        }
     payload_sha256 = hashlib.sha256(
         json.dumps(
             payload_identity,
@@ -801,6 +1072,10 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
         change_note=change_note,
         legal_agreement_accepted=legal_accepted,
         payload_sha256=payload_sha256,
+        additional_preview_files=additional_files,
+        update_preview_files=update_files,
+        remove_preview_indices=remove_indices,
+        expected_additional_previews=expected_previews,
     )
 
 
@@ -1055,6 +1330,18 @@ def publish(
 
         assert receipt is not None
         item_id = _item_id_from_receipt(receipt)
+        if plan.expected_additional_previews is not None:
+            observed = {
+                "item_id": str(item_id), "app_id": plan.app_id,
+                "previews": client.additional_previews(item_id),
+            }
+            if observed != plan.expected_additional_previews:
+                raise SteamNativeError(
+                    "PREVIEW_SNAPSHOT_MISMATCH", "public additional previews changed since preparation",
+                    details={"expected": plan.expected_additional_previews, "observed": observed},
+                )
+            receipt = _updated(receipt, additional_previews_before=observed)
+            _write_receipt(receipt_path, receipt)
         update_handle = client.start_item_update(plan.app_id, item_id)
         _require_set(client.set_title(update_handle, plan.title), "title")
         _require_set(
@@ -1070,7 +1357,26 @@ def publish(
         )
         _require_set(client.set_tags(update_handle, plan.tags), "tags")
 
-        receipt = _updated(receipt, stage="submit_intent")
+        # Replace before removal, then remove descending, then append in plan order.
+        # This avoids shifting a lower captured index before it has been used.
+        for file in plan.update_preview_files:
+            assert file.index is not None
+            _check_preview_file(file)
+            _require_set(client.update_preview_file(update_handle, file.index, file.path), "update additional preview")
+        for index in plan.remove_preview_indices:
+            _require_set(client.remove_preview(update_handle, index), "remove additional preview")
+        for file in plan.additional_preview_files:
+            _check_preview_file(file)
+            _require_set(client.add_preview_file(update_handle, file.path), "add additional preview")
+
+        changes: dict[str, object] = {"stage": "submit_intent"}
+        if plan.expected_additional_previews is not None:
+            changes["additional_preview_changes"] = {
+                "update": [file.identity() for file in plan.update_preview_files],
+                "remove_indices": list(plan.remove_preview_indices),
+                "add": [file.identity() for file in plan.additional_preview_files],
+            }
+        receipt = _updated(receipt, **changes)
         _write_receipt(receipt_path, receipt)
         submit_result = client.submit_item_update(update_handle, plan.change_note)
         if submit_result.result != ERESULT_OK:
@@ -1135,6 +1441,11 @@ def _parser() -> argparse.ArgumentParser:
     probe_parser.add_argument("--dll", required=True)
     probe_parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID)
 
+    previews_parser = subparsers.add_parser("previews", help="read one item's fresh additional preview metadata")
+    previews_parser.add_argument("--dll", required=True)
+    previews_parser.add_argument("--item-id", required=True)
+    previews_parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID)
+
     publish_parser = subparsers.add_parser(
         "publish", help="create or update a Workshop item from a reviewed plan"
     )
@@ -1151,6 +1462,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = symbols(arguments.dll)
         elif arguments.command == "probe":
             result = probe(arguments.dll, arguments.app_id)
+        elif arguments.command == "previews":
+            result = previews(arguments.dll, arguments.item_id, arguments.app_id)
         else:
             result = publish(
                 arguments.dll, arguments.plan_file, arguments.receipt_file
