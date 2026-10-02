@@ -211,6 +211,53 @@ NewGame all use this one existing binding; their route/tree/action DTOs have
 no second legacy build-identity gate. No native C++, driver, service, MCP,
 public DTO, or timeout change is needed for this observed local rejection.
 
+The next closed attempt used source
+`7ebc43e016c36f2c7e95b88a6ae9061cf1ba1bed` and v14, managed PID 117856.
+`m7-clan-preparation/actual-v14-7ebc43e0-01/actual-native-bootstrap-01` has
+SHA-256 `d9de8afc4c46569b8a023a7476883bb89610794e1629d078bdd64096eb5a973a`.
+After 607.34 seconds and 2,288 calls, it again returned
+`main_menu route was not observed` with `last_route={}`; both capability
+arrays still contain the three required frontend entries. The first and last
+actual route calls now return
+`native gameplay step failed: application-main frontend executor is unavailable`,
+with durations 0.012 and 0.009 seconds. The earlier malformed identity error
+is absent: the new fault is the native frontend executor admission path.
+Its exact predicate is `MainThreadQuerySubmitResultV1::invalid_request`:
+the new-adapter installer registers typed, semantic, and nonwar executors,
+but leaves `permitted_frontend_executor` null. The field is assigned only in
+the retained legacy installer. The new adapter's nonempty executor allowlist
+therefore rejects `ExecuteFrontendGuiRouteMailboxV1` before queue publication,
+and the frontend submit branch maps that enum to the observed unavailable
+error. The archived initial mailbox reports installed and submission enabled,
+with stop false, failure zero, and published/executed request counts zero;
+this matches the missing registration. Root applied the minimum fix assigning that
+existing executor only inside the installer's exact .3 descriptor block.
+It changes no GUI reader, Python facade, registration field, or CMake option.
+The original small patch and root application receipt are retained; its two
+context-mismatch attempts changed no source, and root applied the same two
+lines directly. That patch packaging issue is separate from the actual
+executor registration failure. Production build and actual frontend route
+verification remain pending.
+The single registration-flow fixture is GREEN under MSVC `/O2 /W4 /WX`:
+`gui-substrate-abi/v14-registration-fixture-final/RESULT.json` reports compile
+and run exit zero. It extracts the complete installer method from the frozen
+before source and root's actual canonical after source, then runs the real
+`BindThreadRuntimeImage`, `RegisterNonwarMailboxExecutorsV1`, mailbox install,
+submit, pump, wait, and reclaim paths. Before registration the submit result
+is `invalid_request` and the callback never runs; after registration one
+actorless frontend request completes and reclaims. The fixture never assigns
+the frontend permit itself. Its existing FakeRuntime supplies offline IAT,
+TLS, and state inputs; GUI/typed/semantic callbacks are link stubs, so this
+establishes static registration readiness rather than actual GUI semantics.
+The first link attempt lacked standard `user32.lib` and remains a retained
+harness RED; adding that library produced the final result without changing
+production code. Actual main-menu route, NewGame, and government verification
+remain for root's next frozen DLL.
+No NewGame, private Bookmark model, selector, or StartGame ran; cleanup was
+fully proven. The new attempt's fields are retained separately under
+`m7-frontend-12003/actual-v14-route-wait-red/`, without replacing previous
+failed artifacts.
+
 No actual seed, paired save, cold restore, or succession has been established.
 M7 remains open. Root must verify actual government, actor, rules, paired
 checkpoint, and formal consumer/cold continuation before assigning readiness.
@@ -220,7 +267,8 @@ flowchart TD
   A[Exact 1.20.0.3 adapter ready] --> R[Historical v12 RED: three frontend capabilities absent]
   R -->|runtime target fix; actual v13 hello has all three| H[Advertisement subfault closed]
   H --> I[Actual v13 RED: Python binding accepts legacy identity only]
-  I -. exact .3 facade identity fix; actual route pending .-> A1[Main menu route query]
+  I -->|exact .3 facade identity fix| J[Actual v14 RED: native frontend executor unavailable]
+  J -. exact .3 existing frontend executor registration; actual route pending .-> A1[Main menu route query]
   A1 -. private typed NewGame pending live .-> B[Bookmarks]
   B -. Rurik only: key-derived native Bookmark setter .-> C[Fresh target Bookmark model]
   B -. Yahya: same Bookmark target probe .-> C

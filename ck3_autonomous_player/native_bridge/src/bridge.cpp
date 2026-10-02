@@ -9908,6 +9908,8 @@ public:
         xar::game::ReviewedCrozierAbiSha256(game_->descriptor()), executors);
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     if (xar::game::IsCk3_12003Descriptor(game_->descriptor())) {
+      environment.permitted_frontend_executor =
+          &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
       nonwar.steward_develop_county = &xar::ck3_11906::
           ExecuteStewardDevelopCountyCandidatesMailboxQueryV1;
     }
