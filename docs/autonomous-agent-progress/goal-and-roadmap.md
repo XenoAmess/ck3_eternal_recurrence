@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 23:33 Robert v20冷恢复、健康材料及正式新增6日：累计3248天
+
+2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
+
+2026-10-02 23:33:53 Asia/Shanghai当前closed截点：唯一Robert originalordinary、Steam离线/最小化no-focus、root实机独占，上一8doc actualpublica6b1727833e33b500d9d288cef6ea43b1a952574。新native **4ee/v20** 487TU/933pins严格83.79s后实际新PID94488冷恢复samegoal/六ledger；currentPython **b03/nativeenv4ee** 分列，b03官方CI37023469750 SUCCESS。原fowl.0003/instance12 sole native0/API1真实clear，独立health3.80962→4.30962 **＋0.5**，随后正式 **＋6 saved日**；**Robert3248/36524、本次95新增日**，raw53222280/fullsave4130，G2 **4/8=50%**、NW **1/4=25%**、typedgoal0succession不变。该窗口requested30只actual6，在新natural **rite_growth.0010/13** 消费者尚未适配处暂停；最新用户已全面开放宗教研究并撤销旧限制，原13适配与原生宗教树/只读采集并行，权限不补M2两multi或live。
+
+Guy原properconsumer一次gone_unmaterialized/materialfalse/not_observed，pendingnull但完整sourcepending保留、retainedqueue1/match0，无婚约/联盟/拒绝/timeout信用；Chancellor7→13一次ACK→原typedapplied/正常6日，原successful plan nexttrue在clock前native15/date53222136，随后真＋6日，samePID窄loop成立；额外modeconsume03新modal早退不是RED，cold待验；Feast同83886111 actualcold ongoing、Swayfull134217986/gen8/cold4/三ringattached，均无终态/归因收益/整体M6完成。Constructionafter1108.33266/war1army1仍hold，净值修复仅static/noaction。Latestsave85,736,985B/SHA `ed1bf0fb76915ffda910121a83b327780d5b94352d4388ab6592129c1d6e6e23`，driver49,851,154B/SHA `1f81968a0434dd4e610d6ce13cb1386b4903a6b19cefbdf1ad67bd601e5e3842`；[当前6日保存及原13停点](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/fowl3-chancellor-following-normal30-b03-actual-01/result.json)。
+
 ## 22:33 Robert配偶scope修复实机闭环与新增4日：累计3242天
 
 2026-10-02 22:33:32 Asia/Shanghai当前截点：Robert原ordinary campaign/Python242/native716-v19/GAME70968，Steam离线/最小化不抢焦点、原17:27释放及21:12继续授权保持。已封存85日stage public991ac2fb0626d4c992c22d0656cb4d4f1dbf5180；purePython修复 public242d2f0f75278a9f78fec3b9fa96211c1f0da29a。原feast.2001/11/my_spouse34730的4scope兼容已真实sole native0/API1选择→独立clear→正式 **＋4日保存**，**Robert3242/36524、本次89新增日**；raw53222136/h4111/full4111，typedgoal0succession另列，G2 **4/8=50%**、NW **1/4=25%**不变。新自然instance12/1 authored尚未读key，不预填选择；[scope242原11闭环与＋4日](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-normal90-natural-blocker-01/actual-242-next-closed/REPORT-FIELDS.json)。
@@ -501,7 +509,7 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 - 完整比较所有合法 CB、目标 title 价值、成本、双方 reserve、盟友接受/ETA、其它战争、truce、faction 与 succession 风险。
 - 实现 declare、call/join/offer war 及可验证 participant 后置状态。
 - planner 能在至少五个候选中选择目标/CB，也能选择“现在不打”，并处理进攻、防御、盟友与同时两战。
-- 圣战/大圣战只读取战争 OODA 必需的原生合法性、目标、费用、参战与结束结果；faith 保持 opaque/minimal。
+- 宗教领域现已全面开放，faith/religion原生输入与圣战/大圣战相关宗教决策树可按exact-build深入研究，不再受opaque/minimal窄例外限制；当前战争研究/战争实机任务仍停止，Robert nonwar-only入口保持。
 
 ### P6：家庭、婚姻、教育、继承与王朝
 
@@ -529,7 +537,7 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 - 建立 laws/government、culture/innovations、decisions 原生树。
 - 读取 authority/laws/succession law、culture/traditions/acceptance、innovations 和非宗教 decision eligibility/cost/effect。
 - 实现 law/authority、culture/fascination 与非宗教 major decision，并跨年验证长期效果。
-- 通用 faith/doctrine/tenet/fervor、改宗、宗教改革及 holy order 继续 owner-deferred，不计完成。
+- 通用 faith/doctrine/tenet/fervor、改宗、宗教改革及 holy order 已在最新用户全面宗教授权内，按真实当前价值研究原生树/只读bridge/MCP并逐步实机验收；解除限制本身不计能力完成。
 
 ### P10：活动、旅行、宫廷、宝物、勋号与 DLC/government packs
 
@@ -576,49 +584,8 @@ GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 
 真实 run 出现更高优先级的观测阻点时，可以调整相邻工作包，但不得通过重复返回 `unknown/unavailable` 代替补观测口。
 
-## 宗教域暂缓边界
+## 宗教领域当前全面开放
 
-在项目所有者明确通知“可以开始宗教相关内容”之前：
+2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
 
-- 不深入研究或实现通用 faith/doctrine/tenet/fervor、改宗、宗教改革、宗教专用 AI、bridge、策略或实机矩阵；
-- holy order 继续暂缓；
-- 只允许两项窄例外：完整战争 OODA 所必需的圣战/大圣战输入与动作；婚姻确实依赖信仰时的最小原生判定；
-- 两类例外优先消费原生最终 legality/acceptance/result/reason，faith/religion 只保留 opaque identity 或直接必要输入；
-- 暂缓不等于完成。解除暂缓后，通用宗教域仍须补齐五层完成门与整局矩阵。
-
-
-### 2026-09-13 G2-M1 partition increment
-
-Per-held-title current succession was first completed as a static package. The
-campaign root publishes every personally held county-or-higher title with its
-engine-calculated first heir, and the turn bundle exposes split-risk state. The
-matching typed council component followed the same path. R639, recorded below,
-then verified both together without a partition- or council-specific long run.
-
-### 2026-09-13 G2-M1 production-live closure
-
-The bounded same-process R639 artifact is GREEN for independent ruler `29829`
-and vassal ruler `36108`. Both campaign roots and turn bundles are
-`available/ready=true`; relationship vectors, related contexts, partition and
-six occupied council tasks per scene are observed on unchanged date `53178264`.
-The source save is unchanged and managed cleanup is proven. Artifact SHA-256 is
-`CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`.
-G2-M1 is complete and the fixed program denominator is now `1/8`.
-
-### 2026-09-14 G2-M3 paused cold-restore pickup gate
-
-The R679 bounded differential did not reach campaign-root reading. The request
-was published but cancelled before execution while the paused application-main
-pump epoch remained `11208 -> 11208`; executor starts and executed requests
-both remained `0 -> 0`. The run performed zero gameplay, retained date
-`53789952`, captured no succession expectation and cleaned up successfully.
-This is a production RED in the cold-restore paused pickup path.
-
-The mailbox partial-admission FIX1 is still only static/candidate evidence
-because R679 returned no typed root payload. G2-M3 therefore remains
-`in_progress` and global G2 remains `1/8`. Before another CK3 round, FIX2 must
-restore observable application-main pump progress for a published request on
-this cold paused boundary. The next live gate is one short differential that
-proves pickup, then observes the FIX1 available-but-partial root, derived
-partial turn bundle and succession expectation. A naturally occurring death
-and successor continuation remain a later, separate M3 integration gate.
+原生树、exact-build输入与实际paused材料按既有readiness分级；缺少新live不能以授权、schema、源码或fixture冒充完成。原午夜计划和旧日期段中的宗教权限仅为历史记录，不作为当前门禁。

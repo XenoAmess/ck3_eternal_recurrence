@@ -10,6 +10,16 @@
 
 显式 `native-session --start-minimized` 将首次、frontend warm-up/final、checkpoint 和 next-episode 启动传入 Windows `STARTUPINFO` 的 `STARTF_USESHOWWINDOW` / `SW_SHOWMINNOACTIVE`，复用受管 PID 的窗口采样保持最小化。默认其它流程不改变；当前 G2 后续启动全部选择此参数。真实 CLI→session→launch 参数链、Win32 producer 与 PID helper 的一个定向 case GREEN；新进程焦点／窗口状态仍由实机采样确认。对应源码及收据为 `artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-start-implementation-01/`。
 
+## 23:33 Robert v20冷恢复、健康材料及正式新增6日：累计3248天
+
+2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
+
+2026-10-02 23:33:53 Asia/Shanghai实际流程增量：唯一Robert原ordinary/Steamoffline/minimizedno-focus，root独占实机；v20/native4ee933pins/487TU严格build及官方prepare/stage/rebind/preflight后真实新PID94488同goal/六ledger/full4114 anchor4113冷恢复成立。currentPythonb03沿用native/env4ee。原活动窗口冷query未物化的0selection attempt保留，通过现成explicitnative OpenActivityView呈现再typed选择，不偷偷在readonly里mutate，不重复Start。
+
+原feast_main_live_fowl.0003/12 unique0/API1→独立old12gone，同actor/date53222136/paused；existingroot独立health380962→430962实际+.5，与generic comparator仍null/unavailable分列，不当两multi。Guy originalrequest正常gone_unmaterialized/pendingnull/resolved完整sourcepending，count1/match0只not_observed，不重发、不推拒绝/timeout。新C43696替34867原once→typedapplied→正常＋6日，原successful plan nexttrue在clock前native15/date53222136，随后真＋6日，samePID窄loop成立；额外modeconsume03新modal早退不是RED，cold待验；新C cold后续另验，旧S receipt/cold不移。
+
+requested30实际6日保存至raw53222280/fullsave4130，**Robert3248/36524、本次95新日**；save85,736,985B/SHA `ed1bf0fb76915ffda910121a83b327780d5b94352d4388ab6592129c1d6e6e23`，driver49,851,154B/SHA `1f81968a0434dd4e610d6ce13cb1386b4903a6b19cefbdf1ad67bd601e5e3842`。新rite_growth.0010/13尚无选择/材料，但最新用户全面宗教研究授权已撤销旧暂缓/两窄例外/holyorder限制；按exact原生树与最小既有消费者继续适配，不再等待旧范围许可。Feastsamefull83886111新PIDongoing/Swaysamefullgen8三ringready仅current连续性；原terminal/attendance/reward/Swaybenefit待normaloutcome。Constructionwar1army1/event13 hold继续。[closed6日与当前停点](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/fowl3-chancellor-following-normal30-b03-actual-01/result.json)。本stage一次文档/JSON核数、原合同G24/8/NW1/4保持；旧tests/validator/CI不重跑，午夜draft未正式收口/不倒填早会。
+
 ## 22:33 Robert配偶scope修复实机闭环与新增4日：累计3242天
 
 2026-10-02 22:33:32 Asia/Shanghai实际续行：唯一Robert原ordinary latest pair、Steam离线/最小化no-focus，root独占game/SDK/pipe/state/Git；Python242沿用native/env716-v19，未经combined新native验收不得改称新DLL live。原feast.2001/instance11配偶34730四scope形状由既有typed consumer一次native0/API1选择；独立paused同date53222040/native55→56、公有2→3证实旧11消失。该选项tooltip-only/empty effect/metric null，gold/prestige delta0，包装status不作M2材料。随后同ordinary正式life-advance正常 **＋4保存日** 到raw53222136/h4111/full4111，新的instance12/1 authored只记出现，下一先现成typed exactkey读取再处理。[原11真实clear与正常＋4日](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-normal90-natural-blocker-01/actual-242-next-closed/REPORT-FIELDS.json)。
@@ -1252,7 +1262,7 @@ live variant；production runner 实际从共享条目解析一个真实 encount
   `end_war_attacker_white_peace_interaction`、角色/路由/选项/期限/合法性与只读 query sequence。runner 不会默认 accept、
   reject、block 或 acknowledge，并检查原 source 字节与元数据不变及受管清理。当前 snapshot discovery 会先过滤
   `+0x5C6` auto-accept notification，故本验收只覆盖 ordinary pending interaction；ACK 分支仍是明确未闭合的 discovery
-  依赖。宗教专用语义继续 owner-deferred，不得借此夹具探索。
+  依赖。宗教专用语义继续 owner-deferred，不得借此夹具探索。（此句是2026-08-17当时限制；2026-10-02最新全面宗教授权已撤销该现行限制，不再阻断当前宗教研究。）
 - 2026-08-26 上述 runner 用 fresh Release DLL SHA
   `152FB65A9F302B67423F5AE604AEE0DD9A791498E74C9CA924E47DCAF14F568C` 完成 GREEN。seed PID `93972` 创建并保存
   pending checkpoint（66,579,686 bytes，SHA `3ABF8B9750911910D95B6AE2108B71BAA040613B3E4410578F1C4F76F16019DF`），

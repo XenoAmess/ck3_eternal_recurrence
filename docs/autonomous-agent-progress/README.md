@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体进度中心
 
+## 23:33 Robert v20冷恢复、健康材料及正式新增6日：累计3248天
+
+2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
+
+2026-10-02 23:33:53 Asia/Shanghai当前closed截点：唯一Robert originalordinary、Steam离线/最小化no-focus、root实机独占，上一8doc actualpublica6b1727833e33b500d9d288cef6ea43b1a952574。新native **4ee/v20** 487TU/933pins严格83.79s后实际新PID94488冷恢复samegoal/六ledger；currentPython **b03/nativeenv4ee** 分列，b03官方CI37023469750 SUCCESS。原fowl.0003/instance12 sole native0/API1真实clear，独立health3.80962→4.30962 **＋0.5**，随后正式 **＋6 saved日**；**Robert3248/36524、本次95新增日**，raw53222280/fullsave4130，G2 **4/8=50%**、NW **1/4=25%**、typedgoal0succession不变。该窗口requested30只actual6，在新natural **rite_growth.0010/13** 消费者尚未适配处暂停；最新用户已全面开放宗教研究并撤销旧限制，原13适配与原生宗教树/只读采集并行，权限不补M2两multi或live。
+
+Guy原properconsumer一次gone_unmaterialized/materialfalse/not_observed，pendingnull但完整sourcepending保留、retainedqueue1/match0，无婚约/联盟/拒绝/timeout信用；Chancellor7→13一次ACK→原typedapplied/正常6日，原successful plan nexttrue在clock前native15/date53222136，随后真＋6日，samePID窄loop成立；额外modeconsume03新modal早退不是RED，cold待验；Feast同83886111 actualcold ongoing、Swayfull134217986/gen8/cold4/三ringattached，均无终态/归因收益/整体M6完成。Constructionafter1108.33266/war1army1仍hold，净值修复仅static/noaction。Latestsave85,736,985B/SHA `ed1bf0fb76915ffda910121a83b327780d5b94352d4388ab6592129c1d6e6e23`，driver49,851,154B/SHA `1f81968a0434dd4e610d6ce13cb1386b4903a6b19cefbdf1ad67bd601e5e3842`；[当前6日保存及原13停点](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/fowl3-chancellor-following-normal30-b03-actual-01/result.json)。
+
 ## 22:33 Robert配偶scope修复实机闭环与新增4日：累计3242天
 
 2026-10-02 22:33:32 Asia/Shanghai当前截点：Robert原ordinary campaign/Python242/native716-v19/GAME70968，Steam离线/最小化不抢焦点、原17:27释放及21:12继续授权保持。已封存85日stage public991ac2fb0626d4c992c22d0656cb4d4f1dbf5180；purePython修复 public242d2f0f75278a9f78fec3b9fa96211c1f0da29a。原feast.2001/11/my_spouse34730的4scope兼容已真实sole native0/API1选择→独立clear→正式 **＋4日保存**，**Robert3242/36524、本次89新增日**；raw53222136/h4111/full4111，typedgoal0succession另列，G2 **4/8=50%**、NW **1/4=25%**不变。新自然instance12/1 authored尚未读key，不预填选择；[scope242原11闭环与＋4日](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-normal90-natural-blocker-01/actual-242-next-closed/REPORT-FIELDS.json)。
@@ -251,4 +259,4 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
   月报保持“未完成/重制中”。详细规范见 [`monthly/README.md`](monthly/README.md) 与 [`demos/README.md`](demos/README.md)。
 - 报告必须区分“已完成”“正在进行”“为什么做”“证据/测试”“未闭合”“下一步”。
 - live attempt 无论 GREEN 或 RED 都保留真实结论；不得通过修改预期、删去失败或把 harness 成功写成 capability 成功来美化状态。
-- 宗教域继续遵守所有者暂缓：只允许战争中的圣战 OODA 和婚姻确实需要时的最小 faith 判定两项窄例外。
+- 当前宗教研究已由2026-10-02最新用户指令全面开放；旧通用宗教/holy order暂缓及“只有圣战/婚姻两窄例外”限制全部撤销。原生AI树、exact-build只读观测和真实材料继续分级记录，授权本身不计完成；当前Robert唯一实机入口/nonwar-only保持。
