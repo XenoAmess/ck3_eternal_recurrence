@@ -1,0 +1,676 @@
+{
+  "schema": "xar.ck3.episode03.william-lewes-evidence-index.v1",
+  "document": {
+    "path": "D:/we3/docs/ck3-native-ai/episode03-william-lewes-live-2026-10-03.md",
+    "bytes": 17941,
+    "sha256": "9743d0107f20d256380a8d6d7da6f9e67ca4bda0b0f6643a9fab376aaaa2ec4e"
+  },
+  "created_utc": "2026-10-02T17:06:04.284404+00:00",
+  "external_evidence_root": "D:/ck3-war-episode03-20261002-a01",
+  "retention": "All originals, failures and attempts retained externally; repository contains document/index only, no game binaries, raw media or saves.",
+  "actual_context": {
+    "root_task_label": "R0156",
+    "session_dir": "live-a06",
+    "episode_run_id": "native-33388-ebbc6357f8b6",
+    "bridge_pid": 15372,
+    "actor_character_id": 33388,
+    "war_id": 1,
+    "target_province_id": 1506,
+    "full_siege_id_before_fall": 6,
+    "public_cunit_id": 0,
+    "strength_native_carmy_id": 0,
+    "cb_key": "norman_conquest_cb",
+    "game_adapter_id": "ck3-1.20.0.3-msvc-x64",
+    "ck3_executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "records": [
+    {
+      "id": "steam-offline-fresh-a17",
+      "status": "retained-byte-pinned",
+      "scope": "Root original-image inspection of two distinct UTC/nonce challenges and Steam offline label after graphics recovery; no new desktop acquisition by this documentation task.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/steam-offline-challenge-a17-graphics-recovered/visual-review.json",
+          "bytes": 2105,
+          "sha256": "06f28bf2dffbd0070ad7b9a096a0edd4aee378dfea21af7e4f1effb038b53de5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/steam-offline-challenge-a17-graphics-recovered/frames.json",
+          "bytes": 1443,
+          "sha256": "6e3e539bfb72a33ae68b28617625cf82fc1543c31e4c3d3f50912d2c080dca9d"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/steam-offline-challenge-a17-graphics-recovered/challenge-2.png",
+          "bytes": 893962,
+          "sha256": "dd271e334a26955107cb39b2f2e2360382a36576e2d5246ac77a95e7c53b7aa9"
+        }
+      ]
+    },
+    {
+      "id": "native-production-a03",
+      "status": "retained-byte-pinned",
+      "scope": "Exact production artifact/source manifest; 117 compiled BOOL settings OFF; immutable DLL; no extrapolation to all live capabilities.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/native-unit-zero-artifacts-a03.json",
+          "bytes": 9981,
+          "sha256": "2fac5c017453aa949a41d27741f4941aac29802003aa19a72b323d8fa00d6fd6"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/native-unit-zero-source-a03.json",
+          "bytes": 473525,
+          "sha256": "faf9c277dd9a16503986689527df07fd532f3aec8abf83c965c32c704f268c6f"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/native-unit-zero-compiled-12003-capabilities-a03.json",
+          "bytes": 2618,
+          "sha256": "32065151a80d45eab742ca5d95d541a2178a1f02fc81a1ff6362052c38a8de6c"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/native-build-unit-zero-a03/xar_ck3_bridge.dll",
+          "bytes": 4505088,
+          "sha256": "eb03ee5cf602b110fb04642fdd5bd023a35de926a3ec94f12b035d37e2c2a686"
+        }
+      ]
+    },
+    {
+      "id": "native-build-and-12-ctest",
+      "status": "offline-checks-passed",
+      "scope": "Production build and selected offline CTest command/output; actual .3 worker included.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/native-unit-zero-build-a03-20261002T134343809504.json",
+          "bytes": 1030,
+          "sha256": "100f6699a06a722b8d0edc23dcbf61dca8c676d148a2678bfe3bc69fa74950b5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/native-unit-zero-test-a03-20261002T134857793910.json",
+          "bytes": 700,
+          "sha256": "8b4e26c2f462fcae60999398da5452748ec55406b7c5bfc0366f66e3130af908"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/native-unit-zero-test-a03-20261002T134857793910.log",
+          "bytes": 1926,
+          "sha256": "f3791ddb82be19bf0c402b06fccaf6f7280e3ce4c9bbc53aaf8070788b5ed3a7"
+        }
+      ]
+    },
+    {
+      "id": "runtime-before-and-after",
+      "status": "disk-inputs-unchanged",
+      "scope": "387 disk inputs at before/after-capture/after-stop; unchanged exact paths, bytes and SHA; not a resident-code-byte attestation.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/runtime-source-live-a06-before.json",
+          "bytes": 126629,
+          "sha256": "9f4870b362d1131d4623e28c4631c27881a0862fb3748773c2df0f1458940523"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/runtime-source-live-a06-after-capture.json",
+          "bytes": 126299,
+          "sha256": "c924966c196fc4838c866a1e47f0f531946e807dff8bd8063b4ee2da7693f3f2"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/runtime-source-live-a06-after-stop.json",
+          "bytes": 126296,
+          "sha256": "e46e6fd9f695397623908f7a9f23dc217f294b1d5bfaace04c90ddc901383b1b"
+        }
+      ]
+    },
+    {
+      "id": "actual-carmy-zero-opening",
+      "status": "actual-readback-passed",
+      "scope": "Same-frame public/raw CUnit0 and resolved CArmy0 strengths plus actual norman_conquest_cb four-component baseline; detailed original pins retained inside report.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/actual-carmy-zero-readback-a06.md",
+          "bytes": 6101,
+          "sha256": "008b62b14f063333497db371da833ea94b5940057291df036e489ba1c56e928f"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/actual-carmy-zero-readback-a06.json",
+          "bytes": 119370,
+          "sha256": "e83cec576ec56753a4d187946ccc400358f6cd55bbeb1d0afec7e456c3f70be4"
+        }
+      ]
+    },
+    {
+      "id": "public-unit-zero-fix",
+      "status": "retained-byte-pinned",
+      "scope": "Strict complete public CUnit0 recovery and original bounded build/test evidence; actual evidence in separate opening and progression records.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/public-cunit-zero-recovery-a03.md",
+          "bytes": 8155,
+          "sha256": "83fb4bb7620abaab682942e97cf6ddd903901defdaf91e491fefa19bd409dac4"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/unit-zero-core-source-pins-a03.json",
+          "bytes": 10503,
+          "sha256": "27683f01a731866e80fa3209a3001ccc2ad2c73b5971bdaa951de21f2ac199f0"
+        }
+      ]
+    },
+    {
+      "id": "strength-carmy-zero-fix",
+      "status": "offline-checks-passed",
+      "scope": "Only nullable ArmyStrength native_carmy_id field range correction; exact before/after source, producer/serializer proof and bounded Python regressions.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/carmy-zero-strength-recovery-a04.md",
+          "bytes": 4167,
+          "sha256": "379df693553c9e6553bde0cf81276cd8cb8f25c9e1296f0e402d674fd8314e36"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/carmy-zero-strength-source-pins-a04.json",
+          "bytes": 25282,
+          "sha256": "8440a804bf4071953445ae5a2ca3e9029272bad9ed23115d59d490676c4b8c27"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/carmy-zero-strength-a04-attempt-02/receipt.json",
+          "bytes": 2305,
+          "sha256": "eedefd15aba3b702e3dab066589ac95e5127f72e03d1590962267451245a6b79"
+        }
+      ]
+    },
+    {
+      "id": "one-day-and-reinforcement",
+      "status": "observed-net-work-confirmed",
+      "scope": "Jan10/11 exact paused one-day endpoints, later G/T change, B and designator changes; full original result/response/UI pins retained inside report.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/review.md",
+          "bytes": 7000,
+          "sha256": "49da2feb6aaf87173da16462ff8c30d35f3a3b7ce3e8b34bcd5de64e5e255677"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/review.json",
+          "bytes": 81985,
+          "sha256": "23b214708316a4a082550e88d11127481c79bb2e9072c06a984f1fc9c6e62016"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/count-normalizer-static-proof.json",
+          "bytes": 7222,
+          "sha256": "a0f7b661ce92f00f9205d8fdabb4aac40918caed414576a1622a8fe790fe6c02"
+        }
+      ]
+    },
+    {
+      "id": "assault-one-day-and-stop",
+      "status": "actual-readback-passed-with-boundaries",
+      "scope": "139 checks of actual start/day/stop/strength/war baseline; net C and eligible B observations only; a01 path-comparison correction retained.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.md",
+          "bytes": 7523,
+          "sha256": "6de6a8bc6c32f15813f74276d4833fdc2866c7070284e17ba929bf398f9fa888"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.json",
+          "bytes": 110376,
+          "sha256": "95c17b00867c9a6d9c08e7d7d81fda898ffc0a01663edd6164881038a0349d7d"
+        }
+      ]
+    },
+    {
+      "id": "fall-and-components",
+      "status": "actual-readback-passed-with-boundaries",
+      "scope": "119 checks: three-day finish, same-frame occupied33388/no active siege, CArmy0=6384, before Apr19 four zero components and after Apr22 occupation13; 211 actual module path/disk matches.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/fall-real-readback-a01.md",
+          "bytes": 7119,
+          "sha256": "47107558130831d91a15b482c7ede0921de5d55ab6301b67148dc7034da67c27"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/fall-real-readback-a01.json",
+          "bytes": 2360510,
+          "sha256": "6451f87f39737182c95c25fb76653f374d3ef1bb2a7db49aad04a988d6fd3548"
+        }
+      ]
+    },
+    {
+      "id": "fall-raw-transport",
+      "status": "retained-byte-pinned",
+      "scope": "Native packet semantic acceptance and actual module origins at native372/public373; no generic MCP capability claimed for internal diagnostic.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live-a06/responses/163137-b65bb795.json",
+          "bytes": 65634,
+          "sha256": "f026fd974dc974f151484f29f5522f51d67ec2c7a23e43bf671a4fae9ba9c9e5"
+        }
+      ]
+    },
+    {
+      "id": "current-legal-holder-ui",
+      "status": "retained-byte-pinned",
+      "scope": "Directly reviewed original county view: current legal holder Duke Leofwine and military occupier You; no pre-siege same-owner-pair claim.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163225-9bbcae09/desktop.png",
+          "bytes": 2922727,
+          "sha256": "ece6870ee7c218be69656d7b26df7e0693622264a5a233463839151953113db3"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163225-9bbcae09/receipt.json",
+          "bytes": 3499,
+          "sha256": "cff6bf320b1cab4c1dc5a6a66dd569f0d251a9c2c48e3cb0ea5fd3249dfd541e"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163445-0409322b/desktop.png",
+          "bytes": 2937509,
+          "sha256": "0edacca805e715920828cbe68c1a10804675ed1b74d90d1438dcf0b5dd1138cc"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163445-0409322b/receipt.json",
+          "bytes": 3063,
+          "sha256": "e6f1652cd36fdcf157feeb06b5d1a63307f7e8fd0913a6c7d906a5fbc4d6b1ec"
+        }
+      ]
+    },
+    {
+      "id": "current-occupation-score-ui",
+      "status": "retained-byte-pinned",
+      "scope": "Directly reviewed actual GUI +13.2 occupation tooltip/current +150 cap and +13 headline; separate from native integer13 and unloaded-policy unknowns.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/receipt.json",
+          "bytes": 3683,
+          "sha256": "9a15daa995170ba14231fcf737684b0f82895825047981ae87135d0e74443038"
+        }
+      ]
+    },
+    {
+      "id": "reinforcement-and-small-breach-ui",
+      "status": "retained-byte-pinned",
+      "scope": "Directly reviewed retained images: Jan21 B6746/G460/69 siege weapons/daily2.7; Jan29 small breach and interval -10%.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-12-william-reinforcement/desktop-after.png",
+          "bytes": 2877172,
+          "sha256": "bf638ab934e496e3bb2426f097a53ac40f84f897b467f1a71633afaba85ed654"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-13-william-breach/desktop-after.png",
+          "bytes": 2910641,
+          "sha256": "ceb390fb564eb89ae01eb9e3bbd3d0687fedca32ec93ba5699d9cb16a5614a3b"
+        }
+      ]
+    },
+    {
+      "id": "large-breach-ui",
+      "status": "retained-byte-pinned",
+      "scope": "Directly reviewed Apr19 original image: large breach and interval -30%; siege-history/phase-clock not independently published by DTO.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/receipt.json",
+          "bytes": 3063,
+          "sha256": "31112522ac74dc16fa732db262b3ebe2f7aee26457a7ebddcb6d37074963f344"
+        }
+      ]
+    },
+    {
+      "id": "capture-10-william-siege-opening",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-10-william-siege-opening/completed.json",
+          "bytes": 2068,
+          "sha256": "1450ab5bb6ac26d6a2bdcfbc931978f93bff6e824c8776a32373fa8760badd71"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-10-william-siege-opening\\raw-desktop.mkv",
+          "bytes": 83122272,
+          "sha256": "b4c99cd5ec1c5e44b5b14ccf357c9a7e564cf8274a3277c65bd92f19cdaf3099"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-10-william-siege-opening\\probe.json",
+          "bytes": 1931,
+          "sha256": "89ed664596ce7ef22747f37cdcf341333437b4b379867d81359ee9dc532127f2"
+        }
+      ],
+      "duration_seconds": 60.0,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false
+    },
+    {
+      "id": "capture-11-william-daily-progress",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-11-william-daily-progress/completed.json",
+          "bytes": 2070,
+          "sha256": "3b6dd8459db146959791c6f15a34001ccd1016c88736ceaf21cd97407fdef920"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-11-william-daily-progress\\raw-desktop.mkv",
+          "bytes": 81012920,
+          "sha256": "93322d0aad265dcf20915244c968aceef61c644a49c5d592030e890ebdd99fa7"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-11-william-daily-progress\\probe.json",
+          "bytes": 1932,
+          "sha256": "e9acbbdcb755c9be7050564a4eb8a4f4c7717bc54635467e712be92cbff68804"
+        }
+      ],
+      "duration_seconds": 60.0,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false
+    },
+    {
+      "id": "capture-12-william-reinforcement",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-12-william-reinforcement/completed.json",
+          "bytes": 2068,
+          "sha256": "a9fb6cf7a56d660ba9195d35f3931656a005e4b8eccbbd1ed1528d8bde7fc60c"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-12-william-reinforcement\\raw-desktop.mkv",
+          "bytes": 77981394,
+          "sha256": "d04d62cba6b89af47094838d2c8a46dfa75436a7e3f695ed24c61b03226f92d1"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-12-william-reinforcement\\probe.json",
+          "bytes": 1931,
+          "sha256": "a74393d56e4f7b4c88d4df4e203b2754237b6dde99fcffd63407e788edad84ec"
+        }
+      ],
+      "duration_seconds": 60.0,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false
+    },
+    {
+      "id": "capture-13-william-breach",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-13-william-breach/completed.json",
+          "bytes": 2047,
+          "sha256": "a180dd9852ae9a6773acce437f3544ab9c230163aeefd924ca4f8e8ed8e86713"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-13-william-breach\\raw-desktop.mkv",
+          "bytes": 81824034,
+          "sha256": "87cb0e07e903fb533eaadc4b70cfe34a9af5e4fcc8d7f31dcc9747066dfab33f"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-13-william-breach\\probe.json",
+          "bytes": 1924,
+          "sha256": "4d3cf25aeb7fad963083fc97721c2123dd3330cbfa8d777beb9b0f50bf16506d"
+        }
+      ],
+      "duration_seconds": 60.0,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false
+    },
+    {
+      "id": "capture-14-william-assault",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-14-william-assault/completed.json",
+          "bytes": 2049,
+          "sha256": "41c9d241d0b487208ce20baf651c4d5de585bb92719acf9783bf21ed48901606"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-14-william-assault\\raw-desktop.mkv",
+          "bytes": 84316072,
+          "sha256": "e6b0b237931c33fd714929ec425a115ddc06eb62436508c663a5b7201ef05388"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-14-william-assault\\probe.json",
+          "bytes": 1925,
+          "sha256": "e18795b55b5396a97b0b0ae02a2b195a4de8676ea2627dd5a86dbbdd3aab6108"
+        }
+      ],
+      "duration_seconds": 60.0,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false
+    },
+    {
+      "id": "capture-15-william-fall",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-15-william-fall/completed.json",
+          "bytes": 2043,
+          "sha256": "fc2557b4f070e1ab1413b23d41abaabe044ff72cba3af5802dc80e9189eded3a"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-15-william-fall\\raw-desktop.mkv",
+          "bytes": 84325541,
+          "sha256": "722b82aa8f2a9e083cd929f177cfe05d483bcce69b22c164b2085f2a782daee7"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-15-william-fall\\probe.json",
+          "bytes": 1922,
+          "sha256": "5ecb0ffe0cea91d2728e1174cc278f1a7c366b454039d95b6bd67a3b9dcaadfa"
+        }
+      ],
+      "duration_seconds": 59.966,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false,
+      "first_actual_fall_pts_independent_review": "passed-see-raw12-17-full-decode-and-capture15-first-occupation-pts"
+    },
+    {
+      "id": "capture-16-william-occupation",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-16-william-occupation/completed.json",
+          "bytes": 2059,
+          "sha256": "651601160c46868fd54ce4d07a5faeee988cf7233cc0dcf1fffc41951ab4d94c"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-16-william-occupation\\raw-desktop.mkv",
+          "bytes": 78283528,
+          "sha256": "0836dbfeea8997ac0902027c9a463201bc7dc9b053166faf769a41742889d599"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-16-william-occupation\\probe.json",
+          "bytes": 1928,
+          "sha256": "1df96689d51fe725343ef3b39e3b16569222cae93363afdf3341d782adbcd4b8"
+        }
+      ],
+      "duration_seconds": 60.0,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false
+    },
+    {
+      "id": "capture-17-william-war-score",
+      "status": "recorded-retained-not-human-signed-off",
+      "scope": "Raw original recording with retained recorder/job, marks and probe; no final film approval or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/capture-17-william-war-score/completed.json",
+          "bytes": 2054,
+          "sha256": "203b4666b8ecdeaabf5e11fafa360c3469ad37c4f58748640764c33ef554d3a9"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-17-william-war-score\\raw-desktop.mkv",
+          "bytes": 88474604,
+          "sha256": "776fa8c17bb02a7717c2291138e380ac889b2db18eacbb5bc5ef5d9c491e1971"
+        },
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-17-william-war-score\\probe.json",
+          "bytes": 1927,
+          "sha256": "df188ed43aaf5ca5c7262caa759b6483ab34279ee77f539d656d84359d224002"
+        }
+      ],
+      "duration_seconds": 60.0,
+      "human_approved": false,
+      "clean_span_verified_by_original_receipt": false
+    },
+    {
+      "id": "checkpoint-and-cleanup",
+      "status": "cleanup-proven",
+      "scope": "Completed normal stop/process-tree cleanup, source after-stop proof, display1024x768 and CAS release sequence3821; CK3 termination exit1 retained in original bootstrap receipt.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live-a06/bootstrap-result.json",
+          "bytes": 7871,
+          "sha256": "54609132a9015ad3f12fe6ac92403daf8cfbe1541217cf34e65c3a95eb5f26da"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/display-restored-after-live6.json",
+          "bytes": 923,
+          "sha256": "314b11a1f711a72ca6be393beb88ae9a49531b8acffb8f4ea3a38e2b1e0c7fa6"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-finished-release.json",
+          "bytes": 2284,
+          "sha256": "0e22c4e1b6062ad0bee35a64695ea0f3ccd92c9e3893452f9515c9e66f9a80a5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/william-lewes-fall-1067-04-22.ck3",
+          "bytes": 74680288,
+          "sha256": "fb0336fe3d570031fa640dc7b0b6d311b09fd62c9dec7b8b18aa47861453d8b0"
+        }
+      ]
+    },
+    {
+      "id": "raw12-17-full-decode-and-capture15-first-occupation-pts",
+      "status": "independent-original-raw-review-passed-with-boundaries",
+      "scope": "Original raw12–17 full9866frames decode and actual capture15 first-occupation PTS; no final-film signoff, stop-assault filming or production/delivery acceptance.",
+      "assets": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/review.md",
+          "bytes": 4193,
+          "sha256": "559ea16b9e1a23fbeaf02687f46d4a26488ab4083b256f5e40f8a1cdfda51343"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/review.json",
+          "bytes": 101515,
+          "sha256": "05b820ee4166b50c21d35f71d9fed8625f597acb9e64ad9e28382b798ceea01d"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/fall-onset-review.json",
+          "bytes": 7722,
+          "sha256": "719a2cb40ded459a389c3bfdc91d3d095f1883924666725a55e0ee236c7a30d2"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/14/assault-sequence-review.json",
+          "bytes": 10835,
+          "sha256": "56bcadc6b3782c506f8689a1acdcde301e691f31f5b2c9b441a3b02b6ba155ae"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/review-output-pins.json",
+          "bytes": 1732,
+          "sha256": "4a679c00f7ace6abaf92cdd03dc0ea3d6823f93b193fd932d2e30657a9e20210"
+        }
+      ],
+      "full_decoded_frames": 9866,
+      "capture15_frames": [
+        {
+          "n": 1432,
+          "pts_seconds": "52.733",
+          "observation": "preceding-first-occupation"
+        },
+        {
+          "n": 1433,
+          "pts_seconds": "52.767",
+          "observation": "first-occupation"
+        },
+        {
+          "n": 1438,
+          "pts_seconds": "52.967",
+          "observation": "siege-fade-completely-gone"
+        }
+      ],
+      "selected_capture15_interval_seconds": [
+        "50.033",
+        "59.500"
+      ],
+      "cue": "cue092",
+      "capture14": {
+        "assault_started_pts_seconds": "6.767",
+        "next_day_pts_seconds": "40.900",
+        "strength_pts_seconds": "40.933",
+        "last_frame_pts_seconds": "59.967",
+        "stop_button_still_present_at_end": true,
+        "stop_assault_filmed": false
+      },
+      "visual_review_scope": {
+        "representative_frames": 42,
+        "half_second_grid_samples": 197,
+        "key_consecutive_frames": 87,
+        "all9866visuallyReviewed": false
+      },
+      "direct_original_png_observation": {
+        "n1432_actual_date_label": "1067-04-22",
+        "n1432_still_preoccupation": true,
+        "frozen_report_date_label": "Apr21",
+        "note": "Original report bytes retained; local date-label erratum appended to native doc. No atomic refresh claim.",
+        "original_png": {
+          "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/fall-onset-a01/sample-007.png",
+          "bytes": 2415778,
+          "sha256": "72b2e3a8b3f6db3f6cb2a06e36be9f757c7d8c5fa41e6e9b80b32acdf19f0e82"
+        }
+      },
+      "final_human_signoff": false
+    }
+  ],
+  "documentation_checks": {
+    "indexed_files_exist_and_current_bytes_hashed": true,
+    "capture_raw_probe_pins_match_completed_receipts": true,
+    "relative_topic_links_exist": true,
+    "runtime_disk_inputs_unchanged_387": true,
+    "latest_module_path_disk_matches_211": true,
+    "native_selected_ctest_12_passed_original_log": true,
+    "native_options_117_all_off": true,
+    "new_live_calls": false,
+    "new_desktop_actions": false
+  },
+  "pending": [
+    "final-script-and-render",
+    "production-admission",
+    "external-delivery",
+    "human-1x-full-film-review-and-signoff"
+  ],
+  "known_unknowns": [
+    "resident-Python-code-bytes/old-pyc-origin",
+    "full-ordinary-daily-modifier-and-siege-phase-history-attribution",
+    "event-specific-work-and-regiment-casualty-attribution",
+    "loaded-CB-policy/n-N-collector/held-goal-clock/fractional-ticking",
+    "pre-post-identical-legal-owner-pair",
+    "gold-ledger-net9.36-versus-GUIreward9",
+    "simultaneous-third-party-occupations-not-isolated"
+  ],
+  "updated_utc": "2026-10-02T17:56:20.806506+00:00",
+  "append_history": [
+    {
+      "kind": "original-raw-PTS-review-only",
+      "previous_document": {
+        "path": "D:/ck3-war-episode03-20261002-a01/william-lewes-pts-doc-append-a01/before-episode03-william-lewes-live-2026-10-03.md",
+        "bytes": 15222,
+        "sha256": "9e7f78d74da5af9e941c2730f3849ccf8ebea341ad01ee2df9cd76b5d9a7482c"
+      },
+      "previous_index": {
+        "path": "D:/ck3-war-episode03-20261002-a01/william-lewes-pts-doc-append-a01/before-episode03-william-lewes-evidence-index.json",
+        "bytes": 25212,
+        "sha256": "d0143152a120155b108952eb505b74c6708c95714864548a4e7ec8c2c7920461"
+      },
+      "producer_status": "pending-root-final-production-validation",
+      "frozen_nine_or_runtime_source_edited": false
+    }
+  ]
+}

@@ -236,7 +236,13 @@ def extract_final_frames(audit, ffmpeg, video, samples, fps, video_start_seconds
     folder.mkdir()
     selected = sorted(samples)
     script = audit.output / "final-frame-filter.txt"
-    expression = "+".join(f"eq(n,{number})" for number in selected)
+    # A flat addition chain exceeds FFmpeg's expression recursion limit on
+    # a full episode. Keep the exact frame set with a balanced expression.
+    terms = [f"eq(n,{number})" for number in selected]
+    while len(terms) > 1:
+        terms = [f"({terms[index]}+{terms[index + 1]})" if index + 1 < len(terms)
+                 else terms[index] for index in range(0, len(terms), 2)]
+    expression = terms[0] if terms else "0"
     script.write_text(f"[0:v:0]select='{expression}',showinfo=checksum=0[frames]\n", encoding="utf-8")
     _, log = audit.command("final-frames", [ffmpeg, "-hide_banner", "-nostdin", "-v", "info", "-n",
                   "-i", video, "-/filter_complex", script, "-map", "[frames]",
