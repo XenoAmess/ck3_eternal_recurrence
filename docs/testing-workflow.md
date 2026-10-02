@@ -920,6 +920,14 @@ live variant；production runner 实际从共享条目解析一个真实 encount
   session 已持有的锁，也不得先关 pipe 后等待 CK3。initial readiness 要在同一 PID/generation 上同时闭合 exact-build hello、
   default-OFF containment/recorder、paused map、存活 episode character 与同日期 main-thread mailbox；cold checkpoint 还要闭合
   `driver_state_restore_kind=cold_checkpoint`、`episode_binding_state=active_resumed` 且无 candidate rejection。
+- 用户设置初始化应在完整字节冻结之前完成。已冻结的产品投影、game/EXE、候选源与要加载的存档仍须保持
+  immutable bytes；前端 warmup 则可能把最小 `pdx_settings.txt` 扩展为完整默认设置。实际预热曾在已声明字段
+  语义相同的情况下触发最终实例创建前的 settings byte gate；该 RED 保持，归因于包装层过早 pin 初始化文件，
+  不能据此判共享启动器或 Steam 故障。已有语义 `settings_contract` 不替代该包装层的完整 byte 检查。
+  处理方法是 prepare 新 profile 后、freeze 前显式加入已正常关闭、同 EXE/build 且来源和声明字段已审阅的
+  初始化 settings seed，记录来源、bytes/SHA，并按本产品既有字段合同逐项核对教程、云、display/分辨率与语言。
+  不扩共享 `settings_contract` 的固定显示接口，不略过 settings、不改写旧 RED；随后重新冻结完整 bytes 并用
+  原 byte gate 验新 attempt。seed 导入及文档方法不证明最终实例、mod/save 加载或玩法通过；新实机仍 NOT_RUN。
 - 新候选的 preview operator manifest 可显式写 `"display_mode": "windowed"`。`prepare-state` 将它传给
   `prepare-profile` 和 `verify-profile`，在独立 `pdx_settings.txt` 冻结普通窗口 `1280×720`，环境 manifest 的
   `display.contract_version=1`、mode、resolution 和环境 SHA 一起绑定；未写该字段时继续使用既有 fullscreen
