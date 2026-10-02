@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 02:31 当前正常循环：Robert3263日，G2仍5/8
+
+2026-10-03T02:31:05+08:00 Asia/Shanghai实际滚动补录，前02:03阶段与10-02closed留作dated history。唯一Robert actor29829/episode `native-29829-2bc2d599f7f9`，当前Python **2f0bb9dc** / native **b594-v22** / PID119508。Robert **3263/36524**、resume **110保存新增日**、10-03 **15保存日**，typed dynasty_continuity reconciled_successions0不混天数比例。G2 **5/8=62.5%**（M0/M1/M2/M3/M5）、NW **1/4=25%**（NW-FAMILY）保持，原M2三自然/两不同多选完整合同已complete，不重复审核或计第四multi；Feast/Sway/Family新动作/宽M7不借该信用。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。本段真实 **＋11 saved日**，raw53222376→53222640、full/save **4168**；save SHA `c9314c243cd2b5eaad006b891d46d368d0e62d3dce24b94c4699d831331aa4f5`、driver SHA `a6f90cbb74281be091c90891a4213e5204b662eb4e30054cfcd1da3d36f2f0e6`。返回turn1 life-advance实际＋4、turn2已有registry自然事件实际gold−50、turn3 life-advance实际＋7；turn4新自然modal缺consumer处暂停，不是完整30日目标达成。[正常＋11保存原包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/fowl9002-following-normal30-2f0-v22-actual-02/result.json)。
+
+原15 fowl9002 typed once/oldgone为无资源收益primitive；实际新6231/16 sole native0扣50gold且oldgone，新6003/17两个visible fighter选项未登记/未选、第三条件隐藏，下一exact形状适配。 Family fresh新37689/37513两full-value GREEN并选择37689后，提交前首value admission聚合guard RED，未到prewrite/nativeSubmit，0新pending/提议；specific falsepredicate需最小诊断，既有shortlist改动已实际解锁新pair但真正提交仍未闭合。 当前piety413.1375和56513→Robert总好感值＋10是独立readonly primitive，不作好感增量或任务归因；learning/reform源码Root applied、未来strict/actual待，native仍b594/v22。public2f0已push且official37045181591 SUCCESS，0新增整项credit。原Feast83886111/Sway134217986gen8不重Start，唯一Robert/nonwar/no-focus与全宗教开放保持。
+
 ## 10-03 02:03 v22当前恢复与正常循环
 
 2026-10-03T02:03:47+08:00 Asia/Shanghai真实滚动补录，10-03日报仍进行中、10-02已closed不倒填。Robert **3252/36524**、本resume **99新增保存日**，其中10-03 **4日**；typed dynasty_continuity reconciled_successions0 / last_succession null保持。G2 **5/8=62.5%**、NW **1/4=25%**；原G2-M2合同由sole owner22/22最终判定complete，新增一整项；NW四域为LIFE/ECON/FAMILY/JOINT，M2无对应整包，故NW仍1/4。唯一actor29829/episode `native-29829-2bc2d599f7f9`，Steam离线、最小化/no-focus、Robert-only/nonwar保持。 [当日日报](daily/2026-10-03.md) / [W40周报](weekly/2026-W40.md)记录本stage。上一报告publicb65和功能publicb594都实际push，v22严格83.02303s/933inputs/487TU及exactCI37040857656 SUCCESS。

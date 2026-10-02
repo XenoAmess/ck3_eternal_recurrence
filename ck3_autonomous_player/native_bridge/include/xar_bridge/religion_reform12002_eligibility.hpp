@@ -10,15 +10,18 @@ namespace xar::ck3_12002::religion_reform {
 inline constexpr std::uintptr_t kCanCreateRiteCoreRva = 0x14F56D0;
 inline constexpr std::uintptr_t kCanEditRiteCoreRva = 0x14F5050;
 inline constexpr std::size_t kCreationWindowActorIdOffset = 0xCC;
+inline constexpr std::uintptr_t kDraftReasonStringDestroyRva = 0x856050;
 
 // Both native methods accept an optional CString reason sink. A null sink
 // takes the same boolean path used by the native data-model callbacks.
 using DraftEligibilityGetter = bool (*)(const void *window, void *reason);
+using DraftReasonStringDestroy = void (*)(void *reason);
 
 struct EligibilityBindings {
   bool enabled = false;
   DraftEligibilityGetter can_create_rite = nullptr;
   DraftEligibilityGetter can_edit_rite = nullptr;
+  DraftReasonStringDestroy destroy_reason_string = nullptr;
 };
 
 enum class EligibilityFailure {
@@ -36,6 +39,8 @@ struct DraftEligibility {
   std::optional<std::uint32_t> draft_actor_id;
   std::optional<bool> can_create_rite;
   std::optional<bool> can_edit_rite;
+  std::optional<std::string> can_create_rite_native_text;
+  std::optional<std::string> can_edit_rite_native_text;
 };
 
 EligibilityBindings BindEligibilityImage12002(
@@ -45,7 +50,8 @@ EligibilityBindings BindEligibilityImage12002(
 // the real current CRiteCreationWindow obtained by the companion window
 // observer; it is not a synthesized draft or a pointer from a query request.
 // The player ID comes from the same actual played-character snapshot.
-// This copies native booleans; it neither creates/edits a Rite nor queues a
+// This copies native booleans and their final native text; it neither
+// creates/edits a Rite nor queues a
 // command. A missing window cannot evaluate a headless proposed draft.
 bool ReadCurrentDraftEligibility12002(const EligibilityBindings &bindings,
                                      const void *current_window,

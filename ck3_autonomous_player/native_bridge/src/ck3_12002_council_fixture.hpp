@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <array>
 #include <cstring>
+#include <vector>
 
 namespace xar::ck3_12002::test {
 
@@ -35,6 +36,7 @@ struct CouncilCandidatesFixture12002 {
   std::array<Blob<0x80>, 4> tasks{};
   Blob<0x30> character_storage{}, task_storage{};
   std::array<Slot, 128> character_slots{}, task_slots{};
+  std::vector<Slot> chaplain_character_slots{}, chaplain_task_slots{};
   std::array<std::int32_t, 4> task_ids{kTask, -1, -1, -1};
   std::array<std::uintptr_t, 128> rows{};
   void *character_storage_pointer = nullptr, *character_fallback = nullptr;
@@ -55,6 +57,7 @@ struct CouncilCandidatesFixture12002 {
   static constexpr char kPosition[] = "councillor_steward";
   static constexpr char kChancellorPosition[] = "councillor_chancellor";
   static constexpr char kSpymasterPosition[] = "councillor_spymaster";
+  static constexpr char kChaplainPosition[] = "councillor_court_chaplain";
 
   CouncilCandidatesFixture12002() noexcept {
     for (std::size_t i = 0; i < characters.size(); ++i) {
@@ -153,6 +156,45 @@ struct CouncilCandidatesFixture12002 {
     expected_task_index = 2;
   }
 
+  // Archived actual004 identities, with explicitly synthetic skill memory.
+  // No query, current-game state, clergy predicate or appointment is simulated.
+  void EnableChaplainLearning() {
+    constexpr std::int32_t owner = 29829, incumbent = 56513, task = 7162;
+    chaplain_character_slots.resize(static_cast<std::size_t>(incumbent) + 1);
+    chaplain_task_slots.resize(static_cast<std::size_t>(task) + 1);
+    characters[0].Put(0x18, owner);
+    characters[1].Put(0x18, incumbent);
+    characters[1].Put(0xD8, std::int32_t{3});
+    characters[1].Put(0xE0, std::int32_t{9});
+    characters[1].Put(0xE4, std::int32_t{14});
+    characters[1].Put(0xE8, std::int32_t{17});
+    chaplain_character_slots[static_cast<std::size_t>(owner)].object = characters[0].Data();
+    chaplain_character_slots[static_cast<std::size_t>(incumbent)].object = characters[1].Data();
+    character_storage.Put(0x20, chaplain_character_slots.data());
+    character_storage.Put(0x2C, static_cast<std::int32_t>(chaplain_character_slots.size()));
+    const char *key = kChaplainPosition;
+    position.Put(0x18, key);
+    position.Put(0x28, std::size_t{sizeof(kChaplainPosition) - 1});
+    position.Put(0x30, std::size_t{31});
+    tasks[0].Put(0x10, task);
+    tasks[0].Put(0x40, incumbent);
+    tasks[0].Put(0x44, owner);
+    task_ids[0] = task;
+    chaplain_task_slots[static_cast<std::size_t>(task)].object = tasks[0].Data();
+    task_storage.Put(0x20, chaplain_task_slots.data());
+    task_storage.Put(0x2C, static_cast<std::int32_t>(chaplain_task_slots.size()));
+    frame.played_character_id = owner;
+    frame.public_revision = 2;
+    frame.native_revision = 9;
+    frame.date_raw = 53222304;
+    frame.snapshot_id.fill('\0');
+    constexpr std::string_view snapshot = "native:clergy-learn";
+    std::copy(snapshot.begin(), snapshot.end(), frame.snapshot_id.begin());
+    request = {std::string_view(frame.snapshot_id.data()), frame.public_revision,
+        frame.native_revision, frame.date_raw, owner, kChaplainPosition};
+    count = 0;
+  }
+
   static bool MainThread(void *context) noexcept {
     return static_cast<CouncilCandidatesFixture12002 *>(context)->main_thread;
   }
@@ -178,7 +220,7 @@ struct CouncilCandidatesFixture12002 {
     auto &f = *static_cast<CouncilCandidatesFixture12002 *>(context);
     if (f.unreadable_candidate_skill && address ==
         static_cast<const std::byte *>(f.characters[15].Data()) +
-            CouncilCandidatesProfile12002(f.request.position_key).main_skill_offset) return false;
+            CouncilCandidatesCompositionProfile12002(f.request.position_key).main_skill_offset) return false;
     const bool valid = Span(f.characters.data(), sizeof(f.characters), address, size) ||
         Span(&f.owner_extension, sizeof(f.owner_extension), address, size) ||
         Span(&f.position, sizeof(f.position), address, size) ||
@@ -192,6 +234,8 @@ struct CouncilCandidatesFixture12002 {
         Span(&f.task_storage, sizeof(f.task_storage), address, size) ||
         Span(f.character_slots.data(), sizeof(f.character_slots), address, size) ||
         Span(f.task_slots.data(), sizeof(f.task_slots), address, size) ||
+        Span(f.chaplain_character_slots.data(), f.chaplain_character_slots.size() * sizeof(Slot), address, size) ||
+        Span(f.chaplain_task_slots.data(), f.chaplain_task_slots.size() * sizeof(Slot), address, size) ||
         Span(f.task_ids.data(), sizeof(f.task_ids), address, size) ||
         Span(f.rows.data(), sizeof(f.rows), address, size) ||
         Span(&f.character_storage_pointer, sizeof(void *), address, size) ||
@@ -201,6 +245,7 @@ struct CouncilCandidatesFixture12002 {
         Span(kPosition, sizeof(kPosition), address, size) ||
         Span(kChancellorPosition, sizeof(kChancellorPosition), address, size) ||
         Span(kSpymasterPosition, sizeof(kSpymasterPosition), address, size) ||
+        Span(kChaplainPosition, sizeof(kChaplainPosition), address, size) ||
         Span(f.allocator_address, f.allocator_size, address, size);
     if (!valid || output == nullptr) return false;
     std::memcpy(output, address, size);

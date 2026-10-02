@@ -1,4 +1,9 @@
 #include "ck3_12002_council_fixture.hpp"
+#include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
+
+#include <fstream>
+#include <utility>
 
 #include <iostream>
 #include <string>
@@ -32,7 +37,52 @@ bool Rejected(Fixture &f, Failure reason, std::uint32_t expected_producer,
 }
 }
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc >= 2 && std::string_view(argv[1]) == "--chaplain-learning-only") {
+    static_assert(kCouncilCandidatesCharacterLearningOffset12002 == 0xD8 + 4 * sizeof(std::int32_t));
+    static_assert(CouncilCandidatesCompositionProfile12002(kCouncilCandidatesChaplainPosition12002).main_skill_key == "learning");
+    static_assert(CouncilCandidatesProfile12002(kCouncilCandidatesChaplainPosition12002).position_key.empty());
+    Fixture f;
+    f.EnableChaplainLearning();
+    CouncilCandidatesFrameV1 frame{};
+    game::CouncilCompositionCandidatesPublicV1 output{};
+    const bool captured = CaptureCouncilCandidatesFrame12002(f.environment, f.access, frame, f.request.position_key);
+    const auto result = ReadCouncilCandidates12002(f.environment, f.access, f.request, output);
+    if (result != Result::available) {
+      std::cerr << "focused reader unavailable public="
+                << ck3_11906::CouncilCompositionCandidatesPublicFailureKeyV1(output.unavailable_reason)
+                << " source=" << ck3_11906::CouncilCompositionStewardCandidatesFailureKeyV1(output.source_unavailable_reason)
+                << " captures=" << f.capture_calls << " producer=" << f.producer_calls
+                << " release=" << f.release_calls << '\n';
+    }
+    const game::AdapterDescriptor descriptor{
+        "ck3-1.20.0.3-msvc-x64", "1.20.0.3", ck3_12003::kExecutableSha256, "fixture-only", {}};
+    const auto wire = game::RenderCrozierBuildIdentity(SerializeCouncilCandidates12002(output), descriptor);
+    const bool ok = Check(captured && frame.played_character_id == 29829 &&
+        frame.active_task_id == 7162 && frame.active_task == reinterpret_cast<std::uintptr_t>(f.tasks[0].Data()),
+        "archived actual004 owner/task binding") &&
+        Check(result == Result::available && output.readiness.ready && !output.vacant &&
+        output.owner_character_id == 29829 && output.incumbent_character_id == 56513 &&
+        output.incumbent_main_skill.value == 17 &&
+        std::string_view(output.incumbent_main_skill.key.data()) == "learning" &&
+        std::string_view(output.position_key.data()) == "councillor_court_chaplain" &&
+        output.candidate_count == 0 && output.candidate_collection_complete,
+        "synthetic learning E8 differs from diplomacy3 stewardship9 intrigue14") &&
+        Check(f.producer_calls == 1 && f.release_calls == 1 && f.producer_inputs_valid,
+        "actual production reader producer and codec route") &&
+        Check(!wire.empty() && wire.find("\"game_version\":\"1.20.0.3\"") != std::string::npos &&
+        wire.find(ck3_12003::kExecutableSha256) != std::string::npos &&
+        wire.find("\"key\":\"learning\"") != std::string::npos,
+        "production Crozier rendered genuine wire");
+    if (ok && argc >= 3) {
+      std::ofstream saved(argv[2], std::ios::binary);
+      saved << wire;
+      if (!saved) return 1;
+    }
+    std::cout << (ok ? "GREEN" : "RED") << " chaplain_learning_only checks=" << checks
+              << " synthetic_learning=17 local_ck3_used=false old_cases_run=0\n";
+    return ok ? 0 : 1;
+  }
   bool ok = true;
   const auto binding = BindCouncilCandidates12002(0x140000000, kExecutableSha256);
   ok &= Check(binding.exact_build_admitted && !binding.offline_fixture_function_overrides &&

@@ -20,7 +20,7 @@
 
 | 决策输入 | 原生最终入口／现有生产 reader | 已发布与未发布的区别 |
 | --- | --- | --- |
-| 对玩家的实际总意见 | `ReadCharacterOpinion12002` → `0x28BC490`，`int32(Character* owner, Character* toward)`，scale1；owner 为 recipient，toward 为玩家 | Sway／gift／Feast 有其实际目标绑定的结果口。总意见可以独立读取；不证明某个宗教 modifier 存在，不等于 clergy approval |
+| 对玩家的实际总意见 | `ReadCharacterOpinion12002` → `0x28BC490`，`int32(Character* owner, Character* toward)`，scale1；owner 为 recipient，toward 为玩家 | 现成 `ck3_query_active_scheme_sway_outcome_opinion_private_v1(expected_revision,target_character_id)`可读实际正fullID target→玩家总意见，不要求active Sway／event。名称不限制该native reader的实际范围；不证明宗教 modifier 或 clergy approval |
 | 玩家当前宗教身份 | `Character.GetRite 0x28D2F90` → `Rite.GetFaith 0x24FC560` → `Faith.GetReligion 0x2443D40`；`Character.GetFaith 0x289E750`互证 | `ck3_query_player_religion_context_v1(expected_revision)`已有。Character+B4 是 RiteID；不把 Faith main Rite 与玩家 Rite 合并。该口不接受任意廷臣／封臣 CharacterID |
 | 当前 Faith fervor | `0x243EA90`，`int64_t*(Faith*, out*)`，Q100000，当前 reader 保留 signed raw／合法 null | context 发布当前资源；不是未来 gain，也不是“热忱越高→廷臣意见越高”的已证明公式 |
 | 目标 Rite／Faith 的最终方向性关系 | Rite `0x2591CE0(source_component, source_rite, target_rite)`；Faith `0x243E950(source_faith, target_faith, false)`；返回 byte0..3 | `ck3_query_player_religion_hostility_v1(expected_revision,target_rite_id)`已存在：双方 Rite／Faith／Religion／main Rite 与四个正反方向最终等级，另有 same_faith／same_religion。输入是 full RiteID，不是 CharacterID；需先有目标角色的实际 Rite 来源 |
@@ -120,9 +120,11 @@ flowchart TD
 
 ## 最小后续观察入口
 
-1. 对已经由 Sway／gift／Feast结果绑定的实际角色，复用其现成定向总意见字段，不为宗教创建第二个总意见计算器。需要未绑定的真实廷臣／封臣时，沿同一 `ReadCharacterOpinion12002` 接入目标full CharacterID；总意见和宗教分解分别命名。
+1. 对真实廷臣／封臣／现任chaplain，先复用现成 Sway-outcome opinion MCP的显式 `target_character_id`，不为宗教新建总意见口。生产 `ReadSwayOutcomeOpinionV1`只解析target与actor pair并调用finalgetter，Python同样不要求active Sway，只要求target正fullID且不同于玩家。该query另有两个Sway modifier字段，不能将它们或总意见冒充宗教分解。2026-10-03 的窄source复核修正了此前按名称误认为只能读取既有Sway目标的边界；实际值仍要freshroot绑定当前目标后实读。
 2. 目标的 Rite identity先复用现成 clergy candidate／conversion／其它已发布目标来源，只有当前真实角色仍缺它时才扩同一bridge的 Character.GetRite→Faith／Religion identity。再使用现成显式 targetRite hostility口。不得从旧 `faith_id`标签或玩家身份猜目标身份。
 3. 加冕的具体 stock key／caller已经定位，真实活动出现时沿正确 activity scope读取最终值／合法性／理由与 piety前后帧；普通神职 endorsement仍需其自身最终 consumer。realm-priest候选／任务链继续由其owner独占。没有真实加冕依赖时不造 absent-activity query或 counter-policy。
 4. fervor已有当前资源getter，县域缩放 consumer已明确；真实县域决策所需的是当前 final county值及相关方向。Fulfillment→clerical faction则应读 effective level／flag。没有证据时不把这些资源列成全部角色意见或 clergy决策的总gate。
 
-本页新增状态为 research，既有primitive只是复用。当前没有新query、策略、动作、游戏日或G2 credit；ROOT独占实际paused验证、状态、发布及commit/push，共享2026-10-03日报／周报由ledger合并本页字段。
+本页新增状态为 research，既有primitive只是复用。当前没有新增query口、策略、动作、游戏日或G2 credit；ROOT独占实际paused验证、状态、发布及commit/push，共享2026-10-03日报／周报由ledger合并本页字段。
+
+2026-10-03 的 [ReligiousRelations 价值专题](religious-relations-task-value-native-ai-12003.md)现在补有ROOT实际v22三调用GREEN：source/native b594、PID119508、native10/public2/raw53222376，freshroot动态选择chaplain56513，现成opinion口独立读 **56513→Robert29829总意见+10**；snapshot读总piety余额raw41313750/100000 = **413.1375**。这些是既有口的production-live primitive，0day/0action/0checkpoint，没有读取任务意见component、真实learning、monthly yield或approval，不能从+10倒推任何宗教modifier／endorsement阈值。此前source库存和治理研究边界保留；原任免谓词仍是其旧帧native9/raw53222304的独立材料。

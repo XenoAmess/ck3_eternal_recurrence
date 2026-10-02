@@ -322,7 +322,7 @@ bool CaptureCouncilCandidatesFrame12002(
     const CouncilCandidatesAccessV1 &access,
     CouncilCandidatesFrameV1 &output, std::string_view position_key) noexcept {
   output = {};
-  return !CouncilCandidatesProfile12002(position_key).position_key.empty() &&
+  return !CouncilCandidatesCompositionProfile12002(position_key).position_key.empty() &&
           EnvironmentExact(environment) && access.capture_frame != nullptr &&
          access.is_main_thread != nullptr && access.is_main_thread(access.context) &&
          access.capture_frame(access.context, output) &&
@@ -341,7 +341,7 @@ ReadCouncilCandidates12002(const CouncilCandidatesEnvironmentV1 &environment,
       request.expected_public_revision == 0 || request.expected_native_revision == 0 ||
       request.expected_owner_character_id <= 0)
     return Unavailable(output, private_source, SourceFailure::invalid_request);
-  const auto profile = CouncilCandidatesProfile12002(request.position_key);
+  const auto profile = CouncilCandidatesCompositionProfile12002(request.position_key);
   if (profile.position_key.empty())
     return Unavailable(output, private_source, SourceFailure::position_outside_coverage);
   if (!environment.exact_build_admitted ||
@@ -490,7 +490,7 @@ std::string SerializeCouncilCandidates12002(const game::CouncilCompositionCandid
   // The v1 codec validates and escapes the unchanged public DTO. Its result
   // supplies only the version-neutral status/payload suffix; this adapter owns
   // the complete schema/capability/build prefix. No old build is admitted.
-  const auto profile = CouncilCandidatesProfile12002(FixedString(value.position_key));
+  const auto profile = CouncilCandidatesCompositionProfile12002(FixedString(value.position_key));
   const std::string payload = ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(
       value, profile.position_key, profile.main_skill_key);
   const auto at = payload.find(",\"status\":");

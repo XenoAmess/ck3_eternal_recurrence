@@ -1,5 +1,74 @@
 # CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-03：当前 `.6003` 两侧冲突的原版树与100/12关系输入
+
+正式普通stage实际+11day之后，当前新自然17 `feast_default.6003` 在暂停raw53222640出现，唯一available typed native24/public11、root-host29829，calculated4806003/runtime7454；frozen query002 SHA `33D74D9174856A146E226323FEFB7065EF54D8394A25B7F663B83E6474A62F93`。saved5是activity、host、province、fighter_1=38293、fighter_2=31073，activity/province仍opaque。snapshot **authored3** 包含hidden第三项，当前typed **rendered2/native0,1** 全部shown/enabled，native2不可作为候选；两个icon rows空而完整性false，不等于无effect。原knowledge003 SHA `4CAF71E819E44FA593501ED0497E12B1149C4906745915D990DA52C2C73CFEF5` 仅`event_definition_key_not_registered`，原17仍未选择，压力实际22。
+
+策略前完整原版树已冻结在 `m2-events/actual-robert-feast6003-blocker-01/source-evidence/native-source-tree.md`，完整source receipt SHA `EAB02530B3A72C5F0CF41EBC9C9A382C2C0A0A8F25F79CCC168137C19B94553A`、15直接依赖及exact-source-pins SHA `12BDC6A3FC4D9868469D6EEA6F5AB2541F1402853684D2DD02CF7AFFA8BB57FF`。exact CK31.20.0.3/Steam25652598/EXE94B55397…DE02A6；`events/activities/feast_activity/main_events/feast_default_events.txt:10043–10183` wholefile SHA `D26B858CEF9CEF76C9E1BF6FB796E2BFA9E103E54853676B0D28A1927052A3F1`，SourceTree key-token到末brace且不含随后newline raw/LF block均 `86104175AF5663FCAE442B51EE9F7D5044C05347400D57A39D98D1B82329B4B4`。只冻结本actual事件、角色选择trigger、两个关系progress helper及必要数值/意见/中英文loc；具体入站scheduler未在此次source-only包闭合，画成unknown，不升级为已知modal选择前置。
+
+```mermaid
+flowchart TD
+    U["unknown：具体入站activity scheduler"] -. "当前modal已真实出现" .-> T["[stock] attendee pair rival或mutual opinion≤−20；同sex分支及local gates"]
+    T --> I["[stock immediate] had6003；保存不同fighter1/2"]
+    I --> A["[actual native24/public11] F1 38293/F2 31073；native0/1合法"]
+    A --> O0["[stock native0] F1→root +20/20y＋friend；F2→root−20/15y＋rival"]
+    A --> O1["[stock native1] F2→root +20/20y＋friend；F1→root−20/15y＋rival"]
+    I --> O2["[stock hiddennative2] diplomacy≥15；prestige150；当前不可选"]
+    O0 --> W["[actual authored AI] 两side同base100＋F1opinion min−99＋F1friend500"]
+    O1 --> W
+    A --> P["[independent actual native26/public2] F1 towardRobert100；F2 12"]
+    P --> K["[ROOT bounded balance] API2/native1；支持低12一侧，反对高100余量侧"]
+    K -. "未读friend/rival/grudge最终结果，不预报80/32" .-> R["unknown：真实两guest total post与关系状态"]
+```
+
+native0 `.a:10109–10140` 支持fighter1，native1 `.b:10142–10173` 支持fighter2，效果镜像：支持者通过 **reverse_add_opinion** 对root加 `feast_sided_with_me_in_my_fight_opinion`（+20，20年decay），另一方对root加 `feast_sided_against_me_in_my_fight_opinion`（−20，15年decay）；root再调用friend/rival progress，参数OPINION=0。两个helper可以设置potential关系或升级potentialfriend→friend、potentialrival→rival；rival的tier/asymmetric分支还能设置grudge或执行**root→opposedfighter**的 `add_opinion(grudge_opinion,−20)`。OPINION=0只抑制普通opinion分支，不抹去这些关系/grudge作用；该方向不同于本包现成guest→root total口，不把它预加到guest总opinion或伪称两个query已覆盖全部关系效果。0/1没有直接gold/prestige/piety/stress/health写，无common after。hidden2 `.c:10175–10182` 需diplomacy≥15，sourceprestige150，不因它可提供易验材料而尝试当前隐藏行。
+
+两side原版AI都实际引用fighter1：base100、opinion_modifier(opinion_target=fighter_1,min=−99)、若friendfighter1再add500。这是已读源码目标相同的事实，不能改写成对称fighter2权重、声称原生偏native1或资源最优。ROOT现成两个readonly MCP pre分别读38293→29829=**100**、31073→29829=**12**，均exact.3 native26/public2/raw53222640/同actor/episode，原17保留。唯一actual-summary最终 SHA `08790ADFCC6FB4B6CF9A7172C365ABAFE10C97C4100CA77963DDFDE6876A4139`，raw/pins复用closed `feast6003-v22-fighters-relation-pre-01`；没有新增native口或选择/推进时间。
+
+得到100/12后，ROOT明确以**平衡当前关系**规则选择native1/API2：给弱12侧正向机会，高100侧可承担source负向，避免直接把12侧作用−20。早先“优先较高”native0仅未执行proposal，被实际输入后的ROOT指令取代，历史summary保留为`actual-relation-pre-summary-proposal0.json`；draft0未运行fixture、未发布/选择，唯一当前case将验证1。总opinion不证明friend/bestfriend/rival身份，升级/夹限/grudge实际结果未知；不预称100→80/12→32，不增加新的关系gate、查询口、预算限制或泛事件框架。当前leaf只存该source-reviewed两rendered/五scope的bounded路线，不固定fighter ID；泛化政治/家族/已friend身份策略质量差距与替换入口留在原专题，后续按真实影响补普通relationship primitive。非空effects保持generic observableNone，当前M2已完成不被重核；实际选后ROOT可同两现成totalopinion口读回，具体材料只按真实delta记录。
+
+本包 **static-ready**，唯一现有full-route新case `test_feast6003_actual_two_visible_options_use_service_and_observed_advance` 首次实际执行 **GREEN1/1**（attempt01，0failures/errors）。原native24/public11、snapshot3/rendered0,1/五scope通过normalizer→knowledge/classifier→ordinaryplan→现有service **API2/native1**→native-driver独立合成old17gone、同actor/datepaused；fixture压力22保持，没有模拟80/32、friend/rival/grudge、收益或以后事件。只有此最终1case执行，旧proposal0没run，未重复旧9002/6231或其它矩阵。四个scratch source/test触点是新`records_feast_brawl6003_12003.py`、既有registry `.3`dispatch、policy exactrelational key、既有test的一case；第五path是本原topic。source/tree/currentpre与完整patch/pins/argv/log在 `m2-events/actual-robert-feast6003-blocker-01/python-compatibility/`。没有改service、driver、outcome、native/CMake或扩大schema；无新增DLL编译输入。ROOT统一合并发布后再once消费原17和两total-opinion独立post，当前静态包不授实机材料/Feast终态信用。
+
+## 2026-10-03：`.9002` 正式 next/save 与自动 `.6231` 实际支付50gold
+
+原15 `.9002` 实际消失后，ROOT 同Python2f0bb9dc/native-environmentb594/v22 PID119508 的无Guytrial正式普通stage02 closed，实际 **+11days** 到暂停raw53222640，同Robert29829 / episode `native-29829-2bc2d599f7f9`。turn1从native:15/paused53222376、active_event=null出发，`life-advance` executed **+4days** 到53222472，新自然16出现；原15没重现，正式next已消费清除状态。
+
+turn2的实际packet明确key **`feast_default.6231`** / instance16，不靠支出猜事件。已登记consumer自动选 **native0/API1**，当前shown/enabled通过；独立选择前后同actor/date/paused、old16gone/不同snapshot-revision，实际goldraw **110833266→105833266**，scale100000，真实支付 **50gold**。八项独立gold比较checks全true、metric可读、statusverified_change/relationstrictly_decreasing成立；这次generic gold profile确实支持此材料，与此前`.9002` genericNone区分。所观测的是付款，不是净收益；没有据source效果授来宾opinion、个人出席或Feast终态信用，也不重新增加原M2完成或第四multi。原helper的自然provenance/credit标记不改。
+
+随后turn3从old16已消失状态正式 `life-advance` executed **+7days** 到53222640，再出现新的自然17；checkpoint **saved h4168**，save85802882B/SHA `C9314C243CD2B5EAAD006B891D46D368D0E62D3DCE24B94C4699D831331AA4F5`，driver50191665B/history4168/SHA `A6F90CBB74281BE091C90891A4213E5204B662EB4E30054CFCD1DA3D36F2F0E6`，同actor/date/episode配对。大save/history只复用closed receipt，无重读；这11天由中央ledger计数，本包新增day credit0。
+
+```mermaid
+flowchart TD
+    A["[prior production] 原15 API1/native0→gone；stress0保持"] --> N["[formal turn1] life-advance+4；新16"]
+    N --> C["[automatic registered] feast_default.6231 API1/native0"]
+    C --> M["[independent same-frame] old16gone；actual gold−50"]
+    M --> F["[formal turn3] life-advance+7；保存h4168"]
+    F -. "新的自然17未选择" .-> B["unknown：feast_default.6003 当前registry缺项"]
+```
+
+当前stage**不是30日完整GREEN**：whole status仍`existing_consumer_not_ready`，turn4 actual17为typed **`feast_default.6003`** / calculated4806003 / runtime7454，native24/public11/raw53222640/root-host29829；snapshot authored3、rendered native0/1两项均shown/enabled，当前stress22。saved5是activity、host、province、fighter_1=38293、fighter_2=31073；activity/province保持opaque，两option indicators rows空且完整性false，不等于effects为空。唯一failure是exactkey `event_definition_key_not_registered`，原17未提交选择、没有放宽Family聚合guard或新增native协议。新事件原树/value输入及leaf由当前专属包处理，不能复用旧`.6231`的买酒策略或猜标题选择。
+
+本增量将原`.9002`升为 **production-live loop**，并记录已登记`.6231`在Robert实机的独立支付与下一正式回合。原M2 complete结论保持，未重复合同/22checks、旧矩阵或fixtures；Feast终态仍由M6owner独立HostedPost决定。唯一assessment/当日fields在 `m2-events/actual-robert-fowl9002-blocker-01/actual-2f0bb9dc-v22-following-loop/`，source-only后续`6003`登记不需要新native/CMake或SDK线程。
+
+
+## 2026-10-03：`.9002` 实际 sole-choice 原15消失，压力0保持
+
+ROOT 发布 Python `2f0bb9dc85e1983cd7de3c7623431aa323aac9d3`，复用 v22 strict native/environment `b59464e0`、原 PID119508、同Robert ordinary episode/paused raw53222376。在现成生产consumer对当前 `feast_main_live_fowl.9002` / instance15实际选择唯一 **native0/API1** 一次，closed目录 `m2-events/robert-fowl9002-2f0bb9dc-actual-select-01`。queryavailable、root=host=host_saying_goodbye29829、实际六scope/soleenabled0与已审阅profile全部匹配，source recommendation无failedchecks，没注入opaque Activity/province身份。
+
+选择前native11/public2，独立选择后native12/public3：原15消失/active_event=null、实际snapshot/revision前进、同actor29829/date53222376/paused/episode，typed native receipt `event_instance_advanced`、postcondition_verified=true，并直接绑定actual bridgePID119508。`submitted` ACK本身没有被当后置证据。压力 **0→0**，goldraw110833266与prestigeraw237410970均未变；源码−10不写成实际减压，未读fulfillment就不推断其变化。genericprofile继续None，`independent_material.metric=null/status=unavailable/current_selected_choice_material_profile_unavailable`、material_change_observed=false、helper provenance/credit false全部保留；通用包装status `event_selected_material_recorded`并非已观测实收益。
+
+```mermaid
+flowchart TD
+    P["[actual native11/public2] 原15；六scope/唯一native0"] --> A["[production] API1/native0 once；显式instance15/revision2"]
+    A --> R["[independent native12/public3] 原15gone；sameactor/datepaused"]
+    R --> M["[actual material boundary] stress0；gold/prestige不变；genericNone/无收益credit"]
+    R -. "ROOT formal normal接续运行中" .-> N["unknown：下一普通turn/新checkpoint"]
+    R -. "Feastowner独立lifecycle" .-> L["unknown：活动终态；farewell文字不替代DTO"]
+```
+
+本实例提升为 **production-live primitive**，不增加multi样本或M2材料；此前原M2合同complete保持，不重新核22项。原`.9002` not_registered RED仍保留，没有再跑旧fixture/SDK/nativequery。ROOT后来独立同活动lifecycle观察仍ongoing/terminalfalse，由M6owner收口；这里不因为farewell标题或原15消失授整场Feast终态。真实normal next与新配对保存仍待ROOT closed包，本次选择没有推进时间。有限assessment/当日fields位于 `m2-events/actual-robert-fowl9002-blocker-01/actual-2f0bb9dc-v22-closed/`，只解析该114KB闭包，未读巨大driverhistory/save、未修改源码或中央报告；ROOT负责commit/push与后续loop。
+
+
 ## 2026-10-03：Robert 新15 `feast_main_live_fowl.9002` 单选 host farewell
 
 v22 正式普通下一回合真实推进3天后，新自然instance15在暂停raw53222376出现。唯一closed typed receipt为 `m7-robert/ewan0801-following-normal30-b594-v22-actual-01/turn-002/natural-event/002-ck3_query_current_event_window_context_v1-service-receipt.json`，SHA `5537F69FEBF56AEA11E0AD6074EA8B0939966EF32F4850295703AFBCD803335D`：exact key **`feast_main_live_fowl.9002`** / calculated4849002 / runtime7525，native8/public5，root29829。它不是凭10日延迟猜测的`.9000`。snapshot authored1与rendered1一致，native0/API1显示启用，label“我们，应该经常这样！”；six saved scopes为activity、host、province、fowl_dinner_target37636、fowl_bird_chaser36907、host_saying_goodbye29829。root=host=host_saying_goodbye，target/chaser是当前动态身份；activity/province继续opaque。压力实际0；icon stress-decrease幅度unavailable、效果集合不完整，不据此推收益。原knowledge003仅 `event_definition_key_not_registered`，原15未提交选项、0新增日。

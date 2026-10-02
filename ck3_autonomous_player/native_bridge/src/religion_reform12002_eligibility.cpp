@@ -1,9 +1,45 @@
 #include "xar_bridge/religion_reform12002_eligibility.hpp"
 
+#include <array>
 #include <cstring>
+#include <utility>
 
 namespace xar::ck3_12002::religion_reform {
 namespace {
+// Exact 1.20.0.3 reflection callers 0x14FB0A0 / 0x14FAF10 obtain these
+// reasons through 0x14F5780 / 0x14F5110 and release them with 0x856050.
+// The game's allocator owns any heap bytes; the DLL only copies them.
+struct NativeDraftReasonString {
+  std::array<char, 16> storage{};
+  std::uint64_t size = 0;
+  std::uint64_t capacity = 15;
+};
+static_assert(sizeof(NativeDraftReasonString) == 32);
+static_assert(offsetof(NativeDraftReasonString, size) == 0x10);
+static_assert(offsetof(NativeDraftReasonString, capacity) == 0x18);
+
+bool ReadEligibilityWithReason(DraftEligibilityGetter getter,
+                               const void *window,
+                               DraftReasonStringDestroy destroy,
+                               std::optional<std::string> &text) {
+  // Legacy injected bindings without a lifecycle reader keep their original
+  // final bool; null text describes a reason that was not copied.
+  if (!destroy) return getter(window, nullptr);
+  NativeDraftReasonString native{};
+  const bool allowed = getter(window, &native);
+  const char *data = native.storage.data();
+  if (native.capacity >= 16)
+    std::memcpy(&data, native.storage.data(), sizeof(data));
+  if (native.size <= native.capacity && (!native.size || data)) {
+    if (native.size)
+      text.emplace(data, static_cast<std::size_t>(native.size));
+    else
+      text.emplace();
+  }
+  destroy(&native);
+  return allowed;
+}
+
 std::uint32_t ReadActor(const void *window) noexcept {
   std::uint32_t actor{};
   std::memcpy(&actor, static_cast<const std::byte *>(window) +
@@ -16,6 +52,26 @@ std::string Boolean(const std::optional<bool> &value) {
   if (!value) return "null";
   return *value ? "true" : "false";
 }
+
+std::string Text(const std::optional<std::string> &text) {
+  if (!text) return "null";
+  std::string out = "\"";
+  constexpr char hex[] = "0123456789abcdef";
+  for (const auto character : *text) {
+    const auto byte = static_cast<unsigned char>(character);
+    if (character == '"' || character == '\\') {
+      out += '\\';
+      out += character;
+    } else if (byte < 32) {
+      out += "\\u00";
+      out += hex[byte >> 4];
+      out += hex[byte & 15];
+    } else {
+      out += character;
+    }
+  }
+  return out + '"';
+}
 } // namespace
 
 EligibilityBindings BindEligibilityImage12002(std::uintptr_t base,
@@ -27,6 +83,8 @@ EligibilityBindings BindEligibilityImage12002(std::uintptr_t base,
       base + kCanCreateRiteCoreRva);
   bindings.can_edit_rite = reinterpret_cast<DraftEligibilityGetter>(
       base + kCanEditRiteCoreRva);
+  bindings.destroy_reason_string = reinterpret_cast<DraftReasonStringDestroy>(
+      base + kDraftReasonStringDestroyRva);
   return bindings;
 }
 
@@ -51,14 +109,20 @@ bool ReadCurrentDraftEligibility12002(const EligibilityBindings &bindings,
     output.failure = EligibilityFailure::draft_actor_mismatch;
     return false;
   }
-  const bool create = bindings.can_create_rite(window, nullptr);
-  const bool edit = bindings.can_edit_rite(window, nullptr);
+  std::optional<std::string> create_text;
+  std::optional<std::string> edit_text;
+  const bool create = ReadEligibilityWithReason(
+      bindings.can_create_rite, window, bindings.destroy_reason_string, create_text);
+  const bool edit = ReadEligibilityWithReason(
+      bindings.can_edit_rite, window, bindings.destroy_reason_string, edit_text);
   if (ReadActor(window) != actor) {
     output.failure = EligibilityFailure::draft_actor_changed;
     return false;
   }
   output.can_create_rite = create;
   output.can_edit_rite = edit;
+  output.can_create_rite_native_text = std::move(create_text);
+  output.can_edit_rite_native_text = std::move(edit_text);
   output.available = true;
   output.failure = EligibilityFailure::none;
   return true;
@@ -88,7 +152,9 @@ std::string SerializeDraftEligibility12002(const DraftEligibility &output) {
       ",\"draft_actor_id\":" +
       (output.draft_actor_id ? std::to_string(*output.draft_actor_id) : "null") +
       ",\"can_create_rite\":" + Boolean(output.can_create_rite) +
-      ",\"can_edit_rite\":" + Boolean(output.can_edit_rite) + "}";
+      ",\"can_edit_rite\":" + Boolean(output.can_edit_rite) +
+      ",\"can_create_rite_native_text\":" + Text(output.can_create_rite_native_text) +
+      ",\"can_edit_rite_native_text\":" + Text(output.can_edit_rite_native_text) + "}";
 }
 
 } // namespace xar::ck3_12002::religion_reform

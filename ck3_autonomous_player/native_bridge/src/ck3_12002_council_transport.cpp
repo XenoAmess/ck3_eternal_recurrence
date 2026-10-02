@@ -265,7 +265,10 @@ bool HandleCouncilPrivate12002(const game::GameAdapter& adapter,
               game::kCouncilCompositionStewardPositionKeyCapacityV1 - 1)) {
         failure = "private_position_key_invalid"; return false;
       }
-      if (CouncilCandidatesProfile12002(position_key).position_key.empty()) {
+      const auto profile = step == bridge::kCouncilPrivateQueryStepV1 ?
+          CouncilCandidatesCompositionProfile12002(position_key) :
+          CouncilCandidatesProfile12002(position_key);
+      if (profile.position_key.empty()) {
         failure = "private_position_outside_coverage"; return false;
       }
       SnapshotRequest(state, published, revision, position_key);

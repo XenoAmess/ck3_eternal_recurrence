@@ -23,6 +23,7 @@ inline constexpr std::size_t kCouncilCandidatesAllocatorFallbackOffset12002 = 0x
 inline constexpr std::size_t kCouncilCandidatesCharacterStewardshipOffset12002 = 0xE0;
 inline constexpr std::size_t kCouncilCandidatesCharacterDiplomacyOffset12002 = 0xD8;
 inline constexpr std::size_t kCouncilCandidatesCharacterIntrigueOffset12002 = 0xE4;
+inline constexpr std::size_t kCouncilCandidatesCharacterLearningOffset12002 = 0xE8;
 inline constexpr std::size_t kCouncilCandidatesTaskIncumbentOffset12002 = 0x40;
 inline constexpr std::string_view kCouncilCandidatesStewardPosition12002 =
     "councillor_steward";
@@ -30,6 +31,8 @@ inline constexpr std::string_view kCouncilCandidatesChancellorPosition12002 =
     "councillor_chancellor";
 inline constexpr std::string_view kCouncilCandidatesSpymasterPosition12002 =
     "councillor_spymaster";
+inline constexpr std::string_view kCouncilCandidatesChaplainPosition12002 =
+    "councillor_court_chaplain";
 
 struct CouncilCandidatesPositionProfile12002 {
   std::string_view position_key{};
@@ -46,6 +49,15 @@ inline constexpr CouncilCandidatesPositionProfile12002 CouncilCandidatesProfile1
   if (position_key == kCouncilCandidatesSpymasterPosition12002)
     return {position_key, "intrigue", kCouncilCandidatesCharacterIntrigueOffset12002};
   return {};
+}
+
+// Composition-only observation. The original profile remains the final-gates
+// coverage map; this learning read does not add a clergy appointment route.
+inline constexpr CouncilCandidatesPositionProfile12002 CouncilCandidatesCompositionProfile12002(
+    std::string_view position_key) noexcept {
+  if (position_key == kCouncilCandidatesChaplainPosition12002)
+    return {position_key, "learning", kCouncilCandidatesCharacterLearningOffset12002};
+  return CouncilCandidatesProfile12002(position_key);
 }
 
 using CouncilCandidatesFrameV1 =

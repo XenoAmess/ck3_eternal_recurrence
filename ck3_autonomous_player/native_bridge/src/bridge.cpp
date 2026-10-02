@@ -16058,32 +16058,46 @@ void RunConnectedSession(
           std::uint64_t legality_query_sequence = 0;
           std::uint64_t subject_id = 0;
           std::uint64_t candidate_id = 0;
+          // Diagnose the actual value-admission RED without re-reading any gate.
+          std::array<std::optional<bool>, 30> value_admission_gate_values{};
+          std::uint32_t first_failed_value_admission_gate = 0;
+          const auto value_admission_gate = [&](std::uint32_t ordinal, bool passed) {
+            value_admission_gate_values[ordinal] = passed;
+            if (!passed && first_failed_value_admission_gate == 0)
+              first_failed_value_admission_gate = ordinal;
+            return passed;
+          };
+          std::optional<std::int32_t> value_child_failure_raw;
+          std::optional<std::int32_t> value_child_played_character_id;
+          std::optional<std::int32_t> value_family_read_result_raw;
+          std::optional<std::size_t> value_candidate_row_count;
+          xar::game::Snapshot checked{};
           const bool request_valid =
-              game.enabled() &&
-              (xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_11906::kExecutableSha256 ||
-               xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_12002::kExecutableSha256) &&
-              xar::bridge::JsonUnsignedField(
-                  incoming.payload, "expected_revision", expected_revision) &&
-              xar::bridge::JsonUnsignedField(
+              value_admission_gate(1, game.enabled()) &&
+              value_admission_gate(2, (xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_11906::kExecutableSha256 ||
+               xar::game::ReviewedCrozierAbiSha256(game.descriptor()) == xar::ck3_12002::kExecutableSha256)) &&
+              value_admission_gate(3, xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision)) &&
+              value_admission_gate(4, xar::bridge::JsonUnsignedField(
                   incoming.payload, "legality_query_sequence",
-                  legality_query_sequence) &&
-              xar::bridge::JsonUnsignedField(
-                  incoming.payload, "subject_character_id", subject_id) &&
-              xar::bridge::JsonUnsignedField(
-                  incoming.payload, "candidate_character_id", candidate_id) &&
-              expected_revision != 0 && expected_revision == state_revision &&
-              legality_query_sequence != 0 &&
-              legality_query_sequence ==
-                  state.marriage_family_private_query_sequence &&
-              subject_id > 0 && subject_id <= INT32_MAX &&
-              candidate_id > 0 && candidate_id <= INT32_MAX &&
-              subject_id != candidate_id;
+                  legality_query_sequence)) &&
+              value_admission_gate(5, xar::bridge::JsonUnsignedField(
+                  incoming.payload, "subject_character_id", subject_id)) &&
+              value_admission_gate(6, xar::bridge::JsonUnsignedField(
+                  incoming.payload, "candidate_character_id", candidate_id)) &&
+              value_admission_gate(7, expected_revision != 0) && value_admission_gate(8, expected_revision == state_revision) &&
+              value_admission_gate(9, legality_query_sequence != 0) &&
+              value_admission_gate(10, legality_query_sequence ==
+                  state.marriage_family_private_query_sequence) &&
+              value_admission_gate(11, subject_id > 0) && value_admission_gate(12, subject_id <= INT32_MAX) &&
+              value_admission_gate(13, candidate_id > 0) && value_admission_gate(14, candidate_id <= INT32_MAX) &&
+              value_admission_gate(15, subject_id != candidate_id);
           xar::game::Snapshot before{};
           const bool frame_ready =
-              request_valid && previous_snapshot.has_value() &&
-              xar::game::ReadSnapshot(game, before) &&
-              before == *previous_snapshot && before.paused && before.map_ready &&
-              before.has_played_character && before.played_character_alive;
+              request_valid && value_admission_gate(16, previous_snapshot.has_value()) &&
+              value_admission_gate(17, xar::game::ReadSnapshot(game, before)) &&
+              value_admission_gate(18, before == *previous_snapshot) && value_admission_gate(19, before.paused) && value_admission_gate(20, before.map_ready) &&
+              value_admission_gate(21, before.has_played_character) && value_admission_gate(22, before.played_character_alive);
           MarriageCandidateAllianceMailboxQueryV1 query{};
           query.row_count = 1;
           query.read_fertility = true;
@@ -16094,16 +16108,19 @@ void RunConnectedSession(
           if (frame_ready) {
             const auto child =
                 ReadPlayerChildForAdapterV1(game, static_cast<std::int32_t>(subject_id));
+            value_child_failure_raw = static_cast<std::int32_t>(child.failure);
+            value_child_played_character_id = child.played_character_id;
             std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> rows;
             xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
-            const auto read = child.failure == xar::ck3_11906::
-                                      PlayerChildMarriageSubjectFailureV1::none
+            const auto read = value_admission_gate(23, child.failure == xar::ck3_11906::
+                                      PlayerChildMarriageSubjectFailureV1::none)
                 ? xar::game::ReadArrangeMarriageFamilyCandidatesV1(
                       game, static_cast<std::int32_t>(subject_id), rows,
                       diagnostics)
                 : xar::game::
                       ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
-            xar::game::Snapshot checked{};
+            value_family_read_result_raw = static_cast<std::int32_t>(read);
+            value_candidate_row_count = rows.size();
             const auto matching = std::find_if(
                 rows.begin(), rows.end(), [&](const auto &row) {
                   return row.candidate_character_id ==
@@ -16116,22 +16133,119 @@ void RunConnectedSession(
                          row.recipient_answer_status_raw <= 1;
                 });
             selected_ready =
-                child.played_character_id == before.played_character_id &&
-                read == xar::game::
+                value_admission_gate(24, child.played_character_id == before.played_character_id) &&
+                value_admission_gate(25, read == xar::game::
                             ReadArrangeMarriageFamilyCandidatesResultV1::
-                                available &&
-                matching != rows.end() &&
-                std::count_if(rows.begin(), rows.end(), [&](const auto &row) {
+                                available) &&
+                value_admission_gate(26, matching != rows.end()) &&
+                value_admission_gate(27, std::count_if(rows.begin(), rows.end(), [&](const auto &row) {
                   return row.candidate_character_id ==
                          static_cast<std::int32_t>(candidate_id);
-                }) == 1 &&
-                xar::game::ReadSnapshot(game, checked) && checked == before;
+                }) == 1) &&
+                value_admission_gate(28, xar::game::ReadSnapshot(game, checked)) && value_admission_gate(29, checked == before);
             if (selected_ready) query.observed[0] = *matching;
           }
           if (!selected_ready) {
-            connected = write_frame(
-                pipe, CommandResultFrame(request_id, step, false,
-                    "specified child and candidate need fresh same-frame native legality"));
+            std::string failure_frame = CommandResultFrame(request_id, step, false,
+                "specified child and candidate need fresh same-frame native legality");
+            failure_frame.pop_back();
+            failure_frame += ",\"private_diagnostic\":{\"first_failed_gate\":";
+            failure_frame += std::to_string(first_failed_value_admission_gate);
+            failure_frame += ",\"gate_values\":[";
+            for (std::size_t ordinal = 0; ordinal < value_admission_gate_values.size(); ++ordinal) {
+              if (ordinal != 0) failure_frame += ',';
+              const auto &observed = value_admission_gate_values[ordinal];
+              failure_frame += observed.has_value() ? (*observed ? "true" : "false") : "null";
+            }
+            failure_frame += "]";
+            const auto append_number = [&](std::string_view name, auto value) {
+              failure_frame += ',';
+              AppendJsonString(failure_frame, name);
+              failure_frame += ':';
+              failure_frame += std::to_string(value);
+            };
+            const auto append_optional_number = [&](std::string_view name, const auto &value) {
+              failure_frame += ',';
+              AppendJsonString(failure_frame, name);
+              failure_frame += ':';
+              failure_frame += value.has_value() ? std::to_string(*value) : "null";
+            };
+            append_number("expected_revision", expected_revision);
+            append_number("native_revision", state_revision);
+            append_number("legality_query_sequence", legality_query_sequence);
+            append_number("native_family_query_sequence", state.marriage_family_private_query_sequence);
+            append_number("subject_character_id", subject_id);
+            append_number("candidate_character_id", candidate_id);
+            append_optional_number("child_failure_raw", value_child_failure_raw);
+            append_optional_number("child_played_character_id", value_child_played_character_id);
+            append_optional_number("family_read_result_raw", value_family_read_result_raw);
+            append_optional_number("candidate_row_count", value_candidate_row_count);
+            const auto append_snapshot = [&](std::string_view name, const xar::game::Snapshot *observed) {
+              failure_frame += ',';
+              AppendJsonString(failure_frame, name);
+              failure_frame += ':';
+              if (observed == nullptr) { failure_frame += "null"; return; }
+              failure_frame += "{\"date_raw\":" + std::to_string(observed->date_raw);
+              failure_frame += ",\"played_character_id\":" + std::to_string(observed->played_character_id);
+              failure_frame += ",\"paused\":";
+              failure_frame += observed->paused ? "true" : "false";
+              failure_frame += ",\"map_ready\":";
+              failure_frame += observed->map_ready ? "true" : "false";
+              failure_frame += '}';
+            };
+            append_snapshot("before", value_admission_gate_values[17] == true ? &before : nullptr);
+            append_snapshot("published", previous_snapshot.has_value() ? &*previous_snapshot : nullptr);
+            append_snapshot("checked", value_admission_gate_values[28] == true ? &checked : nullptr);
+            const auto append_snapshot_changes = [&](std::string_view name,
+                const xar::game::Snapshot &left, const xar::game::Snapshot &right,
+                const std::optional<bool> &equal) {
+              failure_frame += ',';
+              AppendJsonString(failure_frame, name);
+              failure_frame += ':';
+              if (!equal.has_value()) { failure_frame += "null"; return; }
+              failure_frame += '[';
+              bool first = true;
+              const auto append_changed = [&](std::string_view field, bool differs) {
+                if (!differs || *equal) return;
+                if (!first) failure_frame += ',';
+                first = false;
+                AppendJsonString(failure_frame, field);
+              };
+              append_changed("date_raw", left.date_raw != right.date_raw);
+              append_changed("speed", left.speed != right.speed);
+              append_changed("paused", left.paused != right.paused);
+              append_changed("player_id", left.player_id != right.player_id);
+              append_changed("map_ready", left.map_ready != right.map_ready);
+              append_changed("has_played_character", left.has_played_character != right.has_played_character);
+              append_changed("played_character_id", left.played_character_id != right.played_character_id);
+              append_changed("played_character_alive", left.played_character_alive != right.played_character_alive);
+              append_changed("played_character_stress_points", left.played_character_stress_points != right.played_character_stress_points);
+              append_changed("played_character_gold", left.played_character_gold != right.played_character_gold);
+              append_changed("played_character_prestige", left.played_character_prestige != right.played_character_prestige);
+              append_changed("played_character_piety", left.played_character_piety != right.played_character_piety);
+              append_changed("played_character_betrothed_id", left.played_character_betrothed_id != right.played_character_betrothed_id);
+              append_changed("played_character_primary_spouse_id", left.played_character_primary_spouse_id != right.played_character_primary_spouse_id);
+              append_changed("played_character_spouse_ids", left.played_character_spouse_ids != right.played_character_spouse_ids);
+              append_changed("has_active_event", left.has_active_event != right.has_active_event);
+              append_changed("active_event_instance_id", left.active_event_instance_id != right.active_event_instance_id);
+              append_changed("active_event_option_count", left.active_event_option_count != right.active_event_option_count);
+              append_changed("has_pending_character_interaction", left.has_pending_character_interaction != right.has_pending_character_interaction);
+              append_changed("pending_character_interaction_id", left.pending_character_interaction_id != right.pending_character_interaction_id);
+              append_changed("pending_sender_character_id", left.pending_sender_character_id != right.pending_sender_character_id);
+              append_changed("pending_auto_accept_notification", left.pending_auto_accept_notification != right.pending_auto_accept_notification);
+              append_changed("active_wars", left.active_wars != right.active_wars);
+              append_changed("player_armies", left.player_armies != right.player_armies);
+              append_changed("has_one_life_settlement", left.has_one_life_settlement != right.has_one_life_settlement);
+              append_changed("one_life_settlement", left.one_life_settlement != right.one_life_settlement);
+              failure_frame += ']';
+            };
+            if (previous_snapshot.has_value())
+              append_snapshot_changes("before_vs_published_changed_fields", before,
+                  *previous_snapshot, value_admission_gate_values[18]);
+            append_snapshot_changes("checked_vs_before_changed_fields", checked, before,
+                value_admission_gate_values[29]);
+            failure_frame += "}}";
+            connected = write_frame(pipe, failure_frame);
           } else {
             query.expected_snapshot = before;
             if (xar::game::IsReviewedCrozierAdapter(game)) {
