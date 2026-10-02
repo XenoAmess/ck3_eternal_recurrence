@@ -121,6 +121,14 @@ options retain their default OFF value.
 `--build-dir` must not already exist. `--skip-tests` is available for a diagnostic
 compile, but such an artifact is not a production-tested bridge.
 
+Globbed 1.20 feast wire fixtures that call stage-five qualification or serialization
+also link `xar_ck3_12002_feast_fixture_support`. The selector includes
+`ck3_12002_activity_feast_wire_test` as well as `guest_wire`; omitting the former
+leaves those two symbols unresolved when the private production features are OFF.
+This is a fixture-link correction and does not enable features. A DLL linked before
+an offline test target fails still has a RED full-build result; preserve that attempt
+and record the actual scope of any subsequent incremental validation.
+
 The offline tests inject only into the purpose-built
 `xar_ck3_bridge_target.exe`; they do not start or touch CK3. One test covers
 the suspended environment-driven launch. The second starts the target normally,

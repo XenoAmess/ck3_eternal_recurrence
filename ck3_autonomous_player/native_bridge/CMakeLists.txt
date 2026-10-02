@@ -2124,7 +2124,7 @@ if(BUILD_TESTING)
     add_executable(${fixture_target} "${fixture}")
     target_link_libraries(${fixture_target} PRIVATE xar_ck3_12002_runtime)
     target_include_directories(${fixture_target} PRIVATE src research)
-    if(fixture_name MATCHES "^ck3_12002_(activity_feast_(costs|guest_rule|guest_wire|planner_open_v1|start)|activity_hosted_identity|feast_guests)_test$")
+    if(fixture_name MATCHES "^ck3_12002_(activity_feast_(costs|guest_rule|guest_wire|wire|planner_open_v1|start)|activity_hosted_identity|feast_guests)_test$")
       target_link_libraries(${fixture_target} PRIVATE
         xar_ck3_12002_feast_fixture_support)
     endif()
