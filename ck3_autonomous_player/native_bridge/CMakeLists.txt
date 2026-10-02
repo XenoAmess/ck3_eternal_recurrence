@@ -2116,6 +2116,18 @@ if(BUILD_TESTING)
       target_link_libraries(${fixture_target} PRIVATE
         xar_ck3_12002_feast_fixture_support)
     endif()
+    if(fixture_name STREQUAL "ck3_12002_activity_feast_router_test")
+      # Dispatcher spies exercise these routes without enabling their private
+      # production features or the real native transport callbacks.
+      target_sources(${fixture_target} PRIVATE
+        src/ck3_12002_activity_feast_router.cpp)
+      target_compile_definitions(${fixture_target} PRIVATE
+        XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1=1
+        XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1=1
+        XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1=1)
+      target_link_libraries(${fixture_target} PRIVATE
+        xar_ck3_12002_feast_fixture_support)
+    endif()
     if(fixture_name STREQUAL "ck3_12002_nonwar_mailbox_test")
       target_link_libraries(${fixture_target} PRIVATE user32)
     endif()
@@ -6028,6 +6040,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/main-thread-query-mailbox.md
       "${XAR_CK3_EXECUTABLE_PATH}"
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/route_contact_horizon_v1_dispatch.hpp
   )
 
   add_executable(xar_ck3_war_entry_assessments_v1_test

@@ -1870,7 +1870,7 @@ bool TestQueuedWakeStillCancelsWithoutPump() {
 }
 
 bool TestSourceContract(int argc, char **argv) {
-  if (argc != 7) {
+  if (argc != 8) {
     std::fprintf(stderr, "mailbox source contract argc=%d\n", argc);
     return false;
   }
@@ -1880,8 +1880,10 @@ bool TestSourceContract(int argc, char **argv) {
   const auto documentation = ReadFile(argv[4]);
   const auto executable = ReadFile(argv[5]);
   const auto bridge = ReadFile(argv[6]);
+  const auto route_dispatch = ReadFile(argv[7]);
   if (source.empty() || abi.empty() || fixture.empty() ||
-      documentation.empty() || executable.empty() || bridge.empty()) {
+      documentation.empty() || executable.empty() || bridge.empty() ||
+      route_dispatch.empty()) {
     std::fprintf(stderr,
                  "mailbox source input empty source=%zu abi=%zu fixture=%zu "
                  "docs=%zu exe=%zu bridge=%zu\n",
@@ -2264,9 +2266,9 @@ bool TestSourceContract(int argc, char **argv) {
   const auto route_bind = bridge.find(
       "BindCurrentProcess(true)", route_scope_gate);
   const auto route_submit = bridge.find(
-      "TrySubmitMainThreadQueryV1", route_bind);
+      "SubmitRouteContactHorizonQueryV1", route_bind);
   const auto route_queued_wait_budget = bridge.find(
-      "kRouteContactHorizonV1QueuedWaitBudgetMilliseconds", route_submit);
+      "WaitForRouteContactHorizonQueryV1", route_submit);
   const auto route_executing_wait_slice = bridge.find(
       "kRouteContactHorizonV1ExecutingWaitSliceMilliseconds",
       route_queued_wait_budget);
@@ -2301,6 +2303,39 @@ bool TestSourceContract(int argc, char **argv) {
         route_completion_snapshot < route_completion_read &&
         route_completion_read < route_revision_publish)) {
     std::fprintf(stderr, "mailbox route ordering contract failed\n");
+    return false;
+  }
+  // The worker delegates queued submission and its bounded wait to the same
+  // typed helper exercised by the H3937 retry fixture. Check that delegation
+  // still uses the route callback and the original queued wait budget.
+  const auto dispatch_submit = route_dispatch.find(
+      "SubmitRouteContactHorizonQueryV1(");
+  const auto dispatch_submit_callback = route_dispatch.find(
+      "TrySubmitMainThreadQueryV1(", dispatch_submit);
+  const auto dispatch_executor = route_dispatch.find(
+      "&ExecuteRouteContactHorizonMailboxQueryV1", dispatch_submit_callback);
+  const auto dispatch_wait = route_dispatch.find(
+      "WaitForRouteContactHorizonQueryV1(", dispatch_executor);
+  const auto dispatch_wait_callback = route_dispatch.find(
+      "WaitForMainThreadQueryV1(", dispatch_wait);
+  const auto dispatch_wait_budget = route_dispatch.find(
+      "kRouteContactHorizonV1QueuedWaitBudgetMilliseconds", dispatch_wait_callback);
+  const auto dispatch_wake_interval = route_dispatch.find(
+      "&trace, kRouteContactHorizonV1QueuedWakeIntervalMs", dispatch_wait_budget);
+  if (dispatch_submit == std::string::npos ||
+      dispatch_submit_callback == std::string::npos ||
+      dispatch_executor == std::string::npos ||
+      dispatch_wait == std::string::npos ||
+      dispatch_wait_callback == std::string::npos ||
+      dispatch_wait_budget == std::string::npos ||
+      dispatch_wake_interval == std::string::npos ||
+      !(dispatch_submit < dispatch_submit_callback &&
+        dispatch_submit_callback < dispatch_executor &&
+        dispatch_executor < dispatch_wait &&
+        dispatch_wait < dispatch_wait_callback &&
+        dispatch_wait_callback < dispatch_wait_budget &&
+        dispatch_wait_budget < dispatch_wake_interval)) {
+    std::fprintf(stderr, "mailbox route dispatch ordering contract failed\n");
     return false;
   }
   const auto frontend_handler =
