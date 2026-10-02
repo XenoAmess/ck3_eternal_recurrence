@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 03:26 当前3276日：v23学习9/订婚材料/Feast terminal已实测
+
+2026-10-03T03:26:56+08:00 Asia/Shanghai真实滚动补录。唯一Robert actor29829/episode `native-29829-2bc2d599f7f9`，v23 newPID6280最小化，Python/native **2c435dcb** / envd1f0。正常又保存 **13实际日**，累计 **3276/36524**、resume **123保存新增日**、10-03 **28保存日**；typed dynasty_continuity reconciled_successions0另列，非自然继承已发生。G2 **5/8=62.5%**、NW **1/4=25%**保持，原M2完整合同不复核/不重授。 [日报](daily/2026-10-03.md) / [周报](weekly/2026-W40.md)。最新full/save4187/raw53222952/save86097647B/SHA19660902df72fd0e51934ac6eface446dcf750c050e9e28c6d67989206e697e1、driverSHAcb7c0017b00cf8160be9409cb25da615ef3941a979e44132ea577d51e9f3340e；实际3＋3＋7共13日，新20未登记使30目标暂停。
+
+原6003 API2/native1一次clear→关系post82/32（与跨cold100/12差−18/＋20）→normal13 saved窄loop；marriage18空选项材料不代婚约材料；新20 feast.7101未选。 Guy38988↔37689/recipient37685唯一1提议、独立betrothal materialtrue、原normalpendingnull/28字段sourcepending完全保留、实际alliance双方false；窄loop已闭，2distinct/5valuecalls不授原≥5新资格或adult婚姻。 原Feast83886111 nativecompleted/terminal/postcounter已true，attribution/benefitfalse、37265个体参加未知，完整M6不增加。 当前56513 learning9是真实primitive，Sway原full134217986/gen8三empty attachedrings接续无收益；全面宗教撤禁已public完成，monthly/conversion源与当前实际结果分开。exact2c build934/77.33s、cold6280、官方37049741283SUCCESS分别有证据。新20.7101未选、target30未满，不扩大M4/M6/M7或重复M2信用。
+
 ## 10-03 02:31 当前正常循环：Robert3263日，G2仍5/8
 
 2026-10-03T02:31:05+08:00 Asia/Shanghai实际滚动补录，前02:03阶段与10-02closed留作dated history。唯一Robert actor29829/episode `native-29829-2bc2d599f7f9`，当前Python **2f0bb9dc** / native **b594-v22** / PID119508。Robert **3263/36524**、resume **110保存新增日**、10-03 **15保存日**，typed dynasty_continuity reconciled_successions0不混天数比例。G2 **5/8=62.5%**（M0/M1/M2/M3/M5）、NW **1/4=25%**（NW-FAMILY）保持，原M2三自然/两不同多选完整合同已complete，不重复审核或计第四multi；Feast/Sway/Family新动作/宽M7不借该信用。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。本段真实 **＋11 saved日**，raw53222376→53222640、full/save **4168**；save SHA `c9314c243cd2b5eaad006b891d46d368d0e62d3dce24b94c4699d831331aa4f5`、driver SHA `a6f90cbb74281be091c90891a4213e5204b662eb4e30054cfcd1da3d36f2f0e6`。返回turn1 life-advance实际＋4、turn2已有registry自然事件实际gold−50、turn3 life-advance实际＋7；turn4新自然modal缺consumer处暂停，不是完整30日目标达成。[正常＋11保存原包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/fowl9002-following-normal30-2f0-v22-actual-02/result.json)。

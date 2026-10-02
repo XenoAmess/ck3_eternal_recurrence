@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：ReligiousRelations 学习与敬虔／意见价值
 
-本页服务 Robert 本世的 piety 决策：stock/native收益树为 **research**，学习只读源码为 **static-ready**，既有总piety／现任总意见口已有新的 **production-live primitive**。宗教已全面开放；这里只追当前 `task_religious_relations` 的有效学习、月度敬虔和意见贡献，不进行神职任命、切换任务或更改信仰。当前 task 的已读 `CanReassign=false`是原生可用观察，不能当作只读价值观察的禁令。
+本页服务 Robert 本世的 piety 决策：stock/native收益树为 **research**，当前祭司有效学习已由同一 MCP 实读为 **production-live primitive**，既有总piety／现任总意见口也已有真实 primitive。宗教已全面开放；这里只追当前 `task_religious_relations` 的有效学习、月度敬虔和意见贡献，不进行神职任命、切换任务或更改信仰。当前 task 的已读 `CanReassign=false`是原生可用观察，不能当作只读价值观察的禁令。
 
 先复用 [realm-priest 原生树](religion-realm-priest-council-native-ai-12003.md)及 [宗教治理／意见](religion-governance-opinion-native-ai-12003.md)。新知识与施工材料冻结在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-value-12003/`；原 rolecoverage、realm-priest、Chancellor 专题不在本包改写。
 
@@ -12,7 +12,7 @@
 
 ROOT实际 v21 clergy004 的 [compact extract](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/religion-realm-priest-12003/actual-v21-clergy-01/ACTUAL-CLERGY-EXTRACT.json)，SHA `b43a4205d9bf7d292d41cec52500ecbe674201d1da72cbd69eb873277f22a6cc`，绑定 owner29829、candidate=incumbent56513、active task7162、双方Rite152、public/native revision2/9、raw53222304。其 `native_valid_position=true`、`native_valid_character=true`、`native_can_reassign=false`，context matches且无读取 failure。当前 root已观察 ReligiousRelations／general／infinite／not frozen；task current/max 的合法 null是完成进度，不是月度产出的缺失值。
 
-这是已有 **production-live primitive** 的实读身份／任务／权限起点。incumbent learning和任务 piety／opinion 最终贡献尚未实读；本页不重读该raw004、不重发query，也不固定未来任务或人选为这些旧ID。
+这是已有 **production-live primitive** 的实读身份／任务／权限起点。该 v21 帧尚未读取 incumbent learning或任务 piety／opinion 最终贡献；后续 v23 实际学习见下文。本页不重读该raw004、不重发query，也不固定未来任务或人选为这些旧ID。
 
 ## 已知 stock 输入与 native 分界
 
@@ -46,7 +46,7 @@ ROOT已授权五个生产叶子的外置补丁，当前v22冻结不改：native�
 
 唯一新native focused case最终GREEN（0.152492s），复用ROOT copied currentv22 archive `ce824deff6f48d0fcf48b5e9219f00f5af21e57d11e1d608aa4b198c9cb62db1`、严格新对象和生产reader／codec／Crozier renderer。synthetic角色背景采用owner29829/inc56513/task7162，learning17与D8=3／E0=9／E4=14不同，证明实际走E8学习路由。所发971-byte genuine内层composition wire SHA `8d12fb4d37abbcd53db258a6eb6b4be0b31ab349426dd238c48757adac16cae8`被Python生产composition DTO decoder唯一一次消费GREEN（0.0905943s）；原默认builder、final-gates不扩chaplain及Steward默认的三个必要controls通过。没有伪造outer application-main envelope或再造第二份native wire。
 
-首link依赖closure失败保留，旧v14 archive不称currentv22。首次focused snapshot ID长32没有留既有NUL空间，reader在invalid_request就退出；诊断证明captures1/producer0，故这是fixture输入错误，没有学习读取结论。仅缩短fixture ID并必要重编受影响test object；生产hunks没有为此修改，旧GREEN对象／旧cases不重跑。源码现在static-ready，尚未应用到实际v22，56513真实学习数值仍未读；ROOT后续统一合入、build和newPID paused验收。
+首link依赖closure失败保留，旧v14 archive不称currentv22。首次focused snapshot ID长32没有留既有NUL空间，reader在invalid_request就退出；诊断证明captures1/producer0，故这是fixture输入错误，没有学习读取结论。仅缩短fixture ID并必要重编受影响test object；生产hunks没有为此修改，旧GREEN对象／旧cases不重跑。这个阶段的源码为static-ready、尚未应用到实际v22；ROOT后来统一合入并由v23新PID paused验收，真实数值见下节。
 
 ## V22 实际余额与现任对 Robert 的总意见
 
@@ -64,7 +64,7 @@ ROOT实际 [三调用capture](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10
 flowchart TD
     A[实际owner与active ReligiousRelations task] --> I[已读incumbent／任务／Rite／权限]
     I --> L[已有native learning enum4／有效getter E8]
-    L -. incumbent实际points尚未published .-> LP[当前有效学习]
+    L --> LP[v23 同一MCP实际现任56513有效学习9]
     LP --> P[stock learning/20及owner／关系条件]
     LP --> O[stock learning/2及owner／关系条件]
     P -. task-scoped final evaluator未闭合 .-> PV[当前monthly-piety contribution]
@@ -79,4 +79,20 @@ flowchart TD
     I -. 改任务资格与其它任务价值未读 .-> X[后续替代任务比较]
 ```
 
-本页尚无 counter-policy。stock输入树已冻结，既有总余额／总意见口已明确，任务-scoped modifier数字caller仍需沿actual task→type→三个owner modifier declarations定位其求值和raw scale。ROOT独占实际paused采集、native/shared/MCP源码、状态与发布；本包不加入正在冻结的v22候选。
+本页尚无 counter-policy。stock输入树已冻结，既有总余额／总意见口已明确，任务-scoped modifier数字caller仍需沿actual task→type→三个owner modifier declarations定位其求值和raw scale。ROOT独占实际paused采集、native/shared/MCP源码、状态与发布；各阶段保留其真实source，新值不倒填进旧v22材料。
+
+## V23 同一 MCP 实际有效学习
+
+ROOT已合入 composition-only 的五个生产叶子，并在新 v23 冷启动上下文执行 [actual-v23-learning-and-sway-cold-01](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-value-12003/actual-v23-learning-and-sway-cold-01/result.json)，single-client共6个registered calls CLOSED GREEN。其中本专题只消费001 fresh snapshot与002既有 `ck3_query_council_composition_candidates_private_v1(position_key="councillor_court_chaplain")`；其余4个Sway调用由其它owner报告。
+
+| 本帧实际字段 | 结果与证据范围 |
+| --- | --- |
+| Runtime与玩家 | `production-source-2c435dcb`、actor29829、episode `native-29829-2bc2d599f7f9`、raw53222640；ROOT独立执行上下文记录newPID6280，两个学习packet本身没有PID字段 |
+| Fresh revision | snapshot `native:3`、frontend revision2、native revision3；query metadata同frontend2／native3 |
+| 当前祭司技能 | owner29829、position `councillor_court_chaplain`、incumbent **56513**、`skill_key=learning`、`skill_value=9`，accepted／available／read-only／exact `.3` |
+| 候选集合 | 实际provider返回4项eligible；没有候选final-gates、当帧CanReassign或新任命结论 |
+| 存量 | 本帧snapshot `played_character_piety={raw:41313750,scale:100000}`，仍是总余额 **413.1375**；没有月增长字段 |
+
+内层 native composition DTO 的 snapshot public/native revision为3/3，属于内部native输出语义；它不能改写外层实际 frontend revision2。本帧 packet未发布task key／task ID；当前职责的较早实读事实保留在原帧，不将它冒充002新字段。内层真实 wire及001／002 pins见 [ACTUAL-LEARNING-EXTRACT.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-value-12003/actual-v23-learning-and-sway-cold-01/ACTUAL-LEARNING-EXTRACT.json)。
+
+当前有效学习现在是 **production-live primitive**，复用同一现存 MCP／参数／旗标；未修改final-gates或策略，没有任命／任务切换，旧synthetic17与static夹具仍作为历史源码验证，不替代真实9。没有重复query、学习测试或旧矩阵。该值解除技能输入缺口；任务应用的month-piety、累计opinion／approval仍未实读，也不能把9/20手算当作月度已应用贡献。总月增长的下一只读入口单独记录在 [总月敬虔原生树](monthly-piety-native-ai-12003.md)。

@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 10-03 03:26 当前3276累计：从实际query推进正常订婚与native终态
+
+2026-10-03T03:26:56+08:00 Asia/Shanghai真实滚动补录。唯一Robert actor29829/episode `native-29829-2bc2d599f7f9`，v23 newPID6280最小化，Python/native **2c435dcb** / envd1f0。正常又保存 **13实际日**，累计 **3276/36524**、resume **123保存新增日**、10-03 **28保存日**；typed dynasty_continuity reconciled_successions0另列，非自然继承已发生。G2 **5/8=62.5%**、NW **1/4=25%**保持，原M2完整合同不复核/不重授。
+
+最新full/save4187/raw53222952/save86097647B/SHA19660902df72fd0e51934ac6eface446dcf750c050e9e28c6d67989206e697e1、driverSHAcb7c0017b00cf8160be9409cb25da615ef3941a979e44132ea577d51e9f3340e；实际3＋3＋7共13日，新20未登记使30目标暂停。 原6003 API2/native1一次clear→关系post82/32（与跨cold100/12差−18/＋20）→normal13 saved窄loop；marriage18空选项材料不代婚约材料；新20 feast.7101未选。 Guy38988↔37689/recipient37685唯一1提议、独立betrothal materialtrue、原normalpendingnull/28字段sourcepending完全保留、实际alliance双方false；窄loop已闭，2distinct/5valuecalls不授原≥5新资格或adult婚姻。 原Feast83886111 nativecompleted/terminal/postcounter已true，attribution/benefitfalse、37265个体参加未知，完整M6不增加。 当前Sway只恢复原实例/55%和三rings，不用clock推scheme效果；学习9actual不代月yield。用户全面宗教授权及全局撤禁public完成，继续monthly readonly/conversion causal action/reform reasons/holyorder原生树与MCP施工；完整宗教域未完成。
+
+下一步沿当前4187原Robert保存适配自然20.7101，继续既有正常clock并仅读实际Family已resolved结果，不重发1proposal/Start/Steward/C/Sway。Feast已达terminal，下一项必须补可见有价值后置及必要个人参加输入，按原合同判断且不增临时门槛；Sway按真实phase/专属关系材料继续，不用保存日数推效果。monthly-piety/reform reasons/conversion/clergy任务值/holyorder原生树→同MCP观测与真实因果结果继续并行，source/static成果不冒当前live；construction只在fresh资格成立后一次执行。 [机器指标](g2-requirements-v1.json)、[当天证据](daily/2026-10-03.md)维护当前值；下方旧日期截点保留作历史，不用旧未terminal/未queue数据覆盖此次actual。
+
 ## 10-03 02:31 本轮继续＋11日：3263累计，Family真实submit前value未闭合
 
 2026-10-03T02:31:05+08:00 Asia/Shanghai实际滚动补录，前02:03阶段与10-02closed留作dated history。唯一Robert actor29829/episode `native-29829-2bc2d599f7f9`，当前Python **2f0bb9dc** / native **b594-v22** / PID119508。Robert **3263/36524**、resume **110保存新增日**、10-03 **15保存日**，typed dynasty_continuity reconciled_successions0不混天数比例。G2 **5/8=62.5%**（M0/M1/M2/M3/M5）、NW **1/4=25%**（NW-FAMILY）保持，原M2三自然/两不同多选完整合同已complete，不重复审核或计第四multi；Feast/Sway/Family新动作/宽M7不借该信用。

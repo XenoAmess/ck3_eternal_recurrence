@@ -1,5 +1,53 @@
 # CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-03：6003后正式13天，新20 `feast.7101` 的实际效果边界
+
+ROOT source/native/env2c435dcb/PID6280 的closed normal30 actual推进 **13天**：life-advance turn2+3、turn6+3、turn7+7，从53222640至53222952，正常pairedcheckpoint **h4187**、save86097647B/SHA19660902DF72FD0E51934AC6EFACE446DCF750C050E9E28C6D67989206E697E1，driver50310947B/SHACB7C0017B00CF8160BE9409CB25DA615EF3941A979E44132EA577D51E9F3340E/history4187。原6003正式next/save成立；actualnatural列表中turn3已有marriage_interaction.0010/18消费、old18gone/samepausedframe/空效果无材料，turn8是新20notready，不写成两个已登记自然选项，也不猜未captured19。Family提交及结果属于Familyowner；本package没有新day/M2credit，中央已计Robert3276/resume123/day03+28。
+
+新 **`feast.7101`/instance20** 的currenttyped native21/public12/paused53222952、calculated5947101/runtime10168，root-host29829，savedexact5=`activity,host,province,activity_location,root_scope`；host/root_scope均29829，其余activity/province payloads opaque保持。Basic authored1与typedrendered1同为sole native0/API1、shownenabled。唯一实际missing是生产registry未登记该key；nativegetter/windowavailable/1match，非ABI/观测口缺失，未提交20。
+
+策略前先冻结 exactSteam `events/activities/feast_activity/feast_events.txt:1378–1469`，wholefileSHA `F5820211444E7DBAF0A318ADF65BEBF4CA581D3A4E9F381ADD63D3BF02AAF77E`、rawtokenblockSHA `EF36486354CD4B41268C64CA6B7F7DB46DB7A90569B8E3C3E7D63F5C4757232E`，完整原生脚本AI/效益树、必要rankhelper与阈值pins在 `m2-events/actual-robert-feast7101-blocker-01/source-evidence/native-source-tree.md` 与`exact-source-pins.json`。immediate保存root_scope/music/必要spouse；无commonafter、无authoredai_chance。本事件唯一option真实hiddeneffect只调用 **reveler_lifestyle_rank_up_check_effect**：无trait的条件随机分支可正常引出原版feast.0050；已有trait按progress阈值分支可增加XP并清progress。原脚本既有else内NOT-has-trait特殊判定和chance modifiers原样记录，当前character trait/XP/概率最终结果未观测，不能假traitgain或改成理论最优门。
+
+关键区别：option的 **disburse_feast_activity_rewards 位于show_as_tooltip**，不是该选项实际执行奖励。实际奖励caller是activity.on_complete另一链；当前stressdecrease icon、tooltipprestige或标题均不证明选择后立即获得相应材料或活动completed。当前beforestress7及已有资源数字只作独立pre帧，不把它们的normal时间变化归因尚未选的20。当前只登记exact20/该sole API1→native0，全reviewed option profile非空rank-check，observableNone诚实；不提前登记0050或新增observer/terminal协议，不要求未用trait/faith比较成为solelegal续行前置。
+
+必要唯一现有full-routecase从actual5scopes/authored1/rendered1经normalizer→sharedregistryclassifier→ordinaryplan→生产service/API1-native0→独立模拟old20gone。它验证mapping/正常消费路径，未模拟rankup、资源奖或活动结束；已有旧case/ABI矩阵不重跑，生产leaf/registry/policy与现有test仅四触点，ROOT独占apply/Git/runtime/game。当前交付status static-ready，actualchoice与Hosted lifecycle由ROOT分别独立验收，不从fixture提升live。
+
+```mermaid
+flowchart TD
+  A[实际自然20 .7101 available 唯一native0] --> B[immediate 已保存root_scope/music/必要spouse]
+  B --> C[sole option hidden_effect rank_up_check]
+  C --> D{已有 lifestyle_reveler?}
+  D -->|没有| E[条件chance modifiers / 正常原版0050]
+  D -->|已有| F[progress thresholds XP条件分支 / 清progress]
+  E -.最终trait状态未独立读.-> U[unknown actual rank outcome]
+  F -.最终XP未独立读.-> U
+  C --> T[show_as_tooltip disburse 仅预览]
+  V[activity.on_complete 真正disburse独立链] -.Hosted terminal必须另读.-> W[未知本次生命周期结果]
+```
+
+6003后的normal有限fields：`m2-events/actual-robert-feast6003-blocker-01/actual-2c435dcb-v23-following-loop/REPORT-FIELDS.json`；新7101 source/test唯一receipt与ROOT integrationpatch在`m2-events/actual-robert-feast7101-blocker-01/python-compatibility/`。既有M2complete保持，不按7101标题授M6terminal。
+
+
+## 2026-10-03：v23 后台物化后消费原17，独立总好感82/32
+
+前述 cold 缺窗 `select-01` 为0selection/0day，原17保留；ROOT随后复用现成qualified finite/connectwait helper，在PID6280/暂停raw53222640 对当前managed fullActivity83886111 **native OpenActivityView once**。`feast6003-v23-headless-open-01/result.json` 与rawdispatch证明1invocation、0physicalinput、0OSfocus/restore、0Start，仍原17；首次独立query native5/public2即available/1matchingwindow/exact `feast_default.6003`。ACK `invoked_pending`本身没有算ready。本次真实恢复由原活动窗后台入口完成，没有native/ABI/leaf/test补丁；cold activity insert 在可用读取前需要窗口物化这一现成recipe得到再次production验证。
+
+改变presentation条件后ROOT仅重试 `robert-feast6003-2c435dcb-v23-actual-select-02`，native7/public2 typed root-host29829、fighter1=38293/fighter2=31073、authored3/rendered2，available/solematching和全部registry checks通过。新loadercalculated5986003/runtime10234不替代canonicalkey。实际 **API2/native1一次**，独立native8/public3证明原17gone/activeeventnull、同actor/ordinaryepisode/日期暂停、新snapshot与revisionadvance；gold/prestige/piety及stress22不变。Activity/province payload identities仍unavailable，action fullID没有伪塞事件scope。Generic material/profile仍None/unavailable，helper自然provenance false原样，包装 `event_selected_material_recorded`没有被当作generic关系比较器完成。
+
+ROOT随后2existing registered guest-opinion只读query在native9/public2/同raw53222640独立读 **38293→Robert82、31073→Robert32**。与已冻结 **v22 PID119508/native26 paused100/12**相比，可观察总差为 **−18/+20**，明确跨source/native cold baseline，不宣称存在未给出的v23即刻pre帧，也不将第一位写成推算80。Source native1 opposite−20/+20与friend/rival/grudge条件helper是输入定义；实际total82不足以归因namedmodifier或特定helper，ROOT→opposedgrudge与这里fighter→ROOT方向不同。固定3宴会reward rows均absent不等于已读本事件named rows；friend/rival身份、宾客终态和M6完成均未扩信用。
+
+本次same-date正常checkpoint saved **h4177/raw53222640、85802463B/SHA2150FC6A0976AFC054CBD9C580CA88BDF2A88090C590753E58997032E1B44D84**，official driver.close returned；finite结果未导出driverfileSHA，不读取live state或伪填。normalfollowing30由ROOT另行运行，paused保存不冒充next+days。原M2完整信用保持，本package新day/新M2credit0；原缺窗RED保留。唯一有限fields `m2-events/actual-robert-feast6003-blocker-01/actual-2c435dcb-v23-closed/REPORT-FIELDS.json`，本次21项实际判读一次通过，无旧fixture/source树重跑。
+
+
+## 2026-10-03：v23 cold 保留原17，缺窗在选择前停止
+
+ROOT v23/source2c435dcb/newPID6280 冷恢复同Robert29829/ordinary episode/暂停raw53222640，原17保存与basic authored3仍存在。closed `robert-feast6003-2c435dcb-v23-actual-select-01/result.json` 为`event_context_unavailable`：只有有限snapshot和typedquery两调用，native4/public2的原17 query acceptedtrue、`.3` backend，`event_window_not_materialized/window_match_count0`；key/root/scopes/options均null，没有registry recommendation、typed choice、selection或after包。实际 **0 selection/0 day**，没有从上一v22 typedkey伪填当前querynull，也不把首次cold未物化归因6003leaf/ABI错误或扩大capability RED。
+
+原event reader CPP SHA `52ECF2F6088A75595FD9793CDFB3600C957EFFB2FD9B1934F0A0555CA616C13C` 沿用已实机Activity支持输入。`ReadActivityObservation:822–840`只copy已有handler/window/selectedinsert与hasopen；`999–1031` onlyhasopen才读matchingdata，candidate0明确报告notmaterialized，vtable/layout不符则报告另一layout_invalid。现DTO不区分哪候选未出现，不新增诊断或ABI来推断它。已实测的最短复用是 [Feast原topic](ck3-1.20.0.2-feast-guest-rule.md)634/638/655 的后台 `open-current-activity-view-v1-private` 一次，再现成typed read独立证明presentation；ROOT此前Robertfowl12也有headless-open02闭包。用当前PLAN、fullActivity83886111 fresh hosted绑定、actor29829/date53222640和ROOT已修finite/connectwait helper，fullID不塞进opaque事件scope。该presentation动作不Start、不选事件、不推进时间、不取OS焦点或physicalinput，ACK不等于ready。
+
+本次只提供现成入口与cold RED字段，未执行open/重query、未改leaf/native或重跑source树/唯一case。frontend owner核既有background command、ROOT sole执行；新实际恢复结果尚待独立query。唯一bounded fields在 `m2-events/actual-robert-feast6003-blocker-01/actual-2c435dcb-v23-cold-hidden-red/REPORT-FIELDS.json`，原M2 complete及此前阶段信用保持，失败artifact留存。
+
+
 ## 2026-10-03：当前 `.6003` 两侧冲突的原版树与100/12关系输入
 
 正式普通stage实际+11day之后，当前新自然17 `feast_default.6003` 在暂停raw53222640出现，唯一available typed native24/public11、root-host29829，calculated4806003/runtime7454；frozen query002 SHA `33D74D9174856A146E226323FEFB7065EF54D8394A25B7F663B83E6474A62F93`。saved5是activity、host、province、fighter_1=38293、fighter_2=31073，activity/province仍opaque。snapshot **authored3** 包含hidden第三项，当前typed **rendered2/native0,1** 全部shown/enabled，native2不可作为候选；两个icon rows空而完整性false，不等于无effect。原knowledge003 SHA `4CAF71E819E44FA593501ED0497E12B1149C4906745915D990DA52C2C73CFEF5` 仅`event_definition_key_not_registered`，原17仍未选择，压力实际22。

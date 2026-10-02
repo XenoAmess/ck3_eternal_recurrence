@@ -337,6 +337,7 @@ def query_vanilla_event_knowledge_v1(
         from .records_feast_brawl6003_12003 import FEAST_BRAWL6003_12003_RECORDS
         from .records_feast_fowl_12003 import FEAST_FOWL_12003_RECORDS
         from .records_feast_fowl9002_12003 import FEAST_FOWL9002_12003_RECORDS
+        from .records_feast_completion7101_12003 import FEAST_COMPLETION7101_12003_RECORDS
         from .records_religion_rite_growth_12003 import RELIGION_RITE_GROWTH_12003_RECORDS
         from .records_feast_0801_12003 import FEAST_0801_12003_RECORDS
 
@@ -353,6 +354,8 @@ def query_vanilla_event_knowledge_v1(
             notice = FEAST_FOWL_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = FEAST_FOWL9002_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = FEAST_COMPLETION7101_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = RELIGION_RITE_GROWTH_12003_RECORDS.get(event_definition_key)
         if notice is None:

@@ -458,3 +458,51 @@ runner owns its existing natural-event consumer; no second default event
 consumer, new Feast start or construction action is added. Existing Feast
 lifecycle reconciliation continues until an actual native terminal result is
 observed. This prepared window adds0 days or completion credit.
+
+## Actual v23 current-checkpoint cold baseline, 2026-10-03
+
+The existing qualified helper closed GREEN at 2026-10-02 18:53:34 UTC
+(2026-10-03 02:53:34 Asia/Shanghai), with scope
+`ordinary_paused_goal_checkpoint_baseline`. Root restored the latest saved
+v22 pair into the independently prepared v23 profile. Actual GAME6280 differs
+from the archived GAME119508; Robert29829 is alive, paused and map-ready at
+raw53222640 in the original episode `native-29829-2bc2d599f7f9`.
+The normal consumer retained the saved `dynasty_continuity` goal with
+origin/current29829, `reconciled_successions=0` and `last_succession=null`.
+
+The normal source prefix remains full4169/saveanchor4169. Its ordinary cold
+restore adds h4170 with the actual previous/new PID lineage, yielding full4170;
+this is not a new save or elapsed day. The saved checkpoint remains85,802,882
+bytes/SHA-256
+`6005a5c86b796cc0875fc2c1987da4f54d4167386bf0bd76be16393173965ced`.
+The after-close driver pin reported by the qualified helper is50,193,329
+bytes/SHA-256
+`59ac7ed1f93104c08efe13273049d439d5d3d4b6081fded1ddefd688b08da0d5`.
+All six carried production ledgers passed the helper's actual saved-pin
+comparison: first-heir marriage, child default, prisoner ransom, Council,
+Sway and `activity-feast-stage5-start-private-v1.json`. No appointment,
+marriage proposal, Feast Start or Sway Start was replayed. The archived
+succession expectation remains source evidence; the ordinary cold consumer
+cleared the active expectation to null, which is distinct from the preserved
+campaign goal.
+
+Public runtime, native metadata and actual compiler source are all
+`2c435dcb7ef0a0cfd775c3bfd26e7b37daea0d1d`. The adopted v23 DLL is8,043,520
+bytes/SHA-256
+`d47b7f11ee4041e9721e28baab5e3d9ac809d12da18e017887bb194cc7a252c9`.
+Official ordinary rebind retained the save bytes and bound the new environment
+`d1f020b6ba01b4718f6797746afb6f75e0bd979fc280f4acb4ecf7619e66011e`.
+Root separately observed HWND9969350 for GAME6280 with `minimized=true`; that
+window observation is Root's tool evidence, not a field exported by the
+qualified baseline result.
+
+The exact evidence is
+`m7-robert/robert-mainline-v23-current-review-01/actual-candidate-cold-goal-01/result.json`,
+with its `ROOT-PACKET.json` and `official-rebind-01.json`. Startup readiness
+initially returned two transient unavailable observations before the map
+became ready; the retained overall result is GREEN. This attempt deliberately
+skipped the government query and next planner, executed no planned step and
+added0 Robert days. It verifies this new-PID saved-goal/six-ledger cold baseline;
+it does not establish a new government loop, resolve a pending domain outcome,
+add a G2 qualification slot or complete M7. Subsequent live domain queries and
+normal continuation remain separately owned by Root.
