@@ -1,6 +1,6 @@
 # 2026-10-02 全部 open draft PR 逐项处理
 
-冻结审阅基线：`db4c94d17a3ae8c3241543c511c8ef253d8afd1b`。GitHub 全部开放 PR 共 **45** 个，全部为 `XenoAmess` 提交的 draft；本次先逐项比对 exact head、原始 diff 与当前主线，而不是按标题或年代批量丢弃。当前阶段为补入及验证，GitHub 关闭回读另行记录。
+冻结审阅基线：`db4c94d17a3ae8c3241543c511c8ef253d8afd1b`。GitHub 全部开放 PR 共 **45** 个，全部为 `XenoAmess` 提交的 draft；本次先逐项比对 exact head、原始 diff 与当前主线，而不是按标题或年代批量丢弃。补入、验证、GitHub 关闭与来源保全均已完成，最终回读见文末。
 
 **处理分类：21 个补入遗漏，16 个已在主线，8 个被后续实现替代。** 仓库要求线性 rebase/提交；补入内容之后关闭旧 PR，GitHub `closed` 不冒充 `merged`。每个原始 head 都有 `archive/draft-review-20261002/pr-<number>-<sha9>` 归档标签，远端 exact SHA 已复核；源码、旧 worktree、历史录像、失败 attempt 和其他过程资产不随分支引用清理而删除。
 
@@ -73,3 +73,11 @@ R0321 首跳仅恢复只读查询顺序，缺少真实现金 producer 的旧移�
 原生 C++、Python facades、planner/research、视频证据、历史知识五个独立文件所有权工作包按项目 AGENTS 并行；协调者汇入文档与证据。open_kaishek 对本次 C++ 编译、Python 文件/MCP 传输、Windows 控制夹具和媒体证据工具不适用：它们不执行 CK3 脚本语义，未启动游戏。
 
 原生最终检查：新的外置 OFF 与 H2743-ON 两组配置均编译 full bridge 和受影响 targets，CTest 每组 7/7，通过合计 14 项；共享 GameAdapter layout 在120 runtime与119可选读口间保持一致，119 reader、knight mailbox 缺失 fixture stub 和 query capability 接线一并补齐。完整 source mapping 与初次 fixture/linkage RED 保存在 `reviews/native-implementation.json`，新 DLL 仅用于编译验证，未刷新或冒充旧 live seal。
+
+## 最终 GitHub 回读与来源保全
+
+已按编号逐项关闭全部 **45** 个旧 draft，每次 PATCH 后独立回读 `state=closed`、原 head 不变和 `merged=false`；开放 PR 与 draft 均为 **0**。21 个遗漏成果通过线性提交 [`763ae3cd8`](https://github.com/XenoAmess/ck3_eternal_recurrence/commit/763ae3cd839055ccf0654bbd2a21ca5e09c23d39) 进入 master；其 [exact SHA 官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36989710144) 为 completed/success。未制造 merge commit、强推或额外 PR 评论。
+
+随后退役关联 **45 local + 45 remote source refs**，37 个附属原始 worktree 在 unchanged exact HEAD detach，写入冻结 sidecar，目录和全部 ignored/process assets 保留；tracking refs 亦回读不存在。所有 45 original PR head 与额外 local565 的 archive tag 保留，其余七个 differing local head 的 ancestry/patch-equivalence 及已有 archive containment 已记录。已对已知 workspace/process/temp Git metadata 做跨 common-dir 来源引用审计；本次仅退役这45个来源，不触碰其他活跃任务引用。
+
+逐项关闭 JSON、最后开放列表、common-dir 审计、pre/post worktree ledger 与删除回执位于 `D:/ck3-pr-review-20261002-a01/`。此文及 JSON 是永久跟踪记录；最终报告另作普通 master commit/push，其 CI 回执继续外置保留。历史 RED、119-only readiness 和人工视频签核状态不因关闭 PR 而改变。

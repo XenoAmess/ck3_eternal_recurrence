@@ -4,7 +4,7 @@
   "timezone": "Asia/Shanghai",
   "repository": "XenoAmess/ck3_eternal_recurrence",
   "integration_base": "db4c94d17a3ae8c3241543c511c8ef253d8afd1b",
-  "stage": "all source composition and offline checks complete; exact-master CI and GitHub closure pending",
+  "stage": "complete: accepted content integrated; all45 source PRs closed; source refs retired with archives and worktrees preserved",
   "counts": {
     "total": 45,
     "integrate_missing": 21,
@@ -32,10 +32,12 @@
         "exact_bytes_present": 77
       },
       "archive_tag": "archive/draft-review-20261002/pr-448-24c51a37d",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json",
+      "closed_at": "2026-10-02T09:32:53Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-448-093239368327.json"
     },
     {
       "number": 449,
@@ -55,10 +57,12 @@
         "different_master_version": 18
       },
       "archive_tag": "archive/draft-review-20261002/pr-449-3bc267e0d",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:32:58Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-449-093244775832.json"
     },
     {
       "number": 451,
@@ -78,10 +82,12 @@
         "exact_bytes_present": 196
       },
       "archive_tag": "archive/draft-review-20261002/pr-451-d921dd3a0",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:33:04Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-451-093250379766.json"
     },
     {
       "number": 500,
@@ -101,10 +107,12 @@
         "different_master_version": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-500-784e2bb33",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:09Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-500-093255435559.json"
     },
     {
       "number": 502,
@@ -124,10 +132,12 @@
         "missing_from_master": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-502-6374697d0",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:14Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-502-093300636502.json"
     },
     {
       "number": 503,
@@ -147,10 +157,12 @@
         "missing_from_master": 3
       },
       "archive_tag": "archive/draft-review-20261002/pr-503-346da8d15",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:19Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-503-093305906019.json"
     },
     {
       "number": 507,
@@ -170,10 +182,12 @@
         "missing_from_master": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-507-f7e78a1a9",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:25Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-507-093310879244.json"
     },
     {
       "number": 512,
@@ -193,10 +207,12 @@
         "missing_from_master": 5
       },
       "archive_tag": "archive/draft-review-20261002/pr-512-3af6fdd2f",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:30Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-512-093315967951.json"
     },
     {
       "number": 514,
@@ -216,10 +232,12 @@
         "different_master_version": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-514-e70f0a802",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:35Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-514-093320747145.json"
     },
     {
       "number": 565,
@@ -239,10 +257,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-565-2d68e899e",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:40Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-565-093325758247.json"
     },
     {
       "number": 595,
@@ -262,10 +282,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-595-3219e2669",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:33:45Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-595-093330798071.json"
     },
     {
       "number": 612,
@@ -285,10 +307,12 @@
         "exact_bytes_present": 25
       },
       "archive_tag": "archive/draft-review-20261002/pr-612-f96dc0054",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:33:50Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-612-093336061206.json"
     },
     {
       "number": 653,
@@ -307,10 +331,12 @@
         "missing_from_master": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-653-0ebe9a62e",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:33:55Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-653-093340896672.json"
     },
     {
       "number": 669,
@@ -330,10 +356,12 @@
         "different_master_version": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-669-7b8ac1fb9",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:34:00Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-669-093346403645.json"
     },
     {
       "number": 673,
@@ -354,10 +382,12 @@
         "missing_from_master": 9
       },
       "archive_tag": "archive/draft-review-20261002/pr-673-2ad213f56",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json",
+      "closed_at": "2026-10-02T09:34:06Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-673-093351915837.json"
     },
     {
       "number": 679,
@@ -376,10 +406,12 @@
         "missing_from_master": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-679-63fb1023c",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:34:11Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-679-093357290190.json"
     },
     {
       "number": 684,
@@ -399,10 +431,12 @@
         "different_master_version": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-684-ae6c5eed8",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:34:16Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-684-093402585586.json"
     },
     {
       "number": 685,
@@ -422,10 +456,12 @@
         "exact_bytes_present": 6
       },
       "archive_tag": "archive/draft-review-20261002/pr-685-e7c0727b7",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:34:21Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-685-093407709767.json"
     },
     {
       "number": 696,
@@ -444,10 +480,12 @@
         "missing_from_master": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-696-bf861e123",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:34:27Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-696-093413210071.json"
     },
     {
       "number": 714,
@@ -466,10 +504,12 @@
         "missing_from_master": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-714-226ea4979",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:34:32Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-714-093418670619.json"
     },
     {
       "number": 719,
@@ -489,10 +529,12 @@
         "different_master_version": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-719-7648739b7",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:34:38Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-719-093423861950.json"
     },
     {
       "number": 721,
@@ -511,10 +553,12 @@
         "different_master_version": 3
       },
       "archive_tag": "archive/draft-review-20261002/pr-721-f83f72b72",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\war.json",
+      "closed_at": "2026-10-02T09:34:43Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-721-093428788019.json"
     },
     {
       "number": 723,
@@ -533,10 +577,12 @@
         "different_master_version": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-723-98d0871eb",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json",
+      "closed_at": "2026-10-02T09:34:47Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-723-093433657145.json"
     },
     {
       "number": 724,
@@ -555,10 +601,12 @@
         "different_master_version": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-724-a852f4bf6",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json",
+      "closed_at": "2026-10-02T09:34:53Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-724-093438812196.json"
     },
     {
       "number": 728,
@@ -578,10 +626,12 @@
         "exact_bytes_present": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-728-d4004005e",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json",
+      "closed_at": "2026-10-02T09:34:58Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-728-093443937362.json"
     },
     {
       "number": 730,
@@ -601,10 +651,12 @@
         "exact_bytes_present": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-730-965a5d5ef",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json",
+      "closed_at": "2026-10-02T09:35:03Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-730-093449266278.json"
     },
     {
       "number": 731,
@@ -624,10 +676,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-731-b13925c22",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:35:08Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-731-093454269950.json"
     },
     {
       "number": 732,
@@ -646,10 +700,12 @@
         "exact_bytes_present": 3
       },
       "archive_tag": "archive/draft-review-20261002/pr-732-848b89008",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json",
+      "closed_at": "2026-10-02T09:35:13Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-732-093459481507.json"
     },
     {
       "number": 733,
@@ -669,10 +725,12 @@
         "missing_from_master": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-733-04b7b5460",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\runtime.json",
+      "closed_at": "2026-10-02T09:35:19Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-733-093504944908.json"
     },
     {
       "number": 735,
@@ -691,10 +749,12 @@
         "exact_bytes_present": 3
       },
       "archive_tag": "archive/draft-review-20261002/pr-735-5cec58c6c",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:35:24Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-735-093509825946.json"
     },
     {
       "number": 736,
@@ -713,10 +773,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-736-e90d04c57",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:35:29Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-736-093514941637.json"
     },
     {
       "number": 737,
@@ -736,10 +798,12 @@
         "exact_bytes_present": 7
       },
       "archive_tag": "archive/draft-review-20261002/pr-737-080178785",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:35:34Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-737-093520672380.json"
     },
     {
       "number": 739,
@@ -758,10 +822,12 @@
         "missing_from_master": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-739-146b2ff12",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:35:40Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-739-093526036193.json"
     },
     {
       "number": 740,
@@ -781,10 +847,12 @@
         "different_master_version": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-740-5168746fb",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:35:45Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-740-093531198291.json"
     },
     {
       "number": 742,
@@ -804,10 +872,12 @@
         "different_master_version": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-742-499047b70",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:35:50Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-742-093535991989.json"
     },
     {
       "number": 743,
@@ -827,10 +897,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-743-a9943b4fe",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json",
+      "closed_at": "2026-10-02T09:35:55Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-743-093540947083.json"
     },
     {
       "number": 745,
@@ -850,10 +922,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-745-e348c0fda",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:36:00Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-745-093546491276.json"
     },
     {
       "number": 746,
@@ -872,10 +946,12 @@
         "exact_bytes_present": 1
       },
       "archive_tag": "archive/draft-review-20261002/pr-746-2abf954ad",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:36:06Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-746-093552008392.json"
     },
     {
       "number": 747,
@@ -894,10 +970,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-747-9e2076c97",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:36:11Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-747-093557120135.json"
     },
     {
       "number": 749,
@@ -916,10 +994,12 @@
         "exact_bytes_present": 3
       },
       "archive_tag": "archive/draft-review-20261002/pr-749-f05de7a41",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json",
+      "closed_at": "2026-10-02T09:36:16Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-749-093602090145.json"
     },
     {
       "number": 750,
@@ -939,10 +1019,12 @@
         "exact_bytes_present": 3
       },
       "archive_tag": "archive/draft-review-20261002/pr-750-5a1025282",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:36:21Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-750-093607611640.json"
     },
     {
       "number": 752,
@@ -962,10 +1044,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-752-62e39f933",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:36:26Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-752-093612769545.json"
     },
     {
       "number": 756,
@@ -985,10 +1069,12 @@
         "exact_bytes_present": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-756-38b28769b",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h3937.json",
+      "closed_at": "2026-10-02T09:36:32Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-756-093618159392.json"
     },
     {
       "number": 761,
@@ -1007,10 +1093,12 @@
         "exact_bytes_present": 3
       },
       "archive_tag": "archive/draft-review-20261002/pr-761-96acba4f1",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\video.json",
+      "closed_at": "2026-10-02T09:36:37Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-761-093623218857.json"
     },
     {
       "number": 770,
@@ -1030,10 +1118,12 @@
         "different_master_version": 2
       },
       "archive_tag": "archive/draft-review-20261002/pr-770-78d75e018",
-      "github_operation": "close after accepted missing hunks are integrated and exact-master CI passes",
-      "github_state": "pending",
+      "github_operation": "Reviewed accepted content in linear master commit; closed historical draft and independently read it back",
+      "github_state": "closed",
       "github_merged": false,
-      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json"
+      "review_report": "D:\\ck3-pr-review-20261002-a01\\reviews\\h2743.json",
+      "closed_at": "2026-10-02T09:36:42Z",
+      "closure_receipt": "D:\\ck3-pr-review-20261002-a01\\github-closures\\pr-770-093759213359.json"
     }
   ],
   "validation": {
@@ -1094,5 +1184,32 @@
       "receipt": "reviews/native-implementation.json",
       "live_acceptance": false
     }
-  }
+  },
+  "content_master_sha": "763ae3cd839055ccf0654bbd2a21ca5e09c23d39",
+  "official_content_ci": {
+    "id": 36989710144,
+    "conclusion": "success",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36989710144"
+  },
+  "github_readback": {
+    "closed_reviewed_prs": 45,
+    "remaining_open_prs_at_readback": 0,
+    "remaining_open_drafts_at_readback": 0,
+    "readback_at": "2026-10-02T09:38:00.359290+00:00",
+    "github_merged_count": 0
+  },
+  "source_retirement": {
+    "master_sha": "763ae3cd839055ccf0654bbd2a21ca5e09c23d39",
+    "verified_at": "2026-10-02T09:42:28.761612+00:00",
+    "source_local_refs_deleted": 45,
+    "source_remote_refs_deleted": 45,
+    "source_tracking_refs_absent": 45,
+    "source_worktrees_preserved_detached": 37,
+    "source_worktrees_dirty_exceptions": 0,
+    "push_stdout": "",
+    "push_stderr": "To https://github.com/XenoAmess/ck3_eternal_recurrence.git\n - [deleted]             codex/episode02-review-preview-20260930\n - [deleted]             codex/video-screen-fence-20260930\n - [deleted]             codex/video-screen-job-20260930\n - [deleted]             codex/video-screen-job-converged-20260930\n - [deleted]             docs/war-video-vacation-handoff-20260929\n - [deleted]             promo/e2-a05-current-count-copy-20260930-v2\n - [deleted]             promo/e2-a05-terminal-frame-proof-20260930\n - [deleted]             promo/e2-d12-second-recorder-static-20260930\n - [deleted]             promo/e2-seven-pending-source-audit-20260929\n - [deleted]             promo/episode02-20260928\n - [deleted]             research/e205-native-selector-death-stop-20260930\n - [deleted]             research/h2743-managed-readonly-entry-20260930\n - [deleted]             research/h2743-profile-cli-cleanup-stop-20260930\n - [deleted]             research/h2743-v5-bus-cas-prototype-20260930\n - [deleted]             research/h2743-v5-head24c51-runner-pair-20260930\n - [deleted]             research/h2743-v5-runner-cas-route-20260930\n - [deleted]             research/h2743-v5-static-seal-20260930\n - [deleted]             research/h3937-cold-admission-20260930\n - [deleted]             research/h3937-cold-observer-20260930\n - [deleted]             research/h3937-job-multimember-20260930\n - [deleted]             research/h3937-r0117-operator-static-20260930\n - [deleted]             research/h3937-r0117-static-seal-20260930\n - [deleted]             research/h3937-retire-legacy-once-20260930\n - [deleted]             research/h3937-watchdog-handle-diagnostic-20260930\n - [deleted]             research/r0321-fidelity-next\n - [deleted]             research/r0321-scope-audit\n - [deleted]             research/r0368-actor-army-role\n - [deleted]             research/r0368-injector-identity-sparse\n - [deleted]             research/r0368-injector-job-containment\n - [deleted]             research/video-k05-static-gap-20260930\n - [deleted]             research/video-recorder-job-20260930\n - [deleted]             war/h2743-exit-decision-20260928\n - [deleted]             war/h3937-phase0-roster-readonly\n - [deleted]             war/h3937-stationary-readonly\n - [deleted]             war/r0266-joint-cash-20260928\n - [deleted]             war/r0271-r0321-source-boundary-20260928\n - [deleted]             war/r0271-r3942-red-20260929\n - [deleted]             war/r0271-r3945-a11-red-20260929\n - [deleted]             war/r0271-r3946-a12-red-20260930\n - [deleted]             war/r0271-r3947-a13-red-20260930\n - [deleted]             war/r0321-forecast-red-intake-20260928\n - [deleted]             war/r0321-receiver-live-20260928\n - [deleted]             war/r0321-safe-audit\n - [deleted]             war/r0345-stationary-readonly\n - [deleted]             war/steam-recovery-cas-fence\n",
+    "all_source_tags_retained": true,
+    "other_refs_untouched": true
+  },
+  "cross_common_dir_audit": "D:\\ck3-pr-review-20261002-a01\\cross-common-draft-ref-audit.json"
 }
