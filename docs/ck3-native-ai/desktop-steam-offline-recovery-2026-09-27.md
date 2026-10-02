@@ -24,6 +24,11 @@ H2743 `attempt-05` 启动前再次遇到此问题：原始 `1024×768` 截图 `s
 
 H2825 再次出现“窗口边缘能移动、Steam 内容区全黑、两次完整截图哈希相同”的情形。`recover --stale-frame-reference <至少 120 秒前的 steam-frame-freshness.json> --restart-running-todesk-on-stale` 现在会核对同一 Steam HWND、桌面尺寸和移动后窗口矩形；若两次移动后截图的字节数及 SHA-256 完全相同，就保存 `steam-frame-stale.json` 并进入原有的独占屏幕、无 CK3、无录制进程的 ToDesk 重启门禁。它仍不判定 Steam 是否离线。H2825 `attempt-05/steam-offline-03` 的重复帧检查确证 RED，服务停止再次被错误码 5 拒绝；随后一次在同一桌面临时显示当秒随机挑战码的两张原始截图产生不同像素，操作人目视确认第二张中当前挑战码与 Steam 左下“离线模式”，才继续只读 CK3 启动。挑战窗不点击 Steam、不改变客户端状态，完整截图和回执保存在该 attempt 外置目录。
 
+挑战窗沿用上述先例，仅用于 stale 后的**启动前显示层取证**。执行前按既有预检及[屏幕租约合同](../codex-task-bus.md)确认独占、无 CK3／录制／其他屏幕占用；不得作为活跃 CK3 会话的通用输入捷径。
+自有瞬态窗只显示两次当秒 UTC 与不同 nonce，不点击 Steam、不改模式。分别保存两次实际请求显示的 UTC/nonce 及两张未裁切、未合成的完整原始桌面图，各绑定 bytes、SHA-256 与采集时间；审阅时间另记，失败旧图和回执保持。
+操作人须直接在第二张原图读回当次 nonce，并直接审阅同图 Steam 的“离线模式”；挑战窗或两图 SHA 不同都不能自动判定 offline，也不能单独证明 Steam 内容区或后端状态新鲜。
+当前挑战只证明采集响应本次显示变化；已有窗口／背景 stale 和冻结时钟事实仍保留，不称时钟已更新或整层桌面已恢复。无法读回当前 nonce 或看清离线标识时，启动前离线证据仍未闭合。
+
 每次 attempt 保留 `events.jsonl`、`recovery.json` 和 `probe-1/`（有重试则再建 `probe-2/`）。`recovery.json` 的 `fresh_frame.receipt_path` 指向成功的新鲜帧回执，`fresh_frame.image_identity` 给出截图路径、字节数和 SHA-256；原回执 `probe-N/steam-frame-freshness.json` 的 `moved_identity` 也保存同一身份。`outcome` 只表达桌面响应性；`steam_offline_status_observed` 永远为 `null`。**操作人必须亲自审阅本次新截图**中的 Steam 离线标识，才可把它当作离线实证；黑屏、服务运行、旧图 hash、窗口移动成功都不单独证明离线。必要时还须查当前账号是否被其他机器占用，再按项目的 CK3 启动门禁继续。
 
 2026-09-27 本机静态／实测证据：历史 `ck3-xqol-phase2-20260910` 屏幕记录已过期约 16 天，登记 PID 2696 不存在；CK3 与常见录屏进程不在运行。取得新独占租约后，`D:\workspace\ck3_native_war_ai_promo_work\steam-offline-recovery-20260927-002\recovery.json` 报 `fresh_frame_needs_offline_visual_review`，`probe-1/steam-frame-freshness.json` 中 `moving_edge_changed=true`，`moved_identity.sha256=205DAEA6748C6A2508C9DB02F113D9525F4FC6ADFF8737221AE6DE04349CC9D6`；原始 Steam 窗口矩形 `[0,0,962,768]` 经 `[20,0,982,768]` 后已复位。人工查看同次 `steam-moved.png`，Steam 左下显示“离线模式”。ToDesk 服务 PID 4792 始终运行，未触发重启，未启动 CK3。
