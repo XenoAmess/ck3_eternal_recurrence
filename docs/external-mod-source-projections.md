@@ -30,6 +30,10 @@
 
 独立项目 [R0007](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/3fbeed4/docs/live-R0007-cold-reload-culture.md) 分别读取了基础文化 cap 和原生 UI 的时代加成上限。基础 define 是输入，实际可用上限还可能包含时代、修正或其他原版条件。验收应读回有效值，并以超过默认上限的真实入口、费用支付和业务状态验证扩容。通过原生 effect 准备夹具可能触发原版冷却；应先核对权威定义，区分冷却阻断与容量阻断，记录夹具解除条件，而不能削弱产品原生限制或把开始建立称为多年后已完成。
 
+2026-10-03 的独立项目 [R0008](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/live-R0008-selector.md) 进一步区分了尾部空槽与中间空洞：该实例实际读取到 100 个信条槽和 128 个教条条目，第 100 槽可以打开原生候选并选择，真实已选索引为 `[0,1,99]`，虔诚费用从 4837 变为 5587；原生合法性检查仍报告 `Absent is not allowed`。R0006 的两个真实信条加尾部 98 个空槽可创建保存，不能据此外推有空洞的选择序列也能创建。扩容测试应分别覆盖尾部空槽、中间空洞、连续选择和最终保存；末端选择与费用变化成功只证明对应操作，不代替创建合法性通过。这个 exact-build 反例不能推出其他列表或版本的统一空槽规则。
+
+R0008 同时仍为加载检查 RED：`visible=no` 的隐藏教条也会解析默认 `_name`/`_desc` 本地化，隐藏性不能省略加载所需元数据；教条组按原版合同解析 `_name`。GUI 通过 `AddScope` 传入的 scope，应按原版 ScriptedGui 合同用 `saved_scopes` 声明。产品已依据原版 `doctrine_types`、`doctrine_group_types` 的 `.info` 和 `pam_scripted_guis.txt` 修正声明并补齐两种语言的空白本地化，具体生成源码和收据见独立项目 [候选说明](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/selector-repair-candidate.md)。此修正目前只有静态检查通过，须以新源码冷启动确认原生日志，不能用 R0008 的旧冻结输入或静态 BOM/结构检查冒充实机修复。框架只提炼加载合同和验收边界，不搬入产品教条、存档或专有夹具，也不将本产品结果外推为所有 mod 通过。
+
 验证入口：`python tools/test_ck3_text_projection.py`，覆盖真实生产投影/恢复路径、原生 controls 保留、变更拒绝、歧义锚点及注释/字符串扫描。
 
 磁盘空间不足时，先区分可再下载的软件缓存与必须保留的研究材料。源码、冻结构建输入、存档、mod/Workshop 资产、夹具、原始及中间素材、dump 和失败 attempt 都不能作为垃圾；目录名含 `Temp`、`runtime` 或 `cache` 也不构成删除依据。已安装依赖和本地构建 wheel 继续保留，删除下载缓存不能改变 venv 或依赖版本。只对已确认可再生的具体缓存范围盘点，校验解析后的绝对目标仍位于该范围，拒绝符号链接、junction 与其他 reparse 路径；逐文件取得独占删除句柄并读回删除结果，锁定、近期或用途不明的内容跳过，不停止游戏或其他任务。
