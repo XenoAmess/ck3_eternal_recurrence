@@ -26,4 +26,8 @@
 
 当 GUI 方法名似乎可复用时，可由隔离 debug userdir 的原生 `dump_data_types` 取得当前注册接口。独立项目 [R0005](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/eb27c6ba47e44b298382e4fd4c337b9d2e505311/docs/live-R0005-selector-investigation.md) 保存了实际导出的接口文件摘要和调查边界。方法名或 getter 的存在不证明参数语义兼容；缺少某个导出也不能证明所有内部方法都不存在。发生原生崩溃时同时保留进程退出码、崩溃日志和 dump，不能只依据没有 GUI 解析错误判 GREEN。该反例是测试方法的富化，不构成新的宗教 MCP 能力或产品修复验收。
 
+独立项目 [R0006](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/99e78c6/docs/live-R0006-empty-slots.md) 还复现了编辑控件容量和追加粘贴的问题：1.20.0.3 控制台长命令被截断，保存名称未先全选时则插入旧内容中。剪贴板写入成功不等于目标文本完整。输入后应先用不同的哨兵覆盖剪贴板，再从目标控件复制全文；全文不一致时必须停止后续 Enter/保存，而不是仅抛出错误后继续动作序列。按 exact-build 和具体控件记录已实测容量，不能将控制台长度上限外推给所有编辑框。保留输入失败和修复回执。
+
+独立项目 [R0007](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/3fbeed4/docs/live-R0007-cold-reload-culture.md) 分别读取了基础文化 cap 和原生 UI 的时代加成上限。基础 define 是输入，实际可用上限还可能包含时代、修正或其他原版条件。验收应读回有效值，并以超过默认上限的真实入口、费用支付和业务状态验证扩容。通过原生 effect 准备夹具可能触发原版冷却；应先核对权威定义，区分冷却阻断与容量阻断，记录夹具解除条件，而不能削弱产品原生限制或把开始建立称为多年后已完成。
+
 验证入口：`python tools/test_ck3_text_projection.py`，覆盖真实生产投影/恢复路径、原生 controls 保留、变更拒绝、歧义锚点及注释/字符串扫描。
