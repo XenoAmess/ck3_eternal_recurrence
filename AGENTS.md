@@ -306,6 +306,7 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   `docs/codex-task-bus.md`。任务开始先 `register`、`poll --ack`、`list`，状态变化和共享资源取得/释放时写 `status`，长任务每
   15 分钟 `heartbeat`，完成时写 `done`。
 - Git push、Workshop 外部写入和 CK3 启动前必须再 `poll --ack`；通知只用于协作，不替代 `fetch + rebase`、既有排他锁或用户授权。
+- **受管实机的 clean checkout 冻结。** 当 screen keeper 将 owner checkout 的 exact HEAD 与 `dirty_entries=0` 作为准入/续租条件时，该目录内的实现和文档候选只保全到外置 runtime；正常保存并退出游戏、停止 keeper 并完成 CAS 释放后，才应用 tracked 修改、提交并为下一冷载重新冻结。不得在会话中忽略 dirty 拒绝、更新冻结 source/HEAD 来追认变更，或以无 `expected-sequence` 的 heartbeat/status 绕过条件续租；原始拒绝和最后有效序号继续保留。其他隔离目录的工作仍按其文件所有权推进。租约合同见 `docs/codex-task-bus.md`。
 
 - **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动

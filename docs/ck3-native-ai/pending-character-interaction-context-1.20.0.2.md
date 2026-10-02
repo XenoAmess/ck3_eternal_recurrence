@@ -152,3 +152,23 @@ flowchart TD
 这次生产原语覆盖查询 → source-bound 拒绝 → 独立旧 ID 清空；没有读取 `31506` 的 liege/title、opinion 或 clan unity 后置，因此不声明完整转封关系保持、全部副作用或物质收益。下一正常 turn 消费仍由根执行者继续，M2 material credit 为零；没有重复查询/fixture/回复，旧 RED 未改写。
 
 其后同 PID/episode 的 `formal-v14-next-02` 实际 initial pending 为 null，正式正常回合消费了该清空状态；turn3 正常推进 33 天，turn5 再推进 8 天，date raw `53329800→53330784`（41 天），旧 pending 始终 absent。独立 before/after 的角色 `31853`、episode 和暂停 bookend 相同；正常 h2097 checkpoint 留存，随后因新自然 `feast.2001` instance15 未登记而停止。一次离线核对七项 GREEN，保存于上述 continuation 包的 `normal-next-consumption-assessment.json`。本切片闭合 root 选定的 SDK typed 拒绝 → 独立 pending 清空 → 正式下一回合消费；新 ordinal296 自动策略兼容仍只获静态回归，不冒称已经自然再现并由新版自动规则决策。没有新材料/M2 credit，也不是整个正式运行已完成。
+
+## 2026-10-03：typed 消费者的返回值与异步回读合同
+
+本节只复核公共 Python/keeper 实现，不新增实机认证；前述 signed-ID 与生产查询/拒绝证据保持原边界。消费者沿用 `normalize_pending_interaction_id`：保留完整 signed int32 与 generation，`0` 和负数结构合法，只有 `-1` 为无效哨兵，不能取绝对值或先判 `id > 0`。
+
+`reply_pending_character_interaction(accept=False, interaction_instance_id=..., expected_revision=...)` 最终覆盖返回字段为 `accepted=False`；它表示选择了拒绝，不是命令失败。回复完成应核对 `interaction_result.status="rejected"`、原 `instance_id`，以及独立后置 snapshot 的旧完整 ID 消失或变化；异常或 postcondition 缺失不能用这一布尔值代替。通知走现有 typed acknowledge 接口，不把 auto-accept 通知当普通 accept 再执行。
+
+消费者对同一 query/source frame 只提交一次动作，然后在有限 deadline 内读回实际状态，不因 ACK 后第一帧仍旧就重提。`_execute_pending_character_interaction_reply` 已按 command timeout 等待暂停帧的旧 ID 推进；event selection 另显式核对 episode/PID/connection。调用方仍应把 query、选择、后置与同一 played actor、episode、bridge PID/generation、public/native revision 和 date 绑定，不能把 pending helper 的 ID 检查说成它已经完成全部身份检查。
+
+map-control 的 `_verify_idempotent_map_control_postcondition` 只对 `already_running` / `already_paused` 返回分支等待 semantic frame；一般 `submitted` ACK 返回不能证明 paused 已改变。需要恢复自然时钟的消费者应独立限时等待实际 `paused=false`；期间若下一事件/请求出现，应先消费新的有效上下文，再决定恢复，不能越过队列。paused=false 也不能独自证明日期自然推进、资源/关系结果或长期稳定性。
+
+原生 `legality.*.allowed` 只证明当帧可以执行。available v1 合同仍为 `generic_costs_ready=true`、`structured_terms_ready=false`、`interaction_semantic_decision_ready=false`；generic actor/on_send 成本不能证明接收方 accept 的全部后果或可承受性。产品接受策略需要另外明确的条款/效果/成本依据；缺少语义时保全 context 并转交其操作员政策，不把 allowed 或 ACK 写成最优选择/物质结果。这里不统一各产品的拒绝优先级，也不修改主仓 planner。
+
+以下来源均按公共提交 `18dee6291c3e9d2374ac6e8117e208cf1c8319de` 的实际文件 bytes 核对；没有 import SDK、调用 driver/pipe、重复原生夹具或操作游戏。本节是 source-supported 文档增量，消费者实机适配仍须分别验收。
+
+| 公共源码与入口 | SHA-256 |
+| --- | --- |
+| [pending_character_interaction_context_contract.py](../../ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py)：`normalize_pending_interaction_id` / available readiness | `f43876ccfbd32b75005f3954ab9a5877c9274f250d427143e8e31d4904082419` |
+| [service.py](../../ck3_autonomous_player/src/xar_autoplayer/bridge/service.py)：`reply_pending_character_interaction` / `acknowledge_pending_character_interaction` | `4cc430636faca6485e9fb986378d3ca7817f3c6b8474b178c3cfed55e2996eff` |
+| [native_driver.py](../../ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py)：`_execute_pending_character_interaction_reply` / event selection / map-control postcondition | `edcb1f8e4ebbb20703988995a9f584a2cdeef1b6c4e154a84a7560746ec25aed` |
