@@ -2449,7 +2449,9 @@ class NativeHeadlessGameplayDriver:
                 planner(planning_snapshot, self._command_history)
             )
 
-    def take_snapshot(self) -> dict[str, object]:
+    def take_snapshot(
+        self, *, include_native_command_history: bool = True
+    ) -> dict[str, object]:
         snapshot = self.take_internal_semantic_snapshot()
         with self._driver_state_lock:
             rollback_war_failures = copy.deepcopy(self._rollback_war_failures)
@@ -2458,12 +2460,26 @@ class NativeHeadlessGameplayDriver:
                 if rollback_war_failures
                 else None
             )
-        return {
+        result = {
             **snapshot,
-            "native_command_history": self._history_snapshot(),
+            "native_command_history": (
+                self._history_snapshot() if include_native_command_history else []
+            ),
             "native_rollback_war_failure": rollback_war_failure,
             "native_rollback_war_failures": rollback_war_failures,
         }
+        if not include_native_command_history:
+            with self._history_lock:
+                total_count = len(self._command_history)
+            result["native_command_history_export"] = {
+                "mode": "omitted",
+                "total_count": total_count,
+                "included_count": 0,
+            }
+        return result
+
+    def take_snapshot_without_native_command_history(self) -> dict[str, object]:
+        return self.take_snapshot(include_native_command_history=False)
 
     def query_ranked_marriage_private_v1(
         self, *, expected_native_revision: int,

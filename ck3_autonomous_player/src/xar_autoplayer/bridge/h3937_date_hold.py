@@ -1,14 +1,14 @@
-"""Frozen Robert H3937 war date hold until its formal inputs are certified.
+"""Keep the historical H3937 read-only research episode frozen.
 
-The episode ID is the binding key.  The source actor, war, army, and date are
-audit anchors, not switches that can release the hold after identity drift.
-No physical inventory mailbox certificate or accepted war/cash policy exists
-yet, so this module has no release path.
+The episode ID binds the old research hold, including identity/date drift.
+The ordinary campaign reuses that episode ID after migration; its persisted
+typed goal and current actor distinguish normal play from the research run.
 """
 
 from __future__ import annotations
 
 from .active_combat_retreat_contract import ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX
+from .succession_transition_contract import ORDINARY_CAMPAIGN_SUCCESSION
 from .war_contract import (
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
     WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
@@ -23,12 +23,27 @@ H3937_SOURCE_DATE_RAW = 53_219_928
 
 
 def h3937_date_hold_active(snapshot: object) -> bool:
-    """Keep every date in the exact episode frozen, including drifted frames."""
+    """Hold the legacy research profile, not its migrated ordinary campaign."""
 
-    return bool(
-        isinstance(snapshot, dict)
-        and snapshot.get("episode_run_id") == H3937_EPISODE_RUN_ID
+    if (
+        not isinstance(snapshot, dict)
+        or snapshot.get("episode_run_id") != H3937_EPISODE_RUN_ID
+    ):
+        return False
+    lifecycle = snapshot.get("succession_lifecycle")
+    goal = snapshot.get("campaign_goal")
+    actor = snapshot.get("played_character")
+    ordinary_campaign = (
+        isinstance(lifecycle, dict)
+        and lifecycle.get("lifecycle") == ORDINARY_CAMPAIGN_SUCCESSION
+        and isinstance(goal, dict)
+        and goal.get("format_version") == 1
+        and goal.get("goal_key") == "dynasty_continuity"
+        and goal.get("campaign_id") == snapshot["episode_run_id"]
+        and isinstance(actor, dict)
+        and goal.get("current_character_id") == actor.get("character_id")
     )
+    return not ordinary_campaign
 
 
 def is_date_control_step(step: object) -> bool:

@@ -515,7 +515,15 @@ class GameplayBridgeService:
     def capabilities(self) -> dict[str, object]:
         return self.driver.capabilities()
 
-    def snapshot(self) -> dict[str, object]:
+    def snapshot(
+        self, *, include_native_command_history: bool = True,
+    ) -> dict[str, object]:
+        if include_native_command_history is False:
+            finite_reader = getattr(
+                self.driver, "take_snapshot_without_native_command_history", None,
+            )
+            if callable(finite_reader):
+                return finite_reader()
         return self.driver.take_snapshot()
 
     def bridge_diagnostics(self) -> dict[str, object]:
