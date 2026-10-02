@@ -1,0 +1,243 @@
+﻿# Maintained CK3 1.20 branch; public CB key retained for saves.
+empire_de_jure_greatwar = {
+	icon = invasion
+	group = invasion
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = {
+		always = yes
+	}
+	ai = no
+	check_all_defenders_for_ticking_war_score = yes
+	is_great_holy_war = no
+	allow_hostages = no
+	allowed_for_character = {
+		is_ai = no
+		prestige_level >= 4
+	}
+	allowed_against_character = {
+		scope:attacker = {
+			top_liege != scope:defender.top_liege
+		}
+	}
+	target_titles = neighbor_land_or_water
+	target_title_tier = all
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+	valid_to_start = {
+		scope:target = {
+			tier = tier_empire
+			is_landless_type_title = no
+		}
+	}
+	should_invalidate = {
+		trigger_if = {
+			limit = {
+				exists = root.war
+			}
+			NOT = {
+				any_in_list = {
+					list = target_titles
+					any_de_jure_county = {
+						holder ?= {
+							top_liege = {
+								is_defender_in_war = root.war
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	on_invalidated_desc = msg_mongol_invasion_war_invalidated_message
+	on_invalidated = {
+	}
+	cost = {
+		piety = {
+			value = 5000
+			add = common_cb_impious_piety_cost
+		}
+		prestige = {
+			add = {
+				value = 2500
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+	on_declaration = {
+		on_declared_war = yes
+	}
+	on_victory_desc = DJC_VICTORY_DESC
+	on_victory = {
+		if = {
+			limit = {
+				exists = root.war
+			}
+			scope:attacker = {
+				show_pow_release_message_effect = yes
+			}
+			add_legitimacy_attacker_victory_effect = yes
+			scope:attacker = {
+				accolade_attacker_war_end_glory_gain_high_effect = yes
+			}
+			djc_transfer_de_jure_counties = {
+				WAR = root.war
+			}
+			modify_allies_of_participants_fame_values = {
+				WINNER = scope:attacker
+				FAME_BASE = mongol_invasion_cb_ally_prestige
+				IS_RELIGIOUS_WAR = no
+				WINNER_ALLY_FAME_SCALE = 1
+				LOSER_ALLY_FAME_SCALE = 1
+			}
+			scope:attacker = {
+				add_prestige_experience = {
+					value = mongol_invasion_cb_prestige_experience_gain
+				}
+			}
+			add_truce_attacker_victory_effect = yes
+			scope:attacker = {
+				fp1_remember_recent_conquest_victory_effect = yes
+			}
+			laamp_as_mercenary_payout_tooltip_effect = yes
+		}
+	}
+	on_white_peace_desc = DJC_WHITE_PEACE_DESC
+	on_white_peace = {
+		if = {
+			limit = {
+				exists = root.war
+			}
+			scope:attacker = {
+				show_pow_release_message_effect = yes
+			}
+			scope:attacker = {
+				accolade_attacker_war_end_glory_gain_low_effect = yes
+			}
+			scope:defender = {
+				accolade_defender_war_end_glory_gain_med_effect = yes
+			}
+			modify_allies_of_participants_fame_values = {
+				WINNER = scope:attacker
+				FAME_BASE = mongol_invasion_cb_ally_prestige
+				IS_RELIGIOUS_WAR = no
+				WINNER_ALLY_FAME_SCALE = 1
+				LOSER_ALLY_FAME_SCALE = 1
+			}
+			add_truce_white_peace_effect = yes
+			scope:attacker = {
+				add_prestige = mongol_invasion_cb_prestige_white_peace
+				stress_and_fulfillment_impact = {
+					ambitious = medium_stress_impact_gain
+					arrogant = medium_stress_impact_gain
+				}
+			}
+			scope:defender = {
+				stress_and_fulfillment_impact = {
+					arrogant = medium_stress_impact_gain
+				}
+			}
+			laamp_as_mercenary_payout_tooltip_effect = yes
+		}
+	}
+	on_defeat_desc = DJC_DEFEAT_DESC
+	on_defeat = {
+		if = {
+			limit = {
+				exists = root.war
+			}
+			scope:attacker = {
+				show_pow_release_message_effect = yes
+			}
+			add_legitimacy_attacker_defeat_effect = yes
+			scope:defender = {
+				accolade_defender_war_end_glory_gain_high_effect = yes
+			}
+			modify_allies_of_participants_fame_values = {
+				WINNER = scope:defender
+				FAME_BASE = mongol_invasion_cb_ally_prestige
+				IS_RELIGIOUS_WAR = no
+				WINNER_ALLY_FAME_SCALE = 1
+				LOSER_ALLY_FAME_SCALE = 1
+			}
+			add_truce_attacker_defeat_effect = yes
+			every_in_list = {
+				list = target_titles
+				scope:defender = {
+					add_prestige = mongol_invasion_cb_prestige_gain
+				}
+				scope:attacker = {
+					if = {
+						limit = {
+							scope:defender = {
+								is_ai = no
+							}
+						}
+						if = {
+							limit = {
+								monthly_character_income > 0
+							}
+							pay_short_term_income = {
+								years = 3
+								target = scope:defender
+							}
+						}
+						else = {
+							pay_short_term_gold = {
+								target = scope:defender
+								gold = medium_gold_value
+							}
+						}
+					}
+				}
+			}
+			scope:attacker = {
+				every_vassal = {
+					custom = custom.every_vassal
+					add_opinion = {
+						modifier = liege_lost_mongol_invasion_war
+						target = prev
+					}
+				}
+			}
+			scope:attacker = {
+				save_temporary_scope_as = loser
+			}
+			on_lost_aggression_war_discontent_loss = yes
+			laamp_as_mercenary_payout_tooltip_effect = yes
+		}
+	}
+	transfer_behavior = transfer
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+	war_name = "EMPIRE_DE_JURE_CONQUEST_WAR_NAME"
+	cb_name = "EMPIRE_DE_JURE_CONQUEST_CB_NAME"
+	interface_priority = 100
+	use_de_jure_wargoal_only = yes
+	attacker_wargoal_percentage = 0.8
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+	max_ai_diplo_distance_to_title = 500
+	ai_score_mult = {
+		value = 1
+		if = {
+			limit = {
+				scope:defender = {
+					any_owned_story = {
+						story_type = frankokratia_story
+						NOT = {
+							has_variable = franko_war_complete
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}

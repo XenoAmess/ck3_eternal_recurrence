@@ -1,0 +1,27 @@
+﻿# Non-destructive extension: retain the upstream public child hook ID.
+on_war_started = {
+    on_actions = { de_jure_greatwar_start }
+}
+
+de_jure_greatwar_start = {
+    effect = {
+        if = {
+            limit = { exists = scope:war }
+            if = {
+                limit = {
+                    scope:war = {
+                        OR = {
+                            using_cb = duchy_de_jure_greatwar
+                            using_cb = kingdom_de_jure_greatwar
+                            using_cb = empire_de_jure_greatwar
+                        }
+                        primary_attacker = { is_ai = no }
+                    }
+                }
+                scope:war.casus_belli = {
+                    djc_join_de_jure_defenders = { WAR = scope:war }
+                }
+            }
+        }
+    }
+}

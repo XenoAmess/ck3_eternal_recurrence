@@ -1,0 +1,67 @@
+﻿# Character scope; scope:barony is supplied by the native title selector.
+
+cht_convert_to_castle_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            exists = scope:barony
+            scope:barony = { ch_barony_is_valid_for_castle_trigger = { CHARACTER = root } }
+        }
+        scope:barony.title_province = { set_holding_type = castle_holding }
+    }
+}
+
+cht_convert_to_city_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            exists = scope:barony
+            scope:barony = { ch_barony_is_valid_for_city_trigger = { CHARACTER = root } }
+        }
+        scope:barony.title_province = { set_holding_type = city_holding }
+    }
+}
+
+cht_convert_to_temple_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            exists = scope:barony
+            scope:barony = { ch_barony_is_valid_for_temple_trigger = { CHARACTER = root } }
+        }
+        scope:barony.title_province = { set_holding_type = church_holding }
+    }
+}
+
+cht_convert_to_nomad_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            exists = scope:barony
+            scope:barony = { ch_barony_is_valid_for_nomad_trigger = { CHARACTER = root } }
+        }
+        scope:barony.title_province = { set_holding_type = nomad_holding }
+    }
+}
+
+cht_convert_to_tribal_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            exists = scope:barony
+            scope:barony = { ch_barony_is_valid_for_tribal_trigger = { CHARACTER = root } }
+        }
+        scope:barony.title_province = { set_holding_type = tribal_holding }
+    }
+}
+
+cht_convert_to_temple_citadel_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            exists = scope:barony
+            scope:barony = { ch_barony_is_valid_for_temple_citadel_trigger = { CHARACTER = root } }
+        }
+        scope:barony.title_province = { set_holding_type = temple_citadel_holding }
+    }
+}

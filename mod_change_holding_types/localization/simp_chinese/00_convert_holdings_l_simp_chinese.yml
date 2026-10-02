@@ -1,0 +1,53 @@
+﻿l_simp_chinese:
+ decision_group_type_ch:0 "地产转化决议"
+ NOT_I_HAVE_CH_BARONY_SELECTED:1 "你 #bold 没有#! 选择一个男爵领！"
+ CH_SELECT_HOLDING_TOOLTIP:0 "选择男爵领"
+ CH_CONVERT_HOLDING_DECISION_NAME_LABEL:0 "名称:"
+ CH_CONVERT_HOLDING_DECISION_CAPITAL_LABEL:0 "目标:"
+ CH_CONVERT_HOLDING_DECISION_CHANGE_CAPITAL:1 "更改男爵领"
+ CH_CONVERT_HOLDING_DECISION_SELECT_CAPITAL:1 "选择男爵领"
+
+ ch_convert_holding_to_castle_decision:0 "地产转化为城堡"
+ ch_convert_holding_to_castle_decision_tooltip:0 "现有[holding|E]被[castle|E]取代"
+ ch_convert_holding_to_castle_decision_desc:0 "#F 简单的重建就能让原本的地产转变为城堡。#!\n\n$CHT_BUILDING_LOSS_WARNING$"
+ ch_convert_holding_to_castle_decision_confirm:0 "推倒重建！"
+ I_HAVE_CH_ELIGBLE_BARONIES_TO_CASTLE_COUNTY:1 "你的[barony|E]拥有一个能被转化为[castle|E]的[holding|E]\n$EFFECT_LIST_BULLET$所选[barony|E]有已建成地产，且由你直接持有、未出租\n$EFFECT_LIST_BULLET$不存在建造中的建筑"
+
+ ch_convert_holding_to_city_decision:0 "地产转化为城市"
+ ch_convert_holding_to_city_decision_tooltip:0 "现有[holding|E]被[city|E]取代"
+ ch_convert_holding_to_city_decision_desc:0 "#F 简单的重建就能让原本的地产转变为城市。#!\n\n$CHT_BUILDING_LOSS_WARNING$"
+ ch_convert_holding_to_city_decision_confirm:0 "推倒重建！"
+ I_HAVE_CH_ELIGBLE_BARONIES_TO_CITY_COUNTY:1 "你的[barony|E]拥有一个能被转化为[city|E]的[holding|E]\n$EFFECT_LIST_BULLET$所选[barony|E]有已建成地产，且由你直接持有、未出租\n$EFFECT_LIST_BULLET$不存在建造中的建筑"
+
+ ch_convert_holding_to_temple_decision:0 "地产转化为神殿"
+ ch_convert_holding_to_temple_decision_tooltip:0 "现有[holding|E]被[temple|E]取代"
+ ch_convert_holding_to_temple_decision_desc:0 "#F 简单的重建就能让原本的地产转变为神殿。#!\n\n$CHT_BUILDING_LOSS_WARNING$"
+ ch_convert_holding_to_temple_decision_confirm:0 "推倒重建！"
+ I_HAVE_CH_ELIGBLE_BARONIES_TO_TEMPLE_COUNTY:1 "你的[barony|E]拥有一个能被转化为[temple|E]的[holding|E]\n$EFFECT_LIST_BULLET$所选[barony|E]有已建成地产，且由你直接持有、未出租\n$EFFECT_LIST_BULLET$不存在建造中的建筑"
+
+ ch_convert_holding_to_nomad_decision:0 "地产转化为游牧聚落"
+ ch_convert_holding_to_nomad_decision_tooltip:0 "现有[holding|E]被[nomad|E]取代"
+ ch_convert_holding_to_nomad_decision_desc:0 "#F 简单的重建就能让原本的地产转变为游牧聚落。#!\n\n$CHT_BUILDING_LOSS_WARNING$"
+ ch_convert_holding_to_nomad_decision_confirm:0 "推倒重建！"
+ I_HAVE_CH_ELIGBLE_BARONIES_TO_NOMAD_COUNTY:1 "你的[barony|E]拥有一个能被转化为[nomad|E]的[holding|E]\n$EFFECT_LIST_BULLET$所选[barony|E]有已建成地产，且由你直接持有、未出租\n$EFFECT_LIST_BULLET$不存在建造中的建筑"
+
+ ch_convert_holding_to_tribal_decision:0 "地产转化为部落"
+ ch_convert_holding_to_tribal_decision_tooltip:0 "现有[holding|E]被[tribal|E]取代"
+ ch_convert_holding_to_tribal_decision_desc:0 "#F 简单的重建就能让原本的地产转变为部落。#!\n\n$CHT_BUILDING_LOSS_WARNING$"
+ ch_convert_holding_to_tribal_decision_confirm:0 "推倒重建！"
+ I_HAVE_CH_ELIGBLE_BARONIES_TO_TRIBAL_COUNTY:1 "你的[barony|E]拥有一个能被转化为[tribal|E]的[holding|E]\n$EFFECT_LIST_BULLET$所选[barony|E]有已建成地产，且由你直接持有、未出租\n$EFFECT_LIST_BULLET$不存在建造中的建筑"
+
+ ch_convert_holding_to_temple_citadel_decision:0 "地产转化为神殿城塞"
+ ch_convert_holding_to_temple_citadel_decision_tooltip:0 "现有[holding|E]被[temple_citadel|E]取代"
+ ch_convert_holding_to_temple_citadel_decision_desc:0 "#F 简单的重建就能让原本的地产转变为神殿城塞。#!\n\n$CHT_BUILDING_LOSS_WARNING$"
+ ch_convert_holding_to_temple_citadel_decision_confirm:0 "推倒重建！"
+ I_HAVE_CH_ELIGBLE_BARONIES_TO_TEMPLE_CITADEL_COUNTY:1 "你的[barony|E]拥有一个能被转化为[temple_citadel|E]的[holding|E]\n$EFFECT_LIST_BULLET$所选[barony|E]有已建成地产，且由你直接持有、未出租\n$EFFECT_LIST_BULLET$不存在建造中的建筑"
+
+ # 新增效果提示文本
+ ch_convert_holding_to_castle_decision_effect_message:0 "成功将地产转化为城堡"
+ ch_convert_holding_to_city_decision_effect_message:0 "成功将地产转化为城市"
+ ch_convert_holding_to_temple_decision_effect_message:0 "成功将地产转化为神殿"
+ ch_convert_holding_to_nomad_decision_effect_message:0 "成功将地产转化为游牧聚落"
+ ch_convert_holding_to_tribal_decision_effect_message:0 "成功将地产转化为部落"
+ ch_convert_holding_to_temple_citadel_decision_effect_message:0 "成功将地产转化为神殿城塞"
+ CHT_BUILDING_LOSS_WARNING:0 "#warning 不兼容的建筑可能丢失。地产仍受政府兼容性及继承规则约束。#!"

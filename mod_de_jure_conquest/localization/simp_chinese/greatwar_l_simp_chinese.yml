@@ -1,0 +1,28 @@
+﻿l_simp_chinese:
+ # 公国级法理大征服
+ DUCHY_DE_JURE_CONQUEST_WAR_NAME:0 "公国法理大征服战争"
+ DUCHY_DE_JURE_CONQUEST_CB_NAME:0 "公国法理大征服"
+
+ # 王国级法理大征服
+ KINGDOM_DE_JURE_CONQUEST_WAR_NAME:0 "王国法理大征服战争"
+ KINGDOM_DE_JURE_CONQUEST_CB_NAME:0 "王国法理大征服"
+
+ # 帝国级法理大征服
+ EMPIRE_DE_JURE_CONQUEST_WAR_NAME:0 "帝国法理大征服战争"
+ EMPIRE_DE_JURE_CONQUEST_CB_NAME:0 "帝国法理大征服"
+
+ # 通用描述
+ GREATWAR_CB_DESC:0 "一场旨在夺取头衔全部法理领土的大规模战争，征服所有理应属于其管辖范围内的土地。"
+ GREATWAR_REQUIRES_PRESTIGE:0 "需要威望等级§Y$PRESTIGE_LEVEL$§!"
+
+ # 工具提示
+ GREATWAR_DUCHY_TOOLTIP:0 "夺取公国的全部法理领土"
+ GREATWAR_KINGDOM_TOOLTIP:0 "夺取王国的全部法理领土"
+ GREATWAR_EMPIRE_TOOLTIP:0 "夺取帝国的全部法理领土"
+
+ # 战争描述
+ GREATWAR_WAR_DESC:0 "这是一场争夺$TITLE$法理领土的大规模战争"
+
+ DJC_VICTORY_DESC:0 "进攻方取得目标法理区域内由防守方领地持有的伯爵领及其男爵领。进攻方已有领土、附庸领土与目标法理外的领土不受影响。"
+ DJC_WHITE_PEACE_DESC:0 "领土不变，战争以白和平结束，并结算入侵战争的威望、压力和停战效果。"
+ DJC_DEFEAT_DESC:0 "领土不变，进攻方承受入侵战争的战败效果，并建立停战。"

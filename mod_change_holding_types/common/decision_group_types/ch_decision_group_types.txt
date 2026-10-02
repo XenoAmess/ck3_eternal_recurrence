@@ -1,0 +1,4 @@
+﻿ch = {
+	sort_order = 48
+	gui_tags = { big_button }
+}

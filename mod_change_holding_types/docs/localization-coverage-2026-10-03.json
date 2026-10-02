@@ -1,0 +1,166 @@
+{
+  "schema": "independent-mod-release-localization.v1",
+  "status": "format-certified",
+  "product": "mod_change_holding_types",
+  "model": "MiniMax-M3",
+  "source_sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461",
+  "candidate_sha256": "ae3b7503056916f582b109a0ede29d2dc74f021faa6c743bd9a7f0a8616f7bf4",
+  "review_decisions": [
+    "R0001 Japanese/Korean were English placeholders and rejected; replaced by R0002 translations.",
+    "Corrected mixed Chinese 转变 in Korean descriptions to 전환.",
+    "Restored whitespace after Japanese #bold and German neuter Stammesgebiet article."
+  ],
+  "installed_language_source": {
+    "schema": "independent-mod-installed-languages.v1",
+    "game_version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "layout": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\launcher\\settings-layout.json",
+    "layout_sha256": "649319eebff6212e1993e54bd0dc652c35e2158f77909ed9fb8bd840f2648eb9",
+    "languages": [
+      "english",
+      "french",
+      "german",
+      "polish",
+      "japanese",
+      "spanish",
+      "simp_chinese",
+      "russian",
+      "korean"
+    ],
+    "observations": [
+      {
+        "language": "english",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\achievements_l_english.yml",
+        "header": "l_english:",
+        "sample_sha256": "f1c605ad28835b4e2dc5fce993b55be0569bf97e3da33938f3409ada4abc4fda"
+      },
+      {
+        "language": "french",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\french\\achievements_l_french.yml",
+        "header": "l_french:",
+        "sample_sha256": "b904630f8d874b31250d56f9d6749b61f5eaa5c3f3d3c2edb2b0f8d491731849"
+      },
+      {
+        "language": "german",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\german\\achievements_l_german.yml",
+        "header": "l_german:",
+        "sample_sha256": "aa1ed22cb7bbc6fddb627a9a34fa0a817fb713fd74b2c306c7a11feb0fe73dfd"
+      },
+      {
+        "language": "polish",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\polish\\achievements_l_polish.yml",
+        "header": "l_polish:",
+        "sample_sha256": "9759db0a051ba9a23323c24111931511434c479785323d25f55d40234d1264cc"
+      },
+      {
+        "language": "japanese",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\japanese\\achievements_l_japanese.yml",
+        "header": "l_japanese:",
+        "sample_sha256": "009ef2b6a99f02a3b6f7b1a7735f63526b9154164d062fa8d1bc842b19a8bdb1"
+      },
+      {
+        "language": "spanish",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\spanish\\achievements_l_spanish.yml",
+        "header": "l_spanish:",
+        "sample_sha256": "64848aed4b3aa53e3f8d3f36ae047df70d21170d01a05468312e81a92c409149"
+      },
+      {
+        "language": "simp_chinese",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\achievements_l_simp_chinese.yml",
+        "header": "l_simp_chinese:",
+        "sample_sha256": "66865f1289fd93eb0fc28100306044e4defdcf97976cef543e6d7e04b25b69ed"
+      },
+      {
+        "language": "russian",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\russian\\achievements_l_russian.yml",
+        "header": "l_russian:",
+        "sample_sha256": "2de906a6c8da0af23d7d5ac8f90c1ec52ba0be1837b81a805884d26a6883fff5"
+      },
+      {
+        "language": "korean",
+        "folder_exists": true,
+        "sample": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\korean\\achievements_l_korean.yml",
+        "header": "l_korean:",
+        "sample_sha256": "2cab6bdd9776d9bfae2b85d35a99e01b2bd3b068813d1dd7014bc48b13ac633c"
+      }
+    ],
+    "live_verified": false
+  },
+  "files": [
+    {
+      "language": "english",
+      "path": "localization/english/00_convert_holdings_l_english.yml",
+      "sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "french",
+      "path": "localization/french/00_convert_holdings_l_french.yml",
+      "sha256": "fc857e4a31897780ca237a7cb39229f911bde3367873f9f66f15ebb857d0c05a",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "german",
+      "path": "localization/german/00_convert_holdings_l_german.yml",
+      "sha256": "0d625367d70877d1ed8dc4955e19bcbcf8b73b873007472651a9fa125466b025",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "polish",
+      "path": "localization/polish/00_convert_holdings_l_polish.yml",
+      "sha256": "753de39e3ed414f0561003c6bf6f92b4d8e0d1dc1292e89355ee72708db61e6c",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "japanese",
+      "path": "localization/japanese/00_convert_holdings_l_japanese.yml",
+      "sha256": "ea1483a79b91c8560f91a51427d971ca6ec413468d24d7772562e967da22ed85",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "spanish",
+      "path": "localization/spanish/00_convert_holdings_l_spanish.yml",
+      "sha256": "2714db73ca2612453e0854df12666bff09f08ecc66714e7dd7d388b03a4c176a",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "simp_chinese",
+      "path": "localization/simp_chinese/00_convert_holdings_l_simp_chinese.yml",
+      "sha256": "87223ea400c45e166c4f127d5b8cc34d57bea6fdddd9b089d583029d1b23ac34",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "russian",
+      "path": "localization/russian/00_convert_holdings_l_russian.yml",
+      "sha256": "128c3f7c0ada61e236b825405f41e6770b690c79215f4b62dec4e8e4f83f0c35",
+      "keys": 44,
+      "live_verified": false
+    },
+    {
+      "language": "korean",
+      "path": "localization/korean/00_convert_holdings_l_korean.yml",
+      "sha256": "32add5901197ff7198ab0e97d798d3d731e23b0d672255a9c3d67ae31a2bef57",
+      "keys": 44,
+      "live_verified": false
+    }
+  ],
+  "native_speaker_reviewed": false,
+  "live_verified": false,
+  "remaining_live_scope": "CK3 rendering and interaction are separately recorded in product test report; no static result implies live verification."
+}

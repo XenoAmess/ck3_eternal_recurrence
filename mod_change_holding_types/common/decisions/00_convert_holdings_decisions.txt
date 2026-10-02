@@ -1,0 +1,423 @@
+﻿#ch_convert_holding_to_castle_decision
+#ch_convert_holding_to_city_decision
+#ch_convert_holding_to_temple_decision
+#ch_convert_holding_to_nomad_decision
+
+#地产转为城堡
+ch_convert_holding_to_castle_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	
+	decision_group_type = ch
+	
+	ai_check_interval = 0
+
+	is_shown = {
+		is_ai = no
+		is_landed = yes
+	}
+	
+	widget = {
+		# Name of the widget to use. Must be at the path <decision_view_widgets>/<widget_name>.gui
+		gui = decision_view_widget_ch_convert_holding
+		# Some widgets require a custom controller (see below). Default: default
+		controller = create_holy_order
+		title_valid = {
+			trigger_if = {
+				limit = { exists = this }
+				ch_barony_is_valid_for_castle_trigger = { CHARACTER = scope:ruler }
+			}
+			trigger_else = {
+				custom_description = {
+					text = "has_ch_barony_selected"
+					always = no
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		is_ai = no
+		is_at_war = no
+		custom_description = {
+			text = "has_ch_eligble_barony_to_castle_in_county"
+			any_held_county = {
+				any_in_de_jure_hierarchy = {
+					ch_barony_is_valid_for_castle_trigger = { CHARACTER = root }
+				}
+			}
+		}
+		culture = {
+		has_innovation = innovation_motte
+		}
+	}
+
+	cost = {
+		gold = main_building_tier_1_cost
+	}
+
+	effect = {
+		cht_convert_to_castle_effect = yes
+	}
+	
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+#地产转为城市
+ch_convert_holding_to_city_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	
+	decision_group_type = ch
+	
+	ai_check_interval = 0
+
+	is_shown = {
+		is_ai = no
+		is_landed = yes
+	}
+	
+	widget = {
+		# Name of the widget to use. Must be at the path <decision_view_widgets>/<widget_name>.gui
+		gui = decision_view_widget_ch_convert_holding
+		# Some widgets require a custom controller (see below). Default: default
+		controller = create_holy_order
+		title_valid = {
+			trigger_if = {
+				limit = { exists = this }
+				ch_barony_is_valid_for_city_trigger = { CHARACTER = scope:ruler }
+			}
+			trigger_else = {
+				custom_description = {
+					text = "has_ch_barony_selected"
+					always = no
+				}
+			}
+		}
+	}	
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		is_ai = no
+		is_at_war = no
+		custom_description = {
+			text = "has_ch_eligble_barony_to_city_in_county"
+			any_held_county = {
+				any_in_de_jure_hierarchy = {
+					ch_barony_is_valid_for_city_trigger = { CHARACTER = root }
+				}
+			}
+		}
+		culture = {
+		has_innovation = innovation_city_planning 
+		}
+	}
+
+	cost = {
+		gold = main_building_tier_1_cost
+	}
+
+	effect = {
+		cht_convert_to_city_effect = yes
+	}
+	
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+#地产转为神殿
+ch_convert_holding_to_temple_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	
+	decision_group_type = ch
+	
+	ai_check_interval = 0
+
+	is_shown = {
+		is_ai = no
+		is_landed = yes
+	}
+
+	widget = {
+		# Name of the widget to use. Must be at the path <decision_view_widgets>/<widget_name>.gui
+		gui = decision_view_widget_ch_convert_holding
+		# Some widgets require a custom controller (see below). Default: default
+		controller = create_holy_order
+		title_valid = {
+			trigger_if = {
+				limit = { exists = this }
+				ch_barony_is_valid_for_temple_trigger = { CHARACTER = scope:ruler }
+			}
+			trigger_else = {
+				custom_description = {
+					text = "has_ch_barony_selected"
+					always = no
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		is_ai = no
+		is_at_war = no
+		custom_description = {
+			text = "has_ch_eligble_barony_to_temple_in_county"
+			any_held_county = {
+				any_in_de_jure_hierarchy = {
+					ch_barony_is_valid_for_temple_trigger = { CHARACTER = root }
+				}
+			}
+		}
+		culture = {
+		has_innovation = innovation_city_planning 
+		}
+	}
+
+	cost = {
+		gold = main_building_tier_1_cost
+	}
+
+	effect = {
+		cht_convert_to_temple_effect = yes
+	}
+	
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+#地产转为游牧
+ch_convert_holding_to_nomad_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	
+	decision_group_type = ch
+	
+	ai_check_interval = 0
+
+	is_shown = {
+		is_ai = no
+		is_landed = yes
+	}
+
+	widget = {
+		# Name of the widget to use. Must be at the path <decision_view_widgets>/<widget_name>.gui
+		gui = decision_view_widget_ch_convert_holding
+		# Some widgets require a custom controller (see below). Default: default
+		controller = create_holy_order
+		title_valid = {
+			trigger_if = {
+				limit = { exists = this }
+				ch_barony_is_valid_for_nomad_trigger = { CHARACTER = scope:ruler }
+			}
+			trigger_else = {
+				custom_description = {
+					text = "has_ch_barony_selected"
+					always = no
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		is_ai = no
+		is_at_war = no
+		custom_description = {
+			text = "has_ch_eligble_barony_to_nomad_in_county"
+			any_held_county = {
+				any_in_de_jure_hierarchy = {
+					ch_barony_is_valid_for_nomad_trigger = { CHARACTER = root }
+				}
+			}
+		}
+	}
+
+	cost = {
+		gold = main_building_tier_1_cost
+	}
+
+	effect = {
+		cht_convert_to_nomad_effect = yes
+	}
+	
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+#地产转为部落
+ch_convert_holding_to_tribal_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	
+	decision_group_type = ch
+	
+	ai_check_interval = 0
+
+	is_shown = {
+		is_ai = no
+		is_landed = yes
+	}
+
+	widget = {
+		# Name of the widget to use. Must be at the path <decision_view_widgets>/<widget_name>.gui
+		gui = decision_view_widget_ch_convert_holding
+		# Some widgets require a custom controller (see below). Default: default
+		controller = create_holy_order
+		title_valid = {
+			trigger_if = {
+				limit = { exists = this }
+				ch_barony_is_valid_for_tribal_trigger = { CHARACTER = scope:ruler }
+			}
+			trigger_else = {
+				custom_description = {
+					text = "has_ch_barony_selected"
+					always = no
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		is_ai = no
+		is_at_war = no
+		custom_description = {
+			text = "has_ch_eligble_barony_to_tribal_in_county"
+			any_held_county = {
+				any_in_de_jure_hierarchy = {
+					ch_barony_is_valid_for_tribal_trigger = { CHARACTER = root }
+				}
+			}
+		}
+	}
+
+	cost = {
+		gold = main_building_tier_1_cost
+	}
+
+	effect = {
+		cht_convert_to_tribal_effect = yes
+	}
+	
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+#地产转为寺庙城寨
+ch_convert_holding_to_temple_citadel_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	
+	decision_group_type = ch
+	
+	ai_check_interval = 0
+
+	is_shown = {
+		is_ai = no
+		is_landed = yes
+	}
+
+	widget = {
+		# Name of the widget to use. Must be at the path <decision_view_widgets>/<widget_name>.gui
+		gui = decision_view_widget_ch_convert_holding
+		# Some widgets require a custom controller (see below). Default: default
+		controller = create_holy_order
+		title_valid = {
+			trigger_if = {
+				limit = { exists = this }
+				ch_barony_is_valid_for_temple_citadel_trigger = { CHARACTER = scope:ruler }
+			}
+			trigger_else = {
+				custom_description = {
+					text = "has_ch_barony_selected"
+					always = no
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		is_ai = no
+		is_at_war = no
+		custom_description = {
+			text = "has_ch_eligble_barony_to_temple_citadel_in_county"
+			any_held_county = {
+				any_in_de_jure_hierarchy = {
+					ch_barony_is_valid_for_temple_citadel_trigger = { CHARACTER = root }
+				}
+			}
+		}
+	}
+
+	cost = {
+		gold = main_building_tier_1_cost
+	}
+
+	effect = {
+		cht_convert_to_temple_citadel_effect = yes
+	}
+	
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}

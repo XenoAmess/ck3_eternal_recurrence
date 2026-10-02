@@ -1,0 +1,41 @@
+﻿# A convertible title is an existing, directly held, unleased barony.
+cht_barony_is_convertible_trigger = {
+    tier = tier_barony
+    holder = $CHARACTER$
+    $CHARACTER$ = { is_ai = no }
+    is_leased_out = no
+    title_province = {
+        has_holding = yes
+        has_ongoing_construction = no
+    }
+}
+
+ch_barony_is_valid_for_castle_trigger = {
+    cht_barony_is_convertible_trigger = { CHARACTER = $CHARACTER$ }
+    title_province = { NOT = { has_holding_type = castle_holding } }
+}
+
+ch_barony_is_valid_for_city_trigger = {
+    cht_barony_is_convertible_trigger = { CHARACTER = $CHARACTER$ }
+    title_province = { NOT = { has_holding_type = city_holding } }
+}
+
+ch_barony_is_valid_for_temple_trigger = {
+    cht_barony_is_convertible_trigger = { CHARACTER = $CHARACTER$ }
+    title_province = { NOT = { has_holding_type = church_holding } }
+}
+
+ch_barony_is_valid_for_nomad_trigger = {
+    cht_barony_is_convertible_trigger = { CHARACTER = $CHARACTER$ }
+    title_province = { NOT = { has_holding_type = nomad_holding } }
+}
+
+ch_barony_is_valid_for_tribal_trigger = {
+    cht_barony_is_convertible_trigger = { CHARACTER = $CHARACTER$ }
+    title_province = { NOT = { has_holding_type = tribal_holding } }
+}
+
+ch_barony_is_valid_for_temple_citadel_trigger = {
+    cht_barony_is_convertible_trigger = { CHARACTER = $CHARACTER$ }
+    title_province = { NOT = { has_holding_type = temple_citadel_holding } }
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "xar.upstream.freeze.v1",
+  "item_id": "3337428403",
+  "source": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3337428403",
+  "snapshot": "C:\\workspace\\two-mod-maintenance-20261003\\upstream-3337428403-original",
+  "frozen_at_utc": "2026-10-02T22:54:47.997995+00:00",
+  "download_receipt": "C:\\workspace\\two-mod-maintenance-20261003\\3337428403-download-stdout.json",
+  "files": [
+    {
+      "path": "common/decision_group_types/ch_decision_group_types.txt",
+      "size": 60,
+      "sha256": "917d9d2bd3c0f20531887d738f3d7161ae7b1a59189e23e3020fe752f83ae3fd"
+    },
+    {
+      "path": "common/decisions/00_convert_holdings_decisions.txt",
+      "size": 9276,
+      "sha256": "fbc80b0f57a62c9dc8650ebb93b2e6afcea65d0d8ac35fb875e12cf3f2596346"
+    },
+    {
+      "path": "common/scripted_triggers/00_convert_holdings_scripted_triggers.txt",
+      "size": 1067,
+      "sha256": "822c1f79df39080d3397f20130d446bfefbcaab9c82326634bdccf7dfff16106"
+    },
+    {
+      "path": "common/trigger_localization/00_convert_holdings_requirement_triggers.txt",
+      "size": 728,
+      "sha256": "ab3b53fd810998e77e8c4b750fc6d4f7d51b15434bcd5d5b31ea2b24055a1ba4"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 119,
+      "sha256": "316a5dbecb14e7c05e269bbd4692eff6cdc8b295765f32767c2d5c697851a944"
+    },
+    {
+      "path": "gui/decision_view_widgets/decision_view_widget_ch_convert_holding.gui",
+      "size": 3023,
+      "sha256": "86cc12b0b09915cb2e4782b218f98bda6850734fd4c2fc06e758fe637eff53ad"
+    },
+    {
+      "path": "localization/english/00_convert_holdings_l_english.yml",
+      "size": 4832,
+      "sha256": "03a95fa50ce39d8b69b53e8b94bd0ec1847308eb668f8fe53ced4355fcd6cfee"
+    },
+    {
+      "path": "localization/simp_chinese/00_convert_holdings_l_simp_chinese.yml",
+      "size": 4375,
+      "sha256": "16e90462b67c899acbfa7047e6fbfd562671c69a1a3825f60efb33ee68bb3d6e"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 34744,
+      "sha256": "26ce48cd711b6a6ca65661c4511f4499da3ed72b80d1bf3b855a49e65d529071"
+    },
+    {
+      "path": "thumbnail.sai2",
+      "size": 174516,
+      "sha256": "841cda48c930f0d470f9b8327ff10396e3b49fe939e020fabcaf3c9338a26484"
+    }
+  ],
+  "tree_sha256": "904700D881F7997CBC09DC1E86EFACEBDC37058F45C8790F06CC55CBB75D15E4",
+  "file_count": 10,
+  "total_bytes": 232740
+}

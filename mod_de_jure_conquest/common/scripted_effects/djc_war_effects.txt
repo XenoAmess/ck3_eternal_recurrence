@@ -1,0 +1,62 @@
+﻿# THIS/ROOT are the current CB; target_titles is a native CB-local list.
+# WAR must be this CB's exact war, never an arbitrary war of the attacker.
+djc_join_de_jure_defenders = {
+    if = {
+        limit = { exists = $WAR$ }
+        $WAR$ = { save_temporary_scope_as = djc_current_war }
+        every_in_list = {
+            list = target_titles
+            every_de_jure_county = {
+                holder ?= {
+                    top_liege = {
+                        if = {
+                            limit = {
+                                this != scope:djc_current_war.primary_attacker
+                                NOT = { is_vassal_or_below_of = scope:djc_current_war.primary_attacker }
+                                NOT = { is_participant_in_war = scope:djc_current_war }
+                            }
+                            save_temporary_scope_as = djc_joining_defender
+                            scope:djc_current_war = { add_defender = scope:djc_joining_defender }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Snapshot all eligible titles before resolving the single native transaction.
+# Allied/neutral/player counties and land outside the goal are never seized.
+djc_transfer_de_jure_counties = {
+    if = {
+        limit = { exists = $WAR$ }
+        $WAR$ = { save_temporary_scope_as = djc_current_war }
+        create_title_and_vassal_change = {
+            type = conquest
+            save_scope_as = change
+            add_claim_on_loss = yes
+        }
+        every_in_list = {
+            list = target_titles
+            every_de_jure_county = {
+                limit = {
+                    holder ?= {
+                        this != scope:attacker
+                        NOT = { is_vassal_or_below_of = scope:attacker }
+                        top_liege = { is_defender_in_war = scope:djc_current_war }
+                    }
+                }
+                add_to_temporary_list = djc_titles_taken
+            }
+        }
+        every_in_list = {
+            list = djc_titles_taken
+            change_title_holder = {
+                holder = scope:attacker
+                change = scope:change
+                take_baronies = yes
+            }
+        }
+        resolve_title_and_vassal_change = scope:change
+    }
+}

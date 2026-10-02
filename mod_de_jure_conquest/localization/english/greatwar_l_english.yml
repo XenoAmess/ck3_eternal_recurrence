@@ -1,0 +1,28 @@
+﻿l_english:
+ # 公国级法理大征服
+ DUCHY_DE_JURE_CONQUEST_WAR_NAME:0 "Duchy De Jure Conquest War"
+ DUCHY_DE_JURE_CONQUEST_CB_NAME:0 "Duchy De Jure Conquest"
+
+ # 王国级法理大征服
+ KINGDOM_DE_JURE_CONQUEST_WAR_NAME:0 "Kingdom De Jure Conquest War"
+ KINGDOM_DE_JURE_CONQUEST_CB_NAME:0 "Kingdom De Jure Conquest"
+
+ # 帝国级法理大征服
+ EMPIRE_DE_JURE_CONQUEST_WAR_NAME:0 "Empire De Jure Conquest War"
+ EMPIRE_DE_JURE_CONQUEST_CB_NAME:0 "Empire De Jure Conquest"
+
+ # 通用描述
+ GREATWAR_CB_DESC:0 "A great war to claim the entire de jure territory of a title, conquering all lands that rightfully belong under its jurisdiction."
+ GREATWAR_REQUIRES_PRESTIGE:0 "Requires Prestige Level §Y$PRESTIGE_LEVEL$§!"
+
+ # 工具提示
+ GREATWAR_DUCHY_TOOLTIP:0 "Claim the entire de jure territory of a Duchy"
+ GREATWAR_KINGDOM_TOOLTIP:0 "Claim the entire de jure territory of a Kingdom"
+ GREATWAR_EMPIRE_TOOLTIP:0 "Claim the entire de jure territory of an Empire"
+
+ # 战争描述
+ GREATWAR_WAR_DESC:0 "This is a great war for the de jure territory of $TITLE$"
+
+ DJC_VICTORY_DESC:0 "The attacker takes counties in the target de jure region held by the defending realms, including their baronies. Counties already in the attacker's realm and land outside the target region are excluded."
+ DJC_WHITE_PEACE_DESC:0 "No territory changes hands. The war ends in white peace with the normal invasion-war prestige, stress, and truce effects."
+ DJC_DEFEAT_DESC:0 "No territory changes hands. The attacker suffers the normal invasion-war defeat effects, and a truce is established."

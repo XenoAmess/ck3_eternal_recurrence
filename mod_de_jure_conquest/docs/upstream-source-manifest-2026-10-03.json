@@ -1,0 +1,53 @@
+{
+  "schema": "xar.upstream.freeze.v1",
+  "item_id": "3600021457",
+  "source": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3600021457",
+  "snapshot": "C:\\workspace\\two-mod-maintenance-20261003\\upstream-3600021457-original",
+  "frozen_at_utc": "2026-10-02T22:54:47.976206+00:00",
+  "download_receipt": "C:\\workspace\\two-mod-maintenance-20261003\\3600021457-download-stdout.json",
+  "files": [
+    {
+      "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "size": 7668,
+      "sha256": "48d6d8a9e62fc4884648c94bbd1dcb67dcc5c852dec18037fcaa56bf5ef1a7d4"
+    },
+    {
+      "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "size": 7677,
+      "sha256": "d4a1516785555b633e6699b2fc9dc03324aa2ee68a5ca53b32ae7fdbc76ae0c5"
+    },
+    {
+      "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "size": 7676,
+      "sha256": "0ef1c61c20fd7c0445433b229119bb14eeaaf4add20909324ac11653e0c01d9e"
+    },
+    {
+      "path": "common/on_action/greatwar.txt",
+      "size": 1568,
+      "sha256": "f7ba8b636d35255ac6b868f17aa3265f154b8c1e7d295262c9c2df7a03c8bd49"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 127,
+      "sha256": "8da24420a91f099ec2d4fcb7f6e00c14bd4cfd1b79f43cc23a0e509184e3b8fb"
+    },
+    {
+      "path": "localization/greatwar_l_english.yml",
+      "size": 1065,
+      "sha256": "01136ceced33de7208e17ffa120a90f64ea482a5c208dba26a7d584a8e1279b6"
+    },
+    {
+      "path": "localization/greatwar_l_simp_chinese.yml",
+      "size": 1006,
+      "sha256": "b094bcfd42bb4f320d0926fd7bc12a03283ca577e431e5e93aabc8f3caf2724d"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 111868,
+      "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+    }
+  ],
+  "tree_sha256": "6A8FABF7200130185850280E71AF3CA9C741FD3959D03C45E4119A8BA83203E1",
+  "file_count": 8,
+  "total_bytes": 138655
+}

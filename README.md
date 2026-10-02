@@ -45,6 +45,8 @@ Workshop。** 玩家应从具体产品入口安装；发布者应使用对应的
 | **牛来** | 召来特殊勇士并闭合廷臣、骑士、宫廷职位、关系与事件交付 | 小型独立 Mod；少数获明确授权允许 AI 低意愿使用的产品之一 | [产品说明](ox_here/README.md) |
 | **XenoAmess 的体验优化** | 自动继任保护、防止封臣上塞、自动防御援军和多项批处理决议 | 公开版与开发版分离；各功能复用原版合法性门禁 | [产品说明](mod_xenoamess_quality_of_life/README.md) |
 | **自动升级建筑（XenoAmess 维护版）** | 每 15 日按原版资格、资源和玩家策略升级直属地产建筑 | 经授权维护的独立产品；由 exact-build 建筑图生成升级规则 | [产品说明](mod_auto_upgrade_buildings/README.md) |
+| **公国/王国/帝国法理征服（XenoAmess维护版）** | 对目标法理区域发起三档玩家征服战争 | 独立目录与发布线；适配和验收记录随产品维护 | [产品说明](mod_de_jure_conquest/README.md) |
+| **地产类型转换（XenoAmess维护版）** | 将直辖男爵领转换为六种地产类型 | 独立目录与发布线；保留费用、革新条件及建筑损失提示 | [产品说明](mod_change_holding_types/README.md) |
 | **重整河山** | 天命崩解、动态后朝、尊王诸侯与跨代复辟循环 | `0.4.0` 已完成独立发布闭环 | [产品说明](mod_reclaim_the_motherland/README.md) |
 | **肃清曼荼罗伪信** | 按规则清理全图曼荼罗政府与 Temple Citadel，并约束后续转制 | 独立产品、专用 release builder | [产品说明](mod_remove_mandala/README.md) |
 | **驱策朝贡国** | 宗主向直属 AI 朝贡国下达单县扩张命令，可选有限军费补贴 | `1.0.0` 正式线；威望、接受、宣战与补贴采用原子结算 | [产品说明](mod_tributary_expansion_directives/README.md) |

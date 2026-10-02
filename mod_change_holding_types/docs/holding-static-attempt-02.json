@@ -1,0 +1,88 @@
+{
+  "schema": "cht.static-validation.v1",
+  "status": "GREEN",
+  "errors": [],
+  "git_sha": "2ee6c06df2c43b8e65bed1c50a11008ba60f533f",
+  "runtime_file_count": 10,
+  "source_files": [
+    {
+      "path": "common/decision_group_types/ch_decision_group_types.txt",
+      "size": 56,
+      "sha256": "3ef2e04eb222acdd87bfcbff3cff18f9d32b547b62e83e778a9631d7494cadf0"
+    },
+    {
+      "path": "common/decisions/00_convert_holdings_decisions.txt",
+      "size": 8147,
+      "sha256": "35f1a8bbd75cebe1a6da09c0462134f53ca8a1db06340c6c3e031d986531e0c1"
+    },
+    {
+      "path": "common/scripted_effects/cht_conversion_effects.txt",
+      "size": 1928,
+      "sha256": "2d9b4ce2c97d5d2be26221d466c5150e0b11e416bad63c835f73fce24ce8eb15"
+    },
+    {
+      "path": "common/scripted_triggers/00_convert_holdings_scripted_triggers.txt",
+      "size": 1412,
+      "sha256": "bbe005b827d0fc4425a50cc30b0eaf551f8eff33b30fbd5f3f469d7a63958898"
+    },
+    {
+      "path": "common/trigger_localization/00_convert_holdings_requirement_triggers.txt",
+      "size": 699,
+      "sha256": "505d5f52e0770ec74d1724b69830b910b15b88712e1d7b02cdb79df2156ea360"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 140,
+      "sha256": "c5301c5d8a286b3666d98915fd4a9240e143dc6930f849c9741c43a9bcf96e70"
+    },
+    {
+      "path": "gui/decision_view_widgets/decision_view_widget_ch_convert_holding.gui",
+      "size": 2856,
+      "sha256": "b496d5997d8a1ef43feb253951673ef8668388b1c36d3056ee47dc45afbe730e"
+    },
+    {
+      "path": "localization/english/00_convert_holdings_l_english.yml",
+      "size": 5339,
+      "sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461"
+    },
+    {
+      "path": "localization/simp_chinese/00_convert_holdings_l_simp_chinese.yml",
+      "size": 4919,
+      "sha256": "87223ea400c45e166c4f127d5b8cc34d57bea6fdddd9b089d583029d1b23ac34"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 34744,
+      "sha256": "26ce48cd711b6a6ca65661c4511f4499da3ed72b80d1bf3b855a49e65d529071"
+    }
+  ],
+  "selector_methods": [
+    "DecisionViewWidgetSelectBarony.GetCurrentTitle",
+    "DecisionViewWidgetSelectBarony.HasCurrentTitle",
+    "DecisionViewWidgetSelectBarony.HasValidTitles",
+    "DecisionViewWidgetSelectBarony.IsCreate",
+    "DecisionViewWidgetSelectBarony.IsRevoke",
+    "DecisionViewWidgetSelectBarony.OnSelectCapital"
+  ],
+  "vanilla_files": [
+    {
+      "path": "common/holdings/00_holdings.txt",
+      "size": 4662,
+      "sha256": "d669821006607f206eefe2fbcf2ae93b5815defafd204529a924d215c03c1abe"
+    },
+    {
+      "path": "common/decisions/00_holy_order_decisions.txt",
+      "size": 27897,
+      "sha256": "137cc1b2daa7a7f615e597cd1623cc0c9d29052e63ca73ccbf94e5db38c34e4f"
+    },
+    {
+      "path": "gui/decision_view_widgets/decision_view_widget_create_holy_order.gui",
+      "size": 2652,
+      "sha256": "4bc9150da42880abc9a5c36e3701bfe2782aa045abde97189ae7322a8c6a499a"
+    }
+  ],
+  "game_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "release_localization": false,
+  "evidence_layer": "static-structure-and-installed-source",
+  "ck3_started": false
+}

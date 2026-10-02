@@ -1,0 +1,134 @@
+{
+  "schema": "cht.static-validation.v1",
+  "status": "GREEN",
+  "errors": [],
+  "git_sha": "7f71bc71e8c24d3432b1ed3492475051b2c635b1",
+  "runtime_file_count": 17,
+  "source_files": [
+    {
+      "path": "common/decision_group_types/ch_decision_group_types.txt",
+      "size": 56,
+      "sha256": "3ef2e04eb222acdd87bfcbff3cff18f9d32b547b62e83e778a9631d7494cadf0"
+    },
+    {
+      "path": "common/decisions/00_convert_holdings_decisions.txt",
+      "size": 8147,
+      "sha256": "35f1a8bbd75cebe1a6da09c0462134f53ca8a1db06340c6c3e031d986531e0c1"
+    },
+    {
+      "path": "common/scripted_effects/cht_conversion_effects.txt",
+      "size": 1928,
+      "sha256": "2d9b4ce2c97d5d2be26221d466c5150e0b11e416bad63c835f73fce24ce8eb15"
+    },
+    {
+      "path": "common/scripted_triggers/00_convert_holdings_scripted_triggers.txt",
+      "size": 1412,
+      "sha256": "bbe005b827d0fc4425a50cc30b0eaf551f8eff33b30fbd5f3f469d7a63958898"
+    },
+    {
+      "path": "common/trigger_localization/00_convert_holdings_requirement_triggers.txt",
+      "size": 699,
+      "sha256": "505d5f52e0770ec74d1724b69830b910b15b88712e1d7b02cdb79df2156ea360"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 140,
+      "sha256": "c5301c5d8a286b3666d98915fd4a9240e143dc6930f849c9741c43a9bcf96e70"
+    },
+    {
+      "path": "gui/decision_view_widgets/decision_view_widget_ch_convert_holding.gui",
+      "size": 2856,
+      "sha256": "b496d5997d8a1ef43feb253951673ef8668388b1c36d3056ee47dc45afbe730e"
+    },
+    {
+      "path": "localization/english/00_convert_holdings_l_english.yml",
+      "size": 5339,
+      "sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461"
+    },
+    {
+      "path": "localization/french/00_convert_holdings_l_french.yml",
+      "size": 5622,
+      "sha256": "fc857e4a31897780ca237a7cb39229f911bde3367873f9f66f15ebb857d0c05a"
+    },
+    {
+      "path": "localization/german/00_convert_holdings_l_german.yml",
+      "size": 5684,
+      "sha256": "0d625367d70877d1ed8dc4955e19bcbcf8b73b873007472651a9fa125466b025"
+    },
+    {
+      "path": "localization/japanese/00_convert_holdings_l_japanese.yml",
+      "size": 5700,
+      "sha256": "ea1483a79b91c8560f91a51427d971ca6ec413468d24d7772562e967da22ed85"
+    },
+    {
+      "path": "localization/korean/00_convert_holdings_l_korean.yml",
+      "size": 6053,
+      "sha256": "32add5901197ff7198ab0e97d798d3d731e23b0d672255a9c3d67ae31a2bef57"
+    },
+    {
+      "path": "localization/polish/00_convert_holdings_l_polish.yml",
+      "size": 5595,
+      "sha256": "753de39e3ed414f0561003c6bf6f92b4d8e0d1dc1292e89355ee72708db61e6c"
+    },
+    {
+      "path": "localization/russian/00_convert_holdings_l_russian.yml",
+      "size": 7340,
+      "sha256": "128c3f7c0ada61e236b825405f41e6770b690c79215f4b62dec4e8e4f83f0c35"
+    },
+    {
+      "path": "localization/simp_chinese/00_convert_holdings_l_simp_chinese.yml",
+      "size": 4919,
+      "sha256": "87223ea400c45e166c4f127d5b8cc34d57bea6fdddd9b089d583029d1b23ac34"
+    },
+    {
+      "path": "localization/spanish/00_convert_holdings_l_spanish.yml",
+      "size": 5621,
+      "sha256": "2714db73ca2612453e0854df12666bff09f08ecc66714e7dd7d388b03a4c176a"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 34744,
+      "sha256": "26ce48cd711b6a6ca65661c4511f4499da3ed72b80d1bf3b855a49e65d529071"
+    }
+  ],
+  "selector_methods": [
+    "DecisionViewWidgetSelectBarony.GetCurrentTitle",
+    "DecisionViewWidgetSelectBarony.HasCurrentTitle",
+    "DecisionViewWidgetSelectBarony.HasValidTitles",
+    "DecisionViewWidgetSelectBarony.IsCreate",
+    "DecisionViewWidgetSelectBarony.IsRevoke",
+    "DecisionViewWidgetSelectBarony.OnSelectCapital"
+  ],
+  "vanilla_files": [
+    {
+      "path": "common/holdings/00_holdings.txt",
+      "size": 4662,
+      "sha256": "d669821006607f206eefe2fbcf2ae93b5815defafd204529a924d215c03c1abe"
+    },
+    {
+      "path": "common/decisions/00_holy_order_decisions.txt",
+      "size": 27897,
+      "sha256": "137cc1b2daa7a7f615e597cd1623cc0c9d29052e63ca73ccbf94e5db38c34e4f"
+    },
+    {
+      "path": "gui/decision_view_widgets/decision_view_widget_create_holy_order.gui",
+      "size": 2652,
+      "sha256": "4bc9150da42880abc9a5c36e3701bfe2782aa045abde97189ae7322a8c6a499a"
+    },
+    {
+      "path": "common/script_values/00_building_values.txt",
+      "size": 103815,
+      "sha256": "f436f7d9d5ac5506b38d715f0ce02c4f4257eef3addf56597c18a526a6f66825"
+    },
+    {
+      "path": "common/culture/innovations/00_tribal_innovations.txt",
+      "size": 11736,
+      "sha256": "e878e75efa1dba64557b254a68c4a1f4379ea92209bfb6821d6876db68f1f961"
+    }
+  ],
+  "game_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "ck3_exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "release_localization": true,
+  "evidence_layer": "static-structure-and-installed-source",
+  "ck3_started": false
+}

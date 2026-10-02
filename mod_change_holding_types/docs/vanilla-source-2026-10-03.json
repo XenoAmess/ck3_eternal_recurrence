@@ -1,0 +1,32 @@
+{
+  "install": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
+  "steam_build_id": "25652598",
+  "evidence_layer": "installed-source-only",
+  "files": [
+    {
+      "path": "game/common/holdings/00_holdings.txt",
+      "bytes": 4662,
+      "sha256": "d669821006607f206eefe2fbcf2ae93b5815defafd204529a924d215c03c1abe"
+    },
+    {
+      "path": "game/common/holdings/_holdings.info",
+      "bytes": 2237,
+      "sha256": "763082e08cf8bb87945b40e9d3cd8c414ef972027a5801c4eed54bad4249417e"
+    },
+    {
+      "path": "game/common/scripted_effects/00_holding_effects.txt",
+      "bytes": 1952,
+      "sha256": "8d9f05fa838687b0b508fbbb090b0c94d11bf9d34390cff7ab2dfad475d11e47"
+    },
+    {
+      "path": "game/common/scripted_effects/00_decisions_effects.txt",
+      "bytes": 92722,
+      "sha256": "a30e06ea5c3c3c0cc24e8be823600f12a5f5cb0caf3fa52c3ca98648b0f8f2d5"
+    },
+    {
+      "path": "game/common/scripted_effects/tgp_mandala_scripted_effects.txt",
+      "bytes": 98099,
+      "sha256": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e"
+    }
+  ]
+}

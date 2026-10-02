@@ -1,0 +1,49 @@
+{
+  "schema": "cht.external-fixture.v1",
+  "fixture_root": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-01",
+  "expected_pass_markers": [
+    "convert-city",
+    "convert-temple",
+    "convert-tribal",
+    "convert-nomad",
+    "convert-temple_citadel",
+    "convert-castle",
+    "same-type-rejected",
+    "same-type-unchanged",
+    "ai-effect-blocked",
+    "non-barony-rejected"
+  ],
+  "required_start": "CHTT: START production-effect-matrix",
+  "required_end": "CHTT: END production-effect-matrix",
+  "required_auxiliary_markers": [
+    "CHTT: AI guard actor reached"
+  ],
+  "entry_character_history_id": 1128,
+  "entry_bookmark_key": "bookmark_rags_to_riches_duke_robert",
+  "covers": "production scripted effects and title predicates",
+  "does_not_cover": [
+    "GUI decision execution",
+    "native selector selection",
+    "decision cost",
+    "save/reload",
+    "all buildings preserved"
+  ],
+  "ck3_started": false,
+  "files": [
+    {
+      "path": "common/on_action/chtt_on_actions.txt",
+      "size": 232,
+      "sha256": "cebb3384c7d0e45fade0719fef3f6f7872ebc84d6903e98373fe845f89b770a6"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 82,
+      "sha256": "9c3bede238e7e45cea7814f02c991efecf417ba86dd10a9fe3f0ab792e351fd7"
+    },
+    {
+      "path": "events/chtt_events.txt",
+      "size": 3520,
+      "sha256": "400a0ef3265c3097b2a849f534330814ef4a1fc10bf00dc69f075a71763ea5e7"
+    }
+  ]
+}
