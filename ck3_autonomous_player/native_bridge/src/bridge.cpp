@@ -16435,7 +16435,15 @@ void RunConnectedSession(
               query.request_matrilineal_option = !default_child_route;
               query.observed[0] = *matching;
               query.expected_snapshot = before;
-              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              if (xar::game::IsReviewedCrozierAdapter(game)) {
+                const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+                query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+                query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+                query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
+                    xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
+              } else {
+                query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              }
               query.environment = xar::bridge::
                   BindMarriageCandidateAllianceProjectionEnvironmentV1(
                       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),

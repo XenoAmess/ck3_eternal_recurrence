@@ -1125,6 +1125,185 @@
         "unavailable_character_scopes": []
       }
     },
+    "court_chaplain_task.0313": {
+      "analysis_updates": {
+        "evidence_boundary": "Current source, direct opinion dependency, bounded authored caller and zh/en event localization are reviewed and byte-pinned. Existing seven-scope/option contract and observations remain historical 1.19 evidence; no current native projection or outcome is asserted.",
+        "review_summary": "Claim and payment occur upstream. The sole authored option adds a decaying -30 opinion from ROOT (duchy holder) toward scope:councillor_liege for 3650 days. The immediate claim is tooltip-only; the leaf has no follow-up.",
+        "source_input_graph": {
+          "direct_caller": {
+            "authored_option": "court_chaplain_task.0302.b",
+            "call_line": 376,
+            "claim_line": 340,
+            "claim_subject": "scope:councillor_liege",
+            "claim_target": "scope:duchy",
+            "edge_status": "Source-reviewed trigger_event inside authored branch; runtime not revalidated",
+            "event_id": "court_chaplain_task.0302",
+            "payment_helper": "court_chaplain_task_0301_charge_prestige_or_gold_effect",
+            "payment_line": 339,
+            "recipient_scope": "scope:duchy_holder",
+            "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+            "source_lines": "337-376"
+          },
+          "direct_effect_dependency": {
+            "decaying": true,
+            "leaf_days": 3650,
+            "leaf_effect": "add_opinion",
+            "modifier": "court_chaplain_fabricated_claim_opinion",
+            "modifier_years": 10,
+            "opinion": -30,
+            "relative_path": "common/opinion_modifiers/00_council_task_opinions.txt",
+            "source_lines": "78-82",
+            "subject": "ROOT",
+            "target": "scope:councillor_liege"
+          },
+          "event_localization_inputs": {
+            "english_lines_by_key_order": [
+              21,
+              15,
+              16,
+              17
+            ],
+            "keys": [
+              "court_chaplain_task.0313.t",
+              "court_chaplain_task.0311.opening",
+              "court_chaplain_task.0311.end",
+              "court_chaplain_task.0311.a"
+            ],
+            "simp_chinese_lines_by_key_order": [
+              16,
+              12,
+              13,
+              14
+            ]
+          },
+          "leaf_definition": {
+            "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+            "source_lines": "518-551"
+          },
+          "new_live_evidence": false,
+          "opinion_localization_boundary": {
+            "1.20.0.2": "Archive English and Simplified Chinese opinion localization files absent; no comparison or hash inferred",
+            "1.20.0.3": {
+              "comparison_to_12002": "not-compared-archive-file-absent",
+              "key": "court_chaplain_fabricated_claim_opinion",
+              "source_file_sha256": {
+                "localization/english/opinions/council_task_opinions_l_english.yml": "9065B8A8E1E58ECB8CEC9D15A61299589A3B5F4901D473A258DAEBF60C21D2C4",
+                "localization/simp_chinese/opinions/council_task_opinions_l_simp_chinese.yml": "287947DF4A754C143CDF54211A0CECBE3D31F6304FF8A2DAA03167D498BB91A3"
+              },
+              "source_line": 13
+            }
+          },
+          "review_basis": "Reviewed stock script and direct dependencies; source-only knowledge",
+          "runtime_call_chain_revalidated": false,
+          "scope_inputs": {
+            "ROOT": "duchy_holder; recipient selected by .0302.b",
+            "councillor": "Portrait and shared text",
+            "councillor_liege": "Original claimant; opinion target; tooltip claim subject",
+            "county": "Shared title/description display, despite duchy claim tooltip",
+            "county_holder": "Saved upstream at task completion; not read by leaf",
+            "duchy": "Tooltip claim target; claim already granted upstream",
+            "province": "Historical task projection; not directly read or saved by leaf"
+          },
+          "source_file_sha256": {
+            "common/council_tasks/00_court_chaplain_tasks.txt": "DDD7E89EB6BD27E485CE254DBE14E63D129FAD4E98DC2C6DC13BA39CE6B95661",
+            "common/on_action/councillor_on_actions.txt": "4F7E9646703314D783957D58FDB51434E108DDE0EF0088422DE44422B06CDCB7",
+            "common/opinion_modifiers/00_council_task_opinions.txt": "DFB08810CC43692B4AE88B22161390B8D284D9FC0919ACDE20F2ED77F61085DD",
+            "events/councillor_task_events/court_chaplain_task_events.txt": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+            "localization/english/event_localization/councillor_task_events/court_chaplain_task_events_l_english.yml": "3BCA7FBBCE296750410C68DAEC1C246D3EEC601AD5904A073E946860A8D16086",
+            "localization/simp_chinese/event_localization/councillor_task_events/court_chaplain_task_events_l_simp_chinese.yml": "994E1FB75B104F0918E68FD52AE2037FE01EFFC7ADA9C971D8A6A9CC7E2F3386"
+          },
+          "unexpanded_dependencies": [
+            "Task cadence and engine scope producer",
+            "Cost script-value formula",
+            "Struggle switch/catalyst utility internals",
+            "Native normalized AI stochastic outcome"
+          ],
+          "upstream_source_inputs": [
+            {
+              "entry": "on_finish_task_county",
+              "handoff_scope": "councillor_liege",
+              "relative_path": "common/council_tasks/00_court_chaplain_tasks.txt",
+              "saved_scope": "county_holder",
+              "source_lines": "1070-1081",
+              "triggered_on_action": "task_fabricate_claim_success_effect"
+            },
+            {
+              "entry": "task_fabricate_claim_success_effect",
+              "random_event_weights": {
+                "court_chaplain_task.0301": 100,
+                "court_chaplain_task.0302": 20
+              },
+              "relative_path": "common/on_action/councillor_on_actions.txt",
+              "source_lines": "340-345"
+            },
+            {
+              "entry": "court_chaplain_task.0302.immediate",
+              "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+              "saved_scopes": [
+                "duchy",
+                "duchy_holder"
+              ],
+              "source_lines": "263-272"
+            },
+            {
+              "cost_formula_reviewed": false,
+              "effect_scope": "Upstream claimant payment; prestige/gold switch",
+              "entry": "court_chaplain_task_0301_charge_prestige_or_gold_effect",
+              "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+              "source_lines": "74-93"
+            }
+          ]
+        },
+        "source_reviewed_effectful_notice": {
+          "actual_current_native_option_observed": false,
+          "actual_current_saved_scope_projection_observed": false,
+          "authored_opinion": -30,
+          "authored_option_name": "court_chaplain_task.0311.a",
+          "authored_option_ordinal": 0,
+          "claim_gain": false,
+          "days": 3650,
+          "definition_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+          "definition_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+          "effect": "add_opinion",
+          "engine_default_ai_weight": "unknown",
+          "event_id": "court_chaplain_task.0313",
+          "explicit_leaf_ai_chance": false,
+          "follow_up_event": false,
+          "immediate_claim_display_only": true,
+          "new_live_evidence": false,
+          "opinion_definition_lines": "78-82",
+          "opinion_definition_path": "common/opinion_modifiers/00_council_task_opinions.txt",
+          "opinion_definition_sha256": "DFB08810CC43692B4AE88B22161390B8D284D9FC0919ACDE20F2ED77F61085DD",
+          "opinion_modifier": "court_chaplain_fabricated_claim_opinion",
+          "opinion_modifier_decaying": true,
+          "opinion_modifier_years": 10,
+          "payment": false,
+          "runtime_call_chain_revalidated": false,
+          "source_lines": "518-551",
+          "subject": "ROOT (recipient duchy_holder)",
+          "target": "scope:councillor_liege (claimant)"
+        }
+      },
+      "body_compared": true,
+      "classification": "unchanged-ordered-tokens",
+      "current_executable_leaf_registered": false,
+      "direct_effect_dependency_reviewed": true,
+      "evidence_artifact": "artifacts/g2-maintainer-2026-10-02/resume-12003/m4-construction/religion-event-source-review-20261003/chaplain0313/SOURCE-REVIEW-PROOF.json",
+      "evidence_artifact_sha256": "FA2AC895C76128144B601FF0BEA711976A61F2895BE585573215FD7CC759C1F9",
+      "live_acceptance_performed": false,
+      "new_ordered_token_sha256": "1509EBEDDFEDD7B1D82C840F48C4BC7E9B8C052852DE2839047C13CC3F94E9D7",
+      "old_ordered_token_sha256": "1509EBEDDFEDD7B1D82C840F48C4BC7E9B8C052852DE2839047C13CC3F94E9D7",
+      "source_file_sha256": {
+        "common/council_tasks/00_court_chaplain_tasks.txt": "DDD7E89EB6BD27E485CE254DBE14E63D129FAD4E98DC2C6DC13BA39CE6B95661",
+        "common/on_action/councillor_on_actions.txt": "4F7E9646703314D783957D58FDB51434E108DDE0EF0088422DE44422B06CDCB7",
+        "common/opinion_modifiers/00_council_task_opinions.txt": "DFB08810CC43692B4AE88B22161390B8D284D9FC0919ACDE20F2ED77F61085DD",
+        "events/councillor_task_events/court_chaplain_task_events.txt": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+        "localization/english/event_localization/councillor_task_events/court_chaplain_task_events_l_english.yml": "3BCA7FBBCE296750410C68DAEC1C246D3EEC601AD5904A073E946860A8D16086",
+        "localization/simp_chinese/event_localization/councillor_task_events/court_chaplain_task_events_l_simp_chinese.yml": "994E1FB75B104F0918E68FD52AE2037FE01EFFC7ADA9C971D8A6A9CC7E2F3386"
+      },
+      "source_review_boundary": "One leaf plus direct opinion dependency and bounded caller/loc; no current saved-scope projection, legal option frame, native execution or material outcome.",
+      "source_review_complete": true
+    },
     "court_yearly.6030": {
       "analysis_updates": {
         "source_compatibility_semantic_changes": [
@@ -3367,6 +3546,19 @@
       "new_ordered_token_sha256": "A96A72632FEDA142C215E4A753EB92FA014DBB04A648D9EBB4681368D59985C1",
       "old_ordered_token_sha256": "F335CCEB2A14F645AD68847B696DC488C96A1300ADE857F64D012A666E69807C",
       "policy_contract_compatible": true
+    },
+    "fervor.1002": {
+      "body_compared": false,
+      "classification": "reviewed-source-removed",
+      "current_definition": null,
+      "evidence_artifact": "artifacts/g2-maintainer-2026-10-02/resume-12003/m4-construction/religion-event-source-review-20261003/fervor1002/SOURCE-PROOF.json",
+      "evidence_artifact_sha256": "2A4B8427EF2DC6A895B7215755FBB4F7D003142523A0C0942A98EEF30BCD941D",
+      "executable_source_review_approved": false,
+      "live_acceptance_performed": false,
+      "reason": "event_definition_not_present_in_current_build",
+      "registration_approved": false,
+      "source_absence_review_complete": true,
+      "source_proof": "SOURCE-PROOF.json"
     },
     "health.1015": {
       "analysis_updates": {

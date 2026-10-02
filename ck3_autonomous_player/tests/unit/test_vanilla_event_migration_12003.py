@@ -45,14 +45,17 @@ class PatchVanillaRegistryTests(unittest.TestCase):
         self.assertFalse(new["analysis"]["migration_1_20_0_3"]["new_live_evidence"])
         source = load_vanilla_event_source_index(build="1.20.0.3")
         self.assertEqual(source["ck3_exe_sha256"], SUPPORTED_CK3_EXE_SHA256["1.20.0.3"])
-        self.assertEqual(len(source["events"]), 192)
+        self.assertEqual(len(source["events"]), 193)
 
-    def test_deferred_events_remain_unavailable_on_both_patch_builds(self):
+    def test_absent_source_and_war_package_remain_unavailable_on_both_patch_builds(self):
         for build in ("1.20.0.2", "1.20.0.3"):
-            for key in ("fervor.1002", "court_chaplain_task.0313", "great_holy_war.0011"):
+            for key, reason in (
+                ("fervor.1002", "event_definition_not_present_in_current_build"),
+                ("great_holy_war.0011", "event_domain_outside_nonwar_work_package"),
+            ):
                 with self.subTest(build=build, key=key):
                     result = query_vanilla_event_knowledge_v1(key, build)
-                    self.assertEqual(result["unavailable_reason"], "event_domain_owner_deferred")
+                    self.assertEqual(result["unavailable_reason"], reason)
 
 
 if __name__ == "__main__":

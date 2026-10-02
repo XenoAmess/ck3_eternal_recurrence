@@ -34,6 +34,11 @@ def migrate_event_knowledge(
     row = load_compatibility()["events"].get(event_key)
     if not isinstance(row, dict):
         return {"status": "unavailable", "unavailable_reason": "event_migration_not_reviewed"}
+    if row.get("status") == "source-absent":
+        return {
+            "status": "unavailable",
+            "unavailable_reason": "event_definition_not_present_in_current_build",
+        }
     if row.get("status") == "owner-deferred":
         # Historical aliases never impose the revoked religion restriction.
         # The war package exclusion remains a separate execution boundary.

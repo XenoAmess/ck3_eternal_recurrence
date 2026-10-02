@@ -156,6 +156,10 @@ def _take_snapshot(driver: object) -> Mapping[str, object]:
     return take_snapshot()
 
 
+class _CouncilReadStaleFrameError(BridgeUnavailableError):
+    """A read was rejected before submission because its native frame expired."""
+
+
 def _read_operation(
     driver: object, step: str, fields: Mapping[str, object],
     *, timeout_seconds: float | None = None, action_request_id: str | None = None,
@@ -177,6 +181,14 @@ def _read_operation(
             "request_id": request_id, "step": current_step, **current_fields,
         })
         frame = driver.state.wait_for_command_result(request_id, remaining)
+        if (
+            current_step in {PRIVATE_QUERY_STEP, PRIVATE_GATES_STEP}
+            and isinstance(frame, Mapping) and frame.get("type") == "command_result"
+            and frame.get("protocol_version") == 1
+            and frame.get("request_id") == request_id and frame.get("ok") is False
+            and frame.get("error") == "nonwar private snapshot revision is stale or malformed"
+        ):
+            raise _CouncilReadStaleFrameError(str(frame["error"]))
         if not (
             isinstance(frame, Mapping) and frame.get("type") == "command_result"
             and frame.get("protocol_version") == 1
@@ -196,6 +208,20 @@ def _read_operation(
         time.sleep(min(0.01, remaining))
         result = send(PRIVATE_STATUS_STEP, {})
     return result
+
+
+def _wait_for_new_read_frame(
+    driver: object, before: Mapping[str, object], *, deadline: float,
+    rejection: _CouncilReadStaleFrameError,
+) -> Mapping[str, object]:
+    while True:
+        fresh = _take_snapshot(driver)
+        if _binding(fresh) != _binding(before):
+            return fresh
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise rejection
+        time.sleep(min(0.01, remaining))
 
 
 def _source_frame(snapshot: Mapping[str, object]) -> dict[str, object]:
@@ -220,34 +246,49 @@ def query_council_private_v1(
     if query_step not in {PRIVATE_QUERY_STEP, PRIVATE_GATES_STEP}:
         raise ValueError("unsupported private council read step")
     before = _take_snapshot(driver)
-    played = before.get("played_character")
-    player_id = played.get("character_id") if isinstance(played, Mapping) else None
-    native_revision = before.get("native_revision")
-    public_revision = before.get("revision")
-    if not (
-        before.get("paused") is True and before.get("map_ready") is True
-        and isinstance(played, Mapping) and played.get("alive") is True
-        and type(player_id) is int and player_id > 0
-        and type(native_revision) is int and native_revision > 0
-        and type(public_revision) is int and public_revision > 0
-    ):
-        raise BridgeUnavailableError("private council query requires a paused living-player map frame")
-    if expected_revision is not None and expected_revision != public_revision:
-        raise BridgeUnavailableError("private council query revision mismatch")
-    request = build_council_composition_candidates_request_v1(
-        expected_snapshot_id=f"native:{native_revision}",
-        public_revision=native_revision, native_revision=native_revision,
-        date_raw=before.get("date_raw"), owner_character_id=player_id,
-        position_key=position_key, allow_chancellor_read_only=True,
-        allow_spymaster_read_only=True,
-    )
-    result = _read_operation(
-        driver, query_step, {
-            "expected_revision": native_revision,
-            "position_key": request["position_key"],
-        },
-        timeout_seconds=timeout_seconds,
-    )
+    started = time.monotonic()
+    attempt_timeout = timeout_seconds
+    for attempt in range(2):
+        played = before.get("played_character")
+        player_id = played.get("character_id") if isinstance(played, Mapping) else None
+        native_revision = before.get("native_revision")
+        public_revision = before.get("revision")
+        if not (
+            before.get("paused") is True and before.get("map_ready") is True
+            and isinstance(played, Mapping) and played.get("alive") is True
+            and type(player_id) is int and player_id > 0
+            and type(native_revision) is int and native_revision > 0
+            and type(public_revision) is int and public_revision > 0
+        ):
+            raise BridgeUnavailableError("private council query requires a paused living-player map frame")
+        if attempt == 0 and expected_revision is not None and expected_revision != public_revision:
+            raise BridgeUnavailableError("private council query revision mismatch")
+        request = build_council_composition_candidates_request_v1(
+            expected_snapshot_id=f"native:{native_revision}",
+            public_revision=native_revision, native_revision=native_revision,
+            date_raw=before.get("date_raw"), owner_character_id=player_id,
+            position_key=position_key, allow_chancellor_read_only=True,
+            allow_spymaster_read_only=True,
+        )
+        try:
+            result = _read_operation(
+                driver, query_step, {
+                    "expected_revision": native_revision,
+                    "position_key": request["position_key"],
+                },
+                timeout_seconds=attempt_timeout,
+            )
+            break
+        except _CouncilReadStaleFrameError as error:
+            if attempt != 0:
+                raise
+            timeout = (getattr(driver, "command_timeout_seconds", 30.0)
+                       if timeout_seconds is None else timeout_seconds)
+            deadline = started + timeout
+            before = _wait_for_new_read_frame(driver, before, deadline=deadline, rejection=error)
+            attempt_timeout = deadline - time.monotonic()
+            if attempt_timeout <= 0:
+                raise error
     try:
         projected = normalize_council_private_query_result_v1(
             result, expected_request=request, query_step=query_step,

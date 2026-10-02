@@ -2,18 +2,19 @@
   "audit": {
     "changed_registered_dependency_pin_count": 1,
     "current_bounded_campaign_utility_review_count": 3,
-    "current_bounded_continuation_source_compatible_count": 192,
-    "current_contract_adaptation_pending_count": 2,
+    "current_bounded_continuation_source_compatible_count": 193,
+    "current_contract_adaptation_pending_count": 0,
+    "current_source_absent_count": 1,
     "excluded-owner-boundary": 1,
     "registered_event_count": 195,
-    "source-review-pending": 2,
-    "unchanged-source-file-bytes": 192
+    "reviewed-source-removed": 1,
+    "unchanged-source-file-bytes": 193
   },
-  "baseline_compatibility_dataset_sha256": "11E2AE895DBF9B0C73131C4497F64F0DD521E92698B17745689DB2632C12FABF",
-  "baseline_compatibility_file_sha256": "D4EAE439E084A705EAE02C56C348B7516D112855BCA82D94BCE303621F5D82D1",
+  "baseline_compatibility_dataset_sha256": "8D917F03429EC39E7AAF30327B3D8FDF05D37903B26E37D7F5FD7910F9C6E007",
+  "baseline_compatibility_file_sha256": "1D38CDADF857C64F8FB2E192E3C14E103926E0BE6F3BD462545D952975D2D940",
   "ck3_build": "1.20.0.3",
   "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
-  "dataset_sha256": "EE280715008886E4614C33A42E42B68935193EED72804AF65A9DB98535536A95",
+  "dataset_sha256": "B1A8E017364E1412F994F628E838A1365ACCC964B23FA8C3AE03108C10D607F8",
   "events": {
     "adultery.0002": {
       "analysis_updates": {
@@ -1518,15 +1519,223 @@
       "token_differences": []
     },
     "court_chaplain_task.0313": {
+      "analysis_updates": {
+        "evidence_boundary": "Current source, direct opinion dependency, bounded authored caller and zh/en event localization are reviewed and byte-pinned. Existing seven-scope/option contract and observations remain historical 1.19 evidence; no current native projection or outcome is asserted.",
+        "review_summary": "Claim and payment occur upstream. The sole authored option adds a decaying -30 opinion from ROOT (duchy holder) toward scope:councillor_liege for 3650 days. The immediate claim is tooltip-only; the leaf has no follow-up.",
+        "source_input_graph": {
+          "direct_caller": {
+            "authored_option": "court_chaplain_task.0302.b",
+            "call_line": 376,
+            "claim_line": 340,
+            "claim_subject": "scope:councillor_liege",
+            "claim_target": "scope:duchy",
+            "edge_status": "Source-reviewed trigger_event inside authored branch; runtime not revalidated",
+            "event_id": "court_chaplain_task.0302",
+            "payment_helper": "court_chaplain_task_0301_charge_prestige_or_gold_effect",
+            "payment_line": 339,
+            "recipient_scope": "scope:duchy_holder",
+            "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+            "source_lines": "337-376"
+          },
+          "direct_effect_dependency": {
+            "decaying": true,
+            "leaf_days": 3650,
+            "leaf_effect": "add_opinion",
+            "modifier": "court_chaplain_fabricated_claim_opinion",
+            "modifier_years": 10,
+            "opinion": -30,
+            "relative_path": "common/opinion_modifiers/00_council_task_opinions.txt",
+            "source_lines": "78-82",
+            "subject": "ROOT",
+            "target": "scope:councillor_liege"
+          },
+          "event_localization_inputs": {
+            "english_lines_by_key_order": [
+              21,
+              15,
+              16,
+              17
+            ],
+            "keys": [
+              "court_chaplain_task.0313.t",
+              "court_chaplain_task.0311.opening",
+              "court_chaplain_task.0311.end",
+              "court_chaplain_task.0311.a"
+            ],
+            "simp_chinese_lines_by_key_order": [
+              16,
+              12,
+              13,
+              14
+            ]
+          },
+          "leaf_definition": {
+            "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+            "source_lines": "518-551"
+          },
+          "new_live_evidence": false,
+          "opinion_localization_boundary": {
+            "1.20.0.2": "Archive English and Simplified Chinese opinion localization files absent; no comparison or hash inferred",
+            "1.20.0.3": {
+              "comparison_to_12002": "not-compared-archive-file-absent",
+              "key": "court_chaplain_fabricated_claim_opinion",
+              "source_file_sha256": {
+                "localization/english/opinions/council_task_opinions_l_english.yml": "9065B8A8E1E58ECB8CEC9D15A61299589A3B5F4901D473A258DAEBF60C21D2C4",
+                "localization/simp_chinese/opinions/council_task_opinions_l_simp_chinese.yml": "287947DF4A754C143CDF54211A0CECBE3D31F6304FF8A2DAA03167D498BB91A3"
+              },
+              "source_line": 13
+            }
+          },
+          "review_basis": "Reviewed stock script and direct dependencies; source-only knowledge",
+          "runtime_call_chain_revalidated": false,
+          "scope_inputs": {
+            "ROOT": "duchy_holder; recipient selected by .0302.b",
+            "councillor": "Portrait and shared text",
+            "councillor_liege": "Original claimant; opinion target; tooltip claim subject",
+            "county": "Shared title/description display, despite duchy claim tooltip",
+            "county_holder": "Saved upstream at task completion; not read by leaf",
+            "duchy": "Tooltip claim target; claim already granted upstream",
+            "province": "Historical task projection; not directly read or saved by leaf"
+          },
+          "source_file_sha256": {
+            "common/council_tasks/00_court_chaplain_tasks.txt": "DDD7E89EB6BD27E485CE254DBE14E63D129FAD4E98DC2C6DC13BA39CE6B95661",
+            "common/on_action/councillor_on_actions.txt": "4F7E9646703314D783957D58FDB51434E108DDE0EF0088422DE44422B06CDCB7",
+            "common/opinion_modifiers/00_council_task_opinions.txt": "DFB08810CC43692B4AE88B22161390B8D284D9FC0919ACDE20F2ED77F61085DD",
+            "events/councillor_task_events/court_chaplain_task_events.txt": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+            "localization/english/event_localization/councillor_task_events/court_chaplain_task_events_l_english.yml": "3BCA7FBBCE296750410C68DAEC1C246D3EEC601AD5904A073E946860A8D16086",
+            "localization/simp_chinese/event_localization/councillor_task_events/court_chaplain_task_events_l_simp_chinese.yml": "994E1FB75B104F0918E68FD52AE2037FE01EFFC7ADA9C971D8A6A9CC7E2F3386"
+          },
+          "unexpanded_dependencies": [
+            "Task cadence and engine scope producer",
+            "Cost script-value formula",
+            "Struggle switch/catalyst utility internals",
+            "Native normalized AI stochastic outcome"
+          ],
+          "upstream_source_inputs": [
+            {
+              "entry": "on_finish_task_county",
+              "handoff_scope": "councillor_liege",
+              "relative_path": "common/council_tasks/00_court_chaplain_tasks.txt",
+              "saved_scope": "county_holder",
+              "source_lines": "1070-1081",
+              "triggered_on_action": "task_fabricate_claim_success_effect"
+            },
+            {
+              "entry": "task_fabricate_claim_success_effect",
+              "random_event_weights": {
+                "court_chaplain_task.0301": 100,
+                "court_chaplain_task.0302": 20
+              },
+              "relative_path": "common/on_action/councillor_on_actions.txt",
+              "source_lines": "340-345"
+            },
+            {
+              "entry": "court_chaplain_task.0302.immediate",
+              "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+              "saved_scopes": [
+                "duchy",
+                "duchy_holder"
+              ],
+              "source_lines": "263-272"
+            },
+            {
+              "cost_formula_reviewed": false,
+              "effect_scope": "Upstream claimant payment; prestige/gold switch",
+              "entry": "court_chaplain_task_0301_charge_prestige_or_gold_effect",
+              "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+              "source_lines": "74-93"
+            }
+          ]
+        },
+        "source_reviewed_effectful_notice": {
+          "actual_current_native_option_observed": false,
+          "actual_current_saved_scope_projection_observed": false,
+          "authored_opinion": -30,
+          "authored_option_name": "court_chaplain_task.0311.a",
+          "authored_option_ordinal": 0,
+          "claim_gain": false,
+          "days": 3650,
+          "definition_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+          "definition_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+          "effect": "add_opinion",
+          "engine_default_ai_weight": "unknown",
+          "event_id": "court_chaplain_task.0313",
+          "explicit_leaf_ai_chance": false,
+          "follow_up_event": false,
+          "immediate_claim_display_only": true,
+          "new_live_evidence": false,
+          "opinion_definition_lines": "78-82",
+          "opinion_definition_path": "common/opinion_modifiers/00_council_task_opinions.txt",
+          "opinion_definition_sha256": "DFB08810CC43692B4AE88B22161390B8D284D9FC0919ACDE20F2ED77F61085DD",
+          "opinion_modifier": "court_chaplain_fabricated_claim_opinion",
+          "opinion_modifier_decaying": true,
+          "opinion_modifier_years": 10,
+          "payment": false,
+          "runtime_call_chain_revalidated": false,
+          "source_lines": "518-551",
+          "subject": "ROOT (recipient duchy_holder)",
+          "target": "scope:councillor_liege (claimant)"
+        }
+      },
       "authorization_date": "2026-10-02",
-      "body_compared": false,
-      "classification": "source-review-pending",
+      "baseline_compatibility_row_sha256": "C591B69EC972075AE8B2BE2E2A9081825863AEC54F4442D0EEF4440D3ACA1AF1",
+      "body_compared": true,
+      "caller_candidate_files": [
+        {
+          "call_edge_reviewed": false,
+          "file_bytes_unchanged": true,
+          "new_file_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+          "old_file_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+          "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt"
+        }
+      ],
+      "classification": "unchanged-source-file-bytes",
+      "direct_effect_dependency_reviewed": true,
+      "full_dependency_compatibility_proven": false,
+      "inherited_review": {
+        "boundary": "Reviewed source-only claim notice; historical native scopes/options are not current observations.",
+        "build": "1.20.0.2",
+        "compatibility_status": "unchanged",
+        "new_live_evidence": false
+      },
+      "key": "court_chaplain_task.0313",
       "namespace": "court_chaplain_task",
-      "policy_reuse_eligible_by_body": false,
-      "reason": "event_source_migration_pending",
-      "review_gap": "Current source definition, scope projection and native outcome have not yet been migrated. Religion research and implementation are authorized.",
-      "source_file_sha256": {},
-      "status": "source-review-pending"
+      "new_definition": {
+        "block_sha256": "D07481E6BD054CAB8C44A2CBFE53EB76B58060CF38BC3840EF36EFAD37A8040B",
+        "end_line": 551,
+        "file_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+        "line": 518,
+        "ordered_token_sha256": "1509EBEDDFEDD7B1D82C840F48C4BC7E9B8C052852DE2839047C13CC3F94E9D7",
+        "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+        "token_count": 78
+      },
+      "new_live_evidence": false,
+      "old_definition": {
+        "block_sha256": "D07481E6BD054CAB8C44A2CBFE53EB76B58060CF38BC3840EF36EFAD37A8040B",
+        "end_line": 551,
+        "file_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+        "line": 518,
+        "ordered_token_sha256": "1509EBEDDFEDD7B1D82C840F48C4BC7E9B8C052852DE2839047C13CC3F94E9D7",
+        "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt",
+        "token_count": 78
+      },
+      "policy_contract_compatible": true,
+      "policy_reuse_eligible_by_body": true,
+      "reviewed_profile_keys": [],
+      "runtime_call_chain_revalidated": false,
+      "source_file_sha256": {
+        "common/council_tasks/00_court_chaplain_tasks.txt": "DDD7E89EB6BD27E485CE254DBE14E63D129FAD4E98DC2C6DC13BA39CE6B95661",
+        "common/on_action/councillor_on_actions.txt": "4F7E9646703314D783957D58FDB51434E108DDE0EF0088422DE44422B06CDCB7",
+        "common/opinion_modifiers/00_council_task_opinions.txt": "DFB08810CC43692B4AE88B22161390B8D284D9FC0919ACDE20F2ED77F61085DD",
+        "events/councillor_task_events/court_chaplain_task_events.txt": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+        "localization/english/event_localization/councillor_task_events/court_chaplain_task_events_l_english.yml": "3BCA7FBBCE296750410C68DAEC1C246D3EEC601AD5904A073E946860A8D16086",
+        "localization/english/opinions/council_task_opinions_l_english.yml": "9065B8A8E1E58ECB8CEC9D15A61299589A3B5F4901D473A258DAEBF60C21D2C4",
+        "localization/simp_chinese/event_localization/councillor_task_events/court_chaplain_task_events_l_simp_chinese.yml": "994E1FB75B104F0918E68FD52AE2037FE01EFFC7ADA9C971D8A6A9CC7E2F3386",
+        "localization/simp_chinese/opinions/council_task_opinions_l_simp_chinese.yml": "287947DF4A754C143CDF54211A0CECBE3D31F6304FF8A2DAA03167D498BB91A3"
+      },
+      "source_review_boundary": "One leaf plus direct opinion dependency and bounded caller/loc; no current saved-scope projection, legal option frame, native execution or material outcome.",
+      "status": "unchanged",
+      "token_differences": []
     },
     "court_yearly.6030": {
       "analysis_updates": {
@@ -5617,14 +5826,39 @@
     },
     "fervor.1002": {
       "authorization_date": "2026-10-02",
+      "baseline_compatibility_row_sha256": "D227F10901B3AF46AB40214CDAA0D9F51F129703560AD02B3D5782D001C03791",
       "body_compared": false,
-      "classification": "source-review-pending",
+      "classification": "reviewed-source-removed",
+      "key": "fervor.1002",
       "namespace": "fervor",
+      "new_definition": null,
+      "policy_contract_compatible": false,
       "policy_reuse_eligible_by_body": false,
-      "reason": "event_source_migration_pending",
-      "review_gap": "Current source definition, scope projection and native outcome have not yet been migrated. Religion research and implementation are authorized.",
+      "reason": "event_definition_not_present_in_current_build",
+      "review_gap": "Absence review is closed. There is no current stock event definition to migrate; current options/scopes/outcomes are not observed. Do not register a current-build executable leaf from the historical contract.",
       "source_file_sha256": {},
-      "status": "source-review-pending"
+      "source_removal_review": {
+        "baseline_12002_entry_status": "removed",
+        "baseline_12002_inventory_path": "Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion/stock/stock-inventory.json",
+        "baseline_12002_inventory_sha256": "a4468289cb85d6e1ae268dd4e9172fefe632e5da4b0c4b9ffe371d41b1f29dff",
+        "baseline_12002_new_file": null,
+        "boundary": "The current zh/en files each retain 44 event-localization keys, but no current stock definition/caller was found. Residual localization and the 1.19 contract are not executable source evidence. No event-body comparison or native projection is claimed.",
+        "current_caller_or_dependency_matches": [],
+        "current_definition": null,
+        "current_file_present": false,
+        "current_options_scopes_effects_ai_weights": null,
+        "event_key": "fervor.1002",
+        "expected_relative_path": "events/religion_events/fervor_events.txt",
+        "lookup_command": "rg -n fervor.1002 events common",
+        "lookup_exit_code": 1,
+        "lookup_scope": "Current Steam 1.20.0.3 game/events and game/common",
+        "residual_localization_pins": {
+          "localization/english/event_localization/religion_events/fervor_events_l_english.yml": "cc48ee92f53e55d65b1b5052dfd2a702d4be4aba32d1f74dfaca0d9ea1d1ed3a",
+          "localization/simp_chinese/event_localization/religion_events/fervor_events_l_simp_chinese.yml": "fd6fe59a6b4dc826b17382475bd3be892f5dacdb35f2f8b372a224a135951bd2"
+        },
+        "review_date": "2026-10-03"
+      },
+      "status": "source-absent"
     },
     "great_holy_war.0011": {
       "body_compared": false,
@@ -14001,8 +14235,8 @@
   "live_acceptance_performed": false,
   "old_ck3_build": "1.20.0.2",
   "old_ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
-  "old_source_index_dataset_sha256": "BF4ADC6FEE5742B1E57F0768E2BE120113E9176D4A8FABAA3BF30EB42FB22DF8",
-  "old_source_index_file_sha256": "3BAB1109B00B45548373A4993C7D959131821EB5BCB883E29EEB63828A45F923",
+  "old_source_index_dataset_sha256": "4B38B779335B18EF14B3C617ABB5C075919C706ABCDE4BF345AED2D5A85A553B",
+  "old_source_index_file_sha256": "CF160E3E3FD7BD1907DB295DE48F3D450FDDDDC518AA15D55ADA31F6C0CA186A",
   "policy_reuse_boundary": "Byte-identical registered definitions/caller candidate files and the reviewed direct effect permit static source reuse only. Legacy live exemplars remain legacy; actual .3 runtime is separately accepted by the migration owner.",
   "religion_authorization": {
     "boundary": "Authorization does not establish source compatibility, native observation, or live acceptance. Original review gaps remain explicit implementation work.",
@@ -14010,7 +14244,7 @@
     "date": "2026-10-02",
     "previous_owner_restriction_revoked": true
   },
-  "review_ledger_file_sha256": "6508984676F440DF16F9D73F9F03BB670F34D8C2396D8C3B62AA8444322ECDE0",
+  "review_ledger_file_sha256": "A95D5B4D17393A31AFD987F3C6E0BAD2B8CF6EF6CA0A464AAE2BEA49DEC9262B",
   "schema": "xar.ck3.nonwar-event-source-compatibility",
   "schema_version": 1,
   "token_comparison": "Registered event definition files are byte-identical to .2; no new ordered-token equality is inferred for changed unrelated scripts."

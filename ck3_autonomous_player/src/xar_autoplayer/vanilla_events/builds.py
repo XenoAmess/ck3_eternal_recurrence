@@ -13,7 +13,9 @@ SUPPORTED_CK3_EXE_SHA256: Final = {
 }
 MIGRATED_CK3_BUILDS: Final = frozenset({"1.20.0.2", "1.20.0.3"})
 NONWAR_MIGRATION_DEFERRED_EVENT_KEYS: Final = frozenset({
-    "fervor.1002", "court_chaplain_task.0313", "great_holy_war.0011",
+    # Keep the legacy name: source-absent fervor has no current definition;
+    # the war event is outside this nonwar package. Religion is authorized.
+    "fervor.1002", "great_holy_war.0011",
 })
 
 

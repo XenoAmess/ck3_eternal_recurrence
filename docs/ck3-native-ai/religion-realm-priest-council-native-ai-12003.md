@@ -83,7 +83,7 @@ v20 native manifest 已将 `XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_
 | `ck3_query_player_rite_governance_v1` | State Rite、heads、organization 的独立可用范围 | 不包含 chaplain 候选、任务产出或 clergy approval |
 | existing Council composition / final-gates 两个 queries | 已按 `position_key` 读 S/C/Spy 候选、主能力和原生 final gates | 当前只读 role 白名单没有 chaplain/learning；不能直接用该 key 当成已支持 |
 
-clergy 返回中的 native `false` 是已观察的拒绝；合法 Rite ID `0`、没有物化 chaplain task、读取失败保留各自语义。`capture_epoch` 是 owning-pump identity，不是公共 revision。以上三谓词不自行合取成可提交动作许可。初始研究没有新的 Robert clergy 专属 paused packet；后续 v21 root 中的 holder/task 窄 primitive 单列如下，不能替代任免谓词或候选读取。
+clergy 返回中的 native `false` 是已观察的拒绝；合法 Rite ID `0`、没有物化 chaplain task、读取失败保留各自语义。`capture_epoch` 是 owning-pump identity，不是公共 revision。以上三谓词不自行合取成可提交动作许可。初始研究没有新的 Robert clergy 专属 paused packet；后续 v21 root 中的 holder/task 和指定现任三谓词分别单列如下，不能替代未捕获的候选集合。
 
 当前通用 Council reader 已支持 chaplain 的实际 task 绑定：`ActiveCouncilTask` 的 type/progress/frozen/incumbent/owner/target 分别为 `+18/+20/+39/+40/+44/+48,+50`，`CouncilTaskType` 的 key/position/task-kind/progress-kind 为 `+18/+40/+48/+54`。general 无目标；county 使用 ProvinceID tag8；court 使用 CharacterID tag4。infinite 的 current/max 为合法缺失；percentage 的 raw max 为 `10000000`；value 使用 `0x31AB520 / 0x31AB840` 的 Q100000 current/max evaluator。**完成进度不是月度产出或任务 modifier 贡献**；不用旧 `council-and-development` 的历史 layout 替换这份 `.3` 已 reviewed 布局。
 
@@ -137,11 +137,32 @@ ROOT 在 2026-10-03 恢复 v21/source `6443a516` 的原 Robert campaign，新 PI
 
 本页现在可把56513称为**该 v21 帧实际现任**，但仍没有其 learning、CanFire、CanReassign、完整合法候选或 monthly-piety/opinion contribution。以后 query 使用新的 snapshot revision 与实际 ID，不能把这个 archived ID 固定为未来现任。readiness 是既有 root 的 **production-live primitive** 加本次原生树 **research**，不是 clergy 任免/改任务 loop。本离线 owner 未触发新查询、动作或日期推进。
 
+## V21 指定现任的实际三谓词：可用观察中的拒换
+
+ROOT 用既有 CLI opt-in `--private-player-clergy-appointment-query`，以 `expected_revision=2`、`candidate_character_id=56513` 查询当前现任；没有替换候选或任命操作。`ewan0801-v21-relation-post-and-religion-01/004-ck3_query_player_clergy_appointment_v1.json` 的 normalized structuredContent 实际 `query_status=observed`、`status=available`、`failure=none`，绑定 `.3 / 94B553…`、`native:9`、public/native revision2/9、raw53222304。只读 backend 为 `ck3-1.20.0.3-native-player-clergy-appointment-v1`，domain 为 `player_clergy_appointment_v1`。sourcePython38b43747/native-env6443/PID96348 是 root 执行上下文，未冒充这些字段来自 DTO。
+
+| 实际字段 | 该帧值 | 参数方向 / 合法含义 |
+| --- | --- | --- |
+| owner / 指定 candidate / incumbent | `29829 / 56513 / 56513` | owner 从 played actor 取得；显式 candidate 是现任，`candidate_is_incumbent=true`，没有查询替代候选集合 |
+| position / active task | `councillor_court_chaplain / 7162` | 与 actual chaplain task 绑定；current root 中的 authored task 为 ReligiousRelations |
+| court owner / context matches | `29829 / true` | candidate 的原生 court owner 与 player 上下文匹配 |
+| owner Rite / candidate Rite | `152 / 152` | 两个实际 Rite 身份相同；不是由 Faith 标签推导 |
+| `native_valid_position` | **true** | `31BCED0(position, owner29829)`；席位对这个 owner 有效 |
+| `native_valid_character` | **true** | `31BCF90(position, candidate56513)`；指定现任通过 compiled character predicate，不证明其出现在替代候选 collection 中 |
+| `native_can_reassign` | **false** | `31B4980(actual task7162, nullptr tooltip)`；当前 task 的原生重派判定拒绝，是可用观察中的 false，未发生 ABI/工具读取失败 |
+| `action_eligibility_complete` | **false** | 既有只读合同的动作资格边界，不是失败的任命 receipt |
+
+`capture_epoch=154621` 是 owning-pump epoch，不是 revision。structuredContent 没有 `accepted / protocol_version / private_build`，不从 aggregate 四调用 GREEN 补造这些原始字段。独立的 body available、context true 与三个 native 值证明这个窄 query 的 **production-live primitive**。
+
+当前不把普通重派视作已成立的合法机会，也不尝试替换现任。这个 false 不提供 doctrine、auto-fill、once/time 的具体拒绝分支，且不等于独立 `CanFire=false`；是否可解职、可改任务与其它宗教任免路线仍需各自实际 native 输入。没有任命 ACK、结果、后继 consumer 或 G2 动作信用。
+
+[实际提取](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/religion-realm-priest-12003/actual-v21-clergy-01/ACTUAL-CLERGY-EXTRACT.json) SHA `b43a4205d9bf7d292d41cec52500ecbe674201d1da72cbd69eb873277f22a6cc`，原 packet SHA `52aa8335ce7894e7491e2a12a78fbc7d411baded9c93c1222981f6c62ae88878`。初次解析已保存 body；只补遗漏的 structured metadata 一次，记录在同包 receipt，没有重核已读谓词、读取其它 raw 或再调用 SDK。
+
 ## 最小下一施工与策略边界
 
-先由 root 在实际暂停帧复用 current root、religion context/doctrine 和指定候选 clergy 查询。选取 fresh root 中的 incumbent full ID 作权限观察时，保持其“现任”语义；这不是一次候选搜索，也不预设玩家有任免权。当前 native `CanReassign=false` 应记录实际制度/时间结果，候选身份与历史表不覆盖它。
+本帧 current root 与指定现任 clergy 权限观察已取得，直接复用，不重复请求。`CanReassign=false` 后，当前优先级改为观测 **ReligiousRelations 的实际任务价值**，而非为了任命次数扩大候选集合。其必要输入是 incumbent learning、实际 `council_owner_modifier.monthly_piety` 贡献、theocracy/same-Faith opinion 的当前累计值及 maximum；stock helper 入口为 `court_chaplain_religious_relations_total_piety_gain`、`court_chaplain_religious_relations_opinion_modifier`、`court_chaplain_religious_relations_no_hof_opinion_modifier` 与累计变量。任务-scoped native evaluator/getter 尚未闭合，先沿 actual task7162/type/owner scopes 定位，不能手算成当前值，也不能把总 spiritual fulfillment 变化归因给任务。只有决策确需替代任务时再补其实际 shown/valid/目标结果；当前不会猜测改任务权限。
 
-下一独立功能施工是给**两个既有参数化 Council queries** 补只读 `councillor_court_chaplain / learning / +E8` profile。native 最小生产叶子为 `include/xar_bridge/ck3_12002_council_candidates.hpp`；existing capture、producer、projector、serializer、runtime 和 gates 已依 profile 取实际 role。Python candidates/final-gates 合同相应增加 role/skill 识别，SDK signature 不需要新增候选参数或查询协议。源码授权和最终文件 ownership 由 root 另行分配，本页没有实施。
+已冻结的候选观测施工入口仍是给**两个既有参数化 Council queries** 补只读 `councillor_court_chaplain / learning / +E8` profile。native 最小生产叶子为 `include/xar_bridge/ck3_12002_council_candidates.hpp`；existing capture、producer、projector、serializer、runtime 和 gates 已依 profile 取实际 role。Python candidates/final-gates 合同相应增加 role/skill 识别，SDK signature 不需要新增候选参数或查询协议。本帧拒换后，该候选包不再作为当前任免动作前置优先级；若提供实际任务 learning 或后来真实可重派帧所需输入，再按必要性采用。源码授权和最终文件 ownership 由 root 另行分配，本页没有实施。
 
 必要的新路径验证只覆盖 chaplain 绑定、learning 与 stewardship/intrigue 的不同值、原生 false 保留和 genuine `.3` wire；现有 fixture 和原默认 Steward 成功循环复用，不重跑旧矩阵。root 随后在 fresh Robert 同帧读取 incumbent/candidates/final-gates 和 clergy 资格，并保留实际 can-reassign/可替换路线。
 
@@ -158,4 +179,4 @@ ROOT 在 2026-10-03 恢复 v21/source `6443a516` 的原 Robert campaign，新 PI
 
 当前 stock 主要输入为 `00_council_positions.txt` SHA `31fa258dfbf35a07e9ee08d1d1dfdcd26712d3974cd65ec74255c284e4df0a2a`、`00_councillor_triggers.txt` SHA `350a5e375d73e38cdd659fc3221fe8395ad6650b3fd244e03ee2342afc9a8f88`、`00_court_chaplain_tasks.txt` SHA `ddd7e89eb6bd27e485ce254dbe14e63d129fad4e98dc2c6dc13ba39ce6b95661`、`99_court_chaplain_values.txt` SHA `216f07c8b65800faf373691a9247c913fbccd933161c8e2cebe3a37bf144e3f3`。任务文件对应 religious-relations `1–232`、conversion `235–739`、fabricate-claim `741–1182`；script-values 的具体 conditional 入口见上述账本。这些 current `.3` 文件哈希替代历史 `.2/1.19` stock 作为本页输入，不改旧专题的历史记录。
 
-10-03 报告字段由同包外置 `REPORT-FIELDS.json` 收口；日报/周报由 ledger owner 合并。v21 root 新材料仅增加 chaplain 身份/任务 primitive；本页的 `.3` candidate/任务收益与 clergy action 均没有新 live 资格，G2/M4 整体完成状态未提升。
+10-03 报告字段由同包外置 `REPORT-FIELDS.json` 与 `actual-v21-clergy-01/REPORT-FIELDS.json` 收口；日报/周报由 ledger owner 合并。v21 root 和 clergy004 分别增加身份/任务及指定现任的三个原生谓词 **production-live primitive**；本页的完整 candidate/任务收益与 clergy action 均没有新 live 资格，G2/M4 整体完成状态未提升。

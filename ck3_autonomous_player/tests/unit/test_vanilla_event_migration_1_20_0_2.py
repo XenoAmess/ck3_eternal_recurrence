@@ -121,12 +121,12 @@ def test_current_catalog_retains_legacy_live_as_legacy_not_current():
     assert listed["dataset_summary"]["portable_events"] == 0
     assert query_vanilla_event_knowledge_v1("fervor.1002", CURRENT_CK3_BUILD)[
         "unavailable_reason"
-    ] == "event_source_migration_pending"
+    ] == "event_definition_not_present_in_current_build"
 
 
 def test_current_source_index_tracks_actual_build_and_caller_candidates():
     index = load_vanilla_event_source_index(build=CURRENT_CK3_BUILD)
-    assert index["audit"]["registered_event_count"] == 192
+    assert index["audit"]["registered_event_count"] == 193
     assert index["audit"]["missing_definition_count"] == 0
     source = query_vanilla_event_source_provenance_v1("epidemic_events.0110", CURRENT_CK3_BUILD)
     assert source["status"] == "available"
@@ -263,21 +263,67 @@ def test_current_offline_tool_replays_new_contracts_without_material_receipts():
 
 def test_religion_authorization_retains_real_source_review_readiness():
     from xar_autoplayer.vanilla_events import migration_1_20_0_2, migration_1_20_0_3
+    from xar_autoplayer.vanilla_events import DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
+    from xar_autoplayer.vanilla_events.builds import NONWAR_MIGRATION_DEFERRED_EVENT_KEYS
+    from xar_autoplayer.vanilla_events.source_index import compute_source_index_dataset_sha256
+
+    default_current_keys = set(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS) - NONWAR_MIGRATION_DEFERRED_EVENT_KEYS
+    assert "court_chaplain_task.0313" in default_current_keys
+    assert "fervor.1002" not in default_current_keys
+    legacy = {key: query_vanilla_event_knowledge_v1(key, "1.19.0.6")
+              for key in ("fervor.1002", "court_chaplain_task.0313")}
+    after = {}
 
     for build, migration in (("1.20.0.2", migration_1_20_0_2),
                              ("1.20.0.3", migration_1_20_0_3)):
         data = migration.load_compatibility()
         assert data["religion_authorization"]["previous_owner_restriction_revoked"] is True
-        for key in ("fervor.1002", "court_chaplain_task.0313"):
-            result = query_vanilla_event_knowledge_v1(key, build)
-            assert result["status"] == "unavailable"
-            assert result["unavailable_reason"] == "event_source_migration_pending"
-            assert data["events"][key]["body_compared"] is False
-            assert data["events"][key]["policy_reuse_eligible_by_body"] is False
-        assert query_vanilla_event_knowledge_v1("epidemic_events.0110", build)["status"] == "available"
-        war = query_vanilla_event_knowledge_v1("great_holy_war.0011", build)
-        assert war["status"] == "unavailable"
-        assert war["unavailable_reason"] == "event_domain_outside_nonwar_work_package"
+        assert data["dataset_sha256"] == compute_source_index_dataset_sha256(data)
+        absent = query_vanilla_event_knowledge_v1("fervor.1002", build)
+        assert absent["status"] == "unavailable"
+        assert absent["unavailable_reason"] == "event_definition_not_present_in_current_build"
+        assert absent["contract"] is None
+        assert data["events"]["fervor.1002"]["status"] == "source-absent"
+        assert data["events"]["fervor.1002"]["new_definition"] is None
+        assert data["events"]["fervor.1002"]["body_compared"] is False
+
+        notice = query_vanilla_event_knowledge_v1("court_chaplain_task.0313", build)
+        assert notice["status"] == "available"
+        analysis = notice["analysis"]
+        assert analysis["exact_build"]["game_version"] == build
+        assert analysis["exact_build"]["ck3_executable_sha256"] == SUPPORTED_CK3_EXE_SHA256[build]
+        assert analysis["definition_lines"] == "518-551"
+        assert "source_reviewed_effectless_notice" not in analysis
+        effect = analysis["source_reviewed_effectful_notice"]
+        assert (effect["authored_opinion"], effect["days"]) == (-30, 3650)
+        assert effect["claim_gain"] is False and effect["payment"] is False
+        assert effect["actual_current_native_option_observed"] is False
+        graph = analysis["source_input_graph"]
+        assert graph["new_live_evidence"] is False
+        assert graph["direct_caller"]["call_line"] == 376
+        assert graph["direct_caller"]["recipient_scope"] == "scope:duchy_holder"
+        assert graph["direct_effect_dependency"]["leaf_days"] == 3650
+        assert graph["direct_effect_dependency"]["opinion"] == -30
+        assert all(analysis["source_sha256"][path] == digest
+                   for path, digest in graph["source_file_sha256"].items())
+        assert analysis[f"migration_{build.replace('.', '_')}"]["new_live_evidence"] is False
+        assert notice["contract"] == legacy["court_chaplain_task.0313"]["contract"]
+        assert notice["observations"]["legacy_build"] == "1.19.0.6"
+        assert notice["observations"]["new_live_evidence"] is False
+        assert notice["observations"]["legacy_observations"] == legacy["court_chaplain_task.0313"]["observations"]
+
+        index = load_vanilla_event_source_index(build=build)
+        assert index["audit"]["registered_event_count"] == 193
+        source = query_vanilla_event_source_provenance_v1("court_chaplain_task.0313", build)
+        assert source["status"] == "available"
+        assert source["definition"]["line"] == 518
+        assert source["definition"]["file_sha256"] == "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71"
+        assert source["caller_candidates"][0]["line"] == 376
+        absent_source = query_vanilla_event_source_provenance_v1("fervor.1002", build)
+        assert absent_source["status"] == "unavailable"
+        assert absent_source["definition"] is None
+        after[build] = {"fervor.1002": absent, "court_chaplain_task.0313": notice,
+                        "source_0313": source, "source_absent_1002": absent_source}
 
     data_dir = ROOT / "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/data"
     review = data_dir / "source_compatibility_reviews_1_20_0_2.json"
@@ -287,11 +333,16 @@ def test_religion_authorization_retains_real_source_review_readiness():
     assert data3["baseline_compatibility_file_sha256"] == hashlib.sha256(
         (data_dir / "source_compatibility_1_20_0_2.json").read_bytes()).hexdigest().upper()
     assert data3["baseline_compatibility_dataset_sha256"] == data2["dataset_sha256"]
-    collector_path = ROOT / "ck3_autonomous_player/native_bridge/research/ck3_12002_nonwar_event_sources.py"
-    spec = importlib.util.spec_from_file_location("religion_authorized_source_collector", collector_path)
-    collector = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = collector
-    spec.loader.exec_module(collector)
-    assert "fervor.1002" not in collector.EXCLUDED
-    assert "court_chaplain_task.0313" not in collector.EXCLUDED
-    assert collector.EXCLUDED["great_holy_war.0011"] == "war-domain-outside-nonwar-work-package"
+    assert data3["review_ledger_file_sha256"] == hashlib.sha256(
+        (data_dir / "source_compatibility_reviews_1_20_0_3.json").read_bytes()).hexdigest().upper()
+    patch_review = json.loads((data_dir / "source_compatibility_reviews_1_20_0_3.json").read_bytes())
+    assert patch_review["inherited_review_ledger"]["file_sha256"] == hashlib.sha256(review.read_bytes()).hexdigest().upper()
+    assert data3["old_source_index_file_sha256"] == hashlib.sha256(
+        (data_dir / "source_index_1_20_0_2.json").read_bytes()).hexdigest().upper()
+    assert data3["old_source_index_dataset_sha256"] == load_vanilla_event_source_index(build="1.20.0.2")["dataset_sha256"]
+    assert legacy["fervor.1002"]["analysis"]["exact_build"]["game_version"] == "1.19.0.6"
+    global ORDINARY_RELIGION_SOURCE_REVIEW_RESULTS
+    ORDINARY_RELIGION_SOURCE_REVIEW_RESULTS = {
+        "legacy": legacy, "after": after, "default_catalog_includes_0313": True,
+        "default_catalog_excludes_absent_fervor1002": True,
+    }

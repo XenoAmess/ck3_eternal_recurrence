@@ -1,5 +1,29 @@
 ﻿# CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-03：Robert `.0801` 一次选择、两项关系实测与原宗教材料冷保留
+
+ROOT正常恢复v21新PID96348、同ordinary episode `native-29829-2bc2d599f7f9`，Python `38b43747` 与native/environment `6443` 分列。原14随后在现成生产consumer消费一次：`robert-ewan0801-38b43747-actual-select-01/result.json` closed `event_selected_material_recorded`，三个actual native均可见合法，选择API2/native1，`native:7`/public2→独立`native:8`/public3。原14消失、active_event=null，同actor29829/raw53222304/paused，postcondition_verified=true。压力仍0，gold/prestige未变；没有把stress-decrease icon或源码贡献写成实际减压。
+
+独立关系材料复用Feastowner四query的唯一extract：`m6-feast/robert-feast/actual-2026-10-03-event14/actual-relation-01/actual-relation-summary.json` SHA `E95BD0C3D6B56E149D1BB487E9CBA1E7CBE4FC62BD5DD91EBEBC037852329368`，没有重复提取四raw。PRE native4同日、POST native9同日，recipient35466对actor29829总opinion **40→60/+20**，recipient34730对actor29829 **41→61/+20**，均observed/read-only、query-post绑定一致。这是两项实际总opinion变化，不是填入源码期待；已发表fixed3 modifier rows仍合法absent，friendliness不在该named-row接口中，不能伪造named modifier已独立读出。完整来宾数、其它人出席、活动终态或终局奖励没有因此获得信用；原generic material profile仍None/unavailable，helper provenance/credit false也保留。
+
+独立宗教材料冷保留是另一层：原13在PID94488已实测fulfillment0→500000/+5，正常下一回合+1day并保存h4139；ROOT后来从正常h4140/六账本配对恢复到PID96348。该新PID的现成registered religion POST第3query `ewan0801-v21-relation-post-and-religion-01/003-ck3_query_player_religion_context_v1.json` available/read_only、native9/raw53222304/actor29829，fulfillment仍raw500000/scale100000，Rite152/Faith23/Religion8/mainRite152、keys与fervor raw6808550均保留，原13未再现。此读数发生于当前`.0801`选择之后，记录的是新PID中实际标量5，不计第二次宗教+5；v21冷恢复发生在`.0801`选择之前，因此也不冒充本次新增opinion的选择后cold验收。
+
+```mermaid
+flowchart TD
+    R["[prior live] Rite13实际+5→next正常1day→保存"] --> C["[actual new PID96348] 同episode冷恢复；原13gone，原14待选"]
+    C --> P["[relation PRE] native4：35466=40；34730=41"]
+    P --> A["[production native7] API2/native1选择原14一次"]
+    A --> S["[independent native8] 原14gone；同actor/date paused"]
+    S --> O["[independent relation POST native9] 60/61；各实际+20"]
+    S --> F["[independent religion native9] 当前值5、Rite/Faith不变；原宗教材料保留"]
+    O -. "ROOT接续正式普通turn" .-> N["unknown：0801 next/新paired checkpoint"]
+    N -. "按该checkpoint最新实际baseline" .-> K["unknown：0801选后cold关系材料"]
+```
+
+按原handover M2行与 `g2-requirements-v1.json` 的visible_outcome核一次：要求三个真实自然事件、其中两个多选及材料变化；原执行专题还要求两种真实场景的typed action→独立材料→下一正式nonwar turn→paired checkpoint/cold。当前同Robert episode已具备`.7002`单选/+35与next、fowl`.0003`单选/health+.5与next、Rite`.0010`三选/+5与next及新PID材料读数，以及本次`.0801`三选/两opinion各+20；两种不同多选的实际材料样本已出现。本次能力为 **production-live primitive**，当前准确余项是`.0801`选择后的actualnext、新paired checkpoint及选择后cold材料，尚不写whole M2 complete，也不新增通用observer、named-friendliness字段或“不同活动/不同领域”等门槛。
+
+最小后续cold材料沿现成口即可：在ROOT最新正常checkpoint保存同actor/date的35466/34730总opinion baseline，正常新PID恢复后独立snapshot证明旧14未再现，分别调用existing `ck3_query_activity_feast_guest_opinion_private_v1` 对两个recipient向actor29829的当前总opinion作同日warm/cold比较。中间正常时间可能使friendliness衰减或其它意见变化；baseline用最新实际值，不硬钉历史60/61、不要求再+20、不重选14。专题字段与原合同核对落在 `m2-events/actual-robert-feast-0801-blocker-01/actual-38b43747-v21-closed/REPORT-FIELDS.json`、`closed-packet-assessment.json`、`M2-CONTRACT-REVIEW.json`。未重跑旧路径、两个GREEN测试或任何SDK；Feastowner独占其收益专题，中央day数本包新增0。
+
 ## 2026-10-03：Robert 当前宴会 `feast_events_ewan.0801` 最小关系路线
 
 原宗教13消失后，正式普通回合推进一天，原生新14在暂停raw53222304出现；首次 consumer closed `existing_consumer_not_ready`，原实例保留且未选择。已复用唯一实际query：`rite0010-following-normal30-6443-actual-01/turn-002/natural-event/002-ck3_query_current_event_window_context_v1-service-receipt.json`，SHA `124CD1F98D8C3E156DE5BABB8F9D7E58065753CB3E4640B47C8A01DAA49AA82F`。typed key `feast_events_ewan.0801`、instance14/calculated1340801/runtime550，native31/public5；root=host29829，saved scopes为activity、host、province、fellow_guest_1=35466、fellow_guest_2=34730。activity/province身份保持opaque。basic authored3与typed rendered3一致，native0、1、2均shown/enabled，当前压力0；前两项icon只给stress decrease、不提供幅度或完整效果，第三项空rows也不代表无效果。

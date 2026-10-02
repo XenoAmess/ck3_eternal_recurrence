@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 82,
-    "caller_candidate_reference_count": 535,
-    "definition_file_count": 72,
+    "caller_candidate_file_count": 83,
+    "caller_candidate_reference_count": 536,
+    "definition_file_count": 73,
     "external_caller_event_count": 158,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 192,
-    "same_file_only_caller_event_count": 34,
-    "unique_definition_count": 192
+    "registered_event_count": 193,
+    "same_file_only_caller_event_count": 35,
+    "unique_definition_count": 193
   },
   "ck3_build": "1.20.0.2",
   "ck3_exe_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
-  "dataset_sha256": "BF4ADC6FEE5742B1E57F0768E2BE120113E9176D4A8FABAA3BF30EB42FB22DF8",
+  "dataset_sha256": "4B38B779335B18EF14B3C617ABB5C075919C706ABCDE4BF345AED2D5A85A553B",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -462,6 +462,24 @@
         "relative_path": "events/interaction_events/character_interaction_events.txt"
       },
       "namespace": "char_interaction"
+    },
+    "court_chaplain_task.0313": {
+      "caller_candidate_resolution": "same-definition-file-only",
+      "caller_candidates": [
+        {
+          "column": 21,
+          "file_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+          "kind": "exact-token-lexical-candidate",
+          "line": 376,
+          "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "EA86AEAE9A122F06699D8CB0550D3D299E72BC460520A704D050499196D4AF71",
+        "line": 518,
+        "relative_path": "events/councillor_task_events/court_chaplain_task_events.txt"
+      },
+      "namespace": "court_chaplain_task"
     },
     "court_yearly.6030": {
       "caller_candidate_resolution": "external-definition-file",
