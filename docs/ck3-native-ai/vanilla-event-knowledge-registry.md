@@ -1,5 +1,54 @@
 ﻿# CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-03：Robert 当前宴会 `feast_events_ewan.0801` 最小关系路线
+
+原宗教13消失后，正式普通回合推进一天，原生新14在暂停raw53222304出现；首次 consumer closed `existing_consumer_not_ready`，原实例保留且未选择。已复用唯一实际query：`rite0010-following-normal30-6443-actual-01/turn-002/natural-event/002-ck3_query_current_event_window_context_v1-service-receipt.json`，SHA `124CD1F98D8C3E156DE5BABB8F9D7E58065753CB3E4640B47C8A01DAA49AA82F`。typed key `feast_events_ewan.0801`、instance14/calculated1340801/runtime550，native31/public5；root=host29829，saved scopes为activity、host、province、fellow_guest_1=35466、fellow_guest_2=34730。activity/province身份保持opaque。basic authored3与typed rendered3一致，native0、1、2均shown/enabled，当前压力0；前两项icon只给stress decrease、不提供幅度或完整效果，第三项空rows也不代表无效果。
+
+原版树在我方policy修改前落盘于 `m6-feast/robert-feast/actual-2026-10-03-event14/source-effects/source-tree.md`，并同步 [Feast原生树](ck3-1.20.0.2-feast-guest-rule.md)。exact current CK3 1.20.0.3/Steam25652598/EXE94B55397…DE02A6，`events/activities/feast_activity/feast_events_ewan.txt:1516–1866` 文件SHA `6B040A05457D879EC733CD887A06CAFDC427F196E1B9E95B8C111778CF5C34E6`，完整raw token blockSHA `511C54E289BD36EB746377F99633FCF6982C6C8B42CA14ACEA7FEEB7607D5EE2`。最终source-effects REPORT SHA `8694C5EFB4454D7418AEB8E714B7E79549FD4FE82355C5EAA8B39B9F4A2DCB7C`，direct-dependency-pins SHA `289AD22EA60A32951264D5AD9A12C2F58468D5F92791341BE8A42B4A5390A016`；只读取此实际事件与三个直接values/opinion文件，未扩其它caller或新PE审计。
+
+```mermaid
+flowchart TD
+    E["[stock] reduce_stress_intent；murder时非host；一年cooldown"] --> I["[stock immediate] 随机保存两个不同非root、至少一共同trait的attendee"]
+    I --> W["[stock eventweight] base1；gregarious/reveler各+.25"]
+    W --> P["[actual] root-host29829；两guest见证；3native全部enabled"]
+    P --> A["[stock native0] impact base−100/reclusive+80；AI100，rationality+.5/boldness−.5"]
+    P --> B["[stock native1] qualifying attendee各friendliness20→root；impact−15/gregarious−5；AI1，sociability+.5/boldness−.25"]
+    P --> C["[stock native2] prestige75；greg/arrogant−5、shy/humble+40；AI1，boldness/energy+.5"]
+    B --> K["[our current route] API2/native1；关系价值；无authored支付"]
+    K -. "未实际选择；已有独立查询配方" .-> R["unknown：实际guest总opinion变化、原14消失与next"]
+```
+
+`.b` 在 `scope:activity.every_attending_character` 对**每位**非root且至少一共同trait的实际attendee执行一次 `add_opinion(target=root, modifier=friendliness_opinion, opinion=20)`；不是每个共同trait加一次，也不限于两位portrait scopes。两位当前fellow是immediate所选attendee见证，未把总受益人数假定为2，也不据此授其它被邀请人物出席信用。friendliness定义为monthly_change0.1、decaying=yes、stacking=yes；event与modifier没有显式duration，native默认duration未推断。没有common after或直接follow-up key。`stress_and_fulfillment_impact` 是原生处理的作用：-100/+80、-15/-5、-5/+40是源码贡献，最终stress/fulfillment受处理、modifier、夹限影响。native2 `minor_prestige_gain=minor_prestige_value=75`，不能沿用其它Feast事件的35。
+
+原树落盘后，ROOT按当前Robert关系目标授权 `.b`/native1/API2；当前stress0，额外减压不能提前写成实际收益。native0是更强减压路线但有reclusive贡献，native2是带trait-stress取舍的prestige路线；我方不为凑材料样本改选更容易比较的prestige。AIbase100/1/1及其全部personality权重已列为输入，未把初始base当最终selector或宣称此关系策略全局最优。只新增当前 `.0801` 的五scope/三选项合同、`.3` dispatch、现有有限relational-scope入口，不固定guest ID、不注册未来事件、不改变service/native/outcome。
+
+本包 **static-ready**：唯一新增现有full-route方法 `test_feast_0801_actual_three_options_select_second_and_observe_advance` 首次实际执行 **GREEN 1/1**，采用真实native31/public5与五scope，经normalizer→knowledge/classifier→ordinaryplan→service API2→native-driver独立合成原14gone、同actor/datepaused；压力0保持，没有模拟opinion、资源收益或后续事件。首次runner attempt01在case执行前因import路径断言产生harness RED（0tests），冻结保留；只修3module overlay导入，attempt02执行唯一case，没有重跑旧Rite或Feast suites。材料profile非空，`observable_postcondition=None`，不虚构general relationship comparator已接入。
+
+ROOT可复用现有 `ck3_query_activity_feast_guest_opinion_private_v1(guest_character_id=35466或34730, expected_revision=<fresh public revision>)` 做recipient对当前actor29829的独立总opinion PRE/POST，精确config为上述M6目录 `root-relation-pre-sdk-calls.json` 与post副本；现有named fixed3 rows不含friendliness，因此不能把总delta或源码20冒充已发表named-modifier读数。本包交付于 `m2-events/actual-robert-feast-0801-blocker-01/python-compatibility/`，当前静态fixture不授新live、实际+20、M2、终态或完整Feast奖励信用；ROOT发布freeze后才一次消费原14并独立verify。
+
+## 2026-10-03：Robert 原 `rite_growth.0010` 一次选择与独立精神满足度 +5
+
+ROOT 使用已发布 Python `6443a516`、现有 native/environment `4ee`，在同一 Robert ordinary episode `native-29829-2bc2d599f7f9`、PID94488 消费原自然 instance13 一次。现成生产 consumer 的 closed result 为 `event_selected_material_recorded`：实际 typed key `rite_growth.0010`、calculated3910010/runtime5952，七个 saved scopes 沿用已审阅合同；snapshot authored3、三个 rendered/native0、1、2 均显示启用，选 native0/API1。选择前 `native:24`/public2，独立选择后 `native:25`/public3；原13消失、`active_event=null`、同actor29829/暂停raw53222280，postcondition verified。原generic effect preview仍不完整，stock `ai_chance` base100/0/0 只是已审阅初始权重，未声称最终引擎 selector 或全局宗教策略最优。
+
+材料另由现成 registered MCP `ck3_query_player_religion_context_v1` 读取：真实 PRE native23、fulfillment raw0，独立 POST native26、raw500000，scale100000；同actor29829、同raw53222280、不同capture epoch，均 `available=true/read_only=true`。因此本次实际增量为 **+5**。两次 Rite152/Faith23/Religion8/mainRite152、fervor raw6808550及其keys均未变；没有把独立 player context 的身份填进事件 opaque saved scopes。此前 exact-build 研究已证明脚本 base5 经gain/loss modifier和上下限夹限，本次实测+5只描述这一次，不据此取消其它帧的modifier/clamp语义。
+
+```mermaid
+flowchart TD
+    N["[actual normal origin] following6day turn3 原13出现；3个可见选项"] --> P["[actual PRE] native23 fulfillment0"]
+    P --> C["[production] native24/API1→native0；已审阅当前Rite路线"]
+    C --> A["[independent snapshot] native25 原13gone；同actor/date paused"]
+    A --> R["[independent religion POST] native26 raw500000；实际+5；Rite/Faith不变"]
+    R --> L["[production normal next] native28→31；正常+1day；新14出现"]
+    L --> S["[closed checkpoint] h4139；同episode保存/driver配对"]
+    S -. "另一次冷场景尚未发生" .-> K["unknown：独立cold验证"]
+```
+
+能力由 static-ready 经实际选择与独立材料验证，升为本事件的 **production-live loop**：ROOT随后现成普通回合起点 `native:28` 仍同actor/raw且无原13，选择 `life-advance`，终点 `native:31`/暂停raw53222304，实际 **+1day** 后新 instance14 出现。请求30天并未完成，closed status `existing_consumer_not_ready` 属于新14 `feast_events_ewan.0801` 的知识缺项，不是原13再现；新14尚未选择。正常stage是 `m7-robert/rite0010-following-normal30-6443-actual-01/result.json` 及 `turn-001/result.json`，checkpoint h4139/saved，同episode保存85752395B/SHA `B6486A6A55BD7A4B3DA8269AB80B2C6197A01A3484BCB441FCE59A0C8E3C5317`，driver49943552B/SHA `C1E512C5C7389D18339E6977125D67A1D3638A2732062B000C252DEBB775406C`。这些大文件的hash复用ROOT closed receipt，没有再读save/history；该1天由中央ledger计数，本assessment不重复增加天数。
+
+原 natural adapter 的 `production_material_expectation=null`、generic `metric=null/status=unavailable/current_selected_choice_material_profile_unavailable`、helper `natural_provenance_verified=false` 和 `new_live_milestone_credit=false` 原样保留；外部实际宗教pre/post证明并不冒充通用材料比较器已经接入fulfillment。该自然三选项实例可作为多选材料样本候选交ledger核算，但不自动完成M2的两种多选、独立cold场景或整体合同；当前原事件的next消费已由上述正常+1天闭合。
+
+本次有限离线 assessment 位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-rite-growth-0010-blocker-01/actual-6443a516-closed/closed-packet-assessment.json`，当日字段为同目录 `REPORT-FIELDS.json`；input pins覆盖 selection result、独立PRE/POST、adapter-input及后续正常stage/turn。实际选择目录是 `m2-events/robert-rite0010-6443a516-actual-select-01`，PRE/POST为 `m2-events/robert-rite-fulfillment-before-01` 与 `after-01` 的 `001-ck3_query_player_religion_context_v1.json`。选择包自身checkpoint仍只继承既有seq4/`submitted`，新的paired save/driver证据来自后续closed stage。本次未读巨大history、未重复SDK/游戏动作或已GREEN fixture；原unregistered RED、组包metadata失败及离线parser首个status枚举误用attempt均保留。parser把真实recommendation `recommended`误写为期待`available`，其余原事件21项成立；这只是报告器标签修正，不是生产能力RED。
+
 ## 2026-10-02：宗教开放后的真实 `rite_growth.0010`
 
 用户已经明确开放全方位深入宗教研究并撤销旧宗教暂缓要求；以下当前事件不再沿用该限制。ROOT 与其它 owner 维护全局旧限制清理，本包只修复 Robert 当前自然 instance13 的实际消费缺项，不抢共享迁移或中央报告文件。

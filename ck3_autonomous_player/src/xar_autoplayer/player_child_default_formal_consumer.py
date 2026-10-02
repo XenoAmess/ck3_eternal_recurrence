@@ -401,15 +401,22 @@ def submit_child_default_private(driver: object, *,
                 (rejected_candidate_ids | attempted_candidate_ids)
             ):
         raise ValueError("child default split or value changed before submission")
+    # Refresh same-child native legality after the latest campaign-root recheck.
+    fresh_legality = driver.query_player_child_marriage_subject_private_v1(
+        expected_native_revision=snapshot["native_revision"],
+        subject_character_id=split["subject_character_id"])
+    if {**fresh_legality, "query_sequence": legality["query_sequence"]} != legality:
+        raise ValueError("child default native legality changed before submission")
     fresh_values = [
         driver.query_player_child_marriage_value_private_v1(
-            legality=legality, candidate_character_id=candidate_id,
+            legality=fresh_legality, candidate_character_id=candidate_id,
             request_matrilineal_option=False)
         for candidate_id in shortlist
     ]
-    if (fresh_values != full_values
+    if ([{**fresh, "legality_query_sequence": legality["query_sequence"]}
+         for fresh in fresh_values] != full_values
             or choose_specified_child_default_value(
-                legality, fresh_values, split_successor_verified=True,
+                fresh_legality, fresh_values, split_successor_verified=True,
                 rejected_candidate_ids=rejected_candidate_ids | attempted_candidate_ids,
             ).get("selected_candidate_character_id") !=
                 value.get("candidate_character_id")):
@@ -417,11 +424,12 @@ def submit_child_default_private(driver: object, *,
     # The native selected-proof cache holds one pair. Re-reading the selected
     # full value last binds that exact pair for the typed submit.
     selected_fresh = driver.query_player_child_marriage_value_private_v1(
-        legality=legality,
+        legality=fresh_legality,
         candidate_character_id=value["candidate_character_id"],
         request_matrilineal_option=False)
-    if selected_fresh != value:
+    if {**selected_fresh, "legality_query_sequence": legality["query_sequence"]} != value:
         raise ValueError("child default selected native proof changed")
+    legality, value = fresh_legality, selected_fresh
     row = value.get("row")
     if (not isinstance(row, dict)
             or row.get("heir_character_id") != split["subject_character_id"]
