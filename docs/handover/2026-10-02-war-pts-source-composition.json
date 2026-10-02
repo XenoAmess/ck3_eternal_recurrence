@@ -1,0 +1,16 @@
+{
+  "schema": "ck3.war-handover.pts-source-composition.v1",
+  "reason": "The later raw-visual-index source adds Decimal seek canonicalization required by frozen PTS indexing; both sampler and its regression tests replace the earlier preview variants. Earlier original bytes remain reachable via archive source tags and the preservation commit.",
+  "files": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/sample_e2_05_raw_visual_index.py",
+      "source_commit": "a3fdd31ca8631644cb6341b85db2ae0b29b7c1b4",
+      "git_blob": "4d263983de3d522e8f24dfc43ed4dc03829352af"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/test_sample_e2_05_raw_visual_index.py",
+      "source_commit": "a3fdd31ca8631644cb6341b85db2ae0b29b7c1b4",
+      "git_blob": "2c70ef6eef480fc8f6148f51f0a8a2cc1d3761cf"
+    }
+  ]
+}
